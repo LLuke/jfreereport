@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.13 2003/05/02 12:39:36 taqua Exp $
+ * $Id: PreviewAction.java,v 1.14 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public abstract class PreviewAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public PreviewAction(ResourceBundle resources)
+  public PreviewAction(final ResourceBundle resources)
   {
     this.putValue(NAME, resources.getString("action.print-preview.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.print-preview.description"));

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
+ * $Id: CloseAction.java,v 1.2 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public abstract class CloseAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected CloseAction(ResourceBundle resources)
+  protected CloseAction(final ResourceBundle resources)
   {
     this.putValue(NAME, resources.getString("action.close.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.close.description"));

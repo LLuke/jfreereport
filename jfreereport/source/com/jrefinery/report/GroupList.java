@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.29 2003/06/26 19:55:55 taqua Exp $
+ * $Id: GroupList.java,v 1.30 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes:
  * --------
@@ -83,7 +83,7 @@ public class GroupList implements Cloneable, Serializable
      *
      * @param groupList the group list whose stylesheet colllection should be managed.
      */
-    public GroupListStyleSheetCollectionHelper(GroupList groupList)
+    public GroupListStyleSheetCollectionHelper(final GroupList groupList)
     {
       this.groupList = groupList;
     }
@@ -101,7 +101,7 @@ public class GroupList implements Cloneable, Serializable
       }
       for (int i = 0; i < groupList.cache.length; i++)
       {
-        Group g = groupList.cache[i];
+        final Group g = groupList.cache[i];
         g.registerStyleSheetCollection(getStyleSheetCollection());
       }
     }
@@ -119,7 +119,7 @@ public class GroupList implements Cloneable, Serializable
       }
       for (int i = 0; i < groupList.cache.length; i++)
       {
-        Group g = groupList.cache[i];
+        final Group g = groupList.cache[i];
         g.unregisterStyleSheetCollection(null);
       }
     }
@@ -148,7 +148,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @param list  groups to add to the list.
    */
-  public GroupList(GroupList list)
+  public GroupList(final GroupList list)
   {
     this();
     backend.addAll(list.backend);
@@ -165,7 +165,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return the report group.
    */
-  public Group get(int i)
+  public Group get(final int i)
   {
     if (cache == null)
     {
@@ -181,20 +181,20 @@ public class GroupList implements Cloneable, Serializable
    * @return a boolean indicating whether or not the object was removed.
    * @throws NullPointerException if the given group object is null.
    */
-  public boolean remove(Group o)
+  public boolean remove(final Group o)
   {
     if (o == null)
     {
       throw new NullPointerException();
     }
     cache = null;
-    int idxOf = findGroup(o);
+    final int idxOf = findGroup(o);
     if (idxOf == -1)
     {
       // the object was not in the list ...
       return false;
     }
-    Group go = (Group) backend.get(idxOf);
+    final Group go = (Group) backend.get(idxOf);
     if (getStyleSheetCollection() != null)
     {
       go.unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -211,11 +211,11 @@ public class GroupList implements Cloneable, Serializable
    * @param group the group that is searched.
    * @return the index of the group or -1 if this group is not contained in that list.
    */
-  private int findGroup(Group group)
+  private int findGroup(final Group group)
   {
     for (int i = 0; i < backend.size(); i++)
     {
-      Group gList = (Group) backend.get(i);
+      final Group gList = (Group) backend.get(i);
       if (gList.compareTo(group) == 0)
       {
         return i;
@@ -238,7 +238,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @param o  the group object.
    */
-  public void add(Group o)
+  public void add(final Group o)
   {
     if (o == null)
     {
@@ -265,9 +265,9 @@ public class GroupList implements Cloneable, Serializable
    * @throws NullPointerException if the given collection is null.
    * @throws ClassCastException if the collection does not contain groups.
    */
-  public void addAll(Collection c)
+  public void addAll(final Collection c)
   {
-    Iterator it = c.iterator();
+    final Iterator it = c.iterator();
     while (it.hasNext())
     {
       add((Group) it.next());
@@ -283,7 +283,7 @@ public class GroupList implements Cloneable, Serializable
   {
     try
     {
-      GroupList l = (GroupList) super.clone();
+      final GroupList l = (GroupList) super.clone();
       l.styleSheetCollectionHelper = new GroupListStyleSheetCollectionHelper(l);
       l.backend = new ArrayList();
       l.clear();
@@ -327,7 +327,7 @@ public class GroupList implements Cloneable, Serializable
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("GroupList={backend='");
     b.append(backend);
     b.append("'} ");
@@ -355,7 +355,7 @@ public class GroupList implements Cloneable, Serializable
    * if there is already an other stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -369,7 +369,7 @@ public class GroupList implements Cloneable, Serializable
    * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -389,7 +389,7 @@ public class GroupList implements Cloneable, Serializable
    * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException if
    * there is an other stylesheet collection already registered with that element.
    */
-  public void updateStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void updateStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     if (cache == null)
     {
@@ -397,7 +397,7 @@ public class GroupList implements Cloneable, Serializable
     }
     for (int i = 0; i < cache.length; i++)
     {
-      Group g = cache[i];
+      final Group g = cache[i];
       g.updateStyleSheetCollection(styleSheetCollection);
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.12 2003/01/29 21:57:12 taqua Exp $
+ * $Id: SampleData2.java,v 1.13 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -226,7 +226,7 @@ public class SampleData2 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass(int column)
+  public Class getColumnClass(final int column)
   {
     if (column == 3)
     {
@@ -249,7 +249,7 @@ public class SampleData2 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     if (column == 0)
     {
@@ -285,7 +285,7 @@ public class SampleData2 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt(int row, int column)
+  public Object getValueAt(final int row, final int column)
   {
     //if (column == 2 && row == 100) return null;
     return data[row][column];

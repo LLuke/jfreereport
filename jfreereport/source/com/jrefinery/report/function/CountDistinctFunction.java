@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CountDistinctFunction.java,v 1.4 2003/06/10 16:07:47 taqua Exp $
+ * $Id: CountDistinctFunction.java,v 1.5 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -88,7 +88,7 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    *
    * @param name  the group name (null permitted).
    */
-  public void setGroup(String name)
+  public void setGroup(final String name)
   {
     setProperty(GROUP_PROPERTY, name);
   }
@@ -112,7 +112,7 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -128,7 +128,7 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
@@ -142,7 +142,7 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
@@ -161,14 +161,14 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
       return;
     }
 
-    Object o = event.getDataRow().get(getField());
+    final Object o = event.getDataRow().get(getField());
     values.add(o);
   }
 
@@ -190,7 +190,7 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    * @throws ClassNotFoundException if a class definition for a serialized object
    * could not be found.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(final ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();

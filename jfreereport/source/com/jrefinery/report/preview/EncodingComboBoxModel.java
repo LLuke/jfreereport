@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.20 2003/06/26 19:55:56 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.21 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * --------
@@ -85,10 +85,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
      * @throws ClassCastException if the arguments' types prevent them from
      *         being compared by this Comparator.
      */
-    public int compare(Object o1, Object o2)
+    public int compare(final Object o1, final Object o2)
     {
-      EncodingCarrier e1 = (EncodingCarrier) o1;
-      EncodingCarrier e2 = (EncodingCarrier) o2;
+      final EncodingCarrier e1 = (EncodingCarrier) o1;
+      final EncodingCarrier e2 = (EncodingCarrier) o2;
       return e1.getName().toLowerCase().compareTo(e2.getName().toLowerCase());
     }
 
@@ -100,7 +100,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return A boolean.
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (o == null)
       {
@@ -140,7 +140,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      * @param name  the name (<code>null</code> not permitted).
      * @param description  the description.
      */
-    public EncodingCarrier(String name, String description)
+    public EncodingCarrier(final String name, final String description)
     {
       if (name == null)
       {
@@ -148,7 +148,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
       }
       this.name = name;
       this.description = description;
-      StringBuffer dName = new StringBuffer();
+      final StringBuffer dName = new StringBuffer();
       dName.append(name);
       dName.append(" (");
       dName.append(description);
@@ -193,7 +193,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return A boolean.
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (this == o)
       {
@@ -259,7 +259,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * @return <code>true</code> if the encoding is valid and added to the model, <code>false</code>
    *         otherwise.
    */
-  public boolean addEncoding(String name, String description)
+  public boolean addEncoding(final String name, final String description)
   {
     if (EncodingSupport.isSupportedEncoding(name))
     {
@@ -280,7 +280,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * @param name  the name.
    * @param description  the description.
    */
-  public void addEncodingUnchecked(String name, String description)
+  public void addEncodingUnchecked(final String name, final String description)
   {
     encodings.add(new EncodingCarrier(name, description));
     fireContentsChanged();
@@ -291,10 +291,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @param encoding the encoding that should be verified.
    */
-  public void ensureEncodingAvailable(String encoding)
+  public void ensureEncodingAvailable(final String encoding)
   {
-    String desc = getDefaultEncodings().getProperty(encoding, ENCODING_DEFAULT_DESCRIPTION);
-    EncodingCarrier ec = new EncodingCarrier(encoding, desc);
+    final String desc = getDefaultEncodings().getProperty(encoding, ENCODING_DEFAULT_DESCRIPTION);
+    final EncodingCarrier ec = new EncodingCarrier(encoding, desc);
     if (encodings.contains(ec) == false)
     {
       encodings.add(ec);
@@ -320,10 +320,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       return;
     }
-    ListDataEvent evt = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, getSize());
+    final ListDataEvent evt = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, getSize());
     for (int i = 0; i < listDataListeners.size(); i++)
     {
-      ListDataListener l = (ListDataListener) listDataListeners.get(i);
+      final ListDataListener l = (ListDataListener) listDataListeners.get(i);
       l.contentsChanged(evt);
     }
   }
@@ -336,13 +336,25 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * @param anItem the list object to select or <code>null</code>
    *        to clear the selection
    */
-  public void setSelectedItem(Object anItem)
+  public void setSelectedItem(final Object anItem)
   {
     selectedObject = anItem;
-    if (anItem != null && anItem instanceof String)
+    if (anItem != null)
     {
-      selectedIndex = encodings.indexOf(new EncodingCarrier((String) anItem, null));
+      if (anItem != null && anItem instanceof String)
+      {
+        final int size = getSize();
+        for (int i = 0; i < size; i++)
+        {
+          if (anItem.equals(getElementAt(i)))
+          {
+            selectedIndex = i;
+            return;
+          }
+        }
+      }
     }
+    selectedIndex = -1;
   }
 
   /**
@@ -356,6 +368,28 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
+   * Defines the selected index for this encoding model.
+   *
+   * @param index the selected index or -1 to clear the selection.
+   * @throws IllegalArgumentException if the given index is invalid.
+   */
+  public void setSelectedIndex(final int index)
+  {
+    if (index == -1)
+    {
+      selectedIndex = -1;
+      selectedObject = null;
+      return;
+    }
+    if (index < -1 || index >= getSize())
+    {
+      throw new IllegalArgumentException("Index is invalid.");
+    }
+    selectedIndex = index;
+    selectedObject = getElementAt(index);
+  }
+
+  /**
    * Returns the selected encoding.
    *
    * @return The encoding (name).
@@ -366,7 +400,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       return null;
     }
-    EncodingCarrier ec = (EncodingCarrier) encodings.get(selectedIndex);
+    final EncodingCarrier ec = (EncodingCarrier) encodings.get(selectedIndex);
     return ec.getName();
   }
 
@@ -397,9 +431,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return the value at <code>index</code>
    */
-  public Object getElementAt(int index)
+  public Object getElementAt(final int index)
   {
-    EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
+    final EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getDisplayName();
   }
 
@@ -409,7 +443,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @param l the <code>ListDataListener</code> to be added
    */
-  public void addListDataListener(ListDataListener l)
+  public void addListDataListener(final ListDataListener l)
   {
     if (listDataListeners == null)
     {
@@ -424,7 +458,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @param l the <code>ListDataListener</code> to be removed
    */
-  public void removeListDataListener(ListDataListener l)
+  public void removeListDataListener(final ListDataListener l)
   {
     if (listDataListeners == null)
     {
@@ -604,17 +638,17 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public static EncodingComboBoxModel createDefaultModel()
   {
-    EncodingComboBoxModel ecb = new EncodingComboBoxModel();
+    final EncodingComboBoxModel ecb = new EncodingComboBoxModel();
 
-    String availEncs = ReportConfiguration.getGlobalConfig().getAvailableEncodings();
+    final String availEncs = ReportConfiguration.getGlobalConfig().getAvailableEncodings();
 
     if (availEncs.equalsIgnoreCase(ReportConfiguration.AVAILABLE_ENCODINGS_ALL))
     {
-      Properties encodings = getDefaultEncodings();
-      Enumeration enum = encodings.keys();
+      final Properties encodings = getDefaultEncodings();
+      final Enumeration enum = encodings.keys();
       while (enum.hasMoreElements())
       {
-        String enc = (String) enum.nextElement();
+        final String enc = (String) enum.nextElement();
         // if not set to "true"
         if (encodings.getProperty(enc, "false").equalsIgnoreCase("true"))
         {
@@ -625,8 +659,8 @@ public class EncodingComboBoxModel implements ComboBoxModel
     }
     else if (availEncs.equals(ReportConfiguration.AVAILABLE_ENCODINGS_FILE))
     {
-      String encFile = ReportConfiguration.getGlobalConfig().getEncodingsDefinitionFile();
-      InputStream in = ecb.getClass().getResourceAsStream(encFile);
+      final String encFile = ReportConfiguration.getGlobalConfig().getEncodingsDefinitionFile();
+      final InputStream in = ecb.getClass().getResourceAsStream(encFile);
       if (in == null)
       {
         Log.warn(new Log.SimpleMessage
@@ -636,15 +670,15 @@ public class EncodingComboBoxModel implements ComboBoxModel
       {
         try
         {
-          Properties defaultEncodings = getDefaultEncodings();
-          Properties encDef = new Properties();
-          BufferedInputStream bin = new BufferedInputStream(in);
+          final Properties defaultEncodings = getDefaultEncodings();
+          final Properties encDef = new Properties();
+          final BufferedInputStream bin = new BufferedInputStream(in);
           encDef.load(bin);
           bin.close();
-          Enumeration enum = encDef.keys();
+          final Enumeration enum = encDef.keys();
           while (enum.hasMoreElements())
           {
-            String enc = (String) enum.nextElement();
+            final String enc = (String) enum.nextElement();
             // if not set to "true"
             if (encDef.getProperty(enc, "false").equalsIgnoreCase("true"))
             {
@@ -671,7 +705,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The index.
    */
-  public int indexOf(String encoding)
+  public int indexOf(final String encoding)
   {
     return encodings.indexOf(new EncodingCarrier(encoding, null));
   }
@@ -683,9 +717,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The index.
    */
-  public String getEncoding(int index)
+  public String getEncoding(final int index)
   {
-    EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
+    final EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getName();
   }
 
@@ -696,9 +730,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The description.
    */
-  public String getDescription(int index)
+  public String getDescription(final int index)
   {
-    EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
+    final EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getDescription();
   }
 }

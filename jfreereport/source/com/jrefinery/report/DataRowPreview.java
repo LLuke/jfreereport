@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowPreview.java,v 1.4 2003/05/30 16:57:21 taqua Exp $
+ * $Id: DataRowPreview.java,v 1.5 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class DataRowPreview extends DataRowBackend
    *
    * @param db  the base.
    */
-  public DataRowPreview(DataRowBackend db)
+  public DataRowPreview(final DataRowBackend db)
   {
     super(db);
   }
@@ -67,7 +67,7 @@ public class DataRowPreview extends DataRowBackend
    * Updates this instance to be a preview of the given backend.
    * @param db the row.
    */
-  public void update(DataRowBackend db)
+  public void update(final DataRowBackend db)
   {
     super.setCurrentRow(db.getCurrentRow() + 1);
   }
@@ -90,7 +90,7 @@ public class DataRowPreview extends DataRowBackend
    * @param currentRow the current row
    * @throws IllegalStateException as this is a readonly implementation
    */
-  public void setCurrentRow(int currentRow)
+  public void setCurrentRow(final int currentRow)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }
@@ -103,7 +103,7 @@ public class DataRowPreview extends DataRowBackend
    * @param functions the current function collection
    * @throws IllegalStateException as this is a readonly implementation
    */
-  public void setFunctions(LevelledExpressionList functions)
+  public void setFunctions(final LevelledExpressionList functions)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }
@@ -118,7 +118,7 @@ public class DataRowPreview extends DataRowBackend
    *
    * @throws IllegalStateException as this is a readonly implementation
    */
-  public void setTablemodel(TableModel tablemodel)
+  public void setTablemodel(final TableModel tablemodel)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }
@@ -128,7 +128,7 @@ public class DataRowPreview extends DataRowBackend
    *
    * @param properties  the report properties.
    */
-  public void setReportProperties(ReportPropertiesList properties)
+  public void setReportProperties(final ReportPropertiesList properties)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }

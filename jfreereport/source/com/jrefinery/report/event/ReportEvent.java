@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.19 2003/06/13 17:54:32 taqua Exp $
+ * $Id: ReportEvent.java,v 1.20 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -100,7 +100,7 @@ public class ReportEvent extends EventObject
    * @param state  the current state of the processed report (<code>null</code> not permmitted).
    * @param type the event type for this event object.
    */
-  public ReportEvent(ReportState state, int type)
+  public ReportEvent(final ReportState state, final int type)
   {
     super(state);
     if (state == null)

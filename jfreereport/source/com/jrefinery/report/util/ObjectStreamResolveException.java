@@ -25,7 +25,7 @@
  * ---------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: ObjectStreamResolveException.java,v 1.3 2003/02/26 13:58:05 mungady Exp $
+ * $Id: ObjectStreamResolveException.java,v 1.4 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ public class ObjectStreamResolveException extends ObjectStreamException
    *
    * @param classname the detailed message for the exception
    */
-  public ObjectStreamResolveException(String classname)
+  public ObjectStreamResolveException(final String classname)
   {
     super(classname);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableOperationModule.java,v 1.7 2003/04/09 15:52:51 mungady Exp $
+ * $Id: DrawableOperationModule.java,v 1.8 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -65,10 +65,10 @@ public class DrawableOperationModule extends OperationModule
    * @param value  the value.
    * @param bounds  the bounds.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
-                               Rectangle2D bounds)
+  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
+                               final Rectangle2D bounds)
   {
-    DrawableContent content = (DrawableContent) value.getContentForBounds(bounds);
+    final DrawableContent content = (DrawableContent) value.getContentForBounds(bounds);
     if (content == null)
     {
       return;

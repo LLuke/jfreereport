@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.7 2003/02/27 10:35:39 mungady Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.8 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * @param support the layout support which defines the alignment.
    * @throws NullPointerException if one of the parameters is null.
    */
-  public AlignedLogicalPageWrapper(LogicalPage logicalPage, LayoutSupport support)
+  public AlignedLogicalPageWrapper(final LogicalPage logicalPage, final LayoutSupport support)
   {
     if (logicalPage == null)
     {
@@ -87,7 +87,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * @param boundary the alignment boundary
    * @return the aligned value
    */
-  private float alignDown(float value, float boundary)
+  private float alignDown(final float value, final float boundary)
   {
     if (boundary == 0)
     {
@@ -158,7 +158,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    *
    * @param operations the spool that should be replayed.
    */
-  public void replaySpool(Spool operations)
+  public void replaySpool(final Spool operations)
   {
     logicalPage.replaySpool(operations);
   }
@@ -177,7 +177,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    *
    * @return a spool.
    */
-  public Spool spoolBand(Rectangle2D bounds, Band band) throws OutputTargetException
+  public Spool spoolBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {
     return logicalPage.spoolBand(bounds, band);
   }
@@ -190,7 +190,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public void addBand(Rectangle2D bounds, Band band) throws OutputTargetException
+  public void addBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {
     logicalPage.addBand(bounds, band);
   }
@@ -202,8 +202,8 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    */
   public PageFormat getPhysicalPageFormat()
   {
-    PageFormat pf = (PageFormat) logicalPage.getPhysicalPageFormat().clone();
-    Paper p = pf.getPaper();
+    final PageFormat pf = (PageFormat) logicalPage.getPhysicalPageFormat().clone();
+    final Paper p = pf.getPaper();
     p.setSize(alignDown((float) p.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
         alignDown((float) p.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
     pf.setPaper(p);
@@ -225,7 +225,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    *
    * @param target  the output target.
    */
-  public void setOutputTarget(OutputTarget target)
+  public void setOutputTarget(final OutputTarget target)
   {
     logicalPage.setOutputTarget(target);
   }

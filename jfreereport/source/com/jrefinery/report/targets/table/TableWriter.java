@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.23 2003/06/23 16:08:27 taqua Exp $
+ * $Id: TableWriter.java,v 1.24 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -161,7 +161,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    * Sets the cursor for the writer.
    * @param cursor the new cursor.
    */
-  private void setCursor(TableWriterCursor cursor)
+  private void setCursor(final TableWriterCursor cursor)
   {
     this.cursor = cursor;
   }
@@ -205,7 +205,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param width the maximum width for a root band.
    */
-  public void setMaxWidth(float width)
+  public void setMaxWidth(final float width)
   {
     maxWidth = width;
   }
@@ -218,14 +218,14 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @return the dimensions of the band.
    */
-  private Rectangle2D doLayout(Band band)
+  private Rectangle2D doLayout(final Band band)
   {
     // in this layouter the width of a band is always the full page width.
     // the height is not limited ...
-    float width = getMaxWidth();
-    float height = Short.MAX_VALUE;
+    final float width = getMaxWidth();
+    final float height = Short.MAX_VALUE;
 
-    Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
+    final Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
         getLayoutSupport(),
         width,
         height);
@@ -242,9 +242,9 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    * the sheet.
    * @param band the band that should be printed.
    */
-  private void doPrint(Rectangle2D bounds, Band band)
+  private void doPrint(final Rectangle2D bounds, final Band band)
   {
-    int cellCount = producer.getCellCount();
+    final int cellCount = producer.getCellCount();
 
     // now print the band ...
     producer.processBand(bounds, band);
@@ -268,8 +268,8 @@ public class TableWriter extends AbstractFunction implements PageEventListener
     }
     inEndPage = true;
 
-    ReportEvent currentEvent = getCurrentEvent();
-    ReportState cEventState = getCurrentEvent().getState();
+    final ReportEvent currentEvent = getCurrentEvent();
+    final ReportState cEventState = getCurrentEvent().getState();
     cEventState.firePageFinishedEvent();
     cEventState.nextPage();
     setCurrentEvent(currentEvent);
@@ -287,8 +287,8 @@ public class TableWriter extends AbstractFunction implements PageEventListener
     }
     inEndPage = true;
 
-    ReportEvent currentEvent = getCurrentEvent();
-    ReportState cEventState = currentEvent.getState();
+    final ReportEvent currentEvent = getCurrentEvent();
+    final ReportState cEventState = currentEvent.getState();
     cEventState.firePageStartedEvent(currentEvent.getType());
     setCurrentEvent(currentEvent);
     inEndPage = false;
@@ -300,7 +300,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param b  the band.
    */
-  protected void print(Band b)
+  protected void print(final Band b)
   {
     if (!isInEndPage() && (isPageEmpty == false)
         && b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
@@ -309,12 +309,12 @@ public class TableWriter extends AbstractFunction implements PageEventListener
       startPage();
     }
 
-    float y = getCursor().getY();
+    final float y = getCursor().getY();
     // don't save the state if the current page is currently being finished
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
-    Rectangle2D bounds = doLayout(b);
+    final Rectangle2D bounds = doLayout(b);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
     doPrint(bounds, b);
 
@@ -346,7 +346,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    * Overrides the depency level. Should be lower than any other function depency.
    * @param deplevel the new depency level.
    */
-  public void setDependencyLevel(int deplevel)
+  public void setDependencyLevel(final int deplevel)
   {
     this.depLevel = deplevel;
   }
@@ -356,7 +356,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     setCurrentEvent(event);
 
@@ -371,7 +371,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     isLastPageBreak = true;
     setCurrentEvent(event);
@@ -401,14 +401,14 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event  the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     setCurrentEvent(event);
     // a new page has started, so reset the cursor ...
     setCursor(new TableWriterCursor());
 
     // is paginated ...
-    Object[] params = new Object[]{
+    final Object[] params = new Object[]{
       new Integer(event.getState().getCurrentPage())
     };
     String sheetName =
@@ -423,7 +423,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
     }
     producer.beginPage(sheetName);
 
-    Band b = event.getReport().getPageHeader();
+    final Band b = event.getReport().getPageHeader();
     if (event.getState().getCurrentPage() == 1)
     {
       if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
@@ -448,7 +448,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
      */
     for (int gidx = 0; gidx < currentEffectiveGroupIndex; gidx++)
     {
-      Group g = event.getReport().getGroup(gidx);
+      final Group g = event.getReport().getGroup(gidx);
       if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
       {
         print(g.getHeader());
@@ -461,10 +461,10 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event  the event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
     setCurrentEvent(event);
-    Band b = event.getReport().getPageFooter();
+    final Band b = event.getReport().getPageFooter();
     if (event.getState().getCurrentPage() == 1)
     {
       if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
@@ -492,13 +492,13 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     setCurrentEvent(event);
     currentEffectiveGroupIndex += 1;
-    int gidx = event.getState().getCurrentGroupIndex();
-    Group g = event.getReport().getGroup(gidx);
-    Band b = g.getHeader();
+    final int gidx = event.getState().getCurrentGroupIndex();
+    final Group g = event.getReport().getGroup(gidx);
+    final Band b = g.getHeader();
     print(b);
   }
 
@@ -507,13 +507,13 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     setCurrentEvent(event);
     currentEffectiveGroupIndex -= 1;
-    int gidx = event.getState().getCurrentGroupIndex();
-    Group g = event.getReport().getGroup(gidx);
-    Band b = g.getFooter();
+    final int gidx = event.getState().getCurrentGroupIndex();
+    final Group g = event.getReport().getGroup(gidx);
+    final Band b = g.getFooter();
     print(b);
   }
 
@@ -522,7 +522,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     setCurrentEvent(event);
     print(event.getReport().getItemBand());
@@ -535,7 +535,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event The event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     setCurrentEvent(event);
     currentEffectiveGroupIndex += 1;
@@ -548,7 +548,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event The event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
     // this event does nothing
     setCurrentEvent(event);
@@ -572,7 +572,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param currentEvent the current event.
    */
-  public void setCurrentEvent(ReportEvent currentEvent)
+  public void setCurrentEvent(final ReportEvent currentEvent)
   {
     this.currentEvent = currentEvent;
   }
@@ -592,7 +592,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param producer the table producer that should be used to create the TableCellData.
    */
-  public void setProducer(TableProducer producer)
+  public void setProducer(final TableProducer producer)
   {
     this.producer = producer;
   }
@@ -604,7 +604,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     // we are fairly sure, that our table report processor does not invoke this
     // method
@@ -617,7 +617,7 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     if (getMaxWidth() == 0)
     {

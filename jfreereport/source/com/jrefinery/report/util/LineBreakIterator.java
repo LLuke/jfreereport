@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.8 2003/05/14 22:26:40 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.9 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class LineBreakIterator implements Iterator
    *
    * @param text the text to be broken up.
    */
-  public LineBreakIterator(String text)
+  public LineBreakIterator(final String text)
   {
     setText(text);
   }
@@ -90,7 +90,7 @@ public class LineBreakIterator implements Iterator
 
     // recognize \n, \r, \r\n
 
-    int nChars = text.length;
+    final int nChars = text.length;
     int nextChar = position;
 
     for (; ;)
@@ -142,7 +142,7 @@ public class LineBreakIterator implements Iterator
    */
   public int nextWithEnd()
   {
-    int pos = position;
+    final int pos = position;
     if (pos == DONE)
     {
       return DONE;
@@ -152,7 +152,7 @@ public class LineBreakIterator implements Iterator
       position = DONE;
       return DONE;
     }
-    int retval = nextPosition();
+    final int retval = nextPosition();
     if (retval == DONE)
     {
       return text.length;
@@ -175,7 +175,7 @@ public class LineBreakIterator implements Iterator
    *
    * @param text  the text.
    */
-  public void setText(String text)
+  public void setText(final String text)
   {
     position = 0;
     this.text = text.toCharArray();
@@ -206,7 +206,7 @@ public class LineBreakIterator implements Iterator
       return null;
     }
 
-    int lastFound = position;
+    final int lastFound = position;
     int pos = nextWithEnd();
     if (pos == DONE)
     {
@@ -217,7 +217,7 @@ public class LineBreakIterator implements Iterator
     // step one char back
     if (pos > 0)
     {
-      int end = lastFound;
+      final int end = lastFound;
       for (; ((pos) > end) && ((text[pos - 1] == '\n') || text[pos - 1] == '\r'); pos--)
       {
         // search the end of the current linebreak sequence ..
@@ -252,9 +252,9 @@ public class LineBreakIterator implements Iterator
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";
+    final String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";
     LineBreakIterator lbi = new LineBreakIterator(test);
     while (lbi.hasNext())
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EmptyReportException.java,v 1.2 2003/06/15 21:26:29 taqua Exp $
+ * $Id: EmptyReportException.java,v 1.3 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,7 +52,7 @@ public class EmptyReportException extends ReportProcessingException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public EmptyReportException(String message, Exception ex)
+  public EmptyReportException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -62,7 +62,7 @@ public class EmptyReportException extends ReportProcessingException
    *
    * @param message  the exception message.
    */
-  public EmptyReportException(String message)
+  public EmptyReportException(final String message)
   {
     super(message);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceGenerator.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
+ * $Id: StyleKeyReferenceGenerator.java,v 1.8 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -70,11 +70,11 @@ public final class StyleKeyReferenceGenerator
    */
   public static TableModel createData()
   {
-    StyleKeyFactoryCollector cc = new StyleKeyFactoryCollector();
+    final StyleKeyFactoryCollector cc = new StyleKeyFactoryCollector();
     cc.addFactory(new DefaultStyleKeyFactory());
     cc.addFactory(new PageableLayoutStyleKeyFactory());
 
-    StyleKeyReferenceTableModel model = new StyleKeyReferenceTableModel(cc);
+    final StyleKeyReferenceTableModel model = new StyleKeyReferenceTableModel(cc);
     return model;
   }
 
@@ -83,11 +83,11 @@ public final class StyleKeyReferenceGenerator
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
 
-    ReportGenerator gen = ReportGenerator.getInstance();
-    URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
+    final ReportGenerator gen = ReportGenerator.getInstance();
+    final URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");
@@ -96,7 +96,7 @@ public final class StyleKeyReferenceGenerator
       return;
     }
 
-    JFreeReport report;
+    final JFreeReport report;
     try
     {
       report = gen.parseReport(reportURL);

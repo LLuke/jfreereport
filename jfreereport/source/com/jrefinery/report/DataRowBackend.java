@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.43 2003/06/23 14:36:56 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.44 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes
  * -------
@@ -123,7 +123,7 @@ public class DataRowBackend implements Cloneable
    *
    * @param db  the data row backend.
    */
-  protected DataRowBackend(DataRowBackend db)
+  protected DataRowBackend(final DataRowBackend db)
   {
     this.columnlocks = EMPTY_BOOLS;
     this.colcache = db.colcache;
@@ -176,7 +176,7 @@ public class DataRowBackend implements Cloneable
    *
    * @param currentRow the current row
    */
-  public void setCurrentRow(int currentRow)
+  public void setCurrentRow(final int currentRow)
   {
     if (currentRow < -1)
     {
@@ -209,7 +209,7 @@ public class DataRowBackend implements Cloneable
    *
    * @param functions the current function collection
    */
-  public void setFunctions(LevelledExpressionList functions)
+  public void setFunctions(final LevelledExpressionList functions)
   {
     if (functions == null)
     {
@@ -226,7 +226,7 @@ public class DataRowBackend implements Cloneable
    *
    * @param tablemodel the tablemodel used as base for the reporting
    */
-  public void setTablemodel(TableModel tablemodel)
+  public void setTablemodel(final TableModel tablemodel)
   {
     this.tablemodel = tablemodel;
     if (tablemodel != null)
@@ -252,7 +252,7 @@ public class DataRowBackend implements Cloneable
    *         columns in this row.
    * @throws IllegalStateException if a deadlock is detected.
    */
-  public Object get(int column)
+  public Object get(final int column)
   {
     if (column >= getColumnCount())
     {
@@ -340,9 +340,9 @@ public class DataRowBackend implements Cloneable
    *         columns in this row.
    * @throws IllegalStateException if a deadlock is detected.
    */
-  public Object get(String name)
+  public Object get(final String name)
   {
-    int idx = findColumn(name);
+    final int idx = findColumn(name);
     if (idx == -1)
     {
       return null;
@@ -370,18 +370,18 @@ public class DataRowBackend implements Cloneable
    * @return the column position of the column, expression or function with the given name or
    * -1 if the given name does not exist in this DataRow.
    */
-  public int findColumn(String name)
+  public int findColumn(final String name)
   {
-    Integer integ = (Integer) colcache.get(name);
+    final Integer integ = (Integer) colcache.get(name);
     if (integ != null)
     {
       return integ.intValue();
     }
 
-    int size = getColumnCount();
+    final int size = getColumnCount();
     for (int i = 0; i < size; i++)
     {
-      String column = getColumnName(i);
+      final String column = getColumnName(i);
       if (column.equals(name))
       {
         colcache.put(name, new Integer(i));
@@ -420,7 +420,7 @@ public class DataRowBackend implements Cloneable
     else if (col < getFunctionEndIndex())
     {
       col -= getTableEndIndex();
-      Expression f = getFunctions().getExpression(col);
+      final Expression f = getFunctions().getExpression(col);
       if (f == null)
       {
         Log.warn("No such function: " + col);
@@ -464,7 +464,7 @@ public class DataRowBackend implements Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    DataRowBackend db = (DataRowBackend) super.clone();
+    final DataRowBackend db = (DataRowBackend) super.clone();
     db.preview = null;
     db.columnlocks = new boolean[getColumnCount()];
     return db;
@@ -576,7 +576,7 @@ public class DataRowBackend implements Cloneable
    *
    * @param properties  the report properties.
    */
-  public void setReportProperties(ReportPropertiesList properties)
+  public void setReportProperties(final ReportPropertiesList properties)
   {
     this.reportProperties = properties;
     revalidateColumnLock();

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.9 2003/05/16 17:26:43 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.10 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public final class InItemGroupState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public InItemGroupState(ReportState previous)
+  public InItemGroupState(final ReportState previous)
   {
     super(previous);
   }
@@ -87,7 +87,7 @@ public final class InItemGroupState extends ReportState
 
     // we have more data to work on
     // If the group is done, print the GroupFooter of the parent
-    Group group = getReport().getGroup(getCurrentGroupIndex());
+    final Group group = getReport().getGroup(getCurrentGroupIndex());
 
     if (group.isLastItemInGroup(getDataRowBackend(),
         getDataRowBackend().previewNextRow()))

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.14 2003/06/10 16:07:54 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.15 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -95,15 +95,15 @@ public class DefaultSizeCalculator implements SizeCalculator
 
       // On a 1.4 version, the aliasing has no influence on non-fractional metrics
       // aliasing has no influence on any version if fractional metrics are enabled.
-      FontRenderContext frcAlias = new FontRenderContext(null, true, false);
-      FontRenderContext frcNoAlias = new FontRenderContext(null, false, false);
-      Font font = new Font("Serif", Font.PLAIN, 10);
-      String myText = "A simple text with some characters to calculate the length.";
+      final FontRenderContext frcAlias = new FontRenderContext(null, true, false);
+      final FontRenderContext frcNoAlias = new FontRenderContext(null, false, false);
+      final Font font = new Font("Serif", Font.PLAIN, 10);
+      final String myText = "A simple text with some characters to calculate the length.";
 
-      double wAlias = font.getStringBounds(myText, 0, myText.length(), frcAlias).getWidth();
-      double wNoAlias = font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
+      final double wAlias = font.getStringBounds(myText, 0, myText.length(), frcAlias).getWidth();
+      final double wNoAlias = font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
       isBuggyVersion = (wAlias != wNoAlias);
-      boolean buggyOverride = ReportConfiguration.getGlobalConfig().isG2BuggyFRC();
+      final boolean buggyOverride = ReportConfiguration.getGlobalConfig().isG2BuggyFRC();
       Log.debug("This is a buggy version of the font-renderer context: " + isBuggyVersion);
       Log.debug("The buggy-value is defined in the configuration     : " + buggyOverride);
       if (isBuggyVersion)
@@ -224,7 +224,7 @@ public class DefaultSizeCalculator implements SizeCalculator
    *
    * @return A default size calculator.
    */
-  public static DefaultSizeCalculator getDefaultSizeCalculator(FontDefinition font)
+  public static DefaultSizeCalculator getDefaultSizeCalculator(final FontDefinition font)
   {
     if (cache == null)
     {
@@ -244,7 +244,7 @@ public class DefaultSizeCalculator implements SizeCalculator
    *
    * @param font  the font.
    */
-  public DefaultSizeCalculator(FontDefinition font)
+  public DefaultSizeCalculator(final FontDefinition font)
   {
     if (font == null)
     {
@@ -273,7 +273,7 @@ public class DefaultSizeCalculator implements SizeCalculator
    *
    * @return the width of the given string in 1/72" dpi.
    */
-  public float getStringWidth(String text, int lineStartPos, int endPos)
+  public float getStringWidth(final String text, final int lineStartPos, final int endPos)
   {
     if (lineStartPos < 0)
     {
@@ -288,9 +288,9 @@ public class DefaultSizeCalculator implements SizeCalculator
     {
       return 0;
     }
-    FontRenderContext frc = getFrcDetector().createFontRenderContext();
-    Rectangle2D textBounds2 = font.getFont().getStringBounds(text, lineStartPos, endPos, frc);
-    float x2 = (float) textBounds2.getWidth();
+    final FontRenderContext frc = getFrcDetector().createFontRenderContext();
+    final Rectangle2D textBounds2 = font.getFont().getStringBounds(text, lineStartPos, endPos, frc);
+    final float x2 = (float) textBounds2.getWidth();
     return x2;
   }
 

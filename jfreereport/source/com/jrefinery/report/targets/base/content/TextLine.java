@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.12 2003/05/14 22:26:39 taqua Exp $
+ * $Id: TextLine.java,v 1.13 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class TextLine implements Content
    * @param sizeCalc  the size calculator.
    * @param lineheight the line height that should be used for this text line.
    */
-  public TextLine(SizeCalculator sizeCalc, float lineheight)
+  public TextLine(final SizeCalculator sizeCalc, final float lineheight)
   {
     bounds = new Rectangle2D.Float();
     this.lineHeight = lineheight;
@@ -117,7 +117,7 @@ public class TextLine implements Content
    * @param width the width of the bounds.
    * @param height the height of the bounds.
    */
-  public void setContent(String content, float x, float y, float width, float height)
+  public void setContent(final String content, final float x, final float y, float width, float height)
   {
     if (x < 0)
     {
@@ -171,7 +171,7 @@ public class TextLine implements Content
    *
    * @return <code>null</code>.
    */
-  public Content getContentPart(int part)
+  public Content getContentPart(final int part)
   {
     return null;
   }
@@ -196,16 +196,16 @@ public class TextLine implements Content
    *
    * @return the content that fits the specified bounds.
    */
-  public Content getContentForBounds(Rectangle2D bounds)
+  public Content getContentForBounds(final Rectangle2D bounds)
   {
-    Rectangle2D actBounds = this.bounds.createIntersection(bounds);
+    final Rectangle2D actBounds = this.bounds.createIntersection(bounds);
     if (actBounds.getHeight() < this.bounds.getHeight())
     {
       return null;
     }
-    float frontW = (float) (actBounds.getX() - this.bounds.getX());
-    int frontPos = calcStringLength(0, frontW);
-    int endPos = calcStringLength(frontPos, (float) actBounds.getWidth());
+    final float frontW = (float) (actBounds.getX() - this.bounds.getX());
+    final int frontPos = calcStringLength(0, frontW);
+    final int endPos = calcStringLength(frontPos, (float) actBounds.getWidth());
 
     if (frontPos == endPos)
     {
@@ -213,7 +213,7 @@ public class TextLine implements Content
       return null;
     }
 
-    TextLine line = new TextLine(getSizeCalculator(), lineHeight);
+    final TextLine line = new TextLine(getSizeCalculator(), lineHeight);
     line.setContent(content.substring(frontPos, endPos),
         (float) actBounds.getX(),
         (float) actBounds.getY(),
@@ -230,7 +230,7 @@ public class TextLine implements Content
    *
    * @return the number of characters that will fit within a certain width.
    */
-  private int calcStringLength(int startPos, float maxWidth)
+  private int calcStringLength(final int startPos, final float maxWidth)
   {
     if (maxWidth == 0.0)
     {
@@ -241,7 +241,7 @@ public class TextLine implements Content
       return 0;
     }
 
-    float lineWidth = getSizeCalculator().getStringWidth(content, startPos, content.length());
+    final float lineWidth = getSizeCalculator().getStringWidth(content, startPos, content.length());
     if (lineWidth <= maxWidth)
     {
       return content.length();
@@ -275,14 +275,14 @@ public class TextLine implements Content
    * @return the position, where the string width is nearest or equal to maxWidth..
    */
   private int calculateWidthPos
-      (final int lineStart, int startPos, int endPos, final float maxWidth)
+      (final int lineStart, final int startPos, final int endPos, final float maxWidth)
   {
     if (startPos == endPos)
     {
       return startPos;
     }
 
-    int delta = ((endPos - startPos) / 2) + startPos;
+    final int delta = ((endPos - startPos) / 2) + startPos;
     if (delta == startPos)
     {
       return startPos;
@@ -292,7 +292,7 @@ public class TextLine implements Content
       return endPos;
     }
 
-    float wDelta = getSizeCalculator().getStringWidth(content, lineStart, delta);
+    final float wDelta = getSizeCalculator().getStringWidth(content, lineStart, delta);
     if (wDelta == maxWidth)
     {
       return delta;
@@ -321,7 +321,7 @@ public class TextLine implements Content
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append(getClass().getName());
     b.append("={ content=\"");
     b.append(getContent());

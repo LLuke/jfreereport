@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.8 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class PercentageDemo extends AbstractDemoFrame
    *
    * @param title  the frame title.
    */
-  public PercentageDemo(String title)
+  public PercentageDemo(final String title)
   {
     setTitle(title);
     setJMenuBar(createMenuBar());
@@ -94,11 +94,11 @@ public class PercentageDemo extends AbstractDemoFrame
    */
   public JMenuBar createMenuBar()
   {
-    JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = createJMenuItem("menu.file");
+    final JMenuBar mb = new JMenuBar();
+    final JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
+    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -114,23 +114,23 @@ public class PercentageDemo extends AbstractDemoFrame
    */
   public JPanel createContent()
   {
-    JPanel content = new JPanel(new BorderLayout());
+    final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-    String d = "In this demo, the TableModel contains two columns A and B. The generated "
+    final String d = "In this demo, the TableModel contains two columns A and B. The generated "
         + "report displays the values in these columns, plus a third value (A/B) "
         + "formatted as a percentage.";
-    JTextArea textArea = new JTextArea(d);
+    final JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
     textArea.setEditable(false);
-    JScrollPane scroll = new JScrollPane(textArea);
+    final JScrollPane scroll = new JScrollPane(textArea);
     scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     this.data = createData();
-    JTable table = new JTable(data);
-    JScrollPane scrollPane = new JScrollPane(table);
+    final JTable table = new JTable(data);
+    final JScrollPane scrollPane = new JScrollPane(table);
 
-    JButton previewButton = new ActionButton(getPreviewAction());
+    final JButton previewButton = new ActionButton(getPreviewAction());
 
     content.add(scroll, BorderLayout.NORTH);
     content.add(scrollPane);
@@ -143,7 +143,7 @@ public class PercentageDemo extends AbstractDemoFrame
    */
   protected void attemptPreview()
   {
-    URL in = getClass().getResource("/com/jrefinery/report/demo/PercentageDemo.xml");
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/PercentageDemo.xml");
 
     if (in == null)
     {
@@ -153,7 +153,7 @@ public class PercentageDemo extends AbstractDemoFrame
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
-    JFreeReport report;
+    final JFreeReport report;
     try
     {
       report = parseReport(in);
@@ -167,7 +167,7 @@ public class PercentageDemo extends AbstractDemoFrame
 
     try
     {
-      PreviewFrame frame = new PreviewFrame(report);
+      final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
@@ -187,11 +187,11 @@ public class PercentageDemo extends AbstractDemoFrame
    *
    * @return a report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(final URL templateURL)
   {
 
     JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
       result = generator.parseReport(templateURL);
@@ -211,7 +211,7 @@ public class PercentageDemo extends AbstractDemoFrame
    */
   public static TableModel createData()
   {
-    DefaultTableModel data = new DefaultTableModel();
+    final DefaultTableModel data = new DefaultTableModel();
     data.addColumn("A");
     data.addColumn("B");
     data.addRow(new Object[]{new Double(43.0), new Double(127.5)});
@@ -227,9 +227,9 @@ public class PercentageDemo extends AbstractDemoFrame
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    PercentageDemo frame = new PercentageDemo("Percentage Demo");
+    final PercentageDemo frame = new PercentageDemo("Percentage Demo");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: URLFilter.java,v 1.12 2003/06/01 17:39:25 taqua Exp $
+ * $Id: URLFilter.java,v 1.13 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     if (ds == null)
     {
@@ -110,7 +110,7 @@ public class URLFilter implements DataFilter, Serializable
       return null;
     }
 
-    Object o = getDataSource().getValue();
+    final Object o = getDataSource().getValue();
     if (o == null)
     {
       return null;
@@ -124,7 +124,7 @@ public class URLFilter implements DataFilter, Serializable
     {
       if (o instanceof File)
       {
-        File f = (File) o;
+        final File f = (File) o;
         if (f.canRead())
         {
           return f.toURL();
@@ -158,7 +158,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @param baseURL  the base URL.
    */
-  public void setBaseURL(URL baseURL)
+  public void setBaseURL(final URL baseURL)
   {
     this.baseURL = baseURL;
   }
@@ -172,7 +172,7 @@ public class URLFilter implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    URLFilter f = (URLFilter) super.clone();
+    final URLFilter f = (URLFilter) super.clone();
     if (source != null)
     {
       f.source = (DataSource) source.clone();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportStateProgress.java,v 1.2 2003/04/09 16:16:07 mungady Exp $
+ * $Id: ReportStateProgress.java,v 1.3 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -70,8 +70,8 @@ public class ReportStateProgress
    * @param currentPage  the current page.
    * @param stateClass  the state class.
    */
-  public ReportStateProgress(int currentGroupIndex, int currentDataItem, int currentPage,
-                             Class stateClass)
+  public ReportStateProgress(final int currentGroupIndex, final int currentDataItem, final int currentPage,
+                             final Class stateClass)
   {
     this.currentGroupIndex = currentGroupIndex;
     this.currentDataItem = currentDataItem;
@@ -88,7 +88,7 @@ public class ReportStateProgress
    *
    * @param currentGroupIndex  the new index value.
    */
-  public void setCurrentGroupIndex(int currentGroupIndex)
+  public void setCurrentGroupIndex(final int currentGroupIndex)
   {
     this.currentGroupIndex = currentGroupIndex;
   }
@@ -98,7 +98,7 @@ public class ReportStateProgress
    *
    * @param currentDataItem  the current data item.
    */
-  public void setCurrentDataItem(int currentDataItem)
+  public void setCurrentDataItem(final int currentDataItem)
   {
     this.currentDataItem = currentDataItem;
   }
@@ -108,7 +108,7 @@ public class ReportStateProgress
    *
    * @param currentPage  the current page.
    */
-  public void setCurrentPage(int currentPage)
+  public void setCurrentPage(final int currentPage)
   {
     this.currentPage = currentPage;
   }
@@ -118,7 +118,7 @@ public class ReportStateProgress
    *
    * @param stateClass  the state class.
    */
-  public void setStateClass(Class stateClass)
+  public void setStateClass(final Class stateClass)
   {
     if (stateClass == null)
     {

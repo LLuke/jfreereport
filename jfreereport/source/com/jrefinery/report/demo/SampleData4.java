@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData4.java,v 1.9 2003/05/02 12:39:37 taqua Exp $
+ * $Id: SampleData4.java,v 1.10 2003/06/27 14:25:16 taqua Exp $
  *
  */
 package com.jrefinery.report.demo;
@@ -57,10 +57,10 @@ public class SampleData4 extends AbstractTableModel
      *
      * @return an integer representing the relative order of the two fonts.
      */
-    public int compare(Object o, Object o1)
+    public int compare(final Object o, final Object o1)
     {
-      Font f1 = (Font) o;
-      Font f2 = (Font) o1;
+      final Font f1 = (Font) o;
+      final Font f2 = (Font) o1;
       int comp = f1.getFamily().compareTo(f2.getFamily());
       if (comp == 0)
       {
@@ -109,7 +109,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass(int column)
+  public Class getColumnClass(final int column)
   {
     return String.class;
   }
@@ -121,7 +121,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     if (column == 0)
     {
@@ -145,7 +145,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt(int row, int column)
+  public Object getValueAt(final int row, final int column)
   {
     if (column == 0)
     {

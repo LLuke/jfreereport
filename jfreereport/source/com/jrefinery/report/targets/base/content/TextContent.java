@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.16 2003/06/19 18:44:10 taqua Exp $
+ * $Id: TextContent.java,v 1.17 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -66,23 +66,23 @@ public class TextContent extends ContentContainer
    * @param bounds  the bounds.
    * @param ot  the size calculator.
    */
-  public TextContent(String value, float lineHeight, Rectangle2D bounds, SizeCalculator ot)
+  public TextContent(final String value, final float lineHeight, final Rectangle2D bounds, final SizeCalculator ot)
   {
     super((Rectangle2D) bounds.clone());
     this.sizeCalculator = ot;
 
-    float x = (float) bounds.getX();
-    float y = (float) bounds.getY();
-    float w = (float) bounds.getWidth();
-    float h = (float) bounds.getHeight();
+    final float x = (float) bounds.getX();
+    final float y = (float) bounds.getY();
+    final float w = (float) bounds.getWidth();
+    final float h = (float) bounds.getHeight();
     float usedHeight = 0;
 
     if (w != 0)
     {
-      List paragraphs = splitContent(value);
+      final List paragraphs = splitContent(value);
       for (int i = 0; i < paragraphs.size(); i++)
       {
-        TextParagraph p = new TextParagraph(getSizeCalculator(), lineHeight);
+        final TextParagraph p = new TextParagraph(getSizeCalculator(), lineHeight);
         p.setContent((String) paragraphs.get(i), x, y + usedHeight, w, h - usedHeight);
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
@@ -107,9 +107,9 @@ public class TextContent extends ContentContainer
    *
    * @return a list of lines/paragraphs.
    */
-  private List splitContent(String text)
+  private List splitContent(final String text)
   {
-    List lines = new ArrayList();
+    final List lines = new ArrayList();
 
     // check if empty content ... this case is easy ...
     if (text.length() == 0)
@@ -117,7 +117,7 @@ public class TextContent extends ContentContainer
       return lines;
     }
 
-    LineBreakIterator iterator = new LineBreakIterator(text);
+    final LineBreakIterator iterator = new LineBreakIterator(text);
     while (iterator.hasNext())
     {
       lines.add(iterator.next());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.12 2003/06/27 18:46:25 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.io.OutputStream;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.EncodingSupport;
 import com.jrefinery.report.util.PageFormatFactory;
-import com.jrefinery.report.util.Log;
 
 /**
  * Implements a printer command set for plain text output. The output is
@@ -180,7 +179,7 @@ public class PrinterCommandSet
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public PrinterCommandSet(OutputStream out, PageFormat format, int defaultCPI, int defaultLPI)
+  public PrinterCommandSet(final OutputStream out, final PageFormat format, final int defaultCPI, final int defaultLPI)
   {
     this.out = out;
     this.defaultLPI = defaultLPI;
@@ -234,7 +233,7 @@ public class PrinterCommandSet
    * @param fontSelection the font selection byte.
    * @throws IOException is not thrown here.
    */
-  public void setFont(byte fontSelection) throws IOException
+  public void setFont(final byte fontSelection) throws IOException
   {
     this.font = fontSelection;
   }
@@ -256,7 +255,7 @@ public class PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command or if the
    *   character width is not supported by the printer.
    */
-  public void setCharacterWidth(byte charWidth) throws IOException
+  public void setCharacterWidth(final byte charWidth) throws IOException
   {
     this.characterWidth = charWidth;
   }
@@ -280,7 +279,7 @@ public class PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setFontStyle(boolean bold, boolean italic, boolean underline, boolean strike)
+  public void setFontStyle(final boolean bold, final boolean italic, final boolean underline, final boolean strike)
       throws IOException
   {
     this.bold = bold;
@@ -335,7 +334,7 @@ public class PrinterCommandSet
    * @param lines the number of lines that could be printed on a single page.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setPaperSize(int lines) throws IOException
+  public void setPaperSize(final int lines) throws IOException
   {
     this.paperSize = lines;
   }
@@ -357,7 +356,7 @@ public class PrinterCommandSet
    * @param right the number of spaces left free on the right paper border.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setHorizontalBorder(int left, int right) throws IOException
+  public void setHorizontalBorder(final int left, final int right) throws IOException
   {
     this.borderLeft = left;
     this.borderRight = right;
@@ -371,7 +370,7 @@ public class PrinterCommandSet
    * @param bottom the number of blank lines printed at the end of a page
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setVerticalBorder(int top, int bottom) throws IOException
+  public void setVerticalBorder(final int top, final int bottom) throws IOException
   {
     this.borderTop = top;
     this.borderBottom = bottom;
@@ -420,7 +419,7 @@ public class PrinterCommandSet
    * @param spaceInInch the linespacing in 1/1440 inches.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setLineSpacing(int spaceInInch) throws IOException
+  public void setLineSpacing(final int spaceInInch) throws IOException
   {
     if (spaceInInch <= 0)
     {
@@ -447,17 +446,16 @@ public class PrinterCommandSet
    * @param codepage the new codepage that should be used.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setCodePage(String codepage) throws IOException
+  public void setCodePage(final String codepage) throws IOException
   {
     if (codepage == null)
     {
       throw new NullPointerException("The codepage must not be null.");
     }
-    Log.debug ("CodePage: " + codepage);
     encodingHeader = " ".getBytes(codepage);
 
-    byte[] spacesWithHeader = "  ".getBytes(codepage);
-    int length = spacesWithHeader.length - encodingHeader.length;
+    final byte[] spacesWithHeader = "  ".getBytes(codepage);
+    final int length = spacesWithHeader.length - encodingHeader.length;
     space = new byte[length];
     System.arraycopy(spacesWithHeader, encodingHeader.length, space, 0, length);
 
@@ -481,7 +479,7 @@ public class PrinterCommandSet
    * @param autoLF the new autoLF state
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setAutoLF(boolean autoLF) throws IOException
+  public void setAutoLF(final boolean autoLF) throws IOException
   {
     this.autoLf = autoLF;
   }
@@ -493,7 +491,7 @@ public class PrinterCommandSet
    * @param letterQuality true, if letter quality should be used, false for draft-quality
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setPrintQuality(boolean letterQuality) throws IOException
+  public void setPrintQuality(final boolean letterQuality) throws IOException
   {
     this.letterQuality = letterQuality;
   }
@@ -536,18 +534,18 @@ public class PrinterCommandSet
     setFontStyle(false, false, false, false);
     setPrintQuality(false);
 
-    PageFormatFactory fact = PageFormatFactory.getInstance();
-    Paper paper = pageFormat.getPaper();
-    int cWidthPoints = 72 / getCharacterWidth();
-    int left = (int) (fact.getLeftBorder(paper) / cWidthPoints);
-    int right = (int) (fact.getRightBorder(paper) / cWidthPoints);
+    final PageFormatFactory fact = PageFormatFactory.getInstance();
+    final Paper paper = pageFormat.getPaper();
+    final int cWidthPoints = 72 / getCharacterWidth();
+    final int left = (int) (fact.getLeftBorder(paper) / cWidthPoints);
+    final int right = (int) (fact.getRightBorder(paper) / cWidthPoints);
     setHorizontalBorder(left, right);
 
-    int top = (int) (fact.getTopBorder(paper) * 20);
-    int bottom = (int) (fact.getBottomBorder(paper) * 20);
+    final int top = (int) (fact.getTopBorder(paper) * 20);
+    final int bottom = (int) (fact.getBottomBorder(paper) * 20);
     setVerticalBorder(top, bottom);
 
-    int lines = (int) ((paper.getHeight() / 72) * getDefaultLPI());
+    final int lines = (int) ((paper.getHeight() / 72) * getDefaultLPI());
     setPaperSize(lines);
   }
 
@@ -560,12 +558,12 @@ public class PrinterCommandSet
   {
     if (firstPage)
     {
-      int spaceUsage = encodingHeader.length - space.length;
+      final int spaceUsage = encodingHeader.length - space.length;
       out.write(encodingHeader, 0, spaceUsage);
       setFirstPage(false);
     }
 
-    int topBorderLines = ((getBorderTop() / 1440) / getLineSpacing());
+    final int topBorderLines = ((getBorderTop() / 1440) / getLineSpacing());
     for (int i = 0; i < topBorderLines; i++)
     {
       startLine();
@@ -580,13 +578,26 @@ public class PrinterCommandSet
    */
   public void endPage() throws IOException
   {
-    int bottomBorderLines = ((getBorderBottom() / 1440) / getLineSpacing());
+    final int bottomBorderLines = ((getBorderBottom() / 1440) / getLineSpacing());
     for (int i = 0; i < bottomBorderLines; i++)
     {
       startLine();
       endLine();
     }
-    out.write(FORM_FEED);
+    writeControlChar(FORM_FEED);
+  }
+
+  /**
+   * Writes the given control character.
+   *
+   * @param ctrl the control character.
+   * @throws IOException if an error occured.
+   */
+  protected void writeControlChar (final byte ctrl) throws IOException
+  {
+    // encode as ascii string ...
+    final String s = new String (new byte[]{ctrl}, "ASCII");
+    writeEncodedText(s);
   }
 
   /**
@@ -609,10 +620,10 @@ public class PrinterCommandSet
     emptyCellCounter = 0;
     // CR = (ASCII #13) reset the print position to the start of the line
     // LF = (ASCII #10) scroll down a new line (? Auto-LF feature ?)
-    out.write(CARRIAGE_RETURN);
+    writeControlChar(CARRIAGE_RETURN);
     if (isAutoLf() == false)
     {
-      out.write(LINE_FEED);
+      writeControlChar(LINE_FEED);
     }
   }
 
@@ -624,7 +635,7 @@ public class PrinterCommandSet
    * @param x the column where to start to print the chunk
    * @throws IOException if an IO error occured.
    */
-  public void printChunk(PlainTextPage.TextDataChunk chunk, int x) throws IOException
+  public void printChunk(final PlainTextPage.TextDataChunk chunk, final int x) throws IOException
   {
     if (emptyCellCounter != 0)
     {
@@ -640,16 +651,28 @@ public class PrinterCommandSet
       return;
     }
 
-    FontDefinition fd = chunk.getFont();
+    final FontDefinition fd = chunk.getFont();
     setFontStyle(fd.isBold(), fd.isItalic(), fd.isUnderline(), fd.isStrikeThrough());
 
-    StringBuffer buffer = new StringBuffer(" "); // this space is removed later ..
-    buffer.append(chunk.getText());
+    final StringBuffer buffer = new StringBuffer(chunk.getText()); // this space is removed later ..
     for (int i = buffer.length(); i < chunk.getWidth(); i++)
     {
       buffer.append(' ');
     }
-    byte[] text = buffer.toString().getBytes(getCodepage());
+    writeEncodedText(buffer.toString());
+  }
+
+  /**
+   * Writes encoded text for the current encoding into the output stream.
+   *
+   * @param textString the text that should be written.
+   * @throws IOException if an error occures.
+   */
+  protected void writeEncodedText (final String textString) throws IOException
+  {
+    final StringBuffer buffer = new StringBuffer(" ");
+    buffer.append(textString);
+    final byte[] text = buffer.toString().getBytes(getCodepage());
     out.write(text, encodingHeader.length, text.length - encodingHeader.length);
   }
 
@@ -677,7 +700,7 @@ public class PrinterCommandSet
    * @param encoding the encoding that should be tested.
    * @return true, if the encoding is supported, false otherwise.
    */
-  public boolean isEncodingSupported(String encoding)
+  public boolean isEncodingSupported(final String encoding)
   {
     if (EncodingSupport.isSupportedEncoding(encoding))
     {
@@ -703,7 +726,7 @@ public class PrinterCommandSet
    *
    * @param firstPage the new first page flag.
    */
-  protected void setFirstPage(boolean firstPage)
+  protected void setFirstPage(final boolean firstPage)
   {
     this.firstPage = firstPage;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.17 2003/06/19 18:44:09 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.18 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param styleSheet  the style sheet.
    */
-  public StyleSheetHandler(Parser parser, String finishTag, ElementStyleSheet styleSheet)
+  public StyleSheetHandler(final Parser parser, final String finishTag, final ElementStyleSheet styleSheet)
   {
     if (parser == null)
     {
@@ -121,17 +121,17 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(BASIC_KEY_TAG))
     {
-      String name = attrs.getValue("name");
+      final String name = attrs.getValue("name");
       if (name == null)
       {
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
-      String className = attrs.getValue("class");
+      final String className = attrs.getValue("class");
       Class c = null;
       try
       {
@@ -149,12 +149,12 @@ public class StyleSheetHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(COMPOUND_KEY_TAG))
     {
-      String name = attrs.getValue("name");
+      final String name = attrs.getValue("name");
       if (name == null)
       {
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
-      String className = attrs.getValue("class");
+      final String className = attrs.getValue("class");
       Class c = null;
       try
       {
@@ -170,10 +170,10 @@ public class StyleSheetHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(EXTENDS_TAG))
     {
-      String extend = attrs.getValue("name");
+      final String extend = attrs.getValue("name");
       if (extend != null)
       {
-        ElementStyleSheet exSheet = (ElementStyleSheet) styleCollection.get(extend);
+        final ElementStyleSheet exSheet = (ElementStyleSheet) styleCollection.get(extend);
         if (exSheet == null)
         {
           throw new ParseException("Invalid parent styleSheet, StyleSheet not defined: " + extend,
@@ -201,7 +201,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // no characters expected here ...
   }
@@ -213,7 +213,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName)
+  public void endElement(final String tagName)
       throws SAXException
   {
     if (tagName.equals(BASIC_KEY_TAG))

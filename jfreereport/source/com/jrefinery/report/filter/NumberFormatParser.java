@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: NumberFormatParser.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
+ * $Id: NumberFormatParser.java,v 1.10 2003/06/27 14:25:17 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -65,7 +65,7 @@ public class NumberFormatParser extends FormatParser
    *
    * @param nf The number format.
    */
-  public void setNumberFormat(NumberFormat nf)
+  public void setNumberFormat(final NumberFormat nf)
   {
     super.setFormatter(nf);
   }
@@ -85,9 +85,9 @@ public class NumberFormatParser extends FormatParser
    *
    * @param f The format.
    */
-  public void setFormatter(Format f)
+  public void setFormatter(final Format f)
   {
-    NumberFormat fm = (NumberFormat) f;
+    final NumberFormat fm = (NumberFormat) f;
     super.setFormatter(fm);
   }
 
@@ -96,7 +96,7 @@ public class NumberFormatParser extends FormatParser
    *
    * @param newValue The new value of the grouping flag.
    */
-  public void setGroupingUsed(boolean newValue)
+  public void setGroupingUsed(final boolean newValue)
   {
     getNumberFormat().setGroupingUsed(newValue);
   }
@@ -116,7 +116,7 @@ public class NumberFormatParser extends FormatParser
    *
    * @param newValue The number of digits.
    */
-  public void setMaximumFractionDigits(int newValue)
+  public void setMaximumFractionDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -136,7 +136,7 @@ public class NumberFormatParser extends FormatParser
    *
    * @param newValue The number of digits.
    */
-  public void setMaximumIntegerDigits(int newValue)
+  public void setMaximumIntegerDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -156,7 +156,7 @@ public class NumberFormatParser extends FormatParser
    *
    * @param newValue The number of digits.
    */
-  public void setMinimumFractionDigits(int newValue)
+  public void setMinimumFractionDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -176,7 +176,7 @@ public class NumberFormatParser extends FormatParser
    *
    * @param newValue The number of digits.
    */
-  public void setMinimumIntegerDigits(int newValue)
+  public void setMinimumIntegerDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -200,7 +200,7 @@ public class NumberFormatParser extends FormatParser
    *
    * @return true, if the given object is already an instance of number.
    */
-  protected boolean isValidOutput(Object o)
+  protected boolean isValidOutput(final Object o)
   {
     return o instanceof Number;
   }

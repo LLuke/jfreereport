@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.13 2003/06/23 14:36:56 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.14 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -107,7 +107,7 @@ public class ReportConverterGUI extends JFrame
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setTargetFile(performSelectFile(getTargetFile(), true));
     }
@@ -134,7 +134,7 @@ public class ReportConverterGUI extends JFrame
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setSourceFile(performSelectFile(getSourceFile(), false));
     }
@@ -161,7 +161,7 @@ public class ReportConverterGUI extends JFrame
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       convert();
     }
@@ -174,11 +174,11 @@ public class ReportConverterGUI extends JFrame
   {
     sourceField = new JTextField();
     targetField = new JTextField();
-    JButton selectSourceButton = new ActionButton(new SelectSourceAction());
-    JButton selectTargetButton = new ActionButton(new SelectTargetAction());
-    JButton convertFilesButton = new ActionButton(new ConvertAction());
+    final JButton selectSourceButton = new ActionButton(new SelectSourceAction());
+    final JButton selectTargetButton = new ActionButton(new SelectTargetAction());
+    final JButton convertFilesButton = new ActionButton(new ConvertAction());
 
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -254,12 +254,12 @@ public class ReportConverterGUI extends JFrame
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    ReportConverterGUI gui = new ReportConverterGUI();
+    final ReportConverterGUI gui = new ReportConverterGUI();
     gui.addWindowListener(new WindowAdapter()
     {
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         System.exit(0);
       }
@@ -276,7 +276,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performTargetValidate(String filename)
+  public boolean performTargetValidate(final String filename)
   {
     if (filename.trim().length() == 0)
     {
@@ -286,7 +286,7 @@ public class ReportConverterGUI extends JFrame
           JOptionPane.ERROR_MESSAGE);
       return false;
     }
-    File f = new File(filename);
+    final File f = new File(filename);
     if (f.exists())
     {
       if (f.isFile() == false)
@@ -305,8 +305,8 @@ public class ReportConverterGUI extends JFrame
             JOptionPane.ERROR_MESSAGE);
         return false;
       }
-      String key1 = "convertdialog.targetOverwriteConfirmation";
-      String key2 = "convertdialog.targetOverwriteTitle";
+      final String key1 = "convertdialog.targetOverwriteConfirmation";
+      final String key2 = "convertdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
           MessageFormat.format(getResources().getString(key1),
               new Object[]{filename}
@@ -330,7 +330,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performSourceValidate(String filename)
+  public boolean performSourceValidate(final String filename)
   {
     if (filename.trim().length() == 0)
     {
@@ -340,7 +340,7 @@ public class ReportConverterGUI extends JFrame
           JOptionPane.ERROR_MESSAGE);
       return false;
     }
-    File f = new File(filename);
+    final File f = new File(filename);
     if (f.exists() == false)
     {
       return false;
@@ -385,7 +385,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @param file  the file name.
    */
-  private void setSourceFile(String file)
+  private void setSourceFile(final String file)
   {
     sourceField.setText(file);
   }
@@ -395,7 +395,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @param file  the file name.
    */
-  private void setTargetFile(String file)
+  private void setTargetFile(final String file)
   {
     targetField.setText(file);
   }
@@ -442,7 +442,7 @@ public class ReportConverterGUI extends JFrame
       return false;
     }
 
-    ReportConverter converter = new ReportConverter();
+    final ReportConverter converter = new ReportConverter();
     try
     {
       Log.debug("Converting report ...");
@@ -466,15 +466,15 @@ public class ReportConverterGUI extends JFrame
    *
    * @return The file name.
    */
-  protected String performSelectFile(String filename, boolean appendExt)
+  protected String performSelectFile(final String filename, final boolean appendExt)
   {
-    File file = new File(filename);
+    final File file = new File(filename);
     fileChooser.setCurrentDirectory(file);
     fileChooser.setSelectedFile(file);
-    int option = fileChooser.showSaveDialog(this);
+    final int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {
-      File selFile = fileChooser.getSelectedFile();
+      final File selFile = fileChooser.getSelectedFile();
       String selFileName = selFile.getAbsolutePath();
 
       if (appendExt)

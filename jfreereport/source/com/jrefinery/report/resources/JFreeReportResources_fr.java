@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.8 2003/06/13 18:55:45 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.9 2003/06/27 14:25:22 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -347,7 +347,7 @@ public class JFreeReportResources_fr extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     ResourceCompareTool.main(new String[]{"fr"});
   }

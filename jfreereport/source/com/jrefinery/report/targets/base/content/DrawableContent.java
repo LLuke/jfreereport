@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContent.java,v 1.4 2003/04/09 15:50:23 mungady Exp $
+ * $Id: DrawableContent.java,v 1.5 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class DrawableContent implements Content
    * @param drawable  the drawable object.
    * @param contentOrigin  the origin.
    */
-  public DrawableContent(DrawableContainer drawable, Point2D contentOrigin)
+  public DrawableContent(final DrawableContainer drawable, final Point2D contentOrigin)
   {
     if (drawable == null)
     {
@@ -97,7 +97,7 @@ public class DrawableContent implements Content
    */
   public Rectangle2D getBounds()
   {
-    Rectangle2D clippBounds = drawable.getClippingBounds();
+    final Rectangle2D clippBounds = drawable.getClippingBounds();
     return new Rectangle2D.Float((float) contentOrigin.getX(),
         (float) contentOrigin.getY(),
         (float) clippBounds.getWidth(),
@@ -125,21 +125,21 @@ public class DrawableContent implements Content
    *
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds(Rectangle2D bounds)
+  public Content getContentForBounds(final Rectangle2D bounds)
   {
-    Rectangle2D myBounds = getBounds();
+    final Rectangle2D myBounds = getBounds();
 
     if (bounds.intersects(myBounds) == false)
     {
       return null;
     }
-    Rectangle2D newBounds = bounds.createIntersection(myBounds);
-    Rectangle2D clipBounds
+    final Rectangle2D newBounds = bounds.createIntersection(myBounds);
+    final Rectangle2D clipBounds
         = new Rectangle2D.Float((float) (newBounds.getX() - contentOrigin.getX()),
             (float) (newBounds.getY() - contentOrigin.getY()),
             (float) newBounds.getWidth(),
             (float) newBounds.getHeight());
-    DrawableContainer newContainer = new DrawableContainer(drawable,
+    final DrawableContainer newContainer = new DrawableContainer(drawable,
         clipBounds);
 
     return new DrawableContent(newContainer, new Point2D.Float((float) newBounds.getX(),
@@ -166,7 +166,7 @@ public class DrawableContent implements Content
    *
    * @return the subcontent (possibly null).
    */
-  public Content getContentPart(int part)
+  public Content getContentPart(final int part)
   {
     return null;
   }

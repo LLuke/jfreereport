@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HorizontalBoundsAlignment.java,v 1.5 2003/02/27 10:35:39 mungady Exp $
+ * $Id: HorizontalBoundsAlignment.java,v 1.6 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public abstract class HorizontalBoundsAlignment extends BoundsAlignment
    *
    * @param bounds  the bounds.
    */
-  protected HorizontalBoundsAlignment(Rectangle2D bounds)
+  protected HorizontalBoundsAlignment(final Rectangle2D bounds)
   {
     super(bounds);
   }

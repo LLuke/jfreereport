@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableContainer.java,v 1.4 2003/04/24 18:08:43 taqua Exp $
+ * $Id: DrawableContainer.java,v 1.5 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class DrawableContainer
    * @param container  the container.
    * @param clippingBounds  the clipping bounds.
    */
-  public DrawableContainer(DrawableContainer container, Rectangle2D clippingBounds)
+  public DrawableContainer(final DrawableContainer container, final Rectangle2D clippingBounds)
   {
     this(container.getDrawable(), container.getDrawableSize(), clippingBounds);
   }
@@ -83,7 +83,7 @@ public class DrawableContainer
    * @param drawableSize  the size.
    * @param clippingBounds  the clipping region.
    */
-  public DrawableContainer(Drawable drawable, Dimension2D drawableSize, Rectangle2D clippingBounds)
+  public DrawableContainer(final Drawable drawable, final Dimension2D drawableSize, final Rectangle2D clippingBounds)
   {
     this.drawable = drawable;
     this.drawableSize = drawableSize;
@@ -115,7 +115,7 @@ public class DrawableContainer
    *
    * @param drawableSize  the drawable size.
    */
-  public void setDrawableSize(Dimension2D drawableSize)
+  public void setDrawableSize(final Dimension2D drawableSize)
   {
     this.drawableSize.setSize(drawableSize);
   }
@@ -135,7 +135,7 @@ public class DrawableContainer
    *
    * @param clippingBounds  the clipping bounds.
    */
-  public void setClippingBounds(Rectangle2D clippingBounds)
+  public void setClippingBounds(final Rectangle2D clippingBounds)
   {
     this.clippingBounds.setRect(clippingBounds);
   }
@@ -147,7 +147,7 @@ public class DrawableContainer
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append(getClass().getName());
     b.append("={Drawable=");
     b.append(getDrawable());

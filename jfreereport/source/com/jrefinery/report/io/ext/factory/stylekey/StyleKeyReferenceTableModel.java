@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceTableModel.java,v 1.4 2003/05/02 12:40:13 taqua Exp $
+ * $Id: StyleKeyReferenceTableModel.java,v 1.5 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -69,7 +69,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
      * @param keyFactory  the factory.
      * @param key  the key.
      */
-    public StylekeyDescriptionRow(StyleKeyFactory keyFactory, StyleKey key)
+    public StylekeyDescriptionRow(final StyleKeyFactory keyFactory, final StyleKey key)
     {
       this.keyFactory = keyFactory;
       this.key = key;
@@ -112,7 +112,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the factory collection.
    */
-  public StyleKeyReferenceTableModel(StyleKeyFactoryCollector cf)
+  public StyleKeyReferenceTableModel(final StyleKeyFactoryCollector cf)
   {
     rows = new ArrayList();
     addStyleKeyFactoryCollector(cf);
@@ -123,12 +123,12 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the factory.
    */
-  private void addStyleKeyFactoryCollector(StyleKeyFactoryCollector cf)
+  private void addStyleKeyFactoryCollector(final StyleKeyFactoryCollector cf)
   {
-    Iterator it = cf.getFactories();
+    final Iterator it = cf.getFactories();
     while (it.hasNext())
     {
-      StyleKeyFactory cfact = (StyleKeyFactory) it.next();
+      final StyleKeyFactory cfact = (StyleKeyFactory) it.next();
       if (cfact instanceof StyleKeyFactoryCollector)
       {
         addStyleKeyFactoryCollector((StyleKeyFactoryCollector) cfact);
@@ -145,14 +145,14 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the factory.
    */
-  private void addStyleKeyFactory(StyleKeyFactory cf)
+  private void addStyleKeyFactory(final StyleKeyFactory cf)
   {
     Iterator it = cf.getRegisteredKeys();
-    ArrayList factories = new ArrayList();
+    final ArrayList factories = new ArrayList();
 
     while (it.hasNext())
     {
-      String c = (String) it.next();
+      final String c = (String) it.next();
       factories.add(c);
     }
 
@@ -161,8 +161,8 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
 
     while (it.hasNext())
     {
-      String keyName = (String) it.next();
-      StyleKey key = cf.getStyleKey(keyName);
+      final String keyName = (String) it.next();
+      final StyleKey key = cf.getStyleKey(keyName);
       rows.add(new StylekeyDescriptionRow(cf, key));
     }
   }
@@ -200,7 +200,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     return COLUMN_NAMES[column];
   }
@@ -211,7 +211,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    *  @param columnIndex  the column being queried
    *  @return the Object.class
    */
-  public Class getColumnClass(int columnIndex)
+  public Class getColumnClass(final int columnIndex)
   {
     return String.class;
   }
@@ -225,9 +225,9 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    *
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(int rowIndex, int columnIndex)
+  public Object getValueAt(final int rowIndex, final int columnIndex)
   {
-    StylekeyDescriptionRow or = (StylekeyDescriptionRow) rows.get(rowIndex);
+    final StylekeyDescriptionRow or = (StylekeyDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)
     {
       case 0:

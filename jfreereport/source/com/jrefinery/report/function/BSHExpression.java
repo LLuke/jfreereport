@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.17 2003/06/01 20:33:38 taqua Exp $
+ * $Id: BSHExpression.java,v 1.18 2003/06/27 14:25:18 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -176,7 +176,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
     {
       throw new FunctionInitializeException("No null name allowed");
     }
-    InputStream in = this.getClass().getClassLoader().getResourceAsStream(BSHHEADERFILE);
+    final InputStream in = this.getClass().getClassLoader().getResourceAsStream(BSHHEADERFILE);
     if (in == null)
     {
       throw new FunctionInitializeException("Unable to locate BSHHeaderFile");
@@ -185,7 +185,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
     try
     {
       // read the header, creates a skeleton
-      Reader r = new InputStreamReader(new BufferedInputStream(in));
+      final Reader r = new InputStreamReader(new BufferedInputStream(in));
       interpreter.eval(r);
       r.close();
 
@@ -194,7 +194,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
       //
       // Object getValue ()
       //
-      String expression = getProperty("expression");
+      final String expression = getProperty("expression");
       if (expression == null)
       {
         throw new FunctionInitializeException("No expression set");
@@ -218,7 +218,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    BSHExpression expression = (BSHExpression) super.clone();
+    final BSHExpression expression = (BSHExpression) super.clone();
     try
     {
       expression.interpreter = new Interpreter();
@@ -240,7 +240,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
    */
   public Expression getInstance()
   {
-    BSHExpression expression = (BSHExpression) super.getInstance();
+    final BSHExpression expression = (BSHExpression) super.getInstance();
     return expression;
   }
 }

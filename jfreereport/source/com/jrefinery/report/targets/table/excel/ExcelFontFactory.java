@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.8 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.9 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class ExcelFontFactory
    *
    * @param workbook  the workbook.
    */
-  public ExcelFontFactory(HSSFWorkbook workbook)
+  public ExcelFontFactory(final HSSFWorkbook workbook)
   {
     fontList = new ArrayList();
     this.workbook = workbook;
@@ -76,12 +76,12 @@ public class ExcelFontFactory
    * @param forecolor the font color
    * @return the created or a cached HSSFFont
    */
-  public HSSFFont getExcelFont(FontDefinition font, Color forecolor)
+  public HSSFFont getExcelFont(final FontDefinition font, final Color forecolor)
   {
-    HSSFFontWrapper wrapper = new HSSFFontWrapper(font, forecolor);
+    final HSSFFontWrapper wrapper = new HSSFFontWrapper(font, forecolor);
     if (fontList.contains(wrapper))
     {
-      HSSFFontWrapper cached = (HSSFFontWrapper) fontList.get(fontList.indexOf(wrapper));
+      final HSSFFontWrapper cached = (HSSFFontWrapper) fontList.get(fontList.indexOf(wrapper));
       if (cached != null)
       {
         return cached.getFont(workbook);
@@ -89,7 +89,7 @@ public class ExcelFontFactory
     }
 
     // ok, we need a new one ...
-    HSSFFont excelFont = wrapper.getFont(workbook);
+    final HSSFFont excelFont = wrapper.getFont(workbook);
     fontList.add(excelFont);
     return excelFont;
   }

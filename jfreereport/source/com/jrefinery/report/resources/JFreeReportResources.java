@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.58 2003/06/15 21:26:29 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.59 2003/06/19 18:44:10 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -65,15 +65,15 @@ public class JFreeReportResources extends ListResourceBundle
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     Object lastKey = null;
     try
     {
-      Hashtable elements = new Hashtable();
+      final Hashtable elements = new Hashtable();
       for (int i = 0; i < CONTENTS.length; i++)
       {
-        Object[] row = CONTENTS[i];
+        final Object[] row = CONTENTS[i];
         lastKey = row[0];
         elements.put(row[0], row[1]);
       }
@@ -105,10 +105,10 @@ public class JFreeReportResources extends ListResourceBundle
    */
   public void printAll()
   {
-    Object[][] c = getContents();
+    final Object[][] c = getContents();
     for (int i = 0; i < c.length; i++)
     {
-      Object[] cc = c[i];
+      final Object[] cc = c[i];
       System.out.print(cc[0]);
       System.out.print("=");
       System.out.println(cc[1]);
@@ -124,10 +124,10 @@ public class JFreeReportResources extends ListResourceBundle
    *
    * @return the image.
    */
-  public static BufferedImage createTransparentImage(int width, int height)
+  public static BufferedImage createTransparentImage(final int width, final int height)
   {
-    BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    int[] data = img.getRGB(0, 0, width, height, null, 0, width);
+    final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    final int[] data = img.getRGB(0, 0, width, height, null, 0, width);
     Arrays.fill(data, 0xff000000);
     img.setRGB(0, 0, width, height, data, 0, width);
     return img;
@@ -141,16 +141,16 @@ public class JFreeReportResources extends ListResourceBundle
    *
    * @return the image icon.
    */
-  public static ImageIcon getIcon(String filename)
+  public static ImageIcon getIcon(final String filename)
   {
 
-    URL in = res.getClass().getClassLoader().getResource(filename);
+    final URL in = res.getClass().getClassLoader().getResource(filename);
     if (in == null)
     {
       Log.warn("Unable to find file in the class path: " + filename);
       return new ImageIcon(createTransparentImage(1, 1));
     }
-    Image img = Toolkit.getDefaultToolkit().createImage(in);
+    final Image img = Toolkit.getDefaultToolkit().createImage(in);
     if (img == null)
     {
       Log.warn("Unable to instantiate the image: " + filename);
@@ -165,7 +165,7 @@ public class JFreeReportResources extends ListResourceBundle
    * @param character the keystroke character
    * @return the generated keystroke object.
    */
-  protected static final KeyStroke createMenuKeystroke(int character)
+  protected static final KeyStroke createMenuKeystroke(final int character)
   {
     return KeyStroke.getKeyStroke(character, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportEventException.java,v 1.3 2003/04/09 00:10:34 mungady Exp $
+ * $Id: ReportEventException.java,v 1.4 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class ReportEventException extends ReportProcessingException
    * @param message  the exception message.
    * @param childExceptions the collected exceptions.
    */
-  public ReportEventException(String message, List childExceptions)
+  public ReportEventException(final String message, final List childExceptions)
   {
     super(message);
     if (childExceptions == null)
@@ -99,14 +99,14 @@ public class ReportEventException extends ReportProcessingException
    *
    * @param writer  the writer.
    */
-  public void printStackTrace(PrintWriter writer)
+  public void printStackTrace(final PrintWriter writer)
   {
     super.printStackTrace(writer);
     for (int i = 0; i < childExceptions.size(); i++)
     {
       writer.print("Exception #");
       writer.println(i);
-      Exception ex = (Exception) childExceptions.get(i);
+      final Exception ex = (Exception) childExceptions.get(i);
       if (ex != null)
       {
         ex.printStackTrace(writer);
@@ -123,14 +123,14 @@ public class ReportEventException extends ReportProcessingException
    *
    * @param stream  the output stream.
    */
-  public void printStackTrace(PrintStream stream)
+  public void printStackTrace(final PrintStream stream)
   {
     super.printStackTrace(stream);
     for (int i = 0; i < childExceptions.size(); i++)
     {
       stream.print("Exception #");
       stream.println(i);
-      Exception ex = (Exception) childExceptions.get(i);
+      final Exception ex = (Exception) childExceptions.get(i);
       if (ex != null)
       {
         ex.printStackTrace(stream);

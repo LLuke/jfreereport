@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.8 2003/02/26 13:58:05 mungady Exp $
+ * $Id: ReportPropertiesList.java,v 1.9 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class ReportPropertiesList
    *
    * @param base  the underlying properties.
    */
-  public ReportPropertiesList(ReportProperties base)
+  public ReportPropertiesList(final ReportProperties base)
   {
     if (base == null)
     {
@@ -76,10 +76,10 @@ public class ReportPropertiesList
     this.base = base;
     this.columns = new ArrayList();
 
-    Iterator enum = base.keys();
+    final Iterator enum = base.keys();
     while (enum.hasNext())
     {
-      String key = (String) enum.next();
+      final String key = (String) enum.next();
       if (base.isMarked(key))
       {
         columns.add(key);
@@ -104,7 +104,7 @@ public class ReportPropertiesList
    *
    * @return the column name.
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     return (String) columns.get(column);
   }
@@ -116,7 +116,7 @@ public class ReportPropertiesList
    *
    * @return the value.
    */
-  public Object get(int column)
+  public Object get(final int column)
   {
     return (base.get(getColumnName(column)));
   }
@@ -128,7 +128,7 @@ public class ReportPropertiesList
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
 
     b.append("ReportPropertiesList: ");
     b.append(columns);

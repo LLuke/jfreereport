@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.10 2003/06/19 18:44:09 taqua Exp $
+ * $Id: IconTableModel.java,v 1.11 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -70,9 +70,9 @@ public class IconTableModel extends AbstractTableModel
    * @param icon The icon.
    * @param size The size of the icon image in bytes.
    */
-  protected void addIconEntry(String name, String category, Image icon, Long size)
+  protected void addIconEntry(final String name, final String category, final Image icon, final Long size)
   {
-    Object[] item = new Object[4];
+    final Object[] item = new Object[4];
     item[0] = name;
     item[1] = category;
     item[2] = icon;
@@ -108,9 +108,9 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The data item.
    */
-  public Object getValueAt(int row, int column)
+  public Object getValueAt(final int row, final int column)
   {
-    Object[] item = (Object[]) data.get(row);
+    final Object[] item = (Object[]) data.get(row);
     return item[column];
   }
 
@@ -121,7 +121,7 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The column class.
    */
-  public Class getColumnClass(int column)
+  public Class getColumnClass(final int column)
   {
     if (column == 2)
     {
@@ -140,7 +140,7 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The column name.
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     switch (column)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann;
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellData.java,v 1.7 2003/05/02 12:40:38 taqua Exp $
+ * $Id: ExcelCellData.java,v 1.8 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public abstract class ExcelCellData extends TableCellData
    * @param elementBounds are calculated outside
    * @param style the assigned cell style.
    */
-  public ExcelCellData(Rectangle2D elementBounds, ExcelDataCellStyle style)
+  public ExcelCellData(final Rectangle2D elementBounds, final ExcelDataCellStyle style)
   {
     super(elementBounds);
     if (style == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.6 2003/04/09 15:50:33 mungady Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.7 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,7 @@ public class DefaultLayoutSupport implements LayoutSupport
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
   {
     return DefaultSizeCalculator.getDefaultSizeCalculator(font);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.11 2003/05/02 12:40:33 taqua Exp $
+ * $Id: Spool.java,v 1.12 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    *
    * @param op  the operation.
    */
-  public void addOperation(PhysicalOperation op)
+  public void addOperation(final PhysicalOperation op)
   {
     operations.add(op);
   }
@@ -99,7 +99,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    *
    * @param spool  the spool.
    */
-  public void merge(Spool spool)
+  public void merge(final Spool spool)
   {
     operations.addAll(spool.operations);
   }
@@ -113,7 +113,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    */
   public Object clone() throws CloneNotSupportedException
   {
-    Spool s = (Spool) super.clone();
+    final Spool s = (Spool) super.clone();
     s.operations = (ArrayList) operations.clone();
     return s;
   }

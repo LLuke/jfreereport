@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.27 2003/06/26 19:55:55 taqua Exp $
+ * $Id: Group.java,v 1.28 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -89,7 +89,7 @@ public class Group implements Serializable, Cloneable, Comparable
      *
      * @param group the group whose stylesheet collection should be managed.
      */
-    public GroupStyleSheetCollectionHelper(Group group)
+    public GroupStyleSheetCollectionHelper(final Group group)
     {
       this.group = group;
     }
@@ -151,7 +151,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @param name  the group name (null not permitted).
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     if (name == null)
     {
@@ -191,7 +191,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @throws NullPointerException if the given header is null
    */
-  public void setHeader(GroupHeader header)
+  public void setHeader(final GroupHeader header)
   {
     if (header == null)
     {
@@ -224,7 +224,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * @param footer  the footer (null not permitted).
    * @throws NullPointerException if the given footer is null.
    */
-  public void setFooter(GroupFooter footer)
+  public void setFooter(final GroupFooter footer)
   {
     if (footer == null)
     {
@@ -250,7 +250,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @throws NullPointerException if the given list is null or the list contains null-values.
    */
-  public void setFields(List c)
+  public void setFields(final List c)
   {
     if (c == null)
     {
@@ -258,10 +258,10 @@ public class Group implements Serializable, Cloneable, Comparable
     }
     fields.clear();
     fieldsCached = null;
-    Iterator it = c.iterator();
+    final Iterator it = c.iterator();
     while (it.hasNext())
     {
-      String field = (String) it.next();
+      final String field = (String) it.next();
       addField(field);
     }
   }
@@ -274,7 +274,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @throws NullPointerException if the name is null
    */
-  public void addField(String name)
+  public void addField(final String name)
   {
     if (name == null)
     {
@@ -306,7 +306,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return true, if both objects are null or both objects are equal, false otherwise.
    */
-  private boolean secureEquals(Object item1, Object item2)
+  private boolean secureEquals(final Object item1, final Object item2)
   {
     if ((item1 == null) && (item2 == null))
     {
@@ -332,7 +332,7 @@ public class Group implements Serializable, Cloneable, Comparable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    Group g = (Group) super.clone();
+    final Group g = (Group) super.clone();
     g.fields = new TreeSet(fields);
     g.fieldsCached = fieldsCached;
     g.footer = (GroupFooter) footer.clone();
@@ -350,7 +350,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return A flag indicating whether or not the current item is the last in its group.
    */
-  public boolean isLastItemInGroup(DataRowBackend currentDataRow, DataRowBackend nextDataRow)
+  public boolean isLastItemInGroup(final DataRowBackend currentDataRow, final DataRowBackend nextDataRow)
   {
     // return true if this is the last row in the model.
     if (currentDataRow.isLastRow() || nextDataRow == null)
@@ -367,15 +367,15 @@ public class Group implements Serializable, Cloneable, Comparable
 
       for (int i = 0; i < fieldsCached.length; i++)
       {
-        String field = fieldsCached[i];
-        int column = nextDataRow.findColumn(field);
+        final String field = fieldsCached[i];
+        final int column = nextDataRow.findColumn(field);
         if (column == -1)
         {
           continue;
         }
 
-        Object item1 = currentDataRow.get(column);
-        Object item2 = nextDataRow.get(column);
+        final Object item1 = currentDataRow.get(column);
+        final Object item2 = nextDataRow.get(column);
         if (secureEquals(item1, item2) == false)
         {
           return true;
@@ -393,7 +393,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * @return true, if the given object is a group with the same name and fields,
    * false otherwise
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {
@@ -435,9 +435,9 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return an integer indicating the relative ordering of the two groups.
    */
-  public int compareTo(Object o)
+  public int compareTo(final Object o)
   {
-    Group g = (Group) o;
+    final Group g = (Group) o;
 
     /** Remove all element, which are in both lists, they are equal */
     if (fields.size() == g.fields.size())
@@ -478,7 +478,7 @@ public class Group implements Serializable, Cloneable, Comparable
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("Group={Name='");
     b.append(getName());
     b.append("', fields=");
@@ -512,7 +512,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * if there is already an other stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -527,7 +527,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * if there is an other stylesheet collection already registered with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -547,7 +547,7 @@ public class Group implements Serializable, Cloneable, Comparable
    * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
    * if there is an other stylesheet collection already registered with that element.
    */
-  public void updateStyleSheetCollection(StyleSheetCollection sc)
+  public void updateStyleSheetCollection(final StyleSheetCollection sc)
   {
     footer.updateStyleSheetCollection(sc);
     header.updateStyleSheetCollection(sc);

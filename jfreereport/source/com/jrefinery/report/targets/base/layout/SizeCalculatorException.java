@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculatorException.java,v 1.5 2003/04/24 18:08:57 taqua Exp $
+ * $Id: SizeCalculatorException.java,v 1.6 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class SizeCalculatorException extends StackableException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public SizeCalculatorException(String message, Exception ex)
+  public SizeCalculatorException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -70,7 +70,7 @@ public class SizeCalculatorException extends StackableException
    *
    * @param message  the exception message.
    */
-  public SizeCalculatorException(String message)
+  public SizeCalculatorException(final String message)
   {
     super(message);
   }

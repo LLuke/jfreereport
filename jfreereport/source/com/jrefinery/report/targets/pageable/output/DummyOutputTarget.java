@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.11 2003/05/14 22:26:39 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.12 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      *
      * @param s  the graphics device.
      */
-    private OutputTargetState(OutputTarget s)
+    private OutputTargetState(final OutputTarget s)
     {
       save(s);
     }
@@ -95,7 +95,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      *
      * @param source  the OutputTarget, that should save its state.
      */
-    public void save(OutputTarget source)
+    public void save(final OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -108,7 +108,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      * @param target  the output target, that receives the restored state.
      * @throws OutputTargetException if the state restoration failed.
      */
-    private void restore(OutputTarget target)
+    private void restore(final OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
@@ -136,7 +136,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param backend the original outputtarget, that should be used in this proxy.
    */
-  public DummyOutputTarget(OutputTarget backend)
+  public DummyOutputTarget(final OutputTarget backend)
   {
     super(backend.getLogicalPage());
     this.backend = backend;
@@ -175,7 +175,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param page  the physical page.
    */
-  public void beginPage(PhysicalPage page)
+  public void beginPage(final PhysicalPage page)
   {
     state = new OutputTargetState(this);
   }
@@ -220,7 +220,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont(FontDefinition font) throws OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     this.font = font;
   }
@@ -244,7 +244,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke(Stroke stroke) throws OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     this.stroke = stroke;
   }
@@ -266,7 +266,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(Paint paint) throws OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     this.paint = paint;
   }
@@ -276,7 +276,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param text  the text.
    */
-  public void drawString(String text)
+  public void drawString(final String text)
   {
   }
 
@@ -285,7 +285,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void drawShape(Shape shape)
+  public void drawShape(final Shape shape)
   {
   }
 
@@ -294,7 +294,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void fillShape(Shape shape)
+  public void fillShape(final Shape shape)
   {
   }
 
@@ -305,7 +305,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(ImageReference image) throws OutputTargetException
+  public void drawImage(final ImageReference image) throws OutputTargetException
   {
   }
 
@@ -326,7 +326,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param config  the configuration.
    */
-  public void configure(ReportConfiguration config)
+  public void configure(final ReportConfiguration config)
   {
   }
 
@@ -340,7 +340,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @throws SizeCalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws SizeCalculatorException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws SizeCalculatorException
   {
     return backend.createTextSizeCalculator(font);
   }
@@ -384,7 +384,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(DrawableContainer drawable)
+  public void drawDrawable(final DrawableContainer drawable)
   {
   }
 }

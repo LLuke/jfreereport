@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFilter.java,v 1.6 2003/05/02 12:39:43 taqua Exp $
+ * $Id: DrawableFilter.java,v 1.7 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class DrawableFilter implements DataFilter
    *
    * @param dataSource The data source.
    */
-  public void setDataSource(DataSource dataSource)
+  public void setDataSource(final DataSource dataSource)
   {
     this.dataSource = dataSource;
   }
@@ -94,12 +94,12 @@ public class DrawableFilter implements DataFilter
    */
   public Object getValue()
   {
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     if (ds == null)
     {
       return null;
     }
-    Object o = ds.getValue();
+    final Object o = ds.getValue();
     if (o instanceof DrawableContainer)
     {
       return o;
@@ -125,7 +125,7 @@ public class DrawableFilter implements DataFilter
    */
   public Object clone() throws CloneNotSupportedException
   {
-    DrawableFilter r = (DrawableFilter) super.clone();
+    final DrawableFilter r = (DrawableFilter) super.clone();
     if (dataSource != null)
     {
       r.dataSource = (DataSource) dataSource.clone();

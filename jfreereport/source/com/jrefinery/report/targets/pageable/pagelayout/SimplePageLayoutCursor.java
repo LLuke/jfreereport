@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.10 2003/02/27 10:35:40 mungady Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -75,7 +75,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param height  the logical page height.
    */
-  public SimplePageLayoutCursor(float height)
+  public SimplePageLayoutCursor(final float height)
   {
     y = (float) 0;
     pageBottom = height;
@@ -88,7 +88,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param reserve  the space (in points) to reserve at the bottom of the page.
    */
-  public void setReservedSpace(float reserve)
+  public void setReservedSpace(final float reserve)
   {
     if (reserve < 0)
     {
@@ -115,7 +115,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance(float amount)
+  public void advance(final float amount)
   {
     if (amount < 0)
     {
@@ -131,7 +131,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo(float amount)
+  public void advanceTo(final float amount)
   {
     if (amount < y)
     {
@@ -147,7 +147,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return A flag indicating whether or not there is room to print the band.
    */
-  public boolean isSpaceFor(float height)
+  public boolean isSpaceFor(final float height)
   {
     return (y + height <= (pageBottom - reserved));
   }
@@ -201,7 +201,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("SimplePageLayoutCursor={y=");
     b.append(y);
     b.append(", pagebottom=");
@@ -228,7 +228,7 @@ public class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param pageTop the reserved page header space.
    */
-  public void setPageTop(float pageTop)
+  public void setPageTop(final float pageTop)
   {
     this.pageTop = pageTop;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.12 2003/06/01 17:39:25 taqua Exp $
+ * $Id: StringFilter.java,v 1.13 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @param nullvalue  the null value.
    */
-  public void setNullValue(String nullvalue)
+  public void setNullValue(final String nullvalue)
   {
     if (nullvalue == null)
     {
@@ -102,12 +102,12 @@ public class StringFilter implements DataFilter, Serializable
    */
   public Object getValue()
   {
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     if (ds == null)
     {
       return getNullValue();
     }
-    Object o = ds.getValue();
+    final Object o = ds.getValue();
     if (o == null)
     {
       return getNullValue();
@@ -134,7 +134,7 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @param ds  the data source.
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     if (ds == null)
     {
@@ -152,7 +152,7 @@ public class StringFilter implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    StringFilter f = (StringFilter) super.clone();
+    final StringFilter f = (StringFilter) super.clone();
     if (source != null)
     {
       f.source = (DataSource) source.clone();

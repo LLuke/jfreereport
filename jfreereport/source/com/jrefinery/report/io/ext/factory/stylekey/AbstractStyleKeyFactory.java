@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.14 2003/06/10 16:07:50 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.15 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -71,7 +71,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    *
    * @param key  the key.
    */
-  public void addKey(StyleKey key)
+  public void addKey(final StyleKey key)
   {
     knownKeys.put(key.getName(), key);
   }
@@ -83,7 +83,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    *
    * @return The key.
    */
-  public StyleKey getStyleKey(String name)
+  public StyleKey getStyleKey(final String name)
   {
     return (StyleKey) knownKeys.get(name);
   }
@@ -98,7 +98,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    *
    * @return The object.
    */
-  public Object createBasicObject(StyleKey k, String value, Class c, ClassFactory fc)
+  public Object createBasicObject(final StyleKey k, final String value, final Class c, final ClassFactory fc)
   {
     if (k == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceTableModel.java,v 1.2 2003/06/15 21:26:29 taqua Exp $
+ * $Id: DataSourceReferenceTableModel.java,v 1.3 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -73,8 +73,8 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
      * @param name the name of the datasource within the factory.
      * @param implementingClass the class that implements the named datasource.
      */
-    public DataSourceDescriptionRow(DataSourceFactory datasourceFactory,
-                                    String name, Class implementingClass)
+    public DataSourceDescriptionRow(final DataSourceFactory datasourceFactory,
+                                    final String name, final Class implementingClass)
     {
       this.datasourceFactory = datasourceFactory;
       this.datasourceName = name;
@@ -128,7 +128,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the factory collection.
    */
-  public DataSourceReferenceTableModel(DataSourceCollector cf)
+  public DataSourceReferenceTableModel(final DataSourceCollector cf)
   {
     rows = new ArrayList();
     addFactoryCollector(cf);
@@ -139,12 +139,12 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the factory.
    */
-  private void addFactoryCollector(DataSourceCollector cf)
+  private void addFactoryCollector(final DataSourceCollector cf)
   {
-    Iterator it = cf.getFactories();
+    final Iterator it = cf.getFactories();
     while (it.hasNext())
     {
-      DataSourceFactory cfact = (DataSourceFactory) it.next();
+      final DataSourceFactory cfact = (DataSourceFactory) it.next();
       if (cfact instanceof DataSourceCollector)
       {
         addFactoryCollector((DataSourceCollector) cfact);
@@ -161,14 +161,14 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the factory.
    */
-  private void addDataSourceFactory(DataSourceFactory cf)
+  private void addDataSourceFactory(final DataSourceFactory cf)
   {
     Iterator it = cf.getRegisteredNames();
-    ArrayList factories = new ArrayList();
+    final ArrayList factories = new ArrayList();
 
     while (it.hasNext())
     {
-      String c = (String) it.next();
+      final String c = (String) it.next();
       factories.add(c);
     }
 
@@ -177,8 +177,8 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
 
     while (it.hasNext())
     {
-      String keyName = (String) it.next();
-      ObjectDescription od = cf.getDataSourceDescription(keyName);
+      final String keyName = (String) it.next();
+      final ObjectDescription od = cf.getDataSourceDescription(keyName);
       rows.add(new DataSourceDescriptionRow(cf, keyName, od.getObjectClass()));
     }
   }
@@ -216,7 +216,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     return COLUMN_NAMES[column];
   }
@@ -227,7 +227,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    *  @param columnIndex  the column being queried
    *  @return the Object.class
    */
-  public Class getColumnClass(int columnIndex)
+  public Class getColumnClass(final int columnIndex)
   {
     return String.class;
   }
@@ -241,9 +241,9 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    *
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(int rowIndex, int columnIndex)
+  public Object getValueAt(final int rowIndex, final int columnIndex)
   {
-    DataSourceDescriptionRow or = (DataSourceDescriptionRow) rows.get(rowIndex);
+    final DataSourceDescriptionRow or = (DataSourceDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)
     {
       case 0:

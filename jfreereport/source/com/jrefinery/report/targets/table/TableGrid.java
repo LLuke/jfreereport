@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.10 2003/03/13 17:43:08 taqua Exp $
+ * $Id: TableGrid.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class TableGrid
    *
    * @param strict the strict mode for the layout.
    */
-  public TableGrid(boolean strict)
+  public TableGrid(final boolean strict)
   {
     xBounds = new TreeSet();
     yBounds = new TreeSet();
@@ -104,7 +104,7 @@ public class TableGrid
    * @param pos the position that should be added to the grid.
    * @throws NullPointerException if the given position is null
    */
-  public void addData(TableCellData pos)
+  public void addData(final TableCellData pos)
   {
     if (pos == null)
     {
@@ -113,16 +113,16 @@ public class TableGrid
     elements.add(pos);
 
     // collect the bounds and add them to the xBounds and yBounds collection.
-    Rectangle2D bounds = pos.getBounds();
-    Integer x = new Integer((int) bounds.getX());
-    Integer y = new Integer((int) bounds.getY());
+    final Rectangle2D bounds = pos.getBounds();
+    final Integer x = new Integer((int) bounds.getX());
+    final Integer y = new Integer((int) bounds.getY());
     xBounds.add(x);
     yBounds.add(y);
 
     if (isStrict())
     {
-      Integer xW = new Integer((int) (bounds.getX() + bounds.getWidth()));
-      Integer yW = new Integer((int) (bounds.getY() + bounds.getHeight()));
+      final Integer xW = new Integer((int) (bounds.getX() + bounds.getWidth()));
+      final Integer yW = new Integer((int) (bounds.getY() + bounds.getHeight()));
       xBounds.add(xW);
       yBounds.add(yW);
     }
@@ -145,11 +145,11 @@ public class TableGrid
    */
   public TableGridLayout performLayout()
   {
-    TableCellData[] positions =
+    final TableCellData[] positions =
         (TableCellData[]) elements.toArray(new TableCellData[elements.size()]);
 
     //Log.debug ("Performing Layout: " + positions.length);
-    TableGridLayout layout = new TableGridLayout(getXCuts(), getYCuts(), positions);
+    final TableGridLayout layout = new TableGridLayout(getXCuts(), getYCuts(), positions);
     return layout;
   }
 
@@ -185,12 +185,12 @@ public class TableGrid
     {
       return new int[0];
     }
-    int[] xBoundsArray = new int[xBounds.size()];
-    Iterator it = xBounds.iterator();
+    final int[] xBoundsArray = new int[xBounds.size()];
+    final Iterator it = xBounds.iterator();
     int count = 0;
     while (it.hasNext())
     {
-      Integer i = (Integer) it.next();
+      final Integer i = (Integer) it.next();
       xBoundsArray[count] = i.intValue();
       count += 1;
     }
@@ -202,7 +202,7 @@ public class TableGrid
     // in strict mode, all boundaries are added. The last boundry does
     // not define a start of a cell, so it is removed.
 
-    int[] retval = new int[xBoundsArray.length - 1];
+    final int[] retval = new int[xBoundsArray.length - 1];
     System.arraycopy(xBoundsArray, 0, retval, 0, retval.length);
     return retval;
   }
@@ -215,12 +215,12 @@ public class TableGrid
    */
   public int[] getYCuts()
   {
-    int[] yBoundsArray = new int[yBounds.size()];
-    Iterator it = yBounds.iterator();
+    final int[] yBoundsArray = new int[yBounds.size()];
+    final Iterator it = yBounds.iterator();
     int count = 0;
     while (it.hasNext())
     {
-      Integer i = (Integer) it.next();
+      final Integer i = (Integer) it.next();
       yBoundsArray[count] = i.intValue();
       count += 1;
     }
@@ -232,7 +232,7 @@ public class TableGrid
     // in strict mode, all boundaries are added. The last boundry does
     // not define a start of a cell, so it is removed.
 
-    int[] retval = new int[yBoundsArray.length - 1];
+    final int[] retval = new int[yBoundsArray.length - 1];
     System.arraycopy(yBoundsArray, 0, retval, 0, retval.length);
     return retval;
   }

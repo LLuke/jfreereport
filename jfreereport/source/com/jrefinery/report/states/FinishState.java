@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: FinishState.java,v 1.6 2003/02/04 17:56:20 taqua Exp $
+ * $Id: FinishState.java,v 1.7 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public final class FinishState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public FinishState(ReportState previous)
+  public FinishState(final ReportState previous)
   {
     super(previous);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.12 2003/04/09 15:52:52 mungady Exp $
+ * $Id: OperationFactory.java,v 1.13 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class OperationFactory
    *
    * @param module  the module.
    */
-  public void registerModule(OperationModule module)
+  public void registerModule(final OperationModule module)
   {
     modules.add(0, module);
   }
@@ -81,7 +81,7 @@ public class OperationFactory
    *
    * @param module  the module.
    */
-  public void unregisterModule(OperationModule module)
+  public void unregisterModule(final OperationModule module)
   {
     modules.remove(module);
   }
@@ -96,12 +96,12 @@ public class OperationFactory
    * @return the module or null if no handler is registered for that content-type.
    * @throws OutputTargetException if no module was found for the given content.
    */
-  public OperationModule getModule(String content)
+  public OperationModule getModule(final String content)
       throws OutputTargetException
   {
     for (int i = 0; i < modules.size(); i++)
     {
-      OperationModule mod = (OperationModule) modules.get(i);
+      final OperationModule mod = (OperationModule) modules.get(i);
       if (mod.canHandleContent(content))
       {
         return mod;
@@ -117,11 +117,11 @@ public class OperationFactory
    * @param contentType the to be tested content type.
    * @return true, if this kind of content can be handled, false otherwise.
    */
-  public boolean canHandleContent(String contentType)
+  public boolean canHandleContent(final String contentType)
   {
     for (int i = 0; i < modules.size(); i++)
     {
-      OperationModule mod = (OperationModule) modules.get(i);
+      final OperationModule mod = (OperationModule) modules.get(i);
       if (mod.canHandleContent(contentType))
       {
         return true;
@@ -139,14 +139,14 @@ public class OperationFactory
    * @param col the operations collector for the ops.
    * @throws OutputTargetException if this factory is not able to handle that content.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
-                               Rectangle2D bounds)
+  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
+                               final Rectangle2D bounds)
       throws OutputTargetException
   {
-    String contentType = e.getContentType();
+    final String contentType = e.getContentType();
     for (int i = 0; i < modules.size(); i++)
     {
-      OperationModule mod = (OperationModule) modules.get(i);
+      final OperationModule mod = (OperationModule) modules.get(i);
       if (mod.canHandleContent(contentType))
       {
         // todo element alignment !

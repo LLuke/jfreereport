@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.13 2003/06/10 17:14:40 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.14 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -183,7 +183,7 @@ public abstract class AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
-  public AbstractXMLDefinitionWriter(ReportWriter reportWriter, int indentLevel)
+  public AbstractXMLDefinitionWriter(final ReportWriter reportWriter, final int indentLevel)
   {
     this.reportWriter = reportWriter;
     this.indentLevel = indentLevel;
@@ -217,7 +217,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  protected void writeTag(Writer w, String name) throws IOException
+  protected void writeTag(final Writer w, final String name) throws IOException
   {
     indent(w, OPEN_TAG_INCREASE);
 
@@ -238,7 +238,7 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  protected void writeCloseTag(Writer w, String tag) throws IOException
+  protected void writeCloseTag(final Writer w, final String tag) throws IOException
   {
     // check whether the tag contains CData - we ma not indent such tags
     if (getSafeTags().isSafeForOpen(tag))
@@ -269,10 +269,10 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  protected void writeTag(Writer w, String name, String attributeName, String attributeValue,
-                          boolean close) throws IOException
+  protected void writeTag(final Writer w, final String name, final String attributeName, final String attributeValue,
+                          final boolean close) throws IOException
   {
-    Properties attr = new Properties();
+    final Properties attr = new Properties();
     attr.setProperty(attributeName, attributeValue);
     writeTag(w, name, attr, close);
   }
@@ -287,18 +287,18 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  protected void writeTag(Writer w, String name, Properties attributes, boolean close)
+  protected void writeTag(final Writer w, final String name, final Properties attributes, final boolean close)
       throws IOException
   {
     indent(w, OPEN_TAG_INCREASE);
 
     w.write("<");
     w.write(name);
-    Enumeration keys = attributes.keys();
+    final Enumeration keys = attributes.keys();
     while (keys.hasMoreElements())
     {
-      String key = (String) keys.nextElement();
-      String value = attributes.getProperty(key);
+      final String key = (String) keys.nextElement();
+      final String value = attributes.getProperty(key);
       w.write(" ");
       w.write(key);
       w.write("=\"");
@@ -332,14 +332,14 @@ public abstract class AbstractXMLDefinitionWriter
    *
    * @return The normalised string.
    */
-  public static String normalize(String s)
+  public static String normalize(final String s)
   {
-    StringBuffer str = new StringBuffer();
-    int len = (s != null) ? s.length() : 0;
+    final StringBuffer str = new StringBuffer();
+    final int len = (s != null) ? s.length() : 0;
 
     for (int i = 0; i < len; i++)
     {
-      char ch = s.charAt(i);
+      final char ch = s.charAt(i);
 
       switch (ch)
       {
@@ -367,7 +367,7 @@ public abstract class AbstractXMLDefinitionWriter
           {
             if (i > 0)
             {
-              char lastChar = str.charAt(str.length() - 1);
+              final char lastChar = str.charAt(str.length() - 1);
 
               if (lastChar != '\r')
               {
@@ -401,7 +401,7 @@ public abstract class AbstractXMLDefinitionWriter
    * @param increase the current indent level.
    * @throws IOException if writing the stream failed.
    */
-  protected void indent(Writer writer, int increase) throws IOException
+  protected void indent(final Writer writer, final int increase) throws IOException
   {
     if (increase == CLOSE_TAG_DECREASE)
     {

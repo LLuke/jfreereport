@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.7 2003/06/01 17:39:26 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.8 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    *
    * @param name The function name.
    */
-  public ItemHideFunction(String name)
+  public ItemHideFunction(final String name)
   {
     this();
     setName(name);
@@ -105,7 +105,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    *
    * @param name  the element name (must not be null).
    */
-  public void setElement(String name)
+  public void setElement(final String name)
   {
     setProperty(ELEMENT_PROPERTY, name);
   }
@@ -129,7 +129,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -145,9 +145,9 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
-    Object fieldValue = event.getDataRow().get(getField());
+    final Object fieldValue = event.getDataRow().get(getField());
 
     // is visible when last and current object are not equal
     // first element in group is always visible
@@ -161,7 +161,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
       visible = (secureEquals(lastObject, fieldValue) == false);
     }
     lastObject = fieldValue;
-    Element e = event.getReport().getItemBand().getElement(getElement());
+    final Element e = event.getReport().getItemBand().getElement(getElement());
     if (e != null)
     {
       e.setVisible(visible);
@@ -178,7 +178,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    *
    * @return true, if the two objects are equal.
    */
-  private boolean secureEquals(Object o1, Object o2)
+  private boolean secureEquals(final Object o1, final Object o2)
   {
     if (o1 == null && o2 == null)
     {
@@ -200,7 +200,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    *
    * @param event  the report event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     lastObject = null;
     firstInGroup = true;
@@ -229,12 +229,12 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
   public void initialize()
       throws FunctionInitializeException
   {
-    String fieldProp = getProperty(FIELD_PROPERTY);
+    final String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }
-    String elementProp = getProperty(ELEMENT_PROPERTY);
+    final String elementProp = getProperty(ELEMENT_PROPERTY);
     if (elementProp == null)
     {
       throw new FunctionInitializeException("No Such Property : element");
@@ -249,7 +249,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
    */
   public Expression getInstance()
   {
-    ItemHideFunction ih = (ItemHideFunction) super.getInstance();
+    final ItemHideFunction ih = (ItemHideFunction) super.getInstance();
     ih.lastObject = null;
     return ih;
   }

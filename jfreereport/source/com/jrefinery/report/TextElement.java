@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.32 2003/05/02 12:39:03 taqua Exp $
+ * $Id: TextElement.java,v 1.33 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -111,9 +111,9 @@ public class TextElement extends Element
    *
    * @param s  the null string.
    */
-  public void setNullString(String s)
+  public void setNullString(final String s)
   {
-    String nstring = (s == null) ? "-" : s;
+    final String nstring = (s == null) ? "-" : s;
     stringfilter.setNullValue(nstring);
   }
 
@@ -138,7 +138,7 @@ public class TextElement extends Element
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append(this.getClass().getName());
     b.append("={ name=");
     b.append(getName());
@@ -157,7 +157,7 @@ public class TextElement extends Element
    */
   public Object clone() throws CloneNotSupportedException
   {
-    TextElement te = (TextElement) super.clone();
+    final TextElement te = (TextElement) super.clone();
     te.stringfilter = (StringFilter) stringfilter.clone();
     return te;
   }
@@ -191,7 +191,7 @@ public class TextElement extends Element
    * @param b  the flag.
    * @deprecated this information is contained in the FontDefinition object.
    */
-  public void setStrikethrough(boolean b)
+  public void setStrikethrough(final boolean b)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH, b);
   }
@@ -204,7 +204,7 @@ public class TextElement extends Element
    * @deprecated the FontDefinition object should be used to define the font and
    * font-related properties.
    */
-  public void setFont(Font f)
+  public void setFont(final Font f)
   {
     getStyle().setFontDefinitionProperty(new FontDefinition(f));
   }
@@ -238,7 +238,7 @@ public class TextElement extends Element
    * @deprecated this information is contained in the FontDefinition object.
    * @param b  the flag.
    */
-  public void setUnderlined(boolean b)
+  public void setUnderlined(final boolean b)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.UNDERLINED, b);
   }
@@ -268,7 +268,7 @@ public class TextElement extends Element
    */
   public int getAlignment()
   {
-    ElementAlignment al = (ElementAlignment)
+    final ElementAlignment al = (ElementAlignment)
         getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
     return al.getOldAlignment();
   }
@@ -282,7 +282,7 @@ public class TextElement extends Element
    * @param alignment  the alignment for this element.
    * @deprecated the text alignment should be defined using the style sheet interfaces.
    */
-  public void setAlignment(int alignment)
+  public void setAlignment(final int alignment)
   {
     getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment));
@@ -299,7 +299,7 @@ public class TextElement extends Element
    */
   public int getVerticalAlignment()
   {
-    ElementAlignment al = (ElementAlignment)
+    final ElementAlignment al = (ElementAlignment)
         getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
     return al.getOldAlignment();
   }
@@ -313,7 +313,7 @@ public class TextElement extends Element
    * @param alignment the alignment.
    * @deprecated the text alignment should be defined using the style sheet interfaces.
    */
-  public void setVerticalAlignment(int alignment)
+  public void setVerticalAlignment(final int alignment)
   {
     getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(alignment));

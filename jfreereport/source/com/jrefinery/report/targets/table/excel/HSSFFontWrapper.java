@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.10 2003/05/02 12:40:39 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.11 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -82,9 +82,9 @@ public class HSSFFontWrapper
    * @param font the wrapped font.
    * @param color the foreground color.
    */
-  public HSSFFontWrapper(FontDefinition font, Color color)
+  public HSSFFontWrapper(final FontDefinition font, final Color color)
   {
-    String fName = font.getFontName();
+    final String fName = font.getFontName();
     if (font.isSansSerif())
     {
       fontName = "Arial";
@@ -116,7 +116,7 @@ public class HSSFFontWrapper
    *
    * @param font the font.
    */
-  public HSSFFontWrapper(HSSFFont font)
+  public HSSFFontWrapper(final HSSFFont font)
   {
     fontName = font.getFontName();
     colorIndex = font.getColor();
@@ -134,7 +134,7 @@ public class HSSFFontWrapper
    * @param workbook the workbook, that will be used to create the font.
    * @return the created font.
    */
-  public HSSFFont getFont(HSSFWorkbook workbook)
+  public HSSFFont getFont(final HSSFWorkbook workbook)
   {
     if (font == null)
     {
@@ -170,7 +170,7 @@ public class HSSFFontWrapper
    * @param o the compared object.
    * @return true, if the font wrapper contains the same font definition, false otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

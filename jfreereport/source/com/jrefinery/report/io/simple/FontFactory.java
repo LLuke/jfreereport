@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.9 2003/05/11 13:39:17 taqua Exp $
+ * $Id: FontFactory.java,v 1.10 2003/06/27 14:25:21 taqua Exp $
  *
  * Changes
  * -------
@@ -102,7 +102,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param fontname the defined font name or null.
      */
-    public void setFontname(String fontname)
+    public void setFontname(final String fontname)
     {
       this.fontname = fontname;
     }
@@ -122,7 +122,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param fontSize the defined font size or null.
      */
-    public void setFontSize(Integer fontSize)
+    public void setFontSize(final Integer fontSize)
     {
       this.fontSize = fontSize;
     }
@@ -142,7 +142,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param bold the defined bold flag or null.
      */
-    public void setBold(Boolean bold)
+    public void setBold(final Boolean bold)
     {
       isBold = bold;
     }
@@ -162,7 +162,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param italic the defined italic flag or null.
      */
-    public void setItalic(Boolean italic)
+    public void setItalic(final Boolean italic)
     {
       isItalic = italic;
     }
@@ -182,7 +182,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param strikeThrough the defined strikeThrough flag or null.
      */
-    public void setStrikeThrough(Boolean strikeThrough)
+    public void setStrikeThrough(final Boolean strikeThrough)
     {
       isStrikeThrough = strikeThrough;
     }
@@ -202,7 +202,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param underlined the defined underlined flag or null.
      */
-    public void setUnderlined(Boolean underlined)
+    public void setUnderlined(final Boolean underlined)
     {
       isUnderlined = underlined;
     }
@@ -222,7 +222,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param embedded the defined embedded flag or null.
      */
-    public void setEmbedded(Boolean embedded)
+    public void setEmbedded(final Boolean embedded)
     {
       isEmbedded = embedded;
     }
@@ -242,7 +242,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param fontencoding the character encoding or null.
      */
-    public void setFontencoding(String fontencoding)
+    public void setFontencoding(final String fontencoding)
     {
       this.fontencoding = fontencoding;
     }
@@ -262,7 +262,7 @@ public class FontFactory implements ReportDefinitionTags
      *
      * @param lineHeight the defined line height or null.
      */
-    public void setLineHeight(Float lineHeight)
+    public void setLineHeight(final Float lineHeight)
     {
       this.lineHeight = lineHeight;
     }
@@ -281,7 +281,7 @@ public class FontFactory implements ReportDefinitionTags
    * @param es the element style sheet that should receive the font definition.
    * @param fi the previously parsed font information.
    */
-  public static void applyFontInformation(ElementStyleSheet es, FontInformation fi)
+  public static void applyFontInformation(final ElementStyleSheet es, final FontInformation fi)
   {
     if (fi.getFontname() != null)
     {
@@ -329,9 +329,9 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @return the int value.
    */
-  protected Integer readInt(Attributes attr, String name)
+  protected Integer readInt(final Attributes attr, final String name)
   {
-    String val = attr.getValue(name);
+    final String val = attr.getValue(name);
     if (val == null)
     {
       return null;
@@ -355,13 +355,13 @@ public class FontFactory implements ReportDefinitionTags
    * @param target the font information, that should be used to store the defined values.
    * @return the read font information.
    */
-  private FontInformation readSimpleFontStyle(Attributes attr, FontInformation target)
+  private FontInformation readSimpleFontStyle(final Attributes attr, FontInformation target)
   {
     if (target == null)
     {
       target = new FontInformation();
     }
-    String fontStyle = attr.getValue(FONT_STYLE_ATT);
+    final String fontStyle = attr.getValue(FONT_STYLE_ATT);
 
     if (fontStyle != null)
     {
@@ -434,22 +434,22 @@ public class FontFactory implements ReportDefinitionTags
    * @param target the target element style sheet, that should receive the created font definition.
    * @throws ElementDefinitionException if the font cannot be created.
    */
-  public void createFont(Attributes attr, ElementStyleSheet target)
+  public void createFont(final Attributes attr, final ElementStyleSheet target)
       throws ElementDefinitionException
   {
     // get the font name...
-    String elementFontName = attr.getValue(FONT_NAME_ATT);
+    final String elementFontName = attr.getValue(FONT_NAME_ATT);
     if (elementFontName != null)
     {
       target.setStyleProperty(ElementStyleSheet.FONT, elementFontName);
     }
 
-    FontInformation fi = new FontInformation();
+    final FontInformation fi = new FontInformation();
     // get the font style...
     applyFontInformation(target, readSimpleFontStyle(attr, fi));
 
     // get the font size...
-    Integer elementFontSize = readInt(attr, FONT_SIZE_ATT);
+    final Integer elementFontSize = readInt(attr, FONT_SIZE_ATT);
     if (elementFontSize != null)
     {
       target.setStyleProperty(ElementStyleSheet.FONTSIZE, elementFontSize);
@@ -463,13 +463,13 @@ public class FontFactory implements ReportDefinitionTags
    * @return the created font information.
    * @throws ElementDefinitionException if the font cannot be created.
    */
-  public FontInformation createFont(Attributes attr)
+  public FontInformation createFont(final Attributes attr)
       throws ElementDefinitionException
   {
     // get the font name...
-    FontInformation fi = new FontInformation();
+    final FontInformation fi = new FontInformation();
 
-    String elementFontName = attr.getValue(FONT_NAME_ATT);
+    final String elementFontName = attr.getValue(FONT_NAME_ATT);
     if (elementFontName != null)
     {
       fi.setFontname(elementFontName);
@@ -479,7 +479,7 @@ public class FontFactory implements ReportDefinitionTags
     readSimpleFontStyle(attr, fi);
 
     // get the font size...
-    Integer elementFontSize = readInt(attr, FONT_SIZE_ATT);
+    final Integer elementFontSize = readInt(attr, FONT_SIZE_ATT);
     if (elementFontSize != null)
     {
       fi.setFontSize(elementFontSize);
@@ -493,7 +493,7 @@ public class FontFactory implements ReportDefinitionTags
    * @param bool the primitive boolean.
    * @return the Boolean object.
    */
-  private Boolean getBoolean (boolean bool)
+  private Boolean getBoolean (final boolean bool)
   {
     if (bool == true)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
+ * $Id: StylesHandler.java,v 1.14 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class StylesHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public StylesHandler(Parser parser, String finishTag)
+  public StylesHandler(final Parser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -109,18 +109,18 @@ public class StylesHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(STYLE_TAG))
     {
-      String name = attrs.getValue("name");
+      final String name = attrs.getValue("name");
       if (name == null)
       {
         throw new ParseException("Attribute 'name' is required", getParser().getLocator());
       }
       styleSheet = new ElementStyleSheet(name);
 
-      StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(),
+      final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(),
           STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
@@ -139,7 +139,7 @@ public class StylesHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     // no such events ...
   }
@@ -151,7 +151,7 @@ public class StylesHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(STYLE_TAG))
     {

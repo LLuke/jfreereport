@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactoryCollector.java,v 1.6 2003/05/02 12:40:10 taqua Exp $
+ * $Id: ElementFactoryCollector.java,v 1.7 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -66,7 +66,7 @@ public class ElementFactoryCollector implements ElementFactory
    *
    * @param factory  the factory.
    */
-  public void addFactory(ElementFactory factory)
+  public void addFactory(final ElementFactory factory)
   {
     factories.add(factory);
   }
@@ -88,12 +88,12 @@ public class ElementFactoryCollector implements ElementFactory
    *
    * @return The element.
    */
-  public Element getElementForType(String type)
+  public Element getElementForType(final String type)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      ElementFactory fact = (ElementFactory) factories.get(i);
-      Element element = fact.getElementForType(type);
+      final ElementFactory fact = (ElementFactory) factories.get(i);
+      final Element element = fact.getElementForType(type);
       if (element != null)
       {
         return element;

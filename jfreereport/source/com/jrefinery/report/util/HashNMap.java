@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.15 2003/06/26 19:55:57 taqua Exp $
+ * $Id: HashNMap.java,v 1.16 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -132,9 +132,9 @@ public class HashNMap implements Serializable, Cloneable
    * @param key  the key.
    * @param val  the value.
    */
-  public void put(Object key, Object val)
+  public void put(final Object key, final Object val)
   {
-    ArrayList v = new ArrayList();
+    final ArrayList v = new ArrayList();
     v.add(val);
     table.put(key, v);
   }
@@ -146,9 +146,9 @@ public class HashNMap implements Serializable, Cloneable
    * @param key  the key.
    * @param val  the value.
    */
-  public void add(Object key, Object val)
+  public void add(final Object key, final Object val)
   {
-    ArrayList v = (ArrayList) table.get(key);
+    final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
     {
       put(key, val);
@@ -167,7 +167,7 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return the value.
    */
-  public Object getFirst(Object key)
+  public Object getFirst(final Object key)
   {
     return get(key, 0);
   }
@@ -182,9 +182,9 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return the object.
    */
-  public Object get(Object key, int n)
+  public Object get(final Object key, final int n)
   {
-    ArrayList v = (ArrayList) table.get(key);
+    final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
     {
       return null;
@@ -199,9 +199,9 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return an iterator.
    */
-  public Iterator getAll(Object key)
+  public Iterator getAll(final Object key)
   {
-    ArrayList v = (ArrayList) table.get(key);
+    final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
     {
       return EMPTY_ITERATOR;
@@ -237,9 +237,9 @@ public class HashNMap implements Serializable, Cloneable
    * @param value  the value.
    * @return true, if removing the element was successfull, false otherwise.
    */
-  public boolean remove(Object key, Object value)
+  public boolean remove(final Object key, final Object value)
   {
-    ArrayList v = (ArrayList) table.get(key);
+    final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
     {
       return false;
@@ -261,7 +261,7 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @param key  the key.
    */
-  public void removeAll(Object key)
+  public void removeAll(final Object key)
   {
     table.remove(key);
   }
@@ -281,7 +281,7 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return true if the key is contained in the map
    */
-  public boolean containsKey(Object key)
+  public boolean containsKey(final Object key)
   {
     return table.containsKey(key);
   }
@@ -293,13 +293,13 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return true if the value is registered in the map for an key.
    */
-  public boolean containsValue(Object value)
+  public boolean containsValue(final Object value)
   {
-    Iterator e = keys();
+    final Iterator e = keys();
     boolean found = false;
     while (e.hasNext() && !found)
     {
-      ArrayList v = (ArrayList) e.next();
+      final ArrayList v = (ArrayList) e.next();
       found = v.contains(value);
     }
     return found;
@@ -312,7 +312,7 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return true if the key or value is contained in the map
    */
-  public boolean contains(Object value)
+  public boolean contains(final Object value)
   {
     if (containsKey(value) == true)
     {
@@ -330,13 +330,13 @@ public class HashNMap implements Serializable, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    HashNMap map = (HashNMap) super.clone();
+    final HashNMap map = (HashNMap) super.clone();
     map.table = new HashMap();
-    Iterator enum = keys();
+    final Iterator enum = keys();
     while (enum.hasNext())
     {
-      Object key = enum.next();
-      ArrayList list = (ArrayList) map.table.get(key);
+      final Object key = enum.next();
+      final ArrayList list = (ArrayList) map.table.get(key);
       if (list != null)
       {
         map.table.put(key, list.clone());
@@ -353,13 +353,13 @@ public class HashNMap implements Serializable, Cloneable
    * @param data the object array to receive the contents.
    * @return the contents.
    */
-  public Object[] toArray(Object key, Object[] data)
+  public Object[] toArray(final Object key, final Object[] data)
   {
     if (key == null)
     {
       throw new NullPointerException("Key must not be null.");
     }
-    ArrayList list = (ArrayList) table.get(key);
+    final ArrayList list = (ArrayList) table.get(key);
     if (list != null)
     {
       return list.toArray(data);
@@ -374,13 +374,13 @@ public class HashNMap implements Serializable, Cloneable
    * @param key the key.
    * @return the contents.
    */
-  public Object[] toArray(Object key)
+  public Object[] toArray(final Object key)
   {
     if (key == null)
     {
       throw new NullPointerException("Key must not be null.");
     }
-    ArrayList list = (ArrayList) table.get(key);
+    final ArrayList list = (ArrayList) table.get(key);
     if (list != null)
     {
       return list.toArray();
@@ -395,13 +395,13 @@ public class HashNMap implements Serializable, Cloneable
    * @return the number of element for this key, or 0 if there are no elements
    * registered.
    */
-  public int getValueCount(Object key)
+  public int getValueCount(final Object key)
   {
     if (key == null)
     {
       throw new NullPointerException("Key must not be null.");
     }
-    ArrayList list = (ArrayList) table.get(key);
+    final ArrayList list = (ArrayList) table.get(key);
     if (list != null)
     {
       return list.size();

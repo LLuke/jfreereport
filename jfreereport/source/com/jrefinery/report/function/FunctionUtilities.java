@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.5 2003/05/16 19:29:50 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.6 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -57,17 +57,17 @@ public class FunctionUtilities
    *
    * @return the found element or null, if no element could be found.
    */
-  public static Element findElement(Band band, String element)
+  public static Element findElement(final Band band, final String element)
   {
     if (element == null)
     {
       throw new NullPointerException("Element name must not be null");
     }
 
-    Element[] elements = band.getElementArray();
+    final Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
-      Element e = elements[i];
+      final Element e = elements[i];
       if (e instanceof Band)
       {
         return findElement((Band) e, element);
@@ -88,14 +88,14 @@ public class FunctionUtilities
    *
    * @return A boolean.
    */
-  public static boolean isDefinedGroup(String groupName, ReportEvent event)
+  public static boolean isDefinedGroup(final String groupName, final ReportEvent event)
   {
     if (groupName == null)
     {
       return false;
     }
 
-    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+    final Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
     if (groupName.equals(group.getName()))
     {
       return true;
@@ -115,7 +115,7 @@ public class FunctionUtilities
    *
    * @return A boolean.
    */
-  public static boolean isDefinedPrepareRunLevel(Function f, ReportEvent event)
+  public static boolean isDefinedPrepareRunLevel(final Function f, final ReportEvent event)
   {
     if (f == null)
     {
@@ -141,7 +141,7 @@ public class FunctionUtilities
    *
    * @return A boolean.
    */
-  public static boolean isLayoutLevel(ReportEvent event)
+  public static boolean isLayoutLevel(final ReportEvent event)
   {
     if (event == null)
     {

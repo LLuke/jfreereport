@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.8 2003/05/02 12:40:39 taqua Exp $
+ * $Id: ExcelToolLibrary.java,v 1.9 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class ExcelToolLibrary
    * @param awtColor the awt color that should be transformed into an Excel color.
    * @return the excel color index that is nearest to the supplied color.
    */
-  public static short getNearestColor(Color awtColor)
+  public static short getNearestColor(final Color awtColor)
   {
     short color = HSSFColor.BLACK.index;
 
@@ -84,37 +84,37 @@ public class ExcelToolLibrary
       return color;
     }
 
-    Collection keys = triplets.keySet();
+    final Collection keys = triplets.keySet();
     if (keys != null && keys.size() > 0)
     {
       long minDiff = Long.MAX_VALUE;
 
       // get the color without the alpha chanel
-      int colorValue = awtColor.getRGB() & 0x00ffffff;
+      final int colorValue = awtColor.getRGB() & 0x00ffffff;
 
-      int cdRG = awtColor.getRed() - awtColor.getGreen();
-      int cdGB = awtColor.getGreen() - awtColor.getBlue();
-      int cdBR = awtColor.getBlue() - awtColor.getRed();
+      final int cdRG = awtColor.getRed() - awtColor.getGreen();
+      final int cdGB = awtColor.getGreen() - awtColor.getBlue();
+      final int cdBR = awtColor.getBlue() - awtColor.getRed();
 
-      Enumeration elements = triplets.elements();
+      final Enumeration elements = triplets.elements();
       while (elements.hasMoreElements())
       {
-        HSSFColor crtColor = (HSSFColor) elements.nextElement();
-        short[] rgb = crtColor.getTriplet();
+        final HSSFColor crtColor = (HSSFColor) elements.nextElement();
+        final short[] rgb = crtColor.getTriplet();
 
-        int xlRG = rgb[0] - rgb[1];
-        int xlGB = rgb[1] - rgb[2];
-        int xlBR = rgb[2] - rgb[0];
+        final int xlRG = rgb[0] - rgb[1];
+        final int xlGB = rgb[1] - rgb[2];
+        final int xlBR = rgb[2] - rgb[0];
 
-        int deltaRG = Math.abs(xlRG - cdRG);
-        int deltaGB = Math.abs(xlGB - cdGB);
-        int deltaBR = Math.abs(xlBR - cdBR);
+        final int deltaRG = Math.abs(xlRG - cdRG);
+        final int deltaGB = Math.abs(xlGB - cdGB);
+        final int deltaBR = Math.abs(xlBR - cdBR);
 
-        long delta = deltaBR + deltaGB + deltaRG;
+        final long delta = deltaBR + deltaGB + deltaRG;
 
-        long excelColor = (delta << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
+        final long excelColor = (delta << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
 
-        long diff = Math.abs(colorValue - excelColor);
+        final long diff = Math.abs(colorValue - excelColor);
 
         if (diff < minDiff)
         {

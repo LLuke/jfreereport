@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatDimension.java,v 1.10 2003/05/11 13:39:17 taqua Exp $
+ * $Id: FloatDimension.java,v 1.11 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class FloatDimension extends org.jfree.ui.FloatDimension
    *
    * @param fd  the dimension to copy.
    */
-  public FloatDimension(FloatDimension fd)
+  public FloatDimension(final FloatDimension fd)
   {
     super(fd);
   }
@@ -70,7 +70,7 @@ public class FloatDimension extends org.jfree.ui.FloatDimension
    * @param width  the width.
    * @param height  the height.
    */
-  public FloatDimension(float width, float height)
+  public FloatDimension(final float width, final float height)
   {
     super(width, height);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.6 2003/06/10 16:07:52 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.7 2003/06/27 14:25:21 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
-  public TemplatesWriter(ReportWriter reportWriter, int indentLevel)
+  public TemplatesWriter(final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
   }
@@ -68,7 +68,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(Writer writer) throws IOException, ReportWriterException
+  public void write(final Writer writer) throws IOException, ReportWriterException
   {
     indent(writer, INDENT_ONLY);
     writer.write("<!-- templates are not yet supported by the writer. -->\n");

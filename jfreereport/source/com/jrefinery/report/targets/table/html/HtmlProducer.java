@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.31 2003/06/12 19:50:11 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.32 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -126,9 +126,9 @@ public class HtmlProducer extends TableProducer
    * @param strict a flag whether to use the strict layout mode.
    * @param useXHTML a flag whether to generate XHTML content.
    */
-  public HtmlProducer(HtmlFilesystem filesystem,
-                      boolean strict,
-                      boolean useXHTML)
+  public HtmlProducer(final HtmlFilesystem filesystem,
+                      final boolean strict,
+                      final boolean useXHTML)
   {
     super(strict);
     if (filesystem == null)
@@ -175,7 +175,7 @@ public class HtmlProducer extends TableProducer
   public void open()
   {
     this.content = new ByteArrayOutputStream();
-    DeflaterOutputStream deflaterStream
+    final DeflaterOutputStream deflaterStream
         = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
     try
     {
@@ -200,7 +200,7 @@ public class HtmlProducer extends TableProducer
     }
     pout.print("<title>");
     pout.flush();
-    String title = String.valueOf(getProperty(TITLE, "Untitled report"));
+    final String title = String.valueOf(getProperty(TITLE, "Untitled report"));
     pout.print(getEntityParser().encodeEntities(title));
     pout.println("</title></head>");
     pout.println("<body>");
@@ -221,15 +221,15 @@ public class HtmlProducer extends TableProducer
       //
       // Creates the stylesheets and the StyleSheet reference.
       //
-      StringBuffer cssbuffer = new StringBuffer();
+      final StringBuffer cssbuffer = new StringBuffer();
 
-      Iterator styles = styleCollection.getDefinedStyles();
+      final Iterator styles = styleCollection.getDefinedStyles();
       while (styles.hasNext())
       {
-        HtmlCellStyle style = (HtmlCellStyle) styles.next();
+        final HtmlCellStyle style = (HtmlCellStyle) styles.next();
         if (styleCollection.isRegistered(style))
         {
-          String name = styleCollection.lookupName(style);
+          final String name = styleCollection.lookupName(style);
           cssbuffer.append(".");
           cssbuffer.append(name);
           cssbuffer.append(" { ");
@@ -238,9 +238,9 @@ public class HtmlProducer extends TableProducer
           cssbuffer.append(System.getProperty("line.separator", "\n"));
         }
       }
-      HtmlReferenceData cssRef = filesystem.createCSSReference(cssbuffer.toString());
+      final HtmlReferenceData cssRef = filesystem.createCSSReference(cssbuffer.toString());
 
-      PrintWriter writer = new PrintWriter(filesystem.getRootStream());
+      final PrintWriter writer = new PrintWriter(filesystem.getRootStream());
 
       // write the standard headers
       if (useXHTML)
@@ -288,14 +288,14 @@ public class HtmlProducer extends TableProducer
       // now copy all cached content into the root stream
       pout.flush();
       pout.close();
-      byte[] data = content.toByteArray();
+      final byte[] data = content.toByteArray();
       content.close();
       content = null;
       pout = null;
 
-      InflaterInputStream infIn
+      final InflaterInputStream infIn
           = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
-      InputStreamReader inReader = new InputStreamReader(infIn);
+      final InputStreamReader inReader = new InputStreamReader(infIn);
 
       IOUtils.getInstance().copyWriter(inReader, writer);
 
@@ -329,7 +329,7 @@ public class HtmlProducer extends TableProducer
    *
    * @param name the page name
    */
-  public void beginPage(String name)
+  public void beginPage(final String name)
   {
     if (name != null)
     {
@@ -373,9 +373,9 @@ public class HtmlProducer extends TableProducer
    * @param background the (unmerged) background styles.
    * @return the background style sheet definition.
    */
-  protected String createHtmlBackgroundStyle(List background)
+  protected String createHtmlBackgroundStyle(final List background)
   {
-    TableCellBackground bg = createTableCellStyle(background);
+    final TableCellBackground bg = createTableCellStyle(background);
     if (bg == null)
     {
       return null;
@@ -388,23 +388,23 @@ public class HtmlProducer extends TableProducer
    *
    * @param layout the layouted cells.
    */
-  private void generatePage(TableGridLayout layout)
+  private void generatePage(final TableGridLayout layout)
   {
     pout.println();
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
-      int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
+      final int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
 
       pout.println("<tr style=\"height:" + lastRowHeight + "pt\">");
 //      boolean printed = false;
       for (int x = 0; x < layout.getWidth(); x++)
       {
-        TableGridLayout.Element gridElement = layout.getData(x, y);
+        final TableGridLayout.Element gridElement = layout.getData(x, y);
         // no element defined for the given cell...
         if (gridElement == null)
         {
-          int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
+          final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
           pout.println("<!-- No Element -->");
           pout.println("<td style=\"width:" + width + "pt\"></td>");
 //          printed = true;
@@ -413,10 +413,10 @@ public class HtmlProducer extends TableProducer
 
         // no data cell defined, but there exists a background defintion
         // for that cell.
-        TableGridPosition gridPosition = gridElement.getRoot();
+        final TableGridPosition gridPosition = gridElement.getRoot();
         if (gridPosition == null || gridPosition.isInvalidCell())
         {
-          int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
+          final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
           if (gridPosition == null)
           {
             pout.println("<!-- gridposition is null -->");
@@ -430,7 +430,7 @@ public class HtmlProducer extends TableProducer
           pout.print(width);
           pout.print("pt");
 
-          String style = createHtmlBackgroundStyle(gridElement.getBackground());
+          final String style = createHtmlBackgroundStyle(gridElement.getBackground());
           if (style != null)
           {
             pout.print("; ");
@@ -449,7 +449,7 @@ public class HtmlProducer extends TableProducer
         }
 
         // real data ...
-        HtmlCellData cellData = (HtmlCellData) gridPosition.getElement();
+        final HtmlCellData cellData = (HtmlCellData) gridPosition.getElement();
 
         pout.print("    <td style=\"width:");
         pout.print((int) gridPosition.getBounds().getWidth());
@@ -457,7 +457,7 @@ public class HtmlProducer extends TableProducer
         pout.print("; height:");
         pout.print((int) gridPosition.getBounds().getHeight());
         pout.print("pt");
-        String style = createHtmlBackgroundStyle(gridElement.getBackground());
+        final String style = createHtmlBackgroundStyle(gridElement.getBackground());
         if (style != null)
         {
           pout.print("; ");
@@ -518,7 +518,7 @@ public class HtmlProducer extends TableProducer
    *
    * @param configuration the configuration supplied by the table processor.
    */
-  public void configure(Properties configuration)
+  public void configure(final Properties configuration)
   {
     setProperty(ENCODING, configuration.getProperty(ENCODING, ENCODING_DEFAULT));
   }

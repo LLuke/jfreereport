@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellDataFactory.java,v 1.7 2003/05/02 12:40:37 taqua Exp $
+ * $Id: CSVCellDataFactory.java,v 1.8 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -66,9 +66,9 @@ public class CSVCellDataFactory implements TableCellDataFactory
    * @return The generated {@link TableCellData} object, or <code>null</code> if the element type
    *         is not supported.
    */
-  public TableCellData createCellData(Element e, Rectangle2D rect)
+  public TableCellData createCellData(final Element e, final Rectangle2D rect)
   {
-    Object value = e.getValue();
+    final Object value = e.getValue();
     if ((value != null) && (value instanceof String))
     {
       return new CSVCellData((String) value, rect);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.32 2003/06/12 23:16:26 taqua Exp $
+ * $Id: ImageReference.java,v 1.33 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes:
  * --------
@@ -96,7 +96,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @throws IOException if the url could not be read.
    */
-  public ImageReference(URL url) throws IOException
+  public ImageReference(final URL url) throws IOException
   {
     InputStream is = null;
     setSourceURL(url);
@@ -104,14 +104,14 @@ public class ImageReference implements Serializable, Cloneable
     try
     {
       is = url.openStream();
-      int c1 = is.read();
-      int c2 = is.read();
+      final int c1 = is.read();
+      final int c2 = is.read();
       is.close();
       is = null;
 
       if (c1 == 0xD7 && c2 == 0xCD)
       {
-        WmfFile wmfFile = new WmfFile(url);
+        final WmfFile wmfFile = new WmfFile(url);
         image = wmfFile.replay();
       }
       else
@@ -122,7 +122,7 @@ public class ImageReference implements Serializable, Cloneable
         {
           throw new IOException("Image could not be instantiated.");
         }
-        WaitingImageObserver obs = new WaitingImageObserver(image);
+        final WaitingImageObserver obs = new WaitingImageObserver(image);
         obs.waitImageLoaded();
       }
     }
@@ -145,14 +145,14 @@ public class ImageReference implements Serializable, Cloneable
    * @param img the image for this reference
    * @throws NullPointerException if the image is null
    */
-  public ImageReference(Image img)
+  public ImageReference(final Image img)
   {
     if (img == null)
     {
       throw new NullPointerException();
     }
     this.image = img;
-    WaitingImageObserver obs = new WaitingImageObserver(image);
+    final WaitingImageObserver obs = new WaitingImageObserver(image);
     obs.waitImageLoaded();
     setBounds(new Rectangle2D.Float(0, 0, image.getWidth(null), image.getHeight(null)));
     this.width = image.getWidth(null);
@@ -166,7 +166,7 @@ public class ImageReference implements Serializable, Cloneable
    * @param h  the height of the unscaled image.
    * @param bounds  the area of the unscaled image to draw.
    */
-  public ImageReference(int w, int h, Rectangle2D bounds)
+  public ImageReference(final int w, final int h, final Rectangle2D bounds)
   {
     this.width = w;
     this.height = h;
@@ -190,7 +190,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param bounds  the bounds.
    */
-  public void setBounds(Rectangle2D bounds)
+  public void setBounds(final Rectangle2D bounds)
   {
     this.bounds.setRect(bounds);
   }
@@ -210,7 +210,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param scaleX  the new factor.
    */
-  public void setScaleX(float scaleX)
+  public void setScaleX(final float scaleX)
   {
     if (scaleX == 0)
     {
@@ -234,7 +234,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param scaleY  the y scale factor.
    */
-  public void setScaleY(float scaleY)
+  public void setScaleY(final float scaleY)
   {
     if (scaleY == 0)
     {
@@ -248,9 +248,9 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param bounds  the bounds.
    */
-  public void setBoundsScaled(Rectangle2D bounds)
+  public void setBoundsScaled(final Rectangle2D bounds)
   {
-    Rectangle2D boundsNew = getBounds();
+    final Rectangle2D boundsNew = getBounds();
     boundsNew.setRect(bounds.getX() / getScaleX(),
         bounds.getY() / getScaleY(),
         bounds.getWidth() / getScaleX(),
@@ -265,7 +265,7 @@ public class ImageReference implements Serializable, Cloneable
    */
   public Rectangle2D getBoundsScaled()
   {
-    Rectangle2D bounds = getBounds();
+    final Rectangle2D bounds = getBounds();
     bounds.setRect(bounds.getX() * getScaleX(),
         bounds.getY() * getScaleY(),
         bounds.getWidth() * getScaleX(),
@@ -300,7 +300,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @param surl The URL.
    */
-  protected void setSourceURL(URL surl)
+  protected void setSourceURL(final URL surl)
   {
     if (surl == null)
     {
@@ -316,7 +316,7 @@ public class ImageReference implements Serializable, Cloneable
    */
   public String toString()
   {
-    StringBuffer buf = new StringBuffer();
+    final StringBuffer buf = new StringBuffer();
 
     buf.append("ImageReference={ URL=");
     buf.append(getSourceURL());
@@ -334,7 +334,7 @@ public class ImageReference implements Serializable, Cloneable
    *
    * @return true if the specified object is equal to this one.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (o == null)
     {
@@ -344,7 +344,7 @@ public class ImageReference implements Serializable, Cloneable
     {
       return false;
     }
-    ImageReference ref = (ImageReference) o;
+    final ImageReference ref = (ImageReference) o;
     if (ref.url == null && url == null)
     {
       return true;
@@ -382,7 +382,7 @@ public class ImageReference implements Serializable, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ImageReference ref = (ImageReference) super.clone();
+    final ImageReference ref = (ImageReference) super.clone();
     ref.bounds = bounds.getBounds2D();
     return ref;
   }

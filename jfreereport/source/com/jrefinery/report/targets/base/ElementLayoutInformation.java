@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.12 2003/04/24 18:08:56 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.13 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -73,14 +73,14 @@ public class ElementLayoutInformation
    *
    * @throws NullPointerException if the given rectangle is null.
    */
-  public ElementLayoutInformation(Rectangle2D rect)
+  public ElementLayoutInformation(final Rectangle2D rect)
   {
     if (rect == null)
     {
       throw new NullPointerException();
     }
     absolutePosition = new Point2D.Float((float) rect.getX(), (float) rect.getY());
-    FloatDimension fdim = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    final FloatDimension fdim = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
     maximumSize = fdim;
     minimumSize = fdim;
     preferredSize = fdim;
@@ -96,9 +96,9 @@ public class ElementLayoutInformation
    * @param maximumSize  the maximum size for the element.
    * @throws NullPointerException if one of the parameters is <code>null</code>.
    */
-  public ElementLayoutInformation(Point2D absolutePosition,
-                                  Dimension2D minimumSize,
-                                  Dimension2D maximumSize)
+  public ElementLayoutInformation(final Point2D absolutePosition,
+                                  final Dimension2D minimumSize,
+                                  final Dimension2D maximumSize)
   {
     this(absolutePosition, minimumSize, maximumSize, null);
   }
@@ -116,10 +116,10 @@ public class ElementLayoutInformation
    * @throws NullPointerException if the position or max/min size is <code>null</code>.
    *
    */
-  public ElementLayoutInformation(Point2D absolutePosition,
-                                  Dimension2D minimumSize,
-                                  Dimension2D maximumSize,
-                                  Dimension2D preferredSize)
+  public ElementLayoutInformation(final Point2D absolutePosition,
+                                  final Dimension2D minimumSize,
+                                  final Dimension2D maximumSize,
+                                  final Dimension2D preferredSize)
   {
     if (absolutePosition == null)
     {
@@ -196,7 +196,7 @@ public class ElementLayoutInformation
    *
    * @return  the minimum dimension.
    */
-  public static Dimension2D unionMin(Dimension2D max, Dimension2D pref)
+  public static Dimension2D unionMin(final Dimension2D max, final Dimension2D pref)
   {
     if (pref == null)
     {
@@ -213,7 +213,7 @@ public class ElementLayoutInformation
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("ElementLayoutInformation: \n");
     b.append("    AbsolutePos: ");
     b.append(absolutePosition);

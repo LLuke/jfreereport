@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReferenceData.java,v 1.5 2003/02/26 16:42:28 mungady Exp $
+ * $Id: ImageReferenceData.java,v 1.6 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public class ImageReferenceData extends HtmlReferenceData
    *
    * @param reference the referenced file name.
    */
-  public ImageReferenceData(String reference)
+  public ImageReferenceData(final String reference)
   {
     super(true);
     this.reference = reference;

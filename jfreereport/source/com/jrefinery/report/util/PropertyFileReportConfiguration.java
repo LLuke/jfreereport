@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.9 2003/05/02 12:40:47 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.10 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -53,14 +53,14 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
    *
    * @param fileName the file name of the stored properties.
    */
-  public void load(String fileName)
+  public void load(final String fileName)
   {
-    InputStream in = this.getClass().getResourceAsStream(fileName);
+    final InputStream in = this.getClass().getResourceAsStream(fileName);
     if (in != null)
     {
       try
       {
-        BufferedInputStream bin = new BufferedInputStream(in);
+        final BufferedInputStream bin = new BufferedInputStream(in);
         this.getConfiguration().load(bin);
         bin.close();
       }

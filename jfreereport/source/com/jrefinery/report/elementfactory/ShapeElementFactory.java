@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeElementFactory.java,v 1.1 2003/06/10 12:11:54 taqua Exp $
+ * $Id: ShapeElementFactory.java,v 1.2 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -59,7 +59,7 @@ public abstract class ShapeElementFactory extends ElementFactory
     return color;
   }
 
-  public void setColor(Color color)
+  public void setColor(final Color color)
   {
     this.color = color;
   }
@@ -69,7 +69,7 @@ public abstract class ShapeElementFactory extends ElementFactory
     return stroke;
   }
 
-  public void setStroke(Stroke stroke)
+  public void setStroke(final Stroke stroke)
   {
     this.stroke = stroke;
   }
@@ -79,7 +79,7 @@ public abstract class ShapeElementFactory extends ElementFactory
     return scale;
   }
 
-  public void setScale(Boolean scale)
+  public void setScale(final Boolean scale)
   {
     this.scale = scale;
   }
@@ -89,7 +89,7 @@ public abstract class ShapeElementFactory extends ElementFactory
     return keepAspectRatio;
   }
 
-  public void setKeepAspectRatio(Boolean keepAspectRatio)
+  public void setKeepAspectRatio(final Boolean keepAspectRatio)
   {
     this.keepAspectRatio = keepAspectRatio;
   }
@@ -99,7 +99,7 @@ public abstract class ShapeElementFactory extends ElementFactory
     return shouldFill;
   }
 
-  public void setShouldFill(Boolean shouldFill)
+  public void setShouldFill(final Boolean shouldFill)
   {
     this.shouldFill = shouldFill;
   }
@@ -109,7 +109,7 @@ public abstract class ShapeElementFactory extends ElementFactory
     return shouldDraw;
   }
 
-  public void setShouldDraw(Boolean shouldDraw)
+  public void setShouldDraw(final Boolean shouldDraw)
   {
     this.shouldDraw = shouldDraw;
   }

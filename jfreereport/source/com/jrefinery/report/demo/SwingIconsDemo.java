@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.5 2003/06/26 19:55:56 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.6 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
    *
    * @param title  the frame title.
    */
-  public SwingIconsDemo(String title)
+  public SwingIconsDemo(final String title)
   {
     setTitle(title);
     setJMenuBar(createMenuBar());
@@ -99,11 +99,11 @@ public class SwingIconsDemo extends AbstractDemoFrame
    */
   public JMenuBar createMenuBar()
   {
-    JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = createJMenuItem("menu.file");
+    final JMenuBar mb = new JMenuBar();
+    final JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
+    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -119,13 +119,13 @@ public class SwingIconsDemo extends AbstractDemoFrame
    */
   public JPanel createContent()
   {
-    JPanel content = new JPanel(new BorderLayout());
+    final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     this.data = readData();
-    JTable table = new JTable(data);
+    final JTable table = new JTable(data);
     table.setDefaultRenderer(java.awt.Image.class, new ImageCellRenderer());
     table.setRowHeight(26);
-    JScrollPane scrollPane = new JScrollPane(table);
+    final JScrollPane scrollPane = new JScrollPane(table);
     content.add(scrollPane);
     return content;
   }
@@ -145,7 +145,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
    */
   protected void attemptPreview()
   {
-    URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
@@ -154,7 +154,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
-    JFreeReport report;
+    final JFreeReport report;
     try
     {
       report = parseReport(in);
@@ -168,7 +168,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
 
     try
     {
-      PreviewFrame frame = new PreviewFrame(report);
+      final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setLargeIconsEnabled(true);
       frame.getBase().setToolbarFloatable(false);
       frame.pack();
@@ -192,11 +192,11 @@ public class SwingIconsDemo extends AbstractDemoFrame
    * @throws ElementDefinitionException if the report generator encountered an error.
    * @throws IOException if there was an IO error while reading from the URL.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(final URL templateURL)
       throws IOException, ElementDefinitionException
   {
 
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     return generator.parseReport(templateURL);
 
   }
@@ -206,10 +206,10 @@ public class SwingIconsDemo extends AbstractDemoFrame
    *
    * @param args ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     ReportConfiguration.getGlobalConfig().setLogLevel("Error");
-    SwingIconsDemo frame = new SwingIconsDemo("Swing Icons Report");
+    final SwingIconsDemo frame = new SwingIconsDemo("Swing Icons Report");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

@@ -1,7 +1,13 @@
+This document describes the important API changes for the JFreeReport
+releases. It contains hints on how to upgrade to a new version and how
+to cope with the possible changes of the report behaviour.
+
+
+-------------------------------------------------------------------------
 Migrating from version 0.7.6 to 0.8.0
 
-If you are using the XML-Definition and the predefined PreviewDialogs only,
-you can skip the code changes, your reporting process has not changed.
+If you are using the XML-Definition and the predefined PreviewDialogs
+only, you can skip the code changes, your reporting process has not changed.
 
 XML-Definition and changes in the reporting behaviour
 
@@ -10,23 +16,24 @@ XML-Definition and changes in the reporting behaviour
   is now a minimumHeight
 
 - Proportional values are evaluated by calculating the band size used by
-  static (non-proportional elements). Then the dimensions of all elements are
-  calculated, and the final band dimension defined.
+  static (non-proportional elements). Then the dimensions of all elements
+  are calculated, and the final band dimension defined.
 
   This dimension is finally applied to the proportional values a second time,
   and the elements are drawn.
 
-  It can cause problems if you ignore the 100% size of those relative elements,
-  so f.i. an element at position 90% and a height of > %10 could cause trouble.
-  Trouble means, that your layout looks a little bit weird within that band,
-  and that that invalid element is not printed properly.
+  It can cause problems if you ignore the 100% size of those relative
+  elements, so f.i. an element at position 90% and a height of > %10 could
+  cause trouble. Trouble means, that your layout looks a little bit weird
+  within that band, and that that invalid element is not printed properly.
 
-- All text elements have now vertical alignment (as implemented in the last cvs
-  version), bands can define default values for ElementAlignments.
+- All text elements have now vertical alignment (as implemented in the last
+  cvs version), bands can define default values for ElementAlignments.
 
-- GroupHeader can be repeated after an pagebreak. The last groupheader that is marked
-  as repeatable is repeated. If the groupheader + pageheader + pagefooter does not
-  fit on the current page, you get State-did-not-proceed errors.
+- GroupHeader can be repeated after an pagebreak. The last groupheader that
+  is marked as repeatable is repeated. If the groupheader + pageheader +
+  pagefooter does not fit on the current page, you get
+  State-did-not-proceed errors.
 
 - The pagefooter can now contain dynamic elements.
 
@@ -89,15 +96,16 @@ Changes from 0.8.0 to 0.8.1
 
   The band layout management has moved to com.jrefinery.report.targets.base.**.
 
-  The "first" demo has been renamed to "swing-icons-demo" to better fit is purpose
-  in the documentation, as it is no longer the simplest demo available.
+  The "first" demo has been renamed to "swing-icons-demo" to better fit is
+  purpose in the documentation, as it is no longer the simplest demo available.
 
-  The layouting now handles the element font defintion correctly. If an element's
-  height is smaller than the defined font size, then no line will be printed. So
-  if your elements disappear after upgrading, then check your element definitions. 
+  The layouting now handles the element font defintion correctly. If an
+  element's height is smaller than the defined font size, then no line will
+  be printed. So if your elements disappear after upgrading, then check your
+  element definitions.
 
-  Some methods of the PreviewFrame (f.i. setLargeIconsEnabled(boolean)) moved into
-  the common backend class PreviewProxyBase.
+  Some methods of the PreviewFrame (f.i. setLargeIconsEnabled(boolean)) moved
+  into the common backend class PreviewProxyBase.
   
 ----------------------------------------------------------------------------------
 Changes from 0.8.1 to 0.8.2
@@ -106,48 +114,53 @@ Shapes:
   The shape content handling was buggy. Shape bounds are specified relative
   to the element bounds.
 
-  In previous versions, both the shape bounds and the element bounds were defined equal.
-  So a line starting on y=10 within the band had the shape element bounds with y=10
-  and contained a line2D shape with y1=10 and y2=10. The shape was later transformed
-  to y=0 before painting. This way all shapes were translated to x=0,y=0, regardless
-  of their real bounds. That invalid behaviour is fixed now, but all shape definitions
-  have changed.
+  In previous versions, both the shape bounds and the element bounds were
+  defined equal. So a line starting on y=10 within the band had the shape
+  element bounds with y=10 and contained a line2D shape with y1=10 and y2=10.
+  The shape was later transformed to y=0 before painting. This way all shapes
+  were translated to x=0,y=0, regardless of their real bounds. That invalid
+  behaviour is fixed now, but all shape definitions have changed.
 
-  This bug only affects the ext-definition styles, as the simple parser profile
-  adjusts the shapes within the predefined shape elements automaticly. To fix your
-  extended-definition, either adjust your shape definition to start at position 0,0
-  or adjust your element to start at 0,0 and extend its dimension to
-  (old_x + old_width, old_y + old_height).
+  This bug only affects the ext-definition styles, as the simple parser
+  profile adjusts the shapes within the predefined shape elements automaticly.
+  To fix your extended-definition, either adjust your shape definition to
+  start at position 0,0 or adjust your element to start at 0,0 and extend
+  its dimension to (old_x + old_width, old_y + old_height).
 
 LineElements:
-  Shape coordinates for the ItemFactory.createLineShapeElement() method must not contain
-  negative values. If you want to create scaling lines, you will have to use one of the
-  createShapeElement methods, which are able to separate bounds from shapes.
+  Shape coordinates for the ItemFactory.createLineShapeElement() method must
+  not contain negative values. If you want to create scaling lines, you will
+  have to use one of the createShapeElement methods, which are able to
+  separate bounds from shapes.
 
 JFreeReport object replaced by ReportDefinition object:
-  Within the functions and the whole report processing process, the JFreeReport object
-  was replaced by an read only ReportDefinition object. This object uses the same
-  methodnames as the JFreeReport object, but has no means to access the report
-  functions or to change or replace the report bands.
+  Within the functions and the whole report processing process, the
+  JFreeReport object was replaced by an read only ReportDefinition object.
+  This object uses the same method names as the JFreeReport object, but has
+  no means to access the report functions or to change or replace the
+  report bands.
 
-  When upgrading you will have to change your functions to use the ReportDefinition
-  instead of the JFreeReport object. It is sufficient to change the object type and
-  to recompile the function.
+  When upgrading you will have to change your functions to use the
+  ReportDefinition instead of the JFreeReport object. It is sufficient to
+  change the object type and to recompile the function.
 
-Groups are no longer editiable during the report processing. Any attemp to add a
-  new group to the list will result in an exception.
+Groups are no longer editiable during the report processing. Any attemp to
+  add a new group to the list will result in an exception.
 
-The group fields are now enforced to have a subgroup relationship. This means, that
-  the child group must contain all fields of the direct parent group. For a particualar
-  child group, the evaluation of "group.getFields().containsAll (parent.getFields())"
+The group fields are now enforced to have a subgroup relationship. This
+  means, that the child group must contain all fields of the direct parent
+  group. For a particualar child group, the evaluation of
+
+        "group.getFields().containsAll (parent.getFields())"
+
   must return true for all parent groups.
 
   The order of the groups does not matter.
 
   Examples:
     Valid:
-        GROUP 0 = {}  // empty fields are allowed, this means the group is the parent
-                      // of all other groups
+        GROUP 0 = {}  // empty fields are allowed, this means the group is
+                      // the parent of all other groups
         Group 1 = {FIELD_A}
         Group 2 = {FIELD_A, FIELD_B}
 
@@ -155,20 +168,22 @@ The group fields are now enforced to have a subgroup relationship. This means, t
         GROUP 0 = {}
         Group 1 = {FIELD_A, FIELD_D}
         Group 2 = {FIELD_A, FIELD_B}
-                      // There is no way to form a subgroup relationship between Group 1
-                      // and Group 2. Group 1 does not contain all fields of Group 2 and
-                      // neither does Group2 contain all fields from Group 1.
+                      // There is no way to form a subgroup relationship
+                      // between Group 1 and Group 2. Group 1 does not
+                      // contain all fields of Group 2 and neither does
+                      // Group2 contain all fields from Group 1.
 
-All element coordinates must be smaller than the available page width, or the
-  repagination process will fail. So specifying x="110%" will be a killer as well
-  as specifying x="1000" when the page width is smaller than or equal to 1000.
+All element coordinates must be smaller than the available page width, or
+  the repagination process will fail. So specifying x="110%" will be a
+  killer as well as specifying x="1000" when the page width is smaller than
+  or equal to 1000.
 
-----------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 Changes from 0.8.2 to 0.8.3
 
-Functions, which need to initialized themself on the start of the report processing,
-  should no longer use the reportStarted() event, as this event is no longer the first
-  event in the report processing.
+Functions, which need to initialized themself on the start of the report
+  processing, should no longer use the reportStarted() event, as this event
+  is no longer the first event in the report processing.
 
   The defined event order is now as follows:
 
@@ -210,46 +225,52 @@ Functions, which need to initialized themself on the start of the report process
 The ItemColumnQuotientFunction is now deprecated and has been replaced by the
   ItemColumnQuotientExpression.
 
-----------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 Changes from 0.8.3a to 0.8.3b
 
 Functions which depend on page events (pageStarted or pageFinished) should
   now implement the PageListener interface. This interface provides an additional
   method to inform all functions of canceled pages.
 
-  Pages get canceled by the PageableReportProcessor, if they are generated empty.
+  Pages get canceled by the PageableReportProcessor, if they are generated
+  empty.
 
-Stylesheets can be accessed by their name by using the StyleSheet collection.This
-  Collection is maintained by the ReportDefinition object and was populated when
-  the reporting started.
+Stylesheets can be accessed by their name by using the StyleSheet collection.
+  This collection is maintained by the ReportDefinition object and was
+  populated when the reporting started.
 
   From now on all Stylesheets get cloned during the report processing. Your
-  functions should not hold references to StyleSheets or the StyleSheet collection.
-  The currently valid instance of the stylesheet collection can be queried by using
-  the ReportEvent object.
+  functions should not hold references to StyleSheets or the StyleSheet
+  collection. The currently valid instance of the stylesheet collection can
+  be queried by using the ReportEvent object.
 
-----------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 Changes from 0.8.3b to 0.8.3c
 
-Lines and other non-area shapes are no longer clipped. Depending on your report and
-  the used shapes, your report ma look weird until the shapes are clipped manually.
-  The AWT does not support easy clipping of shapes (except when drawing them), and
-  the Area class is not able to handle non-areal shapes. That means: Unless the
-  clippping is implemented manually, there will be no full support for it.
+Lines and other non-area shapes are no longer clipped. Depending on your
+  report and the used shapes, your report ma look weird until the shapes
+  are clipped manually. The AWT does not support easy clipping of shapes
+  (except when drawing them), and the Area class is not able to handle
+  non-areal shapes. That means: Unless the clippping is implemented
+  manually, there will be no full support for it.
 
-Report components, which have an StyleSheetCollection assigned cannot be added to
-  other report components, which were assigned to a different StyleSheetCollection.
-  Every attempt to do this will result in an Exception.
+Report components, which have an StyleSheetCollection assigned cannot be
+  added to other report components, which were assigned to a different
+  StyleSheetCollection. Every attempt to do this will result in an Exception.
 
-  All StyleSheets used within an Report can be queried from the StyleSheet collection,
-  once a element is added to the JFreeReport object, it gets the StyleSheetCollection
-  of the report assigned.
+  All StyleSheets used within an Report can be queried from the StyleSheet
+  collection, once a element is added to the JFreeReport object, it gets
+  the StyleSheetCollection of the report assigned.
 
-  Cloning Elements or StyleSheets removed the stylesheet collection from the clone,
-  as the clone is not connected to the original report anymore.
+  Cloning Elements or StyleSheets removed the stylesheet collection from
+  the clone, as the clone is not connected to the original report anymore.
 
-  All elements of a report share the same stylesheet collection. The collection can
-  contain more than one element with the same name, but it is wise to give all
-  stylesheets an unique name.
+  All elements of a report share the same stylesheet collection. The
+  collection can contain more than one element with the same name, but it
+  is wise to give all stylesheets an unique name.
 
-             
+---------------------------------------------------------------------------
+Changes from 0.8.3c to 0.8.3d
+
+OutputTarget properties are all strings now. The PDF target uses "true" and
+  "false" to express boolean values.

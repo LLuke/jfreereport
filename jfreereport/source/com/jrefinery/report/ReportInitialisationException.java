@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportInitialisationException.java,v 1.7 2003/04/24 18:08:44 taqua Exp $
+ * $Id: ReportInitialisationException.java,v 1.8 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class ReportInitialisationException extends StackableException
    *
    * @param s  the detail message.
    */
-  public ReportInitialisationException(String s)
+  public ReportInitialisationException(final String s)
   {
     super(s);
   }
@@ -70,7 +70,7 @@ public class ReportInitialisationException extends StackableException
    * @param s  the detail message.
    * @param e  the parent exception.
    */
-  public ReportInitialisationException(String s, Exception e)
+  public ReportInitialisationException(final String s, final Exception e)
   {
     super(s, e);
   }

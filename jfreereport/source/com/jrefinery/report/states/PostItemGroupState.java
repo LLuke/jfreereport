@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostItemGroupState.java,v 1.7 2003/05/16 17:26:44 taqua Exp $
+ * $Id: PostItemGroupState.java,v 1.8 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public final class PostItemGroupState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PostItemGroupState(ReportState previous)
+  public PostItemGroupState(final ReportState previous)
   {
     super(previous);
   }

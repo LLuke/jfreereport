@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.10 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -73,12 +73,12 @@ public final class ObjectReferenceGenerator
    */
   public static TableModel createData()
   {
-    ClassFactoryCollector cc = new ClassFactoryCollector();
+    final ClassFactoryCollector cc = new ClassFactoryCollector();
     cc.addFactory(new DefaultClassFactory());
     cc.addFactory(new DefaultDataSourceFactory());
     cc.addFactory(new TemplateClassFactory());
 
-    ObjectReferenceTableModel model = new ObjectReferenceTableModel(cc);
+    final ObjectReferenceTableModel model = new ObjectReferenceTableModel(cc);
     return model;
   }
 
@@ -87,11 +87,11 @@ public final class ObjectReferenceGenerator
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
 
-    ReportGenerator gen = ReportGenerator.getInstance();
-    URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
+    final ReportGenerator gen = ReportGenerator.getInstance();
+    final URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");
@@ -100,7 +100,7 @@ public final class ObjectReferenceGenerator
       return;
     }
 
-    JFreeReport report;
+    final JFreeReport report;
     try
     {
       report = gen.parseReport(reportURL);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -114,7 +114,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     image = null;
   }
@@ -126,7 +126,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     image = null;
   }
@@ -136,7 +136,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     image = null;
   }
@@ -146,7 +146,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     image = null;
   }
@@ -156,7 +156,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
     image = null;
   }
@@ -166,7 +166,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     image = null;
   }
@@ -176,7 +176,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     image = null;
   }
@@ -186,7 +186,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     image = null;
   }
@@ -198,30 +198,30 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    */
   private Image createComponentImage()
   {
-    Object o = getDataRow().get(getField());
+    final Object o = getDataRow().get(getField());
     if ((o instanceof Component) == false)
     {
       return null;
     }
 
-    float scale = getScale();
+    final float scale = getScale();
 
-    Component comp = (Component) o;
+    final Component comp = (Component) o;
 
     // supplies the peer and allows drawing ...
     synchronized (peerSupply)
     {
-      Dimension dim = comp.getSize();
+      final Dimension dim = comp.getSize();
 
       peerSupply.add(comp);
       peerSupply.pack();
       peerSupply.setSize(dim);
       peerSupply.validate();
 
-      BufferedImage bi = new BufferedImage((int) (scale * dim.width),
+      final BufferedImage bi = new BufferedImage((int) (scale * dim.width),
           (int) (scale * dim.height),
           BufferedImage.TYPE_INT_ARGB);
-      Graphics2D graph = bi.createGraphics();
+      final Graphics2D graph = bi.createGraphics();
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
       graph.dispose();
@@ -243,7 +243,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
       image = createComponentImage();
     }
 
-    ImageReference ref = new ImageReference(image);
+    final ImageReference ref = new ImageReference(image);
     ref.setScaleX(1f / getScale());
     ref.setScaleY(1f / getScale());
     return ref;
@@ -256,7 +256,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    *
    * @param scale the scale factor.
    */
-  public void setScale(float scale)
+  public void setScale(final float scale)
   {
     setProperty(SCALE_PROPERTY, String.valueOf(scale));
   }
@@ -271,10 +271,10 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    */
   public float getScale()
   {
-    String scale = getProperty(SCALE_PROPERTY, "1");
+    final String scale = getProperty(SCALE_PROPERTY, "1");
     try
     {
-      float f = Float.parseFloat(scale);
+      final float f = Float.parseFloat(scale);
       if (f == 0)
       {
         return 1;
@@ -296,7 +296,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
   public void initialize()
       throws FunctionInitializeException
   {
-    String fieldProp = getProperty(FIELD_PROPERTY);
+    final String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
@@ -311,7 +311,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    */
   public Expression getInstance()
   {
-    PaintDynamicComponentFunction pc = (PaintDynamicComponentFunction) super.getInstance();
+    final PaintDynamicComponentFunction pc = (PaintDynamicComponentFunction) super.getInstance();
     pc.peerSupply = new Frame();
     pc.peerSupply.setLayout(new BorderLayout());
     return pc;
@@ -326,7 +326,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
    * @throws ClassNotFoundException if a class definition for a serialized object
    * could not be found.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(final ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();

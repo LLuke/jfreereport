@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.19 2003/06/19 18:44:11 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.20 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -116,7 +116,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    *
    * @throws IOException if an IO error occurs.
    */
-  public ZIPHtmlFilesystem(OutputStream out, String dataDirectory)
+  public ZIPHtmlFilesystem(final OutputStream out, String dataDirectory)
       throws IOException
   {
     if (out == null)
@@ -135,8 +135,8 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     this.rootStream = new DeflaterOutputStream(rootBase, new Deflater(Deflater.BEST_COMPRESSION));
 
     // dataDirectory creation ...
-    File dataDir = new File(dataDirectory);
-    File baseDir = new File("");
+    final File dataDir = new File(dataDirectory);
+    final File baseDir = new File("");
     if (dataDir.isAbsolute() || IOUtils.getInstance().isSubDirectory(baseDir, dataDir) == false)
     {
       throw new IllegalArgumentException("The data directory is no relative directory in the "
@@ -200,7 +200,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @param copyExternalImages true, if external referenced content should be copied into the ZIP
    *                           file, false otherwise.
    */
-  public void setCopyExternalImages(boolean copyExternalImages)
+  public void setCopyExternalImages(final boolean copyExternalImages)
   {
     this.copyExternalImages = copyExternalImages;
   }
@@ -215,9 +215,9 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @param url the url that should be tested.
    * @return true, if the content type is supported by the browsers, false otherwise.
    */
-  protected boolean isSupportedImageFormat(URL url)
+  protected boolean isSupportedImageFormat(final URL url)
   {
-    String file = url.getFile();
+    final String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))
     {
       return true;
@@ -256,25 +256,25 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    *
    * @see ZIPHtmlFilesystem#isSupportedImageFormat
    */
-  public HtmlReferenceData createImageReference(ImageReference reference)
+  public HtmlReferenceData createImageReference(final ImageReference reference)
       throws IOException
   {
     if (reference.getSourceURL() == null)
     {
-      WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+      final WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder(reference.getImage(),
+      final PngEncoder encoder = new PngEncoder(reference.getImage(),
           PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
-      byte[] data = encoder.pngEncode();
+      final byte[] data = encoder.pngEncode();
 
-      Object object = comparator.createCompareData(data);
+      final Object object = comparator.createCompareData(data);
       String name = (String) encodedImages.get(object);
       if (name == null)
       {
         // encode the picture ...
-        String entryName = dataDirectory + createName("picture") + ".png";
-        ZipEntry ze = new ZipEntry(entryName);
+        final String entryName = dataDirectory + createName("picture") + ".png";
+        final ZipEntry ze = new ZipEntry(entryName);
         zipOut.putNextEntry(ze);
 
         //File dataFile = new File (dataDirectory, createName("picture") + ".png");
@@ -288,21 +288,21 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     }
     else if (isSupportedImageFormat(reference.getSourceURL()) == false)
     {
-      URL url = reference.getSourceURL();
+      final URL url = reference.getSourceURL();
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
-        WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+        final WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
         obs.waitImageLoaded();
 
-        PngEncoder encoder = new PngEncoder(reference.getImage(),
+        final PngEncoder encoder = new PngEncoder(reference.getImage(),
             PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
-        byte[] data = encoder.pngEncode();
+        final byte[] data = encoder.pngEncode();
 
-        IOUtils iou = IOUtils.getInstance();
-        String entryName = dataDirectory
+        final IOUtils iou = IOUtils.getInstance();
+        final String entryName = dataDirectory
             + createName(iou.stripFileExtension(iou.getFileName(url))) + ".png";
-        ZipEntry ze = new ZipEntry(entryName);
+        final ZipEntry ze = new ZipEntry(entryName);
         zipOut.putNextEntry(ze);
 
         //File dataFile = new File (dataDirectory, createName("picture") + ".png");
@@ -318,19 +318,19 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     }
     else if (isCopyExternalImages())
     {
-      URL url = reference.getSourceURL();
+      final URL url = reference.getSourceURL();
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
-        IOUtils iou = IOUtils.getInstance();
-        String entryName = dataDirectory + createName(iou.getFileName(url));
-        ZipEntry ze = new ZipEntry(entryName);
+        final IOUtils iou = IOUtils.getInstance();
+        final String entryName = dataDirectory + createName(iou.getFileName(url));
+        final ZipEntry ze = new ZipEntry(entryName);
         zipOut.putNextEntry(ze);
 
         //File dataFile = new File (dataDirectory, createName("picture") + ".png");
         // a png encoder is included in JCommon ...
 
-        InputStream urlIn = new BufferedInputStream(reference.getSourceURL().openStream());
+        final InputStream urlIn = new BufferedInputStream(reference.getSourceURL().openStream());
         IOUtils.getInstance().copyStreams(urlIn, zipOut);
         urlIn.close();
 
@@ -341,7 +341,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     }
     else
     {
-      String baseName = reference.getSourceURL().toExternalForm();
+      final String baseName = reference.getSourceURL().toExternalForm();
       return new ImageReferenceData(baseName);
     }
   }
@@ -352,7 +352,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @param base the basename.
    * @return the unique name generated using the basename.
    */
-  private String createName(String base)
+  private String createName(final String base)
   {
     CounterRef ref = (CounterRef) usedNames.get(base);
     if (ref == null)
@@ -376,11 +376,11 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @return the generated HtmlReference, never null.
    * @throws IOException if IO errors occured while creating the reference.
    */
-  public HtmlReferenceData createCSSReference(String styleSheet)
+  public HtmlReferenceData createCSSReference(final String styleSheet)
       throws IOException
   {
-    String entryName = dataDirectory + createName("style") + ".css";
-    ZipEntry ze = new ZipEntry(entryName);
+    final String entryName = dataDirectory + createName("style") + ".css";
+    final ZipEntry ze = new ZipEntry(entryName);
     zipOut.putNextEntry(ze);
 
     //File dataFile = new File (dataDirectory, createName("picture") + ".png");
@@ -388,7 +388,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
 
     zipOut.write(styleSheet.getBytes());
 
-    String baseName = entryName;
+    final String baseName = entryName;
     return new HRefReferenceData(baseName);
   }
 
@@ -400,16 +400,16 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    */
   public void close() throws IOException
   {
-    String entryName = createName("report") + ".html";
-    ZipEntry ze = new ZipEntry(entryName);
+    final String entryName = createName("report") + ".html";
+    final ZipEntry ze = new ZipEntry(entryName);
     zipOut.putNextEntry(ze);
 
     rootStream.flush();
     rootStream.close();
-    byte[] data = rootBase.toByteArray();
+    final byte[] data = rootBase.toByteArray();
     rootBase = null;
 
-    InflaterInputStream infIn
+    final InflaterInputStream infIn
         = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
     IOUtils.getInstance().copyStreams(infIn, zipOut);
     zipOut.closeEntry();

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.2 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    *
    * @param event the report event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     // if this is a preparerun, nothing gets printed and so no font change is required.
     if (event.getState().isPrepareRun())
@@ -87,7 +87,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
 
     // Try to get the name of the font to be set.
     // If the name is null, return without an excpetion, just do nothing.
-    String fontname = (String) event.getDataRow().get(1);
+    final String fontname = (String) event.getDataRow().get(1);
     if (fontname == null)
     {
       return;
@@ -95,12 +95,12 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
 
     // Lookup the element by name. If there no element found, the getElement function
     // returns null, so we have to check this case.
-    Element e = event.getReport().getItemBand().getElement(getElement());
+    final Element e = event.getReport().getItemBand().getElement(getElement());
 
     // set the font if an element was found.
     if (e != null && (e instanceof TextElement))
     {
-      TextElement tx = (TextElement) e;
+      final TextElement tx = (TextElement) e;
       tx.getStyle().setFontDefinitionProperty(
           new FontDefinition(new Font(fontname, Font.PLAIN, 10)));
     }
@@ -131,7 +131,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
    *
    * @param name  the element name.
    */
-  public void setElement(String name)
+  public void setElement(final String name)
   {
     setProperty("element", name);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFormatSerializer.java,v 1.4 2003/06/26 20:17:35 taqua Exp $
+ * $Id: PageFormatSerializer.java,v 1.5 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,9 +68,9 @@ public class PageFormatSerializer implements SerializeMethod
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(Object o, ObjectOutputStream out) throws IOException
+  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
   {
-    PageFormat pf = (PageFormat) o;
+    final PageFormat pf = (PageFormat) o;
     out.writeObject(PageFormatFactory.getInstance().resolvePageFormat(pf));
   }
 
@@ -82,9 +82,9 @@ public class PageFormatSerializer implements SerializeMethod
    * @throws IOException if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
   {
-    Object[] pageFormatResolve = (Object[]) in.readObject();
+    final Object[] pageFormatResolve = (Object[]) in.readObject();
     return PageFormatFactory.getInstance().createPageFormat(pageFormatResolve);
   }
 

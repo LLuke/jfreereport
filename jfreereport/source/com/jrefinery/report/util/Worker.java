@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.6 2003/04/08 14:10:48 mungady Exp $
+ * $Id: Worker.java,v 1.7 2003/06/27 14:25:26 taqua Exp $
  *
  *
  * Changes
@@ -61,7 +61,7 @@ public class Worker extends Thread
    *
    * @param sleeptime  the time this worker sleeps until he checks for new work.
    */
-  public Worker(int sleeptime)
+  public Worker(final int sleeptime)
   {
     this.sleeptime = sleeptime;
     start();
@@ -82,7 +82,7 @@ public class Worker extends Thread
    *
    * @throws IllegalStateException if the worker is not idle.
    */
-  public void setWorkload(Runnable r)
+  public void setWorkload(final Runnable r)
   {
     if (workload != null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.43 2003/06/13 17:55:29 taqua Exp $
+ * $Id: ReportState.java,v 1.44 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -134,23 +134,23 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param reportPar  the report.
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
-  protected ReportState(JFreeReport reportPar) throws CloneNotSupportedException
+  protected ReportState(final JFreeReport reportPar) throws CloneNotSupportedException
   {
     setReport(new ReportDefinition(reportPar));
     numberOfRows = reportPar.getData().getRowCount();
     reportProperties = getReport().getProperties();
 
-    DataRowConnector dc = new DataRowConnector();
+    final DataRowConnector dc = new DataRowConnector();
     DataRowConnector.connectDataSources(getReport(), dc);
     setDataRowConnector(dc);
 
-    LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions(),
+    final LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions(),
         reportPar.getFunctions());
     setFunctions(functions);
     functions.connectDataRow(dc);
 
 
-    DataRowBackend dr = new DataRowBackend();
+    final DataRowBackend dr = new DataRowBackend();
     dr.setTablemodel(reportPar.getData());
     dr.setFunctions(getFunctions());
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
@@ -183,7 +183,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param clone the base report state from which to initialize.
    * @param reset true, if the state should be reseted, false otherwise.
    */
-  protected ReportState(ReportState clone, boolean reset)
+  protected ReportState(final ReportState clone, final boolean reset)
   {
     setReport(clone.getReport());
     reportProperties = clone.reportProperties;
@@ -214,7 +214,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param clone  the existing state.
    */
-  protected ReportState(ReportState clone)
+  protected ReportState(final ReportState clone)
   {
     this(clone, false);
   }
@@ -246,7 +246,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param dataRowConnector  the data row connector.
    */
-  private void setDataRowConnector(DataRowConnector dataRowConnector)
+  private void setDataRowConnector(final DataRowConnector dataRowConnector)
   {
     this.dataRowConnector = dataRowConnector;
   }
@@ -276,7 +276,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param dataRow  the data row backend.
    */
-  private void setDataRowBackend(DataRowBackend dataRow)
+  private void setDataRowBackend(final DataRowBackend dataRow)
   {
     this.dataRow = dataRow;
   }
@@ -307,7 +307,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @throws NullPointerException if the given report is null
    */
-  private void setReport(ReportDefinition report)
+  private void setReport(final ReportDefinition report)
   {
     if (report == null)
     {
@@ -364,7 +364,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param itemIndex The new item index.
    */
-  public void setCurrentItem(int itemIndex)
+  public void setCurrentItem(final int itemIndex)
   {
     this.currentItem = itemIndex;
   }
@@ -384,7 +384,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param page The new page number.
    */
-  public void setCurrentPage(int page)
+  public void setCurrentPage(final int page)
   {
     if (page < 0)
     {
@@ -410,7 +410,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param index The new group index.
    */
-  public void setCurrentGroupIndex(int index)
+  public void setCurrentGroupIndex(final int index)
   {
     if (index < -1)
     {
@@ -435,7 +435,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param functions  the functions.
    */
-  protected void setFunctions(LevelledExpressionList functions)
+  protected void setFunctions(final LevelledExpressionList functions)
   {
     if (functions == null)
     {
@@ -451,7 +451,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the property value.
    */
-  public Object getProperty(String key)
+  public Object getProperty(final String key)
   {
     return reportProperties.get(key);
   }
@@ -465,7 +465,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the property value.
    */
-  public Object getProperty(String key, Object def)
+  public Object getProperty(final String key, final Object def)
   {
     return reportProperties.get(key, def);
   }
@@ -476,7 +476,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param key  the property name.
    * @param o  the property value.
    */
-  public void setProperty(String key, Object o)
+  public void setProperty(final String key, final Object o)
   {
     reportProperties.put(key, o);
   }
@@ -500,7 +500,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public boolean isPrepareRun()
   {
-    Boolean bool = (Boolean) getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
+    final Boolean bool = (Boolean) getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
         Boolean.FALSE);
     return bool.booleanValue();
   }
@@ -539,8 +539,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ReportState result = (ReportState) super.clone();
-    LevelledExpressionList functions = (LevelledExpressionList) getFunctions().clone();
+    final ReportState result = (ReportState) super.clone();
+    final LevelledExpressionList functions = (LevelledExpressionList) getFunctions().clone();
     result.setFunctions(functions);
     result.report = (ReportDefinition) report.clone();
     result.dataRow = (DataRowBackend) dataRow.clone();
@@ -568,7 +568,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return true if some progress has been made, false otherwise.
    */
-  public boolean isProceeding(ReportStateProgress oldstate)
+  public boolean isProceeding(final ReportStateProgress oldstate)
   {
     // a state is proceeding if it changed its group
     if (getCurrentGroupIndex() != oldstate.getCurrentGroupIndex())
@@ -618,8 +618,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * @param oldState  the old state.
      * @param message  the message.
      */
-    public StateProceedMessage(ReportState currentState, ReportStateProgress oldState,
-                               String message)
+    public StateProceedMessage(final ReportState currentState, final ReportStateProgress oldState,
+                               final String message)
     {
       this.currentState = currentState;
       this.oldState = oldState;
@@ -721,7 +721,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param type the event type of the event that should be prepared.
    */
-  public void firePrepareEvent(int type)
+  public void firePrepareEvent(final int type)
   {
     getDataRowConnector().setDataRowBackend(getDataRowBackend());
     this.functions.firePrepareEvent(new ReportEvent(this, (ReportEvent.PREPARE_EVENT | type)));
@@ -751,7 +751,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param baseEvent the type of the base event which caused the page start to be
    * triggered.
    */
-  public void firePageStartedEvent(int baseEvent)
+  public void firePageStartedEvent(final int baseEvent)
   {
     getDataRowConnector().setDataRowBackend(getDataRowBackend());
     this.functions.pageStarted(new ReportEvent(this, ReportEvent.PAGE_STARTED | baseEvent));
@@ -829,7 +829,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param band the band, that completed layouting.
    * @param type the type of the base event fireing the laout complete event.
    */
-  public void fireLayoutCompleteEvent(Band band, int type)
+  public void fireLayoutCompleteEvent(final Band band, final int type)
   {
     getDataRowConnector().setDataRowBackend(getDataRowBackend());
     functions.layoutComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
@@ -870,7 +870,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param ancestorHashcode  the ancestor hash code.
    */
-  protected void setAncestorHashcode(int ancestorHashcode)
+  protected void setAncestorHashcode(final int ancestorHashcode)
   {
     this.ancestorHashcode = ancestorHashcode;
   }
@@ -883,7 +883,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean isAncestor(ReportState state)
+  public boolean isAncestor(final ReportState state)
   {
     return (state.getAncestorHashcode() == getAncestorHashcode());
   }
@@ -915,7 +915,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param band the band that should be updated.
    */
-  public void updateDataRow(Band band)
+  public void updateDataRow(final Band band)
   {
     // docmark: at the moment, the DataRow connector is not checked, so we can
     // give any instance. This may change later..

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SaveAsAction.java,v 1.15 2003/06/23 16:08:27 taqua Exp $
+ * $Id: SaveAsAction.java,v 1.16 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public abstract class SaveAsAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public SaveAsAction(ResourceBundle resources)
+  public SaveAsAction(final ResourceBundle resources)
   {
     this.putValue(NAME, resources.getString("action.save-as.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.save-as.description"));

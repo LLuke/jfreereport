@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardTableModel.java,v 1.3 2003/05/02 12:39:41 taqua Exp $
+ * $Id: CardTableModel.java,v 1.4 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class CardTableModel extends AbstractTableModel
    *
    * @param c  the card.
    */
-  public void addCard(Card c)
+  public void addCard(final Card c)
   {
     if (c == null)
     {
@@ -132,7 +132,7 @@ public class CardTableModel extends AbstractTableModel
    *  @param columnIndex  the column being queried
    *  @return the Object.class
    */
-  public Class getColumnClass(int columnIndex)
+  public Class getColumnClass(final int columnIndex)
   {
     if (columnIndex == POS_TYPE)
     {
@@ -153,7 +153,7 @@ public class CardTableModel extends AbstractTableModel
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     return COL_NAMES[column];
   }
@@ -167,16 +167,16 @@ public class CardTableModel extends AbstractTableModel
    *
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(int rowIndex, int columnIndex)
+  public Object getValueAt(final int rowIndex, final int columnIndex)
   {
-    Card c = (Card) cards.get(rowIndex);
+    final Card c = (Card) cards.get(rowIndex);
     if (columnIndex == POS_TYPE)
     {
       return c.getType();
     }
     if (c.getType() == CardType.ACCOUNT)
     {
-      AccountCard ac = (AccountCard) c;
+      final AccountCard ac = (AccountCard) c;
       if (columnIndex == POS_NAME)
       {
         return ac.getLastName();
@@ -196,7 +196,7 @@ public class CardTableModel extends AbstractTableModel
     }
     else if ((c.getType() == CardType.ADMIN) || (c.getType() == CardType.USER))
     {
-      UserCard ac = (UserCard) c;
+      final UserCard ac = (UserCard) c;
       if (columnIndex == POS_NAME)
       {
         return ac.getLastName();
@@ -224,7 +224,7 @@ public class CardTableModel extends AbstractTableModel
     }
     else if (c.getType() == CardType.FREE)
     {
-      FreeCard ac = (FreeCard) c;
+      final FreeCard ac = (FreeCard) c;
       if (columnIndex == POS_CARDNR)
       {
         return ac.getCardNr();
@@ -236,7 +236,7 @@ public class CardTableModel extends AbstractTableModel
     }
     else if (c.getType() == CardType.PREPAID)
     {
-      PrepaidCard ac = (PrepaidCard) c;
+      final PrepaidCard ac = (PrepaidCard) c;
       if (columnIndex == POS_NAME)
       {
         return ac.getLastName();

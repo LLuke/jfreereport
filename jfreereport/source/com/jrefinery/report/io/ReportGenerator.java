@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.32 2003/05/11 13:39:16 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.33 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public class ReportGenerator extends ParserFrontend
    * @throws ElementDefinitionException if there is a problem parsing the
    * report template.
    */
-  public JFreeReport parseReport(String file)
+  public JFreeReport parseReport(final String file)
       throws IOException, ElementDefinitionException
   {
     if (file == null)
@@ -122,7 +122,7 @@ public class ReportGenerator extends ParserFrontend
    * @throws ElementDefinitionException if there is a problem parsing
    * the report template.
    */
-  public JFreeReport parseReport(URL file)
+  public JFreeReport parseReport(final URL file)
       throws ElementDefinitionException, IOException
   {
     return parseReport(file, file);
@@ -145,10 +145,10 @@ public class ReportGenerator extends ParserFrontend
    * @throws ElementDefinitionException if there is a problem parsing
    * the report template.
    */
-  public JFreeReport parseReport(URL file, URL contentBase)
+  public JFreeReport parseReport(final URL file, final URL contentBase)
       throws ElementDefinitionException, IOException
   {
-    JFreeReport report = (JFreeReport) parse(file, contentBase);
+    final JFreeReport report = (JFreeReport) parse(file, contentBase);
     report.setProperty(JFreeReport.REPORT_DEFINITION_SOURCE, file.toString());
     if (contentBase != null)
     {
@@ -176,7 +176,7 @@ public class ReportGenerator extends ParserFrontend
    * @throws ElementDefinitionException if there is a problem parsing
    * the report template.
    */
-  public JFreeReport parseReport(File file)
+  public JFreeReport parseReport(final File file)
       throws IOException, ElementDefinitionException
   {
     if (file == null)
@@ -184,7 +184,7 @@ public class ReportGenerator extends ParserFrontend
       throw new NullPointerException();
     }
 
-    File contentBase = file.getCanonicalFile().getParentFile();
+    final File contentBase = file.getCanonicalFile().getParentFile();
     return parseReport(file.toURL(), contentBase.toURL());
   }
 
@@ -198,7 +198,7 @@ public class ReportGenerator extends ParserFrontend
    *
    * @throws ElementDefinitionException if an error occurred.
    */
-  public JFreeReport parseReport(InputSource input, URL contentBase)
+  public JFreeReport parseReport(final InputSource input, final URL contentBase)
       throws ElementDefinitionException
   {
     return (JFreeReport) super.parse(input, contentBase);

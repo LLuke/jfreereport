@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionRadioButton.java,v 1.3 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ActionRadioButton.java,v 1.4 2003/06/27 14:25:25 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -72,7 +72,7 @@ public class ActionRadioButton extends JRadioButton
      *
      * @param event  the property change event.
      */
-    public void propertyChange(PropertyChangeEvent event)
+    public void propertyChange(final PropertyChangeEvent event)
     {
       try
       {
@@ -95,35 +95,35 @@ public class ActionRadioButton extends JRadioButton
               getAction().getValue(Action.SHORT_DESCRIPTION));
         }
 
-        Action ac = getAction();
+        final Action ac = getAction();
         if (event.getPropertyName().equals(ActionDowngrade.ACCELERATOR_KEY))
         {
-          KeyStroke oldVal = (KeyStroke) event.getOldValue();
+          final KeyStroke oldVal = (KeyStroke) event.getOldValue();
           if (oldVal != null)
           {
             unregisterKeyboardAction
                 (oldVal);
           }
-          Object o = ac.getValue(ActionDowngrade.ACCELERATOR_KEY);
+          final Object o = ac.getValue(ActionDowngrade.ACCELERATOR_KEY);
           if (o instanceof KeyStroke && o != null)
           {
-            KeyStroke k = (KeyStroke) o;
+            final KeyStroke k = (KeyStroke) o;
             registerKeyboardAction(ac, k, WHEN_IN_FOCUSED_WINDOW);
           }
         }
         else if (event.getPropertyName().equals(ActionDowngrade.MNEMONIC_KEY))
         {
-          Object o = ac.getValue(ActionDowngrade.MNEMONIC_KEY);
+          final Object o = ac.getValue(ActionDowngrade.MNEMONIC_KEY);
           if (o != null)
           {
             if (o instanceof Character)
             {
-              Character c = (Character) o;
+              final Character c = (Character) o;
               setMnemonic(c.charValue());
             }
             else if (o instanceof Integer)
             {
-              Integer c = (Integer) o;
+              final Integer c = (Integer) o;
               setMnemonic(c.intValue());
             }
           }
@@ -149,7 +149,7 @@ public class ActionRadioButton extends JRadioButton
    *
    * @param text  the label for the new button.
    */
-  public ActionRadioButton(String text)
+  public ActionRadioButton(final String text)
   {
     super(text);
   }
@@ -160,7 +160,7 @@ public class ActionRadioButton extends JRadioButton
    * @param text  the label for the new button.
    * @param icon  the icon for the button.
    */
-  public ActionRadioButton(String text, Icon icon)
+  public ActionRadioButton(final String text, final Icon icon)
   {
     super(text, icon);
   }
@@ -171,7 +171,7 @@ public class ActionRadioButton extends JRadioButton
    *
    * @param icon  the icon for the button.
    */
-  public ActionRadioButton(Icon icon)
+  public ActionRadioButton(final Icon icon)
   {
     super(icon);
   }
@@ -181,7 +181,7 @@ public class ActionRadioButton extends JRadioButton
    *
    * @param action  the action.
    */
-  public ActionRadioButton(Action action)
+  public ActionRadioButton(final Action action)
   {
     setAction(action);
   }
@@ -218,7 +218,7 @@ public class ActionRadioButton extends JRadioButton
    *
    * @param b the new enable-state of this button
    */
-  public void setEnabled(boolean b)
+  public void setEnabled(final boolean b)
   {
     super.setEnabled(b);
     if (getAction() != null)
@@ -240,18 +240,18 @@ public class ActionRadioButton extends JRadioButton
    *
    * @param newAction the new action
    */
-  public void setAction(Action newAction)
+  public void setAction(final Action newAction)
   {
-    Action oldAction = getAction();
+    final Action oldAction = getAction();
     if (oldAction != null)
     {
       removeActionListener(oldAction);
       oldAction.removePropertyChangeListener(getPropertyChangeHandler());
 
-      Object o = oldAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+      final Object o = oldAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
       if (o instanceof KeyStroke && o != null)
       {
-        KeyStroke k = (KeyStroke) o;
+        final KeyStroke k = (KeyStroke) o;
         unregisterKeyboardAction(k);
       }
     }
@@ -271,19 +271,19 @@ public class ActionRadioButton extends JRadioButton
       {
         if (o instanceof Character)
         {
-          Character c = (Character) o;
+          final Character c = (Character) o;
           setMnemonic(c.charValue());
         }
         else if (o instanceof Integer)
         {
-          Integer c = (Integer) o;
+          final Integer c = (Integer) o;
           setMnemonic(c.intValue());
         }
       }
       o = newAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
       if (o instanceof KeyStroke && o != null)
       {
-        KeyStroke k = (KeyStroke) o;
+        final KeyStroke k = (KeyStroke) o;
         registerKeyboardAction(newAction, k, WHEN_IN_FOCUSED_WINDOW);
       }
     }

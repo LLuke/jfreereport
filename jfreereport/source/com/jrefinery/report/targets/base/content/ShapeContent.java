@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.12 2003/04/09 15:50:25 mungady Exp $
+ * $Id: ShapeContent.java,v 1.13 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class ShapeContent implements Content
    *
    * @param s  the shape.
    */
-  public ShapeContent(Shape s)
+  public ShapeContent(final Shape s)
   {
     this(s, s.getBounds2D());
   }
@@ -70,7 +70,7 @@ public class ShapeContent implements Content
    * @param s  the shape.
    * @param bounds  the bounds.
    */
-  public ShapeContent(Shape s, Rectangle2D bounds)
+  public ShapeContent(final Shape s, final Rectangle2D bounds)
   {
     if (s == null)
     {
@@ -143,7 +143,7 @@ public class ShapeContent implements Content
    *
    * @return <code>null</code>.
    */
-  public Content getContentPart(int part)
+  public Content getContentPart(final int part)
   {
     return null;
   }
@@ -155,9 +155,9 @@ public class ShapeContent implements Content
    *
    * @return the content.
    */
-  public Content getContentForBounds(Rectangle2D bounds)
+  public Content getContentForBounds(final Rectangle2D bounds)
   {
-    Rectangle2D newBounds = bounds.createIntersection(getBounds());
+    final Rectangle2D newBounds = bounds.createIntersection(getBounds());
     return new ShapeContent(getShape(), newBounds);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ColorSerializer.java,v 1.4 2003/06/26 20:17:35 taqua Exp $
+ * $Id: ColorSerializer.java,v 1.5 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,11 +69,11 @@ public class ColorSerializer implements SerializeMethod
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(Object o, ObjectOutputStream out) throws IOException
+  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
   {
-    Color c = (Color) o;
-    float[] components = c.getColorComponents(null);
-    float alpha = c.getAlpha() / 255.0f;
+    final Color c = (Color) o;
+    final float[] components = c.getColorComponents(null);
+    final float alpha = c.getAlpha() / 255.0f;
     out.writeObject(c.getColorSpace());
     out.writeObject(components);
     out.writeFloat(alpha);
@@ -88,11 +88,11 @@ public class ColorSerializer implements SerializeMethod
    * @throws IOException if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
   {
-    ColorSpace csp = (ColorSpace) in.readObject();
-    float[] components = (float[]) in.readObject();
-    float alpha = in.readFloat();
+    final ColorSpace csp = (ColorSpace) in.readObject();
+    final float[] components = (float[]) in.readObject();
+    final float alpha = in.readFloat();
     return new Color(csp, components, alpha);
   }
 

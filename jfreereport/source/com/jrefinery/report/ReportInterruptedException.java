@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportInterruptedException.java,v 1.4 2003/02/26 16:41:46 mungady Exp $
+ * $Id: ReportInterruptedException.java,v 1.5 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public class ReportInterruptedException extends ReportProcessingException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public ReportInterruptedException(String message, Exception ex)
+  public ReportInterruptedException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -62,7 +62,7 @@ public class ReportInterruptedException extends ReportProcessingException
    *
    * @param message  the exception message.
    */
-  public ReportInterruptedException(String message)
+  public ReportInterruptedException(final String message)
   {
     super(message);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.45 2003/05/02 12:39:02 taqua Exp $
+ * $Id: ItemFactory.java,v 1.46 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -119,14 +119,14 @@ public class ItemFactory
    * @throws NullPointerException if bounds, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(String name,
-                                              Rectangle2D bounds,
-                                              Paint paint,
-                                              int alignment,
-                                              Font font,
-                                              String nullString,
-                                              String format,
-                                              String field)
+  public static TextElement createDateElement(final String name,
+                                              final Rectangle2D bounds,
+                                              final Paint paint,
+                                              final int alignment,
+                                              final Font font,
+                                              final String nullString,
+                                              final String format,
+                                              final String field)
   {
     return createDateElement(name,
         bounds,
@@ -157,18 +157,18 @@ public class ItemFactory
    * @throws NullPointerException if bounds, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(String name,
-                                              Rectangle2D bounds,
-                                              Paint paint,
-                                              int alignment,
-                                              int valign,
-                                              Font font,
-                                              String nullString,
-                                              String format,
-                                              String field)
+  public static TextElement createDateElement(final String name,
+                                              final Rectangle2D bounds,
+                                              final Paint paint,
+                                              final int alignment,
+                                              final int valign,
+                                              final Font font,
+                                              final String nullString,
+                                              final String format,
+                                              final String field)
   {
 
-    DateFieldTemplate dft = new DateFieldTemplate();
+    final DateFieldTemplate dft = new DateFieldTemplate();
     if (format != null)
     {
       dft.setFormat(format);
@@ -176,7 +176,7 @@ public class ItemFactory
     dft.setNullValue(nullString);
     dft.setField(field);
 
-    TextElement dateElement = new TextElement();
+    final TextElement dateElement = new TextElement();
     if (name != null)
     {
       dateElement.setName(name);
@@ -218,14 +218,14 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(String name,
-                                              Rectangle2D bounds,
-                                              Paint paint,
-                                              int alignment,
-                                              Font font,
-                                              String nullString,
-                                              DateFormat format,
-                                              String field)
+  public static TextElement createDateElement(final String name,
+                                              final Rectangle2D bounds,
+                                              final Paint paint,
+                                              final int alignment,
+                                              final Font font,
+                                              final String nullString,
+                                              final DateFormat format,
+                                              final String field)
   {
     return createDateElement(name, bounds, paint, alignment,
         ElementAlignment.TOP.getOldAlignment(),
@@ -250,20 +250,20 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(String name,
-                                              Rectangle2D bounds,
-                                              Paint paint,
-                                              int alignment,
-                                              int valign,
-                                              Font font,
-                                              String nullString,
-                                              DateFormat format,
-                                              String field)
+  public static TextElement createDateElement(final String name,
+                                              final Rectangle2D bounds,
+                                              final Paint paint,
+                                              final int alignment,
+                                              final int valign,
+                                              final Font font,
+                                              final String nullString,
+                                              final DateFormat format,
+                                              final String field)
   {
-    DataSource ds;
+    final DataSource ds;
     if (format instanceof SimpleDateFormat)
     {
-      DateFieldTemplate dft = new DateFieldTemplate();
+      final DateFieldTemplate dft = new DateFieldTemplate();
       dft.setDateFormat((SimpleDateFormat) format);
       dft.setNullValue(nullString);
       dft.setField(field);
@@ -271,7 +271,7 @@ public class ItemFactory
     }
     else
     {
-      DateFormatFilter filter = new DateFormatFilter();
+      final DateFormatFilter filter = new DateFormatFilter();
       if (format != null)
       {
         filter.setFormatter(format);
@@ -280,7 +280,7 @@ public class ItemFactory
       ds = filter;
     }
 
-    TextElement dateElement = new TextElement();
+    final TextElement dateElement = new TextElement();
     if (name != null)
     {
       dateElement.setName(name);
@@ -323,14 +323,14 @@ public class ItemFactory
    *
    * @deprecated use createDateElement instead, as all DataAccess has been unified
    */
-  public static TextElement createDateFunction(String name,
-                                               Rectangle2D bounds,
-                                               Paint paint,
-                                               int alignment,
-                                               Font font,
-                                               String nullString,
-                                               String format,
-                                               String function)
+  public static TextElement createDateFunction(final String name,
+                                               final Rectangle2D bounds,
+                                               final Paint paint,
+                                               final int alignment,
+                                               final Font font,
+                                               final String nullString,
+                                               final String format,
+                                               final String function)
   {
     return createDateElement(name, bounds, paint, alignment, font, nullString, format, function);
   }
@@ -354,14 +354,14 @@ public class ItemFactory
    *
    * @deprecated use createDateElement instead, as all DataAccess has been unified
    */
-  public static TextElement createDateFunction(String name,
-                                               Rectangle2D bounds,
-                                               Paint paint,
-                                               int alignment,
-                                               Font font,
-                                               String nullString,
-                                               DateFormat format,
-                                               String function)
+  public static TextElement createDateFunction(final String name,
+                                               final Rectangle2D bounds,
+                                               final Paint paint,
+                                               final int alignment,
+                                               final Font font,
+                                               final String nullString,
+                                               final DateFormat format,
+                                               final String function)
   {
     return createDateElement(name, bounds, paint, alignment, font, nullString, format, function);
   }
@@ -384,13 +384,13 @@ public class ItemFactory
    * @deprecated don't use the itemfactory for that kind of element or use the
    * createStringElement method
    */
-  public static TextElement createGeneralElement(String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 int alignment,
-                                                 Font font,
-                                                 String nullString,
-                                                 String function)
+  public static TextElement createGeneralElement(final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Paint paint,
+                                                 final int alignment,
+                                                 final Font font,
+                                                 final String nullString,
+                                                 final String function)
   {
     return createStringElement(name, bounds, paint, alignment, font, nullString, function);
   }
@@ -409,10 +409,10 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                URL source)
+  public static ImageElement createImageElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final URL source)
   {
     return createImageElement(name, bounds, paint, source, true);
   }
@@ -432,11 +432,11 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                URL source,
-                                                boolean scale)
+  public static ImageElement createImageElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final URL source,
+                                                final boolean scale)
   {
     return createImageElement(name, bounds, paint, source, scale, false);
   }
@@ -457,17 +457,17 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                URL source,
-                                                boolean scale,
-                                                boolean keepAspectRatio)
+  public static ImageElement createImageElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final URL source,
+                                                final boolean scale,
+                                                final boolean keepAspectRatio)
   {
-    ImageURLElementTemplate template = new ImageURLElementTemplate();
+    final ImageURLElementTemplate template = new ImageURLElementTemplate();
     template.setContent(source.toExternalForm());
 
-    ImageElement element = new ImageElement();
+    final ImageElement element = new ImageElement();
     if (name != null)
     {
       element.setName(name);
@@ -498,10 +498,10 @@ public class ItemFactory
    *
    * @deprecated use createImageURLElement instead
    */
-  public static ImageElement createImageURLField(String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 String field)
+  public static ImageElement createImageURLField(final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Paint paint,
+                                                 final String field)
   {
     return createImageURLElement(name, bounds, paint, field);
   }
@@ -519,10 +519,10 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageURLElement(String name,
-                                                   Rectangle2D bounds,
-                                                   Paint paint,
-                                                   String field)
+  public static ImageElement createImageURLElement(final String name,
+                                                   final Rectangle2D bounds,
+                                                   final Paint paint,
+                                                   final String field)
   {
     return createImageURLElement(name, bounds, paint, field, true);
   }
@@ -541,11 +541,11 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageURLElement(String name,
-                                                   Rectangle2D bounds,
-                                                   Paint paint,
-                                                   String field,
-                                                   boolean scale)
+  public static ImageElement createImageURLElement(final String name,
+                                                   final Rectangle2D bounds,
+                                                   final Paint paint,
+                                                   final String field,
+                                                   final boolean scale)
   {
     return createImageURLElement(name, bounds, paint, field, scale, false);
   }
@@ -565,17 +565,17 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageURLElement(String name,
-                                                   Rectangle2D bounds,
-                                                   Paint paint,
-                                                   String field,
-                                                   boolean scale,
-                                                   boolean keepAspectRatio)
+  public static ImageElement createImageURLElement(final String name,
+                                                   final Rectangle2D bounds,
+                                                   final Paint paint,
+                                                   final String field,
+                                                   final boolean scale,
+                                                   final boolean keepAspectRatio)
   {
-    ImageURLFieldTemplate template = new ImageURLFieldTemplate();
+    final ImageURLFieldTemplate template = new ImageURLFieldTemplate();
     template.setField(field);
 
-    ImageElement element = new ImageElement();
+    final ImageElement element = new ImageElement();
     if (name != null)
     {
       element.setName(name);
@@ -606,10 +606,10 @@ public class ItemFactory
    *
    * @deprecated use createImageURLElement instead
    */
-  public static ImageElement createImageURLFunction(String name,
-                                                    Rectangle2D bounds,
-                                                    Paint paint,
-                                                    String function)
+  public static ImageElement createImageURLFunction(final String name,
+                                                    final Rectangle2D bounds,
+                                                    final Paint paint,
+                                                    final String function)
   {
     return createImageURLElement(name, bounds, paint, function);
   }
@@ -629,10 +629,10 @@ public class ItemFactory
    *
    * @deprecated use createImageDataRowElement instead
    */
-  public static ImageElement createImageFieldElement(String name,
-                                                     Rectangle2D bounds,
-                                                     Paint paint,
-                                                     String field)
+  public static ImageElement createImageFieldElement(final String name,
+                                                     final Rectangle2D bounds,
+                                                     final Paint paint,
+                                                     final String field)
   {
     return createImageDataRowElement(name, bounds, paint, field);
   }
@@ -650,10 +650,10 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageDataRowElement(String name,
-                                                       Rectangle2D bounds,
-                                                       Paint paint,
-                                                       String field
+  public static ImageElement createImageDataRowElement(final String name,
+                                                       final Rectangle2D bounds,
+                                                       final Paint paint,
+                                                       final String field
                                                        )
   {
     return createImageDataRowElement(name, bounds, paint, field, true);
@@ -673,11 +673,11 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageDataRowElement(String name,
-                                                       Rectangle2D bounds,
-                                                       Paint paint,
-                                                       String field,
-                                                       boolean scale)
+  public static ImageElement createImageDataRowElement(final String name,
+                                                       final Rectangle2D bounds,
+                                                       final Paint paint,
+                                                       final String field,
+                                                       final boolean scale)
   {
     return createImageDataRowElement(name, bounds, paint, field, scale, false);
   }
@@ -697,16 +697,16 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageDataRowElement(String name,
-                                                       Rectangle2D bounds,
-                                                       Paint paint,
-                                                       String field,
-                                                       boolean scale,
-                                                       boolean keepAspectRatio)
+  public static ImageElement createImageDataRowElement(final String name,
+                                                       final Rectangle2D bounds,
+                                                       final Paint paint,
+                                                       final String field,
+                                                       final boolean scale,
+                                                       final boolean keepAspectRatio)
   {
-    ImageFieldTemplate template = new ImageFieldTemplate();
+    final ImageFieldTemplate template = new ImageFieldTemplate();
     template.setField(field);
-    ImageElement element = new ImageElement();
+    final ImageElement element = new ImageElement();
     if (name != null)
     {
       element.setName(name);
@@ -737,10 +737,10 @@ public class ItemFactory
    *
    * @deprecated use createImageDataRowElement instead
    */
-  public static ImageElement createImageFunctionElement(String name,
-                                                        Rectangle2D bounds,
-                                                        Paint paint,
-                                                        String function)
+  public static ImageElement createImageFunctionElement(final String name,
+                                                        final Rectangle2D bounds,
+                                                        final Paint paint,
+                                                        final String function)
   {
     return createImageDataRowElement(name, bounds, paint, function);
   }
@@ -760,12 +760,12 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createLabelElement(String name,
-                                               Rectangle2D bounds,
-                                               Paint paint,
-                                               int alignment,
-                                               Font font,
-                                               String labeltext)
+  public static TextElement createLabelElement(final String name,
+                                               final Rectangle2D bounds,
+                                               final Paint paint,
+                                               final int alignment,
+                                               final Font font,
+                                               final String labeltext)
   {
     return createLabelElement(name, bounds, paint, alignment,
         ElementAlignment.TOP.getOldAlignment(),
@@ -788,18 +788,18 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name, format or field are <code>null</code>.
    * @throws IllegalArgumentException if the given alignment is invalid.
    */
-  public static TextElement createLabelElement(String name,
-                                               Rectangle2D bounds,
-                                               Paint paint,
-                                               int alignment,
-                                               int valign,
-                                               Font font,
-                                               String labeltext)
+  public static TextElement createLabelElement(final String name,
+                                               final Rectangle2D bounds,
+                                               final Paint paint,
+                                               final int alignment,
+                                               final int valign,
+                                               final Font font,
+                                               final String labeltext)
   {
-    LabelTemplate template = new LabelTemplate();
+    final LabelTemplate template = new LabelTemplate();
     template.setContent(labeltext);
 
-    TextElement label = new TextElement();
+    final TextElement label = new TextElement();
     if (name != null)
     {
       label.setName(name);
@@ -838,21 +838,21 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createLineShapeElement(String name,
-                                                    Paint paint,
-                                                    Stroke stroke,
-                                                    Line2D shape)
+  public static ShapeElement createLineShapeElement(final String name,
+                                                    final Paint paint,
+                                                    final Stroke stroke,
+                                                    final Line2D shape)
   {
     if (shape.getX1() == shape.getX2() && shape.getY1() == shape.getY2())
     {
       // scale the line, is horizontal,the line is on pos 0,0 within the element
-      Rectangle2D bounds = new Rectangle2D.Float(0, (float) shape.getY1(), -100, 0);
+      final Rectangle2D bounds = new Rectangle2D.Float(0, (float) shape.getY1(), -100, 0);
       return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
           true, false, true);
     }
     else
     {
-      Rectangle2D bounds = shape.getBounds2D();
+      final Rectangle2D bounds = shape.getBounds2D();
       if (bounds.getX() < 0)
       {
         throw new IllegalArgumentException("Line coordinates must not be negative.");
@@ -888,12 +888,12 @@ public class ItemFactory
    * the shape by using an AffineTransform. Use one of the createShape methods, that
    * allow you to supply separate bounds and shapes.
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Paint paint,
-                                                Stroke stroke,
-                                                Shape shape,
-                                                boolean shouldDraw,
-                                                boolean shouldFill)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Paint paint,
+                                                final Stroke stroke,
+                                                final Shape shape,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill)
   {
     // we have two choices here: let the element be big enough to take up
     // the complete shape and let the element start at 0,0, and the shape
@@ -906,7 +906,7 @@ public class ItemFactory
 
     // we have to translate the shape, as anything else would mess up the table layout
 
-    Rectangle2D shapeBounds = shape.getBounds2D();
+    final Rectangle2D shapeBounds = shape.getBounds2D();
 
     if (shapeBounds.getX() == 0 && shapeBounds.getY() == 0)
     {
@@ -915,7 +915,7 @@ public class ItemFactory
           shouldDraw, shouldFill, true);
     }
 
-    AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(),
+    final AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(),
         -shapeBounds.getY());
     return createShapeElement(name, shapeBounds, paint, stroke, af.createTransformedShape(shape),
         shouldDraw, shouldFill, true);
@@ -939,14 +939,14 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                Stroke stroke,
-                                                Shape shape,
-                                                boolean shouldDraw,
-                                                boolean shouldFill,
-                                                boolean shouldScale)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final Stroke stroke,
+                                                final Shape shape,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill,
+                                                final boolean shouldScale)
   {
     return createShapeElement(name, bounds, paint, stroke, shape, shouldDraw,
         shouldFill, shouldScale, false);
@@ -970,17 +970,17 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                Stroke stroke,
-                                                Shape shape,
-                                                boolean shouldDraw,
-                                                boolean shouldFill,
-                                                boolean shouldScale,
-                                                boolean keepAspectRatio)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final Stroke stroke,
+                                                final Shape shape,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill,
+                                                final boolean shouldScale,
+                                                final boolean keepAspectRatio)
   {
-    ShapeElement shapeElement = new ShapeElement();
+    final ShapeElement shapeElement = new ShapeElement();
     if (name != null)
     {
       shapeElement.setName(name);
@@ -1021,17 +1021,17 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                Stroke stroke,
-                                                String fieldname,
-                                                boolean shouldDraw,
-                                                boolean shouldFill,
-                                                boolean shouldScale,
-                                                boolean keepAspectRatio)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final Stroke stroke,
+                                                final String fieldname,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill,
+                                                final boolean shouldScale,
+                                                final boolean keepAspectRatio)
   {
-    ShapeElement shapeElement = new ShapeElement();
+    final ShapeElement shapeElement = new ShapeElement();
     if (name != null)
     {
       shapeElement.setName(name);
@@ -1068,12 +1068,12 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createRectangleShapeElement(String name,
-                                                         Paint paint,
-                                                         Stroke stroke,
-                                                         Rectangle2D shape,
-                                                         boolean shouldDraw,
-                                                         boolean shouldFill)
+  public static ShapeElement createRectangleShapeElement(final String name,
+                                                         final Paint paint,
+                                                         final Stroke stroke,
+                                                         final Rectangle2D shape,
+                                                         final boolean shouldDraw,
+                                                         final boolean shouldFill)
   {
     if (shape.getX() < 0 || shape.getY() < 0 || shape.getWidth() < 0 || shape.getHeight() < 0)
     {
@@ -1082,7 +1082,7 @@ public class ItemFactory
       return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0, 0, 100, 100),
           shouldDraw, shouldFill, true);
     }
-    Rectangle2D rect = (Rectangle2D) shape.clone();
+    final Rectangle2D rect = (Rectangle2D) shape.clone();
     rect.setRect(0, 0, rect.getWidth(), rect.getHeight());
     return createShapeElement(name, shape, paint, stroke, rect, shouldDraw, shouldFill, false);
   }
@@ -1106,13 +1106,13 @@ public class ItemFactory
    *
    * @deprecated use createStringElement instead
    */
-  public static TextElement createMultilineTextElement(String name,
-                                                       Rectangle2D bounds,
-                                                       Paint paint,
-                                                       int alignment,
-                                                       Font font,
-                                                       String nullString,
-                                                       String field)
+  public static TextElement createMultilineTextElement(final String name,
+                                                       final Rectangle2D bounds,
+                                                       final Paint paint,
+                                                       final int alignment,
+                                                       final Font font,
+                                                       final String nullString,
+                                                       final String field)
   {
     return createStringElement(name, bounds, paint, alignment, font, nullString, field);
   }
@@ -1134,14 +1134,14 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                Font font,
-                                                String nullString,
-                                                NumberFormat format,
-                                                String field)
+  public static TextElement createNumberElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final int alignment,
+                                                final Font font,
+                                                final String nullString,
+                                                final NumberFormat format,
+                                                final String field)
   {
     return createNumberElement(name, bounds, paint, alignment,
         ElementAlignment.TOP.getOldAlignment(),
@@ -1167,20 +1167,20 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                int valign,
-                                                Font font,
-                                                String nullString,
-                                                NumberFormat format,
-                                                String field)
+  public static TextElement createNumberElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final int alignment,
+                                                final int valign,
+                                                final Font font,
+                                                final String nullString,
+                                                final NumberFormat format,
+                                                final String field)
   {
-    DataSource ds;
+    final DataSource ds;
     if (format instanceof DecimalFormat)
     {
-      NumberFieldTemplate template = new NumberFieldTemplate();
+      final NumberFieldTemplate template = new NumberFieldTemplate();
       template.setDecimalFormat((DecimalFormat) format);
       template.setNullValue(nullString);
       template.setField(field);
@@ -1188,7 +1188,7 @@ public class ItemFactory
     }
     else
     {
-      NumberFormatFilter filter = new NumberFormatFilter();
+      final NumberFormatFilter filter = new NumberFormatFilter();
       if (format != null)
       {
         filter.setFormatter(format);
@@ -1197,7 +1197,7 @@ public class ItemFactory
       ds = filter;
     }
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     if (name != null)
     {
       element.setName(name);
@@ -1240,14 +1240,14 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                Font font,
-                                                String nullString,
-                                                String format,
-                                                String field)
+  public static TextElement createNumberElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final int alignment,
+                                                final Font font,
+                                                final String nullString,
+                                                final String format,
+                                                final String field)
   {
     return createNumberElement(name, bounds, paint, alignment,
         ElementAlignment.TOP.getOldAlignment(),
@@ -1273,17 +1273,17 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                int valign,
-                                                Font font,
-                                                String nullString,
-                                                String format,
-                                                String field)
+  public static TextElement createNumberElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final int alignment,
+                                                final int valign,
+                                                final Font font,
+                                                final String nullString,
+                                                final String format,
+                                                final String field)
   {
-    NumberFieldTemplate template = new NumberFieldTemplate();
+    final NumberFieldTemplate template = new NumberFieldTemplate();
     if (format != null)
     {
       template.setFormat(format);
@@ -1291,7 +1291,7 @@ public class ItemFactory
     template.setNullValue(nullString);
     template.setField(field);
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     if (name != null)
     {
       element.setName(name);
@@ -1336,14 +1336,14 @@ public class ItemFactory
    *
    * @deprecated use createNumberElement instead
    */
-  public static TextElement createNumberFunction(String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 int alignment,
-                                                 Font font,
-                                                 String nullString,
-                                                 String format,
-                                                 String function)
+  public static TextElement createNumberFunction(final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Paint paint,
+                                                 final int alignment,
+                                                 final Font font,
+                                                 final String nullString,
+                                                 final String format,
+                                                 final String function)
   {
     return createNumberElement(name, bounds, paint, alignment, font, nullString, format, function);
   }
@@ -1367,14 +1367,14 @@ public class ItemFactory
    *
    * @deprecated use createNumberElement instead
    */
-  public static TextElement createNumberFunction(String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 int alignment,
-                                                 Font font,
-                                                 String nullString,
-                                                 NumberFormat format,
-                                                 String function)
+  public static TextElement createNumberFunction(final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Paint paint,
+                                                 final int alignment,
+                                                 final Font font,
+                                                 final String nullString,
+                                                 final NumberFormat format,
+                                                 final String function)
   {
     return createNumberElement(name, bounds, paint, alignment, font, nullString, format, function);
   }
@@ -1395,13 +1395,13 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createStringElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                Font font,
-                                                String nullString,
-                                                String field)
+  public static TextElement createStringElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final int alignment,
+                                                final Font font,
+                                                final String nullString,
+                                                final String field)
   {
     return createStringElement(name,
         bounds,
@@ -1430,20 +1430,20 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createStringElement(String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                int valign,
-                                                Font font,
-                                                String nullString,
-                                                String field)
+  public static TextElement createStringElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Paint paint,
+                                                final int alignment,
+                                                final int valign,
+                                                final Font font,
+                                                final String nullString,
+                                                final String field)
   {
-    StringFieldTemplate template = new StringFieldTemplate();
+    final StringFieldTemplate template = new StringFieldTemplate();
     template.setField(field);
     template.setNullValue(nullString);
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     if (name != null)
     {
       element.setName(name);
@@ -1487,13 +1487,13 @@ public class ItemFactory
    *
    * @deprecated use createStringElement instead
    */
-  public static TextElement createStringFunction(String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 int alignment,
-                                                 Font font,
-                                                 String nullString,
-                                                 String function)
+  public static TextElement createStringFunction(final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Paint paint,
+                                                 final int alignment,
+                                                 final Font font,
+                                                 final String nullString,
+                                                 final String function)
   {
     return createStringElement(name, bounds, paint, alignment, font, nullString, function);
   }
@@ -1508,9 +1508,9 @@ public class ItemFactory
    *
    * @return the GroupFooter
    */
-  public static Band createGroupFooter(float height, Font defaultFont, Paint defaultPaint)
+  public static Band createGroupFooter(final float height, final Font defaultFont, final Paint defaultPaint)
   {
-    GroupFooter footer = new GroupFooter();
+    final GroupFooter footer = new GroupFooter();
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(0, height));
     if (defaultFont != null)
@@ -1535,10 +1535,10 @@ public class ItemFactory
    *
    * @return the GroupHeader
    */
-  public static Band createGroupHeader(float height, Font defaultFont, Paint defaultPaint,
-                                       boolean pageBreak)
+  public static Band createGroupHeader(final float height, final Font defaultFont, final Paint defaultPaint,
+                                       final boolean pageBreak)
   {
-    GroupHeader header = new GroupHeader();
+    final GroupHeader header = new GroupHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(0, height));
     if (defaultFont != null)
@@ -1567,10 +1567,10 @@ public class ItemFactory
    *
    * @return the PageFooter
    */
-  public static Band createPageFooter(float height, Font defaultFont, Paint defaultPaint,
-                                      boolean onfirstpage, boolean onlastpage)
+  public static Band createPageFooter(final float height, final Font defaultFont, final Paint defaultPaint,
+                                      final boolean onfirstpage, final boolean onlastpage)
   {
-    PageFooter footer = new PageFooter();
+    final PageFooter footer = new PageFooter();
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(0, height));
     if (defaultFont != null)
@@ -1601,10 +1601,10 @@ public class ItemFactory
    *
    * @return the PageHeader
    */
-  public static Band createPageHeader(float height, Font defaultFont, Paint defaultPaint,
-                                      boolean onfirstpage, boolean onlastpage)
+  public static Band createPageHeader(final float height, final Font defaultFont, final Paint defaultPaint,
+                                      final boolean onfirstpage, final boolean onlastpage)
   {
-    PageHeader header = new PageHeader();
+    final PageHeader header = new PageHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(0, height));
     if (defaultFont != null)
@@ -1632,10 +1632,10 @@ public class ItemFactory
    *
    * @return the ReportFooter
    */
-  public static Band createReportFooter(float height, Font defaultFont, Paint defaultPaint,
-                                        boolean isownpage)
+  public static Band createReportFooter(final float height, final Font defaultFont, final Paint defaultPaint,
+                                        final boolean isownpage)
   {
-    ReportFooter footer = new ReportFooter();
+    final ReportFooter footer = new ReportFooter();
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(0, height));
     if (defaultFont != null)
@@ -1662,10 +1662,10 @@ public class ItemFactory
    *
    * @return the ReportHeader
    */
-  public static Band createReportHeader(float height, Font defaultFont, Paint defaultPaint,
-                                        boolean isownpage)
+  public static Band createReportHeader(final float height, final Font defaultFont, final Paint defaultPaint,
+                                        final boolean isownpage)
   {
-    ReportHeader header = new ReportHeader();
+    final ReportHeader header = new ReportHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(0, height));
     if (defaultFont != null)
@@ -1690,9 +1690,9 @@ public class ItemFactory
    *
    * @return the band.
    */
-  public static Band createItemBand(float height, Font defaultFont, Paint defaultPaint)
+  public static Band createItemBand(final float height, final Font defaultFont, final Paint defaultPaint)
   {
-    ItemBand band = new ItemBand();
+    final ItemBand band = new ItemBand();
     band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
     if (defaultFont != null)
     {
@@ -1718,9 +1718,9 @@ public class ItemFactory
    *
    * @return the ReportFooter
    */
-  public static Group createGroup(String name, List fields, GroupFooter footer, GroupHeader header)
+  public static Group createGroup(final String name, final List fields, final GroupFooter footer, final GroupHeader header)
   {
-    Group g = new Group();
+    final Group g = new Group();
     g.setName(name);
     if (fields != null)
     {
@@ -1754,19 +1754,19 @@ public class ItemFactory
    *
    * @return the created report.
    */
-  public static JFreeReport createReport(String name,
-                                         ReportHeader rheader,
-                                         ReportFooter rfooter,
-                                         PageHeader pheader,
-                                         PageFooter pfooter,
-                                         GroupList groups,
-                                         ItemBand items,
-                                         ExpressionCollection functions,
-                                         ExpressionCollection expressions,
-                                         PageFormat pageformat,
-                                         TableModel data)
+  public static JFreeReport createReport(final String name,
+                                         final ReportHeader rheader,
+                                         final ReportFooter rfooter,
+                                         final PageHeader pheader,
+                                         final PageFooter pfooter,
+                                         final GroupList groups,
+                                         final ItemBand items,
+                                         final ExpressionCollection functions,
+                                         final ExpressionCollection expressions,
+                                         final PageFormat pageformat,
+                                         final TableModel data)
   {
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.setName(name);
     if (rheader != null)
     {
@@ -1814,7 +1814,7 @@ public class ItemFactory
    * @param e  the element.
    * @param bounds  the bounds.
    */
-  public static void setElementBounds(Element e, Rectangle2D bounds)
+  public static void setElementBounds(final Element e, final Rectangle2D bounds)
   {
     e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS,
         new Point2D.Float((float) bounds.getX(), (float) bounds.getY()));
@@ -1838,22 +1838,22 @@ public class ItemFactory
    * @param resourceBase the classname/basename of the assigned resource bundle
    * @return the created ResourceElement
    */
-  public static TextElement createResourceElement(String name,
-                                                  Rectangle2D bounds,
-                                                  Color color,
-                                                  int alignment,
-                                                  int valignment,
-                                                  Font font,
-                                                  String nullValue,
-                                                  String resourceBase,
-                                                  String field)
+  public static TextElement createResourceElement(final String name,
+                                                  final Rectangle2D bounds,
+                                                  final Color color,
+                                                  final int alignment,
+                                                  final int valignment,
+                                                  final Font font,
+                                                  final String nullValue,
+                                                  final String resourceBase,
+                                                  final String field)
   {
-    ResourceFieldTemplate template = new ResourceFieldTemplate();
+    final ResourceFieldTemplate template = new ResourceFieldTemplate();
     template.setField(field);
     template.setNullValue(nullValue);
     template.setResourceClassName(resourceBase);
 
-    TextElement element = new TextElement();
+    final TextElement element = new TextElement();
     if (name != null)
     {
       element.setName(name);
@@ -1895,22 +1895,22 @@ public class ItemFactory
    * @param resourceBase the classname/basename of the assigned resource bundle
    * @return the created ResourceElement
    */
-  public static TextElement createResourceLabel(String name,
-                                                Rectangle2D bounds,
-                                                Color paint,
-                                                int alignment,
-                                                int valign,
-                                                Font font,
-                                                String nullValue,
-                                                String resourceBase,
-                                                String resourceKey)
+  public static TextElement createResourceLabel(final String name,
+                                                final Rectangle2D bounds,
+                                                final Color paint,
+                                                final int alignment,
+                                                final int valign,
+                                                final Font font,
+                                                final String nullValue,
+                                                final String resourceBase,
+                                                final String resourceKey)
   {
-    ResourceLabelTemplate template = new ResourceLabelTemplate();
+    final ResourceLabelTemplate template = new ResourceLabelTemplate();
     template.setResourceClassName(resourceBase);
     template.setContent(resourceKey);
     template.setNullValue(nullValue);
 
-    TextElement label = new TextElement();
+    final TextElement label = new TextElement();
     if (name != null)
     {
       label.setName(name);

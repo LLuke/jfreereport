@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PathIteratorSegmentObjectDescription.java,v 1.2 2003/05/14 22:26:38 taqua Exp $
+ * $Id: PathIteratorSegmentObjectDescription.java,v 1.3 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -100,8 +100,8 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    */
   public Object createObject()
   {
-    PathIteratorSegment seg = new PathIteratorSegment();
-    int segType = parseSegmentType((String) getParameter("segmentType"));
+    final PathIteratorSegment seg = new PathIteratorSegment();
+    final int segType = parseSegmentType((String) getParameter("segmentType"));
     if (segType == -1)
     {
       return null;
@@ -124,7 +124,7 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * @param segment the string that contains the PathIterator type.
    * @return the parsed PathIterator type or -1.
    */
-  private int parseSegmentType(String segment)
+  private int parseSegmentType(final String segment)
   {
     if (segment == null)
     {
@@ -161,7 +161,7 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * @throws IllegalArgumentException if the segment type is none of the
    * predefined PathIterator types.
    */
-  private String createSegmentType(int segment)
+  private String createSegmentType(final int segment)
     throws IllegalArgumentException
   {
     switch (segment)
@@ -188,9 +188,9 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * @param name the parameter name
    * @return the float value of the parameter or 0.
    */
-  private float getFloatParameter(String name)
+  private float getFloatParameter(final String name)
   {
-    Float o = (Float) getParameter(name);
+    final Float o = (Float) getParameter(name);
     if (o == null)
     {
       return 0;
@@ -206,7 +206,7 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    * @throws ObjectFactoryException if there is a problem while reading the
    * properties of the given object.
    */
-  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  public void setParameterFromObject(final Object o) throws ObjectFactoryException
   {
     if ((o instanceof PathIteratorSegment) == false)
     {
@@ -214,7 +214,7 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
           "The given object is no PathIteratorSegment.");
     }
 
-    PathIteratorSegment seg = (PathIteratorSegment) o;
+    final PathIteratorSegment seg = (PathIteratorSegment) o;
     setParameter("segmentType", createSegmentType(seg.getSegmentType()));
     setParameter("x1", String.valueOf(seg.getX1()));
     setParameter("x2", String.valueOf(seg.getX2()));

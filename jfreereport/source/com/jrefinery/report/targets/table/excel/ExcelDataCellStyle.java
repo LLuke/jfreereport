@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.8 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.9 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ public class ExcelDataCellStyle
    *
    * @param wrapText set to true, if wordwrapping is enabled, false otherwise.
    */
-  public void setWrapText(boolean wrapText)
+  public void setWrapText(final boolean wrapText)
   {
     this.wrapText = wrapText;
   }
@@ -115,7 +115,7 @@ public class ExcelDataCellStyle
    *
    * @param horizontalAlignment the horizontal alignment for the cell content.
    */
-  public void setHorizontalAlignment(ElementAlignment horizontalAlignment)
+  public void setHorizontalAlignment(final ElementAlignment horizontalAlignment)
   {
     this.horizontalAlignment = horizontalAlignment;
   }
@@ -135,7 +135,7 @@ public class ExcelDataCellStyle
    *
    * @param verticalAlignment the vertical alignment for the cell content.
    */
-  public void setVerticalAlignment(ElementAlignment verticalAlignment)
+  public void setVerticalAlignment(final ElementAlignment verticalAlignment)
   {
     this.verticalAlignment = verticalAlignment;
   }
@@ -155,7 +155,7 @@ public class ExcelDataCellStyle
    *
    * @param fontDefinition the font definition for the text in the cell.
    */
-  public void setFontDefinition(FontDefinition fontDefinition)
+  public void setFontDefinition(final FontDefinition fontDefinition)
   {
     this.fontDefinition = fontDefinition;
   }
@@ -175,7 +175,7 @@ public class ExcelDataCellStyle
    *
    * @param textColor the text color.
    */
-  public void setTextColor(Color textColor)
+  public void setTextColor(final Color textColor)
   {
     this.textColor = textColor;
   }
@@ -195,7 +195,7 @@ public class ExcelDataCellStyle
    *
    * @param dataStyle the cell data style.
    */
-  public void setDataStyle(String dataStyle)
+  public void setDataStyle(final String dataStyle)
   {
     this.dataStyle = dataStyle;
   }
@@ -207,7 +207,7 @@ public class ExcelDataCellStyle
    * @return  <code>true</code> if this object is the same as the obj
    *          argument; <code>false</code> otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

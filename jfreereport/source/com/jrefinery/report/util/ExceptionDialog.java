@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExceptionDialog.java,v 1.15 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.16 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class ExceptionDialog extends JDialog
      *
      * @param event  the action event.
      */
-    public void actionPerformed(ActionEvent event)
+    public void actionPerformed(final ActionEvent event)
     {
       setVisible(false);
     }
@@ -106,7 +106,7 @@ public class ExceptionDialog extends JDialog
      *
      * @param event  the action event.
      */
-    public void actionPerformed(ActionEvent event)
+    public void actionPerformed(final ActionEvent event)
     {
       scroller.setVisible(!(scroller.isVisible()));
       if (scroller.isVisible())
@@ -157,7 +157,7 @@ public class ExceptionDialog extends JDialog
     scroller = new JScrollPane(backtraceArea);
     scroller.setVisible(false);
 
-    JPanel detailPane = new JPanel();
+    final JPanel detailPane = new JPanel();
     detailPane.setLayout(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.CENTER;
@@ -166,7 +166,7 @@ public class ExceptionDialog extends JDialog
     gbc.weighty = 0;
     gbc.gridx = 0;
     gbc.gridy = 0;
-    JLabel icon = new JLabel(UIManager.getDefaults().getIcon("OptionPane.errorIcon"));
+    final JLabel icon = new JLabel(UIManager.getDefaults().getIcon("OptionPane.errorIcon"));
     icon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     detailPane.add(icon, gbc);
 
@@ -220,8 +220,8 @@ public class ExceptionDialog extends JDialog
    */
   public void adjustSize()
   {
-    Dimension scSize = scroller.getPreferredSize();
-    Dimension cbase = filler.getPreferredSize();
+    final Dimension scSize = scroller.getPreferredSize();
+    final Dimension cbase = filler.getPreferredSize();
     cbase.width = Math.max(scSize.width, cbase.width);
     cbase.height = 0;
     filler.setMinimumSize(cbase);
@@ -236,14 +236,14 @@ public class ExceptionDialog extends JDialog
    */
   private JPanel createButtonPane()
   {
-    JPanel buttonPane = new JPanel();
+    final JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(2));
     buttonPane.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     okAction = new OKAction();
     detailsAction = new DetailsAction();
 
-    JButton ok = new ActionButton(okAction);
-    JButton details = new ActionButton(detailsAction);
+    final JButton ok = new ActionButton(okAction);
+    final JButton details = new ActionButton(detailsAction);
 
     FloatingButtonEnabler.getInstance().addButton(ok);
     FloatingButtonEnabler.getInstance().addButton(details);
@@ -258,7 +258,7 @@ public class ExceptionDialog extends JDialog
    *
    * @param mesg  the message.
    */
-  public void setMessage(String mesg)
+  public void setMessage(final String mesg)
   {
     messageLabel.setText(mesg);
   }
@@ -280,7 +280,7 @@ public class ExceptionDialog extends JDialog
    *
    * @param e  the exception.
    */
-  public void setException(Exception e)
+  public void setException(final Exception e)
   {
     currentEx = e;
     if (e == null)
@@ -301,13 +301,13 @@ public class ExceptionDialog extends JDialog
    *
    * @return the stack trace.
    */
-  private String readFromException(Exception e)
+  private String readFromException(final Exception e)
   {
     String text = "No backtrace available";
     try
     {
-      StringWriter writer = new StringWriter();
-      PrintWriter pwriter = new PrintWriter(writer);
+      final StringWriter writer = new StringWriter();
+      final PrintWriter pwriter = new PrintWriter(writer);
       e.printStackTrace(pwriter);
       text = writer.toString();
       writer.close();
@@ -337,7 +337,7 @@ public class ExceptionDialog extends JDialog
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void showExceptionDialog(String title, String message, Exception e)
+  public static void showExceptionDialog(final String title, final String message, final Exception e)
   {
     if (defaultDialog == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LengthLimitingDocument.java,v 1.4 2003/02/26 13:58:04 mungady Exp $
+ * $Id: LengthLimitingDocument.java,v 1.5 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class LengthLimitingDocument extends PlainDocument
    *
    * @param maxlen the maximum number of elements in this document
    */
-  public LengthLimitingDocument(int maxlen)
+  public LengthLimitingDocument(final int maxlen)
   {
     super();
     this.maxlen = maxlen;
@@ -79,7 +79,7 @@ public class LengthLimitingDocument extends PlainDocument
    *
    * @param maxlen the maximum number of characters in this document.
    */
-  public void setMaxLength(int maxlen)
+  public void setMaxLength(final int maxlen)
   {
     this.maxlen = maxlen;
   }
@@ -102,7 +102,7 @@ public class LengthLimitingDocument extends PlainDocument
    * @param a the attribute set assigned for the document
    * @throws BadLocationException if the offset is not correct
    */
-  public void insertString(int offs, String str, AttributeSet a)
+  public void insertString(final int offs, final String str, final AttributeSet a)
       throws BadLocationException
   {
     if (str == null)
@@ -115,8 +115,8 @@ public class LengthLimitingDocument extends PlainDocument
       super.insertString(offs, str, a);
     }
 
-    char[] numeric = str.toCharArray();
-    StringBuffer b = new StringBuffer();
+    final char[] numeric = str.toCharArray();
+    final StringBuffer b = new StringBuffer();
     b.append(numeric, 0, Math.min(maxlen, numeric.length));
     super.insertString(offs, b.toString(), a);
   }

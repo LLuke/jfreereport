@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.39 2003/06/13 16:21:37 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.40 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   {
     if (dummyGraphics == null)
     {
-      BufferedImage image = new BufferedImage(BufferedImage.TYPE_INT_ARGB, 1, 1);
+      final BufferedImage image = new BufferedImage(BufferedImage.TYPE_INT_ARGB, 1, 1);
       dummyGraphics = image.createGraphics();
       applyStandardRenderingHints(dummyGraphics);
     }
@@ -126,7 +126,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param g2 the graphics2D object that should be configured
    */
-  private static void applyStandardRenderingHints(Graphics2D g2)
+  private static void applyStandardRenderingHints(final Graphics2D g2)
   {
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
         RenderingHints.VALUE_FRACTIONALMETRICS_ON);
@@ -173,7 +173,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param s  the graphics device.
      */
-    private G2State(G2OutputTarget s)
+    private G2State(final G2OutputTarget s)
     {
       save(s);
     }
@@ -183,7 +183,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param source  the Graphics2D.
      */
-    private void save(G2OutputTarget source)
+    private void save(final G2OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -199,7 +199,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      * @param target  the Graphics2D.
      * @throws OutputTargetException if restoring the state failes.
      */
-    private void restore(G2OutputTarget target)
+    private void restore(final G2OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
@@ -217,7 +217,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param page  the logical page.
    * @param graphics  the graphics device.
    */
-  public G2OutputTarget(LogicalPage page, Graphics2D graphics)
+  public G2OutputTarget(final LogicalPage page, final Graphics2D graphics)
   {
     super(page);
     setGraphics2D(graphics);
@@ -230,7 +230,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param physPageFormat  the page format for the physical page used to print the report.
    * @param logPageFormat  the page format for the logical page used to layout the report.
    */
-  public G2OutputTarget(Graphics2D g2, PageFormat physPageFormat, PageFormat logPageFormat)
+  public G2OutputTarget(final Graphics2D g2, final PageFormat physPageFormat, final PageFormat logPageFormat)
   {
     super(physPageFormat, logPageFormat);
     setGraphics2D(g2);
@@ -242,7 +242,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param g2  the graphics device.
    * @param pageFormat  the page format.
    */
-  public G2OutputTarget(Graphics2D g2, PageFormat pageFormat)
+  public G2OutputTarget(final Graphics2D g2, final PageFormat pageFormat)
   {
     this(g2, pageFormat, pageFormat);
   }
@@ -252,7 +252,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param g2  the graphics device (null not permitted).
    */
-  private void setGraphics2D(Graphics2D g2)
+  private void setGraphics2D(final Graphics2D g2)
   {
     if (g2 == null)
     {
@@ -300,12 +300,12 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param page  the physical page.
    */
-  public void beginPage(PhysicalPage page)
+  public void beginPage(final PhysicalPage page)
   {
     this.currentPage = page;
-    Rectangle2D pageBounds = currentPage.getBounds();
-    PageFormat currentPageFormat = page.getPageFormat();
-    Rectangle2D bounds = new Rectangle2D.Float((float) currentPageFormat.getImageableX(),
+    final Rectangle2D pageBounds = currentPage.getBounds();
+    final PageFormat currentPageFormat = page.getPageFormat();
+    final Rectangle2D bounds = new Rectangle2D.Float((float) currentPageFormat.getImageableX(),
         (float) currentPageFormat.getImageableY(),
         (float) currentPageFormat.getImageableWidth() + 1,
         (float) currentPageFormat.getImageableHeight() + 1);
@@ -323,8 +323,8 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public void endPage() throws OutputTargetException
   {
-    PageFormat currentPageFormat = currentPage.getPageFormat();
-    Rectangle2D pageBounds = currentPage.getBounds();
+    final PageFormat currentPageFormat = currentPage.getPageFormat();
+    final Rectangle2D pageBounds = currentPage.getBounds();
     g2.setClip(originalClip);
     g2.transform(AffineTransform.getTranslateInstance(0 - currentPageFormat.getImageableX()
         - pageBounds.getX(),
@@ -338,7 +338,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param font  the font.
    */
-  public void setFont(FontDefinition font)
+  public void setFont(final FontDefinition font)
   {
     if (font == null)
     {
@@ -363,7 +363,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param paint The paint.
    */
-  public void setPaint(Paint paint)
+  public void setPaint(final Paint paint)
   {
     g2.setPaint(paint);
   }
@@ -395,7 +395,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException this exception is not thrown here.
    */
-  public void setStroke(Stroke stroke) throws OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     g2.setStroke(stroke);
   }
@@ -407,7 +407,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param shape The shape.
    */
-  public void drawShape(Shape shape)
+  public void drawShape(final Shape shape)
   {
     g2.draw(shape);
   }
@@ -419,7 +419,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param shape The shape.
    */
-  public void fillShape(Shape shape)
+  public void fillShape(final Shape shape)
   {
     g2.fill(shape);
   }
@@ -429,16 +429,16 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param image the image reference used to contain the image.
    */
-  public void drawImage(ImageReference image)
+  public void drawImage(final ImageReference image)
   {
-    Rectangle2D myBounds = image.getBoundsScaled();
-    Rectangle2D bounds = getOperationBounds();
+    final Rectangle2D myBounds = image.getBoundsScaled();
+    final Rectangle2D bounds = getOperationBounds();
 
     if (image.getImage() != null)
     {
       //Log.debug ("Drawing image from Reference!");
-      Shape s = g2.getClip();
-      AffineTransform transform = g2.getTransform();
+      final Shape s = g2.getClip();
+      final AffineTransform transform = g2.getTransform();
       try
       {
         g2.clip(
@@ -450,7 +450,7 @@ public class G2OutputTarget extends AbstractOutputTarget
         while (g2.drawImage(image.getImage(),
             (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
         {
-          WaitingImageObserver obs = new WaitingImageObserver(image.getImage());
+          final WaitingImageObserver obs = new WaitingImageObserver(image.getImage());
           obs.waitImageLoaded();
           if (obs.isError())
           {
@@ -480,7 +480,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param text The text.
    */
-  public void drawString(String text)
+  public void drawString(final String text)
   {
     // Draw the string on the given location. The fontmetrics is not correct for
     // the fonts I tested ("Arial 10 Plain -> FM.height = 13, Ascent = 10, Descent = 2"
@@ -490,23 +490,23 @@ public class G2OutputTarget extends AbstractOutputTarget
     // I don't trust java, and iText reads the font descriptor from the files, so I
     // correct the AWT-fontMetrics. This correction is not 100% perfect, but it is
     // perfect enough for printing ...
-    FontMetrics fm = g2.getFontMetrics();
-    float baseline = (float) fm.getAscent();
-    float cFact = getFont().getFont().getSize2D() / fm.getHeight();
+    final FontMetrics fm = g2.getFontMetrics();
+    final float baseline = (float) fm.getAscent();
+    final float cFact = getFont().getFont().getSize2D() / fm.getHeight();
 
-    float correctedBaseline = baseline * cFact;
+    final float correctedBaseline = baseline * cFact;
     g2.drawString(text, 0.0f, correctedBaseline);
 
     if (getFont().isUnderline())
     {
-      float l = (getFont().getFont().getSize2D() + correctedBaseline) / 2.0f;
-      Line2D line = new Line2D.Float(0, l, (float) getOperationBounds().getWidth(), l);
+      final float l = (getFont().getFont().getSize2D() + correctedBaseline) / 2.0f;
+      final Line2D line = new Line2D.Float(0, l, (float) getOperationBounds().getWidth(), l);
       g2.draw(line);
     }
     if (getFont().isStrikeThrough())
     {
-      float l = getFont().getFont().getSize2D();
-      Line2D line = new Line2D.Float(0, l / 2, (float) getOperationBounds().getWidth(), l / 2);
+      final float l = getFont().getFont().getSize2D();
+      final Line2D line = new Line2D.Float(0, l / 2, (float) getOperationBounds().getWidth(), l / 2);
       g2.draw(line);
     }
   }
@@ -552,7 +552,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param config  the configuration.
    */
-  public void configure(ReportConfiguration config)
+  public void configure(final ReportConfiguration config)
   {
     // nothing to do here, G2OuputTarget is not configured in any way.
   }
@@ -565,7 +565,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the size calculator.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font)
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
   {
     return DefaultSizeCalculator.getDefaultSizeCalculator(font);
   }
@@ -575,9 +575,9 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param bounds  the bounds.
    */
-  public void setOperationBounds(Rectangle2D bounds)
+  public void setOperationBounds(final Rectangle2D bounds)
   {
-    Rectangle2D oldBounds = super.getOperationBounds();
+    final Rectangle2D oldBounds = super.getOperationBounds();
     // undo the last bounds operation
     g2.transform(AffineTransform.getTranslateInstance(0 - oldBounds.getX(), 0 - oldBounds.getY()));
     super.setOperationBounds(bounds);
@@ -590,7 +590,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(DrawableContainer drawable)
+  public void drawDrawable(final DrawableContainer drawable)
   {
 
     // only the drawable clippingbounds region will be drawn.
@@ -599,16 +599,16 @@ public class G2OutputTarget extends AbstractOutputTarget
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
 
-    Rectangle2D clipBounds = drawable.getClippingBounds();
+    final Rectangle2D clipBounds = drawable.getClippingBounds();
 
-    Graphics2D target = (Graphics2D) g2.create();
+    final Graphics2D target = (Graphics2D) g2.create();
     target.translate(-clipBounds.getX(), -clipBounds.getY());
     target.clip(new Rectangle2D.Float(0, 0,
         (float) clipBounds.getWidth(),
         (float) clipBounds.getHeight()));
 
-    Dimension2D drawableSize = drawable.getDrawableSize();
-    Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
+    final Dimension2D drawableSize = drawable.getDrawableSize();
+    final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
         (float) drawableSize.getWidth(),
         (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);

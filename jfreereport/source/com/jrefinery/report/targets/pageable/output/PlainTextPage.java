@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.15 2003/06/27 14:25:24 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.16 2003/06/27 18:46:25 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,7 @@ public class PlainTextPage
      * @param y the row of the text
      * @param w the number of characters of the text that should be printed.
      */
-    protected TextDataChunk(String text, FontDefinition font, int x, int y, int w)
+    protected TextDataChunk(final String text, final FontDefinition font, final int x, final int y, final int w)
     {
       this.text = text;
       this.font = font;
@@ -162,7 +162,7 @@ public class PlainTextPage
    * @param encoding the document encoding for this page.
    * @param commandSet the commandset for printing and formating the text.
    */
-  public PlainTextPage(int w, int h, PrinterCommandSet commandSet, String encoding)
+  public PlainTextPage(final int w, final int h, final PrinterCommandSet commandSet, final String encoding)
   {
     if (w <= 0)
     {
@@ -211,7 +211,7 @@ public class PlainTextPage
    * @param text the text that should be printed.
    * @param format the fontdefinition used to format the text.
    */
-  public void addTextChunk(int x, int y, int w, String text, FontDefinition format)
+  public void addTextChunk(final int x, final int y, final int w, final String text, final FontDefinition format)
   {
     if (x < 0)
     {
@@ -234,7 +234,7 @@ public class PlainTextPage
       throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
     }
 
-    TextDataChunk chunk = new TextDataChunk(text, format, x, y, w);
+    final TextDataChunk chunk = new TextDataChunk(text, format, x, y, w);
     for (int i = 0; i < w; i++)
     {
       if (pageBuffer[x + i][y] == null)
@@ -252,7 +252,7 @@ public class PlainTextPage
    * @param y the line
    * @return the text chunk or null.
    */
-  private TextDataChunk getChunk(int x, int y)
+  private TextDataChunk getChunk(final int x, final int y)
   {
     return pageBuffer[x][y];
   }
@@ -273,7 +273,7 @@ public class PlainTextPage
       commandSet.startLine();
       for (int x = 0; x < width; x++)
       {
-        TextDataChunk chunk = getChunk(x, y);
+        final TextDataChunk chunk = getChunk(x, y);
         if (chunk == null)
         {
           commandSet.printEmptyChunk();

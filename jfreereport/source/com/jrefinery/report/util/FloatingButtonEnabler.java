@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatingButtonEnabler.java,v 1.11 2003/05/14 22:26:40 taqua Exp $
+ * $Id: FloatingButtonEnabler.java,v 1.12 2003/06/27 14:25:25 taqua Exp $
  *
  */
 package com.jrefinery.report.util;
@@ -74,7 +74,7 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param button  the button.
    */
-  public void addButton(AbstractButton button)
+  public void addButton(final AbstractButton button)
   {
     button.addMouseListener(this);
     button.setBorderPainted(false);
@@ -85,7 +85,7 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param button  the button.
    */
-  public void removeButton(AbstractButton button)
+  public void removeButton(final AbstractButton button)
   {
     button.addMouseListener(this);
     button.setBorderPainted(true);
@@ -96,11 +96,11 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param e  the mouse event.
    */
-  public void mouseEntered(MouseEvent e)
+  public void mouseEntered(final MouseEvent e)
   {
     if (e.getSource() instanceof AbstractButton)
     {
-      AbstractButton button = (AbstractButton) e.getSource();
+      final AbstractButton button = (AbstractButton) e.getSource();
       if (button.isEnabled())
       {
         button.setBorderPainted(true);
@@ -113,11 +113,11 @@ public class FloatingButtonEnabler extends MouseAdapter
    *
    * @param e  the mouse event.
    */
-  public void mouseExited(MouseEvent e)
+  public void mouseExited(final MouseEvent e)
   {
     if (e.getSource() instanceof AbstractButton)
     {
-      AbstractButton button = (AbstractButton) e.getSource();
+      final AbstractButton button = (AbstractButton) e.getSource();
       button.setBorderPainted(false);
     }
   }

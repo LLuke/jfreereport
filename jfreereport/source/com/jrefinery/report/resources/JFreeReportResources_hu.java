@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  *
  *
- * $Id: JFreeReportResources_hu.java,v 1.1 2003/05/16 13:24:42 taqua Exp $
+ * $Id: JFreeReportResources_hu.java,v 1.2 2003/06/27 14:25:22 taqua Exp $
  *
  *
  */
@@ -344,7 +344,7 @@ public class JFreeReportResources_hu extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     ResourceCompareTool.main(new String[]{"hu"});
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.15 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public FunctionsHandler(Parser parser, String finishTag)
+  public FunctionsHandler(final Parser parser, final String finishTag)
   {
     this.parser = parser;
     this.finishTag = finishTag;
@@ -106,46 +106,46 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(EXPRESSION_TAG))
     {
-      String className = attrs.getValue("class");
+      final String className = attrs.getValue("class");
       if (className == null)
       {
         throw new ParseException("The attribute 'class' is missing for expression",
             getParser().getLocator());
       }
-      String expName = attrs.getValue("name");
+      final String expName = attrs.getValue("name");
       if (expName == null)
       {
         throw new ParseException("The attribute 'name' is missing for expression",
             getParser().getLocator());
       }
-      int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
+      final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
-      Expression e = loadExpression(className, expName, depLevel);
+      final Expression e = loadExpression(className, expName, depLevel);
       expressionHandler = new ExpressionHandler(getParser(), tagName, e);
       getParser().pushFactory(expressionHandler);
     }
     else if (tagName.equals(FUNCTION_TAG))
     {
-      String className = attrs.getValue("class");
+      final String className = attrs.getValue("class");
       if (className == null)
       {
         throw new ParseException("The attribute 'class' is missing for function",
             getParser().getLocator());
       }
-      String expName = attrs.getValue("name");
+      final String expName = attrs.getValue("name");
       if (expName == null)
       {
         throw new ParseException("The attribute 'name' is missing for function",
             getParser().getLocator());
       }
-      int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
+      final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
-      Expression e = loadExpression(className, expName, depLevel);
+      final Expression e = loadExpression(className, expName, depLevel);
       expressionHandler = new ExpressionHandler(getParser(), tagName, e);
       getParser().pushFactory(expressionHandler);
     }
@@ -163,7 +163,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
         throw new ParseException("The attribute 'name' is missing for the property-ref",
             getParser().getLocator());
       }
-      ObjectDescription od = loadObjectDescription(className);
+      final ObjectDescription od = loadObjectDescription(className);
       if (isBasicObject(od))
       {
         propertyRefHandler = new BasicObjectHandler(getParser(), tagName, od);
@@ -194,13 +194,13 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private ObjectDescription loadObjectDescription(String className)
+  private ObjectDescription loadObjectDescription(final String className)
       throws SAXException
   {
     try
     {
-      Class propertyClass = getClass().getClassLoader().loadClass(className);
-      ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getHelperObject(
+      final Class propertyClass = getClass().getClassLoader().loadClass(className);
+      final ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getHelperObject(
           ParserConfigHandler.OBJECT_FACTORY_TAG);
       ObjectDescription retval = fc.getDescriptionForClass(propertyClass);
       if (retval == null)
@@ -226,13 +226,13 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private Expression loadExpression(String className, String expName, int depLevel)
+  private Expression loadExpression(final String className, final String expName, final int depLevel)
       throws SAXException
   {
     try
     {
-      Class fnC = getClass().getClassLoader().loadClass(className);
-      Expression retVal = (Expression) fnC.newInstance();
+      final Class fnC = getClass().getClassLoader().loadClass(className);
+      final Expression retVal = (Expression) fnC.newInstance();
       retVal.setName(expName);
       retVal.setDependencyLevel(depLevel);
       return retVal;
@@ -261,7 +261,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // ignore ..
   }
@@ -273,7 +273,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName)
+  public void endElement(final String tagName)
       throws SAXException
   {
     if (tagName.equals(EXPRESSION_TAG))
@@ -305,7 +305,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
     else if (tagName.equals(PROPERTY_REF_TAG))
     {
       getReport().setPropertyMarked(propertyName, true);
-      Object value = propertyRefHandler.getValue();
+      final Object value = propertyRefHandler.getValue();
       if ("".equals(value) == false)
       {
         getReport().setProperty(propertyName, propertyRefHandler.getValue());
@@ -353,14 +353,14 @@ public class FunctionsHandler implements ElementDefinitionHandler
    *
    * @return A boolean.
    */
-  private boolean isBasicObject(ObjectDescription od)
+  private boolean isBasicObject(final ObjectDescription od)
   {
-    Iterator odNames = od.getParameterNames();
+    final Iterator odNames = od.getParameterNames();
     if (odNames.hasNext() == false)
     {
       return false;
     }
-    String param = (String) odNames.next();
+    final String param = (String) odNames.next();
     if (odNames.hasNext() == true)
     {
       return false;

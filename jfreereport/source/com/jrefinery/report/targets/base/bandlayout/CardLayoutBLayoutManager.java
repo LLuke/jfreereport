@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.7 2003/05/02 12:40:30 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.8 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -78,16 +78,16 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerDims)
+  public Dimension2D minimumLayoutSize(final Band b, final Dimension2D containerDims)
   {
-    ElementLayoutInformation eli = createLayoutInformationForMinimumSize(b, containerDims);
+    final ElementLayoutInformation eli = createLayoutInformationForMinimumSize(b, containerDims);
 
-    Element[] elements = b.getElementArray();
-    Dimension2D retval = (Dimension2D) eli.getMinimumSize().clone();
+    final Element[] elements = b.getElementArray();
+    final Dimension2D retval = (Dimension2D) eli.getMinimumSize().clone();
 
     for (int i = 0; i < elements.length; i++)
     {
-      Element e = elements[i];
+      final Element e = elements[i];
       unionMax(retval, getMinimumSize(e, containerDims));
     }
     return ElementLayoutInformation.unionMin(eli.getMaximumSize(), retval);
@@ -101,20 +101,20 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims)
+  public Dimension2D preferredLayoutSize(final Band b, final Dimension2D containerDims)
   {
-    ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
+    final ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
     if (eli.getPreferredSize() != null)
     {
       return eli.getPreferredSize();
     }
 
-    Element[] elements = b.getElementArray();
-    Dimension2D retval = (Dimension2D) eli.getMinimumSize().clone();
+    final Element[] elements = b.getElementArray();
+    final Dimension2D retval = (Dimension2D) eli.getMinimumSize().clone();
 
     for (int i = 0; i < elements.length; i++)
     {
-      Element e = elements[i];
+      final Element e = elements[i];
       unionMax(retval, getPreferredSize(e, containerDims));
     }
     return ElementLayoutInformation.unionMin(eli.getMaximumSize(), retval);
@@ -127,7 +127,7 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    * @param retval  the first dimension (and return value carrier).
    * @param elementDim  the second dimension.
    */
-  private void unionMax(Dimension2D retval, Dimension2D elementDim)
+  private void unionMax(final Dimension2D retval, final Dimension2D elementDim)
   {
     retval.setSize(Math.max(elementDim.getWidth(), retval.getWidth()),
         Math.max(elementDim.getHeight(), retval.getHeight()));
@@ -138,38 +138,38 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    */
-  public void doLayout(Band b)
+  public void doLayout(final Band b)
   {
-    Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
+    final Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
     if (parentBounds == null)
     {
       throw new IllegalStateException("Need the parent's bound set");
     }
 
-    Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
+    final Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
         (float) parentBounds.getHeight());
 
-    Dimension2D dim = preferredLayoutSize(b, parentDim);
-    Element[] elements = b.getElementArray();
-    LayoutSupport layoutSupport = getLayoutSupport();
+    final Dimension2D dim = preferredLayoutSize(b, parentDim);
+    final Element[] elements = b.getElementArray();
+    final LayoutSupport layoutSupport = getLayoutSupport();
     dim.setSize(align((float) dim.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
         align((float) dim.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
 
     for (int i = 0; i < elements.length; i++)
     {
-      Element e = elements[i];
+      final Element e = elements[i];
       if (e.isVisible() == false)
       {
         continue;
       }
 
       // here apply the bounds ...
-      Rectangle2D bounds
+      final Rectangle2D bounds
           = new Rectangle2D.Float(0, 0, (float) dim.getWidth(), (float) dim.getHeight());
       BandLayoutManagerUtil.setBounds(e, bounds);
       if (e instanceof Band)
       {
-        BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
+        final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
         lm.doLayout((Band) e);
       }
     }
@@ -180,7 +180,7 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @param container  the container band.
    */
-  public void invalidateLayout(Band container)
+  public void invalidateLayout(final Band container)
   {
   }
 }

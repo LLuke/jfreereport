@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.10 2003/06/19 18:44:10 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.11 2003/06/27 14:25:21 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public AbstractReportDefinitionHandler(Parser parser, String finishTag)
+  public AbstractReportDefinitionHandler(final Parser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -118,7 +118,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    */
   public URL getContentBase()
   {
-    String contentBase = getParser().getConfigProperty(Parser.CONTENTBASE_KEY);
+    final String contentBase = getParser().getConfigProperty(Parser.CONTENTBASE_KEY);
     if (contentBase == null)
     {
       throw new IllegalStateException("Content Base is null.");
@@ -169,7 +169,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    *
    * @throws SAXException if there is a parsing problem.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
 
   }

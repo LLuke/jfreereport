@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.12 2003/06/10 16:07:51 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.13 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -67,7 +67,7 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    *
    * @param factory  the factory.
    */
-  public void addFactory(StyleKeyFactory factory)
+  public void addFactory(final StyleKeyFactory factory)
   {
     factories.add(factory);
   }
@@ -89,12 +89,12 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    *
    * @return The style key.
    */
-  public StyleKey getStyleKey(String name)
+  public StyleKey getStyleKey(final String name)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      StyleKeyFactory fact = (StyleKeyFactory) factories.get(i);
-      StyleKey o = fact.getStyleKey(name);
+      final StyleKeyFactory fact = (StyleKeyFactory) factories.get(i);
+      final StyleKey o = fact.getStyleKey(name);
       if (o != null)
       {
         return o;
@@ -113,12 +113,12 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    *
    * @return The object.
    */
-  public Object createBasicObject(StyleKey k, String value, Class c, ClassFactory cf)
+  public Object createBasicObject(final StyleKey k, final String value, final Class c, final ClassFactory cf)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      StyleKeyFactory fact = (StyleKeyFactory) factories.get(i);
-      Object o = fact.createBasicObject(k, value, c, cf);
+      final StyleKeyFactory fact = (StyleKeyFactory) factories.get(i);
+      final Object o = fact.createBasicObject(k, value, c, cf);
       if (o != null)
       {
         return o;
@@ -134,11 +134,11 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    */
   public Iterator getRegisteredKeys()
   {
-    ArrayList list = new ArrayList();
+    final ArrayList list = new ArrayList();
     for (int i = 0; i < factories.size(); i++)
     {
-      StyleKeyFactory f = (StyleKeyFactory) factories.get(i);
-      Iterator enum = f.getRegisteredKeys();
+      final StyleKeyFactory f = (StyleKeyFactory) factories.get(i);
+      final Iterator enum = f.getRegisteredKeys();
       while (enum.hasNext())
       {
         list.add(enum.next());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.17 2003/06/26 19:55:57 taqua Exp $
+ * $Id: TableProcessor.java,v 1.18 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public abstract class TableProcessor
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public TableProcessor(JFreeReport report)
+  public TableProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null)
@@ -146,7 +146,7 @@ public abstract class TableProcessor
    * @see TableGrid#isStrict
    * @param strictLayout true, if a stricter layouting algorithm should be used, false otherwise.
    */
-  public void setStrictLayout(boolean strictLayout)
+  public void setStrictLayout(final boolean strictLayout)
   {
     this.strictLayout = strictLayout;
   }
@@ -175,7 +175,7 @@ public abstract class TableProcessor
     // apply the configuration ...
     configure();
 
-    StartState startState = new StartState(getReport());
+    final StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
 
@@ -196,19 +196,19 @@ public abstract class TableProcessor
     // The pageformat will cause trouble in later versions, when printing over
     // multiple pages gets implemented. This property will be replaced by a more
     // suitable alternative.
-    PageFormat p = report.getDefaultPageFormat();
+    final PageFormat p = report.getDefaultPageFormat();
     state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.
-    TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+    final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
     w.setProducer(createProducer(true));
     w.getProducer().configure(getProperties());
 
     // now process all function levels.
     // there is at least one level defined, as we added the CSVWriter
     // to the report.
-    Iterator it = startState.getLevels();
+    final Iterator it = startState.getLevels();
     if (it.hasNext() == false)
     {
       throw new IllegalStateException("No functions defined, invalid implementation.");
@@ -230,7 +230,7 @@ public abstract class TableProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      boolean failOnError
+      final boolean failOnError
           = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
@@ -283,7 +283,7 @@ public abstract class TableProcessor
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // finally prepeare the returned start state.
-    StartState sretval = (StartState) retval;
+    final StartState sretval = (StartState) retval;
     if (sretval == null)
     {
       throw new IllegalStateException("There was no valid pagination done.");
@@ -305,13 +305,13 @@ public abstract class TableProcessor
     {
       ReportState state = repaginate();
 
-      TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+      final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
       w.setProducer(createProducer(false));
       w.getProducer().configure(getProperties());
 
       w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
 
-      boolean failOnError =
+      final boolean failOnError =
           getReport().getReportConfiguration().isStrictErrorHandling();
       ReportStateProgress progress = null;
       while (!state.isFinish())
@@ -353,7 +353,7 @@ public abstract class TableProcessor
    * @param value  the value of the property.  If the value is <code>null</code>, the property is
    * removed from the output target.
    */
-  public void setProperty(String property, Object value)
+  public void setProperty(final String property, final Object value)
   {
     if (property == null)
     {
@@ -380,7 +380,7 @@ public abstract class TableProcessor
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null
    */
-  public Object getProperty(String property)
+  public Object getProperty(final String property)
   {
     return getProperty(property, null);
   }
@@ -396,14 +396,14 @@ public abstract class TableProcessor
    *
    * @throws NullPointerException if <code>property</code> is null
    */
-  public Object getProperty(String property, Object defaultValue)
+  public Object getProperty(final String property, final Object defaultValue)
   {
     if (property == null)
     {
       throw new NullPointerException();
     }
 
-    Object retval = properties.get(property);
+    final Object retval = properties.get(property);
     if (retval == null)
     {
       return defaultValue;
@@ -445,23 +445,23 @@ public abstract class TableProcessor
    */
   protected void configure()
   {
-    ReportConfiguration rc = getReport().getReportConfiguration();
-    Enumeration enum = rc.getConfigProperties();
-    String prefix = getReportConfigurationPrefix();
+    final ReportConfiguration rc = getReport().getReportConfiguration();
+    final Enumeration enum = rc.getConfigProperties();
+    final String prefix = getReportConfigurationPrefix();
 
     while (enum.hasMoreElements())
     {
-      String key = (String) enum.nextElement();
+      final String key = (String) enum.nextElement();
       if (key.startsWith(prefix) == false)
       {
         continue;
       }
-      String propKey = key.substring(prefix.length());
+      final String propKey = key.substring(prefix.length());
       if (getProperties().containsKey(propKey))
       {
         continue;
       }
-      Object value = rc.getConfigProperty(key);
+      final Object value = rc.getConfigProperty(key);
       setProperty(propKey, value);
     }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.5 2003/03/07 16:55:55 taqua Exp $
+ * $Id: StringFieldTemplate.java,v 1.6 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -81,7 +81,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @param field  the field name.
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -101,7 +101,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @param nullValue  the value that represents <code>null</code>.
    */
-  public void setNullValue(String nullValue)
+  public void setNullValue(final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -125,7 +125,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
    */
   public Object clone() throws CloneNotSupportedException
   {
-    StringFieldTemplate template = (StringFieldTemplate) super.clone();
+    final StringFieldTemplate template = (StringFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
     template.dataRowDataSource = (DataRowDataSource) template.stringFilter.getDataSource();
     return template;
@@ -138,7 +138,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.connectDataRow(row);
   }
@@ -153,7 +153,7 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.disconnectDataRow(row);
   }

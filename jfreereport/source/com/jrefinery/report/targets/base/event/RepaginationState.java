@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RepaginationState.java,v 1.2 2003/04/09 15:50:33 mungady Exp $
+ * $Id: RepaginationState.java,v 1.3 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class RepaginationState
    * @param currentRow  the current row.
    * @param maxRow  the maximum row.
    */
-  public RepaginationState(int pass, int page, int currentRow, int maxRow)
+  public RepaginationState(final int pass, final int page, final int currentRow, final int maxRow)
   {
     this.pass = pass;
     this.page = page;

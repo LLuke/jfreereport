@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RightAlignment.java,v 1.11 2003/05/11 13:39:18 taqua Exp $
+ * $Id: RightAlignment.java,v 1.12 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class RightAlignment extends HorizontalBoundsAlignment
    *
    * @param bounds  the reference bounds.
    */
-  public RightAlignment(Rectangle2D bounds)
+  public RightAlignment(final Rectangle2D bounds)
   {
     super(bounds);
   }
@@ -72,11 +72,11 @@ public class RightAlignment extends HorizontalBoundsAlignment
       throw new NullPointerException("Rect must not be null");
     }
     rect = getReferenceBounds().createIntersection(rect);
-    float x = (float) (getReferenceBounds().getX() +
+    final float x = (float) (getReferenceBounds().getX() +
         getReferenceBounds().getWidth() - rect.getWidth());
-    float y = (float) rect.getY();
-    float w = (float) rect.getWidth();
-    float h = (float) rect.getHeight();
+    final float y = (float) rect.getY();
+    final float w = (float) rect.getWidth();
+    final float h = (float) rect.getHeight();
     rect.setRect(x, y, w, h);
     return rect;
   }

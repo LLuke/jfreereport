@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.11 2003/06/19 18:44:09 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.12 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
      *
      * @param n  the number.
      */
-    public void add(Number n)
+    public void add(final Number n)
     {
       result = result.add(new BigDecimal(n.toString()));
     }
@@ -168,7 +168,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     currentIndex = -1;
 
@@ -184,7 +184,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -218,7 +218,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
@@ -233,7 +233,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
       try
       {
         datasource.setValue(fieldValue);
-        Number n = (Number) parser.getValue();
+        final Number n = (Number) parser.getValue();
         groupDividend.add(n);
       }
       catch (Exception e)
@@ -249,7 +249,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
       try
       {
         datasource.setValue(fieldValue);
-        Number n = (Number) parser.getValue();
+        final Number n = (Number) parser.getValue();
         groupDivisor.add(n);
       }
       catch (Exception e)
@@ -275,7 +275,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    *
    * @param group  the group name.
    */
-  public void setGroup(String group)
+  public void setGroup(final String group)
   {
     setProperty(GROUP_PROPERTY, group);
   }
@@ -290,8 +290,8 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    */
   public Object getValue()
   {
-    BigDecimal dividend = groupDividend.getResult();
-    BigDecimal divisor = groupDivisor.getResult();
+    final BigDecimal dividend = groupDividend.getResult();
+    final BigDecimal divisor = groupDivisor.getResult();
     if (divisor.intValue() == 0)
     {
       return "n/a";
@@ -330,7 +330,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    *
    * @param dividend the field name (null not permitted).
    */
-  public void setDividend(String dividend)
+  public void setDividend(final String dividend)
   {
     if (dividend == null)
     {
@@ -346,7 +346,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    *
    * @param divisor the field name (null not permitted).
    */
-  public void setDivisor(String divisor)
+  public void setDivisor(final String divisor)
   {
     if (divisor == null)
     {
@@ -384,7 +384,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    */
   public Expression getInstance()
   {
-    TotalGroupSumQuotientFunction function = (TotalGroupSumQuotientFunction) super.getInstance();
+    final TotalGroupSumQuotientFunction function = (TotalGroupSumQuotientFunction) super.getInstance();
     function.groupDividend = new GroupSum();
     function.groupDivisor = new GroupSum();
     function.datasource = new StaticDataSource();

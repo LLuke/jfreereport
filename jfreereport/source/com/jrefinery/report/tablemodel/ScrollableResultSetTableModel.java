@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.6 2003/05/11 13:39:17 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.7 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public ScrollableResultSetTableModel(ResultSet resultset) throws SQLException
+  public ScrollableResultSetTableModel(final ResultSet resultset) throws SQLException
   {
     if (resultset != null)
     {
@@ -105,7 +105,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public void updateResultSet(ResultSet resultset) throws SQLException
+  public void updateResultSet(final ResultSet resultset) throws SQLException
   {
     if (this.resultset != null)
     {
@@ -225,7 +225,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @see java.sql.ResultSetMetaData#getColumnLabel(int)
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     if (dbmd != null)
     {
@@ -249,7 +249,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the value.
    */
-  public Object getValueAt(int row, int column)
+  public Object getValueAt(final int row, final int column)
   {
     if (resultset != null)
     {
@@ -273,7 +273,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the column class.
    */
-  public Class getColumnClass(int column)
+  public Class getColumnClass(final int column)
   {
     if (dbmd != null)
     {
@@ -297,7 +297,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the column class name.
    */
-  public String getColumnClassName(int column)
+  public String getColumnClassName(final int column)
   {
     if (dbmd != null)
     {
@@ -322,7 +322,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    *
    * @return the modified class name.
    */
-  private String mckoiDBFixClassName(String classname)
+  private String mckoiDBFixClassName(final String classname)
   {
     if (classname.startsWith("class "))
     {

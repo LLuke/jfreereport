@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PostReportInitializedState.java,v 1.2 2003/06/15 21:26:29 taqua Exp $
+ * $Id: PostReportInitializedState.java,v 1.3 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,7 +54,7 @@ public class PostReportInitializedState extends ReportState
    *
    * @param clone  the existing state.
    */
-  public PostReportInitializedState(ReportState clone)
+  public PostReportInitializedState(final ReportState clone)
   {
     super(clone);
   }

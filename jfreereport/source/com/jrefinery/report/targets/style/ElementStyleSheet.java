@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.35 2003/06/26 19:55:57 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.36 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
      *
      * @param es the ElementStyleSheet whose stylesheet collection should be managed.
      */
-    public ElementStyleSheetCollectionHelper(ElementStyleSheet es)
+    public ElementStyleSheetCollectionHelper(final ElementStyleSheet es)
     {
       if (es == null)
       {
@@ -243,7 +243,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param name  the name (<code>null</code> not permitted).
    */
-  public ElementStyleSheet(String name)
+  public ElementStyleSheet(final String name)
   {
     if (name == null)
     {
@@ -273,7 +273,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param allowCaching  the flag value.
    */
-  public void setAllowCaching(boolean allowCaching)
+  public void setAllowCaching(final boolean allowCaching)
   {
     this.allowCaching = allowCaching;
   }
@@ -294,7 +294,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param parent  the parent (<code>null</code> not permitted).
    */
-  public synchronized void addParent(ElementStyleSheet parent)
+  public synchronized void addParent(final ElementStyleSheet parent)
   {
     addParent(0, parent);
   }
@@ -308,7 +308,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param parent  the parent (<code>null</code> not permitted).
    */
-  public synchronized void addDefaultParent(ElementStyleSheet parent)
+  public synchronized void addDefaultParent(final ElementStyleSheet parent)
   {
     addDefaultParent(0, parent);
   }
@@ -323,7 +323,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
    *         numberOfParents)
    */
-  public synchronized void addParent(int position, ElementStyleSheet parent)
+  public synchronized void addParent(final int position, final ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -364,7 +364,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
    *         numberOfParents)
    */
-  public synchronized void addDefaultParent(int position, ElementStyleSheet parent)
+  public synchronized void addDefaultParent(final int position, final ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -398,11 +398,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @return true, if the element is a child of this element style sheet,
    * false otherwise.
    */
-  public boolean isSubStyleSheet(ElementStyleSheet parent)
+  public boolean isSubStyleSheet(final ElementStyleSheet parent)
   {
     for (int i = 0; i < parents.size(); i++)
     {
-      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      final ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
       if (es == parent)
       {
         return true;
@@ -415,7 +415,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     for (int i = 0; i < defaultSheets.size(); i++)
     {
-      ElementStyleSheet es = (ElementStyleSheet) defaultSheets.get(i);
+      final ElementStyleSheet es = (ElementStyleSheet) defaultSheets.get(i);
       if (es == parent)
       {
         return true;
@@ -434,7 +434,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param parent  the style-sheet to remove (<code>null</code> not permitted).
    */
-  public synchronized void removeParent(ElementStyleSheet parent)
+  public synchronized void removeParent(final ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -463,7 +463,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param parent  the style-sheet to remove (<code>null</code> not permitted).
    */
-  public synchronized void removeDefaultParent(ElementStyleSheet parent)
+  public synchronized void removeDefaultParent(final ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -519,7 +519,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the value.
    */
-  public Object getStyleProperty(StyleKey key)
+  public Object getStyleProperty(final StyleKey key)
   {
     return getStyleProperty(key, null);
   }
@@ -534,7 +534,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the value.
    */
-  public Object getStyleProperty(StyleKey key, Object defaultValue)
+  public Object getStyleProperty(final StyleKey key, final Object defaultValue)
   {
     Object value = properties.get(key);
     if (value != null)
@@ -559,7 +559,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
     for (int i = 0; i < parentsCached.length; i++)
     {
-      ElementStyleSheet st = parentsCached[i];
+      final ElementStyleSheet st = parentsCached[i];
       value = st.getStyleProperty(key, null);
       if (value == null)
       {
@@ -584,7 +584,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
     for (int i = 0; i < defaultCached.length; i++)
     {
-      ElementStyleSheet st = defaultCached[i];
+      final ElementStyleSheet st = defaultCached[i];
       value = st.getStyleProperty(key, null);
       if (value == null)
       {
@@ -611,7 +611,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given key is null.
    * @throws ClassCastException if the value cannot be assigned with the given key.
    */
-  public void setBooleanStyleProperty(StyleKey key, boolean value)
+  public void setBooleanStyleProperty(final StyleKey key, final boolean value)
   {
     if (value)
     {
@@ -631,7 +631,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given key is null.
    * @throws ClassCastException if the value cannot be assigned with the given key.
    */
-  public void setStyleProperty(StyleKey key, Object value)
+  public void setStyleProperty(final StyleKey key, final Object value)
   {
     if (key == null)
     {
@@ -674,7 +674,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   {
     try
     {
-      ElementStyleSheet sc = (ElementStyleSheet) super.clone();
+      final ElementStyleSheet sc = (ElementStyleSheet) super.clone();
       sc.properties = (HashMap) properties.clone();
       if (styleCache != null)
       {
@@ -682,8 +682,8 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       }
       sc.styleChangeSupport = new StyleChangeSupport(sc);
       sc.parents = new ArrayList();// parents.clone();
-      ElementStyleSheet[] cloneParentsCached = new ElementStyleSheet[parents.size()];
-      ElementStyleSheet[] cloneDefaultCached = new ElementStyleSheet[defaultSheets.size()];
+      final ElementStyleSheet[] cloneParentsCached = new ElementStyleSheet[parents.size()];
+      final ElementStyleSheet[] cloneDefaultCached = new ElementStyleSheet[defaultSheets.size()];
       sc.parentsListCached = null;
       sc.defaultParentsListCached = null;
       sc.collectionHelper = new ElementStyleSheetCollectionHelper(sc);
@@ -732,7 +732,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean getBooleanStyleProperty(StyleKey key)
+  public boolean getBooleanStyleProperty(final StyleKey key)
   {
     return getBooleanStyleProperty(key, false);
   }
@@ -745,9 +745,9 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return true or false.
    */
-  public boolean getBooleanStyleProperty(StyleKey key, boolean defaultValue)
+  public boolean getBooleanStyleProperty(final StyleKey key, final boolean defaultValue)
   {
-    Boolean b = (Boolean) getStyleProperty(key, null);
+    final Boolean b = (Boolean) getStyleProperty(key, null);
     if (b == null)
     {
       return defaultValue;
@@ -763,9 +763,9 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the style value.
    */
-  public int getIntStyleProperty(StyleKey key, int def)
+  public int getIntStyleProperty(final StyleKey key, final int def)
   {
-    Integer i = (Integer) getStyleProperty(key, new Integer(def));
+    final Integer i = (Integer) getStyleProperty(key, new Integer(def));
     return i.intValue();
   }
 
@@ -777,10 +777,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public Font getFontStyleProperty()
   {
-    String name = (String) getStyleProperty(FONT);
-    int size = getIntStyleProperty(FONTSIZE, -1);
-    boolean bold = getBooleanStyleProperty(BOLD);
-    boolean italic = getBooleanStyleProperty(ITALIC);
+    final String name = (String) getStyleProperty(FONT);
+    final int size = getIntStyleProperty(FONTSIZE, -1);
+    final boolean bold = getBooleanStyleProperty(BOLD);
+    final boolean italic = getBooleanStyleProperty(ITALIC);
     int style = Font.PLAIN;
     if (bold)
     {
@@ -790,7 +790,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       style += Font.ITALIC;
     }
-    Font retval = new Font(name, style, size);
+    final Font retval = new Font(name, style, size);
     return retval;
   }
 
@@ -800,7 +800,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @deprecated use setFontDefinition()
    * @param font  the font (<code>null</code> not permitted).
    */
-  public void setFontStyleProperty(Font font)
+  public void setFontStyleProperty(final Font font)
   {
     if (font == null)
     {
@@ -819,16 +819,16 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public FontDefinition getFontDefinitionProperty()
   {
-    String name = (String) getStyleProperty(FONT);
-    int size = getIntStyleProperty(FONTSIZE, -1);
-    boolean bold = getBooleanStyleProperty(BOLD);
-    boolean italic = getBooleanStyleProperty(ITALIC);
-    boolean underlined = getBooleanStyleProperty(UNDERLINED);
-    boolean strike = getBooleanStyleProperty(STRIKETHROUGH);
-    boolean embed = getBooleanStyleProperty(EMBEDDED_FONT);
-    String encoding = (String) getStyleProperty(FONTENCODING);
+    final String name = (String) getStyleProperty(FONT);
+    final int size = getIntStyleProperty(FONTSIZE, -1);
+    final boolean bold = getBooleanStyleProperty(BOLD);
+    final boolean italic = getBooleanStyleProperty(ITALIC);
+    final boolean underlined = getBooleanStyleProperty(UNDERLINED);
+    final boolean strike = getBooleanStyleProperty(STRIKETHROUGH);
+    final boolean embed = getBooleanStyleProperty(EMBEDDED_FONT);
+    final String encoding = (String) getStyleProperty(FONTENCODING);
 
-    FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike,
+    final FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike,
         encoding, embed);
     return retval;
   }
@@ -838,7 +838,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param font  the font (<code>null</code> not permitted).
    */
-  public void setFontDefinitionProperty(FontDefinition font)
+  public void setFontDefinitionProperty(final FontDefinition font)
   {
     if (font == null)
     {
@@ -869,7 +869,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param l  the listener.
    */
-  public void addListener(StyleChangeListener l)
+  public void addListener(final StyleChangeListener l)
   {
     styleChangeSupport.addListener(l);
   }
@@ -879,7 +879,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @param l  the listener.
    */
-  public void removeListener(StyleChangeListener l)
+  public void removeListener(final StyleChangeListener l)
   {
     styleChangeSupport.removeListener(l);
   }
@@ -891,7 +891,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @param key  the style key.
    * @param value  the new value.
    */
-  public void styleChanged(ElementStyleSheet source, StyleKey key, Object value)
+  public void styleChanged(final ElementStyleSheet source, final StyleKey key, final Object value)
   {
     if (styleCache != null)
     {
@@ -906,7 +906,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @param source  the source of the change.
    * @param key  the style key.
    */
-  public void styleRemoved(ElementStyleSheet source, StyleKey key)
+  public void styleRemoved(final ElementStyleSheet source, final StyleKey key)
   {
     if (styleCache != null)
     {
@@ -921,18 +921,18 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @param out the output stream where to write the object.
    * @throws IOException if errors occur while writing the stream.
    */
-  private void writeObject(ObjectOutputStream out)
+  private void writeObject(final ObjectOutputStream out)
       throws IOException
   {
     out.defaultWriteObject();
-    int size = properties.size();
+    final int size = properties.size();
     out.writeInt(size);
-    Iterator it = properties.keySet().iterator();
+    final Iterator it = properties.keySet().iterator();
     while (it.hasNext())
     {
-      Object key = it.next();
+      final Object key = it.next();
       out.writeObject(key);
-      Object value = properties.get(key);
+      final Object value = properties.get(key);
       SerializerHelper.getInstance().writeObject(value, out);
     }
   }
@@ -945,18 +945,18 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws ClassNotFoundException if a class definition for a serialized object
    * could not be found.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(final ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     styleChangeSupport = new StyleChangeSupport(this);
 
     in.defaultReadObject();
-    int size = in.readInt();
+    final int size = in.readInt();
     properties = new HashMap(size);
     for (int i = 0; i < size; i++)
     {
-      Object key = in.readObject();
-      Object value = SerializerHelper.getInstance().readObject(in);
+      final Object key = in.readObject();
+      final Object value = SerializerHelper.getInstance().readObject(in);
       properties.put(key, value);
     }
   }
@@ -993,7 +993,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     collectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -1008,7 +1008,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     collectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }

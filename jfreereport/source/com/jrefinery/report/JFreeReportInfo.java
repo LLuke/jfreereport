@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.18 2003/06/04 21:09:04 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.19 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes:
  * --------
@@ -66,8 +66,8 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
   public JFreeReportInfo()
   {
     // get a locale-specific resource bundle...
-    String baseResourceClass = "com.jrefinery.report.resources.JFreeReportResources";
-    ResourceBundle resources = ResourceBundle.getBundle(baseResourceClass);
+    final String baseResourceClass = "com.jrefinery.report.resources.JFreeReportResources";
+    final ResourceBundle resources = ResourceBundle.getBundle(baseResourceClass);
 
     setName(resources.getString("project.name"));
     setVersion(resources.getString("project.version"));
@@ -113,9 +113,9 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
    *
    * @param args ignored
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    JFreeReportInfo info = new JFreeReportInfo();
+    final JFreeReportInfo info = new JFreeReportInfo();
     System.out.println(info.getName() + " " + info.getVersion());
     System.out.println("----------------------------------------------------------------");
     System.out.println(info.getCopyright());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.17 2003/06/10 17:14:39 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.18 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -74,7 +74,7 @@ public class DataSourceCollector implements DataSourceFactory
    *
    * @param factory  the factory.
    */
-  public void addFactory(DataSourceFactory factory)
+  public void addFactory(final DataSourceFactory factory)
   {
     factories.add(factory);
     if (getConfig() != null)
@@ -100,12 +100,12 @@ public class DataSourceCollector implements DataSourceFactory
    *
    * @return The description.
    */
-  public ObjectDescription getDataSourceDescription(String name)
+  public ObjectDescription getDataSourceDescription(final String name)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      DataSourceFactory fact = (DataSourceFactory) factories.get(i);
-      ObjectDescription o = fact.getDataSourceDescription(name);
+      final DataSourceFactory fact = (DataSourceFactory) factories.get(i);
+      final ObjectDescription o = fact.getDataSourceDescription(name);
       if (o != null)
       {
         return o.getInstance();
@@ -121,12 +121,12 @@ public class DataSourceCollector implements DataSourceFactory
    *
    * @return The name.
    */
-  public String getDataSourceName(ObjectDescription od)
+  public String getDataSourceName(final ObjectDescription od)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      DataSourceFactory fact = (DataSourceFactory) factories.get(i);
-      String o = fact.getDataSourceName(od);
+      final DataSourceFactory fact = (DataSourceFactory) factories.get(i);
+      final String o = fact.getDataSourceName(od);
       if (o != null)
       {
         return o;
@@ -142,12 +142,12 @@ public class DataSourceCollector implements DataSourceFactory
    *
    * @return The description.
    */
-  public ObjectDescription getDescriptionForClass(Class c)
+  public ObjectDescription getDescriptionForClass(final Class c)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      DataSourceFactory fact = (DataSourceFactory) factories.get(i);
-      ObjectDescription o = fact.getDescriptionForClass(c);
+      final DataSourceFactory fact = (DataSourceFactory) factories.get(i);
+      final ObjectDescription o = fact.getDescriptionForClass(c);
       if (o != null)
       {
         return o.getInstance();
@@ -166,12 +166,12 @@ public class DataSourceCollector implements DataSourceFactory
    * @return The object description suitable to create instances of the given class d.
    */
   public ObjectDescription getSuperClassObjectDescription
-      (Class d, ObjectDescription knownSuperClass)
+      (final Class d, ObjectDescription knownSuperClass)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      DataSourceFactory fact = (DataSourceFactory) factories.get(i);
-      ObjectDescription od = fact.getSuperClassObjectDescription(d, knownSuperClass);
+      final DataSourceFactory fact = (DataSourceFactory) factories.get(i);
+      final ObjectDescription od = fact.getSuperClassObjectDescription(d, knownSuperClass);
       if (od == null)
       {
         continue;
@@ -203,11 +203,11 @@ public class DataSourceCollector implements DataSourceFactory
    */
   public Iterator getRegisteredClasses()
   {
-    ArrayList list = new ArrayList();
+    final ArrayList list = new ArrayList();
     for (int i = 0; i < factories.size(); i++)
     {
-      ClassFactory f = (ClassFactory) factories.get(i);
-      Iterator enum = f.getRegisteredClasses();
+      final ClassFactory f = (ClassFactory) factories.get(i);
+      final Iterator enum = f.getRegisteredClasses();
       while (enum.hasNext())
       {
         list.add(enum.next());
@@ -225,7 +225,7 @@ public class DataSourceCollector implements DataSourceFactory
    *
    * @param config the configuration, never null
    */
-  public void configure(Configuration config)
+  public void configure(final Configuration config)
   {
     if (config == null)
     {
@@ -238,10 +238,10 @@ public class DataSourceCollector implements DataSourceFactory
     }
 
     this.config = config;
-    Iterator it = factories.iterator();
+    final Iterator it = factories.iterator();
     while (it.hasNext())
     {
-      DataSourceFactory od = (DataSourceFactory) it.next();
+      final DataSourceFactory od = (DataSourceFactory) it.next();
       od.configure(config);
     }
 

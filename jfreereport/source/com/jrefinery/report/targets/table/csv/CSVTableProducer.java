@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.9 2003/05/11 13:39:18 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.10 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class CSVTableProducer extends TableProducer
    * @param writer  the character stream writer for writing the generated content.
    * @param strict  the strict mode that is used for the layouting.
    */
-  public CSVTableProducer(PrintWriter writer, boolean strict)
+  public CSVTableProducer(final PrintWriter writer, final boolean strict)
   {
     super(strict);
     if (writer == null)
@@ -130,13 +130,13 @@ public class CSVTableProducer extends TableProducer
    *
    * @param layout  contains the layouted CSVCellData objects.
    */
-  private void generatePage(TableGridLayout layout)
+  private void generatePage(final TableGridLayout layout)
   {
     for (int y = 0; y < layout.getHeight(); y++)
     {
       for (int x = 0; x < layout.getWidth(); x++)
       {
-        TableGridLayout.Element gridPosition = layout.getData(x, y);
+        final TableGridLayout.Element gridPosition = layout.getData(x, y);
         if (gridPosition == null)
         {
           writer.print(quoter.getSeparator());
@@ -149,7 +149,7 @@ public class CSVTableProducer extends TableProducer
           continue;
         }
 
-        TableGridPosition pos = gridPosition.getRoot();
+        final TableGridPosition pos = gridPosition.getRoot();
         if (pos.isOrigin(x, y) == false)
         {
           // colspanned cell
@@ -159,7 +159,7 @@ public class CSVTableProducer extends TableProducer
 
         if (pos.getElement() != null)
         {
-          CSVCellData cellData = (CSVCellData) pos.getElement();
+          final CSVCellData cellData = (CSVCellData) pos.getElement();
 
           writer.print(quoter.doQuoting(cellData.getValue()));
           writer.print(quoter.getSeparator());
@@ -182,7 +182,7 @@ public class CSVTableProducer extends TableProducer
    *
    * @param name the name of the page, not used.
    */
-  public void beginPage(String name)
+  public void beginPage(final String name)
   {
     // remains empty ...
   }
@@ -215,9 +215,9 @@ public class CSVTableProducer extends TableProducer
    *
    * @param configuration the configuration supplied by the table processor.
    */
-  public void configure(Properties configuration)
+  public void configure(final Properties configuration)
   {
-    String separator = configuration.getProperty(CSVTableProcessor.SEPARATOR_KEY, ",");
+    final String separator = configuration.getProperty(CSVTableProcessor.SEPARATOR_KEY, ",");
     this.quoter = new CSVQuoter(separator);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.25 2003/06/19 18:44:10 taqua Exp $
+ * $Id: ElementFactory.java,v 1.26 2003/06/27 14:25:21 taqua Exp $
  *
  * Changes
  * -------
@@ -136,7 +136,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public ElementFactory(Parser parser, String finishTag, Band band)
+  public ElementFactory(final Parser parser, final String finishTag, final Band band)
   {
     super(parser, finishTag);
     this.currentBand = band;
@@ -160,10 +160,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @see com.jrefinery.report.ItemFactory
    */
-  public void startElement(String qName, Attributes atts)
+  public void startElement(final String qName, final Attributes atts)
       throws SAXException
   {
-    String elementName = qName.toLowerCase().trim();
+    final String elementName = qName.toLowerCase().trim();
 
     // *** LABEL ***
     if (elementName.equals(LABEL_TAG))
@@ -296,7 +296,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @param start  the start index.
    * @param length  the length of the valid character data.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     if (this.currentText != null)
     {
@@ -312,10 +312,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if an unknown tag is encountered.
    */
-  public void endElement(String qName)
+  public void endElement(final String qName)
       throws SAXException
   {
-    String elementName = qName.toLowerCase().trim();
+    final String elementName = qName.toLowerCase().trim();
 
     // *** LABEL ***
     if (elementName.equals(LABEL_TAG))
@@ -418,23 +418,23 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startImageRef(Attributes atts) throws SAXException
+  protected void startImageRef(final Attributes atts) throws SAXException
   {
-    String elementName = getNameGenerator().generateName(atts.getValue("name"));
-    String elementSource = atts.getValue("src");
+    final String elementName = getNameGenerator().generateName(atts.getValue("name"));
+    final String elementSource = atts.getValue("src");
     // Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
     try
     {
-      boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
-      boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
-      ImageElement element = ItemFactory.createImageElement(
+      final boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+      final boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
+      final ImageElement element = ItemFactory.createImageElement(
           elementName,
           ParserUtil.getElementPosition(atts),
           Color.white,
           new URL(getContentBase(), elementSource),
           elementScale,
           elementARatio);
-      boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+      final boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
       element.getStyle().setBooleanStyleProperty
           (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
@@ -456,14 +456,14 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startImageField(Attributes atts) throws SAXException
+  protected void startImageField(final Attributes atts) throws SAXException
   {
-    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    String elementSource = atts.getValue(FIELDNAME_ATT);
+    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementSource = atts.getValue(FIELDNAME_ATT);
 
-    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
-    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
-    ImageElement element = ItemFactory.createImageDataRowElement(
+    final boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    final boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
+    final ImageElement element = ItemFactory.createImageDataRowElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
@@ -471,7 +471,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         elementScale,
         elementARatio);
 
-    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    final boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
     element.getStyle().setBooleanStyleProperty
         (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
@@ -486,17 +486,17 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX error.
    */
-  protected void startDrawableField(Attributes atts) throws SAXException
+  protected void startDrawableField(final Attributes atts) throws SAXException
   {
-    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    String elementSource = atts.getValue(FIELDNAME_ATT);
+    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementSource = atts.getValue(FIELDNAME_ATT);
 
-    DrawableElement element = new DrawableElement();
+    final DrawableElement element = new DrawableElement();
     element.setName(elementName);
     ItemFactory.setElementBounds(element, ParserUtil.getElementPosition(atts));
 
-    DataRowDataSource drds = new DataRowDataSource(elementSource);
-    DrawableFilter filter = new DrawableFilter();
+    final DataRowDataSource drds = new DataRowDataSource(elementSource);
+    final DrawableFilter filter = new DrawableFilter();
     filter.setDataSource(drds);
     element.setDataSource(filter);
     getCurrentBand().addElement(element);
@@ -512,21 +512,21 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startImageURLField(Attributes atts) throws SAXException
+  protected void startImageURLField(final Attributes atts) throws SAXException
   {
-    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    String elementSource = atts.getValue(FIELDNAME_ATT);
+    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementSource = atts.getValue(FIELDNAME_ATT);
 
-    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
-    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
-    ImageElement element = ItemFactory.createImageURLElement(
+    final boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    final boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
+    final ImageElement element = ItemFactory.createImageURLElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
         elementSource,
         elementScale,
         elementARatio);
-    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    final boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
     element.getStyle().setBooleanStyleProperty
         (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
@@ -542,21 +542,21 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startImageFunction(Attributes atts) throws SAXException
+  protected void startImageFunction(final Attributes atts) throws SAXException
   {
-    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    String elementSource = atts.getValue(FUNCTIONNAME_ATT);
+    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementSource = atts.getValue(FUNCTIONNAME_ATT);
 
-    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
-    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
-    ImageElement element = ItemFactory.createImageDataRowElement(
+    final boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    final boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
+    final ImageElement element = ItemFactory.createImageDataRowElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
         elementSource,
         elementScale,
         elementARatio);
-    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    final boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
     element.getStyle().setBooleanStyleProperty
         (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
@@ -573,21 +573,21 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startImageURLFunction(Attributes atts) throws SAXException
+  protected void startImageURLFunction(final Attributes atts) throws SAXException
   {
-    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    String elementSource = atts.getValue(FUNCTIONNAME_ATT);
+    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementSource = atts.getValue(FUNCTIONNAME_ATT);
 
-    boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
-    boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
-    ImageElement element = ItemFactory.createImageURLElement(
+    final boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    final boolean elementARatio = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), true);
+    final ImageElement element = ItemFactory.createImageURLElement(
         elementName,
         ParserUtil.getElementPosition(atts),
         Color.white,
         elementSource,
         elementScale,
         elementARatio);
-    boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
+    final boolean elementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
     element.getStyle().setBooleanStyleProperty
         (ElementStyleSheet.DYNAMIC_HEIGHT, elementDynamic);
 
@@ -601,17 +601,17 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startLine(Attributes atts) throws SAXException
+  protected void startLine(final Attributes atts) throws SAXException
   {
-    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
-    float x1 = ParserUtil.parseFloat(atts.getValue("x1"), "Element x1 not specified");
-    float y1 = ParserUtil.parseFloat(atts.getValue("y1"), "Element y1 not specified");
-    float x2 = ParserUtil.parseFloat(atts.getValue("x2"), "Element x2 not specified");
-    float y2 = ParserUtil.parseFloat(atts.getValue("y2"), "Element y2 not specified");
+    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    final float x1 = ParserUtil.parseFloat(atts.getValue("x1"), "Element x1 not specified");
+    final float y1 = ParserUtil.parseFloat(atts.getValue("y1"), "Element y1 not specified");
+    final float x2 = ParserUtil.parseFloat(atts.getValue("x2"), "Element x2 not specified");
+    final float y2 = ParserUtil.parseFloat(atts.getValue("y2"), "Element y2 not specified");
 
-    Line2D line = new Line2D.Float(x1, y1, x2, y2);
-    ShapeElement element = ItemFactory.createLineShapeElement(
+    final Line2D line = new Line2D.Float(x1, y1, x2, y2);
+    final ShapeElement element = ItemFactory.createLineShapeElement(
         name,
         c,
         ParserUtil.parseStroke(atts.getValue("weight")),
@@ -626,15 +626,15 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startRectangle(Attributes atts) throws SAXException
+  protected void startRectangle(final Attributes atts) throws SAXException
   {
-    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
-    Rectangle2D bounds = ParserUtil.getElementPosition(atts);
-    boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
-    boolean shouldFill = ParserUtil.parseBoolean(atts.getValue("fill"), true);
+    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    final Rectangle2D bounds = ParserUtil.getElementPosition(atts);
+    final boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
+    final boolean shouldFill = ParserUtil.parseBoolean(atts.getValue("fill"), true);
 
-    ShapeElement element = ItemFactory.createRectangleShapeElement(
+    final ShapeElement element = ItemFactory.createRectangleShapeElement(
         name,
         c,
         ParserUtil.parseStroke(atts.getValue("weight")),
@@ -649,18 +649,18 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startShapeField(Attributes atts) throws SAXException
+  protected void startShapeField(final Attributes atts) throws SAXException
   {
-    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
-    String elementSource = atts.getValue(FIELDNAME_ATT);
-    Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
-    Rectangle2D bounds = ParserUtil.getElementPosition(atts);
-    boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
-    boolean shouldFill = ParserUtil.parseBoolean(atts.getValue("fill"), true);
-    boolean scale = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), false);
-    boolean kar = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementSource = atts.getValue(FIELDNAME_ATT);
+    final Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    final Rectangle2D bounds = ParserUtil.getElementPosition(atts);
+    final boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
+    final boolean shouldFill = ParserUtil.parseBoolean(atts.getValue("fill"), true);
+    final boolean scale = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), false);
+    final boolean kar = ParserUtil.parseBoolean(atts.getValue("scale"), true);
 
-    ShapeElement element = ItemFactory.createShapeElement(
+    final ShapeElement element = ItemFactory.createShapeElement(
         name,
         bounds,
         c,
@@ -676,7 +676,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startLabel(Attributes atts) throws SAXException
+  protected void startLabel(final Attributes atts) throws SAXException
   {
     getTextElementAttributes(atts);
     clearCurrentText();
@@ -691,7 +691,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startMultilineField(Attributes atts) throws SAXException
+  protected void startMultilineField(final Attributes atts) throws SAXException
   {
     getDataElementAttributes(atts);
   }
@@ -705,7 +705,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startStringField(Attributes atts) throws SAXException
+  protected void startStringField(final Attributes atts) throws SAXException
   {
     getDataElementAttributes(atts);
   }
@@ -717,7 +717,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startNumberField(Attributes atts) throws SAXException
+  protected void startNumberField(final Attributes atts) throws SAXException
   {
     getDataElementAttributes(atts);
     textElementFormatString = atts.getValue(FORMAT_ATT);
@@ -730,7 +730,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startDateField(Attributes atts) throws SAXException
+  protected void startDateField(final Attributes atts) throws SAXException
   {
     getDataElementAttributes(atts);
     textElementFormatString = atts.getValue(FORMAT_ATT);
@@ -743,7 +743,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startNumberFunction(Attributes atts) throws SAXException
+  protected void startNumberFunction(final Attributes atts) throws SAXException
   {
     getFunctionElementAttributes(atts);
     textElementFormatString = atts.getValue(FORMAT_ATT);
@@ -756,7 +756,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startDateFunction(Attributes atts) throws SAXException
+  protected void startDateFunction(final Attributes atts) throws SAXException
   {
     getFunctionElementAttributes(atts);
     textElementFormatString = atts.getValue(FORMAT_ATT);
@@ -769,7 +769,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startStringFunction(Attributes atts) throws SAXException
+  protected void startStringFunction(final Attributes atts) throws SAXException
   {
     getFunctionElementAttributes(atts);
   }
@@ -782,7 +782,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endLabel() throws SAXException
   {
-    TextElement te = ItemFactory.createLabelElement(
+    final TextElement te = ItemFactory.createLabelElement(
         textElementName,
         textElementBounds,
         textElementColor,
@@ -887,7 +887,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startResourceLabel(Attributes attrs)
+  protected void startResourceLabel(final Attributes attrs)
       throws SAXException
   {
     getTextElementAttributes(attrs);
@@ -896,7 +896,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
     if (resourceBase == null)
     {
-      ReportConfiguration config = getReport().getReportConfiguration();
+      final ReportConfiguration config = getReport().getReportConfiguration();
       resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
       if (resourceBase == null)
       {
@@ -915,7 +915,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void startResourceField(Attributes attrs)
+  protected void startResourceField(final Attributes attrs)
       throws SAXException
   {
     getDataElementAttributes(attrs);
@@ -923,7 +923,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
     if (resourceBase == null)
     {
-      ReportConfiguration config = getReport().getReportConfiguration();
+      final ReportConfiguration config = getReport().getReportConfiguration();
       resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
       if (resourceBase == null)
       {
@@ -939,7 +939,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endResourceLabel()
   {
-    TextElement te = ItemFactory.createResourceLabel(textElementName,
+    final TextElement te = ItemFactory.createResourceLabel(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -959,7 +959,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endResourceField()
   {
-    TextElement te = ItemFactory.createResourceElement(textElementName,
+    final TextElement te = ItemFactory.createResourceElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -982,7 +982,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endMultilineField() throws SAXException
   {
-    TextElement te = ItemFactory.createStringElement(textElementName,
+    final TextElement te = ItemFactory.createStringElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -1003,7 +1003,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endStringField() throws SAXException
   {
-    TextElement te = ItemFactory.createStringElement(textElementName,
+    final TextElement te = ItemFactory.createStringElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -1024,7 +1024,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endNumberField() throws SAXException
   {
-    TextElement te = ItemFactory.createNumberElement(textElementName,
+    final TextElement te = ItemFactory.createNumberElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -1046,7 +1046,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endDateField() throws SAXException
   {
-    TextElement te = ItemFactory.createDateElement(textElementName,
+    final TextElement te = ItemFactory.createDateElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -1068,7 +1068,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endNumberFunction() throws SAXException
   {
-    TextElement te = ItemFactory.createNumberElement(textElementName,
+    final TextElement te = ItemFactory.createNumberElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -1090,7 +1090,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endStringFunction() throws SAXException
   {
-    TextElement te = ItemFactory.createStringElement(textElementName,
+    final TextElement te = ItemFactory.createStringElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -1111,7 +1111,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   protected void endDateFunction() throws SAXException
   {
-    TextElement te = ItemFactory.createDateElement(textElementName,
+    final TextElement te = ItemFactory.createDateElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
@@ -1134,7 +1134,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void getTextElementAttributes(Attributes atts) throws SAXException
+  protected void getTextElementAttributes(final Attributes atts) throws SAXException
   {
     this.textElementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     this.textElementBounds = ParserUtil.getElementPosition(atts);
@@ -1157,7 +1157,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @return an alignment code.
    */
-  protected int parseTextAlignment(String alignment, int defaultAlignment)
+  protected int parseTextAlignment(final String alignment, final int defaultAlignment)
   {
     int elementAlignment = defaultAlignment;
     if (alignment != null)
@@ -1189,7 +1189,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @return an alignment code.
    */
-  protected int parseTextVerticalAlignment(String alignment, int defaultAlignment)
+  protected int parseTextVerticalAlignment(final String alignment, final int defaultAlignment)
   {
     int elementAlignment = defaultAlignment;
     if (alignment != null)
@@ -1217,7 +1217,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void getDataElementAttributes(Attributes atts) throws SAXException
+  protected void getDataElementAttributes(final Attributes atts) throws SAXException
   {
     getTextElementAttributes(atts);
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");
@@ -1235,7 +1235,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws SAXException if there is a SAX problem.
    */
-  protected void getFunctionElementAttributes(Attributes atts) throws SAXException
+  protected void getFunctionElementAttributes(final Attributes atts) throws SAXException
   {
     getTextElementAttributes(atts);
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");

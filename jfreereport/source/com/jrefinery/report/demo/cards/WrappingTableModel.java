@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WrappingTableModel.java,v 1.4 2003/05/11 13:38:57 taqua Exp $
+ * $Id: WrappingTableModel.java,v 1.5 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -74,24 +74,24 @@ public class WrappingTableModel implements TableModel
      *
      * @param e the event, that should be translated.
      */
-    public void tableChanged(TableModelEvent e)
+    public void tableChanged(final TableModelEvent e)
     {
       // inefficient, but necessary ...
-      int columnIndex = TableModelEvent.ALL_COLUMNS;
+      final int columnIndex = TableModelEvent.ALL_COLUMNS;
 
-      int firstRow = e.getFirstRow();
-      int lastRow = e.getLastRow();
+      final int firstRow = e.getFirstRow();
+      final int lastRow = e.getLastRow();
 
-      int firstRowIndex = (firstRow / 2);
-      int lastRowIndex = (lastRow / 2);
+      final int firstRowIndex = (firstRow / 2);
+      final int lastRowIndex = (lastRow / 2);
 
-      TableModelEvent event =
+      final TableModelEvent event =
           new TableModelEvent(WrappingTableModel.this, firstRowIndex, lastRowIndex,
               columnIndex, e.getType());
 
       for (int i = 0; i < listeners.size(); i++)
       {
-        TableModelListener l = (TableModelListener) listeners.get(i);
+        final TableModelListener l = (TableModelListener) listeners.get(i);
         l.tableChanged(event);
       }
 
@@ -102,7 +102,7 @@ public class WrappingTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void addTableModelListener(TableModelListener l)
+    public void addTableModelListener(final TableModelListener l)
     {
       listeners.add(l);
     }
@@ -112,7 +112,7 @@ public class WrappingTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void removeTableModelListener(TableModelListener l)
+    public void removeTableModelListener(final TableModelListener l)
     {
       listeners.remove(l);
     }
@@ -135,7 +135,7 @@ public class WrappingTableModel implements TableModel
    *
    * @param model  the underlying table model.
    */
-  public WrappingTableModel(TableModel model)
+  public WrappingTableModel(final TableModel model)
   {
     this(model, "Column1_", "Column2_");
   }
@@ -147,7 +147,7 @@ public class WrappingTableModel implements TableModel
    * @param prefix1  the first column prefix.
    * @param prefix2  the second column prefix.
    */
-  public WrappingTableModel(TableModel model, String prefix1, String prefix2)
+  public WrappingTableModel(final TableModel model, final String prefix1, final String prefix2)
   {
     if (prefix1 == null)
     {
@@ -223,9 +223,9 @@ public class WrappingTableModel implements TableModel
    *
    * @return the name of the column
    */
-  public String getColumnName(int columnIndex)
+  public String getColumnName(final int columnIndex)
   {
-    int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    final int tmpColumnIndex = (columnIndex % model.getColumnCount());
     if (columnIndex < model.getColumnCount())
     {
       return getColumnPrefix1() + model.getColumnName(tmpColumnIndex);
@@ -244,9 +244,9 @@ public class WrappingTableModel implements TableModel
    * @param columnIndex  the index of the column
    * @return the common ancestor class of the object values in the model.
    */
-  public Class getColumnClass(int columnIndex)
+  public Class getColumnClass(final int columnIndex)
   {
-    int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    final int tmpColumnIndex = (columnIndex % model.getColumnCount());
     return model.getColumnClass(tmpColumnIndex);
   }
 
@@ -262,10 +262,10 @@ public class WrappingTableModel implements TableModel
    * @return true if the cell is editable
    * @see #setValueAt
    */
-  public boolean isCellEditable(int rowIndex, int columnIndex)
+  public boolean isCellEditable(final int rowIndex, final int columnIndex)
   {
-    int tmpColumnIndex = (columnIndex % model.getColumnCount());
-    int tmpRowIndex = calculateRow(rowIndex, columnIndex);
+    final int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    final int tmpRowIndex = calculateRow(rowIndex, columnIndex);
     if (tmpRowIndex >= model.getRowCount())
     {
       return false;
@@ -281,7 +281,7 @@ public class WrappingTableModel implements TableModel
    *
    * @return The physical row.
    */
-  private int calculateRow(int row, int column)
+  private int calculateRow(final int row, final int column)
   {
     if (column < model.getColumnCount())
     {
@@ -304,10 +304,10 @@ public class WrappingTableModel implements TableModel
    *
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(int rowIndex, int columnIndex)
+  public Object getValueAt(final int rowIndex, final int columnIndex)
   {
-    int tmpColumnIndex = (columnIndex % model.getColumnCount());
-    int tmpRowIndex = calculateRow(rowIndex, columnIndex);
+    final int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    final int tmpRowIndex = calculateRow(rowIndex, columnIndex);
     if (tmpRowIndex >= model.getRowCount())
     {
       return null;
@@ -325,10 +325,10 @@ public class WrappingTableModel implements TableModel
    * @see #getValueAt
    * @see #isCellEditable
    */
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+  public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex)
   {
-    int tmpColumnIndex = (columnIndex % model.getColumnCount());
-    int tmpRowIndex = calculateRow(rowIndex, columnIndex);
+    final int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    final int tmpRowIndex = calculateRow(rowIndex, columnIndex);
     if (tmpRowIndex >= model.getRowCount())
     {
       return;
@@ -342,7 +342,7 @@ public class WrappingTableModel implements TableModel
    *
    * @param l  the TableModelListener
    */
-  public void addTableModelListener(TableModelListener l)
+  public void addTableModelListener(final TableModelListener l)
   {
     translator.addTableModelListener(l);
   }
@@ -353,7 +353,7 @@ public class WrappingTableModel implements TableModel
    *
    * @param l  the TableModelListener
    */
-  public void removeTableModelListener(TableModelListener l)
+  public void removeTableModelListener(final TableModelListener l)
   {
     translator.removeTableModelListener(l);
   }
@@ -363,7 +363,7 @@ public class WrappingTableModel implements TableModel
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     TableModelInfo.printTableModel(new WrappingTableModel(new CardTableModel()));
   }

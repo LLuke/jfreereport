@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.14 2003/05/02 12:40:40 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.15 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class HtmlStyleCollection
    */
   private String createName()
   {
-    String name = "style-" + nameCounter;
+    final String name = "style-" + nameCounter;
     nameCounter++;
     return name;
 
@@ -96,7 +96,7 @@ public class HtmlStyleCollection
    * @param style the generated style, that should be added to the style cache.
    * @return the registered name for the stylesheet.
    */
-  public String addStyle(HtmlCellStyle style)
+  public String addStyle(final HtmlCellStyle style)
   {
     String name = lookupName(style);
     if (name == null)
@@ -114,9 +114,9 @@ public class HtmlStyleCollection
    * @param style the style, that should be checked.
    * @return true, if the style is registered, false otherwise.
    */
-  public boolean isRegistered(HtmlCellStyle style)
+  public boolean isRegistered(final HtmlCellStyle style)
   {
-    String name = lookupName(style);
+    final String name = lookupName(style);
 
     // if the table does not contain this style, it is not registered.
     if (name == null)
@@ -144,7 +144,7 @@ public class HtmlStyleCollection
    * @return the registered name for this style, or null, if the style is not registed.
    * @see HtmlStyleCollection#isRegistered
    */
-  public String lookupName(HtmlCellStyle style)
+  public String lookupName(final HtmlCellStyle style)
   {
     return (String) table.get(style);
   }
@@ -165,7 +165,7 @@ public class HtmlStyleCollection
    * @param font the font definition.
    * @return the translated html font name.
    */
-  private String translateFontName(FontDefinition font)
+  private String translateFontName(final FontDefinition font)
   {
     if (font.isCourier())
     {
@@ -188,12 +188,12 @@ public class HtmlStyleCollection
    * @param style the HtmlCellStyle, that should be translated.
    * @return the generated stylesheet definition.
    */
-  public String createStyleSheetDefinition(HtmlCellStyle style)
+  public String createStyleSheetDefinition(final HtmlCellStyle style)
   {
-    FontDefinition font = style.getFont();
-    String colorValue = getColorString(style.getFontColor());
+    final FontDefinition font = style.getFont();
+    final String colorValue = getColorString(style.getFontColor());
 
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("font-family:");
     b.append(translateFontName(font));
     b.append("; font-size:");
@@ -240,7 +240,7 @@ public class HtmlStyleCollection
    * @param ea the element alignment
    * @return the translated alignment name.
    */
-  private String translateHorizontalAlignment(ElementAlignment ea)
+  private String translateHorizontalAlignment(final ElementAlignment ea)
   {
     if (ea == ElementAlignment.RIGHT)
     {
@@ -260,7 +260,7 @@ public class HtmlStyleCollection
    * @param ea the element alignment
    * @return the translated alignment name.
    */
-  private String translateVerticalAlignment(ElementAlignment ea)
+  private String translateVerticalAlignment(final ElementAlignment ea)
   {
     if (ea == ElementAlignment.BOTTOM)
     {
@@ -281,7 +281,7 @@ public class HtmlStyleCollection
    * @param color the AWTColor that should be translated.
    * @return the translated html color definition
    */
-  private String getColorString(Color color)
+  private String getColorString(final Color color)
   {
     try
     {
@@ -301,13 +301,13 @@ public class HtmlStyleCollection
    * @param bg the background definition, that should be translated.
    * @return the generated stylesheet definition.
    */
-  public String getBackgroundStyle(TableCellBackground bg)
+  public String getBackgroundStyle(final TableCellBackground bg)
   {
-    ArrayList style = new ArrayList();
-    Color c = bg.getColor();
+    final ArrayList style = new ArrayList();
+    final Color c = bg.getColor();
     if (c != null)
     {
-      StringBuffer b = new StringBuffer();
+      final StringBuffer b = new StringBuffer();
       b.append("background-color:");
       b.append(getColorString(c));
       style.add(b.toString());
@@ -315,7 +315,7 @@ public class HtmlStyleCollection
 
     if (bg.getColorTop() != null)
     {
-      StringBuffer b = new StringBuffer();
+      final StringBuffer b = new StringBuffer();
       b.append("border-top: ");
       b.append(bg.getBorderSizeTop());
       b.append("pt solid ");
@@ -325,7 +325,7 @@ public class HtmlStyleCollection
 
     if (bg.getColorBottom() != null)
     {
-      StringBuffer b = new StringBuffer();
+      final StringBuffer b = new StringBuffer();
       b.append("border-bottom: ");
       b.append(bg.getBorderSizeBottom());
       b.append("pt solid ");
@@ -335,7 +335,7 @@ public class HtmlStyleCollection
 
     if (bg.getColorLeft() != null)
     {
-      StringBuffer b = new StringBuffer();
+      final StringBuffer b = new StringBuffer();
       b.append("border-left: ");
       b.append(bg.getBorderSizeLeft());
       b.append("pt solid ");
@@ -345,7 +345,7 @@ public class HtmlStyleCollection
 
     if (bg.getColorRight() != null)
     {
-      StringBuffer b = new StringBuffer();
+      final StringBuffer b = new StringBuffer();
       b.append("border-right: ");
       b.append(bg.getBorderSizeRight());
       b.append("pt solid ");
@@ -353,8 +353,8 @@ public class HtmlStyleCollection
       style.add(b.toString());
     }
 
-    StringBuffer b = new StringBuffer();
-    Iterator styles = style.iterator();
+    final StringBuffer b = new StringBuffer();
+    final Iterator styles = style.iterator();
     while (styles.hasNext())
     {
       b.append(styles.next());

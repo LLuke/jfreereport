@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.7 2003/06/13 16:19:47 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.8 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
     try
     {
       //Log.debug ("Open URL: " + url, new Exception());
-      InputStream in = new BufferedInputStream(url.openStream());
+      final InputStream in = new BufferedInputStream(url.openStream());
       readData(in);
       in.close();
     }
@@ -109,22 +109,22 @@ public class SwingIconsDemoTableModel extends IconTableModel
    *
    * @param in  the input stream.
    */
-  private void readData(InputStream in)
+  private void readData(final InputStream in)
   {
     try
     {
-      ZipInputStream iconJar = new ZipInputStream(in);
+      final ZipInputStream iconJar = new ZipInputStream(in);
 
       ZipEntry ze = iconJar.getNextEntry();
       while (ze != null)
       {
-        String fullName = ze.getName();
+        final String fullName = ze.getName();
         if (fullName.endsWith(".gif"))
         {
-          String category = getCategory(fullName);
-          String name = getName(fullName);
-          Image image = getImage(iconJar);
-          Long bytes = new Long(ze.getSize());
+          final String category = getCategory(fullName);
+          final String name = getName(fullName);
+          final Image image = getImage(iconJar);
+          final Long bytes = new Long(ze.getSize());
           //Log.debug ("Add Icon: " + name);
           addIconEntry(name, category, image, bytes);
         }
@@ -145,14 +145,14 @@ public class SwingIconsDemoTableModel extends IconTableModel
    *
    * @return The image.
    */
-  private Image getImage(InputStream in)
+  private Image getImage(final InputStream in)
   {
     Image result = null;
-    ByteArrayOutputStream byteIn = new ByteArrayOutputStream();
+    final ByteArrayOutputStream byteIn = new ByteArrayOutputStream();
     try
     {
       IOUtils.getInstance().copyStreams(in, byteIn);
-      ImageIcon temp = new ImageIcon(byteIn.toByteArray());
+      final ImageIcon temp = new ImageIcon(byteIn.toByteArray());
       result = temp.getImage();
     }
     catch (IOException e)
@@ -169,10 +169,10 @@ public class SwingIconsDemoTableModel extends IconTableModel
    *
    * @return The category extracted from the file name.
    */
-  private String getCategory(String fullName)
+  private String getCategory(final String fullName)
   {
-    int start = fullName.indexOf("/") + 1;
-    int end = fullName.lastIndexOf("/");
+    final int start = fullName.indexOf("/") + 1;
+    final int end = fullName.lastIndexOf("/");
     return fullName.substring(start, end);
   }
 
@@ -183,10 +183,10 @@ public class SwingIconsDemoTableModel extends IconTableModel
    *
    * @return The name extracted from the full name.
    */
-  private String getName(String fullName)
+  private String getName(final String fullName)
   {
-    int start = fullName.lastIndexOf("/") + 1;
-    int end = fullName.indexOf(".");
+    final int start = fullName.lastIndexOf("/") + 1;
+    final int end = fullName.indexOf(".");
     return fullName.substring(start, end);
   }
 

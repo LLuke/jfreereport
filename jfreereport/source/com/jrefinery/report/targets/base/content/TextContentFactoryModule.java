@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.11 2003/06/10 16:07:54 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.12 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class TextContentFactoryModule implements ContentFactoryModule
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType)
+  public boolean canHandleContent(final String contentType)
   {
     return contentType.equalsIgnoreCase("text/plain");
   }
@@ -88,11 +88,11 @@ public class TextContentFactoryModule implements ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem creating the content.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
-                                         LayoutSupport ot)
+  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
+                                         final LayoutSupport ot)
       throws ContentCreationException
   {
-    String text = (String) e.getValue();
+    final String text = (String) e.getValue();
     if (text == null)
     {
       return null;
@@ -102,12 +102,12 @@ public class TextContentFactoryModule implements ContentFactoryModule
       return null;
     }
 
-    Point2D point = bounds.getAbsolutePosition();
+    final Point2D point = bounds.getAbsolutePosition();
 
     // TextElement has a defined width (Max(MinSize, PrefSize).
     // and a maximum height (Min(MaxSize, PrefSize).
 
-    Dimension2D prefSize = bounds.getPreferredSize();
+    final Dimension2D prefSize = bounds.getPreferredSize();
     double width = bounds.getMinimumSize().getWidth();
     double height = bounds.getMaximumSize().getHeight();
     if (prefSize != null)
@@ -115,23 +115,23 @@ public class TextContentFactoryModule implements ContentFactoryModule
       width = Math.max(prefSize.getWidth(), width);
       height = Math.min(prefSize.getHeight(), height);
     }
-    Dimension2D dim = new FloatDimension((float) width, (float) height);
+    final Dimension2D dim = new FloatDimension((float) width, (float) height);
 
     if (dim.getWidth() == 0 && dim.getHeight() == 0)
     {
       return null;
     }
 
-    FontDefinition f = e.getStyle().getFontDefinitionProperty();
-    Rectangle2D tBounds = new Rectangle2D.Float((float) point.getX(),
+    final FontDefinition f = e.getStyle().getFontDefinitionProperty();
+    final Rectangle2D tBounds = new Rectangle2D.Float((float) point.getX(),
         (float) point.getY(),
         (float) dim.getWidth(),
         (float) dim.getHeight());
 
-    Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
+    final Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try
     {
-      TextContent tc = new TextContent(text, lh.floatValue(), tBounds,
+      final TextContent tc = new TextContent(text, lh.floatValue(), tBounds,
           ot.createTextSizeCalculator(f));
       return tc;
     }

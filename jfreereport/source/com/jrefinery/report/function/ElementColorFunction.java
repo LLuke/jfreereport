@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.10 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.11 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -91,7 +91,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    * @param name The element name.
    * @see com.jrefinery.report.Band#getElement(String)
    */
-  public void setElement(String name)
+  public void setElement(final String name)
   {
     setProperty(ELEMENT_PROPERTY, name);
   }
@@ -125,7 +125,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -162,7 +162,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    *
    * @param elementColorTrue  the color.
    */
-  public void setElementColorTrue(Color elementColorTrue)
+  public void setElementColorTrue(final Color elementColorTrue)
   {
     if (elementColorTrue == null)
     {
@@ -185,7 +185,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    *
    * @param elementColorFalse  the color.
    */
-  public void setElementColorFalse(Color elementColorFalse)
+  public void setElementColorFalse(final Color elementColorFalse)
   {
     if (elementColorFalse == null)
     {
@@ -228,23 +228,23 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
       // dont do anything if there is no printing done ...
       return;
     }
-    Band b = event.getReport().getItemBand();
-    Element e = FunctionUtilities.findElement(b, getElement());
+    final Band b = event.getReport().getItemBand();
+    final Element e = FunctionUtilities.findElement(b, getElement());
     if (e == null)
     {
       // there is no such element ! (we searched it by its name)
       return;
     }
 
-    Object o = event.getDataRow().get(getField());
-    boolean value;
+    final Object o = event.getDataRow().get(getField());
+    final boolean value;
     if (o == null)
     {
       value = false;
@@ -282,7 +282,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    * @param out the output stream where to write the object.
    * @throws IOException if errors occur while writing the stream.
    */
-  private void writeObject(ObjectOutputStream out)
+  private void writeObject(final ObjectOutputStream out)
       throws IOException
   {
     out.defaultWriteObject();
@@ -298,7 +298,7 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
    * @throws ClassNotFoundException if a class definition for a serialized object
    * could not be found.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(final ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();

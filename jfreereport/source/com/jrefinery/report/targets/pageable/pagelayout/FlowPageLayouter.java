@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.9 2003/05/14 22:26:39 taqua Exp $
+ * $Id: FlowPageLayouter.java,v 1.10 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -74,9 +74,9 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @return the layout task.
    */
-  public LayoutTask getTaskForEvent(ReportEvent event)
+  public LayoutTask getTaskForEvent(final ReportEvent event)
   {
-    LayoutTask task = new LayoutTask();
+    final LayoutTask task = new LayoutTask();
     tasks.push(task);
     return task;
   }
@@ -86,7 +86,7 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @param task  the task.
    */
-  public void endTask(LayoutTask task)
+  public void endTask(final LayoutTask task)
   {
     tasks.pop();
   }
@@ -96,17 +96,17 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @param event  the event.
    */
-  public void performLayout(ReportEvent event)
+  public void performLayout(final ReportEvent event)
   {
-    LayoutTask task = getTaskForEvent(event);
+    final LayoutTask task = getTaskForEvent(event);
 
     boolean isProceeding = false;
     do
     {
       for (int i = 0; i < taskWorker.size(); i++)
       {
-        LayoutAgent agent = (LayoutAgent) taskWorker.get(i);
-        LayoutAgentProgress progress = agent.processTask(task);
+        final LayoutAgent agent = (LayoutAgent) taskWorker.get(i);
+        final LayoutAgentProgress progress = agent.processTask(task);
         if (progress == LayoutAgentProgress.PROCESSING_COMPLETE)
         {
           isProceeding = true;
@@ -140,7 +140,7 @@ public class FlowPageLayouter extends PageLayouter
    *
    * @throws ReportProcessingException never.
    */
-  public void restoreSaveState(ReportState state)
+  public void restoreSaveState(final ReportState state)
       throws ReportProcessingException
   {
   }

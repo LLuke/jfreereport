@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.7 2003/06/12 23:17:13 taqua Exp $
+ * $Id: FunctionInitializeException.java,v 1.8 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class FunctionInitializeException extends ReportInitialisationException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public FunctionInitializeException(String message, Exception ex)
+  public FunctionInitializeException(final String message, final Exception ex)
   {
     super(message);
     parent = ex;
@@ -73,7 +73,7 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @param message  the exception message.
    */
-  public FunctionInitializeException(String message)
+  public FunctionInitializeException(final String message)
   {
     super(message);
   }
@@ -93,7 +93,7 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @param stream  the output stream.
    */
-  public void printStackTrace(PrintStream stream)
+  public void printStackTrace(final PrintStream stream)
   {
     super.printStackTrace(stream);
     if (getParent() != null)
@@ -108,7 +108,7 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @param writer  the writer.
    */
-  public void printStackTrace(PrintWriter writer)
+  public void printStackTrace(final PrintWriter writer)
   {
     super.printStackTrace(writer);
     if (getParent() != null)

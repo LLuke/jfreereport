@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.15 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -132,7 +132,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public ReportConfigHandler(Parser parser, String finishTag)
+  public ReportConfigHandler(final Parser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -154,7 +154,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
@@ -186,7 +186,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // is not used ... ignore all events ..
   }
@@ -198,7 +198,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
     {
@@ -211,14 +211,14 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     else if (tagName.equals(CONFIGURATION_TAG))
     {
       // add all properties of the PropertyHandler to the report configuration
-      Properties p = currentPropertyFactory.getProperties();
-      ReportConfiguration rc = getReport().getReportConfiguration();
+      final Properties p = currentPropertyFactory.getProperties();
+      final ReportConfiguration rc = getReport().getReportConfiguration();
 
-      Enumeration pEnum = p.keys();
+      final Enumeration pEnum = p.keys();
       while (pEnum.hasMoreElements())
       {
-        String key = (String) pEnum.nextElement();
-        String value = p.getProperty(key);
+        final String key = (String) pEnum.nextElement();
+        final String value = p.getProperty(key);
         if (value != null)
         {
           rc.setConfigProperty(key, value);
@@ -267,9 +267,9 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private void handlePageFormat(Attributes atts) throws SAXException
+  private void handlePageFormat(final Attributes atts) throws SAXException
   {
-    JFreeReport report = getReport();
+    final JFreeReport report = getReport();
 
     PageFormat format = report.getDefaultPageFormat();
     float defTopMargin = (float) format.getImageableY();
@@ -286,7 +286,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     defLeftMargin = ParserUtil.parseFloat(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
     defRightMargin = ParserUtil.parseFloat(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
-    Paper p = format.getPaper();
+    final Paper p = format.getPaper();
     switch (format.getOrientation())
     {
       case PageFormat.PORTRAIT:
@@ -325,12 +325,12 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if there is an error parsing the report.
    */
-  private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
+  private PageFormat createPageFormat(final PageFormat format, final Attributes atts) throws SAXException
   {
-    String pageformatName = atts.getValue(PAGEFORMAT_ATT);
+    final String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
-    int orientationVal;
-    String orientation = atts.getValue(ORIENTATION_ATT);
+    final int orientationVal;
+    final String orientation = atts.getValue(ORIENTATION_ATT);
     if (orientation == null)
     {
       orientationVal = PageFormat.PORTRAIT;
@@ -354,7 +354,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     }
     if (pageformatName != null)
     {
-      Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
+      final Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
       if (p == null)
       {
         Log.warn("Unable to create the requested Paper. " + pageformatName);
@@ -365,10 +365,10 @@ public class ReportConfigHandler implements ElementDefinitionHandler
 
     if (atts.getValue(WIDTH_ATT) != null && atts.getValue(HEIGHT_ATT) != null)
     {
-      int[] pageformatData = new int[2];
+      final int[] pageformatData = new int[2];
       pageformatData[0] = ParserUtil.parseInt(atts.getValue(WIDTH_ATT), "No Width set");
       pageformatData[1] = ParserUtil.parseInt(atts.getValue(HEIGHT_ATT), "No Height set");
-      Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
+      final Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
       if (p == null)
       {
         Log.warn("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "

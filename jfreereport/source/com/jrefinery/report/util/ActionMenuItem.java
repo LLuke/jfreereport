@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionMenuItem.java,v 1.12 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ActionMenuItem.java,v 1.13 2003/06/27 14:25:25 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -73,7 +73,7 @@ public class ActionMenuItem extends JMenuItem
      *
      * @param event  the property change event.
      */
-    public void propertyChange(PropertyChangeEvent event)
+    public void propertyChange(final PropertyChangeEvent event)
     {
       try
       {
@@ -95,34 +95,34 @@ public class ActionMenuItem extends JMenuItem
               getAction().getValue(Action.SHORT_DESCRIPTION));
         }
 
-        Action ac = getAction();
+        final Action ac = getAction();
         if (event.getPropertyName().equals(ActionDowngrade.ACCELERATOR_KEY))
         {
-          KeyStroke oldVal = (KeyStroke) event.getOldValue();
+          final KeyStroke oldVal = (KeyStroke) event.getOldValue();
           if (oldVal != null)
           {
             unregisterKeyboardAction(oldVal);
           }
-          Object o = ac.getValue(ActionDowngrade.ACCELERATOR_KEY);
+          final Object o = ac.getValue(ActionDowngrade.ACCELERATOR_KEY);
           if (o instanceof KeyStroke && o != null)
           {
-            KeyStroke k = (KeyStroke) o;
+            final KeyStroke k = (KeyStroke) o;
             registerKeyboardAction(ac, k, WHEN_IN_FOCUSED_WINDOW);
           }
         }
         else if (event.getPropertyName().equals(ActionDowngrade.MNEMONIC_KEY))
         {
-          Object o = ac.getValue(ActionDowngrade.MNEMONIC_KEY);
+          final Object o = ac.getValue(ActionDowngrade.MNEMONIC_KEY);
           if (o != null)
           {
             if (o instanceof Character)
             {
-              Character c = (Character) o;
+              final Character c = (Character) o;
               setMnemonic(c.charValue());
             }
             else if (o instanceof Integer)
             {
-              Integer c = (Integer) o;
+              final Integer c = (Integer) o;
               setMnemonic(c.intValue());
             }
           }
@@ -147,7 +147,7 @@ public class ActionMenuItem extends JMenuItem
    *
    * @param icon  the icon.
    */
-  public ActionMenuItem(Icon icon)
+  public ActionMenuItem(final Icon icon)
   {
     super(icon);
   }
@@ -157,7 +157,7 @@ public class ActionMenuItem extends JMenuItem
    *
    * @param text  the label.
    */
-  public ActionMenuItem(String text)
+  public ActionMenuItem(final String text)
   {
     super(text);
   }
@@ -168,7 +168,7 @@ public class ActionMenuItem extends JMenuItem
    * @param text  the label.
    * @param icon  the icon.
    */
-  public ActionMenuItem(String text, Icon icon)
+  public ActionMenuItem(final String text, final Icon icon)
   {
     super(text, icon);
   }
@@ -179,7 +179,7 @@ public class ActionMenuItem extends JMenuItem
    * @param text  the label.
    * @param i  the mnemonic.
    */
-  public ActionMenuItem(String text, int i)
+  public ActionMenuItem(final String text, final int i)
   {
     super(text, i);
   }
@@ -189,7 +189,7 @@ public class ActionMenuItem extends JMenuItem
    *
    * @param action  the action.
    */
-  public ActionMenuItem(Action action)
+  public ActionMenuItem(final Action action)
   {
     setAction(action);
   }
@@ -225,7 +225,7 @@ public class ActionMenuItem extends JMenuItem
    *
    * @param b the new enable-state of this menuitem
    */
-  public void setEnabled(boolean b)
+  public void setEnabled(final boolean b)
   {
     super.setEnabled(b);
     if (getAction() != null)
@@ -247,18 +247,18 @@ public class ActionMenuItem extends JMenuItem
    *
    * @param newAction the new action
    */
-  public void setAction(Action newAction)
+  public void setAction(final Action newAction)
   {
-    Action oldAction = getAction();
+    final Action oldAction = getAction();
     if (oldAction != null)
     {
       removeActionListener(oldAction);
       oldAction.removePropertyChangeListener(getPropertyChangeHandler());
 
-      Object o = oldAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
+      final Object o = oldAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
       if (o instanceof KeyStroke && o != null)
       {
-        KeyStroke k = (KeyStroke) o;
+        final KeyStroke k = (KeyStroke) o;
         unregisterKeyboardAction(k);
       }
     }
@@ -278,12 +278,12 @@ public class ActionMenuItem extends JMenuItem
       {
         if (o instanceof Character)
         {
-          Character c = (Character) o;
+          final Character c = (Character) o;
           setMnemonic(c.charValue());
         }
         else if (o instanceof Integer)
         {
-          Integer c = (Integer) o;
+          final Integer c = (Integer) o;
           setMnemonic(c.intValue());
         }
       }
@@ -291,7 +291,7 @@ public class ActionMenuItem extends JMenuItem
       o = newAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
       if (o instanceof KeyStroke && o != null)
       {
-        KeyStroke k = (KeyStroke) o;
+        final KeyStroke k = (KeyStroke) o;
         registerKeyboardAction(newAction, k, WHEN_IN_FOCUSED_WINDOW);
       }
     }

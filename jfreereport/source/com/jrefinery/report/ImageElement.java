@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.21 2002/12/06 17:17:46 mungady Exp $
+ * $Id: ImageElement.java,v 1.22 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes:
  * --------
@@ -91,7 +91,7 @@ public class ImageElement extends Element
    *
    * @param scale  the flag.
    */
-  public void setScale(boolean scale)
+  public void setScale(final boolean scale)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.SCALE, scale);
   }
@@ -111,7 +111,7 @@ public class ImageElement extends Element
    *
    * @param kar the flag.
    */
-  public void setKeepAspectRatio(boolean kar)
+  public void setKeepAspectRatio(final boolean kar)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, kar);
   }

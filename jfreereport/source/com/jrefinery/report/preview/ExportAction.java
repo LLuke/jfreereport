@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.7 2003/06/26 19:55:56 taqua Exp $
+ * $Id: ExportAction.java,v 1.8 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * --------
@@ -64,7 +64,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
    *
    * @param plugin  the export plug-in.
    */
-  public ExportAction(ExportPlugin plugin)
+  public ExportAction(final ExportPlugin plugin)
   {
     if (plugin == null)
     {
@@ -113,7 +113,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
    *
    * @param report  the report.
    */
-  public void setReport(JFreeReport report)
+  public void setReport(final JFreeReport report)
   {
     this.report = report;
   }
@@ -123,7 +123,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
    *
    * @param e  the event.
    */
-  public void actionPerformed(ActionEvent e)
+  public void actionPerformed(final ActionEvent e)
   {
     if (plugin.isControlPlugin() == false)
     {
@@ -148,7 +148,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
    */
   public void run()
   {
-    boolean retval = plugin.performExport(report);
+    final boolean retval = plugin.performExport(report);
     if (plugin.isControlPlugin() == false && retval == false)
     {
       Log.info("Export failed: " + plugin.getFailureDescription());

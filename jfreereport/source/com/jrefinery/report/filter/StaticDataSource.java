@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.11 2003/06/19 18:44:09 taqua Exp $
+ * $Id: StaticDataSource.java,v 1.12 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @param o The value.
    */
-  public StaticDataSource(Object o)
+  public StaticDataSource(final Object o)
   {
     setValue(o);
   }
@@ -77,7 +77,7 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @param o The value.
    */
-  public void setValue(Object o)
+  public void setValue(final Object o)
   {
     this.value = o;
   }
@@ -110,7 +110,7 @@ public class StaticDataSource implements DataSource, Serializable
    * @param out the output stream where to write the object.
    * @throws IOException if errors occur while writing the stream.
    */
-  private void writeObject(ObjectOutputStream out)
+  private void writeObject(final ObjectOutputStream out)
       throws IOException
   {
     out.defaultWriteObject();
@@ -125,7 +125,7 @@ public class StaticDataSource implements DataSource, Serializable
    * @throws ClassNotFoundException if a class definition for a serialized object
    * could not be found.
    */
-  private void readObject(java.io.ObjectInputStream in)
+  private void readObject(final java.io.ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();

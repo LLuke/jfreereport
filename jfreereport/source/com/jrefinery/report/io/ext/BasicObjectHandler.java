@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.15 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param od  the object description.
    */
-  public BasicObjectHandler(Parser parser, String finishTag, ObjectDescription od)
+  public BasicObjectHandler(final Parser parser, final String finishTag, final ObjectDescription od)
   {
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
@@ -99,7 +99,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @throws SAXException  if a parser error occurs.
    */
-  public BasicObjectHandler(Parser parser, String finishTag, Class targetObject)
+  public BasicObjectHandler(final Parser parser, final String finishTag, final Class targetObject)
       throws SAXException
   {
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -107,7 +107,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
     this.finishTag = finishTag;
     this.buffer = new StringBuffer();
 
-    ClassFactory fact = (ClassFactory) getParser().getHelperObject(
+    final ClassFactory fact = (ClassFactory) getParser().getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
     objectDescription = fact.getDescriptionForClass(targetObject);
     if (objectDescription == null)
@@ -129,7 +129,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @throws SAXException as the basic object tag has no child elements.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     throw new SAXException("Element '" + finishTag + "' has no child-elements.");
   }
@@ -143,7 +143,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if an parser error occurs.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     buffer.append(ch, start, length);
   }
@@ -155,13 +155,13 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(finishTag) == false)
     {
       throw new SAXException("Expected tag '" + finishTag + "'");
     }
-    ObjectDescription od = getTargetObjectDescription();
+    final ObjectDescription od = getTargetObjectDescription();
     od.setParameter("value", entityParser.decodeEntities(buffer.toString()));
     getParser().popFactory().endElement(tagName);
   }

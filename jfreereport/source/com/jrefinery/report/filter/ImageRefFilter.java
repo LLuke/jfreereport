@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.13 2003/06/01 17:39:25 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.14 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @param dataSource The data source.
    */
-  public void setDataSource(DataSource dataSource)
+  public void setDataSource(final DataSource dataSource)
   {
     this.dataSource = dataSource;
   }
@@ -93,12 +93,12 @@ public class ImageRefFilter implements DataFilter, Serializable
    */
   public Object getValue()
   {
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     if (ds == null)
     {
       return null;
     }
-    Object o = ds.getValue();
+    final Object o = ds.getValue();
     if (o instanceof ImageReference)
     {
       return o;
@@ -132,7 +132,7 @@ public class ImageRefFilter implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ImageRefFilter r = (ImageRefFilter) super.clone();
+    final ImageRefFilter r = (ImageRefFilter) super.clone();
     if (dataSource != null)
     {
       r.dataSource = (DataSource) dataSource.clone();

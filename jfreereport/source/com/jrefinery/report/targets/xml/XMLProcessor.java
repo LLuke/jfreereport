@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.15 2003/05/02 12:40:44 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.16 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class XMLProcessor
    * @throws ReportProcessingException if the report could not be initialized
    * @throws FunctionInitializeException if the writer function could not be initialized.
    */
-  public XMLProcessor(JFreeReport report)
+  public XMLProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null)
@@ -98,7 +98,7 @@ public class XMLProcessor
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
 
-    XMLWriter lm = new XMLWriter();
+    final XMLWriter lm = new XMLWriter();
     lm.setName(XML_WRITER);
     this.report.addFunction(lm);
   }
@@ -130,7 +130,7 @@ public class XMLProcessor
    *
    * @param writer that should receive the generated output.
    */
-  public void setWriter(Writer writer)
+  public void setWriter(final Writer writer)
   {
     this.writer = writer;
   }
@@ -145,7 +145,7 @@ public class XMLProcessor
    */
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {
-    StartState startState = new StartState(getReport());
+    final StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
 
@@ -166,18 +166,18 @@ public class XMLProcessor
     // The pageformat will cause trouble in later versions, when printing over
     // multiple pages gets implemented. This property will be replaced by a more
     // suitable alternative.
-    PageFormat p = report.getDefaultPageFormat();
+    final PageFormat p = report.getDefaultPageFormat();
     state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.
-    XMLWriter w = (XMLWriter) state.getDataRow().get(XML_WRITER);
+    final XMLWriter w = (XMLWriter) state.getDataRow().get(XML_WRITER);
     w.setWriter(new OutputStreamWriter(new NullOutputStream()));
 
     // now process all function levels.
     // there is at least one level defined, as we added the CSVWriter
     // to the report.
-    Iterator it = startState.getLevels();
+    final Iterator it = startState.getLevels();
     if (it.hasNext() == false)
     {
       throw new IllegalStateException("No functions defined, invalid implementation.");
@@ -199,7 +199,7 @@ public class XMLProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      boolean failOnError = (level == -1)
+      final boolean failOnError = (level == -1)
           && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
@@ -251,7 +251,7 @@ public class XMLProcessor
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // finally prepeare the returned start state.
-    StartState sretval = (StartState) retval;
+    final StartState sretval = (StartState) retval;
     if (sretval == null)
     {
       throw new IllegalStateException("There was no valid pagination done.");
@@ -278,10 +278,10 @@ public class XMLProcessor
     {
       ReportState state = repaginate();
 
-      XMLWriter w = (XMLWriter) state.getDataRow().get(XML_WRITER);
+      final XMLWriter w = (XMLWriter) state.getDataRow().get(XML_WRITER);
       w.setWriter(getWriter());
 
-      boolean failOnError =
+      final boolean failOnError =
           getReport().getReportConfiguration().isStrictErrorHandling();
       ReportStateProgress progress = null;
       while (!state.isFinish())

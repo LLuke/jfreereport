@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.17 2003/06/19 18:44:11 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.18 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param file the filename of the root html file.
    * @throws IOException if an error occurs.
    */
-  public DirectoryHtmlFilesystem(File file)
+  public DirectoryHtmlFilesystem(final File file)
       throws IOException
   {
     this(file, file.getParentFile());
@@ -118,7 +118,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param dataDirectory the name of the data directory, where the files should be created.
    * @throws IOException if an error occurs.
    */
-  public DirectoryHtmlFilesystem(File file, File dataDirectory)
+  public DirectoryHtmlFilesystem(final File file, final File dataDirectory)
       throws IOException
   {
     this.usedNames = new HashMap();
@@ -172,7 +172,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param copyExternalImages true, if external referenced content should be copied into the
    *                           ZIP file, false otherwise.
    */
-  public void setCopyExternalImages(boolean copyExternalImages)
+  public void setCopyExternalImages(final boolean copyExternalImages)
   {
     this.copyExternalImages = copyExternalImages;
   }
@@ -204,9 +204,9 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param url the url that should be tested.
    * @return true, if the content type is supported by the browsers, false otherwise.
    */
-  protected boolean isSupportedImageFormat(URL url)
+  protected boolean isSupportedImageFormat(final URL url)
   {
-    String file = url.getFile();
+    final String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))
     {
       return true;
@@ -235,26 +235,26 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @throws IOException if IO errors occured while creating the reference.
    * @see DirectoryHtmlFilesystem#isSupportedImageFormat
    */
-  public HtmlReferenceData createImageReference(ImageReference reference)
+  public HtmlReferenceData createImageReference(final ImageReference reference)
       throws IOException
   {
     if (reference.getSourceURL() == null)
     {
-      WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+      final WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder(reference.getImage(),
+      final PngEncoder encoder = new PngEncoder(reference.getImage(),
           PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
-      byte[] data = encoder.pngEncode();
+      final byte[] data = encoder.pngEncode();
 
-      Object object = comparator.createCompareData(data);
+      final Object object = comparator.createCompareData(data);
       String name = (String) encodedImages.get(object);
       if (name == null)
       {
         // encode the picture ...
-        File dataFile = new File(dataDirectory, createName("picture") + ".png");
+        final File dataFile = new File(dataDirectory, createName("picture") + ".png");
         // a png encoder is included in JCommon ...
-        OutputStream in = new BufferedOutputStream(new FileOutputStream(dataFile));
+        final OutputStream in = new BufferedOutputStream(new FileOutputStream(dataFile));
         in.write(data);
         in.flush();
         in.close();
@@ -265,21 +265,21 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
     else if (isSupportedImageFormat(reference.getSourceURL()) == false)
     {
-      URL url = reference.getSourceURL();
+      final URL url = reference.getSourceURL();
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
-        WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
+        final WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
         obs.waitImageLoaded();
 
-        PngEncoder encoder = new PngEncoder(reference.getImage(),
+        final PngEncoder encoder = new PngEncoder(reference.getImage(),
             PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
-        byte[] data = encoder.pngEncode();
+        final byte[] data = encoder.pngEncode();
 
         // encode the picture ...
-        File dataFile = new File(dataDirectory, createName("picture") + ".png");
+        final File dataFile = new File(dataDirectory, createName("picture") + ".png");
         // a png encoder is included in JCommon ...
-        OutputStream in = new BufferedOutputStream(new FileOutputStream(dataFile));
+        final OutputStream in = new BufferedOutputStream(new FileOutputStream(dataFile));
         in.write(data);
         in.flush();
         in.close();
@@ -290,14 +290,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
     else if (isCopyExternalImages())
     {
-      URL url = reference.getSourceURL();
+      final URL url = reference.getSourceURL();
       String name = (String) usedURLs.get(url);
       if (name == null)
       {
-        File dataFile
+        final File dataFile
             = new File(dataDirectory, createName(IOUtils.getInstance().getFileName(url)));
-        InputStream urlIn = new BufferedInputStream(reference.getSourceURL().openStream());
-        OutputStream fout = new BufferedOutputStream(new FileOutputStream(dataFile));
+        final InputStream urlIn = new BufferedInputStream(reference.getSourceURL().openStream());
+        final OutputStream fout = new BufferedOutputStream(new FileOutputStream(dataFile));
         IOUtils.getInstance().copyStreams(urlIn, fout);
         urlIn.close();
         fout.close();
@@ -309,7 +309,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
     else
     {
-      String baseName = IOUtils.getInstance().createRelativeURL(reference.getSourceURL(),
+      final String baseName = IOUtils.getInstance().createRelativeURL(reference.getSourceURL(),
           dataDirectory.toURL());
       return new ImageReferenceData(baseName);
     }
@@ -321,7 +321,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @param base the basename.
    * @return the unique name generated using the basename.
    */
-  private String createName(String base)
+  private String createName(final String base)
   {
     CounterRef ref = (CounterRef) usedNames.get(base);
     if (ref == null)
@@ -345,14 +345,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
    * @return the generated HtmlReference, never null.
    * @throws IOException if IO errors occured while creating the reference.
    */
-  public HtmlReferenceData createCSSReference(String styleSheet)
+  public HtmlReferenceData createCSSReference(final String styleSheet)
       throws IOException
   {
-    File refFile = new File(dataDirectory, createName("style") + ".css");
-    OutputStream fout = new BufferedOutputStream(new FileOutputStream(refFile));
+    final File refFile = new File(dataDirectory, createName("style") + ".css");
+    final OutputStream fout = new BufferedOutputStream(new FileOutputStream(refFile));
     fout.write(styleSheet.getBytes());
     fout.close();
-    String baseName = IOUtils.getInstance().createRelativeURL(refFile.toURL(),
+    final String baseName = IOUtils.getInstance().createRelativeURL(refFile.toURL(),
         dataDirectory.toURL());
     return new HRefReferenceData(baseName);
   }

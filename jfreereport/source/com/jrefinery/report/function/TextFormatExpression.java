@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.10 2003/06/19 18:44:09 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.11 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -101,10 +101,10 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   private Object[] collectValues()
   {
-    Object[] retval = new Object[fieldList.size()];
+    final Object[] retval = new Object[fieldList.size()];
     for (int i = 0; i < fieldList.size(); i++)
     {
-      String field = (String) fieldList.get(i);
+      final String field = (String) fieldList.get(i);
       retval[i] = getDataRow().get(field);
     }
     return retval;
@@ -119,7 +119,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
   {
     super.initialize();
     fieldList.clear();
-    Iterator textFormatIterator = new PropertiesIterator(getProperties());
+    final Iterator textFormatIterator = new PropertiesIterator(getProperties());
     while (textFormatIterator.hasNext())
     {
       fieldList.add(textFormatIterator.next());
@@ -143,7 +143,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    *
    * @param pattern  the pattern string
    */
-  public void setPattern(String pattern)
+  public void setPattern(final String pattern)
   {
     setProperty(PATTERN_PROPERTY, pattern);
   }
@@ -157,7 +157,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   public Object clone() throws CloneNotSupportedException
   {
-    TextFormatExpression tex = (TextFormatExpression) super.clone();
+    final TextFormatExpression tex = (TextFormatExpression) super.clone();
     tex.fieldList = new ArrayList(fieldList);
     return tex;
   }

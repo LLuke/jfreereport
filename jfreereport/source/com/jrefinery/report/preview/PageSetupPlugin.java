@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.3 2003/06/26 19:55:56 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.4 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -88,10 +88,10 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return A boolean.
    */
-  public boolean performExport(JFreeReport report)
+  public boolean performExport(final JFreeReport report)
   {
-    PrinterJob pj = PrinterJob.getPrinterJob();
-    PageFormat pf = pj.pageDialog(report.getDefaultPageFormat());
+    final PrinterJob pj = PrinterJob.getPrinterJob();
+    final PageFormat pf = pj.pageDialog(report.getDefaultPageFormat());
     if (PageFormatFactory.isEqual(pf, report.getDefaultPageFormat()))
     {
       return false;

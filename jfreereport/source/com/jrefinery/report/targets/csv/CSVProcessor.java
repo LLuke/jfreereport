@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.14 2003/05/02 12:40:31 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.15 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,7 @@ public class CSVProcessor
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialisation failed.
    */
-  public CSVProcessor(JFreeReport report)
+  public CSVProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     this(report, report.getReportConfiguration().getConfigProperty(CSV_SEPARATOR, ","));
@@ -121,7 +121,7 @@ public class CSVProcessor
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialisation failed.
    */
-  public CSVProcessor(JFreeReport report, String separator)
+  public CSVProcessor(final JFreeReport report, final String separator)
       throws ReportProcessingException, FunctionInitializeException
   {
     this(report, separator, false);
@@ -141,7 +141,7 @@ public class CSVProcessor
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialization failed.
    */
-  public CSVProcessor(JFreeReport report, String separator, boolean writeDataRowNames)
+  public CSVProcessor(final JFreeReport report, final String separator, final boolean writeDataRowNames)
       throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null)
@@ -160,7 +160,7 @@ public class CSVProcessor
     // Add the writer function as highest priority function to the report.
     // this function is executed as last function, after all other function values
     // have been calculated.
-    CSVWriter lm = new CSVWriter();
+    final CSVWriter lm = new CSVWriter();
     lm.setName(CSV_WRITER);
     lm.setSeparator(separator);
     lm.setWriteDataRowNames(writeDataRowNames);
@@ -194,7 +194,7 @@ public class CSVProcessor
    *
    * @param writer the writer.
    */
-  public void setWriter(Writer writer)
+  public void setWriter(final Writer writer)
   {
     this.writer = writer;
   }
@@ -210,7 +210,7 @@ public class CSVProcessor
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {
     // every report processing starts with an StartState.
-    StartState startState = new StartState(getReport());
+    final StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
 
@@ -231,18 +231,18 @@ public class CSVProcessor
     // The pageformat will cause trouble in later versions, when printing over
     // multiple pages gets implemented. This property will be replaced by a more
     // suitable alternative.
-    PageFormat p = getReport().getDefaultPageFormat();
+    final PageFormat p = getReport().getDefaultPageFormat();
     state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.
-    CSVWriter w = (CSVWriter) state.getDataRow().get(CSV_WRITER);
+    final CSVWriter w = (CSVWriter) state.getDataRow().get(CSV_WRITER);
     w.setWriter(new OutputStreamWriter(new NullOutputStream()));
 
     // now process all function levels.
     // there is at least one level defined, as we added the CSVWriter
     // to the report.
-    Iterator it = startState.getLevels();
+    final Iterator it = startState.getLevels();
     if (it.hasNext() == false)
     {
       throw new IllegalStateException("No functions defined, invalid implementation.");
@@ -264,7 +264,7 @@ public class CSVProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      boolean failOnError
+      final boolean failOnError
           = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
 
       while (!state.isFinish())
@@ -317,7 +317,7 @@ public class CSVProcessor
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // finally prepeare the returned start state.
-    StartState sretval = (StartState) retval;
+    final StartState sretval = (StartState) retval;
     if (sretval == null)
     {
       throw new IllegalStateException("There was no valid pagination done.");
@@ -344,10 +344,10 @@ public class CSVProcessor
     {
       ReportState state = repaginate();
 
-      CSVWriter w = (CSVWriter) state.getDataRow().get(CSV_WRITER);
+      final CSVWriter w = (CSVWriter) state.getDataRow().get(CSV_WRITER);
       w.setWriter(getWriter());
 
-      boolean failOnError =
+      final boolean failOnError =
           getReport().getReportConfiguration().isStrictErrorHandling();
       ReportStateProgress progress = null;
       while (!state.isFinish())

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.14 2003/06/12 19:49:39 taqua Exp $
+ * $Id: ReportWriter.java,v 1.15 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class ReportWriter
    * @param report  the report.
    * @param encoding  the encoding.
    */
-  public ReportWriter(JFreeReport report, String encoding)
+  public ReportWriter(final JFreeReport report, final String encoding)
   {
     dataSourceCollector = new DataSourceCollector();
     elementFactoryCollector = new ElementFactoryCollector();
@@ -113,7 +113,7 @@ public class ReportWriter
    *
    * @param dsf  the data-source factory.
    */
-  public void addDataSourceFactory(DataSourceFactory dsf)
+  public void addDataSourceFactory(final DataSourceFactory dsf)
   {
     dataSourceCollector.addFactory(dsf);
   }
@@ -133,7 +133,7 @@ public class ReportWriter
    *
    * @param ef  the element factory.
    */
-  public void addElementFactory(ElementFactory ef)
+  public void addElementFactory(final ElementFactory ef)
   {
     elementFactoryCollector.addFactory(ef);
   }
@@ -153,7 +153,7 @@ public class ReportWriter
    *
    * @param cf  the class factory.
    */
-  public void addClassFactoryFactory(ClassFactory cf)
+  public void addClassFactoryFactory(final ClassFactory cf)
   {
     classFactoryCollector.addFactory(cf);
   }
@@ -173,7 +173,7 @@ public class ReportWriter
    *
    * @param skf  the style-key factory.
    */
-  public void addStyleKeyFactory(StyleKeyFactory skf)
+  public void addStyleKeyFactory(final StyleKeyFactory skf)
   {
     styleKeyFactoryCollector.addFactory(skf);
   }
@@ -193,7 +193,7 @@ public class ReportWriter
    *
    * @param collection  the template collection.
    */
-  public void addTemplateCollection(TemplateCollection collection)
+  public void addTemplateCollection(final TemplateCollection collection)
   {
     templateCollector.addTemplateCollection(collection);
   }
@@ -226,9 +226,9 @@ public class ReportWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(Writer w) throws IOException, ReportWriterException
+  public void write(final Writer w) throws IOException, ReportWriterException
   {
-    ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
+    final ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
 
     // configure all factories with the current report configuration ...
     dataSourceCollector.configure(report.getReportConfiguration());

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateExcelCellData.java,v 1.8 2003/05/09 17:12:13 taqua Exp $
+ * $Id: DateExcelCellData.java,v 1.9 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -59,9 +59,9 @@ public class DateExcelCellData extends ExcelCellData
    * @param style  the cell style.
    * @param value  the date value.
    */
-  public DateExcelCellData(Rectangle2D elementBounds,
-                           ExcelDataCellStyle style,
-                           Date value)
+  public DateExcelCellData(final Rectangle2D elementBounds,
+                           final ExcelDataCellStyle style,
+                           final Date value)
   {
     super(elementBounds, style);
     this.date = value;
@@ -72,7 +72,7 @@ public class DateExcelCellData extends ExcelCellData
    *
    * @param cell the cell, that should be formated.
    */
-  public void applyContent(HSSFCell cell)
+  public void applyContent(final HSSFCell cell)
   {
     cell.setCellValue(date);
   }

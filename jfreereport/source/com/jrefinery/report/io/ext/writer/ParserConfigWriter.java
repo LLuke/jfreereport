@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.8 2003/06/10 16:07:52 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.9 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
-  public ParserConfigWriter(ReportWriter reportWriter, int indentLevel)
+  public ParserConfigWriter(final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
   }
@@ -71,7 +71,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void write(Writer writer) throws IOException
+  public void write(final Writer writer) throws IOException
   {
     writeTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
     writer.write(getLineSeparator());
@@ -102,16 +102,16 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeFactory(Writer w, String tagName, Iterator it)
+  public void writeFactory(final Writer w, final String tagName, final Iterator it)
       throws IOException
   {
     while (it.hasNext())
     {
-      Object itObject = it.next();
+      final Object itObject = it.next();
       try
       {
-        Class itClass = itObject.getClass();
-        Constructor c = itClass.getConstructor(new Class[0]);
+        final Class itClass = itObject.getClass();
+        final Constructor c = itClass.getConstructor(new Class[0]);
         if (c == null)
         {
           continue;
@@ -124,7 +124,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
         continue;
       }
 
-      String className = itObject.getClass().getName();
+      final String className = itObject.getClass().getName();
       writeTag(w, tagName, ParserConfigHandler.CLASS_ATTRIBUTE, className, CLOSE);
     }
   }

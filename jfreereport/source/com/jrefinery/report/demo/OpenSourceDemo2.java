@@ -83,7 +83,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    *
    * @param title  the frame title.
    */
-  public OpenSourceDemo2(String title)
+  public OpenSourceDemo2(final String title)
   {
     setTitle(title);
     setJMenuBar(createMenuBar());
@@ -97,11 +97,11 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    */
   public JMenuBar createMenuBar()
   {
-    JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = createJMenuItem("menu.file");
+    final JMenuBar mb = new JMenuBar();
+    final JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
+    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -117,11 +117,11 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    */
   public JPanel createContent()
   {
-    JPanel content = new JPanel(new BorderLayout());
+    final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     this.data = new OpenSourceProjects();
-    JTable table = new JTable(data);
-    JScrollPane scrollPane = new JScrollPane(table);
+    final JTable table = new JTable(data);
+    final JScrollPane scrollPane = new JScrollPane(table);
     content.add(scrollPane);
     return content;
   }
@@ -134,10 +134,10 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
 
     try
     {
-      JFreeReport report = createReport();
+      final JFreeReport report = createReport();
 
       report.setData(this.data);
-      PreviewDialog frame = new PreviewDialog(report);
+      final PreviewDialog frame = new PreviewDialog(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
@@ -161,14 +161,14 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
   public static JFreeReport createReport()
   {
 
-    JFreeReport result = new JFreeReport();
+    final JFreeReport result = new JFreeReport();
 
-    ReportConfiguration config = result.getReportConfiguration();
+    final ReportConfiguration config = result.getReportConfiguration();
     config.setConfigProperty("com.jrefinery.report.preview.PreferredWidth", "640.0");
     config.setConfigProperty("com.jrefinery.report.preview.PreferredHeight", "480.0");
 
     // set up the functions...
-    PageFunction f1 = new PageFunction("page_number");
+    final PageFunction f1 = new PageFunction("page_number");
     try
     {
       result.addFunction(f1);
@@ -179,11 +179,11 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
     }
 
     // set up the item band...
-    ItemBand itemBand = result.getItemBand();
+    final ItemBand itemBand = result.getItemBand();
     configureItemBand(itemBand);
 
     // set up the page footer...
-    PageFooter pageFooter = result.getPageFooter();
+    final PageFooter pageFooter = result.getPageFooter();
     configurePageFooter(pageFooter);
 
     return result;
@@ -195,12 +195,12 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    *
    * @param band  the item band to be configured.
    */
-  public static void configureItemBand(ItemBand band)
+  public static void configureItemBand(final ItemBand band)
   {
-    ElementStyleSheet ess = band.getBandDefaults();
+    final ElementStyleSheet ess = band.getBandDefaults();
     ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));
 
-    TextElement field1 = ItemFactory.createStringElement(
+    final TextElement field1 = ItemFactory.createStringElement(
         "Name_Field",
         new Rectangle2D.Double(0.0, 7.0, 140.0, 10.0),
         Color.black,
@@ -214,7 +214,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
         10, true, false, false, false));
     band.addElement(field1);
 
-    TextElement field2 = ItemFactory.createStringElement(
+    final TextElement field2 = ItemFactory.createStringElement(
         "URL_Field",
         new Rectangle2D.Double(0.0, 9.0, -100.0, 10.0),
         Color.black,
@@ -227,7 +227,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
     field2.getStyle().setFontDefinitionProperty(new FontDefinition("Monospaced", 8));
     band.addElement(field2);
 
-    TextElement field3 = ItemFactory.createStringElement(
+    final TextElement field3 = ItemFactory.createStringElement(
         "Description_Field",
         new Rectangle2D.Double(0.0, 20.0, -100.0, 0.0),
         Color.black,
@@ -248,13 +248,13 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    *
    * @param footer  the page footer to be configured.
    */
-  public static void configurePageFooter(PageFooter footer)
+  public static void configurePageFooter(final PageFooter footer)
   {
-    ElementStyleSheet ess = footer.getBandDefaults();
+    final ElementStyleSheet ess = footer.getBandDefaults();
     ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));
 
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new Dimension(0, 20));
-    TextElement pageNumberField = ItemFactory.createNumberElement("PageNumber_Field",
+    final TextElement pageNumberField = ItemFactory.createNumberElement("PageNumber_Field",
         new Rectangle2D.Double(0.0, 0.0, -100.0, -100.0),
         Color.black,
         ElementAlignment.RIGHT.getOldAlignment(),
@@ -273,9 +273,9 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    OpenSourceDemo2 frame = new OpenSourceDemo2("Open Source Demo 2");
+    final OpenSourceDemo2 frame = new OpenSourceDemo2("Open Source Demo 2");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

@@ -25,7 +25,7 @@
  * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: OutputTargetException.java,v 1.6 2003/02/09 18:43:05 taqua Exp $
+ * $Id: OutputTargetException.java,v 1.7 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public class OutputTargetException extends SizeCalculatorException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public OutputTargetException(String message, Exception ex)
+  public OutputTargetException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -62,7 +62,7 @@ public class OutputTargetException extends SizeCalculatorException
    *
    * @param message  the exception message.
    */
-  public OutputTargetException(String message)
+  public OutputTargetException(final String message)
   {
     super(message);
   }

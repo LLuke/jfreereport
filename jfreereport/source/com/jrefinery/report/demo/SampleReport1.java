@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.21 2003/06/01 19:11:41 taqua Exp $
+ * $Id: SampleReport1.java,v 1.22 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes:
  * --------
@@ -86,7 +86,7 @@ public class SampleReport1
    */
   private PageHeader createPageHeader()
   {
-    PageHeader header = (PageHeader)
+    final PageHeader header = (PageHeader)
         ItemFactory.createPageHeader(18, new Font("Serif", Font.PLAIN, 10), null, true, false);
     // is by default true, but it is defined in the xml template, so I add it here too.
     header.addElement(
@@ -150,11 +150,11 @@ public class SampleReport1
    */
   private PageFooter createPageFooter()
   {
-    PageFooter pageFooter = (PageFooter) ItemFactory.createPageFooter(
+    final PageFooter pageFooter = (PageFooter) ItemFactory.createPageFooter(
         30, new Font("Dialog", Font.PLAIN, 10), null, true, true);
     pageFooter.addElement(ItemFactory.createRectangleShapeElement(
         "", Color.black, null, new Rectangle2D.Float(0, 0, -100, -100), true, false));
-    Element field3 = ItemFactory.createLabelElement(
+    final Element field3 = ItemFactory.createLabelElement(
         "Label 2",
         new Rectangle2D.Float(10, 0, WIDTH, 0),
         null,
@@ -176,7 +176,7 @@ public class SampleReport1
    */
   private ReportFooter createReportFooter()
   {
-    ReportFooter footer = (ReportFooter)
+    final ReportFooter footer = (ReportFooter)
         ItemFactory.createReportFooter(48, new Font("Serif", Font.BOLD, 16), null, false);
     footer.addElement(
         ItemFactory.createLabelElement(
@@ -199,7 +199,7 @@ public class SampleReport1
    */
   private ReportHeader createReportHeader()
   {
-    ReportHeader header = (ReportHeader)
+    final ReportHeader header = (ReportHeader)
         ItemFactory.createReportHeader(48, new Font("Serif", Font.BOLD, 20), null, false);
     header.addElement(
         ItemFactory.createLabelElement(
@@ -237,7 +237,7 @@ public class SampleReport1
    */
   private ItemBand createItemBand()
   {
-    ItemBand items = (ItemBand)
+    final ItemBand items = (ItemBand)
         ItemFactory.createItemBand(10, new Font("Monospaced", Font.PLAIN, 8), Color.black);
     items.addElement(
         ItemFactory.createRectangleShapeElement(
@@ -329,15 +329,15 @@ public class SampleReport1
    */
   private ExpressionCollection createFunctions() throws FunctionInitializeException
   {
-    ExpressionCollection functions = new ExpressionCollection();
+    final ExpressionCollection functions = new ExpressionCollection();
 
-    ItemSumFunction sum = new ItemSumFunction();
+    final ItemSumFunction sum = new ItemSumFunction();
     sum.setName("sum");
     sum.setProperty("field", "Population");
     sum.setProperty("group", "Continent Group");
     functions.add(sum);
 
-    ElementVisibilitySwitchFunction backgroundTrigger = new ElementVisibilitySwitchFunction();
+    final ElementVisibilitySwitchFunction backgroundTrigger = new ElementVisibilitySwitchFunction();
     backgroundTrigger.setName("backgroundTrigger");
     backgroundTrigger.setProperty("element", "background");
     functions.add(backgroundTrigger);
@@ -357,7 +357,7 @@ public class SampleReport1
    */
   private GroupList createGroups()
   {
-    GroupList list = new GroupList();
+    final GroupList list = new GroupList();
     list.add(createContinentGroup());
     return list;
   }
@@ -387,11 +387,11 @@ public class SampleReport1
    */
   private Group createContinentGroup()
   {
-    Group continentGroup = new Group();
+    final Group continentGroup = new Group();
     continentGroup.setName("Continent Group");
     continentGroup.addField("Continent");
 
-    GroupHeader header = (GroupHeader)
+    final GroupHeader header = (GroupHeader)
         ItemFactory.createGroupHeader(18, new Font("Monospaced", Font.BOLD, 9), null, false);
     header.addElement(
         ItemFactory.createLabelElement(
@@ -426,7 +426,7 @@ public class SampleReport1
     );
     continentGroup.setHeader(header);
 
-    GroupFooter footer = (GroupFooter)
+    final GroupFooter footer = (GroupFooter)
         ItemFactory.createGroupFooter(18, new Font("Monospaced", Font.BOLD, 9), null);
     footer.addElement(
         ItemFactory.createLabelElement(
@@ -465,7 +465,7 @@ public class SampleReport1
    */
   public JFreeReport createReport() throws FunctionInitializeException
   {
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.setName("Sample Report 1");
     report.setReportFooter(createReportFooter());
     report.setReportHeader(createReportHeader());

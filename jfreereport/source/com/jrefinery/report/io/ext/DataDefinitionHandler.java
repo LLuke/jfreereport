@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataDefinitionHandler.java,v 1.7 2003/05/02 12:40:02 taqua Exp $
+ * $Id: DataDefinitionHandler.java,v 1.8 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class DataDefinitionHandler implements ElementDefinitionHandler
    *
    * @param parser  the parser.
    */
-  public DataDefinitionHandler(Parser parser)
+  public DataDefinitionHandler(final Parser parser)
   {
     this.parser = parser;
   }
@@ -69,7 +69,7 @@ public class DataDefinitionHandler implements ElementDefinitionHandler
    * @param tagName  the tag name.
    * @param attrs  the attributes.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
   {
   }
 
@@ -80,7 +80,7 @@ public class DataDefinitionHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
   }
 
@@ -89,7 +89,7 @@ public class DataDefinitionHandler implements ElementDefinitionHandler
    *
    * @param tagName  the tag name.
    */
-  public void endElement(String tagName)
+  public void endElement(final String tagName)
   {
   }
 
@@ -108,7 +108,7 @@ public class DataDefinitionHandler implements ElementDefinitionHandler
    *
    * @param parser  the parser.
    */
-  public void setParser(Parser parser)
+  public void setParser(final Parser parser)
   {
     this.parser = parser;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.3 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.4 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -127,7 +127,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
       try
       {
         datasource.setValue(fieldValue);
-        Number n = (Number) parser.getValue();
+        final Number n = (Number) parser.getValue();
         dividend = n.doubleValue();
       }
       catch (Exception e)
@@ -143,7 +143,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
       try
       {
         datasource.setValue(fieldValue);
-        Number n = (Number) parser.getValue();
+        final Number n = (Number) parser.getValue();
         divisor = n.doubleValue();
       }
       catch (Exception e)
@@ -190,7 +190,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    *
    * @param dividend the field name (null not permitted).
    */
-  public void setDividend(String dividend)
+  public void setDividend(final String dividend)
   {
     if (dividend == null)
     {
@@ -206,7 +206,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    *
    * @param divisor the field name (null not permitted).
    */
-  public void setDivisor(String divisor)
+  public void setDivisor(final String divisor)
   {
     if (divisor == null)
     {
@@ -246,7 +246,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
    */
   public Expression getInstance()
   {
-    ItemColumnQuotientExpression function = (ItemColumnQuotientExpression) super.getInstance();
+    final ItemColumnQuotientExpression function = (ItemColumnQuotientExpression) super.getInstance();
     function.datasource = new StaticDataSource();
     function.parser = new DecimalFormatParser();
     function.parser.setNullValue(ZERO);

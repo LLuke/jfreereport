@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.12 2003/05/14 22:26:38 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.13 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param e the event, that should be translated.
      */
-    public void tableChanged(TableModelEvent e)
+    public void tableChanged(final TableModelEvent e)
     {
       int firstRow = e.getFirstRow();
       if (e.getFirstRow() > 0)
@@ -89,15 +89,15 @@ public class SubSetTableModel implements TableModel
         lastRow -= start;
         lastRow -= (model.getRowCount() - end);
       }
-      int type = e.getType();
-      int column = e.getColumn();
+      final int type = e.getType();
+      final int column = e.getColumn();
 
-      TableModelEvent event =
+      final TableModelEvent event =
           new TableModelEvent(SubSetTableModel.this, firstRow, lastRow, column, type);
 
       for (int i = 0; i < listeners.size(); i++)
       {
-        TableModelListener l = (TableModelListener) listeners.get(i);
+        final TableModelListener l = (TableModelListener) listeners.get(i);
         l.tableChanged(event);
       }
     }
@@ -107,7 +107,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    private void addTableModelListener(TableModelListener l)
+    private void addTableModelListener(final TableModelListener l)
     {
       listeners.add(l);
     }
@@ -117,7 +117,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    private void removeTableModelListener(TableModelListener l)
+    private void removeTableModelListener(final TableModelListener l)
     {
       listeners.remove(l);
     }
@@ -150,7 +150,7 @@ public class SubSetTableModel implements TableModel
    * @throws NullPointerException if the given model is null
    * @throws IllegalArgumentException if start or end are invalid.
    */
-  public SubSetTableModel(int start, int end, TableModel model)
+  public SubSetTableModel(final int start, final int end, final TableModel model)
   {
     if (start < 0)
     {
@@ -181,7 +181,7 @@ public class SubSetTableModel implements TableModel
    * @param rowIndex the original row index.
    * @return the translated row index.
    */
-  private int getClientRowIndex(int rowIndex)
+  private int getClientRowIndex(final int rowIndex)
   {
     return rowIndex + start;
   }
@@ -197,7 +197,7 @@ public class SubSetTableModel implements TableModel
    */
   public int getRowCount()
   {
-    int rowCount = model.getRowCount();
+    final int rowCount = model.getRowCount();
     return rowCount - start - (rowCount - end);
   }
 
@@ -223,7 +223,7 @@ public class SubSetTableModel implements TableModel
    *
    * @return the name of the column
    */
-  public String getColumnName(int columnIndex)
+  public String getColumnName(final int columnIndex)
   {
     return model.getColumnName(columnIndex);
   }
@@ -237,7 +237,7 @@ public class SubSetTableModel implements TableModel
    *
    * @return the base ancestor class of the object values in the model.
    */
-  public Class getColumnClass(int columnIndex)
+  public Class getColumnClass(final int columnIndex)
   {
     return getColumnClass(columnIndex);
   }
@@ -255,7 +255,7 @@ public class SubSetTableModel implements TableModel
    *
    * @see #setValueAt
    */
-  public boolean isCellEditable(int rowIndex, int columnIndex)
+  public boolean isCellEditable(final int rowIndex, final int columnIndex)
   {
     return model.isCellEditable(getClientRowIndex(rowIndex), columnIndex);
   }
@@ -269,7 +269,7 @@ public class SubSetTableModel implements TableModel
    *
    * @return  the value Object at the specified cell
    */
-  public Object getValueAt(int rowIndex, int columnIndex)
+  public Object getValueAt(final int rowIndex, final int columnIndex)
   {
     return model.getValueAt(getClientRowIndex(rowIndex), columnIndex);
   }
@@ -285,7 +285,7 @@ public class SubSetTableModel implements TableModel
    * @see #getValueAt
    * @see #isCellEditable
    */
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+  public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex)
   {
     model.setValueAt(aValue, getClientRowIndex(rowIndex), columnIndex);
   }
@@ -296,7 +296,7 @@ public class SubSetTableModel implements TableModel
    *
    * @param l  the TableModelListener
    */
-  public void addTableModelListener(TableModelListener l)
+  public void addTableModelListener(final TableModelListener l)
   {
     eventHandler.addTableModelListener(l);
   }
@@ -307,7 +307,7 @@ public class SubSetTableModel implements TableModel
    *
    * @param l  the TableModelListener
    */
-  public void removeTableModelListener(TableModelListener l)
+  public void removeTableModelListener(final TableModelListener l)
   {
     eventHandler.removeTableModelListener(l);
   }

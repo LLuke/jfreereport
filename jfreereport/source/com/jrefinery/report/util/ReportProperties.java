@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.19 2003/04/09 15:55:13 mungady Exp $
+ * $Id: ReportProperties.java,v 1.20 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @param props  an existing ReportProperties instance.
    */
-  public ReportProperties(ReportProperties props)
+  public ReportProperties(final ReportProperties props)
   {
     this.properties = new HashMap(props.properties);
     this.markedProperties = new TreeSet();
@@ -122,7 +122,7 @@ public class ReportProperties implements Serializable, Cloneable
    * @param key  the property key.
    * @param value  the property value.
    */
-  public void put(String key, Object value)
+  public void put(final String key, final Object value)
   {
     if (value == null)
     {
@@ -141,7 +141,7 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return The stored value, or <code>null</code> if the key does not exist in this collection.
    */
-  public Object get(String key)
+  public Object get(final String key)
   {
     return this.properties.get(key);
   }
@@ -156,9 +156,9 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return The stored value, or the default value if the key does not exist in this collection.
    */
-  public Object get(String key, Object defaultValue)
+  public Object get(final String key, final Object defaultValue)
   {
-    Object o = this.properties.get(key);
+    final Object o = this.properties.get(key);
     if (o == null)
     {
       return defaultValue;
@@ -173,7 +173,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public Iterator keys()
   {
-    TreeSet list = new TreeSet();
+    final TreeSet list = new TreeSet();
     list.addAll(this.properties.keySet());
     list.addAll(this.markedProperties);
     return list.iterator();
@@ -194,7 +194,7 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return true, if the given key is known.
    */
-  public boolean containsKey(String key)
+  public boolean containsKey(final String key)
   {
     return this.properties.containsKey(key);
   }
@@ -208,7 +208,7 @@ public class ReportProperties implements Serializable, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ReportProperties p = (ReportProperties) super.clone();
+    final ReportProperties p = (ReportProperties) super.clone();
     p.properties = (HashMap) this.properties.clone();
     p.markedProperties = (TreeSet) this.markedProperties.clone();
     return p;
@@ -220,7 +220,7 @@ public class ReportProperties implements Serializable, Cloneable
    * @param property  the property key.
    * @param marked  boolean.
    */
-  public void setMarked(String property, boolean marked)
+  public void setMarked(final String property, final boolean marked)
   {
     if (marked)
     {
@@ -239,7 +239,7 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return true for marked properties, false otherwise.
    */
-  public boolean isMarked(String property)
+  public boolean isMarked(final String property)
   {
     return this.markedProperties.contains(property);
   }

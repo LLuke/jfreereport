@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSearchKey.java,v 1.2 2003/04/09 15:49:56 mungady Exp $
+ * $Id: LayoutSearchKey.java,v 1.3 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class LayoutSearchKey extends LayoutCacheKey
    * @param e  the element.
    * @param dim  the dimension.
    */
-  public void setSearchConstraint(Element e, Dimension2D dim)
+  public void setSearchConstraint(final Element e, final Dimension2D dim)
   {
     setElement(e);
     setParentDim(dim);

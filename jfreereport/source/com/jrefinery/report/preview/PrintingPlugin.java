@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.3 2003/06/26 19:55:56 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.4 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,11 +75,11 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return A boolean.
    */
-  public boolean performExport(JFreeReport report)
+  public boolean performExport(final JFreeReport report)
   {
     try
     {
-      PrinterJob pj = PrinterJob.getPrinterJob();
+      final PrinterJob pj = PrinterJob.getPrinterJob();
       pj.setPageable(getBase().getPageable());
       if (pj.printDialog())
       {

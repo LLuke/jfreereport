@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.4 2003/04/08 14:20:49 mungady Exp $
+ * $Id: BaseFontRecord.java,v 1.5 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -97,7 +97,7 @@ public class BaseFontRecord
    *
    * @param encoding  the encoding.
    */
-  public void setEncoding(String encoding)
+  public void setEncoding(final String encoding)
   {
     this.encoding = encoding;
   }
@@ -117,7 +117,7 @@ public class BaseFontRecord
    *
    * @param embedded  the flag.
    */
-  public void setEmbedded(boolean embedded)
+  public void setEmbedded(final boolean embedded)
   {
     this.embedded = embedded;
   }
@@ -137,7 +137,7 @@ public class BaseFontRecord
    *
    * @param logicalName  the logical name.
    */
-  public void setLogicalName(String logicalName)
+  public void setLogicalName(final String logicalName)
   {
     this.logicalName = logicalName;
   }
@@ -157,7 +157,7 @@ public class BaseFontRecord
    *
    * @param awtFont  the AWT font.
    */
-  public void setFontDefinition(FontDefinition awtFont)
+  public void setFontDefinition(final FontDefinition awtFont)
   {
     this.awtFont = awtFont;
   }
@@ -177,7 +177,7 @@ public class BaseFontRecord
    *
    * @param baseFont  the iText BaseFont.
    */
-  public void setBaseFont(BaseFont baseFont)
+  public void setBaseFont(final BaseFont baseFont)
   {
     this.baseFont = baseFont;
   }

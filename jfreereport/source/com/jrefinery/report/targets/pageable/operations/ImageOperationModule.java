@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.10 2003/04/09 15:52:51 mungady Exp $
+ * $Id: ImageOperationModule.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -70,11 +70,11 @@ public class ImageOperationModule extends OperationModule
    * @param value  the content.
    * @param bounds  the bounds.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
-                               Rectangle2D bounds)
+  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
+                               final Rectangle2D bounds)
   {
-    Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
+    final Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
 
     if (ic == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessingException.java,v 1.10 2003/04/24 18:08:44 taqua Exp $
+ * $Id: ReportProcessingException.java,v 1.11 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class ReportProcessingException extends StackableException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public ReportProcessingException(String message, Exception ex)
+  public ReportProcessingException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -66,7 +66,7 @@ public class ReportProcessingException extends StackableException
    *
    * @param message  the exception message.
    */
-  public ReportProcessingException(String message)
+  public ReportProcessingException(final String message)
   {
     super(message);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.7 2003/04/06 18:11:31 taqua Exp $
+ * $Id: StyleKey.java,v 1.8 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class StyleKey implements Serializable, Cloneable
    * @param name  the name.
    * @param valueType  the class of the value for this key.
    */
-  private StyleKey(String name, Class valueType)
+  private StyleKey(final String name, final Class valueType)
   {
     setName(name);
     setValueType(valueType);
@@ -95,7 +95,7 @@ public class StyleKey implements Serializable, Cloneable
    *
    * @param name  the name (null not permitted).
    */
-  private void setName(String name)
+  private void setName(final String name)
   {
     if (name == null)
     {
@@ -120,7 +120,7 @@ public class StyleKey implements Serializable, Cloneable
    *
    * @param valueType  the class.
    */
-  private void setValueType(Class valueType)
+  private void setValueType(final Class valueType)
   {
     if (valueType == null)
     {
@@ -137,7 +137,7 @@ public class StyleKey implements Serializable, Cloneable
    *
    * @return the style key.
    */
-  public static StyleKey getStyleKey(String name, Class valueType)
+  public static StyleKey getStyleKey(final String name, final Class valueType)
   {
     if (definedKeys == null)
     {
@@ -159,7 +159,7 @@ public class StyleKey implements Serializable, Cloneable
    *
    * @return the style key.
    */
-  public static StyleKey getStyleKey(String name)
+  public static StyleKey getStyleKey(final String name)
   {
     if (definedKeys == null)
     {
@@ -178,7 +178,7 @@ public class StyleKey implements Serializable, Cloneable
    * @return  <code>true</code> if this object is the same as the obj
    *          argument; <code>false</code> otherwise.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {
@@ -226,7 +226,7 @@ public class StyleKey implements Serializable, Cloneable
    */
   protected Object readResolve() throws ObjectStreamException
   {
-    StyleKey key = getStyleKey(name);
+    final StyleKey key = getStyleKey(name);
     if (key != null)
     {
       return key;

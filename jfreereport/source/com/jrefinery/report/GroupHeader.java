@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.11 2002/12/06 18:05:53 taqua Exp $
+ * $Id: GroupHeader.java,v 1.12 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -81,7 +81,7 @@ public class GroupHeader extends Band
    * @deprecated use the ElementStyleSheet to access this property as every band is able
    * to request such a pageBreak
    */
-  public void setPageBreakBeforePrint(boolean pageBreakBefore)
+  public void setPageBreakBeforePrint(final boolean pageBreakBefore)
   {
     getStyle().setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, pageBreakBefore);
   }

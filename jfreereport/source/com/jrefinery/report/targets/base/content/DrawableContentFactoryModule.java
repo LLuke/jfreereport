@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.8 2003/06/10 16:07:54 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.9 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType)
+  public boolean canHandleContent(final String contentType)
   {
     return contentType.startsWith("drawable/");
   }
@@ -77,18 +77,18 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
-                                         LayoutSupport ot)
+  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
+                                         final LayoutSupport ot)
       throws ContentCreationException
   {
-    DrawableContainer drawable = (DrawableContainer) e.getValue();
+    final DrawableContainer drawable = (DrawableContainer) e.getValue();
     if (drawable == null)
     {
       return null;
     }
 
-    Point2D point = bounds.getAbsolutePosition();
-    Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+    final Point2D point = bounds.getAbsolutePosition();
+    final Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
         bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
@@ -100,10 +100,10 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
     // this could be a show-stopper for WMF-Drawables, so we'll start subclassing
     // the drawable stuff soon ...
 
-    Rectangle2D drawableBounds = new Rectangle2D.Float(0, 0,
+    final Rectangle2D drawableBounds = new Rectangle2D.Float(0, 0,
         (float) iBounds.getWidth(),
         (float) iBounds.getHeight());
-    DrawableContainer con = new DrawableContainer(drawable.getDrawable(), iBounds, drawableBounds);
+    final DrawableContainer con = new DrawableContainer(drawable.getDrawable(), iBounds, drawableBounds);
     return new DrawableContent(con, point);
   }
 }

@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: DateFormatParser.java,v 1.10 2002/12/12 12:26:55 mungady Exp $
+ * $Id: DateFormatParser.java,v 1.11 2003/06/27 14:25:17 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -74,7 +74,7 @@ public class DateFormatParser extends FormatParser
    *
    * @throws NullPointerException if the given format is null
    */
-  public void setDateFormat(DateFormat format)
+  public void setDateFormat(final DateFormat format)
   {
     super.setFormatter(format);
   }
@@ -87,9 +87,9 @@ public class DateFormatParser extends FormatParser
    * @throws NullPointerException if the given format is null
    * @throws ClassCastException if an invalid formater is set.
    */
-  public void setFormatter(Format format)
+  public void setFormatter(final Format format)
   {
-    DateFormat dfmt = (DateFormat) format;
+    final DateFormat dfmt = (DateFormat) format;
     super.setFormatter(dfmt);
   }
 
@@ -104,9 +104,9 @@ public class DateFormatParser extends FormatParser
    *
    * @throws ClassCastException if the value is no date or not null.
    */
-  public void setNullValue(Object nullvalue)
+  public void setNullValue(final Object nullvalue)
   {
-    Date dt = (Date) nullvalue;
+    final Date dt = (Date) nullvalue;
     super.setNullValue(dt);
   }
 
@@ -119,7 +119,7 @@ public class DateFormatParser extends FormatParser
    *
    * @return true, if the given value is already an instance of date.
    */
-  protected boolean isValidOutput(Object o)
+  protected boolean isValidOutput(final Object o)
   {
     return o instanceof Date;
   }

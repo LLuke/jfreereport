@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HugeJFreeReportDemo.java,v 1.28 2003/05/02 12:39:34 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.29 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,7 +71,7 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
    */
   protected List createAvailableDemos()
   {
-    ArrayList list = new ArrayList();
+    final ArrayList list = new ArrayList();
 
     list.add(new DemoDefinition(createExampleName(1),
         new SampleData1(),
@@ -108,7 +108,7 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
    *
    * @param args ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     try
     {
@@ -119,7 +119,7 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
       System.err.println("Look and feel problem.");
     }
 
-    HugeJFreeReportDemo frame = new HugeJFreeReportDemo();
+    final HugeJFreeReportDemo frame = new HugeJFreeReportDemo();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

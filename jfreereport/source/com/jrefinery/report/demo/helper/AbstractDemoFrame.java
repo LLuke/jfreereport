@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.2 2003/06/26 19:55:56 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.3 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -78,7 +78,7 @@ public abstract class AbstractDemoFrame extends JFrame
      *
      * @param event  the event.
      */
-    public void actionPerformed(ActionEvent event)
+    public void actionPerformed(final ActionEvent event)
     {
       attemptExit();
     }
@@ -94,7 +94,7 @@ public abstract class AbstractDemoFrame extends JFrame
      *
      * @param event  the window event.
      */
-    public void windowClosing(WindowEvent event)
+    public void windowClosing(final WindowEvent event)
     {
       attemptExit();
     }
@@ -118,7 +118,7 @@ public abstract class AbstractDemoFrame extends JFrame
      *
      * @param event  the event.
      */
-    public void actionPerformed(ActionEvent event)
+    public void actionPerformed(final ActionEvent event)
     {
       attemptPreview();
     }
@@ -188,7 +188,7 @@ public abstract class AbstractDemoFrame extends JFrame
    */
   protected boolean attemptExit()
   {
-    boolean close =
+    final boolean close =
         JOptionPane.showConfirmDialog(
             this,
             getResources().getString("exitdialog.message"),
@@ -217,12 +217,12 @@ public abstract class AbstractDemoFrame extends JFrame
    *
    * @return the menu.
    */
-  protected JMenu createJMenuItem(String base)
+  protected JMenu createJMenuItem(final String base)
   {
-    String label = getResources().getString(base + ".name");
-    Character mnemonic = (Character) getResources().getObject(base + ".mnemonic");
+    final String label = getResources().getString(base + ".name");
+    final Character mnemonic = (Character) getResources().getObject(base + ".mnemonic");
 
-    JMenu menu = new JMenu(label);
+    final JMenu menu = new JMenu(label);
     if (mnemonic != null)
     {
       menu.setMnemonic(mnemonic.charValue());
@@ -238,7 +238,7 @@ public abstract class AbstractDemoFrame extends JFrame
    * @param localisationBase  the resource prefix.
    * @param e  the exception.
    */
-  protected void showExceptionDialog(String localisationBase, Exception e)
+  protected void showExceptionDialog(final String localisationBase, final Exception e)
   {
     ExceptionDialog.showExceptionDialog(
         getResources().getString(localisationBase + ".title"),

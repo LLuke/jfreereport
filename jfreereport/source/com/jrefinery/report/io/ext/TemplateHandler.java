@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.14 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class TemplateHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param template  the template description.
    */
-  public TemplateHandler(Parser parser, String finishTag, TemplateDescription template)
+  public TemplateHandler(final Parser parser, final String finishTag, final TemplateDescription template)
   {
     if (parser == null)
     {
@@ -111,7 +111,7 @@ public class TemplateHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(BASIC_OBJECT_TAG))
     {
@@ -120,14 +120,14 @@ public class TemplateHandler implements ElementDefinitionHandler
       {
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
-      ObjectDescription od = getTemplate();
+      final ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
         throw new ParseException("No such parameter '" + parameterName + "' in template. ",
             getParser().getLocator());
       }
-      String overrideClassName = attrs.getValue("class");
+      final String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
         try
@@ -150,13 +150,13 @@ public class TemplateHandler implements ElementDefinitionHandler
       {
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
-      ObjectDescription od = getTemplate();
+      final ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
         throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
-      String overrideClassName = attrs.getValue("class");
+      final String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
         try
@@ -188,7 +188,7 @@ public class TemplateHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     // ignore ...
   }
@@ -200,12 +200,12 @@ public class TemplateHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if ((tagName.equals(BASIC_OBJECT_TAG))
         || (tagName.equals(COMPOUND_OBJECT_TAG)))
     {
-      Object o = basicFactory.getValue();
+      final Object o = basicFactory.getValue();
       if (o == null)
       {
         throw new ParseException("Parameter value is null", getParser().getLocator());

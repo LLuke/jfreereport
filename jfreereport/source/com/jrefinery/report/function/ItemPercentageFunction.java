@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.20 2003/06/26 15:18:56 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.21 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -115,11 +115,11 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     totalSumFunction.groupStarted(event);
 
-    Object fieldValue = event.getDataRow().get(getField());
+    final Object fieldValue = event.getDataRow().get(getField());
     if (fieldValue == null)
     {
       // No add, field is null
@@ -128,7 +128,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
     try
     {
       datasource.setValue(fieldValue);
-      Number n = (Number) parser.getValue();
+      final Number n = (Number) parser.getValue();
       currentValue = new BigDecimal(n.toString());
     }
     catch (Exception e)
@@ -142,11 +142,11 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     totalSumFunction.itemsAdvanced(event);
 
-    Object fieldValue = event.getDataRow().get(getField());
+    final Object fieldValue = event.getDataRow().get(getField());
     if (fieldValue == null)
     {
       // No add, field is null
@@ -155,7 +155,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
     try
     {
       datasource.setValue(fieldValue);
-      Number n = (Number) parser.getValue();
+      final Number n = (Number) parser.getValue();
       currentValue = new BigDecimal(n.toString());
     }
     catch (Exception e)
@@ -170,7 +170,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     totalSumFunction.reportInitialized(event);
     currentValue = ZERO;
@@ -185,13 +185,13 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    */
   public Object getValue()
   {
-    BigDecimal total = (BigDecimal) totalSumFunction.getValue();
+    final BigDecimal total = (BigDecimal) totalSumFunction.getValue();
 
     if (total.longValue() == 0)
     {
       return null;
     }
-    BigDecimal retval =
+    final BigDecimal retval =
         currentValue.multiply(new BigDecimal(100)).divide(total, 4, BigDecimal.ROUND_HALF_UP);
     return retval;
   }
@@ -211,7 +211,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    *
    * @param group  the name of the group (null permitted).
    */
-  public void setGroup(String group)
+  public void setGroup(final String group)
   {
     setProperty(GROUP_PROPERTY, group);
   }
@@ -235,7 +235,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -250,7 +250,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    * @param name The property name.
    * @param value The property value.
    */
-  public void setProperty(String name, String value)
+  public void setProperty(final String name, final String value)
   {
     super.setProperty(name, value);
     totalSumFunction.setProperty(name, value);
@@ -268,7 +268,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ItemPercentageFunction clone = (ItemPercentageFunction) super.clone();
+    final ItemPercentageFunction clone = (ItemPercentageFunction) super.clone();
     clone.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.clone();
     return clone;
   }
@@ -281,7 +281,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    */
   public Expression getInstance()
   {
-    ItemPercentageFunction function = (ItemPercentageFunction) super.getInstance();
+    final ItemPercentageFunction function = (ItemPercentageFunction) super.getInstance();
     function.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.getInstance();
     function.datasource = new StaticDataSource();
     function.parser = new DecimalFormatParser();

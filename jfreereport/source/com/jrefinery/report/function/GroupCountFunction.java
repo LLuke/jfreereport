@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.14 2003/06/01 17:39:26 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.15 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    * @param group The group name.
    * @throws NullPointerException if the given name is null
    */
-  public GroupCountFunction(String name, String group)
+  public GroupCountFunction(final String name, final String group)
   {
     setName(name);
     setGroup(group);
@@ -97,7 +97,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @param group the name of the group to be counted.
    */
-  public void setGroup(String group)
+  public void setGroup(final String group)
   {
     setProperty(GROUP_PROPERTY, group);
   }
@@ -108,7 +108,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @param event the current report event received.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     this.count = 0;
   }
@@ -119,7 +119,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @param event the current report event received.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (getGroup() == null)
     {
@@ -127,8 +127,8 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
       return;
     }
 
-    ReportState state = event.getState();
-    Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
+    final ReportState state = event.getState();
+    final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
       this.count++;

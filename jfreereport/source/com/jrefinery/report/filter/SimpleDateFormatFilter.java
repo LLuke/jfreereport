@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2003, by Simba Management Limited.
  *
- * $Id: SimpleDateFormatFilter.java,v 1.11 2003/02/26 13:57:56 mungady Exp $
+ * $Id: SimpleDateFormatFilter.java,v 1.12 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * @param format The format.
    * @throws NullPointerException if the format given is null
    */
-  public void setSimpleDateFormat(SimpleDateFormat format)
+  public void setSimpleDateFormat(final SimpleDateFormat format)
   {
     super.setFormatter(format);
   }
@@ -89,9 +89,9 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * @throws NullPointerException if the format given is null
    * @throws ClassCastException if the format given is no DateFormat
    */
-  public void setFormatter(Format format)
+  public void setFormatter(final Format format)
   {
-    SimpleDateFormat sdfmt = (SimpleDateFormat) format;
+    final SimpleDateFormat sdfmt = (SimpleDateFormat) format;
     super.setFormatter(sdfmt);
   }
 
@@ -113,7 +113,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setFormatString(String format)
+  public void setFormatString(final String format)
   {
     if (format == null)
     {
@@ -141,7 +141,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setLocalizedFormatString(String format)
+  public void setLocalizedFormatString(final String format)
   {
     getSimpleDateFormat().applyLocalizedPattern(format);
   }

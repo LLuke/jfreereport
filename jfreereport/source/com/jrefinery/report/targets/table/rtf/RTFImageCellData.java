@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFImageCellData.java,v 1.8 2003/03/29 20:17:27 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.9 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class RTFImageCellData extends RTFCellData
    * @param image the image content.
    * @param style the assigned cell style.
    */
-  public RTFImageCellData(Rectangle2D outerBounds, ImageReference image, RTFCellStyle style)
+  public RTFImageCellData(final Rectangle2D outerBounds, final ImageReference image, final RTFCellStyle style)
   {
     super(outerBounds, style);
     if (image == null)
@@ -88,8 +88,8 @@ public class RTFImageCellData extends RTFCellData
   {
     try
     {
-      Image iTextImage = getImage(image);
-      Cell cell = new Cell();
+      final Image iTextImage = getImage(image);
+      final Cell cell = new Cell();
       getStyle().applyAlignment(cell);
       cell.addElement(iTextImage);
       return cell;
@@ -127,14 +127,14 @@ public class RTFImageCellData extends RTFCellData
    *         ImageReference.
    * @throws IOException if the image could not be read.
    */
-  private Image getImage(ImageReference imageRef) throws DocumentException, IOException
+  private Image getImage(final ImageReference imageRef) throws DocumentException, IOException
   {
-    Rectangle2D bounds = getBounds();
-    Rectangle2D imageBounds = imageRef.getBoundsScaled();
+    final Rectangle2D bounds = getBounds();
+    final Rectangle2D imageBounds = imageRef.getBoundsScaled();
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
+      final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
           (float) bounds.getHeight());
       if ((imageRef.getSourceURL() != null)
           && (drawArea.contains(imageBounds))
@@ -154,11 +154,11 @@ public class RTFImageCellData extends RTFCellData
 
     if (imageRef.getImage() != null)
     {
-      WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
+      final WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder(imageRef.getImage());
-      byte[] data = encoder.pngEncode();
+      final PngEncoder encoder = new PngEncoder(imageRef.getImage());
+      final byte[] data = encoder.pngEncode();
       return Image.getInstance(data);
     }
 
@@ -171,9 +171,9 @@ public class RTFImageCellData extends RTFCellData
    * @param url the url pointing to the image, that should be tested.
    * @return true, if the image is a JPEG or PNG file, false otherwise.
    */
-  private boolean isSupportedImageFormat(URL url)
+  private boolean isSupportedImageFormat(final URL url)
   {
-    String file = url.getFile();
+    final String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))
     {
       return true;

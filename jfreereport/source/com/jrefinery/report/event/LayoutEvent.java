@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutEvent.java,v 1.4 2003/05/26 13:30:58 taqua Exp $
+ * $Id: LayoutEvent.java,v 1.5 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class LayoutEvent extends ReportEvent
    * @param band the layouted band.
    * @param type the event type.
    */
-  public LayoutEvent(ReportState state, Band band, int type)
+  public LayoutEvent(final ReportState state, final Band band, final int type)
   {
     super(state, type);
 

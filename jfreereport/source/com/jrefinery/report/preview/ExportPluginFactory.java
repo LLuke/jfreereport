@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.8 2003/06/26 19:55:56 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.9 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * --------
@@ -63,7 +63,7 @@ public class ExportPluginFactory
    * @param className the class name of the export plugin.
    * @return The plug-in.
    */
-  protected ExportPlugin createPlugIn(PreviewProxy proxy, String className)
+  protected ExportPlugin createPlugIn(final PreviewProxy proxy, final String className)
   {
     if (proxy == null)
     {
@@ -71,8 +71,8 @@ public class ExportPluginFactory
     }
     try
     {
-      Class c = Class.forName(className);
-      ExportPlugin ep = (ExportPlugin) c.newInstance();
+      final Class c = Class.forName(className);
+      final ExportPlugin ep = (ExportPlugin) c.newInstance();
       ep.init(proxy);
       return ep;
     }
@@ -91,7 +91,7 @@ public class ExportPluginFactory
    *
    * @return A boolean.
    */
-  protected boolean isPluginEnabled(ReportConfiguration config, String plugin)
+  protected boolean isPluginEnabled(final ReportConfiguration config, final String plugin)
   {
     return config.getConfigProperty(PLUGIN_ENABLE_PREFIX + plugin, "false").equals("true");
   }
@@ -105,12 +105,12 @@ public class ExportPluginFactory
    *
    * @return  The list of export plugins.
    */
-  public ArrayList createExportPlugIns(PreviewProxy proxy, ReportConfiguration config)
+  public ArrayList createExportPlugIns(final PreviewProxy proxy, final ReportConfiguration config)
   {
-    InputStream in = getClass().getResourceAsStream
+    final InputStream in = getClass().getResourceAsStream
         ("/com/jrefinery/report/preview/previewplugins.properties");
 
-    Properties prop = new Properties();
+    final Properties prop = new Properties();
 
     try
     {
@@ -121,14 +121,14 @@ public class ExportPluginFactory
       Log.warn("Unable to load export plugin configuration.");
     }
 
-    String availablePlugins = prop.getProperty("available.plugins", "");
-    StringTokenizer strtok = new StringTokenizer(availablePlugins, ",");
-    ArrayList retval = new ArrayList();
+    final String availablePlugins = prop.getProperty("available.plugins", "");
+    final StringTokenizer strtok = new StringTokenizer(availablePlugins, ",");
+    final ArrayList retval = new ArrayList();
 
     while (strtok.hasMoreElements())
     {
-      String plugin = strtok.nextToken().trim();
-      String pluginClass = prop.getProperty(plugin);
+      final String plugin = strtok.nextToken().trim();
+      final String pluginClass = prop.getProperty(plugin);
       if (pluginClass == null)
       {
         Log.warn(new Log.SimpleMessage("Plugin ", plugin, " is not defined."));
@@ -136,7 +136,7 @@ public class ExportPluginFactory
       }
       if (isPluginEnabled(config, plugin))
       {
-        ExportPlugin ep = createPlugIn(proxy, pluginClass);
+        final ExportPlugin ep = createPlugIn(proxy, pluginClass);
         if (ep != null)
         {
           retval.add(ep);

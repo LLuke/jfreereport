@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LabelTemplate.java,v 1.5 2003/03/18 22:34:58 taqua Exp $
+ * $Id: LabelTemplate.java,v 1.6 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -69,7 +69,7 @@ public class LabelTemplate extends AbstractTemplate
    *
    * @param content  the text.
    */
-  public void setContent(String content)
+  public void setContent(final String content)
   {
     staticDataSource.setValue(content);
   }
@@ -99,7 +99,7 @@ public class LabelTemplate extends AbstractTemplate
    *
    * @param nullValue  the string.
    */
-  public void setNullValue(String nullValue)
+  public void setNullValue(final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -123,7 +123,7 @@ public class LabelTemplate extends AbstractTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    LabelTemplate template = (LabelTemplate) super.clone();
+    final LabelTemplate template = (LabelTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
     template.staticDataSource = (StaticDataSource) template.stringFilter.getDataSource();
     return template;

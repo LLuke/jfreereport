@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.10 2003/02/27 10:35:37 mungady Exp $
+ * $Id: FontDefinition.java,v 1.11 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -109,8 +109,8 @@ public class FontDefinition implements Serializable, Cloneable
    * @param encoding the default text encoding that should be used with this font.
    * @param embedded whether this font should be embedded in the target document.
    */
-  public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic,
-                        boolean underline, boolean strikeThrough, String encoding, boolean embedded)
+  public FontDefinition(final String fontName, final int fontSize, final boolean bold, final boolean italic,
+                        final boolean underline, final boolean strikeThrough, final String encoding, final boolean embedded)
   {
     if (fontName == null)
     {
@@ -142,8 +142,8 @@ public class FontDefinition implements Serializable, Cloneable
    * @param strikeThrough  true, if the font should be drawn with strikethrough style,
    *                       false otherwise
    */
-  public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic,
-                        boolean underline, boolean strikeThrough)
+  public FontDefinition(final String fontName, final int fontSize, final boolean bold, final boolean italic,
+                        final boolean underline, final boolean strikeThrough)
   {
     this(fontName, fontSize, bold, italic, underline, strikeThrough, null, false);
   }
@@ -155,7 +155,7 @@ public class FontDefinition implements Serializable, Cloneable
    * @param fontName  the font name used in this font definition.
    * @param fontSize  the font size for the defined font.
    */
-  public FontDefinition(String fontName, int fontSize)
+  public FontDefinition(final String fontName, final int fontSize)
   {
     this(fontName, fontSize, false, false, false, false, null, false);
   }
@@ -165,7 +165,7 @@ public class FontDefinition implements Serializable, Cloneable
    *
    * @param font the awt font that should be used as definition source.
    */
-  public FontDefinition(Font font)
+  public FontDefinition(final Font font)
   {
     this(font.getName(), font.getSize(), font.isBold(), font.isItalic(), false, false, null,
         false);
@@ -296,7 +296,7 @@ public class FontDefinition implements Serializable, Cloneable
    * does not define an own encoding.
    * @return the font encoding or the default encoding.
    */
-  public String getFontEncoding(String defaultEncoding)
+  public String getFontEncoding(final String defaultEncoding)
   {
     if (this.fontEncoding == null)
     {
@@ -314,7 +314,7 @@ public class FontDefinition implements Serializable, Cloneable
    */
   public String toString()
   {
-    StringBuffer buffer = new StringBuffer();
+    final StringBuffer buffer = new StringBuffer();
     buffer.append("FontDefinition='fontname=\"");
     buffer.append(fontName);
     buffer.append("; fontSize=" + fontSize);
@@ -336,7 +336,7 @@ public class FontDefinition implements Serializable, Cloneable
    * @see     #hashCode()
    * @see     java.util.Hashtable
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

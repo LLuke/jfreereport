@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.9 2003/04/09 16:06:34 mungady Exp $
+ * $Id: XMLWriter.java,v 1.10 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @param w the writer.
    */
-  public void setWriter(Writer w)
+  public void setWriter(final Writer w)
   {
     this.w = w;
   }
@@ -106,13 +106,13 @@ public class XMLWriter extends AbstractFunction
    * @param b the band that should be written.
    * @throws IOException if an IO-Error occurs.
    */
-  private void writeBand(Band b)
+  private void writeBand(final Band b)
       throws IOException
   {
-    Element[] elements = b.getElementArray();
+    final Element[] elements = b.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
-      Element e = elements[i];
+      final Element e = elements[i];
       if (e.getContentType().startsWith("text"))
       {
         w.write("<element name=\"");
@@ -135,7 +135,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     try
     {
@@ -155,7 +155,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     try
     {
@@ -175,12 +175,12 @@ public class XMLWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     try
     {
       w.write("<groupheader name=\"");
-      Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+      final Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
       w.write(entityParser.encodeEntities(g.getName()));
       w.write("\">");
       writeBand(g.getHeader());
@@ -197,12 +197,12 @@ public class XMLWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     try
     {
       w.write("<groupfooter name=\"");
-      Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+      final Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
       w.write(entityParser.encodeEntities(g.getName()));
       w.write("\">");
       writeBand(g.getFooter());
@@ -219,7 +219,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     try
     {
@@ -240,7 +240,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @param event The event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     try
     {
@@ -259,7 +259,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @param event The event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
     try
     {
@@ -301,7 +301,7 @@ public class XMLWriter extends AbstractFunction
    * Overrides the depency level. Should be lower than any other function depency.
    * @param deplevel the new depency level.
    */
-  public void setDependencyLevel(int deplevel)
+  public void setDependencyLevel(final int deplevel)
   {
     this.depLevel = deplevel;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomOutAction.java,v 1.16 2003/05/14 22:26:37 taqua Exp $
+ * $Id: ZoomOutAction.java,v 1.17 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public abstract class ZoomOutAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected ZoomOutAction(ResourceBundle resources)
+  protected ZoomOutAction(final ResourceBundle resources)
   {
     putValue(NAME, resources.getString("action.zoomOut.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.zoomOut.description"));

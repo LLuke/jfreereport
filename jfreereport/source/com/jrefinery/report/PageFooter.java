@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageFooter.java,v 1.9 2002/12/06 17:18:24 mungady Exp $
+ * $Id: PageFooter.java,v 1.10 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -75,7 +75,7 @@ public class PageFooter extends Band
    *
    * @param b  a flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnFirstPage(boolean b)
+  public void setDisplayOnFirstPage(final boolean b)
   {
     getStyle().setBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, b);
   }
@@ -95,7 +95,7 @@ public class PageFooter extends Band
    *
    * @param b  a flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnLastPage(boolean b)
+  public void setDisplayOnLastPage(final boolean b)
   {
     getStyle().setBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, b);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentType.java,v 1.2 2003/03/07 13:47:40 taqua Exp $
+ * $Id: ContentType.java,v 1.3 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class ContentType
    *
    * @param name  the name.
    */
-  private ContentType(String name)
+  private ContentType(final String name)
   {
     myName = name;
   }

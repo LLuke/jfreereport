@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollectionHelper.java,v 1.3 2003/06/26 19:55:57 taqua Exp $
+ * $Id: StyleSheetCollectionHelper.java,v 1.4 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,7 +84,7 @@ public abstract class StyleSheetCollectionHelper implements Serializable
    * registered with this helper
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     if (styleSheetCollection == null)
     {
@@ -120,7 +120,7 @@ public abstract class StyleSheetCollectionHelper implements Serializable
    * stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     if (styleSheetCollection == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageFieldTemplateDescription.java,v 1.4 2003/03/07 16:56:00 taqua Exp $
+ * $Id: ImageFieldTemplateDescription.java,v 1.5 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class ImageFieldTemplateDescription extends AbstractTemplateDescription
    *
    * @param name  the name.
    */
-  public ImageFieldTemplateDescription(String name)
+  public ImageFieldTemplateDescription(final String name)
   {
     super(name, ImageFieldTemplate.class, true);
   }

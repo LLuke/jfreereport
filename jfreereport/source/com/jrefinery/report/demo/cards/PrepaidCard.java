@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrepaidCard.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
+ * $Id: PrepaidCard.java,v 1.3 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ public class PrepaidCard extends PersonBoundCard
    * @param lastName  the last name.
    * @param cardNr  the card number.
    */
-  public PrepaidCard(String firstName, String lastName, String cardNr)
+  public PrepaidCard(final String firstName, final String lastName, final String cardNr)
   {
     super(firstName, lastName, cardNr);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.6 2003/06/19 18:44:09 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.7 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
    *
    * @param event  the event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
@@ -103,7 +103,7 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -131,7 +131,7 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -161,7 +161,7 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
    *
    * @param group  the group name.
    */
-  public void setGroup(String group)
+  public void setGroup(final String group)
   {
     setProperty(GROUP_PROPERTY, group);
   }

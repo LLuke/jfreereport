@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.14 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.15 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -85,7 +85,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
      *
      * @param e The action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
@@ -111,7 +111,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(JFreeReport report)
+  public PreviewDialog(final JFreeReport report)
       throws ReportProcessingException
   {
     init(report);
@@ -125,7 +125,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(JFreeReport report, Frame owner)
+  public PreviewDialog(final JFreeReport report, final Frame owner)
       throws ReportProcessingException
   {
     super(owner);
@@ -141,7 +141,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(JFreeReport report, Frame owner, boolean modal)
+  public PreviewDialog(final JFreeReport report, final Frame owner, final boolean modal)
       throws ReportProcessingException
   {
     super(owner, modal);
@@ -156,7 +156,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(JFreeReport report, Dialog owner)
+  public PreviewDialog(final JFreeReport report, final Dialog owner)
       throws ReportProcessingException
   {
     super(owner);
@@ -172,7 +172,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(JFreeReport report, Dialog owner, boolean modal)
+  public PreviewDialog(final JFreeReport report, final Dialog owner, final boolean modal)
       throws ReportProcessingException
   {
     super(owner, modal);
@@ -186,7 +186,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  private void init(JFreeReport report) throws ReportProcessingException
+  private void init(final JFreeReport report) throws ReportProcessingException
   {
     base = new PreviewProxyBase(this);
     base.init(report);
@@ -224,7 +224,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.
        */
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
             "CloseFrame"));

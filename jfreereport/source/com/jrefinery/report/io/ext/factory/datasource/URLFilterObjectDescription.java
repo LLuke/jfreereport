@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: URLFilterObjectDescription.java,v 1.5 2003/06/10 16:07:50 taqua Exp $
+ * $Id: URLFilterObjectDescription.java,v 1.6 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,7 +58,7 @@ public class URLFilterObjectDescription extends BeanObjectDescription
    *
    * @param className  the class.
    */
-  public URLFilterObjectDescription(Class className)
+  public URLFilterObjectDescription(final Class className)
   {
     super(className);
     if (URLFilter.class.isAssignableFrom(className) == false)
@@ -74,13 +74,13 @@ public class URLFilterObjectDescription extends BeanObjectDescription
    */
   public Object createObject()
   {
-    URLFilter t = (URLFilter) super.createObject();
+    final URLFilter t = (URLFilter) super.createObject();
     if (t.getBaseURL() == null)
     {
-      String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
+      final String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
       try
       {
-        URL bURL = new URL(baseURL);
+        final URL bURL = new URL(baseURL);
         t.setBaseURL(bURL);
       }
       catch (Exception e)

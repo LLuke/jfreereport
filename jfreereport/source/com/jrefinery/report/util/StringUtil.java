@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.9 2003/02/26 13:58:05 mungady Exp $
+ * $Id: StringUtil.java,v 1.10 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class StringUtil
    *
    * @return true, if the string starts with the given starting text.
    */
-  public static boolean startsWithIgnoreCase(String base, String start)
+  public static boolean startsWithIgnoreCase(final String base, final String start)
   {
     if (base.length() < start.length())
     {
@@ -70,7 +70,7 @@ public class StringUtil
    *
    * @return true, if the string ends with the given ending text.
    */
-  public static boolean endsWithIgnoreCase(String base, String end)
+  public static boolean endsWithIgnoreCase(final String base, final String end)
   {
     if (base.length() < end.length())
     {
@@ -144,13 +144,13 @@ public class StringUtil
    * @param s The string to be encoded
    * @return The encoded string
    */
-  public static String encodeUTF(String s)
+  public static String encodeUTF(final String s)
   {
-    StringBuffer sbuf = new StringBuffer();
-    int len = s.length();
+    final StringBuffer sbuf = new StringBuffer();
+    final int len = s.length();
     for (int i = 0; i < len; i++)
     {
-      int ch = s.charAt(i);
+      final int ch = s.charAt(i);
       if ('A' <= ch && ch <= 'Z')
       { // 'A'..'Z'
         sbuf.append((char) ch);
@@ -262,13 +262,13 @@ public class StringUtil
    * @param s The string to be encoded
    * @return The encoded string
    */
-  public static String encodeCSS(String s)
+  public static String encodeCSS(final String s)
   {
-    StringBuffer sbuf = new StringBuffer();
-    int len = s.length();
+    final StringBuffer sbuf = new StringBuffer();
+    final int len = s.length();
     for (int i = 0; i < len; i++)
     {
-      int ch = s.charAt(i);
+      final int ch = s.charAt(i);
       if ('A' <= ch && ch <= 'Z')
       {  // 'A'..'Z'
         sbuf.append((char) ch);

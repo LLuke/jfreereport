@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.8 2003/06/12 19:50:11 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.9 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -63,8 +63,8 @@ public class HtmlImageCellData extends HtmlCellData
    * @param style the assigned cell style.
    * @param useXHTML a flag indicating whether to create XHTML instead of HTML4 code.
    */
-  public HtmlImageCellData(Rectangle2D outerBounds, ImageReference image, HtmlCellStyle style,
-                           boolean useXHTML)
+  public HtmlImageCellData(final Rectangle2D outerBounds, final ImageReference image, final HtmlCellStyle style,
+                           final boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
     if (image == null)
@@ -82,17 +82,17 @@ public class HtmlImageCellData extends HtmlCellData
    * @param filesystem the HTML-Filesystem used to create the ImageReference.
    * @see HtmlFilesystem#createImageReference
    */
-  public void write(PrintWriter pout, HtmlFilesystem filesystem)
+  public void write(final PrintWriter pout, final HtmlFilesystem filesystem)
   {
     try
     {
-      HtmlReferenceData href = filesystem.createImageReference(image);
+      final HtmlReferenceData href = filesystem.createImageReference(image);
       if (href.isExternal())
       {
         pout.print("<img src=\"");
         pout.print(StringUtil.encodeUTF(href.getReference()));
         pout.print("\" width=\"");
-        Rectangle2D bounds = image.getBoundsScaled();
+        final Rectangle2D bounds = image.getBoundsScaled();
         pout.write((int) bounds.getWidth());
         pout.print("\" height=\"");
         pout.write((int) bounds.getHeight());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDataSourceFactory.java,v 1.11 2003/06/10 17:14:38 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.12 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -69,7 +69,7 @@ public abstract class AbstractDataSourceFactory
    * @param name  the name.
    * @param o  the object description.
    */
-  public void registerDataSources(String name, ObjectDescription o)
+  public void registerDataSources(final String name, final ObjectDescription o)
   {
     dataSources.put(name, o);
     registerClass(o.getObjectClass(), o);
@@ -82,9 +82,9 @@ public abstract class AbstractDataSourceFactory
    *
    * @return The object description.
    */
-  public ObjectDescription getDataSourceDescription(String name)
+  public ObjectDescription getDataSourceDescription(final String name)
   {
-    ObjectDescription od = (ObjectDescription) dataSources.get(name);
+    final ObjectDescription od = (ObjectDescription) dataSources.get(name);
     if (od != null)
     {
       return od.getInstance();
@@ -99,13 +99,13 @@ public abstract class AbstractDataSourceFactory
    *
    * @return The name.
    */
-  public String getDataSourceName(ObjectDescription od)
+  public String getDataSourceName(final ObjectDescription od)
   {
-    Iterator keys = dataSources.keySet().iterator();
+    final Iterator keys = dataSources.keySet().iterator();
     while (keys.hasNext())
     {
-      String key = (String) keys.next();
-      ObjectDescription ds = (ObjectDescription) dataSources.get(key);
+      final String key = (String) keys.next();
+      final ObjectDescription ds = (ObjectDescription) dataSources.get(key);
       if (ds.getObjectClass().equals(od.getObjectClass()))
       {
         return key;

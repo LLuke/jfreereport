@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewApplet.java,v 1.2 2003/06/26 19:55:56 taqua Exp $
+ * $Id: PreviewApplet.java,v 1.3 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -81,7 +81,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
      *
      * @param e The action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setVisible(false);
     }
@@ -200,7 +200,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
    *
    * @param title  the title.
    */
-  public void setTitle(String title)
+  public void setTitle(final String title)
   {
     // no need to implement it, except you want to do something
     // special ...

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellData.java,v 1.6 2003/05/14 22:26:40 taqua Exp $
+ * $Id: RTFCellData.java,v 1.7 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public abstract class RTFCellData extends TableCellData
    * @param style the cell style.
    * @throws NullPointerException if the style is null.
    */
-  public RTFCellData(Rectangle2D outerBounds, RTFCellStyle style)
+  public RTFCellData(final Rectangle2D outerBounds, final RTFCellStyle style)
   {
     super(outerBounds);
     if (style == null)

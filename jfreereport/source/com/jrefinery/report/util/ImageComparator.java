@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageComparator.java,v 1.6 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ImageComparator.java,v 1.7 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class ImageComparator
      *
      * @param image the image data used for comparison.
      */
-    private CompleteImageCompareData(byte[] image)
+    private CompleteImageCompareData(final byte[] image)
     {
       this.image = image;
     }
@@ -84,7 +84,7 @@ public class ImageComparator
      * @param o the to be compared object
      * @return true, if both objects are equal
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (this == o)
       {
@@ -133,7 +133,7 @@ public class ImageComparator
      * @param digestMD5Data the MD5 digest data
      * @param digestSHAData the SHA1 digest data
      */
-    private DigestImageCompareData(byte[] digestMD5Data, byte[] digestSHAData)
+    private DigestImageCompareData(final byte[] digestMD5Data, final byte[] digestSHAData)
     {
       if (digestMD5Data == null || digestSHAData == null)
       {
@@ -149,7 +149,7 @@ public class ImageComparator
      * @param o the to be compared object
      * @return true, if both objects are equal
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (this == o)
       {
@@ -222,12 +222,12 @@ public class ImageComparator
    * @param image the image data which should be prepared for comparison
    * @return the prepared image data.
    */
-  public ImageCompareData createCompareData(byte[] image)
+  public ImageCompareData createCompareData(final byte[] image)
   {
     if (digestMD5 != null && digestSHA != null)
     {
-      byte[] dataMD5 = digestMD5.digest(image);
-      byte[] dataSHA = digestSHA.digest(image);
+      final byte[] dataMD5 = digestMD5.digest(image);
+      final byte[] dataSHA = digestSHA.digest(image);
       if (dataSHA != null && dataMD5 != null)
       {
         return new DigestImageCompareData(dataMD5, dataSHA);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterException.java,v 1.4 2003/04/24 18:08:53 taqua Exp $
+ * $Id: ReportWriterException.java,v 1.5 2003/06/27 14:25:20 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class ReportWriterException extends StackableException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public ReportWriterException(String message, Exception ex)
+  public ReportWriterException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -69,7 +69,7 @@ public class ReportWriterException extends StackableException
    *
    * @param message  the exception message.
    */
-  public ReportWriterException(String message)
+  public ReportWriterException(final String message)
   {
     super(message);
   }

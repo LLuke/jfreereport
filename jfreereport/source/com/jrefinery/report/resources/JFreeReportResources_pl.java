@@ -178,7 +178,7 @@ public class JFreeReportResources_pl extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     ResourceCompareTool.main(new String[]{"pl"});
   }

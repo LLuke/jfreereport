@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReadOnlyIterator.java,v 1.4 2003/04/09 15:55:08 mungady Exp $
+ * $Id: ReadOnlyIterator.java,v 1.5 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class ReadOnlyIterator implements Iterator
    *
    * @param base  the base iterator.
    */
-  public ReadOnlyIterator(Iterator base)
+  public ReadOnlyIterator(final Iterator base)
   {
     this.base = base;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.9 2003/06/10 16:07:52 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.10 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
-  public ReportConfigWriter(ReportWriter reportWriter, int indentLevel)
+  public ReportConfigWriter(final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
   }
@@ -77,18 +77,18 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void write(Writer writer) throws IOException
+  public void write(final Writer writer) throws IOException
   {
     writeTag(writer, ExtReportHandler.REPORT_CONFIG_TAG);
     writeTag(writer, ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG,
         buildPageFormatProperties(), CLOSE);
     writeTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
-    ReportConfiguration config = getReport().getReportConfiguration();
-    Enumeration enum = config.getConfigProperties();
+    final ReportConfiguration config = getReport().getReportConfiguration();
+    final Enumeration enum = config.getConfigProperties();
     while (enum.hasMoreElements())
     {
-      String key = (String) enum.nextElement();
-      String value = config.getConfigProperty(key);
+      final String key = (String) enum.nextElement();
+      final String value = config.getConfigProperty(key);
       if (value != null)
       {
         writeTag(writer, "property", "name", key, OPEN);
@@ -108,9 +108,9 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    */
   private Properties buildPageFormatProperties()
   {
-    Properties retval = new Properties();
-    PageFormat fmt = getReport().getDefaultPageFormat();
-    int[] borders = getBorders(fmt.getPaper());
+    final Properties retval = new Properties();
+    final PageFormat fmt = getReport().getDefaultPageFormat();
+    final int[] borders = getBorders(fmt.getPaper());
 
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)
     {
@@ -146,10 +146,10 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
       retval.setProperty(ReportConfigHandler.RIGHTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
     }
 
-    int w = (int) fmt.getPaper().getWidth();
-    int h = (int) fmt.getPaper().getHeight();
+    final int w = (int) fmt.getPaper().getWidth();
+    final int h = (int) fmt.getPaper().getHeight();
 
-    String pageDefinition = lookupPageDefinition(w, h);
+    final String pageDefinition = lookupPageDefinition(w, h);
     if (pageDefinition != null)
     {
       retval.setProperty(ReportConfigHandler.PAGEFORMAT_ATT, pageDefinition);
@@ -181,9 +181,9 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @return The borders.
    */
-  private int[] getBorders(Paper p)
+  private int[] getBorders(final Paper p)
   {
-    int[] retval = new int[4];
+    final int[] retval = new int[4];
 
     retval[0] = (int) p.getImageableY();
     retval[1] = (int) p.getImageableX();
@@ -201,20 +201,20 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @return The page definition name.
    */
-  public String lookupPageDefinition(int w, int h)
+  public String lookupPageDefinition(final int w, final int h)
   {
     try
     {
-      Field[] fields = PageFormatFactory.class.getFields();
+      final Field[] fields = PageFormatFactory.class.getFields();
       for (int i = 0; i < fields.length; i++)
       {
-        Field f = fields[i];
+        final Field f = fields[i];
         if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()))
         {
-          Object o = f.get(PageFormatFactory.getInstance());
+          final Object o = f.get(PageFormatFactory.getInstance());
           if (o instanceof int[])
           {
-            int[] pageDef = (int[]) o;
+            final int[] pageDef = (int[]) o;
             if (pageDef[0] == w && pageDef[1] == h)
             {
               return f.getName();

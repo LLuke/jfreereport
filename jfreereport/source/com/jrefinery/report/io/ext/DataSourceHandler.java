@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class DataSourceHandler extends CompoundObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public DataSourceHandler(Parser parser, String finishTag, String type)
+  public DataSourceHandler(final Parser parser, final String finishTag, final String type)
       throws SAXException
   {
     super(parser, finishTag, lookupObjectDescription(parser, type));
@@ -90,12 +90,12 @@ public class DataSourceHandler extends CompoundObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private static ObjectDescription lookupObjectDescription(Parser parser, String type)
+  private static ObjectDescription lookupObjectDescription(final Parser parser, final String type)
       throws SAXException
   {
-    DataSourceCollector fc = (DataSourceCollector) parser.getHelperObject(
+    final DataSourceCollector fc = (DataSourceCollector) parser.getHelperObject(
         ParserConfigHandler.DATASOURCE_FACTORY_TAG);
-    ObjectDescription od = fc.getDataSourceDescription(type);
+    final ObjectDescription od = fc.getDataSourceDescription(type);
     if (od == null)
     {
       throw new ParseException("The specified DataSource type is not defined");
@@ -111,7 +111,7 @@ public class DataSourceHandler extends CompoundObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(DATASOURCE_TAG) == false)
     {
@@ -119,7 +119,7 @@ public class DataSourceHandler extends CompoundObjectHandler
       return;
     }
 
-    String typeName = attrs.getValue("type");
+    final String typeName = attrs.getValue("type");
     if (typeName == null)
     {
       throw new ParseException("The datasource type must be specified", getParser().getLocator());
@@ -135,7 +135,7 @@ public class DataSourceHandler extends CompoundObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(DATASOURCE_TAG) == false)
     {
@@ -149,7 +149,7 @@ public class DataSourceHandler extends CompoundObjectHandler
     }
     else
     {
-      DataSource ds = (DataSource) dataSourceHandler.getValue();
+      final DataSource ds = (DataSource) dataSourceHandler.getValue();
       getTargetObjectDescription().setParameter("dataSource", ds);
       dataSourceHandler = null;
     }

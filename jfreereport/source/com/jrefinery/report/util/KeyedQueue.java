@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: KeyedQueue.java,v 1.15 2003/03/18 18:28:46 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.16 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @param limit  the maximum number of items.
    */
-  public KeyedQueue(int limit)
+  public KeyedQueue(final int limit)
   {
     table = new HashMap();
     list = new LinkedList();
@@ -84,7 +84,7 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @param limit  the maximum number of items.
    */
-  public void setLimit(int limit)
+  public void setLimit(final int limit)
   {
     if (limit < 1)
     {
@@ -110,7 +110,7 @@ public class KeyedQueue implements Serializable, Cloneable
    * @param key  the key.
    * @param ob  the value.
    */
-  public void put(Object key, Object ob)
+  public void put(final Object key, final Object ob)
   {
     if (key == null)
     {
@@ -121,7 +121,7 @@ public class KeyedQueue implements Serializable, Cloneable
       throw new NullPointerException("Value must not be null");
     }
 
-    Object oldval = table.put(key, ob);
+    final Object oldval = table.put(key, ob);
     if (oldval != null)
     {
       list.remove(oldval);
@@ -141,7 +141,7 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @return the value.
    */
-  public Object get(Object key)
+  public Object get(final Object key)
   {
     if (key == null)
     {
@@ -156,7 +156,7 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @param key  the key.
    */
-  public void remove(Object key)
+  public void remove(final Object key)
   {
     if (key == null)
     {
@@ -171,7 +171,7 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void removeLast()
   {
-    Object o = list.getLast();
+    final Object o = list.getLast();
     table.remove(o);
     list.remove(o);
   }
@@ -194,7 +194,7 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    KeyedQueue q = (KeyedQueue) super.clone();
+    final KeyedQueue q = (KeyedQueue) super.clone();
     q.list = (LinkedList) list.clone();
     q.table = (HashMap) table.clone();
     return q;

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.27 2003/06/23 14:36:57 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.28 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -572,7 +572,7 @@ public class PageFormatFactory
    * @param papersize the definition of the papersize in a 2-element int-array
    * @return the created paper
    */
-  public Paper createPaper(int[] papersize)
+  public Paper createPaper(final int[] papersize)
   {
     if (papersize.length != 2)
     {
@@ -590,9 +590,9 @@ public class PageFormatFactory
    * @param height the height of the paper in points
    * @return the created paper
    */
-  public Paper createPaper(int width, int height)
+  public Paper createPaper(final int width, final int height)
   {
-    Paper p = new Paper();
+    final Paper p = new Paper();
     p.setSize(width, height);
     setBorders(p, 0, 0, 0, 0);
     return p;
@@ -608,10 +608,10 @@ public class PageFormatFactory
    * @param bottom the border in points in the bottom
    * @param right the border in points in the right
    */
-  public void setBorders(Paper paper, double top, double left, double bottom, double right)
+  public void setBorders(final Paper paper, final double top, final double left, final double bottom, final double right)
   {
-    double w = paper.getWidth() - (right + left);
-    double h = paper.getHeight() - (bottom + top);
+    final double w = paper.getWidth() - (right + left);
+    final double h = paper.getHeight() - (bottom + top);
     paper.setImageableArea(left, top, w, h);
   }
 
@@ -625,7 +625,7 @@ public class PageFormatFactory
    * @param bottom the border in points in the bottom
    * @param right the border in points in the right
    */
-  public void setBordersInch(Paper paper, double top, double left, double bottom, double right)
+  public void setBordersInch(final Paper paper, final double top, final double left, final double bottom, final double right)
   {
     setBorders(paper, convertInchToPoints(top), convertInchToPoints(left),
         convertInchToPoints(bottom), convertInchToPoints(right));
@@ -641,7 +641,7 @@ public class PageFormatFactory
    * @param bottom the border in points in the bottom
    * @param right the border in points in the right
    */
-  public void setBordersMm(Paper paper, double top, double left, double bottom, double right)
+  public void setBordersMm(final Paper paper, final double top, final double left, final double bottom, final double right)
   {
     setBorders(paper, convertMmToPoints(top), convertMmToPoints(left),
         convertMmToPoints(bottom), convertMmToPoints(right));
@@ -653,7 +653,7 @@ public class PageFormatFactory
    * @param inches the size in inch
    * @return the size in points
    */
-  public double convertInchToPoints(double inches)
+  public double convertInchToPoints(final double inches)
   {
     return inches * 72;
   }
@@ -664,7 +664,7 @@ public class PageFormatFactory
    * @param mm the size in inch
    * @return the size in points
    */
-  public double convertMmToPoints(double mm)
+  public double convertMmToPoints(final double mm)
   {
     return mm * (72d / 254d);
   }
@@ -678,13 +678,13 @@ public class PageFormatFactory
    * @return the created Pageformat
    * @throws NullPointerException if the paper given was null
    */
-  public PageFormat createPageFormat(Paper paper, int orientation)
+  public PageFormat createPageFormat(final Paper paper, final int orientation)
   {
     if (paper == null)
     {
       throw new NullPointerException("Paper given must not be null");
     }
-    PageFormat pf = new PageFormat();
+    final PageFormat pf = new PageFormat();
     pf.setPaper(paper);
     pf.setOrientation(orientation);
     return pf;
@@ -698,18 +698,18 @@ public class PageFormatFactory
    * @param name the name of the constant defining the papersize
    * @return the defined paper or null, if the name was invalid.
    */
-  public Paper createPaper(String name)
+  public Paper createPaper(final String name)
   {
     try
     {
-      Field f = this.getClass().getDeclaredField(name);
-      Object o = f.get(this);
+      final Field f = this.getClass().getDeclaredField(name);
+      final Object o = f.get(this);
       if (o instanceof int[] == false)
       {
         // Log.debug ("Is no valid pageformat definition");
         return null;
       }
-      int[] pageformat = (int[]) o;
+      final int[] pageformat = (int[]) o;
       return createPaper(pageformat);
     }
     catch (NoSuchFieldException nfe)
@@ -729,7 +729,7 @@ public class PageFormatFactory
    *
    * @param pf  the page format.
    */
-  public static void logPageFormat(PageFormat pf)
+  public static void logPageFormat(final PageFormat pf)
   {
     Log.debug("PageFormat: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
     Log.debug("PageFormat: Image: X " + pf.getImageableX()
@@ -747,7 +747,7 @@ public class PageFormatFactory
    *
    * @param pf  the paper size.
    */
-  public static void logPaper(Paper pf)
+  public static void logPaper(final Paper pf)
   {
     Log.debug("Paper: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
     Log.debug("Paper: Image: X " + pf.getImageableX()
@@ -763,7 +763,7 @@ public class PageFormatFactory
    * @param pf2 the second page format that should be compared.
    * @return true, if both page formats are equal, false otherwise.
    */
-  public static boolean isEqual(PageFormat pf1, PageFormat pf2)
+  public static boolean isEqual(final PageFormat pf1, final PageFormat pf2)
   {
     if (pf1 == pf2)
     {
@@ -778,8 +778,8 @@ public class PageFormatFactory
     {
       return false;
     }
-    Paper p1 = pf1.getPaper();
-    Paper p2 = pf2.getPaper();
+    final Paper p1 = pf1.getPaper();
+    final Paper p2 = pf2.getPaper();
 
     if (p1.getWidth() != p2.getWidth())
     {
@@ -814,7 +814,7 @@ public class PageFormatFactory
    * @param p the paper that defines the borders.
    * @return the left border.
    */
-  public double getLeftBorder(Paper p)
+  public double getLeftBorder(final Paper p)
   {
     return p.getImageableX();
   }
@@ -825,7 +825,7 @@ public class PageFormatFactory
    * @param p the paper that defines the borders.
    * @return the right border.
    */
-  public double getRightBorder(Paper p)
+  public double getRightBorder(final Paper p)
   {
     return p.getWidth() - (p.getImageableX() + p.getImageableWidth());
   }
@@ -836,7 +836,7 @@ public class PageFormatFactory
    * @param p the paper that defines the borders.
    * @return the top border.
    */
-  public double getTopBorder(Paper p)
+  public double getTopBorder(final Paper p)
   {
     return p.getImageableY();
   }
@@ -847,7 +847,7 @@ public class PageFormatFactory
    * @param p the paper that defines the borders.
    * @return the bottom border.
    */
-  public double getBottomBorder(Paper p)
+  public double getBottomBorder(final Paper p)
   {
     return p.getHeight() - (p.getImageableY() + p.getImageableHeight());
   }
@@ -858,12 +858,12 @@ public class PageFormatFactory
    * @param format the page format that should be prepared for serialisation.
    * @return the prepared page format data.
    */
-  public Object[] resolvePageFormat(PageFormat format)
+  public Object[] resolvePageFormat(final PageFormat format)
   {
-    Integer orientation = new Integer(format.getOrientation());
-    Paper p = format.getPaper();
-    float[] fdim = new float[]{(float) p.getWidth(), (float) p.getHeight()};
-    float[] rect = new float[]{(float) p.getImageableX(),
+    final Integer orientation = new Integer(format.getOrientation());
+    final Paper p = format.getPaper();
+    final float[] fdim = new float[]{(float) p.getWidth(), (float) p.getHeight()};
+    final float[] rect = new float[]{(float) p.getImageableX(),
                                (float) p.getImageableY(),
                                (float) p.getImageableWidth(),
                                (float) p.getImageableHeight()};
@@ -876,15 +876,15 @@ public class PageFormatFactory
    * @param data the serialized page format data.
    * @return the restored page format.
    */
-  public PageFormat createPageFormat(Object[] data)
+  public PageFormat createPageFormat(final Object[] data)
   {
-    Integer orientation = (Integer) data[0];
-    float[] dim = (float[]) data[1];
-    float[] rect = (float[]) data[2];
-    Paper p = new Paper();
+    final Integer orientation = (Integer) data[0];
+    final float[] dim = (float[]) data[1];
+    final float[] rect = (float[]) data[2];
+    final Paper p = new Paper();
     p.setSize(dim[0], dim[1]);
     p.setImageableArea(rect[0], rect[1], rect[2], rect[3]);
-    PageFormat format = new PageFormat();
+    final PageFormat format = new PageFormat();
     format.setPaper(p);
     format.setOrientation(orientation.intValue());
     return format;

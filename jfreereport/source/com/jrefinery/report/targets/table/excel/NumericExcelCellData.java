@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: NumericExcelCellData.java,v 1.9 2003/05/09 17:12:13 taqua Exp $
+ * $Id: NumericExcelCellData.java,v 1.10 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -57,9 +57,9 @@ public class NumericExcelCellData extends ExcelCellData
    * @param style the cell style.
    * @param value the number value.
    */
-  public NumericExcelCellData(Rectangle2D elementBounds,
-                              ExcelDataCellStyle style,
-                              Number value)
+  public NumericExcelCellData(final Rectangle2D elementBounds,
+                              final ExcelDataCellStyle style,
+                              final Number value)
   {
     super(elementBounds, style);
     this.number = value;
@@ -70,7 +70,7 @@ public class NumericExcelCellData extends ExcelCellData
    *
    * @param cell the cell, that should be formated.
    */
-  public void applyContent(HSSFCell cell)
+  public void applyContent(final HSSFCell cell)
   {
     if (number != null)
     {

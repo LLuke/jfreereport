@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
+ * $Id: FormatFilter.java,v 1.15 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @throws NullPointerException if the given format is null
    */
-  public void setFormatter(Format format)
+  public void setFormatter(final Format format)
   {
     if (format == null)
     {
@@ -113,19 +113,19 @@ public class FormatFilter implements DataFilter, Serializable
    */
   public Object getValue()
   {
-    Format f = getFormatter();
+    final Format f = getFormatter();
     if (f == null)
     {
       return getNullValue();
     }
 
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     if (ds == null)
     {
       return getNullValue();
     }
 
-    Object o = ds.getValue();
+    final Object o = ds.getValue();
     if (o == null)
     {
       return getNullValue();
@@ -146,7 +146,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @param nullvalue The string.
    */
-  public void setNullValue(String nullvalue)
+  public void setNullValue(final String nullvalue)
   {
     if (nullvalue == null)
     {
@@ -180,7 +180,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     if (ds == null)
     {
@@ -198,7 +198,7 @@ public class FormatFilter implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    FormatFilter f = (FormatFilter) super.clone();
+    final FormatFilter f = (FormatFilter) super.clone();
     if (datasource != null)
     {
       f.datasource = (DataSource) datasource.clone();

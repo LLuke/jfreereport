@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
+ * $Id: ImageCellRenderer.java,v 1.2 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -81,8 +81,8 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
    * @param column The (zero-based) column index.
    * @return The component that can render the contents of the cell.
    */
-  public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                 boolean hasFocus, int row, int column)
+  public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected,
+                                                 final boolean hasFocus, final int row, final int column)
   {
 
     setFont(null);

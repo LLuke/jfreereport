@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFormatFilter.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
+ * $Id: DateFormatFilter.java,v 1.10 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class DateFormatFilter extends FormatFilter
    * @param format The format.
    * @throws NullPointerException if the format given is null
    */
-  public void setDateFormat(DateFormat format)
+  public void setDateFormat(final DateFormat format)
   {
     super.setFormatter(format);
   }
@@ -92,9 +92,9 @@ public class DateFormatFilter extends FormatFilter
    * @throws ClassCastException if the format given is no DateFormat
    * @throws NullPointerException if the format given is null
    */
-  public void setFormatter(Format format)
+  public void setFormatter(final Format format)
   {
-    DateFormat dfmt = (DateFormat) format;
+    final DateFormat dfmt = (DateFormat) format;
     super.setFormatter(dfmt);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldTemplateDescription.java,v 1.4 2003/03/07 16:56:00 taqua Exp $
+ * $Id: NumberFieldTemplateDescription.java,v 1.5 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class NumberFieldTemplateDescription extends AbstractTemplateDescription
    *
    * @param name  the name.
    */
-  public NumberFieldTemplateDescription(String name)
+  public NumberFieldTemplateDescription(final String name)
   {
     super(name, NumberFieldTemplate.class, false);
     setParameterDefinition("name", String.class);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardType.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
+ * $Id: CardType.java,v 1.3 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class CardType
    *
    * @param name  the type name.
    */
-  private CardType(String name)
+  private CardType(final String name)
   {
     myName = name;
   }

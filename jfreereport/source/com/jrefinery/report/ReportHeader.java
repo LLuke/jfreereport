@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportHeader.java,v 1.10 2003/02/23 20:39:11 taqua Exp $
+ * $Id: ReportHeader.java,v 1.11 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -73,7 +73,7 @@ public class ReportHeader extends Band
    *
    * @param b  the new flag indicating whether to force a pagebreak.
    */
-  public void setOwnPage(boolean b)
+  public void setOwnPage(final boolean b)
   {
     getStyle().setBooleanStyleProperty
         (BandStyleSheet.PAGEBREAK_AFTER, b);

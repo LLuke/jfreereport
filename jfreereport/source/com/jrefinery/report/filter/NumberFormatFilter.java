@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFormatFilter.java,v 1.11 2003/02/04 17:56:09 taqua Exp $
+ * $Id: NumberFormatFilter.java,v 1.12 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param nf The number format.
    */
-  public void setNumberFormat(NumberFormat nf)
+  public void setNumberFormat(final NumberFormat nf)
   {
     setFormatter(nf);
   }
@@ -92,9 +92,9 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param f The format.
    */
-  public void setFormatter(Format f)
+  public void setFormatter(final Format f)
   {
-    NumberFormat fm = (NumberFormat) f;
+    final NumberFormat fm = (NumberFormat) f;
     super.setFormatter(fm);
   }
 
@@ -103,7 +103,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The new value of the grouping flag.
    */
-  public void setGroupingUsed(boolean newValue)
+  public void setGroupingUsed(final boolean newValue)
   {
     getNumberFormat().setGroupingUsed(newValue);
   }
@@ -123,7 +123,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMaximumFractionDigits(int newValue)
+  public void setMaximumFractionDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -143,7 +143,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMaximumIntegerDigits(int newValue)
+  public void setMaximumIntegerDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -163,7 +163,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMinimumFractionDigits(int newValue)
+  public void setMinimumFractionDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -183,7 +183,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMinimumIntegerDigits(int newValue)
+  public void setMinimumIntegerDigits(final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }

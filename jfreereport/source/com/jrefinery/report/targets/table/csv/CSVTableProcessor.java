@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.10 2003/05/11 13:39:18 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -91,7 +91,7 @@ public class CSVTableProcessor extends TableProcessor
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public CSVTableProcessor(JFreeReport report)
+  public CSVTableProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     // query:
@@ -116,7 +116,7 @@ public class CSVTableProcessor extends TableProcessor
    * @throws FunctionInitializeException if the table writer initialization failed.
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
-  public CSVTableProcessor(JFreeReport report, String separator)
+  public CSVTableProcessor(final JFreeReport report, final String separator)
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
@@ -144,7 +144,7 @@ public class CSVTableProcessor extends TableProcessor
    *
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
-  public void setSeparator(String separator)
+  public void setSeparator(final String separator)
   {
     if (separator == null)
     {
@@ -168,7 +168,7 @@ public class CSVTableProcessor extends TableProcessor
    *
    * @param writer the writer.
    */
-  public void setWriter(Writer writer)
+  public void setWriter(final Writer writer)
   {
     this.writer = writer;
   }
@@ -180,9 +180,9 @@ public class CSVTableProcessor extends TableProcessor
    *
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(boolean dummy)
+  public TableProducer createProducer(final boolean dummy)
   {
-    CSVTableProducer prod;
+    final CSVTableProducer prod;
     if (dummy)
     {
       prod = new CSVTableProducer(new PrintWriter(new NullOutputStream()),

@@ -62,7 +62,7 @@ public abstract class FirstPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  protected FirstPageAction(ResourceBundle resources)
+  protected FirstPageAction(final ResourceBundle resources)
   {
     putValue(NAME, resources.getString("action.firstpage.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.firstpage.description"));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReferenceDocGenerator.java,v 1.5 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ReferenceDocGenerator.java,v 1.6 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class ReferenceDocGenerator
    *
    * @param args  command line arguments.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     StyleKeyReferenceGenerator.main(args);
     ObjectReferenceGenerator.main(args);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HRefReferenceData.java,v 1.5 2003/02/26 16:42:26 mungady Exp $
+ * $Id: HRefReferenceData.java,v 1.6 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public class HRefReferenceData extends HtmlReferenceData
    *
    * @param reference the referenced resource.
    */
-  public HRefReferenceData(String reference)
+  public HRefReferenceData(final String reference)
   {
     super(true);
     if (reference == null)

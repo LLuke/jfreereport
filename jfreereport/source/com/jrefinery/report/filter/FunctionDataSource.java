@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.16 2003/06/01 17:39:24 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.17 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @param function The function.
    */
-  public FunctionDataSource(String function)
+  public FunctionDataSource(final String function)
   {
     setFunction(function);
   }
@@ -102,7 +102,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @param field the name of the function as defined in the function collection.
    */
-  public void setFunction(String field)
+  public void setFunction(final String field)
   {
     if (field == null)
     {
@@ -154,7 +154,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
@@ -175,7 +175,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable, Seria
    *
    * @throws IllegalStateException if there is no data row connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {

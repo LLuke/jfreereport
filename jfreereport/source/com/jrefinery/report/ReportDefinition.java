@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.10 2003/06/26 19:55:55 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.11 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class ReportDefinition implements Cloneable
    *
    * @throws CloneNotSupportedException if there is a problem cloning.
    */
-  public ReportDefinition(JFreeReport report) throws CloneNotSupportedException
+  public ReportDefinition(final JFreeReport report) throws CloneNotSupportedException
   {
     groups = new UnmodifiableGroupList((GroupList) report.getGroups().clone());
     properties = (ReportProperties) report.getProperties().clone();
@@ -205,7 +205,7 @@ public class ReportDefinition implements Cloneable
    * @throws IllegalArgumentException if the count is negative.
    * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
    */
-  public Group getGroup(int count)
+  public Group getGroup(final int count)
   {
     if (count < 0)
     {
@@ -234,7 +234,7 @@ public class ReportDefinition implements Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ReportDefinition report = (ReportDefinition) super.clone();
+    final ReportDefinition report = (ReportDefinition) super.clone();
     report.groups = (GroupList) groups.clone();
     report.itemBand = (ItemBand) itemBand.clone();
     report.pageFooter = (PageFooter) pageFooter.clone();

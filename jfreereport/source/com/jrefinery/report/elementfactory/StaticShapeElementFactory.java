@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.1 2003/06/10 12:11:54 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.2 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,7 +66,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     return shape;
   }
 
-  public void setShape(Shape shape)
+  public void setShape(final Shape shape)
   {
     if (shape == null)
       throw new NullPointerException();
@@ -76,8 +76,8 @@ public class StaticShapeElementFactory extends ShapeElementFactory
 
   public Element createElement()
   {
-    ShapeElement e = new ShapeElement();
-    ElementStyleSheet style = e.getStyle();
+    final ShapeElement e = new ShapeElement();
+    final ElementStyleSheet style = e.getStyle();
     if (getName() != null)
     {
       e.setName(getName());
@@ -113,21 +113,21 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createLineShapeElement(String name,
-                                                    Color paint,
-                                                    Stroke stroke,
-                                                    Line2D shape)
+  public static ShapeElement createLineShapeElement(final String name,
+                                                    final Color paint,
+                                                    final Stroke stroke,
+                                                    final Line2D shape)
   {
     if (shape.getX1() == shape.getX2() && shape.getY1() == shape.getY2())
     {
       // scale the line, is horizontal,the line is on pos 0,0 within the element
-      Rectangle2D bounds = new Rectangle2D.Float(0, (float) shape.getY1(), -100, 0);
+      final Rectangle2D bounds = new Rectangle2D.Float(0, (float) shape.getY1(), -100, 0);
       return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
           true, false, true);
     }
     else
     {
-      Rectangle2D bounds = shape.getBounds2D();
+      final Rectangle2D bounds = shape.getBounds2D();
       if (bounds.getX() < 0)
       {
         throw new IllegalArgumentException("Line coordinates must not be negative.");
@@ -164,12 +164,12 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Color paint,
-                                                Stroke stroke,
-                                                Shape shape,
-                                                boolean shouldDraw,
-                                                boolean shouldFill)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Color paint,
+                                                final Stroke stroke,
+                                                final Shape shape,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill)
   {
     // we have two choices here: let the element be big enough to take up
     // the complete shape and let the element start at 0,0, and the shape
@@ -182,7 +182,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
 
     // we have to translate the shape, as anything else would mess up the table layout
 
-    Rectangle2D shapeBounds = shape.getBounds2D();
+    final Rectangle2D shapeBounds = shape.getBounds2D();
 
     if (shapeBounds.getX() == 0 && shapeBounds.getY() == 0)
     {
@@ -191,7 +191,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
           shouldDraw, shouldFill, true);
     }
 
-    AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(),
+    final AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(),
         -shapeBounds.getY());
     return createShapeElement(name, shapeBounds, paint, stroke, af.createTransformedShape(shape),
         shouldDraw, shouldFill, true);
@@ -215,14 +215,14 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Rectangle2D bounds,
-                                                Color paint,
-                                                Stroke stroke,
-                                                Shape shape,
-                                                boolean shouldDraw,
-                                                boolean shouldFill,
-                                                boolean shouldScale)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Color paint,
+                                                final Stroke stroke,
+                                                final Shape shape,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill,
+                                                final boolean shouldScale)
   {
     return createShapeElement(name, bounds, paint, stroke, shape, shouldDraw,
         shouldFill, shouldScale, false);
@@ -246,17 +246,17 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Rectangle2D bounds,
-                                                Color paint,
-                                                Stroke stroke,
-                                                Shape shape,
-                                                boolean shouldDraw,
-                                                boolean shouldFill,
-                                                boolean shouldScale,
-                                                boolean keepAspectRatio)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Color paint,
+                                                final Stroke stroke,
+                                                final Shape shape,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill,
+                                                final boolean shouldScale,
+                                                final boolean keepAspectRatio)
   {
-    StaticShapeElementFactory factory = new StaticShapeElementFactory();
+    final StaticShapeElementFactory factory = new StaticShapeElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension
@@ -287,12 +287,12 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createRectangleShapeElement(String name,
-                                                         Color paint,
-                                                         Stroke stroke,
-                                                         Rectangle2D shape,
-                                                         boolean shouldDraw,
-                                                         boolean shouldFill)
+  public static ShapeElement createRectangleShapeElement(final String name,
+                                                         final Color paint,
+                                                         final Stroke stroke,
+                                                         final Rectangle2D shape,
+                                                         final boolean shouldDraw,
+                                                         final boolean shouldFill)
   {
     if (shape.getX() < 0 || shape.getY() < 0 || shape.getWidth() < 0 || shape.getHeight() < 0)
     {
@@ -301,7 +301,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
       return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0, 0, 100, 100),
           shouldDraw, shouldFill, true);
     }
-    Rectangle2D rect = (Rectangle2D) shape.clone();
+    final Rectangle2D rect = (Rectangle2D) shape.clone();
     rect.setRect(0, 0, rect.getWidth(), rect.getHeight());
     return createShapeElement(name, shape, paint, stroke, rect, shouldDraw, shouldFill, false);
   }

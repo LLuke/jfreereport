@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlReferenceData.java,v 1.4 2003/02/26 16:42:28 mungady Exp $
+ * $Id: HtmlReferenceData.java,v 1.5 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public abstract class HtmlReferenceData
    *
    * @param external if the generated reference points to an external resource.
    */
-  protected HtmlReferenceData(boolean external)
+  protected HtmlReferenceData(final boolean external)
   {
     this.external = external;
   }

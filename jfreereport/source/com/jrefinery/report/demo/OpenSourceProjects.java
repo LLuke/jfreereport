@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceProjects.java,v 1.4 2003/03/19 10:27:28 mungady Exp $
+ * $Id: OpenSourceProjects.java,v 1.5 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -110,7 +110,7 @@ public class OpenSourceProjects extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     switch (column)
     {
@@ -137,7 +137,7 @@ public class OpenSourceProjects extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt(int row, int column)
+  public Object getValueAt(final int row, final int column)
   {
     if (column == 0)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.50 2003/06/26 19:55:57 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.51 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -500,7 +500,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param globalConfig  the global configuration.
    */
-  public ReportConfiguration(ReportConfiguration globalConfig)
+  public ReportConfiguration(final ReportConfiguration globalConfig)
   {
     this();
     parentConfiguration = globalConfig;
@@ -513,7 +513,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @return the property value.
    */
-  public String getConfigProperty(String key)
+  public String getConfigProperty(final String key)
   {
     return getConfigProperty(key, null);
   }
@@ -530,7 +530,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @return the property value.
    */
-  public String getConfigProperty(String key, String defaultValue)
+  public String getConfigProperty(final String key, final String defaultValue)
   {
     String value = configuration.getProperty(key);
     if (value == null)
@@ -553,7 +553,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param key  the property key.
    * @param value  the property value.
    */
-  public void setConfigProperty(String key, String value)
+  public void setConfigProperty(final String key, final String value)
   {
     if (key == null)
     {
@@ -613,7 +613,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param level  the new log level.
    */
-  public void setLogLevel(String level)
+  public void setLogLevel(final String level)
   {
     setConfigProperty(LOGLEVEL, level);
   }
@@ -634,7 +634,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param autoInit  the new status.
    */
-  public void setPDFTargetAutoInit(boolean autoInit)
+  public void setPDFTargetAutoInit(final boolean autoInit)
   {
     setConfigProperty(PDFTARGET_AUTOINIT, String.valueOf(autoInit));
   }
@@ -659,7 +659,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param disableLogging  the flag.
    */
-  public void setDisableLogging(boolean disableLogging)
+  public void setDisableLogging(final boolean disableLogging)
   {
     setConfigProperty(DISABLE_LOGGING, String.valueOf(disableLogging));
   }
@@ -679,7 +679,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param pdfTargetEncoding  the new encoding.
    */
-  public void setPdfTargetEncoding(String pdfTargetEncoding)
+  public void setPdfTargetEncoding(final String pdfTargetEncoding)
   {
     setConfigProperty(PDFTARGET_ENCODING, pdfTargetEncoding);
   }
@@ -714,15 +714,15 @@ public class ReportConfiguration implements Configuration, Serializable
     {
       globalConfig = new ReportConfiguration();
 
-      PropertyFileReportConfiguration rootProperty = new PropertyFileReportConfiguration();
+      final PropertyFileReportConfiguration rootProperty = new PropertyFileReportConfiguration();
       rootProperty.load("/com/jrefinery/report/jfreereport.properties");
       globalConfig.insertConfiguration(rootProperty);
 
-      PropertyFileReportConfiguration baseProperty = new PropertyFileReportConfiguration();
+      final PropertyFileReportConfiguration baseProperty = new PropertyFileReportConfiguration();
       baseProperty.load("/jfreereport.properties");
       globalConfig.insertConfiguration(baseProperty);
 
-      SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
+      final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
       globalConfig.insertConfiguration(systemConfig);
 
       // todo; loadExtensions ();
@@ -737,7 +737,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param config the new report configuration.
    */
-  protected void insertConfiguration(ReportConfiguration config)
+  protected void insertConfiguration(final ReportConfiguration config)
   {
     config.setParentConfig(getParentConfig());
     setParentConfig(config);
@@ -749,7 +749,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param config  the parent configuration.
    */
-  protected void setParentConfig(ReportConfiguration config)
+  protected void setParentConfig(final ReportConfiguration config)
   {
     if (parentConfiguration == this)
     {
@@ -784,7 +784,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param logTarget  the new log target.
    */
-  public void setLogTarget(String logTarget)
+  public void setLogTarget(final String logTarget)
   {
     setConfigProperty(LOGTARGET, logTarget);
   }
@@ -806,7 +806,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param warnInvalidColumns the warning flag
    */
-  public void setWarnInvalidColumns(boolean warnInvalidColumns)
+  public void setWarnInvalidColumns(final boolean warnInvalidColumns)
   {
     setConfigProperty(WARN_INVALID_COLUMNS, String.valueOf(warnInvalidColumns));
   }
@@ -829,7 +829,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param print set to true, if comments should be enabled.
    */
-  public void setPrintOperationComment(boolean print)
+  public void setPrintOperationComment(final boolean print)
   {
     setConfigProperty(PRINT_OPERATION_COMMENT, String.valueOf(print));
   }
@@ -850,7 +850,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param alias set to true, if the Graphics2D should use aliasing.
    */
-  public void setG2TargetUseAliasing(boolean alias)
+  public void setG2TargetUseAliasing(final boolean alias)
   {
     setConfigProperty(G2TARGET_USEALIASING, String.valueOf(alias));
   }
@@ -871,7 +871,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param embed set to true, if the PDFOutputTarget should use embedded fonts.
    */
-  public void setPDFTargetEmbedFonts(boolean embed)
+  public void setPDFTargetEmbedFonts(final boolean embed)
   {
     setConfigProperty(PDFTARGET_EMBED_FONTS, String.valueOf(embed));
   }
@@ -898,7 +898,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param buggy set to true, if the Graphics2D implementation does not calculate the string
    * positions correctly and an alternative implementation should be used.
    */
-  public void setG2BuggyFRC(boolean buggy)
+  public void setG2BuggyFRC(final boolean buggy)
   {
     setConfigProperty(G2TARGET_ISBUGGY_FRC, String.valueOf(buggy));
   }
@@ -920,7 +920,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param validate true, if the parser should validate the xml files.
    */
-  public void setValidateXML(boolean validate)
+  public void setValidateXML(final boolean validate)
   {
     setConfigProperty(PARSER_VALIDATE, String.valueOf(validate));
   }
@@ -958,7 +958,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @see ReportConfiguration#isStrictTableLayout
    */
-  public void setStrictTableLayout(boolean strict)
+  public void setStrictTableLayout(final boolean strict)
   {
     setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
   }
@@ -981,7 +981,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param enableExportCSV true, if the export plugin should be active, false otherwise.
    */
-  public void setEnableExportCSV(boolean enableExportCSV)
+  public void setEnableExportCSV(final boolean enableExportCSV)
   {
     setConfigProperty(ENABLE_EXPORT_CSV, String.valueOf(enableExportCSV));
   }
@@ -1004,7 +1004,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param enableExportHTML true, if the export plugin should be active, false otherwise.
    */
-  public void setEnableExportHTML(boolean enableExportHTML)
+  public void setEnableExportHTML(final boolean enableExportHTML)
   {
     setConfigProperty(ENABLE_EXPORT_HTML, String.valueOf(enableExportHTML));
   }
@@ -1027,7 +1027,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param enableExportPlain true, if the export plugin should be active, false otherwise.
    */
-  public void setEnableExportPlain(boolean enableExportPlain)
+  public void setEnableExportPlain(final boolean enableExportPlain)
   {
     setConfigProperty(ENABLE_EXPORT_PLAIN, String.valueOf(enableExportPlain));
   }
@@ -1050,7 +1050,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param enableExportPDF true, if the export plugin should be active, false otherwise.
    */
-  public void setEnableExportPDF(boolean enableExportPDF)
+  public void setEnableExportPDF(final boolean enableExportPDF)
   {
     setConfigProperty(ENABLE_EXPORT_PDF, String.valueOf(enableExportPDF));
   }
@@ -1073,7 +1073,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param enableExportExcel true, if the export plugin should be active, false otherwise.
    */
-  public void setEnableExportExcel(boolean enableExportExcel)
+  public void setEnableExportExcel(final boolean enableExportExcel)
   {
     setConfigProperty(ENABLE_EXPORT_EXCEL, String.valueOf(enableExportExcel));
   }
@@ -1107,7 +1107,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param strictErrorHandling if set to true, then errors in the event dispatching will
    * cause the reporting to fail.
    */
-  public void setStrictErrorHandling(boolean strictErrorHandling)
+  public void setStrictErrorHandling(final boolean strictErrorHandling)
   {
     setConfigProperty(STRICT_ERRORHANDLING, String.valueOf(strictErrorHandling));
   }
@@ -1150,7 +1150,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param targetEncoding  the new encoding.
    */
-  public void setXMLTargetEncoding(String targetEncoding)
+  public void setXMLTargetEncoding(final String targetEncoding)
   {
     setConfigProperty(TEXT_OUTPUT_ENCODING, targetEncoding);
   }
@@ -1170,7 +1170,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param targetEncoding  the new encoding.
    */
-  public void setHTMLTargetEncoding(String targetEncoding)
+  public void setHTMLTargetEncoding(final String targetEncoding)
   {
     setConfigProperty(HTML_OUTPUT_ENCODING, targetEncoding);
   }
@@ -1190,7 +1190,7 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @param targetEncoding  the new encoding.
    */
-  public void setCSVTargetEncoding(String targetEncoding)
+  public void setCSVTargetEncoding(final String targetEncoding)
   {
     setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
   }
@@ -1201,7 +1201,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param out the output stream where to write the object.
    * @throws IOException if errors occur while writing the stream.
    */
-  private void writeObject(ObjectOutputStream out)
+  private void writeObject(final ObjectOutputStream out)
       throws IOException
   {
     out.defaultWriteObject();
@@ -1224,11 +1224,11 @@ public class ReportConfiguration implements Configuration, Serializable
    * @throws ClassNotFoundException if a class definition for a serialized object
    * could not be found.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(final ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
-    boolean readParent = in.readBoolean();
+    final boolean readParent = in.readBoolean();
     if (readParent)
     {
       parentConfiguration = (ReportConfiguration) in.readObject();
@@ -1245,9 +1245,9 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param prefix the prefix that all selected property keys should share
    * @return the properties as iterator.
    */
-  public Iterator findPropertyKeys(String prefix)
+  public Iterator findPropertyKeys(final String prefix)
   {
-    ArrayList keys = new ArrayList();
+    final ArrayList keys = new ArrayList();
     collectPropertyKeys(prefix, this, keys);
     return Collections.unmodifiableList(keys).iterator();
   }
@@ -1260,13 +1260,13 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param config the currently processed report configuration.
    * @param collector the target list, that should receive all valid keys.
    */
-  private void collectPropertyKeys(String prefix, ReportConfiguration config,
-                                   ArrayList collector)
+  private void collectPropertyKeys(final String prefix, final ReportConfiguration config,
+                                   final ArrayList collector)
   {
-    Enumeration enum = config.getConfigProperties();
+    final Enumeration enum = config.getConfigProperties();
     while (enum.hasMoreElements())
     {
-      String key = (String) enum.nextElement();
+      final String key = (String) enum.nextElement();
       if (key.startsWith(prefix))
       {
         collector.add(key);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.24 2003/04/09 00:10:34 mungady Exp $
+ * $Id: ShapeElement.java,v 1.25 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -124,7 +124,7 @@ public class ShapeElement extends Element
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("Shape={ name=");
     b.append(getName());
     b.append(", shape=");
@@ -163,7 +163,7 @@ public class ShapeElement extends Element
    *
    * @param shouldDraw  the flag.
    */
-  public void setShouldDraw(boolean shouldDraw)
+  public void setShouldDraw(final boolean shouldDraw)
   {
     getStyle().setStyleProperty(DRAW_SHAPE, shouldDraw ? Boolean.TRUE : Boolean.FALSE);
   }
@@ -173,7 +173,7 @@ public class ShapeElement extends Element
    *
    * @param shouldFill  the flag.
    */
-  public void setShouldFill(boolean shouldFill)
+  public void setShouldFill(final boolean shouldFill)
   {
     getStyle().setStyleProperty(FILL_SHAPE, shouldFill ? Boolean.TRUE : Boolean.FALSE);
   }
@@ -195,7 +195,7 @@ public class ShapeElement extends Element
    *
    * @param scale  the flag.
    */
-  public void setScale(boolean scale)
+  public void setScale(final boolean scale)
   {
     getStyle().setStyleProperty(ElementStyleSheet.SCALE, scale ? Boolean.TRUE : Boolean.FALSE);
   }
@@ -217,7 +217,7 @@ public class ShapeElement extends Element
    *
    * @param kar  the flag.
    */
-  public void setKeepAspectRatio(boolean kar)
+  public void setKeepAspectRatio(final boolean kar)
   {
     getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO,
         kar ? Boolean.TRUE : Boolean.FALSE);
@@ -251,7 +251,7 @@ public class ShapeElement extends Element
    *
    * @param stroke  the stroke.
    */
-  public void setStroke(Stroke stroke)
+  public void setStroke(final Stroke stroke)
   {
     getStyle().setStyleProperty(ElementStyleSheet.STROKE, stroke);
   }

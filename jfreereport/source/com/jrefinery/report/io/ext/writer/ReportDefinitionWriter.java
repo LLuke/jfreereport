@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.10 2003/05/30 16:57:52 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.11 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
    *
    * @param writer  the report writer.
    */
-  public ReportDefinitionWriter(ReportWriter writer)
+  public ReportDefinitionWriter(final ReportWriter writer)
   {
     super(writer, 0);
   }
@@ -77,9 +77,9 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(Writer w) throws IOException, ReportWriterException
+  public void write(final Writer w) throws IOException, ReportWriterException
   {
-    String reportName = getReport().getName();
+    final String reportName = getReport().getName();
     w.write("<?xml version=\"1.0\" encoding=\"" + getReportWriter().getEncoding() + "\"?>\n");
     w.write("<!DOCTYPE report-definition PUBLIC \"");
     w.write(ParserEntityResolver.PUBLIC_ID_EXTENDED);
@@ -90,27 +90,27 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
     w.write("-->\n");
     writeTag(w, "report-definition", "name", reportName, OPEN);
 
-    ParserConfigWriter parserConfigWriter =
+    final ParserConfigWriter parserConfigWriter =
         new ParserConfigWriter(getReportWriter(), getIndentLevel());
     parserConfigWriter.write(w);
 
-    ReportConfigWriter reportConfigWriter =
+    final ReportConfigWriter reportConfigWriter =
         new ReportConfigWriter(getReportWriter(), getIndentLevel());
     reportConfigWriter.write(w);
 
-    StylesWriter stylesWriter =
+    final StylesWriter stylesWriter =
         new StylesWriter(getReportWriter(), getIndentLevel());
     stylesWriter.write(w);
 
-    TemplatesWriter templatesWriter =
+    final TemplatesWriter templatesWriter =
         new TemplatesWriter(getReportWriter(), getIndentLevel());
     templatesWriter.write(w);
 
-    ReportDescriptionWriter reportDescriptionWriter
+    final ReportDescriptionWriter reportDescriptionWriter
         = new ReportDescriptionWriter(getReportWriter(), getIndentLevel());
     reportDescriptionWriter.write(w);
 
-    FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter(), getIndentLevel());
+    final FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter(), getIndentLevel());
     functionsWriter.write(w);
 
     w.write("</report-definition>");

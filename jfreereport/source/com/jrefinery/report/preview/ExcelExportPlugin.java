@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.3 2003/06/26 19:55:56 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.4 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -76,7 +76,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @param proxy
    */
-  public void init(PreviewProxy proxy)
+  public void init(final PreviewProxy proxy)
   {
     super.init(proxy);
     if (proxy instanceof Frame)
@@ -102,7 +102,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return true or false.
    */
-  public boolean performExport(JFreeReport report)
+  public boolean performExport(final JFreeReport report)
   {
     return handleExportResult(exportDialog.performExport(report));
   }

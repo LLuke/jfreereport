@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentCreationException.java,v 1.4 2003/04/24 18:08:57 taqua Exp $
+ * $Id: ContentCreationException.java,v 1.5 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class ContentCreationException extends StackableException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public ContentCreationException(String message, Exception ex)
+  public ContentCreationException(final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -68,7 +68,7 @@ public class ContentCreationException extends StackableException
    *
    * @param message  the exception message.
    */
-  public ContentCreationException(String message)
+  public ContentCreationException(final String message)
   {
     super(message);
   }

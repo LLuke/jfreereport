@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVQuoter.java,v 1.6 2003/02/25 18:46:59 taqua Exp $
+ * $Id: CSVQuoter.java,v 1.7 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class CSVQuoter
    *
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
-  public CSVQuoter(String separator)
+  public CSVQuoter(final String separator)
   {
     setSeparator(separator);
   }
@@ -78,11 +78,11 @@ public class CSVQuoter
    *
    * @return The quoted string
    */
-  public String doQuoting(String original)
+  public String doQuoting(final String original)
   {
     if (isQuotingNeeded(original))
     {
-      StringBuffer retval = new StringBuffer();
+      final StringBuffer retval = new StringBuffer();
       retval.append("\"");
       applyQuote(retval, original);
       retval.append("\"");
@@ -102,12 +102,12 @@ public class CSVQuoter
    *
    * @return The unquoted string.
    */
-  public String undoQuoting(String nativeString)
+  public String undoQuoting(final String nativeString)
   {
     if (isQuotingNeeded(nativeString))
     {
-      StringBuffer b = new StringBuffer(nativeString.length());
-      int length = nativeString.length() - 1;
+      final StringBuffer b = new StringBuffer(nativeString.length());
+      final int length = nativeString.length() - 1;
       int start = 1;
 
       int pos = start;
@@ -140,7 +140,7 @@ public class CSVQuoter
    * @param str the string that should be tested.
    * @return true, if quoting needs to be applied, false otherwise.
    */
-  private boolean isQuotingNeeded(String str)
+  private boolean isQuotingNeeded(final String str)
   {
     if (str.indexOf(separator) != -1)
     {
@@ -164,15 +164,15 @@ public class CSVQuoter
    * @param b the result buffer
    * @param original the string, that should be quoted.
    */
-  private void applyQuote(StringBuffer b, String original)
+  private void applyQuote(final StringBuffer b, final String original)
   {
     // This solution needs improvements. Copy blocks instead of single
     // characters.
-    int length = original.length();
+    final int length = original.length();
 
     for (int i = 0; i < length; i++)
     {
-      char c = original.charAt(i);
+      final char c = original.charAt(i);
       if (c == '"')
       {
         b.append("\"\"");
@@ -201,7 +201,7 @@ public class CSVQuoter
    *
    * @param separator  the separator (<code>null</code> not permitted).
    */
-  public void setSeparator(String separator)
+  public void setSeparator(final String separator)
   {
     if (separator == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.8 2003/05/14 22:26:39 taqua Exp $
+ * $Id: ContentContainer.java,v 1.9 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class ContentContainer implements Content
    *
    * @param bounds  the content bounds.
    */
-  protected ContentContainer(Rectangle2D bounds)
+  protected ContentContainer(final Rectangle2D bounds)
   {
     this.bounds = bounds;
     content = new ArrayList(5);
@@ -91,7 +91,7 @@ public class ContentContainer implements Content
    *
    * @param bounds  the new bounds.
    */
-  protected void setBounds(Rectangle2D bounds)
+  protected void setBounds(final Rectangle2D bounds)
   {
     this.bounds.setRect(bounds);
   }
@@ -104,7 +104,7 @@ public class ContentContainer implements Content
    * @param width  the width.
    * @param height  the height.
    */
-  protected void setBounds(float x, float y, float width, float height)
+  protected void setBounds(final float x, final float y, final float width, final float height)
   {
     this.bounds.setRect(x, y, width, height);
   }
@@ -114,7 +114,7 @@ public class ContentContainer implements Content
    *
    * @param cp  the content to add.
    */
-  protected void addContentPart(Content cp)
+  protected void addContentPart(final Content cp)
   {
     content.add(cp);
   }
@@ -136,7 +136,7 @@ public class ContentContainer implements Content
    *
    * @return the content.
    */
-  public Content getContentPart(int part)
+  public Content getContentPart(final int part)
   {
     return (Content) content.get(part);
   }
@@ -148,24 +148,24 @@ public class ContentContainer implements Content
    *
    * @return a container holding the content items.
    */
-  public Content getContentForBounds(Rectangle2D bounds)
+  public Content getContentForBounds(final Rectangle2D bounds)
   {
     ContentContainer cc = null;
     for (int i = 0; i < getContentPartCount(); i++)
     {
-      Content contentPart = getContentPart(i);
+      final Content contentPart = getContentPart(i);
       if (contentPart.getBounds().intersects(bounds) == false)
       {
         continue;
       }
 
-      Content retval = contentPart.getContentForBounds(bounds);
+      final Content retval = contentPart.getContentForBounds(bounds);
       if (retval == null)
       {
         continue;
       }
 
-      Rectangle2D cbounds = retval.getBounds();
+      final Rectangle2D cbounds = retval.getBounds();
       if (cbounds.getHeight() != 0 && cbounds.getWidth() != 0)
       {
         if (cc == null)
@@ -188,8 +188,8 @@ public class ContentContainer implements Content
     Rectangle2D retval = null;
     for (int i = 0; i < getContentPartCount(); i++)
     {
-      Content contentPart = getContentPart(i);
-      Rectangle2D minCBounds = contentPart.getMinimumContentSize();
+      final Content contentPart = getContentPart(i);
+      final Rectangle2D minCBounds = contentPart.getMinimumContentSize();
 
       if (minCBounds == null)
       {
@@ -214,7 +214,7 @@ public class ContentContainer implements Content
    */
   public String toString()
   {
-    StringBuffer container = new StringBuffer();
+    final StringBuffer container = new StringBuffer();
     container.append(getClass().getName());
     container.append("={\n");
     for (int i = 0; i < getContentPartCount(); i++)

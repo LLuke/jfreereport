@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.7 2003/04/08 14:20:54 mungady Exp $
+ * $Id: BaseFontSupport.java,v 1.8 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class BaseFontSupport
    *
    * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public BaseFontRecord createBaseFont(FontDefinition font, String encoding, boolean embedded)
+  public BaseFontRecord createBaseFont(final FontDefinition font, final String encoding, final boolean embedded)
       throws OutputTargetException
   {
     if (font == null)
@@ -100,7 +100,7 @@ public class BaseFontSupport
     //Log.debug ("Create Font: " + font + " Encoding: " + encoding + " Embedd: " + embedFonts);
 
     // use the Java logical font name to map to a predefined iText font.
-    String logicalName = font.getFontName();
+    final String logicalName = font.getFontName();
     boolean bold = false;
     boolean italic = false;
 
@@ -119,7 +119,7 @@ public class BaseFontSupport
       italic = true;
     }
 
-    String fontKey;
+    final String fontKey;
     if (font.isCourier())
     {
       fontKey = createCourierName(bold, italic);
@@ -161,7 +161,7 @@ public class BaseFontSupport
 
     try
     {
-      String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);
+      final String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);
       if (filename != null)
       {
         fontRecord = createFontFromTTF(font, filename, encoding, stringEncoding, embedded);
@@ -174,7 +174,7 @@ public class BaseFontSupport
       {
         // filename is null, so no ttf file registered for the fontname, maybe this is
         // one of the internal fonts ...
-        BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded,
+        final BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded,
             false, null, null);
 
         if (f != null)
@@ -197,7 +197,7 @@ public class BaseFontSupport
     // fallback .. use BaseFont.HELVETICA as default
     try
     {
-      BaseFont f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, embedded,
+      final BaseFont f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, embedded,
           false, null, null);
       if (f != null)
       {
@@ -233,9 +233,9 @@ public class BaseFontSupport
    * @throws IOException if there is an I/O problem.
    * @throws DocumentException if the BaseFont could not be created.
    */
-  private BaseFontRecord createFontFromTTF(FontDefinition font, String filename,
-                                           String encoding, String stringEncoding,
-                                           boolean embedded)
+  private BaseFontRecord createFontFromTTF(final FontDefinition font, final String filename,
+                                           final String encoding, final String stringEncoding,
+                                           final boolean embedded)
       throws IOException, DocumentException
   {
 
@@ -264,27 +264,27 @@ public class BaseFontSupport
     // check if this font is in the cache ...
     //Log.warn ("TrueTypeFontKey : " + fontKey + " Font: " + font.isItalic() + " Encoding: "
     //          + encoding);
-    BaseFontRecord fontRec = getFromCache(fontKey, encoding);
+    final BaseFontRecord fontRec = getFromCache(fontKey, encoding);
     if (fontRec != null)
     {
       return fontRec;
     }
 
     // no, we have to create a new instance
-    BaseFontRecord record = new BaseFontRecord();
+    final BaseFontRecord record = new BaseFontRecord();
     record.setFontDefinition(font);
     record.setEmbedded(embedded);
     record.setLogicalName(fontKey);
     try
     {
-      BaseFont f = BaseFont.createFont(fontKey, encoding, embedded, false, null, null);
+      final BaseFont f = BaseFont.createFont(fontKey, encoding, embedded, false, null, null);
       record.setBaseFont(f);
       record.setEncoding(encoding);
     }
     catch (DocumentException de)
     {
       // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
-      BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded, false, null, null);
+      final BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded, false, null, null);
       record.setBaseFont(f);
       record.setEncoding(stringEncoding);
     }
@@ -300,7 +300,7 @@ public class BaseFontSupport
    *
    * @param record  the record.
    */
-  private void putToCache(BaseFontRecord record)
+  private void putToCache(final BaseFontRecord record)
   {
     baseFonts.put(record.createKey(), record);
   }
@@ -313,9 +313,9 @@ public class BaseFontSupport
    *
    * @return the PDF font record.
    */
-  private BaseFontRecord getFromCache(String fontKey, String encoding)
+  private BaseFontRecord getFromCache(final String fontKey, final String encoding)
   {
-    BaseFontRecord r = (BaseFontRecord) baseFonts.get(new BaseFontRecordKey(fontKey, encoding));
+    final BaseFontRecord r = (BaseFontRecord) baseFonts.get(new BaseFontRecordKey(fontKey, encoding));
     return r;
   }
 
@@ -327,7 +327,7 @@ public class BaseFontSupport
    *
    * @return the font name.
    */
-  private String createSansSerifName(boolean bold, boolean italic)
+  private String createSansSerifName(final boolean bold, final boolean italic)
   {
     if (bold && italic)
     {
@@ -355,7 +355,7 @@ public class BaseFontSupport
    *
    * @return the font name.
    */
-  private String createSerifName(boolean bold, boolean italic)
+  private String createSerifName(final boolean bold, final boolean italic)
   {
     if (bold && italic)
     {
@@ -383,7 +383,7 @@ public class BaseFontSupport
    *
    * @return the font name.
    */
-  private String createCourierName(boolean bold, boolean italic)
+  private String createCourierName(final boolean bold, final boolean italic)
   {
     if (bold && italic)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowDataSource.java,v 1.8 2003/06/01 17:39:24 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.9 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    *
    * @param column  the name of the field, function or expression in the data-row.
    */
-  public DataRowDataSource(String column)
+  public DataRowDataSource(final String column)
   {
     setDataSourceColumnName(column);
   }
@@ -107,7 +107,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    *
    * @see com.jrefinery.report.DataRow#get
    */
-  public void setDataSourceColumnName(String dataSourceColumnName)
+  public void setDataSourceColumnName(final String dataSourceColumnName)
   {
     if (dataSourceColumnName == null)
     {
@@ -153,7 +153,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    * @throws NullPointerException if the given row is null
    * @throws IllegalStateException if there is a datarow already connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
@@ -178,7 +178,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    * @throws NullPointerException if the given row is null
    * @throws IllegalStateException if there is currently no datarow connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {

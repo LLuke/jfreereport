@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.9 2003/06/26 19:55:57 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.10 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
    * @return The generated TableCellData object, or <code>null</code> if element type is
    *         not supported.
    */
-  public TableCellData createCellData(Element e, Rectangle2D rect)
+  public TableCellData createCellData(final Element e, final Rectangle2D rect)
   {
     if (e.isVisible() == false)
     {
@@ -95,13 +95,13 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
       return createBandCell(rect);
     }
 
-    Object value = e.getValue();
+    final Object value = e.getValue();
 
-    FontDefinition font = e.getStyle().getFontDefinitionProperty();
-    Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    ElementAlignment valign =
+    final FontDefinition font = e.getStyle().getFontDefinitionProperty();
+    final Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final ElementAlignment valign =
         (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    ElementAlignment halign =
+    final ElementAlignment halign =
         (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
     /**
      * Images cause OutOfMemoryError so they get removed ...
@@ -118,8 +118,8 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
     {
       try
       {
-        BaseFontRecord bf = baseFontSupport.createBaseFont(font, "Cp1252", false);
-        RTFTextCellStyle style = new RTFTextCellStyle
+        final BaseFontRecord bf = baseFontSupport.createBaseFont(font, "Cp1252", false);
+        final RTFTextCellStyle style = new RTFTextCellStyle
             (font, bf.getBaseFont(), color, valign, halign);
         return new RTFTextCellData(rect, (String) value, style);
       }

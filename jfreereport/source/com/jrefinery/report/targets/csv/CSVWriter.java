@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVWriter.java,v 1.8 2003/02/25 18:47:00 taqua Exp $
+ * $Id: CSVWriter.java,v 1.9 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class CSVWriter extends AbstractFunction
      *
      * @param quoter  a utility class for quoting CSV strings.
      */
-    public CSVRow(CSVQuoter quoter)
+    public CSVRow(final CSVQuoter quoter)
     {
       data = new ArrayList();
       this.quoter = quoter;
@@ -91,7 +91,7 @@ public class CSVWriter extends AbstractFunction
      *
      * @param value the appended int value
      */
-    public void append(int value)
+    public void append(final int value)
     {
       data.add(new Integer(value));
     }
@@ -101,7 +101,7 @@ public class CSVWriter extends AbstractFunction
      *
      * @param o the appended value
      */
-    public void append(Object o)
+    public void append(final Object o)
     {
       data.add(o);
     }
@@ -113,9 +113,9 @@ public class CSVWriter extends AbstractFunction
      *
      * @throws IOException if an I/O error occurred.
      */
-    public void write(Writer w) throws IOException
+    public void write(final Writer w) throws IOException
     {
-      Iterator it = data.iterator();
+      final Iterator it = data.iterator();
       while (it.hasNext())
       {
         w.write(quoter.doQuoting(String.valueOf(it.next())));
@@ -165,7 +165,7 @@ public class CSVWriter extends AbstractFunction
    *
    * @param writeDataRowNames true, if column names are printed, false otherwise
    */
-  public void setWriteDataRowNames(boolean writeDataRowNames)
+  public void setWriteDataRowNames(final boolean writeDataRowNames)
   {
     this.writeDataRowNames = writeDataRowNames;
   }
@@ -185,7 +185,7 @@ public class CSVWriter extends AbstractFunction
    *
    * @param w the writer
    */
-  public void setWriter(Writer w)
+  public void setWriter(final Writer w)
   {
     this.w = w;
   }
@@ -198,7 +198,7 @@ public class CSVWriter extends AbstractFunction
    * @throws NullPointerException if the separator is null.
    * @throws IllegalArgumentException if the separator is an empty string.
    */
-  public void setSeparator(String separator)
+  public void setSeparator(final String separator)
   {
     if (separator == null)
     {
@@ -227,11 +227,11 @@ public class CSVWriter extends AbstractFunction
    * @param dr the dataRow which should be written
    * @param row the CSVRow used to collect the RowData.
    */
-  private void writeDataRow(DataRow dr, CSVRow row)
+  private void writeDataRow(final DataRow dr, final CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
     {
-      Object o = dr.get(i);
+      final Object o = dr.get(i);
       if (o == null)
       {
         row.append(o);
@@ -249,7 +249,7 @@ public class CSVWriter extends AbstractFunction
    * @param dr the dataRow which should be written
    * @param row the CSVRow used to collect the RowData.
    */
-  private void writeDataRowNames(DataRow dr, CSVRow row)
+  private void writeDataRowNames(final DataRow dr, final CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
     {
@@ -262,20 +262,20 @@ public class CSVWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     try
     {
       if (isWriteDataRowNames())
       {
-        CSVRow names = new CSVRow(quoter);
+        final CSVRow names = new CSVRow(quoter);
         names.append("report.currentgroup");
         names.append("report.eventtype");
         writeDataRowNames(event.getDataRow(), names);
         names.write(getWriter());
       }
 
-      CSVRow row = new CSVRow(quoter);
+      final CSVRow row = new CSVRow(quoter);
       row.append(-1);
       row.append("reportheader");
       writeDataRow(event.getDataRow(), row);
@@ -292,11 +292,11 @@ public class CSVWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     try
     {
-      CSVRow row = new CSVRow(quoter);
+      final CSVRow row = new CSVRow(quoter);
       row.append(-1);
       row.append("reportfooter");
       writeDataRow(event.getDataRow(), row);
@@ -313,17 +313,17 @@ public class CSVWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     try
     {
-      int currentIndex = event.getState().getCurrentGroupIndex();
+      final int currentIndex = event.getState().getCurrentGroupIndex();
 
-      CSVRow row = new CSVRow(quoter);
+      final CSVRow row = new CSVRow(quoter);
       row.append(currentIndex);
 
-      Group g = event.getReport().getGroup(currentIndex);
-      String bandInfo = "groupheader name=\"" + g.getName() + "\"";
+      final Group g = event.getReport().getGroup(currentIndex);
+      final String bandInfo = "groupheader name=\"" + g.getName() + "\"";
       row.append(bandInfo);
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
@@ -339,17 +339,17 @@ public class CSVWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     try
     {
-      int currentIndex = event.getState().getCurrentGroupIndex();
+      final int currentIndex = event.getState().getCurrentGroupIndex();
 
-      CSVRow row = new CSVRow(quoter);
+      final CSVRow row = new CSVRow(quoter);
       row.append(currentIndex);
 
-      Group g = event.getReport().getGroup(currentIndex);
-      String bandInfo = "groupfooter name=\"" + g.getName() + "\"";
+      final Group g = event.getReport().getGroup(currentIndex);
+      final String bandInfo = "groupfooter name=\"" + g.getName() + "\"";
       row.append(bandInfo);
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
@@ -365,11 +365,11 @@ public class CSVWriter extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     try
     {
-      CSVRow row = new CSVRow(quoter);
+      final CSVRow row = new CSVRow(quoter);
       row.append(event.getState().getCurrentGroupIndex());
       row.append("itemband");
       writeDataRow(event.getDataRow(), row);
@@ -412,7 +412,7 @@ public class CSVWriter extends AbstractFunction
    * Overrides the depency level. Should be lower than any other function depency.
    * @param deplevel the new depency level.
    */
-  public void setDependencyLevel(int deplevel)
+  public void setDependencyLevel(final int deplevel)
   {
     this.depLevel = deplevel;
   }

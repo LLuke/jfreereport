@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MiddleAlignment.java,v 1.9 2003/05/11 13:39:18 taqua Exp $
+ * $Id: MiddleAlignment.java,v 1.10 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class MiddleAlignment extends VerticalBoundsAlignment
    *
    * @param bounds  the current bounds.
    */
-  public MiddleAlignment(Rectangle2D bounds)
+  public MiddleAlignment(final Rectangle2D bounds)
   {
     super(bounds);
   }
@@ -72,11 +72,11 @@ public class MiddleAlignment extends VerticalBoundsAlignment
       throw new NullPointerException("MiddleAlignment.align(...): null not permitted.");
     }
     r = getReferenceBounds().createIntersection(r);
-    float x = (float) r.getX();
-    float y = (float) (getReferenceBounds().getY()
+    final float x = (float) r.getX();
+    final float y = (float) (getReferenceBounds().getY()
         + ((getReferenceBounds().getHeight() - r.getHeight()) / 2));
-    float w = (float) r.getWidth();
-    float h = (float) r.getHeight();
+    final float w = (float) r.getWidth();
+    final float h = (float) r.getHeight();
     r.setRect(x, y, w, h);
     return r;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SampleData5.java,v 1.7 2003/04/02 21:13:50 taqua Exp $
+ * $Id: SampleData5.java,v 1.8 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -82,7 +82,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass(int column)
+  public Class getColumnClass(final int column)
   {
     return Number.class;
   }
@@ -94,7 +94,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     if (column == 0)
     {
@@ -130,7 +130,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt(int row, int column)
+  public Object getValueAt(final int row, final int column)
   {
     return new Long((long) (row / Math.pow(10, 4 - column)));
   }

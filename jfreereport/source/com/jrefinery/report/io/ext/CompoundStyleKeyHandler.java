@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.15 2003/06/19 18:44:09 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.16 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -78,11 +78,11 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public CompoundStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
+  public CompoundStyleKeyHandler(final Parser parser, final String finishTag, final String name, final Class c)
       throws SAXException
   {
     super(parser, finishTag, name, c);
-    ClassFactory fact = (ClassFactory) getParser().getHelperObject(
+    final ClassFactory fact = (ClassFactory) getParser().getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
     keyObjectDescription = fact.getDescriptionForClass(getKeyValueClass());
     if (keyObjectDescription == null)
@@ -114,7 +114,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(BASIC_OBJECT_TAG))
     {
@@ -123,13 +123,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       {
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
-      ObjectDescription od = getKeyObjectDescription();
+      final ObjectDescription od = getKeyObjectDescription();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
         throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
-      String overrideClassName = attrs.getValue("class");
+      final String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
         try
@@ -153,13 +153,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
 
-      ObjectDescription od = getKeyObjectDescription();
+      final ObjectDescription od = getKeyObjectDescription();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
         throw new ParseException("No such parameter", getParser().getLocator());
       }
-      String overrideClassName = attrs.getValue("class");
+      final String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
         try
@@ -193,7 +193,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     // ignore ...
   }
@@ -205,11 +205,11 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if ((tagName.equals(BASIC_OBJECT_TAG)) || (tagName.equals(COMPOUND_OBJECT_TAG)))
     {
-      Object o = basicFactory.getValue();
+      final Object o = basicFactory.getValue();
       if (o == null)
       {
         throw new ParseException("Parameter value is null", getParser().getLocator());

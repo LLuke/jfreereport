@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardDemo.java,v 1.5 2003/06/12 23:17:13 taqua Exp $
+ * $Id: CardDemo.java,v 1.6 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class CardDemo extends JFreeReportDemo
    */
   public static TableModel createSimpleDemoModel()
   {
-    CardTableModel model = new CardTableModel();
+    final CardTableModel model = new CardTableModel();
     model.addCard(new AdminCard("Jared", "Diamond", "NR123123", "login", "secret", new Date()));
     model.addCard(new FreeCard("NR123123", new Date()));
     model.addCard(new PrepaidCard("First Name", "Last Name", "NR123123"));
@@ -84,7 +84,7 @@ public class CardDemo extends JFreeReportDemo
    */
   private TableModel createEmptyStartDemoModel()
   {
-    CardTableModel model = new CardTableModel();
+    final CardTableModel model = new CardTableModel();
     model.addCard(new NoPrintCard());
     model.addCard(new NoPrintCard());
     model.addCard(new NoPrintCard());
@@ -103,7 +103,7 @@ public class CardDemo extends JFreeReportDemo
    */
   protected List createAvailableDemos()
   {
-    ArrayList demos = new ArrayList();
+    final ArrayList demos = new ArrayList();
 
     demos.add(new DemoDefinition("Simple Card printing",
         createSimpleDemoModel(),
@@ -121,7 +121,7 @@ public class CardDemo extends JFreeReportDemo
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     try
     {
@@ -134,7 +134,7 @@ public class CardDemo extends JFreeReportDemo
         Log.info("Look and feel problem.");
       }
 
-      CardDemo frame = new CardDemo();
+      final CardDemo frame = new CardDemo();
       frame.pack();
       frame.setBounds(100, 100, 700, 400);
       RefineryUtilities.centerFrameOnScreen(frame);

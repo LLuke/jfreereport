@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupFooterState.java,v 1.9 2003/05/16 17:26:45 taqua Exp $
+ * $Id: PreGroupFooterState.java,v 1.10 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public final class PreGroupFooterState extends ReportState
    *
    * @param previous  the previous report state.
    */
-  public PreGroupFooterState(ReportState previous)
+  public PreGroupFooterState(final ReportState previous)
   {
     super(previous);
   }

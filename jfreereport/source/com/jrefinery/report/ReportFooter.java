@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportFooter.java,v 1.8 2002/12/06 17:18:33 mungady Exp $
+ * $Id: ReportFooter.java,v 1.9 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,7 +69,7 @@ public class ReportFooter extends Band
    */
   public boolean isOwnPage()
   {
-    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
+    final Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
         Boolean.FALSE);
     return b.booleanValue();
   }
@@ -79,7 +79,7 @@ public class ReportFooter extends Band
    *
    * @param b  the flag.
    */
-  public void setOwnPage(boolean b)
+  public void setOwnPage(final boolean b)
   {
     getStyle().setBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, b);
   }

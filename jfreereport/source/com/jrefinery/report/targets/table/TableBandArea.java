@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableBandArea.java,v 1.3 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableBandArea.java,v 1.4 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class TableBandArea extends TableCellBackground
    *
    * @param outerBounds the band bounds in the table,
    */
-  public TableBandArea(Rectangle2D outerBounds)
+  public TableBandArea(final Rectangle2D outerBounds)
   {
     super(outerBounds, null);
   }

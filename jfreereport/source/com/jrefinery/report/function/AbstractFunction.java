@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.34 2003/06/15 21:26:29 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.35 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param name the name of the function.
    */
-  protected AbstractFunction(String name)
+  protected AbstractFunction(final String name)
   {
     this();
     setName(name);
@@ -145,7 +145,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param name  the name (<code>null</code> not permitted).
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     if (name == null)
     {
@@ -161,7 +161,7 @@ public abstract class AbstractFunction implements Function
    *
    * @return the property value.
    */
-  public String getProperty(String name)
+  public String getProperty(final String name)
   {
     return getProperty(name, null);
   }
@@ -174,7 +174,7 @@ public abstract class AbstractFunction implements Function
    *
    * @return the property value.
    */
-  public String getProperty(String name, String defaultVal)
+  public String getProperty(final String name, final String defaultVal)
   {
     return properties.getProperty(name, defaultVal);
   }
@@ -197,7 +197,7 @@ public abstract class AbstractFunction implements Function
    * @param name  the property name (<code>null</code> not permitted).
    * @param value  the property value.
    */
-  public void setProperty(String name, String value)
+  public void setProperty(final String name, final String value)
   {
     if (value == null)
     {
@@ -217,7 +217,7 @@ public abstract class AbstractFunction implements Function
    */
   public Properties getProperties()
   {
-    Properties retval = new Properties();
+    final Properties retval = new Properties();
     retval.putAll(properties);
     return retval;
   }
@@ -231,15 +231,15 @@ public abstract class AbstractFunction implements Function
    *
    * @param p  the properties.
    */
-  public void setProperties(Properties p)
+  public void setProperties(final Properties p)
   {
     if (p != null)
     {
-      Enumeration names = p.keys();
+      final Enumeration names = p.keys();
       while (names.hasMoreElements())
       {
-        String name = (String) names.nextElement();
-        String prop = (String) p.get(name);
+        final String name = (String) names.nextElement();
+        final String prop = (String) p.get(name);
         setProperty(name, prop);
       }
     }
@@ -266,7 +266,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param level  the level (must be greater than or equal to 0).
    */
-  public void setDependencyLevel(int level)
+  public void setDependencyLevel(final int level)
   {
     if (level < 0)
     {
@@ -293,7 +293,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param dataRow assigns the datarow for this expression.
    */
-  public void setDataRow(DataRow dataRow)
+  public void setDataRow(final DataRow dataRow)
   {
     this.dataRow = dataRow;
   }
@@ -320,7 +320,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
   }
 
@@ -329,7 +329,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
   }
 
@@ -338,7 +338,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
   }
 
@@ -346,8 +346,9 @@ public abstract class AbstractFunction implements Function
    * Receives notification that a page has started.
    *
    * @param event  the event.
+   * @deprecated Implement the PageEventListener interface to receive page events.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
   }
 
@@ -355,8 +356,9 @@ public abstract class AbstractFunction implements Function
    * Receives notification that a page has ended.
    *
    * @param event  the event.
+   * @deprecated Implement the PageEventListener interface to receive page events.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
   }
 
@@ -365,7 +367,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
   }
 
@@ -374,7 +376,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
   }
 
@@ -383,7 +385,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
   }
 
@@ -394,7 +396,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event The event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
   }
 
@@ -405,7 +407,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event The event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
   }
 
@@ -421,7 +423,7 @@ public abstract class AbstractFunction implements Function
    */
   public Object clone() throws CloneNotSupportedException
   {
-    AbstractFunction function = (AbstractFunction) super.clone();
+    final AbstractFunction function = (AbstractFunction) super.clone();
     function.properties = (Properties) properties.clone();
     return function;
   }
@@ -450,7 +452,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event The event.
    */
-  public void reportDone(ReportEvent event)
+  public void reportDone(final ReportEvent event)
   {
     // does nothing...
   }

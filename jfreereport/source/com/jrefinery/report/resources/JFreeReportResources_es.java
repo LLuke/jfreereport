@@ -28,7 +28,7 @@
  * Original Author:  Ramon Juanes;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_es.java,v 1.5 2003/05/16 13:24:41 taqua Exp $
+ * $Id: JFreeReportResources_es.java,v 1.6 2003/06/27 14:25:22 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -171,7 +171,7 @@ public class JFreeReportResources_es extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     ResourceCompareTool.main(new String[]{"es"});
   }

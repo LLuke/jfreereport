@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.18 2003/06/19 18:44:10 taqua Exp $
+ * $Id: StartState.java,v 1.19 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -63,14 +63,14 @@ public final class StartState extends ReportState
    * @param report  the report.
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
-  public StartState(JFreeReport report)
+  public StartState(final JFreeReport report)
       throws CloneNotSupportedException
   {
     super(report);
-    Iterator it = getLevels();
+    final Iterator it = getLevels();
     if (it.hasNext())
     {
-      Integer i = (Integer) getLevels().next();
+      final Integer i = (Integer) getLevels().next();
       getFunctions().setLevel(i.intValue());
     }
     else
@@ -87,7 +87,7 @@ public final class StartState extends ReportState
    *
    * @throws ReportProcessingException if the State could not be initialized properly.
    */
-  public StartState(FinishState fstate, int level) throws ReportProcessingException
+  public StartState(final FinishState fstate, final int level) throws ReportProcessingException
   {
     super(fstate, true);
     getFunctions().setLevel(level);

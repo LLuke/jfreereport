@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutAgentProgress.java,v 1.3 2002/12/07 14:58:33 taqua Exp $
+ * $Id: LayoutAgentProgress.java,v 1.4 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class LayoutAgentProgress
    *
    * @param name  the name.
    */
-  private LayoutAgentProgress(String name)
+  private LayoutAgentProgress(final String name)
   {
     myName = name;
   }

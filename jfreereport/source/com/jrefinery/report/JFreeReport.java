@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.58 2003/06/26 19:55:55 taqua Exp $
+ * $Id: JFreeReport.java,v 1.59 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -205,16 +205,16 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
   public JFreeReport(
-      String name,
-      ReportHeader reportHeader,
-      ReportFooter reportFooter,
-      PageHeader pageHeader,
-      PageFooter pageFooter,
-      ItemBand itemBand,
-      GroupList groups,
-      Collection functions,
-      TableModel data,
-      PageFormat defaultPageFormat)
+      final String name,
+      final ReportHeader reportHeader,
+      final ReportFooter reportFooter,
+      final PageHeader pageHeader,
+      final PageFooter pageFooter,
+      final ItemBand itemBand,
+      final GroupList groups,
+      final Collection functions,
+      final TableModel data,
+      final PageFormat defaultPageFormat)
       throws FunctionInitializeException
   {
     this();
@@ -254,17 +254,17 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * <!-- changed expressions to fit functions parameter -->
    */
   public JFreeReport(
-      String name,
-      ReportHeader reportHeader,
-      ReportFooter reportFooter,
-      PageHeader pageHeader,
-      PageFooter pageFooter,
-      ItemBand itemBand,
-      GroupList groups,
-      Collection functions,
-      TableModel data,
-      PageFormat defaultPageFormat,
-      Collection expressions)
+      final String name,
+      final ReportHeader reportHeader,
+      final ReportFooter reportFooter,
+      final PageHeader pageHeader,
+      final PageFooter pageFooter,
+      final ItemBand itemBand,
+      final GroupList groups,
+      final Collection functions,
+      final TableModel data,
+      final PageFormat defaultPageFormat,
+      final Collection expressions)
       throws FunctionInitializeException
   {
     this(name, reportHeader, reportFooter, pageHeader, pageFooter, itemBand,
@@ -282,7 +282,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    */
   public String getName()
   {
-    Object name = getProperty(NAME_PROPERTY);
+    final Object name = getProperty(NAME_PROPERTY);
     return String.valueOf(name);
   }
 
@@ -294,7 +294,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param name  the name of the report.
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     setProperty(NAME_PROPERTY, name);
   }
@@ -311,7 +311,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param key  the key.
    * @param value  the value.
    */
-  public void setProperty(String key, Object value)
+  public void setProperty(final String key, final Object value)
   {
     this.properties.put(key, value);
   }
@@ -335,7 +335,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the property value.
    */
-  public Object getProperty(String key)
+  public Object getProperty(final String key)
   {
     if (key == null)
     {
@@ -351,7 +351,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return the property value.
    */
-  public boolean isPropertyMarked(String key)
+  public boolean isPropertyMarked(final String key)
   {
     return this.properties.isMarked(key);
   }
@@ -362,7 +362,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param key  the key.
    * @param mark the new marking flag
    */
-  public void setPropertyMarked(String key, boolean mark)
+  public void setPropertyMarked(final String key, final boolean mark)
   {
     this.properties.setMarked(key, mark);
   }
@@ -372,7 +372,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param header  the report header (<code>null</code> not permitted).
    */
-  public void setReportHeader(ReportHeader header)
+  public void setReportHeader(final ReportHeader header)
   {
     if (header == null)
     {
@@ -399,7 +399,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param footer  the report footer (<code>null</code> not permitted).
    */
-  public void setReportFooter(ReportFooter footer)
+  public void setReportFooter(final ReportFooter footer)
   {
     if (footer == null)
     {
@@ -426,7 +426,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param header  the page header (<code>null</code> not permitted).
    */
-  public void setPageHeader(PageHeader header)
+  public void setPageHeader(final PageHeader header)
   {
     if (header == null)
     {
@@ -453,7 +453,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param footer  the page footer (<code>null</code> not permitted).
    */
-  public void setPageFooter(PageFooter footer)
+  public void setPageFooter(final PageFooter footer)
   {
     if (footer == null)
     {
@@ -480,7 +480,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param band  the new item band (<code>null</code> not permitted).
    */
-  public void setItemBand(ItemBand band)
+  public void setItemBand(final ItemBand band)
   {
     if (band == null)
     {
@@ -507,7 +507,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param group  the group.
    */
-  public void addGroup(Group group)
+  public void addGroup(final Group group)
   {
     groups.add(group);
   }
@@ -520,7 +520,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param groupList  the list of groups.
    */
-  public void setGroups(GroupList groupList)
+  public void setGroups(final GroupList groupList)
   {
     if (groupList == null)
     {
@@ -528,7 +528,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     }
 
     this.groups.clear();
-    Iterator it = groupList.iterator();
+    final Iterator it = groupList.iterator();
     while (it.hasNext())
     {
       addGroup((Group) it.next());
@@ -544,7 +544,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     // if this was an empty group, fix it by adding an default group
     if (groups.size() == 0)
     {
-      Group defaultGroup = new Group();
+      final Group defaultGroup = new Group();
       defaultGroup.setName("default");
       addGroup(defaultGroup);
     }
@@ -582,7 +582,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @throws IllegalArgumentException if the count is negative.
    * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
    */
-  public Group getGroup(int count)
+  public Group getGroup(final int count)
   {
     if (count < 0)
     {
@@ -605,7 +605,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public void addExpression(Expression function) throws FunctionInitializeException
+  public void addExpression(final Expression function) throws FunctionInitializeException
   {
     expressions.add(function);
   }
@@ -617,7 +617,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public void addFunction(Function function) throws FunctionInitializeException
+  public void addFunction(final Function function) throws FunctionInitializeException
   {
     this.functions.add(function);
   }
@@ -637,7 +637,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param functions  the collection of functions.
    */
-  public void setFunctions(ExpressionCollection functions)
+  public void setFunctions(final ExpressionCollection functions)
   {
     if (functions == null)
     {
@@ -684,7 +684,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param data  the data for the report (<code>null</code> not permitted).
    */
-  public void setData(TableModel data)
+  public void setData(final TableModel data)
   {
     if (data == null)
     {
@@ -712,7 +712,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    */
   public Object clone() throws CloneNotSupportedException
   {
-    JFreeReport report = (JFreeReport) super.clone();
+    final JFreeReport report = (JFreeReport) super.clone();
     report.data = data; // data is defined to be immutable, so don't clone the thing
     report.defaultPageFormat = (PageFormat) defaultPageFormat.clone();
     report.groups = (GroupList) groups.clone();
@@ -763,7 +763,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param expressions  the expressions (<code>null</code> not permitted).
    */
-  public void setExpressions(ExpressionCollection expressions)
+  public void setExpressions(final ExpressionCollection expressions)
   {
     if (expressions == null)
     {
@@ -791,7 +791,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param out the objectoutput stream
    * @throws IOException if errors occur
    */
-  private void writeObject(ObjectOutputStream out)
+  private void writeObject(final ObjectOutputStream out)
       throws IOException
   {
     out.defaultWriteObject();
@@ -806,7 +806,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @throws IOException if there is an IO problem.
    * @throws ClassNotFoundException if there is a class problem.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(final ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();

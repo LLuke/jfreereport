@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceFieldTemplateDescription.java,v 1.3 2003/03/07 16:56:00 taqua Exp $
+ * $Id: ResourceFieldTemplateDescription.java,v 1.4 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class ResourceFieldTemplateDescription extends AbstractTemplateDescriptio
    *
    * @param name  the name.
    */
-  public ResourceFieldTemplateDescription(String name)
+  public ResourceFieldTemplateDescription(final String name)
   {
     super(name, ResourceFieldTemplate.class, true);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceLabelTemplateDescription.java,v 1.3 2003/03/07 16:56:00 taqua Exp $
+ * $Id: ResourceLabelTemplateDescription.java,v 1.4 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class ResourceLabelTemplateDescription extends AbstractTemplateDescriptio
    *
    * @param name  the name.
    */
-  public ResourceLabelTemplateDescription(String name)
+  public ResourceLabelTemplateDescription(final String name)
   {
     super(name, ResourceLabelTemplate.class, true);
   }

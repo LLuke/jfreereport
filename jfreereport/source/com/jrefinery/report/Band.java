@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.61 2003/06/23 16:08:20 taqua Exp $
+ * $Id: Band.java,v 1.62 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -130,7 +130,7 @@ public class Band extends Element implements Serializable, Cloneable
   {
     getStyle().addDefaultParent(BandDefaultStyleSheet.getBandDefaultStyle());
 
-    BandLayoutManager layout = new StaticLayoutManager();
+    final BandLayoutManager layout = new StaticLayoutManager();
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layout);
 
     setName("anonymousBand@" + super.hashCode());
@@ -157,7 +157,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param layoutManager  the layout manager.
    */
-  public void setLayout(BandLayoutManager layoutManager)
+  public void setLayout(final BandLayoutManager layoutManager)
   {
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layoutManager);
   }
@@ -196,7 +196,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws IllegalArgumentException if the position is invalid, either negative or
    * greater than the number of elements in this band.
    */
-  public synchronized void addElement(int position, Element element)
+  public synchronized void addElement(final int position, final Element element)
   {
     if (position < 0)
     {
@@ -260,17 +260,17 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws NullPointerException if the collection given is <code>null</code> or
    * the collection contains <code>null</code> elements.
    */
-  public synchronized void addElements(Collection elements)
+  public synchronized void addElements(final Collection elements)
   {
     if (elements == null)
     {
       throw new NullPointerException("Band.addElements(...): collection is null.");
     }
 
-    Iterator iterator = elements.iterator();
+    final Iterator iterator = elements.iterator();
     while (iterator.hasNext())
     {
-      Element element = (Element) iterator.next();
+      final Element element = (Element) iterator.next();
       addElement(element);
     }
   }
@@ -285,17 +285,17 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @throws NullPointerException if the given name is null.
    */
-  public Element getElement(String name)
+  public Element getElement(final String name)
   {
     if (name == null)
     {
       throw new NullPointerException("Band.getElement(...): name is null.");
     }
 
-    Iterator it = allElements.iterator();
+    final Iterator it = allElements.iterator();
     while (it.hasNext())
     {
-      Element e = (Element) it.next();
+      final Element e = (Element) it.next();
       if (e.getName() != null)
       {
         if (e.getName().equals(name))
@@ -315,7 +315,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param e  the element to be removed.
    */
-  public void removeElement(Element e)
+  public void removeElement(final Element e)
   {
     if (e == null)
     {
@@ -381,7 +381,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @return the element
    * @throws IndexOutOfBoundsException if the index is invalid.
    */
-  public Element getElement(int index)
+  public Element getElement(final int index)
   {
     if (allElementsCached == null)
     {
@@ -400,7 +400,7 @@ public class Band extends Element implements Serializable, Cloneable
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append(this.getClass().getName());
     b.append("={name=\"");
     b.append(getName());
@@ -420,21 +420,21 @@ public class Band extends Element implements Serializable, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    Band b = (Band) super.clone();
+    final Band b = (Band) super.clone();
     b.bandDefaults = bandDefaults.getCopy();
-    int elementSize = allElements.size();
+    final int elementSize = allElements.size();
     b.allElements = new ArrayList(elementSize);
     b.allElementsCached = new Element[elementSize];
     b.setParent(null);
 
-    ElementStyleSheet myBandDefaults = bandDefaults;
-    ElementStyleSheet cloneBandDefaults = b.bandDefaults;
+    final ElementStyleSheet myBandDefaults = bandDefaults;
+    final ElementStyleSheet cloneBandDefaults = b.bandDefaults;
 
     if (allElementsCached != null)
     {
       for (int i = 0; i < allElementsCached.length; i++)
       {
-        Element eC = (Element) allElementsCached[i].clone();
+        final Element eC = (Element) allElementsCached[i].clone();
         b.allElements.add(eC);
         b.allElementsCached[i] = eC;
         eC.setParent(b);
@@ -446,8 +446,8 @@ public class Band extends Element implements Serializable, Cloneable
     {
       for (int i = 0; i < elementSize; i++)
       {
-        Element e = (Element) allElements.get(i);
-        Element eC = (Element) e.clone();
+        final Element e = (Element) allElements.get(i);
+        final Element eC = (Element) e.clone();
         b.allElements.add(eC);
         b.allElementsCached[i] = eC;
         eC.setParent(b);
@@ -488,7 +488,7 @@ public class Band extends Element implements Serializable, Cloneable
    */
   protected void handleUnregisterStyleSheetCollection()
   {
-    Element[] elements = getElementArray();
+    final Element[] elements = getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       elements[i].unregisterStyleSheetCollection(getStyleSheetCollection());
@@ -503,7 +503,7 @@ public class Band extends Element implements Serializable, Cloneable
    */
   protected void handleRegisterStyleSheetCollection()
   {
-    Element[] elements = getElementArray();
+    final Element[] elements = getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       elements[i].registerStyleSheetCollection(getStyleSheetCollection());
@@ -528,7 +528,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException
    * if there is an other stylesheet collection already registered with that element.
    */
-  public void updateStyleSheetCollection(StyleSheetCollection sc)
+  public void updateStyleSheetCollection(final StyleSheetCollection sc)
   {
     if (sc == null)
     {
@@ -539,7 +539,7 @@ public class Band extends Element implements Serializable, Cloneable
       throw new NullPointerException("There is a stylesheet collection already registered.");
     }
 
-    Element[] elements = getElementArray();
+    final Element[] elements = getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       elements[i].updateStyleSheetCollection(sc);
@@ -565,7 +565,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @param height the new height. The minimum width is set to '0'.
    * @deprecated do not manipulate the element properties that way, use a stylesheet
    */
-  public void setHeight(float height)
+  public void setHeight(final float height)
   {
     getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
   }
@@ -579,7 +579,7 @@ public class Band extends Element implements Serializable, Cloneable
    */
   public float getHeight()
   {
-    Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+    final Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(0, 0));
     return (float) d.getHeight();
   }

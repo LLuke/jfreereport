@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WindowSizeLimiter.java,v 1.3 2002/12/12 12:26:57 mungady Exp $
+ * $Id: WindowSizeLimiter.java,v 1.4 2003/06/27 14:25:26 taqua Exp $
  *
  *
  * Changes
@@ -62,7 +62,7 @@ public class WindowSizeLimiter extends ComponentAdapter
    *
    * @param e  the event.
    */
-  public void componentResized(ComponentEvent e)
+  public void componentResized(final ComponentEvent e)
   {
     if (e.getSource() == currentSource)
     {
@@ -72,9 +72,9 @@ public class WindowSizeLimiter extends ComponentAdapter
     if (e.getSource() instanceof Component)
     {
       currentSource = e.getSource();
-      Component c = (Component) e.getSource();
-      Dimension d = c.getMaximumSize();
-      Dimension s = c.getSize();
+      final Component c = (Component) e.getSource();
+      final Dimension d = c.getMaximumSize();
+      final Dimension s = c.getSize();
       if (s.width > d.width)
       {
         s.width = d.width;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.11 2003/06/12 23:17:14 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.12 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -70,7 +70,7 @@ public class TemplateCollection
    *
    * @param template  the template.
    */
-  public void addTemplate(TemplateDescription template)
+  public void addTemplate(final TemplateDescription template)
   {
     templates.put(template.getName(), template);
     if (getConfig() != null)
@@ -86,9 +86,9 @@ public class TemplateCollection
    *
    * @return The template description.
    */
-  public TemplateDescription getTemplate(String name)
+  public TemplateDescription getTemplate(final String name)
   {
-    TemplateDescription td = (TemplateDescription) templates.get(name);
+    final TemplateDescription td = (TemplateDescription) templates.get(name);
     if (td != null)
     {
       return (TemplateDescription) td.getInstance();
@@ -103,12 +103,12 @@ public class TemplateCollection
    *
    * @return The description.
    */
-  public TemplateDescription getDescription(Template template)
+  public TemplateDescription getDescription(final Template template)
   {
-    Iterator enum = templates.values().iterator();
+    final Iterator enum = templates.values().iterator();
     while (enum.hasNext())
     {
-      TemplateDescription td = (TemplateDescription) enum.next();
+      final TemplateDescription td = (TemplateDescription) enum.next();
       if (td.getObjectClass().equals(template.getClass()))
       {
         return (TemplateDescription) td.getInstance();
@@ -127,7 +127,7 @@ public class TemplateCollection
    *
    * @param config the configuration, never null
    */
-  public void configure(Configuration config)
+  public void configure(final Configuration config)
   {
     if (config == null)
     {
@@ -140,10 +140,10 @@ public class TemplateCollection
     }
 
     this.config = config;
-    Iterator it = templates.values().iterator();
+    final Iterator it = templates.values().iterator();
     while (it.hasNext())
     {
-      TemplateDescription od = (TemplateDescription) it.next();
+      final TemplateDescription od = (TemplateDescription) it.next();
       od.configure(config);
     }
 

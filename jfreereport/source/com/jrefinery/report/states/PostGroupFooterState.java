@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.7 2003/04/05 18:57:12 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.8 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public final class PostGroupFooterState extends ReportState
    *
    * @param previous  the previous report state.
    */
-  public PostGroupFooterState(ReportState previous)
+  public PostGroupFooterState(final ReportState previous)
   {
     super(previous);
   }
@@ -117,7 +117,7 @@ public final class PostGroupFooterState extends ReportState
       {
         // we have more data to work on
         // If the group is done, print the GroupFooter of the parent
-        Group group = getReport().getGroup(getCurrentGroupIndex());
+        final Group group = getReport().getGroup(getCurrentGroupIndex());
         if (group.isLastItemInGroup(getDataRowBackend(),
             getDataRowBackend().previewNextRow()))
         {

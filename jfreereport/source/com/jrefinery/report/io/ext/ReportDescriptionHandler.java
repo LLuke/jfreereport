@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.10 2003/06/04 21:09:07 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.11 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public ReportDescriptionHandler(Parser parser, String finishTag)
+  public ReportDescriptionHandler(final Parser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -114,13 +114,13 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(REPORT_HEADER_TAG))
     {
-      Band band = new ReportHeader();
-      String name = attrs.getValue("name");
+      final Band band = new ReportHeader();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -130,8 +130,8 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(REPORT_FOOTER_TAG))
     {
-      Band band = new ReportFooter();
-      String name = attrs.getValue("name");
+      final Band band = new ReportFooter();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -141,8 +141,8 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(PAGE_HEADER_TAG))
     {
-      Band band = new PageHeader();
-      String name = attrs.getValue("name");
+      final Band band = new PageHeader();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -152,8 +152,8 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(PAGE_FOOTER_TAG))
     {
-      Band band = new PageFooter();
-      String name = attrs.getValue("name");
+      final Band band = new PageFooter();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -163,8 +163,8 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(ITEMBAND_TAG))
     {
-      Band band = new ItemBand();
-      String name = attrs.getValue("name");
+      final Band band = new ItemBand();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -174,7 +174,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(GROUPS_TAG))
     {
-      GroupsHandler groupFactory = new GroupsHandler(getParser(), tagName);
+      final GroupsHandler groupFactory = new GroupsHandler(getParser(), tagName);
       getParser().pushFactory(groupFactory);
     }
     else
@@ -197,7 +197,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // ignore the characters ...
   }
@@ -220,7 +220,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName)
+  public void endElement(final String tagName)
       throws SAXException
   {
     if (tagName.equals(REPORT_HEADER_TAG))

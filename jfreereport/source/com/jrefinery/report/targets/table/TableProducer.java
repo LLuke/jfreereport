@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.21 2003/05/11 13:39:18 taqua Exp $
+ * $Id: TableProducer.java,v 1.22 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public abstract class TableProducer
    * @param strictLayout the strict layout flag. Set to true, to enable the strict
    * layout mode.
    */
-  public TableProducer(boolean strictLayout)
+  public TableProducer(final boolean strictLayout)
   {
     properties = new Properties();
     grid = new TableGrid(strictLayout);
@@ -163,7 +163,7 @@ public abstract class TableProducer
    *
    * @param data the new TableCellData.
    */
-  protected void addCell(TableCellData data)
+  protected void addCell(final TableCellData data)
   {
     grid.addData(data);
   }
@@ -184,7 +184,7 @@ public abstract class TableProducer
    * @param bounds the bounds that define where to print the given band on this logical page
    * @param band the band that should be spooled/printed
    */
-  public void processBand(Rectangle2D bounds, Band band)
+  public void processBand(final Rectangle2D bounds, final Band band)
   {
     if (isOpen() == false)
     {
@@ -207,18 +207,18 @@ public abstract class TableProducer
     processElement(bounds, band);
 
     // process all elements
-    Element[] l = band.getElementArray();
+    final Element[] l = band.getElementArray();
     for (int i = 0; i < l.length; i++)
     {
-      Element e = l[i];
+      final Element e = l[i];
       if (e instanceof Band)
       {
-        Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+        final Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
         processBand(translateSubRect(bbounds, bounds), (Band) e);
       }
       else
       {
-        Rectangle2D elementBounds = (Rectangle2D)
+        final Rectangle2D elementBounds = (Rectangle2D)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
         if (elementBounds == null)
@@ -226,7 +226,7 @@ public abstract class TableProducer
           throw new NullPointerException("No layout for element");
         }
 
-        Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
+        final Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
         processElement(drawBounds, e);
       }
     }
@@ -241,11 +241,11 @@ public abstract class TableProducer
    * @param inner the inner rectangle in the local coordinate space
    * @return the translated sub rectangle.
    */
-  private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
+  private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
-    float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
-    Rectangle2D rc = new Rectangle2D.Float(
+    final float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    final float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
         Math.max(0, w),
@@ -264,9 +264,9 @@ public abstract class TableProducer
    * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
    * Bounds are usually defined by the BandLayoutManager.
    */
-  private void processElement(Rectangle2D drawBounds, Element e)
+  private void processElement(final Rectangle2D drawBounds, final Element e)
   {
-    TableCellData data = getCellDataFactory().createCellData(e, drawBounds);
+    final TableCellData data = getCellDataFactory().createCellData(e, drawBounds);
     if (data != null)
     {
       addCell(data);
@@ -281,7 +281,7 @@ public abstract class TableProducer
    * @param background the collected backgrounds for a single table cell.
    * @return the merged TableCellBackground.
    */
-  protected TableCellBackground createTableCellStyle(List background)
+  protected TableCellBackground createTableCellStyle(final List background)
   {
     if (background == null)
     {
@@ -291,8 +291,8 @@ public abstract class TableProducer
     TableCellBackground bg = null;
     for (int i = 0; i < background.size(); i++)
     {
-      TableGridPosition listBgPos = (TableGridPosition) background.get(i);
-      TableCellBackground listBg = (TableCellBackground) listBgPos.getElement();
+      final TableGridPosition listBgPos = (TableGridPosition) background.get(i);
+      final TableCellBackground listBg = (TableCellBackground) listBgPos.getElement();
 
       if (bg == null)
       {
@@ -327,7 +327,7 @@ public abstract class TableProducer
    *
    * @param dummy set to true, to activate the dummy mode, so that all output is skipped.
    */
-  public void setDummy(boolean dummy)
+  public void setDummy(final boolean dummy)
   {
     this.dummy = dummy;
   }
@@ -340,7 +340,7 @@ public abstract class TableProducer
    * @param value  the value of the property.  If the value is <code>null</code>, the property is
    * removed from the output target.
    */
-  public void setProperty(String property, String value)
+  public void setProperty(final String property, final String value)
   {
     if (property == null)
     {
@@ -367,7 +367,7 @@ public abstract class TableProducer
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null
    */
-  public String getProperty(String property)
+  public String getProperty(final String property)
   {
     return getProperty(property, null);
   }
@@ -383,7 +383,7 @@ public abstract class TableProducer
    *
    * @throws NullPointerException if <code>property</code> is null
    */
-  public String getProperty(String property, String defaultValue)
+  public String getProperty(final String property, final String defaultValue)
   {
     if (property == null)
     {

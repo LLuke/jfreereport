@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ElementHandler.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,7 @@ public class ElementHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param element  the element.
    */
-  public ElementHandler(Parser parser, String finishTag, Element element)
+  public ElementHandler(final Parser parser, final String finishTag, final Element element)
   {
     this.finishTag = finishTag;
     this.parser = parser;
@@ -126,11 +126,11 @@ public class ElementHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(TEMPLATE_TAG))
     {
-      String references = attrs.getValue("references");
+      final String references = attrs.getValue("references");
       if (references == null)
       {
         throw new ParseException("A parent template must be specified", getParser().getLocator());
@@ -148,7 +148,7 @@ public class ElementHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(DATASOURCE_TAG))
     {
-      String typeName = attrs.getValue("type");
+      final String typeName = attrs.getValue("type");
       if (typeName == null)
       {
         throw new ParseException("The datasource type must be specified",
@@ -159,8 +159,8 @@ public class ElementHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(STYLE_TAG))
     {
-      ElementStyleSheet styleSheet = element.getStyle();
-      StyleSheetHandler styleSheetFactory
+      final ElementStyleSheet styleSheet = element.getStyle();
+      final StyleSheetHandler styleSheetFactory
           = new StyleSheetHandler(getParser(), STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
@@ -179,7 +179,7 @@ public class ElementHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     // no characters allowed ...
   }
@@ -191,17 +191,17 @@ public class ElementHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(TEMPLATE_TAG))
     {
-      TemplateDescription t = templateFactory.getTemplate();
+      final TemplateDescription t = templateFactory.getTemplate();
       element.setDataSource(t.createTemplate());
       templateFactory = null;
     }
     else if (tagName.equals(DATASOURCE_TAG))
     {
-      DataSource ds = (DataSource) dataSourceHandler.getValue();
+      final DataSource ds = (DataSource) dataSourceHandler.getValue();
       element.setDataSource(ds);
       dataSourceHandler = null;
     }

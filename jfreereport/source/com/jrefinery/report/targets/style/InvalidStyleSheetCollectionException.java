@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InvalidStyleSheetCollectionException.java,v 1.2 2003/06/26 19:55:57 taqua Exp $
+ * $Id: InvalidStyleSheetCollectionException.java,v 1.3 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,7 +68,7 @@ public class InvalidStyleSheetCollectionException extends StackableRuntimeExcept
    * @param s the exception message.
    * @param e the parent exception.
    */
-  public InvalidStyleSheetCollectionException(String s, Exception e)
+  public InvalidStyleSheetCollectionException(final String s, final Exception e)
   {
     super(s, e);
   }
@@ -78,7 +78,7 @@ public class InvalidStyleSheetCollectionException extends StackableRuntimeExcept
    *
    * @param s the exception message.
    */
-  public InvalidStyleSheetCollectionException(String s)
+  public InvalidStyleSheetCollectionException(final String s)
   {
     super(s);
   }

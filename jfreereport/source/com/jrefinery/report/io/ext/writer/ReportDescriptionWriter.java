@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.11 2003/06/10 16:07:52 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.12 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param indent the current indention level.
    */
-  public ReportDescriptionWriter(ReportWriter reportWriter, int indent)
+  public ReportDescriptionWriter(final ReportWriter reportWriter, final int indent)
   {
     super(reportWriter, indent);
   }
@@ -89,7 +89,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(Writer writer) throws IOException, ReportWriterException
+  public void write(final Writer writer) throws IOException, ReportWriterException
   {
     writeTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
     writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG,
@@ -114,7 +114,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeBand(Writer writer, String tagName, Band band, Band parent)
+  private void writeBand(final Writer writer, final String tagName, final Band band, final Band parent)
       throws IOException, ReportWriterException
   {
     writeTag(writer, tagName, "name", band.getName(), OPEN);
@@ -126,13 +126,13 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       parentSheet = parent.getBandDefaults();
     }
 
-    StyleWriter styleWriter =
+    final StyleWriter styleWriter =
         new StyleWriter(getReportWriter(), band.getStyle(), parentSheet, getIndentLevel());
     styleWriter.write(writer);
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
     writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-    StyleWriter defaultStyleWriter =
+    final StyleWriter defaultStyleWriter =
         new StyleWriter(getReportWriter(), band.getBandDefaults(), null, getIndentLevel());
     defaultStyleWriter.write(writer);
     writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
@@ -149,12 +149,12 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       }
     }
 
-    Element[] list = band.getElementArray();
+    final Element[] list = band.getElementArray();
     for (int i = 0; i < list.length; i++)
     {
       if (list[i] instanceof Band)
       {
-        Band b = (Band) list[i];
+        final Band b = (Band) list[i];
         writeBand(writer, "band", b, band);
       }
       else
@@ -175,7 +175,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeElement(Writer writer, Element element, Band parent)
+  private void writeElement(final Writer writer, final Element element, final Band parent)
       throws IOException, ReportWriterException
   {
     if (parent.getElements().indexOf(element) == -1)
@@ -183,14 +183,14 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       throw new IllegalArgumentException("The given Element is no child of the band");
     }
 
-    Properties p = new Properties();
+    final Properties p = new Properties();
     p.setProperty("name", element.getName());
     p.setProperty("type", element.getContentType());
     writeTag(writer, BandHandler.ELEMENT_TAG, p, OPEN);
 
     writeTag(writer, ElementHandler.STYLE_TAG);
 
-    StyleWriter styleWriter =
+    final StyleWriter styleWriter =
         new StyleWriter(getReportWriter(), element.getStyle(),
             parent.getBandDefaults(), getIndentLevel());
     styleWriter.write(writer);
@@ -220,15 +220,15 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeTemplate(Writer writer, Template template)
+  private void writeTemplate(final Writer writer, final Template template)
       throws IOException, ReportWriterException
   {
-    Properties p = new Properties();
+    final Properties p = new Properties();
     if (template.getName() != null)
     {
       p.setProperty("name", template.getName());
     }
-    TemplateDescription td =
+    final TemplateDescription td =
         getReportWriter().getTemplateCollector().getDescription(template);
     if (td == null)
     {
@@ -238,7 +238,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
     writeTag(writer, ElementHandler.TEMPLATE_TAG, p, OPEN);
 
-    ObjectWriter objectWriter =
+    final ObjectWriter objectWriter =
         new ObjectWriter(getReportWriter(), template, td.getInstance(), getIndentLevel());
     objectWriter.write(writer);
 
@@ -254,7 +254,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeDataSource(Writer writer, DataSource datasource)
+  private void writeDataSource(final Writer writer, final DataSource datasource)
       throws IOException, ReportWriterException
   {
     ObjectDescription od =
@@ -268,11 +268,11 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     {
       throw new ReportWriterException("Unable to resolve DataSource: " + datasource.getClass());
     }
-    DataSourceWriter dsWriter =
+    final DataSourceWriter dsWriter =
         new DataSourceWriter(getReportWriter(), datasource, od, getIndentLevel());
 
-    DataSourceCollector dataSourceCollector = getReportWriter().getDataSourceCollector();
-    String dsname = dataSourceCollector.getDataSourceName(od);
+    final DataSourceCollector dataSourceCollector = getReportWriter().getDataSourceCollector();
+    final String dsname = dataSourceCollector.getDataSourceName(od);
     if (dsname == null)
     {
       throw new ReportWriterException("No name for DataSource " + datasource);
@@ -291,18 +291,18 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeGroups(Writer writer)
+  private void writeGroups(final Writer writer)
       throws IOException, ReportWriterException
   {
     writeTag(writer, ReportDescriptionHandler.GROUPS_TAG);
 
-    GroupList list = getReport().getGroups();
+    final GroupList list = getReport().getGroups();
     for (int i = 0; i < list.size(); i++)
     {
-      Group g = list.get(i);
+      final Group g = list.get(i);
       writeTag(writer, GroupsHandler.GROUP_TAG, "name", g.getName(), OPEN);
       writeTag(writer, GroupHandler.FIELDS_TAG);
-      List fields = g.getFields();
+      final List fields = g.getFields();
       for (int f = 0; f < fields.size(); f++)
       {
         writeTag(writer, GroupHandler.FIELD_TAG);

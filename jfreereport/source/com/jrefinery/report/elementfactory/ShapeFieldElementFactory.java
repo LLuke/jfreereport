@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeFieldElementFactory.java,v 1.1 2003/06/10 12:11:54 taqua Exp $
+ * $Id: ShapeFieldElementFactory.java,v 1.2 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,15 +63,15 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
     return fieldname;
   }
 
-  public void setFieldname(String fieldname)
+  public void setFieldname(final String fieldname)
   {
     this.fieldname = fieldname;
   }
 
   public Element createElement()
   {
-    ShapeElement e = new ShapeElement();
-    ElementStyleSheet style = e.getStyle();
+    final ShapeElement e = new ShapeElement();
+    final ElementStyleSheet style = e.getStyle();
     if (getName() != null)
     {
       e.setName(getName());
@@ -110,17 +110,17 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(String name,
-                                                Rectangle2D bounds,
-                                                Color paint,
-                                                Stroke stroke,
-                                                String fieldname,
-                                                boolean shouldDraw,
-                                                boolean shouldFill,
-                                                boolean shouldScale,
-                                                boolean keepAspectRatio)
+  public static ShapeElement createShapeElement(final String name,
+                                                final Rectangle2D bounds,
+                                                final Color paint,
+                                                final Stroke stroke,
+                                                final String fieldname,
+                                                final boolean shouldDraw,
+                                                final boolean shouldFill,
+                                                final boolean shouldScale,
+                                                final boolean keepAspectRatio)
   {
-    ShapeFieldElementFactory factory = new ShapeFieldElementFactory();
+    final ShapeFieldElementFactory factory = new ShapeFieldElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
     factory.setMinimumSize(new FloatDimension

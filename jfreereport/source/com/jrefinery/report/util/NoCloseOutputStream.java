@@ -25,7 +25,7 @@
  * ------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: NoCloseOutputStream.java,v 1.4 2003/02/26 13:58:05 mungady Exp $
+ * $Id: NoCloseOutputStream.java,v 1.5 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public class NoCloseOutputStream extends FilterOutputStream
    *
    * @param out the parent stream
    */
-  public NoCloseOutputStream(OutputStream out)
+  public NoCloseOutputStream(final OutputStream out)
   {
     super(out);
   }

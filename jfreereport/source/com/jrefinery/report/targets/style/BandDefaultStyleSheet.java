@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.17 2003/06/23 14:36:57 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.18 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
    *
    * @param locked true, if the stylesheet is locked and read-only, false otherwise.
    */
-  protected void setLocked(boolean locked)
+  protected void setLocked(final boolean locked)
   {
     this.locked = locked;
   }
@@ -118,7 +118,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
    * @throws ClassCastException if the value cannot be assigned with the given key.
    * @throws UnsupportedOperationException as this style sheet is read only.
    */
-  public void setStyleProperty(StyleKey key, Object value)
+  public void setStyleProperty(final StyleKey key, final Object value)
   {
     if (isLocked())
     {
@@ -147,7 +147,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
    *
    * @param styleSheetCollection the stylesheet collection that should be registered.
    */
-  public final void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public final void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
   }
 
@@ -156,7 +156,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
    *
    * @param styleSheetCollection the stylesheet collection that should be registered.
    */
-  public final void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public final void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
   }
 

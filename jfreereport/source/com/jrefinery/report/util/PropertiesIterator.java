@@ -24,7 +24,7 @@
  * PropertiesIterator.java
  * -----------------------
  *
- * $Id: PropertiesIterator.java,v 1.7 2002/12/12 12:26:57 mungady Exp $
+ * $Id: PropertiesIterator.java,v 1.8 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class PropertiesIterator implements Iterator
    *
    * @param properties  the underlying properties collection.
    */
-  public PropertiesIterator(Properties properties)
+  public PropertiesIterator(final Properties properties)
   {
     this(properties, null);
   }
@@ -79,7 +79,7 @@ public class PropertiesIterator implements Iterator
    * @param properties  the underlying properties collection.
    * @param prefix  a prefix for generating property names (null permitted).
    */
-  public PropertiesIterator(Properties properties, String prefix)
+  public PropertiesIterator(final Properties properties, final String prefix)
   {
     if (properties == null)
     {
@@ -125,7 +125,7 @@ public class PropertiesIterator implements Iterator
    */
   public Object next()
   {
-    String value = properties.getProperty(getNextKey());
+    final String value = properties.getProperty(getNextKey());
     count++;
     return value;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.9 2003/06/12 19:50:11 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.10 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -59,8 +59,8 @@ public class HtmlTextCellData extends HtmlCellData
    * @param style the style definition for the cell.
    * @param useXHTML a flag indicating whether to use XHTML.
    */
-  public HtmlTextCellData(Rectangle2D outerBounds, String value, HtmlCellStyle style,
-                          boolean useXHTML)
+  public HtmlTextCellData(final Rectangle2D outerBounds, final String value, final HtmlCellStyle style,
+                          final boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
     if (value == null)
@@ -76,7 +76,7 @@ public class HtmlTextCellData extends HtmlCellData
    * @param pout the print writer, which receives the generated HTML-Code.
    * @param filesystem not used.
    */
-  public void write(PrintWriter pout, HtmlFilesystem filesystem)
+  public void write(final PrintWriter pout, final HtmlFilesystem filesystem)
   {
     printText(pout, value, isUseXHTML());
   }
@@ -99,18 +99,18 @@ public class HtmlTextCellData extends HtmlCellData
    * @param text the text that should be printed.
    * @param useXHTML true, if XHTML is generated, false otherwise.
    */
-  public static void printText(PrintWriter pout, String text, boolean useXHTML)
+  public static void printText(final PrintWriter pout, final String text, final boolean useXHTML)
   {
     if (text.length() == 0)
     {
       return;
     }
 
-    LineBreakIterator iterator = new LineBreakIterator(text);
+    final LineBreakIterator iterator = new LineBreakIterator(text);
     boolean flagStart = true;
     while (iterator.hasNext())
     {
-      String readLine = (String) iterator.next();
+      final String readLine = (String) iterator.next();
 
       if (flagStart == true)
       {

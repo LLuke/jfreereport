@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.7 2003/04/24 18:08:49 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.8 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class GroupsHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public GroupsHandler(Parser parser, String finishTag)
+  public GroupsHandler(final Parser parser, final String finishTag)
   {
     this.parser = parser;
     this.finishTag = finishTag;
@@ -99,17 +99,17 @@ public class GroupsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(GROUP_TAG))
     {
-      Group group = new Group();
-      String name = attrs.getValue("name");
+      final Group group = new Group();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         group.setName(name);
       }
-      GroupHandler handler = new GroupHandler(getParser(), tagName, group);
+      final GroupHandler handler = new GroupHandler(getParser(), tagName, group);
       groupList.add(group);
       getParser().pushFactory(handler);
     }
@@ -129,7 +129,7 @@ public class GroupsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     // not used here
   }
@@ -141,11 +141,11 @@ public class GroupsHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(finishTag))
     {
-      JFreeReport report = (JFreeReport) getParser().getResult();
+      final JFreeReport report = (JFreeReport) getParser().getResult();
       report.setGroups(groupList);
       getParser().popFactory().endElement(tagName);
     }

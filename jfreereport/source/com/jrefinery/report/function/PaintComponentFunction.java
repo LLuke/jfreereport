@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.15 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,7 @@ public class PaintComponentFunction extends AbstractFunction
    *
    * @param field  the field name (null not permitted).
    */
-  public void setElement(String field)
+  public void setElement(final String field)
   {
     if (field == null)
     {
@@ -141,7 +141,7 @@ public class PaintComponentFunction extends AbstractFunction
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -157,10 +157,10 @@ public class PaintComponentFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void layoutComplete(LayoutEvent event)
+  public void layoutComplete(final LayoutEvent event)
   {
     // the current value in the dataRow is no AWT-Component ...
-    Object o = getDataRow().get(getField());
+    final Object o = getDataRow().get(getField());
     if ((o instanceof Component) == false)
     {
       image = null;
@@ -168,24 +168,24 @@ public class PaintComponentFunction extends AbstractFunction
     }
 
     // this is not the band with the element in it ...
-    Element element = FunctionUtilities.findElement(event.getLayoutedBand(), getElement());
+    final Element element = FunctionUtilities.findElement(event.getLayoutedBand(), getElement());
     if (element == null)
     {
       // don't change/delete the image if already created ...
       return;
     }
 
-    float scale = getScale();
+    final float scale = getScale();
 
-    Rectangle2D bounds = BandLayoutManagerUtil.getBounds(element, null);
+    final Rectangle2D bounds = BandLayoutManagerUtil.getBounds(element, null);
     // no valid layout
     if (bounds.getWidth() <= 0 || bounds.getHeight() <= 0)
     {
       return;
     }
 
-    Component comp = (Component) o;
-    Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
+    final Component comp = (Component) o;
+    final Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
     comp.setSize(dim);
 
     // supplies the peer and allows drawing ...
@@ -196,10 +196,10 @@ public class PaintComponentFunction extends AbstractFunction
       peerSupply.setSize(dim);
       peerSupply.validate();
 
-      BufferedImage bi = new BufferedImage((int) (scale * dim.width),
+      final BufferedImage bi = new BufferedImage((int) (scale * dim.width),
           (int) (scale * dim.height),
           BufferedImage.TYPE_INT_ARGB);
-      Graphics2D graph = bi.createGraphics();
+      final Graphics2D graph = bi.createGraphics();
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
       graph.dispose();
@@ -222,7 +222,7 @@ public class PaintComponentFunction extends AbstractFunction
     {
       return null;
     }
-    ImageReference ref = new ImageReference(image);
+    final ImageReference ref = new ImageReference(image);
     ref.setScaleX(1f / getScale());
     ref.setScaleY(1f / getScale());
     return ref;
@@ -235,7 +235,7 @@ public class PaintComponentFunction extends AbstractFunction
    *
    * @param scale the scale factor.
    */
-  public void setScale(float scale)
+  public void setScale(final float scale)
   {
     setProperty(SCALE_PROPERTY, String.valueOf(scale));
   }
@@ -249,10 +249,10 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public float getScale()
   {
-    String scale = getProperty(SCALE_PROPERTY, "1");
+    final String scale = getProperty(SCALE_PROPERTY, "1");
     try
     {
-      float f = Float.parseFloat(scale);
+      final float f = Float.parseFloat(scale);
       if (f == 0)
       {
         return 1;
@@ -273,7 +273,7 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public Expression getInstance()
   {
-    PaintComponentFunction pc = (PaintComponentFunction) super.getInstance();
+    final PaintComponentFunction pc = (PaintComponentFunction) super.getInstance();
     pc.peerSupply = new Frame();
     pc.peerSupply.setLayout(new BorderLayout());
     return pc;
@@ -288,12 +288,12 @@ public class PaintComponentFunction extends AbstractFunction
   public void initialize()
       throws FunctionInitializeException
   {
-    String fieldProp = getProperty(FIELD_PROPERTY);
+    final String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
     }
-    String elementProp = getProperty(ELEMENT_PROPERTY);
+    final String elementProp = getProperty(ELEMENT_PROPERTY);
     if (elementProp == null)
     {
       throw new FunctionInitializeException("No Such Property : element");
@@ -308,7 +308,7 @@ public class PaintComponentFunction extends AbstractFunction
    * @throws ClassNotFoundException if a class definition for a serialized object
    * could not be found.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(final ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();

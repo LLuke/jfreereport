@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: UnmodifiableGroupList.java,v 1.4 2003/06/10 16:07:47 taqua Exp $
+ * $Id: UnmodifiableGroupList.java,v 1.5 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public class UnmodifiableGroupList extends GroupList
    *
    * @param list  the base list.
    */
-  public UnmodifiableGroupList(GroupList list)
+  public UnmodifiableGroupList(final GroupList list)
   {
     super(list);
   }
@@ -63,7 +63,7 @@ public class UnmodifiableGroupList extends GroupList
    * @return nothing, as this method always fires a UnsupportedOperation exception.
    * @throws UnsupportedOperationException as this GroupList is not modifiable.
    */
-  public boolean remove(Object o)
+  public boolean remove(final Object o)
   {
     throw new UnsupportedOperationException();
   }
@@ -74,7 +74,7 @@ public class UnmodifiableGroupList extends GroupList
    * @param o  the object (must be an instance of the Group class).
    * @throws UnsupportedOperationException as this GroupList is not modifiable.
    */
-  public void add(Group o)
+  public void add(final Group o)
   {
     throw new UnsupportedOperationException();
   }

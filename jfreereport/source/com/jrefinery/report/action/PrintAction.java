@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PrintAction.java,v 1.18 2003/06/23 16:08:27 taqua Exp $
+ * $Id: PrintAction.java,v 1.19 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public abstract class PrintAction extends AbstractActionDowngrade implements Run
    *
    * @param resources  localised resources.
    */
-  protected PrintAction(ResourceBundle resources)
+  protected PrintAction(final ResourceBundle resources)
   {
     this.putValue(NAME, resources.getString("action.print.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.print.description"));

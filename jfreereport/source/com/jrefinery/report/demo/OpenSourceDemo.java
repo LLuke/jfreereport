@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.16 2003/06/19 18:44:09 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.17 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
    *
    * @param title  the frame title.
    */
-  public OpenSourceDemo(String title)
+  public OpenSourceDemo(final String title)
   {
     setTitle(title);
     this.data = new OpenSourceProjects();
@@ -98,11 +98,11 @@ public class OpenSourceDemo extends AbstractDemoFrame
    */
   public JMenuBar createMenuBar()
   {
-    JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = createJMenuItem("menu.file");
+    final JMenuBar mb = new JMenuBar();
+    final JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
+    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -118,20 +118,20 @@ public class OpenSourceDemo extends AbstractDemoFrame
    */
   public JPanel createContent()
   {
-    JPanel content = new JPanel(new BorderLayout());
+    final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-    String d = "This demo creates a report listing some useful open source projects for Java.";
-    JTextArea textArea = new JTextArea(d);
+    final String d = "This demo creates a report listing some useful open source projects for Java.";
+    final JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
     textArea.setEditable(false);
-    JScrollPane scroll = new JScrollPane(textArea);
+    final JScrollPane scroll = new JScrollPane(textArea);
     scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    JTable table = new JTable(this.data);
-    JScrollPane scrollPane = new JScrollPane(table);
+    final JTable table = new JTable(this.data);
+    final JScrollPane scrollPane = new JScrollPane(table);
 
-    JButton previewButton = new ActionButton(getPreviewAction());
+    final JButton previewButton = new ActionButton(getPreviewAction());
 
     content.add(scroll, BorderLayout.NORTH);
     content.add(scrollPane);
@@ -145,7 +145,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
    */
   protected void attemptPreview()
   {
-    URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
 
     if (in == null)
     {
@@ -155,7 +155,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
-    JFreeReport report;
+    final JFreeReport report;
     try
     {
       report = parseReport(in);
@@ -167,9 +167,9 @@ public class OpenSourceDemo extends AbstractDemoFrame
       //config.setEnableExportHTML(false);
 
       // add an image as a report property...
-      URL imageURL = getClass().getResource("/com/jrefinery/report/demo/gorilla.jpg");
-      Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
-      WaitingImageObserver obs = new WaitingImageObserver(image);
+      final URL imageURL = getClass().getResource("/com/jrefinery/report/demo/gorilla.jpg");
+      final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
+      final WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();
       report.setProperty("logo", image);
       report.setPropertyMarked("logo", true);
@@ -183,7 +183,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
 
     try
     {
-      PreviewFrame frame = new PreviewFrame(report);
+      final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
@@ -203,11 +203,11 @@ public class OpenSourceDemo extends AbstractDemoFrame
    *
    * @return a report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(final URL templateURL)
   {
 
     JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
       result = generator.parseReport(templateURL);
@@ -225,9 +225,9 @@ public class OpenSourceDemo extends AbstractDemoFrame
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    OpenSourceDemo frame = new OpenSourceDemo("Open Source Demo");
+    final OpenSourceDemo frame = new OpenSourceDemo("Open Source Demo");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.14 2003/06/26 19:55:56 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.15 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * --------
@@ -106,7 +106,7 @@ public class ExcelExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       if (performValidate())
       {
@@ -134,7 +134,7 @@ public class ExcelExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setConfirmed(false);
       setVisible(false);
@@ -159,7 +159,7 @@ public class ExcelExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       performSelectFile();
     }
@@ -204,7 +204,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @param owner  the dialog owner.
    */
-  public ExcelExportDialog(Frame owner)
+  public ExcelExportDialog(final Frame owner)
   {
     super(owner);
     initConstructor();
@@ -215,7 +215,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @param owner  the dialog owner.
    */
-  public ExcelExportDialog(Dialog owner)
+  public ExcelExportDialog(final Dialog owner)
   {
     super(owner);
     initConstructor();
@@ -243,7 +243,7 @@ public class ExcelExportDialog extends JDialog
 
     addWindowListener(new WindowAdapter()
     {
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         getActionCancel().actionPerformed(null);
       }
@@ -308,12 +308,12 @@ public class ExcelExportDialog extends JDialog
    */
   private void initialize()
   {
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
-    JLabel lblFileName = new JLabel(getResources().getString("excelexportdialog.filename"));
-    JButton btnSelect = new ActionButton(getActionSelectFile());
+    final JLabel lblFileName = new JLabel(getResources().getString("excelexportdialog.filename"));
+    final JButton btnSelect = new ActionButton(getActionSelectFile());
 
     txFilename = new JTextField();
     cbStrictLayout = new JCheckBox(getResources().getString("excelexportdialog.strict-layout"));
@@ -352,7 +352,7 @@ public class ExcelExportDialog extends JDialog
 
     btnCancel = new ActionButton(getActionCancel());
     btnConfirm = new ActionButton(getActionConfirm());
-    JPanel buttonPanel = new JPanel();
+    final JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new GridLayout());
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
@@ -386,7 +386,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @param filename the filename of the excel file
    */
-  public void setFilename(String filename)
+  public void setFilename(final String filename)
   {
     this.txFilename.setText(filename);
   }
@@ -408,7 +408,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @param confirmed set to true, if OK was pressed, false otherwise
    */
-  protected void setConfirmed(boolean confirmed)
+  protected void setConfirmed(final boolean confirmed)
   {
     this.confirmed = confirmed;
   }
@@ -428,7 +428,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @param strictLayout  the new setting.
    */
-  public void setStrictLayout(boolean strictLayout)
+  public void setStrictLayout(final boolean strictLayout)
   {
     cbStrictLayout.setSelected(strictLayout);
   }
@@ -450,18 +450,18 @@ public class ExcelExportDialog extends JDialog
     if (fileChooser == null)
     {
       fileChooser = new JFileChooser();
-      FilesystemFilter filter = new FilesystemFilter("Excel Documents", ".xls");
+      final FilesystemFilter filter = new FilesystemFilter("Excel Documents", ".xls");
       fileChooser.addChoosableFileFilter(filter);
       fileChooser.setMultiSelectionEnabled(false);
     }
 
-    File file = new File(getFilename());
+    final File file = new File(getFilename());
     fileChooser.setCurrentDirectory(file);
     fileChooser.setSelectedFile(file);
-    int option = fileChooser.showSaveDialog(this);
+    final int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {
-      File selFile = fileChooser.getSelectedFile();
+      final File selFile = fileChooser.getSelectedFile();
       String selFileName = selFile.getAbsolutePath();
 
       // Test if ends on xls
@@ -481,7 +481,7 @@ public class ExcelExportDialog extends JDialog
    */
   public boolean performValidate()
   {
-    String filename = getFilename();
+    final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
@@ -490,7 +490,7 @@ public class ExcelExportDialog extends JDialog
           JOptionPane.ERROR_MESSAGE);
       return false;
     }
-    File f = new File(filename);
+    final File f = new File(filename);
     if (f.exists())
     {
       if (f.isFile() == false)
@@ -510,8 +510,8 @@ public class ExcelExportDialog extends JDialog
             JOptionPane.ERROR_MESSAGE);
         return false;
       }
-      String key1 = "excelexportdialog.targetOverwriteConfirmation";
-      String key2 = "excelexportdialog.targetOverwriteTitle";
+      final String key1 = "excelexportdialog.targetOverwriteConfirmation";
+      final String key2 = "excelexportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
           MessageFormat.format(getResources().getString(key1),
               new Object[]{getFilename()}
@@ -535,7 +535,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return true or false.
    */
-  public boolean performExport(JFreeReport report)
+  public boolean performExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);
@@ -554,14 +554,14 @@ public class ExcelExportDialog extends JDialog
    *
    * @return true or false.
    */
-  public boolean writeExcel(JFreeReport report)
+  public boolean writeExcel(final JFreeReport report)
   {
     OutputStream out = null;
     try
     {
 
       out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
-      ExcelProcessor target = new ExcelProcessor(report);
+      final ExcelProcessor target = new ExcelProcessor(report);
       target.setStrictLayout(isStrictLayout());
       target.setOutputStream(out);
       target.processReport();
@@ -598,7 +598,7 @@ public class ExcelExportDialog extends JDialog
    * @param localisationBase  the resource key prefix.
    * @param e  the exception.
    */
-  private void showExceptionDialog(String localisationBase, Exception e)
+  private void showExceptionDialog(final String localisationBase, final Exception e)
   {
     ExceptionDialog.showExceptionDialog(
         getResources().getString(localisationBase + ".title"),
@@ -614,7 +614,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @param config  the report configuration.
    */
-  public void initFromConfiguration(ReportConfiguration config)
+  public void initFromConfiguration(final ReportConfiguration config)
   {
     // nothing to initialize so far. We have much less options than in "save to PDF"
   }
@@ -625,9 +625,9 @@ public class ExcelExportDialog extends JDialog
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    JDialog d = new ExcelExportDialog();
+    final JDialog d = new ExcelExportDialog();
     d.pack();
     d.addWindowListener(new WindowAdapter()
     {
@@ -635,7 +635,7 @@ public class ExcelExportDialog extends JDialog
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.
        */
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         System.exit(0);
       }

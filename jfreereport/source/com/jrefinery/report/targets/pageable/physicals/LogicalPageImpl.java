@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.36 2003/06/12 23:17:16 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.37 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -107,7 +107,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @param format  the page format.
    */
-  public LogicalPageImpl(PageFormat format)
+  public LogicalPageImpl(final PageFormat format)
   {
     this(format, format);
   }
@@ -119,7 +119,7 @@ public class LogicalPageImpl implements LogicalPage
    * @param log  the logical page format.
    * @param phys  the physical page format.
    */
-  public LogicalPageImpl(PageFormat log, PageFormat phys)
+  public LogicalPageImpl(final PageFormat log, final PageFormat phys)
   {
     addOperationComments = ReportConfiguration.getGlobalConfig().isPrintOperationComment();
     closed = true; // logical page is closed by default ..
@@ -170,7 +170,7 @@ public class LogicalPageImpl implements LogicalPage
    */
   protected OperationFactory createOperationFactory()
   {
-    OperationFactory operationFactory = new OperationFactory();
+    final OperationFactory operationFactory = new OperationFactory();
     operationFactory.registerModule(new TextOperationModule());
     operationFactory.registerModule(new ImageOperationModule());
     operationFactory.registerModule(new ShapeOperationModule());
@@ -188,7 +188,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @return the physical page.
    */
-  public PhysicalPage getPhysicalPage(int x, int y)
+  public PhysicalPage getPhysicalPage(final int x, final int y)
   {
     return physicalPage[y * physicalPageWidth + x];
   }
@@ -199,7 +199,7 @@ public class LogicalPageImpl implements LogicalPage
    * @param ot the outputTarget, must not be null
    * @throws NullPointerException if the given OutputTarget is null
    */
-  public void setOutputTarget(OutputTarget ot)
+  public void setOutputTarget(final OutputTarget ot)
   {
     if (ot == null)
     {
@@ -233,7 +233,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @param format  the page format (null not permitted).
    */
-  public void setPageFormat(PageFormat format)
+  public void setPageFormat(final PageFormat format)
   {
     if (format == null)
     {
@@ -257,7 +257,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @param format  the page format.
    */
-  public void setPhysicalPageFormat(PageFormat format)
+  public void setPhysicalPageFormat(final PageFormat format)
   {
     if (format == null)
     {
@@ -274,9 +274,9 @@ public class LogicalPageImpl implements LogicalPage
    * @param band the band which will be added to the page
    * @throws OutputTargetException if the band addition failed
    */
-  public void addBand(Rectangle2D bounds, Band band) throws OutputTargetException
+  public void addBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {
-    Spool operations = spoolBand(bounds, band);
+    final Spool operations = spoolBand(bounds, band);
     if (operations.isEmpty())
     {
       return;
@@ -289,9 +289,9 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @param operations  the operations.
    */
-  public void replaySpool(Spool operations)
+  public void replaySpool(final Spool operations)
   {
-    PhysicalOperation[] ops = operations.getOperations();
+    final PhysicalOperation[] ops = operations.getOperations();
     for (int i = 0; i < ops.length; i++)
     {
       getPhysicalPage(0, 0).addOperation(ops[i]);
@@ -312,14 +312,14 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public Spool spoolBand(Rectangle2D bounds, Band band) throws OutputTargetException
+  public Spool spoolBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {
     if (isOpen() == false)
     {
       throw new IllegalStateException("Band already closed");
     }
 
-    Spool spool = new Spool();
+    final Spool spool = new Spool();
     spoolBand(bounds, band, spool);
     return spool;
   }
@@ -339,7 +339,7 @@ public class LogicalPageImpl implements LogicalPage
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  protected void spoolBand(Rectangle2D bounds, Band band, Spool spool)
+  protected void spoolBand(final Rectangle2D bounds, final Band band, final Spool spool)
       throws OutputTargetException
   {
     // do nothing if the band is invisble
@@ -355,11 +355,11 @@ public class LogicalPageImpl implements LogicalPage
       return;
     }
 
-    PageFormat pf = getPageFormat();
-    Rectangle2D logicalPageBounds = new Rectangle2D.Float(0, 0,
+    final PageFormat pf = getPageFormat();
+    final Rectangle2D logicalPageBounds = new Rectangle2D.Float(0, 0,
         (float) pf.getImageableWidth(),
         (float) pf.getImageableHeight());
-    Rectangle2D ibounds = logicalPageBounds.createIntersection(bounds);
+    final Rectangle2D ibounds = logicalPageBounds.createIntersection(bounds);
 
     if (addOperationComments)
     {
@@ -368,13 +368,13 @@ public class LogicalPageImpl implements LogicalPage
     }
 
     // process all elements
-    Element[] elements = band.getElementArray();
+    final Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
-      Element e = elements[i];
+      final Element e = elements[i];
       if (e instanceof Band)
       {
-        Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+        final Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
         spoolBand(translateSubRect(bounds, bbounds), (Band) e, spool);
       }
       else
@@ -393,11 +393,11 @@ public class LogicalPageImpl implements LogicalPage
    * @param inner the inner rectangle in the local coordinate space
    * @return the translated sub rectangle.
    */
-  private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
+  private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
-    float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
-    Rectangle2D rc = new Rectangle2D.Float(
+    final float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    final float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
         Math.max(0, w),
@@ -418,7 +418,7 @@ public class LogicalPageImpl implements LogicalPage
    * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
    * Bounds are usually defined by the BandLayoutManager.
    */
-  private void addElement(Rectangle2D bounds, Element e, Spool operations)
+  private void addElement(final Rectangle2D bounds, final Element e, final Spool operations)
       throws OutputTargetException
   {
     if (e.isVisible() == false)
@@ -426,7 +426,7 @@ public class LogicalPageImpl implements LogicalPage
       //Log.debug ("The Element " + e + " is not visible");
       return;
     }
-    ContentFactory factory = outputTarget.getContentFactory();
+    final ContentFactory factory = outputTarget.getContentFactory();
     if (factory.canHandleContent(e.getContentType()) == false)
     {
       /*
@@ -435,13 +435,13 @@ public class LogicalPageImpl implements LogicalPage
                                        */
       return;
     }
-    Rectangle2D elementBounds = (Rectangle2D)
+    final Rectangle2D elementBounds = (Rectangle2D)
         e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     if (elementBounds == null)
     {
       throw new NullPointerException("No layout for element");
     }
-    Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
+    final Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
     if (addOperationComments)
     {
       operations.addOperation(new PhysicalOperation.AddComment("Begin Element: " + e.getClass()
@@ -449,11 +449,11 @@ public class LogicalPageImpl implements LogicalPage
       operations.addOperation(new PhysicalOperation.AddComment(" ...  Element: " + drawBounds));
     }
 
-    ElementLayoutInformation eli = new ElementLayoutInformation(drawBounds);
+    final ElementLayoutInformation eli = new ElementLayoutInformation(drawBounds);
 
     try
     {
-      Content content = factory.createContentForElement(e, eli, getOutputTarget());
+      final Content content = factory.createContentForElement(e, eli, getOutputTarget());
       if (content == null)
       {
         // Log.debug ("Content is null, no content created?");

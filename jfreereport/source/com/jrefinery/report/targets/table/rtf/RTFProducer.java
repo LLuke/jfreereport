@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.9 2003/06/26 15:18:57 taqua Exp $
+ * $Id: RTFProducer.java,v 1.10 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class RTFProducer extends TableProducer
    * @param strictLayout the stric layout flag.
    * @throws NullPointerException if the outputstream is null.
    */
-  public RTFProducer(OutputStream outputStream, boolean strictLayout)
+  public RTFProducer(final OutputStream outputStream, final boolean strictLayout)
   {
     super(strictLayout);
     if (outputStream == null)
@@ -141,14 +141,14 @@ public class RTFProducer extends TableProducer
    * @param cell the cell that should be defined.
    * @param background the background definition for the cell.
    */
-  private void setCellBackgroundStyle(Cell cell, List background)
+  private void setCellBackgroundStyle(final Cell cell, final List background)
   {
-    TableCellBackground bg = createTableCellStyle(background);
+    final TableCellBackground bg = createTableCellStyle(background);
     if (bg == null)
     {
       return;
     }
-    Color color = bg.getColor();
+    final Color color = bg.getColor();
     if (color != null)
     {
       cell.setBackgroundColor(color);
@@ -156,10 +156,10 @@ public class RTFProducer extends TableProducer
 
     // Cell Borders are only added if all borders are defined and equal,
     // as iText-RTF does not support different borders ...
-    Color bT = bg.getColorTop();
-    Color bB = bg.getColorBottom();
-    Color bL = bg.getColorLeft();
-    Color bR = bg.getColorRight();
+    final Color bT = bg.getColorTop();
+    final Color bB = bg.getColorBottom();
+    final Color bL = bg.getColorLeft();
+    final Color bR = bg.getColorRight();
     if (bT == null || bB == null || bL == null || bR == null)
     {
       return;
@@ -180,10 +180,10 @@ public class RTFProducer extends TableProducer
    * @param layout the layouted table content.
    * @throws DocumentException if an error occured when generating the document.
    */
-  private void generatePage(TableGridLayout layout)
+  private void generatePage(final TableGridLayout layout)
       throws DocumentException
   {
-    Table table = new Table(layout.getWidth(), layout.getHeight());
+    final Table table = new Table(layout.getWidth(), layout.getHeight());
     table.setAutoFillEmptyCells(false);
 
     for (int y = 0; y < layout.getHeight(); y++)
@@ -192,21 +192,21 @@ public class RTFProducer extends TableProducer
       boolean printed = false;
       for (int x = 0; x < layout.getWidth(); x++)
       {
-        TableGridLayout.Element gridElement = layout.getData(x, y);
+        final TableGridLayout.Element gridElement = layout.getData(x, y);
         if (gridElement == null)
         {
           // cell is empty, autofill will create an empty cell here ...
-          Cell cell = new Cell();
+          final Cell cell = new Cell();
           cell.setBorderWidth(0);
           table.addCell(cell, y, x);
           printed = true;
           continue;
         }
 
-        TableGridPosition gridPosition = gridElement.getRoot();
+        final TableGridPosition gridPosition = gridElement.getRoot();
         if (gridPosition == null || gridPosition.isInvalidCell())
         {
-          Cell cell = new Cell();
+          final Cell cell = new Cell();
           cell.setBorderWidth(0);
           // iText cell width is a string, why?
 
@@ -222,8 +222,8 @@ public class RTFProducer extends TableProducer
           continue;
         }
 
-        RTFCellData cellData = (RTFCellData) gridPosition.getElement();
-        Cell cell = cellData.getCell();
+        final RTFCellData cellData = (RTFCellData) gridPosition.getElement();
+        final Cell cell = cellData.getCell();
         cell.setBorderWidth(0);
         setCellBackgroundStyle(cell, gridElement.getBackground());
 
@@ -257,7 +257,7 @@ public class RTFProducer extends TableProducer
    *
    * @param name the page name
    */
-  public void beginPage(String name)
+  public void beginPage(final String name)
   {
     // ignore the event, not important ...
   }
@@ -294,7 +294,7 @@ public class RTFProducer extends TableProducer
    *
    * @param configuration the configuration supplied by the table processor.
    */
-  public void configure(Properties configuration)
+  public void configure(final Properties configuration)
   {
   }
 }

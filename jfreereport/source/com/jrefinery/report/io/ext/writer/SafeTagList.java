@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SafeTagList.java,v 1.3 2003/03/18 18:28:44 taqua Exp $
+ * $Id: SafeTagList.java,v 1.4 2003/06/27 14:25:20 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class SafeTagList
      * @param open  the 'open' flag.
      * @param close  the 'close' flag.
      */
-    public SafeDescription(boolean open, boolean close)
+    public SafeDescription(final boolean open, final boolean close)
     {
       this.open = open;
       this.close = close;
@@ -107,7 +107,7 @@ public class SafeTagList
    *
    * @param tag  the tag name.
    */
-  public void add(String tag)
+  public void add(final String tag)
   {
     safeTags.put(tag, new SafeDescription(true, true));
   }
@@ -119,7 +119,7 @@ public class SafeTagList
    * @param open  the 'open' flag.
    * @param closed  the 'close' flag.
    */
-  public void add(String tag, boolean open, boolean closed)
+  public void add(final String tag, final boolean open, final boolean closed)
   {
     safeTags.put(tag, new SafeDescription(open, closed));
   }
@@ -131,9 +131,9 @@ public class SafeTagList
    *
    * @return A boolean.
    */
-  public boolean isSafeForOpen(String tag)
+  public boolean isSafeForOpen(final String tag)
   {
-    SafeDescription sd = (SafeDescription) safeTags.get(tag);
+    final SafeDescription sd = (SafeDescription) safeTags.get(tag);
     if (sd == null)
     {
       return false;
@@ -148,9 +148,9 @@ public class SafeTagList
    *
    * @return A boolean.
    */
-  public boolean isSafeForClose(String tag)
+  public boolean isSafeForClose(final String tag)
   {
-    SafeDescription sd = (SafeDescription) safeTags.get(tag);
+    final SafeDescription sd = (SafeDescription) safeTags.get(tag);
     if (sd == null)
     {
       return false;

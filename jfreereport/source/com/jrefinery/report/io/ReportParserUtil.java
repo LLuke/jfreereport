@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParserUtil.java,v 1.3 2003/05/14 22:26:38 taqua Exp $
+ * $Id: ReportParserUtil.java,v 1.4 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class ReportParserUtil
    * @return the element alignment.
    * @throws SAXException if the alignment value is not recognised.
    */
-  public static ElementAlignment parseVerticalElementAlignment(String value) throws SAXException
+  public static ElementAlignment parseVerticalElementAlignment(final String value) throws SAXException
   {
     if (value.equals("top"))
     {
@@ -77,7 +77,7 @@ public class ReportParserUtil
    * @return the element alignment.
    * @throws SAXException if the alignment value is not recognised.
    */
-  public static ElementAlignment parseHorizontalElementAlignment(String value) throws SAXException
+  public static ElementAlignment parseHorizontalElementAlignment(final String value) throws SAXException
   {
     if (value.equals("left"))
     {

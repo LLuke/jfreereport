@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.15 2003/06/10 16:07:52 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.16 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -75,8 +75,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @param objectDescription  the object description (<code>null</code> not permitted).
    * @param indentLevel the current indention level.
    */
-  public ObjectWriter(ReportWriter reportWriter, Object baseObject,
-                      ObjectDescription objectDescription, int indentLevel)
+  public ObjectWriter(final ReportWriter reportWriter, final Object baseObject,
+                      final ObjectDescription objectDescription, final int indentLevel)
   {
     super(reportWriter, indentLevel);
     if (baseObject == null)
@@ -131,7 +131,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the object could not be written.
    */
-  public void write(Writer writer) throws IOException, ReportWriterException
+  public void write(final Writer writer) throws IOException, ReportWriterException
   {
     writer.flush();
 
@@ -144,10 +144,10 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       throw new ReportWriterException("Unable to save object", e);
     }
 
-    Iterator names = objectDescription.getParameterNames();
+    final Iterator names = objectDescription.getParameterNames();
     while (names.hasNext())
     {
-      String name = (String) names.next();
+      final String name = (String) names.next();
       writeParameter(writer, name);
     }
   }
@@ -159,14 +159,14 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    *
    * @return The description.
    */
-  protected ObjectDescription getParameterDescription(String name)
+  protected ObjectDescription getParameterDescription(final String name)
   {
 
     // Try to find the object description directly ...
     // by looking at the given object. This is the most accurate
     // option ...
-    ObjectDescription parameterDescription = null;
-    Object o = objectDescription.getParameter(name);
+    ObjectDescription parameterDescription;
+    final Object o = objectDescription.getParameter(name);
     if (o != null)
     {
       parameterDescription = cc.getDescriptionForClass(o.getClass());
@@ -185,7 +185,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     }
     else
     {
-      Class parameterClass = objectDescription.getParameterDefinition(name);
+      final Class parameterClass = objectDescription.getParameterDefinition(name);
       parameterDescription = cc.getDescriptionForClass(parameterClass);
 
       if (parameterDescription != null)
@@ -216,18 +216,18 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if transforming the report into a stream failed.
    */
-  protected void writeParameter(Writer writer, String parameterName)
+  protected void writeParameter(final Writer writer, final String parameterName)
       throws IOException, ReportWriterException
   {
-    Object parameterValue = getObjectDescription().getParameter(parameterName);
+    final Object parameterValue = getObjectDescription().getParameter(parameterName);
     if (parameterValue == null)
     {
       // Log.info ("Parameter '" + parameterName + "' is null. The Parameter will not be defined.");
       return;
     }
 
-    Class parameterDefinition = getObjectDescription().getParameterDefinition(parameterName);
-    ObjectDescription parameterDescription = getParameterDescription(parameterName);
+    final Class parameterDefinition = getObjectDescription().getParameterDefinition(parameterName);
+    final ObjectDescription parameterDescription = getParameterDescription(parameterName);
     if (parameterDescription == null)
     {
       throw new ReportWriterException("Unable to get Parameter description for "
@@ -243,14 +243,14 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       throw new ReportWriterException("Unable to fill parameter object:" + parameterName);
     }
 
-    Properties p = new Properties();
+    final Properties p = new Properties();
     p.setProperty("name", parameterName);
     if ((parameterDefinition.equals(parameterValue.getClass())) == false)
     {
       p.setProperty("class", parameterValue.getClass().getName());
     }
 
-    List parameterNames = getParameterNames(parameterDescription);
+    final List parameterNames = getParameterNames(parameterDescription);
     if (isBasicObject(parameterNames, parameterDescription))
     {
       writeTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG, p, OPEN);
@@ -261,7 +261,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     {
       writeTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG, p, OPEN);
 
-      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue,
+      final ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue,
           parameterDescription, getIndentLevel());
       objWriter.write(writer);
 
@@ -278,7 +278,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    *
    * @return A boolean.
    */
-  protected static boolean isBasicObject(List parameters, ObjectDescription od)
+  protected static boolean isBasicObject(final List parameters, final ObjectDescription od)
   {
     if (od == null)
     {
@@ -287,7 +287,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     if (parameters.size() == 1)
     {
-      String param = (String) parameters.get(0);
+      final String param = (String) parameters.get(0);
       if (param.equals("value"))
       {
         if (od.getParameterDefinition("value").equals(String.class))
@@ -306,14 +306,14 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    *
    * @return The list.
    */
-  protected static ArrayList getParameterNames(ObjectDescription d)
+  protected static ArrayList getParameterNames(final ObjectDescription d)
   {
-    ArrayList list = new ArrayList();
+    final ArrayList list = new ArrayList();
 
-    Iterator it = d.getParameterNames();
+    final Iterator it = d.getParameterNames();
     while (it.hasNext())
     {
-      String name = (String) it.next();
+      final String name = (String) it.next();
       list.add(name);
     }
     return list;

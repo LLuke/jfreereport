@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinitionObjectDescription.java,v 1.8 2003/04/24 18:08:50 taqua Exp $
+ * $Id: FontDefinitionObjectDescription.java,v 1.9 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -97,9 +97,9 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    *
    * @return A boolean.
    */
-  private boolean getBooleanParameter(String name)
+  private boolean getBooleanParameter(final String name)
   {
-    Boolean bool = (Boolean) getParameter(name);
+    final Boolean bool = (Boolean) getParameter(name);
     if (bool == null)
     {
       return false;
@@ -117,10 +117,10 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    * @throws ObjectFactoryException if there is a problem while reading the
    * properties of the given object.
    */
-  private int getIntegerParameter(String name)
+  private int getIntegerParameter(final String name)
       throws ObjectFactoryException
   {
-    Integer i = (Integer) getParameter(name);
+    final Integer i = (Integer) getParameter(name);
     if (i == null)
     {
       throw new ObjectFactoryException("Parameter " + name + " is not set");
@@ -137,14 +137,14 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
   {
     try
     {
-      String fontEncoding = (String) getParameter(FONT_ENCODING);
-      String fontName = (String) getParameter(FONT_NAME);
-      int fontSize = getIntegerParameter(FONT_SIZE);
-      boolean bold = getBooleanParameter(BOLD);
-      boolean embedded = getBooleanParameter(EMBEDDED_FONT);
-      boolean italic = getBooleanParameter(ITALIC);
-      boolean strike = getBooleanParameter(STRIKETHROUGH);
-      boolean underline = getBooleanParameter(UNDERLINE);
+      final String fontEncoding = (String) getParameter(FONT_ENCODING);
+      final String fontName = (String) getParameter(FONT_NAME);
+      final int fontSize = getIntegerParameter(FONT_SIZE);
+      final boolean bold = getBooleanParameter(BOLD);
+      final boolean embedded = getBooleanParameter(EMBEDDED_FONT);
+      final boolean italic = getBooleanParameter(ITALIC);
+      final boolean strike = getBooleanParameter(STRIKETHROUGH);
+      final boolean underline = getBooleanParameter(UNDERLINE);
       return new FontDefinition(fontName, fontSize, bold, italic, underline, strike,
           fontEncoding, embedded);
     }
@@ -162,7 +162,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    *
    * @throws ObjectFactoryException if the object is not an instance of <code>Float</code>.
    */
-  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  public void setParameterFromObject(final Object o) throws ObjectFactoryException
   {
     if ((o instanceof FontDefinition) == false)
     {
@@ -170,7 +170,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
           "The given object is no com.jrefinery.report.targets.FontDefinition.");
     }
 
-    FontDefinition fdef = (FontDefinition) o;
+    final FontDefinition fdef = (FontDefinition) o;
     setParameter(FONT_ENCODING, fdef.getFontEncoding(null));
     setParameter(FONT_NAME, fdef.getFontName());
     setParameter(FONT_SIZE, new Integer(fdef.getFontSize()));
@@ -187,7 +187,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    * @param bool the primitive boolean.
    * @return the Boolean object.
    */
-  private Boolean getBoolean (boolean bool)
+  private Boolean getBoolean (final boolean bool)
   {
     if (bool == true)
     {

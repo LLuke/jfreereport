@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.26 2003/06/26 19:55:56 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.27 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
      *
      * @param n  the number.
      */
-    public void add(Number n)
+    public void add(final Number n)
     {
       if (n == null)
       {
@@ -146,7 +146,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    *
    * @param event  the event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
@@ -160,7 +160,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -190,14 +190,14 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
       return;
     }
 
-    Object fieldValue = event.getDataRow().get(getField());
+    final Object fieldValue = event.getDataRow().get(getField());
     if (fieldValue instanceof Number == false)
     {
       // No add, field is null
@@ -205,7 +205,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     }
     try
     {
-      Number n = (Number) fieldValue;
+      final Number n = (Number) fieldValue;
       groupResult.add(n);
     }
     catch (Exception e)
@@ -230,7 +230,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    *
    * @param group  the group name.
    */
-  public void setGroup(String group)
+  public void setGroup(final String group)
   {
     setProperty(GROUP_PROPERTY, group);
   }
@@ -267,7 +267,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    *
    * @param field the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -303,7 +303,7 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    */
   public Expression getInstance()
   {
-    TotalGroupSumFunction function = (TotalGroupSumFunction) super.getInstance();
+    final TotalGroupSumFunction function = (TotalGroupSumFunction) super.getInstance();
     function.groupResult = new GroupSum();
     function.results = new ArrayList();
     return function;

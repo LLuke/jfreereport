@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PathIteratorSegment.java,v 1.2 2003/05/14 22:26:38 taqua Exp $
+ * $Id: PathIteratorSegment.java,v 1.3 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -83,7 +83,7 @@ public class PathIteratorSegment
    * @param segmentType the type of the segment, one of the predefined constants of
    * the class PathIterator.
    */
-  public void setSegmentType(int segmentType)
+  public void setSegmentType(final int segmentType)
   {
     this.segmentType = segmentType;
   }
@@ -103,7 +103,7 @@ public class PathIteratorSegment
    *
    * @param x1 the x coordinate of the first parameter point.
    */
-  public void setX1(float x1)
+  public void setX1(final float x1)
   {
     this.x1 = x1;
   }
@@ -123,7 +123,7 @@ public class PathIteratorSegment
    *
    * @param y1 the y coordinate of the first parameter point.
    */
-  public void setY1(float y1)
+  public void setY1(final float y1)
   {
     this.y1 = y1;
   }
@@ -143,7 +143,7 @@ public class PathIteratorSegment
    *
    * @param x2 the x coordinate of the second parameter point.
    */
-  public void setX2(float x2)
+  public void setX2(final float x2)
   {
     this.x2 = x2;
   }
@@ -163,7 +163,7 @@ public class PathIteratorSegment
    *
    * @param y2 the y coordinate of the second parameter point.
    */
-  public void setY2(float y2)
+  public void setY2(final float y2)
   {
     this.y2 = y2;
   }
@@ -183,7 +183,7 @@ public class PathIteratorSegment
    *
    * @param x3 the x coordinate of the third parameter point.
    */
-  public void setX3(float x3)
+  public void setX3(final float x3)
   {
     this.x3 = x3;
   }
@@ -203,7 +203,7 @@ public class PathIteratorSegment
    *
    * @param y3 the y coordinate of the third parameter point.
    */
-  public void setY3(float y3)
+  public void setY3(final float y3)
   {
     this.y3 = y3;
   }

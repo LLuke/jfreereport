@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractElementFactory.java,v 1.5 2003/06/23 14:36:56 taqua Exp $
+ * $Id: AbstractElementFactory.java,v 1.6 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -65,7 +65,7 @@ public class AbstractElementFactory implements ElementFactory
    *
    * @param e  the element.
    */
-  public void registerElement(Element e)
+  public void registerElement(final Element e)
   {
     registerElement(e.getContentType(), e);
   }
@@ -76,7 +76,7 @@ public class AbstractElementFactory implements ElementFactory
    * @param type  the element type.
    * @param e  the element.
    */
-  public void registerElement(String type, Element e)
+  public void registerElement(final String type, final Element e)
   {
     elements.put(type, e);
   }
@@ -90,9 +90,9 @@ public class AbstractElementFactory implements ElementFactory
    *
    * @return The element.
    */
-  public Element getElementForType(String type)
+  public Element getElementForType(final String type)
   {
-    Element e = (Element) elements.get(type);
+    final Element e = (Element) elements.get(type);
     if (e == null)
     {
       return null;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.13 2003/06/04 21:09:06 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.14 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -97,13 +97,13 @@ public class ExtReportHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public ExtReportHandler(Parser parser, String finishTag)
+  public ExtReportHandler(final Parser parser, final String finishTag)
   {
     this.parser = parser;
     this.finishTag = finishTag;
 
     // create the initial JFreeReport object.
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     getParser().setHelperObject(REPORT_DEFINITION_TAG, report);
     getParser().setHelperObject(StylesHandler.STYLES_COLLECTION, new HashMap());
     createClassFactoryHolder();
@@ -112,13 +112,13 @@ public class ExtReportHandler implements ElementDefinitionHandler
     createDataSourceFactoryHolder();
     createElementFactoryHolder();
 
-    DataSourceCollector dsfc = (DataSourceCollector)
+    final DataSourceCollector dsfc = (DataSourceCollector)
         getParser().getHelperObject(ParserConfigHandler.DATASOURCE_FACTORY_TAG);
     dsfc.configure(getParser());
-    ClassFactoryCollector cffc = (ClassFactoryCollector)
+    final ClassFactoryCollector cffc = (ClassFactoryCollector)
         getParser().getHelperObject(ParserConfigHandler.OBJECT_FACTORY_TAG);
     cffc.configure(getParser());
-    TemplateCollector tffc = (TemplateCollector)
+    final TemplateCollector tffc = (TemplateCollector)
         getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     tffc.configure(getParser());
 
@@ -132,7 +132,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(PARSER_CONFIG_TAG))
@@ -234,7 +234,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
       fc = new DataSourceCollector();
       getParser().setHelperObject(ParserConfigHandler.DATASOURCE_FACTORY_TAG, fc);
 
-      ClassFactoryCollector cfc = (ClassFactoryCollector) getParser().getHelperObject(
+      final ClassFactoryCollector cfc = (ClassFactoryCollector) getParser().getHelperObject(
           ParserConfigHandler.OBJECT_FACTORY_TAG);
       cfc.addFactory(fc);
     }
@@ -261,7 +261,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // characters are ignored at this point...
   }
@@ -273,7 +273,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(finishTag))
     {

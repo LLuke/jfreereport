@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageSetupAction.java,v 1.18 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PageSetupAction.java,v 1.19 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public abstract class PageSetupAction extends AbstractActionDowngrade implements
    *
    * @param resources  localised resources.
    */
-  protected PageSetupAction(ResourceBundle resources)
+  protected PageSetupAction(final ResourceBundle resources)
   {
     this.putValue(NAME, resources.getString("action.page-setup.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.page-setup.description"));

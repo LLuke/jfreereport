@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DecimalFormatFilter.java,v 1.10 2002/12/11 01:10:40 mungady Exp $
+ * $Id: DecimalFormatFilter.java,v 1.11 2003/06/27 14:25:17 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -91,7 +91,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    *
    * @throws NullPointerException if the given format is null
    */
-  public void setDecimalFormat(DecimalFormat format)
+  public void setDecimalFormat(final DecimalFormat format)
   {
     setFormatter(format);
   }
@@ -105,9 +105,9 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * @throws NullPointerException if the given format is null
    * @throws ClassCastException if the format is no decimal format
    */
-  public void setFormatter(Format format)
+  public void setFormatter(final Format format)
   {
-    DecimalFormat dfmt = (DecimalFormat) format;
+    final DecimalFormat dfmt = (DecimalFormat) format;
     super.setFormatter(dfmt);
   }
 
@@ -127,7 +127,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    *
    * @param format  the format string.
    */
-  public void setFormatString(String format)
+  public void setFormatString(final String format)
   {
     getDecimalFormat().applyPattern(format);
   }
@@ -148,7 +148,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    *
    * @param format  the format string.
    */
-  public void setLocalizedFormatString(String format)
+  public void setLocalizedFormatString(final String format)
   {
     getDecimalFormat().applyLocalizedPattern(format);
   }

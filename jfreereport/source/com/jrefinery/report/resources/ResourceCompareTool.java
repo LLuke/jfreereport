@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.7 2003/05/02 12:40:27 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.8 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -58,11 +58,11 @@ public class ResourceCompareTool
    * @param s the locale specification as ISO country code.
    * @return the loaded resources or null, if there is no such translation.
    */
-  private static JFreeReportResources loadLocale(String s)
+  private static JFreeReportResources loadLocale(final String s)
   {
     try
     {
-      Class c = Class.forName(JFreeReportResources.class.getName() + "_" + s);
+      final Class c = Class.forName(JFreeReportResources.class.getName() + "_" + s);
       return (JFreeReportResources) c.newInstance();
     }
     catch (Exception e)
@@ -76,53 +76,53 @@ public class ResourceCompareTool
    *
    * @param args a string array with only one element, the ISO code of the localisation.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     if (args.length != 1)
     {
       throw new IllegalArgumentException("Need locale identifier as argument.");
     }
 
-    JFreeReportResources resources = new JFreeReportResources();
-    JFreeReportResources compare = loadLocale(args[0]);
+    final JFreeReportResources resources = new JFreeReportResources();
+    final JFreeReportResources compare = loadLocale(args[0]);
     if (compare == null)
     {
       System.err.println("The locale " + args[0] + " is not implemented.");
       System.exit(1);
     }
 
-    Object[][] contentsRes = resources.getContents();
-    Object[][] contentsComp = compare.getContents();
+    final Object[][] contentsRes = resources.getContents();
+    final Object[][] contentsComp = compare.getContents();
     if (compare.getContents() == null)
     {
       throw new IllegalArgumentException("The given localisation is not a valid implementation");
     }
-    Hashtable baseContentTable = new Hashtable();
-    Hashtable compContentTable = new Hashtable();
+    final Hashtable baseContentTable = new Hashtable();
+    final Hashtable compContentTable = new Hashtable();
 
     for (int i = 0; i < contentsRes.length; i++)
     {
-      String name = (String) contentsRes[i][0];
-      Object value = contentsRes[i][1];
+      final String name = (String) contentsRes[i][0];
+      final Object value = contentsRes[i][1];
       baseContentTable.put(name, value);
     }
     for (int i = 0; i < contentsComp.length; i++)
     {
-      String name = (String) contentsComp[i][0];
-      Object value = contentsComp[i][1];
+      final String name = (String) contentsComp[i][0];
+      final Object value = contentsComp[i][1];
       compContentTable.put(name, value);
     }
 
-    ArrayList notImplemented = new ArrayList();
-    ArrayList wrongType = new ArrayList();
-    ArrayList invalidKey = new ArrayList();
+    final ArrayList notImplemented = new ArrayList();
+    final ArrayList wrongType = new ArrayList();
+    final ArrayList invalidKey = new ArrayList();
 
     Enumeration enum = baseContentTable.keys();
     while (enum.hasMoreElements())
     {
-      String key = (String) enum.nextElement();
-      Object valueBase = baseContentTable.get(key);
-      Object valueComp = compContentTable.get(key);
+      final String key = (String) enum.nextElement();
+      final Object valueBase = baseContentTable.get(key);
+      final Object valueComp = compContentTable.get(key);
       if (valueComp == null)
       {
         notImplemented.add(key);
@@ -136,8 +136,8 @@ public class ResourceCompareTool
     enum = compContentTable.keys();
     while (enum.hasMoreElements())
     {
-      String key = (String) enum.nextElement();
-      Object valueBase = baseContentTable.get(key);
+      final String key = (String) enum.nextElement();
+      final Object valueBase = baseContentTable.get(key);
       if (valueBase == null)
       {
         invalidKey.add(key);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutTask.java,v 1.5 2003/05/02 12:40:35 taqua Exp $
+ * $Id: LayoutTask.java,v 1.6 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class LayoutTask
      *
      * @param name  the name (null not permitted).
      */
-    public LayoutFlag(String name)
+    public LayoutFlag(final String name)
     {
       if (name == null)
       {
@@ -99,7 +99,7 @@ public class LayoutTask
      *
      * @param flagObject  the flag object.
      */
-    public void setFlagObject(Object flagObject)
+    public void setFlagObject(final Object flagObject)
     {
       this.flagObject = flagObject;
     }
@@ -141,7 +141,7 @@ public class LayoutTask
    * @param event  the event.
    * @param type  the event type.
    */
-  public void setEvent(ReportEvent event, EventType type)
+  public void setEvent(final ReportEvent event, final EventType type)
   {
     this.event = event;
     this.eventType = type;
@@ -172,7 +172,7 @@ public class LayoutTask
    *
    * @param done  the new value of the flag.
    */
-  public void setDone(boolean done)
+  public void setDone(final boolean done)
   {
     this.done = done;
   }
@@ -182,7 +182,7 @@ public class LayoutTask
    *
    * @param flag  the flag.
    */
-  public void setFlag(LayoutFlag flag)
+  public void setFlag(final LayoutFlag flag)
   {
     this.progressFlags.put(flag.getName(), flag);
   }
@@ -194,7 +194,7 @@ public class LayoutTask
    *
    * @return the layout flag.
    */
-  public LayoutFlag getFlag(String name)
+  public LayoutFlag getFlag(final String name)
   {
     return (LayoutFlag) progressFlags.get(name);
   }

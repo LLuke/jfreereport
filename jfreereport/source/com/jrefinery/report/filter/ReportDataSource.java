@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDataSource.java,v 1.11 2003/06/01 17:39:25 taqua Exp $
+ * $Id: ReportDataSource.java,v 1.12 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @param field The field name.
    */
-  public ReportDataSource(String field)
+  public ReportDataSource(final String field)
   {
     setField(field);
   }
@@ -85,7 +85,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @param field The field name.
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -127,7 +127,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ReportDataSource rd = (ReportDataSource) super.clone();
+    final ReportDataSource rd = (ReportDataSource) super.clone();
     return rd;
   }
 
@@ -140,7 +140,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
@@ -160,7 +160,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable, Seriali
    *
    * @throws IllegalStateException if no datarow is connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {

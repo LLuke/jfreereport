@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.5 2003/02/26 16:42:28 mungady Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.6 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @param root the output stream for the main file.
    */
-  public StreamHtmlFilesystem(OutputStream root)
+  public StreamHtmlFilesystem(final OutputStream root)
   {
     this.root = root;
   }
@@ -92,7 +92,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @throws IOException if there is an I/O problem.
    */
-  public HtmlReferenceData createImageReference(ImageReference reference)
+  public HtmlReferenceData createImageReference(final ImageReference reference)
       throws IOException
   {
     if (reference.getSourceURL() == null)
@@ -101,7 +101,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
     }
     else
     {
-      URL src = reference.getSourceURL();
+      final URL src = reference.getSourceURL();
       if (src.getProtocol().equals("http") || src.getProtocol().equals("https")
           || src.getProtocol().equals("ftp"))
       {
@@ -119,7 +119,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @throws IOException if there is an I/O problem.
    */
-  public HtmlReferenceData createCSSReference(String styleSheet)
+  public HtmlReferenceData createCSSReference(final String styleSheet)
       throws IOException
   {
     return new InternalCSSReferenceData(styleSheet);

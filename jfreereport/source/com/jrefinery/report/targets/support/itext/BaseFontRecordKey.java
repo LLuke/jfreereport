@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.2 2003/02/10 21:23:37 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.3 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class BaseFontRecordKey
    * @param logicalName  the logical name.
    * @param encoding  the encoding.
    */
-  public BaseFontRecordKey(String logicalName, String encoding)
+  public BaseFontRecordKey(final String logicalName, final String encoding)
   {
     this.logicalName = logicalName;
     this.encoding = encoding;
@@ -72,7 +72,7 @@ public class BaseFontRecordKey
    *
    * @return true or false.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

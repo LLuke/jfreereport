@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.10 2003/06/26 19:55:56 taqua Exp $
+ * $Id: StraightToXML.java,v 1.11 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -66,11 +66,11 @@ public class StraightToXML
    * @param filename  the output filename.
    * @throws ParseException if the report could not be parsed.
    */
-  public StraightToXML(String filename) throws ParseException
+  public StraightToXML(final String filename) throws ParseException
   {
-    URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
-    JFreeReport report = parseReport(in);
-    TableModel data = new OpenSourceProjects();
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
+    final JFreeReport report = parseReport(in);
+    final TableModel data = new OpenSourceProjects();
     report.setData(data);
     saveXML(report, filename);
   }
@@ -83,9 +83,9 @@ public class StraightToXML
    * @return a report.
    * @throws ParseException if the report could not be parsed.
    */
-  private JFreeReport parseReport(URL templateURL) throws ParseException
+  private JFreeReport parseReport(final URL templateURL) throws ParseException
   {
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
       return generator.parseReport(templateURL);
@@ -104,14 +104,14 @@ public class StraightToXML
    *
    * @return <code>true</code> if the export succeeded, and <code>false</code> otherwise.
    */
-  public boolean saveXML(JFreeReport report, String fileName)
+  public boolean saveXML(final JFreeReport report, final String fileName)
   {
     Writer out = null;
     try
     {
       out = new BufferedWriter(new FileWriter(new File(fileName)));
 
-      XMLProcessor xprc = new XMLProcessor(report);
+      final XMLProcessor xprc = new XMLProcessor(report);
       xprc.setWriter(out);
       xprc.processReport();
       return true;
@@ -144,11 +144,11 @@ public class StraightToXML
    *
    * @param args  ignored.
    */
-  public static void main(String args[])
+  public static void main(final String[] args)
   {
     try
     {
-      StraightToXML demo = new StraightToXML(System.getProperty("user.home") + "/test99.xml");
+      final StraightToXML demo = new StraightToXML(System.getProperty("user.home") + "/test99.xml");
       System.exit(0);
     }
     catch (Exception e)

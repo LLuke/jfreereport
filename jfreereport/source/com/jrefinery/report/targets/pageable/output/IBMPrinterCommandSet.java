@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IBMPrinterCommandSet.java,v 1.10 2003/05/14 22:26:39 taqua Exp $
+ * $Id: IBMPrinterCommandSet.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,8 @@ import com.jrefinery.report.util.StringUtil;
  * <p>
  * This implementation is untested. If you have access to an IBM compatible
  * printer, you could try this command set to improve printing quality.
+ * <p>
+ * This implementation does only work for 8-Bit character sets.
  *
  * @see PrinterCommandSet
  * @see PlainTextOutputTarget
@@ -66,7 +68,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public IBMPrinterCommandSet(OutputStream out, PageFormat format, int defaultCPI, int defaultLPI)
+  public IBMPrinterCommandSet(final OutputStream out, final PageFormat format, final int defaultCPI, final int defaultLPI)
   {
     super(out, format, defaultCPI, defaultLPI);
   }
@@ -82,7 +84,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param fontSelection the printers font selection token.
    * @throws IOException if there was an IOError while writing the command.
    */
-  public void setFont(byte fontSelection)
+  public void setFont(final byte fontSelection)
       throws IOException
   {
     if (fontSelection == getFont())
@@ -103,7 +105,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command or if the
    *   character width is not supported by the printer.
    */
-  public void setCharacterWidth(byte charWidth) throws IOException
+  public void setCharacterWidth(final byte charWidth) throws IOException
   {
     if (charWidth == getCharacterWidth())
     {
@@ -160,7 +162,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setFontStyle(boolean bold, boolean italic, boolean underline, boolean strike)
+  public void setFontStyle(final boolean bold, final boolean italic, final boolean underline, final boolean strike)
       throws IOException
   {
     if (isBold())
@@ -233,7 +235,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param lines the number of lines that could be printed on a single page.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setPaperSize(int lines)
+  public void setPaperSize(final int lines)
       throws IOException
   {
     getOut().write(0x1b);
@@ -250,7 +252,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param right the number of spaces left free on the right paper border.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setHorizontalBorder(int left, int right)
+  public void setHorizontalBorder(final int left, final int right)
       throws IOException
   {
     getOut().write(0x1b);
@@ -268,13 +270,13 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param bottom the number of blank lines printed at the end of a page
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setVerticalBorder(int top, int bottom)
+  public void setVerticalBorder(final int top, final int bottom)
       throws IOException
   {
-    int top1 = (top / 256);
-    int top2 = (top % 256);
-    int bottom1 = (bottom / 256);
-    int bottom2 = (bottom % 256);
+    final int top1 = (top / 256);
+    final int top2 = (top % 256);
+    final int bottom1 = (bottom / 256);
+    final int bottom2 = (bottom % 256);
     getOut().write(0x1b);
     getOut().write(0x5b);
     getOut().write(0x04);
@@ -293,11 +295,11 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param spaceInInch the linespacing in 1/1440 inches.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setLineSpacing(int spaceInInch)
+  public void setLineSpacing(final int spaceInInch)
       throws IOException
   {
     // round it to 1/72 inch, its easier this way...
-    int spacePar = (spaceInInch / 20);
+    final int spacePar = (spaceInInch / 20);
     getOut().write(0x1b);
     getOut().write(0x41);
     getOut().write(spacePar);
@@ -313,10 +315,10 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param codepage the new codepage that should be used.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setCodePage(String codepage)
+  public void setCodePage(final String codepage)
       throws IOException
   {
-    int[] cp = translateCodePage(codepage);
+    final int[] cp = translateCodePage(codepage);
     getOut().write(0x1b);
     getOut().write(0x5b);
     getOut().write(0x54);
@@ -337,7 +339,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param autoLF the new autoLF state
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setAutoLF(boolean autoLF)
+  public void setAutoLF(final boolean autoLF)
       throws IOException
   {
     if (autoLF == false)
@@ -372,7 +374,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @return the epson byte code.
    * @throws UnsupportedEncodingException if the encoding is not supported.
    */
-  private static int[] translateCodePage(String cp)
+  private static int[] translateCodePage(final String cp)
       throws UnsupportedEncodingException
   {
     if (StringUtil.startsWithIgnoreCase(cp, "cp"))
@@ -386,8 +388,8 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
 
       try
       {
-        int i = Integer.parseInt(cp.substring(2));
-        int[] retval = new int[2];
+        final int i = Integer.parseInt(cp.substring(2));
+        final int[] retval = new int[2];
         retval[0] = i / 256;
         retval[1] = i % 256;
         return retval;
@@ -426,7 +428,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    */
   public void endPage() throws IOException
   {
-    getOut().write(FORM_FEED);
+    writeControlChar(FORM_FEED);
   }
 
   /**
@@ -435,7 +437,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param encoding the encoding that should be tested.
    * @return true, if the encoding is valid, false otherwise.
    */
-  public boolean isEncodingSupported(String encoding)
+  public boolean isEncodingSupported(final String encoding)
   {
     try
     {

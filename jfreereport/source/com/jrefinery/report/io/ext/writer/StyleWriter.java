@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.17 2003/06/10 16:07:52 taqua Exp $
+ * $Id: StyleWriter.java,v 1.18 2003/06/27 14:25:20 taqua Exp $
  *
  * Changes
  * -------
@@ -75,10 +75,10 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @param defaultStyleSheet  the default style sheet.
    * @param indentLevel the current indention level.
    */
-  public StyleWriter(ReportWriter reportWriter,
-                     ElementStyleSheet elementStyleSheet,
-                     ElementStyleSheet defaultStyleSheet,
-                     int indentLevel)
+  public StyleWriter(final ReportWriter reportWriter,
+                     final ElementStyleSheet elementStyleSheet,
+                     final ElementStyleSheet defaultStyleSheet,
+                     final int indentLevel)
   {
     super(reportWriter, indentLevel);
     this.elementStyleSheet = elementStyleSheet;
@@ -93,23 +93,23 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(Writer writer) throws IOException, ReportWriterException
+  public void write(final Writer writer) throws IOException, ReportWriterException
   {
-    List parents = elementStyleSheet.getParents();
+    final List parents = elementStyleSheet.getParents();
     for (int p = 0; p < parents.size(); p++)
     {
-      ElementStyleSheet parent = (ElementStyleSheet) parents.get(p);
+      final ElementStyleSheet parent = (ElementStyleSheet) parents.get(p);
       if (isDefaultStyleSheet(parent) == false)
       {
         writeTag(writer, StyleSheetHandler.EXTENDS_TAG, "name", parent.getName(), CLOSE);
       }
     }
 
-    Iterator keys = elementStyleSheet.getDefinedPropertyNames();
+    final Iterator keys = elementStyleSheet.getDefinedPropertyNames();
     while (keys.hasNext())
     {
-      StyleKey key = (StyleKey) keys.next();
-      Object value = elementStyleSheet.getStyleProperty(key);
+      final StyleKey key = (StyleKey) keys.next();
+      final Object value = elementStyleSheet.getStyleProperty(key);
       if (value != null)
       {
         writeKeyValue(writer, key, value);
@@ -128,9 +128,9 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @param o the stylekey value.
    * @return the found object description or null, if none was found.
    */
-  private ObjectDescription findObjectDescription(StyleKey key, Object o)
+  private ObjectDescription findObjectDescription(final StyleKey key, final Object o)
   {
-    ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
+    final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
     ObjectDescription od = cc.getDescriptionForClass(o.getClass());
     if (od != null)
     {
@@ -166,10 +166,10 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeKeyValue(Writer w, StyleKey key, Object o)
+  private void writeKeyValue(final Writer w, final StyleKey key, final Object o)
       throws IOException, ReportWriterException
   {
-    ObjectDescription od = findObjectDescription(key, o);
+    final ObjectDescription od = findObjectDescription(key, o);
     if (od == null)
     {
       throw new ReportWriterException("Unable to find object description for key: "
@@ -186,14 +186,14 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
           + key.getName(), e);
     }
 
-    Properties p = new Properties();
+    final Properties p = new Properties();
     p.setProperty("name", key.getName());
     if ((key.getValueType().equals(o.getClass())) == false)
     {
       p.setProperty("class", o.getClass().getName());
     }
 
-    List parameterNames = getParameterNames(od);
+    final List parameterNames = getParameterNames(od);
     if (isBasicKey(parameterNames, od))
     {
       writeTag(w, StyleSheetHandler.BASIC_KEY_TAG, p, OPEN);
@@ -203,7 +203,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     else
     {
       writeTag(w, StyleSheetHandler.COMPOUND_KEY_TAG, p, OPEN);
-      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
+      final ObjectWriter objWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
       objWriter.write(w);
       writeCloseTag(w, StyleSheetHandler.COMPOUND_KEY_TAG);
     }
@@ -217,11 +217,11 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    *
    * @return A boolean.
    */
-  private boolean isBasicKey(List parameters, ObjectDescription od)
+  private boolean isBasicKey(final List parameters, final ObjectDescription od)
   {
     if (parameters.size() == 1)
     {
-      String param = (String) parameters.get(0);
+      final String param = (String) parameters.get(0);
       if (param.equals("value"))
       {
         if (od.getParameterDefinition("value").equals(String.class))
@@ -240,13 +240,13 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    *
    * @return The list.
    */
-  private ArrayList getParameterNames(ObjectDescription d)
+  private ArrayList getParameterNames(final ObjectDescription d)
   {
-    ArrayList list = new ArrayList();
-    Iterator it = d.getParameterNames();
+    final ArrayList list = new ArrayList();
+    final Iterator it = d.getParameterNames();
     while (it.hasNext())
     {
-      String name = (String) it.next();
+      final String name = (String) it.next();
       list.add(name);
     }
     return list;
@@ -259,7 +259,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    *
    * @return A boolean.
    */
-  private boolean isDefaultStyleSheet(ElementStyleSheet es)
+  private boolean isDefaultStyleSheet(final ElementStyleSheet es)
   {
     if (es == BandDefaultStyleSheet.getBandDefaultStyle())
     {

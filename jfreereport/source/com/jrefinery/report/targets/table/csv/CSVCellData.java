@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellData.java,v 1.6 2003/05/02 12:40:37 taqua Exp $
+ * $Id: CSVCellData.java,v 1.7 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class CSVCellData extends TableCellData
    * @param value  the value of the cell (<code>null</code> not permitted).
    * @param outerBounds  the element bounds.
    */
-  public CSVCellData(String value, Rectangle2D outerBounds)
+  public CSVCellData(final String value, final Rectangle2D outerBounds)
   {
     super(outerBounds);
     if (value == null)

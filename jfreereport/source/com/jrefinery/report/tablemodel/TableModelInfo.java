@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableModelInfo.java,v 1.3 2003/05/11 13:39:17 taqua Exp $
+ * $Id: TableModelInfo.java,v 1.4 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public class TableModelInfo
    *
    * @param mod  the model.
    */
-  public static void printTableModel(TableModel mod)
+  public static void printTableModel(final TableModel mod)
   {
     System.out.println("Tablemodel contains " + mod.getRowCount() + " rows.");
     for (int i = 0; i < mod.getColumnCount(); i++)
@@ -66,8 +66,8 @@ public class TableModelInfo
     {
       for (int i = 0; i < mod.getColumnCount(); i++)
       {
-        Object value = mod.getValueAt(rows, i);
-        Class c = mod.getColumnClass(i);
+        final Object value = mod.getValueAt(rows, i);
+        final Class c = mod.getColumnClass(i);
         if (value == null)
         {
           System.out.println("ValueAt (" + rows + ", " + i + ") is null");
@@ -95,7 +95,7 @@ public class TableModelInfo
    *
    * @param mod  the model.
    */
-  public static void printTableModelContents(TableModel mod)
+  public static void printTableModelContents(final TableModel mod)
   {
     System.out.println("Tablemodel contains " + mod.getRowCount() + " rows.");
     for (int i = 0; i < mod.getColumnCount(); i++)
@@ -109,8 +109,8 @@ public class TableModelInfo
     {
       for (int i = 0; i < mod.getColumnCount(); i++)
       {
-        Object value = mod.getValueAt(rows, i);
-        Class c = mod.getColumnClass(i);
+        final Object value = mod.getValueAt(rows, i);
+        final Class c = mod.getColumnClass(i);
         System.out.println("ValueAt (" + rows + ", " + i + ") is " + value);
       }
     }

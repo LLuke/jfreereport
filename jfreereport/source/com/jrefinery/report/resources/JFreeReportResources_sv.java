@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_sv.java,v 1.4 2003/06/19 18:44:10 taqua Exp $
+ * $Id: JFreeReportResources_sv.java,v 1.5 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -332,7 +332,7 @@ public class JFreeReportResources_sv extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     ResourceCompareTool.main(new String[]{"sv"});
   }

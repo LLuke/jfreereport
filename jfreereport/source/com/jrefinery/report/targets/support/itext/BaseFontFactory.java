@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.15 2003/06/26 19:55:57 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.16 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class BaseFontFactory extends DefaultFontMapper
      * @return  <code>true</code> if and only if <code>pathname</code>
      *          should be included
      */
-    public boolean accept(File pathname)
+    public boolean accept(final File pathname)
     {
       if (pathname.canRead() == false)
       {
@@ -98,7 +98,7 @@ public class BaseFontFactory extends DefaultFontMapper
       {
         return true;
       }
-      String name = pathname.getName();
+      final String name = pathname.getName();
       if (StringUtil.endsWithIgnoreCase(name, ".afm"))
       {
         return true;
@@ -151,16 +151,16 @@ public class BaseFontFactory extends DefaultFontMapper
       encoding = "UTF-16";
     }
 
-    String osname = System.getProperty("os.name");
-    String jrepath = System.getProperty("java.home");
-    String fs = System.getProperty("file.separator");
+    final String osname = System.getProperty("os.name");
+    final String jrepath = System.getProperty("java.home");
+    final String fs = System.getProperty("file.separator");
 
     Log.debug("Running on operating system: " + osname);
     Log.debug("Character encoding used as default: " + encoding);
 
     if (System.getProperty("mrj.version") != null)
     {
-      String userhome = System.getProperty("user.home");
+      final String userhome = System.getProperty("user.home");
       Log.debug("Detected MacOS (Property 'mrj.version' is present.");
       registerFontPath(new File(userhome + "/Library/Fonts"), encoding);
       registerFontPath(new File("/Library/Fonts"), encoding);
@@ -186,7 +186,7 @@ public class BaseFontFactory extends DefaultFontMapper
    *
    * @param encoding the default font encoding.
    */
-  private void registerWindowsFontPath(String encoding)
+  private void registerWindowsFontPath(final String encoding)
   {
     Log.debug("Found windows in os name, assuming DOS/Win32 structures");
     // Assume windows
@@ -194,21 +194,21 @@ public class BaseFontFactory extends DefaultFontMapper
     // directory exist and includes a font dir.
 
     String fontPath = null;
-    String windirs = System.getProperty("java.library.path");
-    String fs = System.getProperty("file.separator");
+    final String windirs = System.getProperty("java.library.path");
+    final String fs = System.getProperty("file.separator");
 
     if (windirs != null)
     {
-      StringTokenizer strtok
+      final StringTokenizer strtok
           = new StringTokenizer(windirs, System.getProperty("path.separator"));
       while (strtok.hasMoreTokens())
       {
-        String token = strtok.nextToken();
+        final String token = strtok.nextToken();
 
         if (token.endsWith("System32"))
         {
           // found windows folder ;-)
-          int lastBackslash = token.lastIndexOf(fs);
+          final int lastBackslash = token.lastIndexOf(fs);
           fontPath = token.substring(0, lastBackslash) + fs + "Fonts";
 
           break;
@@ -218,7 +218,7 @@ public class BaseFontFactory extends DefaultFontMapper
     Log.debug("Fonts located in \"" + fontPath + "\"");
     if (fontPath != null)
     {
-      File file = new File(fontPath);
+      final File file = new File(fontPath);
       registerFontPath(file, encoding);
     }
   }
@@ -229,11 +229,11 @@ public class BaseFontFactory extends DefaultFontMapper
    * @param file  the directory that contains the font files.
    * @param encoding  the encoding.
    */
-  public synchronized void registerFontPath(File file, String encoding)
+  public synchronized void registerFontPath(final File file, final String encoding)
   {
     if (file.exists() && file.isDirectory() && file.canRead())
     {
-      File[] files = file.listFiles(FONTPATHFILTER);
+      final File[] files = file.listFiles(FONTPATHFILTER);
       for (int i = 0; i < files.length; i++)
       {
         if (files[i].isDirectory())
@@ -255,7 +255,7 @@ public class BaseFontFactory extends DefaultFontMapper
    * @param filename  the filename.
    * @param encoding  the encoding.
    */
-  public synchronized void registerFontFile(String filename, String encoding)
+  public synchronized void registerFontFile(final String filename, final String encoding)
   {
     if (!filename.toLowerCase().endsWith(".ttf") &&
         !filename.toLowerCase().endsWith(".afm") &&
@@ -263,7 +263,7 @@ public class BaseFontFactory extends DefaultFontMapper
     {
       return;
     }
-    File file = new File(filename);
+    final File file = new File(filename);
     if (file.exists() && file.isFile() && file.canRead())
     {
       try
@@ -286,18 +286,18 @@ public class BaseFontFactory extends DefaultFontMapper
    * @throws DocumentException if the base font could not be created
    * @throws IOException if the base font file could not be read.
    */
-  private void addFont(String font, String encoding)
+  private void addFont(final String font, final String encoding)
       throws DocumentException, IOException
   {
     if (fontsByName.containsValue(font))
     {
       return; // already in there
     }
-    BaseFont bfont = BaseFont.createFont(font, encoding, true, false, null, null);
-    String[][] fi = bfont.getFullFontName();
+    final BaseFont bfont = BaseFont.createFont(font, encoding, true, false, null, null);
+    final String[][] fi = bfont.getFullFontName();
     for (int i = 0; i < fi.length; i++)
     {
-      String[] ffi = fi[i];
+      final String[] ffi = fi[i];
       if (fontsByName.containsKey(ffi[3]) == false)
       {
         fontsByName.put(ffi[3], font);
@@ -323,7 +323,7 @@ public class BaseFontFactory extends DefaultFontMapper
    *
    * @return the font file name.
    */
-  public String getFontfileForName(String font)
+  public String getFontfileForName(final String font)
   {
     return (String) fontsByName.get(font);
   }

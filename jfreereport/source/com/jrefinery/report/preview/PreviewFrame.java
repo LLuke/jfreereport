@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.51 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.52 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -99,7 +99,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
      *
      * @param e The action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
@@ -125,7 +125,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewFrame(JFreeReport report) throws ReportProcessingException
+  public PreviewFrame(final JFreeReport report) throws ReportProcessingException
   {
     init(report);
   }
@@ -137,7 +137,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  private void init(JFreeReport report) throws ReportProcessingException
+  private void init(final JFreeReport report) throws ReportProcessingException
   {
     base = new PreviewProxyBase(this);
     base.init(report);
@@ -175,7 +175,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.
        */
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
             "CloseFrame"));

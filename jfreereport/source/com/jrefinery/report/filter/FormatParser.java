@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FormatParser.java,v 1.14 2003/06/19 18:44:09 taqua Exp $
+ * $Id: FormatParser.java,v 1.15 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class FormatParser implements DataFilter, Serializable
    * @param format The format.
    * @throws NullPointerException if the given format is null
    */
-  public void setFormatter(Format format)
+  public void setFormatter(final Format format)
   {
     if (format == null)
     {
@@ -108,19 +108,19 @@ public class FormatParser implements DataFilter, Serializable
    */
   public Object getValue()
   {
-    Format f = getFormatter();
+    final Format f = getFormatter();
     if (f == null)
     {
       return getNullValue();
     }
 
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     if (ds == null)
     {
       return getNullValue();
     }
 
-    Object o = ds.getValue();
+    final Object o = ds.getValue();
     if (o == null)
     {
       return getNullValue();
@@ -150,7 +150,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return false as this class does not know anything about the format of input or result objects.
    */
-  protected boolean isValidOutput(Object o)
+  protected boolean isValidOutput(final Object o)
   {
     return false;
   }
@@ -170,7 +170,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     if (ds == null)
     {
@@ -186,7 +186,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @param nullvalue The value returned when the parsing failed.
    */
-  public void setNullValue(Object nullvalue)
+  public void setNullValue(final Object nullvalue)
   {
     this.nullvalue = nullvalue;
   }
@@ -211,7 +211,7 @@ public class FormatParser implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    FormatParser p = (FormatParser) super.clone();
+    final FormatParser p = (FormatParser) super.clone();
     if (datasource != null)
     {
       p.datasource = (DataSource) datasource.clone();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.13 2003/05/14 22:26:40 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.14 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
    * @param styleCollection the used style collection.
    * @param useXHTML a flag indicating whether to generate XHTML.
    */
-  public HtmlCellDataFactory(HtmlStyleCollection styleCollection, boolean useXHTML)
+  public HtmlCellDataFactory(final HtmlStyleCollection styleCollection, final boolean useXHTML)
   {
     if (styleCollection == null)
     {
@@ -95,7 +95,7 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
    * in points.
    * @return null if element type is not supported or the generated TableCellData object.
    */
-  public TableCellData createCellData(Element e, Rectangle2D rect)
+  public TableCellData createCellData(final Element e, final Rectangle2D rect)
   {
     if (e.isVisible() == false)
     {
@@ -107,25 +107,25 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
       return createBandCell(rect);
     }
 
-    Object value = e.getValue();
+    final Object value = e.getValue();
 
-    FontDefinition font = e.getStyle().getFontDefinitionProperty();
-    Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    ElementAlignment valign
+    final FontDefinition font = e.getStyle().getFontDefinitionProperty();
+    final Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final ElementAlignment valign
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    ElementAlignment halign
+    final ElementAlignment halign
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
 
     if (value instanceof ImageReference)
     {
-      HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
+      final HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
       styleCollection.addStyle(style);
       return new HtmlImageCellData(rect, (ImageReference) value, style, useXHTML);
     }
 
     if (value instanceof String)
     {
-      HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
+      final HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
       styleCollection.addStyle(style);
       return new HtmlTextCellData(rect, (String) value, style, useXHTML);
     }

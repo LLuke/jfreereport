@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.17 2003/06/01 17:39:26 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.18 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    * @param name  the function name.
    * @param propertyName  the property name.
    */
-  public ReportPropertyFunction(String name, String propertyName)
+  public ReportPropertyFunction(final String name, final String propertyName)
   {
     setName(name);
     setField(propertyName);
@@ -99,9 +99,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -110,9 +110,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -121,9 +121,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -132,9 +132,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -143,9 +143,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -154,9 +154,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -165,9 +165,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -176,9 +176,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -187,9 +187,9 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param event  the event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
-    ReportState state = event.getState();
+    final ReportState state = event.getState();
     value = state.getProperty(getField());
   }
 
@@ -222,7 +222,7 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
    *
    * @param field The report property name.
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -239,7 +239,7 @@ public class ReportPropertyFunction extends AbstractFunction implements Serializ
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
-    String fieldProp = getProperty(REPORTPROPERTY_PROPERTY);
+    final String fieldProp = getProperty(REPORTPROPERTY_PROPERTY);
     if (fieldProp == null)
     {
       throw new FunctionInitializeException("No Such Property : reportProperty");

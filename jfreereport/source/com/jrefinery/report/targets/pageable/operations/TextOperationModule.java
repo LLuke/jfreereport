@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.14 2003/04/09 15:52:55 mungady Exp $
+ * $Id: TextOperationModule.java,v 1.15 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -75,8 +75,8 @@ public class TextOperationModule extends OperationModule
    * @param value  the content.
    * @param bounds  the bounds.
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
-                               Rectangle2D bounds)
+  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
+                               final Rectangle2D bounds)
   {
     if (bounds == null)
     {
@@ -90,16 +90,16 @@ public class TextOperationModule extends OperationModule
     {
       throw new NullPointerException("Value is null");
     }
-    Content c = value.getContentForBounds(bounds);
+    final Content c = value.getContentForBounds(bounds);
     if (c == null)
     {
       return;
     }
     // Font
-    FontDefinition font = e.getStyle().getFontDefinitionProperty();
+    final FontDefinition font = e.getStyle().getFontDefinitionProperty();
 
     // Paint
-    Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
     col.addOperation(new PhysicalOperation.SetFontOperation(font));
     col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
@@ -110,9 +110,9 @@ public class TextOperationModule extends OperationModule
       cbounds = bounds.getBounds2D();
     }
 
-    ElementAlignment va
+    final ElementAlignment va
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    VerticalBoundsAlignment vba;
+    final VerticalBoundsAlignment vba;
     if (va.equals(ElementAlignment.TOP))
     {
       vba = new TopAlignment(bounds);
@@ -128,7 +128,7 @@ public class TextOperationModule extends OperationModule
     // calculate the horizontal shift ... is applied later
     vba.calculateShift(cbounds);
 
-    ElementAlignment ha
+    final ElementAlignment ha
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
     if (ha.equals(ElementAlignment.CENTER))
     {
@@ -153,14 +153,14 @@ public class TextOperationModule extends OperationModule
    * @param hba  the bounds.
    * @param vba  the vertical bounds alignment.
    */
-  private void addContent(Content c, PhysicalOperationsCollector col,
-                          HorizontalBoundsAlignment hba,
-                          VerticalBoundsAlignment vba)
+  private void addContent(final Content c, final PhysicalOperationsCollector col,
+                          final HorizontalBoundsAlignment hba,
+                          final VerticalBoundsAlignment vba)
   {
     if (c instanceof TextLine)
     {
-      String value = ((TextLine) c).getContent();
-      Rectangle2D abounds = vba.applyShift(hba.align(c.getBounds()));
+      final String value = ((TextLine) c).getContent();
+      final Rectangle2D abounds = vba.applyShift(hba.align(c.getBounds()));
       col.addOperation(new PhysicalOperation.SetBoundsOperation(abounds));
       col.addOperation(new PhysicalOperation.PrintTextOperation(value));
     }
@@ -179,7 +179,7 @@ public class TextOperationModule extends OperationModule
    *
    * @param c  the content.
    */
-  public static void print(Content c)
+  public static void print(final Content c)
   {
     if (c == null)
     {

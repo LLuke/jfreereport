@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.25 2003/06/13 16:21:40 taqua Exp $
+ * $Id: PageLayouter.java,v 1.26 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -161,7 +161,7 @@ public abstract class PageLayouter extends AbstractFunction
    * @param pageRestartDone set to true, if the restart process for this page is completed,
    *                        false otherwise.
    */
-  public void setPageRestartDone(boolean pageRestartDone)
+  public void setPageRestartDone(final boolean pageRestartDone)
   {
     this.pageRestartDone = pageRestartDone;
   }
@@ -183,7 +183,7 @@ public abstract class PageLayouter extends AbstractFunction
    * @param generatedPageEmpty true, if the page was empty when the logical page was closed,
    * false otherwise.
    */
-  protected void setGeneratedPageEmpty(boolean generatedPageEmpty)
+  protected void setGeneratedPageEmpty(final boolean generatedPageEmpty)
   {
     this.generatedPageEmpty = generatedPageEmpty;
   }
@@ -194,7 +194,7 @@ public abstract class PageLayouter extends AbstractFunction
    * @param logicalPage  the logical page (null not permitted).
    * @throws NullPointerException it the logical page is null
    */
-  public void setLogicalPage(LogicalPage logicalPage)
+  public void setLogicalPage(final LogicalPage logicalPage)
   {
     if (logicalPage == null)
     {
@@ -246,7 +246,7 @@ public abstract class PageLayouter extends AbstractFunction
    * @see com.jrefinery.report.targets.pageable.pagelayout.PageLayouter#isFinishingPage
    * @param finishingPage  the new flag value.
    */
-  public void setFinishingPage(boolean finishingPage)
+  public void setFinishingPage(final boolean finishingPage)
   {
     this.finishingPage = finishingPage;
   }
@@ -272,7 +272,7 @@ public abstract class PageLayouter extends AbstractFunction
    * @see com.jrefinery.report.targets.pageable.pagelayout.PageLayouter#isRestartingPage
    * @param restartingPage  sets the restarting page flag.
    */
-  public void setRestartingPage(boolean restartingPage)
+  public void setRestartingPage(final boolean restartingPage)
   {
     this.restartingPage = restartingPage;
   }
@@ -307,7 +307,7 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @param currentEvent event.
    */
-  protected void setCurrentEvent(ReportEvent currentEvent)
+  protected void setCurrentEvent(final ReportEvent currentEvent)
   {
     if (currentEvent == null)
     {
@@ -356,7 +356,7 @@ public abstract class PageLayouter extends AbstractFunction
     }
     setFinishingPage(true);
 
-    ReportEvent cEvent = getCurrentEvent();
+    final ReportEvent cEvent = getCurrentEvent();
     clearCurrentEvent();
 
     cEvent.getState().firePageFinishedEvent();
@@ -385,7 +385,7 @@ public abstract class PageLayouter extends AbstractFunction
     {
       throw new IllegalStateException("Page already started");
     }
-    ReportEvent event = getCurrentEvent();
+    final ReportEvent event = getCurrentEvent();
     if (event == null)
     {
       throw new NullPointerException("PageLayouter.startPage(...): state is null.");
@@ -495,7 +495,7 @@ public abstract class PageLayouter extends AbstractFunction
    * Overrides the depency level. Should be lower than any other function depency.
    * @param deplevel the new depency level.
    */
-  public void setDependencyLevel(int deplevel)
+  public void setDependencyLevel(final int deplevel)
   {
     this.depLevel = deplevel;
   }
@@ -513,7 +513,7 @@ public abstract class PageLayouter extends AbstractFunction
    */
   public Object clone() throws CloneNotSupportedException
   {
-    PageLayouter l = (PageLayouter) super.clone();
+    final PageLayouter l = (PageLayouter) super.clone();
     l.currentEvent = null;
     return l;
   }
@@ -528,10 +528,10 @@ public abstract class PageLayouter extends AbstractFunction
    * @throws IllegalStateException if there is no SavedState but this is not the
    * first page.
    */
-  public void restoreSaveState(ReportState ancestor)
+  public void restoreSaveState(final ReportState ancestor)
       throws ReportProcessingException
   {
-    Object state = getLayoutManagerState();
+    final Object state = getLayoutManagerState();
     // reset the report finished flag...
     //setStartNewPage(false);
     setGeneratedPageEmpty(true);

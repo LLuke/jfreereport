@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.6 2003/05/02 12:40:30 taqua Exp $
+ * $Id: ImageContent.java,v 1.7 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class ImageContent implements Content
    * @param ref  the image reference.
    * @param bounds  the content bounds.
    */
-  public ImageContent(ImageReference ref, Rectangle2D bounds)
+  public ImageContent(final ImageReference ref, final Rectangle2D bounds)
   {
     this.reference = ref;
     this.bounds = bounds;
@@ -95,7 +95,7 @@ public class ImageContent implements Content
    *
    * @return <code>null</code>.
    */
-  public Content getContentPart(int part)
+  public Content getContentPart(final int part)
   {
     return null;
   }
@@ -117,22 +117,22 @@ public class ImageContent implements Content
    *
    * @return the content.
    */
-  public Content getContentForBounds(Rectangle2D bounds)
+  public Content getContentForBounds(final Rectangle2D bounds)
   {
     if (bounds.intersects(getBounds()) == false)
     {
       return null;
     }
 
-    Rectangle2D myBounds = bounds.createIntersection(getBounds());
+    final Rectangle2D myBounds = bounds.createIntersection(getBounds());
     try
     {
-      ImageReference ref = (ImageReference) reference.clone();
-      float x = (float) (bounds.getX() - this.bounds.getX());
-      float y = (float) (bounds.getY() - this.bounds.getY());
-      float w = (float) myBounds.getWidth();
-      float h = (float) myBounds.getHeight();
-      Rectangle2D imageArea = new Rectangle2D.Float(x, y, w, h);
+      final ImageReference ref = (ImageReference) reference.clone();
+      final float x = (float) (bounds.getX() - this.bounds.getX());
+      final float y = (float) (bounds.getY() - this.bounds.getY());
+      final float w = (float) myBounds.getWidth();
+      final float h = (float) myBounds.getHeight();
+      final Rectangle2D imageArea = new Rectangle2D.Float(x, y, w, h);
       ref.setBoundsScaled(imageArea.createIntersection(ref.getBoundsScaled()));
       return new ImageContent(ref, myBounds);
     }

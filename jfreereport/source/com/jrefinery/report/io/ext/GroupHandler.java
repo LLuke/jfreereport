@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.8 2003/04/24 18:08:49 taqua Exp $
+ * $Id: GroupHandler.java,v 1.9 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class GroupHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param group  the group.
    */
-  public GroupHandler(Parser parser, String finishTag, Group group)
+  public GroupHandler(final Parser parser, final String finishTag, final Group group)
   {
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.parser = parser;
@@ -108,12 +108,12 @@ public class GroupHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(GROUP_HEADER_TAG))
     {
-      Band band = new GroupHeader();
-      String name = attrs.getValue("name");
+      final Band band = new GroupHeader();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -123,8 +123,8 @@ public class GroupHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(GROUP_FOOTER_TAG))
     {
-      Band band = new GroupFooter();
-      String name = attrs.getValue("name");
+      final Band band = new GroupFooter();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -159,7 +159,7 @@ public class GroupHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     if (buffer != null)
     {
@@ -174,7 +174,7 @@ public class GroupHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(finishTag))
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.7 2003/06/26 19:55:57 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.8 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,7 +75,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
      *
      * @param styleSheet The ElementStyleSheet that should be stored in that entry.
      */
-    public StyleCollectionEntry(ElementStyleSheet styleSheet)
+    public StyleCollectionEntry(final ElementStyleSheet styleSheet)
     {
       this(0, styleSheet);
     }
@@ -89,7 +89,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
      * @throws IllegalArgumentException if the reference count is negative.
      * @throws NullPointerException if the given stylesheet is null.
      */
-    public StyleCollectionEntry(int referenceCount, ElementStyleSheet styleSheet)
+    public StyleCollectionEntry(final int referenceCount, final ElementStyleSheet styleSheet)
     {
       if (referenceCount < 0)
       {
@@ -119,7 +119,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
      * @param referenceCount the reference count.
      * @throws IllegalArgumentException if the reference count is negative.
      */
-    public void setReferenceCount(int referenceCount)
+    public void setReferenceCount(final int referenceCount)
     {
       if (referenceCount < 0)
       {
@@ -158,7 +158,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the element stylesheet
    * @throws NullPointerException if the given stylesheet is null.
    */
-  public void addStyleSheet(ElementStyleSheet es)
+  public void addStyleSheet(final ElementStyleSheet es)
   {
     addStyleSheet(es, true);
   }
@@ -175,7 +175,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * a different stylesheet collection assigned.
    * @throws NullPointerException if the given element stylesheet is null.
    */
-  protected void addStyleSheet(ElementStyleSheet es, boolean updateRefs)
+  protected void addStyleSheet(final ElementStyleSheet es, final boolean updateRefs)
   {
     if (es == null)
     {
@@ -212,15 +212,15 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the stylesheet that is searched.
    * @return true, if the stylesheet is contained in that collection, false otherwise.
    */
-  private boolean contains(ElementStyleSheet es)
+  private boolean contains(final ElementStyleSheet es)
   {
     if (styleSheets.containsKey(es.getName()))
     {
-      Iterator it = styleSheets.getAll(es.getName());
+      final Iterator it = styleSheets.getAll(es.getName());
       while (it.hasNext())
       {
-        StyleCollectionEntry se = (StyleCollectionEntry) it.next();
-        ElementStyleSheet ces = se.getStyleSheet();
+        final StyleCollectionEntry se = (StyleCollectionEntry) it.next();
+        final ElementStyleSheet ces = se.getStyleSheet();
         if (ces.getId() == es.getId())
         {
           return true;
@@ -237,18 +237,18 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param name the name of the stylesheet.
    * @return the found stylesheets as object array or null.
    */
-  public ElementStyleSheet[] getAll(String name)
+  public ElementStyleSheet[] getAll(final String name)
   {
-    StyleCollectionEntry[] data = (StyleCollectionEntry[])
+    final StyleCollectionEntry[] data = (StyleCollectionEntry[])
         styleSheets.toArray(name, new StyleCollectionEntry[styleSheets.getValueCount(name)]);
     if (data.length == 0)
     {
       return null;
     }
-    ElementStyleSheet[] retval = new ElementStyleSheet[data.length];
+    final ElementStyleSheet[] retval = new ElementStyleSheet[data.length];
     for (int i = 0; i < data.length; i++)
     {
-      StyleCollectionEntry se = data[i];
+      final StyleCollectionEntry se = data[i];
       retval[i] = se.getStyleSheet();
     }
     return retval;
@@ -260,9 +260,9 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param name the name of the searched stylesheet.
    * @return the stylesheet or null, if there is no such stylesheet.
    */
-  public ElementStyleSheet getFirst(String name)
+  public ElementStyleSheet getFirst(final String name)
   {
-    StyleCollectionEntry se = (StyleCollectionEntry) styleSheets.getFirst(name);
+    final StyleCollectionEntry se = (StyleCollectionEntry) styleSheets.getFirst(name);
     if (se == null)
     {
       return null;
@@ -280,21 +280,21 @@ public class StyleSheetCollection implements Cloneable, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    StyleSheetCollection col = (StyleSheetCollection) super.clone();
+    final StyleSheetCollection col = (StyleSheetCollection) super.clone();
     col.styleSheets = new HashNMap();
     // clone all contained stylesheets ...
     Iterator it = styleSheets.keySet().iterator();
     StyleCollectionEntry[] allElements = new StyleCollectionEntry[0];
     while (it.hasNext())
     {
-      Object key = it.next();
-      int len = styleSheets.getValueCount(key);
+      final Object key = it.next();
+      final int len = styleSheets.getValueCount(key);
       allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
       for (int i = 0; i < len; i++)
       {
-        StyleCollectionEntry se = allElements[i];
-        ElementStyleSheet es = se.getStyleSheet();
-        ElementStyleSheet esCopy = es.getCopy();
+        final StyleCollectionEntry se = allElements[i];
+        final ElementStyleSheet es = se.getStyleSheet();
+        final ElementStyleSheet esCopy = es.getCopy();
         col.styleSheets.add(esCopy.getName(),
             new StyleCollectionEntry(se.getReferenceCount(), esCopy));
       }
@@ -306,24 +306,24 @@ public class StyleSheetCollection implements Cloneable, Serializable
     it = col.styleSheets.keySet().iterator();
     while (it.hasNext())
     {
-      Object key = it.next();
-      int len = col.styleSheets.getValueCount(key);
+      final Object key = it.next();
+      final int len = col.styleSheets.getValueCount(key);
       allElements = (StyleCollectionEntry[]) col.styleSheets.toArray(key, allElements);
       for (int ai = 0; ai < len; ai++)
       {
-        StyleCollectionEntry se = allElements[ai];
-        ElementStyleSheet es = se.getStyleSheet();
+        final StyleCollectionEntry se = allElements[ai];
+        final ElementStyleSheet es = se.getStyleSheet();
 
-        List parents = es.getParents();
+        final List parents = es.getParents();
         // reversed add order .. last parent must be added first ..
-        ElementStyleSheet[] parentArray =
+        final ElementStyleSheet[] parentArray =
             (ElementStyleSheet[]) parents.toArray(new ElementStyleSheet[parents.size()]);
         for (int i = parentArray.length - 1; i >= 0; i--)
         {
-          String name = parentArray[i].getName();
-          InstanceID id = parentArray[i].getId();
+          final String name = parentArray[i].getName();
+          final InstanceID id = parentArray[i].getId();
           es.removeParent(parentArray[i]);
-          StyleCollectionEntry seParent = col.findStyleSheet(name, id);
+          final StyleCollectionEntry seParent = col.findStyleSheet(name, id);
           if (seParent == null)
           {
             throw new IllegalStateException
@@ -338,13 +338,13 @@ public class StyleSheetCollection implements Cloneable, Serializable
     it = col.styleSheets.keySet().iterator();
     while (it.hasNext())
     {
-      Object key = it.next();
-      int len = col.styleSheets.getValueCount(key);
+      final Object key = it.next();
+      final int len = col.styleSheets.getValueCount(key);
       allElements = (StyleCollectionEntry[]) col.styleSheets.toArray(key, allElements);
       for (int i = 0; i < len; i++)
       {
-        StyleCollectionEntry se = allElements[i];
-        ElementStyleSheet es = se.getStyleSheet();
+        final StyleCollectionEntry se = allElements[i];
+        final ElementStyleSheet es = se.getStyleSheet();
         es.registerStyleSheetCollection(col);
       }
     }
@@ -360,20 +360,20 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param id the instance id of the stylesheet
    * @return the found stylesheet entry or null if not found.
    */
-  private StyleCollectionEntry findStyleSheet(String name, InstanceID id)
+  private StyleCollectionEntry findStyleSheet(final String name, final InstanceID id)
   {
-    int len = styleSheets.getValueCount(name);
+    final int len = styleSheets.getValueCount(name);
     if (len == 0)
     {
       return null;
     }
 
-    StyleCollectionEntry[] data = (StyleCollectionEntry[])
+    final StyleCollectionEntry[] data = (StyleCollectionEntry[])
         styleSheets.toArray(name, new StyleCollectionEntry[len]);
 
     for (int i = 0; i < data.length; i++)
     {
-      StyleCollectionEntry es = data[i];
+      final StyleCollectionEntry es = data[i];
       if (es.getStyleSheet().getId() == id)
       {
         return es;
@@ -391,7 +391,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    *
    * @param es the elements stylesheet that should be replaced.
    */
-  public void updateStyleSheet(ElementStyleSheet es)
+  public void updateStyleSheet(final ElementStyleSheet es)
   {
     if (es.getStyleSheetCollection() != null)
     {
@@ -404,20 +404,20 @@ public class StyleSheetCollection implements Cloneable, Serializable
     }
     else
     {
-      StyleCollectionEntry entry = findStyleSheet(es.getName(), es.getId());
+      final StyleCollectionEntry entry = findStyleSheet(es.getName(), es.getId());
       styleSheets.remove(es.getName(), entry);
       styleSheets.add(es.getName(), new StyleCollectionEntry(entry.getReferenceCount(), es));
 
-      List parents = es.getParents();
+      final List parents = es.getParents();
       // reversed add order .. last parent must be added first ..
-      ElementStyleSheet[] parentArray =
+      final ElementStyleSheet[] parentArray =
           (ElementStyleSheet[]) parents.toArray(new ElementStyleSheet[parents.size()]);
       for (int i = parentArray.length - 1; i >= 0; i--)
       {
-        String name = parentArray[i].getName();
-        InstanceID id = parentArray[i].getId();
+        final String name = parentArray[i].getName();
+        final InstanceID id = parentArray[i].getId();
         es.removeParent(parentArray[i]);
-        StyleCollectionEntry seParent = findStyleSheet(name, id);
+        final StyleCollectionEntry seParent = findStyleSheet(name, id);
         if (seParent == null)
         {
           throw new IllegalStateException
@@ -434,18 +434,18 @@ public class StyleSheetCollection implements Cloneable, Serializable
    *
    * @param es the element style sheet whose parents should be added.
    */
-  protected void addParents(ElementStyleSheet es)
+  protected void addParents(final ElementStyleSheet es)
   {
-    List parents = es.getParents();
+    final List parents = es.getParents();
     for (int i = 0; i < parents.size(); i++)
     {
-      ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
+      final ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
       addStyleSheet(esp, false);
     }
-    List defaultParents = es.getDefaultParents();
+    final List defaultParents = es.getDefaultParents();
     for (int i = 0; i < defaultParents.size(); i++)
     {
-      ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
+      final ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
       addStyleSheet(esp, false);
     }
   }
@@ -462,12 +462,12 @@ public class StyleSheetCollection implements Cloneable, Serializable
     while (keyIterator.hasNext())
     {
       // reset the reference count ...
-      Object key = keyIterator.next();
-      int len = styleSheets.getValueCount(key);
+      final Object key = keyIterator.next();
+      final int len = styleSheets.getValueCount(key);
       allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
       for (int i = 0; i < len; i++)
       {
-        StyleCollectionEntry se = allElements[i];
+        final StyleCollectionEntry se = allElements[i];
         se.setReferenceCount(0);
       }
     }
@@ -476,30 +476,30 @@ public class StyleSheetCollection implements Cloneable, Serializable
     while (keyIterator.hasNext())
     {
       // compute the reference count ...
-      Object key = keyIterator.next();
-      int len = styleSheets.getValueCount(key);
+      final Object key = keyIterator.next();
+      final int len = styleSheets.getValueCount(key);
       allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
       for (int ai = 0; ai < len; ai++)
       {
-        StyleCollectionEntry se = allElements[ai];
-        ElementStyleSheet es = se.getStyleSheet();
+        final StyleCollectionEntry se = allElements[ai];
+        final ElementStyleSheet es = se.getStyleSheet();
 
-        List parents = es.getParents();
+        final List parents = es.getParents();
         for (int i = 0; i < parents.size(); i++)
         {
-          ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
-          StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+          final ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
+          final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
           if (sep == null)
           {
             throw new NullPointerException("StyleSheet '" + esp.getName() + "' is not known.");
           }
           sep.setReferenceCount(sep.getReferenceCount() + 1);
         }
-        List defaultParents = es.getDefaultParents();
+        final List defaultParents = es.getDefaultParents();
         for (int i = 0; i < defaultParents.size(); i++)
         {
-          ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
-          StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+          final ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
+          final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
           sep.setReferenceCount(sep.getReferenceCount() + 1);
         }
       }
@@ -514,7 +514,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the element stylesheet that should be removed.
    * @return true, if the stylesheet was removed, false otherwise.
    */
-  public boolean remove(ElementStyleSheet es)
+  public boolean remove(final ElementStyleSheet es)
   {
     return remove(es, true);
   }
@@ -527,7 +527,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    * @param es the element stylesheet that should be removed.
    * @return true, if the stylesheet was removed, false otherwise.
    */
-  protected boolean remove(ElementStyleSheet es, boolean update)
+  protected boolean remove(final ElementStyleSheet es, final boolean update)
   {
     if (contains(es) == false)
     {
@@ -535,7 +535,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
     }
     else
     {
-      StyleCollectionEntry se = findStyleSheet(es.getName(), es.getId());
+      final StyleCollectionEntry se = findStyleSheet(es.getName(), es.getId());
       if (se.getReferenceCount() != 0)
       {
         return false;
@@ -552,19 +552,19 @@ public class StyleSheetCollection implements Cloneable, Serializable
       }
 
       // check whether we can remove the parents ...
-      List parents = es.getParents();
+      final List parents = es.getParents();
       for (int i = 0; i < parents.size(); i++)
       {
-        ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
-        StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+        final ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
+        final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
         sep.setReferenceCount(sep.getReferenceCount() - 1);
         remove(esp, false);
       }
-      List defaultParents = es.getDefaultParents();
+      final List defaultParents = es.getDefaultParents();
       for (int i = 0; i < defaultParents.size(); i++)
       {
-        ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
-        StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+        final ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
+        final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
         sep.setReferenceCount(sep.getReferenceCount() - 1);
         remove(esp, false);
       }
@@ -585,7 +585,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    */
   public Iterator keys()
   {
-    Set keySet = styleSheets.keySet();
+    final Set keySet = styleSheets.keySet();
     return Collections.unmodifiableSet(keySet).iterator();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NameGenerator.java,v 1.3 2003/02/26 13:57:58 mungady Exp $
+ * $Id: NameGenerator.java,v 1.4 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public class NameGenerator
    *
    * @return a non-null name.
    */
-  public String generateName(String name)
+  public String generateName(final String name)
   {
     if (name == null)
     {

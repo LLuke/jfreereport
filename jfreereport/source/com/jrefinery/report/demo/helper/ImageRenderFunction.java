@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.1 2003/06/19 18:46:35 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.2 2003/06/27 14:25:16 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -64,13 +64,13 @@ public class ImageRenderFunction extends AbstractFunction implements Serializabl
    *
    * @param event  the report event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
-    BufferedImage image = new BufferedImage(150, 50, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
-    JButton bt = new JButton("A Button");
+    final BufferedImage image = new BufferedImage(150, 50, BufferedImage.TYPE_INT_ARGB);
+    final Graphics2D g2 = image.createGraphics();
+    final JButton bt = new JButton("A Button");
     bt.setSize(90, 20);
-    JRadioButton radio = new JRadioButton("A radio button");
+    final JRadioButton radio = new JRadioButton("A radio button");
     radio.setSize(100, 20);
 
     g2.setColor(Color.darkGray);

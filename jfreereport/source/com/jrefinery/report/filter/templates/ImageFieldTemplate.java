@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageFieldTemplate.java,v 1.7 2003/03/07 16:55:54 taqua Exp $
+ * $Id: ImageFieldTemplate.java,v 1.8 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -81,7 +81,7 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    *
    * @param field  the field name.
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -105,7 +105,7 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ImageFieldTemplate template = (ImageFieldTemplate) super.clone();
+    final ImageFieldTemplate template = (ImageFieldTemplate) super.clone();
     template.imageRefFilter = (ImageRefFilter) imageRefFilter.clone();
     template.dataRowDataSource = (DataRowDataSource) template.imageRefFilter.getDataSource();
     return template;
@@ -118,7 +118,7 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.connectDataRow(row);
   }
@@ -133,7 +133,7 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.disconnectDataRow(row);
   }

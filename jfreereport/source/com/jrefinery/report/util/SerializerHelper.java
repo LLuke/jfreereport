@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializerHelper.java,v 1.4 2003/06/26 19:55:57 taqua Exp $
+ * $Id: SerializerHelper.java,v 1.5 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -98,7 +98,7 @@ public class SerializerHelper
    *
    * @param helper the new instance of the serialize helper.
    */
-  protected static void setInstance(SerializerHelper helper)
+  protected static void setInstance(final SerializerHelper helper)
   {
     singleton = helper;
   }
@@ -123,7 +123,7 @@ public class SerializerHelper
    *
    * @param method the method that should be registered.
    */
-  public void registerMethod(SerializeMethod method)
+  public void registerMethod(final SerializeMethod method)
   {
     this.methods.put(method.getObjectClass(), method);
   }
@@ -133,7 +133,7 @@ public class SerializerHelper
    *
    * @param method the method that should be deregistered.
    */
-  public void unregisterMethod(SerializeMethod method)
+  public void unregisterMethod(final SerializeMethod method)
   {
     this.methods.remove(method.getObjectClass());
   }
@@ -165,9 +165,9 @@ public class SerializerHelper
    * @param c the class for which we want to lookup a serialize method.
    * @return the method or null, if there is no registered method for the class.
    */
-  protected SerializeMethod getSerializer(Class c)
+  protected SerializeMethod getSerializer(final Class c)
   {
-    SerializeMethod sm = (SerializeMethod) methods.get(c);
+    final SerializeMethod sm = (SerializeMethod) methods.get(c);
     if (sm != null)
     {
       return sm;
@@ -184,15 +184,15 @@ public class SerializerHelper
    * @return the method or null, if there is no registered method for the class.
    */
   protected SerializeMethod getSuperClassObjectDescription
-      (Class d, SerializeMethod knownSuperClass)
+      (final Class d, SerializeMethod knownSuperClass)
   {
-    Iterator enum = methods.keySet().iterator();
+    final Iterator enum = methods.keySet().iterator();
     while (enum.hasNext())
     {
-      Class keyClass = (Class) enum.next();
+      final Class keyClass = (Class) enum.next();
       if (keyClass.isAssignableFrom(d))
       {
-        SerializeMethod od = (SerializeMethod) methods.get(keyClass);
+        final SerializeMethod od = (SerializeMethod) methods.get(keyClass);
         if (knownSuperClass == null)
         {
           knownSuperClass = od;
@@ -223,7 +223,7 @@ public class SerializerHelper
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(Object o, ObjectOutputStream out) throws IOException
+  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
   {
     if (o == null)
     {
@@ -237,7 +237,7 @@ public class SerializerHelper
       return;
     }
 
-    SerializeMethod m = getSerializer(o.getClass());
+    final SerializeMethod m = getSerializer(o.getClass());
     if (m == null)
     {
       throw new NotSerializableException(o.getClass().getName());
@@ -259,9 +259,9 @@ public class SerializerHelper
    * @throws IOException if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
   {
-    int type = in.readByte();
+    final int type = in.readByte();
     if (type == 0)
     {
       return null;
@@ -270,8 +270,8 @@ public class SerializerHelper
     {
       return in.readObject();
     }
-    Class c = (Class) in.readObject();
-    SerializeMethod m = getSerializer(c);
+    final Class c = (Class) in.readObject();
+    final SerializeMethod m = getSerializer(c);
     if (m == null)
     {
       throw new NotSerializableException(c.getName());

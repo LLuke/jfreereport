@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.8 2003/06/15 21:26:29 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.9 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param name the name of the function
    */
-  public EventMonitorFunction(String name)
+  public EventMonitorFunction(final String name)
   {
     setName(name);
   }
@@ -76,7 +76,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     Log.info("Report Started: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -89,7 +89,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     Log.info("Report Finished: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -101,7 +101,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event The event.
    */
-  public void reportDone(ReportEvent event)
+  public void reportDone(final ReportEvent event)
   {
     Log.info("Report Done: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -112,7 +112,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     Log.info("Page Started: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -124,7 +124,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
     Log.info("Page Finished: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -136,7 +136,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     Log.info("Group Started: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -148,7 +148,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     Log.info("Group Finished: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -160,7 +160,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     Log.info("Items Advanced: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -171,7 +171,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     Log.info("Items Started: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -182,7 +182,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event  the event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
     Log.info("Items Finished: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());
@@ -195,7 +195,7 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     Log.info("Report Initialized: Level = " + event.getState().getLevel()
         + " Prepare Run: " + event.getState().isPrepareRun());

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultExcelCellData.java,v 1.6 2003/02/26 13:58:02 mungady Exp $
+ * $Id: DefaultExcelCellData.java,v 1.7 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class DefaultExcelCellData extends ExcelCellData
    * @param style  the assigned cell style.
    * @param value  the value stored in the cell data object.
    */
-  public DefaultExcelCellData(Rectangle2D elementBounds, ExcelDataCellStyle style, String value)
+  public DefaultExcelCellData(final Rectangle2D elementBounds, final ExcelDataCellStyle style, final String value)
   {
     super(elementBounds, style);
     this.value = value;
@@ -73,7 +73,7 @@ public class DefaultExcelCellData extends ExcelCellData
    *
    * @param cell  the generated excel cell, which should be filled with the data.
    */
-  public void applyContent(HSSFCell cell)
+  public void applyContent(final HSSFCell cell)
   {
     cell.setCellValue(value);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.9 2003/05/14 22:26:39 taqua Exp $
+ * $Id: OperationModule.java,v 1.10 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public abstract class OperationModule
    *
    * @param content  the content type (null not permitted).
    */
-  protected OperationModule(String content)
+  protected OperationModule(final String content)
   {
     if (content == null)
     {
@@ -111,7 +111,7 @@ public abstract class OperationModule
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType)
+  public boolean canHandleContent(final String contentType)
   {
     if (isGeneric())
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.6 2003/04/09 16:09:51 mungady Exp $
+ * $Id: TableCellBackground.java,v 1.7 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class TableCellBackground extends TableCellData
    * @param outerBounds  the background cell size
    * @param color  the background color, <code>null</code> for no background.
    */
-  public TableCellBackground(Rectangle2D outerBounds, Color color)
+  public TableCellBackground(final Rectangle2D outerBounds, final Color color)
   {
     super(outerBounds);
     this.color = color;
@@ -123,7 +123,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the top border.
    * @param size the line width of the top border.
    */
-  public void setBorderTop(Color color, float size)
+  public void setBorderTop(final Color color, final float size)
   {
     colorTop = color;
     borderSizeTop = size;
@@ -136,7 +136,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the left border.
    * @param size the line width of the left border.
    */
-  public void setBorderLeft(Color color, float size)
+  public void setBorderLeft(final Color color, final float size)
   {
     colorLeft = color;
     borderSizeLeft = size;
@@ -149,7 +149,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the bottom border.
    * @param size the line width of the bottom border.
    */
-  public void setBorderBottom(Color color, float size)
+  public void setBorderBottom(final Color color, final float size)
   {
     colorBottom = color;
     borderSizeBottom = size;
@@ -162,7 +162,7 @@ public class TableCellBackground extends TableCellData
    * @param color the color of the right border.
    * @param size the line width of the right border.
    */
-  public void setBorderRight(Color color, float size)
+  public void setBorderRight(final Color color, final float size)
   {
     colorRight = color;
     borderSizeRight = size;
@@ -256,7 +256,7 @@ public class TableCellBackground extends TableCellData
    * @param background the other background cell
    * @return a union of the background informations.
    */
-  public TableCellBackground merge(TableCellBackground background)
+  public TableCellBackground merge(final TableCellBackground background)
   {
     Color color = getColor();
     if (color == null)
@@ -271,7 +271,7 @@ public class TableCellBackground extends TableCellData
       }
     }
 
-    TableCellBackground merged = new TableCellBackground(getBounds(), color);
+    final TableCellBackground merged = new TableCellBackground(getBounds(), color);
     mergeBorders(background, merged);
     return merged;
   }
@@ -283,7 +283,7 @@ public class TableCellBackground extends TableCellData
    * @param background the background cell that should be merged with this cell.
    * @param merged the resulting cell background.
    */
-  private void mergeBorders(TableCellBackground background, TableCellBackground merged)
+  private void mergeBorders(final TableCellBackground background, final TableCellBackground merged)
   {
     if (getColorTop() == null || getBorderSizeTop() == 0)
     {
@@ -329,10 +329,10 @@ public class TableCellBackground extends TableCellData
    * @param paint the overlay color
    * @return the merged colors.
    */
-  private Color addColor(Color base, Color paint)
+  private Color addColor(final Color base, final Color paint)
   {
-    BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-    Graphics g = img.getGraphics();
+    final BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+    final Graphics g = img.getGraphics();
 
     g.setColor(Color.white);
     g.drawRect(0, 0, 1, 1);
@@ -352,7 +352,7 @@ public class TableCellBackground extends TableCellData
    */
   public String toString()
   {
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     b.append("TableCellBackground={color=");
     b.append(color);
     b.append(", colorTop=");
@@ -382,7 +382,7 @@ public class TableCellBackground extends TableCellData
    *
    * @return A boolean.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.15 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.16 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public ParserConfigHandler(Parser parser, String finishTag)
+  public ParserConfigHandler(final Parser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -121,20 +121,20 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(STYLEKEY_FACTORY_TAG))
     {
-      String className = attrs.getValue(CLASS_ATTRIBUTE);
+      final String className = attrs.getValue(CLASS_ATTRIBUTE);
       if (className == null)
       {
         throw new ParseException("Attribute 'class' is missing.", getParser().getLocator());
       }
-      StyleKeyFactoryCollector fc =
+      final StyleKeyFactoryCollector fc =
           (StyleKeyFactoryCollector) getParser().getHelperObject(STYLEKEY_FACTORY_TAG);
 
-      StyleKeyFactory factory = (StyleKeyFactory) createFactory(className);
+      final StyleKeyFactory factory = (StyleKeyFactory) createFactory(className);
       if (factory == null)
       {
         throw new ParseException
@@ -144,46 +144,46 @@ public class ParserConfigHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(OBJECT_FACTORY_TAG))
     {
-      String className = attrs.getValue(CLASS_ATTRIBUTE);
+      final String className = attrs.getValue(CLASS_ATTRIBUTE);
       if (className == null)
       {
         throw new ParseException("Attribute 'class' is missing.", getParser().getLocator());
       }
-      ClassFactoryCollector fc =
+      final ClassFactoryCollector fc =
           (ClassFactoryCollector) getParser().getHelperObject(OBJECT_FACTORY_TAG);
       fc.addFactory((ClassFactory) createFactory(className));
     }
     else if (tagName.equals(TEMPLATE_FACTORY_TAG))
     {
-      String className = attrs.getValue(CLASS_ATTRIBUTE);
+      final String className = attrs.getValue(CLASS_ATTRIBUTE);
       if (className == null)
       {
         throw new ParseException("Attribute 'class' is missing.", getParser().getLocator());
       }
-      TemplateCollector fc =
+      final TemplateCollector fc =
           (TemplateCollector) getParser().getHelperObject(TEMPLATE_FACTORY_TAG);
       fc.addTemplateCollection((TemplateCollection) createFactory(className));
     }
     else if (tagName.equals(DATASOURCE_FACTORY_TAG))
     {
-      String className = attrs.getValue(CLASS_ATTRIBUTE);
+      final String className = attrs.getValue(CLASS_ATTRIBUTE);
       if (className == null)
       {
         throw new ParseException("Attribute 'class' is missing.", getParser().getLocator());
       }
-      DataSourceFactory factory = (DataSourceFactory) createFactory(className);
-      DataSourceCollector fc =
+      final DataSourceFactory factory = (DataSourceFactory) createFactory(className);
+      final DataSourceCollector fc =
           (DataSourceCollector) getParser().getHelperObject(DATASOURCE_FACTORY_TAG);
       fc.addFactory(factory);
     }
     else if (tagName.equals(ELEMENT_FACTORY_TAG))
     {
-      String className = attrs.getValue(CLASS_ATTRIBUTE);
+      final String className = attrs.getValue(CLASS_ATTRIBUTE);
       if (className == null)
       {
         throw new ParseException("Attribute 'class' is missing.", getParser().getLocator());
       }
-      ElementFactoryCollector fc =
+      final ElementFactoryCollector fc =
           (ElementFactoryCollector) getParser().getHelperObject(ELEMENT_FACTORY_TAG);
       fc.addFactory((ElementFactory) createFactory(className));
     }
@@ -212,11 +212,11 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if the specified class cannot be loaded.
    */
-  private Object createFactory(String classname) throws SAXException
+  private Object createFactory(final String classname) throws SAXException
   {
     try
     {
-      Class f = getClass().getClassLoader().loadClass(classname);
+      final Class f = getClass().getClassLoader().loadClass(classname);
       return f.newInstance();
     }
     catch (Exception e)
@@ -234,7 +234,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // is not used ...
   }
@@ -246,7 +246,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(STYLEKEY_FACTORY_TAG)
         || tagName.equals(DATADEFINITION_FACTORY_TAG)

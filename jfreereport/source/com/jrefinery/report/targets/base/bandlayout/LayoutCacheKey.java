@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutCacheKey.java,v 1.3 2003/04/09 15:49:54 mungady Exp $
+ * $Id: LayoutCacheKey.java,v 1.4 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ public class LayoutCacheKey
    * @param e  the element.
    * @param parentDim  the parent dimensions.
    */
-  public LayoutCacheKey(Element e, Dimension2D parentDim)
+  public LayoutCacheKey(final Element e, final Dimension2D parentDim)
   {
     setElement(e);
     setParentDim(parentDim);
@@ -98,7 +98,7 @@ public class LayoutCacheKey
    *
    * @param e  the element.
    */
-  protected void setElement(Element e)
+  protected void setElement(final Element e)
   {
     if (e == null)
     {
@@ -125,7 +125,7 @@ public class LayoutCacheKey
    *
    * @param parentDim  the parent dimensions.
    */
-  protected void setParentDim(Dimension2D parentDim)
+  protected void setParentDim(final Dimension2D parentDim)
   {
     if (parentDim == null)
     {
@@ -151,7 +151,7 @@ public class LayoutCacheKey
    *
    * @return A boolean.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {

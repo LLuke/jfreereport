@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.12 2003/05/14 22:26:39 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.13 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
    *
    * @return The band area or <code>null<code>, if the band has a height or width of 0.
    */
-  public TableCellData createBandCell(Rectangle2D rect)
+  public TableCellData createBandCell(final Rectangle2D rect)
   {
     if (rect.getHeight() == 0 || rect.getWidth() == 0)
     {
@@ -96,20 +96,20 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
    * @return the generated {@link TableCellBackground} or <code>null</code> if the background
    *         shape is not supported.
    */
-  public TableCellBackground createBackground(Element e, Shape shape, Rectangle2D bounds)
+  public TableCellBackground createBackground(final Element e, final Shape shape, final Rectangle2D bounds)
   {
     TableCellBackground bg = null;
 
-    Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    Point2D point = new Point2D.Float((float) bounds.getX(), (float) bounds.getY());
-    Dimension2D dim = new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight());
+    final Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final Point2D point = new Point2D.Float((float) bounds.getX(), (float) bounds.getY());
+    final Dimension2D dim = new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight());
 
-    Shape s = ShapeTransform.transformShape(
+    final Shape s = ShapeTransform.transformShape(
         shape,
         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
         dim);
-    Rectangle2D shapeBounds = s.getBounds2D();
+    final Rectangle2D shapeBounds = s.getBounds2D();
     shapeBounds.setRect(point.getX(),
         point.getY(),
         shapeBounds.getWidth(),
@@ -117,8 +117,8 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
 
     if (e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE))
     {
-      BasicStroke stroke = (BasicStroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
-      float width = stroke.getLineWidth();
+      final BasicStroke stroke = (BasicStroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
+      final float width = stroke.getLineWidth();
 
 
       if (shape instanceof Line2D)

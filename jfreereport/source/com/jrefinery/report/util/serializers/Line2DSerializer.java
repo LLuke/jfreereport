@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Line2DSerializer.java,v 1.3 2003/06/26 20:17:35 taqua Exp $
+ * $Id: Line2DSerializer.java,v 1.4 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,7 +69,7 @@ public class Line2DSerializer implements SerializeMethod
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(Object o, ObjectOutputStream out) throws IOException
+  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
   {
     SerialUtilities.writeShape((Shape) o, out);
   }
@@ -82,7 +82,7 @@ public class Line2DSerializer implements SerializeMethod
    * @throws IOException if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     return SerialUtilities.readShape(in);
   }

@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.17 2003/05/29 16:36:39 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.18 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ public class ExcelProducer extends TableProducer
    *
    * @see com.jrefinery.report.targets.table.TableGrid#isStrict
    */
-  public ExcelProducer(OutputStream out, boolean strict)
+  public ExcelProducer(final OutputStream out, final boolean strict)
   {
     super(strict);
     this.out = out;
@@ -119,7 +119,7 @@ public class ExcelProducer extends TableProducer
   public void open()
   {
     workbook = new HSSFWorkbook();
-    ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory(workbook);
+    final ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory(workbook);
     cellDataFactory = new ExcelCellDataFactory(cellStyleFactory);
     cellDataFactory.setDefineDataFormats(mapData);
     // style for empty cells
@@ -137,7 +137,7 @@ public class ExcelProducer extends TableProducer
    *
    * @param name the page name
    */
-  public void beginPage(String name)
+  public void beginPage(final String name)
   {
     if (name == null)
     {
@@ -199,24 +199,24 @@ public class ExcelProducer extends TableProducer
    *
    * @param layout the layouted sheet.
    */
-  private void writeSheet(TableGridLayout layout)
+  private void writeSheet(final TableGridLayout layout)
   {
     for (int i = 0; i < layout.getWidth(); i++)
     {
-      float width = (layout.getColumnEnd(i) - layout.getColumnStart(i));
+      final float width = (layout.getColumnEnd(i) - layout.getColumnStart(i));
       sheet.setColumnWidth((short) (i), (short) (width * XFACTOR));
     }
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
-      HSSFRow row = sheet.createRow((short) y);
+      final HSSFRow row = sheet.createRow((short) y);
 
-      float lastRowHeight = (layout.getRowEnd(y) - layout.getRowStart(y));
+      final float lastRowHeight = (layout.getRowEnd(y) - layout.getRowStart(y));
       row.setHeight((short) (lastRowHeight * YFACTOR));
 
       for (int x = 0; x < layout.getWidth(); x++)
       {
-        TableGridLayout.Element gridPosition = layout.getData(x, y);
+        final TableGridLayout.Element gridPosition = layout.getData(x, y);
         if (gridPosition == null)
         {
           continue;
@@ -224,15 +224,15 @@ public class ExcelProducer extends TableProducer
 
         // background stuff ...
 
-        TableGridPosition root = gridPosition.getRoot();
-        TableCellBackground bg = createTableCellStyle(gridPosition.getBackground());
+        final TableGridPosition root = gridPosition.getRoot();
+        final TableCellBackground bg = createTableCellStyle(gridPosition.getBackground());
         if (root == null)
         {
           // just apply the background, if any ...
           if (bg != null)
           {
-            HSSFCell cell = row.createCell((short) x);
-            HSSFCellStyle style = cellDataFactory.getStyleFactory().createCellStyle(null, bg);
+            final HSSFCell cell = row.createCell((short) x);
+            final HSSFCellStyle style = cellDataFactory.getStyleFactory().createCellStyle(null, bg);
             cell.setCellStyle(style);
           }
           continue;
@@ -256,9 +256,9 @@ public class ExcelProducer extends TableProducer
    * @param content the grid position
    * @param bg the background style.
    */
-  private void exportCell(HSSFRow row,
-                          TableGridPosition content,
-                          TableCellBackground bg, short x, int y)
+  private void exportCell(final HSSFRow row,
+                          final TableGridPosition content,
+                          final TableCellBackground bg, final short x, final int y)
   {
     if (content.getColSpan() > 1 || content.getRowSpan() > 1)
     {
@@ -267,10 +267,10 @@ public class ExcelProducer extends TableProducer
           (short) (x + content.getColSpan() - 1)));
     }
 
-    ExcelCellData contentCell = (ExcelCellData) content.getElement();
+    final ExcelCellData contentCell = (ExcelCellData) content.getElement();
 
-    HSSFCell cell = row.createCell(x);
-    HSSFCellStyle style = cellDataFactory.getStyleFactory()
+    final HSSFCell cell = row.createCell(x);
+    final HSSFCellStyle style = cellDataFactory.getStyleFactory()
         .createCellStyle(contentCell.getExcelCellStyle(), bg);
     cell.setCellStyle(style);
 
@@ -297,9 +297,9 @@ public class ExcelProducer extends TableProducer
    *
    * @param configuration the configuration supplied by the table processor.
    */
-  public void configure(Properties configuration)
+  public void configure(final Properties configuration)
   {
-    String mapData = configuration.getProperty
+    final String mapData = configuration.getProperty
         (ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");
     this.mapData = (mapData.equalsIgnoreCase("true"));
   }

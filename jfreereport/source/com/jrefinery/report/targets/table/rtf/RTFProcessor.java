@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProcessor.java,v 1.6 2003/05/11 13:39:20 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.7 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class RTFProcessor extends TableProcessor
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public RTFProcessor(JFreeReport report)
+  public RTFProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
@@ -84,7 +84,7 @@ public class RTFProcessor extends TableProcessor
    *
    * @param outputStream the output stream.
    */
-  public void setOutputStream(OutputStream outputStream)
+  public void setOutputStream(final OutputStream outputStream)
   {
     this.outputStream = outputStream;
   }
@@ -95,9 +95,9 @@ public class RTFProcessor extends TableProcessor
    * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(boolean dummy)
+  public TableProducer createProducer(final boolean dummy)
   {
-    RTFProducer prod;
+    final RTFProducer prod;
     if (dummy == true)
     {
       prod = new RTFProducer(new NullOutputStream(),

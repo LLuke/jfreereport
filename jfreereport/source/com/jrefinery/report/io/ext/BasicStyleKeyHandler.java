@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.14 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -94,7 +94,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public BasicStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
+  public BasicStyleKeyHandler(final Parser parser, final String finishTag, final String name, final Class c)
       throws SAXException
   {
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -133,7 +133,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     throw new SAXException("Element '" + finishTag + "' has no child-elements.");
   }
@@ -147,7 +147,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     buffer.append(ch, start, length);
   }
@@ -169,7 +169,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(finishTag) == false)
     {

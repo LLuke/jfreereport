@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.15 2003/05/16 17:26:45 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.16 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public final class PreGroupHeaderState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PreGroupHeaderState(ReportState previous)
+  public PreGroupHeaderState(final ReportState previous)
   {
     super(previous);
   }

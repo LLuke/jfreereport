@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PersonBoundCard.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
+ * $Id: PersonBoundCard.java,v 1.3 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public abstract class PersonBoundCard extends Card
    * @param lastName  the last name.
    * @param cardNr  the card number.
    */
-  public PersonBoundCard(String firstName, String lastName, String cardNr)
+  public PersonBoundCard(final String firstName, final String lastName, final String cardNr)
   {
     if (firstName == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.19 2003/06/01 17:39:26 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.20 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    *
    * @throws NullPointerException if the name is null
    */
-  public ItemCountFunction(String name)
+  public ItemCountFunction(final String name)
   {
     setName(name);
   }
@@ -91,7 +91,7 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    *
    * @param event  the event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     this.count = 0;
   }
@@ -113,7 +113,7 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    *
    * @param group The group name.
    */
-  public void setGroup(String group)
+  public void setGroup(final String group)
   {
     setProperty(GROUP_PROPERTY, group);
   }
@@ -125,15 +125,15 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    *
    * @param event Information about the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (getGroup() == null)
     {
       return;
     }
 
-    ReportState state = event.getState();
-    Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
+    final ReportState state = event.getState();
+    final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
       this.count = 0;
@@ -145,7 +145,7 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     count++;
   }

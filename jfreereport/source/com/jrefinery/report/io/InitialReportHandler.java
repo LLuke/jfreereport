@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.7 2003/05/02 12:39:52 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.8 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
    *
    * @param parser the used parser for the report definition process.
    */
-  public InitialReportHandler(Parser parser)
+  public InitialReportHandler(final Parser parser)
   {
     this.parser = parser;
   }
@@ -88,17 +88,17 @@ public class InitialReportHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(REPORT_DEFINITION_TAG))
     {
-      ElementDefinitionHandler reportDefinitionHandler = new ExtReportHandler(getParser(), tagName);
+      final ElementDefinitionHandler reportDefinitionHandler = new ExtReportHandler(getParser(), tagName);
       getParser().pushFactory(reportDefinitionHandler);
     }
     else if (tagName.equals(OLD_REPORT_TAG))
     {
-      ReportFactory reportDefinitionHandler = new ReportFactory(getParser(), tagName);
+      final ReportFactory reportDefinitionHandler = new ReportFactory(getParser(), tagName);
       getParser().pushFactory(reportDefinitionHandler);
       reportDefinitionHandler.startElement(tagName, attrs);
     }
@@ -116,7 +116,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // characters are ignored at this point...
   }
@@ -128,7 +128,7 @@ public class InitialReportHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(REPORT_DEFINITION_TAG))
     {

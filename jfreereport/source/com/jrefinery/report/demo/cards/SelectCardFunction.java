@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SelectCardFunction.java,v 1.4 2003/06/01 17:39:24 taqua Exp $
+ * $Id: SelectCardFunction.java,v 1.5 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
    *
    * @param band the band that should be evaluated
    */
-  private void selectBand(Band band)
+  private void selectBand(final Band band)
   {
     CardType type = (CardType) getDataRow().get(getProperty(FIELD_PROPERTY));
     if (type == null)
@@ -90,7 +90,7 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
       type = CardType.EMPTY;
     }
 
-    String bandName = getProperty(type.getTypeName(), "");
+    final String bandName = getProperty(type.getTypeName(), "");
 
     // if the special type empty is active, then everything will be hidden ...
     if (type == CardType.EMPTY)
@@ -101,12 +101,12 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
     {
       band.setVisible(true);
 
-      Element[] elements = band.getElementArray();
+      final Element[] elements = band.getElementArray();
       for (int i = 0; i < elements.length; i++)
       {
         if (elements[i] instanceof Band)
         {
-          Element e = elements[i];
+          final Element e = elements[i];
           e.setVisible(e.getName().equals(bandName));
         }
       }
@@ -118,10 +118,10 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
-    Element[] elements = event.getReport().getItemBand().getElementArray();
-    String rootName = getProperty(BASECARD_PROPERTY, "");
+    final Element[] elements = event.getReport().getItemBand().getElementArray();
+    final String rootName = getProperty(BASECARD_PROPERTY, "");
     // the itemband contains several cards, every card is contained in a single band.
     for (int i = 0; i < elements.length; i++)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingSupport.java,v 1.6 2003/05/14 22:26:40 taqua Exp $
+ * $Id: EncodingSupport.java,v 1.7 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class EncodingSupport
    *
    * @return A boolean.
    */
-  public static boolean isSupportedEncoding(String encoding)
+  public static boolean isSupportedEncoding(final String encoding)
   {
     if (encoding == null)
     {
@@ -73,7 +73,7 @@ public class EncodingSupport
       knownEncodings = new HashMap();
     }
 
-    Boolean value = (Boolean) knownEncodings.get(encoding);
+    final Boolean value = (Boolean) knownEncodings.get(encoding);
     if (value != null)
     {
       return value.booleanValue();

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.8 2003/06/19 18:44:09 taqua Exp $
+ * $Id: HelloWorld.java,v 1.9 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class HelloWorld
      *
      * @param event  the window event.
      */
-    public void windowClosing(WindowEvent event)
+    public void windowClosing(final WindowEvent event)
     {
       System.exit(0);
     }
@@ -86,12 +86,12 @@ public class HelloWorld
   public HelloWorld()
   {
 
-    TableModel data = createData();
-    JFreeReport report = createReportDefinition();
+    final TableModel data = createData();
+    final JFreeReport report = createReportDefinition();
     report.setData(data);
     try
     {
-      PreviewDialog preview = new PreviewDialog(report);
+      final PreviewDialog preview = new PreviewDialog(report);
       preview.addWindowListener(new CloseHandler());
       preview.pack();
       preview.setVisible(true);
@@ -112,8 +112,8 @@ public class HelloWorld
   private TableModel createData()
   {
 
-    Object[] columnNames = new String[]{"Column1", "Column2"};
-    DefaultTableModel result = new DefaultTableModel(columnNames, 1);
+    final Object[] columnNames = new String[]{"Column1", "Column2"};
+    final DefaultTableModel result = new DefaultTableModel(columnNames, 1);
     result.setValueAt("Hello", 0, 0);
     result.setValueAt("World!", 0, 1);
     return result;
@@ -128,10 +128,10 @@ public class HelloWorld
   private JFreeReport createReportDefinition()
   {
 
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.setName("A Very Simple Report");
 
-    TextElement t1 = ItemFactory.createStringElement(
+    final TextElement t1 = ItemFactory.createStringElement(
         "T1",
         new Rectangle2D.Double(0.0, 0.0, 150.0, 20.0),
         Color.black,
@@ -144,7 +144,7 @@ public class HelloWorld
 
     report.getItemBand().addElement(t1);
 
-    TextElement t2 = ItemFactory.createStringElement(
+    final TextElement t2 = ItemFactory.createStringElement(
         "T2",
         new Rectangle2D.Double(200.0, 0.0, 150.0, 20.0),
         Color.black,
@@ -165,9 +165,9 @@ public class HelloWorld
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    HelloWorld app = new HelloWorld();
+    final HelloWorld app = new HelloWorld();
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeFieldTemplate.java,v 1.2 2003/04/09 00:12:30 mungady Exp $
+ * $Id: ShapeFieldTemplate.java,v 1.3 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class ShapeFieldTemplate extends AbstractTemplate implements DataRowConne
    *
    * @param field  the field name.
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -105,7 +105,7 @@ public class ShapeFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ShapeFieldTemplate template = (ShapeFieldTemplate) super.clone();
+    final ShapeFieldTemplate template = (ShapeFieldTemplate) super.clone();
     template.shapeFilter = (ShapeFilter) shapeFilter.clone();
     template.dataRowDataSource = (DataRowDataSource) template.shapeFilter.getDataSource();
     return template;
@@ -118,7 +118,7 @@ public class ShapeFieldTemplate extends AbstractTemplate implements DataRowConne
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.connectDataRow(row);
   }
@@ -133,7 +133,7 @@ public class ShapeFieldTemplate extends AbstractTemplate implements DataRowConne
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.disconnectDataRow(row);
   }

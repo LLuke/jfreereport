@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.18 2003/06/23 14:36:56 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.19 2003/06/27 14:25:17 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -89,7 +89,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @param cacheSize  the cache size.
    */
-  public ImageLoadFilter(int cacheSize)
+  public ImageLoadFilter(final int cacheSize)
   {
     imageCache = new KeyedQueue(cacheSize);
   }
@@ -103,12 +103,12 @@ public class ImageLoadFilter implements DataFilter, Serializable
    */
   public Object getValue()
   {
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     if (ds == null)
     {
       return null;
     }
-    Object o = ds.getValue();
+    final Object o = ds.getValue();
     if (o == null)
     {
       return null;
@@ -121,7 +121,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
 
     // a valid url is found, lookup the url in the cache, maybe the image is loaded and
     // still there.
-    URL url = (URL) o;
+    final URL url = (URL) o;
     Object retval = imageCache.get(url);
     if (retval == null)
     {
@@ -155,7 +155,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     if (ds == null)
     {
@@ -174,7 +174,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ImageLoadFilter il = (ImageLoadFilter) super.clone();
+    final ImageLoadFilter il = (ImageLoadFilter) super.clone();
     il.imageCache = (KeyedQueue) imageCache.clone();
     if (source != null)
     {

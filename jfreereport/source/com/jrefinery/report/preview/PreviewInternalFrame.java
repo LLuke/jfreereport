@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.4 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.5 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
      *
      * @param e The action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
@@ -101,7 +101,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewInternalFrame(JFreeReport report) throws ReportProcessingException
+  public PreviewInternalFrame(final JFreeReport report) throws ReportProcessingException
   {
     init(report);
   }
@@ -113,7 +113,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  private void init(JFreeReport report) throws ReportProcessingException
+  private void init(final JFreeReport report) throws ReportProcessingException
   {
     base = new PreviewProxyBase(this);
     base.init(report);
@@ -166,7 +166,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
        * Invoked when an internal frame is in the process of being closed.
        * The close operation can be overridden at this point.
        */
-      public void internalFrameClosing(InternalFrameEvent e)
+      public void internalFrameClosing(final InternalFrameEvent e)
       {
         base.getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
             "CloseFrame"));

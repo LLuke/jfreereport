@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.16 2003/06/27 14:25:22 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.17 2003/06/27 18:46:12 taqua Exp $
  *
  * Changes
  * --------
@@ -113,7 +113,7 @@ public class PlainTextExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       if (performValidate())
       {
@@ -141,7 +141,7 @@ public class PlainTextExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setConfirmed(false);
       setVisible(false);
@@ -167,7 +167,7 @@ public class PlainTextExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       performSelectFile();
     }
@@ -192,7 +192,7 @@ public class PlainTextExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setSelectedPrinter(TYPE_PLAIN_OUTPUT);
     }
@@ -217,7 +217,7 @@ public class PlainTextExportDialog extends JDialog
      *
      * @param e  the action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setSelectedPrinter(TYPE_EPSON_OUTPUT);
     }
@@ -242,7 +242,7 @@ public class PlainTextExportDialog extends JDialog
      *
      * @param e  an action event.
      */
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(final ActionEvent e)
     {
       setSelectedPrinter(TYPE_IBM_OUTPUT);
     }
@@ -347,7 +347,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param owner the Frame from which the dialog is displayed
    */
-  public PlainTextExportDialog(Frame owner)
+  public PlainTextExportDialog(final Frame owner)
   {
     super(owner);
     init();
@@ -359,7 +359,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param owner the Dialog from which the dialog is displayed
    */
-  public PlainTextExportDialog(Dialog owner)
+  public PlainTextExportDialog(final Dialog owner)
   {
     super(owner);
     init();
@@ -389,12 +389,12 @@ public class PlainTextExportDialog extends JDialog
     selectedEncodingModel = plainTextEncodingModel;
     cbEncoding = new JComboBox(selectedEncodingModel);
 
-    Integer[] lpiModel = {
+    final Integer[] lpiModel = {
       LPI_6,
       LPI_10
     };
 
-    Integer[] cpiModel = {
+    final Integer[] cpiModel = {
       CPI_10,
       CPI_12,
       CPI_15,
@@ -411,13 +411,13 @@ public class PlainTextExportDialog extends JDialog
 
     txFilename = new JTextField();
 
-    ButtonGroup bg = new ButtonGroup();
+    final ButtonGroup bg = new ButtonGroup();
     bg.add(rbPlainPrinterCommandSet);
     bg.add(rbEpsonPrinterCommandSet);
     bg.add(rbIBMPrinterCommandSet);
 
-    JComponent contentPane = createContentPane();
-    GridBagConstraints gbc = new GridBagConstraints();
+    final JComponent contentPane = createContentPane();
+    final GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 1;
     gbc.gridx = 0;
@@ -431,7 +431,7 @@ public class PlainTextExportDialog extends JDialog
 
     addWindowListener(new WindowAdapter()
     {
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         new ActionCancel().actionPerformed(null);
       }
@@ -446,23 +446,23 @@ public class PlainTextExportDialog extends JDialog
    */
   private JComponent createContentPane()
   {
-    JPanel contentPane = new JPanel();
+    final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
-    JLabel lblPrinterSelect = new JLabel(
+    final JLabel lblPrinterSelect = new JLabel(
         getResources().getString("plain-text-exportdialog.printer"));
-    JLabel lblFileName
+    final JLabel lblFileName
         = new JLabel(getResources().getString("plain-text-exportdialog.filename"));
-    JLabel lblEncoding
+    final JLabel lblEncoding
         = new JLabel(getResources().getString("plain-text-exportdialog.encoding"));
-    JButton btnSelect = new ActionButton(new ActionSelectFile());
+    final JButton btnSelect = new ActionButton(new ActionSelectFile());
 
-    JLabel lblCharsPerInch = new JLabel(
+    final JLabel lblCharsPerInch = new JLabel(
         getResources().getString("plain-text-exportdialog.chars-per-inch"));
-    JLabel lblLinesPerInch = new JLabel(
+    final JLabel lblLinesPerInch = new JLabel(
         getResources().getString("plain-text-exportdialog.lines-per-inch"));
-    JLabel lblFontSettings = new JLabel(
+    final JLabel lblFontSettings = new JLabel(
         getResources().getString("plain-text-exportdialog.font-settings"));
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -590,9 +590,9 @@ public class PlainTextExportDialog extends JDialog
   private JPanel createButtonPanel()
   {
     // button panel
-    JButton btnCancel = new ActionButton(new ActionCancel());
-    JButton btnConfirm = new ActionButton(new ActionConfirm());
-    JPanel buttonPanel = new JPanel();
+    final JButton btnCancel = new ActionButton(new ActionCancel());
+    final JButton btnConfirm = new ActionButton(new ActionConfirm());
+    final JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new GridLayout());
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
@@ -609,7 +609,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param type  the type.
    */
-  public void setSelectedPrinter(int type)
+  public void setSelectedPrinter(final int type)
   {
     if (type == TYPE_EPSON_OUTPUT)
     {
@@ -674,7 +674,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param filename the filename of the file
    */
-  public void setFilename(String filename)
+  public void setFilename(final String filename)
   {
     this.txFilename.setText(filename);
   }
@@ -696,7 +696,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param confirmed set to true, if OK was pressed, false otherwise
    */
-  protected void setConfirmed(boolean confirmed)
+  protected void setConfirmed(final boolean confirmed)
   {
     this.confirmed = confirmed;
   }
@@ -727,7 +727,7 @@ public class PlainTextExportDialog extends JDialog
    */
   public int getLinesPerInch()
   {
-    Integer i = (Integer) cbLinesPerInch.getSelectedItem();
+    final Integer i = (Integer) cbLinesPerInch.getSelectedItem();
     if (i == null)
     {
       return LPI_6.intValue();
@@ -740,7 +740,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param i  the lines per inch.
    */
-  public void setLinesPerInch(int i)
+  public void setLinesPerInch(final int i)
   {
     if (i == LPI_10.intValue() || i == LPI_6.intValue())
     {
@@ -759,7 +759,7 @@ public class PlainTextExportDialog extends JDialog
    */
   public int getCharsPerInch()
   {
-    Integer i = (Integer) cbCharsPerInch.getSelectedItem();
+    final Integer i = (Integer) cbCharsPerInch.getSelectedItem();
     if (i == null)
     {
       return CPI_10.intValue();
@@ -772,7 +772,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param i  the characters per inch.
    */
-  public void setCharsPerInch(int i)
+  public void setCharsPerInch(final int i)
   {
     if (i == CPI_10.intValue() || i == CPI_12.intValue()
         || i == CPI_15.intValue()
@@ -798,6 +798,7 @@ public class PlainTextExportDialog extends JDialog
     {
       if (selectedEncodingModel.getSize() > 0)
       {
+        // return the first selected encoding, unless specified otherwise.
         return selectedEncodingModel.getEncoding(0);
       }
       return ReportConfiguration.getGlobalConfig().getTextTargetEncoding();
@@ -813,30 +814,58 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param encoding  the encoding.
    */
-  public void setEncoding(String encoding)
+  public void setEncoding(final String encoding)
   {
     if (encoding == null)
     {
       throw new NullPointerException("Encoding must not be null");
     }
 
+    if (cbEncoding.getModel() != selectedEncodingModel)
+    {
+      throw new IllegalStateException("Model for the combobox is not set up correctly.");
+    }
+
     ensureEncodingAvailable(plainTextCommandSet, plainTextEncodingModel, encoding);
     ensureEncodingAvailable(ibmPrinterCommandSet, ibmPrinterEncodingModel, encoding);
     ensureEncodingAvailable(epsonPrinterCommandSet, epsonPrinterEncodingModel, encoding);
 
-    cbEncoding.setSelectedIndex(selectedEncodingModel.indexOf(encoding));
-    if (ibmPrinterEncodingModel.indexOf(encoding) >= 0)
+    if (selectedEncodingModel.indexOf(encoding) == -1)
     {
-      ibmPrinterEncodingModel.setSelectedItem(encoding);
+      throw new IllegalStateException("This encoding is not known.");
     }
-    if (plainTextEncodingModel.indexOf(encoding) >= 0)
+
+    final int ibmIndex = ibmPrinterEncodingModel.indexOf(encoding);
+    final int epsonIndex = epsonPrinterEncodingModel.indexOf(encoding);
+    final int plainIndex = plainTextEncodingModel.indexOf(encoding);
+
+    if (ibmIndex >= 0)
     {
-      plainTextEncodingModel.setSelectedItem(encoding);
+      ibmPrinterEncodingModel.setSelectedIndex(ibmIndex);
+      if (ibmPrinterEncodingModel.getSelectedIndex() == -1)
+      {
+        throw new IllegalStateException("Unable to select encoding for IBM model.");
+      }
     }
-    if (epsonPrinterEncodingModel.indexOf(encoding) >= 0)
+    if (plainIndex >= 0)
     {
-      epsonPrinterEncodingModel.setSelectedItem(encoding);
+      plainTextEncodingModel.setSelectedIndex(plainIndex);
+      if (plainTextEncodingModel.getSelectedIndex() == -1)
+      {
+        throw new IllegalStateException("Unable to select encoding for plain text model.");
+      }
     }
+    if (epsonIndex >= 0)
+    {
+      epsonPrinterEncodingModel.setSelectedIndex(epsonIndex);
+      if (epsonPrinterEncodingModel.getSelectedIndex() == -1)
+      {
+        throw new IllegalStateException("Unable to select encoding for epson model.");
+      }
+    }
+    final int selectedIndex = selectedEncodingModel.indexOf(encoding);
+    final Object o = cbEncoding.getModel().getElementAt(selectedIndex);
+    cbEncoding.setSelectedItem(o);
 
   }
 
@@ -845,7 +874,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param config  the report configuration.
    */
-  public void initFromConfiguration(ReportConfiguration config)
+  public void initFromConfiguration(final ReportConfiguration config)
   {
     setEncoding(config.getTextTargetEncoding());
   }
@@ -857,7 +886,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return A boolean.
    */
-  public boolean performExport(JFreeReport report)
+  public boolean performExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setModal(true);
@@ -877,7 +906,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return The printer command set.
    */
-  private PrinterCommandSet getPrinterCommandSet(OutputStream out, JFreeReport report)
+  private PrinterCommandSet getPrinterCommandSet(final OutputStream out, final JFreeReport report)
   {
     switch (getSelectedPrinter())
     {
@@ -907,7 +936,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return true, if the report was successfully written, false otherwise.
    */
-  public boolean writeReport(JFreeReport report)
+  public boolean writeReport(final JFreeReport report)
   {
     OutputStream out = null;
     try
@@ -916,14 +945,12 @@ public class PlainTextExportDialog extends JDialog
       out = new BufferedOutputStream(
           new FileOutputStream(
               new File(getFilename())));
-      PrinterCommandSet pc = getPrinterCommandSet(out, report);
-      PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+      final PrinterCommandSet pc = getPrinterCommandSet(out, report);
+      final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
       target.configure(report.getReportConfiguration());
       target.setProperty(PlainTextOutputTarget.ENCODING_PROPERTY, getEncoding());
-      Log.debug ("AfterProperty: " + target.getProperty(PlainTextOutputTarget.ENCODING_PROPERTY));
-      Log.debug ("AfterProperty: " + getEncoding());
 
-      PageableReportProcessor proc = new PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setHandleInterruptedState(false);
       proc.setOutputTarget(target);
 
@@ -962,7 +989,7 @@ public class PlainTextExportDialog extends JDialog
    * @param localisationBase  the resource key prefix.
    * @param e  the exception.
    */
-  private void showExceptionDialog(String localisationBase, Exception e)
+  private void showExceptionDialog(final String localisationBase, final Exception e)
   {
     ExceptionDialog.showExceptionDialog(
         getResources().getString(localisationBase + ".title"),
@@ -1076,7 +1103,7 @@ public class PlainTextExportDialog extends JDialog
    * @param encoding the specified encoding.
    */
   private void ensureEncodingAvailable
-      (PrinterCommandSet cmd, EncodingComboBoxModel model, String encoding)
+      (final PrinterCommandSet cmd, final EncodingComboBoxModel model, final String encoding)
   {
     if (cmd.isEncodingSupported(encoding))
     {
@@ -1091,17 +1118,17 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return The encoding model.
    */
-  private EncodingComboBoxModel createEncodingModel(PrinterCommandSet cmd)
+  private EncodingComboBoxModel createEncodingModel(final PrinterCommandSet cmd)
   {
-    EncodingComboBoxModel defaultEncodingModel = EncodingComboBoxModel.createDefaultModel();
+    final EncodingComboBoxModel defaultEncodingModel = EncodingComboBoxModel.createDefaultModel();
 
-    EncodingComboBoxModel retval = new EncodingComboBoxModel();
+    final EncodingComboBoxModel retval = new EncodingComboBoxModel();
     for (int i = 0; i < defaultEncodingModel.getSize(); i++)
     {
-      String encoding = defaultEncodingModel.getEncoding(i);
+      final String encoding = defaultEncodingModel.getEncoding(i);
       if (cmd.isEncodingSupported(encoding))
       {
-        String description = defaultEncodingModel.getDescription(i);
+        final String description = defaultEncodingModel.getDescription(i);
         retval.addEncoding(encoding, description);
       }
     }
@@ -1122,10 +1149,10 @@ public class PlainTextExportDialog extends JDialog
     }
 
     fileChooser.setSelectedFile(new File(getFilename()));
-    int option = fileChooser.showSaveDialog(this);
+    final int option = fileChooser.showSaveDialog(this);
     if (option == JFileChooser.APPROVE_OPTION)
     {
-      File selFile = fileChooser.getSelectedFile();
+      final File selFile = fileChooser.getSelectedFile();
       String selFileName = selFile.getAbsolutePath();
 
       // Test if ends on xls
@@ -1145,7 +1172,7 @@ public class PlainTextExportDialog extends JDialog
    */
   public boolean performValidate()
   {
-    String filename = getFilename();
+    final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
@@ -1155,7 +1182,7 @@ public class PlainTextExportDialog extends JDialog
           JOptionPane.ERROR_MESSAGE);
       return false;
     }
-    File f = new File(filename);
+    final File f = new File(filename);
     if (f.exists())
     {
       if (f.isFile() == false)
@@ -1174,8 +1201,8 @@ public class PlainTextExportDialog extends JDialog
             JOptionPane.ERROR_MESSAGE);
         return false;
       }
-      String key1 = "plain-text-exportdialog.targetOverwriteConfirmation";
-      String key2 = "plain-text-exportdialog.targetOverwriteTitle";
+      final String key1 = "plain-text-exportdialog.targetOverwriteConfirmation";
+      final String key2 = "plain-text-exportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
           MessageFormat.format(getResources().getString(key1),
               new Object[]{getFilename()}
@@ -1190,28 +1217,4 @@ public class PlainTextExportDialog extends JDialog
 
     return true;
   }
-
-  /**
-   * For debugging.
-   *
-   * @param args  ignored.
-   */
-  public static void main(String[] args)
-  {
-    JDialog d = new PlainTextExportDialog();
-    d.pack();
-    d.addWindowListener(new WindowAdapter()
-    {
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void windowClosing(WindowEvent e)
-      {
-        System.exit(0);
-      }
-    });
-    d.setVisible(true);
-  }
-
 }

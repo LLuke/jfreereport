@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.11 2003/06/26 19:55:57 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.12 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -92,11 +92,11 @@ public class ResultSetTableModelFactory
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel createTableModel(ResultSet rs)
+  public CloseableTableModel createTableModel(final ResultSet rs)
       throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
-    String prop = ReportConfiguration
+    final String prop = ReportConfiguration
         .getGlobalConfig().getConfigProperty(ReportConfiguration.RESULTSET_FACTORY_MODE, "");
 
     if (prop.equalsIgnoreCase("simple"))
@@ -138,7 +138,7 @@ public class ResultSetTableModelFactory
      * @param objects1  the column names.
      * @param res  the result set.
      */
-    private CloseableDefaultTableModel(Object[][] objects, Object[] objects1, ResultSet res)
+    private CloseableDefaultTableModel(final Object[][] objects, final Object[] objects1, final ResultSet res)
     {
       super(objects, objects1);
       this.res = res;
@@ -176,36 +176,36 @@ public class ResultSetTableModelFactory
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel generateDefaultTableModel(ResultSet rs)
+  public CloseableTableModel generateDefaultTableModel(final ResultSet rs)
       throws SQLException
   {
-    ResultSetMetaData rsmd = rs.getMetaData();
-    int colcount = rsmd.getColumnCount();
-    ArrayList header = new ArrayList(colcount);
+    final ResultSetMetaData rsmd = rs.getMetaData();
+    final int colcount = rsmd.getColumnCount();
+    final ArrayList header = new ArrayList(colcount);
     for (int i = 0; i < colcount; i++)
     {
-      String name = rsmd.getColumnName(i + 1);
+      final String name = rsmd.getColumnName(i + 1);
       header.add(name);
     }
-    ArrayList rows = new ArrayList();
+    final ArrayList rows = new ArrayList();
     while (rs.next())
     {
-      Object[] column = new Object[colcount];
+      final Object[] column = new Object[colcount];
       for (int i = 0; i < colcount; i++)
       {
-        Object val = rs.getObject(i + 1);
+        final Object val = rs.getObject(i + 1);
         column[i] = val;
       }
       rows.add(column);
     }
 
-    Object[] tempRows = rows.toArray();
-    Object[][] rowMap = new Object[tempRows.length][];
+    final Object[] tempRows = rows.toArray();
+    final Object[][] rowMap = new Object[tempRows.length][];
     for (int i = 0; i < tempRows.length; i++)
     {
       rowMap[i] = (Object[]) tempRows[i];
     }
-    CloseableDefaultTableModel model = new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
+    final CloseableDefaultTableModel model = new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
     return model;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.25 2003/06/01 17:39:25 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.26 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -83,7 +83,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
    *
    * @param event  the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     pagebreak = false;
     trigger = (getInitialTriggerValue()); // docmark
@@ -98,7 +98,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
    *
    * @param event Information about the event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     pagebreak = false;
     trigger = (getInitialTriggerValue()); // docmark
@@ -111,7 +111,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
    *
    * @param event  the report event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     if (pagebreak)
     {
@@ -128,11 +128,11 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
    *
    * @param event the current report event.
    */
-  private void triggerVisibleState(ReportEvent event)
+  private void triggerVisibleState(final ReportEvent event)
   {
     trigger = (!trigger);
 
-    Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
+    final Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
     if (e != null)
     {
       e.setVisible(trigger);
@@ -181,7 +181,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
    * @param name The element name.
    * @see com.jrefinery.report.Band#getElement(String)
    */
-  public void setElement(String name)
+  public void setElement(final String name)
   {
     setProperty(ELEMENT_PROPERTY, name);
   }

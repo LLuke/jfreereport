@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.14 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public TemplatesHandler(Parser parser, String finishTag)
+  public TemplatesHandler(final Parser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -107,7 +107,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
     if (tagName.equals(TEMPLATE_TAG) == false)
@@ -116,13 +116,13 @@ public class TemplatesHandler implements ElementDefinitionHandler
           getParser().getLocator());
     }
 
-    String templateName = attrs.getValue("name");
+    final String templateName = attrs.getValue("name");
     if (templateName == null)
     {
       throw new ParseException("The 'name' attribute is required for template definitions",
           getParser().getLocator());
     }
-    String references = attrs.getValue("references");
+    final String references = attrs.getValue("references");
     TemplateDescription template = templateCollector.getTemplate(references);
     if (template == null)
     {
@@ -144,7 +144,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // ignore characters ...
   }
@@ -156,7 +156,7 @@ public class TemplatesHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName)
+  public void endElement(final String tagName)
       throws SAXException
   {
     if (tagName.equals(TEMPLATE_TAG))

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.15 2003/06/19 18:44:11 taqua Exp $
+ * $Id: ReportStateList.java,v 1.16 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public class ReportStateList
      * @param list  the list.
      * @param maxChildCount the maximum number of elements in this list.
      */
-    private MasterList(ReportStateList list, int maxChildCount)
+    private MasterList(final ReportStateList list, final int maxChildCount)
     {
       super(maxChildCount);
       this.master = list;
@@ -114,14 +114,14 @@ public class ReportStateList
      * @return the restored ReportState of the given index, or null, if the state
      * could not be restored.
      */
-    protected Object restoreChild(int index)
+    protected Object restoreChild(final int index)
     {
-      ReportState master = (ReportState) getMaster();
+      final ReportState master = (ReportState) getMaster();
       if (master == null)
       {
         return null;
       }
-      int max = getChildPos(index);
+      final int max = getChildPos(index);
       try
       {
         return this.restoreState(max, master);
@@ -143,7 +143,7 @@ public class ReportStateList
      *
      * @throws ReportProcessingException if there was a problem processing the report.
      */
-    protected ReportState restoreState(int count, ReportState rootstate)
+    protected ReportState restoreState(final int count, final ReportState rootstate)
         throws ReportProcessingException
     {
       if (rootstate == null)
@@ -208,7 +208,7 @@ public class ReportStateList
    *
    * @return the position within the masterStateList.
    */
-  private int getMasterPos(int pos, int maxListSize)
+  private int getMasterPos(final int pos, final int maxListSize)
   {
     return (int) Math.floor(pos / maxListSize);
   }
@@ -222,7 +222,7 @@ public class ReportStateList
    * @throws OutputTargetException if there is a problem with the output target.
    * @throws NullPointerException if the report processor is <code>null</code>.
    */
-  public ReportStateList(PageableReportProcessor proc) throws OutputTargetException
+  public ReportStateList(final PageableReportProcessor proc) throws OutputTargetException
   {
     if (proc == null)
     {
@@ -264,7 +264,7 @@ public class ReportStateList
    *
    * @param state  the report state.
    */
-  public void add(ReportState state)
+  public void add(final ReportState state)
   {
     if (state == null)
     {
@@ -286,17 +286,17 @@ public class ReportStateList
     //list. So if an Element gets lost (GCd), only 4 states need to be replayed.
     else if (size() < MASTER4_MAX)
     {
-      int secPos = size() - PRIMARY_MAX;
-      int masterPos = getMasterPos(secPos, MASTERPOSITIONS_MED);
+      final int secPos = size() - PRIMARY_MAX;
+      final int masterPos = getMasterPos(secPos, MASTERPOSITIONS_MED);
       if (masterPos >= masterStates4.size())
       {
-        MasterList master = new MasterList(this, MASTERPOSITIONS_MED);
+        final MasterList master = new MasterList(this, MASTERPOSITIONS_MED);
         masterStates4.add(master);
         master.add(state);
       }
       else
       {
-        MasterList master = (MasterList) masterStates4.get(masterPos);
+        final MasterList master = (MasterList) masterStates4.get(masterPos);
         master.add(state);
       }
       this.size++;
@@ -305,17 +305,17 @@ public class ReportStateList
     //list. So if an Element gets lost (GCd), 10 states need to be replayed.
     else
     {
-      int thirdPos = size() - MASTER4_MAX;
-      int masterPos = getMasterPos(thirdPos, MASTERPOSITIONS_MAX);
+      final int thirdPos = size() - MASTER4_MAX;
+      final int masterPos = getMasterPos(thirdPos, MASTERPOSITIONS_MAX);
       if (masterPos >= masterStates10.size())
       {
-        MasterList master = new MasterList(this, MASTERPOSITIONS_MAX);
+        final MasterList master = new MasterList(this, MASTERPOSITIONS_MAX);
         masterStates10.add(master);
         master.add(state);
       }
       else
       {
-        MasterList master = (MasterList) masterStates10.get(masterPos);
+        final MasterList master = (MasterList) masterStates10.get(masterPos);
         master.add(state);
       }
       this.size++;
@@ -354,14 +354,14 @@ public class ReportStateList
     else if (index < MASTER4_MAX)
     {
       index -= PRIMARY_MAX;
-      MasterList master
+      final MasterList master
           = (MasterList) masterStates4.get(getMasterPos(index, MASTERPOSITIONS_MED));
       return (ReportState) master.get(index);
     }
     else
     {
       index -= MASTER4_MAX;
-      MasterList master
+      final MasterList master
           = (MasterList) masterStates10.get(getMasterPos(index, MASTERPOSITIONS_MAX));
       return (ReportState) master.get(index);
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFieldTemplateDescription.java,v 1.4 2003/03/07 16:55:59 taqua Exp $
+ * $Id: DateFieldTemplateDescription.java,v 1.5 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class DateFieldTemplateDescription extends AbstractTemplateDescription
    *
    * @param name  the name.
    */
-  public DateFieldTemplateDescription(String name)
+  public DateFieldTemplateDescription(final String name)
   {
     super(name, DateFieldTemplate.class, false);
     setParameterDefinition("name", String.class);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.35 2003/06/26 19:55:55 taqua Exp $
+ * $Id: Element.java,v 1.36 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -98,7 +98,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
      * @param e the element.
      * @throws NullPointerException if the given element is null.
      */
-    public ElementStyleSheetCollectionHelper(Element e)
+    public ElementStyleSheetCollectionHelper(final Element e)
     {
       if (e == null)
       {
@@ -227,7 +227,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @param parent (null allowed).
    */
-  protected final void setParent(Band parent)
+  protected final void setParent(final Band parent)
   {
     this.parent = parent;
   }
@@ -238,7 +238,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @param name  the name of this element (null not permitted)
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     if (name == null)
     {
@@ -275,7 +275,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @param ds  the datasource (<code>null</code> not permitted).
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     if (ds == null)
     {
@@ -291,7 +291,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public Object getValue()
   {
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     return ds.getValue();
   }
 
@@ -303,7 +303,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public boolean isVisible()
   {
-    Boolean b = (Boolean) getStyle().getStyleProperty(ElementStyleSheet.VISIBLE, Boolean.FALSE);
+    final Boolean b = (Boolean) getStyle().getStyleProperty(ElementStyleSheet.VISIBLE, Boolean.FALSE);
     return b.booleanValue();
   }
 
@@ -312,7 +312,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @param b the new visibility state
    */
-  public void setVisible(boolean b)
+  public void setVisible(final boolean b)
   {
     getStyle().setStyleProperty(ElementStyleSheet.VISIBLE, b ? Boolean.TRUE : Boolean.FALSE);
   }
@@ -329,7 +329,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    Element e = (Element) super.clone();
+    final Element e = (Element) super.clone();
     e.style = style.getCopy();
     e.datasource = (DataSource) datasource.clone();
     e.styleSheetCollectionHelper = new ElementStyleSheetCollectionHelper(e);
@@ -384,7 +384,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -399,7 +399,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
-  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -445,7 +445,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @throws InvalidStyleSheetCollectionException if there is an other stylesheet
    * collection already registered with that element.
    */
-  public void updateStyleSheetCollection(StyleSheetCollection sc)
+  public void updateStyleSheetCollection(final StyleSheetCollection sc)
   {
     if (sc == null)
     {
@@ -475,7 +475,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public Paint getPaint()
   {
-    Paint retval = (Paint) getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final Paint retval = (Paint) getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     if (retval == null)
     {
       // assertation
@@ -497,7 +497,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @deprecated use a stylesheet to define the paint. The paint object must be an
    * instance of color.
    */
-  public void setPaint(Paint p)
+  public void setPaint(final Paint p)
   {
     if (p == null)
     {

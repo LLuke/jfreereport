@@ -136,6 +136,11 @@ PlainText output target:
   If LPI is set to 6, then the line height should be at least 72/6, so
   a element height of 12 should be ok.
 
+* The Epson- and IBM plain text output does not handle 16-bit character
+  sets. When using the PlainText output target to send the output to an
+  printer, make sure that your printer is able to handle the used text
+  encoding. 
+
 * When specifying colors for the Excel target, then these colors are
   translated into one of the predefined excel color constants. This
   translation tries to find the nearest color, if that fails, the colors

@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.23 2003/05/23 20:12:14 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.24 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -127,7 +127,7 @@ public abstract class AbstractExpression implements Expression
    *
    * @param name  the name (<code>null</code> not permitted).
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     if (name == null)
     {
@@ -143,7 +143,7 @@ public abstract class AbstractExpression implements Expression
    *
    * @return the property value.
    */
-  public String getProperty(String name)
+  public String getProperty(final String name)
   {
     return getProperty(name, null);
   }
@@ -156,7 +156,7 @@ public abstract class AbstractExpression implements Expression
    *
    * @return the property value.
    */
-  public String getProperty(String name, String defaultVal)
+  public String getProperty(final String name, final String defaultVal)
   {
     return properties.getProperty(name, defaultVal);
   }
@@ -180,7 +180,7 @@ public abstract class AbstractExpression implements Expression
    * @param name  the property name (<code>null</code> not permitted).
    * @param value  the property value.
    */
-  public final void setProperty(String name, String value)
+  public final void setProperty(final String name, final String value)
   {
     if (name == null)
     {
@@ -203,7 +203,7 @@ public abstract class AbstractExpression implements Expression
    */
   public Properties getProperties()
   {
-    Properties retval = new Properties();
+    final Properties retval = new Properties();
     retval.putAll(properties);
     return retval;
   }
@@ -217,15 +217,15 @@ public abstract class AbstractExpression implements Expression
    *
    * @param p  the properties.
    */
-  public void setProperties(Properties p)
+  public void setProperties(final Properties p)
   {
     if (p != null)
     {
-      Enumeration names = p.keys();
+      final Enumeration names = p.keys();
       while (names.hasMoreElements())
       {
-        String name = (String) names.nextElement();
-        String prop = (String) p.get(name);
+        final String name = (String) names.nextElement();
+        final String prop = (String) p.get(name);
         setProperty(name, prop);
       }
     }
@@ -252,7 +252,7 @@ public abstract class AbstractExpression implements Expression
    *
    * @param level  the level (must be greater than or equal to 0).
    */
-  public void setDependencyLevel(int level)
+  public void setDependencyLevel(final int level)
   {
     if (level < 0)
     {
@@ -281,7 +281,7 @@ public abstract class AbstractExpression implements Expression
    *
    * @param row the data row.
    */
-  public void setDataRow(DataRow row)
+  public void setDataRow(final DataRow row)
   {
     this.dataRow = row;
   }
@@ -313,7 +313,7 @@ public abstract class AbstractExpression implements Expression
    */
   public Object clone() throws CloneNotSupportedException
   {
-    AbstractExpression function = (AbstractExpression) super.clone();
+    final AbstractExpression function = (AbstractExpression) super.clone();
     function.properties = (Properties) properties.clone();
     return function;
   }

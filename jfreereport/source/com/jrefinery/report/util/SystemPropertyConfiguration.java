@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: SystemPropertyConfiguration.java,v 1.3 2003/02/26 13:58:05 mungady Exp $
+ * $Id: SystemPropertyConfiguration.java,v 1.4 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -61,7 +61,7 @@ public class SystemPropertyConfiguration extends ReportConfiguration
    * @param key  the property key.
    * @param value  the property value.
    */
-  public void setConfigProperty(String key, String value)
+  public void setConfigProperty(final String key, final String value)
   {
     throw new UnsupportedOperationException("The SystemPropertyConfiguration is readOnly");
   }
@@ -78,11 +78,11 @@ public class SystemPropertyConfiguration extends ReportConfiguration
    *
    * @return the property value.
    */
-  public String getConfigProperty(String key, String defaultValue)
+  public String getConfigProperty(final String key, final String defaultValue)
   {
     try
     {
-      String value = System.getProperty(key);
+      final String value = System.getProperty(key);
       if (value != null)
       {
         return value;

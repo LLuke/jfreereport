@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.12 2003/05/02 12:39:39 taqua Exp $
+ * $Id: SampleReport2.java,v 1.13 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes:
  * --------
@@ -78,12 +78,12 @@ public class SampleReport2
      *
      * @param name  the name.
      */
-    public ComplexComponentExpression(String name)
+    public ComplexComponentExpression(final String name)
     {
       setName(name);
       try
       {
-        PDFSaveDialog dlg = new PDFSaveDialog();
+        final PDFSaveDialog dlg = new PDFSaveDialog();
         pif = dlg.getContentPane();
         pif.setVisible(true);
         // remove the old content pane from the dialog, so that it has no
@@ -140,9 +140,9 @@ public class SampleReport2
    * @param height the height of the band and the rectangle
    * @return the created band
    */
-  private Band createBand(String name, Color color, int x, int y, int width, int height)
+  private Band createBand(final String name, final Color color, final int x, final int y, final int width, final int height)
   {
-    Band band = new Band();
+    final Band band = new Band();
     band.setName("Band-" + name);
     band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(width, height));
@@ -174,17 +174,17 @@ public class SampleReport2
    */
   public JFreeReport createReport() throws FunctionInitializeException
   {
-    Band levelA1 = createBand("A1", Color.magenta, 0, 0, 100, 100);
+    final Band levelA1 = createBand("A1", Color.magenta, 0, 0, 100, 100);
     levelA1.addElement(createBand("A1-B1", Color.blue, 0, 50, 50, 50));
     levelA1.addElement(createBand("A1-B2", Color.yellow, 50, 0, 150, 50));
     // x=55%, y=5%, width=40%, height=100%
-    Band levelA2 = createBand("A2", Color.green, -50, 0, -50, -100);
+    final Band levelA2 = createBand("A2", Color.green, -50, 0, -50, -100);
     // x=5%, y=55%, width=40%, height=40%
     levelA2.addElement(createBand("A2-B1", Color.red, 0, -50, -50, -50));
     // x=55%, y=5%, width=40%, height=40%
     levelA2.addElement(createBand("A2-B2", Color.darkGray, -55, -5, -40, -40));
 
-    ReportHeader header = new ReportHeader();
+    final ReportHeader header = new ReportHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
         new FloatDimension(-100, 100));
     header.getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE,
@@ -200,18 +200,18 @@ public class SampleReport2
     header.addElement(levelA1);
     header.addElement(levelA2);
 
-    ReportFooter footer = new ReportFooter();
+    final ReportFooter footer = new ReportFooter();
     footer.addElement(ItemFactory.createImageDataRowElement("element",
         new Rectangle2D.Float(0, 0, 400, 400),
         Color.white, "PaintComponent"));
 
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.setReportHeader(header);
     report.setReportFooter(footer);
 
     report.addExpression(new ComplexComponentExpression("CreateComponent"));
 
-    PaintComponentFunction pc = new PaintComponentFunction();
+    final PaintComponentFunction pc = new PaintComponentFunction();
     pc.setName("PaintComponent");
     pc.setProperty("field", "CreateComponent");
     pc.setProperty("element", "element");

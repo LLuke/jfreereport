@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.8 2003/06/10 16:07:54 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.9 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class ImageContentFactoryModule implements ContentFactoryModule
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType)
+  public boolean canHandleContent(final String contentType)
   {
     return (StringUtil.startsWithIgnoreCase(contentType, "image/"));
   }
@@ -84,18 +84,18 @@ public class ImageContentFactoryModule implements ContentFactoryModule
    *
    * @return the content.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
-                                         LayoutSupport ot)
+  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
+                                         final LayoutSupport ot)
   {
-    ImageReference ir = (ImageReference) e.getValue();
+    final ImageReference ir = (ImageReference) e.getValue();
     // there is no content?
     if (ir == null)
     {
       return null;
     }
 
-    Point2D point = bounds.getAbsolutePosition();
-    Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+    final Point2D point = bounds.getAbsolutePosition();
+    final Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
         bounds.getPreferredSize());
 
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
@@ -105,8 +105,8 @@ public class ImageContentFactoryModule implements ContentFactoryModule
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
-      double w = ir.getImageWidth();
-      double h = ir.getImageHeight();
+      final double w = ir.getImageWidth();
+      final double h = ir.getImageHeight();
       double scaleX = 1;
       double scaleY = 1;
 
@@ -122,7 +122,7 @@ public class ImageContentFactoryModule implements ContentFactoryModule
       {
         if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
         {
-          float scale = (float) Math.min(scaleX, scaleY);
+          final float scale = (float) Math.min(scaleX, scaleY);
           ir.setScaleX(scale);
           ir.setScaleY(scale);
         }
@@ -133,7 +133,7 @@ public class ImageContentFactoryModule implements ContentFactoryModule
         }
       }
     }
-    Rectangle2D irBounds = new Rectangle2D.Float((float) point.getX(),
+    final Rectangle2D irBounds = new Rectangle2D.Float((float) point.getX(),
         (float) point.getY(),
         (float) ir.getBoundsScaled().getWidth(),
         (float) ir.getBoundsScaled().getHeight());

@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData3.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
+ * $Id: SampleData3.java,v 1.9 2003/06/27 14:25:16 taqua Exp $
  *
  */
 package com.jrefinery.report.demo;
@@ -103,7 +103,7 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the column class.
    */
-  public Class getColumnClass(int column)
+  public Class getColumnClass(final int column)
   {
     if (column == 5)
     {
@@ -126,7 +126,7 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the column name.
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     if (column == 0)
     {
@@ -174,12 +174,12 @@ public class SampleData3 extends AbstractTableModel
    *
    * @return the value.
    */
-  public Object getValueAt(int row, int column)
+  public Object getValueAt(final int row, final int column)
   {
     if (column == 7)
     {
-      Integer i = (Integer) data[row][5];
-      Double d = (Double) data[row][6];
+      final Integer i = (Integer) data[row][5];
+      final Double d = (Double) data[row][6];
       return new Double(i.intValue() * d.doubleValue());
     }
     else

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.10 2003/06/27 14:25:17 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -77,7 +77,7 @@ public class ResourceFileFilter implements DataFilter, Serializable
    *
    * @param resources the resource bundle used to lookup the value.
    */
-  public void setResources(ResourceBundle resources)
+  public void setResources(final ResourceBundle resources)
   {
     this.resources = resources;
   }
@@ -103,12 +103,12 @@ public class ResourceFileFilter implements DataFilter, Serializable
     {
       return null;
     }
-    Object value = dataSource.getValue();
+    final Object value = dataSource.getValue();
     if (value == null)
     {
       return null;
     }
-    String svalue = String.valueOf(value);
+    final String svalue = String.valueOf(value);
 
     try
     {
@@ -131,7 +131,7 @@ public class ResourceFileFilter implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ResourceFileFilter filter = (ResourceFileFilter) super.clone();
+    final ResourceFileFilter filter = (ResourceFileFilter) super.clone();
     filter.dataSource = (DataSource) dataSource.clone();
     return filter;
   }
@@ -151,7 +151,7 @@ public class ResourceFileFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     this.dataSource = ds;
   }

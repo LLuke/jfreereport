@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.2 2003/06/26 20:17:31 taqua Exp $
+ * $Id: ElementFactory.java,v 1.3 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,7 +61,7 @@ public abstract class ElementFactory
     return name;
   }
 
-  public void setName(String name)
+  public void setName(final String name)
   {
     this.name = name;
   }
@@ -71,7 +71,7 @@ public abstract class ElementFactory
     return minimumSize;
   }
 
-  public void setMinimumSize(Dimension2D minimumSize)
+  public void setMinimumSize(final Dimension2D minimumSize)
   {
     this.minimumSize = minimumSize;
   }
@@ -81,7 +81,7 @@ public abstract class ElementFactory
     return maximumSize;
   }
 
-  public void setMaximumSize(Dimension2D maximumSize)
+  public void setMaximumSize(final Dimension2D maximumSize)
   {
     this.maximumSize = maximumSize;
   }
@@ -91,7 +91,7 @@ public abstract class ElementFactory
     return preferredSize;
   }
 
-  public void setPreferredSize(Dimension2D preferredSize)
+  public void setPreferredSize(final Dimension2D preferredSize)
   {
     this.preferredSize = preferredSize;
   }
@@ -101,7 +101,7 @@ public abstract class ElementFactory
     return absolutePosition;
   }
 
-  public void setAbsolutePosition(Point2D absolutePosition)
+  public void setAbsolutePosition(final Point2D absolutePosition)
   {
     this.absolutePosition = absolutePosition;
   }
@@ -111,7 +111,7 @@ public abstract class ElementFactory
     return dynamicHeight;
   }
 
-  public void setDynamicHeight(Boolean dynamicHeight)
+  public void setDynamicHeight(final Boolean dynamicHeight)
   {
     this.dynamicHeight = dynamicHeight;
   }

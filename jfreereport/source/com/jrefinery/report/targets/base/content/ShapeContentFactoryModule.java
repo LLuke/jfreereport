@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.11 2003/06/10 16:07:54 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.12 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType)
+  public boolean canHandleContent(final String contentType)
   {
     return (StringUtil.startsWithIgnoreCase(contentType, "shape/"));
   }
@@ -88,24 +88,24 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem with the OutputTarget.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
-                                         LayoutSupport ot)
+  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
+                                         final LayoutSupport ot)
       throws ContentCreationException
   {
-    Shape value = (Shape) e.getValue();
+    final Shape value = (Shape) e.getValue();
     if (value == null)
     {
       return null;
     }
 
-    Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+    final Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
         bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return null;
     }
 
-    Shape s = ShapeTransform.transformShape(value,
+    final Shape s = ShapeTransform.transformShape(value,
         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
         iBounds);

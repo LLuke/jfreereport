@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLElementTemplateDescription.java,v 1.7 2003/06/19 18:44:10 taqua Exp $
+ * $Id: ImageURLElementTemplateDescription.java,v 1.8 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -56,7 +56,7 @@ public class ImageURLElementTemplateDescription extends AbstractTemplateDescript
    *
    * @param name  the name.
    */
-  public ImageURLElementTemplateDescription(String name)
+  public ImageURLElementTemplateDescription(final String name)
   {
     super(name, ImageURLElementTemplate.class, true);
   }
@@ -68,13 +68,13 @@ public class ImageURLElementTemplateDescription extends AbstractTemplateDescript
    */
   public Object createObject()
   {
-    ImageURLElementTemplate t = (ImageURLElementTemplate) super.createObject();
+    final ImageURLElementTemplate t = (ImageURLElementTemplate) super.createObject();
     if (t.getBaseURL() == null)
     {
-      String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
+      final String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
       try
       {
-        URL bURL = new URL(baseURL);
+        final URL bURL = new URL(baseURL);
         t.setBaseURL(bURL);
       }
       catch (Exception e)

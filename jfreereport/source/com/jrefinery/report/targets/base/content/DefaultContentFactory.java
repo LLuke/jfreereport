@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.4 2003/02/27 10:35:38 mungady Exp $
+ * $Id: DefaultContentFactory.java,v 1.5 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class DefaultContentFactory implements ContentFactory
    * @param module the ContentFactoryModule that should be added to the list of
    * available modules.
    */
-  public void addModule(ContentFactoryModule module)
+  public void addModule(final ContentFactoryModule module)
   {
     if (module == null)
     {
@@ -85,7 +85,7 @@ public class DefaultContentFactory implements ContentFactory
    * @param module removes a ContentFactoryModules from the list of available
    * modules.
    */
-  public void removeModule(ContentFactoryModule module)
+  public void removeModule(final ContentFactoryModule module)
   {
     if (module == null)
     {
@@ -108,14 +108,14 @@ public class DefaultContentFactory implements ContentFactory
    * @throws ContentCreationException if there is a problem with the OutputTarget or
    * this factory is not able to handle this content type.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
-                                         LayoutSupport ot)
+  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
+                                         final LayoutSupport ot)
       throws ContentCreationException
   {
-    String contentType = e.getContentType();
+    final String contentType = e.getContentType();
     for (int i = 0; i < modules.size(); i++)
     {
-      ContentFactoryModule cfm = (ContentFactoryModule) modules.get(i);
+      final ContentFactoryModule cfm = (ContentFactoryModule) modules.get(i);
       if (cfm.canHandleContent(contentType))
       {
         return cfm.createContentForElement(e, bounds, ot);
@@ -133,11 +133,11 @@ public class DefaultContentFactory implements ContentFactory
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType)
+  public boolean canHandleContent(final String contentType)
   {
     for (int i = 0; i < modules.size(); i++)
     {
-      ContentFactoryModule cfm = (ContentFactoryModule) modules.get(i);
+      final ContentFactoryModule cfm = (ContentFactoryModule) modules.get(i);
       if (cfm.canHandleContent(contentType))
       {
         return true;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.11 2003/02/25 15:42:31 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.12 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,7 @@ public class TableGridLayout
      * @param pos the new TableGridPosition to be added to this element.
      * @throws NullPointerException if the given position is null
      */
-    public void add(TableGridPosition pos)
+    public void add(final TableGridPosition pos)
     {
       if (pos == null)
       {
@@ -121,10 +121,10 @@ public class TableGridLayout
         else
         {
           root = pos;
-          Iterator it = backGrounds.iterator();
+          final Iterator it = backGrounds.iterator();
           while (it.hasNext())
           {
-            TableGridPosition gpos = (TableGridPosition) it.next();
+            final TableGridPosition gpos = (TableGridPosition) it.next();
             if (gpos.contains(root) == false)
             {
               it.remove();
@@ -183,7 +183,7 @@ public class TableGridLayout
      */
     public String toString()
     {
-      StringBuffer buffer = new StringBuffer();
+      final StringBuffer buffer = new StringBuffer();
       buffer.append("TableGridLayout.Element={root=");
       buffer.append(root);
       buffer.append(", backgrounds=");
@@ -211,7 +211,7 @@ public class TableGridLayout
    * @param pyCuts the collected vertical cell bounds from the TableGrid.
    * @param positions the positions collected by the table grid.
    */
-  public TableGridLayout(int[] pxCuts, int[] pyCuts, TableCellData[] positions)
+  public TableGridLayout(final int[] pxCuts, final int[] pyCuts, final TableCellData[] positions)
   {
     this.xCuts = new int[pxCuts.length];
     this.yCuts = new int[pyCuts.length];
@@ -223,8 +223,8 @@ public class TableGridLayout
     Arrays.sort(yCuts);
 
     // +1 for outer boundry ...
-    int width = xCuts.length;
-    int height = yCuts.length;
+    final int width = xCuts.length;
+    final int height = yCuts.length;
 /*
     Log.info ("Created GridLayout with " + width + ", " + height);
 
@@ -237,7 +237,7 @@ public class TableGridLayout
 
     for (int i = 0; i < positions.length; i++)
     {
-      TableCellData pos = positions[i];
+      final TableCellData pos = positions[i];
       add(pos);
     }
   }
@@ -248,18 +248,18 @@ public class TableGridLayout
    *
    * @param pos the new position that should be added into the grid
    */
-  protected void add(TableCellData pos)
+  protected void add(final TableCellData pos)
   {
-    Rectangle2D bounds = pos.getBounds();
+    final Rectangle2D bounds = pos.getBounds();
 
-    int maxBoundsX = (int) (bounds.getX() + bounds.getWidth());
-    int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
+    final int maxBoundsX = (int) (bounds.getX() + bounds.getWidth());
+    final int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
 
-    int col = findBoundary(xCuts, (int) bounds.getX());
-    int row = findBoundary(yCuts, (int) bounds.getY());
-    int colspan = Math.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
-    int rowspan = Math.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
-    TableGridPosition gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
+    final int col = findBoundary(xCuts, (int) bounds.getX());
+    final int row = findBoundary(yCuts, (int) bounds.getY());
+    final int colspan = Math.max(1, findBoundary(xCuts, maxBoundsX, true) - col);
+    final int rowspan = Math.max(1, findBoundary(yCuts, maxBoundsY, true) - row);
+    final TableGridPosition gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
 
 /*
     Log.info ("AddTablePos: Col=" + gPos.getCol() +
@@ -279,13 +279,13 @@ public class TableGridLayout
                  + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
     }
 */
-    int startY = gPos.getRow();
-    int endY = gPos.getRow() + gPos.getRowSpan();
+    final int startY = gPos.getRow();
+    final int endY = gPos.getRow() + gPos.getRowSpan();
     // calculated the x and y position in the table, now add it to the element.
     for (int posY = startY; posY < endY; posY++)
     {
-      int startX = gPos.getCol();
-      int endX = gPos.getCol() + gPos.getColSpan();
+      final int startX = gPos.getCol();
+      final int endX = gPos.getCol() + gPos.getColSpan();
       for (int posX = startX; posX < endX; posX++)
       {
         addToGrid(posX, posY, gPos);
@@ -306,7 +306,7 @@ public class TableGridLayout
    * @throws IndexOutOfBoundsException if posX or posY are invalid.
    * @throws NullPointerException if the given table grid position is invalid
    */
-  protected void addToGrid(int posX, int posY, TableGridPosition gPos)
+  protected void addToGrid(final int posX, final int posY, final TableGridPosition gPos)
   {
     if (gPos == null)
     {
@@ -321,17 +321,17 @@ public class TableGridLayout
     {
       throw new IndexOutOfBoundsException("Y: " + posY + " > " + getHeight());
     }
-    Object o = data[posX][posY];
+    final Object o = data[posX][posY];
     if (o == null)
     {
-      Element e = new Element();
+      final Element e = new Element();
       e.add(gPos);
       data[posX][posY] = e;
 
     }
     else
     {
-      Element e = (Element) o;
+      final Element e = (Element) o;
       e.add(gPos);
     }
   }
@@ -343,7 +343,7 @@ public class TableGridLayout
    * @param y the table row
    * @return the element, or null, if there is no element defined.
    */
-  public Element getData(int x, int y)
+  public Element getData(final int x, final int y)
   {
     return (Element) data[x][y];
   }
@@ -374,7 +374,7 @@ public class TableGridLayout
    * @param column the column
    * @return the position of the column in points
    */
-  public int getColumnStart(int column)
+  public int getColumnStart(final int column)
   {
     return xCuts[column];
   }
@@ -385,7 +385,7 @@ public class TableGridLayout
    * @param row the row
    * @return the position of the row in points
    */
-  public int getRowStart(int row)
+  public int getRowStart(final int row)
   {
     return yCuts[row];
   }
@@ -396,7 +396,7 @@ public class TableGridLayout
    * @param column the column
    * @return the end position of the column in points
    */
-  public int getColumnEnd(int column)
+  public int getColumnEnd(final int column)
   {
     if (column == xCuts.length - 1)
     {
@@ -414,7 +414,7 @@ public class TableGridLayout
    * @param row the row
    * @return the end position of the column in points
    */
-  public int getRowEnd(int row)
+  public int getRowEnd(final int row)
   {
     if (row == yCuts.length - 1)
     {
@@ -434,7 +434,7 @@ public class TableGridLayout
    * @param value the value that is searched in the data array.
    * @return the position of the value in the array or the next lower position.
    */
-  private static int findBoundary(int[] data, int value)
+  private static int findBoundary(final int[] data, final int value)
   {
     return findBoundary(data, value, false);
   }
@@ -451,11 +451,11 @@ public class TableGridLayout
    * returned.
    * @return the position of the value in the array or the next lower position.
    */
-  private static int findBoundary(int[] data, int value, boolean upperLimit)
+  private static int findBoundary(final int[] data, final int value, final boolean upperLimit)
   {
     for (int i = 0; i < data.length; i++)
     {
-      int dV = data[i];
+      final int dV = data[i];
       if (dV == value)
       {
         return i;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.9 2003/06/19 18:44:09 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.10 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class LGPLTextDemo extends AbstractDemoFrame
    *
    * @param title  the frame title.
    */
-  public LGPLTextDemo(String title)
+  public LGPLTextDemo(final String title)
   {
     setTitle(title);
     setJMenuBar(createMenuBar());
@@ -88,11 +88,11 @@ public class LGPLTextDemo extends AbstractDemoFrame
    */
   private JMenuBar createMenuBar()
   {
-    JMenuBar mb = new JMenuBar();
-    JMenu fileMenu = createJMenuItem("menu.file");
+    final JMenuBar mb = new JMenuBar();
+    final JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    JMenuItem exitItem = new ActionMenuItem(getCloseAction());
+    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
+    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
     fileMenu.addSeparator();
@@ -108,10 +108,10 @@ public class LGPLTextDemo extends AbstractDemoFrame
    */
   private JPanel createContent()
   {
-    JPanel content = new JPanel(new BorderLayout());
+    final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    JTable table = new JTable();
-    JScrollPane scrollPane = new JScrollPane(table);
+    final JTable table = new JTable();
+    final JScrollPane scrollPane = new JScrollPane(table);
     content.add(scrollPane);
     return content;
   }
@@ -121,7 +121,7 @@ public class LGPLTextDemo extends AbstractDemoFrame
    */
   protected void attemptPreview()
   {
-    URL in = getClass().getResource("/com/jrefinery/report/demo/lgpl.xml");
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/lgpl.xml");
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
@@ -130,7 +130,7 @@ public class LGPLTextDemo extends AbstractDemoFrame
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
-    JFreeReport report;
+    final JFreeReport report;
     try
     {
       report = parseReport(in);
@@ -144,7 +144,7 @@ public class LGPLTextDemo extends AbstractDemoFrame
 
     try
     {
-      PreviewDialog frame = new PreviewDialog(report);
+      final PreviewDialog frame = new PreviewDialog(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
@@ -164,11 +164,11 @@ public class LGPLTextDemo extends AbstractDemoFrame
    *
    * @return a report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(final URL templateURL)
   {
 
     JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
       result = generator.parseReport(templateURL);
@@ -187,9 +187,9 @@ public class LGPLTextDemo extends AbstractDemoFrame
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    LGPLTextDemo frame = new LGPLTextDemo("LGPL text Demo");
+    final LGPLTextDemo frame = new LGPLTextDemo("LGPL text Demo");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

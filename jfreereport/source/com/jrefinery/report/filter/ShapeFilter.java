@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeFilter.java,v 1.3 2003/06/01 17:39:25 taqua Exp $
+ * $Id: ShapeFilter.java,v 1.4 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class ShapeFilter implements DataFilter, Serializable
    *
    * @param dataSource The data source.
    */
-  public void setDataSource(DataSource dataSource)
+  public void setDataSource(final DataSource dataSource)
   {
     this.dataSource = dataSource;
   }
@@ -87,12 +87,12 @@ public class ShapeFilter implements DataFilter, Serializable
    */
   public Object getValue()
   {
-    DataSource ds = getDataSource();
+    final DataSource ds = getDataSource();
     if (ds == null)
     {
       return null;
     }
-    Object o = ds.getValue();
+    final Object o = ds.getValue();
     if (o instanceof Shape)
     {
       return o;
@@ -109,7 +109,7 @@ public class ShapeFilter implements DataFilter, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ShapeFilter r = (ShapeFilter) super.clone();
+    final ShapeFilter r = (ShapeFilter) super.clone();
     if (dataSource != null)
     {
       r.dataSource = (DataSource) dataSource.clone();

@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.15 2003/06/23 16:08:28 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.16 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class ExcelCellStyleFactory
      * @param style the foreground style.
      * @param background the background style.
      */
-    public StyleCarrier(ExcelDataCellStyle style, TableCellBackground background)
+    public StyleCarrier(final ExcelDataCellStyle style, final TableCellBackground background)
     {
       this.style = style;
       this.background = background;
@@ -113,7 +113,7 @@ public class ExcelCellStyleFactory
      * @param o the compared object.
      * @return true, if both styles are equal, false otherwise.
      */
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
       if (this == o)
       {
@@ -176,7 +176,7 @@ public class ExcelCellStyleFactory
    * @param workbook the workbook for which the styles should be created.
    * @throws NullPointerException if the workbook is null.
    */
-  public ExcelCellStyleFactory(HSSFWorkbook workbook)
+  public ExcelCellStyleFactory(final HSSFWorkbook workbook)
   {
     if (workbook == null)
     {
@@ -195,7 +195,7 @@ public class ExcelCellStyleFactory
    * @return the HSSFCellStyle-Alignment.
    * @throws IllegalArgumentException if an Unknown JFreeReport alignment is given.
    */
-  protected short convertAlignment(ElementAlignment e)
+  protected short convertAlignment(final ElementAlignment e)
   {
     if (e == ElementAlignment.LEFT)
     {
@@ -232,7 +232,7 @@ public class ExcelCellStyleFactory
    * @param width the AWT-Stroke-Width.
    * @return the translated excel border width.
    */
-  protected short translateStroke(float width)
+  protected short translateStroke(final float width)
   {
     if (width == 0)
     {
@@ -266,7 +266,7 @@ public class ExcelCellStyleFactory
    * @param element the element that should be converted into the excel style.
    * @return the generated excel style, never null.
    */
-  public ExcelDataCellStyle getExcelDataCellStyle(Element element)
+  public ExcelDataCellStyle getExcelDataCellStyle(final Element element)
   {
     return getExcelDataCellStyle(element, "TEXT");
   }
@@ -278,16 +278,16 @@ public class ExcelCellStyleFactory
    * @param format the format string for the cell.
    * @return the generated excel style, never null.
    */
-  public ExcelDataCellStyle getExcelDataCellStyle(Element element, String format)
+  public ExcelDataCellStyle getExcelDataCellStyle(final Element element, final String format)
   {
-    ElementAlignment horizontalAlignment = (ElementAlignment)
+    final ElementAlignment horizontalAlignment = (ElementAlignment)
         element.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
-    ElementAlignment verticalAlignment = (ElementAlignment)
+    final ElementAlignment verticalAlignment = (ElementAlignment)
         element.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
-    FontDefinition awtFont = element.getStyle().getFontDefinitionProperty();
-    Color color = (Color) element.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final FontDefinition awtFont = element.getStyle().getFontDefinitionProperty();
+    final Color color = (Color) element.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
-    ExcelDataCellStyle style = new ExcelDataCellStyle();
+    final ExcelDataCellStyle style = new ExcelDataCellStyle();
     style.setHorizontalAlignment(horizontalAlignment);
     style.setVerticalAlignment(verticalAlignment);
     style.setFontDefinition(awtFont);
@@ -321,15 +321,15 @@ public class ExcelCellStyleFactory
    * @param bg the background style for the table cell.
    * @return the generated or cached HSSFCellStyle.
    */
-  public HSSFCellStyle createCellStyle(ExcelDataCellStyle style, TableCellBackground bg)
+  public HSSFCellStyle createCellStyle(final ExcelDataCellStyle style, final TableCellBackground bg)
   {
-    StyleCarrier carrier = new StyleCarrier(style, bg);
+    final StyleCarrier carrier = new StyleCarrier(style, bg);
     if (styleCache.containsKey(carrier))
     {
       return (HSSFCellStyle) styleCache.get(carrier);
     }
 
-    HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
+    final HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
     hssfCellStyle.setWrapText(true);
     hssfCellStyle.setFillForegroundColor(WHITE_INDEX);
     hssfCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundObjectHandler.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
    * @param finishTag  the finish tag.
    * @param od  the object description.
    */
-  public CompoundObjectHandler(Parser parser, String finishTag, ObjectDescription od)
+  public CompoundObjectHandler(final Parser parser, final String finishTag, final ObjectDescription od)
   {
     super(parser, finishTag, od);
   }
@@ -86,7 +86,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public CompoundObjectHandler(Parser parser, String finishTag, Class targetObject)
+  public CompoundObjectHandler(final Parser parser, final String finishTag, final Class targetObject)
       throws SAXException
   {
     super(parser, finishTag, targetObject);
@@ -110,7 +110,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(BASIC_OBJECT_TAG))
     {
@@ -119,7 +119,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       {
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
-      ObjectDescription od = getKeyObjectDescription();
+      final ObjectDescription od = getKeyObjectDescription();
       if (od == null)
       {
         throw new ParseException("No ObjectFactory for the key", getParser().getLocator());
@@ -130,7 +130,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       {
         throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
-      String overrideClassName = attrs.getValue("class");
+      final String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
         try
@@ -153,7 +153,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       {
         throw new ParseException("Attribute 'name' is missing.", getParser().getLocator());
       }
-      ObjectDescription od = getKeyObjectDescription();
+      final ObjectDescription od = getKeyObjectDescription();
       if (od == null)
       {
         throw new ParseException("No ObjectFactory for the key", getParser().getLocator());
@@ -165,7 +165,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
 
-      String overrideClassName = attrs.getValue("class");
+      final String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
         try
@@ -198,7 +198,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     // ignore the event...
   }
@@ -210,7 +210,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(COMPOUND_OBJECT_TAG))
     {
@@ -221,7 +221,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       }
       else
       {
-        Object o = basicFactory.getValue();
+        final Object o = basicFactory.getValue();
         if (o == null)
         {
           throw new ParseException("Parameter value is null", getParser().getLocator());
@@ -233,7 +233,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
     }
     else if (tagName.equals(BASIC_OBJECT_TAG))
     {
-      Object o = basicFactory.getValue();
+      final Object o = basicFactory.getValue();
       if (o == null)
       {
         throw new ParseException("Parameter value is null", getParser().getLocator());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.14 2003/06/23 14:36:56 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.15 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,8 @@ public class DataSourceWriter extends ObjectWriter
    * @param objectDescription the object description.
    * @param indent the current indention level.
    */
-  public DataSourceWriter(ReportWriter reportWriter, DataSource baseObject,
-                          ObjectDescription objectDescription, int indent)
+  public DataSourceWriter(final ReportWriter reportWriter, final DataSource baseObject,
+                          final ObjectDescription objectDescription, final int indent)
   {
     super(reportWriter, baseObject, objectDescription, indent);
     if (DataSource.class.isAssignableFrom(objectDescription.getObjectClass()) == false)
@@ -85,14 +85,14 @@ public class DataSourceWriter extends ObjectWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  protected void writeParameter(Writer writer, String name)
+  protected void writeParameter(final Writer writer, final String name)
       throws IOException, ReportWriterException
   {
     if (name.equals("dataSource"))
     {
-      DataSource ds = (DataSource) getObjectDescription().getParameter(name);
-      ObjectDescription dsDesc = getParameterDescription(name);
-      String dsname = dataSourceCollector.getDataSourceName(dsDesc);
+      final DataSource ds = (DataSource) getObjectDescription().getParameter(name);
+      final ObjectDescription dsDesc = getParameterDescription(name);
+      final String dsname = dataSourceCollector.getDataSourceName(dsDesc);
 
       if (dsname == null)
       {
@@ -102,7 +102,7 @@ public class DataSourceWriter extends ObjectWriter
 
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
 
-      DataSourceWriter dsWriter =
+      final DataSourceWriter dsWriter =
           new DataSourceWriter(getReportWriter(), ds, dsDesc, getIndentLevel());
       dsWriter.write(writer);
 

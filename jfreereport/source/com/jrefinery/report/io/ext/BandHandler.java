@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.13 2003/06/19 18:44:09 taqua Exp $
+ * $Id: BandHandler.java,v 1.14 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class BandHandler extends ElementHandler
    * @param finishTag  the finish tag.
    * @param band  the band.
    */
-  public BandHandler(Parser parser, String finishTag, Band band)
+  public BandHandler(final Parser parser, final String finishTag, final Band band)
   {
     super(parser, finishTag, band);
   }
@@ -87,12 +87,12 @@ public class BandHandler extends ElementHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(BAND_TAG))
     {
-      Band band = new Band();
-      String name = attrs.getValue("name");
+      final Band band = new Band();
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         band.setName(name);
@@ -103,18 +103,18 @@ public class BandHandler extends ElementHandler
     }
     else if (tagName.equals(ELEMENT_TAG))
     {
-      String type = attrs.getValue("type");
+      final String type = attrs.getValue("type");
       if (type == null)
       {
         throw new ParseException("The element's 'type' attribute is missing",
             getParser().getLocator());
       }
 
-      ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getHelperObject(
+      final ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getHelperObject(
           ParserConfigHandler.ELEMENT_FACTORY_TAG);
-      Element element = fc.getElementForType(type);
+      final Element element = fc.getElementForType(type);
 
-      String name = attrs.getValue("name");
+      final String name = attrs.getValue("name");
       if (name != null)
       {
         element.setName(name);
@@ -125,8 +125,8 @@ public class BandHandler extends ElementHandler
     }
     else if (tagName.equals(DEFAULT_STYLE_TAG))
     {
-      ElementStyleSheet styleSheet = getBand().getBandDefaults();
-      StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(), tagName, styleSheet);
+      final ElementStyleSheet styleSheet = getBand().getBandDefaults();
+      final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(), tagName, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
     else
@@ -152,7 +152,7 @@ public class BandHandler extends ElementHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(BAND_TAG))
     {

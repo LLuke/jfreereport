@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.5 2003/06/10 12:11:55 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.6 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -88,9 +88,9 @@ public class LayoutManagerCache
    *
    * @return The minimum size.
    */
-  public Dimension2D getMinSize(LayoutCacheKey e)
+  public Dimension2D getMinSize(final LayoutCacheKey e)
   {
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
+    final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
     {
       return null;
@@ -109,9 +109,9 @@ public class LayoutManagerCache
    *
    * @return The preferred size.
    */
-  public Dimension2D getPrefSize(LayoutCacheKey e)
+  public Dimension2D getPrefSize(final LayoutCacheKey e)
   {
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
+    final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
     {
       return null;
@@ -130,7 +130,7 @@ public class LayoutManagerCache
    * @param element  the element.
    * @param d  the minimum size.
    */
-  public void setMinSize(LayoutCacheKey key, Element element, Dimension2D d)
+  public void setMinSize(final LayoutCacheKey key, final Element element, final Dimension2D d)
   {
     if (element == null)
     {
@@ -173,7 +173,7 @@ public class LayoutManagerCache
    * @param element  the element.
    * @param d  the minimum size.
    */
-  public void setPrefSize(LayoutCacheKey key, Element element, Dimension2D d)
+  public void setPrefSize(final LayoutCacheKey key, final Element element, final Dimension2D d)
   {
     if (element == null)
     {
@@ -213,7 +213,7 @@ public class LayoutManagerCache
    *
    * @return A boolean.
    */
-  public boolean isCachable(Element e)
+  public boolean isCachable(final Element e)
   {
     // if the element is dynamic, then it is not cachable ...
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
@@ -228,7 +228,7 @@ public class LayoutManagerCache
     {
       // search for dynamic elements within the element's children ...
       // if there is no dynamic element, then the element is cachable ...
-      Element[] elements = ((Band) e).getElementArray();
+      final Element[] elements = ((Band) e).getElementArray();
       for (int i = 0; i < elements.length; i++)
       {
         if (isCachable(elements[i]) == false)

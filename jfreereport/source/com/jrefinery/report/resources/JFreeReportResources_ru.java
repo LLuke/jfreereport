@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_ru.java,v 1.2 2003/05/26 13:30:58 taqua Exp $
+ * $Id: JFreeReportResources_ru.java,v 1.3 2003/06/27 14:25:22 taqua Exp $
  *
  *
  */
@@ -627,7 +627,7 @@ public class JFreeReportResources_ru extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     ResourceCompareTool.main(new String[]{"ru"});
   }

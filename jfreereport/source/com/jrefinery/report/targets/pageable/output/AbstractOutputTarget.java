@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.17 2003/06/27 14:25:24 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.18 2003/06/27 18:46:25 taqua Exp $
  *
  * Changes
  * -------
@@ -91,7 +91,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param format  the page format.
    */
-  protected AbstractOutputTarget(PageFormat format)
+  protected AbstractOutputTarget(final PageFormat format)
   {
     this(format, format);
   }
@@ -102,7 +102,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param logical  the page format used by this target for layouting.
    * @param physical  the page format used by this target for printing.
    */
-  protected AbstractOutputTarget(PageFormat logical, PageFormat physical)
+  protected AbstractOutputTarget(final PageFormat logical, final PageFormat physical)
   {
     this(new LogicalPageImpl(logical, physical));
   }
@@ -112,7 +112,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param logicalPage  the logical page.
    */
-  protected AbstractOutputTarget(LogicalPage logicalPage)
+  protected AbstractOutputTarget(final LogicalPage logicalPage)
   {
     properties = new Properties();
     this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
@@ -130,7 +130,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param value  the value of the property.  If the value is <code>null</code>, the property is
    * removed from the output target.
    */
-  public void setProperty(String property, String value)
+  public void setProperty(final String property, final String value)
   {
     if (property == null)
     {
@@ -157,7 +157,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null
    */
-  public String getProperty(String property)
+  public String getProperty(final String property)
   {
     return getProperty(property, null);
   }
@@ -173,14 +173,14 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @throws NullPointerException if <code>property</code> is null
    */
-  public String getProperty(String property, String defaultValue)
+  public String getProperty(final String property, final String defaultValue)
   {
     if (property == null)
     {
       throw new NullPointerException();
     }
 
-    String retval = properties.getProperty(property);
+    final String retval = properties.getProperty(property);
     if (retval == null)
     {
       return defaultValue;
@@ -213,7 +213,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param bounds  the bounds.
    */
-  public void setOperationBounds(Rectangle2D bounds)
+  public void setOperationBounds(final Rectangle2D bounds)
   {
     operationBounds.setRect(bounds);
   }
@@ -270,7 +270,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   protected ContentFactory createContentFactory()
   {
-    DefaultContentFactory contentFactory = new DefaultContentFactory();
+    final DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
     contentFactory.addModule(new ImageContentFactoryModule());
     contentFactory.addModule(new ShapeContentFactoryModule());

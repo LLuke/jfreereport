@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WordBreakIterator.java,v 1.6 2003/05/11 13:39:20 taqua Exp $
+ * $Id: WordBreakIterator.java,v 1.7 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class WordBreakIterator
    *
    * @param text  the text to break.
    */
-  public WordBreakIterator(String text)
+  public WordBreakIterator(final String text)
   {
     setText(text);
   }
@@ -115,12 +115,12 @@ public class WordBreakIterator
    */
   public int nextWithEnd()
   {
-    int pos = position;
+    final int pos = position;
     if (pos == DONE || pos == text.length)
     {
       return DONE;
     }
-    int retval = next();
+    final int retval = next();
     if (retval == DONE)
     {
       return text.length;
@@ -188,7 +188,7 @@ public class WordBreakIterator
    *
    * @param text  the text.
    */
-  public void setText(String text)
+  public void setText(final String text)
   {
     position = 0;
     //lastFound = 0;
@@ -211,7 +211,7 @@ public class WordBreakIterator
    *
    * @param position the position.
    */
-  public void setPosition(int position)
+  public void setPosition(final int position)
   {
     if (position < 0)
     {

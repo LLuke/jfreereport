@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.14 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public FunctionFactory(Parser parser, String finishTag)
+  public FunctionFactory(final Parser parser, final String finishTag)
   {
     super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -104,10 +104,10 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if an unknown tag is encountered.
    */
-  public void startElement(String qName,
-                           Attributes atts) throws SAXException
+  public void startElement(final String qName,
+                           final Attributes atts) throws SAXException
   {
-    String elementName = qName.toLowerCase().trim();
+    final String elementName = qName.toLowerCase().trim();
     if (elementName.equals(FUNCTION_TAG))
     {
       startFunction(atts);
@@ -159,7 +159,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param p  the properties.
    */
-  protected void setProperties(Properties p)
+  protected void setProperties(final Properties p)
   {
     this.currentProperties = p;
   }
@@ -180,7 +180,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param function  the function.
    */
-  protected void setCurrentFunction(Function function)
+  protected void setCurrentFunction(final Function function)
   {
     this.currentFunction = function;
   }
@@ -201,7 +201,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param function  the expression.
    */
-  protected void setCurrentExpression(Expression function)
+  protected void setCurrentExpression(final Expression function)
   {
     this.currentFunction = function;
   }
@@ -213,7 +213,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startProperties(Attributes atts)
+  protected void startProperties(final Attributes atts)
       throws SAXException
   {
     setProperties(new Properties());
@@ -226,7 +226,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startProperty(Attributes atts)
+  protected void startProperty(final Attributes atts)
       throws SAXException
   {
     currentProperty = atts.getValue(NAME_ATT);
@@ -246,7 +246,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startFunctions(Attributes atts)
+  protected void startFunctions(final Attributes atts)
       throws SAXException
   {
   }
@@ -258,12 +258,12 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startExpression(Attributes attr)
+  protected void startExpression(final Attributes attr)
       throws SAXException
   {
-    String name = getNameGenerator().generateName(attr.getValue("name"));
-    String className = attr.getValue("class");
-    int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
+    final String name = getNameGenerator().generateName(attr.getValue("name"));
+    final String className = attr.getValue("class");
+    final int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
 
     if (className == null)
     {
@@ -272,7 +272,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     try
     {
-      Class fnC = getClass().getClassLoader().loadClass(className);
+      final Class fnC = getClass().getClassLoader().loadClass(className);
       setCurrentExpression((Expression) fnC.newInstance());
       getCurrentExpression().setName(name);
       getCurrentExpression().setDependencyLevel(depLevel);
@@ -302,7 +302,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startPropertyRef(Attributes attr)
+  protected void startPropertyRef(final Attributes attr)
       throws SAXException
   {
     currentProperty = getNameGenerator().generateName(attr.getValue("name"));
@@ -322,12 +322,12 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startFunction(Attributes attr)
+  protected void startFunction(final Attributes attr)
       throws SAXException
   {
-    String name = getNameGenerator().generateName(attr.getValue("name"));
-    String className = attr.getValue("class");
-    int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
+    final String name = getNameGenerator().generateName(attr.getValue("name"));
+    final String className = attr.getValue("class");
+    final int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
 
     if (className == null)
     {
@@ -336,7 +336,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     try
     {
-      Class fnC = getClass().getClassLoader().loadClass(className);
+      final Class fnC = getClass().getClassLoader().loadClass(className);
       setCurrentFunction((Function) fnC.newInstance());
       getCurrentFunction().setName(name);
       getCurrentFunction().setDependencyLevel(depLevel);
@@ -365,7 +365,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * @param start  the first character index.
    * @param length  the length (number of valid characters).
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // accumulate the characters in case the text is split into several chunks...
     if (this.currentText != null)
@@ -381,9 +381,9 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @throws SAXException if there is a problem parsing the element.
    */
-  public void endElement(String qName) throws SAXException
+  public void endElement(final String qName) throws SAXException
   {
-    String elementName = qName.toLowerCase().trim();
+    final String elementName = qName.toLowerCase().trim();
     if (elementName.equals(FUNCTION_TAG))
     {
       endFunction();
@@ -481,7 +481,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void endProperties()
       throws SAXException
   {
-    Expression f = getCurrentExpression();
+    final Expression f = getCurrentExpression();
     if (f == null)
     {
       throw new ParseException("End properties reached without a function defined", getLocator());
@@ -497,7 +497,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void endProperty()
       throws SAXException
   {
-    Properties currentProps = getProperties();
+    final Properties currentProps = getProperties();
     if (currentProps == null)
     {
       throw new ParseException("EndProperty without properties tag?", getLocator());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.24 2003/06/19 18:44:09 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.25 2003/06/27 14:25:18 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -87,7 +87,7 @@ public class PageTotalFunction extends PageFunction
      *
      * @param page  the page.
      */
-    public PageStorage(int page)
+    public PageStorage(final int page)
     {
       this.page = page;
     }
@@ -107,7 +107,7 @@ public class PageTotalFunction extends PageFunction
      *
      * @param page  the page number.
      */
-    public void setPage(int page)
+    public void setPage(final int page)
     {
       this.page = page;
     }
@@ -135,7 +135,7 @@ public class PageTotalFunction extends PageFunction
    *
    * @param event  the event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     // report started is no longer the first event. PageStarted is called first!
     if (pageStorage == null)
@@ -152,7 +152,7 @@ public class PageTotalFunction extends PageFunction
    *
    * @param event Information about the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
@@ -191,15 +191,15 @@ public class PageTotalFunction extends PageFunction
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (getGroup() == null)
     {
       return;
     }
 
-    ReportDefinition report = event.getReport();
-    Group group = report.getGroup(event.getState().getCurrentGroupIndex());
+    final ReportDefinition report = event.getReport();
+    final Group group = report.getGroup(event.getState().getCurrentGroupIndex());
     if (getGroup().equals(group.getName()) == false)
     {
       return;
@@ -228,7 +228,7 @@ public class PageTotalFunction extends PageFunction
    *
    * @param page  the page number.
    */
-  protected void setPage(int page)
+  protected void setPage(final int page)
   {
     if (this.pageStorage != null)
     {
@@ -291,7 +291,7 @@ public class PageTotalFunction extends PageFunction
    */
   public Expression getInstance()
   {
-    PageTotalFunction function = (PageTotalFunction) super.getInstance();
+    final PageTotalFunction function = (PageTotalFunction) super.getInstance();
     function.groupPages = new HashMap();
     function.pageStorage = null;
     return function;

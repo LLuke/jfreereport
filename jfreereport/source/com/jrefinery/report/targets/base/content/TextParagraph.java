@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.21 2003/06/16 15:33:51 taqua Exp $
+ * $Id: TextParagraph.java,v 1.22 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class TextParagraph extends ContentContainer
    * @param calc  the size calculator.
    * @param lineHeight the height of the lines contained in this paragraph.
    */
-  public TextParagraph(SizeCalculator calc, float lineHeight)
+  public TextParagraph(final SizeCalculator calc, final float lineHeight)
   {
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;
@@ -101,7 +101,7 @@ public class TextParagraph extends ContentContainer
    * @param height the height of the bounds.
    */
   public void setContent
-      (String content, final float x, final float y, final float width, final float height)
+      (final String content, final float x, final float y, final float width, final float height)
   {
     if (content == null)
     {
@@ -126,11 +126,11 @@ public class TextParagraph extends ContentContainer
 
     float usedHeight = 0;
 
-    int maxLines = (int) Math.floor(height / getSizeCalculator().getLineHeight());
+    final int maxLines = (int) Math.floor(height / getSizeCalculator().getLineHeight());
 
     if (maxLines > 0)
     {
-      List l = breakLines(content, width, maxLines);
+      final List l = breakLines(content, width, maxLines);
       /*
       if (l.size() > maxLines)
       {
@@ -140,8 +140,8 @@ public class TextParagraph extends ContentContainer
       for (int i = 0; i < l.size(); i++)
       {
         // create Lines
-        String lineText = (String) l.get(i);
-        TextLine line = new TextLine(getSizeCalculator(), lineHeight);
+        final String lineText = (String) l.get(i);
+        final TextLine line = new TextLine(getSizeCalculator(), lineHeight);
 
 /*
         // strict assertation ... is expensive and not enabled by default ...
@@ -181,7 +181,7 @@ public class TextParagraph extends ContentContainer
    *
    * @return a list of lines.
    */
-  private List breakLines(String mytext, final float width, final int maxLines)
+  private List breakLines(final String mytext, final float width, final int maxLines)
   {
     if (width <= 0)
     {
@@ -198,11 +198,11 @@ public class TextParagraph extends ContentContainer
     // Reserve some space for the last line if there is more than one line to display.
     // If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
     // mode later, but without any visual editing it would be cruel to any report designer.
-    WordBreakIterator breakit = new WordBreakIterator(mytext);
-    ArrayList returnLines = new ArrayList(5);
+    final WordBreakIterator breakit = new WordBreakIterator(mytext);
+    final ArrayList returnLines = new ArrayList(5);
 
     int lineStartPos = 0;
-    int lineLength = mytext.length();
+    final int lineLength = mytext.length();
     if (lineLength == 0)
     {
       returnLines.add("");
@@ -221,13 +221,13 @@ public class TextParagraph extends ContentContainer
         lineStartPos++;
       }
       */
-      boolean forceEnd = ((returnLines.size() + 1) == maxLines);
-      int nextPos = findNextBreak(mytext, lineStartPos, width, forceEnd, breakit);
+      final boolean forceEnd = ((returnLines.size() + 1) == maxLines);
+      final int nextPos = findNextBreak(mytext, lineStartPos, width, forceEnd, breakit);
 
       // the complete text is finished, noting more to do here.
       if (nextPos == BreakIterator.DONE)
       {
-        String addString = mytext.substring(lineStartPos);
+        final String addString = mytext.substring(lineStartPos);
         returnLines.add(addString);
         return returnLines;
       }
@@ -241,7 +241,7 @@ public class TextParagraph extends ContentContainer
       else
       {
         // End the line and restart for the next line ...
-        String addString = mytext.substring(lineStartPos, nextPos);
+        final String addString = mytext.substring(lineStartPos, nextPos);
         returnLines.add(addString);
         lineStartPos = nextPos;
       }
@@ -256,7 +256,7 @@ public class TextParagraph extends ContentContainer
    * @return true, if this is a whitespace character, but not a
    * linebreak character, false otherwise.
    */
-  private boolean isWhitespace(char c)
+  private boolean isWhitespace(final char c)
   {
     if (c == '\n' || c == '\r')
     {
@@ -282,7 +282,7 @@ public class TextParagraph extends ContentContainer
                             final int lineStart,
                             final float width,
                             final boolean forceEnd,
-                            WordBreakIterator breakit)
+                            final WordBreakIterator breakit)
   {
     int startPos = lineStart;
     int endPos;
@@ -353,7 +353,7 @@ public class TextParagraph extends ContentContainer
    *
    * @return a string with '..' appended.
    */
-  private String appendReserveLit(String base, int lineStart, int lastCheckedChar, float width)
+  private String appendReserveLit(final String base, final int lineStart, final int lastCheckedChar, final float width)
   {
     if (lastCheckedChar < 0)
     {
@@ -369,20 +369,20 @@ public class TextParagraph extends ContentContainer
     }
 
     // check whether the complete line would fit into the given width
-    float toTheEnd = getSizeCalculator().getStringWidth(base, lineStart, base.length());
+    final float toTheEnd = getSizeCalculator().getStringWidth(base, lineStart, base.length());
     if (toTheEnd <= width)
     {
       return base.substring(lineStart);
     }
 
-    String baseLine = base.substring(lineStart, lastCheckedChar);
-    float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length()))
+    final String baseLine = base.substring(lineStart, lastCheckedChar);
+    final float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length()))
         - reservedSize;
 
-    int maxFillerLength = base.length() - lastCheckedChar;
+    final int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 1; i < maxFillerLength; i++)
     {
-      float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar,
+      final float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar,
           lastCheckedChar + i);
       if (filler < fillerWidth)
       {
@@ -399,9 +399,9 @@ public class TextParagraph extends ContentContainer
    *
    * @return  a string with all whitespace replaced by space characters.
    */
-  protected String clearWhitespaces(String text)
+  protected String clearWhitespaces(final String text)
   {
-    char[] textdata = text.toCharArray();
+    final char[] textdata = text.toCharArray();
     for (int i = 0; i < textdata.length; i++)
     {
       if (Character.isWhitespace(textdata[i]))

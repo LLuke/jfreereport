@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFTextCellData.java,v 1.7 2003/06/19 18:44:11 taqua Exp $
+ * $Id: RTFTextCellData.java,v 1.8 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class RTFTextCellData extends RTFCellData
    * @param value the text content.
    * @param style the style definition for the cell.
    */
-  public RTFTextCellData(Rectangle2D outerBounds, String value, RTFTextCellStyle style)
+  public RTFTextCellData(final Rectangle2D outerBounds, final String value, final RTFTextCellStyle style)
   {
     super(outerBounds, style);
     if (value == null)
@@ -79,13 +79,13 @@ public class RTFTextCellData extends RTFCellData
   public Cell getCell()
       throws DocumentException
   {
-    Cell cell = new Cell();
+    final Cell cell = new Cell();
     cell.setBorderWidth(0);
 
-    Chunk chunk = new Chunk(value);
-    RTFTextCellStyle style = (RTFTextCellStyle) getStyle();
+    final Chunk chunk = new Chunk(value);
+    final RTFTextCellStyle style = (RTFTextCellStyle) getStyle();
     style.applyTextStyle(chunk);
-    Paragraph paragraph = new Paragraph();
+    final Paragraph paragraph = new Paragraph();
     paragraph.add(chunk);
     cell.addElement(paragraph);
     return cell;

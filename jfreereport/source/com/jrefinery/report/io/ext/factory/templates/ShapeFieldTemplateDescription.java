@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeFieldTemplateDescription.java,v 1.2 2003/04/09 16:18:40 mungady Exp $
+ * $Id: ShapeFieldTemplateDescription.java,v 1.3 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 09-Apr-2003)
  * -------------------------
@@ -51,7 +51,7 @@ public class ShapeFieldTemplateDescription extends AbstractTemplateDescription
    *
    * @param name  the name.
    */
-  public ShapeFieldTemplateDescription(String name)
+  public ShapeFieldTemplateDescription(final String name)
   {
     super(name, ShapeFieldTemplate.class, true);
   }

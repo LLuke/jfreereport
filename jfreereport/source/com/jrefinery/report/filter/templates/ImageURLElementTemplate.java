@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLElementTemplate.java,v 1.6 2003/05/02 12:39:44 taqua Exp $
+ * $Id: ImageURLElementTemplate.java,v 1.7 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -77,7 +77,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
    *
    * @param content  the URL.
    */
-  public void setContent(String content)
+  public void setContent(final String content)
   {
     staticDataSource.setValue(content);
   }
@@ -107,7 +107,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
    *
    * @param baseURL  the URL.
    */
-  public void setBaseURL(URL baseURL)
+  public void setBaseURL(final URL baseURL)
   {
     urlFilter.setBaseURL(baseURL);
   }
@@ -131,7 +131,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ImageURLElementTemplate template = (ImageURLElementTemplate) super.clone();
+    final ImageURLElementTemplate template = (ImageURLElementTemplate) super.clone();
     template.imageLoadFilter = (ImageLoadFilter) imageLoadFilter.clone();
     template.urlFilter = (URLFilter) template.imageLoadFilter.getDataSource();
     template.staticDataSource = (StaticDataSource) template.urlFilter.getDataSource();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class PropertyHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public PropertyHandler(Parser parser, String finishTag)
+  public PropertyHandler(final Parser parser, final String finishTag)
   {
     entityParser = CharacterEntityParser.createXMLEntityParser();
     properties = new Properties();
@@ -102,7 +102,7 @@ public class PropertyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(String tagName, Attributes attrs) throws SAXException
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
     if (tagName.equals(PROPERTY_TAG) == false)
     {
@@ -126,7 +126,7 @@ public class PropertyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  public void characters(final char[] ch, final int start, final int length) throws SAXException
   {
     // accumulate the characters in case the text is split into several chunks...
     if (this.buffer != null)
@@ -142,7 +142,7 @@ public class PropertyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(String tagName) throws SAXException
+  public void endElement(final String tagName) throws SAXException
   {
     if (tagName.equals(PROPERTY_TAG))
     {

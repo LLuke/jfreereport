@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalCSSReferenceData.java,v 1.5 2003/02/26 16:42:28 mungady Exp $
+ * $Id: InternalCSSReferenceData.java,v 1.6 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public class InternalCSSReferenceData extends HtmlReferenceData
    *
    * @param data the style sheet definition data.
    */
-  public InternalCSSReferenceData(String data)
+  public InternalCSSReferenceData(final String data)
   {
     super(false);
     styleData = data;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.13 2003/05/11 13:39:19 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.14 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class HtmlProcessor extends TableProcessor
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public HtmlProcessor(JFreeReport report)
+  public HtmlProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     this(report, false);
@@ -98,7 +98,7 @@ public class HtmlProcessor extends TableProcessor
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public HtmlProcessor(JFreeReport report, boolean useXHTML)
+  public HtmlProcessor(final JFreeReport report, final boolean useXHTML)
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
@@ -121,7 +121,7 @@ public class HtmlProcessor extends TableProcessor
    *
    * @param useXHTML the XHTML flag.
    */
-  public void setGenerateXHTML(boolean useXHTML)
+  public void setGenerateXHTML(final boolean useXHTML)
   {
     this.useXHTML = useXHTML;
   }
@@ -142,7 +142,7 @@ public class HtmlProcessor extends TableProcessor
    *
    * @param filesystem the filesystem for storing the generated content.
    */
-  public void setFilesystem(HtmlFilesystem filesystem)
+  public void setFilesystem(final HtmlFilesystem filesystem)
   {
     this.filesystem = filesystem;
   }
@@ -153,9 +153,9 @@ public class HtmlProcessor extends TableProcessor
    * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(boolean dummy)
+  public TableProducer createProducer(final boolean dummy)
   {
-    HtmlProducer prod;
+    final HtmlProducer prod;
     if (dummy == true)
     {
       prod = new HtmlProducer(new StreamHtmlFilesystem(new NullOutputStream()),

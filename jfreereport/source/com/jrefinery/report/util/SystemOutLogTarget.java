@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.14 2003/04/24 18:08:59 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.15 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param level log level of the message.
    * @param message text to be logged.
    */
-  public void log(int level, Object message)
+  public void log(int level, final Object message)
   {
     if (level > 3)
     {
@@ -88,7 +88,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param message text to be logged.
    * @param e the exception, which should be logged.
    */
-  public void log(int level, Object message, Exception e)
+  public void log(int level, final Object message, final Exception e)
   {
     if (level > 3)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTemplate.java,v 1.4 2003/03/07 16:55:54 taqua Exp $
+ * $Id: AbstractTemplate.java,v 1.5 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -60,7 +60,7 @@ public abstract class AbstractTemplate implements Template
    *
    * @param name  the name (<code>null</code> not permitted).
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     if (name == null)
     {

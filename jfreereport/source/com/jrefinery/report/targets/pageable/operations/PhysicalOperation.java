@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.16 2003/05/02 12:40:33 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.17 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public abstract class PhysicalOperation
      *
      * @param font  the font (null not permitted).
      */
-    public SetFontOperation(FontDefinition font)
+    public SetFontOperation(final FontDefinition font)
     {
       if (font == null)
       {
@@ -98,7 +98,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       if (font.equals(ot.getFont()) == false)
       {
@@ -120,7 +120,7 @@ public abstract class PhysicalOperation
      *
      * @param comment  the comment.
      */
-    public AddComment(Object comment)
+    public AddComment(final Object comment)
     {
       if (comment == null)
       {
@@ -136,7 +136,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       Log.debug(new Log.SimpleMessage("Physical Operation Comment: ", comment));
     }
@@ -156,7 +156,7 @@ public abstract class PhysicalOperation
      *
      * @param paint  the paint.
      */
-    public SetPaintOperation(Color paint)
+    public SetPaintOperation(final Color paint)
     {
       if (paint == null)
       {
@@ -172,7 +172,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       if (paint.equals(ot.getPaint()) == false)
       {
@@ -195,7 +195,7 @@ public abstract class PhysicalOperation
      *
      * @param stroke  the stroke.
      */
-    public SetStrokeOperation(Stroke stroke)
+    public SetStrokeOperation(final Stroke stroke)
     {
       if (stroke == null)
       {
@@ -211,7 +211,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       if (stroke.equals(ot.getStroke()) == false)
       {
@@ -234,7 +234,7 @@ public abstract class PhysicalOperation
      *
      * @param bounds  the bounds (null not permitted).
      */
-    public SetBoundsOperation(Rectangle2D bounds)
+    public SetBoundsOperation(final Rectangle2D bounds)
     {
       if (bounds == null)
       {
@@ -251,7 +251,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.setOperationBounds(bounds);
     }
@@ -280,7 +280,7 @@ public abstract class PhysicalOperation
      *
      * @param text  the text.
      */
-    public PrintTextOperation(String text)
+    public PrintTextOperation(final String text)
     {
       if (text == null)
       {
@@ -296,7 +296,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawString(text);
     }
@@ -326,7 +326,7 @@ public abstract class PhysicalOperation
      *
      * @param image  the image reference (null not permitted).
      */
-    public PrintImageOperation(ImageReference image)
+    public PrintImageOperation(final ImageReference image)
     {
       if (image == null)
       {
@@ -342,7 +342,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawImage(image);
     }
@@ -362,7 +362,7 @@ public abstract class PhysicalOperation
      *
      * @param shape  the shape (null not permitted).
      */
-    public PrintShapeOperation(Shape shape)
+    public PrintShapeOperation(final Shape shape)
     {
       if (shape == null)
       {
@@ -378,7 +378,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawShape(shape);
     }
@@ -398,7 +398,7 @@ public abstract class PhysicalOperation
      *
      * @param shape  the shape.
      */
-    public PrintFilledShapeOperation(Shape shape)
+    public PrintFilledShapeOperation(final Shape shape)
     {
       if (shape == null)
       {
@@ -414,7 +414,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.fillShape(shape);
     }
@@ -434,7 +434,7 @@ public abstract class PhysicalOperation
      *
      * @param drawableContainer the drawable.
      */
-    public ProcessDrawableOperation(DrawableContainer drawableContainer)
+    public ProcessDrawableOperation(final DrawableContainer drawableContainer)
     {
       if (drawableContainer == null)
       {
@@ -450,7 +450,7 @@ public abstract class PhysicalOperation
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
-    public void performOperation(OutputTarget ot) throws OutputTargetException
+    public void performOperation(final OutputTarget ot) throws OutputTargetException
     {
       ot.drawDrawable(drawableContainer);
     }

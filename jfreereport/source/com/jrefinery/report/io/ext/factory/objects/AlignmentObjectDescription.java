@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignmentObjectDescription.java,v 1.5 2003/04/24 18:08:50 taqua Exp $
+ * $Id: AlignmentObjectDescription.java,v 1.6 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -65,7 +65,7 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
    */
   public Object createObject()
   {
-    String o = (String) getParameter("value");
+    final String o = (String) getParameter("value");
     if (o == null)
     {
       return null;
@@ -104,7 +104,7 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
    *
    * @throws ObjectFactoryException if the object is not recognised.
    */
-  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  public void setParameterFromObject(final Object o) throws ObjectFactoryException
   {
     if (o.equals(ElementAlignment.BOTTOM))
     {

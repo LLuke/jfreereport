@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandStyleSheet.java,v 1.4 2003/01/29 03:13:04 taqua Exp $
+ * $Id: BandStyleSheet.java,v 1.5 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class BandStyleSheet extends ElementStyleSheet
    *
    * @param name  the name.
    */
-  public BandStyleSheet(String name)
+  public BandStyleSheet(final String name)
   {
     super(name);
   }

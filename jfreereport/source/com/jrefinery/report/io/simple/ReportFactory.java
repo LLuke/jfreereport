@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
+ * $Id: ReportFactory.java,v 1.14 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public ReportFactory(Parser parser, String finishTag)
+  public ReportFactory(final Parser parser, final String finishTag)
   {
     super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -95,8 +95,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is a parsing exception.
    */
-  public void startElement(String tagName,
-                           Attributes atts) throws SAXException
+  public void startElement(final String tagName,
+                           final Attributes atts) throws SAXException
   {
     if (tagName.equals(REPORT_TAG))
     {
@@ -109,7 +109,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
         || tagName.equals(ITEMS_TAG))
     {
       // Forward the event to the newly created
-      BandFactory bandFactory = new BandFactory(getParser(), tagName);
+      final BandFactory bandFactory = new BandFactory(getParser(), tagName);
       getParser().pushFactory(bandFactory);
       bandFactory.startElement(tagName, atts);
     }
@@ -147,7 +147,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startProperty(Attributes atts)
+  protected void startProperty(final Attributes atts)
       throws SAXException
   {
     currentProperty = atts.getValue(NAME_ATT);
@@ -164,7 +164,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @param atts the element attributes
    */
-  private void startConfiguration(Attributes atts)
+  private void startConfiguration(final Attributes atts)
   {
     // no action is required, configuration properties are read as sub-elements...
   }
@@ -176,7 +176,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    * @param start  the first character index.
    * @param length  the length (number of valid characters).
    */
-  public void characters(char[] ch, int start, int length)
+  public void characters(final char[] ch, final int start, final int length)
   {
     // accumulate the characters in case the text is split into several chunks...
     if (this.currentText != null)
@@ -192,9 +192,9 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is a parsing problem.
    */
-  public void endElement(String qName) throws SAXException
+  public void endElement(final String qName) throws SAXException
   {
-    String elementName = qName.toLowerCase().trim();
+    final String elementName = qName.toLowerCase().trim();
     if (elementName.equals(REPORT_TAG))
     {
       endReport();
@@ -252,13 +252,13 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is any problem parsing the XML.
    */
-  public void startReport(Attributes atts)
+  public void startReport(final Attributes atts)
       throws SAXException
   {
-    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
 
 
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.setName(name);
 
     PageFormat format = report.getDefaultPageFormat();
@@ -276,7 +276,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     defLeftMargin = ParserUtil.parseFloat(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
     defRightMargin = ParserUtil.parseFloat(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
-    Paper p = format.getPaper();
+    final Paper p = format.getPaper();
     switch (format.getOrientation())
     {
       case PageFormat.PORTRAIT:
@@ -315,12 +315,12 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is an error parsing the report.
    */
-  private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
+  private PageFormat createPageFormat(final PageFormat format, final Attributes atts) throws SAXException
   {
-    String pageformatName = atts.getValue(PAGEFORMAT_ATT);
+    final String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
-    int orientationVal;
-    String orientation = atts.getValue(ORIENTATION_ATT);
+    final int orientationVal;
+    final String orientation = atts.getValue(ORIENTATION_ATT);
     if (orientation == null)
     {
       orientationVal = PageFormat.PORTRAIT;
@@ -343,7 +343,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     }
     if (pageformatName != null)
     {
-      Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
+      final Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
       if (p == null)
       {
         Log.warn("Unable to create the requested Paper. " + pageformatName);
@@ -354,10 +354,10 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
 
     if (atts.getValue(WIDTH_ATT) != null && atts.getValue(HEIGHT_ATT) != null)
     {
-      int[] pageformatData = new int[2];
+      final int[] pageformatData = new int[2];
       pageformatData[0] = ParserUtil.parseInt(atts.getValue(WIDTH_ATT), "No Width set");
       pageformatData[1] = ParserUtil.parseInt(atts.getValue(HEIGHT_ATT), "No Height set");
-      Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
+      final Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
       if (p == null)
       {
         Log.warn("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "
@@ -379,7 +379,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is a parsing problem.
    */
-  public void startGroups(Attributes atts)
+  public void startGroups(final Attributes atts)
       throws SAXException
   {
     getParser().pushFactory(new GroupFactory(getParser(), GROUPS_TAG));
@@ -393,7 +393,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
    *
    * @throws SAXException if there is a parsing problem.
    */
-  public void startFunctions(Attributes atts)
+  public void startFunctions(final Attributes atts)
       throws SAXException
   {
     getParser().pushFactory(new FunctionFactory(getParser(), FUNCTIONS_TAG));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceGenerator.java,v 1.4 2003/06/19 18:44:09 taqua Exp $
+ * $Id: DataSourceReferenceGenerator.java,v 1.5 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -70,10 +70,10 @@ public final class DataSourceReferenceGenerator
    */
   public static TableModel createData()
   {
-    DataSourceCollector cc = new DataSourceCollector();
+    final DataSourceCollector cc = new DataSourceCollector();
     cc.addFactory(new DefaultDataSourceFactory());
 
-    DataSourceReferenceTableModel model = new DataSourceReferenceTableModel(cc);
+    final DataSourceReferenceTableModel model = new DataSourceReferenceTableModel(cc);
     return model;
   }
 
@@ -82,10 +82,10 @@ public final class DataSourceReferenceGenerator
    *
    * @param args  ignored.
    */
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
-    ReportGenerator gen = ReportGenerator.getInstance();
-    URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
+    final ReportGenerator gen = ReportGenerator.getInstance();
+    final URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");
@@ -94,7 +94,7 @@ public final class DataSourceReferenceGenerator
       return;
     }
 
-    JFreeReport report;
+    final JFreeReport report;
     try
     {
       report = gen.parseReport(reportURL);

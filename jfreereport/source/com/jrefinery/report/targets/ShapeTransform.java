@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.12 2003/06/19 18:44:10 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.13 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class ShapeTransform
    * @param dim the target dimension.
    * @return the transformed shape
    */
-  public static Shape transformShape(Shape s, boolean scale, boolean keepAR, Dimension2D dim)
+  public static Shape transformShape(Shape s, final boolean scale, final boolean keepAR, final Dimension2D dim)
   {
     /**
      * Always scale to the maximum bounds ...
@@ -69,9 +69,9 @@ public class ShapeTransform
     if (scale)
     {
 
-      Rectangle2D boundsShape = s.getBounds2D();
-      double w = boundsShape.getWidth();
-      double h = boundsShape.getHeight();
+      final Rectangle2D boundsShape = s.getBounds2D();
+      final double w = boundsShape.getWidth();
+      final double h = boundsShape.getHeight();
       double scaleX = 1;
       double scaleY = 1;
 
@@ -88,7 +88,7 @@ public class ShapeTransform
         /**
          * Apply the normalisation shape transform ... bring the shape to pos (0,0)
          */
-        Rectangle2D bounds = s.getBounds2D();
+        final Rectangle2D bounds = s.getBounds2D();
         AffineTransform af
             = AffineTransform.getTranslateInstance(0 - bounds.getX(), 0 - bounds.getY());
         // apply normalisation translation ...
@@ -96,7 +96,7 @@ public class ShapeTransform
 
         if (keepAR)
         {
-          double scaleFact = Math.min(scaleX, scaleY);
+          final double scaleFact = Math.min(scaleX, scaleY);
           af = AffineTransform.getScaleInstance(scaleFact, scaleFact);
         }
         else
@@ -111,7 +111,7 @@ public class ShapeTransform
         return af.createTransformedShape(s);
       }
     }
-    Area a = new Area(s);
+    final Area a = new Area(s);
     if (a.isEmpty())
     {
       // don't clip  ... Area does not like lines
@@ -124,11 +124,11 @@ public class ShapeTransform
 
 
     // mask everything outside of the clipping area
-    Rectangle2D shape = s.getBounds2D();
-    Rectangle2D clip = new Rectangle2D.Double(shape.getX(),
+    final Rectangle2D shape = s.getBounds2D();
+    final Rectangle2D clip = new Rectangle2D.Double(shape.getX(),
         shape.getY(), dim.getWidth(), dim.getHeight());
 
-    Area clipArea = new Area(clip);
+    final Area clipArea = new Area(clip);
     clipArea.subtract(new Area(clip.createIntersection(shape)));
 
     a.subtract(new Area(clipArea));

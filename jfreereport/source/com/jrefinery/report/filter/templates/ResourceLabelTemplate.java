@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceLabelTemplate.java,v 1.5 2003/05/02 12:39:44 taqua Exp $
+ * $Id: ResourceLabelTemplate.java,v 1.6 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -93,7 +93,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @throws MissingResourceException if the resource is missing.
    */
-  public void setResourceClassName(String resourceClassName)
+  public void setResourceClassName(final String resourceClassName)
       throws MissingResourceException
   {
     resourceFilter.setResources(ResourceBundle.getBundle(resourceClassName));
@@ -105,7 +105,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @param content  the content.
    */
-  public void setContent(String content)
+  public void setContent(final String content)
   {
     staticDataSource.setValue(content);
   }
@@ -135,7 +135,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @param nullValue  The string that represents a <code>null</code> value.
    */
-  public void setNullValue(String nullValue)
+  public void setNullValue(final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -159,7 +159,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ResourceLabelTemplate template = (ResourceLabelTemplate) super.clone();
+    final ResourceLabelTemplate template = (ResourceLabelTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
     template.resourceFilter = (ResourceFileFilter) template.stringFilter.getDataSource();
     template.staticDataSource = (StaticDataSource) template.resourceFilter.getDataSource();

@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):
  *
- * $Id: ExportToCSVAction.java,v 1.3 2003/05/02 12:39:32 taqua Exp $
+ * $Id: ExportToCSVAction.java,v 1.4 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public abstract class ExportToCSVAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public ExportToCSVAction(ResourceBundle resources)
+  public ExportToCSVAction(final ResourceBundle resources)
   {
     this.putValue(NAME, resources.getString("action.export-to-csv.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.export-to-csv.description"));

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.10 2003/06/26 19:55:56 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.11 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -69,11 +69,11 @@ public class StraightToPDF
    * @param filename  the output filename.
    * @throws ParseException if the report could not be parsed.
    */
-  public StraightToPDF(String filename) throws ParseException
+  public StraightToPDF(final String filename) throws ParseException
   {
-    URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
-    JFreeReport report = parseReport(in);
-    TableModel data = new OpenSourceProjects();
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
+    final JFreeReport report = parseReport(in);
+    final TableModel data = new OpenSourceProjects();
     report.setData(data);
     savePDF(report, filename);
   }
@@ -86,9 +86,9 @@ public class StraightToPDF
    * @return a report.
    * @throws ParseException if the report could not be parsed.
    */
-  private JFreeReport parseReport(URL templateURL) throws ParseException
+  private JFreeReport parseReport(final URL templateURL) throws ParseException
   {
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
       return generator.parseReport(templateURL);
@@ -107,18 +107,18 @@ public class StraightToPDF
    *
    * @return true or false.
    */
-  public boolean savePDF(JFreeReport report, String fileName)
+  public boolean savePDF(final JFreeReport report, final String fileName)
   {
     OutputStream out = null;
     try
     {
       out = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
-      PageFormat pf = report.getDefaultPageFormat();
-      PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+      final PageFormat pf = report.getDefaultPageFormat();
+      final PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
       target.configure(report.getReportConfiguration());
       target.open();
 
-      PageableReportProcessor proc = new PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 
@@ -153,13 +153,13 @@ public class StraightToPDF
    *
    * @param args  ignored.
    */
-  public static void main(String args[])
+  public static void main(final String[] args)
   {
     ReportConfiguration.getGlobalConfig().setDisableLogging(true);
     ReportConfiguration.getGlobalConfig().setPDFTargetAutoInit(false);
     try
     {
-      StraightToPDF demo = new StraightToPDF(System.getProperty("user.home") + "/test99.pdf");
+      final StraightToPDF demo = new StraightToPDF(System.getProperty("user.home") + "/test99.pdf");
       System.exit(0);
     }
     catch (Exception e)

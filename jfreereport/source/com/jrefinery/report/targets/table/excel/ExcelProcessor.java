@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.11 2003/06/19 18:44:11 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.12 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,7 @@ public class ExcelProcessor extends TableProcessor
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
-  public ExcelProcessor(JFreeReport report)
+  public ExcelProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
@@ -99,7 +99,7 @@ public class ExcelProcessor extends TableProcessor
    *
    * @param outputStream the output stream.
    */
-  public void setOutputStream(OutputStream outputStream)
+  public void setOutputStream(final OutputStream outputStream)
   {
     this.outputStream = outputStream;
   }
@@ -110,9 +110,9 @@ public class ExcelProcessor extends TableProcessor
    * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(boolean dummy)
+  public TableProducer createProducer(final boolean dummy)
   {
-    ExcelProducer prod;
+    final ExcelProducer prod;
     if (dummy == true)
     {
       prod = new ExcelProducer(new NullOutputStream(), isStrictLayout());

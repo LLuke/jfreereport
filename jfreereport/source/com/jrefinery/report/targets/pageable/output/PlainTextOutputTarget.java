@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.22 2003/06/27 14:25:24 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.23 2003/06/27 18:46:25 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,6 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.Log;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with
@@ -113,7 +112,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source the source outputtarget.
      */
-    private PlainTextState(OutputTarget source)
+    private PlainTextState(final OutputTarget source)
     {
       save(source);
     }
@@ -123,7 +122,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source  the OutputTarget.
      */
-    private void save(OutputTarget source)
+    private void save(final OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -136,7 +135,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      * @param target  the OutputTarget.
      * @throws OutputTargetException if restoring the output target state failed.
      */
-    private void restore(OutputTarget target)
+    private void restore(final OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
@@ -163,7 +162,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      * @param characterWidth the character width in points (1/72 inch).
      * @param characterHeight the character height in points (1/72 inch).
      */
-    private PlainTextSizeCalculator(float characterWidth, float characterHeight)
+    private PlainTextSizeCalculator(final float characterWidth, final float characterHeight)
     {
       this.characterWidth = characterWidth;
       this.characterHeight = characterHeight;
@@ -178,7 +177,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @return the width of the string in Java2D units.
      */
-    public float getStringWidth(String text, int lineStartPos, int endPos)
+    public float getStringWidth(final String text, final int lineStartPos, final int endPos)
     {
       if (lineStartPos < 0)
       {
@@ -251,7 +250,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param commandSet the printer commandset used to write the generated content.
    * @throws NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(PageFormat format, PrinterCommandSet commandSet)
+  public PlainTextOutputTarget(final PageFormat format, final PrinterCommandSet commandSet)
   {
     super(format);
     if (commandSet == null)
@@ -270,8 +269,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param physical  the page format used by this target for printing.
    * @throws NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(PageFormat logical, PageFormat physical,
-                               PrinterCommandSet commandSet)
+  public PlainTextOutputTarget(final PageFormat logical, final PageFormat physical,
+                               final PrinterCommandSet commandSet)
   {
     super(logical, physical);
     if (commandSet == null)
@@ -289,7 +288,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * @param logicalPage  the page format used by this target for layouting.
    * @throws NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(LogicalPage logicalPage, PrinterCommandSet commandSet)
+  public PlainTextOutputTarget(final LogicalPage logicalPage, final PrinterCommandSet commandSet)
   {
     super(logicalPage);
     if (commandSet == null)
@@ -352,7 +351,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param page  the physical page.
    */
-  public void beginPage(PhysicalPage page)
+  public void beginPage(final PhysicalPage page)
   {
     currentPageHeight = correctedDivisionFloor
         ((float) page.getPageFormat().getImageableHeight(), characterHeight);
@@ -410,7 +409,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont(FontDefinition font) throws OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     this.font = font;
   }
@@ -432,7 +431,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke(Stroke stroke) throws OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     this.stroke = stroke;
   }
@@ -454,7 +453,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(Paint paint) throws OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     this.paint = paint;
   }
@@ -464,13 +463,13 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param text  the text.
    */
-  public void drawString(String text)
+  public void drawString(final String text)
   {
-    Rectangle2D bounds = getOperationBounds();
+    final Rectangle2D bounds = getOperationBounds();
 
-    int x = correctedDivisionFloor((float) bounds.getX(), characterWidth);
-    int y = correctedDivisionFloor((float) bounds.getY(), characterHeight);
-    int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidth);
+    final int x = correctedDivisionFloor((float) bounds.getX(), characterWidth);
+    final int y = correctedDivisionFloor((float) bounds.getY(), characterHeight);
+    final int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidth);
 /*
     Log.debug ("Bounds: " + bounds);
     Log.debug ("CW: " + characterWidth);
@@ -499,7 +498,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void drawShape(Shape shape)
+  public void drawShape(final Shape shape)
   {
     // this is not supported, does nothing ...
   }
@@ -510,7 +509,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void fillShape(Shape shape)
+  public void fillShape(final Shape shape)
   {
     // this is not supported, does nothing ...
   }
@@ -523,7 +522,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(ImageReference image) throws OutputTargetException
+  public void drawImage(final ImageReference image) throws OutputTargetException
   {
   }
 
@@ -546,13 +545,12 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param config  the configuration.
    */
-  public void configure(ReportConfiguration config)
+  public void configure(final ReportConfiguration config)
   {
     if (getDocumentEncoding() == null)
     {
       setDocumentEncoding(config.getTextTargetEncoding());
     }
-    Log.debug ("AfterConfigure: " + getDocumentEncoding());
   }
 
   /**
@@ -565,7 +563,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
   {
     return new PlainTextSizeCalculator(characterWidth, characterHeight);
   }
@@ -601,7 +599,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   protected ContentFactory createContentFactory()
   {
-    DefaultContentFactory contentFactory = new DefaultContentFactory();
+    final DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
     return contentFactory;
   }
@@ -612,7 +610,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(DrawableContainer drawable)
+  public void drawDrawable(final DrawableContainer drawable)
   {
   }
 
@@ -623,7 +621,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public String getDocumentEncoding()
   {
-    return (String) getProperty(ENCODING_PROPERTY);
+    return getProperty(ENCODING_PROPERTY);
   }
 
   /**
@@ -632,7 +630,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param documentEncoding
    */
-  public void setDocumentEncoding(String documentEncoding)
+  public void setDocumentEncoding(final String documentEncoding)
   {
     if (documentEncoding == null)
     {
@@ -644,7 +642,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
     else
     {
-      throw new IllegalArgumentException("This encoding is not supported by the printer.");
+      throw new IllegalArgumentException("This encoding is not supported by the printer. : " + documentEncoding);
     }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldTemplateDescription.java,v 1.6 2003/06/04 21:09:09 taqua Exp $
+ * $Id: ImageURLFieldTemplateDescription.java,v 1.7 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -56,7 +56,7 @@ public class ImageURLFieldTemplateDescription extends AbstractTemplateDescriptio
    *
    * @param name  the name.
    */
-  public ImageURLFieldTemplateDescription(String name)
+  public ImageURLFieldTemplateDescription(final String name)
   {
     super(name, ImageURLFieldTemplate.class, true);
   }
@@ -68,13 +68,13 @@ public class ImageURLFieldTemplateDescription extends AbstractTemplateDescriptio
    */
   public Object createObject()
   {
-    ImageURLFieldTemplate t = (ImageURLFieldTemplate) super.createObject();
+    final ImageURLFieldTemplate t = (ImageURLFieldTemplate) super.createObject();
     if (t.getBaseURL() == null)
     {
-      String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
+      final String baseURL = getConfig().getConfigProperty(Parser.CONTENTBASE_KEY);
       try
       {
-        URL bURL = new URL(baseURL);
+        final URL bURL = new URL(baseURL);
         t.setBaseURL(bURL);
       }
       catch (Exception e)

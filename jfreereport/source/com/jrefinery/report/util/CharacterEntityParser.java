@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.13 2003/06/12 23:17:16 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.14 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -61,15 +61,15 @@ public class CharacterEntityParser
    *
    * @param characterEntities the entities used for the parser
    */
-  protected CharacterEntityParser(Properties characterEntities)
+  protected CharacterEntityParser(final Properties characterEntities)
   {
     entities = characterEntities;
     reverse = new Properties();
-    Enumeration enum = entities.keys();
+    final Enumeration enum = entities.keys();
     while (enum.hasMoreElements())
     {
-      String key = (String) enum.nextElement();
-      String value = entities.getProperty(key);
+      final String key = (String) enum.nextElement();
+      final String value = entities.getProperty(key);
       reverse.setProperty(value, key);
     }
   }
@@ -93,7 +93,7 @@ public class CharacterEntityParser
    */
   public static CharacterEntityParser createXMLEntityParser()
   {
-    Properties entities = new Properties();
+    final Properties entities = new Properties();
     entities.setProperty("amp", "&");
     entities.setProperty("quot", "\"");
     entities.setProperty("lt", "<");
@@ -128,9 +128,9 @@ public class CharacterEntityParser
    * @param key the entity name
    * @return the character as string with a length of 1
    */
-  private String lookupCharacter(String key)
+  private String lookupCharacter(final String key)
   {
-    String val = getEntities().getProperty(key);
+    final String val = getEntities().getProperty(key);
     if (val == null)
     {
       return key;
@@ -147,9 +147,9 @@ public class CharacterEntityParser
    * @param character the character that should be translated into the entity
    * @return the entity name for the character or the untranslated character.
    */
-  private String lookupEntity(String character)
+  private String lookupEntity(final String character)
   {
-    String val = getReverse().getProperty(character);
+    final String val = getReverse().getProperty(character);
     if (val == null)
     {
       return null;
@@ -167,13 +167,13 @@ public class CharacterEntityParser
    * @param value the original string
    * @return the encoded string.
    */
-  public String encodeEntities(String value)
+  public String encodeEntities(final String value)
   {
-    StringBuffer writer = new StringBuffer();
+    final StringBuffer writer = new StringBuffer();
     for (int i = 0; i < value.length(); i++)
     {
-      String character = String.valueOf(value.charAt(i));
-      String lookup = lookupEntity(character);
+      final String character = String.valueOf(value.charAt(i));
+      final String lookup = lookupEntity(character);
       if (lookup == null)
       {
         writer.append(character);
@@ -199,13 +199,13 @@ public class CharacterEntityParser
     int subEnd;
     int subValue;
     String replaceString = null;
-    StringBuffer bufValue = new StringBuffer(value);
+    final StringBuffer bufValue = new StringBuffer(value);
 
     while (((subStart = value.indexOf("&", parserIndex)) != -1)
         && (subEnd = value.indexOf(";", parserIndex)) != -1)
     {
       parserIndex = subStart;
-      StringBuffer buf = new StringBuffer();
+      final StringBuffer buf = new StringBuffer();
       buf.append(bufValue.substring(subStart + 1, subEnd));
       if (buf.charAt(0) == '#')
       {
@@ -213,7 +213,7 @@ public class CharacterEntityParser
         subValue = Integer.parseInt(buf.toString());
         if ((subValue >= 1) && (subValue <= 65536))
         {
-          char[] chr = new char[1];
+          final char[] chr = new char[1];
           chr[0] = (char) subValue;
           replaceString = new String(chr);
         }

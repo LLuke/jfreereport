@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriterCursor.java,v 1.4 2003/02/25 15:42:33 taqua Exp $
+ * $Id: TableWriterCursor.java,v 1.5 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class TableWriterCursor
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance(float amount)
+  public void advance(final float amount)
   {
     if (amount < 0)
     {
@@ -77,7 +77,7 @@ public class TableWriterCursor
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo(float amount)
+  public void advanceTo(final float amount)
   {
     if (amount < y)
     {

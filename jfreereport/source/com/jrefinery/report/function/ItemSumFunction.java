@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.30 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.31 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -117,7 +117,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    *
    * @param name The function name.
    */
-  public ItemSumFunction(String name)
+  public ItemSumFunction(final String name)
   {
     this();
     setName(name);
@@ -131,7 +131,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    * @param event Information about the event.
    *
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     this.sum = ZERO;
   }
@@ -142,7 +142,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    *
    * @param event Information about the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event))
     {
@@ -168,7 +168,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    *
    * @param name  the group name (null permitted).
    */
-  public void setGroup(String name)
+  public void setGroup(final String name)
   {
     setProperty(GROUP_PROPERTY, name);
   }
@@ -192,7 +192,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     if (field == null)
     {
@@ -210,11 +210,11 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
-    Object fieldValue = getDataRow().get(getField());
+    final Object fieldValue = getDataRow().get(getField());
     datasource.setValue(fieldValue);
-    Number n = (Number) parser.getValue();
+    final Number n = (Number) parser.getValue();
     if (n == null)
     {
       Log.error("ItemSumFunction.advanceItems(): problem adding number.");
@@ -244,7 +244,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   public void initialize()
       throws FunctionInitializeException
   {
-    String fieldProp = getProperty(FIELD_PROPERTY);
+    final String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
@@ -259,7 +259,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
    */
   public Expression getInstance()
   {
-    ItemSumFunction function = (ItemSumFunction) super.getInstance();
+    final ItemSumFunction function = (ItemSumFunction) super.getInstance();
     function.sum = ZERO;
     function.datasource = new StaticDataSource();
     function.parser = new DecimalFormatParser();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.14 2003/05/02 12:40:35 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.15 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class PhysicalPage
    * @param pf  the page format.
    * @param bounds  the bounds.
    */
-  public PhysicalPage(PageFormat pf, Rectangle2D bounds)
+  public PhysicalPage(final PageFormat pf, final Rectangle2D bounds)
   {
     bandOperations = new ArrayList();
     pageFormat = pf;
@@ -88,7 +88,7 @@ public class PhysicalPage
    *
    * @param op  the operation.
    */
-  public void addOperation(PhysicalOperation op)
+  public void addOperation(final PhysicalOperation op)
   {
     bandOperations.add(op);
   }
@@ -100,7 +100,7 @@ public class PhysicalPage
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public void write(OutputTarget ot) throws OutputTargetException
+  public void write(final OutputTarget ot) throws OutputTargetException
   {
     ot.beginPage(this);
     PhysicalOperation[] ops = new PhysicalOperation[bandOperations.size()];

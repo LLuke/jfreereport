@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.13 2003/06/23 16:08:27 taqua Exp $
+ * $Id: StylesWriter.java,v 1.14 2003/06/27 14:25:21 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
-  public StylesWriter(ReportWriter reportWriter, int indentLevel)
+  public StylesWriter(final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
     reportStyles = new ArrayList();
@@ -83,17 +83,17 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(Writer writer) throws IOException, ReportWriterException
+  public void write(final Writer writer) throws IOException, ReportWriterException
   {
-    ElementStyleSheet[] styles = collectStyles();
+    final ElementStyleSheet[] styles = collectStyles();
     writeTag(writer, ExtReportHandler.STYLES_TAG);
 
     for (int i = 0; i < styles.length; i++)
     {
-      ElementStyleSheet style = styles[i];
+      final ElementStyleSheet style = styles[i];
       writeTag(writer, StylesHandler.STYLE_TAG, "name", style.getName(), OPEN);
 
-      StyleWriter stW = new StyleWriter(getReportWriter(), style, null, getIndentLevel());
+      final StyleWriter stW = new StyleWriter(getReportWriter(), style, null, getIndentLevel());
       stW.write(writer);
 
       writeCloseTag(writer, StylesHandler.STYLE_TAG);
@@ -108,7 +108,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    */
   private ElementStyleSheet[] collectStyles()
   {
-    JFreeReport report = getReport();
+    final JFreeReport report = getReport();
     collectStylesFromBand(report.getReportHeader());
     collectStylesFromBand(report.getReportFooter());
     collectStylesFromBand(report.getPageHeader());
@@ -116,13 +116,13 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     collectStylesFromBand(report.getItemBand());
     for (int i = 0; i < report.getGroupCount(); i++)
     {
-      Group g = report.getGroup(i);
+      final Group g = report.getGroup(i);
       collectStylesFromBand(g.getHeader());
       collectStylesFromBand(g.getFooter());
     }
 
     //now sort the elements ...
-    ElementStyleSheet[] styles = (ElementStyleSheet[])
+    final ElementStyleSheet[] styles = (ElementStyleSheet[])
         reportStyles.toArray(new ElementStyleSheet[reportStyles.size()]);
 /*
     for (int i = 0; i < styles.length; i++)
@@ -138,20 +138,20 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @param band  the band.
    */
-  private void collectStylesFromBand(Band band)
+  private void collectStylesFromBand(final Band band)
   {
-    ElementStyleSheet bandDefaults = band.getBandDefaults();
+    final ElementStyleSheet bandDefaults = band.getBandDefaults();
 
-    List parents = bandDefaults.getParents();
+    final List parents = bandDefaults.getParents();
     for (int i = 0; i < parents.size(); i++)
     {
-      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      final ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
       addCollectableStyleSheet(es);
     }
 
     collectStylesFromElement(band);
 
-    Element[] elements = band.getElementArray();
+    final Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       if (elements[i] instanceof Band)
@@ -171,14 +171,14 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @param element  the element.
    */
-  private void collectStylesFromElement(Element element)
+  private void collectStylesFromElement(final Element element)
   {
-    ElementStyleSheet elementSheet = element.getStyle();
+    final ElementStyleSheet elementSheet = element.getStyle();
 
-    List parents = elementSheet.getParents();
+    final List parents = elementSheet.getParents();
     for (int i = 0; i < parents.size(); i++)
     {
-      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      final ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
       addCollectableStyleSheet(es);
     }
   }
@@ -189,7 +189,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @param es  the element style sheet.
    */
-  private void addCollectableStyleSheet(ElementStyleSheet es)
+  private void addCollectableStyleSheet(final ElementStyleSheet es)
   {
     if (es == BandDefaultStyleSheet.getBandDefaultStyle())
     {
@@ -204,10 +204,10 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       return;
     }
 
-    List parents = es.getParents();
+    final List parents = es.getParents();
     for (int i = 0; i < parents.size(); i++)
     {
-      ElementStyleSheet parentsheet = (ElementStyleSheet) parents.get(i);
+      final ElementStyleSheet parentsheet = (ElementStyleSheet) parents.get(i);
       addCollectableStyleSheet(parentsheet);
     }
 

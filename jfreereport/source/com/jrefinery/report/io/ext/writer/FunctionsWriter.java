@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.14 2003/06/10 17:14:40 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.15 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param indentLevel the current indention level.
    */
-  public FunctionsWriter(ReportWriter reportWriter, int indentLevel)
+  public FunctionsWriter(final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
     cfc = getReportWriter().getClassFactoryCollector();
@@ -85,7 +85,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @throws ReportWriterException if the report function definition
    * could not be written.
    */
-  public void write(Writer writer)
+  public void write(final Writer writer)
       throws IOException, ReportWriterException
   {
     writeTag(writer, ExtReportHandler.FUNCTIONS_TAG);
@@ -105,41 +105,41 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeExpressions(Writer writer, ExpressionCollection exp)
+  public void writeExpressions(final Writer writer, final ExpressionCollection exp)
       throws IOException
   {
     for (int i = 0; i < exp.size(); i++)
     {
-      Expression expression = exp.getExpression(i);
+      final Expression expression = exp.getExpression(i);
       String tagName = FunctionsHandler.EXPRESSION_TAG;
       if (expression instanceof Function)
       {
         tagName = FunctionsHandler.FUNCTION_TAG;
       }
 
-      Properties expressionProperties = expression.getProperties();
+      final Properties expressionProperties = expression.getProperties();
       if (expressionProperties.isEmpty())
       {
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
         properties.setProperty("name", expression.getName());
         properties.setProperty("class", expression.getClass().getName());
         writeTag(writer, tagName, properties, CLOSE);
       }
       else
       {
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
         properties.setProperty("name", expression.getName());
         properties.setProperty("class", expression.getClass().getName());
         writeTag(writer, tagName, properties, OPEN);
 
-        Enumeration enum = expressionProperties.keys();
+        final Enumeration enum = expressionProperties.keys();
         if (enum.hasMoreElements())
         {
           writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
           while (enum.hasMoreElements())
           {
-            String key = (String) enum.nextElement();
-            String value = expressionProperties.getProperty(key);
+            final String key = (String) enum.nextElement();
+            final String value = expressionProperties.getProperty(key);
             if (value != null)
             {
               writeTag(writer, "property", "name", key, OPEN);
@@ -163,17 +163,17 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  private void writePropertyRefs(Writer writer)
+  private void writePropertyRefs(final Writer writer)
       throws IOException, ReportWriterException
   {
-    ReportProperties reportProperties = getReport().getProperties();
-    Iterator enum = reportProperties.keys();
+    final ReportProperties reportProperties = getReport().getProperties();
+    final Iterator enum = reportProperties.keys();
     while (enum.hasNext())
     {
-      String name = (String) enum.next();
+      final String name = (String) enum.next();
       if (reportProperties.isMarked(name))
       {
-        Object value = reportProperties.get(name);
+        final Object value = reportProperties.get(name);
         if (value == null)
         {
           writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);
@@ -191,7 +191,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
           }
           else
           {
-            Properties properties = new Properties();
+            final Properties properties = new Properties();
             properties.setProperty("name", name);
             properties.setProperty("class", od.getObjectClass().getName());
             writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, properties, OPEN);
@@ -213,7 +213,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  private void writeObjectDescription(Writer writer, ObjectDescription od, Object o)
+  private void writeObjectDescription(final Writer writer, final ObjectDescription od, final Object o)
       throws IOException, ReportWriterException
   {
     try
@@ -227,7 +227,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
     if (isBasicObject(od))
     {
-      String value = (String) od.getParameter("value");
+      final String value = (String) od.getParameter("value");
       if (value != null)
       {
         writer.write(normalize(value));
@@ -235,7 +235,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
     else
     {
-      ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
+      final ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
       objectWriter.write(writer);
     }
 
@@ -249,15 +249,15 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  private boolean isBasicObject(ObjectDescription od)
+  private boolean isBasicObject(final ObjectDescription od)
   {
-    Iterator odNames = od.getParameterNames();
+    final Iterator odNames = od.getParameterNames();
     if (odNames.hasNext() == false)
     {
       return false;
     }
 
-    String param = (String) odNames.next();
+    final String param = (String) odNames.next();
     if (odNames.hasNext() == true)
     {
       return false;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.6 2003/05/02 12:40:10 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.7 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -80,8 +80,8 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      * @param paramName  the parameter name.
      * @param paramType  the parameter type.
      */
-    public ObjectDescriptionRow(ClassFactory classFactory, Class object, String paramName,
-                                Class paramType)
+    public ObjectDescriptionRow(final ClassFactory classFactory, final Class object, final String paramName,
+                                final Class paramType)
     {
       this.classFactory = classFactory;
       this.object = object;
@@ -149,10 +149,10 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      * @throws ClassCastException if the arguments' types prevent them from being compared by
      *         this Comparator.
      */
-    public int compare(Object o1, Object o2)
+    public int compare(final Object o1, final Object o2)
     {
-      Class c1 = (Class) o1;
-      Class c2 = (Class) o2;
+      final Class c1 = (Class) o1;
+      final Class c2 = (Class) o2;
       return c1.getName().compareTo(c2.getName());
     }
   }
@@ -174,7 +174,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the class factories.
    */
-  public ObjectReferenceTableModel(ClassFactoryCollector cf)
+  public ObjectReferenceTableModel(final ClassFactoryCollector cf)
   {
     rows = new ArrayList();
     addClassFactoryCollector(cf);
@@ -185,12 +185,12 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the class factory collector.
    */
-  private void addClassFactoryCollector(ClassFactoryCollector cf)
+  private void addClassFactoryCollector(final ClassFactoryCollector cf)
   {
-    Iterator it = cf.getFactories();
+    final Iterator it = cf.getFactories();
     while (it.hasNext())
     {
-      ClassFactory cfact = (ClassFactory) it.next();
+      final ClassFactory cfact = (ClassFactory) it.next();
       if (cfact instanceof ClassFactoryCollector)
       {
         addClassFactoryCollector((ClassFactoryCollector) cfact);
@@ -207,14 +207,14 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    *
    * @param cf  the class factory.
    */
-  private void addClassFactory(ClassFactory cf)
+  private void addClassFactory(final ClassFactory cf)
   {
     Iterator it = cf.getRegisteredClasses();
-    ArrayList factories = new ArrayList();
+    final ArrayList factories = new ArrayList();
 
     while (it.hasNext())
     {
-      Class c = (Class) it.next();
+      final Class c = (Class) it.next();
       factories.add(c);
     }
 
@@ -223,10 +223,10 @@ public class ObjectReferenceTableModel extends AbstractTableModel
 
     while (it.hasNext())
     {
-      Class c = (Class) it.next();
-      ObjectDescription od = cf.getDescriptionForClass(c);
+      final Class c = (Class) it.next();
+      final ObjectDescription od = cf.getDescriptionForClass(c);
       Iterator itNames = od.getParameterNames();
-      ArrayList nameList = new ArrayList();
+      final ArrayList nameList = new ArrayList();
       while (itNames.hasNext())
       {
         nameList.add(itNames.next());
@@ -236,7 +236,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
       itNames = nameList.iterator();
       while (itNames.hasNext())
       {
-        String name = (String) itNames.next();
+        final String name = (String) itNames.next();
         rows.add(new ObjectDescriptionRow(cf, c, name, od.getParameterDefinition(name)));
       }
     }
@@ -275,7 +275,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(int column)
+  public String getColumnName(final int column)
   {
     return COLUMN_NAMES[column];
   }
@@ -286,7 +286,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    * @param columnIndex  the column being queried
    * @return the Object.class
    */
-  public Class getColumnClass(int columnIndex)
+  public Class getColumnClass(final int columnIndex)
   {
     return String.class;
   }
@@ -300,9 +300,9 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    *
    * @return  the value Object at the specified cell
    */
-  public Object getValueAt(int rowIndex, int columnIndex)
+  public Object getValueAt(final int rowIndex, final int columnIndex)
   {
-    ObjectDescriptionRow or = (ObjectDescriptionRow) rows.get(rowIndex);
+    final ObjectDescriptionRow or = (ObjectDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)
     {
       case 0:

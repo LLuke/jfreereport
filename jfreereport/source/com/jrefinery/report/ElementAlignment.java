@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementAlignment.java,v 1.9 2003/05/02 12:39:02 taqua Exp $
+ * $Id: ElementAlignment.java,v 1.10 2003/06/27 14:25:15 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class ElementAlignment implements Serializable
    * @param name  the alignment name.
    * @param oldAlignment  the old alignment code.
    */
-  private ElementAlignment(String name, int oldAlignment)
+  private ElementAlignment(final String name, final int oldAlignment)
   {
     myName = name;
     this.oldAlignment = oldAlignment;
@@ -118,7 +118,7 @@ public class ElementAlignment implements Serializable
    *
    * @return A boolean.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {
@@ -205,7 +205,7 @@ public class ElementAlignment implements Serializable
    * @throws IllegalArgumentException if the supplied code does not match one
    *                                  of the predefined constant values.
    */
-  public static ElementAlignment translateHorizontalAlignment(int alignment)
+  public static ElementAlignment translateHorizontalAlignment(final int alignment)
   {
     if (alignment == LEFT.getOldAlignment())
     {
@@ -236,7 +236,7 @@ public class ElementAlignment implements Serializable
    * @throws IllegalArgumentException if the supplied code does not match one
    *                                  of the predefined constant values.
    */
-  public static ElementAlignment translateVerticalAlignment(int alignment)
+  public static ElementAlignment translateVerticalAlignment(final int alignment)
   {
     if (alignment == TOP.getOldAlignment())
     {

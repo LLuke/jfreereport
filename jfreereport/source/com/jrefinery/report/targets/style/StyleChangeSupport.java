@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleChangeSupport.java,v 1.5 2003/06/19 18:44:11 taqua Exp $
+ * $Id: StyleChangeSupport.java,v 1.6 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class StyleChangeSupport
    *
    * @param source  the source of change events.
    */
-  public StyleChangeSupport(ElementStyleSheet source)
+  public StyleChangeSupport(final ElementStyleSheet source)
   {
     this.source = source;
   }
@@ -67,7 +67,7 @@ public class StyleChangeSupport
    *
    * @param l  the listener.
    */
-  public void addListener(StyleChangeListener l)
+  public void addListener(final StyleChangeListener l)
   {
     if (l == null)
     {
@@ -85,7 +85,7 @@ public class StyleChangeSupport
    *
    * @param l  the listener.
    */
-  public void removeListener(StyleChangeListener l)
+  public void removeListener(final StyleChangeListener l)
   {
     if (l == null)
     {
@@ -104,7 +104,7 @@ public class StyleChangeSupport
    * @param key  the style key.
    * @param value  the new style value.
    */
-  public void fireStyleChanged(StyleKey key, Object value)
+  public void fireStyleChanged(final StyleKey key, final Object value)
   {
     if (listeners == null)
     {
@@ -114,8 +114,8 @@ public class StyleChangeSupport
 
     for (int i = 0; i < listeners.size(); i++)
     {
-      WeakReference ref = (WeakReference) listeners.get(i);
-      StyleChangeListener l = (StyleChangeListener) ref.get();
+      final WeakReference ref = (WeakReference) listeners.get(i);
+      final StyleChangeListener l = (StyleChangeListener) ref.get();
       if (l != null)
       {
         l.styleChanged(source, key, value);
@@ -140,7 +140,7 @@ public class StyleChangeSupport
    *
    * @param key  the style key.
    */
-  public void fireStyleRemoved(StyleKey key)
+  public void fireStyleRemoved(final StyleKey key)
   {
     if (listeners == null)
     {
@@ -150,8 +150,8 @@ public class StyleChangeSupport
 
     for (int i = 0; i < listeners.size(); i++)
     {
-      WeakReference ref = (WeakReference) listeners.get(i);
-      StyleChangeListener l = (StyleChangeListener) ref.get();
+      final WeakReference ref = (WeakReference) listeners.get(i);
+      final StyleChangeListener l = (StyleChangeListener) ref.get();
       if (l != null)
       {
         l.styleRemoved(source, key);

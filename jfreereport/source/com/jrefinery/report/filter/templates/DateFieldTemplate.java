@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFieldTemplate.java,v 1.5 2003/05/02 12:39:44 taqua Exp $
+ * $Id: DateFieldTemplate.java,v 1.6 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -89,7 +89,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
    *
    * @param format  the format string.
    */
-  public void setFormat(String format)
+  public void setFormat(final String format)
   {
     getDateFilter().setFormatString(format);
   }
@@ -109,7 +109,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
    *
    * @param field  the field name.
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     getDataRowDataSource().setDataSourceColumnName(field);
   }
@@ -129,7 +129,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
    *
    * @param nullValue  the string that represents <code>null</code> values.
    */
-  public void setNullValue(String nullValue)
+  public void setNullValue(final String nullValue)
   {
     getStringFilter().setNullValue(nullValue);
   }
@@ -149,7 +149,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
    *
    * @param dateFormat  the date formatter.
    */
-  public void setDateFormat(SimpleDateFormat dateFormat)
+  public void setDateFormat(final SimpleDateFormat dateFormat)
   {
     getDateFilter().setFormatter(dateFormat);
   }
@@ -161,7 +161,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     getDataRowDataSource().connectDataRow(row);
   }
@@ -176,7 +176,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     getDataRowDataSource().disconnectDataRow(row);
   }
@@ -200,7 +200,7 @@ public class DateFieldTemplate extends AbstractTemplate implements DataRowConnec
    */
   public Object clone() throws CloneNotSupportedException
   {
-    DateFieldTemplate template = (DateFieldTemplate) super.clone();
+    final DateFieldTemplate template = (DateFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
     template.dateFilter = (SimpleDateFormatFilter) template.stringFilter.getDataSource();
     template.dataRowDataSource = (DataRowDataSource) template.dateFilter.getDataSource();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.17 2003/06/19 18:44:09 taqua Exp $
+ * $Id: PageFunction.java,v 1.18 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class PageFunction extends AbstractFunction
    *
    * @param name  the function name.
    */
-  public PageFunction(String name)
+  public PageFunction(final String name)
   {
     setName(name);
   }
@@ -96,7 +96,7 @@ public class PageFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     if (isGroupStarted)
     {
@@ -114,7 +114,7 @@ public class PageFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event)
+  public void pageCanceled(final ReportEvent event)
   {
     if (isIgnorePageCancelEvents())
     {
@@ -129,15 +129,15 @@ public class PageFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     if (getGroup() == null)
     {
       return;
     }
 
-    ReportState state = event.getState();
-    Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
+    final ReportState state = event.getState();
+    final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
       isGroupStarted = true;
@@ -149,7 +149,7 @@ public class PageFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     this.setPage(getStartPage() - 1);
   }
@@ -202,7 +202,7 @@ public class PageFunction extends AbstractFunction
    *
    * @param group  the group name.
    */
-  public void setGroup(String group)
+  public void setGroup(final String group)
   {
     setProperty("group", group);
   }
@@ -244,7 +244,7 @@ public class PageFunction extends AbstractFunction
    *
    * @param page  the page.
    */
-  protected void setPage(int page)
+  protected void setPage(final int page)
   {
     this.page = page;
   }

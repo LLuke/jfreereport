@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GeneralPathObjectDescription.java,v 1.3 2003/05/14 22:26:38 taqua Exp $
+ * $Id: GeneralPathObjectDescription.java,v 1.4 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
    *
    * @param c the registered base class, an instance of shape.
    */
-  public GeneralPathObjectDescription(Class c)
+  public GeneralPathObjectDescription(final Class c)
   {
     super(c);
     if (Shape.class.isAssignableFrom(c) == false)
@@ -101,23 +101,23 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
    */
   public Object createObject()
   {
-    int wRule = parseWindingRule();
+    final int wRule = parseWindingRule();
     if (wRule == -1)
     {
       return null;
     }
 
-    PathIteratorSegment[] segments = (PathIteratorSegment[]) getParameter(SEGMENTS_NAME);
+    final PathIteratorSegment[] segments = (PathIteratorSegment[]) getParameter(SEGMENTS_NAME);
     if (segments == null)
     {
       return null;
     }
 
-    GeneralPath path = new GeneralPath();
+    final GeneralPath path = new GeneralPath();
     path.setWindingRule(wRule);
     for (int i = 0; i < segments.length; i++)
     {
-      int segmentType = segments[i].getSegmentType();
+      final int segmentType = segments[i].getSegmentType();
       switch (segmentType)
       {
         case PathIterator.SEG_CLOSE:
@@ -162,7 +162,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
    */
   private int parseWindingRule()
   {
-    String windingRule = (String) getParameter(WINDING_RULE_NAME);
+    final String windingRule = (String) getParameter(WINDING_RULE_NAME);
     int wRule = -1;
     if (windingRule == null)
     {
@@ -186,15 +186,15 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
    *
    * @throws ObjectFactoryException if the object is not an instance of <code>Float</code>.
    */
-  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  public void setParameterFromObject(final Object o) throws ObjectFactoryException
   {
     if (getObjectClass().isAssignableFrom(o.getClass()) == false)
     {
       throw new ObjectFactoryException("Class is not assignable");
     }
 
-    Shape s = (Shape) o;
-    PathIterator pi = s.getPathIterator(AffineTransform.getTranslateInstance(0, 0));
+    final Shape s = (Shape) o;
+    final PathIterator pi = s.getPathIterator(AffineTransform.getTranslateInstance(0, 0));
     if (pi.getWindingRule() == PathIterator.WIND_EVEN_ODD)
     {
       setParameter(WINDING_RULE_NAME, WINDING_RULE_EVEN_ODD);
@@ -204,12 +204,12 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
       setParameter(WINDING_RULE_NAME, WINDING_RULE_NON_ZERO);
     }
 
-    float[] points = new float[MAX_POINTS];
-    ArrayList segments = new ArrayList();
+    final float[] points = new float[MAX_POINTS];
+    final ArrayList segments = new ArrayList();
     while (pi.isDone() == false)
     {
-      int type = pi.currentSegment(points);
-      PathIteratorSegment seg = new PathIteratorSegment();
+      final int type = pi.currentSegment(points);
+      final PathIteratorSegment seg = new PathIteratorSegment();
       switch (type)
       {
         case PathIterator.SEG_CLOSE:

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTemplateDescription.java,v 1.6 2003/04/24 18:08:52 taqua Exp $
+ * $Id: AbstractTemplateDescription.java,v 1.7 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -59,7 +59,7 @@ public abstract class AbstractTemplateDescription
    * @param template  the template class.
    * @param init  initialise?
    */
-  public AbstractTemplateDescription(String name, Class template, boolean init)
+  public AbstractTemplateDescription(final String name, final Class template, final boolean init)
   {
     super(template, init);
     this.name = name;
@@ -80,7 +80,7 @@ public abstract class AbstractTemplateDescription
    *
    * @param name  the name (<code>null</code> not allowed).
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     if (name == null)
     {

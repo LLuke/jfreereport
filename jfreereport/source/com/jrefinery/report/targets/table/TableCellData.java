@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellData.java,v 1.7 2003/04/08 14:33:09 mungady Exp $
+ * $Id: TableCellData.java,v 1.8 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public abstract class TableCellData
    *
    * @param outerBounds the bounds (<code>null</code> not permitted).
    */
-  public TableCellData(Rectangle2D outerBounds)
+  public TableCellData(final Rectangle2D outerBounds)
   {
     if (outerBounds == null)
     {

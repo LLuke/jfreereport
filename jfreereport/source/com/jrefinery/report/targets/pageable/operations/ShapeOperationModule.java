@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.13 2003/04/09 15:52:54 mungady Exp $
+ * $Id: ShapeOperationModule.java,v 1.14 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -75,27 +75,27 @@ public class ShapeOperationModule extends OperationModule
    * @param bounds  the bounds.
    *
    */
-  public void createOperations(PhysicalOperationsCollector col, Element e, Content value,
-                               Rectangle2D bounds)
+  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
+                               final Rectangle2D bounds)
   {
-    Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
-    Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    final Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
+    final Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
-    boolean shouldDraw = e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE);
-    boolean shouldFill = e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE);
+    final boolean shouldDraw = e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE);
+    final boolean shouldFill = e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE);
 
     if (shouldFill == false && shouldDraw == false)
     {
       return;
     }
 
-    ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
+    final ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
     if (sc == null)
     {
       return;
     }
 
-    Shape s = sc.getShape();
+    final Shape s = sc.getShape();
     col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
     col.addOperation(new PhysicalOperation.SetStrokeOperation(stroke));
     col.addOperation(new PhysicalOperation.SetPaintOperation(paint));

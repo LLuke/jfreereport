@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.7 2003/04/09 15:55:14 mungady Exp $
+ * $Id: WaitingImageObserver.java,v 1.8 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,7 +77,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    *
    * @throws NullPointerException if the given image is null.
    */
-  public WaitingImageObserver(Image image)
+  public WaitingImageObserver(final Image image)
   {
     if (image == null)
     {
@@ -106,12 +106,12 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    *            image is completely loaded; <code>true</code> otherwise.
    */
   public boolean imageUpdate(
-      Image img,
-      int infoflags,
-      int x,
-      int y,
-      int width,
-      int height)
+      final Image img,
+      final int infoflags,
+      final int x,
+      final int y,
+      final int width,
+      final int height)
   {
     if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS)
     {
@@ -133,8 +133,8 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    */
   public void waitImageLoaded()
   {
-    BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-    Graphics g = img.getGraphics();
+    final BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+    final Graphics g = img.getGraphics();
 
     while (lock)
     {
@@ -162,7 +162,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    */
   public Object clone() throws CloneNotSupportedException
   {
-    WaitingImageObserver obs = (WaitingImageObserver) super.clone();
+    final WaitingImageObserver obs = (WaitingImageObserver) super.clone();
     return obs;
   }
 

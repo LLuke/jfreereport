@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: NullOutputStream.java,v 1.7 2003/02/23 20:39:29 taqua Exp $
+ * $Id: NullOutputStream.java,v 1.8 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class NullOutputStream extends OutputStream
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void write(int i) throws IOException
+  public void write(final int i) throws IOException
   {
     // no i wont do anything here ...
   }
@@ -70,7 +70,7 @@ public class NullOutputStream extends OutputStream
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void write(byte[] bytes) throws IOException
+  public void write(final byte[] bytes) throws IOException
   {
     // no i wont do anything here ...
   }
@@ -84,7 +84,7 @@ public class NullOutputStream extends OutputStream
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void write(byte[] bytes, int off, int len) throws IOException
+  public void write(final byte[] bytes, final int off, final int len) throws IOException
   {
     // no i wont do anything here ...
   }

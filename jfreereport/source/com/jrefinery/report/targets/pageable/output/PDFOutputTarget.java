@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.42 2003/06/27 14:25:24 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.43 2003/06/27 18:46:25 taqua Exp $
  *
  * Changes
  * -------
@@ -211,7 +211,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param pageFormat  the page format.
    * @param embedFonts  embed fonts?
    */
-  public PDFOutputTarget(OutputStream out, PageFormat pageFormat, boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out, final PageFormat pageFormat, final boolean embedFonts)
   {
     this(out, pageFormat, pageFormat, embedFonts);
   }
@@ -223,7 +223,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param logPage  the logical page.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(OutputStream out, LogicalPage logPage, boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out, final LogicalPage logPage, final boolean embedFonts)
   {
     super(logPage);
     this.out = out;
@@ -239,8 +239,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param physPageFormat  the physical page format.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(OutputStream out, PageFormat logPageFormat, PageFormat physPageFormat,
-                         boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out, final PageFormat logPageFormat, final PageFormat physPageFormat,
+                         final boolean embedFonts)
   {
     this(out, new LogicalPageImpl(logPageFormat, physPageFormat), embedFonts);
   }
@@ -293,7 +293,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public void setFont(FontDefinition font) throws OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     if (font == null)
     {
@@ -323,22 +323,22 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there was a problem drawing the image to the target.
    */
-  public void drawImage(ImageReference imageRef) throws OutputTargetException
+  public void drawImage(final ImageReference imageRef) throws OutputTargetException
   {
     try
     {
-      Rectangle2D bounds = getInternalOperationBounds();
-      Rectangle2D imageBounds = imageRef.getBoundsScaled();
+      final Rectangle2D bounds = getInternalOperationBounds();
+      final Rectangle2D imageBounds = imageRef.getBoundsScaled();
 
-      float x = (float) (bounds.getX());
-      float y = (float) (bounds.getY());
+      final float x = (float) (bounds.getX());
+      final float y = (float) (bounds.getY());
 
-      Image image = getImage(imageRef);
+      final Image image = getImage(imageRef);
       image.setAbsolutePosition(x, (float) (getPageHeight() - y - bounds.getHeight()));
       image.scaleAbsolute((float) imageBounds.getWidth(),
           (float) imageBounds.getHeight());
 
-      PdfContentByte cb = this.writer.getDirectContent();
+      final PdfContentByte cb = this.writer.getDirectContent();
 
       cb.rectangle((float) (imageBounds.getX() + x),
           (float) (getPageHeight() - imageBounds.getY() - y - bounds.getHeight()),
@@ -381,14 +381,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *                           ImageReference.
    * @throws IOException if the image could not be read.
    */
-  private Image getImage(ImageReference imageRef) throws DocumentException, IOException
+  private Image getImage(final ImageReference imageRef) throws DocumentException, IOException
   {
-    Rectangle2D bounds = getInternalOperationBounds();
-    Rectangle2D imageBounds = imageRef.getBoundsScaled();
+    final Rectangle2D bounds = getInternalOperationBounds();
+    final Rectangle2D imageBounds = imageRef.getBoundsScaled();
 
     try
     {
-      Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
+      final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
           (float) bounds.getHeight());
       if ((imageRef.getSourceURL() != null) && (drawArea.contains(imageBounds)))
       {
@@ -407,12 +407,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
     if (imageRef.getImage() != null)
     {
       // since version 0.99 iText supports Alpha-PNGs
-      WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
+      final WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
       obs.waitImageLoaded();
 
-      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.ENCODE_ALPHA,
+      final PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.ENCODE_ALPHA,
           PngEncoder.FILTER_NONE, 5);
-      byte[] data = encoder.pngEncode();
+      final byte[] data = encoder.pngEncode();
       return Image.getInstance(data);
     }
 
@@ -426,7 +426,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the corrected value.
    */
-  private float getCorrectedY(float y)
+  private float getCorrectedY(final float y)
   {
     return getPageHeight() - y;
   }
@@ -437,24 +437,24 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void drawShape(Shape shape)
+  public void drawShape(final Shape shape)
   {
-    Rectangle2D bounds = getInternalOperationBounds();
+    final Rectangle2D bounds = getInternalOperationBounds();
 
-    float ycorr = (float) bounds.getY();
-    float xcorr = (float) bounds.getX();
+    final float ycorr = (float) bounds.getY();
+    final float xcorr = (float) bounds.getX();
 
-    PathIterator pit = shape.getPathIterator(null);
-    PdfContentByte cb = this.writer.getDirectContent();
+    final PathIterator pit = shape.getPathIterator(null);
+    final PdfContentByte cb = this.writer.getDirectContent();
 
     cb.newPath();
     cb.moveTo(xcorr, getCorrectedY(ycorr));
 
-    float[] params = new float[6];
+    final float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
     while (pit.isDone() == false)
     {
-      int cmd = pit.currentSegment(params);
+      final int cmd = pit.currentSegment(params);
       params[1] = getCorrectedY(params[1] + ycorr);
       params[3] = getCorrectedY(params[3] + ycorr);
       params[5] = getCorrectedY(params[5] + ycorr);
@@ -505,26 +505,26 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to fill.
    */
-  public void fillShape(Shape shape)
+  public void fillShape(final Shape shape)
   {
-    Rectangle2D bounds = getInternalOperationBounds();
+    final Rectangle2D bounds = getInternalOperationBounds();
 
-    float ycorr = (float) bounds.getY();
-    float xcorr = (float) bounds.getX();
+    final float ycorr = (float) bounds.getY();
+    final float xcorr = (float) bounds.getX();
 
-    PathIterator pit = shape.getPathIterator(null);
-    PdfContentByte cb = this.writer.getDirectContent();
+    final PathIterator pit = shape.getPathIterator(null);
+    final PdfContentByte cb = this.writer.getDirectContent();
 
     cb.newPath();
     cb.moveTo(xcorr, getCorrectedY(ycorr));
 
-    int windingRule = pit.getWindingRule();
+    final int windingRule = pit.getWindingRule();
 
-    float[] params = new float[6];
+    final float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
     while (pit.isDone() == false)
     {
-      int cmd = pit.currentSegment(params);
+      final int cmd = pit.currentSegment(params);
       params[1] = getCorrectedY(params[1] + ycorr);
       params[3] = getCorrectedY(params[3] + ycorr);
       params[5] = getCorrectedY(params[5] + ycorr);
@@ -601,21 +601,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public void open() throws OutputTargetException
   {
 
-    PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
-    float urx = (float) pageFormat.getWidth();
-    float ury = (float) pageFormat.getHeight();
+    final PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
+    final float urx = (float) pageFormat.getWidth();
+    final float ury = (float) pageFormat.getHeight();
 
-    float marginLeft = (float) pageFormat.getImageableX();
-    float marginRight =
+    final float marginLeft = (float) pageFormat.getImageableX();
+    final float marginRight =
         (float) (pageFormat.getWidth()
         - pageFormat.getImageableWidth()
         - pageFormat.getImageableX());
-    float marginTop = (float) pageFormat.getImageableY();
-    float marginBottom =
+    final float marginTop = (float) pageFormat.getImageableY();
+    final float marginBottom =
         (float) (pageFormat.getHeight()
         - pageFormat.getImageableHeight()
         - pageFormat.getImageableY());
-    Rectangle pageSize = new Rectangle(urx, ury);
+    final Rectangle pageSize = new Rectangle(urx, ury);
 
     try
     {
@@ -629,17 +629,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
       writer = PdfWriter.getInstance(getDocument(), out);
       writer.setLinearPageMode();
 
-      String encrypt = getProperty(SECURITY_ENCRYPTION);
+      final String encrypt = getProperty(SECURITY_ENCRYPTION);
 
       if (encrypt != null)
       {
         if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == true
             || encrypt.equals(SECURITY_ENCRYPTION_40BIT) == true)
         {
-          String userpassword = getProperty(SECURITY_USERPASSWORD);
-          String ownerpassword = getProperty(SECURITY_OWNERPASSWORD);
+          final String userpassword = getProperty(SECURITY_USERPASSWORD);
+          final String ownerpassword = getProperty(SECURITY_OWNERPASSWORD);
           //Log.debug ("UserPassword: " + userpassword + " - OwnerPassword: " + ownerpassword);
-          byte[] userpasswordbytes = DocWriter.getISOBytes(userpassword);
+          final byte[] userpasswordbytes = DocWriter.getISOBytes(userpassword);
           byte[] ownerpasswordbytes = DocWriter.getISOBytes(ownerpassword);
           if (ownerpasswordbytes == null)
           {
@@ -653,8 +653,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       /**
        * MetaData can be set when the writer is registered to the document.
        */
-      String title = getProperty(TITLE);
-      String author = getProperty(AUTHOR);
+      final String title = getProperty(TITLE);
+      final String author = getProperty(AUTHOR);
 
       if (title != null)
       {
@@ -684,7 +684,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param format  the physical page.
    */
-  public void beginPage(PhysicalPage format)
+  public void beginPage(final PhysicalPage format)
   {
     if (isOpen() == false)
     {
@@ -715,9 +715,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param value the defaultvalue.
    * @return the true, if the property has the value "true", false otherwise.
    */
-  private boolean getBooleanProperty (String key, boolean value)
+  private boolean getBooleanProperty (final String key, final boolean value)
   {
-    String val = getProperty(key);
+    final String val = getProperty(key);
     if (val == null)
     {
       return value;
@@ -737,14 +737,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   private int getPermissions()
   {
-    boolean allowPrinting = getBooleanProperty(SECURITY_ALLOW_PRINTING, false);
-    boolean allowModifyContents = getBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, false);
-    boolean allowModifyAnnotations = getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
-    boolean allowCopy = getBooleanProperty(SECURITY_ALLOW_COPY, false);
-    boolean allowFillIn = getBooleanProperty(SECURITY_ALLOW_FILLIN, false);
-    boolean allowScreenReaders = getBooleanProperty(SECURITY_ALLOW_SCREENREADERS, false);
-    boolean allowAssembly = getBooleanProperty(SECURITY_ALLOW_ASSEMBLY, false);
-    boolean allowDegradedPrinting = getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
+    final boolean allowPrinting = getBooleanProperty(SECURITY_ALLOW_PRINTING, false);
+    final boolean allowModifyContents = getBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, false);
+    final boolean allowModifyAnnotations = getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
+    final boolean allowCopy = getBooleanProperty(SECURITY_ALLOW_COPY, false);
+    final boolean allowFillIn = getBooleanProperty(SECURITY_ALLOW_FILLIN, false);
+    final boolean allowScreenReaders = getBooleanProperty(SECURITY_ALLOW_SCREENREADERS, false);
+    final boolean allowAssembly = getBooleanProperty(SECURITY_ALLOW_ASSEMBLY, false);
+    final boolean allowDegradedPrinting = getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
 
     int permissions = 0;
     if (allowPrinting)
@@ -799,16 +799,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param text The text to be printed.
    */
-  public void drawString(String text)
+  public void drawString(final String text)
   {
-    Rectangle2D bounds = getInternalOperationBounds();
-    int fontSize = getFont().getFontSize();
+    final Rectangle2D bounds = getInternalOperationBounds();
+    final int fontSize = getFont().getFontSize();
 
-    PdfContentByte cb = this.writer.getDirectContent();
+    final PdfContentByte cb = this.writer.getDirectContent();
     cb.beginText();
     cb.setFontAndSize(this.baseFont, fontSize);
 
-    float y2 = (float) (bounds.getY() + baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
+    final float y2 = (float) (bounds.getY() + baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
     cb.showTextAligned(
         PdfContentByte.ALIGN_LEFT,
         text,
@@ -826,7 +826,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the target.
    */
-  public void setStroke(Stroke stroke) throws OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     if (stroke == null)
     {
@@ -844,8 +844,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
 
     this.awtStroke = stroke;
-    BasicStroke bstroke = (BasicStroke) stroke;
-    PdfContentByte cb = this.writer.getDirectContent();
+    final BasicStroke bstroke = (BasicStroke) stroke;
+    final PdfContentByte cb = this.writer.getDirectContent();
     cb.setLineWidth(bstroke.getLineWidth());
   }
 
@@ -867,7 +867,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if the paint is invalid.
    */
-  public void setPaint(Paint paint) throws OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     if (paint == null)
     {
@@ -886,7 +886,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
 
     this.awtPaint = paint;
-    PdfContentByte cb = this.writer.getDirectContent();
+    final PdfContentByte cb = this.writer.getDirectContent();
 
     cb.setColorStroke((Color) paint);
     cb.setColorFill((Color) paint);
@@ -926,7 +926,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param encoding  the font encoding.
    */
-  public void setFontEncoding(String encoding)
+  public void setFontEncoding(final String encoding)
   {
     if (encoding == null)
     {
@@ -950,7 +950,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param embedFonts  the new flag value.
    */
-  private void setEmbedFonts(boolean embedFonts)
+  private void setEmbedFonts(final boolean embedFonts)
   {
     setProperty(EMBED_FONTS, String.valueOf(embedFonts));
   }
@@ -992,7 +992,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param document  the document (null not permitted).
    */
-  private void setDocument(Document document)
+  private void setDocument(final Document document)
   {
     if (document == null)
     {
@@ -1006,7 +1006,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param config  the configuration.
    */
-  public void configure(ReportConfiguration config)
+  public void configure(final ReportConfiguration config)
   {
     updateProperty(SECURITY_OWNERPASSWORD, config);
     updateProperty(SECURITY_USERPASSWORD, config);
@@ -1034,10 +1034,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param key  the key.
    * @param config  the config.
    */
-  private void updateProperty(String key, ReportConfiguration config)
+  private void updateProperty(final String key, final ReportConfiguration config)
   {
-    String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
-    String propertyValue = getProperty(key, configValue);
+    final String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
+    final String propertyValue = getProperty(key, configValue);
     if (propertyValue != null)
     {
       setProperty(key, propertyValue);
@@ -1050,10 +1050,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param key  the key.
    * @param config  the config.
    */
-  private void updateBooleanProperty(String key, ReportConfiguration config)
+  private void updateBooleanProperty(final String key, final ReportConfiguration config)
   {
-    String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
-    String propertyValue = getProperty(key, configValue);
+    final String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
+    final String propertyValue = getProperty(key, configValue);
     
     if (propertyValue.equalsIgnoreCase("true"))
     {
@@ -1097,7 +1097,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
      * @param font  the font.
      * @param fontSize  the font size.
      */
-    private PDFSizeCalculator(BaseFont font, float fontSize)
+    private PDFSizeCalculator(final BaseFont font, final float fontSize)
     {
       this.baseFont = font;
       this.fontSize = fontSize;
@@ -1112,7 +1112,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
      *
      * @return the width of the given string in 1/72" dpi.
      */
-    public float getStringWidth(String text, int lineStartPos, int endPos)
+    public float getStringWidth(final String text, final int lineStartPos, final int endPos)
     {
       return baseFont.getWidthPoint(text.substring(lineStartPos, endPos), fontSize);
     }
@@ -1145,9 +1145,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font) throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
   {
-    BaseFontRecord record = fontSupport.createBaseFont(font,
+    final BaseFontRecord record = fontSupport.createBaseFont(font,
         font.getFontEncoding(getFontEncoding()),
         false);
     return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
@@ -1158,7 +1158,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param bounds  the bounds.
    */
-  public void setOperationBounds(Rectangle2D bounds)
+  public void setOperationBounds(final Rectangle2D bounds)
   {
     super.setOperationBounds(bounds);
     internalOperationBounds
@@ -1182,7 +1182,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(DrawableContainer drawable)
+  public void drawDrawable(final DrawableContainer drawable)
   {
     // cant be done using Wmf, as Wmf does not support Unicode and Bitmaps... damn
 
@@ -1193,17 +1193,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
 
-    Rectangle2D clipBounds = drawable.getClippingBounds();
+    final Rectangle2D clipBounds = drawable.getClippingBounds();
 
-    Graphics2D target = writer.getDirectContent().createGraphics((float) clipBounds.getWidth(),
+    final Graphics2D target = writer.getDirectContent().createGraphics((float) clipBounds.getWidth(),
         (float) clipBounds.getHeight());
     target.translate(-clipBounds.getX(), -clipBounds.getY());
     target.clip(new Rectangle2D.Float(0, 0,
         (float) clipBounds.getWidth(),
         (float) clipBounds.getHeight()));
 
-    Dimension2D drawableSize = drawable.getDrawableSize();
-    Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
+    final Dimension2D drawableSize = drawable.getDrawableSize();
+    final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
         (float) drawableSize.getWidth(),
         (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.17 2003/02/26 13:58:05 mungady Exp $
+ * $Id: WeakReferenceList.java,v 1.18 2003/06/27 14:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @param maxChildCount  the maximum number of elements.
    */
-  public WeakReferenceList(int maxChildCount)
+  public WeakReferenceList(final int maxChildCount)
   {
     this.maxChilds = maxChildCount;
     this.childs = new Reference[maxChildCount - 1];
@@ -130,7 +130,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the object.
    */
-  public Object get(int index)
+  public Object get(final int index)
   {
     if (isMaster(index))
     {
@@ -138,7 +138,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
     }
     else
     {
-      Reference ref = childs[getChildPos(index)];
+      final Reference ref = childs[getChildPos(index)];
       if (ref == null)
       {
         throw new IllegalStateException("State: " + index);
@@ -160,7 +160,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    * @param index  the index.
    *
    */
-  public void set(Object report, int index)
+  public void set(final Object report, final int index)
   {
     if (isMaster(index))
     {
@@ -179,7 +179,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return a WeakReference for the object o without any ReferenceQueue attached.
    */
-  protected Reference createReference(Object o)
+  protected Reference createReference(final Object o)
   {
     return new WeakReference(o);
   }
@@ -192,7 +192,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return true, if the object was successfully added to the list, false otherwise
    */
-  public boolean add(Object rs)
+  public boolean add(final Object rs)
   {
     if (size == 0)
     {
@@ -223,7 +223,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return true if the index is a master index.
    */
-  protected boolean isMaster(int index)
+  protected boolean isMaster(final int index)
   {
     return index % getMaxChildCount() == 0;
   }
@@ -235,7 +235,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the internal storage index.
    */
-  protected int getChildPos(int index)
+  protected int getChildPos(final int index)
   {
     return index % getMaxChildCount() - 1;
   }
@@ -257,10 +257,10 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @throws IOException if there is an I/O error.
    */
-  private void writeObject(java.io.ObjectOutputStream out)
+  private void writeObject(final java.io.ObjectOutputStream out)
       throws IOException
   {
-    Reference[] orgChilds = childs;
+    final Reference[] orgChilds = childs;
     try
     {
       childs = null;
@@ -280,7 +280,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    * @throws IOException if there is an I/O error.
    * @throws ClassNotFoundException if a serialized class is not defined on this system.
    */
-  private void readObject(java.io.ObjectInputStream in)
+  private void readObject(final java.io.ObjectInputStream in)
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();

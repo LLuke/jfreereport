@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.5 2003/04/24 18:08:52 taqua Exp $
+ * $Id: TemplateClassFactory.java,v 1.6 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -68,7 +68,7 @@ public class TemplateClassFactory extends ClassFactoryImpl
    *
    * @param td  the template description.
    */
-  private void addTemplate(TemplateDescription td)
+  private void addTemplate(final TemplateDescription td)
   {
     registerClass(td.getObjectClass(), td);
   }

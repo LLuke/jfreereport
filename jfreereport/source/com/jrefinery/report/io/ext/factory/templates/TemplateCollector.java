@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollector.java,v 1.8 2003/06/04 21:09:09 taqua Exp $
+ * $Id: TemplateCollector.java,v 1.9 2003/06/27 14:25:19 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -67,7 +67,7 @@ public class TemplateCollector extends TemplateCollection
    *
    * @param tc  the template collection.
    */
-  public void addTemplateCollection(TemplateCollection tc)
+  public void addTemplateCollection(final TemplateCollection tc)
   {
     factories.add(tc);
     if (getConfig() != null)
@@ -93,12 +93,12 @@ public class TemplateCollector extends TemplateCollection
    *
    * @return The template description.
    */
-  public TemplateDescription getTemplate(String name)
+  public TemplateDescription getTemplate(final String name)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      TemplateCollection fact = (TemplateCollection) factories.get(i);
-      TemplateDescription o = fact.getTemplate(name);
+      final TemplateCollection fact = (TemplateCollection) factories.get(i);
+      final TemplateDescription o = fact.getTemplate(name);
       if (o != null)
       {
         return o;
@@ -114,12 +114,12 @@ public class TemplateCollector extends TemplateCollection
    *
    * @return The description.
    */
-  public TemplateDescription getDescription(Template template)
+  public TemplateDescription getDescription(final Template template)
   {
     for (int i = 0; i < factories.size(); i++)
     {
-      TemplateCollection fact = (TemplateCollection) factories.get(i);
-      TemplateDescription o = fact.getDescription(template);
+      final TemplateCollection fact = (TemplateCollection) factories.get(i);
+      final TemplateDescription o = fact.getDescription(template);
       if (o != null)
       {
         return o;
@@ -137,7 +137,7 @@ public class TemplateCollector extends TemplateCollection
    *
    * @param config the configuration, never null
    */
-  public void configure(Configuration config)
+  public void configure(final Configuration config)
   {
     if (getConfig() != null)
     {
@@ -146,10 +146,10 @@ public class TemplateCollector extends TemplateCollection
     }
     super.configure(config);
 
-    Iterator it = factories.iterator();
+    final Iterator it = factories.iterator();
     while (it.hasNext())
     {
-      TemplateCollection od = (TemplateCollection) it.next();
+      final TemplateCollection od = (TemplateCollection) it.next();
       od.configure(config);
     }
 

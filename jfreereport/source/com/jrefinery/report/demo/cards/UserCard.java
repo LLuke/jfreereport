@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: UserCard.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
+ * $Id: UserCard.java,v 1.3 2003/06/27 14:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,8 @@ public class UserCard extends PersonBoundCard
    * @param password  the password.
    * @param expires  the expiry date.
    */
-  public UserCard(String firstName, String lastName, String cardNr,
-                  String login, String password, Date expires)
+  public UserCard(final String firstName, final String lastName, final String cardNr,
+                  final String login, final String password, final Date expires)
   {
     super(firstName, lastName, cardNr);
     if (login == null)

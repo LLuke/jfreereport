@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.12 2003/05/14 22:26:40 taqua Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.13 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -86,10 +86,10 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    *
    * @return a transparent image.
    */
-  public static BufferedImage createTransparentImage(int width, int height)
+  public static BufferedImage createTransparentImage(final int width, final int height)
   {
-    BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    int[] data = img.getRGB(0, 0, width, height, null, 0, width);
+    final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    final int[] data = img.getRGB(0, 0, width, height, null, 0, width);
     Arrays.fill(data, 0x00000000);
     img.setRGB(0, 0, width, height, data, 0, width);
     return img;

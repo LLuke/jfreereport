@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBLayoutManager.java,v 1.2 2003/04/09 15:49:53 mungady Exp $
+ * $Id: GridBLayoutManager.java,v 1.3 2003/06/27 14:25:23 taqua Exp $
  *
  * Changes
  * -------
@@ -64,16 +64,16 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims)
+  public Dimension2D preferredLayoutSize(final Band b, final Dimension2D containerDims)
   {
-    ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
+    final ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
     if (eli.getPreferredSize() != null)
     {
       return eli.getPreferredSize();
     }
 
     // Now adjust the defined sizes by using the elements stored in the band.
-    Element[] elements = b.getElementArray();
+    final Element[] elements = b.getElementArray();
 
     // calculate absolute width
     for (int i = 0; i < elements.length; i++)
@@ -90,11 +90,11 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @return the minimum size.
    */
-  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerBounds)
+  public Dimension2D minimumLayoutSize(final Band b, final Dimension2D containerBounds)
   {
     // Check the position of the elements inside and calculate the minimum width
     // needed to display all elements
-    Element[] elements = b.getElementArray();
+    final Element[] elements = b.getElementArray();
     return null;
   }
 
@@ -103,7 +103,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    */
-  public void doLayout(Band b)
+  public void doLayout(final Band b)
   {
   }
 
@@ -112,7 +112,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @param container  the container.
    */
-  public void invalidateLayout(Band container)
+  public void invalidateLayout(final Band container)
   {
   }
 
@@ -122,7 +122,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @param e the element to be added to the layout manager.
    */
-  public void addLayoutElement(Element e)
+  public void addLayoutElement(final Element e)
   {
   }
 
@@ -131,7 +131,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @param e the element to be removed from the layout manager.
    */
-  public void removeLayoutElement(Element e)
+  public void removeLayoutElement(final Element e)
   {
   }
 }

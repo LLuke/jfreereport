@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridPosition.java,v 1.10 2003/04/08 14:33:10 mungady Exp $
+ * $Id: TableGridPosition.java,v 1.11 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public final class TableGridPosition
    * @param colSpan the width in columns within the layouted grid
    * @param rowSpan the height in rows within the layouted grid
    */
-  public TableGridPosition(TableCellData element, int col, int row, int colSpan, int rowSpan)
+  public TableGridPosition(final TableCellData element, final int col, final int row, final int colSpan, final int rowSpan)
   {
     if (element == null)
     {
@@ -161,7 +161,7 @@ public final class TableGridPosition
    * @param pos the compared position
    * @return true, if the position is contained in this cells area, false otherwise.
    */
-  public boolean contains(TableGridPosition pos)
+  public boolean contains(final TableGridPosition pos)
   {
     if (row > pos.getRow())
     {
@@ -198,7 +198,7 @@ public final class TableGridPosition
    * @param y the compated row
    * @return true, if row and column are the same as this grid positions row and column.
    */
-  public boolean isOrigin(int x, int y)
+  public boolean isOrigin(final int x, final int y)
   {
     return (x == col) && (y == row);
   }
@@ -212,7 +212,7 @@ public final class TableGridPosition
    */
   public String toString()
   {
-    StringBuffer buffer = new StringBuffer();
+    final StringBuffer buffer = new StringBuffer();
     buffer.append("TableGridPosition={col=");
     buffer.append(getCol());
     buffer.append("; row=");
@@ -244,7 +244,7 @@ public final class TableGridPosition
    *
    * @param invalidCell true, if this cell should be invalid, false otherwise.
    */
-  public void setInvalidCell(boolean invalidCell)
+  public void setInvalidCell(final boolean invalidCell)
   {
     this.invalidCell = invalidCell;
   }

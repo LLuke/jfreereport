@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id: ExpressionDataSource.java,v 1.8 2003/06/01 17:39:24 taqua Exp $
+ * $Id: ExpressionDataSource.java,v 1.9 2003/06/27 14:25:17 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    *
    * @param expression The expression.
    */
-  public ExpressionDataSource(String expression)
+  public ExpressionDataSource(final String expression)
   {
     setExpression(expression);
   }
@@ -89,7 +89,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    *
    * @param field the name of the expression as defined in the expression collection.
    */
-  public void setExpression(String field)
+  public void setExpression(final String field)
   {
     if (field == null)
     {
@@ -144,7 +144,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    * @throws IllegalStateException if there is a datarow already connected.
    * @param row the datarow to be connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {
@@ -165,7 +165,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable, Ser
    * @throws IllegalStateException if there is currently no datarow connected.
    * @param row the datarow to be disconnected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     if (row == null)
     {

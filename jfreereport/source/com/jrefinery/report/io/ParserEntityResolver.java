@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.9 2003/06/23 14:36:56 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.10 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class ParserEntityResolver implements EntityResolver
    *
    * @return A boolean.
    */
-  public boolean setDTDLocation(String publicID, URL location)
+  public boolean setDTDLocation(final String publicID, final URL location)
   {
     if (isValid(location))
     {
@@ -104,7 +104,7 @@ public class ParserEntityResolver implements EntityResolver
    *
    * @return the URL for the DTD.
    */
-  public URL getDTDLocation(String publicID)
+  public URL getDTDLocation(final String publicID)
   {
     return (URL) dtds.get(publicID);
   }
@@ -116,7 +116,7 @@ public class ParserEntityResolver implements EntityResolver
    *
    * @return true, if the URL can be read, false otherwise.
    */
-  private boolean isValid(URL reportDtd)
+  private boolean isValid(final URL reportDtd)
   {
     if (reportDtd == null)
     {
@@ -124,7 +124,7 @@ public class ParserEntityResolver implements EntityResolver
     }
     try
     {
-      InputStream uc = reportDtd.openStream();
+      final InputStream uc = reportDtd.openStream();
       uc.close();
       return true;
     }
@@ -148,7 +148,7 @@ public class ParserEntityResolver implements EntityResolver
    * @throws SAXException if there is a parsing problem.
    * @throws IOException if there is an I/O problem.
    */
-  public InputSource resolveEntity(String publicId, String systemId)
+  public InputSource resolveEntity(final String publicId, final String systemId)
       throws SAXException, IOException
   {
     try
@@ -160,7 +160,7 @@ public class ParserEntityResolver implements EntityResolver
         return null;
       }
 
-      URL location = getDTDLocation(publicId);
+      final URL location = getDTDLocation(publicId);
       if (location == null)
       {
         Log.info("A public ID was given for the document, but it was unknown or invalid.");
@@ -183,10 +183,10 @@ public class ParserEntityResolver implements EntityResolver
    */
   public static ParserEntityResolver getDefaultResolver()
   {
-    ParserEntityResolver res = new ParserEntityResolver();
-    URL urlReportDTD = res.getClass().getResource("/com/jrefinery/report/resources/report.dtd");
+    final ParserEntityResolver res = new ParserEntityResolver();
+    final URL urlReportDTD = res.getClass().getResource("/com/jrefinery/report/resources/report.dtd");
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);
-    URL urlExtReportDTD = res.getClass().getResource(
+    final URL urlExtReportDTD = res.getClass().getResource(
         "/com/jrefinery/report/resources/extreport.dtd");
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
     return res;

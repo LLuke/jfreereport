@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FilesystemFilter.java,v 1.6 2003/05/14 22:26:40 taqua Exp $
+ * $Id: FilesystemFilter.java,v 1.7 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    * @param fileext the file extension that should be accepted
    * @param descr the description for this filetype
    */
-  public FilesystemFilter(String fileext, String descr)
+  public FilesystemFilter(final String fileext, final String descr)
   {
     this(fileext, descr, true);
   }
@@ -79,7 +79,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    * @param descr the description for this filetype
    * @param accDirs true, if directories should be acceptable for this filter.
    */
-  public FilesystemFilter(String fileext, String descr, boolean accDirs)
+  public FilesystemFilter(final String fileext, final String descr, final boolean accDirs)
   {
     this(new String[]{fileext}, descr, accDirs);
   }
@@ -93,7 +93,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    * @param descr the description for this filetype
    * @param accDirs true, if directories should be acceptable for this filter.
    */
-  public FilesystemFilter(String[] fileext, String descr, boolean accDirs)
+  public FilesystemFilter(final String[] fileext, final String descr, final boolean accDirs)
   {
     this.fileext = new ArrayList();
     for (int i = 0; i < fileext.length; i++)
@@ -112,16 +112,16 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    * @return  <code>true</code> if and only if the name should be
    * included in the file list; <code>false</code> otherwise.
    */
-  public boolean accept(File dir, String name)
+  public boolean accept(final File dir, final String name)
   {
-    File f = new File(dir, name);
+    final File f = new File(dir, name);
     if (f.isDirectory() && isAcceptDirectories())
     {
       return true;
     }
     for (int i = 0; i < fileext.size(); i++)
     {
-      String ext = (String) fileext.get(i);
+      final String ext = (String) fileext.get(i);
       if (StringUtil.endsWithIgnoreCase(name, ext))
       {
         return true;
@@ -136,16 +136,16 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    * @param dir the file that should be checked.
    * @return true, if the file should be accepted for this filter, false otherwise.
    */
-  public boolean accept(File dir)
+  public boolean accept(final File dir)
   {
     if (dir.isDirectory() && isAcceptDirectories())
     {
       return true;
     }
-    String name = dir.getName();
+    final String name = dir.getName();
     for (int i = 0; i < fileext.size(); i++)
     {
-      String ext = (String) fileext.get(i);
+      final String ext = (String) fileext.get(i);
       if (StringUtil.endsWithIgnoreCase(name, ext))
       {
         return true;
@@ -169,7 +169,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    *
    * @param b set to <code>true</code> to accept directories, false otherwise
    */
-  public void setAcceptDirectories(boolean b)
+  public void setAcceptDirectories(final boolean b)
   {
     accDirs = b;
   }
@@ -189,7 +189,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    *
    * @param ext the extension that should be added to this filter.
    */
-  public void addExtension(String ext)
+  public void addExtension(final String ext)
   {
     fileext.add(ext);
   }

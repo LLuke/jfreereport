@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoundsAlignment.java,v 1.8 2003/05/14 22:26:39 taqua Exp $
+ * $Id: BoundsAlignment.java,v 1.9 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public abstract class BoundsAlignment
    *
    * @param bounds  the reference bounds (alignment will be performed relative to this rectangle).
    */
-  protected BoundsAlignment(Rectangle2D bounds)
+  protected BoundsAlignment(final Rectangle2D bounds)
   {
     if (bounds == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.25 2003/06/01 19:11:42 taqua Exp $
+ * $Id: Log.java,v 1.26 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public final class Log extends org.jfree.util.Log
      *
      * @param message  the message.
      */
-    public MemoryUsageMessage(String message)
+    public MemoryUsageMessage(final String message)
     {
       this.message = message;
     }
@@ -149,7 +149,7 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void debug(Object message)
+  public static void debug(final Object message)
   {
     log(LogTarget.DEBUG, message);
   }
@@ -160,7 +160,7 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void debug(Object message, Exception e)
+  public static void debug(final Object message, final Exception e)
   {
     log(LogTarget.DEBUG, message, e);
   }
@@ -170,7 +170,7 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void info(Object message)
+  public static void info(final Object message)
   {
     log(LogTarget.INFO, message);
   }
@@ -181,7 +181,7 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void info(Object message, Exception e)
+  public static void info(final Object message, final Exception e)
   {
     log(LogTarget.INFO, message, e);
   }
@@ -191,7 +191,7 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void warn(Object message)
+  public static void warn(final Object message)
   {
     log(LogTarget.WARN, message);
   }
@@ -202,7 +202,7 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void warn(Object message, Exception e)
+  public static void warn(final Object message, final Exception e)
   {
     log(LogTarget.WARN, message, e);
   }
@@ -212,7 +212,7 @@ public final class Log extends org.jfree.util.Log
    *
    * @param message  the message.
    */
-  public static void error(Object message)
+  public static void error(final Object message)
   {
     log(LogTarget.ERROR, message);
   }
@@ -223,7 +223,7 @@ public final class Log extends org.jfree.util.Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void error(Object message, Exception e)
+  public static void error(final Object message, final Exception e)
   {
     log(LogTarget.ERROR, message, e);
   }
@@ -236,7 +236,7 @@ public final class Log extends org.jfree.util.Log
    * @param level  log level of the message.
    * @param message  text to be logged.
    */
-  public static void log(int level, Object message)
+  public static void log(final int level, final Object message)
   {
     org.jfree.util.Log.log(level, message);
   }
@@ -252,7 +252,7 @@ public final class Log extends org.jfree.util.Log
    * @param message  text to be logged.
    * @param e  the exception, which should be logged.
    */
-  public static void log(int level, Object message, Exception e)
+  public static void log(final int level, final Object message, final Exception e)
   {
     org.jfree.util.Log.log(level, message, e);
   }

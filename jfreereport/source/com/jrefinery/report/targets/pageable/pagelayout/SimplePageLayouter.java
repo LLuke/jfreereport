@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.53 2003/06/19 18:44:11 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.54 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -103,7 +103,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
      *
      * @param band  the band.
      */
-    public SimpleLayoutManagerState(Band band)
+    public SimpleLayoutManagerState(final Band band)
     {
       this.band = band;
     }
@@ -184,7 +184,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    */
   public Expression getInstance()
   {
-    SimplePageLayouter pl = (SimplePageLayouter) super.getInstance();
+    final SimplePageLayouter pl = (SimplePageLayouter) super.getInstance();
     pl.pageCarrier = new PageCarrier();
     return pl;
   }
@@ -204,7 +204,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param maxPage the highest page number.
    */
-  protected void setMaxPage(int maxPage)
+  protected void setMaxPage(final int maxPage)
   {
     pageCarrier.maxPages = maxPage;
   }
@@ -217,7 +217,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -255,7 +255,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event The event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -271,7 +271,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event The event.
    */
-  public void reportDone(ReportEvent event)
+  public void reportDone(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -304,7 +304,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event The event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -333,7 +333,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event Information about the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -346,7 +346,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       // a new page has started, so reset the cursor ...
       setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
 
-      Band b = getReport().getPageHeader();
+      final Band b = getReport().getPageHeader();
       if (event.getState().getCurrentPage() == 1)
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
@@ -380,7 +380,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       // was currentEffectiveGroupIndex - 1
       for (int gidx = 0; gidx < currentEffectiveGroupIndex; gidx++)
       {
-        Group g = getReport().getGroup(gidx);
+        final Group g = getReport().getGroup(gidx);
         if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
         {
           print(g.getHeader(), true);
@@ -420,14 +420,14 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event  the report event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
     setCurrentEvent(event);
     try
     {
 
       getCursor().setReservedSpace(0);
-      Band b = getReport().getPageFooter();
+      final Band b = getReport().getPageFooter();
       if (event.getState().getCurrentPage() == 1)
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
@@ -468,7 +468,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event Information about the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -480,7 +480,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       setCurrentEvent(event);
       currentEffectiveGroupIndex -= 1;
 
-      Object prepareRun =
+      final Object prepareRun =
           event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
               Boolean.FALSE);
       if (prepareRun.equals(Boolean.TRUE))
@@ -491,7 +491,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       // force that this last pagebreak ...
       isLastPageBreak = true;
 
-      Band b = getReport().getReportFooter();
+      final Band b = getReport().getReportFooter();
       printBand(b);
     }
     catch (FunctionProcessingException fe)
@@ -515,7 +515,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event Information about the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -527,9 +527,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       setCurrentEvent(event);
       currentEffectiveGroupIndex += 1;
 
-      int gidx = event.getState().getCurrentGroupIndex();
-      Group g = getReport().getGroup(gidx);
-      Band b = g.getHeader();
+      final int gidx = event.getState().getCurrentGroupIndex();
+      final Group g = getReport().getGroup(gidx);
+      final Band b = g.getHeader();
       printBand(b);
     }
     catch (FunctionProcessingException fe)
@@ -553,7 +553,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event Information about the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -565,9 +565,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       setCurrentEvent(event);
       currentEffectiveGroupIndex -= 1;
 
-      int gidx = event.getState().getCurrentGroupIndex();
-      Group g = getReport().getGroup(gidx);
-      Band b = g.getFooter();
+      final int gidx = event.getState().getCurrentGroupIndex();
+      final Group g = getReport().getGroup(gidx);
+      final Band b = g.getFooter();
       printBand(b);
     }
     catch (FunctionProcessingException fe)
@@ -591,7 +591,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
@@ -627,7 +627,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    * @throws ReportProcessingException if the printing or spooling of the band failed.
    * @return true, if the band was printed, false if the printing was delayed to the next page
    */
-  private boolean printBand(Band b) throws ReportProcessingException
+  private boolean printBand(final Band b) throws ReportProcessingException
   {
     if (isPageEnded())
     {
@@ -664,17 +664,17 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @throws ReportProcessingException if the printing failed
    */
-  private boolean print(Band b, boolean spool)
+  private boolean print(final Band b, final boolean spool)
       throws ReportProcessingException
   {
-    float y = getCursor().getY();
+    final float y = getCursor().getY();
     // don't save the state if the current page is currently being finished
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
-    Rectangle2D bounds = doLayout(b, true);
+    final Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
-    boolean retval = doPrint(bounds, b, spool);
+    final boolean retval = doPrint(bounds, b, spool);
     return retval;
   }
 
@@ -687,7 +687,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @throws ReportProcessingException if the printing failed
    */
-  private boolean printBottom(Band b)
+  private boolean printBottom(final Band b)
       throws ReportProcessingException
   {
     // don't save the state if the current page is currently beeing finished
@@ -695,8 +695,8 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     // do not influence the reporting state
 
     // if there is nothing printed, then ignore everything ...
-    boolean spool = getLogicalPage().isEmpty();
-    Rectangle2D bounds = doLayout(b, true);
+    final boolean spool = getLogicalPage().isEmpty();
+    final Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
         bounds.getWidth(), bounds.getHeight());
     return doPrint(bounds, b, spool);
@@ -711,17 +711,17 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @return the dimensions of the band.
    */
-  protected Rectangle2D doLayout(Band band, boolean fireEvent)
+  protected Rectangle2D doLayout(final Band band, final boolean fireEvent)
   {
-    float width = getLogicalPage().getWidth();
-    float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
-    Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
+    final float width = getLogicalPage().getWidth();
+    final float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
+    final Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
         getLogicalPage().getOutputTarget(),
         width,
         height);
     if (fireEvent == true)
     {
-      ReportEvent event = getCurrentEvent();
+      final ReportEvent event = getCurrentEvent();
       clearCurrentEvent();
       event.getState().fireLayoutCompleteEvent(band, event.getType());
       setCurrentEvent(event);
@@ -744,18 +744,18 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    * @throws ReportProcessingException if the printing caused an detectable error
    * while printing the band
    */
-  protected boolean doPrint(Rectangle2D bounds, Band band, boolean spool)
+  protected boolean doPrint(final Rectangle2D bounds, final Band band, final boolean spool)
       throws ReportProcessingException
   {
     try
     {
-      float height = (float) bounds.getHeight();
+      final float height = (float) bounds.getHeight();
       // handle the end of the page
       if (isFinishingPage())
       {
         if (spool)
         {
-          Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (spooledBand == null)
           {
             spooledBand = newSpool;
@@ -767,7 +767,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         }
         else
         {
-          Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (newSpool.isEmpty() == false)
           {
             if (spooledBand != null)
@@ -812,7 +812,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       {
         if (spool)
         {
-          Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (spooledBand == null)
           {
             spooledBand = newSpool;
@@ -827,7 +827,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         }
         else
         {
-          Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (newSpool.isEmpty() == false)
           {
             if (spooledBand != null)
@@ -874,7 +874,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @return true or false.
    */
-  public boolean isSpaceFor(float height)
+  public boolean isSpaceFor(final float height)
   {
     if (isLastPageBreak && (getReport().getPageFooter().isDisplayOnLastPage() == false))
     {
@@ -882,9 +882,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     }
     else
     {
-      Band b = getReport().getPageFooter();
+      final Band b = getReport().getPageFooter();
       // perform layout, but do not fire the event, as we don't print the band ...
-      Rectangle2D rect = doLayout(b, false);
+      final Rectangle2D rect = doLayout(b, false);
       getCursor().setReservedSpace((float) rect.getHeight());
     }
     return getCursor().isSpaceFor(height);
@@ -911,7 +911,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    * @param cursor  the cursor (null not permitted).
    * @throws NullPointerException if the given cursor is null
    */
-  protected void setCursor(SimplePageLayoutCursor cursor)
+  protected void setCursor(final SimplePageLayoutCursor cursor)
   {
     if (cursor == null)
     {
@@ -925,7 +925,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param b  the band.
    */
-  protected void createSaveState(Band b)
+  protected void createSaveState(final Band b)
   {
     state = new SimpleLayoutManagerState(b);
   }
@@ -955,7 +955,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    * @throws IllegalStateException if there is no SavedState but this is not the
    * first page.
    */
-  public void restoreSaveState(ReportState anchestor)
+  public void restoreSaveState(final ReportState anchestor)
       throws ReportProcessingException
   {
     super.restoreSaveState(anchestor);
@@ -989,7 +989,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       try
       {
-        Band band = (Band) state.getBand().clone();
+        final Band band = (Band) state.getBand().clone();
         // update the dataRow to the current dataRow instance...
         getCurrentEvent().getState().updateDataRow(band);
         print(band, false);
@@ -1018,7 +1018,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param logicalPage  the logical page.
    */
-  public void setLogicalPage(LogicalPage logicalPage)
+  public void setLogicalPage(final LogicalPage logicalPage)
   {
     super.setLogicalPage(logicalPage);
     setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
@@ -1035,7 +1035,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @throws ReportProcessingException if finishing the page failed.
    */
-  protected boolean endPage(boolean force) throws ReportProcessingException
+  protected boolean endPage(final boolean force) throws ReportProcessingException
   {
     if (getLogicalPage().isEmpty() == false || force)
     {
@@ -1072,7 +1072,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param startNewPage true, if a new page has already been started, false otherwise.
    */
-  public void setStartNewPage(boolean startNewPage)
+  public void setStartNewPage(final boolean startNewPage)
   {
     this.startNewPage = startNewPage;
   }
@@ -1086,7 +1086,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    */
   public Object clone() throws CloneNotSupportedException
   {
-    SimplePageLayouter sl = (SimplePageLayouter) super.clone();
+    final SimplePageLayouter sl = (SimplePageLayouter) super.clone();
     if (spooledBand != null)
     {
       sl.spooledBand = (Spool) spooledBand.clone();
@@ -1099,7 +1099,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    *
    * @param event  the event.
    */
-  public void prepareEvent(ReportEvent event)
+  public void prepareEvent(final ReportEvent event)
   {
     try
     {

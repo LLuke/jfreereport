@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientFunction.java,v 1.6 2003/06/01 17:39:26 taqua Exp $
+ * $Id: ItemColumnQuotientFunction.java,v 1.7 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
   }
 
@@ -90,7 +90,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
   }
 
@@ -100,7 +100,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
   }
 
@@ -110,7 +110,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void reportDone(ReportEvent event)
+  public void reportDone(final ReportEvent event)
   {
   }
 
@@ -119,7 +119,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
   }
 
@@ -128,7 +128,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
   }
 
@@ -139,7 +139,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
   }
 
@@ -150,7 +150,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
   }
 
@@ -161,7 +161,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
   }
 
@@ -172,7 +172,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
   }
 
@@ -183,7 +183,7 @@ public class ItemColumnQuotientFunction extends ItemColumnQuotientExpression
    *
    * @param event The event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
   }
 }

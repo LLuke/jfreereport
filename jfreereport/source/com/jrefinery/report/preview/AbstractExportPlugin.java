@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.2 2003/06/26 19:55:56 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.3 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,7 +102,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    * @throws NullPointerException if the proxy or the proxy's basecomponent
    * is null.
    */
-  public void init(PreviewProxy proxy)
+  public void init(final PreviewProxy proxy)
   {
     if (proxy == null)
     {
@@ -152,7 +152,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @param text the new status line text.
    */
-  protected void updateStatusText(String text)
+  protected void updateStatusText(final String text)
   {
     getBase().setStatusText(text);
   }

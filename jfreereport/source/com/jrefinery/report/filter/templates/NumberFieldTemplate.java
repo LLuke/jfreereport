@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldTemplate.java,v 1.7 2003/05/02 12:39:44 taqua Exp $
+ * $Id: NumberFieldTemplate.java,v 1.8 2003/06/27 14:25:18 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -89,7 +89,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @param decimalFormat  the number formatter.
    */
-  public void setDecimalFormat(DecimalFormat decimalFormat)
+  public void setDecimalFormat(final DecimalFormat decimalFormat)
   {
     decimalFormatFilter.setFormatter(decimalFormat);
   }
@@ -109,7 +109,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @param format  the format string.
    */
-  public void setFormat(String format)
+  public void setFormat(final String format)
   {
     decimalFormatFilter.setFormatString(format);
   }
@@ -129,7 +129,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @param field  the field name.
    */
-  public void setField(String field)
+  public void setField(final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -149,7 +149,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @param nullValue  the string that represents a <code>null</code> value.
    */
-  public void setNullValue(String nullValue)
+  public void setNullValue(final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -173,7 +173,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
    */
   public Object clone() throws CloneNotSupportedException
   {
-    NumberFieldTemplate template = (NumberFieldTemplate) super.clone();
+    final NumberFieldTemplate template = (NumberFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
     template.decimalFormatFilter = (DecimalFormatFilter) template.stringFilter.getDataSource();
     template.dataRowDataSource = (DataRowDataSource) template.decimalFormatFilter.getDataSource();
@@ -187,7 +187,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.connectDataRow(row);
   }
@@ -202,7 +202,7 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
    *
    * @throws IllegalStateException if there is already a data row connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.disconnectDataRow(row);
   }

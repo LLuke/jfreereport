@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.7 2003/06/19 18:44:11 taqua Exp $
+ * $Id: RTFCellStyle.java,v 1.8 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class RTFCellStyle
    * @param horizontalAlignment the horizontal text alignment.
    * @throws NullPointerException if one of the alignment parameters is null.
    */
-  public RTFCellStyle(ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
+  public RTFCellStyle(final ElementAlignment verticalAlignment, final ElementAlignment horizontalAlignment)
   {
     if (verticalAlignment == null)
     {
@@ -104,7 +104,7 @@ public class RTFCellStyle
    * @return true, if the object is a RTFCellStyle with the same attributes as this
    * object.
    */
-  public boolean equals(Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {
@@ -147,7 +147,7 @@ public class RTFCellStyle
    *
    * @param cell the iText cell, that should be formated.
    */
-  public void applyAlignment(Cell cell)
+  public void applyAlignment(final Cell cell)
   {
     if (horizontalAlignment == ElementAlignment.LEFT)
     {

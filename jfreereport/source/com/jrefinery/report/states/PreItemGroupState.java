@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.9 2003/05/16 17:26:46 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.10 2003/06/27 14:25:22 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public final class PreItemGroupState extends ReportState
    *
    * @param previous  the previous state.
    */
-  public PreItemGroupState(ReportState previous)
+  public PreItemGroupState(final ReportState previous)
   {
     super(previous);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.14 2003/06/26 19:55:57 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.15 2003/06/27 14:25:25 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    *
    * @param styleFactory the stylefactory for creating the cell styles.
    */
-  public ExcelCellDataFactory(ExcelCellStyleFactory styleFactory)
+  public ExcelCellDataFactory(final ExcelCellStyleFactory styleFactory)
   {
     if (styleFactory == null)
     {
@@ -112,7 +112,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * @param defineDataFormats set to true if cells should contain a custom data
    * format for numeric or date cells or false when all cells should contain strings.
    */
-  public void setDefineDataFormats(boolean defineDataFormats)
+  public void setDefineDataFormats(final boolean defineDataFormats)
   {
     this.defineDataFormats = defineDataFormats;
   }
@@ -142,7 +142,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * in points.
    * @return null if element type is not supported or the generated TableCellData object.
    */
-  public TableCellData createCellData(Element element, Rectangle2D bounds)
+  public TableCellData createCellData(final Element element, final Rectangle2D bounds)
   {
     if (element.isVisible() == false)
     {
@@ -158,10 +158,10 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
      * POI 1.9 has support for more formats ...
      */
 
-    DataSource ds = element.getDataSource();
+    final DataSource ds = element.getDataSource();
     if (isDefineDataFormats() && ds instanceof Template)
     {
-      TableCellData retval = handleTemplate((Template) ds, element, bounds);
+      final TableCellData retval = handleTemplate((Template) ds, element, bounds);
       if (retval != null)
       {
         return retval;
@@ -187,15 +187,15 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * @return the generated data or null, if the data is not handled by this
    * implementation.
    */
-  private TableCellData handleFormats(Element e, Rectangle2D bounds)
+  private TableCellData handleFormats(final Element e, final Rectangle2D bounds)
   {
     ExcelCellData retval = null;
 
-    Object value = e.getValue();
+    final Object value = e.getValue();
     if ((value != null) && (value instanceof String))
     {
-      ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e);
-      String svalue = String.valueOf(e.getValue());
+      final ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e);
+      final String svalue = String.valueOf(e.getValue());
       retval = new DefaultExcelCellData(bounds, style, svalue);
     }
     else if (value instanceof Shape)
@@ -217,7 +217,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * @return the generated content or null, if the content is not handled by
    * this implementation.
    */
-  private ExcelCellData handleTemplate(Template template, Element e, Rectangle2D bounds)
+  private ExcelCellData handleTemplate(final Template template, final Element e, final Rectangle2D bounds)
   {
 
     /**
@@ -229,13 +229,13 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
     {
       try
       {
-        DateFieldTemplate dft = (DateFieldTemplate) template;
-        String value = (String) dft.getValue();
-        Date date = dft.getDateFormat().parse(value);
-        String format = (String) e.getStyle().getStyleProperty
+        final DateFieldTemplate dft = (DateFieldTemplate) template;
+        final String value = (String) dft.getValue();
+        final Date date = dft.getDateFormat().parse(value);
+        final String format = (String) e.getStyle().getStyleProperty
             (ExcelProcessor.DATA_FORMAT_STRING, dft.getFormat());
 
-        ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, format);
+        final ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, format);
         return new DateExcelCellData(bounds, style, date);
       }
       catch (ParseException pe)
@@ -247,13 +247,13 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
     {
       try
       {
-        NumberFieldTemplate nft = (NumberFieldTemplate) template;
-        String value = (String) nft.getValue();
-        Number number = nft.getDecimalFormat().parse(value);
-        String format = (String) e.getStyle().getStyleProperty
+        final NumberFieldTemplate nft = (NumberFieldTemplate) template;
+        final String value = (String) nft.getValue();
+        final Number number = nft.getDecimalFormat().parse(value);
+        final String format = (String) e.getStyle().getStyleProperty
             (ExcelProcessor.DATA_FORMAT_STRING, nft.getFormat());
 
-        ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, format);
+        final ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, format);
         return new NumericExcelCellData(bounds, style, number);
       }
       catch (ParseException pe)

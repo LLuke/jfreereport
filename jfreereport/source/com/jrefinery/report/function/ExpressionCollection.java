@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionCollection.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  =======
- * $Id: ExpressionCollection.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  >>>>>>> 1.7
  =======
- * $Id: ExpressionCollection.java,v 1.12 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.13 2003/06/27 14:25:18 taqua Exp $
  >>>>>>> 1.8
  *
  * Changes
@@ -89,7 +89,7 @@ public class ExpressionCollection implements Cloneable, Serializable
    * @throws FunctionInitializeException if any of the expressions cannot be initialized.
    * @throws ClassCastException if the collection does not contain Expressions
    */
-  public ExpressionCollection(Collection expressions)
+  public ExpressionCollection(final Collection expressions)
       throws FunctionInitializeException
   {
     this();
@@ -105,15 +105,15 @@ public class ExpressionCollection implements Cloneable, Serializable
    * @throws ClassCastException if the collection does not contain expressions
    * @throws FunctionInitializeException if a contained expression could not be initialized.
    */
-  public void addAll(Collection expressions)
+  public void addAll(final Collection expressions)
       throws FunctionInitializeException
   {
     if (expressions != null)
     {
-      Iterator iterator = expressions.iterator();
+      final Iterator iterator = expressions.iterator();
       while (iterator.hasNext())
       {
-        Expression f = (Expression) iterator.next();
+        final Expression f = (Expression) iterator.next();
         add(f);
       }
     }
@@ -128,9 +128,9 @@ public class ExpressionCollection implements Cloneable, Serializable
    *
    * @throws NullPointerException if the name given is <code>null</code>.
    */
-  public Expression get(String name)
+  public Expression get(final String name)
   {
-    Integer position = (Integer) expressionPositions.get(name);
+    final Integer position = (Integer) expressionPositions.get(name);
     if (position == null)
     {
       return null;
@@ -146,7 +146,7 @@ public class ExpressionCollection implements Cloneable, Serializable
    *
    * @throws FunctionInitializeException if the Expression could not be initialized correctly
    */
-  public void add(Expression e)
+  public void add(final Expression e)
       throws FunctionInitializeException
   {
     if (e == null)
@@ -170,7 +170,7 @@ public class ExpressionCollection implements Cloneable, Serializable
    *
    * @throws NullPointerException if the given Expression is null.
    */
-  protected void privateAdd(Expression e)
+  protected void privateAdd(final Expression e)
   {
     expressionPositions.put(e.getName(), new Integer(expressionList.size()));
     expressionList.add(e);
@@ -183,9 +183,9 @@ public class ExpressionCollection implements Cloneable, Serializable
    *
    * @throws NullPointerException if the given Expression is null.
    */
-  public void removeExpression(Expression e)
+  public void removeExpression(final Expression e)
   {
-    Integer val = (Integer) expressionPositions.get(e.getName());
+    final Integer val = (Integer) expressionPositions.get(e.getName());
     if (val == null)
     {
       return;
@@ -213,7 +213,7 @@ public class ExpressionCollection implements Cloneable, Serializable
    *
    * @throws IndexOutOfBoundsException if the given position is invalid
    */
-  public Expression getExpression(int pos)
+  public Expression getExpression(final int pos)
   {
     return (Expression) expressionList.get(pos);
   }
@@ -227,14 +227,14 @@ public class ExpressionCollection implements Cloneable, Serializable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    ExpressionCollection col = (ExpressionCollection) super.clone();
+    final ExpressionCollection col = (ExpressionCollection) super.clone();
     col.expressionPositions = new HashMap();
     col.expressionList = new ArrayList();
 
-    Iterator it = expressionList.iterator();
+    final Iterator it = expressionList.iterator();
     while (it.hasNext())
     {
-      Expression ex = (Expression) it.next();
+      final Expression ex = (Expression) it.next();
       col.privateAdd((Expression) ex.clone());
     }
     return col;

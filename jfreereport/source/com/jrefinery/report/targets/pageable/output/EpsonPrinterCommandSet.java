@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.11 2003/05/14 22:26:39 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.12 2003/06/27 14:25:24 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,8 @@ import com.jrefinery.report.util.StringUtil;
  * <p>
  * This implementation is untested. If you have access to an ESC/P compatible
  * printer, you could try this command set to improve printing quality.
+ * <p>
+ * This implementation does only work for 8-Bit character sets.
  *
  * @see PrinterCommandSet
  * @see PlainTextOutputTarget
@@ -67,7 +69,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public EpsonPrinterCommandSet(OutputStream out, PageFormat format, int defaultCPI, int defaultLPI)
+  public EpsonPrinterCommandSet(final OutputStream out, final PageFormat format, final int defaultCPI, final int defaultLPI)
   {
     super(out, format, defaultCPI, defaultLPI);
   }
@@ -83,7 +85,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param fontSelection the printers font selection token.
    * @throws IOException if there was an IOError while writing the command.
    */
-  public void setFont(byte fontSelection) throws IOException
+  public void setFont(final byte fontSelection) throws IOException
   {
     if (fontSelection == getFont())
     {
@@ -133,7 +135,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @throws IOException if there was an IOError while writing the command or if the
    *   character width is not supported by the printer.
    */
-  public void setCharacterWidth(byte charWidth) throws IOException
+  public void setCharacterWidth(final byte charWidth) throws IOException
   {
     if (charWidth == getCharacterWidth())
     {
@@ -197,7 +199,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setFontStyle(boolean bold, boolean italic, boolean underline, boolean strike)
+  public void setFontStyle(final boolean bold, final boolean italic, final boolean underline, final boolean strike)
       throws IOException
   {
     if (isBold())
@@ -290,7 +292,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param lines the number of lines that could be printed on a single page.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setPaperSize(int lines) throws IOException
+  public void setPaperSize(final int lines) throws IOException
   {
     getOut().write(0x1b);
     getOut().write(0x43);
@@ -306,7 +308,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param right the number of spaces left free on the right paper border.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setHorizontalBorder(int left, int right) throws IOException
+  public void setHorizontalBorder(final int left, final int right) throws IOException
   {
     getOut().write(0x1b);
     getOut().write(0x6c);
@@ -324,10 +326,10 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param spaceInInch the linespacing in 1/1440 inches.
    * @throws IOException if an IOException occured while updating the printer state.
    */
-  public void setLineSpacing(int spaceInInch) throws IOException
+  public void setLineSpacing(final int spaceInInch) throws IOException
   {
     // convert into 1/360 inch
-    int spacePar = (spaceInInch / 5);
+    final int spacePar = (spaceInInch / 5);
     getOut().write(0x1b);
     getOut().write(0x2b);
     getOut().write(spacePar);
@@ -341,11 +343,11 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param codepage the new codepage that should be used.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setCodePage(String codepage) throws IOException
+  public void setCodePage(final String codepage) throws IOException
   {
     // http://ecc400.com/intermec/pdf/77019001_6820tr.pdf
     // page 48
-    int[] cp = translateCodePage(codepage);
+    final int[] cp = translateCodePage(codepage);
     getOut().write(0x1b);
     getOut().write(0x52);
     getOut().write(0xff);
@@ -361,7 +363,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param autoLF this parameter is ignored.
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setAutoLF(boolean autoLF) throws IOException
+  public void setAutoLF(final boolean autoLF) throws IOException
   {
     // epson has no notion of auto lf, however it is configurable from
     // the printers menu, not with control characters ...
@@ -385,7 +387,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param letterQuality true, if letter quality should be used, false for draft-quality
    * @throws IOException if there was an IOError while writing the command
    */
-  public void setPrintQuality(boolean letterQuality) throws IOException
+  public void setPrintQuality(final boolean letterQuality) throws IOException
   {
     if (letterQuality)
     {
@@ -413,7 +415,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @return the epson byte code.
    * @throws UnsupportedEncodingException if the encoding is not supported.
    */
-  private static int[] translateCodePage(String cp)
+  private static int[] translateCodePage(final String cp)
       throws UnsupportedEncodingException
   {
     if (StringUtil.startsWithIgnoreCase(cp, "cp"))
@@ -427,8 +429,8 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
 
       try
       {
-        int i = Integer.parseInt(cp.substring(2));
-        int[] retval = new int[2];
+        final int i = Integer.parseInt(cp.substring(2));
+        final int[] retval = new int[2];
         retval[0] = i / 256;
         retval[1] = i % 256;
         return retval;
@@ -469,7 +471,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @param encoding the encoding that should be tested.
    * @return true, if the encoding is valid, false otherwise.
    */
-  public boolean isEncodingSupported(String encoding)
+  public boolean isEncodingSupported(final String encoding)
   {
     try
     {
