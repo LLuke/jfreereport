@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.54 2003/06/18 17:57:14 taqua Exp $
+ * $Id: JFreeReport.java,v 1.55 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -163,18 +163,18 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
     this.groups = new GroupList ();
     checkGroups ();
-    this.groups.setStyleSheetCollection(this.styleSheetCollection);
+    this.groups.registerStyleSheetCollection(this.styleSheetCollection);
 
     this.reportHeader = new ReportHeader ();
-    this.reportHeader.setStyleSheetCollection(this.styleSheetCollection);
+    this.reportHeader.registerStyleSheetCollection(this.styleSheetCollection);
     this.reportFooter = new ReportFooter ();
-    this.reportFooter.setStyleSheetCollection(this.styleSheetCollection);
+    this.reportFooter.registerStyleSheetCollection(this.styleSheetCollection);
     this.pageHeader = new PageHeader ();
-    this.pageHeader.setStyleSheetCollection(this.styleSheetCollection);
+    this.pageHeader.registerStyleSheetCollection(this.styleSheetCollection);
     this.pageFooter = new PageFooter ();
-    this.pageFooter.setStyleSheetCollection(this.styleSheetCollection);
+    this.pageFooter.registerStyleSheetCollection(this.styleSheetCollection);
     this.itemBand = new ItemBand ();
-    this.itemBand.setStyleSheetCollection(this.styleSheetCollection);
+    this.itemBand.registerStyleSheetCollection(this.styleSheetCollection);
 
     this.data = new DefaultTableModel ();
     this.functions = new ExpressionCollection ();
@@ -374,9 +374,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       throw new NullPointerException ("JFreeReport.setReportHeader(...) : null not permitted.");
     }
 
-    this.reportHeader.setStyleSheetCollection(null);
+    this.reportHeader.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.reportHeader = header;
-    this.reportHeader.setStyleSheetCollection(getStyleSheetCollection());
+    this.reportHeader.registerStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -401,9 +401,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       throw new NullPointerException ("JFreeReport.setReportFooter(...) : null not permitted.");
     }
 
-    this.reportFooter.setStyleSheetCollection(null);
+    this.reportFooter.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.reportFooter = footer;
-    this.reportFooter.setStyleSheetCollection(getStyleSheetCollection());
+    this.reportFooter.registerStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -428,9 +428,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       throw new NullPointerException ("JFreeReport.setPageHeader(...) : null not permitted.");
     }
 
-    this.pageHeader.setStyleSheetCollection(null);
+    this.pageHeader.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.pageHeader = header;
-    this.pageHeader.setStyleSheetCollection(getStyleSheetCollection());
+    this.pageHeader.registerStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -455,9 +455,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       throw new NullPointerException ("JFreeReport.setPageFooter(...) : null not permitted.");
     }
 
-    this.pageFooter.setStyleSheetCollection(null);
+    this.pageFooter.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.pageFooter = footer;
-    this.pageFooter.setStyleSheetCollection(getStyleSheetCollection());
+    this.pageFooter.registerStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -482,9 +482,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       throw new NullPointerException ("JFreeReport.setItemBand(...) : null not permitted.");
     }
 
-    this.itemBand.setStyleSheetCollection(null);
+    this.itemBand.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.itemBand = band;
-    this.itemBand.setStyleSheetCollection(getStyleSheetCollection());
+    this.itemBand.registerStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -716,12 +716,12 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     report.functions = (ExpressionCollection) functions.clone ();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = new StyleSheetCollection();
-    report.groups.setStyleSheetCollection(report.styleSheetCollection);
-    report.itemBand.setStyleSheetCollection(report.styleSheetCollection);
-    report.reportFooter.setStyleSheetCollection(report.styleSheetCollection);
-    report.reportHeader.setStyleSheetCollection(report.styleSheetCollection);
-    report.pageFooter.setStyleSheetCollection(report.styleSheetCollection);
-    report.pageHeader.setStyleSheetCollection(report.styleSheetCollection);
+    report.groups.registerStyleSheetCollection(report.styleSheetCollection);
+    report.itemBand.registerStyleSheetCollection(report.styleSheetCollection);
+    report.reportFooter.registerStyleSheetCollection(report.styleSheetCollection);
+    report.reportHeader.registerStyleSheetCollection(report.styleSheetCollection);
+    report.pageFooter.registerStyleSheetCollection(report.styleSheetCollection);
+    report.pageHeader.registerStyleSheetCollection(report.styleSheetCollection);
     return report;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.23 2003/06/10 12:11:16 taqua Exp $
+ * $Id: Group.java,v 1.24 2003/06/19 18:44:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -85,16 +85,16 @@ public class Group implements Serializable, Cloneable, Comparable
       this.group = group;
     }
 
-    protected void registerStyleSheetCollection()
+    protected void handleRegisterStyleSheetCollection()
     {
-      group.footer.setStyleSheetCollection(getStyleSheetCollection());
-      group.header.setStyleSheetCollection(getStyleSheetCollection());
+      group.footer.registerStyleSheetCollection(getStyleSheetCollection());
+      group.header.registerStyleSheetCollection(getStyleSheetCollection());
     }
 
-    protected void unregisterStyleSheetCollection()
+    protected void handleUnregisterStyleSheetCollection()
     {
-      group.footer.setStyleSheetCollection(null);
-      group.header.setStyleSheetCollection(null);
+      group.footer.unregisterStyleSheetCollection(getStyleSheetCollection());
+      group.header.unregisterStyleSheetCollection(getStyleSheetCollection());
     }
   }
 
@@ -179,9 +179,9 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("Header must not be null");
     }
-    this.header.setStyleSheetCollection(null);
+    this.header.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.header = header;
-    this.header.setStyleSheetCollection(getStyleSheetCollection());
+    this.header.registerStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -205,9 +205,9 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("The footer must not be null");
     }
-    this.footer.setStyleSheetCollection(null);
+    this.footer.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.footer = footer;
-    this.footer.setStyleSheetCollection(getStyleSheetCollection());
+    this.footer.registerStyleSheetCollection(getStyleSheetCollection());
   }
 
   /**
@@ -465,9 +465,14 @@ public class Group implements Serializable, Cloneable, Comparable
     return styleSheetCollectionHelper.getStyleSheetCollection();
   }
 
-  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
-    styleSheetCollectionHelper.setStyleSheetCollection(styleSheetCollection);
+    styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
+  }
+
+  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 
 }

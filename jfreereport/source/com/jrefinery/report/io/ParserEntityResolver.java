@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.7 2003/04/23 13:39:19 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.8 2003/05/02 12:39:52 taqua Exp $
  *
  * Changes
  * -------
@@ -163,7 +163,7 @@ public class ParserEntityResolver implements EntityResolver
       URL location = getDTDLocation(publicId);
       if (location == null)
       {
-        Log.info ("A public ID was given for the document, but was unknown or invalid.");
+        Log.info ("A public ID was given for the document, but it was unknown or invalid.");
         return null;
       }
       return new InputSource(location.openStream());

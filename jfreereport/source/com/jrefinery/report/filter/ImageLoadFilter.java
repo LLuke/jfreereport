@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.16 2003/05/09 17:12:12 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.17 2003/06/01 17:39:25 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -131,7 +131,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
       }
       catch (IOException ioe)
       {
-        Log.debug ("Error while loading the image from " + url, ioe);
+        Log.warn ("Error while loading the image from " + url, ioe);
         return null;
       }
     }

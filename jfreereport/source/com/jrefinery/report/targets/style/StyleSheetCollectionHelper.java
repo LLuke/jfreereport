@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleSheetCollectionHelper.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,23 +53,39 @@ public abstract class StyleSheetCollectionHelper implements Serializable
     return styleSheetCollection;
   }
 
-  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void unregisterStyleSheetCollection (StyleSheetCollection styleSheetCollection)
   {
+    if (styleSheetCollection == null)
+    {
+      throw new NullPointerException();
+    }
+
+    /**
+     * Do nothing if both stylesheets are equal.
+     */
+    if (this.styleSheetCollection != styleSheetCollection)
+    {
+      throw new IllegalArgumentException("This styleCollectio is not known.");
+    }
+
+    handleUnregisterStyleSheetCollection();
+    this.styleSheetCollection = null;
+    return;
+
+  }
+
+  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    if (styleSheetCollection == null)
+    {
+      throw new NullPointerException();
+    }
+
     /**
      * Do nothing if both stylesheets are equal.
      */
     if (this.styleSheetCollection == styleSheetCollection)
     {
-      return;
-    }
-
-    /**
-     * Unregister the old stylesheet collection ...
-     */
-    if (styleSheetCollection == null)
-    {
-      unregisterStyleSheetCollection();
-      this.styleSheetCollection = null;
       return;
     }
 
@@ -84,14 +100,11 @@ public abstract class StyleSheetCollectionHelper implements Serializable
     }
 
     this.styleSheetCollection = styleSheetCollection;
-    if (this.styleSheetCollection != null)
-    {
-      registerStyleSheetCollection();
-    }
+    handleRegisterStyleSheetCollection();
   }
 
-  protected abstract void registerStyleSheetCollection();
+  protected abstract void handleRegisterStyleSheetCollection();
 
-  protected abstract void unregisterStyleSheetCollection();
+  protected abstract void handleUnregisterStyleSheetCollection();
 
 }

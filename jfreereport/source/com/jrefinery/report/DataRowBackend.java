@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.41 2003/06/01 19:11:40 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.42 2003/06/10 12:11:16 taqua Exp $
  *
  * Changes
  * -------
@@ -278,7 +278,6 @@ public class DataRowBackend implements Cloneable
         final int currentRow = getCurrentRow();
         if (currentRow < 0 || currentRow > lastRow)
         {
-          Log.debug ("CurrentRow: " + currentRow + " LastRow: " + lastRow);
           returnValue = null;
         }
         else

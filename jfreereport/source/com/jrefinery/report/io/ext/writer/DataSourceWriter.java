@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.12 2003/06/10 16:07:52 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.13 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -99,8 +99,6 @@ public class DataSourceWriter extends ObjectWriter
         throw new ReportWriterException("The datasource type is not registered: "
                                         + ds.getClass());
       }
-//      Log.debug ("Name: " + ds);
-//      Log.debug ("ObjectDescription: " + dsDesc);
 
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
 

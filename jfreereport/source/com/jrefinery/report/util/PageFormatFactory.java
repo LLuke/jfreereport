@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.25 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.26 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -706,7 +706,7 @@ public class PageFormatFactory
       Object o = f.get(this);
       if (o instanceof int[] == false)
       {
-        Log.debug ("Is no valid pageformat definition");
+        // Log.debug ("Is no valid pageformat definition");
         return null;
       }
       int[] pageformat = (int[]) o;
@@ -714,12 +714,12 @@ public class PageFormatFactory
     }
     catch (NoSuchFieldException nfe)
     {
-      Log.debug ("There is no pageformat " + name + " defined.");
+      // Log.debug ("There is no pageformat " + name + " defined.");
       return null;
     }
     catch (IllegalAccessException aie)
     {
-      Log.debug ("There is no pageformat " + name + " accessible.");
+      // Log.debug ("There is no pageformat " + name + " accessible.");
       return null;
     }
   }

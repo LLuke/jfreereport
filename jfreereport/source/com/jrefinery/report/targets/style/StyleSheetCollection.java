@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.3 2003/06/15 21:26:30 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.4 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,12 +39,13 @@
 package com.jrefinery.report.targets.style;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.InstanceID;
-import com.jrefinery.report.util.Log;
 
 /**
  * The StyleSheet collection is assigned to all Elements, all StyleSheets and
@@ -111,13 +112,26 @@ public class StyleSheetCollection implements Cloneable, Serializable
     if (contains(es) == false)
     {
       styleSheets.add(es.getName(), new StyleCollectionEntry(es));
-      es.setStyleSheetCollection(this);
+      es.registerStyleSheetCollection(this);
+
       addParents(es);
       if (updateRefs)
       {
         updateReferences();
       }
     }
+    /** assert: stylesheet collection set ...
+    else
+    {
+      if (es.isGlobalDefault() == false)
+      {
+        if (es.getStyleSheetCollection() != this)
+        {
+          throw new IllegalStateException("Invalid StyleSheet detected!");
+        }
+      }
+    }
+    */
   }
 
   /**
@@ -178,7 +192,6 @@ public class StyleSheetCollection implements Cloneable, Serializable
     StyleCollectionEntry se = (StyleCollectionEntry) styleSheets.getFirst(name);
     if (se == null)
     {
-      Log.debug ("No such StyleSheet: " + name);
       return null;
     }
     return se.getStyleSheet();
@@ -207,7 +220,6 @@ public class StyleSheetCollection implements Cloneable, Serializable
         StyleCollectionEntry se = (StyleCollectionEntry) allElements[i];
         ElementStyleSheet es = se.getStyleSheet();
         ElementStyleSheet esCopy = es.getCopy();
-        Log.debug ("Clone: ADD: " + esCopy.getName());
         col.styleSheets.add(esCopy.getName(),
             new StyleCollectionEntry(se.getReferenceCount(), esCopy));
       }
@@ -371,6 +383,10 @@ public class StyleSheetCollection implements Cloneable, Serializable
         {
           ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
           StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+          if (sep == null)
+          {
+            throw new NullPointerException("StyleSheet '" + esp.getName() + "' is not known.");
+          }
           sep.setReferenceCount(sep.getReferenceCount() + 1);
         }
         List defaultParents = es.getDefaultParents();
@@ -407,7 +423,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
    */
   protected boolean remove (ElementStyleSheet es, boolean update)
   {
-    if (styleSheets.containsKey(es.getName()) == false)
+    if (contains(es) == false)
     {
       return true;
     }
@@ -419,26 +435,45 @@ public class StyleSheetCollection implements Cloneable, Serializable
         return false;
       }
 
+      // finally remove the stylesheet itself ...
+      if (styleSheets.remove(es.getName(), se) == false)
+      {
+        return false;
+      }
+      else
+      {
+        es.unregisterStyleSheetCollection(this);
+      }
+
       // check whether we can remove the parents ...
       List parents = es.getParents();
       for (int i = 0; i < parents.size(); i++)
       {
         ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
+        StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+        sep.setReferenceCount(sep.getReferenceCount() - 1);
         remove (esp, false);
       }
       List defaultParents = es.getDefaultParents();
       for (int i = 0; i < defaultParents.size(); i++)
       {
         ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
+        StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
+        sep.setReferenceCount(sep.getReferenceCount() - 1);
         remove (esp, false);
       }
-      // finally remove the stylesheet itself ...
-      styleSheets.remove(es.getName(), se);
       if (update)
       {
         updateReferences();
       }
       return true;
     }
+
+  }
+
+  public Iterator keys ()
+  {
+    Set keySet = styleSheets.keySet();
+    return Collections.unmodifiableSet(keySet).iterator();
   }
 }

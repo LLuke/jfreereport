@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: InstanceID.java,v 1.1 2003/06/19 18:50:18 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,5 +47,10 @@ public final class InstanceID implements Serializable
 {
   public InstanceID()
   {
+  }
+
+  public String toString()
+  {
+    return "InstanceID[" + hashCode() + "]";
   }
 }

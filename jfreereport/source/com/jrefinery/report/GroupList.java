@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.25 2003/06/01 17:39:23 taqua Exp $
+ * $Id: GroupList.java,v 1.26 2003/06/19 18:44:08 taqua Exp $
  *
  * Changes:
  * --------
@@ -79,7 +79,7 @@ public class GroupList implements Cloneable, Serializable
       this.groupList = groupList;
     }
 
-    protected void registerStyleSheetCollection()
+    protected void handleRegisterStyleSheetCollection()
     {
       if (groupList.cache == null)
       {
@@ -88,11 +88,11 @@ public class GroupList implements Cloneable, Serializable
       for (int i = 0; i < groupList.cache.length; i++)
       {
         Group g = (Group) groupList.cache[i];
-        g.setStyleSheetCollection(getStyleSheetCollection());
+        g.registerStyleSheetCollection(getStyleSheetCollection());
       }
     }
 
-    protected void unregisterStyleSheetCollection()
+    protected void handleUnregisterStyleSheetCollection()
     {
       if (groupList.cache == null)
       {
@@ -101,7 +101,7 @@ public class GroupList implements Cloneable, Serializable
       for (int i = 0; i < groupList.cache.length; i++)
       {
         Group g = (Group) groupList.cache[i];
-        g.setStyleSheetCollection(null);
+        g.unregisterStyleSheetCollection(null);
       }
     }
   }
@@ -129,7 +129,10 @@ public class GroupList implements Cloneable, Serializable
   {
     this();
     backend.addAll(list.backend);
-    setStyleSheetCollection(list.getStyleSheetCollection());
+    if (list.getStyleSheetCollection() != null)
+    {
+      registerStyleSheetCollection(list.getStyleSheetCollection());
+    }
   }
 
   /**
@@ -165,7 +168,10 @@ public class GroupList implements Cloneable, Serializable
       return false;
     }
     Group go = (Group) backend.get(idxOf);
-    go.setStyleSheetCollection(null);
+    if (getStyleSheetCollection() != null)
+    {
+      go.unregisterStyleSheetCollection(getStyleSheetCollection());
+    }
     backend.remove(idxOf);
     return true;
   }
@@ -208,7 +214,10 @@ public class GroupList implements Cloneable, Serializable
     {
       remove(o);
     }
-    o.setStyleSheetCollection(getStyleSheetCollection());
+    if (getStyleSheetCollection() != null)
+    {
+      o.registerStyleSheetCollection(getStyleSheetCollection());
+    }
     backend.add(o);
     Collections.sort(backend);
   }
@@ -287,8 +296,13 @@ public class GroupList implements Cloneable, Serializable
     return styleSheetCollectionHelper.getStyleSheetCollection();
   }
 
-  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
-    styleSheetCollectionHelper.setStyleSheetCollection(styleSheetCollection);
+    styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
+  }
+
+  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 }

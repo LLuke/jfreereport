@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.58 2003/06/15 19:05:41 taqua Exp $
+ * $Id: Band.java,v 1.59 2003/06/19 18:44:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -146,7 +146,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return The layout manager.
    */
-  public BandLayoutManager getLayout ()
+  public BandLayoutManager getLayout()
   {
     return (BandLayoutManager) getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
   }
@@ -156,7 +156,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param layoutManager  the layout manager.
    */
-  public void setLayout (BandLayoutManager layoutManager)
+  public void setLayout(BandLayoutManager layoutManager)
   {
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layoutManager);
   }
@@ -167,7 +167,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return the default style sheet.
    */
-  public ElementStyleSheet getBandDefaults ()
+  public ElementStyleSheet getBandDefaults()
   {
     return bandDefaults;
   }
@@ -180,7 +180,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
    *                              values.
    */
-  public synchronized void addElement (final Element element)
+  public synchronized void addElement(final Element element)
   {
     addElement(allElements.size(), element);
   }
@@ -240,9 +240,14 @@ public class Band extends Element implements Serializable, Cloneable
     // add the element, update the childs Parent and the childs stylesheet.
     allElements.add(position, element);
     allElementsCached = null;
+    // first register the element with the collection ...
+    if (getStyleSheetCollection() != null)
+    {
+      element.registerStyleSheetCollection(getStyleSheetCollection());
+    }
+    // then add the parents, or the band's parent will be unregistered ..
     element.getStyle().addDefaultParent(getBandDefaults());
     element.setParent(this);
-    element.setStyleSheetCollection(getStyleSheetCollection());
     invalidateLayout();
   }
 
@@ -309,7 +314,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param e  the element to be removed.
    */
-  public void removeElement (Element e)
+  public void removeElement(Element e)
   {
     if (e == null)
     {
@@ -320,7 +325,11 @@ public class Band extends Element implements Serializable, Cloneable
       // this is none of my childs, ignore the request ...
       return;
     }
-    e.setStyleSheetCollection(null);
+
+    if (getStyleSheetCollection() != null)
+    {
+      e.unregisterStyleSheetCollection(getStyleSheetCollection());
+    }
     e.getStyle().removeDefaultParent(getBandDefaults());
     e.setParent(null);
     allElements.remove(e);
@@ -343,7 +352,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return the number of elements of this band.
    */
-  public int getElementCount ()
+  public int getElementCount()
   {
     return allElements.size();
   }
@@ -353,7 +362,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return the elements.
    */
-  public synchronized Element[] getElementArray ()
+  public synchronized Element[] getElementArray()
   {
     if (allElementsCached == null)
     {
@@ -371,7 +380,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @return the element
    * @throws IndexOutOfBoundsException if the index is invalid.
    */
-  public Element getElement (int index)
+  public Element getElement(int index)
   {
     if (allElementsCached == null)
     {
@@ -425,7 +434,7 @@ public class Band extends Element implements Serializable, Cloneable
       for (int i = 0; i < allElementsCached.length; i++)
       {
         Element eC = (Element) allElementsCached[i].clone();
-        b.allElements.add (eC);
+        b.allElements.add(eC);
         b.allElementsCached[i] = eC;
         eC.setParent(b);
         eC.getStyle().removeDefaultParent(myBandDefaults);
@@ -438,7 +447,7 @@ public class Band extends Element implements Serializable, Cloneable
       {
         Element e = (Element) allElements.get(i);
         Element eC = (Element) e.clone();
-        b.allElements.add (eC);
+        b.allElements.add(eC);
         b.allElementsCached[i] = eC;
         eC.setParent(b);
         eC.getStyle().removeDefaultParent(myBandDefaults);
@@ -464,7 +473,7 @@ public class Band extends Element implements Serializable, Cloneable
    * added. You should also call this method if you modified one of the elements of
    * the band (eg. redefined the max, min or preferred size).
    */
-  public void invalidateLayout ()
+  public void invalidateLayout()
   {
     getLayout().invalidateLayout(this);
     if (getParent() != null)
@@ -487,9 +496,9 @@ public class Band extends Element implements Serializable, Cloneable
    * @param height the new height. The minimum width is set to '0'.
    * @deprecated do not manipulate the element properties that way, use a stylesheet
    */
-  public void setHeight (float height)
+  public void setHeight(float height)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
+    getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
   }
 
   /**
@@ -499,22 +508,32 @@ public class Band extends Element implements Serializable, Cloneable
    * @deprecated do not manipulate the element properties that way, use a stylesheet
    * and an suitable layoutmanager using the correct stylesheet properties ...
    */
-  public float getHeight ()
+  public float getHeight()
   {
     Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                                              new FloatDimension(0, 0));
+        new FloatDimension(0, 0));
     return (float) d.getHeight();
   }
 
-  protected void unregisterStyleSheetCollection()
+  protected void handleUnregisterStyleSheetCollection()
   {
+    Element[] elements = getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].unregisterStyleSheetCollection(getStyleSheetCollection());
+    }
     getStyleSheetCollection().remove(getBandDefaults());
-    super.unregisterStyleSheetCollection();
+    super.handleUnregisterStyleSheetCollection();
   }
 
-  protected void registerStyleSheetCollection()
+  protected void handleRegisterStyleSheetCollection()
   {
+    Element[] elements = getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].registerStyleSheetCollection(getStyleSheetCollection());
+    }
     getStyleSheetCollection().addStyleSheet(getBandDefaults());
-    super.registerStyleSheetCollection();
+    super.handleRegisterStyleSheetCollection();
   }
 }

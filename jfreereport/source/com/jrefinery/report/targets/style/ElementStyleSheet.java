@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.31 2003/06/15 19:05:48 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.32 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -92,12 +92,12 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       this.es = es;
     }
 
-    protected void registerStyleSheetCollection()
+    protected void handleRegisterStyleSheetCollection()
     {
       getStyleSheetCollection().addStyleSheet(es);
     }
 
-    protected void unregisterStyleSheetCollection()
+    protected void handleUnregisterStyleSheetCollection()
     {
       getStyleSheetCollection().remove(es);
     }
@@ -311,6 +311,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       parentsCached = null;
       parentsListCached = null;
       parent.addListener(this);
+      if (getStyleSheetCollection() != null)
+      {
+        parent.registerStyleSheetCollection(getStyleSheetCollection());
+      }
     }
     else
     {
@@ -344,6 +348,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       defaultSheets.add (position, parent);
       defaultCached = null;
       defaultParentsListCached = null;
+      if (getStyleSheetCollection() != null)
+      {
+        parent.registerStyleSheetCollection(getStyleSheetCollection());
+      }
     }
     else
     {
@@ -401,10 +409,19 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
+    if (parents.contains(parent) == false)
+    {
+      // do nothing if this is none of the parents ...
+      return;
+    }
     parents.remove (parent);
     parent.removeListener(this);
     parentsCached = null;
     parentsListCached = null;
+    if (getStyleSheetCollection() != null)
+    {
+      parent.unregisterStyleSheetCollection(getStyleSheetCollection());
+    }
   }
 
   /**
@@ -618,6 +635,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public ElementStyleSheet getCopy()
   {
+    new IllegalAccessException().printStackTrace();
     try
     {
       ElementStyleSheet sc = (ElementStyleSheet) super.clone();
@@ -904,7 +922,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       properties.put (key, value);
     }
   }
-
+/*
   public boolean equals(Object o)
   {
     if (this == o) return true;
@@ -925,7 +943,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     result = 29 * result + name.hashCode();
     return result;
   }
-
+*/
   /**
    * Creates and returns a copy of this object. This method calls getCopy().
    *
@@ -948,14 +966,14 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     return collectionHelper.getStyleSheetCollection();
   }
 
-  /**
-   * Defines the stylesheet collection for this stylesheet.
-   *
-   * @param styleSheetCollection
-   */
-  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
-    collectionHelper.setStyleSheetCollection(styleSheetCollection);
+    collectionHelper.registerStyleSheetCollection(styleSheetCollection);
+  }
+
+  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    collectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 
   /**
@@ -964,5 +982,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   public InstanceID getId()
   {
     return id;
+  }
+
+  public boolean isGlobalDefault()
+  {
+    return false;
   }
 }

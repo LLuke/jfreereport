@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.45 2003/05/02 12:40:26 taqua Exp $
+ * $Id: ReportPane.java,v 1.46 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -741,7 +741,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
     if (isPaginated ())
     {
       // Is already done
-      Log.debug ("No Pagination done!");
       return;
     }
     if (isPaginating ())

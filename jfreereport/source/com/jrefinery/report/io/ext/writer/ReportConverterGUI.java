@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.11 2003/06/12 19:49:38 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.12 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -256,7 +256,6 @@ public class ReportConverterGUI extends JFrame
    */
   public static void main (String [] args)
   {
-    Log.debug("start ... "); 
     ReportConverterGUI gui = new ReportConverterGUI();
     gui.addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent e)

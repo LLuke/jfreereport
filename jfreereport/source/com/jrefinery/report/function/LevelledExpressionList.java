@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.14 2003/06/13 17:55:23 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.15 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,6 @@ import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.util.LevelList;
-import com.jrefinery.report.util.Log;
 
 /**
  * A list of expressions/functions and associated levels.  This class listens for report events,
@@ -1016,10 +1015,6 @@ public class LevelledExpressionList implements ReportListener,
    */
   protected void clearError()
   {
-    if (hasErrors())
-    {
-      Log.debug ("Has Errors: ", new Exception());
-    }
     errorList.clear();
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.15 2003/06/15 19:05:48 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.16 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -166,7 +166,17 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
    * @param styleSheetCollection
    * @throws IllegalArgumentException
    */
-  public final void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public final void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
   }
+
+  public final void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+  }
+
+  public boolean isGlobalDefault()
+  {
+    return true;
+  }
+
 }

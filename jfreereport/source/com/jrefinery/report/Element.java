@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.31 2003/06/15 19:05:41 taqua Exp $
+ * $Id: Element.java,v 1.32 2003/06/19 18:44:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,8 +69,8 @@ import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleSheetCollection;
-import com.jrefinery.report.targets.style.InvalidStyleSheetCollectionException;
 import com.jrefinery.report.targets.style.StyleSheetCollectionHelper;
+import com.jrefinery.report.util.Log;
 
 /**
  * Base class for all report elements (display items that can appear within a report band).
@@ -97,14 +97,14 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       this.element = e;
     }
 
-    protected void registerStyleSheetCollection()
+    protected void handleRegisterStyleSheetCollection()
     {
-      element.registerStyleSheetCollection();
+      element.handleRegisterStyleSheetCollection();
     }
 
-    protected void unregisterStyleSheetCollection()
+    protected void handleUnregisterStyleSheetCollection()
     {
-      element.unregisterStyleSheetCollection();
+      element.handleUnregisterStyleSheetCollection();
     }
   }
 
@@ -346,19 +346,29 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     return styleSheetCollectionHelper.getStyleSheetCollection();
   }
 
-  public void setStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  public void registerStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
-    styleSheetCollectionHelper.setStyleSheetCollection(styleSheetCollection);
+    styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
 
-  protected void unregisterStyleSheetCollection ()
+  public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
+  }
+
+  protected void handleUnregisterStyleSheetCollection ()
   {
     getStyleSheetCollection().remove(getStyle());
   }
 
-  protected void registerStyleSheetCollection ()
+  protected void handleRegisterStyleSheetCollection ()
   {
     getStyleSheetCollection().addStyleSheet(getStyle());
+    if (getStyle().getStyleSheetCollection() != getStyleSheetCollection())
+    {
+      getStyleSheetCollection().addStyleSheet(getStyle());
+      throw new IllegalStateException(getStyle().getName() + " " + getName());
+    }
   }
 
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
@@ -388,7 +398,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * The paint object must be an instance of color. Generic paints are not permitted.
    *
    * @param p  the paint for this element (null permitted).
-   * 
+   *
    * @deprecated use a stylesheet to define the paint. The paint object must be an
    * instance of color.
    */

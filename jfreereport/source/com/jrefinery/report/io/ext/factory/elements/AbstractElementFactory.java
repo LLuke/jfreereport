@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractElementFactory.java,v 1.3 2003/03/07 16:55:56 taqua Exp $
+ * $Id: AbstractElementFactory.java,v 1.4 2003/03/18 18:28:43 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -82,7 +82,9 @@ public class AbstractElementFactory implements ElementFactory
   }
 
   /**
-   * Returns an element for the specified type.
+   * Returns an element for the specified type. This implementation assumes, that
+   * all elements have a public default constructor and uses Class.newInstance()
+   * to create a new instance of that element.
    * 
    * @param type  the type.
    * 
@@ -97,9 +99,9 @@ public class AbstractElementFactory implements ElementFactory
     }
     try
     {
-      return (Element) e.clone();
+      return (Element) e.getClass().newInstance();
     }
-    catch (CloneNotSupportedException cne)
+    catch (Exception cne)
     {
       return null;
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.6 2003/06/18 17:57:14 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -94,12 +94,12 @@ public class ReportDefinition implements Cloneable
     itemBand = (ItemBand) report.getItemBand().clone();
     reportConfiguration = report.getReportConfiguration();
     styleSheetCollection = new StyleSheetCollection();
-    groups.setStyleSheetCollection(styleSheetCollection);
-    reportFooter.setStyleSheetCollection(styleSheetCollection);
-    reportHeader.setStyleSheetCollection(styleSheetCollection);
-    pageFooter.setStyleSheetCollection(styleSheetCollection);
-    pageHeader.setStyleSheetCollection(styleSheetCollection);
-    itemBand.setStyleSheetCollection(styleSheetCollection);
+    groups.registerStyleSheetCollection(styleSheetCollection);
+    reportFooter.registerStyleSheetCollection(styleSheetCollection);
+    reportHeader.registerStyleSheetCollection(styleSheetCollection);
+    pageFooter.registerStyleSheetCollection(styleSheetCollection);
+    pageHeader.registerStyleSheetCollection(styleSheetCollection);
+    itemBand.registerStyleSheetCollection(styleSheetCollection);
   }
 
   /**
@@ -242,12 +242,12 @@ public class ReportDefinition implements Cloneable
     report.reportFooter = (ReportFooter) reportFooter.clone ();
     report.reportHeader = (ReportHeader) reportHeader.clone ();
     report.styleSheetCollection = new StyleSheetCollection();
-    report.groups.setStyleSheetCollection(report.styleSheetCollection);
-    report.itemBand.setStyleSheetCollection(report.styleSheetCollection);
-    report.reportFooter.setStyleSheetCollection(report.styleSheetCollection);
-    report.reportHeader.setStyleSheetCollection(report.styleSheetCollection);
-    report.pageFooter.setStyleSheetCollection(report.styleSheetCollection);
-    report.pageHeader.setStyleSheetCollection(report.styleSheetCollection);
+    report.groups.registerStyleSheetCollection(report.styleSheetCollection);
+    report.itemBand.registerStyleSheetCollection(report.styleSheetCollection);
+    report.reportFooter.registerStyleSheetCollection(report.styleSheetCollection);
+    report.reportHeader.registerStyleSheetCollection(report.styleSheetCollection);
+    report.pageFooter.registerStyleSheetCollection(report.styleSheetCollection);
+    report.pageHeader.registerStyleSheetCollection(report.styleSheetCollection);
     return report;
   }
 }

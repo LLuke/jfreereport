@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.12 2003/03/18 18:28:46 taqua Exp $
+ * $Id: HashNMap.java,v 1.13 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -227,19 +227,23 @@ public class HashNMap implements Serializable, Cloneable
    * @param key  the key.
    * @param value  the value.
    */
-  public void remove (Object key, Object value)
+  public boolean remove (Object key, Object value)
   {
     ArrayList v = (ArrayList) table.get (key);
     if (v == null)
     {
-      return;
+      return false;
     }
 
-    v.remove (value);
+    if (v.remove (value) == false)
+    {
+      return false;
+    }
     if (v.size () == 0)
     {
       table.remove (key);
     }
+    return true;
   }
 
   /**
