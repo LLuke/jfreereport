@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -38,16 +38,22 @@ package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
 import java.awt.Shape;
+import java.awt.Image;
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Dimension2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.ImageReference;
+import org.jfree.report.DrawableContainer;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.report.modules.output.table.base.AbstractTableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.ui.Drawable;
 
 /**
  * The cell data factory is responsible for converting elements into
@@ -134,6 +140,30 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
     {
       // check backgrounds
       return createBackground(e, (Shape) value, rect);
+    }
+
+    if (value instanceof DrawableContainer)
+    {
+      final HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
+      DrawableContainer container = (DrawableContainer) value;
+      Drawable drawable = container.getDrawable();
+
+      Rectangle2D bounds = container.getClippingBounds();
+      Dimension2D size = container.getDrawableSize();
+
+      Image image = ImageUtils.createTransparentImage
+          ((int) bounds.getWidth(), (int) bounds.getHeight());
+      Graphics2D g2 = (Graphics2D) image.getGraphics();
+      // the clipping bounds are a sub-area of the whole drawable
+      // we only want to print a certain area ...
+      g2.translate(-bounds.getX(), -bounds.getY());
+      g2.clip(bounds);
+
+      drawable.draw(g2, new Rectangle2D.Double (0,0, size.getWidth(), size.getHeight()));
+      g2.dispose();
+      ImageReference imgref = new ImageReference(image);
+      
+      return new HtmlImageCellData(rect, imgref, style, useXHTML);
     }
 
     //Log.debug ("Element " + e + " ignored");
