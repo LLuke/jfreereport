@@ -66,19 +66,19 @@ public class BarcodeEAN8 extends BarcodeEAN
    */
   public byte[] getBars()
   {
-    String _code = getCode();
-    int code[] = new int[_code.length()];
+    final String _code = getCode();
+    final int[] code = new int[_code.length()];
     for (int k = 0; k < code.length; ++k)
       code[k] = _code.charAt(k) - '0';
-    byte bars[] = new byte[TOTALBARS_EAN8];
+    final byte[] bars = new byte[TOTALBARS_EAN8];
     int pb = 0;
     bars[pb++] = 1;
     bars[pb++] = 1;
     bars[pb++] = 1;
     for (int k = 0; k < 4; ++k)
     {
-      int c = code[k];
-      byte stripes[] = BARS[c];
+      final int c = code[k];
+      final byte[] stripes = BARS[c];
       bars[pb++] = stripes[0];
       bars[pb++] = stripes[1];
       bars[pb++] = stripes[2];
@@ -91,8 +91,8 @@ public class BarcodeEAN8 extends BarcodeEAN
     bars[pb++] = 1;
     for (int k = 4; k < 8; ++k)
     {
-      int c = code[k];
-      byte stripes[] = BARS[c];
+      final int c = code[k];
+      final byte[] stripes = BARS[c];
       bars[pb++] = stripes[0];
       bars[pb++] = stripes[1];
       bars[pb++] = stripes[2];
@@ -104,15 +104,15 @@ public class BarcodeEAN8 extends BarcodeEAN
     return bars;
   }
 
-  protected void drawCode(Graphics2D g2, float keepBarX, float textStartY)
+  protected void drawCode(final Graphics2D g2, final float keepBarX, final float textStartY)
   {
-    String code = getCode();
-    BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+    final String code = getCode();
+    final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
     for (int k = 0; k < 8; ++k)
     {
-      String c = code.substring(k, k + 1);
-      float len = calc.getStringWidth(c, 0, 1);
-      float pX = TEXTPOS_EAN8[k] * getMinWidth() - len / 2;
+      final String c = code.substring(k, k + 1);
+      final float len = calc.getStringWidth(c, 0, 1);
+      final float pX = TEXTPOS_EAN8[k] * getMinWidth() - len / 2;
       g2.drawString(c, pX, textStartY);
     }
   }

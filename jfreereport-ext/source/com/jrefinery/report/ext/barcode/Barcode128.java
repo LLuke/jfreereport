@@ -219,7 +219,7 @@ public class Barcode128 extends Barcode
     return uccCode;
   }
 
-  public void setUccCode(boolean ucc)
+  public void setUccCode(final boolean ucc)
   {
     this.uccCode = ucc;
   }
@@ -231,13 +231,13 @@ public class Barcode128 extends Barcode
    * @param numDigits the number of digits to check
    * @return the check result
    */
-  private static boolean isNextCharsDigits(String text, int textIndex, int numDigits)
+  private static boolean isNextCharsDigits(final String text, int textIndex, int numDigits)
   {
     if (textIndex + numDigits > text.length())
       return false;
     while (numDigits-- > 0)
     {
-      char c = text.charAt(textIndex++);
+      final char c = text.charAt(textIndex++);
       if (c < '0' || c > '9')
         return false;
     }
@@ -252,14 +252,14 @@ public class Barcode128 extends Barcode
    * @param numDigits the number of digits to pack. It is always an even number
    * @return the packed digits, two digits per character
    */
-  private static String getPackedRawDigits(String text, int textIndex, int numDigits)
+  private static String getPackedRawDigits(final String text, int textIndex, int numDigits)
   {
-    StringBuffer out = new StringBuffer();
+    final StringBuffer out = new StringBuffer();
     while (numDigits > 0)
     {
       numDigits -= 2;
-      int c1 = text.charAt(textIndex++) - '0';
-      int c2 = text.charAt(textIndex++) - '0';
+      final int c1 = text.charAt(textIndex++) - '0';
+      final int c2 = text.charAt(textIndex++) - '0';
       out.append((char) (c1 * 10 + c2));
     }
     return out.toString();
@@ -272,10 +272,10 @@ public class Barcode128 extends Barcode
    * the character FNC1 is added
    * @return the code ready to be fed to getBarsCode128Raw()
    */
-  public static String getRawText(String text, boolean ucc)
+  public static String getRawText(final String text, final boolean ucc)
   {
-    StringBuffer out = new StringBuffer();
-    int tLen = text.length();
+    final StringBuffer out = new StringBuffer();
+    final int tLen = text.length();
     if (tLen == 0)
     {
       out.append(START_B);
@@ -430,10 +430,10 @@ public class Barcode128 extends Barcode
    * @param text the barcode
    * @return the bars
    */
-  public static byte[] getBarsCode128Raw(String text)
+  public static byte[] getBarsCode128Raw(final String text)
   {
-    StringBuffer b = new StringBuffer();
-    int idx = text.indexOf('\uffff');
+    final StringBuffer b = new StringBuffer();
+    final int idx = text.indexOf('\uffff');
     if (idx >= 0)
     {
       b.append(text.substring(0, idx));
@@ -453,7 +453,7 @@ public class Barcode128 extends Barcode
     b.append((char) chkSum);
 
 
-    byte bars[] = new byte[(b.length() + 1) * 6 + 7];
+    final byte[] bars = new byte[(b.length() + 1) * 6 + 7];
     int k;
     for (k = 0; k < b.length(); ++k)
     {
@@ -482,10 +482,10 @@ public class Barcode128 extends Barcode
     float fontX = 0;
     float fontY = 0;
 
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
-      float baseline = getBaseline();
+      final float baseline = getBaseline();
       if (baseline > 0)
       {
         fontY = baseline - getFontDescent(font.getFont());
@@ -494,21 +494,21 @@ public class Barcode128 extends Barcode
       {
         fontY = -baseline + font.getFontSize();
       }
-      String fullCode = getStrippedCode();
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
+      final String fullCode = getStrippedCode();
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
       fontX = calc.getStringWidth(fullCode, 0, fullCode.length());
     }
 
-    float fullWidth = Math.max(getFullWidth(), fontX);
-    float fullHeight = getBarHeight() + fontY;
+    final float fullWidth = Math.max(getFullWidth(), fontX);
+    final float fullHeight = getBarHeight() + fontY;
     return new FloatDimension(fullWidth, fullHeight);
   }
 
   private float getFullWidth()
   {
-    String rawText = getRawText();
-    int len = rawText.length();
-    float fullWidth = (len + 2) * 11 * getMinWidth() + 2 * getMinWidth();
+    final String rawText = getRawText();
+    final int len = rawText.length();
+    final float fullWidth = (len + 2) * 11 * getMinWidth() + 2 * getMinWidth();
     return fullWidth;
   }
 
@@ -517,31 +517,31 @@ public class Barcode128 extends Barcode
    * @param textColor the color of the text. It can be <CODE>null</CODE>
    * @return the <CODE>Image</CODE>
    */
-  public Image createImageWithBarcode(Color barColor, Color textColor)
+  public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
       throw new NullPointerException("BarColor must not be null");
     if (textColor == null)
       throw new NullPointerException("TextColor must not be null");
 
-    String fullCode = getStrippedCode();
-    String bCode = getRawText();
+    final String fullCode = getStrippedCode();
+    final String bCode = getRawText();
 
 //    int len = bCode.length();
-    float fullWidth = getFullWidth();
+    final float fullWidth = getFullWidth();
     float barStartX = 0;
     float barStartY = 0;
     float textStartX = 0;
     float textStartY = 0;
 
     float textWidth = 0;
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
       textWidth = calc.getStringWidth(fullCode, 0, fullCode.length());
 
-      float baseline = getBaseline();
+      final float baseline = getBaseline();
       if (baseline > 0)
       {
         textStartY = baseline - getFontDescent(font.getFont());
@@ -568,21 +568,21 @@ public class Barcode128 extends Barcode
         textStartX = (fullWidth - textWidth) / 2;
     }
 
-    int imageX = (int) Math.max (fullWidth, textWidth);
-    int imageY = (int) (getBarHeight() + textStartY);
-    BufferedImage image = new BufferedImage (imageX, imageY, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
+    final int imageX = (int) Math.max (fullWidth, textWidth);
+    final int imageY = (int) (getBarHeight() + textStartY);
+    final BufferedImage image = new BufferedImage (imageX, imageY, BufferedImage.TYPE_INT_ARGB);
+    final Graphics2D g2 = image.createGraphics();
 
-    byte bars[] = getBarsCode128Raw(bCode);
+    final byte[] bars = getBarsCode128Raw(bCode);
     g2.setPaint(barColor);
 
     for (int k = 0; k < bars.length; ++k)
     {
-      float w = bars[k] * getMinWidth();
+      final float w = bars[k] * getMinWidth();
       // print every other bar ..
       if ((k % 2) == 0)
       {
-        Rectangle2D.Float rect = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
+        final Rectangle2D.Float rect = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
         g2.fill(rect);
       }
       barStartX += w;

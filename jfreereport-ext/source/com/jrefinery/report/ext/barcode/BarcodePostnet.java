@@ -92,7 +92,7 @@ public class BarcodePostnet extends Barcode
     return multiplier;
   }
 
-  public void setMultiplier(float multiplier)
+  public void setMultiplier(final float multiplier)
   {
     this.multiplier = multiplier;
   }
@@ -102,7 +102,7 @@ public class BarcodePostnet extends Barcode
     return typePlanet;
   }
 
-  public void setTypePlanet(boolean typePlanet)
+  public void setTypePlanet(final boolean typePlanet)
   {
     this.typePlanet = typePlanet;
   }
@@ -112,7 +112,7 @@ public class BarcodePostnet extends Barcode
     return barSize;
   }
 
-  public void setBarSize(float barSize)
+  public void setBarSize(final float barSize)
   {
     this.barSize = barSize;
   }
@@ -127,17 +127,17 @@ public class BarcodePostnet extends Barcode
     int total = 0;
     for (int k = text.length() - 1; k >= 0; --k)
     {
-      int n = text.charAt(k) - '0';
+      final int n = text.charAt(k) - '0';
       total += n;
     }
     text += (char) (((10 - (total % 10)) % 10) + '0');
 
-    byte bars[] = new byte[text.length() * 5 + 2];
+    final byte[] bars = new byte[text.length() * 5 + 2];
     bars[0] = 1;
     bars[bars.length - 1] = 1;
     for (int k = 0; k < text.length(); ++k)
     {
-      int c = text.charAt(k) - '0';
+      final int c = text.charAt(k) - '0';
       System.arraycopy(BARS[c], 0, bars, k * 5 + 1, 5);
     }
     return bars;
@@ -149,8 +149,8 @@ public class BarcodePostnet extends Barcode
    */
   public Dimension2D getBarcodeSize()
   {
-    String code = getCode();
-    float width = ((code.length() + 1) * 5 + 1) * getMultiplier() + getMinWidth();
+    final String code = getCode();
+    final float width = ((code.length() + 1) * 5 + 1) * getMultiplier() + getMinWidth();
     return new FloatDimension(width, getBarHeight());
   }
 
@@ -159,21 +159,21 @@ public class BarcodePostnet extends Barcode
    * @param textColor the color of the text. It can be <CODE>null</CODE>
    * @return the <CODE>Image</CODE>
    */
-  public Image createImageWithBarcode(Color barColor, Color textColor)
+  public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
       throw new NullPointerException("BarColor must not be null");
     if (textColor == null)
       throw new NullPointerException("TextColor must not be null");
 
-    Dimension2D imageDim = getBarcodeSize();
-    BufferedImage image = new BufferedImage((int) imageDim.getWidth(),
+    final Dimension2D imageDim = getBarcodeSize();
+    final BufferedImage image = new BufferedImage((int) imageDim.getWidth(),
                                             (int) imageDim.getHeight(),
                                             BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
+    final Graphics2D g2 = image.createGraphics();
     g2.setPaint(barColor);
 
-    byte bars[] = getBarsPostnet();
+    final byte[] bars = getBarsPostnet();
     byte flip = 1;
 
     if (isTypePlanet())
@@ -195,7 +195,7 @@ public class BarcodePostnet extends Barcode
       {
         height = getBarSize();
       }
-      Rectangle2D rect = new Rectangle2D.Float(startX, 0, getMinWidth(), height);
+      final Rectangle2D rect = new Rectangle2D.Float(startX, 0, getMinWidth(), height);
       g2.fill(rect);
       startX += getMultiplier();
     }

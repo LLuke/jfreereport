@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentTest.java,v 1.1 2003/06/11 20:39:24 taqua Exp $
+ * $Id: ShapeContentTest.java,v 1.2 2003/06/20 12:02:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,15 +56,15 @@ public class ShapeContentTest extends TestCase
   {
   }
 
-  public ShapeContentTest(String s)
+  public ShapeContentTest(final String s)
   {
     super(s);
   }
 
   public void testNullContent() throws Exception
   {
-    ShapeElement se = new ShapeElement();
-    DefaultContentFactory df = new DefaultContentFactory();
+    final ShapeElement se = new ShapeElement();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ShapeContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
@@ -76,9 +76,9 @@ public class ShapeContentTest extends TestCase
 
   public void testInvisibleContent() throws Exception
   {
-    ShapeElement se = new ShapeElement();
+    final ShapeElement se = new ShapeElement();
     se.setDataSource(new StaticDataSource(new Line2D.Float(0, 0, 10, 10)));
-    DefaultContentFactory df = new DefaultContentFactory();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ShapeContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
@@ -90,16 +90,16 @@ public class ShapeContentTest extends TestCase
 
   public void testLineContent() throws Exception
   {
-    ShapeElement se = new ShapeElement();
+    final ShapeElement se = new ShapeElement();
     se.setDataSource(new StaticDataSource(new Line2D.Float(40, 70, 140, 70)));
-    DefaultContentFactory df = new DefaultContentFactory();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ShapeContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(40, 70, 140, 70));
-    Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
+    final Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
     assertEquals(new Rectangle2D.Float(40, 70, 100, 0), c.getBounds());
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));

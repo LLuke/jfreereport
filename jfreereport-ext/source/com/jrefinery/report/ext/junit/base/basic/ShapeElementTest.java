@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeElementTest.java,v 1.1 2003/06/11 20:44:33 taqua Exp $
+ * $Id: ShapeElementTest.java,v 1.2 2003/06/16 15:34:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,19 +47,19 @@ import junit.framework.TestCase;
 
 public class ShapeElementTest extends TestCase
 {
-  public ShapeElementTest(String s)
+  public ShapeElementTest(final String s)
   {
     super(s);
   }
 
   public void testCreate()
   {
-    Line2D line = new Line2D.Float(0, 0, 100, 100);
+    final Line2D line = new Line2D.Float(0, 0, 100, 100);
     Element e = ItemFactory.createLineShapeElement(null, null, null, line);
     Shape s = (Shape) e.getValue();
     assertEquals(s.getBounds2D(), line.getBounds2D());
 
-    Line2D line2 = new Line2D.Float(22, 22, 122, 122);
+    final Line2D line2 = new Line2D.Float(22, 22, 122, 122);
     e = ItemFactory.createLineShapeElement(null, null, null, line2);
     s = (Shape) e.getValue();
     assertEquals(s.getBounds2D(), line.getBounds2D());

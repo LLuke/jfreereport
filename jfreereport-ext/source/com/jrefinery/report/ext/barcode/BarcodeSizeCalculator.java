@@ -29,7 +29,7 @@ import com.jrefinery.report.targets.FontDefinition;
 
 public class BarcodeSizeCalculator extends DefaultSizeCalculator
 {
-  public BarcodeSizeCalculator(FontDefinition font)
+  public BarcodeSizeCalculator(final FontDefinition font)
   {
     super(font);
   }

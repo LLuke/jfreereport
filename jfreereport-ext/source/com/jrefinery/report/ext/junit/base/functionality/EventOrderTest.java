@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: EventOrderTest.java,v 1.1 2003/06/13 22:58:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -65,7 +65,7 @@ public class EventOrderTest extends TestCase
     /**
      * Creates an named function.
      */
-    public PageVerifyFunction(String name)
+    public PageVerifyFunction(final String name)
     {
       super(name);
     }
@@ -75,14 +75,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event  the event.
      */
-    public void pageFinished(ReportEvent event)
+    public void pageFinished(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -95,14 +95,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event  the event.
      */
-    public void pageStarted(ReportEvent event)
+    public void pageStarted(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -117,14 +117,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event The event.
      */
-    public void reportInitialized(ReportEvent event)
+    public void reportInitialized(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -137,13 +137,13 @@ public class EventOrderTest extends TestCase
      *
      * @param event  the event.
      */
-    public void reportStarted(ReportEvent event)
+    public void reportStarted(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -156,14 +156,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event  the event.
      */
-    public void reportFinished(ReportEvent event)
+    public void reportFinished(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -176,14 +176,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event  the event.
      */
-    public void groupStarted(ReportEvent event)
+    public void groupStarted(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -196,14 +196,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event  the event.
      */
-    public void groupFinished(ReportEvent event)
+    public void groupFinished(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -216,14 +216,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event  the event.
      */
-    public void itemsAdvanced(ReportEvent event)
+    public void itemsAdvanced(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -238,14 +238,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event The event.
      */
-    public void itemsStarted(ReportEvent event)
+    public void itemsStarted(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -260,14 +260,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event The event.
      */
-    public void itemsFinished(ReportEvent event)
+    public void itemsFinished(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -281,14 +281,14 @@ public class EventOrderTest extends TestCase
      *
      * @param event The event.
      */
-    public void reportDone(ReportEvent event)
+    public void reportDone(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
         return;
       }
 
-      Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
+      final Integer jupage = (Integer) event.getDataRow().get("JUnit-Page");
       if (event.getState().getCurrentPage() != jupage.intValue())
       {
         throw new IllegalStateException("JUnit-Page: " + jupage +
@@ -313,14 +313,14 @@ public class EventOrderTest extends TestCase
   {
   }
 
-  public EventOrderTest(String s)
+  public EventOrderTest(final String s)
   {
     super(s);
   }
 
   private JFreeReport getReport() throws Exception
   {
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.getReportHeader().addElement(ItemFactory.createLabelElement
         (null, new Rectangle2D.Float(0, 0, 150, 20), null,
             ElementAlignment.LEFT.getOldAlignment(), null, "Text"));
@@ -356,8 +356,8 @@ public class EventOrderTest extends TestCase
 
   public void testEventOrder() throws Exception
   {
-    JFreeReport report = getReport();
-    DefaultTableModel model = new DefaultTableModel(2, 1);
+    final JFreeReport report = getReport();
+    final DefaultTableModel model = new DefaultTableModel(2, 1);
     model.setValueAt("0-0", 0, 0);
     model.setValueAt("0-1", 1, 0);
     report.setData(model);
@@ -371,7 +371,7 @@ public class EventOrderTest extends TestCase
     Log.debug("   PLAIN_TEXT ..");
     assertTrue(FunctionalityTestLib.createPlainText(report));
     Log.debug("   RTF ..");
-    //createRTF(report); // todo fix the memory leak
+    FunctionalityTestLib.createRTF(report); 
     Log.debug("   STREAM_HTML ..");
     FunctionalityTestLib.createStreamHTML(report);
     Log.debug("   EXCEL ..");
@@ -384,11 +384,11 @@ public class EventOrderTest extends TestCase
   public void testPageCount() throws Exception
   {
     JFreeReport report = null;
-    URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[2].getReportDefinition());
+    final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[2].getReportDefinition());
     assertNotNull(url);
     report = ReportGenerator.getInstance().parseReport(url);
     report.setData(FunctionalityTestLib.REPORTS[2].getReportTableModel());
-    PageFunction pf = new PageFunction("JUnit-Page");
+    final PageFunction pf = new PageFunction("JUnit-Page");
     pf.setDependencyLevel(2);
     report.addFunction(pf);
     report.addFunction(new PageVerifyFunction("pf-verify"));

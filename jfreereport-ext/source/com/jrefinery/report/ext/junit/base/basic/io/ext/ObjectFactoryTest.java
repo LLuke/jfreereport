@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ObjectFactoryTest.java,v 1.1 2003/06/11 20:44:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,17 +46,17 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 public class ObjectFactoryTest extends TestCase
 {
-  public ObjectFactoryTest(String s)
+  public ObjectFactoryTest(final String s)
   {
     super(s);
   }
 
   public void testObjectQuery()
   {
-    DefaultClassFactory fact = new DefaultClassFactory();
-    ObjectDescription line2DDescr = fact.getDescriptionForClass(Line2D.class);
+    final DefaultClassFactory fact = new DefaultClassFactory();
+    final ObjectDescription line2DDescr = fact.getDescriptionForClass(Line2D.class);
     assertNotNull(line2DDescr);
-    ObjectDescription od = fact.getSuperClassObjectDescription(Line2D.Float.class, null);
+    final ObjectDescription od = fact.getSuperClassObjectDescription(Line2D.Float.class, null);
     assertEquals(line2DDescr.getClass(), od.getClass());
   }
 }

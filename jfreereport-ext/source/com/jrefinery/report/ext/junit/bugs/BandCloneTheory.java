@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandCloneTheory.java,v 1.3 2003/05/14 22:36:46 taqua Exp $
+ * $Id: BandCloneTheory.java,v 1.4 2003/06/10 18:17:27 taqua Exp $
  *
  * Changes
  * -------
@@ -48,31 +48,31 @@ import org.jfree.ui.FloatDimension;
 
 public class BandCloneTheory
 {
-  public static void main(String[] args) throws Exception
+  public static void main(final String[] args) throws Exception
   {
-    ElementStyleSheet es = new ElementStyleSheet("Ahar");
+    final ElementStyleSheet es = new ElementStyleSheet("Ahar");
 
-    TextElement te = new TextElement();
+    final TextElement te = new TextElement();
     te.getStyle().setAllowCaching(true);
     te.getStyle().addParent(es);
-    Band b = new Band();
+    final Band b = new Band();
     b.addElement(te);
     Log.debug(b.getStyle().getParents());
     Log.debug(b.getStyle().getDefaultParents());
     Log.debug(te.getStyle().getParents());
     Log.debug(te.getStyle().getDefaultParents());
 
-    Band b2 = (Band) b.clone();
-    Element e2 = b2.getElement(0);
+    final Band b2 = (Band) b.clone();
+    final Element e2 = b2.getElement(0);
     Log.debug(b2.getStyle().getParents());
     Log.debug(b2.getStyle().getDefaultParents());
 
     Log.debug(e2.getStyle().getParents());
     Log.debug(e2.getStyle().getDefaultParents());
 
-    Dimension2D pDim = new FloatDimension(123, 123);
-    LayoutCacheKey key = new LayoutCacheKey(te, pDim);
-    LayoutCacheKey key2 = new LayoutCacheKey(e2, pDim);
+    final Dimension2D pDim = new FloatDimension(123, 123);
+    final LayoutCacheKey key = new LayoutCacheKey(te, pDim);
+    final LayoutCacheKey key2 = new LayoutCacheKey(e2, pDim);
     Log.debug("Equal: " + key.equals(key2) + " -> " + key.hashCode() + " -> " + key2.hashCode());
   }
 }

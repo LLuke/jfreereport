@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollectionTest.java,v 1.1 2003/06/20 12:05:13 taqua Exp $
+ * $Id: StyleSheetCollectionTest.java,v 1.2 2003/06/23 16:09:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -56,18 +56,18 @@ public class StyleSheetCollectionTest extends TestCase
   {
   }
 
-  public StyleSheetCollectionTest(String s)
+  public StyleSheetCollectionTest(final String s)
   {
     super(s);
   }
 
   public void testCollectSimple ()
   {
-    ElementStyleSheet es1 = new ElementStyleSheet("es1");
-    ElementStyleSheet es2 = new ElementStyleSheet("es2");
-    ElementStyleSheet es3 = new ElementStyleSheet("es3");
-    ElementStyleSheet es2a = new ElementStyleSheet("es2a");
-    ElementStyleSheet es1a = new ElementStyleSheet("es1a");
+    final ElementStyleSheet es1 = new ElementStyleSheet("es1");
+    final ElementStyleSheet es2 = new ElementStyleSheet("es2");
+    final ElementStyleSheet es3 = new ElementStyleSheet("es3");
+    final ElementStyleSheet es2a = new ElementStyleSheet("es2a");
+    final ElementStyleSheet es1a = new ElementStyleSheet("es1a");
 
     es2.addParent(es3);
     es1.addParent(es2);
@@ -75,7 +75,7 @@ public class StyleSheetCollectionTest extends TestCase
     es2a.addParent(es3);
     es1a.addParent(es2a);
 
-    StyleSheetCollection sc = new StyleSheetCollection();
+    final StyleSheetCollection sc = new StyleSheetCollection();
     es1.registerStyleSheetCollection(sc);
     es1a.registerStyleSheetCollection(sc);
 
@@ -90,11 +90,11 @@ public class StyleSheetCollectionTest extends TestCase
 
   public void testCollectSimpleCrash ()
   {
-    ElementStyleSheet es1 = new ElementStyleSheet("es1");
-    ElementStyleSheet es2 = new ElementStyleSheet("es2");
-    ElementStyleSheet es3 = new ElementStyleSheet("es3");
-    ElementStyleSheet es2a = new ElementStyleSheet("es2a");
-    ElementStyleSheet es1a = new ElementStyleSheet("es1a");
+    final ElementStyleSheet es1 = new ElementStyleSheet("es1");
+    final ElementStyleSheet es2 = new ElementStyleSheet("es2");
+    final ElementStyleSheet es3 = new ElementStyleSheet("es3");
+    final ElementStyleSheet es2a = new ElementStyleSheet("es2a");
+    final ElementStyleSheet es1a = new ElementStyleSheet("es1a");
 
     es2.addParent(es3);
     es1.addParent(es2);
@@ -102,12 +102,12 @@ public class StyleSheetCollectionTest extends TestCase
     es2a.addParent(es3);
     es1a.addParent(es2a);
 
-    StyleSheetCollection sc = new StyleSheetCollection();
+    final StyleSheetCollection sc = new StyleSheetCollection();
     es1.registerStyleSheetCollection(sc);
 
     try
     {
-      StyleSheetCollection sc2 = new StyleSheetCollection();
+      final StyleSheetCollection sc2 = new StyleSheetCollection();
       es2.registerStyleSheetCollection(sc2);
       fail();
     }
@@ -118,11 +118,11 @@ public class StyleSheetCollectionTest extends TestCase
 
   public void testCollectDefaultsSimple ()
   {
-    ElementStyleSheet es1 = new ElementStyleSheet("es1");
-    ElementStyleSheet es2 = new ElementStyleSheet("es2");
-    ElementStyleSheet es3 = ElementDefaultStyleSheet.getDefaultStyle();
-    ElementStyleSheet es2a = new ElementStyleSheet("es2a");
-    ElementStyleSheet es1a = new ElementStyleSheet("es1a");
+    final ElementStyleSheet es1 = new ElementStyleSheet("es1");
+    final ElementStyleSheet es2 = new ElementStyleSheet("es2");
+    final ElementStyleSheet es3 = ElementDefaultStyleSheet.getDefaultStyle();
+    final ElementStyleSheet es2a = new ElementStyleSheet("es2a");
+    final ElementStyleSheet es1a = new ElementStyleSheet("es1a");
 
     es2.addParent(es3);
     es1.addParent(es2);
@@ -130,20 +130,20 @@ public class StyleSheetCollectionTest extends TestCase
     es2a.addParent(es3);
     es1a.addParent(es2a);
 
-    StyleSheetCollection sc = new StyleSheetCollection();
+    final StyleSheetCollection sc = new StyleSheetCollection();
     es1.registerStyleSheetCollection(sc);
 
-    StyleSheetCollection sc2 = new StyleSheetCollection();
+    final StyleSheetCollection sc2 = new StyleSheetCollection();
     es1a.registerStyleSheetCollection(sc2);
   }
 
   public void testClone () throws Exception
   {
-    ElementStyleSheet es1 = new ElementStyleSheet("es1");
-    ElementStyleSheet es2 = new ElementStyleSheet("es2");
-    ElementStyleSheet es3 = ElementDefaultStyleSheet.getDefaultStyle();
-    ElementStyleSheet es2a = new ElementStyleSheet("es2a");
-    ElementStyleSheet es1a = new ElementStyleSheet("es1a");
+    final ElementStyleSheet es1 = new ElementStyleSheet("es1");
+    final ElementStyleSheet es2 = new ElementStyleSheet("es2");
+    final ElementStyleSheet es3 = ElementDefaultStyleSheet.getDefaultStyle();
+    final ElementStyleSheet es2a = new ElementStyleSheet("es2a");
+    final ElementStyleSheet es1a = new ElementStyleSheet("es1a");
 
     es2.addParent(es3);
     es1.addParent(es2);
@@ -151,34 +151,34 @@ public class StyleSheetCollectionTest extends TestCase
     es2a.addParent(es3);
     es1a.addParent(es2a);
 
-    StyleSheetCollection sc = new StyleSheetCollection();
+    final StyleSheetCollection sc = new StyleSheetCollection();
     es1.registerStyleSheetCollection(sc);
     es1a.registerStyleSheetCollection(sc);
 
-    StyleSheetCollection scc = (StyleSheetCollection) sc.clone();
-    ElementStyleSheet esC1 = scc.getFirst("es1");
+    final StyleSheetCollection scc = (StyleSheetCollection) sc.clone();
+    final ElementStyleSheet esC1 = scc.getFirst("es1");
     assertNotNull(esC1);
     assertFalse(es1 == esC1);
 
-    ElementStyleSheet esC2 = getParent(esC1, "es2");
+    final ElementStyleSheet esC2 = getParent(esC1, "es2");
     assertNotNull(esC2);
     assertFalse(es2 == esC2);
     assertTrue(scc.getFirst("es2") == esC2);
 
-    ElementStyleSheet esC1a = scc.getFirst("es1a");
+    final ElementStyleSheet esC1a = scc.getFirst("es1a");
     assertNotNull(esC1a);
     assertFalse(es1a == esC1a);
     assertTrue(scc.getFirst("es1a") == esC1a);
 
-    ElementStyleSheet esC2a = getParent(esC1a, "es2a");
+    final ElementStyleSheet esC2a = getParent(esC1a, "es2a");
     assertNotNull(esC2a);
     assertFalse(es2a == esC2a);
     assertTrue(scc.getFirst("es2a") == esC2a);
 
-    ElementStyleSheet esC3a = getParent(esC2a, "GlobalElement");
+    final ElementStyleSheet esC3a = getParent(esC2a, "GlobalElement");
     assertNotNull(esC3a);
 
-    ElementStyleSheet esC3 = getParent(esC2, "GlobalElement");
+    final ElementStyleSheet esC3 = getParent(esC2, "GlobalElement");
     assertNotNull(esC3);
     assertTrue(esC3 == esC3a);
 
@@ -186,11 +186,11 @@ public class StyleSheetCollectionTest extends TestCase
 
   public void testUpdate () throws Exception
   {
-    ElementStyleSheet es1 = new ElementStyleSheet("es1");
-    ElementStyleSheet es2 = new ElementStyleSheet("es2");
-    ElementStyleSheet es3 = ElementDefaultStyleSheet.getDefaultStyle();
-    ElementStyleSheet es2a = new ElementStyleSheet("es2a");
-    ElementStyleSheet es1a = new ElementStyleSheet("es1a");
+    final ElementStyleSheet es1 = new ElementStyleSheet("es1");
+    final ElementStyleSheet es2 = new ElementStyleSheet("es2");
+    final ElementStyleSheet es3 = ElementDefaultStyleSheet.getDefaultStyle();
+    final ElementStyleSheet es2a = new ElementStyleSheet("es2a");
+    final ElementStyleSheet es1a = new ElementStyleSheet("es1a");
 
     es2.addParent(es3);
     es1.addParent(es2);
@@ -198,54 +198,54 @@ public class StyleSheetCollectionTest extends TestCase
     es2a.addParent(es3);
     es1a.addParent(es2a);
 
-    StyleSheetCollection sc = new StyleSheetCollection();
+    final StyleSheetCollection sc = new StyleSheetCollection();
     es1.registerStyleSheetCollection(sc);
     es1a.registerStyleSheetCollection(sc);
 
-    StyleSheetCollection scc = (StyleSheetCollection) sc.clone();
-    ElementStyleSheet esX1 = (ElementStyleSheet) es1.clone();
+    final StyleSheetCollection scc = (StyleSheetCollection) sc.clone();
+    final ElementStyleSheet esX1 = (ElementStyleSheet) es1.clone();
     scc.updateStyleSheet(esX1);
 
-    ElementStyleSheet esC1 = scc.getFirst("es1");
+    final ElementStyleSheet esC1 = scc.getFirst("es1");
     assertNotNull(esC1);
     assertTrue(esX1 == esC1);
 
-    ElementStyleSheet esC2 = getParent(esC1, "es2");
+    final ElementStyleSheet esC2 = getParent(esC1, "es2");
     assertNotNull(esC2);
     assertFalse(es2 == esC2);
     assertSame(scc.getFirst("es2"), esC2);
 
-    ElementStyleSheet esC1a = scc.getFirst("es1a");
+    final ElementStyleSheet esC1a = scc.getFirst("es1a");
     assertNotNull(esC1a);
     assertFalse(es1a == esC1a);
 
-    ElementStyleSheet esC2a = getParent(esC1a, "es2a");
+    final ElementStyleSheet esC2a = getParent(esC1a, "es2a");
     assertNotNull(esC2a);
     assertFalse(es2a == esC2a);
 
-    ElementStyleSheet esC3a = getParent(esC2a, "GlobalElement");
+    final ElementStyleSheet esC3a = getParent(esC2a, "GlobalElement");
     assertNotNull(esC3a);
 
-    ElementStyleSheet esC3 = getParent(esC2, "GlobalElement");
+    final ElementStyleSheet esC3 = getParent(esC2, "GlobalElement");
     assertNotNull(esC3);
     assertTrue(esC3 == esC3a);
 
   }
 
 
-  private ElementStyleSheet getParent (ElementStyleSheet child, String parent)
+  private ElementStyleSheet getParent (final ElementStyleSheet child, final String parent)
   {
     List l = child.getParents();
     for (int i = 0; i < l.size(); i++)
     {
-      ElementStyleSheet p = (ElementStyleSheet) l.get(i);
+      final ElementStyleSheet p = (ElementStyleSheet) l.get(i);
       if (p.getName().equals(parent))
         return p;
     }
     l = child.getDefaultParents();
     for (int i = 0; i < l.size(); i++)
     {
-      ElementStyleSheet p = (ElementStyleSheet) l.get(i);
+      final ElementStyleSheet p = (ElementStyleSheet) l.get(i);
       if (p.getName().equals(parent))
         return p;
     }
@@ -254,11 +254,11 @@ public class StyleSheetCollectionTest extends TestCase
 
   public void testBand ()
   {
-    ElementStyleSheet esGlobal = new ElementStyleSheet("es-global");
-    ElementStyleSheet esGlobalBand = new ElementStyleSheet("es-global-band");
-    ElementStyleSheet esGlobalBandDefault = new ElementStyleSheet("es-global-banddefault");
+    final ElementStyleSheet esGlobal = new ElementStyleSheet("es-global");
+    final ElementStyleSheet esGlobalBand = new ElementStyleSheet("es-global-band");
+    final ElementStyleSheet esGlobalBandDefault = new ElementStyleSheet("es-global-banddefault");
 
-    Band b = new Band ();
+    final Band b = new Band ();
     b.getStyle().addParent(esGlobalBand);
     b.getBandDefaults().addParent(esGlobalBandDefault);
 
@@ -270,7 +270,7 @@ public class StyleSheetCollectionTest extends TestCase
     e.getStyle().addParent(esGlobal);
     b.addElement(e);
 
-    Band b2 = new Band ();
+    final Band b2 = new Band ();
     b.getStyle().addParent(esGlobalBand);
     b.getBandDefaults().addParent(esGlobalBandDefault);
 
@@ -284,7 +284,7 @@ public class StyleSheetCollectionTest extends TestCase
 
     b.addElement(b2);
 
-    StyleSheetCollection sc = new StyleSheetCollection();
+    final StyleSheetCollection sc = new StyleSheetCollection();
     b.registerStyleSheetCollection(sc);
     assertStyleCollectionConnected(b, sc);
 
@@ -292,11 +292,11 @@ public class StyleSheetCollectionTest extends TestCase
     assertStyleCollectionConnected(b, null);
   }
 
-  private void assertStyleCollectionConnected(Band band, StyleSheetCollection sc)
+  private void assertStyleCollectionConnected(final Band band, final StyleSheetCollection sc)
   {
     assertStylesConnected(band.getStyle(), sc);
     assertStylesConnected(band.getBandDefaults(), sc);
-    Element[] elements = band.getElementArray();
+    final Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       assertTrue(elements[i].getStyleSheetCollection() == sc);
@@ -311,7 +311,7 @@ public class StyleSheetCollectionTest extends TestCase
     }
   }
 
-  private void assertStylesConnected (ElementStyleSheet es, StyleSheetCollection sc)
+  private void assertStylesConnected (final ElementStyleSheet es, final StyleSheetCollection sc)
   {
     if (es.isGlobalDefault())
       return;
@@ -331,12 +331,12 @@ public class StyleSheetCollectionTest extends TestCase
 
   public void testBandPreConnected ()
   {
-    ElementStyleSheet esGlobal = new ElementStyleSheet("es-global");
-    ElementStyleSheet esGlobalBand = new ElementStyleSheet("es-global-band");
-    ElementStyleSheet esGlobalBandDefault = new ElementStyleSheet("es-global-banddefault");
+    final ElementStyleSheet esGlobal = new ElementStyleSheet("es-global");
+    final ElementStyleSheet esGlobalBand = new ElementStyleSheet("es-global-band");
+    final ElementStyleSheet esGlobalBandDefault = new ElementStyleSheet("es-global-banddefault");
 
-    Band b = new Band ();
-    StyleSheetCollection sc = new StyleSheetCollection();
+    final Band b = new Band ();
+    final StyleSheetCollection sc = new StyleSheetCollection();
     b.registerStyleSheetCollection(sc);
 
     assertStyleCollectionConnected(b, sc);
@@ -355,7 +355,7 @@ public class StyleSheetCollectionTest extends TestCase
     e.getStyle().addParent(esGlobal);
     b.addElement(e);
 
-    Band b2 = new Band ();
+    final Band b2 = new Band ();
     b.getStyle().addParent(esGlobalBand);
     b.getBandDefaults().addParent(esGlobalBandDefault);
 

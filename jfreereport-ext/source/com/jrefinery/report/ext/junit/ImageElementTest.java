@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.2 2003/04/11 19:29:27 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.3 2003/06/10 18:17:24 taqua Exp $
  *
  * Changes
  * -------
@@ -50,18 +50,18 @@ import com.jrefinery.report.util.WaitingImageObserver;
 
 public class ImageElementTest
 {
-  private static Image createImage(Image source)
+  private static Image createImage(final Image source)
   {
-    double scale = 0.2;
-    double width = 300;
-    double height = 400;
+    final double scale = 0.2;
+    final double width = 300;
+    final double height = 400;
 
-    WaitingImageObserver obs = new WaitingImageObserver(source);
+    final WaitingImageObserver obs = new WaitingImageObserver(source);
     obs.waitImageLoaded();
 
-    BufferedImage bImage = new BufferedImage((int) (width * scale), (int) (height * scale), BufferedImage.TYPE_INT_ARGB);
+    final BufferedImage bImage = new BufferedImage((int) (width * scale), (int) (height * scale), BufferedImage.TYPE_INT_ARGB);
 
-    Graphics2D graph = bImage.createGraphics();
+    final Graphics2D graph = bImage.createGraphics();
     graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
     if (graph.drawImage(source, AffineTransform.getScaleInstance(scale, scale), null) == false)
     {
@@ -72,18 +72,18 @@ public class ImageElementTest
     return bImage;
   }
 
-  public static void main(String[] args)
+  public static void main(final String[] args)
       throws Exception
   {
     // add an image as a report property...
-    URL imageURL = new String().getClass().getResource("/com/jrefinery/report/demo/gorilla.jpg");
-    Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
+    final URL imageURL = new String().getClass().getResource("/com/jrefinery/report/demo/gorilla.jpg");
+    final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
 
-    Object[][] data = {{createImage(image), createImage(image), createImage(image)}};
-    Object[] names = {"Foto1", "Foto2", "Foto3"};
-    DefaultTableModel mod = new DefaultTableModel(data, names);
+    final Object[][] data = {{createImage(image), createImage(image), createImage(image)}};
+    final Object[] names = {"Foto1", "Foto2", "Foto3"};
+    final DefaultTableModel mod = new DefaultTableModel(data, names);
 
-    JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/image-element.xml", mod);
+    final JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/image-element.xml", mod);
     if (report == null)
       System.exit(1);
 

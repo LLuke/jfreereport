@@ -107,7 +107,7 @@ public abstract class BarcodeEAN extends Barcode
   /** Sets the property to show the guard bars for barcode EAN.
    * @param guardBars new value of property guardBars
    */
-  public void setGuardBars(boolean guardBars)
+  public void setGuardBars(final boolean guardBars)
   {
     this.guardBars = guardBars;
   }
@@ -116,13 +116,13 @@ public abstract class BarcodeEAN extends Barcode
    * @param code the code
    * @return the parity character
    */
-  protected static int calculateEANParity(String code)
+  protected static int calculateEANParity(final String code)
   {
     int mul = 3;
     int total = 0;
     for (int k = code.length() - 1; k >= 0; --k)
     {
-      int n = code.charAt(k) - '0';
+      final int n = code.charAt(k) - '0';
       total += mul * n;
       mul ^= 2;
     }
@@ -137,12 +137,12 @@ public abstract class BarcodeEAN extends Barcode
    */
   public Dimension2D getBarcodeSize()
   {
-    float width = getWidth();
+    final float width = getWidth();
     float height = getBarHeight();
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
-      float baseline = getBaseline();
+      final float baseline = getBaseline();
       if (baseline > 0)
       {
         height += baseline - getFontDescent(font.getFont());
@@ -169,22 +169,22 @@ public abstract class BarcodeEAN extends Barcode
    * @param textColor the color of the text. It can be <CODE>null</CODE>
    * @return the <CODE>Image</CODE>
    */
-  public Image createImageWithBarcode(Color barColor, Color textColor)
+  public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
       throw new NullPointerException("BarColor must not be null");
     if (textColor == null)
       throw new NullPointerException("TextColor must not be null");
 
-    Dimension2D rect = getBarcodeSize();
+    final Dimension2D rect = getBarcodeSize();
     float barStartX = 0;
     float barStartY = 0;
     float textStartY = 0;
 
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
-      float baseline = getBaseline();
+      final float baseline = getBaseline();
       if (baseline <= 0)
       {
         textStartY = getBarHeight() - baseline;
@@ -195,20 +195,20 @@ public abstract class BarcodeEAN extends Barcode
         barStartY = textStartY + baseline;
       }
 
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
       barStartX += calc.getStringWidth("" + getCode().charAt(0), 0, 1);
     }
 
-    byte bars[] = getBars();
-    int guard[] = getGuardBarPositions();
+    final byte[] bars = getBars();
+    final int[] guard = getGuardBarPositions();
 
-    int imageX = (int) rect.getWidth();
-    int imageY = (int) rect.getHeight();
-    BufferedImage image = new BufferedImage (imageX, imageY, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
+    final int imageX = (int) rect.getWidth();
+    final int imageY = (int) rect.getHeight();
+    final BufferedImage image = new BufferedImage (imageX, imageY, BufferedImage.TYPE_INT_ARGB);
+    final Graphics2D g2 = image.createGraphics();
     g2.setPaint(barColor);
 
-    float keepBarX = barStartX;
+    final float keepBarX = barStartX;
     float guardPos = 0;
 
     if ((font != null) && (getBaseline() > 0) && isGuardBars())
@@ -218,17 +218,17 @@ public abstract class BarcodeEAN extends Barcode
 
     for (int k = 0; k < bars.length; ++k)
     {
-      float w = bars[k] * getMinWidth();
+      final float w = bars[k] * getMinWidth();
       if (k % 2 == 0)
       {
         if (Arrays.binarySearch(guard, k) >= 0)
         {
-          Rectangle2D.Float bar = new Rectangle2D.Float(barStartX, barStartY - guardPos, w, getBarHeight() + guardPos);
+          final Rectangle2D.Float bar = new Rectangle2D.Float(barStartX, barStartY - guardPos, w, getBarHeight() + guardPos);
           g2.fill(bar);
         }
         else
         {
-          Rectangle2D.Float bar = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
+          final Rectangle2D.Float bar = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
           g2.fill(bar);
         }
       }

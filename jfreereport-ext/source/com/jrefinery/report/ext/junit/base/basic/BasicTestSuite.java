@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicTestSuite.java,v 1.4 2003/06/20 12:02:20 taqua Exp $
+ * $Id: BasicTestSuite.java,v 1.5 2003/06/23 16:09:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,12 +42,13 @@ import com.jrefinery.report.ext.junit.base.basic.content.ContentTestSuite;
 import com.jrefinery.report.ext.junit.base.basic.layout.LayoutTestSuite;
 import com.jrefinery.report.ext.junit.base.basic.util.UtilTestSuite;
 import com.jrefinery.report.ext.junit.base.basic.style.StyleTestSuite;
+import com.jrefinery.report.ext.junit.base.basic.preview.PreviewTestSuite;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 public class BasicTestSuite extends TestSuite
 {
-  public BasicTestSuite(String s)
+  public BasicTestSuite(final String s)
   {
     super(s);
     addTestSuite(BandTest.class);
@@ -61,7 +62,7 @@ public class BasicTestSuite extends TestSuite
     addTest(new LayoutTestSuite(LayoutTestSuite.class.getName()));
     addTest(new UtilTestSuite(UtilTestSuite.class.getName()));
     addTest(new StyleTestSuite(StyleTestSuite.class.getName()));
-
+    addTest(new PreviewTestSuite(PreviewTestSuite.class.getName()));
   }
 
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.4 2003/05/14 22:36:46 taqua Exp $
+ * $Id: TestSystem.java,v 1.5 2003/06/10 18:17:25 taqua Exp $
  *
  * Changes
  * -------
@@ -52,15 +52,15 @@ import org.jfree.ui.RefineryUtilities;
 public class TestSystem
 {
 
-  public static JFreeReport loadReport(String urlname, TableModel data)
+  public static JFreeReport loadReport(final String urlname, final TableModel data)
   {
-    URL in = new String().getClass().getResource(urlname);
+    final URL in = new String().getClass().getResource(urlname);
     if (in == null)
     {
       Log.error("xml file not found.");
       return null;
     }
-    ReportGenerator gen = ReportGenerator.getInstance();
+    final ReportGenerator gen = ReportGenerator.getInstance();
     JFreeReport report1 = null;
     try
     {
@@ -81,16 +81,16 @@ public class TestSystem
     return report1;
   }
 
-  public static void showPreviewFrame(JFreeReport report1)
+  public static void showPreviewFrame(final JFreeReport report1)
       throws ReportProcessingException
   {
     showPreviewFrameWExit(report1, false);
   }
 
-  public static void showPreviewFrameWExit(JFreeReport report1, boolean close)
+  public static void showPreviewFrameWExit(final JFreeReport report1, final boolean close)
       throws ReportProcessingException
   {
-    PreviewFrame frame1 = new PreviewFrame(report1);
+    final PreviewFrame frame1 = new PreviewFrame(report1);
     frame1.pack();
     RefineryUtilities.positionFrameRandomly(frame1);
     if (close)
@@ -101,7 +101,7 @@ public class TestSystem
          * Invoked when a window is in the process of being closed.
          * The close operation can be overridden at this point.
          */
-        public void windowClosing(WindowEvent e)
+        public void windowClosing(final WindowEvent e)
         {
           System.exit(0);
         }
@@ -111,11 +111,11 @@ public class TestSystem
     frame1.requestFocus();
   }
 
-  public static void main(String[] args)
+  public static void main(final String[] args)
       throws Exception
   {
-    SampleData2 m_dataModel = new SampleData2();
-    JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/pagebreak.xml", m_dataModel);
+    final SampleData2 m_dataModel = new SampleData2();
+    final JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/pagebreak.xml", m_dataModel);
     if (report == null)
       System.exit(1);
 

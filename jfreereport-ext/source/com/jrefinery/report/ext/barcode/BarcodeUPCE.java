@@ -72,11 +72,11 @@ public class BarcodeUPCE extends BarcodeEAN
   protected float getWidth()
   {
     float width = getMinWidth() * (9 + 6 * 7);
-    String char0String = "" + getCode().charAt(0);
-    String char7String = "" + getCode().charAt(0);
+    final String char0String = "" + getCode().charAt(0);
+    final String char7String = "" + getCode().charAt(0);
     if (getFont() != null)
     {
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
       width += calc.getStringWidth(char0String, 0, 1);
       width += calc.getStringWidth(char7String, 0, 1);
     }
@@ -98,21 +98,21 @@ public class BarcodeUPCE extends BarcodeEAN
    */
   public byte[] getBars()
   {
-    String _code = getCode();
-    int code[] = new int[_code.length()];
+    final String _code = getCode();
+    final int[] code = new int[_code.length()];
     for (int k = 0; k < code.length; ++k)
       code[k] = _code.charAt(k) - '0';
-    byte bars[] = new byte[TOTALBARS_UPCE];
-    boolean flip = (code[0] != 0);
+    final byte[] bars = new byte[TOTALBARS_UPCE];
+    final boolean flip = (code[0] != 0);
     int pb = 0;
     bars[pb++] = 1;
     bars[pb++] = 1;
     bars[pb++] = 1;
-    byte sequence[] = PARITYE[code[code.length - 1]];
+    final byte[] sequence = PARITYE[code[code.length - 1]];
     for (int k = 1; k < code.length - 1; ++k)
     {
-      int c = code[k];
-      byte stripes[] = BARS[c];
+      final int c = code[k];
+      final byte[] stripes = BARS[c];
       if (sequence[k - 1] == (flip ? EVEN : ODD))
       {
         bars[pb++] = stripes[0];
@@ -137,16 +137,16 @@ public class BarcodeUPCE extends BarcodeEAN
     return bars;
   }
 
-  protected void drawCode(Graphics2D g2, float keepBarX, float textStartY)
+  protected void drawCode(final Graphics2D g2, final float keepBarX, final float textStartY)
   {
-    BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
-    String code = getCode();
+    final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+    final String code = getCode();
     g2.drawString (code.substring(0, 1), 0, textStartY);
     for (int k = 1; k < 7; ++k)
     {
-      String c = code.substring(k, k + 1);
-      float len = calc.getStringWidth(c, 0, 1);
-      float pX = keepBarX + TEXTPOS_UPCE[k - 1] * getMinWidth() - len / 2;
+      final String c = code.substring(k, k + 1);
+      final float len = calc.getStringWidth(c, 0, 1);
+      final float pX = keepBarX + TEXTPOS_UPCE[k - 1] * getMinWidth() - len / 2;
       g2.drawString(c, pX, textStartY);
     }
     g2.drawString (code.substring(7, 8), (keepBarX + getMinWidth() * (9 + 6 * 7)), textStartY);

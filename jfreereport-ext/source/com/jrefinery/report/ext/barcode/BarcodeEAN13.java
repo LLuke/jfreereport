@@ -79,10 +79,10 @@ public class BarcodeEAN13 extends BarcodeEAN
   protected float getWidth()
   {
     float width = getMinWidth() * (11 + 12 * 7);
-    String char0String = "" + getCode().charAt(0);
+    final String char0String = "" + getCode().charAt(0);
     if (getFont() != null)
     {
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
       width += calc.getStringWidth(char0String, 0, 1);
     }
     return width;
@@ -98,24 +98,24 @@ public class BarcodeEAN13 extends BarcodeEAN
    */
   public byte[] getBars()
   {
-    String _code = getBarCode();
-    int code[] = new int[_code.length()];
+    final String _code = getBarCode();
+    final int[] code = new int[_code.length()];
 
     for (int k = 0; k < code.length; ++k)
     {
       code[k] = _code.charAt(k) - '0';
     }
 
-    byte bars[] = new byte[TOTALBARS_EAN13];
+    final byte[] bars = new byte[TOTALBARS_EAN13];
     int pb = 0;
     bars[pb++] = 1;
     bars[pb++] = 1;
     bars[pb++] = 1;
-    byte sequence[] = PARITY13[code[0]];
+    final byte[] sequence = PARITY13[code[0]];
     for (int k = 0; k < sequence.length; ++k)
     {
-      int c = code[k + 1];
-      byte stripes[] = BARS[c];
+      final int c = code[k + 1];
+      final byte[] stripes = BARS[c];
       if (sequence[k] == ODD)
       {
         bars[pb++] = stripes[0];
@@ -138,8 +138,8 @@ public class BarcodeEAN13 extends BarcodeEAN
     bars[pb++] = 1;
     for (int k = 7; k < 13; ++k)
     {
-      int c = code[k];
-      byte stripes[] = BARS[c];
+      final int c = code[k];
+      final byte[] stripes = BARS[c];
       bars[pb++] = stripes[0];
       bars[pb++] = stripes[1];
       bars[pb++] = stripes[2];
@@ -151,15 +151,15 @@ public class BarcodeEAN13 extends BarcodeEAN
     return bars;
   }
 
-  protected void drawCode (Graphics2D g2, float keepBarX, float textStartY)
+  protected void drawCode (final Graphics2D g2, final float keepBarX, final float textStartY)
   {
-    BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+    final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
     g2.drawString(getCode().substring(0, 1), 0, textStartY);
     for (int k = 1; k < 13; ++k)
     {
-      String c = getCode().substring(k, k + 1);
-      float len = calc.getStringWidth(c, 0, 1);
-      float pX = keepBarX + TEXTPOS_EAN13[k - 1] * getMinWidth() - len / 2;
+      final String c = getCode().substring(k, k + 1);
+      final float len = calc.getStringWidth(c, 0, 1);
+      final float pX = keepBarX + TEXTPOS_EAN13[k - 1] * getMinWidth() - len / 2;
       g2.drawString(c, pX, textStartY);
     }
   }

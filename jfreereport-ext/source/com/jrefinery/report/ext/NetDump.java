@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NetDump.java,v 1.2 2003/05/14 22:36:37 taqua Exp $
+ * $Id: NetDump.java,v 1.3 2003/06/10 18:17:24 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class NetDump
      *
      * @param url the URL to which to connect to.
      */
-    public ConnectionInfo(URL url)
+    public ConnectionInfo(final URL url)
     {
       host = url.getHost();
       port = url.getPort();
@@ -79,9 +79,9 @@ public class NetDump
         port = 80;
       }
 
-      String file = url.getFile();
+      final String file = url.getFile();
 //      String query = url.getQuery();
-      String ref = url.getRef();
+      final String ref = url.getRef();
 
       uri = file;
 /*      if (query != null)
@@ -133,7 +133,7 @@ public class NetDump
    *
    * @param args the connection arguments, the method followed by an url.
    */
-  public static void main (String [] args)
+  public static void main (final String [] args)
   {
     if (args.length != 2)
     {
@@ -143,19 +143,19 @@ public class NetDump
 
     try
     {
-      String method = args[0];
-      URL url = new URL (args[1]);
+      final String method = args[0];
+      final URL url = new URL (args[1]);
       if (url.getProtocol().equals("http") == false)
       {
         Log.error ("The given url must be a HTTP url");
         System.exit(1);
       }
 
-      ConnectionInfo ci = new ConnectionInfo(url);
+      final ConnectionInfo ci = new ConnectionInfo(url);
       Log.debug ("Connecting to: " + ci.getHost() + ":" + ci.getPort());
-      Socket socket = new Socket(ci.getHost(), ci.getPort());
-      OutputStream out = socket.getOutputStream();
-      StringBuffer b = new StringBuffer();
+      final Socket socket = new Socket(ci.getHost(), ci.getPort());
+      final OutputStream out = socket.getOutputStream();
+      final StringBuffer b = new StringBuffer();
       b.append(method.toUpperCase());
       b.append(" ");
       b.append(ci.getUri());
@@ -164,8 +164,8 @@ public class NetDump
       Log.debug (b.toString());
       out.write(b.toString().getBytes());
 
-      InputStream in = socket.getInputStream();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+      final InputStream in = socket.getInputStream();
+      final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       String line = reader.readLine();
       while (line != null)
       {

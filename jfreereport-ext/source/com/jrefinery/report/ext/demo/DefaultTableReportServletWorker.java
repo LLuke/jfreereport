@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultTableReportServletWorker.java,v 1.4 2003/03/04 22:30:32 taqua Exp $
+ * $Id: DefaultTableReportServletWorker.java,v 1.5 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
    * @param url the url of the report definition.
    * @param model the tablemodel that should be used for the reporting.
    */
-  public DefaultTableReportServletWorker(URL url, TableModelProvider model)
+  public DefaultTableReportServletWorker(final URL url, final TableModelProvider model)
   {
     if (model == null) throw new NullPointerException();
     if (url == null) throw new NullPointerException();
@@ -90,7 +90,7 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
   {
     try
     {
-      JFreeReport report = parseReport(url);
+      final JFreeReport report = parseReport(url);
       report.setData(model.getModel());
       return report;
     }
@@ -107,11 +107,11 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
    * @return a report.
    * @throws IOException if the report could not be read from the source.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(final URL templateURL)
       throws IOException
   {
     JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
       result = generator.parseReport(templateURL);

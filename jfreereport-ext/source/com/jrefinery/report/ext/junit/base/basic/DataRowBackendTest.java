@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: DataRowBackendTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,14 +45,14 @@ import junit.framework.TestCase;
 
 public class DataRowBackendTest extends TestCase
 {
-  public DataRowBackendTest(String s)
+  public DataRowBackendTest(final String s)
   {
     super(s);
   }
 
   public void testCreate()
   {
-    DataRowBackend db = new DataRowBackend();
+    final DataRowBackend db = new DataRowBackend();
     assertTrue(db.getColumnCount() == 0);
     assertTrue(db.getCurrentRow() == -1);
     assertNull(db.getFunctions());
@@ -64,15 +64,15 @@ public class DataRowBackendTest extends TestCase
 
   public void testMethods()
   {
-    DataRowBackend db = new DataRowBackend();
+    final DataRowBackend db = new DataRowBackend();
     db.setCurrentRow(-1);
-    DefaultTableModel model = new DefaultTableModel();
-    Object[][] data = new Object[][]{
+    final DefaultTableModel model = new DefaultTableModel();
+    final Object[][] data = new Object[][]{
       {new Integer(1), "a"},
       {new Integer(2), "b"},
       {new Integer(3), "c"}
     };
-    String[] columns = new String[]{
+    final String[] columns = new String[]{
       "Number", "Letter"
     };
     model.setDataVector(data, columns);

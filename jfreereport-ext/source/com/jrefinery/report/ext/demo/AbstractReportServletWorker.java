@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractReportServletWorker.java,v 1.4 2003/03/02 21:36:41 taqua Exp $
+ * $Id: AbstractReportServletWorker.java,v 1.5 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public abstract class AbstractReportServletWorker
    *
    * @param session the session.
    */
-  public AbstractReportServletWorker (HttpSession session)
+  public AbstractReportServletWorker (final HttpSession session)
   {
     this.session = session;
   }

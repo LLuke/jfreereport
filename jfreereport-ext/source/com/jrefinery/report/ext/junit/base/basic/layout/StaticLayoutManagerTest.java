@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StaticLayoutManagerTest.java,v 1.1 2003/06/11 20:39:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -66,9 +66,9 @@ public class StaticLayoutManagerTest extends TestCase
    * @param height the height of the band and the rectangle
    * @return the created band
    */
-  private Band createBand (String name, Color color, int x, int y, int width, int height)
+  private Band createBand (final String name, final Color color, final int x, final int y, final int width, final int height)
   {
-    Band band = new Band ();
+    final Band band = new Band ();
     band.setName("Band-" + name);
     band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                      new FloatDimension(width, height));
@@ -92,17 +92,17 @@ public class StaticLayoutManagerTest extends TestCase
 
   private Band createBand ()
   {
-    Band levelA1 = createBand("A1", Color.magenta, 0, 0, 100, 100);
+    final Band levelA1 = createBand("A1", Color.magenta, 0, 0, 100, 100);
     levelA1.addElement(createBand("A1-B1", Color.blue, 0, 50, 50, 50));
     levelA1.addElement(createBand("A1-B2", Color.yellow, 50, 0, 150, 50));
     // x=55%, y=5%, width=40%, height=100%
-    Band levelA2 = createBand("A2", Color.green, -50, 0, -50, -100);
+    final Band levelA2 = createBand("A2", Color.green, -50, 0, -50, -100);
     // x=5%, y=55%, width=40%, height=40%
     levelA2.addElement(createBand("A2-B1", Color.red, 0, -50, -50, -50));
     // x=55%, y=5%, width=40%, height=40%
     levelA2.addElement(createBand("A2-B2", Color.darkGray, -55, -5, -40, -40));
 
-    Band header = new Band ();
+    final Band header = new Band ();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                        new FloatDimension(-100, 100));
     header.getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE,
@@ -122,15 +122,15 @@ public class StaticLayoutManagerTest extends TestCase
 
   public void testBandInBandLayout ()
   {
-    Band band = createBand();
+    final Band band = createBand();
     band.setLayout(new StaticLayoutManager());
     BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 500);
 
     assertEquals(new Rectangle2D.Float(0,0, 500, 100),
         BandLayoutManagerUtil.getBounds(band, null));
 
-    Band bandA1 = (Band) band.getElement("Band-A1");
-    Band bandA2 = (Band) band.getElement("Band-A2");
+    final Band bandA1 = (Band) band.getElement("Band-A1");
+    final Band bandA2 = (Band) band.getElement("Band-A2");
 
     assertEquals(new Rectangle2D.Float(0,0, 100, 100),
         BandLayoutManagerUtil.getBounds(bandA1, null));

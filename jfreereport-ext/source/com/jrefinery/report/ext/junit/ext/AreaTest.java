@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AreaTest.java,v 1.1 2003/06/20 12:05:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,23 +48,23 @@ import javax.swing.JPanel;
 
 public class AreaTest extends JPanel
 {
-  public void paintComponent (Graphics g)
+  public void paintComponent (final Graphics g)
   {
-    Graphics2D g2 = (Graphics2D) g;
+    final Graphics2D g2 = (Graphics2D) g;
     g2.setPaint(Color.white);
     g2.fill(getBounds());
     g2.setPaint(Color.black);
 
-    Rectangle2D shape = new Rectangle2D.Float (150, 50, 100, 100);
-    Rectangle2D clip = new Rectangle2D.Float (0, 0, 200, 200);
+    final Rectangle2D shape = new Rectangle2D.Float (150, 50, 100, 100);
+    final Rectangle2D clip = new Rectangle2D.Float (0, 0, 200, 200);
 
-    Area a = new Area(clip);
+    final Area a = new Area(clip);
     a.subtract(new Area(clip.createIntersection(shape)));
 
     g2.fill(a);
   }
 
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     /*
     JFrame frame = new JFrame();
@@ -79,13 +79,13 @@ public class AreaTest extends JPanel
     frame.setVisible(true);
     */
 
-    Rectangle2D shape = new Rectangle2D.Float (150, 50, 100, 100);
-    Rectangle2D clip = new Rectangle2D.Float (0, 0, 200, 200);
+    final Rectangle2D shape = new Rectangle2D.Float (150, 50, 100, 100);
+    final Rectangle2D clip = new Rectangle2D.Float (0, 0, 200, 200);
 
-    Area a = new Area(clip);
+    final Area a = new Area(clip);
     a.subtract(new Area(clip.createIntersection(shape)));
 
-    Area aLine = new Area (new Line2D.Float (0,0, 10, 10));
+    final Area aLine = new Area (new Line2D.Float (0,0, 10, 10));
     a.subtract(aLine);
     System.out.println(aLine.isEmpty());
     System.out.println(a.isEmpty());

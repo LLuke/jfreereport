@@ -48,11 +48,11 @@ public class BarcodeUPCA extends BarcodeEAN13
   protected float getWidth()
   {
     float width = getMinWidth() * (11 + 12 * 7);
-    String char0String = "" + getCode().charAt(0);
-    String char11String = "" + getCode().charAt(11);
+    final String char0String = "" + getCode().charAt(0);
+    final String char11String = "" + getCode().charAt(11);
     if (getFont() != null)
     {
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
       width += calc.getStringWidth(char0String, 0, 1);
       width += calc.getStringWidth(char11String, 0, 1);
     }
@@ -70,7 +70,7 @@ public class BarcodeUPCA extends BarcodeEAN13
    * @return the 8 converted digits or <CODE>null</CODE> if the
    * code could not be converted
    */
-  public static String convertUPCAtoUPCE(String text)
+  public static String convertUPCAtoUPCE(final String text)
   {
     if (text.length() != 12 || !(text.startsWith("0") || text.startsWith("1")))
     {
@@ -83,7 +83,7 @@ public class BarcodeUPCA extends BarcodeEAN13
     {
       if (text.substring(6, 8).equals("00"))
       {
-        StringBuffer retval = new StringBuffer();
+        final StringBuffer retval = new StringBuffer();
         retval.append (text.substring(0, 1));
         retval.append (text.substring(1, 3));
         retval.append (text.substring(8, 11));
@@ -96,7 +96,7 @@ public class BarcodeUPCA extends BarcodeEAN13
     {
       if (text.substring(6, 9).equals("000"))
       {
-        StringBuffer retval = new StringBuffer();
+        final StringBuffer retval = new StringBuffer();
         retval.append (text.substring(0, 1));
         retval.append (text.substring(1, 4));
         retval.append (text.substring(9, 11));
@@ -109,7 +109,7 @@ public class BarcodeUPCA extends BarcodeEAN13
     {
       if (text.substring(6, 10).equals("0000"))
       {
-        StringBuffer retval = new StringBuffer();
+        final StringBuffer retval = new StringBuffer();
         retval.append(text.substring(0, 1));
         retval.append(text.substring(1, 5));
         retval.append(text.substring(10, 11));
@@ -122,7 +122,7 @@ public class BarcodeUPCA extends BarcodeEAN13
     {
       if (text.substring(6, 10).equals("0000"))
       {
-        StringBuffer retval = new StringBuffer();
+        final StringBuffer retval = new StringBuffer();
         retval.append (text.substring(0, 1));
         retval.append (text.substring(1, 6));
         retval.append (text.substring(10, 11));
@@ -141,16 +141,16 @@ public class BarcodeUPCA extends BarcodeEAN13
     return ("0" + getCode());
   }
 
-  protected void drawCode(Graphics2D g2, float keepBarX, float textStartY)
+  protected void drawCode(final Graphics2D g2, final float keepBarX, final float textStartY)
   {
-    BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
-    String code = getCode();
+    final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+    final String code = getCode();
     g2.drawString(code.substring(0, 1), 0, textStartY);
     for (int k = 1; k < 11; ++k)
     {
-      String c = code.substring(k, k + 1);
-      float len = calc.getStringWidth(c, 0, 1);
-      float pX = keepBarX + TEXTPOS_EAN13[k] * getMinWidth() - len / 2;
+      final String c = code.substring(k, k + 1);
+      final float len = calc.getStringWidth(c, 0, 1);
+      final float pX = keepBarX + TEXTPOS_EAN13[k] * getMinWidth() - len / 2;
       g2.drawString (c, pX, textStartY);
     }
 

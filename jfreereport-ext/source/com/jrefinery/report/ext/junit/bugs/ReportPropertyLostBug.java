@@ -65,7 +65,7 @@ public class ReportPropertyLostBug extends TestCase
    * Constructs a new set of tests.
    * @param name The name of the tests.
    */
-  public ReportPropertyLostBug(String name)
+  public ReportPropertyLostBug(final String name)
   {
     super(name);
   }
@@ -75,7 +75,7 @@ public class ReportPropertyLostBug extends TestCase
    */
   protected void setUp() throws Exception
   {
-    URL url = getClass().getResource("/com/jrefinery/report/demo/report2.xml");
+    final URL url = getClass().getResource("/com/jrefinery/report/demo/report2.xml");
     if (url == null)
       throw new FileNotFoundException();
 
@@ -92,20 +92,20 @@ public class ReportPropertyLostBug extends TestCase
     report.setProperty("test", "not null");
     assertNotNull(report.getProperty("test"));
 
-    BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-    Graphics2D g2 = (Graphics2D) buffer.getGraphics();
-    PageableReportProcessor proc = new PageableReportProcessor(report);
-    OutputTarget ot = new G2OutputTarget(g2, report.getDefaultPageFormat());
+    final BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+    final Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+    final PageableReportProcessor proc = new PageableReportProcessor(report);
+    final OutputTarget ot = new G2OutputTarget(g2, report.getDefaultPageFormat());
     ot.open();
     proc.setOutputTarget(ot);
 
-    ReportStateList list = proc.repaginate();
+    final ReportStateList list = proc.repaginate();
 
     for (int i = 0; i < 2; i++)
     {
       Log.debug("I = " + i);
-      ReportState state = list.get(1);
-      ReportState s2 = proc.processPage(state, proc.getOutputTarget());
+      final ReportState state = list.get(1);
+      final ReportState s2 = proc.processPage(state, proc.getOutputTarget());
 
       assertNotNull(s2.getProperty("test"));
     }

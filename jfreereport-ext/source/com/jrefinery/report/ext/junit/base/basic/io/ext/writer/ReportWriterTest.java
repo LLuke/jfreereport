@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterTest.java,v 1.2 2003/06/10 18:17:27 taqua Exp $
+ * $Id: ReportWriterTest.java,v 1.3 2003/06/12 19:55:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,14 +61,14 @@ import org.jfree.xml.factory.objects.URLClassFactory;
 
 public class ReportWriterTest extends TestCase
 {
-  public ReportWriterTest(String s)
+  public ReportWriterTest(final String s)
   {
     super(s);
   }
 
   private ReportWriter createWriter()
   {
-    ReportWriter writer = new ReportWriter(new JFreeReport(), "UTF-16");
+    final ReportWriter writer = new ReportWriter(new JFreeReport(), "UTF-16");
     writer.addClassFactoryFactory(new URLClassFactory());
     writer.addClassFactoryFactory(new DefaultClassFactory());
     writer.addClassFactoryFactory(new BandLayoutClassFactory());
@@ -84,8 +84,8 @@ public class ReportWriterTest extends TestCase
 
   public void testFactories()
   {
-    ReportWriter writer = createWriter();
-    ClassFactory cc = writer.getClassFactoryCollector();
+    final ReportWriter writer = createWriter();
+    final ClassFactory cc = writer.getClassFactoryCollector();
     assertNotNull(cc.getDescriptionForClass(DataRowDataSource.class));
     assertEquals(cc.getDescriptionForClass(DataRowDataSource.class).getObjectClass(), DataRowDataSource.class);
     System.out.println(cc.getDescriptionForClass(DataRowDataSource.class));
@@ -93,12 +93,12 @@ public class ReportWriterTest extends TestCase
 
   public void testDataSourceWriter() throws Exception
   {
-    ReportWriter writer = createWriter();
-    StaticDataSource ds = new StaticDataSource(new Line2D.Float());
-    ClassFactory cc = writer.getClassFactoryCollector();
-    DataSourceWriter dsW = new DataSourceWriter(writer,
+    final ReportWriter writer = createWriter();
+    final StaticDataSource ds = new StaticDataSource(new Line2D.Float());
+    final ClassFactory cc = writer.getClassFactoryCollector();
+    final DataSourceWriter dsW = new DataSourceWriter(writer,
         ds, cc.getDescriptionForClass(ds.getClass()), 0);
-    Writer w = new OutputStreamWriter(System.out, "UTF-16");
+    final Writer w = new OutputStreamWriter(System.out, "UTF-16");
     dsW.write(w);
     w.flush();
   }

@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 4:24:01 PM
  *
- * $Id$
+ * $Id: BarcodeFilter.java,v 1.1 2003/02/25 20:58:42 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode.filter;
 
@@ -36,13 +36,13 @@ public class BarcodeFilter implements DataFilter
     return textColor;
   }
 
-  public void setBarColor(Color barColor)
+  public void setBarColor(final Color barColor)
   {
     if (barColor == null) throw new NullPointerException();
     this.barColor = barColor;
   }
 
-  public void setTextColor(Color textColor)
+  public void setTextColor(final Color textColor)
   {
     if (textColor == null) throw new NullPointerException();
     this.textColor = textColor;
@@ -53,7 +53,7 @@ public class BarcodeFilter implements DataFilter
     return barcode;
   }
 
-  public void setBarcode(Barcode barcode)
+  public void setBarcode(final Barcode barcode)
   {
     if (barcode == null) throw new NullPointerException();
     try
@@ -74,14 +74,14 @@ public class BarcodeFilter implements DataFilter
   public Object getValue()
   {
     if (dataSource == null) return null;
-    Object o = dataSource.getValue();
+    final Object o = dataSource.getValue();
     if (o instanceof String == false)
     {
       // only accept strings ...
       return null;
     }
 
-    String code = (String) o;
+    final String code = (String) o;
     Image image = null;
     synchronized (barcode)
     {
@@ -100,7 +100,7 @@ public class BarcodeFilter implements DataFilter
    */
   public Object clone() throws CloneNotSupportedException
   {
-    BarcodeFilter filter = (BarcodeFilter) super.clone();
+    final BarcodeFilter filter = (BarcodeFilter) super.clone();
     filter.barcode = (Barcode) barcode.clone();
     filter.dataSource = (DataSource) dataSource.clone();
     return filter;
@@ -121,7 +121,7 @@ public class BarcodeFilter implements DataFilter
    *
    * @param ds The data source.
    */
-  public void setDataSource(DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     this.dataSource = ds;
   }

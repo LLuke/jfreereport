@@ -38,7 +38,7 @@ public class DefaultFontMetrics extends FontMetrics
 {
   private FontMetrics backend;
 
-  public DefaultFontMetrics(Font font)
+  public DefaultFontMetrics(final Font font)
   {
     super(font);
     backend = G2OutputTarget.createEmptyGraphics().getFontMetrics(font);
@@ -185,7 +185,7 @@ public class DefaultFontMetrics extends FontMetrics
    * @see       #charsWidth(char[], int, int)
    * @see       #stringWidth(java.lang.String)
    */
-  public int charWidth(int ch)
+  public int charWidth(final int ch)
   {
     return backend.charWidth(ch);
   }
@@ -203,7 +203,7 @@ public class DefaultFontMetrics extends FontMetrics
    * @see        #charsWidth(char[], int, int)
    * @see        #stringWidth(java.lang.String)
    */
-  public int charWidth(char ch)
+  public int charWidth(final char ch)
   {
     return backend.charWidth(ch);
   }
@@ -231,7 +231,7 @@ public class DefaultFontMetrics extends FontMetrics
    * @see       #charsWidth(char[], int, int)
    * @see       #getStringBounds(java.lang.String, java.awt.Graphics)
    */
-  public int stringWidth(String str)
+  public int stringWidth(final String str)
   {
     return backend.stringWidth(str);
   }
@@ -255,7 +255,7 @@ public class DefaultFontMetrics extends FontMetrics
    * @see       #bytesWidth(byte[], int, int)
    * @see       #stringWidth(java.lang.String)
    */
-  public int charsWidth(char data[], int off, int len)
+  public int charsWidth(final char[] data, final int off, final int len)
   {
     return backend.charsWidth(data, off, len);
   }
@@ -278,7 +278,7 @@ public class DefaultFontMetrics extends FontMetrics
    * @see       #charsWidth(char[], int, int)
    * @see       #stringWidth(java.lang.String)
    */
-  public int bytesWidth(byte data[], int off, int len)
+  public int bytesWidth(final byte[] data, final int off, final int len)
   {
     return backend.bytesWidth(data, off, len);
   }
@@ -325,7 +325,7 @@ public class DefaultFontMetrics extends FontMetrics
    * specified <code>String</code> and <code>Graphics</code> context.
    * @see java.awt.Font#getLineMetrics(java.lang.String, java.awt.font.FontRenderContext)
    */
-  public LineMetrics getLineMetrics(String str, Graphics context)
+  public LineMetrics getLineMetrics(final String str, final Graphics context)
   {
     return backend.getLineMetrics(str, context);
   }
@@ -341,9 +341,9 @@ public class DefaultFontMetrics extends FontMetrics
    * specified <code>String</code> and <code>Graphics</code> context.
    * @see java.awt.Font#getLineMetrics(java.lang.String, int, int, java.awt.font.FontRenderContext)
    */
-  public LineMetrics getLineMetrics(String str,
-                                    int beginIndex, int limit,
-                                    Graphics context)
+  public LineMetrics getLineMetrics(final String str,
+                                    final int beginIndex, final int limit,
+                                    final Graphics context)
   {
     return backend.getLineMetrics(str, beginIndex, limit, context);
   }
@@ -359,9 +359,9 @@ public class DefaultFontMetrics extends FontMetrics
    * specified character array and <code>Graphics</code> context.
    * @see java.awt.Font#getLineMetrics(char[], int, int, java.awt.font.FontRenderContext)
    */
-  public LineMetrics getLineMetrics(char[] chars,
-                                    int beginIndex, int limit,
-                                    Graphics context)
+  public LineMetrics getLineMetrics(final char[] chars,
+                                    final int beginIndex, final int limit,
+                                    final Graphics context)
   {
     return backend.getLineMetrics(chars, beginIndex, limit, context);
   }
@@ -378,9 +378,9 @@ public class DefaultFontMetrics extends FontMetrics
    * specified arguments.
    * @see java.awt.Font#getLineMetrics(java.text.CharacterIterator, int, int, java.awt.font.FontRenderContext)
    */
-  public LineMetrics getLineMetrics(CharacterIterator ci,
-                                    int beginIndex, int limit,
-                                    Graphics context)
+  public LineMetrics getLineMetrics(final CharacterIterator ci,
+                                    final int beginIndex, final int limit,
+                                    final Graphics context)
   {
     return backend.getLineMetrics(ci, beginIndex, limit, context);
   }
@@ -396,7 +396,7 @@ public class DefaultFontMetrics extends FontMetrics
    * <code>Graphics</code> context.
    * @see java.awt.Font#getStringBounds(java.lang.String, java.awt.font.FontRenderContext)
    */
-  public Rectangle2D getStringBounds(String str, Graphics context)
+  public Rectangle2D getStringBounds(final String str, final Graphics context)
   {
     return backend.getStringBounds(str, context);
   }
@@ -414,9 +414,9 @@ public class DefaultFontMetrics extends FontMetrics
    * <code>Graphics</code> context.
    * @see java.awt.Font#getStringBounds(java.lang.String, int, int, java.awt.font.FontRenderContext)
    */
-  public Rectangle2D getStringBounds(String str,
-                                     int beginIndex, int limit,
-                                     Graphics context)
+  public Rectangle2D getStringBounds(final String str,
+                                     final int beginIndex, final int limit,
+                                     final Graphics context)
   {
     return backend.getStringBounds(str, beginIndex, limit, context);
   }
@@ -437,9 +437,9 @@ public class DefaultFontMetrics extends FontMetrics
    * <code>Graphics</code> context.
    * @see java.awt.Font#getStringBounds(char[], int, int, java.awt.font.FontRenderContext)
    */
-  public Rectangle2D getStringBounds(char[] chars,
-                                     int beginIndex, int limit,
-                                     Graphics context)
+  public Rectangle2D getStringBounds(final char[] chars,
+                                     final int beginIndex, final int limit,
+                                     final Graphics context)
   {
     return backend.getStringBounds(chars, beginIndex, limit, context);
   }
@@ -457,9 +457,9 @@ public class DefaultFontMetrics extends FontMetrics
    * in the specified <code>Graphics</code> context.
    * @see java.awt.Font#getStringBounds(java.text.CharacterIterator, int, int, java.awt.font.FontRenderContext)
    */
-  public Rectangle2D getStringBounds(CharacterIterator ci,
-                                     int beginIndex, int limit,
-                                     Graphics context)
+  public Rectangle2D getStringBounds(final CharacterIterator ci,
+                                     final int beginIndex, final int limit,
+                                     final Graphics context)
   {
     return backend.getStringBounds(ci, beginIndex, limit, context);
   }
@@ -472,14 +472,14 @@ public class DefaultFontMetrics extends FontMetrics
    * bounding box for the character with the maximum bounds.
    * @see java.awt.Font#getMaxCharBounds(java.awt.font.FontRenderContext)
    */
-  public Rectangle2D getMaxCharBounds(Graphics context)
+  public Rectangle2D getMaxCharBounds(final Graphics context)
   {
     return backend.getMaxCharBounds(context);
   }
 
-  public static void main (String [] args)
+  public static void main (final String [] args)
   {
-    FontMetrics fm = new DefaultFontMetrics(new Font ("Serif", Font.PLAIN, 10));
+    final FontMetrics fm = new DefaultFontMetrics(new Font ("Serif", Font.PLAIN, 10));
     Log.debug ("MaxAdvance: " + fm.getMaxAdvance());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParserTest.java,v 1.2 2003/06/20 12:02:20 taqua Exp $
+ * $Id: CharacterEntityParserTest.java,v 1.3 2003/06/23 16:09:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,16 +39,16 @@
 package com.jrefinery.report.ext.junit.base.basic.util;
 
 import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 import junit.framework.TestCase;
 
 public class CharacterEntityParserTest extends TestCase
 {
   public void testEncode () throws Exception
   {
-    String testNative = "Test is a הצü<&> test";
-    String testEncoded = "Test is a &auml;&ouml;&uuml;&lt;&amp;&gt; test";
-    CharacterEntityParser ep = CharacterEntityParser.createHTMLEntityParser();
+    final String testNative = "Test is a הצü<&> test";
+    final String testEncoded = "Test is a &auml;&ouml;&uuml;&lt;&amp;&gt; test";
+    final CharacterEntityParser ep = CharacterEntityParser.createHTMLEntityParser();
     //Log.debug (ep.decodeEntities(testEncoded));
     assertEquals(testNative, ep.decodeEntities(testEncoded));
     assertEquals(testEncoded, ep.encodeEntities(testNative));

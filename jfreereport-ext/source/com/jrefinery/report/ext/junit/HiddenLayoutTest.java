@@ -2,7 +2,7 @@
  * Date: Feb 20, 2003
  * Time: 9:00:04 PM
  *
- * $Id: HiddenLayoutTest.java,v 1.2 2003/03/26 22:52:43 taqua Exp $
+ * $Id: HiddenLayoutTest.java,v 1.3 2003/06/10 18:17:24 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
 
@@ -25,7 +25,7 @@ public class HiddenLayoutTest
   protected JFreeReport previewReport2()
   {
     JFreeReport report = null;
-    URL in = getClass().getResource("/com/jrefinery/report/demo/report3.xml");
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/report3.xml");
     report = parseReport(in);
     report.setData(new SampleData2());
 
@@ -39,11 +39,11 @@ public class HiddenLayoutTest
    *
    * @return A report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(final URL templateURL)
   {
 
     JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
       result = generator.parseReport(templateURL);
@@ -58,18 +58,18 @@ public class HiddenLayoutTest
   }
 
 
-  public static void main(String[] args)
+  public static void main(final String[] args)
       throws Throwable
   {
     try
     {
-      HiddenLayoutTest t = new HiddenLayoutTest();
-      JFreeReport report = t.previewReport2();
+      final HiddenLayoutTest t = new HiddenLayoutTest();
+      final JFreeReport report = t.previewReport2();
 
       Log.debug("report.pageHeader " + report.getPageHeader().getElementCount());
       Log.debug("report.reportHeader " + report.getReportHeader().getElementCount());
 
-      Group g = report.getGroup(1);
+      final Group g = report.getGroup(1);
       BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);
       Log.debug("---------------------------------------------");
       g.getHeader().setVisible(false);

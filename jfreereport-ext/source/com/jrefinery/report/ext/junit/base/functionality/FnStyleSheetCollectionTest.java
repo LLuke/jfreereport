@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FnStyleSheetCollectionTest.java,v 1.1 2003/06/23 16:11:46 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -56,11 +56,13 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
 public class FnStyleSheetCollectionTest extends TestCase
 {
   private static final FunctionalityTestLib.ReportTest TEST_REPORT =
-      new FunctionalityTestLib.ReportTest ("/com/jrefinery/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel());
+      new FunctionalityTestLib.ReportTest
+          ("/com/jrefinery/report/demo/cards/usercards.xml",
+              CardDemo.createSimpleDemoModel());
 
   public void testCollectStyleSheets ()
   {
-    URL url = this.getClass().getResource(TEST_REPORT.getReportDefinition());
+    final URL url = this.getClass().getResource(TEST_REPORT.getReportDefinition());
     assertNotNull(url);
     JFreeReport report = null;
     try
@@ -86,7 +88,7 @@ public class FnStyleSheetCollectionTest extends TestCase
 
   public void testCollectStyleSheetsClone ()
   {
-    URL url = this.getClass().getResource(TEST_REPORT.getReportDefinition());
+    final URL url = this.getClass().getResource(TEST_REPORT.getReportDefinition());
     assertNotNull(url);
     JFreeReport report = null;
     try
@@ -112,30 +114,30 @@ public class FnStyleSheetCollectionTest extends TestCase
   }
 
 
-  private void assertStyleCollectionConnected(JFreeReport report)
+  private void assertStyleCollectionConnected(final JFreeReport report)
   {
-    StyleSheetCollection con = report.getStyleSheetCollection();
+    final StyleSheetCollection con = report.getStyleSheetCollection();
     assertStyleCollectionConnected (report.getPageFooter (), con);
     assertStyleCollectionConnected (report.getPageHeader (), con);
     assertStyleCollectionConnected (report.getReportFooter (), con);
     assertStyleCollectionConnected (report.getReportHeader (), con);
     assertStyleCollectionConnected (report.getItemBand (), con);
 
-    int groupCount = report.getGroupCount ();
+    final int groupCount = report.getGroupCount ();
     for (int i = 0; i < groupCount; i++)
     {
-      Group g = report.getGroup (i);
+      final Group g = report.getGroup (i);
       assertStyleCollectionConnected (g.getFooter (), con);
       assertStyleCollectionConnected (g.getHeader (), con);
     }
   }
 
-  private void assertStyleCollectionConnected(Band band, StyleSheetCollection sc)
+  private void assertStyleCollectionConnected(final Band band, final StyleSheetCollection sc)
   {
     assertTrue(band.getName(), band.getStyleSheetCollection() == sc);
     assertStylesConnected(band.getStyle(), sc);
     assertStylesConnected(band.getBandDefaults(), sc);
-    Element[] elements = band.getElementArray();
+    final Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       assertTrue(elements[i].getStyleSheetCollection() == sc);
@@ -153,7 +155,7 @@ public class FnStyleSheetCollectionTest extends TestCase
     }
   }
 
-  private void assertStylesConnected (ElementStyleSheet es, StyleSheetCollection sc)
+  private void assertStylesConnected (final ElementStyleSheet es, final StyleSheetCollection sc)
   {
     if (es.isGlobalDefault())
       return;

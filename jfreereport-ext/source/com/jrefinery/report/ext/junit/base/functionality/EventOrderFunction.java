@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: EventOrderFunction.java,v 1.1 2003/06/13 22:58:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,7 +51,7 @@ public class EventOrderFunction extends AbstractFunction
   {
   }
 
-  public EventOrderFunction(String name)
+  public EventOrderFunction(final String name)
   {
     setName(name);
   }
@@ -64,7 +64,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void reportInitialized(ReportEvent event)
+  public void reportInitialized(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.REPORT_INITIALIZED) != ReportEvent.REPORT_INITIALIZED)
     {
@@ -84,7 +84,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportStarted(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.REPORT_STARTED) != ReportEvent.REPORT_STARTED)
     {
@@ -104,7 +104,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportFinished(ReportEvent event)
+  public void reportFinished(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.REPORT_FINISHED) != ReportEvent.REPORT_FINISHED)
     {
@@ -124,7 +124,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void pageStarted(ReportEvent event)
+  public void pageStarted(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.PAGE_STARTED) != ReportEvent.PAGE_STARTED)
     {
@@ -143,7 +143,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void pageFinished(ReportEvent event)
+  public void pageFinished(final ReportEvent event)
   {
     Log.error ("! EventOrderFunction: Page Finished called !");
     if ((event.getType() & ReportEvent.PAGE_FINISHED) != ReportEvent.PAGE_FINISHED)
@@ -164,7 +164,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupStarted(ReportEvent event)
+  public void groupStarted(final ReportEvent event)
   {
     Log.error ("! EventOrderFunction: Group Started called !");
     if ((event.getType() & ReportEvent.GROUP_STARTED) != ReportEvent.GROUP_STARTED)
@@ -189,7 +189,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void groupFinished(ReportEvent event)
+  public void groupFinished(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.GROUP_FINISHED) != ReportEvent.GROUP_FINISHED)
     {
@@ -209,7 +209,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void itemsAdvanced(ReportEvent event)
+  public void itemsAdvanced(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.ITEMS_ADVANCED) != ReportEvent.ITEMS_ADVANCED)
     {
@@ -232,7 +232,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void itemsStarted(ReportEvent event)
+  public void itemsStarted(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.ITEMS_STARTED) != ReportEvent.ITEMS_STARTED)
     {
@@ -255,7 +255,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void itemsFinished(ReportEvent event)
+  public void itemsFinished(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.ITEMS_FINISHED) != ReportEvent.ITEMS_FINISHED)
     {
@@ -276,7 +276,7 @@ public class EventOrderFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void reportDone(ReportEvent event)
+  public void reportDone(final ReportEvent event)
   {
     if ((event.getType() & ReportEvent.REPORT_DONE) != ReportEvent.REPORT_DONE)
     {

@@ -69,7 +69,7 @@ public class BarcodeEANSUPP extends Barcode
    * @param ean the EAN/UPC barcode
    * @param supp the supplemental barcode
    */
-  public BarcodeEANSUPP(Barcode ean, Barcode supp)
+  public BarcodeEANSUPP(final Barcode ean, final Barcode supp)
   {
     setBarcodeGap(8); // horizontal distance between the two barcodes
     this.ean = ean;
@@ -81,7 +81,7 @@ public class BarcodeEANSUPP extends Barcode
     return barcodeGap;
   }
 
-  public void setBarcodeGap(float barcodeGap)
+  public void setBarcodeGap(final float barcodeGap)
   {
     this.barcodeGap = barcodeGap;
   }
@@ -92,8 +92,8 @@ public class BarcodeEANSUPP extends Barcode
    */
   public Dimension2D getBarcodeSize()
   {
-    Dimension2D eanDim = ean.getBarcodeSize();
-    Dimension2D suppDim = supp.getBarcodeSize();
+    final Dimension2D eanDim = ean.getBarcodeSize();
+    final Dimension2D suppDim = supp.getBarcodeSize();
 
     return new FloatDimension((float) (eanDim.getWidth() + suppDim.getWidth() + getBarcodeGap()),
                               (float) Math.max(eanDim.getHeight(), suppDim.getHeight()));
@@ -105,7 +105,7 @@ public class BarcodeEANSUPP extends Barcode
    * @param textColor the color of the text. It can be <CODE>null</CODE>
    * @return the <CODE>Image</CODE>
    */
-  public Image createImageWithBarcode(Color barColor, Color textColor)
+  public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
       throw new NullPointerException("BarColor must not be null");
@@ -114,7 +114,7 @@ public class BarcodeEANSUPP extends Barcode
 
     if (supp.getFont() != null)
     {
-      float barHeight = (ean.getBarHeight() +
+      final float barHeight = (ean.getBarHeight() +
           supp.getBaseline() -
           getFontAscent(getFont().getFont()));
       supp.setBarHeight(barHeight);
@@ -124,14 +124,14 @@ public class BarcodeEANSUPP extends Barcode
       supp.setBarHeight(ean.getBarHeight());
     }
 
-    Dimension2D imgSize = getBarcodeSize();
+    final Dimension2D imgSize = getBarcodeSize();
 
-    BufferedImage image = new BufferedImage ((int) imgSize.getWidth(),
+    final BufferedImage image = new BufferedImage ((int) imgSize.getWidth(),
                                              (int) imgSize.getHeight(),
                                              BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
-    Image eanImg = ean.createImageWithBarcode(barColor, textColor);
-    Image suppImg = supp.createImageWithBarcode(barColor, textColor);
+    final Graphics2D g2 = image.createGraphics();
+    final Image eanImg = ean.createImageWithBarcode(barColor, textColor);
+    final Image suppImg = supp.createImageWithBarcode(barColor, textColor);
     g2.drawImage(eanImg, 0,0, null);
     g2.drawImage(suppImg, (int) (eanImg.getWidth(null) + getBarcodeGap()), 0, null);
     g2.dispose();

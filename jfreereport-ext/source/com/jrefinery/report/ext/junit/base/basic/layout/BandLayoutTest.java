@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BandLayoutTest.java,v 1.1 2003/06/11 20:39:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,19 +53,19 @@ public class BandLayoutTest extends TestCase
   {
   }
 
-  public BandLayoutTest(String s)
+  public BandLayoutTest(final String s)
   {
     super(s);
   }
 
   public void testBasicLayout()
   {
-    Band band = new Band();
+    final Band band = new Band();
     BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
     // width is preserved  ...
     assertEquals(new Rectangle2D.Float(0, 0, 500, 0), BandLayoutManagerUtil.getBounds(band, null));
 
-    Element e = StaticShapeElementFactory.createRectangleShapeElement(null, null, null,
+    final Element e = StaticShapeElementFactory.createRectangleShapeElement(null, null, null,
         new Rectangle2D.Float(0, 0, 10, 10), true, true);
     band.addElement(e);
     BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);

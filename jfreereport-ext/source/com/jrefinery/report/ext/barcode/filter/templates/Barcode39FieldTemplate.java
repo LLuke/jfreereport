@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 6:03:51 PM
  *
- * $Id$
+ * $Id: Barcode39FieldTemplate.java,v 1.1 2003/02/25 20:58:44 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode.filter.templates;
 
@@ -28,7 +28,7 @@ public class Barcode39FieldTemplate extends BarcodeFieldTemplate
     return barcode.isExtended();
   }
 
-  public void setExtended(boolean extended)
+  public void setExtended(final boolean extended)
   {
     this.barcode.setExtended(extended);
   }
@@ -38,7 +38,7 @@ public class Barcode39FieldTemplate extends BarcodeFieldTemplate
     return barcode.isStartStopText();
   }
 
-  public void setStartStopText(boolean startStopText)
+  public void setStartStopText(final boolean startStopText)
   {
     this.barcode.setStartStopText(startStopText);
   }
@@ -52,7 +52,7 @@ public class Barcode39FieldTemplate extends BarcodeFieldTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    Barcode39FieldTemplate ft = (Barcode39FieldTemplate) super.clone();
+    final Barcode39FieldTemplate ft = (Barcode39FieldTemplate) super.clone();
     ft.barcode = (Barcode39) ft.getBarcodeFilter().getBarcode();
     return ft;
   }

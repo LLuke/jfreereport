@@ -44,8 +44,8 @@ public class Barcode128Raw extends Barcode128
 
   public String getStrippedCode()
   {
-    String code = getCode();
-    int idx = code.indexOf('\uffff');
+    final String code = getCode();
+    final int idx = code.indexOf('\uffff');
     if (idx < 0)
       return "";
     else
@@ -54,8 +54,8 @@ public class Barcode128Raw extends Barcode128
 
   public String getRawText ()
   {
-    String code = getCode();
-    int idx = code.indexOf('\uffff');
+    final String code = getCode();
+    final int idx = code.indexOf('\uffff');
     if (idx >= 0)
       return code.substring(0, idx);
     else

@@ -69,17 +69,17 @@ public class BarcodeSUPP2 extends BarcodeEAN
    */
   public byte[] getBars()
   {
-    String _code = getCode();
-    int code[] = new int[2];
+    final String _code = getCode();
+    final int[] code = new int[2];
     for (int k = 0; k < code.length; ++k)
       code[k] = _code.charAt(k) - '0';
-    byte bars[] = new byte[TOTALBARS_SUPP2];
+    final byte[] bars = new byte[TOTALBARS_SUPP2];
     int pb = 0;
-    int parity = (code[0] * 10 + code[1]) % 4;
+    final int parity = (code[0] * 10 + code[1]) % 4;
     bars[pb++] = 1;
     bars[pb++] = 1;
     bars[pb++] = 2;
-    byte sequence[] = PARITY2[parity];
+    final byte[] sequence = PARITY2[parity];
     for (int k = 0; k < sequence.length; ++k)
     {
       if (k == 1)
@@ -87,8 +87,8 @@ public class BarcodeSUPP2 extends BarcodeEAN
         bars[pb++] = 1;
         bars[pb++] = 1;
       }
-      int c = code[k];
-      byte stripes[] = BARS[c];
+      final int c = code[k];
+      final byte[] stripes = BARS[c];
       if (sequence[k] == ODD)
       {
         bars[pb++] = stripes[0];
@@ -107,16 +107,16 @@ public class BarcodeSUPP2 extends BarcodeEAN
     return bars;
   }
 
-  protected void drawCode(Graphics2D g2, float keepBarX, float textStartY)
+  protected void drawCode(final Graphics2D g2, final float keepBarX, final float textStartY)
   {
-    BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
-    String code = getCode();
+    final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(getFont());
+    final String code = getCode();
 
     for (int k = 0; k < code.length(); ++k)
     {
-      String c = code.substring(k, k + 1);
-      float len = calc.getStringWidth(c, 0, 1);
-      float pX = (7.5f + (9 * k)) * getMinWidth() - len / 2;
+      final String c = code.substring(k, k + 1);
+      final float len = calc.getStringWidth(c, 0, 1);
+      final float pX = (7.5f + (9 * k)) * getMinWidth() - len / 2;
       g2.drawString (c, pX, textStartY);
     }
   }

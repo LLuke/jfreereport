@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ThaiCharacterBug.java,v 1.2 2003/06/10 18:17:28 taqua Exp $
+ * $Id: ThaiCharacterBug.java,v 1.3 2003/06/16 15:34:34 taqua Exp $
  *
  * Changes
  * -------
@@ -58,20 +58,20 @@ public class ThaiCharacterBug
     //String test = "\u3648\u3614\u3636\u3656\u3617\u3621\u3641\u3585\u3588\u3657\u3634";
     test = new String(test.getBytes("iso-8859-1"), "TIS620");
 
-    Element e = ItemFactory.createLabelElement(null,
+    final Element e = ItemFactory.createLabelElement(null,
         new Rectangle2D.Float(10, 10, 250, 50),
         null,
         ElementAlignment.CENTER.getOldAlignment(),
         new Font("Serif", Font.PLAIN, 14),
         test);
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.getReportHeader().addElement(e);
     return report;
   }
 
-  public static void main(String[] args) throws Exception
+  public static void main(final String[] args) throws Exception
   {
-    PreviewFrame d = new PreviewFrame(getReport());
+    final PreviewFrame d = new PreviewFrame(getReport());
     d.pack();
     d.addWindowListener(new WindowAdapter()
     {
@@ -79,7 +79,7 @@ public class ThaiCharacterBug
        * Invoked when a window is in the process of being closed.
        * The close operation can be overridden at this point.
        */
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         System.exit(0);
       }

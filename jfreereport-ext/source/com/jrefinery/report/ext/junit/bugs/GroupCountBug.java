@@ -78,7 +78,7 @@ public class GroupCountBug extends TestCase
    * Constructs a new set of tests.
    * @param name The name of the tests.
    */
-  public GroupCountBug(String name)
+  public GroupCountBug(final String name)
   {
     super(name);
   }
@@ -89,21 +89,21 @@ public class GroupCountBug extends TestCase
   protected void setUp()
   {
 
-    String[][] values = new String[][]{{"A", "1"}, {"A", "2"}, {"B", "3"}};
-    String[] columns = new String[]{"Letter", "Number"};
-    TableModel data = new DefaultTableModel(values, columns);
+    final String[][] values = new String[][]{{"A", "1"}, {"A", "2"}, {"B", "3"}};
+    final String[] columns = new String[]{"Letter", "Number"};
+    final TableModel data = new DefaultTableModel(values, columns);
 
     this.report = new JFreeReport();
     this.report.setName("Test Report");
     this.report.setData(data);
-    ArrayList fields = new ArrayList();
+    final ArrayList fields = new ArrayList();
     fields.add("Letter");
-    Group letterGroup = new Group();
+    final Group letterGroup = new Group();
     letterGroup.setName("Letter Group");
     letterGroup.setFields(fields);
     this.report.addGroup(letterGroup);
 
-    GroupCountFunction function = new GroupCountFunction();
+    final GroupCountFunction function = new GroupCountFunction();
     function.setName("f1");
     function.setGroup("Letter Group");
     try
@@ -112,11 +112,11 @@ public class GroupCountBug extends TestCase
     }
     catch (Exception e)
     {
-      this.fail();
+      fail();
     }
 
-    BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-    Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+    final BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+    final Graphics2D g2 = (Graphics2D) buffer.getGraphics();
     this.target = new G2OutputTarget(g2, new PageFormat());
 
   }
@@ -126,13 +126,13 @@ public class GroupCountBug extends TestCase
    */
   public void testGroupCount() throws Exception
   {
-    PageableReportProcessor proc = new PageableReportProcessor(report);
+    final PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
-    ReportStateList list = proc.repaginate();
-    ReportState state = list.get(list.size() - 1);
+    final ReportStateList list = proc.repaginate();
+    final ReportState state = list.get(list.size() - 1);
     System.out.println(state.getClass().getName());
-    Integer value = (Integer) state.getDataRow().get("f1");
-    this.assertEquals(new Integer(2), value);
+    final Integer value = (Integer) state.getDataRow().get("f1");
+    assertEquals(new Integer(2), value);
 
   }
 

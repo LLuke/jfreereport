@@ -2,7 +2,7 @@
  * Date: Feb 18, 2003
  * Time: 6:30:13 PM
  *
- * $Id: PlainTextAlignmentTest.java,v 1.1 2003/03/01 15:00:14 taqua Exp $
+ * $Id: PlainTextAlignmentTest.java,v 1.2 2003/06/10 18:17:24 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
 
@@ -16,23 +16,23 @@ import com.jrefinery.report.util.PageFormatFactory;
 
 public class PlainTextAlignmentTest
 {
-  public static void main(String[] args)
+  public static void main(final String[] args)
       throws Exception
   {
-    PageFormatFactory pff = PageFormatFactory.getInstance();
-    Paper p = pff.createPaper(PageFormatFactory.A4);
+    final PageFormatFactory pff = PageFormatFactory.getInstance();
+    final Paper p = pff.createPaper(PageFormatFactory.A4);
     pff.setBorders(p, 72, 72, 72, 72);
-    PageFormat pf = pff.createPageFormat(p, PageFormat.PORTRAIT);
+    final PageFormat pf = pff.createPageFormat(p, PageFormat.PORTRAIT);
 
-    PrinterCommandSet pc = new PrinterCommandSet(System.out, pf, 6, 10);
-    PlainTextOutputTarget target = new PlainTextOutputTarget(pf, pc);
+    final PrinterCommandSet pc = new PrinterCommandSet(System.out, pf, 6, 10);
+    final PlainTextOutputTarget target = new PlainTextOutputTarget(pf, pc);
     target.open();
 
-    float valign = target.getVerticalAlignmentBorder();
-    float halign = target.getHorizontalAlignmentBorder();
+    final float valign = target.getVerticalAlignmentBorder();
+    final float halign = target.getHorizontalAlignmentBorder();
     Log.debug("LogicalPage: " + target.getLogicalPage());
-    double width = target.getLogicalPage().getWidth();
-    double height = target.getLogicalPage().getHeight();
+    final double width = target.getLogicalPage().getWidth();
+    final double height = target.getLogicalPage().getHeight();
 
     Log.debug("valign : " + valign);
     Log.debug("halign : " + halign);

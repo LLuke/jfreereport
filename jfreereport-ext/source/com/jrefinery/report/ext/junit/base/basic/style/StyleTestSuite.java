@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleTestSuite.java,v 1.1 2003/06/20 12:05:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,7 @@ import junit.framework.TestSuite;
 
 public class StyleTestSuite extends TestSuite
 {
-  public StyleTestSuite(String s)
+  public StyleTestSuite(final String s)
   {
     super(s);
     addTestSuite(StyleSheetCollectionTest.class);

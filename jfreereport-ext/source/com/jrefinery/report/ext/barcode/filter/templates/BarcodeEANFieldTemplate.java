@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 6:07:39 PM
  *
- * $Id$
+ * $Id: BarcodeEANFieldTemplate.java,v 1.1 2003/02/25 20:58:45 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode.filter.templates;
 
@@ -22,7 +22,7 @@ public abstract class BarcodeEANFieldTemplate extends BarcodeFieldTemplate
     return barcode.isGuardBars();
   }
 
-  public void setGuardBars(boolean guardBars)
+  public void setGuardBars(final boolean guardBars)
   {
     this.barcode.setGuardBars(guardBars);
   }
@@ -36,7 +36,7 @@ public abstract class BarcodeEANFieldTemplate extends BarcodeFieldTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    BarcodeEANFieldTemplate ft = (BarcodeEANFieldTemplate) super.clone();
+    final BarcodeEANFieldTemplate ft = (BarcodeEANFieldTemplate) super.clone();
     ft.barcode = (BarcodeEAN) ft.getBarcodeFilter().getBarcode();
     return ft;
   }

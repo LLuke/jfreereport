@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.5 2003/04/23 17:32:37 taqua Exp $
+ * $Id: Log4JLogTarget.java,v 1.6 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class Log4JLogTarget implements LogTarget
    *
    * @param cat the category, that should be used for logging.
    */
-  public Log4JLogTarget (Category cat)
+  public Log4JLogTarget (final Category cat)
   {
     if (cat == null) throw new NullPointerException("Given category is null");
     this.cat = cat;
@@ -81,9 +81,9 @@ public class Log4JLogTarget implements LogTarget
    * @param level  the log level.
    * @param message  the log message.
    */
-  public void log (int level, Object message)
+  public void log (final int level, final Object message)
   {
-    Priority priority = Priority.toPriority(level);
+    final Priority priority = Priority.toPriority(level);
     cat.log(priority, message);
   }
 
@@ -95,9 +95,9 @@ public class Log4JLogTarget implements LogTarget
    * @param message  the log message.
    * @param e  the exception
    */
-  public void log (int level, Object message, Exception e)
+  public void log (final int level, final Object message, final Exception e)
   {
-    Priority priority = Priority.toPriority(level);
+    final Priority priority = Priority.toPriority(level);
     cat.log(priority, message, e);
   }
 }

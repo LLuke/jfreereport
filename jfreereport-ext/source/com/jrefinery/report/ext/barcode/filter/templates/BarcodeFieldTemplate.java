@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 5:17:05 PM
  *
- * $Id$
+ * $Id: BarcodeFieldTemplate.java,v 1.1 2003/02/25 20:58:45 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode.filter.templates;
 
@@ -47,7 +47,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getTextColor();
   }
 
-  public void setTextColor(Color textColor)
+  public void setTextColor(final Color textColor)
   {
     barcodeFilter.setTextColor(textColor);
   }
@@ -57,7 +57,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarColor();
   }
 
-  public void setBarColor(Color barColor)
+  public void setBarColor(final Color barColor)
   {
     barcodeFilter.setBarColor(barColor);
   }
@@ -67,7 +67,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return dataRowDataSource.getDataSourceColumnName();
   }
 
-  public void setField(String field)
+  public void setField(final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -77,7 +77,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarcode().getMinWidth();
   }
 
-  public void setMinWidth(float minWidth)
+  public void setMinWidth(final float minWidth)
   {
     barcodeFilter.getBarcode().setMinWidth(minWidth);
   }
@@ -87,7 +87,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarcode().getFont();
   }
 
-  public void setFont(FontDefinition font)
+  public void setFont(final FontDefinition font)
   {
     barcodeFilter.getBarcode().setFont(font);
   }
@@ -97,7 +97,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarcode().getBaseline();
   }
 
-  public void setBaseline(float baseline)
+  public void setBaseline(final float baseline)
   {
     barcodeFilter.getBarcode().setBaseline(baseline);
   }
@@ -107,7 +107,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarcode().getBarHeight();
   }
 
-  public void setBarHeight(float barHeight)
+  public void setBarHeight(final float barHeight)
   {
     barcodeFilter.getBarcode().setBarHeight(barHeight);
   }
@@ -117,7 +117,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarcode().getTextAlignment();
   }
 
-  public void setTextAlignment(ElementAlignment textAlignment)
+  public void setTextAlignment(final ElementAlignment textAlignment)
   {
     barcodeFilter.getBarcode().setTextAlignment(textAlignment);
   }
@@ -127,7 +127,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarcode().isGenerateChecksum();
   }
 
-  public void setGenerateChecksum(boolean generateChecksum)
+  public void setGenerateChecksum(final boolean generateChecksum)
   {
     barcodeFilter.getBarcode().setGenerateChecksum(generateChecksum);
   }
@@ -137,7 +137,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
     return barcodeFilter.getBarcode().isDisplayChecksumText();
   }
 
-  public void setDisplayChecksumInText(boolean displayChecksumInText)
+  public void setDisplayChecksumInText(final boolean displayChecksumInText)
   {
     barcodeFilter.getBarcode().setDisplayChecksumText(displayChecksumInText);
   }
@@ -161,7 +161,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    BarcodeFieldTemplate template = (BarcodeFieldTemplate) super.clone();
+    final BarcodeFieldTemplate template = (BarcodeFieldTemplate) super.clone();
     template.imageRefFilter = (ImageRefFilter) imageRefFilter.clone();
     template.barcodeFilter = (BarcodeFilter) template.imageRefFilter.getDataSource();
     template.dataRowDataSource = (DataRowDataSource) template.barcodeFilter.getDataSource();
@@ -175,7 +175,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
    *
    * @throws java.lang.IllegalStateException if there is already a data row connected.
    */
-  public void connectDataRow(DataRow row) throws IllegalStateException
+  public void connectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.connectDataRow(row);
   }
@@ -190,7 +190,7 @@ public abstract class BarcodeFieldTemplate extends AbstractTemplate
    *
    * @throws java.lang.IllegalStateException if there is already a data row connected.
    */
-  public void disconnectDataRow(DataRow row) throws IllegalStateException
+  public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
     dataRowDataSource.disconnectDataRow(row);
   }

@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 5:51:48 PM
  *
- * $Id$
+ * $Id: BarcodeInter25FieldTemplate.java,v 1.1 2003/02/25 20:58:46 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode.filter.templates;
 
@@ -29,7 +29,7 @@ public class BarcodeInter25FieldTemplate extends BarcodeFieldTemplate
     return barcode.getMultiplier();
   }
 
-  public void setMultiplier(float multiplier)
+  public void setMultiplier(final float multiplier)
   {
     this.barcode.setMultiplier(multiplier);
   }
@@ -43,7 +43,7 @@ public class BarcodeInter25FieldTemplate extends BarcodeFieldTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    BarcodeInter25FieldTemplate ft = (BarcodeInter25FieldTemplate) super.clone();
+    final BarcodeInter25FieldTemplate ft = (BarcodeInter25FieldTemplate) super.clone();
     ft.barcode = (BarcodeInter25) ft.getBarcodeFilter().getBarcode();
     return ft;
   }

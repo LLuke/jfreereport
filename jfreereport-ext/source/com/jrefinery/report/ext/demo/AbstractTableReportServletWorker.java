@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractTableReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
+ * $Id: AbstractTableReportServletWorker.java,v 1.4 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public abstract class AbstractTableReportServletWorker extends AbstractReportSer
    *
    * @param tableProcessor the processor.
    */
-  public void setTableProcessor(TableProcessor tableProcessor)
+  public void setTableProcessor(final TableProcessor tableProcessor)
   {
     this.tableProcessor = tableProcessor;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestSuite.java,v 1.3 2003/06/12 19:55:58 taqua Exp $
+ * $Id: FunctionalityTestSuite.java,v 1.4 2003/06/23 16:09:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,7 +43,7 @@ import junit.framework.TestSuite;
 
 public class FunctionalityTestSuite extends TestSuite
 {
-  public FunctionalityTestSuite(String s)
+  public FunctionalityTestSuite(final String s)
   {
     super(s);
     addTestSuite(ParseTest.class);
@@ -51,6 +51,9 @@ public class FunctionalityTestSuite extends TestSuite
     addTestSuite(ExportTest.class);
     addTestSuite(LineShapeCreateTest.class);
     addTestSuite(FnStyleSheetCollectionTest.class);
+    addTestSuite(EventOrderTest.class);
+    addTestSuite(GroupPageBreakTest.class);
+    addTestSuite(TotalGroupSumTest.class);
   }
 
   public static Test suite()

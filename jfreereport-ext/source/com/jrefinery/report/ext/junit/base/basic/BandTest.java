@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandTest.java,v 1.1 2003/06/01 20:43:36 taqua Exp $
+ * $Id: BandTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,14 +49,14 @@ import junit.framework.TestCase;
 
 public class BandTest extends TestCase
 {
-  public BandTest(String s)
+  public BandTest(final String s)
   {
     super(s);
   }
 
   public void testBandCreate()
   {
-    Band b = new Band();
+    final Band b = new Band();
     assertNotNull(b.getContentType());
     assertNotNull(b.getDataSource());
     assertNotNull(b.getStyle());
@@ -73,7 +73,7 @@ public class BandTest extends TestCase
 
   public void testBandMethods()
   {
-    Band b = new Band();
+    final Band b = new Band();
     assertTrue(b.isVisible());
     b.setVisible(false);
     assertTrue(b.isVisible() == false);
@@ -105,7 +105,7 @@ public class BandTest extends TestCase
 
   public void testAddElement()
   {
-    Band b = new Band();
+    final Band b = new Band();
     assertTrue(b.getElementCount() == 0);
     b.addElement(0, new ElementTest.ElementImpl());
     assertTrue(b.getElementCount() == 1);
@@ -142,9 +142,9 @@ public class BandTest extends TestCase
 
     try
     {
-      Band b1 = new Band();
-      Band b2 = new Band();
-      Band b3 = new Band();
+      final Band b1 = new Band();
+      final Band b2 = new Band();
+      final Band b3 = new Band();
       b1.addElement(b2);
       b2.addElement(b3);
       b3.addElement(b1);
@@ -158,13 +158,13 @@ public class BandTest extends TestCase
 
   public void testSerialize() throws Exception
   {
-    Band e = new Band();
-    ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    ObjectOutputStream out = new ObjectOutputStream(bo);
+    final Band e = new Band();
+    final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+    final ObjectOutputStream out = new ObjectOutputStream(bo);
     out.writeObject(e);
 
-    ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
-    Element e2 = (Element) oin.readObject();
+    final ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
+    final Element e2 = (Element) oin.readObject();
     assertNotNull(e2); // cannot assert equals, as this is not implemented.
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DebugOutputTarget.java,v 1.1 2003/06/11 20:44:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,7 +69,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param format  the page format.
    */
-  public DebugOutputTarget(PageFormat format)
+  public DebugOutputTarget(final PageFormat format)
   {
     super(format);
     open = false;
@@ -109,7 +109,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param page  the physical page.
    */
-  public void beginPage(PhysicalPage page)
+  public void beginPage(final PhysicalPage page)
   {
   }
 
@@ -140,7 +140,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont(FontDefinition font) throws OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     this.font = font;
   }
@@ -164,7 +164,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke(Stroke stroke) throws OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     this.stroke = stroke;
   }
@@ -186,7 +186,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(Paint paint) throws OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     this.paint = paint;
   }
@@ -196,7 +196,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param text  the text.
    */
-  public void drawString(String text)
+  public void drawString(final String text)
   {
   }
 
@@ -205,7 +205,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void drawShape(Shape shape)
+  public void drawShape(final Shape shape)
   {
   }
 
@@ -214,7 +214,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void fillShape(Shape shape)
+  public void fillShape(final Shape shape)
   {
   }
 
@@ -223,7 +223,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(DrawableContainer drawable)
+  public void drawDrawable(final DrawableContainer drawable)
   {
   }
 
@@ -234,7 +234,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(ImageReference image) throws OutputTargetException
+  public void drawImage(final ImageReference image) throws OutputTargetException
   {
   }
 
@@ -255,7 +255,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param config  the configuration.
    */
-  public void configure(ReportConfiguration config)
+  public void configure(final ReportConfiguration config)
   {
   }
 
@@ -269,7 +269,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @throws SizeCalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font)
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
       throws SizeCalculatorException
   {
     return new DefaultSizeCalculator(font);

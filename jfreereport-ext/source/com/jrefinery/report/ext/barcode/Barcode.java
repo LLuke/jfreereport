@@ -120,7 +120,7 @@ public abstract class Barcode implements Cloneable
   {
     setMinWidth(0.8f);
     setFont(DEFAULT_FONT);
-    int size = DEFAULT_FONT.getFontSize();
+    final int size = DEFAULT_FONT.getFontSize();
     setBaseline(size);
     setBarHeight(size * 3);
     setTextAlignment(ElementAlignment.CENTER);
@@ -139,7 +139,7 @@ public abstract class Barcode implements Cloneable
   /** Sets the minimum bar width.
    * @param minWidth the minimum bar width
    */
-  public void setMinWidth(float minWidth)
+  public void setMinWidth(final float minWidth)
   {
     this.minWidth = minWidth;
   }
@@ -155,7 +155,7 @@ public abstract class Barcode implements Cloneable
   /** Sets the text font. <CODE>null</CODE> if no text.
    * @param font the text font. <CODE>null</CODE> if no text
    */
-  public void setFont(FontDefinition font)
+  public void setFont(final FontDefinition font)
   {
     this.font = font;
   }
@@ -191,7 +191,7 @@ public abstract class Barcode implements Cloneable
    * the text distance above the bars.
    * @param baseline the baseline.
    */
-  public void setBaseline(float baseline)
+  public void setBaseline(final float baseline)
   {
     this.baseline = baseline;
   }
@@ -207,7 +207,7 @@ public abstract class Barcode implements Cloneable
   /** Sets the height of the bars.
    * @param barHeight the height of the bars
    */
-  public void setBarHeight(float barHeight)
+  public void setBarHeight(final float barHeight)
   {
     this.barHeight = barHeight;
   }
@@ -225,7 +225,7 @@ public abstract class Barcode implements Cloneable
    * <CODE>Element.ALIGN_CENTER</CODE> or <CODE>Element.ALIGN_RIGHT</CODE>.
    * @param textAlignment the text alignment
    */
-  public void setTextAlignment(ElementAlignment textAlignment)
+  public void setTextAlignment(final ElementAlignment textAlignment)
   {
     this.textAlignment = textAlignment;
   }
@@ -241,7 +241,7 @@ public abstract class Barcode implements Cloneable
   /** Setter for property generateChecksum.
    * @param generateChecksum New value of property generateChecksum.
    */
-  public void setGenerateChecksum(boolean generateChecksum)
+  public void setGenerateChecksum(final boolean generateChecksum)
   {
     this.generateChecksum = generateChecksum;
   }
@@ -257,7 +257,7 @@ public abstract class Barcode implements Cloneable
   /** Sets the property to show the generated checksum in the the text.
    * @param checksumText new value of property checksumText
    */
-  public void setDisplayChecksumText(boolean checksumText)
+  public void setDisplayChecksumText(final boolean checksumText)
   {
     this.displayChecksumInText = checksumText;
   }
@@ -273,7 +273,7 @@ public abstract class Barcode implements Cloneable
   /** Sets the code to generate.
    * @param code the code to generate
    */
-  public void setCode(String code)
+  public void setCode(final String code)
   {
     this.code = code;
   }
@@ -331,27 +331,27 @@ public abstract class Barcode implements Cloneable
    */
   public abstract Image createImageWithBarcode(Color barColor, Color textColor);
 
-  protected float getFontDescent(Font font)
+  protected float getFontDescent(final Font font)
   {
-    DefaultFontMetrics fm = new DefaultFontMetrics(font);
+    final DefaultFontMetrics fm = new DefaultFontMetrics(font);
 
     // correction factor..
-    double cFact = font.getSize2D() / fm.getHeight();
-    float baseline = (float) fm.getAscent();
-    float correctedBaseline = (float) (baseline * cFact);
+    final double cFact = font.getSize2D() / fm.getHeight();
+    final float baseline = (float) fm.getAscent();
+    final float correctedBaseline = (float) (baseline * cFact);
 
-    float l = (font.getSize2D() + correctedBaseline) / 2.0f;
+    final float l = (font.getSize2D() + correctedBaseline) / 2.0f;
     return l;
   }
 
-  protected float getFontAscent (Font font)
+  protected float getFontAscent (final Font font)
   {
-    DefaultFontMetrics fm = new DefaultFontMetrics(font);
+    final DefaultFontMetrics fm = new DefaultFontMetrics(font);
 
     // correction factor..
-    double cFact = font.getSize2D() / fm.getHeight();
-    float baseline = (float) fm.getAscent();
-    float correctedBaseline = (float) (baseline * cFact);
+    final double cFact = font.getSize2D() / fm.getHeight();
+    final float baseline = (float) fm.getAscent();
+    final float correctedBaseline = (float) (baseline * cFact);
     return correctedBaseline;
   }
 

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.11 2003/03/02 21:36:41 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.12 2003/03/04 22:30:34 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class JFreeReportServlet extends HttpServlet
    * @throws ServletException if an error occured, which could not be handled internaly.
    * @throws IOException if writing the generated contents failed.
    */
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
+  public void doGet(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
   {
     doPost(request, response);
@@ -81,19 +81,19 @@ public class JFreeReportServlet extends HttpServlet
    * @throws ServletException if an error occured, which could not be handled internaly.
    * @throws IOException if writing the generated contents failed.
    */
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
+  public void doPost(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
   {
     Log.debug("in processRequest..." + getClass());
 
-    URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
     if (in == null)
     {
       throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
     }
 
-    URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
-    AbstractPageableReportServletWorker worker =
+    final URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
+    final AbstractPageableReportServletWorker worker =
         new DefaultPageableReportServletWorker(null,
                                                in,
                                                new DemoModelProvider(base));
@@ -124,7 +124,7 @@ public class JFreeReportServlet extends HttpServlet
 
     try
     {
-      PDFOutputTarget target = new PDFOutputTarget(response.getOutputStream(),
+      final PDFOutputTarget target = new PDFOutputTarget(response.getOutputStream(),
                                                    worker.getReport().getDefaultPageFormat(),
                                                    true);
       target.setProperty(PDFOutputTarget.TITLE, "Title");

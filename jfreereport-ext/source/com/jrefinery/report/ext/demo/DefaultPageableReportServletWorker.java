@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultPageableReportServletWorker.java,v 1.4 2003/03/04 22:30:32 taqua Exp $
+ * $Id: DefaultPageableReportServletWorker.java,v 1.5 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class DefaultPageableReportServletWorker
    * @param data the tablemodel that should be used for the reporting.
    * @param session the current session, or null, if no session handling should be used.
    */
-  public DefaultPageableReportServletWorker(HttpSession session, URL report, TableModelProvider data)
+  public DefaultPageableReportServletWorker(final HttpSession session, final URL report, final TableModelProvider data)
   {
     super(session);
     if (report == null) throw new NullPointerException();
@@ -93,7 +93,7 @@ public class DefaultPageableReportServletWorker
   {
     try
     {
-      JFreeReport report = parseReport(reportDefinition);
+      final JFreeReport report = parseReport(reportDefinition);
       report.setData(data.getModel());
       return report;
     }
@@ -110,11 +110,11 @@ public class DefaultPageableReportServletWorker
    * @return a report.
    * @throws IOException if an error occured while parsing the report.
    */
-  private JFreeReport parseReport(URL templateURL)
+  private JFreeReport parseReport(final URL templateURL)
     throws IOException
   {
     JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance();
+    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
         result = generator.parseReport(templateURL);

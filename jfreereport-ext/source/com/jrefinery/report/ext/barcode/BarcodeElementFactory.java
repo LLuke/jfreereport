@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 5:13:52 PM
  *
- * $Id: BarcodeElementFactory.java,v 1.1 2003/02/25 20:58:36 taqua Exp $
+ * $Id: BarcodeElementFactory.java,v 1.2 2003/05/14 22:36:46 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode;
 
@@ -20,27 +20,27 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 public class BarcodeElementFactory
 {
-  public static Element createBarcodeElement (String name,
-                                              Rectangle2D bounds,
-                                              Color textColor,
-                                              Color barColor,
-                                              Barcode barcode,
-                                              String field,
-                                              boolean dynamic)
+  public static Element createBarcodeElement (final String name,
+                                              final Rectangle2D bounds,
+                                              final Color textColor,
+                                              final Color barColor,
+                                              final Barcode barcode,
+                                              final String field,
+                                              final boolean dynamic)
   {
-    DataRowDataSource drds = new DataRowDataSource();
+    final DataRowDataSource drds = new DataRowDataSource();
     drds.setDataSourceColumnName(field);
 
-    BarcodeFilter bcf = new BarcodeFilter();
+    final BarcodeFilter bcf = new BarcodeFilter();
     bcf.setBarcode(barcode);
     bcf.setBarColor(barColor);
     bcf.setTextColor(textColor);
     bcf.setDataSource(drds);
 
-    ImageRefFilter irf = new ImageRefFilter();
+    final ImageRefFilter irf = new ImageRefFilter();
     irf.setDataSource(bcf);
 
-    ImageElement ie = new ImageElement();
+    final ImageElement ie = new ImageElement();
     ie.setName(name);
     ItemFactory.setElementBounds(ie, bounds);
     ie.getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(true));
@@ -50,15 +50,15 @@ public class BarcodeElementFactory
     return ie;
   }
 
-  public static Element createBarcodeElement (String name,
-                                              Rectangle2D bounds,
-                                              BarcodeFieldTemplate barcode,
-                                              boolean dynamic)
+  public static Element createBarcodeElement (final String name,
+                                              final Rectangle2D bounds,
+                                              final BarcodeFieldTemplate barcode,
+                                              final boolean dynamic)
   {
-    ImageRefFilter irf = new ImageRefFilter();
+    final ImageRefFilter irf = new ImageRefFilter();
     irf.setDataSource(barcode);
 
-    ImageElement ie = new ImageElement();
+    final ImageElement ie = new ImageElement();
     ie.setName(name);
     ItemFactory.setElementBounds(ie, bounds);
     ie.getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(true));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
+ * $Id: ReportDefinitionTest.java,v 1.3 2003/06/16 15:34:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,20 +49,20 @@ public class ReportDefinitionTest extends TestCase
   private StyleKey testKey =
       StyleKey.getStyleKey("ReportDefinitionTest", String.class);
 
-  public ReportDefinitionTest(String s)
+  public ReportDefinitionTest(final String s)
   {
     super(s);
   }
 
   public void testReport () throws Exception
   {
-    JFreeReport report = new JFreeReport();
-    ElementStyleSheet es = new ElementStyleSheet("test");
+    final JFreeReport report = new JFreeReport();
+    final ElementStyleSheet es = new ElementStyleSheet("test");
     es.setStyleProperty(testKey, "Hello World!");
     report.getReportHeader().getStyle().addParent(es);
     assertEquals(report.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
 
-    ReportDefinition rd = new ReportDefinition(report);
+    final ReportDefinition rd = new ReportDefinition(report);
     assertEquals(rd.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
 
     es.setStyleProperty(testKey, "Hello Little Green Man!");

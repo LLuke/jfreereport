@@ -96,7 +96,7 @@ public class BarcodeInter25 extends Barcode
     return multiplier;
   }
 
-  public void setMultiplier(float multiplier)
+  public void setMultiplier(final float multiplier)
   {
     this.multiplier = multiplier;
   }
@@ -105,12 +105,12 @@ public class BarcodeInter25 extends Barcode
    * @param text the text
    * @return a <CODE>String</CODE> with only numeric characters
    */
-  private static String keepNumbers(String text)
+  private static String keepNumbers(final String text)
   {
-    StringBuffer sb = new StringBuffer();
+    final StringBuffer sb = new StringBuffer();
     for (int k = 0; k < text.length(); ++k)
     {
-      char c = text.charAt(k);
+      final char c = text.charAt(k);
       if (c >= '0' && c <= '9')
         sb.append(c);
     }
@@ -121,13 +121,13 @@ public class BarcodeInter25 extends Barcode
    * @param text the numeric text
    * @return the checksum
    */
-  private static char getChecksum(String text)
+  private static char getChecksum(final String text)
   {
     int mul = 3;
     int total = 0;
     for (int k = text.length() - 1; k >= 0; --k)
     {
-      int n = text.charAt(k) - '0';
+      final int n = text.charAt(k) - '0';
       total += mul * n;
       mul ^= 2;
     }
@@ -141,19 +141,19 @@ public class BarcodeInter25 extends Barcode
   private static byte[] getBarsInter25(String text)
   {
     text = keepNumbers(text);
-    byte bars[] = new byte[text.length() * 5 + 7];
+    final byte[] bars = new byte[text.length() * 5 + 7];
     int pb = 0;
     bars[pb++] = 0;
     bars[pb++] = 0;
     bars[pb++] = 0;
     bars[pb++] = 0;
-    int len = text.length() / 2;
+    final int len = text.length() / 2;
     for (int k = 0; k < len; ++k)
     {
-      int c1 = text.charAt(k * 2) - '0';
-      int c2 = text.charAt(k * 2 + 1) - '0';
-      byte b1[] = BARS[c1];
-      byte b2[] = BARS[c2];
+      final int c1 = text.charAt(k * 2) - '0';
+      final int c2 = text.charAt(k * 2 + 1) - '0';
+      final byte[] b1 = BARS[c1];
+      final byte[] b2 = BARS[c2];
       for (int j = 0; j < 5; ++j)
       {
         bars[pb++] = b1[j];
@@ -174,10 +174,10 @@ public class BarcodeInter25 extends Barcode
   {
     float fontX = 0;
     float fontY = 0;
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
-      float baseline = getBaseline();
+      final float baseline = getBaseline();
       if (baseline > 0)
       {
         fontY = baseline - getFontDescent(font.getFont());
@@ -192,25 +192,25 @@ public class BarcodeInter25 extends Barcode
       {
         fullCode += getChecksum(fullCode);
       }
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
       fontX = calc.getStringWidth(fullCode, 0, fullCode.length());
     }
 
-    float fullWidth = Math.max(getFullWidth(), fontX);
-    float fullHeight = getBarHeight() + fontY;
+    final float fullWidth = Math.max(getFullWidth(), fontX);
+    final float fullHeight = getBarHeight() + fontY;
     return new FloatDimension(fullWidth, fullHeight);
   }
 
   private float getFullWidth ()
   {
-    String fullCode = keepNumbers(getCode());
+    final String fullCode = keepNumbers(getCode());
     int len = fullCode.length();
     if (isGenerateChecksum())
     {
       len += 1;
     }
 
-    float fullWidth = len * (3 * getMinWidth() + 2 * getMinWidth() * getMultiplier()) +
+    final float fullWidth = len * (3 * getMinWidth() + 2 * getMinWidth() * getMultiplier()) +
         (6 + getMultiplier()) * getMinWidth();
     return fullWidth;
   }
@@ -220,7 +220,7 @@ public class BarcodeInter25 extends Barcode
    * @param textColor the color of the text. It can be <CODE>null</CODE>
    * @return the <CODE>Image</CODE>
    */
-  public Image createImageWithBarcode(Color barColor, Color textColor)
+  public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
       throw new NullPointerException("BarColor must not be null");
@@ -239,19 +239,19 @@ public class BarcodeInter25 extends Barcode
     {
       bCode += getChecksum(bCode);
     }
-    float fullWidth = getFullWidth();
+    final float fullWidth = getFullWidth();
 
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
       if (isGenerateChecksum() && isDisplayChecksumText())
       {
         fullCode += getChecksum(fullCode);
       }
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
       textWidth = calc.getStringWidth(fullCode, 0, fullCode.length());
 
-      float baseline = getBaseline();
+      final float baseline = getBaseline();
       if (baseline <= 0)
         textStartY = getBarHeight() - baseline;
       else
@@ -276,13 +276,13 @@ public class BarcodeInter25 extends Barcode
           textStartX = (fullWidth - textWidth) / 2;
     }
 
-    int imageX = (int) Math.max(fullWidth, textWidth);
-    int imageY = (int) (getBarHeight() + textStartY);
-    BufferedImage image = new BufferedImage(imageX, imageY, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
+    final int imageX = (int) Math.max(fullWidth, textWidth);
+    final int imageY = (int) (getBarHeight() + textStartY);
+    final BufferedImage image = new BufferedImage(imageX, imageY, BufferedImage.TYPE_INT_ARGB);
+    final Graphics2D g2 = image.createGraphics();
     g2.setPaint(barColor);
 
-    byte bars[] = getBarsInter25(bCode);
+    final byte[] bars = getBarsInter25(bCode);
 
     for (int k = 0; k < bars.length; ++k)
     {
@@ -297,7 +297,7 @@ public class BarcodeInter25 extends Barcode
       }
       if ((k % 2) == 0)
       {
-        Rectangle2D.Float rect = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
+        final Rectangle2D.Float rect = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
         g2.fill(rect);
       }
       barStartX += w;

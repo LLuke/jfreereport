@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParseTest.java,v 1.4 2003/06/16 15:34:34 taqua Exp $
+ * $Id: ParseTest.java,v 1.5 2003/06/23 16:09:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,7 +52,7 @@ import junit.framework.TestCase;
 public class ParseTest extends TestCase
 {
 
-  public ParseTest(String s)
+  public ParseTest(final String s)
   {
     super(s);
   }
@@ -61,7 +61,7 @@ public class ParseTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
       assertNotNull(url);
       try
       {
@@ -79,11 +79,11 @@ public class ParseTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
       assertNotNull(url);
       try
       {
-        JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+        final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
         report.clone();
       }
       catch (Exception e)
@@ -98,17 +98,17 @@ public class ParseTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
       assertNotNull(url);
 
-      JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+      final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
 
-      ByteArrayOutputStream bo = new ByteArrayOutputStream();
-      ObjectOutputStream out = new ObjectOutputStream(bo);
+      final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+      final ObjectOutputStream out = new ObjectOutputStream(bo);
       out.writeObject(report);
 
-      ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
-      JFreeReport e2 = (JFreeReport) oin.readObject();
+      final ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
+      final JFreeReport e2 = (JFreeReport) oin.readObject();
       assertNotNull(e2); // cannot assert equals, as this is not implemented.
 
     }

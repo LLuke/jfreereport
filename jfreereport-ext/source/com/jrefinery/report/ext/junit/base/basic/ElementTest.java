@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: ElementTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -64,14 +64,14 @@ public class ElementTest extends TestCase
     }
   }
 
-  public ElementTest(String s)
+  public ElementTest(final String s)
   {
     super(s);
   }
 
   public void testElementCreate()
   {
-    Element e = new ElementImpl();
+    final Element e = new ElementImpl();
     assertNotNull(e.getDataSource());
     assertNotNull(e.getStyle());
     assertNotNull(e.getName());
@@ -82,7 +82,7 @@ public class ElementTest extends TestCase
 
   public void testElementMethods()
   {
-    Element e = new ElementImpl();
+    final Element e = new ElementImpl();
     assertTrue(e.isVisible());
     e.setVisible(false);
     assertTrue(e.isVisible() == false);
@@ -113,13 +113,13 @@ public class ElementTest extends TestCase
 
   public void testSerialize() throws Exception
   {
-    Element e = new ElementImpl();
-    ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    ObjectOutputStream out = new ObjectOutputStream(bo);
+    final Element e = new ElementImpl();
+    final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+    final ObjectOutputStream out = new ObjectOutputStream(bo);
     out.writeObject(e);
 
-    ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
-    Element e2 = (Element) oin.readObject();
+    final ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
+    final Element e2 = (Element) oin.readObject();
     assertNotNull(e2); // cannot assert equals, as this is not implemented ...
   }
 }

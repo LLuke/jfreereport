@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpressionTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: BSHExpressionTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,7 @@ import junit.framework.TestCase;
 
 public class BSHExpressionTest extends TestCase
 {
-  public BSHExpressionTest(String s)
+  public BSHExpressionTest(final String s)
   {
     super(s);
   }
@@ -53,7 +53,7 @@ public class BSHExpressionTest extends TestCase
   public void testCreate() throws Exception
   {
     assertTrue(DataRow.class.isAssignableFrom(DataRowConnector.class));
-    BSHExpression ex = new BSHExpression();
+    final BSHExpression ex = new BSHExpression();
     ex.setProperty("expression", "");
     ex.initialize();
 

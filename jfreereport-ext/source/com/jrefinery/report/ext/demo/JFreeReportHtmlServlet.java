@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.8 2003/03/04 22:30:33 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.9 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import com.jrefinery.report.util.Log;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used to generate
- * PDF content in a webbased environment.
+ * Html content in a webbased environment.
  * <p>
  * POST and GET are handled equal, so it does not
  * matter whether you POST or GET the URL for this servlet.
@@ -68,7 +68,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
    * @throws ServletException if an error occured, which could not be handled internaly.
    * @throws IOException if writing the generated contents failed.
    */
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
+  public void doGet(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
   {
     doPost(request, response);
@@ -86,20 +86,20 @@ public class JFreeReportHtmlServlet extends HttpServlet
    * @throws ServletException if an error occured, which could not be handled internaly.
    * @throws IOException if writing the generated contents failed.
    */
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
+  public void doPost(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
   {
     Log.debug("in processRequest..." + getClass());
 
-    URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
+    final URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
     if (in == null)
     {
       throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
     }
 
-    URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
+    final URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
     Log.debug("Base: " + base);
-    AbstractTableReportServletWorker worker =
+    final AbstractTableReportServletWorker worker =
         new DefaultTableReportServletWorker(in, new DemoModelProvider(base));
 
     // display the content in the browser window (see RFC2183)
@@ -109,7 +109,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
     try
     {
       // this throws an exception if the report could not be parsed
-      HtmlProcessor processor = new HtmlProcessor(worker.getReport());
+      final HtmlProcessor processor = new HtmlProcessor(worker.getReport());
       processor.setFilesystem(new StreamHtmlFilesystem(response.getOutputStream()));
       worker.setTableProcessor(processor);
     }

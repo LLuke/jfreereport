@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 3:57:54 PM
  *
- * $Id: TestDrawable.java,v 1.2 2003/05/14 22:36:46 taqua Exp $
+ * $Id: TestDrawable.java,v 1.3 2003/06/10 18:17:25 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
 
@@ -19,7 +19,7 @@ public class TestDrawable implements Drawable
   {
   }
 
-  public void draw(Graphics2D graphics, Rectangle2D bounds)
+  public void draw(final Graphics2D graphics, final Rectangle2D bounds)
   {
     Log.debug("Drawable: " + bounds);
     graphics.setColor(Color.black);

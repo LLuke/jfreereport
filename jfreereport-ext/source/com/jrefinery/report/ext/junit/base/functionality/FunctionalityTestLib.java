@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.1 2003/06/13 22:58:25 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.2 2003/06/20 12:02:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,42 +38,41 @@
 
 package com.jrefinery.report.ext.junit.base.functionality;
 
-import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.Writer;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 import java.awt.print.PageFormat;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import com.jrefinery.report.EmptyReportException;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.demo.OpenSourceProjects;
+import com.jrefinery.report.demo.PercentageDemo;
 import com.jrefinery.report.demo.SampleData1;
 import com.jrefinery.report.demo.SampleData2;
 import com.jrefinery.report.demo.SampleData3;
 import com.jrefinery.report.demo.SampleData4;
-import com.jrefinery.report.demo.OpenSourceProjects;
-import com.jrefinery.report.demo.PercentageDemo;
 import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.demo.cards.CardDemo;
+import com.jrefinery.report.io.ext.factory.datasource.DataSourceReferenceGenerator;
 import com.jrefinery.report.io.ext.factory.objects.ObjectReferenceGenerator;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyReferenceGenerator;
-import com.jrefinery.report.io.ext.factory.datasource.DataSourceReferenceGenerator;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.EmptyReportException;
-import com.jrefinery.report.util.NullOutputStream;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
-import com.jrefinery.report.targets.pageable.output.EpsonPrinterCommandSet;
-import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
-import com.jrefinery.report.targets.table.rtf.RTFProcessor;
+import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
+import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
 import com.jrefinery.report.targets.table.csv.CSVTableProcessor;
 import com.jrefinery.report.targets.table.excel.ExcelProcessor;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
+import com.jrefinery.report.targets.table.rtf.RTFProcessor;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.NullOutputStream;
 
 public class FunctionalityTestLib
 {
@@ -99,14 +98,14 @@ public class FunctionalityTestLib
     new ReportTest ("/com/jrefinery/report/io/ext/factory/datasource/DataSourceReferenceReport.xml", DataSourceReferenceGenerator.createData())
   };
 
-  public static boolean createPlainText(JFreeReport report)
+  public static boolean createPlainText(final JFreeReport report)
   {
     try
     {
-      PageableReportProcessor pr = new PageableReportProcessor(report);
-      OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-      PrinterCommandSet pc = new EpsonPrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
-      PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+      final PageableReportProcessor pr = new PageableReportProcessor(report);
+      final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
+      final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
+      final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
 
       pr.setOutputTarget(target);
       target.open();
@@ -122,74 +121,75 @@ public class FunctionalityTestLib
     }
     catch (Exception rpe)
     {
+      Log.debug ("Failed to execute plain text: " , rpe);
       return false;
     }
   }
 
-  public static void createRTF(JFreeReport report)
+  public static void createRTF(final JFreeReport report)
       throws Exception
   {
-    RTFProcessor pr = new RTFProcessor(report);
+    final RTFProcessor pr = new RTFProcessor(report);
     pr.setStrictLayout(false);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
+    final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
     pr.setOutputStream(fout);
     pr.processReport();
     fout.close();
   }
 
-  public static void createCSV(JFreeReport report)
+  public static void createCSV(final JFreeReport report)
       throws Exception
   {
-    CSVTableProcessor pr = new CSVTableProcessor(report);
+    final CSVTableProcessor pr = new CSVTableProcessor(report);
     pr.setStrictLayout(false);
-    Writer fout = new BufferedWriter(new OutputStreamWriter(new NullOutputStream()));
+    final Writer fout = new BufferedWriter(new OutputStreamWriter(new NullOutputStream()));
     pr.setWriter(fout);
     pr.processReport();
     fout.close();
   }
 
-  public static void createXLS(JFreeReport report)
+  public static void createXLS(final JFreeReport report)
       throws Exception
   {
-    ExcelProcessor pr = new ExcelProcessor(report);
+    final ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
+    final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
     pr.setOutputStream(fout);
     pr.processReport();
     fout.close();
   }
 
-  public static void createStreamHTML(JFreeReport report)
+  public static void createStreamHTML(final JFreeReport report)
       throws Exception
   {
-    HtmlProcessor pr = new HtmlProcessor(report);
+    final HtmlProcessor pr = new HtmlProcessor(report);
     pr.setStrictLayout(false);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
+    final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
     pr.setFilesystem(new StreamHtmlFilesystem(fout));
     pr.processReport();
     fout.close();
   }
 
-  public static void createZIPHTML(JFreeReport report)
+  public static void createZIPHTML(final JFreeReport report)
       throws Exception
   {
-    HtmlProcessor pr = new HtmlProcessor(report);
-    OutputStream fout = new BufferedOutputStream(new NullOutputStream());
+    final HtmlProcessor pr = new HtmlProcessor(report);
+    final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
     pr.setFilesystem(new ZIPHtmlFilesystem(fout, "data"));
     pr.processReport();
     fout.close();
   }
 
-  public static boolean execGraphics2D (JFreeReport report)
+  public static boolean execGraphics2D (final JFreeReport report)
   {
     try
     {
-      G2OutputTarget target =
+      final G2OutputTarget target =
           new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
       target.configure(report.getReportConfiguration());
       target.open();
 
-      PageableReportProcessor proc = new PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 
@@ -214,18 +214,18 @@ public class FunctionalityTestLib
    *
    * @return true or false.
    */
-  public static boolean createPDF(JFreeReport report)
+  public static boolean createPDF(final JFreeReport report)
   {
     OutputStream out = null;
     try
     {
       out = new BufferedOutputStream(new NullOutputStream());
-      PageFormat pf = report.getDefaultPageFormat();
-      PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+      final PageFormat pf = report.getDefaultPageFormat();
+      final PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
       target.configure(report.getReportConfiguration());
       target.open();
 
-      PageableReportProcessor proc = new PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 
@@ -255,7 +255,7 @@ public class FunctionalityTestLib
 
   public static class ReportTest
   {
-    public ReportTest(String reportDefinition, TableModel reportTableModel)
+    public ReportTest(final String reportDefinition, final TableModel reportTableModel)
     {
       this.reportDefinition = reportDefinition;
       this.reportTableModel = reportTableModel;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.3 2003/06/13 22:55:51 taqua Exp $
+ * $Id: ExportTest.java,v 1.4 2003/06/20 12:02:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,7 @@ import junit.framework.TestCase;
 
 public class ExportTest extends TestCase
 {
-  public ExportTest(String s)
+  public ExportTest(final String s)
   {
     super(s);
   }
@@ -58,10 +58,10 @@ public class ExportTest extends TestCase
     {
       for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
       {
-        URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+        final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
         assertNotNull(url);
         Log.debug("Processing: " + url);
-        JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+        final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
         report.setData(FunctionalityTestLib.REPORTS[i].getReportTableModel());
 
         Log.debug("   GRAPHICS2D ..");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineShapeCreateTest.java,v 1.2 2003/06/20 12:02:20 taqua Exp $
+ * $Id: LineShapeCreateTest.java,v 1.3 2003/06/23 16:09:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,7 +63,7 @@ public class LineShapeCreateTest extends TestCase
 {
   private class LSDebugOutputTarget extends DebugOutputTarget
   {
-    public LSDebugOutputTarget(PageFormat format)
+    public LSDebugOutputTarget(final PageFormat format)
     {
       super(format);
     }
@@ -86,7 +86,7 @@ public class LineShapeCreateTest extends TestCase
      *
      * @param shape  the shape to draw.
      */
-    public void drawShape(Shape shape)
+    public void drawShape(final Shape shape)
     {
       shapeCount++;
     }
@@ -96,7 +96,7 @@ public class LineShapeCreateTest extends TestCase
       return shapeCount;
     }
 
-    public void setShapeCount(int shapeCount)
+    public void setShapeCount(final int shapeCount)
     {
       this.shapeCount = shapeCount;
     }
@@ -104,9 +104,9 @@ public class LineShapeCreateTest extends TestCase
 
   public JFreeReport getReport()
   {
-    JFreeReport report = new JFreeReport();
-    ReportHeader header = report.getReportHeader();
-    Color c = Color.red;
+    final JFreeReport report = new JFreeReport();
+    final ReportHeader header = report.getReportHeader();
+    final Color c = Color.red;
     for (int i = 10; i < 100; i += 10)
     {
       header.addElement(
@@ -143,16 +143,16 @@ public class LineShapeCreateTest extends TestCase
 
   public void testDoReport() throws Exception
   {
-    JFreeReport report = getReport();
-    PageFormatFactory pff = PageFormatFactory.getInstance();
-    Paper paper = pff.createPaper("A0");
-    PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
+    final JFreeReport report = getReport();
+    final PageFormatFactory pff = PageFormatFactory.getInstance();
+    final Paper paper = pff.createPaper("A0");
+    final PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
     assertEquals((int) pf.getHeight(), PageFormatFactory.A0[1]);
     assertEquals((int) pf.getWidth(), PageFormatFactory.A0[0]);
     report.setDefaultPageFormat(pf);
     assertEquals(report.getDefaultPageFormat(), pf);
-    LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
-    PageableReportProcessor prp = new PageableReportProcessor(report);
+    final LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
+    final PageableReportProcessor prp = new PageableReportProcessor(report);
     prp.setOutputTarget(lsd);
     lsd.open();
     prp.processReport();
@@ -161,23 +161,23 @@ public class LineShapeCreateTest extends TestCase
 
   public void testDoReport2() throws Exception
   {
-    JFreeReport report = new JFreeReport();
-    Line2D line = new Line2D.Float(40, 70, 140, 70);
-    ShapeElement element = ItemFactory.createLineShapeElement(
+    final JFreeReport report = new JFreeReport();
+    final Line2D line = new Line2D.Float(40, 70, 140, 70);
+    final ShapeElement element = ItemFactory.createLineShapeElement(
         null,
         Color.black,
         ParserUtil.parseStroke("1"),
         line);
     report.getReportHeader().addElement(element);
-    PageFormatFactory pff = PageFormatFactory.getInstance();
-    Paper paper = pff.createPaper("A0");
-    PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
+    final PageFormatFactory pff = PageFormatFactory.getInstance();
+    final Paper paper = pff.createPaper("A0");
+    final PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
     assertEquals((int) pf.getHeight(), PageFormatFactory.A0[1]);
     assertEquals((int) pf.getWidth(), PageFormatFactory.A0[0]);
     report.setDefaultPageFormat(pf);
     assertEquals(report.getDefaultPageFormat(), pf);
-    LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
-    PageableReportProcessor prp = new PageableReportProcessor(report);
+    final LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
+    final PageableReportProcessor prp = new PageableReportProcessor(report);
     prp.setOutputTarget(lsd);
     lsd.open();
     prp.processReport();

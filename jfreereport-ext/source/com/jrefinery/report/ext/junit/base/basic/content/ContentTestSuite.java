@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ContentTestSuite.java,v 1.1 2003/06/11 20:39:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,7 +43,7 @@ import junit.framework.TestSuite;
 
 public class ContentTestSuite extends TestSuite
 {
-  public ContentTestSuite(String s)
+  public ContentTestSuite(final String s)
   {
     super(s);
     addTestSuite(DrawableContentTest.class);

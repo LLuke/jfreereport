@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakVisual.java,v 1.1 2003/05/26 14:25:34 taqua Exp $
+ * $Id: LineBreakVisual.java,v 1.2 2003/06/10 18:17:28 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,10 @@ import com.jrefinery.report.ext.junit.TestSystem;
 
 public class LineBreakVisual
 {
-  public static void main(String[] args)
+  public static void main(final String[] args)
       throws Exception
   {
-    JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/bugs/resource/LineBreak.xml", new DefaultTableModel());
+    final JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/bugs/resource/LineBreak.xml", new DefaultTableModel());
     if (report == null)
       System.exit(1);
 

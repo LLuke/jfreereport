@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: GroupTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,14 +43,14 @@ import junit.framework.TestCase;
 
 public class GroupTest extends TestCase
 {
-  public GroupTest(String s)
+  public GroupTest(final String s)
   {
     super(s);
   }
 
   public void testCreate() throws Exception
   {
-    Group g1 = new Group();
+    final Group g1 = new Group();
     assertNotNull(g1.clone());
     assertNotNull(g1.getFields());
     assertNotNull(g1.getFooter());
@@ -61,9 +61,9 @@ public class GroupTest extends TestCase
 
   public void testEquals()
   {
-    Group g1 = new Group();
+    final Group g1 = new Group();
     g1.setName("");
-    Group g2 = new Group();
+    final Group g2 = new Group();
     g2.setName("");
     assertTrue(g1.equals(g2));
     assertTrue(g1.compareTo(g2) == 0);
@@ -84,7 +84,7 @@ public class GroupTest extends TestCase
 
   public void testMethods()
   {
-    Group g = new Group();
+    final Group g = new Group();
     try
     {
       g.setName(null);

@@ -19,17 +19,17 @@ import org.jfree.ui.RefineryUtilities;
 
 public class JMIBug
 {
-  public void preview(String urlname, TableModel data, boolean landscape)
+  public void preview(final String urlname, final TableModel data, final boolean landscape)
   {
     try
     {
-      URL in = getClass().getResource(urlname);
+      final URL in = getClass().getResource(urlname);
       if (in == null)
       {
         System.out.println("IdCurrencyPanel - preview(url, tableModel) - ERROR: xml file not found.");
         return;
       }
-      ReportGenerator gen = ReportGenerator.getInstance();
+      final ReportGenerator gen = ReportGenerator.getInstance();
       JFreeReport report1 = null;
       try
       {
@@ -48,7 +48,7 @@ public class JMIBug
       if (landscape) report1.getDefaultPageFormat().setOrientation(PageFormat.LANDSCAPE);
       report1.setData(data);
 
-      PreviewFrame frame1 = new PreviewFrame(report1);
+      final PreviewFrame frame1 = new PreviewFrame(report1);
       frame1.pack();
       RefineryUtilities.positionFrameRandomly(frame1);
       frame1.setVisible(true);
@@ -61,9 +61,9 @@ public class JMIBug
   }
 
 
-  public static void main(String[] argh) throws Exception
+  public static void main(final String[] argh) throws Exception
   {
-    SampleData1 m_dataModel = new SampleData1();
+    final SampleData1 m_dataModel = new SampleData1();
     for (int i = 0; i < 10; i++)
     {
       new JMIBug().preview("/com/jrefinery/report/ext/junit/bugs/resource/countryreport.xml", m_dataModel, false);

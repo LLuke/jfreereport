@@ -2,7 +2,7 @@
  * Date: Dec 12, 2002
  * Time: 10:09:52 PM
  *
- * $Id: FontRendererBug.java,v 1.2 2003/01/27 03:21:44 taqua Exp $
+ * $Id: FontRendererBug.java,v 1.3 2003/06/10 18:17:28 taqua Exp $
  */
 package com.jrefinery.report.ext.junit.bugs;
 
@@ -22,16 +22,16 @@ import javax.swing.JFrame;
 public class FontRendererBug extends JPanel
 {
   public final static String myText = "A simple text with not tricks and traps";
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     //G2OutputTarget ot = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), new PageFormat());
 
     printMe (true);
     printMe (false);
 
-    JFrame frame = new JFrame();
+    final JFrame frame = new JFrame();
     frame.addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e)
+      public void windowClosing(final WindowEvent e)
       {
         System.exit (0);
       }
@@ -49,14 +49,14 @@ public class FontRendererBug extends JPanel
   {
   }
 
-  protected void paintComponent(Graphics g)
+  protected void paintComponent(final Graphics g)
   {
-    Graphics2D g2 = (Graphics2D) g;
+    final Graphics2D g2 = (Graphics2D) g;
     g2.setPaint(Color.white);
     g2.fill(getBounds());
     g2.setPaint(Color.black);
 
-    Font font = new Font("Serif", Font.PLAIN, 10);
+    final Font font = new Font("Serif", Font.PLAIN, 10);
     g2.setFont(font);
 
     drawText(g2, 20, false, false);
@@ -65,7 +65,7 @@ public class FontRendererBug extends JPanel
     drawText(g2, 80, true, true);
   }
 
-  public void drawText (Graphics2D g2, int pos, boolean fract, boolean alias)
+  public void drawText (final Graphics2D g2, final int pos, final boolean fract, final boolean alias)
   {
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
         fract ? RenderingHints.VALUE_FRACTIONALMETRICS_ON :
@@ -75,18 +75,18 @@ public class FontRendererBug extends JPanel
         alias ? RenderingHints.VALUE_ANTIALIAS_ON:
         RenderingHints.VALUE_ANTIALIAS_OFF);
 
-    Rectangle2D size = getFont().getStringBounds(myText, 0, myText.length(),
+    final Rectangle2D size = getFont().getStringBounds(myText, 0, myText.length(),
         g2.getFontRenderContext());
     g2.drawString(myText, 0, pos);
     g2.draw(new Line2D.Double(size.getX(), pos + 10, size.getWidth(), pos + 10));
   }
 
-  public static void printMe (boolean alias)
+  public static void printMe (final boolean alias)
   {
     System.out.println ("----------------------------------");
 
-    FontRenderContext frc_fract = new FontRenderContext(null, alias, true);
-    FontRenderContext frc_int = new FontRenderContext(null, alias, false);
+    final FontRenderContext frc_fract = new FontRenderContext(null, alias, true);
+    final FontRenderContext frc_int = new FontRenderContext(null, alias, false);
 
     Font font = new Font("Serif", Font.PLAIN, 10);
     System.out.println("Text: 10: Fract: " + font.getStringBounds(myText, 0, myText.length(), frc_fract));

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DemoModelProvider.java,v 1.1 2003/03/05 14:55:51 taqua Exp $
+ * $Id: DemoModelProvider.java,v 1.2 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class DemoModelProvider implements TableModelProvider
    *
    * @param base the URL pointing to the JLF-Icons zip file.
    */
-  public DemoModelProvider(URL base)
+  public DemoModelProvider(final URL base)
   {
     this.base = base;
   }

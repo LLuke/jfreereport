@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.5 2003/03/02 21:36:41 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.6 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public abstract class AbstractPageableReportServletWorker
    *
    * @param session the used session or null, if no session processing is requested.
    */
-  public AbstractPageableReportServletWorker(HttpSession session)
+  public AbstractPageableReportServletWorker(final HttpSession session)
   {
     super(session);
   }
@@ -94,7 +94,7 @@ public abstract class AbstractPageableReportServletWorker
    * @param outputTarget the output target that should be used to repaginate
    * and process the report if necessary.
    */
-  public void setOutputTarget(OutputTarget outputTarget)
+  public void setOutputTarget(final OutputTarget outputTarget)
   {
     this.outputTarget = outputTarget;
   }
@@ -119,7 +119,7 @@ public abstract class AbstractPageableReportServletWorker
 
     if (isSessionRequired())
     {
-      HttpSession session = getSession();
+      final HttpSession session = getSession();
       processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
       processor.setOutputTarget(getOutputTarget());
@@ -176,7 +176,7 @@ public abstract class AbstractPageableReportServletWorker
    * @throws ReportProcessingException  if the report processing failed.
    * @throws IndexOutOfBoundsException if the page is invalid.
    */
-  public void processPage (int page)
+  public void processPage (final int page)
     throws ReportProcessingException
   {
     try
@@ -187,7 +187,7 @@ public abstract class AbstractPageableReportServletWorker
         repaginateReport();
       }
 
-      ReportState state = pageStateList.get(page);
+      final ReportState state = pageStateList.get(page);
       processor.processPage(state, getOutputTarget());
       getOutputTarget().close();
     }
@@ -208,7 +208,7 @@ public abstract class AbstractPageableReportServletWorker
   {
     try
     {
-      PageableReportProcessor processor = new PageableReportProcessor(getReport());
+      final PageableReportProcessor processor = new PageableReportProcessor(getReport());
       processor.setOutputTarget(getOutputTarget());
       getOutputTarget().open();
       processor.processReport();

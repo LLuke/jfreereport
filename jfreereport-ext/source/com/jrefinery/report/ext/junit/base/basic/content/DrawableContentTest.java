@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DrawableContentTest.java,v 1.1 2003/06/11 20:39:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,15 +57,15 @@ public class DrawableContentTest extends TestCase
   {
   }
 
-  public DrawableContentTest(String s)
+  public DrawableContentTest(final String s)
   {
     super(s);
   }
 
   public void testNullContent() throws Exception
   {
-    DrawableElement se = new DrawableElement();
-    DefaultContentFactory df = new DefaultContentFactory();
+    final DrawableElement se = new DrawableElement();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new DrawableContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
@@ -77,12 +77,12 @@ public class DrawableContentTest extends TestCase
 
   public void testInvisibleContent() throws Exception
   {
-    DrawableElement se = new DrawableElement();
+    final DrawableElement se = new DrawableElement();
     se.setDataSource(new StaticDataSource
         (new DrawableContainer(new TestDrawable(), new FloatDimension(10, 10),
             new Rectangle2D.Float(0, 0, 0, 0))));
 
-    DefaultContentFactory df = new DefaultContentFactory();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new DrawableContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));

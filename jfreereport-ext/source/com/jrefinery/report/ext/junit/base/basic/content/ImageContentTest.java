@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ImageContentTest.java,v 1.1 2003/06/11 20:39:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,15 +56,15 @@ public class ImageContentTest extends TestCase
   {
   }
 
-  public ImageContentTest(String s)
+  public ImageContentTest(final String s)
   {
     super(s);
   }
 
   public void testNullContent() throws Exception
   {
-    ImageElement se = new ImageElement();
-    DefaultContentFactory df = new DefaultContentFactory();
+    final ImageElement se = new ImageElement();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ImageContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
@@ -76,11 +76,11 @@ public class ImageContentTest extends TestCase
 
   public void testInvisibleContent() throws Exception
   {
-    ImageElement se = new ImageElement();
+    final ImageElement se = new ImageElement();
     se.setDataSource(new StaticDataSource
         (new ImageReference(new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB))));
 
-    DefaultContentFactory df = new DefaultContentFactory();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ImageContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));

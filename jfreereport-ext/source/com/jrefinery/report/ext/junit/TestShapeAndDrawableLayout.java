@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestShapeAndDrawableLayout.java,v 1.1 2003/04/11 19:32:13 taqua Exp $
+ * $Id: TestShapeAndDrawableLayout.java,v 1.2 2003/06/10 18:17:25 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,10 @@ import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
 
 public class TestShapeAndDrawableLayout
 {
-  public static void main(String[] args)
+  public static void main(final String[] args)
       throws Exception
   {
-    JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/demo/shape-and-drawable.xml",
+    final JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/demo/shape-and-drawable.xml",
         new DefaultTableModel());
     if (report == null)
       System.exit(1);

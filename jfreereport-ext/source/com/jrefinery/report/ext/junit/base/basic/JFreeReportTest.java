@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
+ * $Id: JFreeReportTest.java,v 1.3 2003/06/23 16:09:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,14 +48,14 @@ import junit.framework.TestCase;
 
 public class JFreeReportTest extends TestCase
 {
-  public JFreeReportTest(String s)
+  public JFreeReportTest(final String s)
   {
     super(s);
   }
 
   public void testCreate() throws Exception
   {
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     assertNotNull(report.getDefaultPageFormat());
     assertNotNull(report.getExpressions());
     assertNotNull(report.getFunctions());
@@ -75,19 +75,19 @@ public class JFreeReportTest extends TestCase
 
   public void testSerialize() throws Exception
   {
-    JFreeReport report = new JFreeReport();
-    ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    ObjectOutputStream out = new ObjectOutputStream(bo);
+    final JFreeReport report = new JFreeReport();
+    final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+    final ObjectOutputStream out = new ObjectOutputStream(bo);
     out.writeObject(report);
 
-    ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
-    JFreeReport e2 = (JFreeReport) oin.readObject();
+    final ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
+    final JFreeReport e2 = (JFreeReport) oin.readObject();
     assertNotNull(e2); // cannot assert equals, as this is not implemented.
   }
 
   public void testClone() throws Exception
   {
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     assertNotNull(report.clone());
   }
 

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.6 2003/03/02 21:36:41 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.7 2003/03/04 22:30:34 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
    * @throws ServletException if an error occured, which could not be handled internaly.
    * @throws IOException if writing the generated contents failed.
    */
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
+  public void doGet(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
   {
     doPost(request, response);
@@ -103,26 +103,26 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
    * @throws ServletException if an error occured, which could not be handled internaly.
    * @throws IOException if writing the generated contents failed.
    */
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
+  public void doPost(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
   {
 
     BufferedImage image = null;
     try
     {
-      URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
+      final URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
       if (in == null)
       {
         throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
       }
 
-      URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
-      AbstractPageableReportServletWorker worker =
+      final URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
+      final AbstractPageableReportServletWorker worker =
           new DefaultPageableReportServletWorker(request.getSession(true),
                                                  in,
                                                  new DemoModelProvider(base));
 
-      String param = request.getParameter("page");
+      final String param = request.getParameter("page");
       if (param == null)
       {
         Log.debug ("Page attribute is missing");
@@ -142,13 +142,13 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
         return;
       }
 
-      PageFormat pageFormat = worker.getReportPageFormat();
+      final PageFormat pageFormat = worker.getReportPageFormat();
       image = createImage(pageFormat);
-      Graphics2D g2 = image.createGraphics();
+      final Graphics2D g2 = image.createGraphics();
       g2.setPaint(Color.white);
       g2.fillRect(0,0, (int) pageFormat.getWidth(), (int) pageFormat.getHeight());
 
-      G2OutputTarget target = new G2OutputTarget(g2, pageFormat);
+      final G2OutputTarget target = new G2OutputTarget(g2, pageFormat);
       worker.setOutputTarget(target);
 
       if (page >= worker.getNumberOfPages() || page < 0)
@@ -163,10 +163,10 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
       response.setHeader("Content-Type", "image/png");
       response.setHeader("Content-Disposition","inline;filename=\"report-page-" + page + ".png\"");
 
-      ServletOutputStream out = response.getOutputStream();
+      final ServletOutputStream out = response.getOutputStream();
       // from JFreeChart ...
-      PngEncoder encoder = new PngEncoder(image, true, 0, 9);
-      byte[] data = encoder.pngEncode();
+      final PngEncoder encoder = new PngEncoder(image, true, 0, 9);
+      final byte[] data = encoder.pngEncode();
       out.write(data);
       out.flush();
     }
@@ -184,12 +184,12 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
    * @param pf the page format that defines the image bounds.
    * @return the generated image.
    */
-  private BufferedImage createImage(PageFormat pf)
+  private BufferedImage createImage(final PageFormat pf)
   {
-    double width = pf.getWidth();
-    double height = pf.getHeight();
+    final double width = pf.getWidth();
+    final double height = pf.getHeight();
     //write the report to the temp file
-    BufferedImage bi = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_BYTE_INDEXED);
+    final BufferedImage bi = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_BYTE_INDEXED);
     return bi;
   }
 

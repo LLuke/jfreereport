@@ -166,7 +166,7 @@ public class Barcode39 extends Barcode
   /** Sets the bar multiplier for wide bars.
    * @param n the bar multiplier for wide bars
    */
-  public void setMultiplier(float n)
+  public void setMultiplier(final float n)
   {
     this.multiplier = n;
   }
@@ -180,11 +180,11 @@ public class Barcode39 extends Barcode
   private static byte[] getBarsCode39(String text)
   {
     text = "*" + text + "*";
-    byte bars[] = new byte[text.length() * 10 - 1];
+    final byte[] bars = new byte[text.length() * 10 - 1];
 
     for (int k = 0; k < text.length(); ++k)
     {
-      int idx = CHARS.indexOf(text.charAt(k));
+      final int idx = CHARS.indexOf(text.charAt(k));
       if (idx < 0)
       {
         throw new IllegalArgumentException("The character '" + text.charAt(k) + "' is illegal in code 39.");
@@ -199,19 +199,19 @@ public class Barcode39 extends Barcode
    * @param text the extended text
    * @return the escaped text
    */
-  static String getCode39Ex(String text)
+  static String getCode39Ex(final String text)
   {
-    StringBuffer out = new StringBuffer();
+    final StringBuffer out = new StringBuffer();
     for (int k = 0; k < text.length(); ++k)
     {
-      char c = text.charAt(k);
+      final char c = text.charAt(k);
       if (c > 127)
       {
         throw new IllegalArgumentException("The character '" + c + "' is illegal in code 39 extended.");
       }
 
-      char c1 = EXTENDED.charAt(c * 2);
-      char c2 = EXTENDED.charAt(c * 2 + 1);
+      final char c1 = EXTENDED.charAt(c * 2);
+      final char c2 = EXTENDED.charAt(c * 2 + 1);
       if (c1 != ' ')
       {
         out.append(c1);
@@ -225,12 +225,12 @@ public class Barcode39 extends Barcode
    * @param text the text
    * @return the checksum
    */
-  private static char getChecksum(String text)
+  private static char getChecksum(final String text)
   {
     int chk = 0;
     for (int k = 0; k < text.length(); ++k)
     {
-      int idx = CHARS.indexOf(text.charAt(k));
+      final int idx = CHARS.indexOf(text.charAt(k));
       if (idx < 0)
       {
         throw new IllegalArgumentException("The character '" + text.charAt(k) + "' is illegal in code 39.");
@@ -276,7 +276,7 @@ public class Barcode39 extends Barcode
    * @param textColor the color of the text. It can be <CODE>null</CODE>
    * @return the <CODE>Image</CODE>
    */
-  public Image createImageWithBarcode(Color barColor, Color textColor)
+  public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
       throw new NullPointerException("BarColor must not be null");
@@ -285,17 +285,17 @@ public class Barcode39 extends Barcode
 
     float textWidth = 0;
     String fullCode = getCode();
-    float fullWidth = getFullWidth();
+    final float fullWidth = getFullWidth();
     float barStartX = 0;
     float textStartX = 0;
     float barStartY = 0;
     float textStartY = 0;
 
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
       fullCode = getFullCode();
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
       textWidth = calc.getStringWidth(fullCode, 0, fullCode.length());
 
       if (getBaseline() <= 0)
@@ -337,18 +337,18 @@ public class Barcode39 extends Barcode
         textStartX = (fullWidth - textWidth) / 2;
     }
 
-    Dimension2D size = getBarcodeSize();
-    int imageX = (int) size.getWidth();
-    int imageY = (int) size.getHeight();
+    final Dimension2D size = getBarcodeSize();
+    final int imageX = (int) size.getWidth();
+    final int imageY = (int) size.getHeight();
     // docmark: now the image size is known ...
     Log.debug ("Create Image With: " + imageX + " H= " + imageY);
     // 10x zoomed for better quality...
-    int scale = 2;
-    BufferedImage image = new BufferedImage(imageX * scale, imageY * scale, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
+    final int scale = 2;
+    final BufferedImage image = new BufferedImage(imageX * scale, imageY * scale, BufferedImage.TYPE_INT_ARGB);
+    final Graphics2D g2 = image.createGraphics();
     g2.setTransform(AffineTransform.getScaleInstance(scale,scale));
 
-    byte bars[] = getBarsCode39(bCode);
+    final byte[] bars = getBarsCode39(bCode);
     g2.setPaint(barColor);
 
     for (int k = 0; k < bars.length; ++k)
@@ -364,7 +364,7 @@ public class Barcode39 extends Barcode
       }
       if (k % 2 == 0)
       {
-        Rectangle2D.Float rect = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
+        final Rectangle2D.Float rect = new Rectangle2D.Float(barStartX, barStartY, w, getBarHeight());
         g2.fill(rect);
       }
       barStartX += w;
@@ -394,7 +394,7 @@ public class Barcode39 extends Barcode
    * the barcode 39.
    * @param startStopText new value of property startStopText
    */
-  public void setStartStopText(boolean startStopText)
+  public void setStartStopText(final boolean startStopText)
   {
     this.startStopText = startStopText;
   }
@@ -410,7 +410,7 @@ public class Barcode39 extends Barcode
   /** Sets the property to generate extended barcode 39.
    * @param extended new value of property extended
    */
-  public void setExtended(boolean extended)
+  public void setExtended(final boolean extended)
   {
     this.extended = extended;
   }
@@ -424,14 +424,14 @@ public class Barcode39 extends Barcode
   {
     float textWidth = 0;
     String fullCode = getCode();
-    float fullWidth = getFullWidth();
+    final float fullWidth = getFullWidth();
     float textHeight = 0;
 
-    FontDefinition font = getFont();
+    final FontDefinition font = getFont();
     if (font != null)
     {
       fullCode = getFullCode();
-      BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
+      final BarcodeSizeCalculator calc = new BarcodeSizeCalculator(font);
       textWidth = calc.getStringWidth(fullCode, 0, fullCode.length());
 
       if (getBaseline() <= 0)

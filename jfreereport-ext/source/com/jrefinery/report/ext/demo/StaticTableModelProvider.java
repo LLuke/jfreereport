@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.8 2003/03/04 22:30:33 taqua Exp $
+ * $Id: StaticTableModelProvider.java,v 1.2 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public class StaticTableModelProvider implements TableModelProvider
    *
    * @param model the model that should be used as datasource in the reporting.
    */
-  public StaticTableModelProvider(TableModel model)
+  public StaticTableModelProvider(final TableModel model)
   {
     this.model = model;
   }
@@ -89,7 +89,7 @@ public class StaticTableModelProvider implements TableModelProvider
    *
    * @param model the tablemodel that should be used in the reporting.
    */
-  public void setModel(TableModel model)
+  public void setModel(final TableModel model)
   {
     this.model = model;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupListTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: GroupListTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,14 +44,14 @@ import junit.framework.TestCase;
 
 public class GroupListTest extends TestCase
 {
-  public GroupListTest(String s)
+  public GroupListTest(final String s)
   {
     super(s);
   }
 
   public void testCreate()
   {
-    GroupList gl = new GroupList();
+    final GroupList gl = new GroupList();
     gl.clear();
     assertNotNull(gl.clone());
     assertNotNull(gl.iterator());
@@ -60,7 +60,7 @@ public class GroupListTest extends TestCase
 
   public void testMethods()
   {
-    GroupList gl = new GroupList();
+    final GroupList gl = new GroupList();
     try
     {
       gl.add(null);
@@ -69,17 +69,17 @@ public class GroupListTest extends TestCase
     {
     }
 
-    Group g1 = new Group();
+    final Group g1 = new Group();
     gl.add(g1);
     gl.add(g1);
     assertTrue(gl.size() == 1); // the old instance gets removed and replaced by the new group
     gl.add(new Group());
     assertTrue(gl.size() == 1); // the old instance gets removed and replaced by the new group
 
-    Group g2 = new Group();
+    final Group g2 = new Group();
     g2.addField("Test");
 
-    Group g3 = new Group();
+    final Group g3 = new Group();
     g3.addField("Failure");
 
     // group g2 and g3 are unreleated, g2 is no child or parent of g3

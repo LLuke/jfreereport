@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: UnicodeEncodeTest.java,v 1.1 2003/06/20 12:05:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,21 +41,24 @@ package com.jrefinery.report.ext.junit.ext;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 
+import com.jrefinery.report.util.Log;
+
 public class UnicodeEncodeTest
 {
-  public static void main(String[] args) throws Exception
+  public static void main(final String[] args) throws Exception
   {
-    String test = "  ";
+    final String test = " ";
     writeBytes(test.getBytes("UTF-16"));
-    ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    OutputStreamWriter wr = new OutputStreamWriter(bo, "UTF-16");
+    Log.debug ("------------------");
+    final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+    final OutputStreamWriter wr = new OutputStreamWriter(bo, "UTF-16");
     wr.write("  ");
     wr.write("  ");
     wr.flush();
     writeBytes(bo.toByteArray());
   }
 
-  public static void writeBytes (byte[] bytes)
+  public static void writeBytes (final byte[] bytes)
   {
     for (int i = 0; i < bytes.length; i++)
     {

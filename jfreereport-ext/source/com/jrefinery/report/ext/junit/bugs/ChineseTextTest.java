@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ChineseTextTest.java,v 1.1 2003/06/11 20:44:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,7 +55,7 @@ public class ChineseTextTest
   public JFreeReport getReport()
   {
     // The chinese text, as unicode character sequence ...
-    char[] text = {
+    final char[] text = {
       34987, 31216, 20026, 32593, 32476, 26102, 20195,
       30340, 36135, 24065, 65292, 23436, 20840, 22522,
       20110, 30340, 32593, 19978, 25903, 20184, 24179,
@@ -95,7 +95,7 @@ public class ChineseTextTest
       30784, 65292, 23436, 20840, 33073, 31163, 20219,
       20309, 22269, 23478, 20869, 37096, 36130, 25919,
       30340, 24433, 21709, 12290};
-    JFreeReport report = new JFreeReport();
+    final JFreeReport report = new JFreeReport();
     report.getReportHeader().addElement(ItemFactory.createLabelElement(
         null, new Rectangle2D.Float(0, 0, -100, 12), null,
         ElementAlignment.LEFT.getOldAlignment(), null,
@@ -123,9 +123,9 @@ public class ChineseTextTest
     return report;
   }
 
-  public static void main(String[] args) throws Exception
+  public static void main(final String[] args) throws Exception
   {
-    JFreeReport report = new ChineseTextTest().getReport();
+    final JFreeReport report = new ChineseTextTest().getReport();
     ReportProcessorUtil.createPDF(report, "/tmp/chinese-text.pdf");
   }
 }

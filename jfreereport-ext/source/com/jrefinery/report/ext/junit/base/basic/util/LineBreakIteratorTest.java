@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LineBreakIteratorTest.java,v 1.1 2003/06/20 12:05:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,26 +47,26 @@ public class LineBreakIteratorTest extends TestCase
   {
   }
 
-  public LineBreakIteratorTest(String s)
+  public LineBreakIteratorTest(final String s)
   {
     super(s);
   }
 
   public void testLineBreaking ()
   {
-    String[] tests = {"The lazy \n fox \r\n jumps \nover the funny tree\n",
+    final String[] tests = {"The lazy \n fox \r\n jumps \nover the funny tree\n",
                       "FirstName AVerLongLastName", "Test\n\n\n\n\n\ntest\n"};
 
-    String[][] results = {
+    final String[][] results = {
       { "The lazy "," fox "," jumps ","over the funny tree",""},
       { "FirstName AVerLongLastName"},
       { "Test","","","","","","test",""}
     };
     for (int j = 0; j < tests.length; j++)
     {
-      String text = tests[j];
+      final String text = tests[j];
 
-      LineBreakIterator iterator = new LineBreakIterator(text);
+      final LineBreakIterator iterator = new LineBreakIterator(text);
       int count = 0;
       while (iterator.hasNext())
       {

@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 5:51:48 PM
  *
- * $Id$
+ * $Id: Barcode128FieldTemplate.java,v 1.1 2003/02/25 20:58:43 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode.filter.templates;
 
@@ -28,7 +28,7 @@ public class Barcode128FieldTemplate extends BarcodeFieldTemplate
     return barcode.isUccCode();
   }
 
-  public void setUccCode(boolean uccCode)
+  public void setUccCode(final boolean uccCode)
   {
     barcode.setUccCode(uccCode);
   }
@@ -42,7 +42,7 @@ public class Barcode128FieldTemplate extends BarcodeFieldTemplate
    */
   public Object clone() throws CloneNotSupportedException
   {
-    Barcode128FieldTemplate ft = (Barcode128FieldTemplate) super.clone();
+    final Barcode128FieldTemplate ft = (Barcode128FieldTemplate) super.clone();
     ft.barcode = (Barcode128) ft.getBarcodeFilter().getBarcode();
     return ft;
   }

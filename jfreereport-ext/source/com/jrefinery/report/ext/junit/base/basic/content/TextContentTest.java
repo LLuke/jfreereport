@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.1 2003/06/11 20:39:25 taqua Exp $
+ * $Id: TextContentTest.java,v 1.2 2003/06/16 15:34:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -60,7 +60,7 @@ public class TextContentTest extends TestCase
     private float lineHeight;
     private float charWidth;
 
-    public DebugSizeCalculator(float lineHeight, float charWidth)
+    public DebugSizeCalculator(final float lineHeight, final float charWidth)
     {
       this.lineHeight = lineHeight;
       this.charWidth = charWidth;
@@ -75,7 +75,7 @@ public class TextContentTest extends TestCase
      *
      * @return the width of the string in Java2D units.
      */
-    public float getStringWidth(String text, int lineStartPos, int endPos)
+    public float getStringWidth(final String text, final int lineStartPos, final int endPos)
     {
       return (endPos - lineStartPos) * charWidth;
     }
@@ -95,16 +95,16 @@ public class TextContentTest extends TestCase
   {
   }
 
-  public TextContentTest(String s)
+  public TextContentTest(final String s)
   {
     super(s);
   }
 
   public void testNullContent() throws Exception
   {
-    TextElement se = new TextElement();
+    final TextElement se = new TextElement();
     se.setNullString("");
-    DefaultContentFactory df = new DefaultContentFactory();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new TextContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
@@ -116,9 +116,9 @@ public class TextContentTest extends TestCase
 
   public void testInvisibleContent() throws Exception
   {
-    TextElement se = new TextElement();
+    final TextElement se = new TextElement();
     se.setDataSource(new StaticDataSource("Hello World :)"));
-    DefaultContentFactory df = new DefaultContentFactory();
+    final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new TextContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
@@ -130,39 +130,39 @@ public class TextContentTest extends TestCase
 
   public void testLeadingWhiteSpaces () throws Exception
   {
-    String textLeadWhite = "  abc\n  abc";
-    TextContent content = new TextContent
+    final String textLeadWhite = "  abc\n  abc";
+    final TextContent content = new TextContent
         (textLeadWhite, 10, new Rectangle2D.Float (0,0, 100, 10),
             new DebugSizeCalculator(10, 10));
     assertEquals(new Rectangle2D.Float(0,0, 50, 10), content.getMinimumContentSize());
 
-    TextParagraph tp = (TextParagraph) content.getContentPart(0);
-    TextLine tl = (TextLine) tp.getContentPart(0);
+    final TextParagraph tp = (TextParagraph) content.getContentPart(0);
+    final TextLine tl = (TextLine) tp.getContentPart(0);
     assertEquals(new Rectangle2D.Float(0,0, 50, 10), tl.getMinimumContentSize());
     assertEquals(tl.getContent(), "  abc");
   }
 
   public static void test1a()
   {
-    String content = "123 thousand people";
-    SizeCalculator ds = new DebugSizeCalculator(10, 10);
-    TextParagraph tp = new TextParagraph(ds, 10);
+    final String content = "123 thousand people";
+    final SizeCalculator ds = new DebugSizeCalculator(10, 10);
+    final TextParagraph tp = new TextParagraph(ds, 10);
     tp.setContent(content, 0, 0, 100, 10);
 
-    TextLine tl = (TextLine) tp.getContentPart(0);
+    final TextLine tl = (TextLine) tp.getContentPart(0);
     assertEquals("123 thou..", tl.getContent());
     assertEquals(new Rectangle2D.Float(0,0, 100, 10), tl.getBounds());
   }
 
   public static void testLineBreaking1()
   {
-    String content = "This    report   lists   a    number   of    " +
+    final String content = "This    report   lists   a    number   of    " +
         "Open    Source    Java    projects   that    you           " +
         "            might   find   useful.    The   report  has    " +
         "been    generated   using   JFreeReport.    For   an  up-to-date" +
         "    list,    please   visit    the   following   web   page:";
 
-    String[] results = {
+    final String[] results = {
       "This    report   lists   a    ",
       "number   of    Open    Source    ",
       "Java    projects   that    you",
@@ -175,13 +175,13 @@ public class TextContentTest extends TestCase
       "page:"
     };
 
-    TextParagraph tp = new TextParagraph(new DebugSizeCalculator(10, 10), 10);
+    final TextParagraph tp = new TextParagraph(new DebugSizeCalculator(10, 10), 10);
     tp.setContent(content, 0, 0, 345, 5000);
     assertEquals(new Rectangle2D.Float(0,0, 330, 100), tp.getMinimumContentSize());
 
     for (int i = 0; i < tp.getContentPartCount(); i++)
     {
-      TextLine tl = (TextLine) tp.getContentPart(i);
+      final TextLine tl = (TextLine) tp.getContentPart(i);
       assertTrue(tl.getBounds().getWidth() < 345);
       assertEquals(results[i], tl.getContent());
     }
@@ -190,11 +190,11 @@ public class TextContentTest extends TestCase
   public static void testLineBreaking3() throws Exception
   {
 
-    String content = "This is a test. It will check to see if word wrapping " +
+    final String content = "This is a test. It will check to see if word wrapping " +
         "is working correctly or not. If it does not work some of the words " +
         "will be broken in the middle and some of them will be missing all together.";
 
-    String[] results = {
+    final String[] results = {
       "This is a test. It will check to see if word ",
       "wrapping is working correctly or not. If it does ",
       "not work some of the words will be broken in the ",
@@ -204,10 +204,10 @@ public class TextContentTest extends TestCase
     Content tc = new TextContent
         (content, 10, new Rectangle2D.Float(0, 0, 500, 5000), new DebugSizeCalculator(10, 10));
     tc = tc.getContentForBounds(tc.getMinimumContentSize());
-    Content tp = tc.getContentPart(0);
+    final Content tp = tc.getContentPart(0);
     for (int i = 0; i < tp.getContentPartCount(); i++)
     {
-      TextLine tl = (TextLine) tp.getContentPart(i);
+      final TextLine tl = (TextLine) tp.getContentPart(i);
       assertTrue(tl.getBounds().getWidth() <= 500);
       assertEquals(results[i], tl.getContent());
     }
@@ -219,11 +219,11 @@ public class TextContentTest extends TestCase
 
   public void testLineBreaking2()
   {
-    String content = "Thisisareallylongword, noone thought thatawordcanbethatlong, itwontfitonaline, but these words do, so heres the test!";
+    final String content = "Thisisareallylongword, noone thought thatawordcanbethatlong, itwontfitonaline, but these words do, so heres the test!";
     Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 0, 200, 5000),
         new DebugSizeCalculator(10, 10));
 
-    String[] results = {
+    final String[] results = {
       "Thisisareallylongwor",
       "d, noone thought ",
       "thatawordcanbethatlo",
@@ -233,10 +233,10 @@ public class TextContentTest extends TestCase
       "so heres the test!"
     };
     tc = tc.getContentForBounds(tc.getMinimumContentSize());
-    Content tp = tc.getContentPart(0);
+    final Content tp = tc.getContentPart(0);
     for (int i = 0; i < tp.getContentPartCount(); i++)
     {
-      TextLine tl = (TextLine) tp.getContentPart(i);
+      final TextLine tl = (TextLine) tp.getContentPart(i);
       assertTrue(tl.getBounds().getWidth() <= 500);
       assertEquals(results[i], tl.getContent());
     }

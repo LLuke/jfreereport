@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendPreviewTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: DataRowBackendPreviewTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,28 +46,28 @@ import junit.framework.TestCase;
 
 public class DataRowBackendPreviewTest extends TestCase
 {
-  public DataRowBackendPreviewTest(String s)
+  public DataRowBackendPreviewTest(final String s)
   {
     super(s);
   }
 
   public void testCreate()
   {
-    DataRowBackend db = new DataRowBackend();
+    final DataRowBackend db = new DataRowBackend();
     db.setCurrentRow(-1);
-    DefaultTableModel model = new DefaultTableModel();
-    Object[][] data = new Object[][]{
+    final DefaultTableModel model = new DefaultTableModel();
+    final Object[][] data = new Object[][]{
       {new Integer(1), "a"},
       {new Integer(2), "b"},
       {new Integer(3), "c"}
     };
-    String[] columns = new String[]{
+    final String[] columns = new String[]{
       "Number", "Letter"
     };
     model.setDataVector(data, columns);
     db.setTablemodel(model);
 
-    DataRowPreview drv = new DataRowPreview(db);
+    final DataRowPreview drv = new DataRowPreview(db);
     try
     {
       drv.setTablemodel(model);
@@ -96,15 +96,15 @@ public class DataRowBackendPreviewTest extends TestCase
 
   public void testFunctionality()
   {
-    DataRowBackend db = new DataRowBackend();
+    final DataRowBackend db = new DataRowBackend();
     db.setCurrentRow(-1);
-    DefaultTableModel model = new DefaultTableModel();
-    Object[][] data = new Object[][]{
+    final DefaultTableModel model = new DefaultTableModel();
+    final Object[][] data = new Object[][]{
       {new Integer(1), "a"},
       {new Integer(2), "b"},
       {new Integer(3), "c"}
     };
-    String[] columns = new String[]{
+    final String[] columns = new String[]{
       "Number", "Letter"
     };
     model.setDataVector(data, columns);
@@ -113,7 +113,7 @@ public class DataRowBackendPreviewTest extends TestCase
     for (int i = 0; i < data.length; i++)
     {
       db.setCurrentRow(i - 1);
-      DataRowBackend dbv = db.previewNextRow();
+      final DataRowBackend dbv = db.previewNextRow();
       assertEquals(dbv.get(0), data[i][0]);
       assertEquals(dbv.get("Number"), data[i][0]);
       assertEquals(dbv.get(1), data[i][1]);
@@ -122,7 +122,7 @@ public class DataRowBackendPreviewTest extends TestCase
 
     db.setCurrentRow(data.length - 1);
     // there is no preview for the last row ...
-    DataRowBackend dbv = db.previewNextRow();
+    final DataRowBackend dbv = db.previewNextRow();
     assertNull(dbv);
   }
 }

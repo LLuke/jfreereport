@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogTarget.java,v 1.2 2003/04/23 17:32:37 taqua Exp $
+ * $Id: Java14LogTarget.java,v 1.3 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class Java14LogTarget implements LogTarget
    *
    * @param logger the logger instance, that should be used for logging.
    */
-  public Java14LogTarget (Logger logger)
+  public Java14LogTarget (final Logger logger)
   {
     if (logger == null) throw new NullPointerException("Given category is null");
     this.logger = logger;
@@ -81,7 +81,7 @@ public class Java14LogTarget implements LogTarget
    * @param level  the log level.
    * @param message  the log message.
    */
-  public void log (int level, Object message)
+  public void log (final int level, final Object message)
   {
     logger.log(translateLogLevel(level), String.valueOf(message));
   }
@@ -94,7 +94,7 @@ public class Java14LogTarget implements LogTarget
    * @param message  the log message.
    * @param e  the exception
    */
-  public void log (int level, Object message, Exception e)
+  public void log (final int level, final Object message, final Exception e)
   {
     logger.log(translateLogLevel(level), String.valueOf(message), e);
   }
@@ -105,7 +105,7 @@ public class Java14LogTarget implements LogTarget
    * @param level the JFreeReport log level.
    * @return the Java 1.4 log level.
    */
-  private Level translateLogLevel (int level)
+  private Level translateLogLevel (final int level)
   {
     if (level == ERROR)
     {

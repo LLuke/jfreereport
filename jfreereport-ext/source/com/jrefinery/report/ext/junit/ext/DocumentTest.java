@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DocumentTest.java,v 1.1 2003/05/26 14:25:35 taqua Exp $
+ * $Id: DocumentTest.java,v 1.2 2003/06/10 18:17:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,15 +46,15 @@ import javax.swing.text.ElementIterator;
 
 public class DocumentTest
 {
-  public static void main(String[] args) throws Exception
+  public static void main(final String[] args) throws Exception
   {
-    JEditorPane jpe = new JEditorPane();
+    final JEditorPane jpe = new JEditorPane();
     jpe.setContentType("text/html");
     jpe.setEditable(false);
     jpe.setText("<html><head><title>A mans tale</title></head><body><p>This is a text<b>bold</b><i>and italic</i></p></body></html>");
-    Document doc = jpe.getDocument();
+    final Document doc = jpe.getDocument();
     System.out.println("Length: " + doc.getLength());
-    ElementIterator ei = new ElementIterator(doc);
+    final ElementIterator ei = new ElementIterator(doc);
     Element e = ei.next();
     ;
     while (e != null)
@@ -64,8 +64,8 @@ public class DocumentTest
       {
         try
         {
-          int start = e.getStartOffset();
-          int end = e.getEndOffset();
+          final int start = e.getStartOffset();
+          final int end = e.getEndOffset();
 
           System.err.print(doc.getText(start, end - start) + " ");
         }

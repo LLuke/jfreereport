@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: UtilTestSuite.java,v 1.1 2003/06/20 12:05:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,11 +43,12 @@ import junit.framework.TestSuite;
 
 public class UtilTestSuite extends TestSuite
 {
-  public UtilTestSuite(String s)
+  public UtilTestSuite(final String s)
   {
     super(s);
     addTestSuite(LineBreakIteratorTest.class);
     addTestSuite(CharacterEntityParserTest.class);
+    addTestSuite(ReportConfigurationTest.class);
   }
 
   public static Test suite()
