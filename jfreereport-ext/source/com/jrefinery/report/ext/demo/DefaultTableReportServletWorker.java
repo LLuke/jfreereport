@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultTableReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
+ * $Id: DefaultTableReportServletWorker.java,v 1.4 2003/03/04 22:30:32 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,8 @@ import java.net.URL;
  * <p>
  * This implementation should handle most reporting cases. If your report needs
  * extra initializations, override <code>createReport</code>.
+ *
+ * @author Thomas Morgner
  */
 public class DefaultTableReportServletWorker extends AbstractTableReportServletWorker
 {

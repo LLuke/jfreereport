@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.7 2003/03/02 21:36:41 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.8 2003/03/04 22:30:33 taqua Exp $
  *
  * Changes
  * -------
@@ -37,17 +37,16 @@
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.report.demo.SwingIconsDemoTableModel;
-import com.jrefinery.report.targets.table.html.HtmlProcessor;
-import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
-import com.jrefinery.report.util.Log;
-
+import java.io.IOException;
+import java.net.URL;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URL;
+
+import com.jrefinery.report.targets.table.html.HtmlProcessor;
+import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
+import com.jrefinery.report.util.Log;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used to generate
@@ -55,6 +54,8 @@ import java.net.URL;
  * <p>
  * POST and GET are handled equal, so it does not
  * matter whether you POST or GET the URL for this servlet.
+ *
+ * @author Thomas Morgner
  */
 public class JFreeReportHtmlServlet extends HttpServlet
 {
@@ -97,7 +98,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
     }
 
     URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
-    Log.debug ("Base: " + base);
+    Log.debug("Base: " + base);
     AbstractTableReportServletWorker worker =
         new DefaultTableReportServletWorker(in, new DemoModelProvider(base));
 
@@ -109,12 +110,12 @@ public class JFreeReportHtmlServlet extends HttpServlet
     {
       // this throws an exception if the report could not be parsed
       HtmlProcessor processor = new HtmlProcessor(worker.getReport());
-      processor.setFilesystem(new StreamHtmlFilesystem (response.getOutputStream()));
+      processor.setFilesystem(new StreamHtmlFilesystem(response.getOutputStream()));
       worker.setTableProcessor(processor);
     }
     catch (Exception e)
     {
-      Log.debug ("Failed to parse the report" , e);
+      Log.debug("Failed to parse the report", e);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       return;
     }
@@ -129,7 +130,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
     }
     catch (Exception e)
     {
-      Log.debug ("Failed to create the report", e);
+      Log.debug("Failed to create the report", e);
     }
   }
 }

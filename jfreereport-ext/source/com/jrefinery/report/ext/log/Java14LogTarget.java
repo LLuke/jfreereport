@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogTarget.java,v 1.1 2003/02/25 20:32:42 taqua Exp $
+ * $Id: Java14LogTarget.java,v 1.2 2003/04/23 17:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,18 @@
  */
 package com.jrefinery.report.ext.log;
 
-import com.jrefinery.util.LogTarget;
+import org.jfree.util.LogTarget;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A log target for the JDK 1.4 logging API. This target can be used
+ * in conjunction with the Log class.
+ *
+ * @see org.jfree.util.Log
+ * @author Thomas Morgner
+ */
 public class Java14LogTarget implements LogTarget
 {
   /** the log category receives the generated log statements. */

@@ -2,23 +2,21 @@
  * Date: Jan 31, 2003
  * Time: 5:13:52 PM
  *
- * $Id$
+ * $Id: BarcodeElementFactory.java,v 1.1 2003/02/25 20:58:36 taqua Exp $
  */
 package com.jrefinery.report.ext.barcode;
+
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ItemFactory;
-import com.jrefinery.report.ext.barcode.Barcode;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.ext.barcode.filter.BarcodeFilter;
-import com.jrefinery.report.filter.ImageRefFilter;
 import com.jrefinery.report.ext.barcode.filter.templates.BarcodeFieldTemplate;
-
-import java.awt.geom.Rectangle2D;
-import java.awt.Color;
+import com.jrefinery.report.filter.DataRowDataSource;
+import com.jrefinery.report.filter.ImageRefFilter;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 public class BarcodeElementFactory
 {
@@ -47,7 +45,7 @@ public class BarcodeElementFactory
     ItemFactory.setElementBounds(ie, bounds);
     ie.getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(true));
     ie.getStyle().setStyleProperty(ElementStyleSheet.SCALE, new Boolean(false));
-    ie.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean(dynamic));
+    ie.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, new Boolean(dynamic));
     ie.setDataSource(irf);
     return ie;
   }
@@ -65,7 +63,7 @@ public class BarcodeElementFactory
     ItemFactory.setElementBounds(ie, bounds);
     ie.getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(true));
     ie.getStyle().setStyleProperty(ElementStyleSheet.SCALE, new Boolean(false));
-    ie.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean(dynamic));
+    ie.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, new Boolean(dynamic));
     ie.setDataSource(irf);
     return ie;
   }

@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 3:57:54 PM
  *
- * $Id$
+ * $Id: TestDrawable.java,v 1.1 2003/03/26 22:54:19 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
 
@@ -10,8 +10,8 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
-import com.jrefinery.ui.Drawable;
 import com.jrefinery.report.util.Log;
+import org.jfree.ui.Drawable;
 
 public class TestDrawable implements Drawable
 {

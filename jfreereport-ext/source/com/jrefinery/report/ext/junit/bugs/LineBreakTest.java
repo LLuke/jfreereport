@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LineBreakTest.java,v 1.1 2003/04/11 19:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,17 +36,18 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
-import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
-import com.jrefinery.report.demo.SampleData5;
-import com.jrefinery.report.ext.junit.TestSystem;
+import java.util.List;
+import java.util.ArrayList;
+
+import com.jrefinery.report.util.LineBreakIterator;
 
 public class LineBreakTest
 {
+/*
   public static void main (String [] args)
     throws Exception
   {
+
     JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/demo/OpenSourceDemo.xml", new SampleData5());
     if (report == null)
       System.exit (1);
@@ -54,5 +55,25 @@ public class LineBreakTest
     BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(),
                                    451, 500);
   }
+*/
 
+  public static void main(String[] args)
+  {
+    String[] tests = {"The lazy \n fox \r\n jumps \nover the funny tree\n",
+    "FirstName AVerLongLastName", "Test\n\n\n\n\n\ntest\n"};
+
+    for (int j = 0; j < tests.length; j++)
+    {
+      String text = tests[j];
+      List lines = new ArrayList();
+
+      LineBreakIterator iterator = new LineBreakIterator(text);
+
+      while (iterator.hasNext())
+      {
+        lines.add(iterator.next());
+      }
+      System.out.println(lines);
+    }
+  }
 }

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
+ * $Id: AbstractReportServletWorker.java,v 1.4 2003/03/02 21:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import java.awt.print.PageFormat;
 /**
  * The report servlet worker provides the infrastructure needed to process the
  * report. The worker stores the processed data in the provided session.
+ * 
+ * @author Thomas Morgner
  */
 public abstract class AbstractReportServletWorker
 {

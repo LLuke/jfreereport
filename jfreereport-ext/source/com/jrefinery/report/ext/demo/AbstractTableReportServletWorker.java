@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractTableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
+ * $Id: AbstractTableReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import com.jrefinery.report.targets.table.TableProcessor;
  * The report servlet worker provides the infrastructure needed to process the
  * report with a table output target. The worker handles the output processing and
  * provides structures to initializes the report.
+ * 
+ * @author Thomas Morgner
  */
 public abstract class AbstractTableReportServletWorker extends AbstractReportServletWorker
 {

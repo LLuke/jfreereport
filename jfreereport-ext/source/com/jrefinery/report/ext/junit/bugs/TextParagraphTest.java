@@ -1,33 +1,25 @@
+/**
+ *
+ */
 package com.jrefinery.report.ext.junit.bugs;
 
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
 
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.content.TextParagraph;
 import com.jrefinery.report.targets.base.content.TextContent;
+import com.jrefinery.report.targets.base.content.TextParagraph;
 import com.jrefinery.report.targets.base.layout.DefaultSizeCalculator;
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
-import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.NullOutputStream;
 
-/**
- * Created by IntelliJ IDEA.
- * User: user
- * Date: 18.03.2003
- * Time: 17:27:01
- * To change this template use Options | File Templates.
- */
 public class TextParagraphTest
 {
   public static void main (String [] args) throws Exception
   {
 //    test3();
-//    test2();
-    test1a();
+    test2();
+//    test1a();
   }
 
   public static void test1a ()
@@ -79,10 +71,11 @@ public class TextParagraphTest
 
   public static void test2 ()
   {
-    String content = "Thisisareallylongword, noone thought thatawordcanbethatlong, itwontfitonaline, but these words do, so heres the test!";
+    String content = "Test\n\n\n\n\n\ntest\n";
+    //String content = "Thisisareallylongword, noone thought thatawordcanbethatlong, itwontfitonaline, but these words do, so heres the test!";
     DefaultSizeCalculator ds = new DefaultSizeCalculator(new FontDefinition (new Font ("Serif", Font.PLAIN, 10)));
-    TextParagraph tp = new TextParagraph(ds, 10);
-    tp.setContent(content, 0,0, 75, 5000);
+    TextContent tp = new TextContent(content, 10, new Rectangle2D.Float (0,0, 41, 5000), ds);
+    //tp.setContent(content, 0,0, 41, 5000);
 
     TextOperationModule.print(tp);
 

@@ -11,11 +11,12 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.demo.SampleData1;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.ui.RefineryUtilities;
 
 import javax.swing.table.TableModel;
 import java.awt.print.PageFormat;
 import java.net.URL;
+
+import org.jfree.ui.RefineryUtilities;
 
 public class JMIBug
 {

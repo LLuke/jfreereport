@@ -24,16 +24,15 @@
  */
 package com.jrefinery.report.ext.barcode;
 
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
-
-import java.awt.FontMetrics;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.geom.Rectangle2D;
 import java.awt.font.LineMetrics;
-import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 import java.text.CharacterIterator;
+
+import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
+import com.jrefinery.report.util.Log;
 
 public class DefaultFontMetrics extends FontMetrics
 {

@@ -2,7 +2,7 @@
  * Date: Dec 12, 2002
  * Time: 4:41:23 PM
  *
- * $Id: Layouting.java,v 1.3 2003/02/25 20:32:41 taqua Exp $
+ * $Id: Layouting.java,v 1.4 2003/04/23 17:32:36 taqua Exp $
  */
 package com.jrefinery.report.ext.junit.bugs;
 
@@ -12,9 +12,9 @@ import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.Band;
-import com.jrefinery.report.TextElement;
 import com.jrefinery.report.DataRowBackend;
 import com.jrefinery.report.DataRowConnector;
+import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportPropertiesList;
@@ -23,7 +23,7 @@ import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.ui.FloatDimension;
+import org.jfree.ui.FloatDimension;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.geom.Rectangle2D;
@@ -66,11 +66,11 @@ public class Layouting extends TestCase
         "URL",
         new Rectangle2D.Float(0,9,-100, 9),
         null,
-        Element.RIGHT,
+        ElementAlignment.RIGHT.getOldAlignment(),
         null,
         null,
         "URL");
-    e.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean(true));
+    e.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, new Boolean(true));
     pf.addElement(e);
 
 /*
@@ -89,7 +89,7 @@ public class Layouting extends TestCase
     e.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean(true));
     pf.addElement(e);
 */
-    assertTrue(e.getStyle().getBooleanStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT));
+    assertTrue(e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT));
 
     report = new JFreeReport();
     report.setPageFooter(pf);
@@ -131,7 +131,7 @@ public class Layouting extends TestCase
     myBand.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Float(0, 0));
 
     // in this layouter the width of a band is always the full page width
-    float width = (float) ot.getLogicalPage().getWidth();
+    float width = ot.getLogicalPage().getWidth();
     Log.debug ("Logical Page: Width = " + width);
     Log.debug (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>PREFLAYOUTSIZE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 

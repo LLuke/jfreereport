@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.4 2003/03/02 19:19:24 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.5 2003/03/02 21:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,8 @@ import javax.servlet.http.HttpSession;
  * The report servlet worker provides the infrastructure needed to process the
  * report with a Pageable output target. The worker handles the repagination and
  * report initiatisation.
+ *
+ * @author Thomas Morgner
  */
 public abstract class AbstractPageableReportServletWorker
     extends AbstractReportServletWorker

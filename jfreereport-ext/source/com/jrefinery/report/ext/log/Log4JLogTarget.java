@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.4 2003/02/25 20:32:43 taqua Exp $
+ * $Id: Log4JLogTarget.java,v 1.5 2003/04/23 17:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  */
 package com.jrefinery.report.ext.log;
 
-import com.jrefinery.util.LogTarget;
+import org.jfree.util.LogTarget;
 import org.apache.log4j.Category;
 import org.apache.log4j.Priority;
 
@@ -44,6 +44,9 @@ import org.apache.log4j.Priority;
  * The Log4J Target can be used to redirect the logging output into the
  * Log4J system. When loaded using the default constructor, the Category
  * is set the "JFreeReport".
+ *
+ * @see org.jfree.util.Log
+ * @author Thomas Morgner
  */
 public class Log4JLogTarget implements LogTarget
 {

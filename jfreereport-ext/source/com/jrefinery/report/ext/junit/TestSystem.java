@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.2 2003/04/11 19:29:27 taqua Exp $
+ * $Id: TestSystem.java,v 1.3 2003/04/23 17:32:36 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
 package com.jrefinery.report.ext.junit;
 
 import java.net.URL;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
@@ -45,7 +47,7 @@ import com.jrefinery.report.demo.SampleData2;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.ui.RefineryUtilities;
+import org.jfree.ui.RefineryUtilities;
 
 public class TestSystem
 {
@@ -93,7 +95,16 @@ public class TestSystem
     RefineryUtilities.positionFrameRandomly (frame1);
     if (close)
     {
-      frame1.setDefaultCloseOperation(PreviewFrame.EXIT_ON_CLOSE);
+      frame1.addWindowListener(new WindowAdapter() {
+        /**
+         * Invoked when a window is in the process of being closed.
+         * The close operation can be overridden at this point.
+         */
+        public void windowClosing(WindowEvent e)
+        {
+          System.exit (0);
+        }
+      });
     }
     frame1.setVisible (true);
     frame1.requestFocus ();

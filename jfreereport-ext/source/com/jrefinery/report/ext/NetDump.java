@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NetDump.java,v 1.6 2003/02/25 14:07:30 taqua Exp $
+ * $Id: NetDump.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import java.io.BufferedReader;
 
 /**
  * The NetDump utility can be used to trace simple HTTP-Calls.
+ *
+ * @author Thomas Morgner
  */
 public class NetDump
 {
