@@ -604,9 +604,10 @@ public class PageFormatFactory
    */
   public void setBorders (Paper paper, double top, double left, double bottom, double right)
   {
-    double w = paper.getWidth() - right - left;
-    double b = paper.getHeight() - bottom - top;
-    paper.setImageableArea(top, left, w, b);
+    double w = paper.getWidth() - (right + left);
+    double h = paper.getHeight() - (bottom + top);
+    Log.debug ("SetBorders: Top: " + top + " Left " + left + " Bottom; " + bottom + " Right " + right + " Width " + w + " Height " + h);
+    paper.setImageableArea(left, top, w, h);
   }
 
   /**
@@ -718,4 +719,46 @@ public class PageFormatFactory
     }
   }
 
+  public static void logPageFormat (PageFormat pf)
+  {
+    Log.debug ("PageFormat: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
+    Log.debug ("PageFormat: Image: X " + pf.getImageableX() + " Y " + pf.getImageableY() + " W: " + pf.getImageableWidth() + " H: " + pf.getImageableHeight());
+    Log.debug ("PageFormat: Margins: X " + pf.getImageableX() + " Y " + pf.getImageableY() + " X2: " + (pf.getImageableWidth() + pf.getImageableX()) + " Y2: " + (pf.getImageableHeight() + pf.getImageableY()));
+  }
+
+  public static void logPaper (Paper pf)
+  {
+    Log.debug ("Paper: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
+    Log.debug ("Paper: Image: X " + pf.getImageableX() + " Y " + pf.getImageableY() + " H: " + pf.getImageableHeight() + " W: " + pf.getImageableWidth());
+  }
+
+  public static void main (String [] args)
+  {
+    PageFormat pf = null;
+    PageFormatFactory pff =PageFormatFactory.getInstance();
+    Paper p = pff.createPaper(500, 1000);
+    // top left bottom right
+    pff.setBorders(p, 10, 0, 0, 0);
+    logPaper(p);
+    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
+    logPageFormat(pf);
+
+    Log.debug ("-------------------------------------------------------------------------");
+    pff.setBorders(p, 0, 10, 0, 0);
+    logPaper(p);
+    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
+    logPageFormat(pf);
+
+    Log.debug ("-------------------------------------------------------------------------");
+    pff.setBorders(p, 0, 0, 10, 0);
+    logPaper(p);
+    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
+    logPageFormat(pf);
+
+    Log.debug ("-------------------------------------------------------------------------");
+    pff.setBorders(p, 0, 0, 0, 10);
+    logPaper(p);
+    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
+    logPageFormat(pf);
+  }
 }

@@ -189,7 +189,6 @@ public class TotalGroupSumFunction extends AbstractFunction
         {
           // Activate the current group, which was filled in the prepare run.
           currentIndex += 1;
-          Log.debug ("TotalGroupSumFunction believes in Group " + currentIndex  + " of " + results.size());
           groupResult = (GroupSum) results.get(currentIndex);
         }
         else

@@ -231,5 +231,8 @@ public interface ReportDefinitionTags
   /** Literal text for an XML attribute. */
   public static final String ORIENTATION_LANDSCAPE_VAL = "landscape";
 
+  /** Literal text for an XML attribute. */
+  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
+
   public static final String DEPENCY_LEVEL_ATT = "deplevel";
 }

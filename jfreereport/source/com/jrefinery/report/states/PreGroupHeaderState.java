@@ -59,7 +59,6 @@ public class PreGroupHeaderState extends ReportState
     {
       handledPagebreak = true;
       rpc.setPageDone ();
-      Log.debug ("PageBreak! ");
     }
     else
     {

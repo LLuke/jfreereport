@@ -181,6 +181,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     defRightMargin = parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
     Paper p = format.getPaper();
+//    Log.debug ("Defined: Top = " + defTopMargin + " , Left = " + defLeftMargin + " , Bottom = " + defBottomMargin + " , Right = " + defRightMargin);
     switch (format.getOrientation())
     {
       case PageFormat.PORTRAIT:
@@ -188,18 +189,18 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
                                                       defBottomMargin, defRightMargin);
         break;
       case PageFormat.LANDSCAPE:
-        PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin,
-                                                      defRightMargin, defTopMargin);
+        // right, top, left, bottom
+        PageFormatFactory.getInstance().setBorders(p, defRightMargin ,defTopMargin, defLeftMargin, defBottomMargin);
         break;
       case PageFormat.REVERSE_LANDSCAPE:
-        PageFormatFactory.getInstance().setBorders(p, defRightMargin, defTopMargin,
-                                                      defLeftMargin, defBottomMargin);
+        PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin, defRightMargin, defTopMargin);
         break;
     }
 
     format.setPaper(p);
     report.setDefaultPageFormat(format);
 
+    //PageFormatFactory.logPageFormat(format);
     setReport(report);
   }
 
@@ -246,56 +247,54 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   {
     String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
+    int orientationVal = PageFormat.PORTRAIT;
     String orientation = atts.getValue(ORIENTATION_ATT);
     if (orientation == null)
     {
-      orientation = ORIENTATION_PORTRAIT_VAL;
+      orientationVal = PageFormat.PORTRAIT;
     }
-    else if ((orientation.equals(ORIENTATION_LANDSCAPE_VAL)
-        || orientation.equals(ORIENTATION_PORTRAIT_VAL)) == false)
+    else
+    if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
     {
-      throw new SAXException("Orientation value in REPORT-Tag is invalid.");
+      orientationVal = PageFormat.LANDSCAPE;
     }
+    else if (orientation.equals(ORIENTATION_REVERSE_LANDSCAPE_VAL))
+    {
+      orientationVal = PageFormat.REVERSE_LANDSCAPE;
+    }
+    else if (orientation.equals(ORIENTATION_PORTRAIT_VAL))
+    {
+      orientationVal = PageFormat.PORTRAIT;
+    }
+    else
+      throw new SAXException("Orientation value in REPORT-Tag is invalid.");
 
     if (pageformatName != null)
     {
       Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
       if (p == null)
       {
+        Log.warn ("Unable to create the requested Paper. " + pageformatName);
         return format;
       }
-      if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
-      {
-        return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.LANDSCAPE);
-      }
-      else
-      {
-        return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.PORTRAIT);
-      }
+      return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
     }
-    else
+
+    if (atts.getValue(WIDTH_ATT) != null && atts.getValue(HEIGHT_ATT) != null)
     {
-      if (atts.getValue(WIDTH_ATT) != null && atts.getValue(HEIGHT_ATT) != null)
+      int[] pageformatData = new int[2];
+      pageformatData[0] = ParserUtil.parseInt(atts.getValue(WIDTH_ATT), "No Width set");
+      pageformatData[1] = ParserUtil.parseInt(atts.getValue(HEIGHT_ATT), "No Height set");
+      Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
+      if (p == null)
       {
-        int[] pageformatData = new int[2];
-        pageformatData[0] = ParserUtil.parseInt(atts.getValue(WIDTH_ATT), "No Width set");
-        pageformatData[1] = ParserUtil.parseInt(atts.getValue(HEIGHT_ATT), "No Height set");
-        Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
-        if (p == null)
-        {
-          return format;
-        }
-        if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
-        {
-          return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.LANDSCAPE);
-        }
-        else
-        {
-          return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.PORTRAIT);
-        }
+        Log.warn ("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", " + pageformatData[1] + "}");
+        return format;
       }
+      return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
     }
-    Log.debug("Returned default PAGEFORMAT");
+
+    Log.warn ("Insufficient Data to create a pageformat: Returned default.");
     return format;
   }
 
