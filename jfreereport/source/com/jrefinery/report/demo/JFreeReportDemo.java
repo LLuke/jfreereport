@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.13 2002/05/27 21:42:46 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.14 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -124,6 +124,9 @@ public class JFreeReportDemo extends JFrame implements WindowListener
   /** A table model containing sample data. */
   private SampleData4 data4;
 
+  /** A table model containing sample data. */
+  private SampleData5 data5;
+
   private ResourceBundle m_resources;
 
   /**
@@ -142,6 +145,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     data2 = new SampleData2();
     data3 = new SampleData3();
     data4 = new SampleData4();
+    data5 = new SampleData5();
 
     createActions();
 
@@ -158,6 +162,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     tabbedPane.addTab("Example 2", JRefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Example 3", JRefineryUtilities.createTablePanel(data3));
     tabbedPane.addTab("Example 4", JRefineryUtilities.createTablePanel(data4));
+    tabbedPane.addTab("Example 5 (HUGE)", JRefineryUtilities.createTablePanel(data5));
 
     content.add(tabbedPane);
 
@@ -203,9 +208,13 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     {
       preview3();
     }
-    else
+    else if (index == 3)
     {
       preview4();
+    }
+    else
+    {
+      preview5();
     }
   }
 
@@ -285,6 +294,47 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
 
     report2.setData(data2);
+    PreviewFrame frame2 = new PreviewFrame(report2);
+    frame2.addWindowListener(this);
+    frame2.pack();
+    JRefineryUtilities.positionFrameRandomly(frame2);
+    frame2.show();
+    frame2.requestFocus();
+  }
+
+  /**
+   * Displays a preview frame for report two.  If the preview frame already exists, it is brought
+   * to the front.
+   */
+  public void preview5()
+  {
+    URL in = getClass().getResource("/com/jrefinery/report/demo/report2.xml");
+    if (in == null)
+    {
+      JOptionPane.showMessageDialog(
+        this,
+        "ReportDefinition report2.xml not found on classpath");
+      return;
+    }
+    ReportGenerator gen = ReportGenerator.getInstance();
+
+    JFreeReport report2 = null;
+    try
+    {
+      report2 = gen.parseReport(in, in);
+    }
+    catch (Exception ioe)
+    {
+      ioe.printStackTrace();
+      JOptionPane.showMessageDialog(
+        this,
+        ioe.getMessage(),
+        "Error: " + ioe.getClass().getName(),
+        JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    report2.setData(data5);
     PreviewFrame frame2 = new PreviewFrame(report2);
     frame2.addWindowListener(this);
     frame2.pack();

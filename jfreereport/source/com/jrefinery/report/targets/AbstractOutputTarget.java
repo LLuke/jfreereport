@@ -300,7 +300,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
         while (endPos != BreakIterator.DONE)
         {
-          x = (float) getStringBounds (currentLine, lineStartPos, endPos);
+//          x = (float) getStringBounds (currentLine, lineStartPos, endPos);
+          x += (float) getStringBounds (currentLine, startPos, endPos);
           if (x >= w)
           {
             break;
@@ -369,7 +370,17 @@ public abstract class AbstractOutputTarget implements OutputTarget
     Rectangle2D bounds = getCursor ().getDrawBounds ();
     float fontheight = getFontHeight ();
     int maxLinesToDisplay = (int) (bounds.getHeight () / fontheight);
-    Vector lines = breakLines (mytext, (float) bounds.getWidth (), maxLinesToDisplay);
+    Vector lines = null;
+    if (maxLinesToDisplay <= 1)
+    {
+      lines = new Vector();
+      lines.add (mytext);
+    }
+    else
+    {
+      lines = breakLines (mytext, (float) bounds.getWidth (), maxLinesToDisplay);
+    }
+
     Rectangle2D lineBounds = new Rectangle2D.Float ();
 
     /**

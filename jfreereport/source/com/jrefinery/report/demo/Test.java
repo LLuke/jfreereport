@@ -3,9 +3,11 @@ package com.jrefinery.report.demo;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.GroupList;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.targets.G2OutputTarget;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.SystemOutLogTarget;
 import com.jrefinery.report.io.ReportDefinitionContentHandler;
+import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.io.FileUtilities;
 import org.xml.sax.SAXException;
 
@@ -17,6 +19,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.net.URL;
 
 public class Test
 {
@@ -30,51 +35,30 @@ public class Test
     Log.addTarget(new SystemOutLogTarget ());
     if (args.length < 1)
     {
-
-      args = new String [] { "report1.xml" };
     }
 
-    SAXParserFactory factory = SAXParserFactory.newInstance ();
     try
     {
-      SAXParser parser = factory.newSAXParser ();
-      ReportDefinitionContentHandler handler = new ReportDefinitionContentHandler ();
+      URL url = Log.class.getResource("/com/jrefinery/report/demo/report2.xml");
 
-      try
-      {
-        File file1 = FileUtilities.findFileOnClassPath (args[0]);
-        if (file1 == null)
-        {
-          System.err.println ("Unable to find " + args[0] + " on the classpath");
-          file1 = new File (args[0]);
-        }
-        InputStream in = new FileInputStream (file1);
-        parser.parse (in, handler);
-        JFreeReport report = handler.getReport ();
-        System.out.println ("Report: " + report);
-        System.out.println ("PageHeader: " + report.getPageHeader());
-        System.out.println ("PageFooter: " + report.getPageFooter());
-        System.out.println ("ReportHeader: " + report.getReportHeader());
-        System.out.println ("ReportFooter: " + report.getReportFooter());
+      JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+      report.setData(new SampleData5());
 
-        GroupList groups = report.getGroups();
-        for (int i = 0; i < groups.size(); i++)
-        {
-          Group g = groups.get(i);
-          System.out.println ("GroupHeader: " + g.getName() + " " + g.getHeader());
-          System.out.println ("GroupFooter: " + g.getName() + " " + g.getFooter());
-        }
-      }
-      catch (IOException e)
-      {
-        System.out.println (e.getMessage ());
-      }
+      // set LandScape
+      Paper paper = new Paper ();
+      paper.setSize (595.275590551181d, 419.5275590551181);
+      paper.setImageableArea (70.86614173228338, 70.86614173228347, 453.54330708661416, 277.8236220472441);
+
+      PageFormat format = new PageFormat ();
+      format.setOrientation (PageFormat.PORTRAIT);
+      format.setPaper (paper);
+
+      long start = System.currentTimeMillis();
+      G2OutputTarget t = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), format);
+      report.processReport(t);
+      System.out.println("Time: " + (System.currentTimeMillis() - start));
     }
-    catch (ParserConfigurationException e)
-    {
-      System.out.println (e.getMessage ());
-    }
-    catch (SAXException e)
+    catch (Exception e)
     {
       System.out.println (e.getMessage ());
     }
