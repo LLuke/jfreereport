@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,17 +23,18 @@
  * ----------
  * First.java
  * ----------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: First.java,v 1.11 2002/09/17 09:49:09 mungady Exp $
+ * $Id: First.java,v 1.12 2002/12/02 17:16:48 taqua Exp $
  *
  * Changes
  * -------
  * 15-Jul-2002 : Version 1 (DG);
- * 20-Nov-2002 : Corrected possible read error if the icon is not read completly from the zip file
+ * 20-Nov-2002 : Corrected possible read error if the icon is not read completly from the zip file;
+ *
  */
 
 package com.jrefinery.report.demo;
@@ -44,6 +45,7 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.ui.ApplicationFrame;
 import com.jrefinery.ui.RefineryUtilities;
 
@@ -77,7 +79,7 @@ import java.util.zip.ZipFile;
  * <P>
  * To run this demo, you need to have the Java Look and Feel Icons jar file on your classpath.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class First extends ApplicationFrame implements ActionListener
 {
@@ -128,7 +130,7 @@ public class First extends ApplicationFrame implements ActionListener
   /**
    * Creates the content for the application frame.
    *
-   * @return A panel containing the basic user interface.
+   * @return a panel containing the basic user interface.
    */
   public JPanel createContent()
   {
@@ -146,7 +148,7 @@ public class First extends ApplicationFrame implements ActionListener
   /**
    * Creates a data set using Java icons.
    *
-   * @return The report data.
+   * @return the report data.
    */
   private TableModel readData()
   {
@@ -198,7 +200,7 @@ public class First extends ApplicationFrame implements ActionListener
   /**
    * Handles action events.
    *
-   * @param e The event.
+   * @param e  the event.
    */
   public void actionPerformed(ActionEvent e)
   {
@@ -341,6 +343,7 @@ public class First extends ApplicationFrame implements ActionListener
    */
   public static void main(String[] args)
   {
+    ReportConfiguration.getGlobalConfig().setDisableLogging(true);
     First frame = new First("First Report");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
