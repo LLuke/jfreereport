@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.9 2002/06/26 21:06:48 taqua Exp $
+ * $Id: ImageElement.java,v 1.10 2002/06/27 19:16:54 taqua Exp $
  *
  * Changes:
  * --------
@@ -39,6 +39,7 @@
  * 16-May-2002 : using protected member m_paint instead of getter methode (JS)
  * 09-Jun-2002 : documentation
  * 27-Jun-2002 : ImageRefence is set using a DataSource
+ * 17-Jul-2002 : Handled the case when ImageReference returned by getValue() is null
  */
 
 package com.jrefinery.report;
@@ -73,7 +74,8 @@ public class ImageElement extends Element
   {
     // set the paint...
     target.setPaint (getPaint (band));
-    target.drawImage ((ImageReference) getValue());
+    ImageReference ref = (ImageReference) getValue();
+    if (ref != null) target.drawImage (ref);
   }
 
 

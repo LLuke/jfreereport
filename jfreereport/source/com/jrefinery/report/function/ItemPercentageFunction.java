@@ -70,6 +70,9 @@ public class ItemPercentageFunction extends AbstractFunction
     TableModel data = event.getReport().getData ();
     int row = event.getState().getCurrentDisplayItem();
 
+    // Handle the case when the tablemodel contains no rows
+    if (data.getRowCount() == 0) return;
+
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)
     {
@@ -108,6 +111,9 @@ public class ItemPercentageFunction extends AbstractFunction
     totalSumFunction.itemsAdvanced (event);
     TableModel data = event.getReport().getData ();
     int row = event.getState().getCurrentDisplayItem();
+
+    // Handle the case when the tablemodel contains no rows
+    if (data.getRowCount() == 0) return;
 
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)

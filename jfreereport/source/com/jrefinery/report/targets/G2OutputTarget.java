@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.7 2002/06/08 16:28:59 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.8 2002/06/17 21:33:28 jaosch Exp $
  *
  * Changes
  * -------
@@ -274,6 +274,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   public void drawImage (ImageReference image)
   {
     Rectangle2D bounds = getCursor ().getDrawBounds ();
+    if (image.getImage() != null)
     g2.drawImage (image.getImage (),
             (int) (bounds.getX ()),
             (int) (bounds.getY ()),

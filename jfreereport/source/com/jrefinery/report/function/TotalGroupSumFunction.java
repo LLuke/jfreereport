@@ -138,6 +138,9 @@ public class TotalGroupSumFunction extends AbstractFunction
     TableModel data = event.getReport().getData ();
     int row = event.getState().getCurrentDataItem();
 
+    // Handle the case when the tablemodel contains no rows
+    if (data.getRowCount() == 0) return;
+
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)
     {

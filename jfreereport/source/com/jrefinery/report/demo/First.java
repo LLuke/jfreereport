@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.1 2002/07/15 16:49:56 mungady Exp $
+ * $Id: First.java,v 1.2 2002/07/16 13:29:10 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.io.FileUtilities;
@@ -149,6 +150,18 @@ public class First extends ApplicationFrame implements ActionListener {
 
         // find the file on the classpath...
         File f = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
+        if (f == null)
+        {
+          ExceptionDialog.showExceptionDialog("Unable to find jlfgr-1_0.jar",
+                  "<html>Unable to load the icons.<br>" +
+                  "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
+                  "<p>" +
+                  "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
+                  null
+          );
+          return result;
+        }
+
         try {
             ZipFile iconJar = new ZipFile(f);
             Enumeration e = iconJar.entries();
@@ -165,7 +178,13 @@ public class First extends ApplicationFrame implements ActionListener {
             }
         }
         catch (IOException e) {
-            System.out.println(e.toString());
+          ExceptionDialog.showExceptionDialog("Unable to load",
+                  "<html>Unable to load the icons.<br>" +
+                  "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
+                  "<p>" +
+                  "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
+                  e
+          );
         }
 
         return result;

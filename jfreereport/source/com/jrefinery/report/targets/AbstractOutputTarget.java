@@ -370,11 +370,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public void drawMultiLineText (
           String mytext, int align)
   {
-    if (false)
-    {
-      drawString (mytext, align);
-      return;
-    }
+    // don othing if there is nothing to print
+    if (mytext == null) return;
+
     Rectangle2D bounds = getCursor ().getDrawBounds ();
     float fontheight = getFontHeight ();
     int maxLinesToDisplay = (int) (bounds.getHeight () / fontheight);
@@ -382,7 +380,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     if (maxLinesToDisplay <= 1)
     {
       lines = new Vector ();
-      lines.add (mytext);
+      lines.add (clearWhitespaces(mytext));
     }
     else
     {
@@ -418,4 +416,16 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
   }
 
+  protected String clearWhitespaces (String text)
+  {
+    char[] textdata = text.toCharArray();
+    for (int i = 0; i < textdata.length; i++)
+    {
+      if (Character.isWhitespace(textdata[i]))
+      {
+        textdata[i] = ' ';
+      }
+    }
+    return new String (textdata);
+  }
 }
