@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.8 2002/12/02 18:25:51 taqua Exp $
+ * $Id: ReportState.java,v 1.9 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -625,7 +625,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Fires a 'page-finished' event.
+   * Fires a '<code>page-finished</code>' event.  The <code>pageFinished(...)</code> method is 
+   * called for every report function.
    */
   public void firePageFinishedEvent ()
   {
@@ -634,8 +635,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Fires a '<code>group-started</code>' event.  The groupStarted(...) method is called for
-   * every report function.
+   * Fires a '<code>group-started</code>' event.  The <code>groupStarted(...)</code> method is 
+   * called for every report function.
    */
   public void fireGroupStartedEvent ()
   {
