@@ -28,125 +28,37 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LeveledExpressionList.java,v 1.3 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.event.ReportListener;
+import com.jrefinery.report.DataRow;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.util.LevelList;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.DataRow;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
 public class LeveledExpressionList implements ReportListener, Cloneable
 {
-  private static class LeveledIterator implements Iterator
-  {
-    private Iterator functionIt;
-    private Iterator expressionIt;
-    private Integer expressionNext;
-    private Integer functionNext;
-
-    public LeveledIterator(Iterator functionIt, Iterator expressionIt)
-    {
-      if (functionIt == null) throw new NullPointerException();
-      if (expressionIt == null) throw new NullPointerException();
-
-      this.functionIt = functionIt;
-      this.expressionIt = expressionIt;
-    }
-
-    /**
-     * Returns <tt>true</tt> if the iteration has more elements. (In other
-     * words, returns <tt>true</tt> if <tt>next</tt> would return an element
-     * rather than throwing an exception.)
-     *
-     * @return <tt>true</tt> if the iterator has more elements.
-     */
-    public boolean hasNext()
-    {
-      return functionIt.hasNext() || expressionIt.hasNext();
-    }
-
-    /**
-     * Returns the next element in the interation.
-     *
-     * @return the next element in the iteration.
-     * @exception NoSuchElementException iteration has no more elements.
-     */
-    public Object next()
-    {
-      Integer result = null;
-      if (expressionIt.hasNext() && expressionNext == null)
-      {
-        expressionNext = (Integer) expressionIt.next();
-      }
-      if (functionIt.hasNext() && functionNext == null)
-      {
-        functionNext = (Integer) functionIt.next();
-      }
-
-      if (expressionNext == null && functionNext ==null) return null;
-      if (expressionNext != null) return expressionNext;
-      if (functionNext != null) return functionNext;
-      if (expressionNext.compareTo(functionNext) < 0)
-      {
-        result = expressionNext;
-        expressionNext = null;
-        return result;
-      }
-      else
-      {
-        result = functionNext;
-        functionNext = null;
-        return result;
-      }
-    }
-
-    /**
-     *
-     * Removes from the underlying collection the last element returned by the
-     * iterator (optional operation).  This method can be called only once per
-     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
-     * the underlying collection is modified while the iteration is in
-     * progress in any way other than by calling this method.
-     *
-     * @exception UnsupportedOperationException if the <tt>remove</tt>
-     *		  operation is not supported by this Iterator.
-
-     * @exception IllegalStateException if the <tt>next</tt> method has not
-     *		  yet been called, or the <tt>remove</tt> method has already
-     *		  been called after the last call to the <tt>next</tt>
-     *		  method.
-     */
-    public void remove()
-    {
-      throw new UnsupportedOperationException();
-    }
-  }
-
   private LevelList expressionList;
-  private LevelList functionList;
   private Hashtable nameLookup;
-  private int size;
   private int level;
 
   public LeveledExpressionList(ExpressionCollection ec, ExpressionCollection fc)
-    throws ReportProcessingException
+      throws ReportProcessingException
 
   {
+    expressionList = new LevelList();
     nameLookup = new Hashtable();
     initializeExpressions(ec);
     initializeFunctions(fc);
-    size = expressionList.size() + functionList.size();
   }
 
   /**
@@ -158,9 +70,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void reportStarted(ReportEvent event)
   {
-    reactivateExpressions();
-
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -168,11 +78,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.reportStarted(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.reportStarted(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
 
@@ -186,8 +112,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void reportFinished(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -195,11 +120,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.reportFinished(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.reportFinished(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
   }
@@ -211,8 +152,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void pageStarted(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -220,11 +160,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.pageStarted(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.pageStarted(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
   }
@@ -236,8 +192,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void pageFinished(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -245,11 +200,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.pageFinished(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.pageFinished(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
   }
@@ -263,8 +234,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void groupStarted(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -272,11 +242,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.groupStarted(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.groupStarted(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
   }
@@ -290,8 +276,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void groupFinished(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -299,11 +284,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.groupFinished(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.groupFinished(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
   }
@@ -317,8 +318,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void itemsStarted(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -326,11 +326,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.itemsStarted(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.itemsStarted(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
   }
@@ -344,8 +360,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void itemsFinished(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -353,11 +368,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.itemsFinished(event);
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.itemsFinished(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+        else
+        {
+          if (e.isActive())
+            e.getValue();
+        }
       }
     }
   }
@@ -371,8 +402,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    reactivateExpressions();
-    Iterator it = functionList.getLevelsDescending();
+    Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
       Integer level = (Integer) it.next();
@@ -380,40 +410,26 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       {
         break;
       }
-      Iterator itLevel = functionList.getElementsForLevel(level.intValue());
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
       while (itLevel.hasNext())
       {
-        Function f = (Function) itLevel.next();
-        f.itemsAdvanced(event);
-      }
-    }
-  }
-
-  private void reactivateExpressions ()
-  {
-    Iterator levels = expressionList.getLevelsDescending();
-    while (levels.hasNext())
-    {
-      Integer level = (Integer) levels.next();
-      if (level.intValue() < getLevel())
-      {
-        break;
-      }
-
-      Iterator expressions = expressionList.getElementsForLevel(level.intValue());
-      while (expressions.hasNext())
-      {
-        Expression e = (Expression) expressions.next();
-        try
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
         {
-          if (e.isActive())
+          Function f = (Function) e;
+          try
           {
-            e.getValue();
+            f.itemsAdvanced(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
           }
         }
-        catch (Exception ex)
+        else
         {
-          Log.warn ("Activating expression failed", ex);
+          if (e.isActive())
+            e.getValue();
         }
       }
     }
@@ -439,11 +455,6 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       Expression f = (Expression) expressionList.get(i);
       f.setDataRow(dr);
     }
-    for (int i = 0; i < functionList.size(); i++)
-    {
-      Expression f = (Expression) functionList.get(i);
-      f.setDataRow(dr);
-    }
   }
 
   /**
@@ -463,22 +474,15 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       Expression f = (Expression) expressionList.get(i);
       f.setDataRow(null);
     }
-    for (int i = 0; i < functionList.size(); i++)
-    {
-      Expression f = (Expression) functionList.get(i);
-      f.setDataRow(null);
-    }
   }
 
-  private void initializeExpressions (ExpressionCollection expressionCollection)
-    throws ReportProcessingException
+  private void initializeExpressions(ExpressionCollection expressionCollection)
+      throws ReportProcessingException
   {
     int size = expressionCollection.size();
-    expressionList = new LevelList ();
-
     for (int i = 0; i < size; i++)
     {
-      Expression f = (Expression) expressionCollection.getExpression(i);
+      Expression f = expressionCollection.getExpression(i);
       if (f != null)
       {
         expressionList.add(f);
@@ -488,40 +492,38 @@ public class LeveledExpressionList implements ReportListener, Cloneable
     }
   }
 
-  private void initializeFunctions (ExpressionCollection functionCollection)
+  private void initializeFunctions(ExpressionCollection functionCollection)
       throws ReportProcessingException
   {
     int size = functionCollection.size();
-    functionList = new LevelList ();
-
     for (int i = 0; i < size; i++)
     {
       // Explicit cast to Function to test all contained elements to be Functions!
       Function f = (Function) functionCollection.getExpression(i);
       if (f != null)
       {
-        functionList.add(f);
-        functionList.setLevel(f, f.getDepencyLevel());
+        expressionList.add(f);
+        expressionList.setLevel(f, f.getDepencyLevel());
         addName(f);
       }
     }
   }
 
-  private void addName (Expression ex) throws ReportProcessingException
+  private void addName(Expression ex) throws ReportProcessingException
   {
     String name = ex.getName();
     if (nameLookup.containsKey(name))
-      throw new ReportProcessingException ("Duplicate Name found: " + name);
+      throw new ReportProcessingException("Duplicate Name found: " + name);
 
-    nameLookup.put (name, ex);
+    nameLookup.put(name, ex);
   }
 
   /**
    * Size does not change, so it is cached.
    */
-  public int size ()
+  public int size()
   {
-    return size;
+    return expressionList.size();
   }
 
   /**
@@ -581,73 +583,64 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     LeveledExpressionList ft = (LeveledExpressionList) super.clone();
-    ft.functionList = (LevelList)functionList.clone();
-    ft.functionList.clear();
+    ft.nameLookup = (Hashtable) nameLookup.clone();
+    ft.expressionList = (LevelList) expressionList.clone();
+    ft.expressionList.clear();
 
-    int size = functionList.size();
-    for (int i =0;i < size; i++)
+    int size = expressionList.size();
+    for (int i = 0; i < size; i++)
     {
-      Expression ex = (Expression) functionList.get(i);
-      Expression exClone = (Expression) ex.clone();
-      ft.functionList.add (exClone,functionList.getLevel(i));
-      ft.nameLookup.put(ex.getName(), exClone);
+      Expression ex = (Expression) expressionList.get(i);
+      if (ex instanceof Function)
+      {
+        Expression exClone = (Expression) ex.clone();
+        ft.expressionList.add(exClone, expressionList.getLevel(i));
+        ft.nameLookup.put(ex.getName(), exClone);
+      }
+      else
+      {
+        ft.expressionList.add (ex, expressionList.getLevel(i));
+      }
     }
     return ft;
   }
 
-  public void setLevel (int level)
+  public void setLevel(int level)
   {
     this.level = level;
   }
 
-  public int getLevel ()
+  public int getLevel()
   {
     return level;
   }
 
-  public Iterator getLevelsDescending ()
+  public Iterator getLevelsDescending()
   {
-    return new LeveledIterator(functionList.getLevelsDescending(), expressionList.getLevelsDescending());
+    return expressionList.getLevelsDescending();
   }
 
-  public Iterator getLevelsAscending ()
+  public Iterator getLevelsAscending()
   {
-    return new LeveledIterator(functionList.getLevelsAscending(), expressionList.getLevelsAscending());
+    return expressionList.getLevelsAscending();
   }
 
-  public Object getValue (int index)
+  public Object getValue(int index)
   {
-
-    if (index < functionList.size())
-    {
-      return ((Expression) functionList.get(index)).getValue();
-    }
-    else
-    {
-      index -= functionList.size();
-      return ((Expression) expressionList.get(index)).getValue();
-    }
+    return ((Expression) expressionList.get(index)).getValue();
   }
 
-  public Expression getExpression (int index)
+  public Expression getExpression(int index)
   {
-    if (index < functionList.size())
-    {
-      return ((Expression) functionList.get(index));
-    }
-    else
-    {
-      index -= functionList.size();
-      return ((Expression) expressionList.get(index));
-    }
+    return ((Expression) expressionList.get(index));
   }
 
-  public Object getValue (String name)
+  public Object getValue(String name)
   {
     return ((Expression) nameLookup.get(name)).getValue();
   }
 
-  public Expression getExpression (String name)
+  public Expression getExpression(String name)
   {
     return (Expression) nameLookup.get(name);
   }

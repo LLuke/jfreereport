@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * $Id: AbstractExpression.java,v 1.12 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.util.Properties;
  * expressions are named and the defined names have to be unique within the reports expressions,
  * functions and fields of the datasource. Expressions are configured using properties.
  * <p>
- * @todo define a property query interface similar to the JDBC-Property interface
+ * todo: define a property query interface similar to the JDBC-Property interface
  *
  * @author TM
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMaxFunction.java,v 1.2 2002/08/31 14:00:22 taqua Exp $
+ * $Id: ItemMaxFunction.java,v 1.3 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class ItemMaxFunction extends AbstractFunction
   public static final String FIELD_PROPERTY = "field";
 
   /** A useful constant for zero */
-  private static final BigDecimal ZERO = new BigDecimal (0.0);
+  private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /** The maximum value */
   private BigDecimal max;
@@ -90,13 +90,13 @@ public class ItemMaxFunction extends AbstractFunction
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
    * will fail.
    */
-  public ItemMaxFunction ()
+  public ItemMaxFunction()
   {
     max = ZERO;
-    datasource = new StaticDataSource ();
-    parser = new DecimalFormatParser ();
-    parser.setNullValue (ZERO);
-    parser.setDataSource (datasource);
+    datasource = new StaticDataSource();
+    parser = new DecimalFormatParser();
+    parser.setNullValue(ZERO);
+    parser.setDataSource(datasource);
   }
 
   /**
@@ -106,10 +106,10 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @param name The function name.
    */
-  public ItemMaxFunction (String name)
+  public ItemMaxFunction(String name)
   {
-    this ();
-    setName (name);
+    this();
+    setName(name);
   }
 
   /**
@@ -120,7 +120,7 @@ public class ItemMaxFunction extends AbstractFunction
    * @param event Information about the event.
    *
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
     this.max = ZERO;
   }
@@ -131,16 +131,16 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
-    String mygroup = getGroup ();
+    String mygroup = getGroup();
     if (mygroup == null)
     {
       return;
     }
 
-    Group group = event.getReport ().getGroup (event.getState ().getCurrentGroupIndex ());
-    if (getGroup().equals (group.getName ()))
+    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()))
     {
       this.max = ZERO;
     }
@@ -151,7 +151,7 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @return The group name.
    */
-  public String getGroup ()
+  public String getGroup()
   {
     return getProperty(GROUP_PROPERTY);
   }
@@ -164,9 +164,9 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @param name The group name (null permitted).
    */
-  public void setGroup (String name)
+  public void setGroup(String name)
   {
-    setProperty (GROUP_PROPERTY, name);
+    setProperty(GROUP_PROPERTY, name);
   }
 
   /**
@@ -176,7 +176,7 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
     return getProperty(FIELD_PROPERTY);
   }
@@ -188,13 +188,13 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
-    setProperty (FIELD_PROPERTY, field);
+    setProperty(FIELD_PROPERTY, field);
   }
 
   /**
@@ -203,14 +203,14 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    Object fieldValue = event.getDataRow ().get (getField ());
-    datasource.setValue (fieldValue);
-    Number n = (Number) parser.getValue ();
+    Object fieldValue = event.getDataRow().get(getField());
+    datasource.setValue(fieldValue);
+    Number n = (Number) parser.getValue();
     try
     {
-      BigDecimal compare = new BigDecimal (n.doubleValue ());
+      BigDecimal compare = new BigDecimal(n.doubleValue());
       if (max.compareTo(compare) < 0)
       {
         max = compare;
@@ -218,7 +218,7 @@ public class ItemMaxFunction extends AbstractFunction
     }
     catch (Exception e)
     {
-      Log.error ("ItemMaxFunction.advanceItems(): problem comparing number.");
+      Log.error("ItemMaxFunction.advanceItems(): problem comparing number.");
     }
   }
 
@@ -228,7 +228,7 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @return The function value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return max;
   }
@@ -239,16 +239,16 @@ public class ItemMaxFunction extends AbstractFunction
    *
    * @throws FunctionInitializeException when no field is set.
    */
-  public void initialize ()
-          throws FunctionInitializeException
+  public void initialize()
+      throws FunctionInitializeException
   {
-    String fieldProp = getProperty (FIELD_PROPERTY);
+    String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException ("No Such Property : field");
+      throw new FunctionInitializeException("No Such Property : field");
     }
-    setField (fieldProp);
-    setGroup (getProperty (GROUP_PROPERTY));
+    setField(fieldProp);
+    setGroup(getProperty(GROUP_PROPERTY));
   }
 
 }

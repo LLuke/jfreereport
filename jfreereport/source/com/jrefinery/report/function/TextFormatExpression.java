@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *
 
- * $Id: TextFormatExpression.java,v 1.3 2002/08/31 16:50:48 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.4 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -58,10 +58,10 @@ import java.util.Iterator;
  * Example:
  <pre>
  <expression name="expr" class="com.jrefinery.report.function.TextFormatExpression">
-   <properties>
-     <property name="pattern">Invoice for your order from {0, date, EEE, MMM d, yyyy}</property>
-     <property name="0">printdate</property>
-   </properties>
+ <properties>
+ <property name="pattern">Invoice for your order from {0, date, EEE, MMM d, yyyy}</property>
+ <property name="0">printdate</property>
+ </properties>
  </expression>
  </pre>
  *

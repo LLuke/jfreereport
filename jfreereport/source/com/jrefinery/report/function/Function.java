@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.10 2002/09/13 15:38:08 mungady Exp $
+ * $Id: Function.java,v 1.11 2002/09/16 16:59:12 mungady Exp $
  *
  * Changes
  * -------
@@ -66,5 +66,5 @@ public interface Function extends ReportListener, Expression, Cloneable
    *
    * @throws CloneNotSupportedException this should never be thrown.
    */
-  public Object clone () throws CloneNotSupportedException;
+  public Object clone() throws CloneNotSupportedException;
 }

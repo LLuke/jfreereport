@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.11 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ItemCountFunction.java,v 1.12 2002/10/15 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.states.ReportState;
 
 /**
  * A report function that counts items in a report.  If the "group" property is set, the item

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.19 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ItemSumFunction.java,v 1.20 2002/10/16 18:33:40 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class ItemSumFunction extends AbstractFunction
   public static final String FIELD_PROPERTY = "field";
 
   /** A useful constant representing zero. */
-  private static final BigDecimal ZERO = new BigDecimal (0.0);
+  private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /** The item sum. */
   private BigDecimal sum;
@@ -101,13 +101,13 @@ public class ItemSumFunction extends AbstractFunction
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
    * will fail.
    */
-  public ItemSumFunction ()
+  public ItemSumFunction()
   {
     sum = ZERO;
-    datasource = new StaticDataSource ();
-    parser = new DecimalFormatParser ();
-    parser.setNullValue (ZERO);
-    parser.setDataSource (datasource);
+    datasource = new StaticDataSource();
+    parser = new DecimalFormatParser();
+    parser.setNullValue(ZERO);
+    parser.setDataSource(datasource);
   }
 
   /**
@@ -117,10 +117,10 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @param name The function name.
    */
-  public ItemSumFunction (String name)
+  public ItemSumFunction(String name)
   {
-    this ();
-    setName (name);
+    this();
+    setName(name);
   }
 
   /**
@@ -131,7 +131,7 @@ public class ItemSumFunction extends AbstractFunction
    * @param event Information about the event.
    *
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
     this.sum = ZERO;
   }
@@ -142,16 +142,16 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
-    String mygroup = getGroup ();
+    String mygroup = getGroup();
     if (mygroup == null)
     {
       return;
     }
 
-    Group group = event.getReport ().getGroup (event.getState ().getCurrentGroupIndex ());
-    if (getGroup().equals (group.getName ()))
+    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()))
     {
       this.sum = ZERO;
     }
@@ -162,7 +162,7 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @return The group name.
    */
-  public String getGroup ()
+  public String getGroup()
   {
     return getProperty(GROUP_PROPERTY);
   }
@@ -175,9 +175,9 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @param name  the group name (null permitted).
    */
-  public void setGroup (String name)
+  public void setGroup(String name)
   {
-    setProperty (GROUP_PROPERTY, name);
+    setProperty(GROUP_PROPERTY, name);
   }
 
   /**
@@ -187,7 +187,7 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
     return getProperty(FIELD_PROPERTY);
   }
@@ -199,13 +199,13 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
-    setProperty (FIELD_PROPERTY, field);
+    setProperty(FIELD_PROPERTY, field);
   }
 
   /**
@@ -217,18 +217,18 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    Object fieldValue = getDataRow ().get (getField ());
-    datasource.setValue (fieldValue);
-    Number n = (Number) parser.getValue ();
+    Object fieldValue = getDataRow().get(getField());
+    datasource.setValue(fieldValue);
+    Number n = (Number) parser.getValue();
     try
     {
-      sum = sum.add (new BigDecimal (n.doubleValue ()));
+      sum = sum.add(new BigDecimal(n.doubleValue()));
     }
     catch (Exception e)
     {
-      Log.error ("ItemSumFunction.advanceItems(): problem adding number.");
+      Log.error("ItemSumFunction.advanceItems(): problem adding number.");
     }
   }
 
@@ -238,7 +238,7 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @return The function value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return sum;
   }
@@ -249,16 +249,16 @@ public class ItemSumFunction extends AbstractFunction
    *
    * @throws FunctionInitializeException when no field is set.
    */
-  public void initialize ()
-          throws FunctionInitializeException
+  public void initialize()
+      throws FunctionInitializeException
   {
-    String fieldProp = getProperty (FIELD_PROPERTY);
+    String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException ("No Such Property : field");
+      throw new FunctionInitializeException("No Such Property : field");
     }
-    setField (fieldProp);
-    setGroup (getProperty (GROUP_PROPERTY));
+    setField(fieldProp);
+    setGroup(getProperty(GROUP_PROPERTY));
   }
 
 }

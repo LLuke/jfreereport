@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.19 2002/09/17 09:49:10 mungady Exp $
+ * $Id: AbstractFunction.java,v 1.20 2002/10/15 20:37:22 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.event.ReportEvent;
+
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -234,9 +235,6 @@ public abstract class AbstractFunction implements Function
    * eventually overwriting existing properties with the same name.
    *
    * @param p The properties.
-   *
-   * @todo create a property query interface. Maybe the same as used in
-   * JDBC (@see java.sql.PropertyInfo)?
    */
   public void setProperties(Properties p)
   {

@@ -36,16 +36,14 @@
  * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
  *               AbstractFunction
  * 10-May-2002 : Applied the ReportEvent interface
- * 05-Jun-2002 : Updated Javadoc comments (DG)
- * 11-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG)
- *
+ * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
 
 /**
@@ -58,13 +56,14 @@ public class PageFunction extends AbstractFunction
 
   /** The page. */
   private int page;
+  private boolean isGroupStarted;
 
   /**
    * Constructs an unnamed function.
    * <P>
    * This constructor is intended for use by the SAX handler class only.
    */
-  public PageFunction ()
+  public PageFunction()
   {
   }
 
@@ -73,40 +72,47 @@ public class PageFunction extends AbstractFunction
    *
    * @param name  the function name.
    */
-  public PageFunction (String name)
+  public PageFunction(String name)
   {
-    setName (name);
+    setName(name);
   }
 
   /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    *
-   * @param event  information about the event.
+   * @param event Information about the event.
    */
-  public void pageStarted (ReportEvent event)
+  public void pageStarted(ReportEvent event)
   {
-    setPage(getPage() + 1);
+    if (isGroupStarted)
+    {
+      this.setPage(getStartPage());
+      isGroupStarted = false;
+    }
+    else
+    {
+      setPage(getPage() + 1);
+    }
   }
 
   /**
    * Receives notification that a group has started.
+   * <P>
+   * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event  information about the event.
+   * @param event Information about the event.
    */
   public void groupStarted(ReportEvent event)
   {
-    if (getGroup() == null)
-    {
-      return;
-    }
+    if (getGroup() == null) return;
 
-    JFreeReport report = event.getReport ();
-    ReportState state = event.getState ();
-    Group group = report.getGroup (state.getCurrentGroupIndex ());
-    if (getGroup ().equals (group.getName ()))
+    JFreeReport report = event.getReport();
+    ReportState state = event.getState();
+    Group group = report.getGroup(state.getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()))
     {
-      setPage(getStartPage());
+      isGroupStarted = true;
     }
   }
 
@@ -128,9 +134,9 @@ public class PageFunction extends AbstractFunction
    *
    * @return the page number.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    return new Integer (getPage());
+    return new Integer(getPage());
   }
 
   /**
@@ -156,52 +162,23 @@ public class PageFunction extends AbstractFunction
     }
   }
 
-  /**
-   * Returns the group (if any) for the function.
-   * <P>
-   * To set the group, use the setProperty("group", name) method inherited from the
-   * AbstractFunction class.
-   *
-   * @return the group.
-   */
-  public String getGroup ()
+  public String getGroup()
   {
     return getProperty("group");
   }
 
-  /**
-   * Returns the start page for the function.
-   * <P>
-   * To set the start page, use the setProperty("start", value) method inherited from the
-   * AbstractFunction class.
-   *
-   * @return the start page for the function.
-   */
-  public int getStartPage ()
+  public int getStartPage()
   {
     return Integer.parseInt(getProperty("start", "1"));
   }
 
-  /**
-   * Returns the page number.
-   *
-   * @return the page number.
-   */
   public int getPage()
   {
     return page;
   }
 
-  /**
-   * Sets the page number.
-   * <P>
-   * This is the value returned by the function's getValue() method.
-   *
-   * @param page  the page number.
-   */
   public void setPage(int page)
   {
     this.page = page;
   }
-
 }

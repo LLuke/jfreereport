@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.12 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ReportPropertyFunction.java,v 1.13 2002/10/15 20:37:24 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.states.ReportState;
 
 /**
  * A report function that returns a property that has been set for a report.
@@ -73,7 +73,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Default constructor (intended for use by the SAX handler only).
    */
-  public ReportPropertyFunction ()
+  public ReportPropertyFunction()
   {
   }
 
@@ -83,10 +83,10 @@ public class ReportPropertyFunction extends AbstractFunction
    * @param name  the function name.
    * @param propertyName  the property name.
    */
-  public ReportPropertyFunction (String name, String propertyName)
+  public ReportPropertyFunction(String name, String propertyName)
   {
-    setName (name);
-    setField (propertyName);
+    setName(name);
+    setField(propertyName);
   }
 
   /**
@@ -94,10 +94,10 @@ public class ReportPropertyFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -107,8 +107,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void reportFinished(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -118,8 +118,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void pageStarted(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -129,8 +129,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void pageFinished(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -140,8 +140,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -151,8 +151,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void groupFinished(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -162,8 +162,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -173,8 +173,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void itemsStarted(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -184,8 +184,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void itemsFinished(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    value = state.getProperty (getField());
+    ReportState state = event.getState();
+    value = state.getProperty(getField());
   }
 
   /**
@@ -193,7 +193,7 @@ public class ReportPropertyFunction extends AbstractFunction
    *
    * @return the function value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return this.value;
   }
@@ -205,7 +205,7 @@ public class ReportPropertyFunction extends AbstractFunction
    *
    * @return The name of the report property.
    */
-  public String getField ()
+  public String getField()
   {
     return getProperty(REPORTPROPERTY_PROPERTY);
   }
@@ -217,13 +217,13 @@ public class ReportPropertyFunction extends AbstractFunction
    *
    * @param field The report property name.
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
-    setProperty (REPORTPROPERTY_PROPERTY, field);
+    setProperty(REPORTPROPERTY_PROPERTY, field);
   }
 
   /**
@@ -231,15 +231,15 @@ public class ReportPropertyFunction extends AbstractFunction
    *
    * @throws FunctionInitializeException if the function is not fully initialised.
    */
-  public void initialize () throws FunctionInitializeException
+  public void initialize() throws FunctionInitializeException
   {
-    super.initialize ();
-    String fieldProp = getProperty (REPORTPROPERTY_PROPERTY);
+    super.initialize();
+    String fieldProp = getProperty(REPORTPROPERTY_PROPERTY);
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException ("No Such Property : reportProperty");
+      throw new FunctionInitializeException("No Such Property : reportProperty");
     }
-    setField (fieldProp);
+    setField(fieldProp);
   }
 
 }

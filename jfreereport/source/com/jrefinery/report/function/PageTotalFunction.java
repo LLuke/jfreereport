@@ -30,23 +30,37 @@
  * ----------------
  * 16-Oct-2002 : Initial version
  * 25-Oct-2002 : BugFix, grouped pagecounting was not working
- * 11-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG)
- *
  */
-
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.util.Log;
+
 import java.util.Hashtable;
 
 /**
- * This function will only work as expected in group mode if the named group has pagebreak set to
- * true.
+ * This function will only work as expected in group mode if the named group has pagebreak set to true.
+ * This function depends on pageEvents, so use it with PageableProcessor only.
  *
- * @author TM
+ * FunctionFlow:
+ *
+ * if autmatic pagebreak:
+ *   fireGroupFinish
+ *   -> PageFull, group footer cannot be printed yet
+ *   firePageFinish
+ *    -> groupFooter is printed
+ *   fireGroupStarted
+ *   firePageFinish // manual pagebreak
+ *   -> groupHeader is printed
+ *
+ * if manual pagebreak only
+ *    fireGroupFinish
+ *    -> print GroupFooter
+ *    fireGroupStarted
+ *    firePageFinish // manual pagebreak
+ *   -> groupHeader is printed
  */
 public class PageTotalFunction extends PageFunction
 {
@@ -56,65 +70,68 @@ public class PageTotalFunction extends PageFunction
    */
   private static class PageStorage
   {
-    /** The page number. */
     private int page;
 
-    /**
-     * Creates a new page storage instance.
-     *
-     * @param page  the page number.
-     */
     public PageStorage(int page)
     {
       this.page = page;
     }
 
-    /**
-     * Returns the page number.
-     *
-     * @return the page number.
-     */
     public int getPage()
     {
       return page;
     }
 
-    /**
-     * Sets the page number.
-     *
-     * @param page  the page.
-     */
     public void setPage(int page)
     {
       this.page = page;
     }
   }
 
-  /** The page. */
-  private PageStorage page;
-
-  /** Storage for ??. */
+  private PageStorage pageStorage;
   private Hashtable groupPages;
+  private boolean isGroupStarted;
 
-  /**
-   * Creates a new function.
-   */
   public PageTotalFunction()
   {
-    this.groupPages = new Hashtable();
+    groupPages = new Hashtable();
   }
 
   /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    *
-   * @param event  information about the event.
+   * Prepared data is bound to the display item, the current displayed row. 
+   *
+   * @param event Information about the event.
    */
   public void pageStarted(ReportEvent event)
   {
-    if (event.getState().isPrepareRun())
+    if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
-      setPage(getPage() + 1);
+      if (isGroupStarted)
+      {
+        this.pageStorage = new PageStorage(getStartPage());
+        isGroupStarted = false;
+      }
+      else
+      {
+        this.setPage(getPage() + 1);
+      }
+      groupPages.put(new Integer(event.getState().getCurrentDisplayItem()), this.pageStorage);
+    }
+    else
+    {
+      if (event.getState().isPrepareRun() == false)
+      {
+        // restore the saved state
+        this.pageStorage = (PageStorage) groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
+        if (pageStorage == null)
+        {
+          throw new IllegalStateException("No page-storage for the current state: " + event.getState().getCurrentDataItem());
+        }
+        Log.debug("PageStorage: " + pageStorage.getPage() + " @ " + event.getState().getCurrentDisplayItem());
+      }
     }
   }
 
@@ -123,48 +140,42 @@ public class PageTotalFunction extends PageFunction
    * <P>
    * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event  information about the event.
+   * @param event Information about the event.
    */
   public void groupStarted(ReportEvent event)
   {
-    if (getGroup() == null)
+    if (getGroup() == null) return;
+
+    JFreeReport report = event.getReport();
+    Group group = report.getGroup(event.getState().getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()) == false)
     {
       return;
     }
 
-    JFreeReport report = event.getReport();
-    ReportState state = event.getState();
-    Group group = report.getGroup(state.getCurrentGroupIndex());
-    if (getGroup().equals(group.getName()))
+    if (event.getState().isPrepareRun())
     {
-      if (event.getState().isPrepareRun())
+      if (event.getState().getLevel() < 0)
       {
         // Correct the calculation:
         // at this point it is sure, that the previous group has finished. We cannot use the
-        // group finished event, as this event is fired before the layouting is done. So the
-        // groupfooter can move to the next page (without throwing another event), and a function
-        // will not get informed of this.
-        setPage(getPage() - 1);
+        // group finished event, as this event is fired before the layouting is done. So the groupfooter
+        // can move to the next page (without throwing another event), and a function will not get
+        // informed of this.
+        //this.setPage(getPage() - 1);
 
-        this.page = new PageStorage(getStartPage());
-        groupPages.put(new Integer(event.getState().getCurrentDataItem()), this.page);
-      }
-      else
-      {
-        // restore the saved state
-        this.page
-            = (PageStorage) groupPages.get(new Integer(event.getState().getCurrentDataItem()));
-        if (page == null)
-        {
-          throw new IllegalStateException("No page-storace for the current state: "
-                                          + event.getState().getCurrentDataItem());
-        }
+        Log.debug ("GroupStarted: Request to start new PageStorage: @[" + event.getState().getCurrentDataItem());
+        isGroupStarted = true;
+        // This PageStorage is only null, if the report has never reached the first report start event
       }
     }
   }
 
   /**
    * Receives notification that the report has started.
+   * Note: pageStorate is a shared object for all instances contained in the
+   * start state, but reportStarted is called during the advancement. States
+   * get cloned before the advancement is done ...
    * <P>
    * Maps the reportStarted-method to the legacy function startReport ().
    *
@@ -172,31 +183,30 @@ public class PageTotalFunction extends PageFunction
    */
   public void reportStarted(ReportEvent event)
   {
-    if (event.getState().isPrepareRun())
+    Log.debug ("ReportStarted: " + this.hashCode());
+    if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
-      this.page = new PageStorage(getStartPage() - 1);
       this.groupPages.clear();
     }
   }
 
-  /**
-   * Sets the page.
-   *
-   * @param page  the page.
-   */
   public void setPage(int page)
   {
-    this.page.setPage(page);
+    Log.debug ("SetPage: " + page);
+
+    if (this.pageStorage != null)
+      this.pageStorage.setPage(page);
   }
 
-  /**
-   * Returns the page.
-   *
-   * @return the page.
-   */
   public int getPage()
   {
-    return this.page.getPage();
+    if (this.pageStorage == null)
+    {
+      Log.warn ("CurrentPage is null, no repagination done?");
+      return 0;
+    }
+
+    return this.pageStorage.getPage();
   }
 
   /**
@@ -230,36 +240,21 @@ public class PageTotalFunction extends PageFunction
     {
       throw new FunctionInitializeException(e.getMessage());
     }
+    pageStorage = new PageStorage(getStartPage() - 1);
   }
 
-  /**
-   * Returns the group for this function (possibly null).
-   *
-   * @return the group.
-   */
   public String getGroup()
   {
     return getProperty("group");
   }
 
-  /**
-   * Sets the group for this function.
-   *
-   * @param group  the group.
-   */
   public void setGroup(String group)
   {
     setProperty("group", group);
   }
 
-  /**
-   * Returns the start page for the function.
-   *
-   * @return the start page.
-   */
   public int getStartPage()
   {
     return Integer.parseInt(getProperty("start", "1"));
   }
-
 }

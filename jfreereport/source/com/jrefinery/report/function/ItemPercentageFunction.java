@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id$
+ * $Id: ItemPercentageFunction.java,v 1.11 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class ItemPercentageFunction extends AbstractFunction
   private BigDecimal currentValue;
 
   /** A useful constant representing zero. */
-  private static final BigDecimal ZERO = new BigDecimal (0.0);
+  private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /** The parser for performing data conversion */
   private NumberFormatParser parser;
@@ -77,15 +77,15 @@ public class ItemPercentageFunction extends AbstractFunction
   /**
    * Creates a new ItemPercentageFunction.
    */
-  public ItemPercentageFunction ()
+  public ItemPercentageFunction()
   {
-    totalSumFunction = new TotalGroupSumFunction ();
-    totalSumFunction.setName ("total");
+    totalSumFunction = new TotalGroupSumFunction();
+    totalSumFunction.setName("total");
 
-    datasource = new StaticDataSource ();
-    parser = new DecimalFormatParser ();
-    parser.setNullValue (ZERO);
-    parser.setDataSource (datasource);
+    datasource = new StaticDataSource();
+    parser = new DecimalFormatParser();
+    parser.setNullValue(ZERO);
+    parser.setDataSource(datasource);
   }
 
   /**
@@ -98,10 +98,10 @@ public class ItemPercentageFunction extends AbstractFunction
    * @throws FunctionInitializeException if the function name is not set or the call to
    * isInitialized returns false.
    */
-  public void initialize () throws FunctionInitializeException
+  public void initialize() throws FunctionInitializeException
   {
-    super.initialize ();
-    totalSumFunction.initialize ();
+    super.initialize();
+    totalSumFunction.initialize();
   }
 
   /**
@@ -111,11 +111,11 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
-    totalSumFunction.groupStarted (event);
+    totalSumFunction.groupStarted(event);
 
-    Object fieldValue = event.getDataRow ().get (getField ());
+    Object fieldValue = event.getDataRow().get(getField());
     if (fieldValue == null)
     {
       // No add, field is null
@@ -123,13 +123,13 @@ public class ItemPercentageFunction extends AbstractFunction
     }
     try
     {
-      datasource.setValue (fieldValue);
-      Number n = (Number) parser.getValue ();
-      currentValue = new BigDecimal (n.toString ());
+      datasource.setValue(fieldValue);
+      Number n = (Number) parser.getValue();
+      currentValue = new BigDecimal(n.toString());
     }
     catch (Exception e)
     {
-      Log.error ("ItemSumFunction.advanceItems(): problem adding number.");
+      Log.error("ItemSumFunction.advanceItems(): problem adding number.");
     }
   }
 
@@ -140,24 +140,24 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    totalSumFunction.itemsAdvanced (event);
-    TableModel data = event.getReport ().getData ();
-    int row = event.getState ().getCurrentDisplayItem ();
+    totalSumFunction.itemsAdvanced(event);
+    TableModel data = event.getReport().getData();
+    int row = event.getState().getCurrentDisplayItem();
 
     // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount () == 0)
+    if (data.getRowCount() == 0)
     {
       return;
     }
 
     Object fieldValue = null;
-    for (int c = 0; c < data.getColumnCount (); c++)
+    for (int c = 0; c < data.getColumnCount(); c++)
     {
-      if (getField ().equals (data.getColumnName (c)))
+      if (getField().equals(data.getColumnName(c)))
       {
-        fieldValue = data.getValueAt (row, c);
+        fieldValue = data.getValueAt(row, c);
       }
     }
 
@@ -168,13 +168,13 @@ public class ItemPercentageFunction extends AbstractFunction
     }
     try
     {
-      datasource.setValue (fieldValue);
-      Number n = (Number) parser.getValue ();
-      currentValue = new BigDecimal (n.toString ());
+      datasource.setValue(fieldValue);
+      Number n = (Number) parser.getValue();
+      currentValue = new BigDecimal(n.toString());
     }
     catch (Exception e)
     {
-      Log.error ("ItemSumFunction.advanceItems(): problem adding number.");
+      Log.error("ItemSumFunction.advanceItems(): problem adding number.");
     }
 
   }
@@ -186,9 +186,9 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
-    totalSumFunction.reportStarted (event);
+    totalSumFunction.reportStarted(event);
     currentValue = ZERO;
   }
 
@@ -199,16 +199,16 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @return The value of the function.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    BigDecimal total = (BigDecimal) totalSumFunction.getValue ();
+    BigDecimal total = (BigDecimal) totalSumFunction.getValue();
 
-    if (total.longValue () == 0)
+    if (total.longValue() == 0)
     {
       return null;
     }
     BigDecimal retval =
-        currentValue.multiply (new BigDecimal (100)).divide (total, 4, BigDecimal.ROUND_HALF_UP);
+        currentValue.multiply(new BigDecimal(100)).divide(total, 4, BigDecimal.ROUND_HALF_UP);
     return retval;
   }
 
@@ -217,9 +217,9 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @return  the group name.
    */
-  public String getGroup ()
+  public String getGroup()
   {
-    return (String) getProperty (GROUP_PROPERTY);
+    return getProperty(GROUP_PROPERTY);
   }
 
   /**
@@ -227,9 +227,9 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @param group  the name of the group (null permitted).
    */
-  public void setGroup (String group)
+  public void setGroup(String group)
   {
-    setProperty (GROUP_PROPERTY, group);
+    setProperty(GROUP_PROPERTY, group);
   }
 
   /**
@@ -239,9 +239,9 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
-    return getProperty (FIELD_PROPERTY);
+    return getProperty(FIELD_PROPERTY);
   }
 
   /**
@@ -251,13 +251,13 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @param field  the field name (null not permitted).
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
-    setProperty (FIELD_PROPERTY, field);
+    setProperty(FIELD_PROPERTY, field);
   }
 
   /**
@@ -266,10 +266,10 @@ public class ItemPercentageFunction extends AbstractFunction
    * @param name The property name.
    * @param value The property value.
    */
-  public void setProperty (String name, String value)
+  public void setProperty(String name, String value)
   {
-    super.setProperty (name, value);
-    totalSumFunction.setProperty (name, value);
+    super.setProperty(name, value);
+    totalSumFunction.setProperty(name, value);
   }
 
   /**
@@ -282,10 +282,10 @@ public class ItemPercentageFunction extends AbstractFunction
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    ItemPercentageFunction clone = (ItemPercentageFunction) super.clone ();
-    clone.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.clone ();
+    ItemPercentageFunction clone = (ItemPercentageFunction) super.clone();
+    clone.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.clone();
     return clone;
   }
 }

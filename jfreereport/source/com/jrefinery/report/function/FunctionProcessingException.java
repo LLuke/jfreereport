@@ -47,9 +47,8 @@ import java.io.PrintWriter;
  *
  * @author TM
  */
-public class FunctionInitializeException extends Exception
+public class FunctionProcessingException extends RuntimeException
 {
-
 
   /** The parent exception. */
   private Exception parent;
@@ -60,7 +59,7 @@ public class FunctionInitializeException extends Exception
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public FunctionInitializeException (String message, Exception ex)
+  public FunctionProcessingException (String message, Exception ex)
   {
     super (message);
     parent = ex;
@@ -71,7 +70,7 @@ public class FunctionInitializeException extends Exception
    *
    * @param message  the exception message.
    */
-  public FunctionInitializeException (String message)
+  public FunctionProcessingException (String message)
   {
     super (message);
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.8 2002/09/13 15:38:08 mungady Exp $
+ * $Id: GroupCountFunction.java,v 1.9 2002/10/15 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.states.ReportState;
 
 /**
  * A report function that counts groups in a report.
@@ -63,7 +63,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   /**
    * Default constructor.
    */
-  public GroupCountFunction ()
+  public GroupCountFunction()
   {
   }
 
@@ -74,9 +74,9 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    * @param group The group name.
    * @throws NullPointerException if the given name is null
    */
-  public GroupCountFunction (String name, String group)
+  public GroupCountFunction(String name, String group)
   {
-    setName (name);
+    setName(name);
     setGroup(group);
   }
 
@@ -85,7 +85,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    *
    * @return the name of the group or null, if all groups are counted
    */
-  public String getGroup ()
+  public String getGroup()
   {
     return getProperty(GROUP_PROPERTY);
   }
@@ -96,9 +96,9 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    *
    * @param group the name of the group to be counted.
    */
-  public void setGroup (String group)
+  public void setGroup(String group)
   {
-    setProperty (GROUP_PROPERTY, group);
+    setProperty(GROUP_PROPERTY, group);
   }
 
   /**
@@ -107,7 +107,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    *
    * @param event the current report event received.
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
     this.count = 0;
   }
@@ -118,18 +118,18 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    *
    * @param event the current report event received.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
-    if (getGroup () == null)
+    if (getGroup() == null)
     {
       this.count++;  // count all groups...
       return;
     }
 
-    JFreeReport report = event.getReport ();
-    ReportState state = event.getState ();
-    Group group = report.getGroup (state.getCurrentGroupIndex ());
-    if (getGroup ().equals (group.getName ()))
+    JFreeReport report = event.getReport();
+    ReportState state = event.getState();
+    Group group = report.getGroup(state.getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()))
     {
       this.count++;
     }
@@ -141,8 +141,8 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    *
    * @return the number of groups processed as java.lang.Integer.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    return new Integer (count);
+    return new Integer(count);
   }
 }

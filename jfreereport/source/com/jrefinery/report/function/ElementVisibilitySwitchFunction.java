@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.6 2002/08/31 14:00:22 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.7 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -62,7 +62,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   /**
    * Default constructor.
    */
-  public ElementVisibilitySwitchFunction ()
+  public ElementVisibilitySwitchFunction()
   {
   }
 
@@ -74,7 +74,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void itemsStarted (ReportEvent event)
+  public void itemsStarted(ReportEvent event)
   {
     trigger = false;
   }
@@ -86,18 +86,18 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @param event  the report event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    if (event.getState ().isPrepareRun ())
+    if (event.getState().isPrepareRun())
     {
       return;
     }
 
     trigger = (!trigger);
-    Element e = event.getReport ().getItemBand ().getElement (getElement ());
+    Element e = event.getReport().getItemBand().getElement(getElement());
     if (e != null)
     {
-      e.setVisible (trigger);
+      e.setVisible(trigger);
     }
   }
 
@@ -108,12 +108,12 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * @throws FunctionInitializeException if required parameters were missing and initialisation
    * cannot be performed.
    */
-  public void initialize () throws FunctionInitializeException
+  public void initialize() throws FunctionInitializeException
   {
-    super.initialize ();
-    if (getProperty (ELEMENT_PROPERTY) == null)
+    super.initialize();
+    if (getProperty(ELEMENT_PROPERTY) == null)
     {
-      throw new FunctionInitializeException ("Element name must be specified");
+      throw new FunctionInitializeException("Element name must be specified");
     }
   }
 
@@ -124,9 +124,9 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * @param name The element name.
    * @see com.jrefinery.report.Band#getElement(String)
    */
-  public void setElement (String name)
+  public void setElement(String name)
   {
-    setProperty (ELEMENT_PROPERTY, name);
+    setProperty(ELEMENT_PROPERTY, name);
   }
 
   /**
@@ -134,15 +134,15 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    *
    * @return The element name.
    */
-  public String getElement ()
+  public String getElement()
   {
-    return getProperty (ELEMENT_PROPERTY, "");
+    return getProperty(ELEMENT_PROPERTY, "");
   }
 
   /**
    * @return the visibility of the element, either Boolean.TRUE or Boolean.FALSE.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     if (trigger)
     {

@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id$
+ * $Id: TotalGroupSumFunction.java,v 1.13 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,11 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
+import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.util.Log;
 
 import java.math.BigDecimal;
@@ -257,7 +257,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public String getGroup()
   {
-    return (String) getProperty(GROUP_PROPERTY);
+    return getProperty(GROUP_PROPERTY);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.2 2002/08/28 10:37:53 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.3 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -229,7 +229,7 @@ public class ItemHideFunction extends AbstractFunction
       throw new FunctionInitializeException("No Such Property : field");
     }
     String elementProp = getProperty(ELEMENT_PROPERTY);
-    if (fieldProp == null)
+    if (elementProp == null)
     {
       throw new FunctionInitializeException("No Such Property : element");
     }

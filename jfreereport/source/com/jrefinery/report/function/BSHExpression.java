@@ -24,7 +24,7 @@
  * BSHExpression.java
  * ------------------
  *
- * $Id$
+ * $Id: BSHExpression.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -65,30 +65,30 @@ import java.io.Reader;
  * <p>
  * An example in the XML format: (from report1.xml)
 <pre>
-  <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
-    <properties>
-      <property name="expression">
-        // you may import packages and classes or use the fully qualified name of the class
-        import com.jrefinery.report.*;
+ <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
+ <properties>
+ <property name="expression">
+ // you may import packages and classes or use the fully qualified name of the class
+ import com.jrefinery.report.*;
 
-        String userdefinedFunction (String parameter, Date date)
-        {
-           return parameter + " - the current date is " + date);
-        }
+ String userdefinedFunction (String parameter, Date date)
+ {
+ return parameter + " - the current date is " + date);
+ }
 
-        // use simple java code to perform the expression. You may use all classes
-        // available in your classpath as if you write "real" java code in your favourite
-        // IDE.
-        // See the www.beanshell.org site for more information ...
-        //
-        // A return value of type "Object" is alway implied ...
-        getValue ()
-        {
-          return userdefinedFunction ("Hello World :) ", new Date());
-        }
-      </property>
-    </properties>
-  </expression>
+ // use simple java code to perform the expression. You may use all classes
+ // available in your classpath as if you write "real" java code in your favourite
+ // IDE.
+ // See the www.beanshell.org site for more information ...
+ //
+ // A return value of type "Object" is alway implied ...
+ getValue ()
+ {
+ return userdefinedFunction ("Hello World :) ", new Date());
+ }
+ </property>
+ </properties>
+ </expression>
 </pre>
  *
  * @author TM
@@ -146,15 +146,15 @@ public class BSHExpression extends AbstractExpression
    * <pre>
    ...
    <property name="expression">
-     ...
-     getValue ()
-     {
-       return userdefinedFunction ("Hello World :) ", new Date());
-     }
-     ...
+   ...
+   getValue ()
+   {
+   return userdefinedFunction ("Hello World :) ", new Date());
+   }
+   ...
 
-     // script initialisations here
-     System.out.println ("Script initialized @ " + new Date());
+   // script initialisations here
+   System.out.println ("Script initialized @ " + new Date());
    </property>
    ...
    </pre>
@@ -196,7 +196,7 @@ public class BSHExpression extends AbstractExpression
     catch (Exception e)
     {
       Log.error("Unable to initialize the expression", e);
-      throw new FunctionInitializeException(e.getMessage());
+      throw new FunctionInitializeException("Unable to initialize the expression", e);
     }
   }
 

@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id$
+ * $Id: Expression.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -99,7 +99,7 @@ public interface Expression extends Cloneable
    *
    * @return boolean.
    */
-  public boolean isActive ();
+  public boolean isActive();
 
   /**
    * Checks that the expression has been correctly initialized.  If there is a problem, this method
@@ -144,7 +144,7 @@ public interface Expression extends Cloneable
    * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
    * depency possible) to 2^31 (upper limit of int).
    */
-  public int getDepencyLevel ();
+  public int getDepencyLevel();
 
-  public void setDepencyLevel (int deplevel);
+  public void setDepencyLevel(int deplevel);
 }

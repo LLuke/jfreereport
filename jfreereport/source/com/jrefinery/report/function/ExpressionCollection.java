@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ExpressionCollection.java,v 1.2 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -33,10 +33,6 @@
  * 27-Aug-2002 : Documentation
  */
 package com.jrefinery.report.function;
-
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.event.ReportListener;
-import com.jrefinery.report.event.ReportEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -107,25 +103,6 @@ public class ExpressionCollection implements Cloneable
       {
         Expression f = (Expression) iterator.next();
         add(f);
-      }
-    }
-  }
-
-  /**
-   * Private add function for internal use. Add the expressions contained in the collection, but do
-   * not initialize them.
-   *
-   * @param expressions  a collection of expressions.
-   */
-  private void privateAddAll(Collection expressions)
-  {
-    if (expressions != null)
-    {
-      Iterator iterator = expressions.iterator();
-      while (iterator.hasNext())
-      {
-        Expression f = (Expression) iterator.next();
-        privateAdd(f);
       }
     }
   }
