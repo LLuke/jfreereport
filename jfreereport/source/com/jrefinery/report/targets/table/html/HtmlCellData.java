@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellData.java,v 1.9 2003/04/23 13:43:06 taqua Exp $
+ * $Id: HtmlCellData.java,v 1.10 2003/05/02 12:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,9 @@
 package com.jrefinery.report.targets.table.html;
 
 import java.awt.geom.Rectangle2D;
+import java.io.PrintWriter;
 
 import com.jrefinery.report.targets.table.TableCellData;
-import com.jrefinery.report.util.HtmlWriter;
 
 /**
  * The baseclass for all HTML-Content cells. The cell has a HtmlCellStyle assigned
@@ -77,7 +77,7 @@ public abstract class HtmlCellData extends TableCellData
    * @param pout the printwriter receiving the generated content.
    * @param filesystem the filesystem used to create the external content.
    */
-  public abstract void write(HtmlWriter pout, HtmlFilesystem filesystem);
+  public abstract void write(PrintWriter pout, HtmlFilesystem filesystem);
 
   /**
    * Gets the assigned cell style.

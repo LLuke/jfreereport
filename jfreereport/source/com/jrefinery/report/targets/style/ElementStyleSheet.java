@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.28 2003/06/10 12:11:56 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.29 2003/06/10 16:07:55 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ import com.jrefinery.report.targets.FontDefinition;
  *
  * @author Thomas Morgner
  */
-public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, StyleChangeListener
+public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeListener
 {
   /** A key for the 'minimum size' of an element. */
   public static final StyleKey MINIMUMSIZE   = StyleKey.getStyleKey("min-size", Dimension2D.class);
@@ -167,10 +167,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   private ArrayList defaultSheets;
 
   /** Parent style sheet cache. */
-  private ElementStyleSheet[] parentsCached;
+  private transient ElementStyleSheet[] parentsCached;
   
   /** Default style sheet cache. */
-  private ElementStyleSheet[] defaultCached;
+  private transient ElementStyleSheet[] defaultCached;
   
   /** Style cache. */
   private transient HashMap styleCache;
@@ -180,6 +180,9 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   
   /** A flag that controls whether or not caching is allowed. */
   private boolean allowCaching;
+
+  /** A stylesheet collection manages all stylesheets of an report. */
+  private StyleSheetCollection collection;
 
   /**
    * Creates a new element style-sheet with the given name.  The style-sheet initially contains
@@ -834,6 +837,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
 
     final ElementStyleSheet elementStyleSheet = (ElementStyleSheet) o;
 
+    if (collection != null ? !collection.equals(elementStyleSheet.collection) : elementStyleSheet.collection != null) return false;
     if (!name.equals(elementStyleSheet.name)) return false;
 
     return true;
@@ -848,6 +852,23 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
    */
   public int hashCode()
   {
-    return name.hashCode();
+    int result;
+    result = name.hashCode();
+    result = 29 * result + (collection != null ? collection.hashCode() : 0);
+    return result;
+  }
+
+  /**
+   * Returns the stylesheet collection for that stylesheet. All StyleSheets on
+   * @return
+   */
+  public StyleSheetCollection getCollection()
+  {
+    return collection;
+  }
+
+  public void setCollection(StyleSheetCollection collection)
+  {
+    this.collection = collection;
   }
 }

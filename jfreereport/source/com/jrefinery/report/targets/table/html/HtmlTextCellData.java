@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.7 2003/05/02 12:40:41 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.8 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -37,11 +37,9 @@
 package com.jrefinery.report.targets.table.html;
 
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
+import java.io.PrintWriter;
 
-import com.jrefinery.report.util.HtmlWriter;
 import com.jrefinery.report.util.LineBreakIterator;
-import com.jrefinery.report.util.Log;
 
 /**
  * A wrapper for text content within the generated HtmlTable.
@@ -78,17 +76,9 @@ public class HtmlTextCellData extends HtmlCellData
    * @param pout the print writer, which receives the generated HTML-Code.
    * @param filesystem not used.
    */
-  public void write(HtmlWriter pout, HtmlFilesystem filesystem)
+  public void write(PrintWriter pout, HtmlFilesystem filesystem)
   {
-    try
-    {
-      printText(pout, value, isUseXHTML());
-    }
-    catch (IOException ioe)
-    {
-      // should not happen
-      Log.warn ("Unexpected I/O-Error", ioe);
-    }
+    printText(pout, value, isUseXHTML());
   }
 
   /**
@@ -108,10 +98,8 @@ public class HtmlTextCellData extends HtmlCellData
    * @param pout the target writer
    * @param text the text that should be printed.
    * @param useXHTML true, if XHTML is generated, false otherwise.
-   * @throws IOException if printing the text failed.
    */
-  public static void printText(HtmlWriter pout, String text, boolean useXHTML)
-    throws IOException
+  public static void printText(PrintWriter pout, String text, boolean useXHTML)
   {
     if (text.length() == 0)
     {
@@ -139,7 +127,7 @@ public class HtmlTextCellData extends HtmlCellData
           pout.println("<br>&nbsp;");
         }
       }
-      HtmlProducer.getEntityParser().encodeEntities(readLine, pout);
+      pout.print(HtmlProducer.getEntityParser().encodeEntities(readLine));
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.12 2003/05/30 16:57:53 taqua Exp $
+ * $Id: ReportWriter.java,v 1.13 2003/06/04 21:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -79,17 +79,6 @@ public class ReportWriter
   
   /** The encoding. */
   private String encoding;
-
-  /**
-   * Creates a new report writer for a report.  The XML encoding defaults to 'UTF-8'.
-   * 
-   * @param report  the report.
-   */
-  public ReportWriter (JFreeReport report)
-  {
-    // all JAXP XML-Parser support at least UTF-8 or UTF-16 encoding.
-    this(report, "UTF-8");
-  }
 
   /**
    * Creates a new report writer for a report.

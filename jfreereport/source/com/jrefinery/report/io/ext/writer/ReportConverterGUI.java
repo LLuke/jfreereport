@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.9 2003/05/06 14:03:21 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.10 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -446,7 +446,7 @@ public class ReportConverterGUI extends JFrame
     try
     {
       Log.debug ("Converting report ...");
-      converter.convertReport(getSourceFile(), getTargetFile());
+      converter.convertReport(getSourceFile(), getTargetFile(), "UTF-16");
       return true;
     }
     catch (Exception e)

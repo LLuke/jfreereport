@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.10 2003/05/11 13:39:20 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.11 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -184,30 +184,6 @@ public class CharacterEntityParser
       }
     }
     return writer.toString();
-  }
-
-  /**
-   * We assume, that both writers access the same stream and that both
-   * of them are unbuffered.
-   *
-   * @param value the string that should be encoded
-   * @param writer the writer which should receive the encoded contents.
-   */
-  public void encodeEntities (String value, HtmlWriter writer)
-  {
-    for (int i = 0; i < value.length(); i++)
-    {
-      String character = String.valueOf (value.charAt(i));
-      String lookup = lookupEntity(character);
-      if (lookup == null)
-      {
-        writer.printEncoded(character);
-      }
-      else
-      {
-        writer.print(lookup);
-      }
-    }
   }
 
   /**

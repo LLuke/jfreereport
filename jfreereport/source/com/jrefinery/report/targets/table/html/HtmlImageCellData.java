@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.6 2003/02/26 16:42:27 mungady Exp $
+ * $Id: HtmlImageCellData.java,v 1.7 2003/04/23 13:43:06 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@ package com.jrefinery.report.targets.table.html;
 
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.util.HtmlWriter;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
 
@@ -82,7 +82,7 @@ public class HtmlImageCellData extends HtmlCellData
    * @param filesystem the HTML-Filesystem used to create the ImageReference.
    * @see HtmlFilesystem#createImageReference
    */
-  public void write(HtmlWriter pout, HtmlFilesystem filesystem)
+  public void write(PrintWriter pout, HtmlFilesystem filesystem)
   {
     try
     {
@@ -99,7 +99,8 @@ public class HtmlImageCellData extends HtmlCellData
         if (image.getSourceURL() != null)
         {
           pout.print("\" alt=\"");
-          HtmlProducer.getEntityParser().encodeEntities(image.getSourceURL().toString(), pout);
+          pout.print
+              (HtmlProducer.getEntityParser().encodeEntities(image.getSourceURL().toString()));
         }
         if (isUseXHTML())
         {

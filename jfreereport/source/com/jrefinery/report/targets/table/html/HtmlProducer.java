@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.29 2003/05/14 22:26:40 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.30 2003/06/10 16:07:55 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +57,6 @@ import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.util.HtmlWriter;
 import org.jfree.io.IOUtils;
 
 /**
@@ -74,7 +74,7 @@ import org.jfree.io.IOUtils;
 public class HtmlProducer extends TableProducer
 {
   /** the printwriter for the main html file. */
-  private HtmlWriter pout;
+  private PrintWriter pout;
 
   /** the cell data factory used for creating the content cells. */
   private HtmlCellDataFactory cellDataFactory;
@@ -179,7 +179,8 @@ public class HtmlProducer extends TableProducer
         = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
     try
     {
-      this.pout = new HtmlWriter(deflaterStream, false, getEncoding());
+      this.pout = new PrintWriter(new OutputStreamWriter
+            (deflaterStream, getEncoding()),false);
     }
     catch (IOException ioe)
     {
@@ -200,7 +201,7 @@ public class HtmlProducer extends TableProducer
     pout.print("<title>");
     pout.flush();
     String title = String.valueOf(getProperty(TITLE, "Untitled report"));
-    pout.printEncoded(getEntityParser().encodeEntities(title));
+    pout.print(getEntityParser().encodeEntities(title));
     pout.println("</title></head>");
     pout.println("<body>");
     pout.flush();
@@ -396,7 +397,7 @@ public class HtmlProducer extends TableProducer
       int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
 
       pout.println("<tr style=\"height:" + lastRowHeight + "pt\">");
-      boolean printed = false;
+//      boolean printed = false;
       for (int x = 0; x < layout.getWidth(); x++)
       {
         TableGridLayout.Element gridElement = layout.getData(x, y);
@@ -406,7 +407,7 @@ public class HtmlProducer extends TableProducer
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
           pout.println("<!-- No Element -->");
           pout.println("<td style=\"width:" + width + "pt\"></td>");
-          printed = true;
+//          printed = true;
           continue;
         }
 
@@ -436,7 +437,7 @@ public class HtmlProducer extends TableProducer
             pout.print(style);
           }
           pout.println("\"></td>");
-          printed = true;
+//          printed = true;
           continue;
         }
 
@@ -499,13 +500,14 @@ public class HtmlProducer extends TableProducer
         pout.println("</td>");
 
         x += gridPosition.getColSpan() - 1;
-        printed = true;
+//        printed = true;
       }
-
+/*
       if (!printed)
       {
         //Log.debug ("The Row at " + y + " was not printed");
       }
+*/
       pout.println("</tr>");
     }
   }

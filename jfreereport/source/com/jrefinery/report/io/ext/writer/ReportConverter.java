@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.14 2003/05/11 13:39:17 taqua Exp $
+ * $Id: ReportConverter.java,v 1.15 2003/06/01 17:39:27 taqua Exp $
  *
  * Changes
  * -------
@@ -38,25 +38,27 @@
 
 package com.jrefinery.report.io.ext.writer;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.io.OutputStream;
 import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
 import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
-import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
 import com.jrefinery.report.io.ext.factory.objects.BandLayoutClassFactory;
+import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.DefaultStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection;
 import com.jrefinery.report.util.Log;
-import org.jfree.xml.factory.objects.URLClassFactory;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
+import org.jfree.xml.factory.objects.URLClassFactory;
 
 /**
  * A utility class for converting XML report definitions from the old format to the 
@@ -84,14 +86,14 @@ public class ReportConverter
    * @throws ReportWriterException if there were problems while serializing
    * the report definition.
    */
-  public void write (JFreeReport report, Writer w, URL contentBase)
+  public void write (JFreeReport report, Writer w, URL contentBase, String encoding)
     throws IOException, ReportWriterException
   {
     if (contentBase == null)
     {
       throw new NullPointerException("ContentBase is null");
     }
-    ReportWriter writer = new ReportWriter(report);
+    ReportWriter writer = new ReportWriter(report, encoding);
     writer.addClassFactoryFactory(new URLClassFactory ());
     writer.addClassFactoryFactory(new DefaultClassFactory());
     writer.addClassFactoryFactory(new BandLayoutClassFactory());
@@ -164,7 +166,7 @@ public class ReportConverter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport (String inName, String outFile)
+  public void convertReport (String inName, String outFile, String encoding)
     throws IOException, ReportWriterException
   {
     URL reportURL = findReport(inName);
@@ -173,10 +175,19 @@ public class ReportConverter
       throw new IOException("The specified report definition was not found");
     }
     File out = new File (outFile);
-    Writer w = new BufferedWriter(new FileWriter(out));
+    OutputStream base = null;
+/*    if (encoding.equalsIgnoreCase("UTF-16"))
+    {
+      base = new UTF16FilterStream(new FileOutputStream(out));
+    }
+    else*/
+    {
+      base = new FileOutputStream(out);
+    }
+    Writer w = new BufferedWriter(new OutputStreamWriter (base, encoding));
     try
     {
-      convertReport(reportURL, out.toURL(), w);
+      convertReport(reportURL, out.toURL(), w, encoding);
     }
     finally
     {
@@ -194,12 +205,14 @@ public class ReportConverter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport (File in, File out) throws IOException, ReportWriterException
+  public void convertReport (File in, File out, String encoding) throws IOException, ReportWriterException
   {
-    Writer w = new BufferedWriter (new FileWriter(out));
+    OutputStream base = new FileOutputStream(out);
+    Writer w = new BufferedWriter
+        (new OutputStreamWriter(base, encoding));
     try
     {
-      convertReport(in.toURL(), out.toURL(), w);
+      convertReport(in.toURL(), out.toURL(), w, encoding);
     }
     finally
     {
@@ -218,10 +231,10 @@ public class ReportConverter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport (URL in, URL contentBase, Writer w) throws IOException, ReportWriterException
+  public void convertReport (URL in, URL contentBase, Writer w, String encoding) throws IOException, ReportWriterException
   {
     JFreeReport report = parseReport(in);
-    write(report, w, contentBase);
+    write(report, w, contentBase, encoding);
     w.flush();
   }
 
@@ -244,6 +257,6 @@ public class ReportConverter
       System.exit(1);
     }
     ReportConverter converter = new ReportConverter();
-    converter.convertReport(args[0], args[1]);
+    converter.convertReport(args[0], args[1], "UTF-16");
   }
 }
