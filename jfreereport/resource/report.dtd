@@ -12,6 +12,8 @@
   2002-07-17: Updated missing attributes in Image* tags
   2002-09-16: Removed BASELINE attribute from font definition, fixed Orientation-attribute declaration,
               Bands can have a default font declaration
+  2002-10-16: All textelements have now a "dynamic" attribute which defaults to false
+  
  -->
 
 <!ENTITY % boolean
@@ -290,6 +292,7 @@
   %position;
   %fontdef;
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!--
@@ -302,6 +305,7 @@
   %position;
   %fontdef;
   fieldname   CDATA    #REQUIRED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!--
@@ -314,6 +318,7 @@
   %fontdef;
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!--
@@ -326,6 +331,7 @@
   %fontdef;
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!ELEMENT number-field   EMPTY>
@@ -336,6 +342,7 @@
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!ELEMENT date-field   EMPTY>
@@ -346,6 +353,7 @@
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!--
@@ -363,11 +371,12 @@
   %fontdef;
   function    CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!--
 
-  @0.7.2 This on is not yet implemented. Next Release.
+  DEPRECATED - use the String-function instead
    ->    Removed, all TextElements support LineBreaks, there no need for a special function
          anymore
 
@@ -378,6 +387,7 @@
   %fontdef;
   function    CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
   -->
 
@@ -389,6 +399,7 @@
   function    CDATA    #REQUIRED
   format		  CDATA    #IMPLIED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!ELEMENT date-function   EMPTY>
@@ -399,6 +410,7 @@
   function    CDATA    #REQUIRED
   format		  CDATA    #IMPLIED
   nullstring  CDATA    #IMPLIED
+  dynamic     (%boolean;)   #IMPLIED
 >
 
 <!--
@@ -412,6 +424,7 @@
   %position;
   %fontdef;
   function    CDATA #REQUIRED
+  dynamic     (%boolean;)   #IMPLIED
 >
 -->
 <!--

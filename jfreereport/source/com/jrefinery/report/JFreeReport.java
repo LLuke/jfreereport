@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.28 2002/09/13 15:38:04 mungady Exp $
+ * $Id: JFreeReport.java,v 1.29 2002/10/15 20:37:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -728,7 +728,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       state = new StartState((FinishState) state, level);
     }
 
-    // part 2: Print the complete report in DummyMode
+    // part 2: Print the complete report in DummyMode(do the layouting)
     ReportStateList pageStates = new ReportStateList (state.getReport(), output);
 
     while (!state.isFinish ())

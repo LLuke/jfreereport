@@ -430,7 +430,7 @@ public class DataRowBackend implements Cloneable
         return i;
       }
     }
-    Log.debug ("No Such Column _ " + name );
+    Log.warn ("No Such Column: " + name );
     return -1;
   }
 
@@ -458,11 +458,10 @@ public class DataRowBackend implements Cloneable
     else
     {
       col -= getTableEndIndex();
-      Log.debug ("Requesting Column: " + col + " from Functions");
       Expression f = getFunctions().getExpression(col);
       if (f == null)
       {
-        Log.debug("No such function " + col);
+        Log.warn ("No such function: " + col);
         return null;
       }
       return f.getName();

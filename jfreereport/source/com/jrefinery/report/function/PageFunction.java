@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.4 2002/06/05 23:21:47 mungady Exp $
+ * $Id: PageFunction.java,v 1.5 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,9 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.Group;
+import com.jrefinery.report.states.ReportState;
 
 /**
  * A report function that counts pages.
@@ -81,7 +84,40 @@ public class PageFunction extends AbstractFunction
    */
   public void pageStarted (ReportEvent event)
   {
-    this.page = event.getState ().getCurrentPage ();
+    this.setPage(getPage() + 1);
+  }
+
+  /**
+   * Receives notification that a group has started.
+   * <P>
+   * Maps the groupStarted-method to the legacy function startGroup (int).
+   *
+   * @param event Information about the event.
+   */
+  public void groupStarted(ReportEvent event)
+  {
+    if (getGroup() == null) return;
+
+    JFreeReport report = event.getReport ();
+    ReportState state = event.getState ();
+    Group group = report.getGroup (state.getCurrentGroupIndex ());
+    if (getGroup ().equals (group.getName ()))
+    {
+      this.setPage(getStartPage());
+    }
+  }
+
+  /**
+   * Receives notification that the report has started.
+   * <P>
+   * Maps the reportStarted-method to the legacy function startReport ().
+   *
+   * @param event Information about the event.
+   */
+  public void reportStarted(ReportEvent event)
+  {
+    // ReportStartEvent is called before any PageStartEvent, so we are BEFORE the first page
+    this.setPage(getStartPage() - 1);
   }
 
   /**
@@ -91,7 +127,49 @@ public class PageFunction extends AbstractFunction
    */
   public Object getValue ()
   {
-    return new Integer (page);
+    return new Integer (getPage());
   }
 
+  /**
+   * Checks that the function has been correctly initialized.  If there is a problem, this method
+   * throws a FunctionInitializeException.
+   * <P>
+   * The default implementation checks that the function name is not null, and calls the
+   * isInitialized() method (now deprecated).
+   *
+   * @throws FunctionInitializeException if the function name is not set or the call to
+   * isInitialized returns false.
+   */
+  public void initialize() throws FunctionInitializeException
+  {
+    super.initialize();
+    try
+    {
+      getStartPage();
+    }
+    catch (Exception e)
+    {
+      throw new FunctionInitializeException(e.getMessage());
+    }
+  }
+
+  public String getGroup ()
+  {
+    return getProperty("group");
+  }
+
+  public int getStartPage ()
+  {
+    return Integer.parseInt(getProperty("start", "1"));
+  }
+
+  public int getPage()
+  {
+    return page;
+  }
+
+  public void setPage(int page)
+  {
+    this.page = page;
+  }
 }

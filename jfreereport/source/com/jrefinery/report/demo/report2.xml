@@ -32,7 +32,7 @@
     <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="italic" fontsize="9">
         <line name="line2" x1="0" y1="4" x2="0" y2="4" weight="0.5"></line>
         <date-function name="date1" function="Date" format="d-MMM-yyyy" x="0" y="4" width="100" height="18" alignment="left"></date-function>
-        <number-function name="pagenum1" function="PageNumber" format="Page 0" x="0" y="4" width="100%" height="18" alignment="right"></number-function>
+        <string-function name="pagenum1" function="pageXofY" x="0" y="4" width="100%" height="18" alignment="right"></string-function>
     </pagefooter>
 
     <!-- GROUPS -->
@@ -101,13 +101,12 @@
     <!-- FUNCTIONS -->
     <functions>
 	<data-ref name="Integer" class="java.lang.Object"/>
-        <function name="Date" class="com.jrefinery.report.function.ReportPropertyFunction">
+   <function name="Date" class="com.jrefinery.report.function.ReportPropertyFunction">
 			<properties>
 				<property name="reportProperty">report.date</property>
 			</properties>
 		</function>
-        <function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
-        <function name="Count1" class="com.jrefinery.report.function.ItemCountFunction">
+  <function name="Count1" class="com.jrefinery.report.function.ItemCountFunction">
 			<properties>
 				<property name="group">Color Group</property>
 			</properties>
@@ -130,6 +129,16 @@
 				<property name="group">Letter Group</property>
 			</properties>
 		</function>
+
+  <function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
+  <function name="PageTotal" class="com.jrefinery.report.function.PageTotalFunction"/>
+    <expression name="pageXofY" class="com.jrefinery.report.function.TextFormatExpression">
+      <properties>
+        <property name="pattern">Page {0} of {1}</property>
+        <property name="0">PageNumber</property>
+        <property name="1">PageTotal</property>
+      </properties>
+    </expression>
 
     </functions>
 

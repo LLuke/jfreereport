@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.18 2002/08/31 14:00:22 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.19 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -219,7 +219,7 @@ public class ItemSumFunction extends AbstractFunction
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    Object fieldValue = event.getDataRow ().get (getField ());
+    Object fieldValue = getDataRow ().get (getField ());
     datasource.setValue (fieldValue);
     Number n = (Number) parser.getValue ();
     try

@@ -105,6 +105,7 @@ public class ElementFactory extends DefaultHandler
   /** The text element format string. */
   private String textElementFormatString;
 
+  private boolean textElementDynamic;
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
    * and will add created element to this band. If unknown end-Tags are encountered, the
@@ -663,6 +664,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         getCurrentText());
 
+    te.setDynamic(textElementDynamic);
     clearCurrentText();
     getCurrentBand().addElement(te);
   }
@@ -744,6 +746,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -761,6 +764,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -778,6 +782,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -796,6 +801,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -814,6 +820,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -832,6 +839,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -849,6 +857,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -867,6 +876,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    te.setDynamic(textElementDynamic);
     getCurrentBand().addElement(te);
   }
 
@@ -885,6 +895,7 @@ public class ElementFactory extends DefaultHandler
     textElementFont = fontFactory.createFont(atts);
     textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), TextElement.LEFT);
     textElementColor = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    textElementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
   }
 
   /**

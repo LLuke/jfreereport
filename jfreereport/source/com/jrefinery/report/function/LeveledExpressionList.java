@@ -10,8 +10,8 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.LevelList;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.DataRow;
 
@@ -249,7 +249,6 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       while (itLevel.hasNext())
       {
         Function f = (Function) itLevel.next();
-        Log.debug ("Function: " + f + " informed that the group started on index: " + event.getState().getCurrentDisplayItem());
         f.groupStarted(event);
       }
     }
@@ -384,15 +383,13 @@ public class LeveledExpressionList implements ReportListener, Cloneable
           {
             e.getValue();
           }
-          Log.debug("Activated Expression");
         }
         catch (Exception ex)
         {
-          Log.debug ("Activating expression failed", ex);
+          Log.warn ("Activating expression failed", ex);
         }
       }
     }
-    Log.debug ("Finished with Reactivate Expressions");
   }
 
   /**
@@ -415,6 +412,11 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       Expression f = (Expression) expressionList.get(i);
       f.setDataRow(dr);
     }
+    for (int i = 0; i < functionList.size(); i++)
+    {
+      Expression f = (Expression) functionList.get(i);
+      f.setDataRow(dr);
+    }
   }
 
   /**
@@ -432,6 +434,11 @@ public class LeveledExpressionList implements ReportListener, Cloneable
     for (int i = 0; i < expressionList.size(); i++)
     {
       Expression f = (Expression) expressionList.get(i);
+      f.setDataRow(null);
+    }
+    for (int i = 0; i < functionList.size(); i++)
+    {
+      Expression f = (Expression) functionList.get(i);
       f.setDataRow(null);
     }
   }
@@ -597,7 +604,6 @@ public class LeveledExpressionList implements ReportListener, Cloneable
 
   public Expression getExpression (int index)
   {
-    Log.debug ("Index On GET: " + index +  " ->  " + functionList.size());
     if (index < functionList.size())
     {
       return ((Expression) functionList.get(index));

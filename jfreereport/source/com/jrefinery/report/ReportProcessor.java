@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessor.java,v 1.13 2002/09/13 15:38:04 mungady Exp $
+ * $Id: ReportProcessor.java,v 1.14 2002/10/15 20:37:13 taqua Exp $
  *
  * Changes
  * -------
@@ -315,7 +315,6 @@ public class ReportProcessor implements JFreeReportConstants
 
     if (cursor.isSpaceFor (band.getHeight ()) == false)
     {
-      Log.debug ("Is no space for band " + band + " - Cursor: " + cursor);
       setPageDone ();
       return false;
     }
