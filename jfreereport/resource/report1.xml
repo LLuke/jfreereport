@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
-	<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+        <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
 <report name="Sample Report 1" width="468" height="648">
 
     <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="20">
-        <label name="Label 1" x="0" y="0" width="450" height="24" alignment="center" baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
+        <label name="Label 1" x="0" y="0" width="0" height="24" alignment="center" baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
     </reportheader>
 
     <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
@@ -13,8 +13,8 @@
         <label name="Label 2" x="0" y="0" width="450" height="24" alignment="center">*** END OF REPORT ***</label>
     </reportfooter>
 
-    <pageheader height="18" fontname="Serif" fontstyle="bold" fontsize="12">
-        <label name="Label 3" x="0" y="0" width="450" height="14" alignment="right">List of Countries by Continent</label>
+    <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
+        <date-function name="date1" x="0" y="0" width="0" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="report_date"/>
         <line name="line1" x1="0" y1="16" x2="0" y2="16" weight="0.5"/>
     </pageheader>
 
@@ -31,7 +31,7 @@
             </groupheader>
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
                 <label name="Label 6" x="0" y="0" width="450" height="12" alignment="left" baseline="10">Population:</label>
-                <number-function x="240" y="0" width="76" height="8" alignment="right" baseline="10" format="#,##0" function="sum"/>
+                <number-function x="260" y="0" width="76" height="12" alignment="right" baseline="10" format="#,##0" function="sum"/>
             </groupfooter>
             <fields>
                  <field>Continent</field>
@@ -42,15 +42,20 @@
     <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
         <string-field name="Country Element" x="0" y="0" width="76" height="8" alignment="left" fieldname="Country" />
         <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
-        <number-field name="Population Element" x="240" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
+        <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
     </items>
 
     <functions>
+      <function name="report_date" class="com.jrefinery.report.function.ReportPropertyFunction">
+        <properties>
+          <property name="reportProperty">report.date</property>
+        </properties>
+      </function>
       <function name="sum" class="com.jrefinery.report.function.ItemSumFunction">
-			  <properties>
-				  <property name="field">Population</property>
-					<property name="group">Continent Group</property>
-				</properties>
-			</function>
+        <properties>
+          <property name="field">Population</property>
+          <property name="group">Continent Group</property>
+        </properties>
+      </function>
     </functions>
 </report>
