@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.52 2003/06/01 17:39:23 taqua Exp $
+ * $Id: JFreeReport.java,v 1.53 2003/06/15 19:05:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -80,6 +80,7 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.util.SerializerHelper;
+import com.jrefinery.report.targets.style.StyleSheetCollection;
 
 /**
  * This class co-ordinates the process of generating a report from a <code>TableModel</code>.  
@@ -773,4 +774,5 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     in.defaultReadObject ();
     defaultPageFormat = (PageFormat) SerializerHelper.getInstance().readObject(in);
   }
+
 }

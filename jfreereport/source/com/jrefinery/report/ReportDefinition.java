@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.4 2003/06/15 19:05:41 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.5 2003/06/15 21:26:29 taqua Exp $
  *
  * Changes
  * -------
@@ -277,25 +277,6 @@ public class ReportDefinition implements Cloneable
   }
 
   /**
-   * Collects styles from all the bands in the report.
-   */
-  protected void collectStyles ()
-  {
-    collectStylesFromBand(getReportHeader());
-    collectStylesFromBand(getReportFooter());
-    collectStylesFromBand(getPageHeader());
-    collectStylesFromBand(getPageFooter());
-    collectStylesFromBand(getItemBand());
-    for (int i = 0; i < getGroupCount(); i++)
-    {
-      Group g = getGroup(i);
-      collectStylesFromBand(g.getHeader());
-      collectStylesFromBand(g.getFooter());
-    }
-
-  }
-
-  /**
    * Collects the styles from a band.
    *
    * @param band  the band.
@@ -316,6 +297,25 @@ public class ReportDefinition implements Cloneable
       {
         styleSheetCollection.updateStyleSheet(elements[i].getStyle());
       }
+    }
+
+  }
+
+  /**
+   * Collects styles from all the bands in the report.
+   */
+  protected void collectStyles ()
+  {
+    collectStylesFromBand(getReportHeader());
+    collectStylesFromBand(getReportFooter());
+    collectStylesFromBand(getPageHeader());
+    collectStylesFromBand(getPageFooter());
+    collectStylesFromBand(getItemBand());
+    for (int i = 0; i < getGroupCount(); i++)
+    {
+      Group g = getGroup(i);
+      collectStylesFromBand(g.getHeader());
+      collectStylesFromBand(g.getFooter());
     }
 
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.9 2003/04/09 16:15:44 mungady Exp $
+ * $Id: ShapeTransform.java,v 1.10 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes
  * -------
@@ -111,11 +111,27 @@ public class ShapeTransform
         return af.createTransformedShape(s);
       }
     }
-
-    Rectangle2D rect = s.getBounds2D();
-    rect.setRect(rect.getX(), rect.getY(), dim.getWidth(), dim.getHeight());
     Area a = new Area (s);
-    a.intersect(new Area (rect));
+    if (a.isEmpty())
+    {
+      // don't clip  ... Area does not like lines
+      // operations with lines always result in an empty Bounds:(0,0,0,0) area
+      //
+      // there is no trivial workaround known ...
+      // except by reimplementing the clipping, and this is not a option - never!
+      return s;
+    }
+
+
+    // mask everything outside of the clipping area
+    Rectangle2D shape = s.getBounds2D();
+    Rectangle2D clip = new Rectangle2D.Double (shape.getX(),
+        shape.getY(), dim.getWidth(), dim.getHeight());
+
+    Area clipArea = new Area (clip);
+    clipArea.subtract(new Area (clip.createIntersection(shape)));
+
+    a.subtract(new Area (clipArea));
     return a;
   }
 }

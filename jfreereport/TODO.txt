@@ -16,3 +16,4 @@
 * Formated Text support for printing (RTF, HTML)
 * Implement JFreeChart adapter and Barcode stuff
 * Allow access to the last datarow to make reporting results available outside.
+* Modularize JFreeReport to create a lightweight package (a 700 kb jar is huge!)

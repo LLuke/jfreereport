@@ -60,7 +60,7 @@ A list of changes in recent versions:
         * The reference document generator now also generates documentation for the
           DataSource factories.
 
-        * The XML parser now prints the location of the parse error on all exceptions.
+        * The XML parser now prints the location of the parse error on all exceptions.l 
 
 0.8.3a : (04-Jun-2003)
         * BugFix: Serialization works again. All functions are serializable
