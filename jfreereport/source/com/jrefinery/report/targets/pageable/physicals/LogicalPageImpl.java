@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
- * LogicalPage.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * --------------------
+ * LogicalPageImpl.java
+ * --------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: LogicalPageImpl.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: LogicalPageImpl.java,v 1.2 2002/12/02 20:43:20 taqua Exp $
  *
  * Changes
  * -------
+ * 04-Dec-2002 : Added Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.physicals;
 
 import com.jrefinery.report.Band;
@@ -52,22 +58,45 @@ import java.util.List;
 /**
  * A simple logical page implementation ... does work with a single physical page
  * and is not yet able to distribute its contents ...
+ *
+ * @author Thomas Morgner
  */
 public class LogicalPageImpl implements LogicalPage
 {
+  /** The output target. */
   private OutputTarget outputTarget;
+  
+  /** An array of physical pages. */
   private PhysicalPage[] physicalPage;
+  
+  /** The physical page width. */
   private int physicalPageWidth;
+  
+  /** The logical page format. */
   private PageFormat pageFormat;
+  
+  /** The physical page format. */
   private PageFormat physicalPageFormat;
 
+  /** A flag that indicates whether or not the logical page is closed. */
   private boolean closed;
 
+  /**
+   * Creates a new logical page.
+   *
+   * @param format  the page format.
+   */
   public LogicalPageImpl(PageFormat format)
   {
     this(format, format);
   }
 
+  /**
+   * Creates a new logical page.
+   *
+   * @param log  the logical page format.
+   * @param phys  the physical page format.
+   */
   public LogicalPageImpl(PageFormat log, PageFormat phys)
   {
     closed = false;
@@ -89,10 +118,21 @@ public class LogicalPageImpl implements LogicalPage
     physicalPageWidth = y;
     for (int i = 0; i < physicalPage.length; i++)
     {
-      physicalPage[i] = new PhysicalPage(phys, new Rectangle2D.Double(0,0, phys.getImageableWidth(), phys.getImageableHeight()));
+      physicalPage[i] = new PhysicalPage(phys, 
+                                         new Rectangle2D.Double(0, 0, 
+                                                                phys.getImageableWidth(), 
+                                                                phys.getImageableHeight()));
     }
   }
 
+  /**
+   * Returns the physical page at a particular row and column.
+   *
+   * @param x ??.
+   * @param y ??.
+   *
+   * @return the physical page.
+   */
   public PhysicalPage getPhysicalPage(int x, int y)
   {
     return physicalPage[y * physicalPageWidth + x];
@@ -110,7 +150,7 @@ public class LogicalPageImpl implements LogicalPage
   }
 
   /**
-   * Returns the page format for the target.
+   * Returns the logical page format.
    *
    * @return the page format.
    */
@@ -120,25 +160,41 @@ public class LogicalPageImpl implements LogicalPage
   }
 
   /**
-   * Sets the page format for the target.
+   * Sets the logical page format.
    *
-   * @param format  the page format.
+   * @param format  the page format (null not permitted).
    */
   public void setPageFormat(PageFormat format)
   {
-    if (format == null) throw new NullPointerException();
+    if (format == null) 
+    {
+      throw new NullPointerException();
+    }
     this.pageFormat = format;
   }
 
+  /**
+   * Returns the physical page format.
+   *
+   * @return the page format.
+   */
   public PageFormat getPhysicalPageFormat()
   {
     return physicalPageFormat;
   }
 
-  public void setPhysicalPageFormat(PageFormat physicalPageFormat)
+  /**
+   * Sets the physical page format.
+   *
+   * @param format  the page format.
+   */
+  public void setPhysicalPageFormat(PageFormat format)
   {
-    if (physicalPageFormat == null) throw new NullPointerException();
-    this.physicalPageFormat = physicalPageFormat;
+    if (format == null) 
+    {
+      throw new NullPointerException();
+    }
+    this.physicalPageFormat = format;
   }
 
   /**

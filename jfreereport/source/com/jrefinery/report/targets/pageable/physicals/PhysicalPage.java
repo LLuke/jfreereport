@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,12 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * -----------------
  * PhysicalPage.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: PhysicalPage.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,23 +43,36 @@ import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.util.ArrayList;
 
+/**
+ * Represents a physical page.
+ * <p>
+ * Here comes the last step of production, the bands are transfered from the Logical page
+ * to the physical page.  That page does not know anything specific about bandtypes and how to 
+ * handle them, is just able to print all that is fed into the page and that's it.
+ *
+ * It will not decide when to make a pagebreak, logical page is responsible for that.
+ * It is a simple operation container ...
+ *
+ * @author Thomas Morgner.
+ */
 public class PhysicalPage
 {
-  // here comes the last step of production, the bands are transfered from the Logical page
-  // to the physical page.
-  // that page does not know anything specific about bandtypes and how to handle them, is just
-  // able to print all that is fed into the page and that's it.
-
-  // will not decide when to make a pagebreak, logical page is responsible for that.
-  // is a simple operation container ...
-  //
+  /** Storage for band operations. */
   private ArrayList bandOperations;
 
+  /** The physical page format. */
   private PageFormat pageFormat;
+  
+  /** The bounds. */
   private Rectangle2D bounds;
 
   /**
-   * PageFormat from OT, bounds define the position in the global context
+   * Creates a new physical page.
+   * <p>
+   * PageFormat from OutputTarget, bounds define the position in the global context.
+   *
+   * @param pf  the page format.
+   * @param bounds  the bounds.
    */
   public PhysicalPage(PageFormat pf, Rectangle2D bounds)
   {
@@ -65,11 +81,22 @@ public class PhysicalPage
     this.bounds = bounds;
   }
 
+  /** 
+   * Adds an operation to the page.
+   *
+   * @param op  the operation.
+   */
   public void addOperation(PhysicalOperation op)
   {
     bandOperations.add(op);
   }
 
+  /**
+   * Writes the page to an output target.
+   * 
+   * @param ot  the output target.
+   *
+   */
   public void write(OutputTarget ot) throws OutputTargetException
   {
 //    Log.debug ("------------------------------- BEGIN ----------------------------");

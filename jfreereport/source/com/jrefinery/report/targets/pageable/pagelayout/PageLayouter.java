@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * -----------------
  * PageLayouter.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: PageLayouter.java,v 1.1 2002/12/02 17:57:05 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: PageLayouter.java,v 1.2 2002/12/02 20:43:17 taqua Exp $
  *
  * Changes
  * -------
+ * 04-Dec-2002 : Added Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.JFreeReport;
@@ -42,7 +48,9 @@ import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.util.Log;
 
 /**
- * Paginating is to be done here, Layouting of course too
+ * An abstract base class that is used to lay out a report.
+ * 
+ * @author Thomas Morgner
  */
 public abstract class PageLayouter extends AbstractFunction
 {
@@ -213,31 +221,37 @@ public abstract class PageLayouter extends AbstractFunction
     this.depLevel = deplevel;
   }
 
+  /**
+   * Returns the 'layout prepare' function.
+   * <p>
+   * This method returns <code>null</code>.
+   *
+   * @return null.
+   */
   public LayoutPrepareFunction getPrepareLayoutFunction ()
   {
     return null;
   }
 
   /**
-   * Returns a clone of the function.
+   * Returns a clone of the PageLayouter.
    * <P>
    * Be aware, this does not create a deep copy. If you have complex
    * strucures contained in objects, you have to overwrite this function.
    *
-   * @return A clone of the function.
+   * @return a clone of the function.
    *
    * @throws java.lang.CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {
-    //new Exception().printStackTrace();
     return super.clone();
   }
 
   /**
-   * A detector whether the last pagebreak was a manual pagebreak or an automatic one
+   * A detector whether the last pagebreak was a manual pagebreak or an automatic one.
    *
-   * @return
+   * @return true or false.
    */
   public abstract boolean isManualPageBreak ();
 }

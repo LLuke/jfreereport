@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,12 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * -----------------------
  * SimplePageLayouter.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -----------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: SimplePageLayouter.java,v 1.1 2002/12/02 17:57:06 taqua Exp $
  *
  * Changes
  * -------
@@ -53,13 +56,23 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * The old behaviour, simple and straightforward.
+ * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport, 
+ * simple and straightforward.
+ *
+ * @author Thomas Morgner
  */
 public class SimplePageLayouter extends PageLayouter
 {
+  /** A useful constant. */
   private boolean ENDPAGE_FORCED = true;
+  
+  /** A useful constant. */
   private boolean ENDPAGE_REQUESTED = false;
+  
+  /** A flag that indicates if the report state is currently inside the item group. */
   private boolean isInItemGroup;
+  
+  /** A flag that indicates if ??. */
   private boolean isLastPageBreak;
 
   protected static class SimpleLayoutManagerState extends PageLayouter.LayoutManagerState
@@ -97,6 +110,9 @@ public class SimplePageLayouter extends PageLayouter
   private SimpleLayoutManagerState state;
   private Spool spooledBand;
 
+  /**
+   * Creates a new page layouter.
+   */
   public SimplePageLayouter()
   {
     setName("Layout");

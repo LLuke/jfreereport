@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,21 +20,36 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * --------------------------
  * LayoutPrepareFunction.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * --------------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: LayoutPrepareFunction.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
  *
  * Changes
  * -------
+ * 04-Dec-2002 : Added Javadocs (DG);
+ *
  */
 package com.jrefinery.report.targets.pageable.physicals;
 
 import com.jrefinery.report.function.Function;
 
+/**
+ * An interface for a layout prepare function.
+ *
+ * @author Thomas Morgner
+ */
 public interface LayoutPrepareFunction extends Function
 {
+  /**
+   * Returns the layout prepare function. 
+   *
+   * @return the layout prepare function.
+   */
   public LayoutPrepareFunction getPrepareFunction();
 }
