@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceGenerator.java,v 1.6 2003/06/29 16:59:25 taqua Exp $
+ * $Id: DataSourceReferenceGenerator.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -56,8 +56,7 @@ import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceF
 public final class DataSourceReferenceGenerator
 {
   /** The report definition file. */
-  private static final String REFERENCE_REPORT =
-      "/org/jfree/report/io/ext/factory/datasource/DataSourceReferenceReport.xml";
+  private static final String REFERENCE_REPORT = "DataSourceReferenceReport.xml";
 
   /**
    * DefaultConstructor.
@@ -88,7 +87,7 @@ public final class DataSourceReferenceGenerator
   public static void main(final String[] args)
   {
     final ReportGenerator gen = ReportGenerator.getInstance();
-    final URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
+    final URL reportURL = DataSourceReferenceGenerator.class.getResource(REFERENCE_REPORT);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");

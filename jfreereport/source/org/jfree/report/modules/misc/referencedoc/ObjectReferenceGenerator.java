@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -58,8 +58,7 @@ import org.jfree.xml.factory.objects.ClassFactoryCollector;
 public final class ObjectReferenceGenerator
 {
   /** The report definition. */
-  private static final String REFERENCE_REPORT =
-      "/org/jfree/report/io/ext/factory/objects/ObjectReferenceReport.xml";
+  private static final String REFERENCE_REPORT = "ObjectReferenceReport.xml";
 
   /**
    * DefaultConstructor.
@@ -93,7 +92,7 @@ public final class ObjectReferenceGenerator
   {
 
     final ReportGenerator gen = ReportGenerator.getInstance();
-    final URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
+    final URL reportURL = ObjectReferenceGenerator.class.getResource(REFERENCE_REPORT);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");

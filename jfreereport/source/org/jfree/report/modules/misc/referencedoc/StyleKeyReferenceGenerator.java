@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceGenerator.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: StyleKeyReferenceGenerator.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -57,8 +57,7 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryColle
 public final class StyleKeyReferenceGenerator
 {
   /** The report definition file. */
-  private static final String REFERENCE_REPORT =
-      "/org/jfree/report/io/ext/factory/stylekey/StyleKeyReferenceReport.xml";
+  private static final String REFERENCE_REPORT = "StyleKeyReferenceReport.xml";
 
   /**
    * DefaultConstructor.
@@ -91,7 +90,7 @@ public final class StyleKeyReferenceGenerator
   {
 
     final ReportGenerator gen = ReportGenerator.getInstance();
-    final URL reportURL = gen.getClass().getResource(REFERENCE_REPORT);
+    final URL reportURL = StyleKeyReferenceGenerator.class.getResource(REFERENCE_REPORT);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");
