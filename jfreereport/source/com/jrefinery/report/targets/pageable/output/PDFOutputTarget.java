@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * PDFOutputTarget.java
  * --------------------
- * (C)opyright 2002, 2003, by Simba Management Limited.and Contributors;
+ * (C)opyright 2002, 2003, by Object Refinery Limited.and Contributors;
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.37 2003/05/14 22:26:39 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.38 2003/05/23 20:12:15 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@
  * 13-Sep-2002 : Removed caching of fonts for FontFactory as it causes OutOfMemoryErrors when a huge
  *               font collection is used
  * 04-Nov-2002 : BugFix: PDFFonts need caching on setFont() or OutOfMemoryErrors occur
+ * 29-May-2003 : Turned off alpha encoding for PNG images, see bug ID 744941 (DG);
  */
 
 package com.jrefinery.report.targets.pageable.output;
@@ -315,7 +316,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws an Image from this imageReference. The image is directly embedded into the
+   * Draws an image from this {@link ImageReference}. The image is directly embedded into the
    * pdf file to provide the best scaling support.
    *
    * @param imageRef  the image reference.
@@ -408,8 +409,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       // since version 0.99 iText supports Alpha-PNGs
       WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
       obs.waitImageLoaded();
-
-      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.ENCODE_ALPHA,
+ 
+      PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.NO_ALPHA,
                                           PngEncoder.FILTER_NONE, 9);
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);
