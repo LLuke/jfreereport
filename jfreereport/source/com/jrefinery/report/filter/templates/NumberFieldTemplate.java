@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:35:22 PM
  *
- * $Id$
+ * $Id: NumberFieldTemplate.java,v 1.1 2003/01/14 21:05:20 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
@@ -12,7 +12,7 @@ import com.jrefinery.report.filter.StringFilter;
 
 import java.text.DecimalFormat;
 
-public class NumberFieldTemplate
+public class NumberFieldTemplate extends AbstractTemplate
 {
   private DecimalFormatFilter decimalFormatFilter;
   private DataRowDataSource dataRowDataSource;

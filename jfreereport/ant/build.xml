@@ -25,6 +25,7 @@
         <property name="iText-jar" value="${basedir}/lib/iText-0.96.jar" />
         <property name="JCommon-jar" value="${basedir}/lib/jcommon-0.7.1.jar" />
         <property name="Pixie-jar" value="${basedir}/lib/pixie.jar" />
+        <property name="POI-jar" value="${basedir}/lib/jakarta-poi-1.5.1-final-20020615.jar" />
 
         <path id="build.classpath">
             <pathelement location="${BeanShell-jar}" />
@@ -32,6 +33,7 @@
             <pathelement location="${iText-jar}" />
             <pathelement location="${JCommon-jar}" />
             <pathelement location="${Pixie-jar}" />
+            <pathelement location="${POI-jar}" />
         </path>
 
     </target>
@@ -111,7 +113,7 @@
 	     includes="com/jrefinery/report/demo/**">
             <manifest>
                 <attribute name="Main-Class" value="com.jrefinery.report.demo.JFreeReportDemo" />
-                <attribute name="Class-Path" value="${jfreereport.name}-${jfreereport.version}.jar ${jfreereport.name}-${jfreereport.version}-demo.jar lib/gnujaxp.jar lib/iText-0.96.jar lib/jcommon-0.7.1.jar lib/pixie.jar lib/bsh-1.2b6.jar"/>
+                <attribute name="Class-Path" value="${jfreereport.name}-${jfreereport.version}.jar ${jfreereport.name}-${jfreereport.version}-demo.jar lib/gnujaxp.jar lib/iText-0.96.jar lib/jcommon-0.7.1.jar lib/pixie.jar lib/bsh-1.2b6.jar lib/jakarta-poi-1.5.1-final-20020615.jar"/>
             </manifest> 
         </jar>
         

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.23 2002/12/10 16:09:29 mungady Exp $
+ * $Id: ItemFactory.java,v 1.24 2002/12/10 21:04:16 taqua Exp $
  *
  * Changes
  * -------
@@ -46,19 +46,22 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.DataRowDataSource;
+import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DateFormatFilter;
-import com.jrefinery.report.filter.DecimalFormatFilter;
-import com.jrefinery.report.filter.ImageLoadFilter;
-import com.jrefinery.report.filter.ImageRefFilter;
 import com.jrefinery.report.filter.NumberFormatFilter;
-import com.jrefinery.report.filter.SimpleDateFormatFilter;
 import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.filter.URLFilter;
+import com.jrefinery.report.filter.templates.DateFieldTemplate;
+import com.jrefinery.report.filter.templates.ImageFieldTemplate;
+import com.jrefinery.report.filter.templates.ImageURLElementTemplate;
+import com.jrefinery.report.filter.templates.ImageURLFieldTemplate;
+import com.jrefinery.report.filter.templates.LabelTemplate;
+import com.jrefinery.report.filter.templates.NumberFieldTemplate;
+import com.jrefinery.report.filter.templates.StringFieldTemplate;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.BandStyleSheet;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import javax.swing.table.TableModel;
 import java.awt.Font;
@@ -69,10 +72,11 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -151,12 +155,10 @@ public class ItemFactory
                                               String field)
   {
 
-    SimpleDateFormatFilter filter = new SimpleDateFormatFilter();
-    if (format != null)
-    {
-      filter.setFormatString(format);
-    }
-    filter.setDataSource(new DataRowDataSource(field));
+    DateFieldTemplate dft = new DateFieldTemplate();
+    dft.setFormat(format);
+    dft.setNullValue(nullString);
+    dft.setField(field);
 
     TextElement dateElement = new TextElement();
     if (name != null)
@@ -173,9 +175,8 @@ public class ItemFactory
     {
       dateElement.setFont(font);
     }
-    dateElement.setNullString(nullString);
     dateElement.setVerticalAlignment(valign);
-    dateElement.setDataSource(filter);
+    dateElement.setDataSource(dft);
 
     return dateElement;
   }
@@ -239,9 +240,22 @@ public class ItemFactory
                                               DateFormat format,
                                               String field)
   {
-    DateFormatFilter filter = new DateFormatFilter();
-    filter.setFormatter(format);
-    filter.setDataSource(new DataRowDataSource(field));
+    DataSource ds = null;
+    if (format instanceof SimpleDateFormat)
+    {
+      DateFieldTemplate dft = new DateFieldTemplate();
+      dft.setDateFormat((SimpleDateFormat) format);
+      dft.setNullValue(nullString);
+      dft.setField(field);
+      ds = dft;
+    }
+    else
+    {
+      DateFormatFilter filter = new DateFormatFilter();
+      filter.setFormatter(format);
+      filter.setDataSource(new DataRowDataSource(field));
+      ds = filter;
+    }
 
     TextElement dateElement = new TextElement();
     if (name != null)
@@ -258,9 +272,8 @@ public class ItemFactory
     {
       dateElement.setFont(font);
     }
-    dateElement.setNullString(nullString);
     dateElement.setVerticalAlignment(valign);
-    dateElement.setDataSource(filter);
+    dateElement.setDataSource(ds);
     return dateElement;
   }
 
@@ -371,13 +384,11 @@ public class ItemFactory
    *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
-   * @throws IOException if there is a problem with the source URL.
    */
   public static ImageElement createImageElement(String name,
                                                 Rectangle2D bounds,
                                                 Paint paint,
                                                 URL source)
-      throws IOException
   {
     return createImageElement(name, bounds, paint, source, true);
   }
@@ -396,14 +407,12 @@ public class ItemFactory
    *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
-   * @throws IOException if there is a problem with the source URL.
    */
   public static ImageElement createImageElement(String name,
                                                 Rectangle2D bounds,
                                                 Paint paint,
                                                 URL source,
                                                 boolean scale)
-      throws IOException
   {
     return createImageElement(name, bounds, paint, source, scale, false);
   }
@@ -423,7 +432,6 @@ public class ItemFactory
    *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
-   * @throws IOException if there is a problem with the source URL.
    */
   public static ImageElement createImageElement(String name,
                                                 Rectangle2D bounds,
@@ -431,10 +439,10 @@ public class ItemFactory
                                                 URL source,
                                                 boolean scale,
                                                 boolean keepAspectRatio)
-      throws IOException
   {
-    ImageReference reference = new ImageReference(source);
-    StaticDataSource sds = new StaticDataSource(reference);
+    ImageURLElementTemplate template = new ImageURLElementTemplate();
+    template.setContent(source.toExternalForm());
+
     ImageElement element = new ImageElement();
     if (name != null)
     {
@@ -445,7 +453,7 @@ public class ItemFactory
       element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     setElementBounds(element, bounds);
-    element.setDataSource(sds);
+    element.setDataSource(template);
     element.setScale(scale);
     element.setKeepAspectRatio(keepAspectRatio);
     return element;
@@ -540,11 +548,8 @@ public class ItemFactory
                                                    boolean scale,
                                                    boolean keepAspectRatio)
   {
-    URLFilter urlfilter = new URLFilter();
-    urlfilter.setDataSource(new DataRowDataSource(field));
-
-    ImageLoadFilter imagefilter = new ImageLoadFilter();
-    imagefilter.setDataSource(urlfilter);
+    ImageURLFieldTemplate template = new ImageURLFieldTemplate();
+    template.setField(field);
 
     ImageElement element = new ImageElement();
     if (name != null)
@@ -556,7 +561,7 @@ public class ItemFactory
       element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     setElementBounds(element, bounds);
-    element.setDataSource(imagefilter);
+    element.setDataSource(template);
     element.setScale(scale);
     element.setKeepAspectRatio(keepAspectRatio);
     return element;
@@ -674,9 +679,8 @@ public class ItemFactory
                                                        boolean scale,
                                                        boolean keepAspectRatio)
   {
-    ImageRefFilter filter = new ImageRefFilter();
-    filter.setDataSource(new DataRowDataSource(field));
-
+    ImageFieldTemplate template = new ImageFieldTemplate();
+    template.setField(field);
     ImageElement element = new ImageElement();
     if (name != null)
     {
@@ -687,7 +691,7 @@ public class ItemFactory
       element.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
     }
     setElementBounds(element, bounds);
-    element.setDataSource(filter);
+    element.setDataSource(template);
     element.setScale(scale);
     element.setKeepAspectRatio(keepAspectRatio);
     return element;
@@ -767,6 +771,9 @@ public class ItemFactory
                                                Font font,
                                                String labeltext)
   {
+    LabelTemplate template = new LabelTemplate();
+    template.setContent(labeltext);
+
     TextElement label = new TextElement();
     if (name != null)
     {
@@ -782,7 +789,7 @@ public class ItemFactory
     {
       label.setFont(font);
     }
-    label.setDataSource(new StaticDataSource(labeltext));
+    label.setDataSource(template);
     label.setVerticalAlignment(valign);
     return label;
   }
@@ -1045,9 +1052,22 @@ public class ItemFactory
                                                 NumberFormat format,
                                                 String field)
   {
-    NumberFormatFilter filter = new NumberFormatFilter();
-    filter.setFormatter(format);
-    filter.setDataSource(new DataRowDataSource(field));
+    DataSource ds = null;
+    if (format instanceof DecimalFormat)
+    {
+      NumberFieldTemplate template = new NumberFieldTemplate ();
+      template.setDecimalFormat((DecimalFormat) format);
+      template.setNullValue(nullString);
+      template.setField(field);
+      ds = template;
+    }
+    else
+    {
+      NumberFormatFilter filter = new NumberFormatFilter();
+      filter.setFormatter(format);
+      filter.setDataSource(new DataRowDataSource(field));
+      ds = filter;
+    }
 
     TextElement element = new TextElement();
     if (name != null)
@@ -1064,8 +1084,7 @@ public class ItemFactory
     {
       element.setFont(font);
     }
-    element.setNullString(nullString);
-    element.setDataSource(filter);
+    element.setDataSource(ds);
     element.setVerticalAlignment(valign);
     return element;
   }
@@ -1130,12 +1149,10 @@ public class ItemFactory
                                                 String format,
                                                 String field)
   {
-    DecimalFormatFilter filter = new DecimalFormatFilter();
-    if (format != null)
-    {
-      filter.setFormatString(format);
-    }
-    filter.setDataSource(new DataRowDataSource(field));
+    NumberFieldTemplate template = new NumberFieldTemplate();
+    template.setFormat(format);
+    template.setNullValue(nullString);
+    template.setField(field);
 
     TextElement element = new TextElement();
     if (name != null)
@@ -1152,8 +1169,7 @@ public class ItemFactory
     {
       element.setFont(font);
     }
-    element.setNullString(nullString);
-    element.setDataSource(filter);
+    element.setDataSource(template);
     element.setVerticalAlignment(valign);
     return element;
   }
@@ -1278,6 +1294,10 @@ public class ItemFactory
                                                 String nullString,
                                                 String field)
   {
+    StringFieldTemplate template = new StringFieldTemplate();
+    template.setField(field);
+    template.setNullValue(nullString);
+
     TextElement element = new TextElement();
     if (name != null)
     {
@@ -1293,8 +1313,7 @@ public class ItemFactory
     {
       element.setFont(font);
     }
-    element.setNullString(nullString);
-    element.setDataSource(new DataRowDataSource(field));
+    element.setDataSource(template);
     element.setVerticalAlignment(valign);
     return element;
   }
