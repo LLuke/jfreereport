@@ -216,6 +216,19 @@ public class ItemFactory
     return line;
   }
 
+  public static RectangleShapeElement createRectangleShapeElement (String name,
+                                                         Paint paint,
+                                                         Stroke stroke,
+                                                         Rectangle2D shape)
+  {
+    RectangleShapeElement line = new RectangleShapeElement();
+    line.setName(name);
+    line.setPaint(paint);
+    line.setStroke(stroke);
+    line.setShape(shape);
+    return line;
+  }
+
   public static TextElement createMultilineTextElement (String name,
                                                 Rectangle2D bounds,
                                                 Paint paint,

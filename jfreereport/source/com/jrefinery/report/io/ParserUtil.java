@@ -119,13 +119,13 @@ public class ParserUtil
       {
         // try to get a color by name using reflection
         // black is used for an instance and not for the color itselfs
-        Field f = Color.black.getClass ().getField (color);
+        Field f = Color.class.getField (color);
 
-        return (Color) f.get (Color.black);
+        return (Color) f.get (null);
       }
       catch (Exception ce)
       {
-
+        System.out.println ("No such Color : " + color);
         // if we can't get any color return black
         return Color.black;
       }

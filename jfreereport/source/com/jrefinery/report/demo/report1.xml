@@ -22,8 +22,9 @@
     </reportfooter>
 
     <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
+        <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
         <date-function name="date1" x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="report_date"/>
-        <line name="line1" x1="0" y1="16" x2="0" y2="16" color="blue" weight="2.0"/>
+        <line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
     </pageheader>
 
     <pagefooter height="18">
@@ -48,6 +49,9 @@
     </groups>
 
     <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
+        <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
+        <line name="top" x1="0" y1="0" x2="0" y2="0" color="#DFDFDF" weight="0.1"/>
+        <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#DFDFDF" weight="0.1"/>
         <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
         <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
         <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
@@ -63,6 +67,11 @@
         <properties>
           <property name="field">Population</property>
           <property name="group">Continent Group</property>
+        </properties>
+      </function>
+      <function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisiblitySwitchFunction">
+        <properties>
+          <property name="element">background</property>
         </properties>
       </function>
     </functions>

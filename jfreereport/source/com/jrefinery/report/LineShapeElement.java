@@ -48,7 +48,6 @@ import java.awt.Shape;
  */
 public class LineShapeElement extends ShapeElement
 {
-  private Line2D m_line;
   private boolean m_clacWidth;
 
   public LineShapeElement()
@@ -82,7 +81,7 @@ public class LineShapeElement extends ShapeElement
    */
   protected void setShape(Shape shape)
   {
-    m_line = (Line2D) ((Line2D) shape).clone();
+    Line2D m_line = (Line2D) ((Line2D) shape).clone();
     m_clacWidth = (m_line.getX1() == m_line.getX2()) && (m_line.getY1() == m_line.getY2());
 
     super.setShape(m_line);
@@ -99,7 +98,7 @@ public class LineShapeElement extends ShapeElement
 
     if (m_clacWidth && ((float) l.getX2()) != target.getUsableWidth())
     {
-      l.setLine(0.0d, m_line.getY1(), target.getUsableWidth(), m_line.getY1());
+      l.setLine(0.0d, l.getY1(), target.getUsableWidth(), l.getY1());
     }
     super.draw(target, band);
   }

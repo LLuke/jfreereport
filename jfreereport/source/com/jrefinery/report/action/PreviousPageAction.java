@@ -41,6 +41,7 @@ public abstract class PreviousPageAction extends AbstractAction
     putValue(Action.NAME, resources.getString("action.back.name"));
     putValue(Action.SHORT_DESCRIPTION, resources.getString("action.back.description"));
     putValue(Action.MNEMONIC_KEY, resources.getObject("action.back.mnemonic"));
+    putValue(Action.ACCELERATOR_KEY, resources.getObject("action.back.accelerator"));
     putValue(Action.SMALL_ICON, resources.getObject("action.back.small-icon"));
     putValue("ICON24", resources.getObject("action.back.icon"));
     putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.PREVPAGE_COMMAND);

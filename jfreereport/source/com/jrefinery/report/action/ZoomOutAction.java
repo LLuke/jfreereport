@@ -41,6 +41,7 @@ public abstract class ZoomOutAction extends AbstractAction
     putValue(Action.NAME, resources.getString("action.zoomOut.name"));
     putValue(Action.SHORT_DESCRIPTION, resources.getString("action.zoomOut.description"));
     putValue(Action.MNEMONIC_KEY, resources.getObject("action.zoomOut.mnemonic"));
+    putValue(Action.ACCELERATOR_KEY, resources.getObject("action.zoomOut.accelerator"));
     putValue(Action.SMALL_ICON, resources.getObject("action.zoomOut.small-icon"));
     putValue("ICON24", resources.getObject("action.zoomOut.icon"));
     putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMOUT_COMMAND);

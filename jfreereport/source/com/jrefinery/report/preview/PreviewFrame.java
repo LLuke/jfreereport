@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.9 2002/05/26 15:07:39 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.10 2002/05/26 16:56:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,6 +53,7 @@ import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -90,6 +91,8 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.JLabel;
+import javax.swing.JRootPane;
+import javax.swing.Icon;
 
 import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.targets.G2OutputTarget;
@@ -121,7 +124,7 @@ import com.jrefinery.ui.ExtensionFileFilter;
  */
 public class PreviewFrame
   extends JFrame
-  implements ActionListener, PropertyChangeListener, JFreeReportConstants, KeyListener
+  implements ActionListener, PropertyChangeListener, JFreeReportConstants
 {
   private class DefaultSaveAsAction extends SaveAsAction implements Runnable
   {
@@ -317,6 +320,7 @@ public class PreviewFrame
   private PageFormat pageFormat;
   private JFreeReport report;
   private JLabel statusHolder;
+  private JToolBar toolbar;
 
   /**
    * Constructs a PreviewFrame that displays the specified report, and has the specified width
@@ -332,8 +336,7 @@ public class PreviewFrame
 
     setResources(getDefaultResources());
     setReport(report);
-
-    addKeyListener(this);
+    setLargeIconsEnabled(true);
 
     ResourceBundle resources = getResources();
 
@@ -341,13 +344,14 @@ public class PreviewFrame
     this.zoomIndex = DEFAULT_ZOOM_INDEX;
 
     createDefaultActions();
+    registerDefaultActions();
 
     // set up the menu
     setJMenuBar(createMenuBar(resources));
 
     // set up the content with a toolbar and a report pane
     JPanel content = new JPanel(new BorderLayout());
-    JToolBar toolbar = createToolBar();
+    toolbar = createToolBar();
     content.add(toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane();
@@ -632,6 +636,29 @@ public class PreviewFrame
     validate();
   }
 
+  protected void registerAction (Action action)
+  {
+    JComponent cp = getRootPane();
+    KeyStroke key = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+    if (key != null)
+    {
+      cp.registerKeyboardAction(action, key, JComponent.WHEN_IN_FOCUSED_WINDOW);
+    }
+  }
+
+  protected void registerDefaultActions ()
+  {
+    registerAction(saveAsAction);
+    registerAction(pageSetupAction);
+    registerAction(printAction);
+    registerAction(aboutAction);
+    registerAction(closeAction);
+    registerAction(nextPageAction);
+    registerAction(previousPageAction);
+    registerAction(zoomInAction);
+    registerAction(zoomOutAction);
+  }
+
   protected void createDefaultActions()
   {
     saveAsAction = createDefaultSaveAsAction();
@@ -718,7 +745,6 @@ public class PreviewFrame
     // create the menus
 
     JMenuBar menuBar = new JMenuBar();
-
     // first the file menu
 
     String menuName = resources.getString("menu.file.name");
@@ -771,6 +797,24 @@ public class PreviewFrame
     return menuBar;
   }
 
+  protected JButton createButton (Action action)
+  {
+    FloatingButtonEnabler fle = new FloatingButtonEnabler();
+    JButton button = new JButton (action);
+    if (isLargeIconsEnabled())
+    {
+      Icon icon = (Icon) action.getValue("ICON24");
+      if (icon != null)
+      {
+        button.setIcon(icon);
+      }
+    }
+    button.setMargin(new Insets (0,0,0,0));
+    button.setText(null);
+    fle.addButton(button);
+    return button;
+  }
+
   /**
    * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
    * in and out, and an about box.
@@ -782,39 +826,37 @@ public class PreviewFrame
     ResourceBundle resources = getResources();
 
     JToolBar toolbar = new JToolBar();
-    toolbar.setBorder(null);
+    toolbar.setBorder(BorderFactory.createEmptyBorder(4,0,4,0));
 
-    FloatingButtonEnabler fle = new FloatingButtonEnabler();
-
-    JButton sa = toolbar.add(saveAsAction);
-    fle.addButton(sa);
-
-    sa = toolbar.add(printAction);
-    fle.addButton(sa);
-
-    sa = toolbar.add(previousPageAction);
-    fle.addButton(sa);
-
-    sa = toolbar.add(nextPageAction);
-    fle.addButton(sa);
-
+    toolbar.add(createButton(saveAsAction));
+    toolbar.add(createButton(printAction));
+    toolbar.add(createButton(previousPageAction));
+    toolbar.add(createButton(previousPageAction));
+    toolbar.add(createButton(nextPageAction));
     toolbar.addSeparator();
-
-    sa = toolbar.add(zoomInAction);
-    fle.addButton(sa);
-
-    sa = toolbar.add(zoomOutAction);
-    fle.addButton(sa);
-
+    toolbar.add(createButton(zoomInAction));
+    toolbar.add(createButton(zoomOutAction));
     toolbar.addSeparator();
-
     toolbar.add(createZoomPane());
     toolbar.addSeparator();
-
-    sa = toolbar.add(aboutAction);
-    fle.addButton(sa);
-
+    toolbar.add(createButton(aboutAction));
     return toolbar;
+  }
+
+  /**
+   * @returns true when the toolbar is floatable
+   */
+  public boolean isToolbarFloatable ()
+  {
+    return toolbar.isFloatable();
+  }
+
+  /**
+   * Defines whether the toolbar is floatable
+   */
+  public void setToolbarFloatable (boolean b)
+  {
+    toolbar.setFloatable(b);
   }
 
   /**
@@ -848,8 +890,7 @@ public class PreviewFrame
     Object source = event.getSource();
     String property = event.getPropertyName();
 
-    if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
-      || property.equals(ReportPane.NUMBER_OF_PAGES_PROPERTY))
+    if (property.equals(ReportPane.PAGENUMBER_PROPERTY) || property.equals(ReportPane.NUMBER_OF_PAGES_PROPERTY))
     {
       getStatus().setText("Page " + reportPane.getPageNumber() + " of " + reportPane.getNumberOfPages());
       validate();
@@ -861,6 +902,10 @@ public class PreviewFrame
         Exception ex = reportPane.getError();
         getStatus().setText("Report generation prduced an error: " + ex.getMessage());
       }
+    }
+    else if (property.equals(ReportPane.ERROR_PROPERTY))
+    {
+      validate();
     }
   }
 
@@ -893,36 +938,6 @@ public class PreviewFrame
     }
     super.processWindowEvent(windowEvent);
   }
-  /**
-   * @see KeyListener#keyPressed(KeyEvent)
-   */
-  public void keyPressed(KeyEvent ke)
-  {
-    if (ke.getKeyCode() == ke.VK_PAGE_DOWN)
-    {
-      increasePageNumber();
-    }
-    else if (ke.getKeyCode() == ke.VK_PAGE_UP)
-    {
-      decreasePageNumber();
-    }
-    else if (ke.getKeyCode() == ke.VK_HOME)
-    {
-      firstPage();
-    }
-    else if (ke.getKeyCode() == ke.VK_END)
-    {
-      lastPage();
-    }
-    else if (ke.getKeyChar() == '+')
-    {
-      increaseZoom();
-    }
-    else if (ke.getKeyChar() == '-')
-    {
-      decreaseZoom();
-    }
-  }
 
   public boolean isLargeIconsEnabled ()
   {
@@ -932,19 +947,5 @@ public class PreviewFrame
   public void setLargeIconsEnabled (boolean b)
   {
     largeIconsEnabled = b;
-  }
-
-  /**
-   * @see KeyListener#keyReleased(KeyEvent)
-   */
-  public void keyReleased(KeyEvent arg0)
-  {
-  }
-
-  /**
-   * @see KeyListener#keyTyped(KeyEvent)
-   */
-  public void keyTyped(KeyEvent arg0)
-  {
   }
 }

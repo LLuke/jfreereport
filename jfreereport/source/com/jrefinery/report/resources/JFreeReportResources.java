@@ -10,19 +10,51 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.ListResourceBundle;
+import java.util.ResourceBundle;
+import java.util.Hashtable;
+import java.util.Enumeration;
+import java.util.MissingResourceException;
 import java.net.URL;
 
 public class JFreeReportResources extends ListResourceBundle
 {
+  public JFreeReportResources ()
+  {
+  }
+
+  /**
+   * Used to test the resourcebundle for null values
+   */
+  public static void main (String [] args)
+  {
+    Object lastKey = null;
+    try
+    {
+      Hashtable elements = new Hashtable();
+      for (int i = 0; i < contents.length; i++)
+      {
+        Object[] row = contents[i];
+        System.out.println (row[0] + " " + row[1]);
+        lastKey = row[0];
+        elements.put (row[0], row[1]);
+      }
+      Object o = getIcon("com/jrefinery/report/resources/SaveAs16.gif");
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      System.out.println(lastKey);
+    }
+    System.exit(0);
+  }
 
   private static JFreeReportResources res = new JFreeReportResources();
-  /**
-   * Returns the array of strings in the resource bundle.
-   */
-  public Object[][] getContents ()
+
+  public Object[][] getContents()
   {
     return contents;
   }
+
 
   /** The resources to be localised. */
   private static final Object[][] contents = 
@@ -35,28 +67,27 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.save-as.name", "Save As..."},
       { "action.save-as.description", "Save to PDF format"},
       { "action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
-      { "action.save-as.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_A, KeyEvent.CTRL_MASK)},
+      { "action.save-as.accelerator", KeyStroke.getKeyStroke ("control S")},
       { "action.save-as.small-icon", getIcon("com/jrefinery/report/resources/SaveAs16.gif")},
       { "action.save-as.icon", getIcon("com/jrefinery/report/resources/SaveAs24.gif")},
-  
+
       { "action.page-setup.name", "Page Setup"},
       { "action.page-setup.description", "Page Setup"},
       { "action.page-setup.mnemonic", new Integer (KeyEvent.VK_G)},
       { "action.page-setup.small-icon", getIcon("com/jrefinery/report/resources/PageSetup16.gif")},
       { "action.page-setup.icon", getIcon("com/jrefinery/report/resources/PageSetup24.gif")},
-//      { "action.page-setup.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
-  
+
       { "action.print.name", "Print..."},
       { "action.print.description", "Print report"},
       { "action.print.mnemonic", new Integer (KeyEvent.VK_P)},
-      { "action.print.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
+      { "action.print.accelerator", KeyStroke.getKeyStroke ("control P")},
       { "action.print.small-icon", getIcon("com/jrefinery/report/resources/Print16.gif")},
       { "action.print.icon", getIcon("com/jrefinery/report/resources/Print24.gif")},
   
       { "action.close.name", "Close"},
       { "action.close.description", "Close print preview window"},
       { "action.close.mnemonic", new Integer(KeyEvent.VK_C) },
-      { "action.close.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK) },
+      { "action.close.accelerator", KeyStroke.getKeyStroke("control X") },
 
       { "action.about.name", "About..."},
       { "action.about.description", "Information about the application"},
@@ -69,30 +100,28 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.back.description", "Switch to the previous page"},
       { "action.back.small-icon", getIcon("com/jrefinery/report/resources/Back16.gif") },
       { "action.back.icon", getIcon("com/jrefinery/report/resources/Back24.gif") },
+      { "action.back.accelerator", KeyStroke.getKeyStroke("PAGE_UP") },
 
       { "action.forward.name", "Forward"},
       { "action.forward.description", "Switch to the next page"},
       { "action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
       { "action.forward.small-icon", getIcon("com/jrefinery/report/resources/Forward16.gif") },
       { "action.forward.icon", getIcon("com/jrefinery/report/resources/Forward24.gif") },
+      { "action.forward.accelerator", KeyStroke.getKeyStroke("PAGE_DOWN") },
 
       { "action.zoomIn.name", "Zoom In"},
       { "action.zoomIn.description", "Increase zoom"},
       { "action.zoomIn.mnemonic", new Integer (KeyEvent.VK_PLUS)},
       { "action.zoomIn.small-icon", getIcon("com/jrefinery/report/resources/ZoomIn16.gif") },
       { "action.zoomIn.icon", getIcon("com/jrefinery/report/resources/ZoomIn24.gif") },
+      { "action.zoomIn.accelerator", KeyStroke.getKeyStroke("PLUS") },
 
       { "action.zoomOut.name", "Zoom Out"},
       { "action.zoomOut.description", "Decrease Zoom"},
       { "action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
       { "action.zoomOut.small-icon", getIcon("com/jrefinery/report/resources/ZoomOut16.gif") },
       { "action.zoomOut.icon", getIcon("com/jrefinery/report/resources/ZoomOut24.gif") },
-
-      { "action.information.name", "Information"},
-      { "action.information.mnemonic", new Integer (0)},
-      { "action.information.description", "Informations about JFreeReport"},
-      { "action.information.small-icon", getIcon("com/jrefinery/report/resources/Information16.gif") },
-      { "action.information.icon", getIcon("com/jrefinery/report/resources/Information24.gif") },
+      { "action.zoomOut.accelerator", KeyStroke.getKeyStroke("MINUS") },
 
     // preview frame...
       { "preview-frame.title", "Print Preview"},

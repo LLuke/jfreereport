@@ -56,6 +56,7 @@ public interface ReportDefinitionTags
   public static final String LABEL_TAG = "label";
   public static final String IMAGEREF_TAG = "imageref";
   public static final String LINE_TAG = "line";
+  public static final String RECTANGLE_TAG = "rectangle";
   public static final String GENERAL_FIELD_TAG = "general-field";
   public static final String STRING_FIELD_TAG = "string-field";
   public static final String NUMBER_FIELD_TAG = "number-field";

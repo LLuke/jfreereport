@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.3 2002/05/16 13:35:27 jaosch Exp $
+ * $Id: CloseAction.java,v 1.4 2002/05/26 16:56:30 taqua Exp $
  *
  * Changes
  * -------
@@ -61,15 +61,10 @@ public abstract class CloseAction extends AbstractAction
    */
   public CloseAction(ResourceBundle resources)
   {
-    String name = resources.getString("action.close.name");
-    this.putValue(Action.NAME, name);
-
-    String description = resources.getString("action.close.description");
-    this.putValue(Action.SHORT_DESCRIPTION, description);
-
-    Integer mnemonic = (Integer) resources.getObject("action.close.mnemonic");
-    this.putValue(Action.MNEMONIC_KEY, mnemonic);
-
+    this.putValue(Action.NAME, resources.getString("action.close.name"));
+    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.close.description"));
+    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.close.mnemonic"));
+    this.putValue(Action.ACCELERATOR_KEY, resources.getObject("action.close.accelerator"));
     this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
   }
 }

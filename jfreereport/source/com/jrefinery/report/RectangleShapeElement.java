@@ -21,30 +21,49 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------
- * ZoomInAction.java
+ * RectangleShapeElement.java
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  */
-package com.jrefinery.report.action;
+package com.jrefinery.report;
 
-import com.jrefinery.report.JFreeReportConstants;
+import com.jrefinery.report.targets.OutputTarget;
+import com.jrefinery.report.targets.OutputTargetException;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import java.util.ResourceBundle;
+import java.awt.geom.Rectangle2D;
+import java.awt.Shape;
 
-public abstract class ZoomInAction extends AbstractAction
+public class RectangleShapeElement extends ShapeElement
 {
-  public ZoomInAction (ResourceBundle resources)
+  public RectangleShapeElement ()
   {
-    putValue(Action.NAME, resources.getString("action.zoomIn.name"));
-    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.zoomIn.description"));
-    putValue(Action.MNEMONIC_KEY, resources.getObject("action.zoomIn.mnemonic"));
-    putValue(Action.ACCELERATOR_KEY, resources.getObject("action.zoomIn.accelerator"));
-    putValue(Action.SMALL_ICON, resources.getObject("action.zoomIn.small-icon"));
-    putValue("ICON24", resources.getObject("action.zoomIn.icon"));
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMIN_COMMAND);
   }
 
+  public Rectangle2D getRectangle ()
+  {
+    return (Rectangle2D) getBounds();
+  }
+
+  public void setRectangle (Rectangle2D rect)
+  {
+    setShape(rect);
+  }
+
+  public void setShape (Shape shape)
+  {
+    super.setShape((Rectangle2D) shape);
+    setBounds((Rectangle2D) shape);
+  }
+
+  public void draw(OutputTarget target, Band band) throws OutputTargetException
+  {
+    setShape(target.getCursor().getElementBounds());
+    super.draw(target, band);
+  }
+
+  protected boolean shouldDraw ()
+  {
+    return false;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: Band.java,v 1.3 2002/05/21 23:06:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,6 +42,7 @@
  *               before any element starts to draw and restored afterwards. This will greatly
  *               reduce sideeffects from changed fonts or paints which are not restored by the
  *               element.
+ * 26-May-2002 : Elements are not stored ordered.
  */
 
 package com.jrefinery.report;
@@ -60,12 +61,14 @@ import javax.swing.table.TableModel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
+import java.util.List;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.LinkedList;
 
 /**
  * A report band contains a list of elements to be displayed, and represents one section of a
@@ -95,7 +98,7 @@ public abstract class Band
   private Paint defaultPaint;
 
   /** All the elements for this band, stored by name. */
-  private Hashtable allElements;
+  private List allElements;
 
   /** Data elements for this band, stored by field name. */
   private HashNMap dataElements;
@@ -111,7 +114,7 @@ public abstract class Band
   {
     setDefaultFont(DEFAULT_FONT);
     setDefaultPaint(DEFAULT_PAINT);
-    allElements = new Hashtable();
+    allElements = new LinkedList();
     dataElements = new HashNMap ();
     functionElements = new HashNMap ();
   }
@@ -181,7 +184,7 @@ public abstract class Band
   public void addElement (Element element)
   {
 
-    allElements.put (element.getName (), element);
+    allElements.add (element);
 
     DataSource ds = getLastDatasource (element);
     if (ds instanceof ReportDataSource)
@@ -285,20 +288,23 @@ public abstract class Band
     target.setClippingArea(bounds);
 
     target.setPaint (getDefaultPaint());
-    Iterator iterator = allElements.values ().iterator ();
+    Iterator iterator = allElements.iterator ();
     while (iterator.hasNext ())
     {
       Element e = (Element) iterator.next ();
-      target.getCursor().setElementBounds(translateBounds(target, e.getBounds()));
-      try
+      if (e.isVisible())
       {
-        Object state = target.saveState();
-        e.draw (target, this);
-        target.restoreState(state);
-      }
-      catch (OutputTargetException ex)
-      {
-        Log.error ("Failed to draw band", ex);
+        target.getCursor().setElementBounds(translateBounds(target, e.getBounds()));
+        try
+        {
+          Object state = target.saveState();
+          e.draw (target, this);
+          target.restoreState(state);
+        }
+        catch (OutputTargetException ex)
+        {
+          Log.error ("Failed to draw band", ex);
+        }
       }
     }
   }
@@ -327,6 +333,19 @@ public abstract class Band
     return retval;
   }
 
+  public Element getElement (String name)
+  {
+    Iterator it  = allElements.iterator();
+    while (it.hasNext())
+    {
+      Element e = (Element) it.next();
+      if (e.getName().equals(name))
+      {
+        return e;
+      }
+    }
+    return null;
+  }
 
   public String toString ()
   {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.3 2002/05/16 12:14:56 jaosch Exp $
+ * $Id: Element.java,v 1.4 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,6 +40,7 @@
  *               paint now protected member
  * 20-May-2002 : Support for DataTarget interface added. The drawing scheme has changed to fit
  *               the new OutputTarget implementation
+ * 26-May-2002 : Elements visible property controls whether an element is drawn by its band
  */
 
 package com.jrefinery.report;
@@ -69,12 +70,14 @@ public abstract class Element implements ElementConstants, DataTarget
   /** The paint used to draw the element. */
   protected Paint m_paint;
 
+  private boolean visible;
+
   /**
    * Constructs an element.
    */
-
   protected Element()
   {
+    setVisible (true);
     setPaint(Color.black);
     setBounds(new Rectangle2D.Float());
   }
@@ -179,6 +182,26 @@ public abstract class Element implements ElementConstants, DataTarget
       carrier = new Rectangle2D.Float();
     carrier.setRect(area);
     return carrier;
+  }
+
+  public boolean equals (Object o)
+  {
+    if (o instanceof Element)
+    {
+      Element el = (Element) o;
+      return el.getName().equals(getName());
+    }
+    return false;
+  }
+
+  public boolean isVisible ()
+  {
+    return visible;
+  }
+
+  public void setVisible (boolean b)
+  {
+    this.visible = b;
   }
 
   /**

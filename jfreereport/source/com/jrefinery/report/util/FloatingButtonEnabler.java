@@ -21,30 +21,54 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------
- * ZoomInAction.java
+ * FloatingButtonEnabler.java
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  */
-package com.jrefinery.report.action;
+package com.jrefinery.report.util;
 
-import com.jrefinery.report.JFreeReportConstants;
+import javax.swing.AbstractButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import java.util.ResourceBundle;
-
-public abstract class ZoomInAction extends AbstractAction
+public class FloatingButtonEnabler extends MouseAdapter
 {
-  public ZoomInAction (ResourceBundle resources)
+  public void addButton (AbstractButton button)
   {
-    putValue(Action.NAME, resources.getString("action.zoomIn.name"));
-    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.zoomIn.description"));
-    putValue(Action.MNEMONIC_KEY, resources.getObject("action.zoomIn.mnemonic"));
-    putValue(Action.ACCELERATOR_KEY, resources.getObject("action.zoomIn.accelerator"));
-    putValue(Action.SMALL_ICON, resources.getObject("action.zoomIn.small-icon"));
-    putValue("ICON24", resources.getObject("action.zoomIn.icon"));
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMIN_COMMAND);
+    button.addMouseListener(this);
+    button.setBorderPainted(false);
   }
+
+  public void removeButton (AbstractButton button)
+  {
+    button.addMouseListener(this);
+    button.setBorderPainted(true);
+  }
+
+  /**
+   * Triggers the drawing of the border when the mouse entered the button area
+   */
+	public void mouseEntered(MouseEvent e)
+	{
+    if (e.getSource() instanceof AbstractButton)
+    {
+      AbstractButton button = (AbstractButton) e.getSource();
+      button.setBorderPainted(true);
+    }
+	}
+
+  /**
+   * disables the drawing of the border when the mouse leaves the button area
+   */
+	public void mouseExited(MouseEvent e)
+	{
+    if (e.getSource() instanceof AbstractButton)
+    {
+      AbstractButton button = (AbstractButton) e.getSource();
+      button.setBorderPainted(false);
+    }
+	}
+
 
 }

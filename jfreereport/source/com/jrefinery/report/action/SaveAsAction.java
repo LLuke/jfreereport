@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SaveAsAction.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: SaveAsAction.java,v 1.3 2002/05/16 13:35:28 jaosch Exp $
  *
  * Changes
  * -------
@@ -61,25 +61,12 @@ public abstract class SaveAsAction extends AbstractAction
    */
   public SaveAsAction(ResourceBundle resources)
   {
-
-    String name = resources.getString("action.save-as.name");
-    this.putValue(Action.NAME, name);
-
-    String description = resources.getString("action.save-as.description");
-    this.putValue(Action.SHORT_DESCRIPTION, description);
-
-    Integer mnemonic = (Integer) resources.getObject("action.save-as.mnemonic");
-    this.putValue(Action.MNEMONIC_KEY, mnemonic);
-
-    KeyStroke accelerator = (KeyStroke) resources.getObject("action.save-as.accelerator");
-    this.putValue(Action.ACCELERATOR_KEY, accelerator);
-
-    ImageIcon icon16 = (ImageIcon) resources.getObject("action.save-as.small-icon");
-    this.putValue(Action.SMALL_ICON, icon16);
-
-    ImageIcon icon24 = (ImageIcon) resources.getObject("action.save-as.icon");
-    this.putValue("ICON24", icon24);
-
+    this.putValue(Action.NAME, resources.getString("action.save-as.name"));
+    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.save-as.description"));
+    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.save-as.mnemonic"));
+    this.putValue(Action.ACCELERATOR_KEY, resources.getObject("action.save-as.accelerator"));
+    this.putValue(Action.SMALL_ICON, resources.getObject("action.save-as.small-icon"));
+    this.putValue("ICON24", resources.getObject("action.save-as.icon"));
     this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.SAVE_AS_COMMAND);
   }
 }

@@ -48,6 +48,7 @@ import com.jrefinery.report.NumberFunctionElement;
 import com.jrefinery.report.StringElement;
 import com.jrefinery.report.StringFunctionElement;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.RectangleShapeElement;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -132,6 +133,10 @@ public class ElementFactory
     else if (elementName.equals (DATE_FUNCTION_TAG))
     {
       startDateFunction (atts);
+    }
+    else if (elementName.equals (RECTANGLE_TAG))
+    {
+      startRectangle (atts);
     }
   }
 
@@ -219,6 +224,10 @@ public class ElementFactory
     {
       endDateFunction ();
     }
+    else if (elementName.equals (RECTANGLE_TAG))
+    {
+      endRectangle();
+    }
     else
     {
       // Dont know who handles this, back to last handler
@@ -263,6 +272,20 @@ public class ElementFactory
             c,
             ParserUtil.parseStroke (atts.getValue ("weight")),
             line);
+    setCurrentElement (element);
+  }
+
+  protected void startRectangle (Attributes atts) throws SAXException
+  {
+    String name = handler.generateName (atts.getValue (NAME_ATT));
+    Paint c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    Rectangle2D bounds = ParserUtil.getElementPosition(atts);
+
+    RectangleShapeElement element = ItemFactory.createRectangleShapeElement (
+            name,
+            c,
+            ParserUtil.parseStroke (atts.getValue ("weight")),
+            bounds);
     setCurrentElement (element);
   }
 
@@ -347,6 +370,12 @@ public class ElementFactory
   }
 
   protected void endLine ()
+          throws SAXException
+  {
+    getCurrentBand ().addElement (getCurrentElement ());
+  }
+
+  protected void endRectangle()
           throws SAXException
   {
     getCurrentBand ().addElement (getCurrentElement ());

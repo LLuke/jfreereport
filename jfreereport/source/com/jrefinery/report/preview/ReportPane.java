@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.7 2002/05/26 15:07:40 taqua Exp $
+ * $Id: ReportPane.java,v 1.8 2002/05/26 16:56:31 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -186,6 +186,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
     getOutputTarget ().setPageFormat (pageFormat);
     setPaginated(false);
     graphCache = null;
+
+    int w = (int) ((pageFormat.getWidth () + PaperBorderPixel) * zoomFactor);
+    int h = (int) ((pageFormat.getHeight () + PaperBorderPixel) * zoomFactor);
+    super.setSize(w, h);
   }
 
   /**
@@ -277,16 +281,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
     double oldzoom = factor;
     zoomFactor = factor;
     graphCache = null;
-    propsupp.firePropertyChange (ZOOMFACTOR_PROPERTY, new Double (oldzoom), new Double (factor));
-  }
 
-  public Dimension getSize ()
-  {
     PageFormat pageFormat = getPageFormat ();
     int w = (int) ((pageFormat.getWidth () + PaperBorderPixel) * zoomFactor);
     int h = (int) ((pageFormat.getHeight () + PaperBorderPixel) * zoomFactor);
     super.setSize(w, h);
-    return super.getSize();
+    propsupp.firePropertyChange (ZOOMFACTOR_PROPERTY, new Double (oldzoom), new Double (factor));
   }
 
   /**

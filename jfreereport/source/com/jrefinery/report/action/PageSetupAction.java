@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageSetupAction.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: PageSetupAction.java,v 1.3 2002/05/16 13:35:28 jaosch Exp $
  *
  * Changes
  * -------
@@ -60,23 +60,11 @@ public abstract class PageSetupAction extends AbstractAction implements Runnable
    */
   public PageSetupAction(ResourceBundle resources)
   {
-
-    String name = resources.getString("action.page-setup.name");
-    this.putValue(Action.NAME, name);
-
-    String description = resources.getString("action.page-setup.description");
-    this.putValue(Action.SHORT_DESCRIPTION, description);
-
-    Integer mnemonic = (Integer) resources.getObject("action.page-setup.mnemonic");
-    this.putValue(Action.MNEMONIC_KEY, mnemonic);
-
-    ImageIcon icon16 = (ImageIcon) resources.getObject("action.page-setup.small-icon");
-    this.putValue(Action.SMALL_ICON, icon16);
-
-    ImageIcon icon24 = (ImageIcon) resources.getObject("action.page-setup.icon");
-    this.putValue("ICON24", icon24);
-
+    this.putValue(Action.NAME, resources.getString("action.page-setup.name"));
+    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.page-setup.description"));
+    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.page-setup.mnemonic"));
+    this.putValue(Action.SMALL_ICON, resources.getObject("action.page-setup.small-icon"));
+    this.putValue("ICON24", resources.getObject("action.page-setup.icon"));
     this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.PAGE_SETUP_COMMAND);
-
   }
 }

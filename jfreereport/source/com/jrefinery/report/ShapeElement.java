@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.6 2002/05/21 23:06:18 taqua Exp $
+ * $Id: ShapeElement.java,v 1.7 2002/05/23 22:32:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -132,7 +132,8 @@ public abstract class ShapeElement extends Element
       target.setPaint(band.getDefaultPaint());
     }
     target.setStroke(getStroke());
-    target.drawShape(getShape());
+    if (shouldDraw()) target.drawShape(getShape());
+    if (shouldFill()) target.fillShape(getShape());
   }
 
   /**
@@ -152,5 +153,15 @@ public abstract class ShapeElement extends Element
   {
     if (stroke == null) throw new NullPointerException();
     m_stroke = stroke;
+  }
+
+  protected boolean shouldDraw ()
+  {
+    return true;
+  }
+
+  protected boolean shouldFill ()
+  {
+    return true;
   }
 }

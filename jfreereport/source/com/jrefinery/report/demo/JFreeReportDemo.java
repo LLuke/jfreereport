@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.9 2002/05/23 22:32:22 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.10 2002/05/26 16:56:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,6 +46,7 @@ package com.jrefinery.report.demo;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -66,6 +67,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.Icon;
 
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.JFreeReport;
@@ -304,7 +306,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void preview3()
   {
-    // it would be nice to load the report file from the arcive with 
+    // it would be nice to load the report file from the arcive with
     // getResourceAsStream() ! (JS)
     File in =
       new File(getClass().getResource("/com/jrefinery/report/demo/report3.xml").getFile());
@@ -446,16 +448,25 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     return menu;
   }
 
+
+  protected JButton createButton (Action action)
+  {
+    FloatingButtonEnabler fle = new FloatingButtonEnabler();
+    JButton button = new JButton (action);
+    button.setMargin(new Insets (0,0,0,0));
+    button.setText(null);
+    fle.addButton(button);
+    return button;
+  }
+
   private JToolBar createToolBar(ResourceBundle resources)
   {
     JToolBar toolbar = new JToolBar();
-    toolbar.setBorder(null);
+    toolbar.setBorder(BorderFactory.createEmptyBorder(4,0,4,0));
 
-    FloatingButtonEnabler fle = new FloatingButtonEnabler();
-
-    fle.addButton(toolbar.add(previewAction));
+    toolbar.add(createButton(previewAction));
     toolbar.addSeparator();
-    fle.addButton(toolbar.add(aboutAction));
+    toolbar.add(createButton(aboutAction));
 
     return toolbar;
   }
