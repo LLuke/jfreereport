@@ -85,6 +85,9 @@ module-file=$${module-${module}-file}</echo>
     <!-- copy across migration.txt -->
     <copy file="migration.txt" tofile="distribution/migration.txt"/>
 
+    <!-- copy across migration.txt -->
+    <copy file="modules.txt" tofile="distribution/modules.txt"/>
+
     <!-- copy across source files -->
     <copy todir="distribution/source">
       <fileset dir="source"/>

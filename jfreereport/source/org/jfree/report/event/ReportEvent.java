@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ReportEvent.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -83,6 +83,10 @@ public class ReportEvent extends EventObject
   public static final int PAGE_FINISHED = 0x400;
   /** The event type constant, that the page finished event is invoked. */
   public static final int PAGE_CANCELED = 0x800;
+  /** The event type constant, that the post group footer state will be processed. */
+  public static final int POST_GROUP_FOOTER = 0x1000;
+  /** The event type constant, that the post group header state will be processed. */
+  public static final int POST_GROUP_HEADER = 0x4000;
 
   /**
    * The event type constant, that this event is a prepare event. Use this constant

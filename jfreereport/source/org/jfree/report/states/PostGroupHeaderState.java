@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupHeaderState.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: PostGroupHeaderState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.states;
+
+import org.jfree.report.event.ReportEvent;
 
 /**
  * The groupHeader has been printed. If there are more groups defined, activate them
@@ -79,6 +81,7 @@ public final class PostGroupHeaderState extends ReportState
    */
   public ReportState advance()
   {
+    firePrepareEvent(ReportEvent.POST_GROUP_HEADER);
     if (hasMoreGroups())
     {
       // there are more groups defined, activate the next group and proceed to print it's header

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package org.jfree.report.states;
 
 import org.jfree.report.Group;
+import org.jfree.report.event.ReportEvent;
 
 /**
  * In this state the active group is closed. After that the next state gets activated:
@@ -94,6 +95,7 @@ public final class PostGroupFooterState extends ReportState
    */
   public ReportState advance()
   {
+    firePrepareEvent(ReportEvent.POST_GROUP_FOOTER);
     // leave the current group and activate the parent group.
     // if this was the last active group, the group index is now BEFORE_FIRST_GROUP
     leaveGroup();
