@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.15 2003/05/11 13:39:19 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.16 2003/05/23 20:12:16 taqua Exp $
  *
  * Changes
  * -------
@@ -84,6 +84,9 @@ public class ExcelProducer extends TableProducer
   /** the current excel sheet. */
   private HSSFSheet sheet;
 
+  /** cache the configuration value until there is a cell data factory. */
+  private boolean mapData;
+
   /**
    * Creates a new Excel producer.
    *
@@ -118,7 +121,7 @@ public class ExcelProducer extends TableProducer
     workbook = new HSSFWorkbook();
     ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory(workbook);
     cellDataFactory = new ExcelCellDataFactory(cellStyleFactory);
-
+    cellDataFactory.setDefineDataFormats(mapData);
     // style for empty cells
 
     // Clear list of cells
@@ -297,13 +300,6 @@ public class ExcelProducer extends TableProducer
   public void configure(Properties configuration)
   {
     String mapData = configuration.getProperty(ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");
-    if (mapData.equalsIgnoreCase("true"))
-    {
-      cellDataFactory.setDefineDataFormats(true);
-    }
-    else
-    {
-      cellDataFactory.setDefineDataFormats(false);
-    }
+    this.mapData = (mapData.equalsIgnoreCase("true"));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.7 2003/03/18 18:28:44 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.8 2003/04/08 14:20:47 mungady Exp $
  *
  * Changes
  * -------
@@ -180,7 +180,7 @@ public class BaseFontFactory extends DefaultFontMapper
       }
       catch (Exception e)
       {
-        Log.warn("Font " + filename + " is invalid. Message:", e);
+        Log.warn(new Log.SimpleMessage("Font ",filename, " is invalid. Message:", e.getMessage()));
       }
     }
   }
