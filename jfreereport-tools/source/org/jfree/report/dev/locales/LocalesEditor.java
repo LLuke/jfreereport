@@ -224,7 +224,7 @@ public class LocalesEditor extends JFrame
      */
     public void actionPerformed (final ActionEvent e)
     {
-      File newSelection = performSelectFile(selectedFile, JFileChooser.OPEN_DIALOG, true);
+      final File newSelection = performSelectFile(selectedFile, JFileChooser.OPEN_DIALOG, true);
       if (newSelection == null)
       {
         return;
