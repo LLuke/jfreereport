@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE report-definition
+  PUBLIC "-//JFreeReport//DTD report definition//EN//extended"
+         "http://jfreereport.sourceforge.net/extreport.dtd">
+<report-definition name="DataSourceReferenceReport">
+  <parser-config>
+    <object-factory class="com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector"/>
+    <object-factory class="com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory"/>
+    <element-factory class="com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory"/>
+    <stylekey-factory class="com.jrefinery.report.io.ext.factory.stylekey.DefaultStyleKeyFactory"/>
+    <stylekey-factory class="com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactory"/>
+    <template-factory class="com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection"/>
+    <datasource-factory class="com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory"/>
+  </parser-config>
+
+  <report-config>
+    <defaultpageformat orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
+    <configuration>
+      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Author">JFreeReport</property>
+      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">iso-8859-15</property>
+    </configuration>
+  </report-config>
+
+  <report-description>
+    <report-header>
+
+      <!-- The report header style -->
+      <style>
+        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+          <basic-object name="height" class="java.lang.Double">18.0</basic-object>
+          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
+        </compound-key>
+      </style>
+
+      <!-- the default band style for defines stylekeys for all child elements -->
+      <default-style>
+        <basic-key name="font-bold">true</basic-key>
+        <basic-key name="font-size">14</basic-key>
+        <basic-key name="font">Serif</basic-key>
+        <basic-key name="font-underline">true</basic-key>
+        <basic-key name="font-italic">false</basic-key>
+      </default-style>
+
+      <!-- The background element, draws the grey background box -->
+      <element name="background" type="shape/generic">
+        <style>
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+            <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
+            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+          </compound-key>
+          <basic-key name="stroke" class="java.awt.BasicStroke">0.0</basic-key>
+          <compound-key name="absolute_pos" class="java.awt.geom.Point2D">
+            <basic-object name="x">0.0</basic-object>
+            <basic-object name="y">0.0</basic-object>
+          </compound-key>
+          <basic-key name="paint">#afafaf</basic-key>
+          <basic-key name="fill-shape">true</basic-key>
+          <basic-key name="scale">true</basic-key>
+          <basic-key name="keepAspectRatio">false</basic-key>
+          <basic-key name="draw-shape">false</basic-key>
+        </style>
+        <datasource type="StaticDataSource">
+          <compound-object name="value" class="java.awt.geom.Rectangle2D">
+            <basic-object name="x">0.0</basic-object>
+            <basic-object name="height">100.0</basic-object>
+            <basic-object name="width">100.0</basic-object>
+            <basic-object name="y">0.0</basic-object>
+          </compound-object>
+        </datasource>
+      </element>
+
+      <!-- A text element, contains the report header -->
+      <element type="text/plain">
+        <style>
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+            <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
+            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+          </compound-key>
+          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+            <basic-object name="x">0.0</basic-object>
+            <basic-object name="y">0.0</basic-object>
+          </compound-key>
+        </style>
+        <template references="label">
+          <basic-object name="content">Extended Parser: DataSource Factory Reference</basic-object>
+        </template>
+      </element>
+
+      <!-- A line -->
+      <element type="shape/generic">
+        <style>
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+            <basic-object name="height" class="java.lang.Double">0.0</basic-object>
+            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+          </compound-key>
+          <basic-key name="stroke" class="java.awt.BasicStroke">2.0</basic-key>
+          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+            <basic-object name="x">0.0</basic-object>
+            <basic-object name="y">18.0</basic-object>
+          </compound-key>
+          <basic-key name="paint">#cfcfcf</basic-key>
+          <basic-key name="fill-shape">false</basic-key>
+          <basic-key name="scale">true</basic-key>
+          <basic-key name="keepAspectRatio">false</basic-key>
+          <basic-key name="draw-shape">true</basic-key>
+        </style>
+        <datasource type="StaticDataSource">
+          <compound-object name="value" class="java.awt.geom.Line2D$Float">
+            <basic-object name="x2">100.0</basic-object>
+            <basic-object name="x1">0.0</basic-object>
+            <basic-object name="y2">18.0</basic-object>
+            <basic-object name="y1">18.0</basic-object>
+          </compound-object>
+        </datasource>
+      </element>
+    </report-header>
+
+    <groups>
+      <group name="object-factory">
+        <fields>
+          <field>datasource-factory</field>
+        </fields>
+        <group-header>
+          <style>
+            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+              <basic-object name="height" class="java.lang.Double">18.0</basic-object>
+              <basic-object name="width" class="java.lang.Double">0.0</basic-object>
+            </compound-key>
+          </style>
+          <default-style>
+            <basic-key name="font-bold">true</basic-key>
+            <basic-key name="font-size">14</basic-key>
+            <basic-key name="font">Serif</basic-key>
+            <basic-key name="font-underline">false</basic-key>
+            <basic-key name="font-italic">false</basic-key>
+          </default-style>
+
+          <!-- group header -->
+          <element type="text/plain">
+            <style>
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+                <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
+                <basic-object name="width" class="java.lang.Double">150.0</basic-object>
+              </compound-key>
+              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+                <basic-object name="x">0.0</basic-object>
+                <basic-object name="y">0.0</basic-object>
+              </compound-key>
+            </style>
+            <template references="label">
+              <basic-object name="content">DataSource Factory: </basic-object>
+            </template>
+          </element>
+
+          <element type="text/plain">
+            <style>
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+                <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
+                <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+              </compound-key>
+              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+                <basic-object name="x">150.0</basic-object>
+                <basic-object name="y">0.0</basic-object>
+              </compound-key>
+              <basic-key name="font-size">10</basic-key>
+            </style>
+            <template references="string-field">
+              <basic-object name="nullValue">-</basic-object>
+              <basic-object name="field">datasource-factory</basic-object>
+            </template>
+          </element>
+
+          <element type="shape/generic">
+            <style>
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+                <basic-object name="height" class="java.lang.Double">0.0</basic-object>
+                <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+              </compound-key>
+              <basic-key name="stroke" class="java.awt.BasicStroke">1.0</basic-key>
+              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+                <basic-object name="x">0.0</basic-object>
+                <basic-object name="y">18.0</basic-object>
+              </compound-key>
+              <basic-key name="paint">#cfcfcf</basic-key>
+              <basic-key name="fill-shape">false</basic-key>
+              <basic-key name="scale">true</basic-key>
+              <basic-key name="keepAspectRatio">false</basic-key>
+              <basic-key name="draw-shape">true</basic-key>
+            </style>
+            <datasource type="StaticDataSource">
+              <compound-object name="value" class="java.awt.geom.Line2D$Float">
+                <basic-object name="x2">100.0</basic-object>
+                <basic-object name="x1">0.0</basic-object>
+                <basic-object name="y2">18.0</basic-object>
+                <basic-object name="y1">18.0</basic-object>
+              </compound-object>
+            </datasource>
+          </element>
+
+        </group-header>
+      </group>
+    </groups>
+
+    <itemband>
+      <style>
+        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+          <basic-object name="height" class="java.lang.Double">12.0</basic-object>
+          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
+        </compound-key>
+      </style>
+      <default-style>
+        <basic-key name="font-bold">true</basic-key>
+        <basic-key name="font-size">10</basic-key>
+        <basic-key name="font">SansSerif</basic-key>
+        <basic-key name="font-underline">false</basic-key>
+        <basic-key name="font-italic">false</basic-key>
+      </default-style>
+
+      <element type="text/plain" name="object-class">
+        <style>
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+            <basic-object name="height" class="java.lang.Double">12.0</basic-object>
+            <basic-object name="width" class="java.lang.Double">200.0</basic-object>
+          </compound-key>
+          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+            <basic-object name="x">50.0</basic-object>
+            <basic-object name="y">0.0</basic-object>
+          </compound-key>
+        </style>
+        <template references="string-field">
+          <basic-object name="nullValue">-</basic-object>
+          <basic-object name="field">datasource-name</basic-object>
+        </template>
+      </element>
+
+      <element type="text/plain">
+        <style>
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
+            <basic-object name="height" class="java.lang.Double">12.0</basic-object>
+            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+          </compound-key>
+          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Double">
+            <basic-object name="x">250.0</basic-object>
+            <basic-object name="y">0.0</basic-object>
+          </compound-key>
+        </style>
+        <template references="string-field">
+          <basic-object name="nullValue">-</basic-object>
+          <basic-object name="field">datasource-class</basic-object>
+        </template>
+      </element>
+
+    </itemband>
+
+  </report-description>
+</report-definition>
