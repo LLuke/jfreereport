@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------
- * SampleData2.java
+ * SampleData6.java
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData6.java,v 1.2 2002/06/05 21:20:47 taqua Exp $
+ * $Id: SampleData6.java,v 1.3 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,6 +42,8 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * A sample data source for the JFreeReport Demo Application.
+ *
+ * @author TM
  */
 public class SampleData6 extends AbstractTableModel
 {
@@ -55,6 +57,8 @@ public class SampleData6 extends AbstractTableModel
 
   /**
    * Returns the number of rows in the table model.
+   *
+   * @return the row count.
    */
   public int getRowCount ()
   {
@@ -63,6 +67,8 @@ public class SampleData6 extends AbstractTableModel
 
   /**
    * Returns the number of columns in the table model.
+   *
+   * @return the column count.
    */
   public int getColumnCount ()
   {
@@ -73,6 +79,8 @@ public class SampleData6 extends AbstractTableModel
    * Returns the class of the data in the specified column.
    *
    * @param column  the column (zero-based index).
+   *
+   * @return the column class.
    */
   public Class getColumnClass (int column)
   {
@@ -94,6 +102,8 @@ public class SampleData6 extends AbstractTableModel
    * Returns the name of the specified column.
    *
    * @param column  the column (zero-based index).
+   *
+   * @return the column name.
    */
   public String getColumnName (int column)
   {
@@ -125,6 +135,11 @@ public class SampleData6 extends AbstractTableModel
 
   /**
    * Returns the data value at the specified row and column.
+   *
+   * @param row  the row index (zero based).
+   * @param column  the column index (zero based).
+   *
+   * @return the value.
    */
   public Object getValueAt (int row, int column)
   {

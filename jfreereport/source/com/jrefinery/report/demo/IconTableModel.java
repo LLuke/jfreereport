@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.2 2002/07/16 13:29:11 mungady Exp $
+ * $Id: IconTableModel.java,v 1.3 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import java.util.List;
 
 /**
  * A simple TableModel implementation used for demonstration purposes.
+ *
+ * @author DG
  */
 public class IconTableModel extends AbstractTableModel
 {
@@ -125,7 +127,9 @@ public class IconTableModel extends AbstractTableModel
       return java.awt.Image.class;
     }
     else
+    {
       return Object.class;
+    }
   }
 
   /**

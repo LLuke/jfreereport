@@ -20,12 +20,12 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ------------------------
  * HugeJFreeReportDemo.java
- * --------------------
+ * ------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
  *
@@ -48,7 +48,6 @@ import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ActionMenuItem;
-import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
 
@@ -85,58 +84,106 @@ import java.util.ResourceBundle;
  * <p>
  * If the system property "com.jrefinery.report.demo.DEBUG" is set to "true", debugging
  * messages to System.out stream are enabled.
+ *
+ * @author TM
  */
 public class HugeJFreeReportDemo extends JFrame
 {
+  /**
+   * Window close hander.
+   */
   private class CloseHandler extends WindowAdapter
   {
+    /**
+     * Receives notification of a window closing.
+     *
+     * @param event  the window event.
+     */
     public void windowClosing (WindowEvent event)
     {
       attemptExit ();
     }
   }
 
+  /**
+   * About action.
+   */
   private class DemoAboutAction extends AboutAction
   {
+    /**
+     * Default constructor.
+     */
     public DemoAboutAction ()
     {
       super (getResources ());
     }
 
+    /**
+     * Performs the action.
+     *
+     * @param event  the event.
+     */
     public void actionPerformed (ActionEvent event)
     {
       displayAbout ();
     }
   }
 
+  /**
+   * Preview action.
+   */
   private class DemoPreviewAction extends PreviewAction
   {
+    /**
+     * Default constructor.
+     */
     public DemoPreviewAction ()
     {
       super (getResources ());
     }
 
+    /**
+     * Performs the action.
+     *
+     * @param event  the event.
+     */
     public void actionPerformed (ActionEvent event)
     {
       attemptPreview ();
     }
   }
 
+  /**
+   * Close action.
+   */
   private class DemoCloseAction extends CloseAction
   {
+    /**
+     * Default constructor.
+     */
     public DemoCloseAction ()
     {
       super (getResources ());
     }
 
+    /**
+     * Performs the action.
+     *
+     * @param event  the event.
+     */
     public void actionPerformed (ActionEvent event)
     {
       attemptExit ();
     }
   }
 
+  /** Preview action. */
   protected PreviewAction previewAction;
+
+  /** About action. */
   protected AboutAction aboutAction;
+
+  /** Close action. */
   protected CloseAction closeAction;
 
   /** A frame for displaying information about the demo application. */
@@ -148,6 +195,7 @@ public class HugeJFreeReportDemo extends JFrame
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
 
+  /** ?? */
   private previewConf[] previewData =
           {
             new previewConf (
@@ -170,21 +218,29 @@ public class HugeJFreeReportDemo extends JFrame
                     new SampleData6 ()),
           };
 
-  private ResourceBundle m_resources;
+  /** Resource bundle. */
+  private ResourceBundle resources;
 
+  /**
+   * Returns localised resources.
+   *
+   * @return localised resources.
+   */
   private ResourceBundle getResources ()
   {
-    return m_resources;
+    return this.resources;
   }
 
   /**
    * Constructs a frame containing sample reports created using the JFreeReport Class Library.
+   *
+   * @param resources  localised resources.
    */
   public HugeJFreeReportDemo (ResourceBundle resources)
   {
     setDefaultCloseOperation (DO_NOTHING_ON_CLOSE);
     addWindowListener (new CloseHandler ());
-    m_resources = resources;
+    this.resources = resources;
     Object[] arguments = new Object[]{JFreeReport.getInfo ().getVersion ()};
     String pattern = resources.getString ("main-frame.title.pattern");
     setTitle (MessageFormat.format (pattern, arguments));
@@ -203,22 +259,22 @@ public class HugeJFreeReportDemo extends JFrame
     tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
     tabbedPane.addTab (
             "Example 1",
-            RefineryUtilities.createTablePanel (previewData[0].m_data));
+            RefineryUtilities.createTablePanel (previewData[0].data));
     tabbedPane.addTab (
             "Example 2",
-            RefineryUtilities.createTablePanel (previewData[1].m_data));
+            RefineryUtilities.createTablePanel (previewData[1].data));
     tabbedPane.addTab (
             "Example 3",
-            RefineryUtilities.createTablePanel (previewData[2].m_data));
+            RefineryUtilities.createTablePanel (previewData[2].data));
     tabbedPane.addTab (
             "Example 4",
-            RefineryUtilities.createTablePanel (previewData[3].m_data));
+            RefineryUtilities.createTablePanel (previewData[3].data));
     tabbedPane.addTab (
             "Example 5 (HUGE)",
-            RefineryUtilities.createTablePanel (previewData[4].m_data));
+            RefineryUtilities.createTablePanel (previewData[4].data));
     tabbedPane.addTab (
             "Example 6 (HUGE)",
-            RefineryUtilities.createTablePanel (previewData[5].m_data));
+            RefineryUtilities.createTablePanel (previewData[5].data));
 
     content.add (tabbedPane);
 
@@ -255,7 +311,7 @@ public class HugeJFreeReportDemo extends JFrame
   {
     int index = tabbedPane.getSelectedIndex ();
 
-    preview (previewData[index].m_reportFile, previewData[index].m_data);
+    preview (previewData[index].reportFile, previewData[index].data);
   }
 
   /**
@@ -316,6 +372,9 @@ public class HugeJFreeReportDemo extends JFrame
    * Shows the exception dialog by using localized messages. The message base is
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
+   *
+   * @param localisationBase  the prefix for the resource key.
+   * @param e  the exception.
    */
   private void showExceptionDialog (String localisationBase, Exception e)
   {
@@ -330,6 +389,8 @@ public class HugeJFreeReportDemo extends JFrame
 
   /**
    * Returns the preferred size of the frame.
+   *
+   * @return the preferred size.
    */
   public Dimension getPreferredSize ()
   {
@@ -338,6 +399,9 @@ public class HugeJFreeReportDemo extends JFrame
 
   /**
    * Exits the application, but only if the user agrees.
+   *
+   * @return false if the user decides not to exit the application.
+   *
    */
   public boolean attemptExit ()
   {
@@ -387,6 +451,8 @@ public class HugeJFreeReportDemo extends JFrame
 
   /**
    * Creates and returns a menu-bar for the frame.
+   *
+   * @return the menu bar.
    */
   private JMenuBar createMenuBar ()
   {
@@ -424,11 +490,15 @@ public class HugeJFreeReportDemo extends JFrame
 
   /**
    * Creates a JMenu which gets initialized from the current resource bundle.
+   *
+   * @param base  prefix for the localised resources.
+   *
+   * @return the menu.
    */
   private JMenu createJMenuItem (String base)
   {
-    String label = m_resources.getString (base + ".name");
-    Character mnemonic = (Character) m_resources.getObject (base + ".mnemonic");
+    String label = this.resources.getString (base + ".name");
+    Character mnemonic = (Character) this.resources.getObject (base + ".mnemonic");
 
     JMenu menu = new JMenu (label);
     if (mnemonic != null)
@@ -442,6 +512,10 @@ public class HugeJFreeReportDemo extends JFrame
   /**
    * Creates a new button based on the action. The button will be floating enabled,
    * so that the buttons borders are only visible when the mouse has entered the button area.
+   *
+   * @param action  the action.
+   *
+   * @return a button based on the action.
    */
   protected JButton createButton (Action action)
   {
@@ -453,7 +527,11 @@ public class HugeJFreeReportDemo extends JFrame
   }
 
   /**
-   * Creates the demos toolbar
+   * Creates the demos toolbar.
+   *
+   * @param resources  localised resources.
+   *
+   * @return a toolbar.
    */
   private JToolBar createToolBar (ResourceBundle resources)
   {
@@ -472,6 +550,8 @@ public class HugeJFreeReportDemo extends JFrame
 
   /**
    * The starting point for the demonstration application.
+   *
+   * @param args ignored.
    */
   public static void main (String[] args)
   {
@@ -481,6 +561,7 @@ public class HugeJFreeReportDemo extends JFrame
     }
     catch (Exception e)
     {
+      System.err.println("Look and feel problem.");
     }
 
     PDFOutputTarget.getFontFactory ().registerDefaultFontPath ();
@@ -494,15 +575,28 @@ public class HugeJFreeReportDemo extends JFrame
     frame.setVisible (true);
   }
 
+  /**
+   * ??
+   */
   private class previewConf
   {
-    String m_reportFile;
-    AbstractTableModel m_data;
+    /** The report template file. */
+    String reportFile;
 
+    /** The data. */
+    AbstractTableModel data;
+
+    /**
+     * ??
+     *
+     * @param reportFile  the report template file.
+     * @param data  the data.
+     */
     public previewConf (String reportFile, AbstractTableModel data)
     {
-      m_reportFile = reportFile;
-      m_data = data;
+      this.reportFile = reportFile;
+      this.data = data;
     }
   }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
+ * $Id: SampleData2.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,6 +42,8 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * A sample data source for the JFreeReport Demo Application.
+ *
+ * @author DG
  */
 public class SampleData2 extends AbstractTableModel
 {
@@ -199,6 +201,8 @@ public class SampleData2 extends AbstractTableModel
 
   /**
    * Returns the number of rows in the table model.
+   *
+   * @return the row count.
    */
   public int getRowCount ()
   {
@@ -207,6 +211,8 @@ public class SampleData2 extends AbstractTableModel
 
   /**
    * Returns the number of columns in the table model.
+   *
+   * @return the column count.
    */
   public int getColumnCount ()
   {
@@ -215,14 +221,18 @@ public class SampleData2 extends AbstractTableModel
 
   /**
    * Returns the class of the data in the specified column.
+   *
+   * @param column  the column (zero-based index).
+   *
+   * @return the column class.
    */
-  public Class getColumnClass (int columnIndex)
+  public Class getColumnClass (int column)
   {
-    if (columnIndex == 3)
+    if (column == 3)
     {
       return Integer.class;
     }
-    else if (columnIndex == 4)
+    else if (column == 4)
     {
       return Double.class;
     }
@@ -234,26 +244,30 @@ public class SampleData2 extends AbstractTableModel
 
   /**
    * Returns the name of the specified column.
+   *
+   * @param column  the column (zero-based index).
+   *
+   * @return the column name.
    */
-  public String getColumnName (int columnIndex)
+  public String getColumnName (int column)
   {
-    if (columnIndex == 0)
+    if (column == 0)
     {
       return "Name";
     }
-    else if (columnIndex == 1)
+    else if (column == 1)
     {
       return "Color";
     }
-    else if (columnIndex == 2)
+    else if (column == 2)
     {
       return "Letter";
     }
-    else if (columnIndex == 3)
+    else if (column == 3)
     {
       return "Integer";
     }
-    else if (columnIndex == 4)
+    else if (column == 4)
     {
       return "Double";
     }
@@ -265,6 +279,11 @@ public class SampleData2 extends AbstractTableModel
 
   /**
    * Returns the data value at the specified row and column.
+   *
+   * @param row  the row index (zero based).
+   * @param column  the column index (zero based).
+   *
+   * @return the value.
    */
   public Object getValueAt (int row, int column)
   {

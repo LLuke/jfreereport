@@ -48,13 +48,18 @@ import java.awt.image.BufferedImage;
 /**
  * The ImageRenderFunction creates a simple Image using a BufferedImage within a function to show
  * the use of the ImageFunctionElement.
+ *
+ * @author TM
  */
 public class ImageRenderFunction extends AbstractFunction
 {
+  /** The function value. */
   private ImageReference functionValue;
 
   /**
    * Create a image according to the current state, simple and silly ...
+   *
+   * @param event  the report event.
    */
   public void pageStarted(ReportEvent event)
   {
@@ -80,7 +85,9 @@ public class ImageRenderFunction extends AbstractFunction
   }
 
   /**
-   * Return the last generated Image
+   * Return the last generated Image.
+   *
+   * @return the function value.
    */
   public Object getValue()
   {

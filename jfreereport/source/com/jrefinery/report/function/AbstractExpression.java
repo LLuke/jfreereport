@@ -44,7 +44,7 @@ import java.util.Properties;
  * expressions are named and the defined names have to be unique within the reports expressions,
  * functions and fields of the datasource. Expressions are configured using properties.
  * <p>
- * @todo define a property query interface similiar to the JDBC-Property interface
+ * @todo define a property query interface similar to the JDBC-Property interface
  *
  * @author TM
  */

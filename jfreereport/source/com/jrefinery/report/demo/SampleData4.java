@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------
  * SampleData4.java
- * -----------------------
+ * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  */
@@ -36,11 +36,24 @@ import java.util.Comparator;
 
 /**
  * A sample data source for the JFreeReport Demo Application.
+ *
+ * @author TM
  */
 public class SampleData4 extends AbstractTableModel
 {
+  /**
+   * Comparator for sorting fonts.
+   */
   private class FontComparator implements Comparator
   {
+    /**
+     * Compares two fonts.
+     *
+     * @param o  font 1.
+     * @param o1  font 2.
+     *
+     * @return an integer representing the relative order of the two fonts.
+     */
     public int compare (Object o, Object o1)
     {
       Font f1 = (Font) o;
@@ -54,8 +67,12 @@ public class SampleData4 extends AbstractTableModel
     }
   }
 
+  /** Storage for the fonts. */
   private Font[] fonts = null;
 
+  /**
+   * Sample dataset.
+   */
   public SampleData4 ()
   {
     fonts = GraphicsEnvironment.getLocalGraphicsEnvironment ().getAllFonts ();
@@ -64,6 +81,8 @@ public class SampleData4 extends AbstractTableModel
 
   /**
    * Returns the number of rows in the table model.
+   *
+   * @return the row count.
    */
   public int getRowCount ()
   {
@@ -72,6 +91,8 @@ public class SampleData4 extends AbstractTableModel
 
   /**
    * Returns the number of columns in the table model.
+   *
+   * @return the column count.
    */
   public int getColumnCount ()
   {
@@ -80,8 +101,12 @@ public class SampleData4 extends AbstractTableModel
 
   /**
    * Returns the class of the data in the specified column.
+   *
+   * @param column  the column (zero-based index).
+   *
+   * @return the column class.
    */
-  public Class getColumnClass (int columnIndex)
+  public Class getColumnClass (int column)
   {
     return String.class;
   }
@@ -90,6 +115,8 @@ public class SampleData4 extends AbstractTableModel
    * Returns the name of the specified column.
    *
    * @param column  the column (zero-based index).
+   *
+   * @return the column name.
    */
   public String getColumnName (int column)
   {
@@ -109,6 +136,11 @@ public class SampleData4 extends AbstractTableModel
 
   /**
    * Returns the data value at the specified row and column.
+   *
+   * @param row  the row index (zero based).
+   * @param column  the column index (zero based).
+   *
+   * @return the value.
    */
   public Object getValueAt (int row, int column)
   {
@@ -122,6 +154,5 @@ public class SampleData4 extends AbstractTableModel
     }
     return "The five boxing wizards jump quickly.";
   }
-
 
 }

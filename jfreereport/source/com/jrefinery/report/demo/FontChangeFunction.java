@@ -53,6 +53,8 @@ import java.awt.Font;
  * Parameters:<br>
  * The function expects the name of a field in the item band in the parameter "element".
  * This functions value will always be null.
+ *
+ * @author TM
  */
 public class FontChangeFunction extends AbstractFunction
 {
@@ -69,6 +71,8 @@ public class FontChangeFunction extends AbstractFunction
    * for all functions in the function collection. This is the right place to alter
    * the font of the element defined in the "element" property, so that every ItemBand
    * has the font set, that is defined in the data model.
+   *
+   * @param event the report event.
    */
   public void itemsAdvanced (ReportEvent event)
   {
@@ -106,6 +110,8 @@ public class FontChangeFunction extends AbstractFunction
    * function has no valid name or the required parameter "element" is missing.
    * <p>
    * @see #setElement(String)
+   *
+   * @throws FunctionInitializeException if the element name has not been specified.
    */
   public void initialize () throws FunctionInitializeException
   {
@@ -117,10 +123,12 @@ public class FontChangeFunction extends AbstractFunction
   }
 
   /**
-   * Defines the name of the text element that gets it's font altered. If the element
+   * Defines the name of the text element that gets its font altered. If the element
    * does not exist or is no text element, the function will do nothing.
    * <p>
    * This functions property is reachable by using the key "element" on getProperty.
+   *
+   * @param name  the element name.
    */
   public void setElement (String name)
   {
@@ -130,6 +138,8 @@ public class FontChangeFunction extends AbstractFunction
   /**
    * Returns the name of the element that should get the font set. Returns an empty string,
    * if the property is not set.
+   *
+   * @return the element name.
    */
   public String getElement ()
   {
@@ -137,8 +147,10 @@ public class FontChangeFunction extends AbstractFunction
   }
 
   /**
-   * Returns the value calculated by this function. As this function does not calcalate values,
+   * Returns the value calculated by this function. As this function does not calculate values,
    * this method does always return null.
+   *
+   * @return null.
    */
   public Object getValue ()
   {

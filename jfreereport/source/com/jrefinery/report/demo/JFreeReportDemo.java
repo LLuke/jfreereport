@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.33 2002/09/10 10:52:13 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.34 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -90,16 +90,29 @@ import java.util.ResourceBundle;
  * <p>
  * If the system property "com.jrefinery.report.demo.DEBUG" is set to "true", debugging
  * messages to System.out stream are enabled.
+ *
+ * @author DG
  */
 public class JFreeReportDemo extends JFrame
 {
+  /**
+   * About action.
+   */
   private class DemoAboutAction extends AboutAction
   {
+    /**
+     * Default constructor.
+     */
     public DemoAboutAction()
     {
       super(getResources());
     }
 
+    /**
+     * Receives notification of an action event.
+     *
+     * @param event  the event.
+     */
     public void actionPerformed(ActionEvent event)
     {
       System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " "
@@ -111,42 +124,77 @@ public class JFreeReportDemo extends JFrame
     }
   }
 
+  /**
+   * Preview action.
+   */
   private class DemoPreviewAction extends PreviewAction
   {
+    /**
+     * Default constructor.
+     */
     public DemoPreviewAction()
     {
       super(getResources());
     }
 
+    /**
+     * Receives notification of an action event.
+     *
+     * @param event  the event.
+     */
     public void actionPerformed(ActionEvent event)
     {
       attemptPreview();
     }
   }
 
+  /**
+   * Close action.
+   */
   private class DemoCloseAction extends CloseAction
   {
+    /**
+     * Default constructor.
+     */
     public DemoCloseAction()
     {
       super(getResources());
     }
 
+    /**
+     * Receives notification of an action event.
+     *
+     * @param event  the event.
+     */
     public void actionPerformed(ActionEvent event)
     {
       attemptExit();
     }
   }
 
+  /**
+   * Window close handler.
+   */
   private class CloseHandler extends WindowAdapter
   {
+    /**
+     * Handles the window closing event.
+     *
+     * @param event  the window event.
+     */
     public void windowClosing(WindowEvent event)
     {
       attemptExit();
     }
   }
 
+  /** Preview action. */
   protected PreviewAction previewAction;
+
+  /** About action. */
   protected AboutAction aboutAction;
+
+  /** Close action. */
   protected CloseAction closeAction;
 
   /** A frame for displaying information about the demo application. */
@@ -170,21 +218,29 @@ public class JFreeReportDemo extends JFrame
   /** A table model containing sample data. */
   private SampleData4 data4;
 
-  private ResourceBundle m_resources;
+  /** Localised resources. */
+  private ResourceBundle resources;
 
+  /**
+   * Returns the localised resources.
+   *
+   * @return localised resources.
+   */
   private ResourceBundle getResources()
   {
-    return m_resources;
+    return this.resources;
   }
 
   /**
    * Constructs a frame containing sample reports created using the JFreeReport Class Library.
+   *
+   * @param resources  localised resources.
    */
   public JFreeReportDemo(ResourceBundle resources)
   {
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new CloseHandler());
-    m_resources = resources;
+    this.resources = resources;
     Object[] arguments = new Object[]{JFreeReport.getInfo().getVersion()};
     String pattern = resources.getString("main-frame.title.pattern");
     setTitle(MessageFormat.format(pattern, arguments));
@@ -245,6 +301,10 @@ public class JFreeReportDemo extends JFrame
 
   /**
    * Forms the localized example string.
+   *
+   * @param ex  the example number.
+   *
+   * @return the string.
    */
   private String formExample(int ex)
   {
@@ -290,6 +350,9 @@ public class JFreeReportDemo extends JFrame
     }
   }
 
+  /**
+   * Preview.
+   */
   private void previewManual()
   {
     try
@@ -317,8 +380,8 @@ public class JFreeReportDemo extends JFrame
    * If the report contains external references in specified in relative urls, the urls
    * are loaded using the reports parent directory as content base.
    *
-   * @param urlname the filename from where to load the report
-   * @param data the datamodel for the report
+   * @param urlname  the filename from where to load the report
+   * @param data  the datamodel for the report
    */
   public void preview(String urlname, TableModel data)
   {
@@ -367,6 +430,9 @@ public class JFreeReportDemo extends JFrame
    * Shows the exception dialog by using localized messages. The message base is
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
+   *
+   * @param localisationBase  the resource prefix.
+   * @param e  the exception.
    */
   private void showExceptionDialog(String localisationBase, Exception e)
   {
@@ -381,6 +447,8 @@ public class JFreeReportDemo extends JFrame
 
   /**
    * Returns the preferred size of the frame.
+   *
+   * @return the preferred size.
    */
   public Dimension getPreferredSize()
   {
@@ -389,6 +457,8 @@ public class JFreeReportDemo extends JFrame
 
   /**
    * Exits the application, but only if the user agrees.
+   *
+   * @return false if the user decides not to exit the application.
    */
   public boolean attemptExit()
   {
@@ -438,6 +508,8 @@ public class JFreeReportDemo extends JFrame
 
   /**
    * Creates and returns a menu-bar for the frame.
+   *
+   * @return the menu bar.
    */
   private JMenuBar createMenuBar()
   {
@@ -476,11 +548,15 @@ public class JFreeReportDemo extends JFrame
 
   /**
    * Creates a JMenu which gets initialized from the current resource bundle.
+   *
+   * @param base the resource prefix.
+   *
+   * @return the menu.
    */
   private JMenu createJMenuItem(String base)
   {
-    String label = m_resources.getString(base + ".name");
-    Character mnemonic = (Character) m_resources.getObject(base + ".mnemonic");
+    String label = this.resources.getString(base + ".name");
+    Character mnemonic = (Character) this.resources.getObject(base + ".mnemonic");
 
     JMenu menu = new JMenu(label);
     if (mnemonic != null)
@@ -493,6 +569,10 @@ public class JFreeReportDemo extends JFrame
   /**
    * Creates a new button based on the action. The button will be floating enabled,
    * so that the buttons borders are only visible when the mouse has entered the button area.
+   *
+   * @param action  the action.
+   *
+   * @return a button based on the action.
    */
   protected JButton createButton(Action action)
   {
@@ -504,7 +584,11 @@ public class JFreeReportDemo extends JFrame
   }
 
   /**
-   * Creates the demos toolbar
+   * Creates the demos toolbar.
+   *
+   * @param resources localised resources.
+   *
+   * @return the toolbar.
    */
   private JToolBar createToolBar(ResourceBundle resources)
   {
@@ -523,6 +607,8 @@ public class JFreeReportDemo extends JFrame
 
   /**
    * The starting point for the demonstration application.
+   *
+   * @param args ignored.
    */
   public static void main(String[] args)
   {
@@ -533,6 +619,7 @@ public class JFreeReportDemo extends JFrame
     }
     catch (Exception e)
     {
+      System.out.println("Look and feel problem.");
     }
 
     PDFOutputTarget.getFontFactory().registerDefaultFontPath();

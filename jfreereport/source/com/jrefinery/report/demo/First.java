@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.8 2002/09/05 08:28:40 mungady Exp $
+ * $Id: First.java,v 1.9 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -75,9 +75,8 @@ import java.util.zip.ZipFile;
  * (david.gilbert@object-refinery.com) if you need to make changes to this file.
  * <P>
  * To run this demo, you need to have the Java Look and Feel Icons jar file on your classpath.
- * <P>
- * To do: fix hard coded path to XML report template.
  *
+ * @author DG
  */
 public class First extends ApplicationFrame implements ActionListener
 {
@@ -91,7 +90,7 @@ public class First extends ApplicationFrame implements ActionListener
   /**
    * Constructs the demo application.
    *
-   * @param title The frame title.
+   * @param title  the frame title.
    */
   public First(String title)
   {
@@ -103,7 +102,7 @@ public class First extends ApplicationFrame implements ActionListener
   /**
    * Creates a menu bar.
    *
-   * @return The menu bar.
+   * @return the menu bar.
    */
   public JMenuBar createMenuBar()
   {
@@ -296,6 +295,10 @@ public class First extends ApplicationFrame implements ActionListener
 
   /**
    * For the category, use the subdirectory name.
+   *
+   * @param fullName  the complete file name.
+   *
+   * @return the category.
    */
   private String getCategory(String fullName)
   {
@@ -306,6 +309,10 @@ public class First extends ApplicationFrame implements ActionListener
 
   /**
    * For the name, strip off the ".gif".
+   *
+   * @param fullName  the complete file name.
+   *
+   * @return the name.
    */
   private String getName(String fullName)
   {
@@ -316,6 +323,8 @@ public class First extends ApplicationFrame implements ActionListener
 
   /**
    * Entry point for running the demo application...
+   *
+   * @param args ignored.
    */
   public static void main(String[] args)
   {

@@ -32,7 +32,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * This creates a report similiar to the Report defined by report1.xml
+ * This creates a report similar to the Report defined by report1.xml.
+ *
+ * @author TM
  */
 public class SampleReport1
 {
@@ -44,8 +46,9 @@ public class SampleReport1
                   baseline="12" format="d-MMM-yyyy" function="report_date"/>
    <line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
    </pageheader>
-   </pre
+   </pre>
    *
+   * @return the page header.
    */
   private PageHeader createPageHeader ()
   {
@@ -93,8 +96,9 @@ public class SampleReport1
    <label name="Label 2" x="0" y="0" width="100%" height="24"
           alignment="center">*** END OF REPORT ***</label>
    </reportfooter>
-   </pre
+   </pre>
    *
+   * @return the page footer.
    */
   private PageFooter createPageFooter ()
   {
@@ -108,8 +112,9 @@ public class SampleReport1
    <pagefooter height="18">
    <!-- insert a page number field here -->
    </pagefooter>
-   </pre
+   </pre>
    *
+   * @return the report footer.
    */
   private ReportFooter createReportFooter ()
   {
@@ -135,8 +140,9 @@ public class SampleReport1
    <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center"
           baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
    </reportheader>
-   </pre
+   </pre>
    *
+   * @return the report header.
    */
   private ReportHeader createReportHeader ()
   {
@@ -172,7 +178,9 @@ public class SampleReport1
    <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right"
                  format="#,##0" fieldname="Population"/>
    </items>
-   </pre
+   </pre>
+   *
+   * @return the item band.
    */
   private ItemBand createItemBand ()
   {
@@ -267,6 +275,9 @@ public class SampleReport1
    </functions>
    </pre>
    *
+   * @return the functions.
+   *
+   * @throws FunctionInitializeException if there is a problem initialising the functions.
    */
   private FunctionCollection createFunctions () throws FunctionInitializeException
   {
@@ -297,6 +308,8 @@ public class SampleReport1
 
    </groups>
    </pre>
+   *
+   * @return the groups.
    */
   private GroupList createGroups ()
   {
@@ -325,6 +338,8 @@ public class SampleReport1
    </fields>
    </group>
    </pre>
+   *
+   * @return the continent group.
    */
   private Group createContinentGroup ()
   {
@@ -396,6 +411,13 @@ public class SampleReport1
     return continentGroup;
   }
 
+  /**
+   * Creates the report.
+   *
+   * @return the constructed report.
+   *
+   * @throws FunctionInitializeException if there was a problem initialising any of the functions.
+   */
   public JFreeReport createReport () throws FunctionInitializeException
   {
     JFreeReport report = new JFreeReport ();
@@ -410,7 +432,11 @@ public class SampleReport1
     return report;
   }
 
+  /**
+   * Default constructor.
+   */
   public SampleReport1 ()
   {
   }
+
 }

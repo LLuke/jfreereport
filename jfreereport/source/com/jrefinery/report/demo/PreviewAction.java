@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewAction.java,v 1.7 2002/08/29 19:15:34 taqua Exp $
+ * $Id: PreviewAction.java,v 1.8 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,15 @@ import java.util.ResourceBundle;
 /**
  * The preview action invokes the parsing and processing of the currently selected sample
  * report. The actual work is done in the JFreeReportDemos method attemptPreview ()
+ *
+ * @author DG
  */
 public abstract class PreviewAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new preview action.
+   *
+   * @param resources  localised resources.
    */
   public PreviewAction (ResourceBundle resources)
   {
