@@ -7,6 +7,8 @@
   2002-05-23: Changed the font style for extended attributes. The old attribute is also valid
               and gets silently mapped to the new style by the parser.
   2002-06-09: Added the rectangle shape element
+  2002-06-30: ImageField, ImageFunction
+  2002-07-10: ImageURLField, ImageURLFunction
  -->
 
 <!ENTITY % boolean
@@ -408,7 +410,8 @@
 >
 <!--
 
-   The image reference links an external image into the report.
+   The image reference links an external image into the report. This element expects an
+   Graphics2D-Object in the datasource.
 
   -->
 <!ELEMENT image-field   EMPTY>
@@ -419,7 +422,8 @@
 >
 <!--
 
-   The image reference links an external image into the report.
+   The image reference links an external image into the report. This element expects an
+   Graphics2D-Object in the datasource.
 
   -->
 <!ELEMENT image-function   EMPTY>
@@ -428,6 +432,31 @@
   function    CDATA #REQUIRED
   name        CDATA #REQUIRED
 >
+<!--
+
+   The image reference links an external image into the report. This element expects an
+   URL or URL-String in the datasource.
+
+  -->
+<!ELEMENT imageurl-field   EMPTY>
+<!ATTLIST imageurl-field
+  %position;
+  field       CDATA #REQUIRED
+  name        CDATA #REQUIRED
+>
+<!--
+
+   The image reference links an external image into the report. This element expects an
+   URL or URL-String in the datasource.
+
+  -->
+<!ELEMENT imageurl-function   EMPTY>
+<!ATTLIST imageurl-function
+  %position;
+  function    CDATA #REQUIRED
+  name        CDATA #REQUIRED
+>
+
 
 <!--
 
