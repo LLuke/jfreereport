@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.37 2003/01/27 03:17:33 taqua Exp $
+ * $Id: Band.java,v 1.38 2003/01/27 23:47:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -176,6 +176,11 @@ public class Band extends Element implements Serializable, Cloneable
         }
         band = band.getParent();
       }
+    }
+
+    if (element.getParent() != null)
+    {
+      element.getParent().removeElement(element);
     }
 
     allElements.add(position, element);
@@ -340,8 +345,10 @@ public class Band extends Element implements Serializable, Cloneable
     {
       Element e = (Element) allElements.get(i);
       Element eC = (Element) e.clone();
-      eC.setParent(b);
       b.allElements.add (eC);
+      eC.setParent(b);
+      eC.getStyle().removeParent(getBandDefaults());
+      eC.getStyle().addParent(b.getBandDefaults());
     }
     return b;
   }

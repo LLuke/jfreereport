@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 4:14:39 PM
  *
- * $Id: HSSFFontWrapper.java,v 1.3 2003/01/25 20:34:12 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.4 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -29,7 +29,6 @@ public class HSSFFontWrapper
 
   public HSSFFontWrapper(FontDefinition font, Color color)
   {
-    Log.debug ("Added Font: " + font);
     String fName = font.getFontName();
     if (font.isSansSerif())
     {
@@ -48,7 +47,7 @@ public class HSSFFontWrapper
       fontName = fName;
     }
     
-    colorIndex = ExcelToolLibrary.getNearestColor(color).getIndex();
+    colorIndex = ExcelToolLibrary.getNearestColor(color);
     fontHeight = (short) (font.getFontSize());
     bold = font.isBold();
     italic = font.isItalic();

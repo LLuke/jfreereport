@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.7 2003/01/27 03:17:43 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.8 2003/01/27 18:24:54 taqua Exp $
  *
  * This file now produces valid HTML4
  */
@@ -220,38 +220,11 @@ public class HtmlProducer extends TableProducer
     return isOpen;
   }
 
-  private String createTableCellStyle (List background)
+  protected String createHtmlBackgroundStyle (List background)
   {
-    if (background == null)
-    {
-      return null;
-    }
-
-    Log.debug ("Background: " + background.size());
-    
-    TableCellBackground bg = null;
-    for (int i = 0; i < background.size(); i++)
-    {
-      TableGridPosition listBgPos = (TableGridPosition) background.get(i);
-      TableCellBackground listBg = (TableCellBackground) listBgPos.getElement();
-
-      if (bg == null)
-      {
-        bg =  listBg;
-      }
-      else
-      {
-        Log.debug ("Merge       : " + bg);
-        Log.debug ("Merge with  : " + listBg);
-        bg = bg.merge(listBg);
-        Log.debug ("Merge result: " + bg);
-      }
-    }
-
+    TableCellBackground bg = createTableCellStyle(background);
     if (bg == null)
-    {
       return null;
-    }
 
     return styleCollection.getBackgroundStyle(bg);
   }
@@ -265,7 +238,7 @@ public class HtmlProducer extends TableProducer
       int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
 
       pout.println("<tr style=\"height:" + lastRowHeight + "pt\">");
-
+      boolean printed = false;
       for (int x = 0; x < layout.getWidth(); x++)
       {
         TableGridLayout.Element gridElement = layout.getData(x, y);
@@ -273,6 +246,7 @@ public class HtmlProducer extends TableProducer
         {
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
           pout.println("<td style=\"width:" + width + "pt\">&nbsp;</td>");
+          printed = true;
           continue;
         }
 
@@ -284,19 +258,23 @@ public class HtmlProducer extends TableProducer
           pout.print(width);
           pout.print("pt");
 
-          String style = createTableCellStyle(gridElement.getBackground());
+
+          Log.debug ("GridElement: " + gridElement);
+          String style = createHtmlBackgroundStyle(gridElement.getBackground());
           if (style != null)
           {
             pout.print("; ");
             pout.print(style);
           }
           pout.print ("\">&nbsp;</td>");
+          printed = true;
           continue;
         }
 
         if (gridPosition.isOrigin(x, y) == false)
         {
           // this is a spanned field.
+
           continue;
         }
 
@@ -308,7 +286,7 @@ public class HtmlProducer extends TableProducer
         pout.print("; height:");
         pout.print((int) gridPosition.getBounds().getHeight());
         pout.print("pt");
-        String style = createTableCellStyle(gridElement.getBackground());
+        String style = createHtmlBackgroundStyle(gridElement.getBackground());
         if (style != null)
         {
           pout.print("; ");
@@ -351,6 +329,15 @@ public class HtmlProducer extends TableProducer
         pout.println("</td>");
 
         x += gridPosition.getColSpan() - 1;
+        printed = true;
+      }
+      if (!printed)
+      {
+        for (int x = 0; x < layout.getWidth(); x++)
+        {
+          Log.debug(layout.getData(x,y).getRoot());
+          Log.debug(layout.getData(x,y).getBackground());
+        }
       }
       pout.println("</tr>");
     }

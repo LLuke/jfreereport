@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 9:40:17 AM
  *
- * $Id: TableGridLayout.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.3 2003/01/27 18:24:53 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -33,7 +33,7 @@ public class TableGridLayout
         if (pos.getElement().isBackground())
         {
           backGrounds.add (0, pos);
-          Log.debug ("backGrounds -> added " + backGrounds.size());
+          //Log.debug ("backGrounds -> added " + backGrounds.size());
         }
         else
         {
@@ -45,10 +45,10 @@ public class TableGridLayout
             if (gpos.contains(root) == false)
             {
               it.remove();
-              Log.debug ("backGrounds !!removed " + backGrounds.size());
+              //Log.debug ("backGrounds !!removed " + backGrounds.size());
             }
           }
-          Log.debug ("backGrounds -> removed " + backGrounds.size());
+          //Log.debug ("backGrounds -> removed " + backGrounds.size());
         }
       }
       else
@@ -58,7 +58,7 @@ public class TableGridLayout
           if (pos.contains(root))
           {
             backGrounds.add(0, pos);
-            Log.debug ("backGrounds -> added " + backGrounds.size());
+//            Log.debug ("backGrounds -> added " + backGrounds.size());
           }
           else
           {
@@ -83,6 +83,17 @@ public class TableGridLayout
     public TableGridPosition getRoot()
     {
       return root;
+    }
+
+    public String toString ()
+    {
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("TableGridLayout.Element={root=");
+      buffer.append(root);
+      buffer.append(", backgrounds=");
+      buffer.append(backGrounds);
+      buffer.append("}");
+      return buffer.toString();
     }
   }
 
@@ -116,25 +127,26 @@ public class TableGridLayout
 
   protected void add (TableCellData pos)
   {
-
     Rectangle2D bounds = pos.getBounds();
+
     int maxBoundsX = (int) (bounds.getX() + bounds.getWidth());
     int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
 
     TableGridPosition gPos = new TableGridPosition(pos);
-    gPos.setCol(findDouble(xCuts, (int) bounds.getX(), false));
-    gPos.setRow(findDouble(yCuts, (int) bounds.getY(), false));
-    gPos.setColSpan(findDouble(xCuts, maxBoundsX, true) - gPos.getCol());
-    gPos.setRowSpan(findDouble(yCuts, maxBoundsY, true) - gPos.getRow());
-
-    /*
-    Log.debug ("DebugChunk: " + pos.debugChunk);
-    Log.debug ("gPos.getCol: " + gPos.getCol() + " -> " + getColumnStart(gPos.getCol()));
-    Log.debug ("gPos.getRow: " + gPos.getRow() + " -> " + getRowStart(gPos.getRow()));
-    Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> " + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
-    Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> " + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
-    */
-
+    gPos.setCol(findBoundry(xCuts, (int) bounds.getX(), false));
+    gPos.setRow(findBoundry(yCuts, (int) bounds.getY(), false));
+    gPos.setColSpan(Math.max(1, findBoundry(xCuts, maxBoundsX, true) - gPos.getCol()));
+    gPos.setRowSpan(Math.max(1, findBoundry(yCuts, maxBoundsY, true) - gPos.getRow()));
+/*
+    if (pos instanceof TableBandArea)
+    {
+      Log.debug ("DebugChunk: " + pos.debugChunk);
+      Log.debug ("gPos.getCol: " + gPos.getCol() + " -> " + getColumnStart(gPos.getCol()));
+      Log.debug ("gPos.getRow: " + gPos.getRow() + " -> " + getRowStart(gPos.getRow()));
+      Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> " + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
+      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> " + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
+    }
+*/
     int startY = gPos.getRow();
     int endY = gPos.getRow() + gPos.getRowSpan();
     for (int posY = startY; posY < endY; posY ++)
@@ -217,7 +229,7 @@ public class TableGridLayout
     }
   }
 
-  private int findDouble (int[] data, int d, boolean upperBounds)
+  private int findBoundry (int[] data, int d, boolean upperBounds)
   {
     for (int i = 0; i < data.length; i++)
     {

@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:19:44 PM
  *
- * $Id: TableProducer.java,v 1.4 2003/01/27 03:17:43 taqua Exp $
+ * $Id: TableProducer.java,v 1.5 2003/01/27 18:24:54 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -79,19 +79,47 @@ public abstract class TableProducer
       return;
     }
 
-    // process all elements
-    List l = band.getElements();
-    for (int i = 0; i < l.size(); i++)
+    if (bounds.getHeight() == 0)
     {
-      Element e = (Element) l.get(i);
+      Log.debug ("Band has no height: " + band);
+      return;
+    }
+
+    processBandInner(bounds, band);
+  }
+
+  private void processBandInner (Rectangle2D bounds, Band band)
+  {
+    if (bounds.getHeight() == 0)
+    {
+      Log.debug ("Band has no height: ", new Exception());
+      return;
+    }
+    // handle the band itself, the band's bounds are already translated.
+    processElement(bounds, band);
+
+    // process all elements
+    Element[] l = band.getElementArray();
+    for (int i = 0; i < l.length; i++)
+    {
+      Element e = l[i];
       if (e instanceof Band)
       {
         Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-        processBand(translateSubRect(bbounds, bounds), (Band) e);
+        processBandInner(translateSubRect(bbounds, bounds), (Band) e);
       }
       else
       {
-        processElement(bounds, e, band.getClass().getName());
+        Rectangle2D elementBounds = (Rectangle2D)
+            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+
+        if (elementBounds == null)
+        {
+          throw new NullPointerException("No layout for element");
+        }
+
+        Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
+        processElement(drawBounds, e);
       }
     }
   }
@@ -107,50 +135,97 @@ public abstract class TableProducer
    */
   private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
   {
-    Rectangle2D rt = outer.getBounds2D();
 
-    double w = Math.min (rt.getWidth() - inner.getX(), inner.getWidth());
-    double h = Math.min (rt.getHeight() - inner.getY(), inner.getHeight());
-    rt.setRect(
-        rt.getX() + inner.getX(),
-        rt.getY() + inner.getY(),
+
+    double w = Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    double h = Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    Rectangle2D rc = new Rectangle2D.Double(
+        outer.getX() + inner.getX(),
+        outer.getY() + inner.getY(),
         Math.max(0, w),
         Math.max(0, h));
-    return rt;
+/*
+    if (rc.getHeight() == 0)
+    {
+      Log.info ("Outer: " + outer);
+      Log.info ("Inner: " + inner);
+      Log.info ("Height Calculated: " + h + " :-> (" + outer.getHeight() + " - " + inner.getY() + ") , " + inner.getHeight());
+    }
+*/
+    return rc;
   }
 
   /**
    * Add the specified element to the logical page. Create content from the values
    * contained in the element and format the content by using the element's attributes.
    * <p>
-   * @param bounds  the element bounds.
+   * @param drawBounds  the bounds where the element should be painted in the target area.
    * @param e  the element.
    *
    * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
    * Bounds are usually defined by the BandLayoutManager.
    */
-  private void processElement(Rectangle2D bounds, Element e, String band)
+  private void processElement(Rectangle2D drawBounds, Element e)
   {
-    Rectangle2D elementBounds = (Rectangle2D)
-        e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-
-    if (elementBounds == null)
+/*
+    if (drawBounds.getHeight() == 0)
     {
-      throw new NullPointerException("No layout for element");
+      Log.info ("Log.Element   : " + e);
+      Log.info ("Log.BandBounds: " + bandbounds);
     }
-
-    Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
+*/
     TableCellData data = getCellDataFactory().createCellData(e, drawBounds);
     if (data != null)
     {
       addCell(data);
+
+      Band parent = e.getParent();
+      Class parentClass = null;
+      if (parent != null)
+      {
+        parentClass = parent.getClass();
+      }
       data.debugChunk = new Log.SimpleMessage("Element",
                                               e.getClass().getName(),
                                               " -> " ,
                                               new Log.SimpleMessage(
                                                   e.getName() ,
-                                                  " (" , band , ")"));
+                                                  " (" , parentClass , ")"));
     }
   }
+
+  protected TableCellBackground createTableCellStyle (List background)
+  {
+    if (background == null)
+    {
+      return null;
+    }
+
+    //Log.debug ("Background: " + background.size());
+
+    TableCellBackground bg = null;
+    for (int i = 0; i < background.size(); i++)
+    {
+      TableGridPosition listBgPos = (TableGridPosition) background.get(i);
+      TableCellBackground listBg = (TableCellBackground) listBgPos.getElement();
+
+      if (bg == null)
+      {
+        bg =  listBg;
+      }
+      else
+      {
+        bg = bg.merge(listBg);
+      }
+    }
+
+    if (bg == null)
+    {
+      return null;
+    }
+
+    return (bg);
+  }
+
 
 }

@@ -29,7 +29,7 @@
     <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
         <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
         <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
-        <line x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
+        <line x1="0" y1="18" x2="0" y2="18" color="#CFCFCF" weight="2.0"/>
     </pageheader>
 
     <pagefooter height="18">

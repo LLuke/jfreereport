@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 8:40:14 AM
  *
- * $Id: TableGrid.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
+ * $Id: TableGrid.java,v 1.3 2003/01/27 18:24:53 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -10,9 +10,8 @@ import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TreeSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 public class TableGrid
 {
@@ -36,6 +35,7 @@ public class TableGrid
   public void addData (TableCellData pos)
   {
     //Log.debug ("Add TableCellData: " + pos);
+
     elements.add(pos);
 
     Rectangle2D bounds = pos.getBounds();

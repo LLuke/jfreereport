@@ -2,7 +2,7 @@
  * Date: Jan 27, 2003
  * Time: 5:58:07 PM
  *
- * $Id$
+ * $Id: ShapeTransform.java,v 1.1 2003/01/27 18:26:13 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
@@ -16,7 +16,7 @@ public class ShapeTransform
 {
   public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Point2D point, Dimension2D dim)
   {
-    AffineTransform af = AffineTransform.getTranslateInstance(point.getX(), point.getY());
+    AffineTransform af = AffineTransform.getTranslateInstance(-point.getX(), -point.getY());
 
     /**
      * Always scale to the maximum bounds ...

@@ -2,24 +2,25 @@
  * Date: Jan 15, 2003
  * Time: 5:01:29 PM
  *
- * $Id: ExcelCellDataFactory.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.3 2003/01/25 20:34:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.Band;
 import com.jrefinery.report.filter.templates.DateFieldTemplate;
 import com.jrefinery.report.filter.templates.NumberFieldTemplate;
 import com.jrefinery.report.filter.templates.Template;
+import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;
 import com.jrefinery.report.targets.table.TableCellData;
-import com.jrefinery.report.targets.table.TableCellDataFactory;
 import com.jrefinery.report.util.Log;
 
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
 import java.util.Date;
 
-public class ExcelCellDataFactory implements TableCellDataFactory
+public class ExcelCellDataFactory extends AbstractTableCellDataFactory
 {
   private ExcelCellStyleFactory styleFactory;
 
@@ -40,6 +41,16 @@ public class ExcelCellDataFactory implements TableCellDataFactory
 
   public TableCellData createCellData (Element element, Rectangle2D bounds)
   {
+    if (element.isVisible() == false)
+    {
+      return null;
+    }
+
+    if (element instanceof Band)
+    {
+      return createBandCell(element, bounds);
+    }
+
     /**
      * POI 1.9 has support for more formats ...
      */
@@ -62,7 +73,7 @@ public class ExcelCellDataFactory implements TableCellDataFactory
    * @param bounds
    * @return
    */
-  private ExcelCellData handleFormats (Element e, Rectangle2D bounds)
+  private TableCellData handleFormats (Element e, Rectangle2D bounds)
   {
     ExcelCellData retval = null;
 
@@ -73,14 +84,21 @@ public class ExcelCellDataFactory implements TableCellDataFactory
       String svalue = String.valueOf(e.getValue());
       retval = new DefaultExcelCellData (bounds, style, svalue);
     }
-    else
+    else if (value instanceof Shape)
     {
-      ExcelBackgroundCellStyle style = styleFactory.getExcelBackgroundCellStyle(e);
-      retval = new BackgroundExcelCellData(bounds, style);
+      return createBackground(e, (Shape) value, bounds);
     }
     return retval;
   }
 
+  /**
+   * Used when POI 2.0 is available ...
+   *
+   * @param template
+   * @param e
+   * @param bounds
+   * @return
+   */
   private ExcelCellData handleTemplate (Template template, Element e, Rectangle2D bounds)
   {
     ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e);
