@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportEventException.java,v 1.8 2002/12/06 17:18:33 mungady Exp $
+ * $Id: ReportEventException.java,v 1.1 2003/03/04 20:28:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,9 +80,9 @@ public class ReportEventException extends ReportProcessingException
    * Returns the errort message string of this throwable object.
    *
    * @return  the error message string of this <code>Throwable</code>
-   *          object if it was {@link #Throwable(String) created} with an
+   *          object if it was created with an
    *          error message string; or <code>null</code> if it was
-   *          {@link #Throwable() created} with no error message.
+   *          created with no error message.
    *
    */
   public String getMessage()
