@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakTest.java,v 1.1 2003/04/11 19:32:37 taqua Exp $
+ * $Id: LineBreakTest.java,v 1.2 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -36,8 +36,8 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jrefinery.report.util.LineBreakIterator;
 
@@ -60,7 +60,7 @@ public class LineBreakTest
   public static void main(String[] args)
   {
     String[] tests = {"The lazy \n fox \r\n jumps \nover the funny tree\n",
-    "FirstName AVerLongLastName", "Test\n\n\n\n\n\ntest\n"};
+                      "FirstName AVerLongLastName", "Test\n\n\n\n\n\ntest\n"};
 
     for (int j = 0; j < tests.length; j++)
     {

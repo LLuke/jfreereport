@@ -28,20 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BSHExpressionTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 01.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.basic.function;
 
-import junit.framework.TestCase;
-import com.jrefinery.report.function.BSHExpression;
-import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.DataRow;
+import com.jrefinery.report.DataRowConnector;
+import com.jrefinery.report.function.BSHExpression;
+import junit.framework.TestCase;
 
 public class BSHExpressionTest extends TestCase
 {
@@ -50,7 +50,7 @@ public class BSHExpressionTest extends TestCase
     super(s);
   }
 
-  public void testCreate () throws Exception
+  public void testCreate() throws Exception
   {
     assertTrue(DataRow.class.isAssignableFrom(DataRowConnector.class));
     BSHExpression ex = new BSHExpression();

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DataRowBackendPreviewTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 30.05.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.basic;
@@ -51,15 +51,15 @@ public class DataRowBackendPreviewTest extends TestCase
     super(s);
   }
 
-  public void testCreate ()
+  public void testCreate()
   {
     DataRowBackend db = new DataRowBackend();
     db.setCurrentRow(-1);
     DefaultTableModel model = new DefaultTableModel();
     Object[][] data = new Object[][]{
-      { new Integer(1), "a" },
-      { new Integer(2), "b" },
-      { new Integer(3), "c" }
+      {new Integer(1), "a"},
+      {new Integer(2), "b"},
+      {new Integer(3), "c"}
     };
     String[] columns = new String[]{
       "Number", "Letter"
@@ -94,15 +94,15 @@ public class DataRowBackendPreviewTest extends TestCase
     }
   }
 
-  public void testFunctionality ()
+  public void testFunctionality()
   {
     DataRowBackend db = new DataRowBackend();
     db.setCurrentRow(-1);
     DefaultTableModel model = new DefaultTableModel();
     Object[][] data = new Object[][]{
-      { new Integer(1), "a" },
-      { new Integer(2), "b" },
-      { new Integer(3), "c" }
+      {new Integer(1), "a"},
+      {new Integer(2), "b"},
+      {new Integer(3), "c"}
     };
     String[] columns = new String[]{
       "Number", "Letter"
@@ -121,10 +121,8 @@ public class DataRowBackendPreviewTest extends TestCase
     }
 
     db.setCurrentRow(data.length - 1);
+    // there is no preview for the last row ...
     DataRowBackend dbv = db.previewNextRow();
-    assertNull(dbv.get(0));
-    assertNull(dbv.get("Number"));
-    assertNull(dbv.get(1));
-    assertNull(dbv.get("Letter"));
+    assertNull(dbv);
   }
 }

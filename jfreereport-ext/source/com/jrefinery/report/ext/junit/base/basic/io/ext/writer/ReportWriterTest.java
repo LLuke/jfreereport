@@ -28,30 +28,36 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportWriterTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 01.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.basic.io.ext.writer;
 
-import junit.framework.TestCase;
-import com.jrefinery.report.io.ext.writer.ReportWriter;
-import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
+import java.awt.geom.Line2D;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.filter.DataRowDataSource;
+import com.jrefinery.report.filter.StaticDataSource;
+import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
+import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
 import com.jrefinery.report.io.ext.factory.objects.BandLayoutClassFactory;
+import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.DefaultStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection;
-import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
-import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.filter.DataRowDataSource;
-import org.jfree.xml.factory.objects.URLClassFactory;
+import com.jrefinery.report.io.ext.writer.DataSourceWriter;
+import com.jrefinery.report.io.ext.writer.ReportWriter;
+import junit.framework.TestCase;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.ClassFactory;
+import org.jfree.xml.factory.objects.URLClassFactory;
 
 public class ReportWriterTest extends TestCase
 {
@@ -60,10 +66,10 @@ public class ReportWriterTest extends TestCase
     super(s);
   }
 
-  public void testFactories ()
+  private ReportWriter createWriter()
   {
     ReportWriter writer = new ReportWriter(new JFreeReport());
-    writer.addClassFactoryFactory(new URLClassFactory ());
+    writer.addClassFactoryFactory(new URLClassFactory());
     writer.addClassFactoryFactory(new DefaultClassFactory());
     writer.addClassFactoryFactory(new BandLayoutClassFactory());
     writer.addClassFactoryFactory(new ArrayClassFactory());
@@ -73,11 +79,27 @@ public class ReportWriterTest extends TestCase
     writer.addTemplateCollection(new DefaultTemplateCollection());
     writer.addElementFactory(new DefaultElementFactory());
     writer.addDataSourceFactory(new DefaultDataSourceFactory());
+    return writer;
+  };
 
+  public void testFactories()
+  {
+    ReportWriter writer = createWriter();
     ClassFactory cc = writer.getClassFactoryCollector();
-    assertNotNull (cc.getDescriptionForClass(DataRowDataSource.class));
+    assertNotNull(cc.getDescriptionForClass(DataRowDataSource.class));
     assertEquals(cc.getDescriptionForClass(DataRowDataSource.class).getObjectClass(), DataRowDataSource.class);
-    System.out.println (cc.getDescriptionForClass(DataRowDataSource.class));
+    System.out.println(cc.getDescriptionForClass(DataRowDataSource.class));
   }
 
+  public void testDataSourceWriter() throws Exception
+  {
+    ReportWriter writer = createWriter();
+    StaticDataSource ds = new StaticDataSource(new Line2D.Float());
+    ClassFactory cc = writer.getClassFactoryCollector();
+    DataSourceWriter dsW = new DataSourceWriter(writer,
+        ds, cc.getDescriptionForClass(ds.getClass()), 0);
+    Writer w = new OutputStreamWriter(System.out);
+    dsW.write(w);
+    w.flush();
+  }
 }

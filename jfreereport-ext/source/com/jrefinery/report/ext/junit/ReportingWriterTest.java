@@ -2,9 +2,18 @@
  * Date: Jan 25, 2003
  * Time: 4:25:02 PM
  *
- * $Id: ReportingWriterTest.java,v 1.1 2003/03/01 15:00:14 taqua Exp $
+ * $Id: ReportingWriterTest.java,v 1.2 2003/03/26 22:52:43 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.demo.SampleData1;
@@ -26,15 +35,6 @@ import com.jrefinery.report.targets.table.rtf.RTFProcessor;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.Log;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.net.URL;
-
 public class ReportingWriterTest
 {
   /**
@@ -45,7 +45,7 @@ public class ReportingWriterTest
     JFreeReport report = null;
     URL in = getClass().getResource("/com/jrefinery/report/demo/report2.xml");
     report = parseReport(in);
-    report.setData(new SampleData2 ());
+    report.setData(new SampleData2());
 
     return report;
   }
@@ -58,7 +58,7 @@ public class ReportingWriterTest
     JFreeReport report = null;
     URL in = getClass().getResource("/com/jrefinery/report/demo/report1.xml");
     report = parseReport(in);
-    report.setData(new SampleData1 ());
+    report.setData(new SampleData1());
 
     return report;
   }
@@ -84,7 +84,7 @@ public class ReportingWriterTest
     JFreeReport report = null;
     URL in = getClass().getResource("/com/jrefinery/report/demo/report3.xml");
     report = parseReport(in);
-    report.setData(new SampleData3 ());
+    report.setData(new SampleData3());
 
     return report;
   }
@@ -109,15 +109,15 @@ public class ReportingWriterTest
     catch (Exception e)
     {
       ExceptionDialog.showExceptionDialog("Error on parsing",
-                                          "Error while parsing " + templateURL, e);
+          "Error while parsing " + templateURL, e);
     }
     return result;
 
   }
 
 
-  public static void main (String [] args)
-    throws Throwable
+  public static void main(String[] args)
+      throws Throwable
   {
     try
     {
@@ -125,8 +125,8 @@ public class ReportingWriterTest
       JFreeReport report = t.previewReport2();
 
 
-      Log.debug ("report.pageHeader " + report.getPageHeader().getElementCount());
-      Log.debug ("report.reportHeader " + report.getReportHeader().getElementCount());
+      Log.debug("report.pageHeader " + report.getPageHeader().getElementCount());
+      Log.debug("report.reportHeader " + report.getReportHeader().getElementCount());
 
       //report.setData(new DefaultTableModel());
       //createXLS(report);
@@ -143,14 +143,14 @@ public class ReportingWriterTest
     System.exit(0);
   }
 
-  public static void createPlainText (JFreeReport report, String filename)
-    throws Exception
+  public static void createPlainText(JFreeReport report, String filename)
+      throws Exception
   {
     PageableReportProcessor pr = new PageableReportProcessor(report);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     PrinterCommandSet pc = new EpsonPrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
     PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
-    
+
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();
@@ -158,8 +158,8 @@ public class ReportingWriterTest
     fout.close();
   }
 
-  public static void createRTF (JFreeReport report, String filename)
-    throws Exception
+  public static void createRTF(JFreeReport report, String filename)
+      throws Exception
   {
     RTFProcessor pr = new RTFProcessor(report);
     pr.setStrictLayout(false);
@@ -169,8 +169,8 @@ public class ReportingWriterTest
     fout.close();
   }
 
-  public static void createCSV (JFreeReport report, String filename)
-    throws Exception
+  public static void createCSV(JFreeReport report, String filename)
+      throws Exception
   {
     CSVTableProcessor pr = new CSVTableProcessor(report);
     pr.setStrictLayout(false);
@@ -180,8 +180,8 @@ public class ReportingWriterTest
     fout.close();
   }
 
-  public static void createXLS (JFreeReport report, String filename)
-    throws Exception
+  public static void createXLS(JFreeReport report, String filename)
+      throws Exception
   {
     ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);
@@ -191,32 +191,34 @@ public class ReportingWriterTest
     fout.close();
   }
 
-  public static void createStreamHTML (JFreeReport report, String filename)
-    throws Exception
+  public static void createStreamHTML(JFreeReport report, String filename)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     pr.setStrictLayout(false);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    pr.setFilesystem(new StreamHtmlFilesystem (fout));
+    pr.setFilesystem(new StreamHtmlFilesystem(fout));
     pr.processReport();
     fout.close();
   }
 
-  public static void createDirectoryHTML (JFreeReport report, String filename)
-    throws Exception
+  public static void createDirectoryHTML(JFreeReport report, String filename)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
-    pr.setFilesystem(new DirectoryHtmlFilesystem (new File(filename)));
+    pr.setFilesystem(new DirectoryHtmlFilesystem(new File(filename)));
     pr.processReport();
   }
 
-  public static void createZIPHTML (JFreeReport report, String filename)
-    throws Exception
+  public static void createZIPHTML(JFreeReport report, String filename)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    pr.setFilesystem(new ZIPHtmlFilesystem (fout, "data"));
+    pr.setFilesystem(new ZIPHtmlFilesystem(fout, "data"));
     pr.processReport();
     fout.close();
   }
+
+
 }

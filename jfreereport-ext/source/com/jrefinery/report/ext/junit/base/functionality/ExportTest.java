@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ExportTest.java,v 1.1 2003/06/01 20:43:38 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 01.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.functionality;
@@ -57,8 +57,8 @@ import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
 import com.jrefinery.report.targets.table.rtf.RTFProcessor;
-import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.NullOutputStream;
 import junit.framework.TestCase;
 
 public class ExportTest extends TestCase
@@ -70,7 +70,7 @@ public class ExportTest extends TestCase
 
   public final static String[] REPORTS = ParseTest.REPORTS;
 
-  public void testConvertReport () throws Exception
+  public void testConvertReport() throws Exception
   {
     try
     {
@@ -78,19 +78,19 @@ public class ExportTest extends TestCase
       {
         URL url = this.getClass().getResource(REPORTS[i]);
         assertNotNull(url);
-        Log.debug ("Processing: " + url);
+        Log.debug("Processing: " + url);
         JFreeReport report = ReportGenerator.getInstance().parseReport(url);
-        Log.debug ("   CSV ..");
+        Log.debug("   CSV ..");
         createCSV(report);
-        Log.debug ("   PLAIN_TEXT ..");
+        Log.debug("   PLAIN_TEXT ..");
         createPlainText(report);
-        Log.debug ("   RTF ..");
+        Log.debug("   RTF ..");
         createRTF(report);
-        Log.debug ("   STREAM_HTML ..");
+        Log.debug("   STREAM_HTML ..");
         createStreamHTML(report);
-        Log.debug ("   EXCEL ..");
+        Log.debug("   EXCEL ..");
         createXLS(report);
-        Log.debug ("   ZIP_HTML ..");
+        Log.debug("   ZIP_HTML ..");
         createZIPHTML(report);
       }
     }
@@ -101,8 +101,8 @@ public class ExportTest extends TestCase
     }
   }
 
-  public static void createPlainText (JFreeReport report)
-    throws Exception
+  public static void createPlainText(JFreeReport report)
+      throws Exception
   {
     PageableReportProcessor pr = new PageableReportProcessor(report);
     OutputStream fout = new BufferedOutputStream(new NullOutputStream());
@@ -116,8 +116,8 @@ public class ExportTest extends TestCase
     fout.close();
   }
 
-  public static void createRTF (JFreeReport report)
-    throws Exception
+  public static void createRTF(JFreeReport report)
+      throws Exception
   {
     RTFProcessor pr = new RTFProcessor(report);
     pr.setStrictLayout(false);
@@ -127,8 +127,8 @@ public class ExportTest extends TestCase
     fout.close();
   }
 
-  public static void createCSV (JFreeReport report)
-    throws Exception
+  public static void createCSV(JFreeReport report)
+      throws Exception
   {
     CSVTableProcessor pr = new CSVTableProcessor(report);
     pr.setStrictLayout(false);
@@ -138,8 +138,8 @@ public class ExportTest extends TestCase
     fout.close();
   }
 
-  public static void createXLS (JFreeReport report)
-    throws Exception
+  public static void createXLS(JFreeReport report)
+      throws Exception
   {
     ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);
@@ -149,23 +149,23 @@ public class ExportTest extends TestCase
     fout.close();
   }
 
-  public static void createStreamHTML (JFreeReport report)
-    throws Exception
+  public static void createStreamHTML(JFreeReport report)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     pr.setStrictLayout(false);
     OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-    pr.setFilesystem(new StreamHtmlFilesystem (fout));
+    pr.setFilesystem(new StreamHtmlFilesystem(fout));
     pr.processReport();
     fout.close();
   }
 
-  public static void createZIPHTML (JFreeReport report)
-    throws Exception
+  public static void createZIPHTML(JFreeReport report)
+      throws Exception
   {
     HtmlProcessor pr = new HtmlProcessor(report);
     OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-    pr.setFilesystem(new ZIPHtmlFilesystem (fout, "data"));
+    pr.setFilesystem(new ZIPHtmlFilesystem(fout, "data"));
     pr.processReport();
     fout.close();
   }

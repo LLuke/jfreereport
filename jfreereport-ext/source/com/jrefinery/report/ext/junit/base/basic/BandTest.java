@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BandTest.java,v 1.1 2003/06/01 20:43:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,14 +38,14 @@
 
 package com.jrefinery.report.ext.junit.base.basic;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import junit.framework.TestCase;
 
 public class BandTest extends TestCase
 {
@@ -54,9 +54,9 @@ public class BandTest extends TestCase
     super(s);
   }
 
-  public void testBandCreate ()
+  public void testBandCreate()
   {
-    Band b = new Band ();
+    Band b = new Band();
     assertNotNull(b.getContentType());
     assertNotNull(b.getDataSource());
     assertNotNull(b.getStyle());
@@ -71,7 +71,7 @@ public class BandTest extends TestCase
     assertNotNull(b.getBandDefaults());
   }
 
-  public void testBandMethods ()
+  public void testBandMethods()
   {
     Band b = new Band();
     assertTrue(b.isVisible());
@@ -103,21 +103,21 @@ public class BandTest extends TestCase
     b.toString();
   }
 
-  public void testAddElement ()
+  public void testAddElement()
   {
-    Band b = new Band ();
+    Band b = new Band();
     assertTrue(b.getElementCount() == 0);
-    b.addElement(0, new ElementTest.ElementImpl ());
+    b.addElement(0, new ElementTest.ElementImpl());
     assertTrue(b.getElementCount() == 1);
-    b.addElement(new ElementTest.ElementImpl ());
+    b.addElement(new ElementTest.ElementImpl());
     assertTrue(b.getElementCount() == 2);
-    b.addElement(0, new ElementTest.ElementImpl ());
+    b.addElement(0, new ElementTest.ElementImpl());
     assertTrue(b.getElementCount() == 3);
-    b.addElement(2, new ElementTest.ElementImpl ());
+    b.addElement(2, new ElementTest.ElementImpl());
     assertTrue(b.getElementCount() == 4);
     try
     {
-      b.addElement(5, new ElementTest.ElementImpl ());
+      b.addElement(5, new ElementTest.ElementImpl());
       fail();
     }
     catch (IllegalArgumentException iob)
@@ -156,11 +156,11 @@ public class BandTest extends TestCase
 
   }
 
-  public void testSerialize () throws Exception
+  public void testSerialize() throws Exception
   {
     Band e = new Band();
     ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    ObjectOutputStream out = new ObjectOutputStream (bo);
+    ObjectOutputStream out = new ObjectOutputStream(bo);
     out.writeObject(e);
 
     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: POITest.java,v 1.1 2003/05/26 14:25:34 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 09.05.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.bugs;
@@ -42,7 +42,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class POITest
 {
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
     HSSFWorkbook wb = new HSSFWorkbook();
     wb.createCellStyle();

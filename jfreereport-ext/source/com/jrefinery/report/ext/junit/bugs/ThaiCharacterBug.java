@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ThaiCharacterBug.java,v 1.1 2003/04/11 19:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,18 +36,17 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Rectangle2D;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ItemFactory;
-import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.preview.PreviewDialog;
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.ItemFactory;
+import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.CharacterEntityParser;
 
 public class ThaiCharacterBug
 {
@@ -56,20 +55,20 @@ public class ThaiCharacterBug
     String test =
         CharacterEntityParser.createXMLEntityParser().decodeEntities("Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;");
     //String test = "\u3648\u3614\u3636\u3656\u3617\u3621\u3641\u3585\u3588\u3657\u3634";
-    test = new String (test.getBytes("iso-8859-1"), "TIS620");
-    
+    test = new String(test.getBytes("iso-8859-1"), "TIS620");
+
     Element e = ItemFactory.createLabelElement(null,
-                                   new Rectangle2D.Float(10, 10, 250, 50),
-                                   null,
-                                   ElementAlignment.CENTER.getOldAlignment(),
-                                   new Font ("Serif", Font.PLAIN, 14),
-                                   test);
+        new Rectangle2D.Float(10, 10, 250, 50),
+        null,
+        ElementAlignment.CENTER.getOldAlignment(),
+        new Font("Serif", Font.PLAIN, 14),
+        test);
     JFreeReport report = new JFreeReport();
     report.getReportHeader().addElement(e);
     return report;
   }
 
-  public static void main (String [] args) throws Exception
+  public static void main(String[] args) throws Exception
   {
     PreviewFrame d = new PreviewFrame(getReport());
     d.pack();

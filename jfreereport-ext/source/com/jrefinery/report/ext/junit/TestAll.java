@@ -9,9 +9,9 @@ package com.jrefinery.report.ext.junit;
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id: TestAll.java,v 1.4 2002/12/10 19:54:24 taqua Exp $
+ * $Id: TestAll.java,v 1.5 2003/03/26 22:52:43 taqua Exp $
  * $Author: taqua $
- * $Date: 2002/12/10 19:54:24 $
+ * $Date: 2003/03/26 22:52:43 $
  */
 
 import junit.framework.Test;
@@ -29,14 +29,14 @@ import junit.framework.TestSuite;
 public class TestAll
 {
 
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
-    junit.textui.TestRunner.run (suite ());
+    junit.textui.TestRunner.run(suite());
   } // end of main(Stringp[ args)
 
-  public static Test suite ()
+  public static Test suite()
   {
-    TestSuite suite = new TestSuite ("All JUnit Tests");
+    TestSuite suite = new TestSuite("All JUnit Tests");
     return suite;
   } // end of suite()
 } // end of com.jrefinery.report.ext.junit.TestAll

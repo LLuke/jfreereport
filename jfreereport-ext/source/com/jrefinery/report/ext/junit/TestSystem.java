@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.3 2003/04/23 17:32:36 taqua Exp $
+ * $Id: TestSystem.java,v 1.4 2003/05/14 22:36:46 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,9 @@
  */
 package com.jrefinery.report.ext.junit;
 
-import java.net.URL;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
@@ -52,72 +52,73 @@ import org.jfree.ui.RefineryUtilities;
 public class TestSystem
 {
 
-  public static JFreeReport loadReport (String urlname, TableModel data)
+  public static JFreeReport loadReport(String urlname, TableModel data)
   {
-    URL in = new String().getClass ().getResource (urlname);
+    URL in = new String().getClass().getResource(urlname);
     if (in == null)
     {
-      Log.error ("xml file not found.");
+      Log.error("xml file not found.");
       return null;
     }
-    ReportGenerator gen = ReportGenerator.getInstance ();
+    ReportGenerator gen = ReportGenerator.getInstance();
     JFreeReport report1 = null;
     try
     {
-      report1 = gen.parseReport (in, in);
+      report1 = gen.parseReport(in, in);
     }
     catch (Exception ioe)
     {
-      Log.error ("1: report definition failure.", ioe);
+      Log.error("1: report definition failure.", ioe);
       return null;
     }
 
     if (report1 == null)
     {
-      Log.error ("2: the report is null.");
+      Log.error("2: the report is null.");
       return null;
     }
-    report1.setData (data);
+    report1.setData(data);
     return report1;
   }
 
-  public static void showPreviewFrame (JFreeReport report1)
-    throws ReportProcessingException
+  public static void showPreviewFrame(JFreeReport report1)
+      throws ReportProcessingException
   {
     showPreviewFrameWExit(report1, false);
   }
 
-  public static void showPreviewFrameWExit (JFreeReport report1, boolean close)
-    throws ReportProcessingException
+  public static void showPreviewFrameWExit(JFreeReport report1, boolean close)
+      throws ReportProcessingException
   {
-    PreviewFrame frame1 = new PreviewFrame (report1);
-    frame1.pack ();
-    RefineryUtilities.positionFrameRandomly (frame1);
+    PreviewFrame frame1 = new PreviewFrame(report1);
+    frame1.pack();
+    RefineryUtilities.positionFrameRandomly(frame1);
     if (close)
     {
-      frame1.addWindowListener(new WindowAdapter() {
+      frame1.addWindowListener(new WindowAdapter()
+      {
         /**
          * Invoked when a window is in the process of being closed.
          * The close operation can be overridden at this point.
          */
         public void windowClosing(WindowEvent e)
         {
-          System.exit (0);
+          System.exit(0);
         }
       });
     }
-    frame1.setVisible (true);
-    frame1.requestFocus ();
+    frame1.setVisible(true);
+    frame1.requestFocus();
   }
 
-  public static void main (String [] args)
-    throws Exception
+  public static void main(String[] args)
+      throws Exception
   {
     SampleData2 m_dataModel = new SampleData2();
     JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/pagebreak.xml", m_dataModel);
     if (report == null)
-      System.exit (1);
+      System.exit(1);
 
-    TestSystem.showPreviewFrame (report);
+    TestSystem.showPreviewFrame(report);
   }
 }

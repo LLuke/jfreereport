@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NetDump.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: NetDump.java,v 1.2 2003/05/14 22:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -76,22 +76,22 @@ public class NetDump
       port = url.getPort();
       if (port == -1)
       {
-        port = url.getDefaultPort();
+        port = 80;
       }
 
       String file = url.getFile();
-      String query = url.getQuery();
+//      String query = url.getQuery();
       String ref = url.getRef();
 
       uri = file;
-      if (query != null)
+/*      if (query != null)
       {
         uri += "?";
         uri += query;
-      }
+      }*/
       if (ref != null)
       {
-        uri += "?";
+        uri += "#";
         uri += ref;
       }
     }

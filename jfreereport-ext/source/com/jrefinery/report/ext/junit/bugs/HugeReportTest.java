@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HugeReportTest.java,v 1.1 2003/04/11 19:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,12 +36,9 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.demo.SampleData2;
 import com.jrefinery.report.demo.SampleData5;
 import com.jrefinery.report.ext.junit.TestSystem;
 
@@ -118,15 +115,15 @@ public class HugeReportTest
     }
   }
 
-  public static void main (String [] args)
-    throws Exception
+  public static void main(String[] args)
+      throws Exception
   {
     JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/bugs/resource/countryreport.xml", new SampleData5());
     if (report == null)
-      System.exit (1);
+      System.exit(1);
 
 
 //    JOptionPane.showMessageDialog(null, "Start!");
-    TestSystem.showPreviewFrame (report);
+    TestSystem.showPreviewFrame(report);
   }
 }

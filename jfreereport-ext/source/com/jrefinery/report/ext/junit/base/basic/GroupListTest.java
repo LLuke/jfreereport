@@ -28,19 +28,19 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: GroupListTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 30.05.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.basic;
 
-import junit.framework.TestCase;
-import com.jrefinery.report.GroupList;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.GroupList;
+import junit.framework.TestCase;
 
 public class GroupListTest extends TestCase
 {
@@ -49,7 +49,7 @@ public class GroupListTest extends TestCase
     super(s);
   }
 
-  public void testCreate ()
+  public void testCreate()
   {
     GroupList gl = new GroupList();
     gl.clear();
@@ -58,7 +58,7 @@ public class GroupListTest extends TestCase
     assertNotNull(gl.toString());
   }
 
-  public void testMethods ()
+  public void testMethods()
   {
     GroupList gl = new GroupList();
     try
@@ -69,17 +69,17 @@ public class GroupListTest extends TestCase
     {
     }
 
-    Group g1 = new Group ();
-    gl.add (g1);
-    gl.add (g1);
+    Group g1 = new Group();
+    gl.add(g1);
+    gl.add(g1);
     assertTrue(gl.size() == 1); // the old instance gets removed and replaced by the new group
-    gl.add (new Group());
+    gl.add(new Group());
     assertTrue(gl.size() == 1); // the old instance gets removed and replaced by the new group
 
-    Group g2 = new Group ();
+    Group g2 = new Group();
     g2.addField("Test");
 
-    Group g3 = new Group ();
+    Group g3 = new Group();
     g3.addField("Failure");
 
     // group g2 and g3 are unreleated, g2 is no child or parent of g3

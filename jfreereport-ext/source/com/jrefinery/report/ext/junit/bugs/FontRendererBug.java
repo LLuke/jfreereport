@@ -2,41 +2,102 @@
  * Date: Dec 12, 2002
  * Time: 10:09:52 PM
  *
- * $Id: FontRendererBug.java,v 1.1 2002/12/12 22:29:43 taqua Exp $
+ * $Id: FontRendererBug.java,v 1.2 2003/01/27 03:21:44 taqua Exp $
  */
 package com.jrefinery.report.ext.junit.bugs;
 
-import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
-import com.jrefinery.report.util.Log;
-
-import java.awt.print.PageFormat;
-import java.awt.font.FontRenderContext;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
 
-public class FontRendererBug
+public class FontRendererBug extends JPanel
 {
-  public static void main (String [] args)
+  public final static String myText = "A simple text with not tricks and traps";
+  public static void main(String[] args)
   {
     //G2OutputTarget ot = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), new PageFormat());
 
-    String myText = "A simple text with not tricks and traps";
+    printMe (true);
+    printMe (false);
 
-    boolean alias = true;
+    JFrame frame = new JFrame();
+    frame.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e)
+      {
+        System.exit (0);
+      }
+    });
+    frame.setContentPane(new FontRendererBug());
+    frame.setSize(400, 400);
+    frame.setVisible(true);
+  }
+
+  /**
+   * Creates a new <code>JPanel</code> with a double buffer
+   * and a flow layout.
+   */
+  public FontRendererBug()
+  {
+  }
+
+  protected void paintComponent(Graphics g)
+  {
+    Graphics2D g2 = (Graphics2D) g;
+    g2.setPaint(Color.white);
+    g2.fill(getBounds());
+    g2.setPaint(Color.black);
+
+    Font font = new Font("Serif", Font.PLAIN, 10);
+    g2.setFont(font);
+
+    drawText(g2, 20, false, false);
+    drawText(g2, 40, false, true);
+    drawText(g2, 60, true, false);
+    drawText(g2, 80, true, true);
+  }
+
+  public void drawText (Graphics2D g2, int pos, boolean fract, boolean alias)
+  {
+    g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+        fract ? RenderingHints.VALUE_FRACTIONALMETRICS_ON :
+        RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        alias ? RenderingHints.VALUE_ANTIALIAS_ON:
+        RenderingHints.VALUE_ANTIALIAS_OFF);
+
+    Rectangle2D size = getFont().getStringBounds(myText, 0, myText.length(),
+        g2.getFontRenderContext());
+    g2.drawString(myText, 0, pos);
+    g2.draw(new Line2D.Double(size.getX(), pos + 10, size.getWidth(), pos + 10));
+  }
+
+  public static void printMe (boolean alias)
+  {
+    System.out.println ("----------------------------------");
+
     FontRenderContext frc_fract = new FontRenderContext(null, alias, true);
     FontRenderContext frc_int = new FontRenderContext(null, alias, false);
 
-    Font font = new Font ("Serif", Font.PLAIN, 10);
-    Log.debug ("Text: 10: Fract: " + font.getStringBounds(myText, 0, myText.length(), frc_fract));
-    Log.debug ("Text: 10: Int  : " + font.getStringBounds(myText, 0, myText.length(), frc_int));
-    Log.debug ("Text: 10: GVi  : " + font.createGlyphVector(frc_int, myText).getLogicalBounds());
-    Log.debug ("Text: 10: GViv : " + font.createGlyphVector(frc_int, myText).getVisualBounds());
-    Log.debug ("Text: 10: GVf  : " + font.createGlyphVector(frc_fract, myText).getLogicalBounds());
-    Log.debug ("Text: 10: GVfv : " + font.createGlyphVector(frc_fract, myText).getVisualBounds());
+    Font font = new Font("Serif", Font.PLAIN, 10);
+    System.out.println("Text: 10: Fract: " + font.getStringBounds(myText, 0, myText.length(), frc_fract));
+    System.out.println("Text: 10: Int  : " + font.getStringBounds(myText, 0, myText.length(), frc_int));
+    System.out.println("Text: 10: GVi  : " + font.createGlyphVector(frc_int, myText).getLogicalBounds());
+    System.out.println("Text: 10: GViv : " + font.createGlyphVector(frc_int, myText).getVisualBounds());
+    System.out.println("Text: 10: GVf  : " + font.createGlyphVector(frc_fract, myText).getLogicalBounds());
+    System.out.println("Text: 10: GVfv : " + font.createGlyphVector(frc_fract, myText).getVisualBounds());
 
-    font = new Font ("Serif", Font.PLAIN, 90);
-    Log.debug ("Text: 40: Fract: " + font.getStringBounds(myText, 0, myText.length(), frc_fract));
-    Log.debug ("Text: 40: Int  : " + font.getStringBounds(myText, 0, myText.length(), frc_int));
-
+    font = new Font("Serif", Font.PLAIN, 40);
+    System.out.println("Text: 40: Fract: " + font.getStringBounds(myText, 0, myText.length(), frc_fract));
+    System.out.println("Text: 40: Int  : " + font.getStringBounds(myText, 0, myText.length(), frc_int));
   }
-
 }

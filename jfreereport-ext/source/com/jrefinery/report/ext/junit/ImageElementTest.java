@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.1 2003/03/26 22:52:43 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.2 2003/04/11 19:29:27 taqua Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,11 @@
  */
 package com.jrefinery.report.ext.junit;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,7 +50,7 @@ import com.jrefinery.report.util.WaitingImageObserver;
 
 public class ImageElementTest
 {
-  private static Image createImage (Image source)
+  private static Image createImage(Image source)
   {
     double scale = 0.2;
     double width = 300;
@@ -59,37 +59,37 @@ public class ImageElementTest
     WaitingImageObserver obs = new WaitingImageObserver(source);
     obs.waitImageLoaded();
 
-    BufferedImage bImage = new BufferedImage((int)(width * scale),(int)(height * scale),BufferedImage.TYPE_INT_ARGB);
+    BufferedImage bImage = new BufferedImage((int) (width * scale), (int) (height * scale), BufferedImage.TYPE_INT_ARGB);
 
     Graphics2D graph = bImage.createGraphics();
-    graph.setTransform(AffineTransform.getScaleInstance(scale,scale));
-    if (graph.drawImage(source, AffineTransform.getScaleInstance(scale,scale),null) == false)
+    graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
+    if (graph.drawImage(source, AffineTransform.getScaleInstance(scale, scale), null) == false)
     {
-      Log.debug ("No i won't print it  :) ");
+      Log.debug("No i won't print it  :) ");
     }
-    Log.debug ("Image: " + source.getWidth(null) + " -> " + source.getHeight(null));
+    Log.debug("Image: " + source.getWidth(null) + " -> " + source.getHeight(null));
     graph.dispose();
     return bImage;
   }
 
-  public static void main (String [] args)
-    throws Exception
+  public static void main(String[] args)
+      throws Exception
   {
     // add an image as a report property...
     URL imageURL = new String().getClass().getResource("/com/jrefinery/report/demo/gorilla.jpg");
     Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
 
-    Object[][] data = { { createImage(image), createImage(image), createImage(image)} };
-    Object[] names = { "Foto1", "Foto2", "Foto3" };
+    Object[][] data = {{createImage(image), createImage(image), createImage(image)}};
+    Object[] names = {"Foto1", "Foto2", "Foto3"};
     DefaultTableModel mod = new DefaultTableModel(data, names);
 
     JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/image-element.xml", mod);
     if (report == null)
-      System.exit (1);
+      System.exit(1);
 
     report.setProperty("GraphImage", image);
     report.getProperties().setMarked("GraphImage", true);
-    TestSystem.showPreviewFrame (report);
+    TestSystem.showPreviewFrame(report);
   }
 
 }

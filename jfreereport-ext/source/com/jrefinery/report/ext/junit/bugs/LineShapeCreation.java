@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LineShapeCreation.java,v 1.1 2003/03/26 22:54:40 taqua Exp $
  *
  * Changes
  * -------
@@ -38,23 +38,22 @@ package com.jrefinery.report.ext.junit.bugs;
 
 import java.awt.geom.Line2D;
 
-import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.util.Log;
 
 public class LineShapeCreation
 {
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
-    Line2D line = new Line2D.Double (26.0, 8.0, 26.0,-5.0);
+    Line2D line = new Line2D.Double(26.0, 8.0, 26.0, -5.0);
     Element e = ItemFactory.createLineShapeElement(null, null, null, line);
     printLine((Line2D) e.getValue());
   }
 
-  private static void printLine (Line2D line)
+  private static void printLine(Line2D line)
   {
-    Log.debug (line.getP1() + " -> " +  line.getP2());
+    Log.debug(line.getP1() + " -> " + line.getP2());
   }
 
 }

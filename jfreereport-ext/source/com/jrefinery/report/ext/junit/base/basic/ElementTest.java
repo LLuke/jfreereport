@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ElementTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,13 +38,13 @@
 
 package com.jrefinery.report.ext.junit.base.basic;
 
-import java.io.ObjectOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
 import com.jrefinery.report.Element;
+import junit.framework.TestCase;
 
 public class ElementTest extends TestCase
 {
@@ -69,7 +69,7 @@ public class ElementTest extends TestCase
     super(s);
   }
 
-  public void testElementCreate ()
+  public void testElementCreate()
   {
     Element e = new ElementImpl();
     assertNotNull(e.getDataSource());
@@ -111,11 +111,11 @@ public class ElementTest extends TestCase
     e.toString();
   }
 
-  public void testSerialize () throws Exception
+  public void testSerialize() throws Exception
   {
     Element e = new ElementImpl();
     ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    ObjectOutputStream out = new ObjectOutputStream (bo);
+    ObjectOutputStream out = new ObjectOutputStream(bo);
     out.writeObject(e);
 
     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));

@@ -28,20 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DataRowBackendTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 30.05.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.basic;
 
 import javax.swing.table.DefaultTableModel;
 
-import junit.framework.TestCase;
 import com.jrefinery.report.DataRowBackend;
+import junit.framework.TestCase;
 
 public class DataRowBackendTest extends TestCase
 {
@@ -62,15 +62,15 @@ public class DataRowBackendTest extends TestCase
     assertTrue(db.isLastRow());
   }
 
-  public void testMethods ()
+  public void testMethods()
   {
     DataRowBackend db = new DataRowBackend();
     db.setCurrentRow(-1);
     DefaultTableModel model = new DefaultTableModel();
     Object[][] data = new Object[][]{
-      { new Integer(1), "a" },
-      { new Integer(2), "b" },
-      { new Integer(3), "c" }
+      {new Integer(1), "a"},
+      {new Integer(2), "b"},
+      {new Integer(3), "c"}
     };
     String[] columns = new String[]{
       "Number", "Letter"
@@ -81,9 +81,12 @@ public class DataRowBackendTest extends TestCase
     db.setCurrentRow(0);
     db.setCurrentRow(1);
     db.setCurrentRow(2);
+    db.setCurrentRow(3); // tablesize is also allowed ...
+
     try
     {
-      db.setCurrentRow(3);
+      // 4 is no longer allowed
+      db.setCurrentRow(4);
       fail();
     }
     catch (IllegalArgumentException e)

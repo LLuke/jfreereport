@@ -31,6 +31,11 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.net.URL;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.demo.SampleData1;
 import com.jrefinery.report.io.ReportGenerator;
@@ -42,11 +47,6 @@ import com.jrefinery.report.util.Log;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.net.URL;
 
 public class ReportPropertyLostBug extends TestCase
 {

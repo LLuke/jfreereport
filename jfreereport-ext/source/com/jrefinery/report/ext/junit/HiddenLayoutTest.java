@@ -2,20 +2,20 @@
  * Date: Feb 20, 2003
  * Time: 9:00:04 PM
  *
- * $Id: HiddenLayoutTest.java,v 1.1 2003/03/01 15:00:12 taqua Exp $
+ * $Id: HiddenLayoutTest.java,v 1.2 2003/03/26 22:52:43 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
 
-import com.jrefinery.report.JFreeReport;
+import java.net.URL;
+
 import com.jrefinery.report.Group;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.demo.SampleData2;
+import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.demo.SampleData2;
-
-import java.net.URL;
 
 public class HiddenLayoutTest
 {
@@ -27,7 +27,7 @@ public class HiddenLayoutTest
     JFreeReport report = null;
     URL in = getClass().getResource("/com/jrefinery/report/demo/report3.xml");
     report = parseReport(in);
-    report.setData(new SampleData2 ());
+    report.setData(new SampleData2());
 
     return report;
   }
@@ -51,33 +51,33 @@ public class HiddenLayoutTest
     catch (Exception e)
     {
       ExceptionDialog.showExceptionDialog("Error on parsing",
-                                          "Error while parsing " + templateURL, e);
+          "Error while parsing " + templateURL, e);
     }
     return result;
 
   }
 
 
-  public static void main (String [] args)
-    throws Throwable
+  public static void main(String[] args)
+      throws Throwable
   {
     try
     {
       HiddenLayoutTest t = new HiddenLayoutTest();
       JFreeReport report = t.previewReport2();
 
-      Log.debug ("report.pageHeader " + report.getPageHeader().getElementCount());
-      Log.debug ("report.reportHeader " + report.getReportHeader().getElementCount());
+      Log.debug("report.pageHeader " + report.getPageHeader().getElementCount());
+      Log.debug("report.reportHeader " + report.getReportHeader().getElementCount());
 
       Group g = report.getGroup(1);
       BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);
-      Log.debug ("---------------------------------------------");
+      Log.debug("---------------------------------------------");
       g.getHeader().setVisible(false);
       BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);
-      Log.debug ("---------------------------------------------");
+      Log.debug("---------------------------------------------");
       g.getHeader().setVisible(true);
       BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);
-      Log.debug ("---------------------------------------------");
+      Log.debug("---------------------------------------------");
     }
     catch (Exception e)
     {

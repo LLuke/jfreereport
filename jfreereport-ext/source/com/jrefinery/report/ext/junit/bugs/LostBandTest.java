@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LostBandTest.java,v 1.1 2003/04/11 19:32:37 taqua Exp $
+ * $Id: LostBandTest.java,v 1.2 2003/04/23 17:32:36 taqua Exp $
  *
  * Changes
  * -------
@@ -49,13 +49,13 @@ import com.jrefinery.report.tablemodel.ResultSetTableModelFactory;
 
 public class LostBandTest
 {
-  public static void main (String [] args)
-    throws Exception
+  public static void main(String[] args)
+      throws Exception
   {
     Class c = Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
 
-    Driver d = (Driver)c.newInstance();
-    Connection con =  d.connect("jdbc:odbc:Arrgh", new Properties());
+    Driver d = (Driver) c.newInstance();
+    Connection con = d.connect("jdbc:odbc:Arrgh", new Properties());
 /*
     ResultSet resMeta = con.getMetaData().getTables(null, null, null, null);
     TableModel modMeta = ResultSetTableModelFactory.getInstance().generateDefaultTableModel(resMeta);
@@ -72,10 +72,10 @@ public class LostBandTest
 
     JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/ext/junit/bugs/resource/LostBands.xml", mod);
     if (report == null)
-      System.exit (1);
+      System.exit(1);
 
     TestSystem.showPreviewFrame(report);
-    
+
   }
 
 }

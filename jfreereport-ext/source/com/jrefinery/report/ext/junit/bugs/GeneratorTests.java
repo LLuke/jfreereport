@@ -49,11 +49,11 @@ public class GeneratorTests extends TestCase
   /**
    * Returns a test suite to the JUnit test runner.
    */
-  public static Test suite ()
+  public static Test suite()
   {
 
-    TestSuite suite = new TestSuite ("com.jrefinery.report");
-    suite.addTestSuite (GroupCountBug.class);
+    TestSuite suite = new TestSuite("com.jrefinery.report");
+    suite.addTestSuite(GroupCountBug.class);
     return suite;
 
   }
@@ -61,9 +61,9 @@ public class GeneratorTests extends TestCase
   /**
    * Constructs the test suite.
    */
-  public GeneratorTests (String name)
+  public GeneratorTests(String name)
   {
-    super (name);
+    super(name);
   }
 
 }

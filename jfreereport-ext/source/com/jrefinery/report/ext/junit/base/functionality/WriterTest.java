@@ -28,23 +28,26 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: WriterTest.java,v 1.1 2003/06/01 20:43:38 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 01.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.functionality;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 
+import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.io.ext.writer.ReportConverter;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.NullOutputStream;
 import junit.framework.TestCase;
+import org.xml.sax.InputSource;
 
 public class WriterTest extends TestCase
 {
@@ -55,20 +58,23 @@ public class WriterTest extends TestCase
     super(s);
   }
 
-  public void testConvertReport () throws Exception
+  public void testConvertReport() throws Exception
   {
     ReportConverter rc = new ReportConverter();
     for (int i = 0; i < REPORTS.length; i++)
     {
       URL url = this.getClass().getResource(REPORTS[i]);
       assertNotNull(url);
+      ByteArrayOutputStream bo = new ByteArrayOutputStream();
       try
       {
-        rc.convertReport(url, url, new OutputStreamWriter(new NullOutputStream()));
+        rc.convertReport(url, url, new OutputStreamWriter(bo));
+        ByteArrayInputStream bin = new ByteArrayInputStream(bo.toByteArray());
+        ReportGenerator.getInstance().parseReport(new InputSource(bin), url);
       }
       catch (Exception e)
       {
-        Log.debug ("Failed to parse " + url, e);
+        Log.debug("Failed to write or parse " + url, e);
         fail();
       }
     }

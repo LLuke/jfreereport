@@ -38,7 +38,7 @@ package com.jrefinery.report.ext.junit;
 
 public class PerformanceTest
 {
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
   }
 }

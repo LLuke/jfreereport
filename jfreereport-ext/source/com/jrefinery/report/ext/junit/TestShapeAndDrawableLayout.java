@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TestShapeAndDrawableLayout.java,v 1.1 2003/04/11 19:32:13 taqua Exp $
  *
  * Changes
  * -------
@@ -38,25 +38,24 @@ package com.jrefinery.report.ext.junit;
 
 import javax.swing.table.DefaultTableModel;
 
-import com.jrefinery.report.demo.SampleData2;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
 
 public class TestShapeAndDrawableLayout
 {
-  public static void main (String [] args)
-    throws Exception
+  public static void main(String[] args)
+      throws Exception
   {
     JFreeReport report = TestSystem.loadReport("/com/jrefinery/report/demo/shape-and-drawable.xml",
-                                               new DefaultTableModel());
+        new DefaultTableModel());
     if (report == null)
-      System.exit (1);
+      System.exit(1);
 
     BandLayoutManagerUtil.doLayout(report.getReportHeader(),
-                                   new DefaultLayoutSupport(),
-                                   550,
-                                   200);
+        new DefaultLayoutSupport(),
+        550,
+        200);
 
   }
 }

@@ -34,12 +34,12 @@
  */
 package com.jrefinery.report.ext.junit;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import com.jrefinery.report.ext.junit.bugs.GeneratorTests;
 import com.jrefinery.report.ext.junit.bugs.GroupCountBug;
 import com.jrefinery.report.ext.junit.bugs.ReportPropertyLostBug;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * A test suite for the JFreeReport class library that can be run using JUnit (http://www.junit.org).
@@ -50,10 +50,10 @@ public class JFreeReportTestSuite extends TestCase
   /**
    * Returns a test suite to the JUnit test runner.
    */
-  public static Test suite ()
+  public static Test suite()
   {
-    TestSuite suite = new TestSuite ("JFreeReport");
-    suite.addTest (GeneratorTests.suite ());
+    TestSuite suite = new TestSuite("JFreeReport");
+    suite.addTest(GeneratorTests.suite());
     suite.addTest(GroupCountBug.suite());
     suite.addTest(ReportPropertyLostBug.suite());
     return suite;
@@ -62,9 +62,9 @@ public class JFreeReportTestSuite extends TestCase
   /**
    * Constructs the test suite.
    */
-  public JFreeReportTestSuite (String name)
+  public JFreeReportTestSuite(String name)
   {
-    super (name);
+    super(name);
   }
 
 }

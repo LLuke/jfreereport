@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FunctionalityTestSuite.java,v 1.1 2003/06/01 20:43:38 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 01.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.functionality;

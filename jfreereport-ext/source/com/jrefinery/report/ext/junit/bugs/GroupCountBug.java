@@ -34,6 +34,13 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.function.GroupCountFunction;
@@ -45,13 +52,6 @@ import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.print.PageFormat;
-import java.util.ArrayList;
 
 /**
  * This test case has been compiled in response to a bug report by Steven Feinstein:
@@ -69,70 +69,70 @@ public class GroupCountBug extends TestCase
   /**
    * Returns the tests as a test suite.
    */
-  public static Test suite ()
+  public static Test suite()
   {
-    return new TestSuite (GroupCountBug.class);
+    return new TestSuite(GroupCountBug.class);
   }
 
   /**
    * Constructs a new set of tests.
    * @param name The name of the tests.
    */
-  public GroupCountBug (String name)
+  public GroupCountBug(String name)
   {
-    super (name);
+    super(name);
   }
 
   /**
    * Common test setup.
    */
-  protected void setUp ()
+  protected void setUp()
   {
 
     String[][] values = new String[][]{{"A", "1"}, {"A", "2"}, {"B", "3"}};
     String[] columns = new String[]{"Letter", "Number"};
-    TableModel data = new DefaultTableModel (values, columns);
+    TableModel data = new DefaultTableModel(values, columns);
 
-    this.report = new JFreeReport ();
-    this.report.setName ("Test Report");
-    this.report.setData (data);
-    ArrayList fields = new ArrayList ();
-    fields.add ("Letter");
-    Group letterGroup = new Group ();
-    letterGroup.setName ("Letter Group");
+    this.report = new JFreeReport();
+    this.report.setName("Test Report");
+    this.report.setData(data);
+    ArrayList fields = new ArrayList();
+    fields.add("Letter");
+    Group letterGroup = new Group();
+    letterGroup.setName("Letter Group");
     letterGroup.setFields(fields);
-    this.report.addGroup (letterGroup);
+    this.report.addGroup(letterGroup);
 
-    GroupCountFunction function = new GroupCountFunction ();
-    function.setName ("f1");
+    GroupCountFunction function = new GroupCountFunction();
+    function.setName("f1");
     function.setGroup("Letter Group");
     try
     {
-      this.report.addFunction (function);
+      this.report.addFunction(function);
     }
     catch (Exception e)
     {
-      this.fail ();
+      this.fail();
     }
 
-    BufferedImage buffer = new BufferedImage (100, 100, BufferedImage.TYPE_INT_RGB);
-    Graphics2D g2 = (Graphics2D) buffer.getGraphics ();
-    this.target = new G2OutputTarget (g2, new PageFormat ());
+    BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+    this.target = new G2OutputTarget(g2, new PageFormat());
 
   }
 
   /**
    * Counts the number of groups.
    */
-  public void testGroupCount () throws Exception
+  public void testGroupCount() throws Exception
   {
     PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
     ReportStateList list = proc.repaginate();
     ReportState state = list.get(list.size() - 1);
-    System.out.println (state.getClass().getName ());
-    Integer value = (Integer) state.getDataRow().get ("f1");
-    this.assertEquals (new Integer (2), value);
+    System.out.println(state.getClass().getName());
+    Integer value = (Integer) state.getDataRow().get("f1");
+    this.assertEquals(new Integer(2), value);
 
   }
 

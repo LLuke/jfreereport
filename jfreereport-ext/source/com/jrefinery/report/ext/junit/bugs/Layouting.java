@@ -2,33 +2,33 @@
  * Date: Dec 12, 2002
  * Time: 4:41:23 PM
  *
- * $Id: Layouting.java,v 1.4 2003/04/23 17:32:36 taqua Exp $
+ * $Id: Layouting.java,v 1.5 2003/05/14 22:36:46 taqua Exp $
  */
 package com.jrefinery.report.ext.junit.bugs;
 
-import junit.framework.TestCase;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.PageFooter;
-import com.jrefinery.report.ItemFactory;
-import com.jrefinery.report.Element;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import javax.swing.table.DefaultTableModel;
+
 import com.jrefinery.report.Band;
 import com.jrefinery.report.DataRowBackend;
 import com.jrefinery.report.DataRowConnector;
+import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.ItemFactory;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.function.LevelledExpressionList;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ReportPropertiesList;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportPropertiesList;
+import junit.framework.TestCase;
 import org.jfree.ui.FloatDimension;
-
-import javax.swing.table.DefaultTableModel;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 
 public class Layouting extends TestCase
 {
@@ -39,7 +39,7 @@ public class Layouting extends TestCase
     super(s);
   }
 
-  protected void setUp ()
+  protected void setUp()
   {
     PageFooter pf = new PageFooter();
 /*
@@ -64,7 +64,7 @@ public class Layouting extends TestCase
 */
     Element e = ItemFactory.createStringElement(
         "URL",
-        new Rectangle2D.Float(0,9,-100, 9),
+        new Rectangle2D.Float(0, 9, -100, 9),
         null,
         ElementAlignment.RIGHT.getOldAlignment(),
         null,
@@ -100,7 +100,7 @@ public class Layouting extends TestCase
     DataRowBackend b = new DataRowBackend();
     b.setTablemodel(new DefaultTableModel());
     b.setReportProperties(new ReportPropertiesList(report.getProperties()));
-    b.setFunctions(new LevelledExpressionList (report.getExpressions(), report.getFunctions()));
+    b.setFunctions(new LevelledExpressionList(report.getExpressions(), report.getFunctions()));
     DataRowConnector c = new DataRowConnector();
     c.setDataRowBackend(b);
     DataRowConnector.connectDataSources(pf, c);
@@ -120,24 +120,24 @@ public class Layouting extends TestCase
 
   public void testLayout2()
   {
-  // DO LAYOUT FROM SIMPLEPAGELAYOUTER ...
+    // DO LAYOUT FROM SIMPLEPAGELAYOUTER ...
     G2OutputTarget ot = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
 
     Band band = report.getPageFooter();
 
-    Band myBand = new Band ();
+    Band myBand = new Band();
     myBand.addElement(band);
     myBand.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(-100, -100));
     myBand.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Float(0, 0));
 
     // in this layouter the width of a band is always the full page width
     float width = ot.getLogicalPage().getWidth();
-    Log.debug ("Logical Page: Width = " + width);
-    Log.debug (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>PREFLAYOUTSIZE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    Log.debug("Logical Page: Width = " + width);
+    Log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>PREFLAYOUTSIZE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
     // the known limitations can be applied ...
     myBand.getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, new FloatDimension(width, Short.MAX_VALUE));
-    Log.debug (myBand.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE));
+    Log.debug(myBand.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE));
     BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(myBand, ot);
     Dimension2D fdim = lm.preferredLayoutSize(myBand, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
 
@@ -145,11 +145,11 @@ public class Layouting extends TestCase
     float height = (float) fdim.getHeight();
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
-    Log.debug (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>DOLAYOUT>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    Log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>DOLAYOUT>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     lm.doLayout(band);
 
-    Log.debug ("Bounds2: " + bounds);
-    Log.debug ("URL-Bounds: " + report.getPageFooter().getElement("URL").getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
+    Log.debug("Bounds2: " + bounds);
+    Log.debug("URL-Bounds: " + report.getPageFooter().getElement("URL").getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
 
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DocumentTest.java,v 1.1 2003/05/26 14:25:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,10 +39,10 @@
 package com.jrefinery.report.ext.junit.ext;
 
 import javax.swing.JEditorPane;
-import javax.swing.text.Document;
-import javax.swing.text.ElementIterator;
-import javax.swing.text.Element;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.ElementIterator;
 
 public class DocumentTest
 {
@@ -55,10 +55,11 @@ public class DocumentTest
     Document doc = jpe.getDocument();
     System.out.println("Length: " + doc.getLength());
     ElementIterator ei = new ElementIterator(doc);
-    Element e = ei.next();;
+    Element e = ei.next();
+    ;
     while (e != null)
     {
-      System.out.println (e.toString());
+      System.out.println(e.toString());
       if (e.isLeaf())
       {
         try
@@ -66,11 +67,11 @@ public class DocumentTest
           int start = e.getStartOffset();
           int end = e.getEndOffset();
 
-          System.err.print (doc.getText(start, end - start) + " ");
+          System.err.print(doc.getText(start, end - start) + " ");
         }
         catch (BadLocationException le)
         {
-          System.err.println ("BLE: " + le.offsetRequested());
+          System.err.println("BLE: " + le.offsetRequested());
         }
       }
       e = ei.next();

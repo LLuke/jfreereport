@@ -28,18 +28,18 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: GroupTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 01.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.ext.junit.base.basic;
 
-import junit.framework.TestCase;
 import com.jrefinery.report.Group;
+import junit.framework.TestCase;
 
 public class GroupTest extends TestCase
 {
@@ -48,7 +48,7 @@ public class GroupTest extends TestCase
     super(s);
   }
 
-  public void testCreate () throws Exception
+  public void testCreate() throws Exception
   {
     Group g1 = new Group();
     assertNotNull(g1.clone());
@@ -59,7 +59,7 @@ public class GroupTest extends TestCase
     assertNotNull(g1.toString());
   }
 
-  public void testEquals ()
+  public void testEquals()
   {
     Group g1 = new Group();
     g1.setName("");
@@ -82,7 +82,7 @@ public class GroupTest extends TestCase
     assertTrue(g1.compareTo(g2) == -1);
   }
 
-  public void testMethods ()
+  public void testMethods()
   {
     Group g = new Group();
     try

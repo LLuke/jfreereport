@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: JFreeReportTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,7 +53,7 @@ public class JFreeReportTest extends TestCase
     super(s);
   }
 
-  public void testCreate () throws Exception
+  public void testCreate() throws Exception
   {
     JFreeReport report = new JFreeReport();
     assertNotNull(report.getDefaultPageFormat());
@@ -73,11 +73,11 @@ public class JFreeReportTest extends TestCase
     assertNotNull(report.clone());
   }
 
-  public void testSerialize () throws Exception
+  public void testSerialize() throws Exception
   {
     JFreeReport report = new JFreeReport();
     ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    ObjectOutputStream out = new ObjectOutputStream (bo);
+    ObjectOutputStream out = new ObjectOutputStream(bo);
     out.writeObject(report);
 
     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
@@ -85,5 +85,5 @@ public class JFreeReportTest extends TestCase
     assertNotNull(e2); // cannot assert equals, as this is not implemented.
   }
 
-  
+
 }
