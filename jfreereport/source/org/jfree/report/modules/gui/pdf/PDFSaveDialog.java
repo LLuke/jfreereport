@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.6 2003/08/18 18:27:59 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.7 2003/08/18 21:36:39 taqua Exp $
  *
  * Changes
  * --------
@@ -88,6 +88,7 @@ import org.jfree.report.modules.gui.pdf.resources.PDFExportResources;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.Log;
 
 /**
  * A dialog that is used to perform the printing of a report into a PDF file. It is primarily
@@ -1160,15 +1161,22 @@ public class PDFSaveDialog extends JDialog
       if (b.equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT))
       {
         rbSecurity128Bit.setSelected(true);
+        updateSecurityPanelEnabled();
         return;
       }
       else if (b.equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
       {
         rbSecurity40Bit.setSelected(true);
+        updateSecurityPanelEnabled();
         return;
+      }
+      else
+      {
+        Log.warn ("Invalid encryption value entered. " + b);
       }
     }
     rbSecurityNone.setSelected(true);
+    updateSecurityPanelEnabled();
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigFactory.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
+ * $Id: ConfigFactory.java,v 1.3 2003/08/19 21:01:16 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,7 +49,7 @@ public final class ConfigFactory
 {
   /** 
    * The selector configuration key that defines the active config storage
-   * implementation
+   * implementation.
    */
   public static final String CONFIG_TARGET_KEY = "org.jfree.report.ConfigStore";
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.8 2003/06/29 16:59:30 taqua Exp $
+ * $Id: Worker.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  *
  * Changes
@@ -64,6 +64,7 @@ public class Worker extends Thread
   public Worker(final int sleeptime)
   {
     this.sleeptime = sleeptime;
+    this.setDaemon(true);
     start();
   }
 
@@ -88,9 +89,9 @@ public class Worker extends Thread
     {
       throw new IllegalStateException("This worker is not idle.");
     }
-    workload = r;
     synchronized (this)
     {
+      workload = r;
       this.notify();
     }
   }
@@ -123,7 +124,7 @@ public class Worker extends Thread
    * this worker starts to sleep until a new workload is set for the worker
    * or the worker got the finish() request.
    */
-  public synchronized void run()
+  public void run()
   {
     while (!finish)
     {
@@ -143,7 +144,10 @@ public class Worker extends Thread
 
       try
       {
-        this.wait(sleeptime);
+        synchronized (this)
+        {
+          this.wait(sleeptime);
+        }
       }
       catch (InterruptedException ie)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPlugin.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ExportPlugin.java,v 1.2 2003/07/14 20:16:04 taqua Exp $
  *
  * Changes
  * --------
@@ -41,6 +41,7 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.Worker;
 
 /**
  * An export plug-in is a class that can work with the {@link ExportAction}
@@ -136,4 +137,13 @@ public interface ExportPlugin
    * @return returns a error description.
    */
   public String getFailureDescription();
+
+  /**
+   * Defines the worker instance for that export plugin. Workers can
+   * be used to delegate tasks to an other thread. The workers are shared
+   * among all export plugins of an dialog instance.
+   *
+   * @param worker the worker.
+   */
+  public void defineWorker (Worker worker);
 }

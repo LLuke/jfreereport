@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.6 2003/07/23 16:02:21 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.7 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -517,9 +517,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
         case PathIterator.SEG_CLOSE:
           {
             cb.closePath();
+            break;
           }
         default:
-          throw new IllegalArgumentException("Unexpected path iterator type.");
+          {
+            Log.warn ("Unexpected path iterator type: " + cmd);
+          }
       }
       pit.next();
     }
@@ -589,9 +592,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
         case PathIterator.SEG_CLOSE:
           {
             cb.closePath();
+            break;
           }
         default:
-          throw new IllegalArgumentException("Unexpected path iterator type.");
+          {
+            Log.warn ("Unexpected path iterator type: " + cmd);
+          }
       }
       pit.next();
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementChooserAgent.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: ElementChooserAgent.java,v 1.2 2003/08/18 18:28:00 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public class ElementChooserAgent extends LayoutAgent
   }
 
   /**
-   * ??
+   * ??.
    *
    * @param task  ??.
    *

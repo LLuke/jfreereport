@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.3 2003/08/18 21:36:39 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,9 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
+ * The text element factory is the abstract base class for all
+ * text element factory implementations. It provides common properties
+ * shared among all text elements.
  * 
  * @author Thomas Morgner
  */

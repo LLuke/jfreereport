@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NullConfigStorage.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
+ * $Id: NullConfigStorage.java,v 1.2 2003/08/19 21:01:17 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -59,8 +59,8 @@ public class NullConfigStorage implements ConfigStorage
   /**
    * This method does nothing.
    *  
-   * @see org.jfree.report.modules.misc.configstore.base.
-   * ConfigStorage#storeProperties(java.lang.String, java.util.Properties)
+   * @see org.jfree.report.modules.misc.configstore.base.ConfigStorage#storeProperties
+   * (java.lang.String, java.util.Properties)
    * 
    * @param configPath this parameter is not used.
    * @param properties this parameter is not used. 

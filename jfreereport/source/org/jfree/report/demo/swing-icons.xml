@@ -15,46 +15,54 @@
   <!-- * PARSER CONFIGURATION * -->
   <!-- ************************ -->
   <parser-config>
-    <!-- comment 1 -->
     <object-factory class="org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory"/>
-    <!-- comment 2 -->
     <element-factory class="org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory"/>
-    <!-- comment 3 -->
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory"/>
-    <!-- comment 4 -->
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory"/>
-    <!-- comment 5 -->
     <template-factory class="org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection"/>
-    <!-- comment 6 -->
     <datasource-factory class="org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory"/>
-    <!-- comment 7 -->
   </parser-config>
 
   <!-- ************************ -->
   <!-- * REPORT CONFIGURATION * -->
   <!-- ************************ -->
   <report-config>
-    <!-- comment 8 -->
     <defaultpageformat orientation="portrait"
       pageformat="LETTER"
       topmargin="72"
       bottommargin="72"
       leftmargin="72"
       rightmargin="72"/>
-    <!-- comment 9 -->
   </report-config>
 
   <!-- ********** -->
   <!-- * STYLES * -->
   <!-- ********** -->
   <styles>
-  </styles>
+    <style name="medium-line">
+      <compound-key name="min-size">
+        <basic-object name="height">0.0</basic-object>
+        <basic-object name="width">-100.0</basic-object>
+      </compound-key>
+      <basic-key name="paint">black</basic-key>
+      <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
+      <basic-key name="draw-shape">true</basic-key>
+      <basic-key name="scale">true</basic-key>
+    </style>
 
-  <!-- ************* -->
-  <!-- * TEMPLATES * -->
-  <!-- ************* -->
-  <templates>
-  </templates>
+    <style name="background-rectangle">
+      <compound-key name="absolute_pos">
+        <basic-object name="x">0.0</basic-object>
+        <basic-object name="y">0.0</basic-object>
+      </compound-key>
+      <compound-key name="min-size">
+        <basic-object name="height">-100.0</basic-object>
+        <basic-object name="width">-100.0</basic-object>
+      </compound-key>
+      <basic-key name="fill-shape">true</basic-key>
+      <basic-key name="scale">true</basic-key>
+    </style>
+  </styles>
 
   <!-- ********************** -->
   <!-- * REPORT DESCRIPTION * -->
@@ -65,101 +73,54 @@
     <!-- = REPORT HEADER = -->
     <!-- ================= -->
     <report-header name="report-header-band">
-      <!-- Style comment a -->
       <style>
-        <!-- Style comment 1 -->
         <compound-key name="min-size">
-          <!-- Style comment 2 -->
           <basic-object name="height">112.0</basic-object>
-          <!-- Style comment 3 -->
           <basic-object name="width">0.0</basic-object>
-          <!-- Style comment 4 -->
         </compound-key>
-        <!-- Style comment 5 -->
       </style>
-      <!-- Style comment 6 -->
 
-      <!-- Style comment 7 -->
       <default-style>
-        <!-- Style comment 8 -->
         <basic-key name="font">SansSerif</basic-key>
-        <!-- Style comment 9-->
         <basic-key name="font-size">10</basic-key>
-        <!-- Style comment 10 -->
         <basic-key name="valignment">bottom</basic-key>
-        <!-- Style comment 11 -->
       </default-style>
-      <!-- Style comment 12 -->
 
-      <!-- Style comment 13 -->
       <element name="title1" type="text/plain">
-        <!-- Style comment 14 -->
         <style>
-          <!-- Style comment 15 -->
           <compound-key name="absolute_pos">
-            <!-- Style comment 16-->
             <basic-object name="x">0.0</basic-object>
-            <!-- Style comment 17-->
             <basic-object name="y">2.0</basic-object>
-            <!-- Style comment 18-->
           </compound-key>
-          <!-- Style comment 19-->
           <compound-key name="min-size">
-            <!-- Style comment 20-->
             <basic-object name="height">18.0</basic-object>
-            <!-- Style comment 21-->
             <basic-object name="width">-100.0</basic-object>
-            <!-- Style comment 22-->
           </compound-key>
-          <!-- Style comment 23-->
           <basic-key name="alignment">center</basic-key>
-          <!-- Style comment 24-->
           <basic-key name="font-size">18</basic-key>
-          <!-- Style comment 25-->
           <basic-key name="font-bold">true</basic-key>
-          <!-- Style comment 26-->
         </style>
-        <!-- Style comment 27-->
         <template references="label">
-          <!-- Style comment 28-->
           <basic-object name="content">Java Look and Feel Graphics Repository</basic-object>
-          <!-- Style comment 29-->
         </template>
-        <!-- Style comment 30-->
       </element>
-      <!-- Style comment 31-->
 
-      <!-- Style comment 32-->
       <element name="description1" type="text/plain">
-        <!-- Style comment 33 -->
         <style>
-          <!-- Style comment 34-->
           <compound-key name="absolute_pos">
-            <!-- Style comment 35-->
             <basic-object name="x">0.0</basic-object>
-            <!-- Style comment 36-->
             <basic-object name="y">32.0</basic-object>
-            <!-- Style comment 37-->
           </compound-key>
-          <!-- Style comment 38-->
           <compound-key name="min-size">
-            <!-- Style comment 39-->
             <basic-object name="height">10.0</basic-object>
-            <!-- Style comment 40-->
             <basic-object name="width">-100.0</basic-object>
-            <!-- Style comment 41-->
           </compound-key>
-          <!-- Style comment 42-->
         </style>
-        <!-- Style comment 43-->
+
         <template references="label">
-          <!-- Style comment 44-->
           <basic-object name="content">This report lists the icons contained in the Java Look and Feel Graphics Repository.</basic-object>
-          <!-- Style comment 45-->
         </template>
-        <!-- Style comment 46-->
       </element>
-      <!-- Style comment 47-->
 
       <element name="description2" type="text/plain">
         <style>
@@ -230,64 +191,35 @@
         <basic-key name="font">SansSerif</basic-key>
         <basic-key name="font-size">12</basic-key>
         <basic-key name="font-bold">true</basic-key>
-        <basic-key name="font-italic">false</basic-key>
+        <basic-key name="valignment">bottom</basic-key>
       </default-style>
 
       <element name="rect1" type="shape/generic">
         <style>
-          <compound-key name="absolute_pos">
-            <basic-object name="x">0.0</basic-object>
-            <basic-object name="y">0.0</basic-object>
-          </compound-key>
-          <compound-key name="min-size">
-            <basic-object name="height">-100.0</basic-object>
-            <basic-object name="width">-100.0</basic-object>
-          </compound-key>
-          <basic-key name="stroke" class="java.awt.BasicStroke">0.0</basic-key>
+          <extends name="background-rectangle"/>
           <basic-key name="paint">#ccffcc</basic-key>
-          <basic-key name="draw-shape">false</basic-key>
-          <basic-key name="fill-shape">true</basic-key>
-          <basic-key name="scale">true</basic-key>
         </style>
         <template references="rectangle"/>
       </element>
 
-      <element name="line1" type="shape/generic">
+      <element type="shape/generic">
         <style>
+          <extends name="medium-line"/>
           <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
-          <compound-key name="min-size">
-            <basic-object name="height">0.0</basic-object>
-            <basic-object name="width">-100.0</basic-object>
-          </compound-key>
-          <basic-key name="paint">black</basic-key>
-          <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
-          <basic-key name="draw-shape">true</basic-key>
-          <basic-key name="fill-shape">false</basic-key>
-          <basic-key name="keepAspectRatio">false</basic-key>
-          <basic-key name="scale">true</basic-key>
         </style>
         <template references="horizontal-line"/>
       </element>
 
-      <element name="line2" type="shape/generic">
+      <element type="shape/generic">
         <style>
+          <extends name="medium-line"/>
           <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">30.0</basic-object>
           </compound-key>
-          <compound-key name="min-size">
-            <basic-object name="height">0.0</basic-object>
-            <basic-object name="width">-100.0</basic-object>
-          </compound-key>
-          <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
-          <basic-key name="paint">black</basic-key>
-          <basic-key name="draw-shape">true</basic-key>
-          <basic-key name="fill-shape">false</basic-key>
-          <basic-key name="scale">true</basic-key>
-          <basic-key name="keepAspectRatio">false</basic-key>
         </style>
         <template references="horizontal-line"/>
       </element>
@@ -303,7 +235,6 @@
             <basic-object name="width">-50.0</basic-object>
           </compound-key>
           <basic-key name="alignment">left</basic-key>
-          <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="label">
           <basic-object name="content">REPORT TOTAL:</basic-object>
@@ -321,7 +252,7 @@
             <basic-object name="width">-30.0</basic-object>
           </compound-key>
           <basic-key name="alignment">center</basic-key>
-          <basic-key name="valignment">bottom</basic-key>
+          <basic-key name="font-size">9</basic-key>
         </style>
         <template references="number-field">
           <basic-object name="field">OverallCount</basic-object>
@@ -340,6 +271,7 @@
             <basic-object name="height">9.0</basic-object>
             <basic-object name="width">-20.0</basic-object>
           </compound-key>
+          <basic-key name="font-size">9</basic-key>
           <basic-key name="alignment">right</basic-key>
           <basic-key name="valignment">bottom</basic-key>
         </style>
@@ -370,24 +302,14 @@
         <basic-key name="font-size">9</basic-key>
         <basic-key name="font">SansSerif</basic-key>
         <basic-key name="font-italic">false</basic-key>
+        <basic-key name="paint">black</basic-key>
+        <basic-key name="valignment">bottom</basic-key>
       </default-style>
 
       <element type="shape/generic">
         <style>
-          <basic-key name="stroke" class="java.awt.BasicStroke">0.0</basic-key>
-          <compound-key name="absolute_pos">
-            <basic-object name="x">0.0</basic-object>
-            <basic-object name="y">0.0</basic-object>
-          </compound-key>
-          <compound-key name="min-size">
-            <basic-object name="height">-100.0</basic-object>
-            <basic-object name="width">-100.0</basic-object>
-          </compound-key>
-          <basic-key name="draw-shape">false</basic-key>
-          <basic-key name="keepAspectRatio">false</basic-key>
-          <basic-key name="scale">true</basic-key>
+          <extends name="background-rectangle"/>
           <basic-key name="paint">#afafaf</basic-key>
-          <basic-key name="fill-shape">true</basic-key>
         </style>
         <template references="rectangle"/>
       </element>
@@ -402,9 +324,7 @@
             <basic-object name="height">14.0</basic-object>
             <basic-object name="width">-50.0</basic-object>
           </compound-key>
-          <basic-key name="paint">black</basic-key>
           <basic-key name="alignment">left</basic-key>
-          <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="label">
           <basic-object name="content">Java Look and Feel Graphics Repository</basic-object>
@@ -422,7 +342,6 @@
             <basic-object name="width">-20.0</basic-object>
           </compound-key>
           <basic-key name="alignment">right</basic-key>
-          <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="date-field">
           <basic-object name="nullValue">-</basic-object>
@@ -433,20 +352,13 @@
 
       <element type="shape/generic">
         <style>
+          <extends name="medium-line"/>
           <basic-key name="stroke" class="java.awt.BasicStroke">2.0</basic-key>
           <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">16.0</basic-object>
           </compound-key>
-          <basic-key name="draw-shape">true</basic-key>
-          <compound-key name="min-size">
-            <basic-object name="height">0.0</basic-object>
-            <basic-object name="width">-100.0</basic-object>
-          </compound-key>
-          <basic-key name="keepAspectRatio">false</basic-key>
-          <basic-key name="scale">true</basic-key>
           <basic-key name="paint">#cfcfcf</basic-key>
-          <basic-key name="fill-shape">false</basic-key>
         </style>
         <template references="horizontal-line"/>
       </element>
@@ -487,7 +399,7 @@
           <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="number-field">
-          <basic-object name="nullValue">hull</basic-object>
+          <basic-object name="nullValue">-</basic-object>
           <basic-object name="format">Page #0</basic-object>
           <basic-object name="field">PageNumber</basic-object>
         </template>
@@ -502,85 +414,52 @@
 
       <!-- category group -->
       <group name="Category">
-        <!-- group comment 1 -->
         <fields>
-          <!-- group comment 2 -->
           <field>Category</field>
-          <!-- group comment 3 -->
         </fields>
 
-        <!-- group comment 4 -->
         <group-header>
-          <!-- group header comment 1 -->
           <style>
             <compound-key name="min-size">
               <basic-object name="height">30.0</basic-object>
               <basic-object name="width">0.0</basic-object>
             </compound-key>
           </style>
+
           <default-style>
-            <basic-key name="font-bold">true</basic-key>
-            <basic-key name="font-size">12</basic-key>
             <basic-key name="font">SansSerif</basic-key>
+            <basic-key name="font-size">12</basic-key>
+            <basic-key name="font-bold">true</basic-key>
             <basic-key name="font-italic">false</basic-key>
+            <basic-key name="paint">black</basic-key>
+            <basic-key name="alignment">left</basic-key>
+            <basic-key name="valignment">bottom</basic-key>
           </default-style>
 
           <element type="shape/generic">
             <style>
-              <basic-key name="stroke" class="java.awt.BasicStroke">0.0</basic-key>
-              <compound-key name="absolute_pos">
-                <basic-object name="x">0.0</basic-object>
-                <basic-object name="y">0.0</basic-object>
-              </compound-key>
-              <basic-key name="draw-shape">false</basic-key>
-              <compound-key name="min-size">
-                <basic-object name="height">-100.0</basic-object>
-                <basic-object name="width">-100.0</basic-object>
-              </compound-key>
-              <basic-key name="keepAspectRatio">false</basic-key>
-              <basic-key name="scale">true</basic-key>
+              <extends name="background-rectangle"/>
               <basic-key name="paint">#ccccff</basic-key>
-              <basic-key name="fill-shape">true</basic-key>
             </style>
             <template references="rectangle"/>
           </element>
 
           <element type="shape/generic">
             <style>
-              <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
-              <compound-key name="absolute_pos">
-                <basic-object name="x">0.0</basic-object>
-                <basic-object name="y">0.0</basic-object>
-              </compound-key>
-              <basic-key name="draw-shape">true</basic-key>
-              <compound-key name="min-size">
-                <basic-object name="height">0.0</basic-object>
-                <basic-object name="width">-100.0</basic-object>
-              </compound-key>
-              <basic-key name="keepAspectRatio">false</basic-key>
-              <basic-key name="scale">true</basic-key>
+              <extends name="medium-line"/>
               <basic-key name="paint">black</basic-key>
-              <basic-key name="fill-shape">false</basic-key>
             </style>
             <template references="horizontal-line"/>
           </element>
 
           <element type="shape/generic">
             <style>
-              <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
+              <extends name="medium-line"/>
               <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">30.0</basic-object>
               </compound-key>
-              <basic-key name="draw-shape">true</basic-key>
-              <compound-key name="min-size">
-                <basic-object name="height">0.0</basic-object>
-                <basic-object name="width">-100.0</basic-object>
-              </compound-key>
-              <basic-key name="keepAspectRatio">false</basic-key>
-              <basic-key name="scale">true</basic-key>
               <basic-key name="paint">black</basic-key>
-              <basic-key name="fill-shape">false</basic-key>
             </style>
             <template references="horizontal-line"/>
           </element>
@@ -591,14 +470,10 @@
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">3.0</basic-object>
               </compound-key>
-              <basic-key name="dynamic_height">false</basic-key>
               <compound-key name="min-size">
                 <basic-object name="height">12.0</basic-object>
                 <basic-object name="width">92.0</basic-object>
               </compound-key>
-              <basic-key name="paint">black</basic-key>
-              <basic-key name="alignment">left</basic-key>
-              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
               <basic-object name="content">Category:</basic-object>
@@ -611,14 +486,10 @@
                 <basic-object name="x">96.0</basic-object>
                 <basic-object name="y">3.0</basic-object>
               </compound-key>
-              <basic-key name="dynamic_height">false</basic-key>
               <compound-key name="min-size">
                 <basic-object name="height">12.0</basic-object>
                 <basic-object name="width">120.0</basic-object>
               </compound-key>
-              <basic-key name="paint">black</basic-key>
-              <basic-key name="alignment">left</basic-key>
-              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="string-field">
               <basic-object name="nullValue">-</basic-object>
@@ -628,21 +499,17 @@
 
           <element type="text/plain">
             <style>
-              <basic-key name="dynamic_height">false</basic-key>
               <basic-key name="font-size">8</basic-key>
               <basic-key name="font-bold">false</basic-key>
               <basic-key name="font-italic">true</basic-key>
-              <basic-key name="paint">black</basic-key>
               <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">20.0</basic-object>
               </compound-key>
-              <basic-key name="alignment">left</basic-key>
               <compound-key name="min-size">
                 <basic-object name="height">9.0</basic-object>
                 <basic-object name="width">-50.0</basic-object>
               </compound-key>
-              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
               <basic-object name="content">Name:</basic-object>
@@ -651,7 +518,6 @@
 
           <element type="text/plain">
             <style>
-              <basic-key name="dynamic_height">false</basic-key>
               <basic-key name="font-size">8</basic-key>
               <basic-key name="font-bold">false</basic-key>
               <basic-key name="font-italic">true</basic-key>
@@ -660,12 +526,10 @@
                 <basic-object name="x">-50.0</basic-object>
                 <basic-object name="y">20.0</basic-object>
               </compound-key>
-              <basic-key name="alignment">left</basic-key>
               <compound-key name="min-size">
                 <basic-object name="height">9.0</basic-object>
                 <basic-object name="width">-30.0</basic-object>
               </compound-key>
-              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
               <basic-object name="content">Icon:</basic-object>
@@ -674,32 +538,26 @@
 
           <element type="text/plain">
             <style>
-              <basic-key name="dynamic_height">false</basic-key>
               <basic-key name="font-size">8</basic-key>
               <basic-key name="font-bold">false</basic-key>
               <basic-key name="font-italic">true</basic-key>
-              <basic-key name="paint">black</basic-key>
+              <basic-key name="alignment">right</basic-key>
               <compound-key name="absolute_pos">
                 <basic-object name="x">-80.0</basic-object>
                 <basic-object name="y">20.0</basic-object>
               </compound-key>
-              <basic-key name="alignment">right</basic-key>
               <compound-key name="min-size">
                 <basic-object name="height">9.0</basic-object>
                 <basic-object name="width">-20.0</basic-object>
               </compound-key>
-              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
               <basic-object name="content">Size:</basic-object>
             </template>
           </element>
-          <!-- group header comment 1e -->
         </group-header>
 
-        <!-- group footer comment 2a -->
         <group-footer>
-          <!-- group footer comment 2b -->
           <style>
             <compound-key name="min-size">
               <basic-object name="height">30.0</basic-object>
@@ -708,10 +566,11 @@
             <basic-key name="pagebreak-before">false</basic-key>
           </style>
           <default-style>
-            <basic-key name="font-bold">true</basic-key>
-            <basic-key name="font-size">11</basic-key>
             <basic-key name="font">SansSerif</basic-key>
+            <basic-key name="font-size">11</basic-key>
+            <basic-key name="font-bold">true</basic-key>
             <basic-key name="font-italic">false</basic-key>
+            <basic-key name="valignment">bottom</basic-key>
           </default-style>
 
           <element type="text/plain">
@@ -720,14 +579,11 @@
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">5.0</basic-object>
               </compound-key>
-              <basic-key name="dynamic_height">false</basic-key>
               <compound-key name="min-size">
-                <basic-object name="height">9.0</basic-object>
+                <basic-object name="height">11.0</basic-object>
                 <basic-object name="width">100.0</basic-object>
               </compound-key>
-              <basic-key name="paint">black</basic-key>
               <basic-key name="alignment">left</basic-key>
-              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
               <basic-object name="content">Group Total:</basic-object>
@@ -740,14 +596,12 @@
                 <basic-object name="x">-50.0</basic-object>
                 <basic-object name="y">5.0</basic-object>
               </compound-key>
-              <basic-key name="dynamic_height">false</basic-key>
               <compound-key name="min-size">
                 <basic-object name="height">9.0</basic-object>
                 <basic-object name="width">-30.0</basic-object>
               </compound-key>
-              <basic-key name="paint">black</basic-key>
               <basic-key name="alignment">center</basic-key>
-              <basic-key name="valignment">bottom</basic-key>
+              <basic-key name="font-size">9</basic-key>
             </style>
             <template references="number-field">
               <basic-object name="nullValue">-</basic-object>
@@ -762,14 +616,12 @@
                 <basic-object name="x">-80.0</basic-object>
                 <basic-object name="y">5.0</basic-object>
               </compound-key>
-              <basic-key name="dynamic_height">false</basic-key>
               <compound-key name="min-size">
                 <basic-object name="height">9.0</basic-object>
                 <basic-object name="width">-20.0</basic-object>
               </compound-key>
-              <basic-key name="paint">black</basic-key>
+              <basic-key name="font-size">9</basic-key>
               <basic-key name="alignment">right</basic-key>
-              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="number-field">
               <basic-object name="nullValue">-</basic-object>
@@ -777,55 +629,37 @@
               <basic-object name="field">GroupSum</basic-object>
             </template>
           </element>
-          <!-- group footer comment 2z -->
         </group-footer>
-        <!-- group footer comment xxad -->
       </group>
-      <!-- group comment end -->
     </groups>
-    <!-- groups comment end -->
 
     <!-- ============= -->
     <!-- = ITEM BAND = -->
     <!-- ============= -->
     <itemband>
 
-      <!-- the band style -->
       <style>
-        <basic-key name="font-bold">false</basic-key>
         <compound-key name="min-size">
           <basic-object name="height">26.0</basic-object>
           <basic-object name="width">0.0</basic-object>
         </compound-key>
-        <basic-key name="font-size">10</basic-key>
-        <basic-key name="font">SansSerif</basic-key>
-        <basic-key name="font-italic">false</basic-key>
       </style>
 
-      <!-- the default element style -->
       <default-style>
         <basic-key name="font">SansSerif</basic-key>
         <basic-key name="font-size">10</basic-key>
-        <basic-key name="font-bold">false</basic-key>
-        <basic-key name="font-italic">false</basic-key>
+        <basic-key name="valignment">bottom</basic-key>
       </default-style>
 
       <element type="shape/generic">
         <style>
+          <extends name="medium-line"/>
           <basic-key name="stroke" class="java.awt.BasicStroke">0.1</basic-key>
           <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">25.0</basic-object>
           </compound-key>
-          <basic-key name="draw-shape">true</basic-key>
-          <compound-key name="min-size">
-            <basic-object name="height">0.0</basic-object>
-            <basic-object name="width">-100.0</basic-object>
-          </compound-key>
-          <basic-key name="keepAspectRatio">false</basic-key>
-          <basic-key name="scale">true</basic-key>
           <basic-key name="paint">#dfdfdf</basic-key>
-          <basic-key name="fill-shape">false</basic-key>
         </style>
         <template references="horizontal-line"/>
       </element>
@@ -837,14 +671,11 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">8.0</basic-object>
           </compound-key>
-          <basic-key name="dynamic_height">false</basic-key>
           <compound-key name="min-size">
             <basic-object name="height">10.0</basic-object>
             <basic-object name="width">-50.0</basic-object>
           </compound-key>
-          <basic-key name="paint">black</basic-key>
           <basic-key name="alignment">left</basic-key>
-          <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="string-field">
           <basic-object name="nullValue">-</basic-object>
@@ -863,10 +694,6 @@
             <basic-object name="height">24.0</basic-object>
             <basic-object name="width">-30.0</basic-object>
           </compound-key>
-          <basic-key name="keepAspectRatio">true</basic-key>
-          <basic-key name="dynamic_height">false</basic-key>
-          <basic-key name="scale">false</basic-key>
-          <basic-key name="paint">white</basic-key>
         </style>
         <template references="image-field">
           <basic-object name="field">Icon</basic-object>
@@ -880,14 +707,11 @@
             <basic-object name="x">-80.0</basic-object>
             <basic-object name="y">8.0</basic-object>
           </compound-key>
-          <basic-key name="dynamic_height">false</basic-key>
           <compound-key name="min-size">
             <basic-object name="height">10.0</basic-object>
             <basic-object name="width">-20.0</basic-object>
           </compound-key>
-          <basic-key name="paint">black</basic-key>
           <basic-key name="alignment">right</basic-key>
-          <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="number-field">
           <basic-object name="nullValue">-</basic-object>
@@ -902,61 +726,34 @@
   <!-- * FUNCTIONS * -->
   <!-- ************* -->
   <functions>
-    <!-- function comment a -->
     <property-ref name="report.date"/>
 
-    <!-- function comment b -->
     <function name="PageNumber" class="org.jfree.report.function.PageFunction"/>
-
-    <!-- function comment c -->
     <function name="GroupCount" class="org.jfree.report.function.ItemCountFunction">
-      <!-- function comment d -->
       <properties>
-        <!-- function comment e -->
         <property name="field">Name</property>
-        <!-- function comment f -->
         <property name="group">Category</property>
-        <!-- function comment g -->
       </properties>
-      <!-- function comment h -->
     </function>
 
-    <!-- function comment i -->
     <function name="GroupSum" class="org.jfree.report.function.ItemSumFunction">
-      <!-- function comment j -->
       <properties>
-        <!-- function comment k -->
         <property name="field">Size</property>
-        <!-- function comment l -->
         <property name="group">Category</property>
-        <!-- function comment m -->
       </properties>
-      <!-- function comment n -->
     </function>
 
-    <!-- function comment o -->
     <function name="OverallCount" class="org.jfree.report.function.ItemCountFunction">
-      <!-- function comment p -->
       <properties>
-        <!-- function comment q -->
         <property name="field">Name</property>
-        <!-- function comment r -->
       </properties>
-      <!-- function comment s -->
     </function>
 
-    <!-- function comment t -->
     <function name="OverallSum" class="org.jfree.report.function.ItemSumFunction">
-      <!-- function comment u -->
       <properties>
-        <!-- function comment v -->
         <property name="field">Size</property>
-        <!-- function comment w -->
       </properties>
-      <!-- function comment x -->
     </function>
-    <!-- function comment y -->
   </functions>
 
-  <!-- comment end -->
 </report-definition>

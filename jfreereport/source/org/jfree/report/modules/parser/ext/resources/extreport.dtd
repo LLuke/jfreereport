@@ -14,8 +14,8 @@
  -->
 <!ENTITY % orientations
   "portrait | landscape | reverse_landscape"
->
-
+> 
+ 
 <!--
 
   The predefined page formats. This is a list of all page formats defined in

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.2 2003/07/25 00:20:35 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.3 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -92,14 +92,15 @@ public class HtmlImageCellData extends HtmlCellData
         pout.print(HtmlEncoderUtil.encodeUTF(href.getReference()));
         pout.print("\" width=\"");
         final Rectangle2D bounds = image.getBoundsScaled();
-        pout.write((int) bounds.getWidth());
+        pout.write(String.valueOf((int) bounds.getWidth()));
         pout.print("\" height=\"");
-        pout.write((int) bounds.getHeight());
+        pout.write(String.valueOf((int)bounds.getHeight()));
         if (image.getSourceURL() != null)
         {
           pout.print("\" alt=\"");
           pout.print
               (HtmlProducer.getEntityParser().encodeEntities(image.getSourceURL().toString()));
+          pout.print("\"");
         }
         if (isUseXHTML())
         {
@@ -107,7 +108,7 @@ public class HtmlImageCellData extends HtmlCellData
         }
         else
         {
-          pout.print("/>");
+          pout.print(" >");
         }
       }
       else

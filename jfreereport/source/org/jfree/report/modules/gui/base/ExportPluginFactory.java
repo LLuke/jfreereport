@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.5 2003/08/18 18:27:59 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.6 2003/08/19 13:37:23 taqua Exp $
  *
  * Changes
  * --------
@@ -42,6 +42,7 @@ import java.util.Arrays;
 
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.Worker;
 
 /**
  * An export plug-in factory. This factory is used to collect all available
@@ -291,6 +292,7 @@ public class ExportPluginFactory
 
     Arrays.sort(def);
     ArrayList retval = new ArrayList();
+    Worker worker = new Worker();
 
     for (int i = 0; i < def.length; i++)
     {
@@ -300,6 +302,7 @@ public class ExportPluginFactory
         final ExportPlugin ep = createPlugIn(proxy, definition.getPluginClass());
         if (ep != null)
         {
+          ep.defineWorker(worker);
           retval.add(ep);
         }
       }

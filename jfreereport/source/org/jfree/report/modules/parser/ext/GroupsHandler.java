@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.6 2003/08/18 18:28:02 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.7 2003/08/20 17:24:35 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
  * need to define all fields of their parent group and at least one additional field.
  *
  * @see org.jfree.report.JFreeReport#setGroups
- * @see GroupList
+ * @see org.jfree.report.GroupList
  * @author Thomas Morgner.
  */
 public class GroupsHandler extends AbstractExtReportParserHandler

@@ -14,12 +14,13 @@
     <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Author">Darkwing Duck</property>
     <!--
       Enabling the following lines would limit the size of the PreviewDialog.
+      This does not affect the report itself, just the dialog's behaviour.
       -->
     <!--
-        <property name="org.jfree.report.preview.PreferredWidth">640</property>
-        <property name="org.jfree.report.preview.PreferredHeight">480</property>
-        <property name="org.jfree.report.preview.MaximumWidth">800</property>
-        <property name="org.jfree.report.preview.MaximumHeight">600</property>
+        <property name="org.jfree.report.modules.gui.base.PreferredWidth">640</property>
+        <property name="org.jfree.report.modules.gui.base.PreferredHeight">480</property>
+        <property name="org.jfree.report.modules.gui.base.MaximumWidth">800</property>
+        <property name="org.jfree.report.modules.gui.base.MaximumHeight">600</property>
     -->
   </configuration>
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.7 2003/08/18 18:28:02 taqua Exp $
+ * $Id: ReportParser.java,v 1.8 2003/08/20 17:24:35 taqua Exp $
  *
  * Changes
  * -------
@@ -119,7 +119,7 @@ public class ReportParser extends Parser
   /**
    * Returns the comment handler that is used to collect comments.
    *
-   * * @return the comment handler.
+   * @return the comment handler.
    */
   public CommentHandler getCommentHandler()
   {

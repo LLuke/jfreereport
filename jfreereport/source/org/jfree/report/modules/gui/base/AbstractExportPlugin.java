@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.4 2003/06/29 16:59:27 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.modules.gui.base;
+
+import org.jfree.report.util.Worker;
 
 /**
  * The AbstractExportPlugin provides a basic implementation of the ExportPlugin
@@ -51,6 +53,9 @@ public abstract class AbstractExportPlugin implements ExportPlugin
 
   /** The preview proxy used to display the preview component. */
   private PreviewProxy proxy;
+
+  /** The worker instance from the main dialog. */
+  private Worker worker;
 
   /**
    * DefaultConstructor.
@@ -172,4 +177,49 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     }
     return result;
   }
+
+  /**
+   * Defines the worker instance for that export plugin. Workers can
+   * be used to delegate tasks to an other thread. The workers are shared
+   * among all export plugins of an dialog instance.
+   *
+   * @param worker the worker.
+   */
+  public void defineWorker(Worker worker)
+  {
+    this.worker = worker;
+  }
+
+  /**
+   * Delegates the task to a worker. If no worker is defined,
+   * the runnable is executed directly.
+   *
+   * @param runnable the task that should be executed.
+   */
+  public void delegateTask (Runnable runnable)
+  {
+    if (worker != null)
+    {
+      synchronized (worker)
+      {
+        while (worker.isAvailable() == false)
+        {
+          try
+          {
+            worker.wait();
+          }
+          catch (InterruptedException ie)
+          {
+            // ignored.
+          }
+        }
+        worker.setWorkload(runnable);
+      }
+    }
+    else
+    {
+      runnable.run();
+    }
+  }
+
 }
