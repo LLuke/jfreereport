@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------------------
  * ElementDefaultStyleSheet.java
  * -----------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003 by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.2 2002/12/05 12:18:05 mungady Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A default element style sheet. This StyleSheet defines all default attribute
- * values for elements.
+ * The default element style sheet. This style sheet defines default attribute
+ * values for all elements.
  * 
  * @author Thomas Morgner
  */
@@ -76,7 +76,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     setFontStyleProperty(DEFAULT_FONT);
     setStyleProperty(VALIGNMENT, ElementAlignment.BOTTOM);
     setStyleProperty(ALIGNMENT, ElementAlignment.LEFT);
-    setStyleProperty(VISIBLE, new Boolean(true));
+    setStyleProperty(VISIBLE, Boolean.TRUE);
   }
 
   /**

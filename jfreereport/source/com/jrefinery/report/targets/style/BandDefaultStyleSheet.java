@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------------
  * BandDefaultStyleSheet.java
  * --------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003 by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.4 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
@@ -66,10 +66,10 @@ public class BandDefaultStyleSheet extends BandStyleSheet
     setStyleProperty(StaticLayoutManager.ABSOLUTE_DIM, new FloatDimension(-100, -100));
     setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Double(0, 0));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
-    setStyleProperty(PAGEBREAK_AFTER, new Boolean(false));
-    setStyleProperty(PAGEBREAK_BEFORE, new Boolean(false));
-    setStyleProperty(DISPLAY_ON_FIRSTPAGE, new Boolean(true));
-    setStyleProperty(DISPLAY_ON_LASTPAGE, new Boolean(true));
+    setStyleProperty(PAGEBREAK_AFTER, Boolean.FALSE);
+    setStyleProperty(PAGEBREAK_BEFORE, Boolean.FALSE);
+    setStyleProperty(DISPLAY_ON_FIRSTPAGE, Boolean.TRUE);
+    setStyleProperty(DISPLAY_ON_LASTPAGE, Boolean.TRUE);
   }
 
   /**
