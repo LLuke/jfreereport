@@ -28,10 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: OperationFactory.java,v 1.7 2003/02/07 22:40:42 taqua Exp $
  *
  * Changes
  * -------
+ * 02-Dec-2002 : Initial version
+ * 07-Feb-2003 : OperationFactory is no longer static, now acts as hub for all
+ *               registered modules
  */
 package com.jrefinery.report.targets.pageable.operations;
 
@@ -44,7 +47,10 @@ import java.util.List;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A collection of operation modules.
+ * The OperationFactory is used to transform content into OutputTarget operations.
+ *
+ * @see com.jrefinery.report.targets.pageable.OutputTarget
+ * @see com.jrefinery.report.targets.base.content.Content
  *
  * @author Thomas Morgner
  */

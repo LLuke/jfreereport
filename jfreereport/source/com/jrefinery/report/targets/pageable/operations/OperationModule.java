@@ -28,18 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: OperationModule.java,v 1.5 2003/02/07 22:40:42 taqua Exp $
  *
  * Changes
  * -------
+ * 02-Dec-2002 : Initial version
+ * 07-Feb-2003 : ContentCreation extracted into separate package
  */
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
-import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.Content;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
 
 import java.awt.geom.Rectangle2D;
 import java.util.List;
@@ -69,7 +68,7 @@ public abstract class OperationModule
    *
    * @param content  the content type (null not permitted).
    */
-  public OperationModule (String content)
+  public OperationModule(String content)
   {
     if (content == null)
     {
@@ -113,7 +112,7 @@ public abstract class OperationModule
    *
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent (String contentType)
+  public boolean canHandleContent(String contentType)
   {
     if (isGeneric())
     {
@@ -134,6 +133,6 @@ public abstract class OperationModule
    *
    * @return the list of operations.
    */
-  public abstract List createOperations (Element e, Content value, Rectangle2D bounds);
+  public abstract List createOperations(Element e, Content value, Rectangle2D bounds);
 
 }

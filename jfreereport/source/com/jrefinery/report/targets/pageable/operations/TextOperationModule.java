@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.4 2003/02/05 13:25:29 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.8 2003/02/07 22:40:43 taqua Exp $
  *
  * Changes
  * -------
+ * 02-Dec-2002 : Initial version
  * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- *
+ * 07-Feb-2003 : ContentCreation extracted into separate package
  */
 
 package com.jrefinery.report.targets.pageable.operations;
@@ -55,8 +56,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A collection of operations that relate to text.
+ * Creates the required operations to display/print text content in the output target.
  *
+ * @see com.jrefinery.report.targets.base.content.TextContent
+ * @see TextLine
  * @author Thomas Morgner
  */
 public class TextOperationModule extends OperationModule
@@ -175,7 +178,7 @@ public class TextOperationModule extends OperationModule
 
 
   /**
-   * Logs the content.
+   * Logs the content. This is a debug method.
    *
    * @param c  the content.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.9 2003/02/07 22:40:42 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -127,7 +127,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -162,7 +162,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -200,7 +200,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -239,7 +239,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -284,11 +284,11 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
-      ot.drawString(text); // left aligned / deprecated
+      ot.drawString(text);
     }
 
     /**
@@ -329,7 +329,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -364,7 +364,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -399,7 +399,7 @@ public abstract class PhysicalOperation
      *
      * @param ot  the output target.
      *
-     * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem performing the operation on the target.
+     * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
@@ -412,7 +412,7 @@ public abstract class PhysicalOperation
    *
    * @param ot  the output target.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem operating on the target.
+   * @throws OutputTargetException if there is a problem operating on the target.
    */
   public abstract void performOperation(OutputTarget ot) throws OutputTargetException;
 }

@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.7 2003/02/07 22:40:42 taqua Exp $
  *
  * Changes
  * -------
+ * 02-Dec-2002 : Initial version
  * 05-Dec-2002 : Updated Javadocs (DG);
- *
+ * 07-Feb-2003 : ContentCreation extracted into separate package
  */
 
 package com.jrefinery.report.targets.pageable.operations;
@@ -52,8 +53,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A collection of operations that relate to shapes.
+ * Creates the required operations to display/print shape content in the output target.
  *
+ * @see ShapeContent
  * @author Thomas Morgner
  */
 public class ShapeOperationModule extends OperationModule

@@ -28,33 +28,30 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.5 2003/02/07 22:40:41 taqua Exp $
  *
  * Changes
  * -------
+ * 02-Dec-2002 : Initial version
+ * 21-Jan-2003 : Image scaling and dynamic content
+ * 07-Feb-2003 : ContentCreation extracted into separate package
  */
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.targets.base.layout.LayoutSupport;
-import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ImageContent;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.operations.OperationModule;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import java.awt.Color;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A collection of operations that relate to images.
+ * Creates the required operations to display/print image content in the output target.
  *
+ * @see ImageContent
  * @author Thomas Morgner
  */
 public class ImageOperationModule extends OperationModule
@@ -76,15 +73,15 @@ public class ImageOperationModule extends OperationModule
    *
    * @return a list of operations.
    */
-  public List createOperations (Element e, Content value, Rectangle2D bounds)
+  public List createOperations(Element e, Content value, Rectangle2D bounds)
   {
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
 
     ArrayList ops = new ArrayList();
-    ops.add (new PhysicalOperation.SetBoundsOperation (bounds));
-    ops.add (new PhysicalOperation.SetPaintOperation(paint));
-    ops.add (new PhysicalOperation.PrintImageOperation(ic.getContent()));
+    ops.add(new PhysicalOperation.SetBoundsOperation(bounds));
+    ops.add(new PhysicalOperation.SetPaintOperation(paint));
+    ops.add(new PhysicalOperation.PrintImageOperation(ic.getContent()));
     return ops;
   }
 }
