@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.19 2003/02/25 18:47:09 taqua Exp $
+ * $Id: PageLayouter.java,v 1.20 2003/02/26 13:58:00 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.pageable.LogicalPage;
-import com.jrefinery.report.util.Log;
 
 /**
  * The baseclass for all PageLayouter. A page layouter is the layoutmanager of
@@ -528,7 +527,6 @@ public abstract class PageLayouter extends AbstractFunction
       throws ReportProcessingException
   {
     Object state = getLayoutManagerState();
-    Log.debug (state);
     // reset the report finished flag...
     //setStartNewPage(false);
     setGeneratedPageEmpty(true);

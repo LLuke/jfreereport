@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.11 2003/02/25 14:45:43 mungady Exp $
+ * $Id: PreviewProxyBase.java,v 1.12 2003/02/25 20:15:40 taqua Exp $
  *
  * Changes
  * -------
@@ -1936,7 +1936,7 @@ public class PreviewProxyBase extends JComponent
         }
         catch (Exception e)
         {
-          Log.debug ("Failed to repaginate" , e);
+          Log.warn ("Failed to repaginate" , e);
           reportPane.setError(e);
         }
       }

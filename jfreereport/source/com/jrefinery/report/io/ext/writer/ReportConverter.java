@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.6 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ReportConverter.java,v 1.7 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -138,7 +138,7 @@ public class ReportConverter
     }
     catch (Exception e)
     {
-      Log.debug ("Cause: ", e);
+      Log.info ("ParseReport failed; Cause: ", e);
       throw new IOException("Failed to parse the report");
     }
   }

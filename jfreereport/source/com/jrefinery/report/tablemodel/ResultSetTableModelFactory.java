@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.5 2003/02/25 18:46:49 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.6 2003/02/27 10:35:36 mungady Exp $
  *
  * Changes
  * -------
@@ -159,7 +159,7 @@ public class ResultSetTableModelFactory
       }
       catch (Exception e)
       {
-        Log.debug ("Close failed for default table model", e);
+        //Log.debug ("Close failed for default table model", e);
       }
     }
   }

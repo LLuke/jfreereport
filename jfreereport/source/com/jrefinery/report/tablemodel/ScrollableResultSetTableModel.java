@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.2 2003/02/04 17:56:23 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.3 2003/02/27 10:35:37 mungady Exp $
  *
  * Changes
  * -------
@@ -182,7 +182,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     }
     catch (SQLException sqle)
     {
-      Log.debug ("GetRowCount failed, returning 0 rows", sqle);
+      //Log.debug ("GetRowCount failed, returning 0 rows", sqle);
       return 0;
     }
     return rowCount;
@@ -211,7 +211,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (SQLException e)
       {
-        Log.debug ("GetColumnCount failed", e);
+        //Log.debug ("GetColumnCount failed", e);
       }
     }
     return 0;
@@ -261,7 +261,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (SQLException e)
       {
-        Log.debug ("Query failed for [" + row + "," + column + "]", e);
+        //Log.debug ("Query failed for [" + row + "," + column + "]", e);
       }
     }
     return null;
@@ -284,7 +284,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (Exception e)
       {
-        Log.debug ("GetColumnClass failed for " + column, e);
+        //Log.debug ("GetColumnClass failed for " + column, e);
       }
     }
     return Object.class;
@@ -308,7 +308,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (SQLException e)
       {
-        Log.debug ("GetColumnClassName failed for " + column, e);
+        //Log.debug ("GetColumnClassName failed for " + column, e);
       }
     }
     return Object.class.getName ();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.3 2003/02/25 14:45:35 mungady Exp $
+ * $Id: PlainTextExportDialog.java,v 1.4 2003/02/25 20:15:38 taqua Exp $
  *
  * Changes
  * --------
@@ -84,6 +84,7 @@ import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.ActionRadioButton;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 /**
@@ -396,9 +397,9 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
     cbLinesPerInch = new JComboBox(new DefaultComboBoxModel (lpiModel));
     cbCharsPerInch = new JComboBox(new DefaultComboBoxModel (cpiModel));
 
-    rbPlainPrinterCommandSet = new JRadioButton(new ActionSelectPlainPrinter());
-    rbEpsonPrinterCommandSet = new JRadioButton(new ActionSelectEpsonPrinter());
-    rbIBMPrinterCommandSet = new JRadioButton(new ActionSelectIBMPrinter());
+    rbPlainPrinterCommandSet = new ActionRadioButton(new ActionSelectPlainPrinter());
+    rbEpsonPrinterCommandSet = new ActionRadioButton(new ActionSelectEpsonPrinter());
+    rbIBMPrinterCommandSet = new ActionRadioButton(new ActionSelectIBMPrinter());
 
     txFilename = new JTextField();
 

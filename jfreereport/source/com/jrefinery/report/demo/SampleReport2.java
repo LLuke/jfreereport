@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.5 2003/02/26 16:42:10 mungady Exp $
+ * $Id: SampleReport2.java,v 1.6 2003/02/27 18:30:41 taqua Exp $
  *
  * Changes:
  * --------
@@ -211,7 +211,6 @@ public class SampleReport2
     pc.setProperty("scale", "5");
     report.addFunction(pc);
 
-    Log.debug (report.getReportFooter().getElement("element"));
     return report;
   }
 

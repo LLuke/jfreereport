@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.8 2003/02/27 18:31:12 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.9 2003/02/28 04:17:18 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.event.LayoutListener;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
-import com.jrefinery.report.util.Log;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -86,6 +86,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   public PaintComponentFunction()
   {
     peerSupply = new Frame();
+    peerSupply.setLayout(new BorderLayout());
   }
 
   /**
@@ -109,7 +110,6 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
         return e;
       }
     }
-    Log.debug ("Element not found in " + band);
     return null;
   }
 
@@ -185,7 +185,6 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     if ((o instanceof Component) == false)
     {
       image = null;
-      Log.debug ("Is no Component");
       return;
     }
 
@@ -194,10 +193,8 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     if (element == null)
     {
       // don't change/delete the image if already created ...
-      Log.debug ("Element not found");
       return;
     }
-    Log.debug ("Element found");
 
     float scale = getScale();
 
@@ -211,12 +208,14 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     Component comp = (Component) o;
     Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
     comp.setSize(dim);
-    comp.validate();
 
     // supplies the peer and allows drawing ...
     synchronized (peerSupply)
     {
-      peerSupply.add(comp);
+      peerSupply.add(comp, BorderLayout.CENTER);
+      peerSupply.pack();
+      peerSupply.setSize(dim);
+      peerSupply.validate();
 
       BufferedImage bi = new BufferedImage((int) (scale * dim.width),
                                            (int) (scale * dim.height),
@@ -242,7 +241,6 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   {
     if (image == null)
     {
-      Log.debug ("No Image created ..");
       return null;
     }
     ImageReference ref = new ImageReference(image);
@@ -298,6 +296,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   {
     PaintComponentFunction pc = (PaintComponentFunction) super.getInstance();
     pc.peerSupply = new Frame();
+    pc.peerSupply.setLayout(new BorderLayout());
     return pc;
   }
 

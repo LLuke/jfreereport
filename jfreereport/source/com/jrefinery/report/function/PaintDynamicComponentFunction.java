@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.5 2003/02/26 13:57:57 mungady Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.6 2003/02/28 04:17:18 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.BorderLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -74,6 +75,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   public PaintDynamicComponentFunction()
   {
     peerSupply = new Frame();
+    peerSupply.setLayout(new BorderLayout());
   }
 
   /**
@@ -194,10 +196,13 @@ public class PaintDynamicComponentFunction extends AbstractFunction
     // supplies the peer and allows drawing ...
     synchronized (peerSupply)
     {
-      peerSupply.add(comp);
-
       Dimension dim = comp.getSize();
-      comp.validate(); // validating is never wrong :)
+
+      peerSupply.add(comp);
+      peerSupply.pack();
+      peerSupply.setSize(dim);
+      peerSupply.validate();
+
       BufferedImage bi = new BufferedImage((int) (scale * dim.width),
                                            (int) (scale * dim.height),
                                            BufferedImage.TYPE_INT_ARGB);
@@ -293,6 +298,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   {
     PaintDynamicComponentFunction pc = (PaintDynamicComponentFunction) super.getInstance();
     pc.peerSupply = new Frame();
+    pc.peerSupply.setLayout(new BorderLayout());
     return pc;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FirstDemoTableModel.java,v 1.6 2003/02/26 13:57:36 mungady Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.1 2003/02/27 14:59:04 mungady Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
     }
     catch (Exception e)
     {
-      Log.debug("Failed to load the Icons", e);
+      Log.warn("Failed to load the Icons", e);
     }
   }
 
@@ -114,13 +114,11 @@ public class SwingIconsDemoTableModel extends IconTableModel
     try
     {
       ZipInputStream iconJar = new ZipInputStream(in);
-      Log.debug ("IconJar: " + iconJar.available());
 
       ZipEntry ze = iconJar.getNextEntry();
       while (ze != null)
       {
         String fullName = ze.getName();
-        Log.debug("Load Entry:" + fullName + " ZE: " + ze.getSize());
         if (fullName.endsWith(".gif"))
         {
           String category = getCategory(fullName);
@@ -135,7 +133,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
     }
     catch (IOException e)
     {
-      Log.debug("Unable to load the ICONS");
+      Log.warn("Unable to load the ICONS", e);
     }
   }
 
@@ -158,7 +156,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
     }
     catch (IOException e)
     {
-      Log.debug("Unable to read the ZIP-Entry", e);
+      Log.warn("Unable to read the ZIP-Entry", e);
     }
     return result;
   }

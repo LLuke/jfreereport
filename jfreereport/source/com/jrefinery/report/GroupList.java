@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.17 2003/02/25 14:06:30 taqua Exp $
+ * $Id: GroupList.java,v 1.18 2003/02/26 16:41:43 mungady Exp $
  *
  * Changes:
  * --------
@@ -260,7 +260,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
       }
       catch (CloneNotSupportedException ce)
       {
-        Log.debug("Clone error ", ce);
+        Log.warn("GroupList clone error ", ce);
         return null;
       }
     }
