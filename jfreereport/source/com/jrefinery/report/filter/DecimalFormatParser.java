@@ -25,7 +25,7 @@
  * ------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: DecimalFormatParser.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -99,7 +99,8 @@ public class DecimalFormatParser extends NumberFormatParser
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter ((DecimalFormat) format);
+    DecimalFormat dfmt = (DecimalFormat) format;
+    super.setFormatter (dfmt);
   }
 
   /**

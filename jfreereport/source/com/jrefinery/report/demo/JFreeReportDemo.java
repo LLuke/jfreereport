@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.44 2002/11/27 12:23:18 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.45 2002/11/29 12:02:15 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,9 +51,10 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
-import com.jrefinery.report.util.ActionDowngrade;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ActionMenuItem;
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
 
@@ -74,8 +75,8 @@ import javax.swing.UIManager;
 import javax.swing.table.TableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -395,6 +396,7 @@ public class JFreeReportDemo extends JFrame
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
+    Log.debug ("Processing Report: " + in);
     ReportGenerator gen = ReportGenerator.getInstance();
 
     JFreeReport report1 = null;
@@ -419,12 +421,22 @@ public class JFreeReportDemo extends JFrame
     report1.setData(data);
     //report1.setData (new DefaultTableModel());
 
-    PreviewFrame frame1 = new PreviewFrame(report1);
-    frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    frame1.pack();
-    RefineryUtilities.positionFrameRandomly(frame1);
-    frame1.setVisible(true);
-    frame1.requestFocus();
+//    ReportValidator v = new ReportValidator(report1);
+//    v.validateReport();
+
+    try
+    {
+      PreviewFrame frame1 = new PreviewFrame(report1);
+      frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      frame1.pack();
+      RefineryUtilities.positionFrameRandomly(frame1);
+      frame1.setVisible(true);
+      frame1.requestFocus();
+    }
+    catch (Exception e)
+    {
+      showExceptionDialog("report.definitionfailure", e);
+    }
   }
 
   /**

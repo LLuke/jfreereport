@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+ This DOCType declaration is valid, uncomment it to validate the report
+ -->
+<!--
+
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+-->
 <report name="First Report" width="612" height="792">
   <!-- REPORT HEADER -->
   <!-- This band appears once at the beginning of the report.  In this example, -->
@@ -22,10 +30,10 @@
   <!-- PAGE HEADER -->
   <!-- Displays the report name and date. -->
   <!-- Suppressed on the first page to avoid duplication with report header. -->
-  <pageheader height="18" onfirstpage="false" onlastpage="true" fontname="SansSerif" fontstyle="bold" fontsize="9">
+  <pageheader height="18" onfirstpage="false" fontname="SansSerif" fontstyle="bold" fontsize="9">
     <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" />
     <label x="0" y="0" width="200" height="14" alignment="left">Java Look and Feel Graphics Repository</label>
-    <date-field x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" fieldname="report.date" />
+    <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date" />
     <line x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0" />
   </pageheader>
   <!-- PAGE FOOTER -->

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.8 2002/09/17 09:49:10 mungady Exp $
+ * $Id: SampleData2.java,v 1.9 2002/10/17 16:14:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -287,7 +287,7 @@ public class SampleData2 extends AbstractTableModel
    */
   public Object getValueAt (int row, int column)
   {
-    if (column == 2 && row == 100) return null;
+    //if (column == 2 && row == 100) return null;
     return data[row][column];
   }
 

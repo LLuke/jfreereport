@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HugeJFreeReportDemo.java,v 1.17 2002/11/07 21:45:27 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.18 2002/11/27 12:20:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,14 +41,13 @@
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionDowngrade;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
-import com.jrefinery.report.util.ActionDowngrade;
-import com.jrefinery.report.util.ActionButton;
-import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
 
@@ -70,8 +69,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -190,9 +189,6 @@ public class HugeJFreeReportDemo extends JFrame
   /** A frame for displaying information about the demo application. */
   private AboutFrame aboutFrame;
 
-  /** A frame for displaying information about the system. */
-  private JFrame infoFrame;
-
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
 
@@ -253,7 +249,7 @@ public class HugeJFreeReportDemo extends JFrame
     setJMenuBar (createMenuBar ());
 
     JPanel content = (JPanel) getContentPane ();
-    JToolBar toolbar = createToolBar (resources);
+    JToolBar toolbar = createToolBar ();
     content.add (toolbar, BorderLayout.NORTH);
 
     tabbedPane = new JTabbedPane ();
@@ -362,11 +358,19 @@ public class HugeJFreeReportDemo extends JFrame
 
     report1.setData (data);
 
-    PreviewFrame frame1 = new PreviewFrame (report1);
-    frame1.pack ();
-    RefineryUtilities.positionFrameRandomly (frame1);
-    frame1.setVisible (true);
-    frame1.requestFocus ();
+    try
+    {
+      PreviewFrame frame1 = new PreviewFrame (report1);
+      frame1.pack ();
+      RefineryUtilities.positionFrameRandomly (frame1);
+      frame1.setVisible (true);
+      frame1.requestFocus ();
+    }
+    catch (Exception e)
+    {
+      showExceptionDialog ("report.definitionfailure", e);
+      return;
+    }
   }
 
   /**
@@ -530,11 +534,9 @@ public class HugeJFreeReportDemo extends JFrame
   /**
    * Creates the demos toolbar.
    *
-   * @param resources  localised resources.
-   *
    * @return a toolbar.
    */
-  private JToolBar createToolBar (ResourceBundle resources)
+  private JToolBar createToolBar ()
   {
     JToolBar toolbar = new JToolBar ();
     toolbar.setBorder (BorderFactory.createEmptyBorder (4, 0, 4, 0));
@@ -564,8 +566,6 @@ public class HugeJFreeReportDemo extends JFrame
     {
       System.err.println("Look and feel problem.");
     }
-
-    PDFOutputTarget.getFontFactory ().registerDefaultFontPath ();
 
     String baseName = "com.jrefinery.report.demo.resources.DemoResources";
     ResourceBundle resources = ResourceBundle.getBundle (baseName);

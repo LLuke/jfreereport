@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SampleReport1.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
+ * $Id: SampleReport1.java,v 1.9 2002/11/29 12:02:15 mungady Exp $
  *
  * Changes:
  * --------
@@ -49,10 +49,10 @@ import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
 import com.jrefinery.report.function.ElementVisibilitySwitchFunction;
+import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.ItemSumFunction;
 import com.jrefinery.report.function.ReportPropertyFunction;
-import com.jrefinery.report.function.ExpressionCollection;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -81,11 +81,8 @@ public class SampleReport1
    */
   private PageHeader createPageHeader ()
   {
-    PageHeader header = new PageHeader ();
-    header.setHeight (18);
-    header.setDefaultFont (new Font ("Serif", Font.PLAIN, 10));
+    PageHeader header = (PageHeader) ItemFactory.createPageHeader(18, new Font ("Serif", Font.PLAIN, 10), null, true, false);
     // Is by default true, but it is defined in the xml template, so I add it here too.
-    header.setDisplayOnFirstPage (true);
     header.addElement (
             ItemFactory.createRectangleShapeElement (
                     "anonymous",
@@ -131,8 +128,7 @@ public class SampleReport1
    */
   private PageFooter createPageFooter ()
   {
-    PageFooter footer = new PageFooter ();
-    footer.setHeight (18);
+    PageFooter footer = (PageFooter) ItemFactory.createPageFooter (18, null, null, false, false);
     return footer;
   }
 
@@ -147,9 +143,7 @@ public class SampleReport1
    */
   private ReportFooter createReportFooter ()
   {
-    ReportFooter footer = new ReportFooter ();
-    footer.setHeight (48);
-    footer.setDefaultFont (new Font ("Serif", Font.BOLD, 16));
+    ReportFooter footer = (ReportFooter) ItemFactory.createReportFooter (48, new Font ("Serif", Font.BOLD, 16), null, false);
     footer.addElement (
             ItemFactory.createLabelElement (
                     "Label 2",
@@ -175,9 +169,7 @@ public class SampleReport1
    */
   private ReportHeader createReportHeader ()
   {
-    ReportHeader header = new ReportHeader ();
-    header.setHeight (48);
-    header.setDefaultFont (new Font ("Serif", Font.BOLD, 20));
+    ReportHeader header = (ReportHeader) ItemFactory.createReportHeader (48, new Font ("Serif", Font.BOLD, 20), null, false);
     header.addElement (
             ItemFactory.createLabelElement (
                     "Label 1",
@@ -213,11 +205,7 @@ public class SampleReport1
    */
   private ItemBand createItemBand ()
   {
-    ItemBand items = new ItemBand ();
-    items.setDefaultPaint (Color.black);
-    items.setDefaultFont (new Font ("Monospaced", Font.PLAIN, 8));
-    items.setHeight (10);
-
+    ItemBand items = (ItemBand) ItemFactory.createItemBand (10, new Font ("Monospaced", Font.PLAIN, 8), Color.black);
     items.addElement (
             ItemFactory.createRectangleShapeElement (
                     "background",
@@ -376,10 +364,7 @@ public class SampleReport1
     continentGroup.setName ("Continent Group");
     continentGroup.addField ("Continent");
 
-    GroupHeader header = new GroupHeader ();
-    header.setHeight (18);
-    header.setDefaultFont (new Font ("Monospaced", Font.BOLD, 9));
-    header.setPageBreakBeforePrint (false);
+    GroupHeader header = (GroupHeader) ItemFactory.createGroupHeader (18, new Font ("Monospaced", Font.BOLD, 9), null, false);
     header.addElement (
             ItemFactory.createLabelElement (
                     "Label 5",
@@ -411,9 +396,7 @@ public class SampleReport1
     );
     continentGroup.setHeader (header);
 
-    GroupFooter footer = new GroupFooter ();
-    footer.setHeight (18);
-    footer.setDefaultFont (new Font ("Monospaced", Font.BOLD, 9));
+    GroupFooter footer = (GroupFooter) ItemFactory.createGroupFooter (18,new Font ("Monospaced", Font.BOLD, 9), null);
     footer.addElement (
             ItemFactory.createLabelElement (
                     "Label 6",

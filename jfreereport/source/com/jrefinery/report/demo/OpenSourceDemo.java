@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OpenSourceDemo.java,v 1.1 2002/11/29 11:54:48 mungady Exp $
  *
  * Changes
  * -------
@@ -39,35 +39,25 @@
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
-import com.jrefinery.io.FileUtilities;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ApplicationFrame;
 import com.jrefinery.ui.RefineryUtilities;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.BorderLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.io.File;
-import java.net.URL;
-import java.io.InputStream;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
-import javax.swing.JPanel;
+
 import javax.swing.BorderFactory;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.TableModel;
-import javax.swing.table.DefaultTableModel;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 
 /**
  * A simple JFreeReport demonstration.  The generated report lists some free and open source
@@ -154,6 +144,8 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
      */
     protected void previewReport() {
 
+      try
+      {
         if (this.report==null) {
             URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
             this.report = parseReport(in);
@@ -168,7 +160,11 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener {
             frame.setVisible(true);
             frame.requestFocus();
         }
-
+      }
+      catch (ReportProcessingException pre)
+      {
+        Log.error ("Failed", pre);
+      }
     }
 
     /**

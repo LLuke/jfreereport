@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+ This DOCType declaration is valid, uncomment it to validate the report
+ -->
+<!--
+
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+-->
 <!-- needs a suitable tablemodel with some data -->
-<!-- DOCTYPE report SYSTEM "report.dtd" -->
 <report orientation="landscape" pageformat="A4" leftmargin="10" rightmargin="10">
 
-<reportheader width="100%" height="39" fontname="Monospaced" fontstyle="bold" fontsize="24" ownpage="false">
+<reportheader height="39" fontname="Monospaced" fontstyle="bold" fontsize="24" ownpage="false">
   <rectangle x="0" y="0" width="100%" height="100%" draw="true" fill="true" color="#DAFAC5"/>
   <label x="0" y="0" width="100%" height="20" fontstyle="bold" color="#000000" alignment="center">Report with a heading :)</label>
 </reportheader>
 
-<pageheader height="45" fontname="Monospaced" fontstyle="bold" fontsize="8" align="middle" onfirstpage="false">
+<pageheader height="45" fontname="Monospaced" fontstyle="bold" fontsize="8" vertical-alignment="middle" onfirstpage="false">
   <rectangle x="0" y="0" width="100%" height="100%" draw="true" fill="true" color="#DAFAC5"/>
 
   <rectangle x="5" y="0" width="50" height="11" draw="true" fill="false"/>
@@ -48,13 +54,13 @@
   <label x="595" y="0" width="114" height="33">State of advancement</label>
 
   <rectangle x="709" y="0" width="70" height="33" draw="true" fill="false"/>
-  <label x="711" y="11" width="70" height="17" align="center">State2</label>
+  <label x="711" y="11" width="70" height="17" vertical-alignment="middle">State2</label>
 </pageheader>
 
 <pagefooter height="15" fontname="Monospaced" fontsize="6">
   <line name="line4" x1="0" y1="0" x2="0" y2="0" weight="1" color="#c0c0c0" />
-  <date-function name="date1" x="0" y="5" width="100%" height="8" alignment="left" color="#000080" format="EEEE d MMMM yyyy" function="report_date"/>
-  <number-function name="pagenum1" function="PageNumber" format="Pagina 0" x="0" y="5" width="100%" height="8" alignment="right" color="#000080"></number-function>
+  <date-field name="date1" x="0" y="5" width="100%" height="8" alignment="left" color="#000080" format="EEEE d MMMM yyyy" fieldname="report_date"/>
+  <number-field name="pagenum1" fieldname="PageNumber" format="Pagina 0" x="0" y="5" width="100%" height="8" alignment="right" color="#000080"/>
 </pagefooter>
 
 <!-- GROUPS -->
@@ -118,7 +124,7 @@
 
   <rectangle x="708" y="0" width="70" height="68" draw="true" fill="false"/>
 
-  <label x="708" y="0" width="70" height="14" aligment="center">Authorisation</label>
+  <label x="708" y="0" width="70" height="14" alignment="center">Authorisation</label>
 
   <rectangle x="708" y="68" width="70" height="30" draw="true" fill="false" />
 </items>

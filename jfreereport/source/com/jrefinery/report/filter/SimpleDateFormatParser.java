@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: SimpleDateFormatParser.java,v 1.6 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,8 @@ public class SimpleDateFormatParser extends DateFormatParser
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter ((SimpleDateFormat) format);
+    SimpleDateFormat sdfmt = (SimpleDateFormat) format;
+    super.setFormatter (sdfmt);
   }
 
   /**

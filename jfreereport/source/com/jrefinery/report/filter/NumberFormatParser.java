@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: NumberFormatParser.java,v 1.7 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -87,7 +87,8 @@ public class NumberFormatParser extends FormatParser
    */
   public void setFormatter (Format f)
   {
-    super.setFormatter ((NumberFormat) f);
+    NumberFormat fm = (NumberFormat) f;
+    super.setFormatter (fm);
   }
 
   /**

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
-    <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
--->
+ This DOCType declaration is valid, uncomment it to validate the report
+ -->
+<!--
 
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+-->
 <report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <!-- REPORT HEADER -->
@@ -35,8 +38,8 @@
         <!-- FIRST GROUP -->
         <group name="Letter Group">
 
-        <!-- GROUP HEADER -->
-            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="true">
+            <!-- GROUP HEADER -->
+            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="false" repeat="true">
                 <label x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
                 <string-field x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
                 <line x1="0" y1="12" x2="0" y2="12" weight="0.25"/>
@@ -49,14 +52,14 @@
                 <number-field fieldname="Sum2" format="#,##0.00" x="276" y="2" width="176" height="12" alignment="right" />
             </groupfooter>
 
-        <!-- GROUP FIELDS -->
+            <!-- GROUP FIELDS -->
             <fields>
                  <field>Letter</field>
             </fields>
 
         </group>
 
-    <!-- SECOND GROUP -->
+        <!-- SECOND GROUP -->
         <group name="Color Group">
 
             <!-- GROUP HEADER -->

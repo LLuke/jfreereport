@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFormatFilter.java,v 1.6 2002/08/28 15:27:39 taqua Exp $
+ * $Id: DateFormatFilter.java,v 1.7 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -94,7 +94,8 @@ public class DateFormatFilter extends FormatFilter
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter ((DateFormat) format);
+    DateFormat dfmt = (DateFormat) format;
+    super.setFormatter (dfmt);
   }
 
 }

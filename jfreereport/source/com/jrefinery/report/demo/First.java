@@ -28,18 +28,19 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.10 2002/09/16 14:13:46 mungady Exp $
+ * $Id: First.java,v 1.11 2002/09/17 09:49:09 mungady Exp $
  *
  * Changes
  * -------
  * 15-Jul-2002 : Version 1 (DG);
- *
+ * 20-Nov-2002 : Corrected possible read error if the icon is not read completly from the zip file
  */
 
 package com.jrefinery.report.demo;
 
 import com.jrefinery.io.FileUtilities;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.ExceptionDialog;
@@ -219,22 +220,29 @@ public class First extends ApplicationFrame implements ActionListener
   protected void previewReport()
   {
 
-    if (this.report == null)
+    try
     {
-      URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
-      this.report = parseReport(in);
-      this.report.setData(this.data);
-    }
+      if (this.report == null)
+      {
+        URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+        this.report = parseReport(in);
+        this.report.setData(this.data);
+      }
 
-    if (this.report != null)
+      if (this.report != null)
+      {
+        PreviewFrame frame = new PreviewFrame(this.report);
+        frame.setLargeIconsEnabled(true);
+        frame.setToolbarFloatable(false);
+        frame.pack();
+        RefineryUtilities.positionFrameRandomly(frame);
+        frame.setVisible(true);
+        frame.requestFocus();
+      }
+    }
+    catch (ReportProcessingException rpe)
     {
-      PreviewFrame frame = new PreviewFrame(this.report);
-      frame.setLargeIconsEnabled(true);
-      frame.setToolbarFloatable(false);
-      frame.pack();
-      RefineryUtilities.positionFrameRandomly(frame);
-      frame.setVisible(true);
-      frame.requestFocus();
+      ExceptionDialog.showExceptionDialog("Error", "Unable to init", rpe);
     }
 
   }
@@ -280,7 +288,12 @@ public class First extends ApplicationFrame implements ActionListener
     {
       InputStream in = new BufferedInputStream(file.getInputStream(entry));
       byte[] bytes = new byte[(int) entry.getSize()];
-      int count = in.read(bytes);
+      int count = 0;
+      while (count != bytes.length)
+      {
+        int readBytes = in.read(bytes, count, bytes.length - count);
+        count += readBytes;
+      }
       ImageIcon temp = new ImageIcon(bytes);
       result = temp.getImage();
     }

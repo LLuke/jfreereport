@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: DateFormatParser.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -89,7 +89,8 @@ public class DateFormatParser extends FormatParser
    */
   public void setFormatter (Format format)
   {
-    super.setFormatter ((DateFormat) format);
+    DateFormat dfmt = (DateFormat) format;
+    super.setFormatter (dfmt);
   }
 
   /**
@@ -105,7 +106,8 @@ public class DateFormatParser extends FormatParser
    */
   public void setNullValue (Object nullvalue)
   {
-    super.setNullValue ((Date) nullvalue);
+    Date dt = (Date) nullvalue;
+    super.setNullValue (dt);
   }
 
   /**

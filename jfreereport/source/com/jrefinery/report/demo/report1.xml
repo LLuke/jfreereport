@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
-        <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
-
+ This DOCType declaration is valid, uncomment it to validate the report
  -->
-<report name="Sample Report 1" orientation="landscape" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
+<!--
 
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+-->
+<report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
     <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
-        <label x="0" y="0" width="100%" height="24" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
-        <label x="754" y="0" width="100%" height="10" alignment="center">Ha! on the bottom printed!</label>
+        <label x="0" y="0" width="100%" height="48" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+        <label x="0" y="0" width="100%" height="48" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
     </reportheader>
-
     <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
-        <!-- insert a number field here showing the total population -->
         <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
     </reportfooter>
 
@@ -23,15 +23,13 @@
 
     <pagefooter height="18">
         <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" draw="false" fill="true"/>
-        <!-- insert a page number field here -->
     </pagefooter>
-
     <groups>
         <group name="Continent Group">
-            <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="false">
+            <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle" pagebreak="false">
                 <label x="0" y="1" width="100" height="9" alignment="left">CONTINENT:</label>
                 <string-field x="100" y="1" width="250" height="9" alignment="left" fieldname="Continent"/>
-                <line x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
+                <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
             </groupheader>
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
                 <label x="0" y="0" width="450" height="12" alignment="left">Population:</label>
@@ -43,16 +41,16 @@
         </group>
     </groups>
 
-    <items height="10" fontname="Serif" fontstyle="plain" fontsize="8">
+    <items height="10" fontname="Serif" fontstyle="plain" fontsize="8" vertical-alignment="middle">
         <!-- the rectangle is named as it is referenced later in the function section -->
         <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
         <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
         <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
-        <string-field x="0" y="0" width="176" height="10" alignment="left" vertical-alignment="middle" fieldname="Country" />
-        <string-field x="180" y="0" width="76" height="10" alignment="left" vertical-alignment="middle" fieldname="ISO Code"/>
-        <number-field x="260" y="0" width="76" height="10" alignment="right" vertical-alignment="middle" format="#,##0" fieldname="Population"/>
-        <string-field x="360" y="0" width="76" height="10" alignment="right" vertical-alignment="middle" fieldname="expression"/>
-        <number-field x="440" y="0" width="76" height="10" alignment="right" vertical-alignment="middle" format="#,##0.00 '%'" fieldname="percent"/>
+        <string-field x="0" y="0" width="176" height="10" alignment="left" fieldname="Country" />
+        <string-field x="180" y="0" width="50" height="10" alignment="left" fieldname="ISO Code"/>
+        <number-field x="240" y="0" width="76" height="10" alignment="right" format="#,##0" fieldname="Population"/>
+        <string-field x="330" y="0" width="76" height="10" alignment="right" fieldname="expression"/>
+        <number-field x="390" y="0" width="76" height="10" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
     </items>
 
     <functions>
@@ -60,7 +58,26 @@
       <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
         <properties>
           <property name="expression">
-            getValue () { return "Expression"; }
+import com.jrefinery.report.util.Log;
+
+// This declaration is important. The script-method getValue is called by the
+// BSHExpression to evaluate the expression. We override the default implementation
+// and perform own calculations here ...
+Object getValue()
+{
+  // dataRow is null before the function is initialized
+  if (dataRow == null)
+  {
+    Log.info ("Returning null");
+    return "DataRow null";
+  }
+
+  Number population = (Number) dataRow.get ("Population");
+  long popK = (long)(population.longValue() / 1000);
+
+  // return a string with the number of people in 1000'er
+  return ("" + popK + " thousand people");
+}
           </property>
         </properties>
       </expression>

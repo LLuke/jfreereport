@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFormatFilter.java,v 1.7 2002/10/15 20:37:22 taqua Exp $
+ * $Id: NumberFormatFilter.java,v 1.8 2002/10/16 18:33:40 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,6 @@
  */
 
 package com.jrefinery.report.filter;
-
-import com.jrefinery.report.util.Log;
 
 import java.text.Format;
 import java.text.NumberFormat;
@@ -96,7 +94,8 @@ public class NumberFormatFilter extends FormatFilter
    */
   public void setFormatter (Format f)
   {
-    super.setFormatter ((NumberFormat) f);
+    NumberFormat fm = (NumberFormat) f;
+    super.setFormatter (fm);
   }
 
   /**
