@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.6 2005/03/03 17:07:58 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.7 2005/03/04 12:08:18 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -179,7 +179,27 @@ public class HtmlContentCreator extends TableContentCreator
       pout.println("</h3>");
       pout.println(isUseXHTML() ? "<hr />" : "<hr>");
     }
-    pout.println("<table cellspacing=\"0\" cellpadding=\"0\">");
+
+    final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
+    final int noc = layout.getColumnCount();
+    String style;
+    if (noc > 0)
+    {
+      final int width = (int)
+               StrictGeomUtility.toExternalValue(layout.getCellWidth(0, noc));
+      style = "width: " + width + "pt;";
+    }
+    else
+    {
+      // that should not happen if at least some content has been printed.
+      style = "";
+    }
+
+    style += "table-layout: fixed";
+
+    pout.print("<table cellspacing=\"0\" cellpadding=\"0\" style=\"");
+    pout.print(style);
+    pout.print("\">");
   }
 
   protected void handleEndTable ()
