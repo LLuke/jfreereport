@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.8 2005/01/24 23:58:33 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.9 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.util.WaitingImageObserver;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;

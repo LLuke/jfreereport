@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.11 2005/01/25 21:40:09 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.12 2005/02/23 21:04:39 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.util.WaitingImageObserver;
 import org.jfree.xml.ParseException;
 
 /**

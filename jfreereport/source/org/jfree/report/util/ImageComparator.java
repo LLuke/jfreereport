@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageComparator.java,v 1.6 2004/05/07 08:14:23 mungady Exp $
+ * $Id: ImageComparator.java,v 1.7 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,9 @@ public class ImageComparator
    */
   private abstract static class ImageCompareData
   {
+    protected ImageCompareData ()
+    {
+    }
   }
 
   /**

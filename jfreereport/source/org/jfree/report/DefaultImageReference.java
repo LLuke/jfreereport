@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.5 2005/02/23 19:31:32 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.6 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes:
  * --------
@@ -49,7 +49,7 @@ import java.io.Serializable;
 import java.net.URL;
 
 import org.jfree.report.resourceloader.ImageFactory;
-import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.util.WaitingImageObserver;
 
 /**
  * An image reference encapsulates the source of an image together with a

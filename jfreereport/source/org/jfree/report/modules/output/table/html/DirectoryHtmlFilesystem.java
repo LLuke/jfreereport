@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.12 2005/02/22 20:18:57 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.13 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ import org.jfree.report.modules.output.table.html.util.CounterReference;
 import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.util.ImageComparator;
 import org.jfree.report.util.StringUtil;
-import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.util.WaitingImageObserver;
 
 /**
  * Writes the generated Html-File and the supplementary data files (images and external

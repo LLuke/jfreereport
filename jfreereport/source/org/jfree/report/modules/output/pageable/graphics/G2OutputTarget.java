@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.18 2005/02/23 21:05:30 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.19 2005/03/03 21:50:44 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.util.WaitingImageObserver;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;

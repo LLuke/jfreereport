@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.10 2005/02/22 20:19:23 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.11 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.util.ImageComparator;
 import org.jfree.report.util.NoCloseOutputStream;
 import org.jfree.report.util.StringUtil;
-import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.util.WaitingImageObserver;
 
 /**
  * Similiar to the DirectoryHtmlFilesystem, the generated Html-File and the supplementary
