@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.14 2002/08/28 10:37:53 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.15 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -342,5 +342,14 @@ public abstract class AbstractFunction implements Function
     Properties retval = new Properties();
     retval.putAll(properties);
     return retval;
+  }
+
+  /**
+   * returns true if this expression contains autoactive content and should be called by the system,
+   * regardless whether this expression is referenced in the datarow.
+   */
+  public boolean isActive()
+  {
+    return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
   }
 }

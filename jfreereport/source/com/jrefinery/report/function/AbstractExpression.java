@@ -221,5 +221,12 @@ public abstract class AbstractExpression implements Expression
     if (getName() == null) throw new FunctionInitializeException("Name must not be null");
   }
 
-
+  /**
+   * returns true if this expression contains autoactive content and should be called by the system,
+   * regardless whether this expression is referenced in the datarow.
+   */
+  public boolean isActive()
+  {
+    return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
+  }
 }

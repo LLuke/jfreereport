@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.31 2002/09/05 17:25:31 taqua Exp $
+ * $Id: ReportState.java,v 1.32 2002/09/11 14:32:00 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -987,53 +987,62 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.reportStarted (event);
+    getReport().getExpressions().reportStarted(event);
   }
 
   public void fireReportFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.reportFinished (event);
+    getReport().getExpressions().reportFinished(event);
   }
 
   public void firePageStartedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.pageStarted (event);
+    getReport().getExpressions().pageStarted(event);
   }
 
   public void firePageFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.pageFinished (event);
+    getReport().getExpressions().pageFinished(event);
   }
 
   public void fireGroupStartedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.groupStarted (event);
+    getReport().getExpressions().groupStarted(event);
   }
 
   public void fireGroupFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.groupFinished (event);
+    getReport().getExpressions().groupFinished(event);
   }
 
   public void fireItemsStartedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.itemsStarted (event);
+    getReport().getExpressions().itemsStarted(event);
   }
 
   public void fireItemsFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.itemsFinished (event);
+    getReport().getExpressions().itemsFinished(event);
   }
 
   public void fireItemsAdvancedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     _functions.itemsAdvanced (event);
+    getReport().getExpressions().itemsAdvanced(event);
   }
 }

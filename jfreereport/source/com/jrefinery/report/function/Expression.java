@@ -42,6 +42,7 @@ import java.util.Properties;
  */
 public interface Expression extends Cloneable
 {
+  public static final String AUTOACTIVATE_PROPERTY = "autoactivate";
 
   /**
    * Returns the name of the expression.
@@ -79,6 +80,17 @@ public interface Expression extends Cloneable
    * @param p The properties.
    */
   public void setProperties(Properties p);
+
+  /**
+   * Returns a copy of this Expressions properties.
+   */
+  public Properties getProperties();
+
+  /**
+   * returns true if this expression contains autoactive content and should be called by the system,
+   * regardless whether this expression is referenced in the datarow.
+   */
+  public boolean isActive ();
 
   /**
    * Checks that the expression has been correctly initialized.  If there is a problem, this method

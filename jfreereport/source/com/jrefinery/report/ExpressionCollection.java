@@ -35,6 +35,8 @@ package com.jrefinery.report;
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.event.ReportListener;
+import com.jrefinery.report.event.ReportEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +53,7 @@ import java.util.Iterator;
  * This ReadOnlyExpressionCollection can be created by calling getCopy() on the first-state expression
  * collection. The ReadOnlyExpressionCollection is able to connect to an DataRow.
  */
-public class ExpressionCollection implements Cloneable
+public class ExpressionCollection implements Cloneable, ReportListener
 {
 
   /**
@@ -335,4 +337,214 @@ public class ExpressionCollection implements Cloneable
     throw new IllegalStateException("Only readonly collections can be connected");
   }
 
+  /**
+   * Receives notification that report generation has started.
+   * <P>
+   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   *
+   * @param event The event.
+   */
+  public void reportStarted(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that report generation has finished (the last record is read and all
+   * groups are closed).
+   *
+   * @param event The event.
+   */
+  public void reportFinished(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a new page is being started.
+   *
+   * @param event The event.
+   */
+  public void pageStarted(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a page is completed.
+   *
+   * @param event The event.
+   */
+  public void pageFinished(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a new group has started.
+   * <P>
+   * The group can be determined by the report state's getCurrentGroup() function.
+   *
+   * @param event The event.
+   */
+  public void groupStarted(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a group is finished.
+   * <P>
+   * The group can be determined by the report state's getCurrentGroup() function.
+   *
+   * @param event The event.
+   */
+  public void groupFinished(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a group of item bands is about to be processed.
+   * <P>
+   * The next events will be itemsAdvanced events until the itemsFinished event is raised.
+   *
+   * @param event The event.
+   */
+  public void itemsStarted(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a group of item bands has been completed.
+   * <P>
+   * The itemBand is finished, the report starts to close open groups.
+   *
+   * @param event The event.
+   */
+  public void itemsFinished(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a new row has been read.
+   * <P>
+   * This event is raised before an ItemBand is printed.
+   *
+   * @param event The event.
+   */
+  public void itemsAdvanced(ReportEvent event)
+  {
+    int size = size();
+    for (int i = 0; i < size; i++)
+    {
+      Expression e = getExpression(i);
+      try
+      {
+        if (e.isActive()) e.getValue();
+      }
+      catch (Exception ex)
+      {
+        Log.debug ("Activating expression failed", ex);
+      }
+    }
+  }
 }
