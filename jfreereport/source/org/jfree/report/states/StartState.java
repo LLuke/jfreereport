@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.6 2005/01/25 00:22:36 taqua Exp $
+ * $Id: StartState.java,v 1.7 2005/01/25 21:40:36 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.PageDefinition;
+import org.jfree.report.event.ReportEvent;
 
 /**
  * The first state in the JFreeReport state transition diagram.
@@ -148,5 +149,10 @@ public final class StartState extends ReportState
   public void resetState()
   {
     super.resetState();
+  }
+
+  public int getEventCode ()
+  {
+    return ReportEvent.REPORT_STARTED;
   }
 }

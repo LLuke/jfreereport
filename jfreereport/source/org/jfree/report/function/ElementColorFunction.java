@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.6.4.2 2004/12/30 14:46:11 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.8 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------
@@ -288,6 +288,17 @@ public class ElementColorFunction extends AbstractFunction
     }
     final Band b = event.getReport().getPageFooter();
     processRootBand(b);
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
+  {
+    // don't have to care, page finished is the next event ..
   }
 
   /**

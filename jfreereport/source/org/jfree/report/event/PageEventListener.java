@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageEventListener.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: PageEventListener.java,v 1.3 2004/05/07 08:03:37 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -80,4 +80,12 @@ public interface PageEventListener extends EventListener
    * @param event The event.
    */
   public void pageCanceled(ReportEvent event);
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected
+   * and the report state had been reverted to the previous state.
+   *  
+   * @param event
+   */
+  public void pageRolledBack(ReportEvent event);
 }

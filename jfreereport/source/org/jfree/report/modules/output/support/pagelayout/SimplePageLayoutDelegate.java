@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.6.2.1.2.1 2004/04/03 19:53:49 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.11 2005/01/25 00:12:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -658,5 +658,16 @@ public class SimplePageLayoutDelegate implements
   protected void setGroupFinishPending(final boolean groupFinishPending)
   {
     this.groupFinishPending = groupFinishPending;
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
+  {
+    // this method is left empty, we dont handle rollback events.
   }
 }

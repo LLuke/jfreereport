@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupFooterState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PreGroupFooterState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,11 @@ public final class PreGroupFooterState extends ReportState
     super(previous);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.GROUP_FINISHED;
+  }
+
   /**
    * Advances from this state to the '<code>POST-GROUP-FOOTER</code>' state
    * after firing the GroupFinished Event.
@@ -68,7 +73,7 @@ public final class PreGroupFooterState extends ReportState
   {
     // There is a header and enough space to print it. The finishGroup event is
     // fired and PostGroupFooterState activated after all work is done.
-    firePrepareEvent(ReportEvent.GROUP_FINISHED);
+    firePrepareEvent();
 
     fireGroupFinishedEvent();
     return new PostGroupFooterState(this);

@@ -81,7 +81,10 @@ What changed:
   is no longer a hardcoded requirement
 * The PDF target caches the used images
 * Some minor performance improvements in the stylekey handling
-
+* A userdefined configuration can be added to the ReportConfiguration. This way
+  JFreeReport can use other frameworks as configuration source ...
+* The parsers can be used to configure an predefined JFreeReport instance.
+* The PageFinished event is now handled correctly.
 
 To be implemented: 
   Simple parser: Support for the new features

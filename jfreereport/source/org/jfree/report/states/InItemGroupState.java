@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.3 2004/03/16 15:09:56 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.4 2004/05/07 08:14:22 mungady Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,11 @@ public final class InItemGroupState extends ReportState
     super(previous);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.ITEMS_ADVANCED;
+  }
+
   /**
    * Advances from this state to the next.
    *
@@ -79,7 +84,7 @@ public final class InItemGroupState extends ReportState
     // the band and print it. If there was not enough space, the engine will return
     // here after the pagebreak.
 
-    firePrepareEvent(ReportEvent.ITEMS_ADVANCED);
+    firePrepareEvent();
 
     advanceItem();
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageURLFieldTemplateDescription.java,v 1.3 2004/03/16 15:09:55 taqua Exp $
+ * $Id: ImageURLFieldTemplateDescription.java,v 1.4 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -59,7 +59,7 @@ public class ImageURLFieldTemplateDescription extends AbstractTemplateDescriptio
   public ImageURLFieldTemplateDescription(final String name)
   {
     super(name, ImageURLFieldTemplate.class, false);
-    setParameterDefinition("content", String.class);
+    setParameterDefinition("field", String.class);
   }
 
   /**

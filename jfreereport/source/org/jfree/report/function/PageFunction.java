@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.5.4.6 2005/01/20 14:50:02 taqua Exp $
+ * $Id: PageFunction.java,v 1.7 2005/01/25 00:00:15 taqua Exp $
  *
  * Changes
  * -------
@@ -377,5 +377,16 @@ public class PageFunction extends AbstractFunction
       setIgnoreNextGroup (true);
       setWaitForFooterPrinted(false);
     }
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
+  {
+    // no need to worry, we only listen to the pageStarted event ...
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupHeaderState.java,v 1.3 2003/09/21 10:49:08 taqua Exp $
+ * $Id: PostGroupHeaderState.java,v 1.4 2004/05/07 08:14:22 mungady Exp $
  *
  * Changes
  * -------
@@ -72,6 +72,11 @@ public final class PostGroupHeaderState extends ReportState
     return this.getCurrentGroupIndex() < (this.getReport().getGroupCount() - 1);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.POST_GROUP_HEADER;
+  }
+
   /**
    * Advances from this state to the next.  If the reporting engine hasn't reached the inner-most
    * group yet, move to the '<code>PRE-GROUP-HEADER</code>' state again, otherwise move to the
@@ -81,7 +86,7 @@ public final class PostGroupHeaderState extends ReportState
    */
   public ReportState advance()
   {
-    firePrepareEvent(ReportEvent.POST_GROUP_HEADER);
+    firePrepareEvent();
     if (hasMoreGroups())
     {
       // there are more groups defined, activate the next group and proceed to print it's header

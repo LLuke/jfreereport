@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostReportFooterState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PostReportFooterState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,11 @@ public class PostReportFooterState extends ReportState
     super(previous);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.REPORT_DONE;
+  }
+
   /**
    * Advance to the FinishState. The PostReportFooterState is used to catch a
    * continued reportfooter.
@@ -69,7 +74,7 @@ public class PostReportFooterState extends ReportState
    */
   public ReportState advance() throws ReportProcessingException
   {
-    firePrepareEvent(ReportEvent.REPORT_DONE);
+    firePrepareEvent();
 
     fireReportDoneEvent();
     return new FinishState(this);

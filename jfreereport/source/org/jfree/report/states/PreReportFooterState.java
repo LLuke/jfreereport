@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreReportFooterState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PreReportFooterState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,11 @@ public final class PreReportFooterState extends ReportState
     super(previous);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.REPORT_FINISHED;
+  }
+
   /**
    * Advances from this state to the next.
    *
@@ -66,7 +71,7 @@ public final class PreReportFooterState extends ReportState
    */
   public ReportState advance()
   {
-    firePrepareEvent(ReportEvent.REPORT_FINISHED);
+    firePrepareEvent();
 
     fireReportFinishedEvent();
     return new PostReportFooterState(this);

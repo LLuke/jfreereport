@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.4.4.2 2004/12/27 16:08:39 mtennes Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.6 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -276,5 +276,18 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     {
       return Boolean.FALSE;
     }
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
+  {
+    // although it should not matter, we do that for completeness
+    // next event will be a pageFinished event ..
+    count -= 1;
   }
 }

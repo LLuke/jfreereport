@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostItemGroupState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PostItemGroupState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,11 @@ public final class PostItemGroupState extends ReportState
     super(previous);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.ITEMS_FINISHED;
+  }
+
   /**
    * Advances from this state to the '<code>PRE-GROUP-FOOTER</code>' state.  Before changing
    * state, an 'items-finished' event is fired.
@@ -69,7 +74,7 @@ public final class PostItemGroupState extends ReportState
    */
   public ReportState advance()
   {
-    firePrepareEvent(ReportEvent.ITEMS_FINISHED);
+    firePrepareEvent();
 
     fireItemsFinishedEvent();
     return new PreGroupFooterState(this);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------
@@ -225,5 +225,17 @@ public class EventMonitorFunction extends AbstractFunction
   public Object getValue()
   {
     return null;
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
+  {
+    Log.info("Page Rolled Back: Level = " + event.getState().getLevel()
+        + " Prepare Run: " + event.getState().isPrepareRun());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportEvent.java,v 1.3 2003/09/21 10:49:08 taqua Exp $
+ * $Id: ReportEvent.java,v 1.4 2004/05/07 08:03:37 mungady Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -87,13 +87,15 @@ public class ReportEvent extends EventObject
   public static final int POST_GROUP_FOOTER = 0x1000;
   /** The event type constant, that the post group header state will be processed. */
   public static final int POST_GROUP_HEADER = 0x4000;
+  /** The event type constant, that the page rollback event is invoked. */
+  public static final int PAGE_ROLLEDBACK = 0x8000;
 
   /**
    * The event type constant, that this event is a prepare event. Use this constant
    * in combination with one of the other event types to specify which kind of event
    * was prepared.
    */
-  public static final int PREPARE_EVENT = 0x2000;
+  public static final int PREPARE_EVENT = 0x2000000;
 
   /** The event type for this event. */
   private int type;

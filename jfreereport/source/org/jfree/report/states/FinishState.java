@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: FinishState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: FinishState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package org.jfree.report.states;
 
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.event.ReportEvent;
 
 /**
  * The report is done. No advance will be done, every call to advance will throw an
@@ -83,4 +84,8 @@ public final class FinishState extends ReportState
     return true;
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.REPORT_DONE;
+  }
 }

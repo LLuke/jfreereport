@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.6 2005/01/24 23:59:05 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -60,6 +60,14 @@ public class ImageRenderFunction extends AbstractFunction
 {
   /** The function value. */
   private transient DefaultImageReference functionValue;
+
+  /**
+   * Creates an unnamed function. Make sure the name of the function is set using {@link
+   * #setName} before the function is added to the report's function collection.
+   */
+  public ImageRenderFunction ()
+  {
+  }
 
   /**
    * Create a image according to the current state, simple and silly ...
@@ -121,4 +129,14 @@ public class ImageRenderFunction extends AbstractFunction
     functionValue = null;
   }
 
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
+  {
+    functionValue = null;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.3 2004/05/07 12:53:08 mungady Exp $
+ * $Id: PageProcess.java,v 1.4 2005/01/25 00:10:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -153,7 +153,7 @@ public class PageProcess
       // this code will definitly be affected by the Band-intenal-pagebreak code
       // to this is non-fatal. the next redesign is planed here :)
 
-      // The state restoration must not finish the current page, except the whole
+      // The state restoration must not finish the current page, except if the whole
       // report processing will be finished.
       if (lm.isPageEnded())
       {
@@ -176,6 +176,8 @@ public class PageProcess
         while ((lm.isPageEnded() == false) && (state.isFinish() == false))
         {
           final PageLayouter org = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
+          final ReportState.PageBreakSaveState oldState = state.createPageProgressCopy();
+          lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
           state = state.advance();
           if (failOnError)
           {
@@ -195,16 +197,29 @@ public class PageProcess
           lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
           if (org != lm)
           {
-            // assertation check, the pagelayouter must not change during the processing.
+            // assertation check, the pagelayouter must not and should not change
+            // during the processing.
             throw new IllegalStateException("Lost the layout manager");
           }
+          // we detected an break ... undo the last event ..
+          if (lm.isAutomaticPagebreak())
+          {
+            state = oldState.restorePageProgressCopy();
+            // due to the cloning involved in the restore process, we have a new instance
+            lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
+            lm.finishPageAfterRestore(state);
+            break;
+          }
 
-          // here: Create metapage...
           checkInterrupted();
         }
       }
 
       metaPage = lm.getMetaPage();
+    }
+    catch(CloneNotSupportedException cne)
+    {
+      throw new ReportProcessingException("Unable to create temporary state object.");
     }
     finally
     {

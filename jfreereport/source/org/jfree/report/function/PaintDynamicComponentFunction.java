@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.5.4.3 2004/12/30 14:46:12 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.8 2005/01/25 00:00:18 taqua Exp $
  *
  * Changes
  * -------
@@ -170,6 +170,17 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    * @param event The event.
    */
   public void pageCanceled(final ReportEvent event)
+  {
+    image = null;
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
   {
     image = null;
   }

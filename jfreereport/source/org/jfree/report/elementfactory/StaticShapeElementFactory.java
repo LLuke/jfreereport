@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.6.4.3 2004/12/30 14:46:11 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.8 2005/01/24 23:59:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -132,6 +132,17 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     // scale the line, is horizontal,the line is on pos 0,0 within the element
     final Rectangle2D bounds = new Rectangle2D.Float(0, (float) y1, -100, 0);
     return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
+        true, false, true);
+  }
+
+  public static ShapeElement createVerticalLine(final String name,
+                                                  final Color paint,
+                                                  final Stroke stroke,
+                                                  final double y1)
+  {
+    // scale the line, is horizontal,the line is on pos 0,0 within the element
+    final Rectangle2D bounds = new Rectangle2D.Float(0, (float) y1, 00, -100);
+    return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 0, 100),
         true, false, true);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PostReportInitializedState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PostReportInitializedState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -59,6 +59,11 @@ public class PostReportInitializedState extends ReportState
     super(clone);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.REPORT_STARTED;
+  }
+
   /**
    * The advance method performs a transition from the current report state to the next report
    * state.  Each transition will usually involve some processing of the report.
@@ -69,7 +74,7 @@ public class PostReportInitializedState extends ReportState
   public ReportState advance() throws ReportProcessingException
   {
     nextPage();
-    firePrepareEvent(ReportEvent.REPORT_STARTED);
+    firePrepareEvent();
 
     // initialise the report before any band (and especially before the pageheader) is printed.
     fireReportStartedEvent();

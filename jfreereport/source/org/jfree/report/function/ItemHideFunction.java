@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.5.4.4 2004/12/30 14:46:11 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.7 2005/01/25 00:00:11 taqua Exp $
  *
  * Changes
  * -------
@@ -262,5 +262,15 @@ public class ItemHideFunction extends AbstractFunction
     final ItemHideFunction ih = (ItemHideFunction) super.getInstance();
     ih.lastObject = null;
     return ih;
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (ReportEvent event)
+  {
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.12.2.1.2.2 2004/10/06 21:28:44 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.15 2005/01/25 00:23:07 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,12 @@
 
 package org.jfree.report.util;
 
+import java.util.Enumeration;
+
 import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.util.Configuration;
 
 /**
  * Global and local configurations for JFreeReport.
@@ -67,6 +71,83 @@ import org.jfree.report.JFreeReportBoot;
  */
 public class ReportConfiguration extends HierarchicalConfiguration
 {
+  private static class UserConfigWrapper extends HierarchicalConfiguration
+          implements Configuration
+  {
+    private Configuration wrappedConfiguration;
+
+    public UserConfigWrapper ()
+    {
+    }
+
+    public void setWrappedConfiguration (final Configuration wrappedConfiguration)
+    {
+      this.wrappedConfiguration = wrappedConfiguration;
+    }
+
+    public Configuration getWrappedConfiguration ()
+    {
+      return wrappedConfiguration;
+    }
+
+    /**
+     * Returns the configuration property with the specified key.
+     *
+     * @param key the property key.
+     * @return the property value.
+     */
+    public String getConfigProperty (final String key)
+    {
+      if (wrappedConfiguration == null)
+      {
+        return getParentConfig().getConfigProperty(key);
+      }
+
+      final String retval = wrappedConfiguration.getConfigProperty(key);
+      if (retval != null)
+      {
+        return retval;
+      }
+      return getParentConfig().getConfigProperty(key);
+    }
+
+    public String getConfigProperty (final String key, final String defaultValue)
+    {
+      if (wrappedConfiguration == null)
+      {
+        return getParentConfig().getConfigProperty(key, defaultValue);
+      }
+
+      final String retval = wrappedConfiguration.getConfigProperty(key, null);
+      if (retval != null)
+      {
+        return retval;
+      }
+      return getParentConfig().getConfigProperty(key, defaultValue);
+    }
+
+    public void setConfigProperty (final String key, final String value)
+    {
+      if (wrappedConfiguration instanceof ModifiableConfiguration)
+      {
+        final ModifiableConfiguration modConfiguration =
+                (ModifiableConfiguration) wrappedConfiguration;
+        modConfiguration.setConfigProperty(key, value);
+      }
+    }
+
+    public Enumeration getConfigProperties ()
+    {
+      if (wrappedConfiguration instanceof ModifiableConfiguration)
+      {
+        final ModifiableConfiguration modConfiguration =
+                (ModifiableConfiguration) wrappedConfiguration;
+        return modConfiguration.getConfigProperties();
+      }
+      return super.getConfigProperties();
+    }
+  }
+
   /** The text aliasing configuration key. */
   public static final String FONTRENDERER_USEALIASING
       = "org.jfree.report.layout.fontrenderer.UseAliasing";
@@ -151,6 +232,8 @@ public class ReportConfiguration extends HierarchicalConfiguration
 
   /** The global configuration. */
   private static transient ReportConfiguration globalConfig;
+
+  private static transient UserConfigWrapper userConfig = new UserConfigWrapper();
 
   /**
    * Default constructor.
@@ -263,6 +346,8 @@ public class ReportConfiguration extends HierarchicalConfiguration
       baseProperty.load("/jfreereport.properties");
       globalConfig.insertConfiguration(baseProperty);
 
+      globalConfig.insertConfiguration(userConfig);
+      
       final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
       globalConfig.insertConfiguration(systemConfig);
       // just in case it is not already started ...
@@ -430,5 +515,15 @@ public class ReportConfiguration extends HierarchicalConfiguration
     {
       setParentConfig(globalConfig);
     }
+  }
+
+  public static Configuration getUserConfig ()
+  {
+    return userConfig.getWrappedConfiguration();
+  }
+
+  public static void setUserConfig (final Configuration config)
+  {
+    userConfig.setWrappedConfiguration(config);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.3 2004/03/16 15:09:56 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.4 2004/05/07 08:14:22 mungady Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,11 @@ public final class PreGroupHeaderState extends ReportState
     super(previous);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.GROUP_STARTED;
+  }
+
   /**
    * Advances from this state to the '<code>POST-GROUP-HEADER</code>' state after
    * fireing the GroupStartedEvent.
@@ -64,7 +69,7 @@ public final class PreGroupHeaderState extends ReportState
    */
   public ReportState advance()
   {
-    firePrepareEvent(ReportEvent.GROUP_STARTED);
+    firePrepareEvent();
 
     enterGroup();
     // enough space, fire the events and proceed to PostGroupHeaderState

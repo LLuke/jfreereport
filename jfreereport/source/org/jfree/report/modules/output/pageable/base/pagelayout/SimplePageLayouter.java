@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.20 2005/01/25 00:10:44 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.21 2005/01/25 21:40:19 taqua Exp $
  *
  * Changes
  * -------
@@ -182,7 +182,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    */
   public void resetCursor()
   {
-    LogicalPage lp = getLogicalPage();
+    final LogicalPage lp = getLogicalPage();
     setCursor(new SimplePageLayoutCursor(lp.getHeight()));
   }
 
@@ -747,13 +747,14 @@ public strictfp class SimplePageLayouter extends PageLayouter
         // handle a automatic pagebreak in case there is not enough space here ...
         else if ((watermark == false) && (isPageEnded() == false) && (isSpaceFor(height) == false))
         {
-          // todo ... how about spooling the band?
-          if (position != -1)
-  	      {
-  	         throw new ReportProcessingException("Band does not fit into given position!");
-  	      }
-          createSaveState(band);
-          endPage(ENDPAGE_FORCED);
+//          // todo ... how about spooling the band?
+//          if (position != -1)
+//  	      {
+//  	         throw new ReportProcessingException("Band does not fit into given position!");
+//  	      }
+//          createSaveState(band);
+//          endPage(ENDPAGE_FORCED);
+          setAutomaticPagebreak(true);
           return false;
         }
         else if (isPageEnded())
@@ -1117,4 +1118,21 @@ public strictfp class SimplePageLayouter extends PageLayouter
     return retval;
   }
 
+  public void finishPageAfterRestore (final ReportState state)
+          throws ReportProcessingException
+  {
+    createSaveState(null);
+    super.finishPageAfterRestore(state);
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (ReportEvent event)
+  {
+    // we do nothing here ..
+  }
 }

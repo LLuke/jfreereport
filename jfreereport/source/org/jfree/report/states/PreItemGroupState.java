@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,11 @@ public final class PreItemGroupState extends ReportState
     super(previous);
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.ITEMS_STARTED;
+  }
+
   /**
    * Advances to the next state.  Normally this will be the '<code>IN-ITEM-GROUP</code>' state,
    * but if the report's data (TableModel) has no rows, proceed to the
@@ -68,7 +73,7 @@ public final class PreItemGroupState extends ReportState
    */
   public ReportState advance()
   {
-    firePrepareEvent(ReportEvent.ITEMS_STARTED);
+    firePrepareEvent();
 
     // inform everybody, that now items will be processed
     fireItemsStartedEvent();

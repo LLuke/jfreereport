@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.4 2004/03/16 15:09:56 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.5 2004/05/07 08:14:22 mungady Exp $
  *
  * Changes
  * -------
@@ -88,6 +88,11 @@ public final class PostGroupFooterState extends ReportState
     return this.getCurrentGroupIndex() == BEFORE_FIRST_GROUP;
   }
 
+  public int getEventCode ()
+  {
+    return ReportEvent.POST_GROUP_FOOTER;
+  }
+
   /**
    * Advances from this state to the next.
    *
@@ -95,7 +100,7 @@ public final class PostGroupFooterState extends ReportState
    */
   public ReportState advance()
   {
-    firePrepareEvent(ReportEvent.POST_GROUP_FOOTER);
+    firePrepareEvent();
     // leave the current group and activate the parent group.
     // if this was the last active group, the group index is now BEFORE_FIRST_GROUP
     leaveGroup();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.4 2003/09/09 15:52:53 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.5 2005/01/25 00:22:24 taqua Exp $
  *
  * Changes
  * -------
@@ -487,7 +487,7 @@ public class DataRowBackend implements Cloneable
     if (functions != null)
     {
       db.functions = (LevelledExpressionList) functions.clone();
-      db.functions.updateDataRow(db.getDataRow());
+      db.functions.updateDataRow(db.dataRowConnector);
     }
     return db;
   }

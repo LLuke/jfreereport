@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.13 2005/01/25 00:00:15 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.14 2005/01/25 21:40:15 taqua Exp $
  *
  * Changes
  * -------
@@ -332,6 +332,36 @@ public final class LevelledExpressionList implements ReportListener,
         try
         {
           e.pageCanceled(event);
+        }
+        catch (Exception ex)
+        {
+          addError(ex);
+        }
+      }
+    }
+  }
+
+  /**
+   * Receives notification that a new page is being started.
+   *
+   * @param event  the event.
+   */
+  public void pageRolledBack(final ReportEvent event)
+  {
+    for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
+    {
+      final int level = levelData[levelIdx].levelNumber;
+      if (level < getLevel())
+      {
+        break;
+      }
+      final int[] functions = levelData[levelIdx].pageEventListeners;
+      for (int l = 0; l < functions.length; l++)
+      {
+        final PageEventListener e = (PageEventListener) flatData[functions[l]];
+        try
+        {
+          e.pageRolledBack(event);
         }
         catch (Exception ex)
         {
@@ -923,6 +953,7 @@ public final class LevelledExpressionList implements ReportListener,
     // ft.size = size;     // already copied during cloning ...
     ft.dataRow = null;
     ft.errorList = (ArrayList) errorList.clone();
+    ft.flatData = (Expression[]) ft.flatData.clone();
 
     for (int expression = 0; expression< flatData.length; expression++)
     {
@@ -1151,6 +1182,5 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
     }
-
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.9.4.2 2004/10/13 18:42:23 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.12 2005/01/25 00:19:06 taqua Exp $
  *
  * Changes
  * -------
@@ -133,9 +133,14 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
     }
     else
     {
-      // create the initial JFreeReport object.
-      final JFreeReport report = new JFreeReport();
-      getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
+      JFreeReport report = (JFreeReport)
+              getParser().getHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME);
+      if (report == null)
+      {
+        // create the initial JFreeReport object.
+        report = new JFreeReport();
+        getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
+      }
       report.getReportBuilderHints().putHint(report, "parser.type", EXT_PARSER_TYPE_HINT_VALUE);
       updateReportName = true;
     }

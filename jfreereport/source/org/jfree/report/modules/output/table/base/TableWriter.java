@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.10.2.1.2.2 2004/12/13 19:27:06 taqua Exp $
+ * $Id: TableWriter.java,v 1.14 2005/01/25 00:12:47 taqua Exp $
  *
  * Changes
  * -------
@@ -763,5 +763,17 @@ public strictfp class TableWriter
           throws ReportProcessingException
   {
     throw new ReportProcessingException("Watermark printing is not supported for table targets.");
+  }
+
+  /**
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
+   * @param event
+   */
+  public void pageRolledBack (final ReportEvent event)
+  {
+    // this method is left empty, we dont handle rollback events.
+    // TableProcessors do not generate that event type ...
   }
 }

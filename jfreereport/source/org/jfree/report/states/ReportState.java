@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.11 2004/05/07 08:14:22 mungady Exp $
+ * $Id: ReportState.java,v 1.12 2005/01/25 00:22:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -117,9 +117,6 @@ public abstract class ReportState implements Cloneable
   /** The first page. */
   public static final int BEFORE_FIRST_PAGE = 0;
 
-  /** The ancestor hash code. */
-  private int ancestorHashcode;
-
   /**
    * Constructs a new state for the specified report.  The report (which encapsulates a reference
    * to the data, plus definitions for the required layout) is cloned to isolate the reporting
@@ -146,9 +143,6 @@ public abstract class ReportState implements Cloneable
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
     getReportDefinition().getDataRowConnector().setDataRowBackend(dr);
     this.dataRow = dr;
-
-    // we have no clone-ancestor, so forget everyting
-    setAncestorHashcode(this.hashCode());
 
     // reset the current data row ...
     resetState();
@@ -191,8 +185,6 @@ public abstract class ReportState implements Cloneable
       setCurrentGroupIndex(clone.getCurrentGroupIndex());
       getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
     }
-    // we have no clone-ancestor, so forget everything
-    setAncestorHashcode(this.hashCode());
   }
 
   /**
@@ -344,7 +336,7 @@ public abstract class ReportState implements Cloneable
    *
    * @param itemIndex The new item index.
    */
-  public void setCurrentItem(final int itemIndex)
+  protected void setCurrentItem(final int itemIndex)
   {
     this.currentItem = itemIndex;
   }
@@ -364,7 +356,7 @@ public abstract class ReportState implements Cloneable
    *
    * @param page The new page number.
    */
-  public void setCurrentPage(final int page)
+  protected void setCurrentPage(final int page)
   {
     if (page < 0)
     {
@@ -390,7 +382,7 @@ public abstract class ReportState implements Cloneable
    *
    * @param index The new group index.
    */
-  public void setCurrentGroupIndex(final int index)
+  protected void setCurrentGroupIndex(final int index)
   {
     if (index < -1)
     {
@@ -497,6 +489,41 @@ public abstract class ReportState implements Cloneable
     progress.setCurrentPage(getCurrentPage());
     progress.setStateClass(this.getClass());
     return progress;
+  }
+
+  public static class PageBreakSaveState
+  {
+    private DataRowBackend backend;
+    private ReportState state;
+
+    public PageBreakSaveState (final ReportState state)
+            throws CloneNotSupportedException
+    {
+      this.backend = (DataRowBackend) state.dataRow.clone();
+      this.state = state.createShallowCopy();
+    }
+
+    public ReportState restorePageProgressCopy ()
+      throws CloneNotSupportedException
+    {
+      final ReportState result = state;
+      result.dataRow = backend;
+      result.report.getDataRowConnector().setDataRowBackend(result.dataRow);
+      result.dataRowPreview = null;
+      return result;
+    }
+
+  }
+
+  protected ReportState createShallowCopy ()
+          throws CloneNotSupportedException
+  {
+    return (ReportState) super.clone();
+  }
+
+  public PageBreakSaveState createPageProgressCopy () throws CloneNotSupportedException
+  {
+    return new PageBreakSaveState(this);
   }
 
   /**
@@ -645,12 +672,10 @@ public abstract class ReportState implements Cloneable
 
   /**
    * Fires a 'prepare' event.
-   *
-   * @param type the event type of the event that should be prepared.
    */
-  public void firePrepareEvent(final int type)
+  public void firePrepareEvent()
   {
-    getFunctions().firePrepareEvent(new ReportEvent(this, (ReportEvent.PREPARE_EVENT | type)));
+    getFunctions().firePrepareEvent(new ReportEvent(this, (ReportEvent.PREPARE_EVENT | getEventCode())));
   }
 
   /**
@@ -771,39 +796,6 @@ public abstract class ReportState implements Cloneable
   }
 
   /**
-   * Returns the ancestor hash code.
-   *
-   * @return the ancestor hash code.
-   */
-  public int getAncestorHashcode()
-  {
-    return ancestorHashcode;
-  }
-
-  /**
-   * Sets the ancestor hash code.
-   *
-   * @param ancestorHashcode  the ancestor hash code.
-   */
-  protected void setAncestorHashcode(final int ancestorHashcode)
-  {
-    this.ancestorHashcode = ancestorHashcode;
-  }
-
-  /**
-   * Returns <code>true</code> if a state is an ancestor of this state, and <code>false</code>
-   * otherwise.
-   *
-   * @param state  the state.
-   *
-   * @return <code>true</code> or <code>false</code>.
-   */
-  public boolean isAncestor(final ReportState state)
-  {
-    return (state.getAncestorHashcode() == getAncestorHashcode());
-  }
-
-  /**
    * Returns the errors that occured during the last event dispatching. This list
    * gets cleared when the next event gets dispatched.
    *
@@ -876,5 +868,7 @@ public abstract class ReportState implements Cloneable
   {
     getFunctions().outputComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
   }
+
+  public abstract int getEventCode();
 
 }

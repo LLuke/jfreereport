@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.14 2004/05/07 12:53:09 mungady Exp $
+ * $Id: PageLayouter.java,v 1.15 2005/01/25 00:10:30 taqua Exp $
  *
  * Changes
  * -------
@@ -145,6 +145,8 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   /** A flag indicating whether the process of restarting the page is completed. */
   private boolean pageRestartDone;
 
+  private ArrayList bands;
+
   /**
    * Creates a new page layouter. The function depency level is set to -1 (highest
    * priority).
@@ -152,6 +154,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   public PageLayouter()
   {
     setDependencyLevel(-1);
+    bands = new ArrayList(40);
   }
 
   /**
@@ -543,6 +546,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     final Object state = getLayoutManagerState();
     // reset the report finished flag...
     pageEnded = false;
+    autoPageBreak = false;
 
     setPageRestartDone(false);
 
@@ -572,8 +576,6 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     // does nothing, we dont care about canceled pages by default..
   }
 
-  private ArrayList bands = new ArrayList();
-
   protected void addRootMetaBand (final MetaBand band)
   {
     bands.add (band);
@@ -584,5 +586,44 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     final MetaBand[] bandArray = (MetaBand[]) bands.toArray(new MetaBand[bands.size()]);
     final MetaPage p = new MetaPage(bandArray);
     return p;
+  }
+
+  private boolean autoPageBreak;
+
+  protected void setAutomaticPagebreak (final boolean b)
+  {
+    autoPageBreak = b;
+  }
+
+  public boolean isAutomaticPagebreak ()
+  {
+    return autoPageBreak;
+  }
+
+  public void finishPageAfterRestore (final ReportState state)
+          throws ReportProcessingException
+  {
+    try
+    {
+      setFinishingPage(true);
+
+      final ReportEvent cEvent = new ReportEvent
+              (state, state.getEventCode() | ReportEvent.PAGE_FINISHED);
+      cEvent.getState().firePageFinishedEvent();
+      cEvent.getState().nextPage();
+
+      setCurrentEvent(cEvent);
+
+      // save the state after the PageFinished event is fired to
+      // gather as many information as possible
+      // log // no cloning save the orignal state
+      layoutManagerState = saveCurrentState();
+    }
+    finally
+    {
+      pageEnded = true;
+      setFinishingPage(false);
+      clearCurrentEvent();
+    }
   }
 }
