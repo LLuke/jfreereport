@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.29 2003/05/02 12:39:02 taqua Exp $
+ * $Id: ImageReference.java,v 1.30 2003/05/09 17:12:12 taqua Exp $
  *
  * Changes:
  * --------
@@ -52,7 +52,7 @@ import java.io.Serializable;
 import java.net.URL;
 
 import com.jrefinery.report.util.WaitingImageObserver;
-import gnu.bhresearch.pixie.wmf.WmfFile;
+import org.jfree.pixie.wmf.WmfFile;
 
 /**
  * An image reference encapsulates the source of an image together with a
