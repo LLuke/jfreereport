@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner;David Gilbert (for Simba Management Limited);
  *
- * $Id: DateExcelCellData.java,v 1.3 2003/02/17 22:01:44 taqua Exp $
+ * $Id: DateExcelCellData.java,v 1.4 2003/02/19 22:14:09 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,24 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import java.awt.geom.Rectangle2D;
 import java.util.Date;
 
+/**
+ * A Date excel cell.
+ */
 public class DateExcelCellData extends ExcelCellData
 {
+  /** the date stored in this cell */
   private Date date;
+  /** the date format */
   private String format;
 
+  /**
+   * Creates a new DateExcelCellData.
+   *
+   * @param elementBounds the bounds of the cell.
+   * @param style the cell style.
+   * @param value the date value.
+   * @param format the date format string.
+   */
   public DateExcelCellData(Rectangle2D elementBounds,
                            ExcelDataCellStyle style,
                            Date value, String format)
@@ -55,11 +68,22 @@ public class DateExcelCellData extends ExcelCellData
     this.format = format;
   }
 
+  /**
+   * Applies the cells content and formats to the given HSSFCell.
+   *
+   * @param cell the cell, that should be formated.
+   */
   public void applyContent(HSSFCell cell)
   {
     cell.setCellValue(date);
   }
 
+  /**
+   * Tests, whether the cell is empty. Empty cells may transport
+   * a format, but they don't contain data.
+   *
+   * @return true, if the cell is empty, false otherwise.
+   */
   public boolean isEmpty()
   {
     if (date == null)

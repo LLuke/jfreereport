@@ -29,13 +29,12 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.3 2003/01/27 03:17:43 taqua Exp $
  *
  * Changes
  * -------
  * 06-Jan-2002 : initial version
  */
-
 package com.jrefinery.report.targets.table.excel;
 
 import com.jrefinery.report.targets.FontDefinition;
@@ -56,6 +55,7 @@ public class ExcelFontFactory
 	/** The list of fonts that we have used so far */
 	private ArrayList fontList = null;
 
+  /** The workbook that is used to create the font */
   private HSSFWorkbook workbook;
 
 	/**
@@ -67,6 +67,14 @@ public class ExcelFontFactory
     this.workbook = workbook;
 	}
 
+  /**
+   * Creates a HSSFFont. The created font is cached and reused later,
+   * if a similiar font is requested.
+   *
+   * @param font the font definition.
+   * @param forecolor the font color
+   * @return the created or a cached HSSFFont
+   */
 	public HSSFFont getExcelFont(FontDefinition font, Color forecolor)
   {
     HSSFFontWrapper wrapper = new HSSFFontWrapper(font, forecolor);

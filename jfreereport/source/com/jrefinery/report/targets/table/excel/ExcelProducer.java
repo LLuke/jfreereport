@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.8 2003/02/17 22:01:44 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.9 2003/02/18 19:37:35 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,9 @@ public class ExcelProducer extends TableProducer
   /** factor for transformation of internal scale to excel scale */
   private static final int YFACTOR = 30;
 
+  /** the excel workbook represents the excel document. */
   private HSSFWorkbook workbook;
+  /** the current excel sheet */
   private HSSFSheet sheet;
 
   /**
@@ -98,13 +100,19 @@ public class ExcelProducer extends TableProducer
     cellDataFactory = null;
   }
 
+  /**
+   * Gets the TableProducer implementation of this TableProducer.
+   *
+   * @return the ExcelCellDataFactory of this producer.
+   */
   public TableCellDataFactory getCellDataFactory()
   {
     return cellDataFactory;
   }
 
   /**
-   * Opens the document.
+   * Opens the document; creates a new Workbook and initializes the
+   * excel file creation process.
    */
   public void open()
   {
@@ -118,6 +126,15 @@ public class ExcelProducer extends TableProducer
     clearCells();
   }
 
+  /**
+   * Handles the start of a new page. The page name is given as parameter.
+   * The TableWriter starts a new page whenever a manual pagebreak is found
+   * in the report definition. The ReportProducer has been opened before.
+   * <p>
+   * If the name is null, the default excel names are used as sheet names.
+   *
+   * @param name the page name
+   */
   public void beginPage (String name)
   {
     if(name == null)
@@ -130,6 +147,10 @@ public class ExcelProducer extends TableProducer
     }
   }
 
+  /**
+   * Handles the end of a page, lays out the collected cells
+   * and write the excel sheet.
+   */
   public void endPage ()
   {
     if (isDummy() == false)
@@ -140,18 +161,23 @@ public class ExcelProducer extends TableProducer
     sheet = null;
   }
 
+  /**
+   * Tests, whether the page is open and a valid sheet has been
+   * created.
+   *
+   * @return true, if the page is open, false otherwise.
+   */
   private boolean isPageOpen ()
   {
     return sheet != null;
   }
 
   /**
-   * Closes the document.
+   * Closes the document and write the generated document.
    */
   public void close()
   {
     // now we have all cell data that we need. Let's generate the file
-
     if (isPageOpen())
       throw new IllegalStateException();
 
@@ -166,9 +192,9 @@ public class ExcelProducer extends TableProducer
   }
 
   /**
-   * generate the XLS data structure
+   * Generate the XLS data structure.
    *
-   * The empty cell stuff was never referenced and did nothing usefull, removed it.
+   * @param layout the layouted sheet.
    */
   private void writeSheet(TableGridLayout layout)
   {
@@ -218,10 +244,14 @@ public class ExcelProducer extends TableProducer
   }
 
   /**
+   * Exports the cell. The cell is generated and the stored cell style
+   * applied.
    *
-   * @param row
-   * @param x
-   * @param y
+   * @param row the HSSFRow, where the generated cell gets added.
+   * @param x the column
+   * @param y the row number
+   * @param content the grid position
+   * @param bg the background style.
    */
   private void exportCell(HSSFRow row,
                           TableGridPosition content,

@@ -1,8 +1,38 @@
 /**
- * Date: Jan 25, 2003
- * Time: 1:43:19 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ExcelToolLibrary.java,v 1.2 2003/01/28 22:05:31 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * ExcelToolLibrary.java
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Heiko Evermann
+ * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ExcelToolLibrary.java,v 1.3 2003/02/04 17:56:32 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 25-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -14,21 +44,13 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+/**
+ * POI Excel utility methods.
+ */
 public class ExcelToolLibrary
 {
+  /** the pre-defined excel color triplets. */
   private static Hashtable triplets;
-
-  private static int abs(int i)
-  {
-    if (i < 0) return -i;
-    return i;
-  }
-
-  private static long abs(long i)
-  {
-    if (i < 0) return -i;
-    return i;
-  }
 
   /**
    * Find a suitable color for the cell.
@@ -76,9 +98,9 @@ public class ExcelToolLibrary
         int xlGB = rgb[1] - rgb[2];
         int xlBR = rgb[2] - rgb[0];
 
-        int deltaRG = abs(xlRG - cdRG);
-        int deltaGB = abs(xlGB - cdGB);
-        int deltaBR = abs(xlBR - cdBR);
+        int deltaRG = Math.abs(xlRG - cdRG);
+        int deltaGB = Math.abs(xlGB - cdGB);
+        int deltaBR = Math.abs(xlBR - cdBR);
 
         long delta = deltaBR + deltaGB + deltaRG;
 
@@ -87,7 +109,7 @@ public class ExcelToolLibrary
             (rgb[1] << 8) +
             rgb[2];
 
-        long diff = abs(colorValue - excelColor);
+        long diff = Math.abs(colorValue - excelColor);
 
         if (diff < minDiff)
         {
@@ -104,10 +126,5 @@ public class ExcelToolLibrary
 
 
     return color;
-  }
-
-  public static void main(String[] args)
-  {
-    getNearestColor(new Color(0x007FFF));
   }
 }
