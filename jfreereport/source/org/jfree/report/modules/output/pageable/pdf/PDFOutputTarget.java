@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.3 2003/07/14 17:37:07 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.4 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes
  * -------
@@ -88,6 +88,7 @@ import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.support.itext.BaseFontFactory;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
+import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
@@ -323,11 +324,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
       return; // no need to do anything ...
     }
     this.fontDefinition = font;
-    this.baseFont = fontSupport.createBaseFont(font, font.getFontEncoding(getFontEncoding()),
-        (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
-    if (baseFont == null)
+    try
     {
-      throw new OutputTargetException("The font definition was not successfull.");
+      this.baseFont = fontSupport.createBaseFont(font, font.getFontEncoding(getFontEncoding()),
+          (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
+      if (baseFont == null)
+      {
+        throw new OutputTargetException("The font definition was not successfull.");
+      }
+    }
+    catch (BaseFontCreateException bfce)
+    {
+      throw new OutputTargetException("The font definition was not successfull.", bfce);
     }
   }
 
@@ -1158,10 +1166,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
   {
-    final BaseFontRecord record = fontSupport.createBaseFont(font,
-        font.getFontEncoding(getFontEncoding()),
-        false);
-    return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
+    try
+    {
+      final BaseFontRecord record = fontSupport.createBaseFont(font,
+          font.getFontEncoding(getFontEncoding()),
+          false);
+      return new PDFSizeCalculator(record.getBaseFont(), font.getFont().getSize2D());
+    }
+    catch (BaseFontCreateException bfce)
+    {
+      throw new OutputTargetException("The font definition was not successfull.", bfce);
+    }
   }
 
   /**

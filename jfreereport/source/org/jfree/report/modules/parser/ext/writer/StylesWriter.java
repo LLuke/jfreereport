@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.15 2003/06/29 16:59:27 taqua Exp $
+ * $Id: StylesWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,11 +46,8 @@ import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.ShapeElement;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.StylesHandler;
-import org.jfree.report.style.BandDefaultStyleSheet;
-import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
@@ -76,7 +73,9 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Writes the styles to a character stream writer.
+   * Writes the ihnerited styles to a character stream writer. This will collect
+   * all inherited styles, ignoring all styles which are directly bound to an
+   * element or which are global default stylesheets.
    *
    * @param writer  the character stream writer.
    *
@@ -102,7 +101,9 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Collects styles from all the bands in the report.
+   * Collects styles from all the bands in the report. The returned styles are
+   * ordered so that parent style sheets are contained before any child stylesheets
+   * in the array.
    *
    * @return The styles.
    */
@@ -121,15 +122,8 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       collectStylesFromBand(g.getFooter());
     }
 
-    //now sort the elements ...
     final ElementStyleSheet[] styles = (ElementStyleSheet[])
         reportStyles.toArray(new ElementStyleSheet[reportStyles.size()]);
-/*
-    for (int i = 0; i < styles.length; i++)
-    {
-      System.out.println(styles[i].getName());
-    }
-*/
     return styles;
   }
 
@@ -191,15 +185,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    */
   private void addCollectableStyleSheet(final ElementStyleSheet es)
   {
-    if (es == BandDefaultStyleSheet.getBandDefaultStyle())
-    {
-      return;
-    }
-    if (es == ElementDefaultStyleSheet.getDefaultStyle())
-    {
-      return;
-    }
-    if (es == ShapeElement.getDefaultStyle())
+    if (es.isGlobalDefault())
     {
       return;
     }
@@ -215,9 +201,5 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     {
       reportStyles.add(es);
     }
-/*    else
-    {
-      Log.debug ("Already Added: " + es.getName());
-    }*/
   }
 }

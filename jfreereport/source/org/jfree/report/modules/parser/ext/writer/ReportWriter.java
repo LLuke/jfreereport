@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.16 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ReportWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -88,6 +88,15 @@ public class ReportWriter
    */
   public ReportWriter(final JFreeReport report, final String encoding)
   {
+    if (report == null)
+    {
+      throw new NullPointerException("Report is null");
+    }
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding is null.");
+    }
+
     dataSourceCollector = new DataSourceCollector();
     elementFactoryCollector = new ElementFactoryCollector();
     classFactoryCollector = new ClassFactoryCollector();
@@ -96,6 +105,11 @@ public class ReportWriter
     templateCollector = new TemplateCollector();
     this.report = report;
     this.encoding = encoding;
+
+    // configure all factories with the current report configuration ...
+    dataSourceCollector.configure(report.getReportConfiguration());
+    classFactoryCollector.configure(report.getReportConfiguration());
+    templateCollector.configure(report.getReportConfiguration());
   }
 
   /**
@@ -229,11 +243,6 @@ public class ReportWriter
   public void write(final Writer w) throws IOException, ReportWriterException
   {
     final ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
-
-    // configure all factories with the current report configuration ...
-    dataSourceCollector.configure(report.getReportConfiguration());
-    classFactoryCollector.configure(report.getReportConfiguration());
-    templateCollector.configure(report.getReportConfiguration());
     writer.write(w); // we start with indentation level 0
   }
 

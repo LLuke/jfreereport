@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: StyleWriter.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
  *
  * Changes
  * -------
@@ -50,13 +50,14 @@ import org.jfree.report.style.BandDefaultStyleSheet;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
+import org.jfree.util.ObjectUtils;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
-import org.jfree.util.ObjectUtils;
 
 /**
- * A style writer.
+ * A style writer. This class will write a single stylesheet into the
+ * writer.
  *
  * @author Thomas Morgner.
  */
@@ -72,8 +73,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * Creates a new writer.
    *
    * @param reportWriter  the report writer.
-   * @param elementStyleSheet  the element style sheet.
-   * @param defaultStyleSheet  the default style sheet.
+   * @param elementStyleSheet  the element style sheet (never null).
+   * @param defaultStyleSheet  the band default style sheet (can be null).
    * @param indentLevel the current indention level.
    */
   public StyleWriter(final ReportWriter reportWriter,
@@ -82,12 +83,16 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
                      final int indentLevel)
   {
     super(reportWriter, indentLevel);
+    if (elementStyleSheet == null)
+    {
+      throw new NullPointerException();
+    }
     this.elementStyleSheet = elementStyleSheet;
     this.defaultStyleSheet = defaultStyleSheet;
   }
 
   /**
-   * Writes the style.
+   * Writes the style sheet.
    *
    * @param writer  the character stream writer.
    *
@@ -97,6 +102,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
     final List parents = elementStyleSheet.getParents();
+    // write the parents of the stylesheet ...
     for (int p = 0; p < parents.size(); p++)
     {
       final ElementStyleSheet parent = (ElementStyleSheet) parents.get(p);
@@ -106,6 +112,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       }
     }
 
+    // now write all defined properties of the stylesheet ...
+    // this will not write ihnerited values, only the ones defined in this instance.
     final Iterator keys = elementStyleSheet.getDefinedPropertyNames();
     while (keys.hasNext())
     {
@@ -132,28 +140,25 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   private ObjectDescription findObjectDescription(final StyleKey key, final Object o)
   {
     final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
+    // search an direct definition for the given object class ...
     ObjectDescription od = cc.getDescriptionForClass(o.getClass());
     if (od != null)
     {
       return od;
     }
-/*
-    Log.debug
-        ("Unable to find object description for implemented style key class: " + o.getClass());
-*/
+
+    // now search an definition for the stylekey class ...
     od = cc.getDescriptionForClass(key.getValueType());
-    if (od != null)
-    {
-      return od;
-    }
-/*
-    Log.debug
-        ("Unable to find object description for native style key class: " + key.getValueType());
-*/
-    // search the most suitable super class object description ...
+    // todo change here : removed return od if od <> null
+    // and use this as best known result when searching for super class object
+    // descriptions. ...
+
+    // search the most suitable super class object description for the object
+    // and the key ...
     od = cc.getSuperClassObjectDescription(o.getClass(), od);
     od = cc.getSuperClassObjectDescription(key.getValueType(), od);
-//    Log.debug ("Object description result: " + od);
+
+    // if it is still null now, then we do not know anything about this object type.
     return od;
   }
 
@@ -174,7 +179,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
     return ObjectUtils.equalOrBothNull(odKey, odObject);
   }
-
+  
   /**
    * Writes a stylekey.
    *

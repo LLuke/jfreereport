@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
+import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.modules.output.table.base.AbstractTableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
@@ -122,7 +123,7 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
             (font, bf.getBaseFont(), color, valign, halign);
         return new RTFTextCellData(rect, (String) value, style);
       }
-      catch (OutputTargetException ex)
+      catch (BaseFontCreateException ex)
       {
         Log.debug("Unable to create font: ", ex);
         return null;

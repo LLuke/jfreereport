@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.15 2003/06/29 16:59:25 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,6 @@ package org.jfree.report.modules.parser.ext.writer;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Enumeration;
-import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.ext.BandHandler;
@@ -59,45 +57,28 @@ import org.jfree.report.modules.parser.ext.ReportDescriptionHandler;
 import org.jfree.report.modules.parser.ext.StyleSheetHandler;
 import org.jfree.report.modules.parser.ext.StylesHandler;
 import org.jfree.report.modules.parser.ext.TemplatesHandler;
+import org.jfree.xml.writer.SafeTagList;
+import org.jfree.xml.writer.XMLWriterSupport;
 
 /**
  * A base class for writer classes for the JFreeReport XML report files.
  *
  * @author Thomas Morgner
  */
-public abstract class AbstractXMLDefinitionWriter
+public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
 {
-  /** A int constant for controling the indent function. */
-  protected static final int OPEN_TAG_INCREASE = 1;
-  /** A int constant for controling the indent function. */
-  protected static final int CLOSE_TAG_DECREASE = 2;
-  /** A int constant for controling the indent function. */
-  protected static final int INDENT_ONLY = 3;
-
-  /** A constant for close. */
-  public static final boolean CLOSE = true;
-
-  /** A constant for open. */
-  public static final boolean OPEN = false;
-
   /** A report writer. */
   private ReportWriter reportWriter;
 
-  /** The line separator. */
-  private static String lineSeparator;
-
   /** A list of safe tags. */
   private static SafeTagList safeTags;
-
-  /** The indent level for that writer. */
-  private int indentLevel;
 
   /**
    * Returns the tags that can safely extend over several lines in the XML definition.
    *
    * @return The safe tags.
    */
-  public static SafeTagList getSafeTags()
+  public static SafeTagList getDefaultSafeTags()
   {
     if (safeTags == null)
     {
@@ -164,20 +145,6 @@ public abstract class AbstractXMLDefinitionWriter
   }
 
   /**
-   * Returns the line separator.
-   *
-   * @return The line separator.
-   */
-  public static String getLineSeparator()
-  {
-    if (lineSeparator == null)
-    {
-      lineSeparator = System.getProperty("line.separator", "\n");
-    }
-    return lineSeparator;
-  }
-
-  /**
    * Creates a new writer.
    *
    * @param reportWriter  the report writer.
@@ -185,8 +152,8 @@ public abstract class AbstractXMLDefinitionWriter
    */
   public AbstractXMLDefinitionWriter(final ReportWriter reportWriter, final int indentLevel)
   {
+    super(getDefaultSafeTags(), indentLevel);
     this.reportWriter = reportWriter;
-    this.indentLevel = indentLevel;
   }
 
   /**
@@ -207,121 +174,6 @@ public abstract class AbstractXMLDefinitionWriter
   protected JFreeReport getReport()
   {
     return getReportWriter().getReport();
-  }
-
-  /**
-   * Writes an opening XML tag that has no attributes.
-   *
-   * @param w  the writer.
-   * @param name  the tag name.
-   *
-   * @throws IOException if there is an I/O problem.
-   */
-  protected void writeTag(final Writer w, final String name) throws IOException
-  {
-    indent(w, OPEN_TAG_INCREASE);
-
-    w.write("<");
-    w.write(name);
-    w.write(">");
-    if (getSafeTags().isSafeForOpen(name))
-    {
-      w.write(getLineSeparator());
-    }
-  }
-
-  /**
-   * Writes a closing XML tag.
-   *
-   * @param w  the writer.
-   * @param tag  the tag name.
-   *
-   * @throws IOException if there is an I/O problem.
-   */
-  protected void writeCloseTag(final Writer w, final String tag) throws IOException
-  {
-    // check whether the tag contains CData - we ma not indent such tags
-    if (getSafeTags().isSafeForOpen(tag))
-    {
-      indent(w, CLOSE_TAG_DECREASE);
-    }
-    else
-    {
-      decreaseIndent();
-    }
-    w.write("</");
-    w.write(tag);
-    w.write(">");
-    if (getSafeTags().isSafeForClose(tag))
-    {
-      w.write(getLineSeparator());
-    }
-  }
-
-  /**
-   * Writes an opening XML tag with an attribute/value pair.
-   *
-   * @param w  the writer.
-   * @param name  the tag name.
-   * @param attributeName  the attribute name.
-   * @param attributeValue  the attribute value.
-   * @param close  controls whether the tag is closed.
-   *
-   * @throws IOException if there is an I/O problem.
-   */
-  protected void writeTag(final Writer w, final String name, final String attributeName, final String attributeValue,
-                          final boolean close) throws IOException
-  {
-    final Properties attr = new Properties();
-    attr.setProperty(attributeName, attributeValue);
-    writeTag(w, name, attr, close);
-  }
-
-  /**
-   * Writes an opening XML tag along with a list of attribute/value pairs.
-   *
-   * @param w  the writer.
-   * @param name  the tag name.
-   * @param attributes  the attributes.
-   * @param close  controls whether the tag is closed.
-   *
-   * @throws IOException if there is an I/O problem.
-   */
-  protected void writeTag(final Writer w, final String name, final Properties attributes, final boolean close)
-      throws IOException
-  {
-    indent(w, OPEN_TAG_INCREASE);
-
-    w.write("<");
-    w.write(name);
-    final Enumeration keys = attributes.keys();
-    while (keys.hasMoreElements())
-    {
-      final String key = (String) keys.nextElement();
-      final String value = attributes.getProperty(key);
-      w.write(" ");
-      w.write(key);
-      w.write("=\"");
-      w.write(normalize(value));
-      w.write("\"");
-    }
-    if (close)
-    {
-      w.write("/>");
-      if (getSafeTags().isSafeForClose(name))
-      {
-        w.write(getLineSeparator());
-      }
-      decreaseIndent();
-    }
-    else
-    {
-      w.write(">");
-      if (getSafeTags().isSafeForOpen(name))
-      {
-        w.write(getLineSeparator());
-      }
-    }
   }
 
   /**
@@ -393,58 +245,6 @@ public abstract class AbstractXMLDefinitionWriter
 
     return (str.toString());
   }
-
-  /**
-   * Indent the line. Called for proper indenting in various places.
-   *
-   * @param writer the writer which should receive the indentention.
-   * @param increase the current indent level.
-   * @throws IOException if writing the stream failed.
-   */
-  protected void indent(final Writer writer, final int increase) throws IOException
-  {
-    if (increase == CLOSE_TAG_DECREASE)
-    {
-      decreaseIndent();
-    }
-    for (int i = 0; i < indentLevel; i++)
-    {
-      writer.write("    "); // 4 spaces, we could also try tab,
-      // but I do not know whether this works
-      // with our XML edit pane
-    }
-    if (increase == OPEN_TAG_INCREASE)
-    {
-      increaseIndent();
-    }
-  }
-
-  /**
-   * Returns the current indent level.
-   *
-   * @return the current indent level.
-   */
-  protected int getIndentLevel()
-  {
-    return indentLevel;
-  }
-
-  /**
-   * Increases the indention by one level.
-   */
-  protected void increaseIndent()
-  {
-    indentLevel++;
-  }
-
-  /**
-   * Decreates the indention by one level.
-   */
-  protected void decreaseIndent()
-  {
-    indentLevel--;
-  }
-
 
   /**
    * Writes the report definition portion. Every DefinitionWriter handles one

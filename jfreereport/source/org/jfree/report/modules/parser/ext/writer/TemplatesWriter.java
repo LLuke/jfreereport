@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.8 2003/06/29 16:59:27 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import org.jfree.report.modules.parser.ext.ExtReportHandler;
 
 /**
  * A templates writer.
+ * todo define and implement the parser hints to write template definitions ... 
  *
  * @author Thomas Morgner
  */
