@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_sv.java,v 1.1 2003/05/30 18:49:43 taqua Exp $
+ * $Id: JFreeReportResources_sv.java,v 1.2 2003/06/04 21:34:01 taqua Exp $
  *
  * Changes
  * -------
@@ -59,34 +59,22 @@ public class JFreeReportResources_sv extends JFreeReportResources
             {"action.save-as.name", "Spara som PDF..."},
             {"action.save-as.description", "Spara till PDF format"},
             {"action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
-            {"action.save-as.accelerator", KeyStroke.getKeyStroke ("control S")},
-            {"action.save-as.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.save-as.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-excel.name", "Exportera till Excel..."},
             {"action.export-to-excel.description", "Spara till MS-Excel format"},
             {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
-            {"action.export-to-excel.accelerator", KeyStroke.getKeyStroke ("control E")},
-            // temporarily using the same icon as "Spara till PDF", till we have a better one
-            {"action.export-to-excel.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-excel.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-html.name", "Exportera till html..."},
             {"action.export-to-html.description", "Spara till HTML format"},
             {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_H)},
-            {"action.export-to-html.accelerator", KeyStroke.getKeyStroke ("control H")},
 
             {"action.export-to-csv.name", "Exportera till CSV..."},
             {"action.export-to-csv.description", "Spara till CSV format"},
             {"action.export-to-csv.mnemonic", new Integer (KeyEvent.VK_C)},
-            {"action.export-to-csv.accelerator", KeyStroke.getKeyStroke ("control C")},
 
             {"action.export-to-plaintext.name", "Spara som text file..."},
             {"action.export-to-plaintext.description", "Spara till vanlig text fil"},
             {"action.export-to-plaintext.mnemonic", new Integer (KeyEvent.VK_T)},
-            {"action.export-to-plaintext.accelerator", KeyStroke.getKeyStroke ("control T")},
 
             {"action.page-setup.name", "Sida inställningar"},
             {"action.page-setup.description", "Sida inställningar"},
@@ -95,17 +83,14 @@ public class JFreeReportResources_sv extends JFreeReportResources
             {"action.print.name", "Skriva ut..."},
             {"action.print.description", "Skriva ut rapporten"},
             {"action.print.mnemonic", new Integer (KeyEvent.VK_P)},
-            {"action.print.accelerator", KeyStroke.getKeyStroke ("control P")},
 
             {"action.close.name", "Stänga"},
             {"action.close.description", "Stänga förhandsgransknings-fönster"},
             {"action.close.mnemonic", new Integer (KeyEvent.VK_C)},
-            {"action.close.accelerator", KeyStroke.getKeyStroke ("control X")},
 
             {"action.gotopage.name", "Gå till sida ..."},
             {"action.gotopage.description", "Se en sida direkt"},
             {"action.gotopage.mnemonic", new Integer (KeyEvent.VK_G)},
-            {"action.gotopage.accelerator", KeyStroke.getKeyStroke ("control G")},
 
             {"dialog.gotopage.message", "Ange en sida nummer"},
             {"dialog.gotopage.title", "Gå till sida"},
@@ -115,34 +100,22 @@ public class JFreeReportResources_sv extends JFreeReportResources
             {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
 
             {"action.firstpage.name", "Hem"},
-            {"action.firstpage.mnemonic", new Integer (KeyEvent.VK_HOME)},
             {"action.firstpage.description", "Bläddra till den första sidan"},
-            {"action.firstpage.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_HOME, 0)},
 
             {"action.back.name", "Bläddra bakåt"},
             {"action.back.description", "Bläddra till den föregående sidan"},
-            {"action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
-            {"action.back.accelerator", KeyStroke.getKeyStroke ("PAGE_UP")},
 
             {"action.forward.name", "Bläddra framåt"},
             {"action.forward.description", "Bläddra till den nästa sidan"},
-            {"action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
-            {"action.forward.accelerator", KeyStroke.getKeyStroke ("PAGE_DOWN")},
 
             {"action.lastpage.name", "Sista sida"},
             {"action.lastpage.description", "Bläddra till den sista sidan"},
-            {"action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
-            {"action.lastpage.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_END, 0)},
 
             {"action.zoomIn.name", "Zooma in"},
             {"action.zoomIn.description", "Förstärka zoomen"},
-            {"action.zoomIn.mnemonic", new Integer (KeyEvent.VK_PLUS)},
-            {"action.zoomIn.accelerator", KeyStroke.getKeyStroke ("PLUS")},
 
             {"action.zoomOut.name", "Zooma ut"},
             {"action.zoomOut.description", "Minska zoomen"},
-            {"action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
-            {"action.zoomOut.accelerator", KeyStroke.getKeyStroke ("MINUS")},
 
             // preview frame...
             {"preview-frame.title", "Förhandsgranska"},

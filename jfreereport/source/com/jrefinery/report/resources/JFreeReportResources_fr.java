@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.6 2003/05/16 13:24:41 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.7 2003/05/26 13:30:58 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -99,28 +99,22 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
 
             {"action.firstpage.name", "Début"},
-//            {"action.firstpage.mnemonic", new Integer (KeyEvent.VK_HOME)},
             {"action.firstpage.description", "Aller à la première page"},
 
             {"action.back.name", "Précédent"},
             {"action.back.description", "Aller à la page précédente"},
-//            {"action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
 
             {"action.forward.name", "Suivant"},
             {"action.forward.description", "Aller à la page suivante"},
-//            {"action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
 
             {"action.lastpage.name", "Fin"},
             {"action.lastpage.description", "Aller à la dernière page"},
-//            {"action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
 
             {"action.zoomIn.name", "Agrandir"},
             {"action.zoomIn.description", "Agrandir"},
-//            {"action.zoomIn.mnemonic", new Integer (KeyEvent.VK_PLUS)},
 
             {"action.zoomOut.name", "Rétrécir"},
             {"action.zoomOut.description", "Rétrécir"},
-//            {"action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
 
             // preview frame...
             {"preview-frame.title", "Aperçu avant impression"},

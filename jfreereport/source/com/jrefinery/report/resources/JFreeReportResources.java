@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.55 2003/05/27 13:44:14 mungady Exp $
+ * $Id: JFreeReportResources.java,v 1.56 2003/06/04 21:09:10 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -159,6 +159,11 @@ public class JFreeReportResources extends ListResourceBundle
     return new ImageIcon (img);
   }
 
+  protected static final KeyStroke createMenuKeystroke (int character)
+  {
+    return KeyStroke.getKeyStroke(character, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+  }
+
   /** The resources to be localised. */
   private static final Object[][] CONTENTS =
           {
@@ -171,14 +176,14 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.save-as.name", "Save As PDF..."},
             {"action.save-as.description", "Save to PDF format"},
             {"action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
-            {"action.save-as.accelerator", KeyStroke.getKeyStroke ("control S")},
+            {"action.save-as.accelerator", createMenuKeystroke(KeyEvent.VK_S)},
             {"action.save-as.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
             {"action.save-as.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-excel.name", "Export to Excel..."},
             {"action.export-to-excel.description", "Save to MS-Excel format"},
             {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
-            {"action.export-to-excel.accelerator", KeyStroke.getKeyStroke ("control E")},
+            {"action.export-to-excel.accelerator", createMenuKeystroke(KeyEvent.VK_E)},
             // temporarily using the same icon as "Save to PDF", till we have a better one
             {"action.export-to-excel.small-icon", 
                 getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
@@ -188,7 +193,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.export-to-html.name", "Export to html..."},
             {"action.export-to-html.description", "Save to HTML format"},
             {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_H)},
-            {"action.export-to-html.accelerator", KeyStroke.getKeyStroke ("control H")},
+            {"action.export-to-html.accelerator", createMenuKeystroke(KeyEvent.VK_H)},
             // temporarily using the same icon as "Save to PDF", till we have a better one
             {"action.export-to-html.small-icon", 
                 getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
@@ -198,7 +203,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.export-to-csv.name", "Export to CSV..."},
             {"action.export-to-csv.description", "Save to CSV format"},
             {"action.export-to-csv.mnemonic", new Integer (KeyEvent.VK_C)},
-            {"action.export-to-csv.accelerator", KeyStroke.getKeyStroke ("control C")},
+            {"action.export-to-csv.accelerator", createMenuKeystroke(KeyEvent.VK_C)},
             // temporarily using the same icon as "Save to PDF", till we have a better one
             {"action.export-to-csv.small-icon", 
                 getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
@@ -208,7 +213,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.export-to-plaintext.name", "Save as text file..."},
             {"action.export-to-plaintext.description", "Save to PlainText format"},
             {"action.export-to-plaintext.mnemonic", new Integer (KeyEvent.VK_T)},
-            {"action.export-to-plaintext.accelerator", KeyStroke.getKeyStroke ("control T")},
+            {"action.export-to-plaintext.accelerator", createMenuKeystroke(KeyEvent.VK_T)},
             // temporarily using the same icon as "Save to PDF", till we have a better one
             {"action.export-to-plaintext.small-icon", 
                 getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
@@ -225,19 +230,19 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.print.name", "Print..."},
             {"action.print.description", "Print report"},
             {"action.print.mnemonic", new Integer (KeyEvent.VK_P)},
-            {"action.print.accelerator", KeyStroke.getKeyStroke ("control P")},
+            {"action.print.accelerator", createMenuKeystroke(KeyEvent.VK_P)},
             {"action.print.small-icon", getIcon ("com/jrefinery/report/resources/Print16.gif")},
             {"action.print.icon", getIcon ("com/jrefinery/report/resources/Print24.gif")},
 
             {"action.close.name", "Close"},
             {"action.close.description", "Close print preview window"},
             {"action.close.mnemonic", new Integer (KeyEvent.VK_C)},
-            {"action.close.accelerator", KeyStroke.getKeyStroke ("control X")},
+            {"action.close.accelerator", createMenuKeystroke(KeyEvent.VK_X)},
 
             {"action.gotopage.name", "Go to page ..."},
             {"action.gotopage.description", "View a page directly"},
             {"action.gotopage.mnemonic", new Integer (KeyEvent.VK_G)},
-            {"action.gotopage.accelerator", KeyStroke.getKeyStroke ("control G")},
+            {"action.gotopage.accelerator", createMenuKeystroke(KeyEvent.VK_G)},
 
             {"dialog.gotopage.message", "Enter a page number"},
             {"dialog.gotopage.title", "Go to page"},

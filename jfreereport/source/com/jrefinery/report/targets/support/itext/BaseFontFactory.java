@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.10 2003/06/12 23:17:16 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.11 2003/06/13 16:21:40 taqua Exp $
  *
  * Changes
  * -------
@@ -142,7 +142,16 @@ public class BaseFontFactory extends DefaultFontMapper
     Log.debug("Running on operating system: " + osname);
     Log.debug("Character encoding used as default: " + encoding);
 
-    if (StringUtil.startsWithIgnoreCase(osname, "windows"))
+    if (System.getProperty("mrj.version") != null)
+    {
+      String userhome = System.getProperty("user.home");
+      Log.debug ("Detected MacOS (Property 'mrj.version' is present.");
+      registerFontPath(new File (userhome + "/Library/Fonts"), encoding);
+      registerFontPath(new File ("/Library/Fonts"), encoding);
+      registerFontPath(new File ("/Network/Library/Fonts"), encoding);
+      registerFontPath(new File ("/System/Library/Fonts"), encoding);
+    }
+    else if (StringUtil.startsWithIgnoreCase(osname, "windows"))
     {
       registerWindowsFontPath(encoding);
     }

@@ -143,6 +143,7 @@ PlainText output target:
   could look weird. Using one of the predefined AWT colors is always safe,
   everything else should work, but there are no guarantees.
 
+
 11. DEFINING THE SELECTABLE ENCODINGS IN THE EXPORT DIALOGS
 -----------------------------------------------------------
 By default, the export dialogs make all defined string encodings available
@@ -205,7 +206,47 @@ are printed on wrong positions, while left-aligned text does not
 fully use the available space (or the oposite effect, that the field
 does not obey to the defined limitations).
 
-13. OTHER FEEDBACK
+
+14. USING TRUETYPE FONTS
+------------------------
+Unix: If you want to use TrueType in Java, you will have to copy all
+  needed TrueType fonts to the $JRE/lib/fonts directory. After copying
+  the fonts, make sure that you update the font.dir file of that directory,
+  so that the JRE can find these fonts.
+
+  When JFreeReport is used to generate PDF files only, copying the files
+  will not be necessary, iText uses the all fonts of the default font path
+  without using AWT functionality.
+
+  The PDF-Target will register all fonts found in the directory
+  "/usr/X11R6/lib/X11/fonts" and all subdirectories. Additionally the directory
+  "/usr/share/fonts" is searched for usable font files.
+
+  See also: (This should also work for JDK 1.2.2)
+  http://java.sun.com/j2se/1.3/docs/guide/intl/addingfonts.html#adding
+
+MacOS: The iText library uses only TTF and Adobe font files to generate PDF
+  files. If your system stores the fonts in the ResourceFork, Java may not be
+  able to access them.
+
+  You can use FONDU (http://fondu.sourceforge.net/) to convert the MacOS fonts
+  into a usable format.
+
+  Additionally the MacOS X font directories are searched in the following order:
+
+  ~/Library/Fonts
+  /Library/Fonts
+  /Network/Library/Fonts
+  /System/Library/Fonts
+
+  Any TTF, AFM or PFB file found in these directories will be registered with
+  iText and can be used to create PDF files.
+
+Windows: The %WINDIR%/fonts directory is used to search and register the system
+  fonts. The JDK uses all fonts that are available, no additional work is needed.
+
+
+14. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the
 JFreeReport forum.
