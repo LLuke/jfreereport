@@ -20,46 +20,28 @@
 <!-- in the JFreeReport forum. -->
 
 <project name="jfreereport-ext" default="all" basedir=".">
+
   <!-- Runns some tests, to identify the used JDK implementation -->
-  <target name="check-JDK">
+  <target name="init" depends="init-classpath">
     <description>Runs tests to retrieve the JDK version</description>
-    <available classname="java.util.Timer" property="java-1.3.present"/>
-    <available classname="java.nio.Buffer" property="java-1.4.present"/>
+    <available classpathref="build.classpath" classname="java.util.Timer" property="java-1.3.present"/>
+    <available classpathref="build.classpath" classname="java.nio.Buffer" property="java-1.4.present"/>
+    <available classpathref="build.classpath" classname="junit.framework.Test" property="junit.present"/>
+    <available classpathref="build.classpath" classname="org.apache.log4j.Category" property="log4j.present"/>
+    <available classpathref="build.classpath" classname="javax.servlet.http.HttpServlet" property="servlet.present"/>
+
+    <!--
+    <echo>
+      Init test: JFreeReport: ${jfreereport.present}
+      Init test: Java1.3    : ${java-1.3.present}
+      Init test: Java1.4    : ${java-1.4.present}
+      Init test: JUnit      : ${junit.present}
+      Init test: Log4J      : ${log4j.present}
+      Init test: Servlets   : ${servlet.present}
+    </echo>
+    -->
   </target>
 
-  <target name="init-ext" description="Initialise parameters for the base project.">
-    <tstamp/>
-    <!-- BaseDirectory is different for either cvs target and build target -->
-    <property name="projectdir" value=".."/>
-    <property name="builddir" value="${projectdir}/build"/>
-    <property name="libdir" value="${projectdir}/lib"/>
-
-    <property name="JFreeChart-jar" value="jfreechart-0.9.6.jar"/>
-    <property name="junit-jar" value="junit.jar"/>
-    <property name="log4j-jar" value="log4j-1.2.3.jar"/>
-    <property name="servlet-jar" value="servlet.jar"/>
-
-    <property name="jfreereport-ext.name" value="jfreereport-ext"/>
-    <property name="jfreereport-ext.version" value="0.8.1"/>
-  </target>
-
-  <!-- Initialisation. -->
-  <target name="init-base" description="Initialise parameters for the base project.">
-    <tstamp/>
-    <property name="jfreereport-dir" value=".."/>
-    <property name="jfreereport-libdir" value="${jfreereport-dir}/lib"/>
-
-    <!-- JFreeReport base libraries -->
-    <property name="BeanShell-jar" value="bsh-1.2b6.jar"/>
-    <property name="GnuJAXP-jar" value="gnujaxp.jar"/>
-    <property name="iText-jar" value="iText-0.96.jar"/>
-    <property name="JCommon-jar" value="jcommon-0.7.2.jar"/>
-    <property name="Pixie-jar" value="pixie.jar"/>
-    <property name="POI-jar" value="jakarta-poi-1.5.1-final-20020615.jar"/>
-    <property name="JFreeReport-jar" value="jfreereport-0.8.1.jar"/>
-    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.1-demo.jar"/>
-
-  </target>
 
   <target name="init-classpath" depends="init-base,init-ext">
     <path id="build.classpath">
@@ -78,9 +60,71 @@
     </path>
   </target>
 
+  <target name="init-ext" description="Initialise parameters for the base project.">
+    <tstamp/>
+    <property file="build.properties"/>
+
+    <!-- BaseDirectory is different for either cvs target and build target -->
+    <property name="projectdir" value=".."/>
+    <property name="builddir" value="${projectdir}/build"/>
+    <property name="libdir" value="${projectdir}/lib"/>
+
+    <property name="JFreeChart-jar" value="jfreechart-0.9.6.jar"/>
+    <property name="junit-jar" value="junit.jar"/>
+    <property name="log4j-jar" value="log4j-1.2.3.jar"/>
+    <property name="servlet-jar" value="servlet.jar"/>
+
+    <property name="jfreereport-ext.name" value="jfreereport-ext"/>
+    <property name="jfreereport-ext.version" value="0.8.1"/>
+  </target>
+
+  <!-- rebuild the base distribution if necessary -->
+  <target name="init-base" depends="init-base-vars, init-base-rebuild">
+    <description>
+      Initializes the base distribution and rebuilds the base project if necessary.
+    </description>
+  </target>
+
+  <target name="init-base-rebuild" unless="jfreereport.present">
+    <ant antfile="${jfreereport-dir}/ant/build.xml" inheritAll="false" target="compile-demo"/>
+  </target>
+
+  <!-- Initialisation. -->
+  <target name="init-base-vars" description="Initialise parameters for the base project.">
+    <tstamp/>
+    <property file="build.properties"/>
+
+    <fail unless="jfreereport-dir">
+      The property "jfreereport-dir" is not defined. Please define this property
+      in the build.properties file or supply the property as command parameter when
+      starting ant.
+
+      The "jfreereport-dir" property should point to the directory, where the
+      JFreeReport base project is installed. The installed JFreeReport version must
+      match the extensions project version.
+    </fail>
+    <property name="jfreereport-libdir" value="${jfreereport-dir}/lib"/>
+
+    <!-- JFreeReport base libraries -->
+    <property name="BeanShell-jar" value="bsh-1.2b6.jar"/>
+    <property name="GnuJAXP-jar" value="gnujaxp.jar"/>
+    <property name="iText-jar" value="iText-0.96.jar"/>
+    <property name="JCommon-jar" value="jcommon-0.7.2.jar"/>
+    <property name="Pixie-jar" value="pixie.jar"/>
+    <property name="POI-jar" value="jakarta-poi-1.5.1-final-20020615.jar"/>
+    <property name="JFreeReport-jar" value="jfreereport-0.8.1.jar"/>
+    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.1-demo.jar"/>
+
+    <available file="${jfreereport-dir}/${JFreeReport-demo-jar}" property="jfreereport.present"/>
+    <echo>
+      Init complete: ${jfreereport.present}
+      Init complete: ${basedir}
+    </echo>
+  </target>
+
   <!-- Compile the JFreeReport classes -->
   <target name="compile"
-    depends="init-classpath"
+    depends="init"
     description="Compile the JFreeReport source code.">
 
     <!-- create a temp build directory -->
@@ -92,7 +136,10 @@
       excludes="com/jrefinery/report/demo/**">
       <classpath refid="build.classpath"/>
       <exclude name="com/jrefinery/report/ext/NetDump.java" unless="java-1.3.present"/>
+      <exclude name="com/jrefinery/report/ext/demo/**" unless="servlet.present"/>
       <exclude name="com/jrefinery/report/ext/log/Java14LogTarget.java" unless="java-1.4.present"/>
+      <exclude name="com/jrefinery/report/ext/log/Log4JTarget.java" unless="log4j.present"/>
+      <exclude name="com/jrefinery/report/ext/junit/**" unless="junit.present"/>
     </javac>
 
     <!-- copy across the resource files -->
@@ -110,7 +157,7 @@
   </target>
 
   <!-- Generate the JFreeReport JavaDoc HTML pages -->
-  <target name="javadoc" depends="init-classpath">
+  <target name="javadoc" depends="init">
     <delete dir="${projectdir}/javadoc"/>
     <mkdir dir="${projectdir}/javadoc"/>
     <javadoc destdir="${projectdir}/javadoc"
@@ -123,7 +170,10 @@
     </javadoc>
   </target>
 
-  <target name="build-war" depends="compile">
+  <!-- Builds the WAR file and copies all required libraries from the JFreeReport base -->
+  <!-- and extension projects into the war.                                            -->
+  <!-- The BaseProject must be readily build                                           -->
+  <target name="build-war" depends="compile" if="servlet.present">
     <mkdir dir="${projectdir}/warbuild"/>
 
     <copy todir="${projectdir}/warbuild">
@@ -140,9 +190,9 @@
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${POI-jar}"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-dir}/${JFreeReport-jar}"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-dir}/${JFreeReport-demo-jar}"/>
-    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${JFreeChart-jar}"/>
-    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${junit-jar}"/>
-    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${log4j-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${JFreeChart-jar}" failonerror="false"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${junit-jar}" failonerror="false"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${log4j-jar}" failonerror="false"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${servlet-jar}"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.jar"/>
 
@@ -156,6 +206,128 @@
 
   </target>
 
-  <target name="all" depends="compile, javadoc, build-war"/>
+  <!-- Make .zip distribution for JFreeReport -->
+  <target name="make-zip" depends="compile, build-war">
+
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="${projectdir}/distribution"/>
+
+    <!-- copy across README -->
+    <copy file="${projectdir}/README" tofile="${projectdir}/distribution/README"/>
+
+    <!-- copy across ChangeLog -->
+    <copy file="${projectdir}/ChangeLog" tofile="${projectdir}/distribution/ChangeLog"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.jar" tofile="${projectdir}/distribution/${jfreereport-ext.name}-${jfreereport-ext.version}.jar"/>
+
+    <!-- copy across war file -->
+    <copy file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.war" tofile="${projectdir}/distribution/${jfreereport-ext.name}-${jfreereport-ext.version}.war" failonerror="false"/>
+
+    <!-- copy across source files -->
+    <copy todir="${projectdir}/distribution/source">
+      <fileset dir="${projectdir}/source"/>
+    </copy>
+
+    <!-- copy across web application files -->
+    <copy todir="${projectdir}/distribution/webapp">
+      <fileset dir="${projectdir}/webapp"/>
+    </copy>
+
+    <!-- copy across lib files -->
+    <copy todir="${projectdir}/distribution/lib">
+      <fileset dir="${projectdir}/lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy todir="${projectdir}/distribution/ant">
+      <fileset dir="${projectdir}/ant"/>
+    </copy>
+
+    <!-- convert end-of-line characters in text files -->
+    <!-- end of file does not need to be marked, and causes trouble if it is -->
+    <fixcrlf srcdir="${projectdir}/distribution/source"
+      eol="crlf" eof="remove"
+      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
+    <fixcrlf srcdir="${projectdir}/distribution/ant"
+      eol="crlf" eof="remove"/>
+
+    <!-- make the zip file -->
+    <zip zipfile="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.zip">
+      <zipfileset dir="${projectdir}/distribution"
+        prefix="${jfreereport-ext.name}-${jfreereport-ext.version}"/>
+    </zip>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="${projectdir}/distribution"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for JFreeReport -->
+  <target name="make-targz" depends="compile, build-war">
+
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="${projectdir}/distribution"/>
+
+    <!-- copy across README -->
+    <copy file="${projectdir}/README" tofile="${projectdir}/distribution/README"/>
+
+    <!-- copy across ChangeLog -->
+    <copy file="${projectdir}/ChangeLog" tofile="${projectdir}/distribution/ChangeLog"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.jar" tofile="${projectdir}/distribution/${jfreereport-ext.name}-${jfreereport-ext.version}.jar"/>
+
+    <!-- copy across war file -->
+    <copy file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.war" tofile="${projectdir}/distribution/${jfreereport-ext.name}-${jfreereport-ext.version}.war" failonerror="false"/>
+
+    <!-- copy across source files -->
+    <copy todir="${projectdir}/distribution/source">
+      <fileset dir="${projectdir}/source"/>
+    </copy>
+
+    <!-- copy across web application files -->
+    <copy todir="${projectdir}/distribution/webapp">
+      <fileset dir="${projectdir}/webapp"/>
+    </copy>
+
+    <!-- copy across lib files -->
+    <copy todir="${projectdir}/distribution/lib">
+      <fileset dir="${projectdir}/lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy todir="${projectdir}/distribution/ant">
+      <fileset dir="${projectdir}/ant"/>
+    </copy>
+
+    <!-- convert end-of-line characters in text files -->
+    <fixcrlf srcdir="${projectdir}/distribution/source"
+      eol="lf" eof="remove"
+      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
+    <fixcrlf srcdir="${projectdir}/distribution/ant"
+      eol="lf" eof="remove"/>
+
+    <!-- make the tar.gz file -->
+    <tar tarfile="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.tar">
+      <tarfileset dir="${projectdir}/distribution"
+        prefix="${jfreereport-ext.name}-${jfreereport-ext.version}"/>
+    </tar>
+    <gzip zipfile="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.tar.gz"
+      src="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.tar"/>
+    <delete file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.tar"/>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="${projectdir}/distribution"/>
+
+  </target>
+
+  <target name="all" depends="init, compile, javadoc, build-war, make-zip, make-targz"/>
 </project>
 

@@ -18,9 +18,33 @@ Note:
 When adding functionality that requires additional libraries make sure that
 all depencies are documented.
 
+Building
+------------------
+
+When rebuilding the sources, make sure, that you have all required libraries
+in your classpath or exclude these classes, that should not be build.
+
+The provided ANT script checks, whether the required libraries for certain
+classes are there, if in doubt, then use this script to compile the sources.
+
+The required libraries for a complete build are:
+
+servlet.jar     - The Servlet package "javax.servlet" is available from Sun.
+junit.jar       - The JUnit test library, available from "www.junit.org"
+log4j-1.2.3.jar - The Log4J logging framework: "jakarta.apache.org".
+JDK 1.4         - For the Java1.4 style logging support
+
 
 JFreeReport Tests:
 ------------------
 
 JUnit test will be located in com.jrefinery.report.ext.junit and get removed
 from the base package.
+
+
+LogTargets
+------------------
+
+Enhanced log targets for the Log4J library and the Java 1.4 logging implementation
+are provided in the package com.jrefinery.report.ext.log.
+
