@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.2 2003/07/11 18:33:20 taqua Exp $
  *
  * Changes:
  * --------
@@ -43,6 +43,8 @@
 package org.jfree.report;
 
 import java.util.Arrays;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import org.jfree.JCommon;
 import org.jfree.ui.about.Contributor;
@@ -69,7 +71,6 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
     setInfo("http://www.jfree.org/jfreereport/index.html");
     setCopyright
         ("(C)opyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors");
-    setLicenceText(Licences.LGPL);
 
     setContributors(Arrays.asList(
         new Contributor[]
@@ -92,6 +93,27 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
               "http://sourceforge.net/projects/jfreereport/"),
         }
     ));
+  }
+
+  public String getLicenceText()
+  {
+    try
+    {
+      Field f = Licences.class.getField("LGPL");
+      if (f.getType().equals(String.class) == false)
+      {
+        return "<unable to read licence text from jcommon>";
+      }
+      if (f.isAccessible() && Modifier.isStatic(f.getModifiers()))
+      {
+        return (String) f.get(null);
+      }
+      return "<unexpected field state in licence text of jcommon.>";
+    }
+    catch (Exception e)
+    {
+      return "<failed to read licence text from jcommon class.>";
+    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.10 2003/06/29 16:59:30 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.io.PrintWriter;
 
 import org.jfree.report.ImageReference;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.StringUtil;
 
 /**
  * A wrapper for Image content within the generated HtmlTable. The image content
@@ -90,7 +89,7 @@ public class HtmlImageCellData extends HtmlCellData
       if (href.isExternal())
       {
         pout.print("<img src=\"");
-        pout.print(StringUtil.encodeUTF(href.getReference()));
+        pout.print(HtmlEncoderUtil.encodeUTF(href.getReference()));
         pout.print("\" width=\"");
         final Rectangle2D bounds = image.getBoundsScaled();
         pout.write((int) bounds.getWidth());
@@ -113,7 +112,7 @@ public class HtmlImageCellData extends HtmlCellData
       }
       else
       {
-        pout.print(StringUtil.encodeUTF(href.getReference()));
+        pout.print(HtmlEncoderUtil.encodeUTF(href.getReference()));
       }
     }
     catch (IOException ioe)

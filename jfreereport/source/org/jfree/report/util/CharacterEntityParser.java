@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.15 2003/06/29 16:59:30 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class CharacterEntityParser
    *
    * @param characterEntities the entities used for the parser
    */
-  protected CharacterEntityParser(final Properties characterEntities)
+  public CharacterEntityParser(final Properties characterEntities)
   {
     entities = characterEntities;
     reverse = new Properties();
@@ -72,17 +72,6 @@ public class CharacterEntityParser
       final String value = entities.getProperty(key);
       reverse.setProperty(value, key);
     }
-  }
-
-  /**
-   * create a new Character entity parser and initializes the parser with
-   * the entities defined in the HTML4 standard.
-   *
-   * @return the CharacterEntityParser initialized with HTML4 entities.
-   */
-  public static CharacterEntityParser createHTMLEntityParser()
-  {
-    return new CharacterEntityParser(new HTMLCharacterEntities());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -175,7 +175,7 @@ public class HtmlProducer extends TableProducer
   {
     if (entityParser == null)
     {
-      entityParser = CharacterEntityParser.createHTMLEntityParser();
+      entityParser = new CharacterEntityParser (new HtmlCharacterEntities());
     }
     return entityParser;
   }

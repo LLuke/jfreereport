@@ -241,6 +241,7 @@
 <!ELEMENT pageheader ( %itemelements; )>
 <!ATTLIST pageheader
   onfirstpage    (%boolean;)   #IMPLIED
+  onlastpage     (%boolean;)   #IMPLIED
   height         CDATA         #IMPLIED
   %basicform;
   %fontdef;

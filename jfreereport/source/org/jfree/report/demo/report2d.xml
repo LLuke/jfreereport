@@ -4,7 +4,7 @@
 <report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
   <!-- PAGE HEADER -->
-  <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
+  <pageheader height="32" onlastpage="false" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
     <line x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
     <label x="0" y="12" width="100%" height="20" alignment="center">PAGE HEADER</label>
     <string-field fieldname="pageXofY" x="50%" y="0" width="50%" height="10" alignment="right"/>
