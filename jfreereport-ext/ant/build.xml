@@ -75,7 +75,7 @@
     <property name="servlet-jar" value="servlet.jar"/>
 
     <property name="jfreereport-ext.name" value="jfreereport-ext"/>
-    <property name="jfreereport-ext.version" value="0.8.2"/>
+    <property name="jfreereport-ext.version" value="0.8.3"/>
   </target>
 
   <!-- rebuild the base distribution if necessary -->
@@ -106,14 +106,14 @@
     <property name="jfreereport-libdir" value="${jfreereport-dir}/lib"/>
 
     <!-- JFreeReport base libraries -->
-    <property name="BeanShell-jar" value="bsh-1.2b6.jar"/>
-    <property name="GnuJAXP-jar" value="gnujaxp.jar"/>
-    <property name="iText-jar" value="itext-0.98.jar"/>
-    <property name="JCommon-jar" value="jcommon-0.7.2.jar"/>
-    <property name="Pixie-jar" value="pixie.jar"/>
-    <property name="POI-jar" value="jakarta-poi-1.5.1-final-20020615.jar"/>
-    <property name="JFreeReport-jar" value="jfreereport-0.8.2.jar"/>
-    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.2-demo.jar"/>
+    <property name="BeanShell-jar" value="bsh-1.2b6.jar" />
+    <property name="GnuJAXP-jar" value="gnujaxp.jar" />
+    <property name="iText-jar" value="itext-0.99.jar" />
+    <property name="JCommon-jar" value="jcommon-0.8.1.jar" />
+    <property name="Pixie-jar" value="pixie-0.8.0.jar" />
+    <property name="POI-jar" value="jakarta-poi-1.10.0-dev-20030222.jar" />
+    <property name="JFreeReport-jar" value="jfreereport-0.8.3.jar"/>
+    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.3-demo.jar"/>
 
     <available file="${jfreereport-dir}/${JFreeReport-demo-jar}" property="jfreereport.present"/>
     <echo>
