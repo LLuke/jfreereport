@@ -1,9 +1,41 @@
 /**
- * Date: Feb 12, 2003
- * Time: 5:54:44 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id$
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------------------
+ * StyleKeyReferenceTableModel.java
+ * --------------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id $
+ *
+ * Changes (from 19-Feb-2003)
+ * -------------------------
+ * 19-Feb-2003 : Added standard header and Javadocs (DG);
+ *  
  */
+
 package com.jrefinery.report.io.ext.factory.stylekey;
 
 import com.jrefinery.report.targets.style.StyleKey;
@@ -11,33 +43,60 @@ import com.jrefinery.report.targets.style.StyleKey;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 
+/**
+ * A table model for the style key reference generator.
+ * 
+ * @author Thomas Morgner
+ */
 public class StyleKeyReferenceTableModel extends AbstractTableModel
 {
+  /**
+   * Represents a row in the table model.
+   */
   private class StylekeyDescriptionRow
   {
+    /** The factory. */
     private StyleKeyFactory keyFactory;
+    
+    /** The key. */
     private StyleKey key;
 
+    /**
+     * Creates a new row.
+     * 
+     * @param keyFactory  the factory.
+     * @param key  the key.
+     */
     public StylekeyDescriptionRow(StyleKeyFactory keyFactory, StyleKey key)
     {
       this.keyFactory = keyFactory;
       this.key = key;
     }
 
+    /**
+     * Returns the factory.
+     * 
+     * @return The factory.
+     */
     public StyleKeyFactory getKeyFactory()
     {
       return keyFactory;
     }
 
+    /**
+     * Returns the key.
+     * 
+     * @return The key.
+     */
     public StyleKey getKey()
     {
       return key;
     }
   }
 
+  /** The column names. */
   private static final String[] COLUMN_NAMES =
       {
         "stylekey-factory",
@@ -45,14 +104,25 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
         "key-class"
       };
 
+  /** Storage for the rows. */
   private ArrayList rows;
 
+  /**
+   * Creates a new table model.
+   * 
+   * @param cf  the factory collection.
+   */
   public StyleKeyReferenceTableModel(StyleKeyFactoryCollector cf)
   {
     rows = new ArrayList();
     addStyleKeyFactoryCollector(cf);
   }
 
+  /**
+   * Adds a factory.
+   * 
+   * @param cf  the factory.
+   */
   private void addStyleKeyFactoryCollector (StyleKeyFactoryCollector cf)
   {
     Iterator it = cf.getFactories();
@@ -70,6 +140,11 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
     }
   }
 
+  /**
+   * Adds a factory.
+   * 
+   * @param cf  the factory.
+   */
   private void addStyleKeyFactory (StyleKeyFactory cf)
   {
     Iterator it = cf.getRegisteredKeys();
@@ -120,10 +195,8 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
   }
 
   /**
-   *  Returns a default name for the column using spreadsheet conventions:
-   *  A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
-   *  returns an empty string.
-   *
+   * Returns the column name.
+   * 
    * @param column  the column being queried
    * @return a string containing the default name of <code>column</code>
    */
@@ -147,9 +220,10 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param	rowIndex	the row whose value is to be queried
-   * @param	columnIndex 	the column whose value is to be queried
-   * @return	the value Object at the specified cell
+   * @param rowIndex  the row whose value is to be queried
+   * @param columnIndex  the column whose value is to be queried
+   * 
+   * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
   {

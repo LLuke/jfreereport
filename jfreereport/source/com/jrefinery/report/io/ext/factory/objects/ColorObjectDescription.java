@@ -1,9 +1,41 @@
 /**
- * Date: Jan 10, 2003
- * Time: 9:07:48 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ColorObjectDescription.java,v 1.4 2003/02/02 23:43:49 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------------
+ * ColorObjectDescription.java
+ * ---------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id $
+ *
+ * Changes (from 19-Feb-2003)
+ * -------------------------
+ * 19-Feb-2003 : Added standard header and Javadocs (DG);
+ *  
  */
+
 package com.jrefinery.report.io.ext.factory.objects;
 
 import com.jrefinery.report.util.Log;
@@ -12,19 +44,35 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+/**
+ * An object-description for a <code>Color</code> object.
+ * 
+ * @author Thomas Morgner
+ */
 public class ColorObjectDescription extends AbstractObjectDescription
 {
+    
+  /**
+   * Creates a new object description.
+   */
   public ColorObjectDescription()
   {
     super(Color.class);
     setParameterDefinition("value", String.class);
   }
 
+  /**
+   * Creates an object based on this description.
+   * 
+   * @return The object.
+   */
   public Object createObject()
   {
     String value = (String) getParameter("value");
-    if (value == null) return Color.black;
-    
+    if (value == null) 
+    {
+      return Color.black;
+    }
     try
     {
       // get color by hex or octal value
@@ -36,7 +84,6 @@ public class ColorObjectDescription extends AbstractObjectDescription
       try
       {
         // try to get a color by name using reflection
-        // black is used for an instance and not for the color itselfs
         Field f = Color.class.getField(value);
 
         return (Color) f.get(null);
@@ -50,6 +97,13 @@ public class ColorObjectDescription extends AbstractObjectDescription
     }
   }
 
+  /**
+   * Sets the parameters of this description object to match the supplied object.
+   * 
+   * @param o  the object (should be an instance of <code>Color</code>).
+   * 
+   * @throws ObjectFactoryException ??
+   */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
     if (o instanceof Color == false)
@@ -64,9 +118,9 @@ public class ColorObjectDescription extends AbstractObjectDescription
       for (int i = 0; i < fields.length; i++)
       {
         Field f = fields[i];
-        if (Modifier.isPublic(f.getModifiers()) &&
-            Modifier.isFinal(f.getModifiers()) &&
-            Modifier.isStatic(f.getModifiers()))
+        if (Modifier.isPublic(f.getModifiers()) 
+            && Modifier.isFinal(f.getModifiers()) 
+            && Modifier.isStatic(f.getModifiers()))
         {
           String name = f.getName();
           Object oColor = f.get(null);
@@ -83,6 +137,7 @@ public class ColorObjectDescription extends AbstractObjectDescription
     }
     catch (Exception e)
     {
+        //
     }
 
     // no defined constant color, so this must be a user defined color

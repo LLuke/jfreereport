@@ -1,15 +1,55 @@
 /**
- * Date: Jan 10, 2003
- * Time: 9:07:48 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: Line2DObjectDescription.java,v 1.3 2003/01/22 19:38:26 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------------
+ * Line2DObjectDescription.java
+ * ----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id $
+ *
+ * Changes (from 19-Feb-2003)
+ * -------------------------
+ * 19-Feb-2003 : Added standard header and Javadocs (DG);
+ *  
  */
+
 package com.jrefinery.report.io.ext.factory.objects;
 
 import java.awt.geom.Line2D;
 
+/**
+ * An object-description for a <code>Line2D</code> object.
+ * 
+ * @author Thomas Morgner
+ */
 public class Line2DObjectDescription extends AbstractObjectDescription
 {
+  /**
+   * Creates a new object description.
+   */
   public Line2DObjectDescription()
   {
     super(Line2D.class);
@@ -19,6 +59,11 @@ public class Line2DObjectDescription extends AbstractObjectDescription
     setParameterDefinition("y2", Float.class);
   }
 
+  /**
+   * Creates an object based on this description.
+   * 
+   * @return The object.
+   */
   public Object createObject()
   {
     Line2D line = new Line2D.Float();
@@ -31,18 +76,36 @@ public class Line2DObjectDescription extends AbstractObjectDescription
     return line;
   }
 
+  /**
+   * Returns a parameter value as a float.
+   * 
+   * @param param  the parameter name.
+   * 
+   * @return The float value.
+   */
   private float getFloatParameter (String param)
   {
     Float p = (Float) getParameter(param);
-    if (p == null) return 0;
+    if (p == null) 
+    {
+      return 0;
+    }
     return p.floatValue();
   }
 
+  /**
+   * Sets the parameters of this description object to match the supplied object.
+   * 
+   * @param o  the object (should be an instance of <code>Line2D</code>).
+   * 
+   * @throws ObjectFactoryException if the object is not an instance of <code>Line2D</code>.
+   */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
     if (o instanceof Line2D == false)
+    {
       throw new ObjectFactoryException("In not assignable");
-
+    }
     Line2D line = (Line2D) o;
     float x1 = (float) line.getX1();
     float x2 = (float) line.getX2();
