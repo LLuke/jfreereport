@@ -23,14 +23,27 @@
  * ----------------------------
  * ConverterResources.java
  * ----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
+ * Original Author:  PR;
+ * Contributor(s):   -;
  *
+ * $Id: ConverterGUIModule.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ *
+ * Changes 
+ * -------------------------
+ * 06-Jul-2003 : Initial version
  */
 package org.jfree.report.modules.gui.converter.resources;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * French language resource for the report converter GUI.
+ * 
+ * @author PR
+ */
 public class ConverterResources_fr extends JFreeReportResources
 {
 

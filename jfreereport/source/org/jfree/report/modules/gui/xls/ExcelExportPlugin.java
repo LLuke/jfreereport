@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -77,7 +77,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   /**
    * Initializes the plugin to work with the given PreviewProxy.
    *
-   * @param proxy
+   * @param proxy the preview proxy that created this plugin.
    */
   public void init(final PreviewProxy proxy)
   {

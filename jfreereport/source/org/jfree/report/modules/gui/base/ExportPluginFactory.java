@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.4 2003/07/23 16:02:19 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.5 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes
  * --------
@@ -44,18 +44,35 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * An export plug-in factory.
+ * An export plug-in factory. This factory is used to collect all available
+ * export plugins and to make them avaiable to the preview components.
  *
  * @author Thomas Morgner.
  */
 public class ExportPluginFactory
 {
+  /**
+   * A class to manage the plugin module definitions.
+   * 
+   * @author Thomas Morgner
+   */
   private static class PluginDefinition implements Comparable
   {
+    /** The class of the export plugin implementation. */
     private Class pluginClass;
+    /** The preference string (used to sort the modules in the menu). */
     private String preference;
+    /** The configuration key that controls whether a module is visible. */
     private String enableKey;
 
+    /**
+     * Creates a new plugin definition.
+     * 
+     * @param pluginClass the plugin class that should be defined.
+     * @param preference the preference of the class in the menu.
+     * @param enableKey the report configuration key that triggers the visiblity 
+     * of the plugin.
+     */
     public PluginDefinition(Class pluginClass, String preference, String enableKey)
     {
       if (pluginClass == null)
@@ -64,17 +81,27 @@ public class ExportPluginFactory
       }
       if (enableKey == null)
       {
-        throw new NullPointerException("PluginClass is null.");
+        throw new NullPointerException("EnableKey is null.");
       }
       if (preference == null)
       {
-        throw new NullPointerException("PluginClass is null.");
+        throw new NullPointerException("Preference is null.");
       }
       this.pluginClass = pluginClass;
       this.enableKey = enableKey;
       this.preference = preference;
     }
 
+    /**
+     * Checks whether this plugin definition is equal to the given object.
+     * The object will be considered equal if it is a plugin definition pointing
+     * to the same export plugin.
+     *  
+     * @see java.lang.Object#equals(java.lang.Object)
+     * 
+     * @param o the object to compare
+     * @return true, if the object is equal, false otherwise.
+     */
     public boolean equals(Object o)
     {
       if (this == o)
@@ -96,21 +123,44 @@ public class ExportPluginFactory
       return true;
     }
 
+    /**
+     * Computes an hashcode for this export plugin. 
+     * @see java.lang.Object#hashCode()
+     * 
+     * @return the computed hashcode.
+     */
     public int hashCode()
     {
       return pluginClass.hashCode();
     }
 
+    /**
+     * Returns the export plugin class defined for this plugin definition.
+     * 
+     * @return the export plugin class.
+     */
     public Class getPluginClass()
     {
       return pluginClass;
     }
 
+    /**
+     * Returns the preference of the plugin in the menu. The preference is used
+     * to order the export plugins.
+     * 
+     * @return the preference of the plugin in the menu
+     */
     public String getPreference()
     {
       return preference;
     }
 
+    /**
+     * Returns the enable key of the report configuration which defines whether this
+     * plugin will be visible.
+     * 
+     * @return the enable key.
+     */
     public String getEnableKey()
     {
       return enableKey;
@@ -139,8 +189,14 @@ public class ExportPluginFactory
     }
   }
 
+  /** The singleton instance of this factory. */
   private static ExportPluginFactory factory;
 
+  /**
+   * Returns the singleton instance of the export plugin factory.
+   * 
+   * @return the factory instance
+   */
   public static ExportPluginFactory getInstance()
   {
     if (factory == null)
@@ -150,13 +206,25 @@ public class ExportPluginFactory
     return factory;
   }
 
+  /** The list of all known export plugins. */ 
   private ArrayList exportPlugins;
 
+  /**
+   * DefaultConstructor. Defines a new export plugin factory.
+   *
+   */
   protected ExportPluginFactory()
   {
     exportPlugins = new ArrayList();
   }
 
+  /**
+   * Registers the given plugin in this factory. 
+   * 
+   * @param plugin the implementing class of the export plugin
+   * @param preference the preference in the menu
+   * @param enableKey the enable key of the export plugin to trigger the visiblity
+   */
   public void registerPlugin (Class plugin, String preference, String enableKey)
   {
     if (ExportPlugin.class.isAssignableFrom(plugin))

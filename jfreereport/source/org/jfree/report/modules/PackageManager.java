@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.6 2003/07/26 18:35:07 taqua Exp $
+ * $Id: PackageManager.java,v 1.7 2003/08/18 18:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,11 +48,16 @@ import org.jfree.report.util.PackageConfiguration;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * This class will help to manage the extension classes of JFreeReport 0.8.4 and
- * later...
+ * The PackageManager is used to load and configure the modules of JFreeReport.
+ * Modules are used to extend the basic capabilities of JFreeReport by providing
+ * a simple plugin-interface. 
  * <p>
- * Todo: Write a real class documentation and add a query interface to make it 
- * possible to check for an certain module. 
+ * Modules provide a simple capability to remove unneeded functionality from the
+ * JFreeReport system and to reduce the overall code size. The modularisation provides
+ * a very strict way of removing unnecessary dependencies beween the various packages.
+ * <p>
+ * The package manager can be used to add new modules to the system or to check
+ * the existence and state of installed modules.  
  *
  * @author Thomas Morgner
  */
@@ -106,6 +111,28 @@ public final class PackageManager
     init("org.jfree.report.ext.modules.");
   }
 
+  /**
+   * Checks, whether a certain module is available.
+   * 
+   * @param moduleDescription the module description of the desired module.
+   * @return true, if the module is available and the version of the module
+   * is compatible, false otherwise.
+   */
+  public boolean isModuleAvailable (ModuleInfo moduleDescription)
+  {
+    PackageState[] packageStates =
+        (PackageState[]) modules.toArray(new PackageState[modules.size()]);
+    for (int i = 0; i < packageStates.length; i++)
+    {
+      PackageState state = packageStates[i];  
+      if (state.getModule().getModuleClass().equals(moduleDescription.getModuleClass()))
+      {
+        return (state.getState() == PackageState.STATE_INITIALIZED);
+      }
+    }
+    return false;
+  }
+  
   /**
    * Initializes the given module prefix. The package manager will search the 
    * report configuration for module definitions that start with that prefix.
@@ -182,7 +209,8 @@ public final class PackageManager
 
   /**
    * Checks, whether the given module is already loaded in either the given
-   * tempModules list or the global package registry. 
+   * tempModules list or the global package registry. If tmpModules is null,
+   * only the previously installed modules are checked.
    * 
    * @param tempModules a list of previously loaded modules.
    * @param module the module specification that is checked.
@@ -190,13 +218,16 @@ public final class PackageManager
    */
   private boolean containsModule (ArrayList tempModules, ModuleInfo module)
   {
-    ModuleInfo[] mods = (ModuleInfo[])
-        tempModules.toArray(new ModuleInfo[tempModules.size()]);
-    for (int i = 0; i < mods.length; i++)
+    if (tempModules != null)
     {
-      if (mods[i].getModuleClass().equals(module.getModuleClass()))
+      ModuleInfo[] mods = (ModuleInfo[])
+          tempModules.toArray(new ModuleInfo[tempModules.size()]);
+      for (int i = 0; i < mods.length; i++)
       {
-        return true;
+        if (mods[i].getModuleClass().equals(module.getModuleClass()))
+        {
+          return true;
+        }
       }
     }
 

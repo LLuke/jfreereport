@@ -25,14 +25,14 @@
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  Sergey M Mozgovoi;
+ * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PDFExportResources_si.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -41,8 +41,16 @@ package org.jfree.report.modules.gui.pdf.resources;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * Slovenian language resource for the PDF export GUI.
+ * 
+ * @author Sergey M Mozgovoi
+ */
 public class PDFExportResources_si extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public PDFExportResources_si()
   {
   }

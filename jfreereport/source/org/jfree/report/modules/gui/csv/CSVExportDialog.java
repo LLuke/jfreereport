@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.2 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes
  * --------
@@ -1016,7 +1016,8 @@ public class CSVExportDialog extends JDialog
 
   /**
    * Returns the CSV encoding property value.
-   *
+   * 
+   * @param config the report configuration from where to read the values.
    * @return the CSV encoding property value.
    */
   public String getCSVTargetEncoding(ReportConfiguration config)
@@ -1027,6 +1028,7 @@ public class CSVExportDialog extends JDialog
   /**
    * Sets the CSV encoding property value.
    *
+   * @param config the report configuration from where to read the values.
    * @param targetEncoding  the new encoding.
    */
   public void setCSVTargetEncoding(ReportConfiguration config, final String targetEncoding)

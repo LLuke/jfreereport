@@ -21,9 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------------------
- * ConverterResources.java
+ * ConverterResources_hu.java
  * ----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
+ * Original Author:  Demeter F. Tamás;
+ * Contributor(s):   -;
+ *
+ * $Id: ConverterGUIModule.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ *
+ * Changes 
+ * -------------------------
+ * 06-Jul-2003 : Initial version
  *
  */
 package org.jfree.report.modules.gui.converter.resources;
@@ -31,6 +40,11 @@ package org.jfree.report.modules.gui.converter.resources;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * Hungarian language resource for the report converter GUI.
+ * 
+ * @author Demeter F. Tamás
+ */
 public class ConverterResources_hu extends JFreeReportResources
 {
 

@@ -25,14 +25,14 @@
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  Thomas Dilts;
+ * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HtmlExportResources_sv.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -43,8 +43,16 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * Swedish language resource for the Html export GUI.
+ * 
+ * @author Thomas Dilts
+ */
 public class HtmlExportResources_sv extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public HtmlExportResources_sv()
   {
   }

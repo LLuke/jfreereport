@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PreviewBase.java
+ * PlainTextExportGUIModule.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportGUIModule.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
+ * $Id: PlainTextExportGUIModule.java,v 1.4 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,16 +43,33 @@ import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The module definition for the plain text export gui module.
+ * 
+ * @author Thomas Morgner
+ */
 public class PlainTextExportGUIModule extends AbstractModule
 {
+  /** The export plugin preference key. */ 
   private static final String ORDER_KEY = "org.jfree.report.modules.gui.plaintext.Order";
+  /** The export plugin enable key. */
   private static final String ENABLE_KEY = "org.jfree.report.modules.gui.plaintext.Enable";
 
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public PlainTextExportGUIModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module and registes it with the export plugin factory. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     String order = ReportConfiguration.getGlobalConfig().getConfigProperty

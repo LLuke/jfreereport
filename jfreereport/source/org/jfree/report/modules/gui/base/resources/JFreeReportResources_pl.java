@@ -23,7 +23,12 @@
  * ----------------------------
  * JFreeReportResources_pl.java
  * ----------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
+ * Original Author:  PB;
+ * Contributor(s):   -;
+ *
+ * $Id: JFreeReportResources_ru.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -37,6 +42,9 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_pl extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   */
   public JFreeReportResources_pl()
   {
   }

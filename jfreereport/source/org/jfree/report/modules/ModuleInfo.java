@@ -28,20 +28,56 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ModuleInfo.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
 package org.jfree.report.modules;
 
+/**
+ * The module info describes an required module and the module version.
+ * This description is used by the package manager to locate base modules.
+ * 
+ * @author Thomas Morgner
+ */
 public interface ModuleInfo
 {
+  /**
+   * Returns the module class of the desired base module.
+   * 
+   * @return the module class.
+   */
   public String getModuleClass();
+  
+  /**
+   * Returns the major version of the base module. The string should
+   * contain a compareable character sequence so that higher versions
+   * of the module are considered greater than lower versions.
+   * 
+   * @return the major version of the module.
+   */
   public String getMajorVersion();
+
+  /**
+   * Returns the minor version of the base module. The string should
+   * contain a compareable character sequence so that higher versions
+   * of the module are considered greater than lower versions.
+   * 
+   * @return the minor version of the module.
+   */
   public String getMinorVersion();
+
+  /**
+   * Returns the patchlevel version of the base module. The patch level
+   * should be used to mark bugfixes. The string should
+   * contain a compareable character sequence so that higher versions
+   * of the module are considered greater than lower versions.
+   * 
+   * @return the major version of the module.
+   */
   public String getPatchLevel();
 }

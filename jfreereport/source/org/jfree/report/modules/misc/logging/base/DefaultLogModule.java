@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultLogModule.java,v 1.1 2003/07/11 18:35:37 taqua Exp $
+ * $Id: DefaultLogModule.java,v 1.2 2003/07/25 00:58:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,13 +44,30 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.SystemOutLogTarget;
 
+/**
+ * The module definition for the System.out-Logging. This is the
+ * default log implementation and is provided to insert the logging
+ * initialisation in the module loading process.
+ * 
+ * @author Thomas Morgner
+ */
 public class DefaultLogModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public DefaultLogModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method initializes the logging system. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     if (ReportConfiguration.getGlobalConfig().isDisableLogging())

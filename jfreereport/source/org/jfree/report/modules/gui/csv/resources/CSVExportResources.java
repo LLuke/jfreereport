@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CSVExportResources.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *
  */
 
@@ -43,8 +43,16 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * English language resource for the CSV export GUI.
+ * 
+ * @author Thomas Morgner
+ */
 public class CSVExportResources extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public CSVExportResources()
   {
   }

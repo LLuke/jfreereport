@@ -25,14 +25,14 @@
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  Hendri Smit;
+ * Contributor(s):   -;
  *
- * $Id: PDFExportResources_nl.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PDFExportResources_nl.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -43,8 +43,16 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * Dutch language resource for the PDF export GUI.
+ * 
+ * @author Hendri Smit
+ */
 public class PDFExportResources_nl extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public PDFExportResources_nl()
   {
   }

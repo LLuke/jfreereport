@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PreviewBase.java
+ * PreviewBaseModule.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.3 2003/07/12 16:31:13 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.4 2003/07/21 20:46:55 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -45,16 +45,37 @@ import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The preview base module provides the basic preview components. This package
+ * contains Applet, JDialog, JFrame and JInternalFrame implementations of the 
+ * preview component. External export modules may plug into these components
+ * to provide additional functionality.  
+ * 
+ * @author Thomas Morgner
+ */
 public class PreviewBaseModule extends AbstractModule
 {
+  /** A configuration key defining whether to translate the swing components. */
   public static final String SWING_TRANSLATE_KEY =
       "org.jfree.report.modules.gui.base.SwingDialogTranslation";
 
+  /**
+   * Default Constructor. Loads the module definition.
+   * 
+   * @throws ModuleInitializeException if loading the module definition failed.
+   */
   public PreviewBaseModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. If the swing components should be translated, the 
+   * resources are plugged into the Swing-ResourceManager.  
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     if (isTranslateSwingDialogs())
@@ -64,6 +85,12 @@ public class PreviewBaseModule extends AbstractModule
     }
   }
 
+  /**
+   * Checks, whethe to translate swing dialogs. This is a global setting and must
+   * be configured outside.
+   * 
+   * @return true, if translating is enabled, false otherwise.
+   */
   private boolean isTranslateSwingDialogs()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty

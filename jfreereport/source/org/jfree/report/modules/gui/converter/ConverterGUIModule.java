@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PreviewBase.java
+ * ConverterGUIModule.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConverterGUIModule.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -41,13 +41,30 @@ package org.jfree.report.modules.gui.converter;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * Provides the module definition for the ReportConverterGUI. 
+ * 
+ * @author Thomas Morgner
+ */
 public class ConverterGUIModule extends AbstractModule
 {
+  /**
+   * Creates a new module definition and loads the module properties.
+   * 
+   * @throws ModuleInitializeException if an error occures.
+   */
   public ConverterGUIModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * This method does nothing.
+   *  
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occures.
+   */
   public void initialize() throws ModuleInitializeException
   {
   }

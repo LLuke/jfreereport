@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageState.java,v 1.1 2003/07/10 20:05:59 taqua Exp $
+ * $Id: PackageState.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 10.07.2003 : Initial version
+ * 10-Jul-2003 : Initial version
  *  
  */
 
@@ -42,17 +42,35 @@ import java.util.Comparator;
 
 import org.jfree.report.util.Log;
 
+/**
+ * The package state class is used by the package manager to keep track of
+ * the activation level of the installed packages.
+ * 
+ * @author Thomas Morgner
+ */
 public class PackageState implements Comparable
 {
-  private static final int STATE_NEW = 0;
-  private static final int STATE_CONFIGURED = 1;
-  private static final int STATE_INITIALIZED = 2;
-  private static final int STATE_ERROR = -2;
+  /** A constant defining that the package is new. */
+  public static final int STATE_NEW = 0;
+  /** A constant defining that the package has been loaded and configured. */
+  public static final int STATE_CONFIGURED = 1;
+  /** A constant defining that the package was initialized and is ready to use. */
+  public static final int STATE_INITIALIZED = 2;
+  /** A constant defining that the package produced an error and is not available. */
+  public static final int STATE_ERROR = -2;
 
+  /** The module class that contains the package information. */
   private Module module;
+  /** The state of the module. */
   private int state;
+  /** A reference to the module comparator to sort modules by dependency. */
   private static ModuleComparator comparator;
 
+  /**
+   * Provides a singleton interface to the comparator.
+   * 
+   * @return the module comparator.
+   */
   protected Comparator getComparator ()
   {
     if (comparator == null)
@@ -62,12 +80,24 @@ public class PackageState implements Comparable
     return comparator;
   }
 
+  /**
+   * Creates a new package state for the given module. The module state will
+   * be initialized to STATE_NEW.
+   * 
+   * @param module the module.
+   */
   public PackageState(Module module)
   {
     this.module = module;
     this.state = STATE_NEW;
   }
 
+  /**
+   * Configures the module and raises the state to STATE_CONFIGURED if the
+   * module is not yet configured.
+   * 
+   * @return true, if the module was configured, false otherwise.
+   */
   public boolean configure()
   {
     if (state == STATE_NEW)
@@ -79,16 +109,35 @@ public class PackageState implements Comparable
     return false;
   }
 
+  /**
+   * Returns the module managed by this state implementation.
+   * 
+   * @return the module.
+   */
   public Module getModule()
   {
     return module;
   }
 
+  /**
+   * Returns the current state of the module. This method returns either
+   * STATE_NEW, STATE_CONFIGURED, STATE_INITIALIZED or STATE_ERROR.
+   * 
+   * @return the module state.
+   */
   public int getState()
   {
     return state;
   }
 
+  /**
+   * Initializes the contained module and raises the set of the module to
+   * STATE_INITIALIZED, if the module was not yet initialized. In case of an
+   * error, the module state will be set to STATE_ERROR and the module will
+   * not be available. 
+   * 
+   * @return true, if the module was successfully initialized, false otherwise.
+   */
   public boolean initialize ()
   {
     if (state == STATE_CONFIGURED)
@@ -109,35 +158,7 @@ public class PackageState implements Comparable
   }
 
   /**
-   * Compares this object with the specified object for order.  Returns a
-   * negative integer, zero, or a positive integer as this object is less
-   * than, equal to, or greater than the specified object.<p>
-   *
-   * In the foregoing description, the notation
-   * <tt>sgn(</tt><i>expression</i><tt>)</tt> designates the mathematical
-   * <i>signum</i> function, which is defined to return one of <tt>-1</tt>,
-   * <tt>0</tt>, or <tt>1</tt> according to whether the value of <i>expression</i>
-   * is negative, zero or positive.
-   *
-   * The implementor must ensure <tt>sgn(x.compareTo(y)) ==
-   * -sgn(y.compareTo(x))</tt> for all <tt>x</tt> and <tt>y</tt>.  (This
-   * implies that <tt>x.compareTo(y)</tt> must throw an exception iff
-   * <tt>y.compareTo(x)</tt> throws an exception.)<p>
-   *
-   * The implementor must also ensure that the relation is transitive:
-   * <tt>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</tt> implies
-   * <tt>x.compareTo(z)&gt;0</tt>.<p>
-   *
-   * Finally, the implementer must ensure that <tt>x.compareTo(y)==0</tt>
-   * implies that <tt>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</tt>, for
-   * all <tt>z</tt>.<p>
-   *
-   * It is strongly recommended, but <i>not</i> strictly required that
-   * <tt>(x.compareTo(y)==0) == (x.equals(y))</tt>.  Generally speaking, any
-   * class that implements the <tt>Comparable</tt> interface and violates
-   * this condition should clearly indicate this fact.  The recommended
-   * language is "Note: this class has a natural ordering that is
-   * inconsistent with equals."
+   * Compares the modules of the package state by using the module comparator.
    *
    * @param   o the Object to be compared.
    * @return  a negative integer, zero, or a positive integer as this object

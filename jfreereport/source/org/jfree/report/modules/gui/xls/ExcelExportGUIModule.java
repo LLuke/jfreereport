@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PreviewBase.java
+ * ExcelExportGUIModule.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportGUIModule.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: ExcelExportGUIModule.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -43,16 +43,33 @@ import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The module definition for the excel export gui module.
+ * 
+ * @author Thomas Morgner
+ */
 public class ExcelExportGUIModule extends AbstractModule
 {
+  /** The export plugin preference key. */ 
   private static final String ORDER_KEY = "org.jfree.report.modules.gui.xls.Order";
+  /** The export plugin enable key. */
   private static final String ENABLE_KEY = "org.jfree.report.modules.gui.xls.Enable";
 
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public ExcelExportGUIModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module and registes it with the export plugin factory. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     String order = ReportConfiguration.getGlobalConfig().getConfigProperty

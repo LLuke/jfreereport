@@ -21,10 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------------------
- * JFreeReportResources_de.java
+ * JFreeReportResources_sv.java
  * ----------------------------
+ * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
  *
- * $Id: JFreeReportResources_sv.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * Original Author:  Thomas Dilts;
+ * Contributor(s):   -;
+ *
+ * $Id: JFreeReportResources_sv.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +46,9 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_sv extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   */
   public JFreeReportResources_sv()
   {
   }

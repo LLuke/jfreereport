@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.3 2003/07/11 18:33:20 taqua Exp $
+ * $Id: AbstractModule.java,v 1.4 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *
  */
 
@@ -44,18 +44,80 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * The abstract module provides a default implementation of the module interface.
+ * <p>
+ * The module can be specified in an external property file. The file name of this 
+ * specification defaults to "module.properties". This file is no real property file,
+ * it follows a more complex rule set.
+ * <p>
+ * Lines starting with '#' are considered comments.
+ * Section headers start at the beginning of the line, section properties
+ * are indented with at least one whitespace.
+ * <p>
+ * The first section is always the module info and contains the basic module
+ * properties like name, version and a short description. 
+ * <p>
+ * <pre>
+ * module-info:
+ *   name: xls-export-gui
+ *   producer: The JFreeReport project - www.jfree.org/jfreereport
+ *   description: A dialog component for the Excel table export.
+ *   version.major: 0
+ *   version.minor: 84
+ *   version.patchlevel: 0
+ * </pre>
+ * The properties name, producer and description are simple strings. They may
+ * span multiple lines, but may not contain a colon (':').
+ * The version properties are integer values.
+ * <p>
+ * This section may be followed by one or more "depends" sections. These
+ * sections describe the base modules that are required to be active to make this
+ * module work. The package manager will enforce this policy and will deactivate this
+ * module if one of the base modules is missing.
+ * <p>
+ * <pre>
+ * depends:
+ *   module: org.jfree.report.modules.output.table.xls.XLSTableModule
+ *   version.major: 0
+ *   version.minor: 84
+ * </pre>
+ * <p>
+ * The property module references to the module implementation of the module package.
+ * 
+ * @author Thomas Morgner
+ */
 public abstract class AbstractModule extends DefaultModuleInfo implements Module
 {
-  private class ReaderHelper
+  /**
+   * The reader helper provides a pushback interface for the reader to read and
+   * buffer  complete lines. 
+   * @author Thomas Morgner
+   */
+  private static class ReaderHelper
   {
+    /** The line buffer containing the last line read. */
     private String buffer;
+    /** The reader from which to read the text. */
     private BufferedReader reader;
 
-    public ReaderHelper(BufferedReader reader) throws IOException
+    /**
+     * Creates a new reader helper for the given buffered reader.
+     * 
+     * @param reader the buffered reader that is the source of the text.
+     */
+    public ReaderHelper(BufferedReader reader) 
     {
       this.reader = reader;
     }
 
+    /**
+     * Checks, whether the reader contains a next line. Returns false if the end
+     * of the stream has been reached.
+     *  
+     * @return true, if there is a next line to read, false otherwise.
+     * @throws IOException if an error occures.
+     */
     public boolean hasNext () throws IOException
     {
       if (buffer == null)
@@ -65,18 +127,35 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
       return buffer != null;
     }
 
-    public String next () throws IOException
+    /**
+     * Returns the next line.
+     * 
+     * @return the next line.
+     */
+    public String next () 
     {
       String line = buffer;
       buffer = null;
       return line;
     }
 
+    /**
+     * Pushes the given line back into the buffer. Only one line can be contained in
+     * the buffer at one time.
+     * 
+     * @param line the line that should be pushed back into the buffer.
+     */
     public void pushBack (String line)
     {
       buffer = line;
     }
 
+    /**
+     * Reads the next line skipping all comment lines.
+     * 
+     * @return the next line, or null if no line can be read.
+     * @throws IOException if an IO error occures.
+     */
     protected String readLine () throws IOException
     {
       String line = reader.readLine();
@@ -88,20 +167,43 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
       return line;
     }
 
+    /**
+     * Closes the reader.
+     * 
+     * @throws IOException if an IOError occurs.
+     */
     public void close() throws IOException
     {
       reader.close();
     }
   }
 
+  /** The list of required modules. */
+  private ModuleInfo[] requiredModules;
+  /** The list of optional modules. */
+  private ModuleInfo[] optionalModules;
+
+  /** The name of the module. */
   private String name;
+  /** A short description of the module. */
   private String description;
+  /** The name of the module producer. */
   private String producer;
 
+  /**
+   * Default Constructor.
+   */
   public AbstractModule()
   {
     setModuleClass(this.getClass().getName());
   }
+  
+  /**
+   * Loads the default module description from the file "module.properties". This file
+   * must be in the same package as the implementing class.
+   * 
+   * @throws ModuleInitializeException if an error occurs.
+   */
   protected void loadModuleInfo () throws ModuleInitializeException
   {
     InputStream in = getClass().getResourceAsStream("module.properties");
@@ -113,6 +215,14 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     loadModuleInfo(in);
   }
 
+  /**
+   * Loads the module descriptiong from the given input stream. The module description
+   * must conform to the rules define in the class description. The file must be encoded
+   * with "ISO-8859-1" (like property files). 
+   * 
+   * @param in the input stream from where to read the file
+   * @throws ModuleInitializeException if an error occurs.
+   */
   protected void loadModuleInfo (InputStream in) throws ModuleInitializeException
   {
     try
@@ -163,6 +273,15 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     }
   }
 
+  /**
+   * Reads a multiline value the stream. This will read the stream until
+   * a new key is found or the end of the file is reached.  
+   * 
+   * @param reader the reader from where to read.
+   * @param firstLine the first line (which was read elsewhere).
+   * @return the complete value, never null
+   * @throws IOException if an error occures
+   */
   private String readValue (ReaderHelper reader, String firstLine)
     throws IOException
   {
@@ -179,6 +298,13 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     return b.toString();
   }
 
+  /**
+   * Reads the module definition header. This header contains information about
+   * the module itself. 
+   * 
+   * @param reader the reader from where to read the content.
+   * @throws IOException if an error occures
+   */
   private void readModuleInfo (ReaderHelper reader) throws IOException
   {
     while (reader.hasNext())
@@ -227,6 +353,13 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     }
   }
 
+  /**
+   * Parses an string to find the key section of the line. This section ends with
+   * an colon.
+   * 
+   * @param line the line which to parse
+   * @return the key or null if no key is found.
+   */
   private String parseKey (String line)
   {
     int idx = line.indexOf(':');
@@ -237,6 +370,12 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     return line.substring(0, idx);
   }
 
+  /**
+   * Parses the value section of the given line. 
+   * 
+   * @param line the line that should be parsed
+   * @return the value, never null
+   */
   private String parseValue (String line)
   {
     int idx = line.indexOf(':');
@@ -244,9 +383,21 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     {
       return line;
     }
+    if ((idx + 1) == line.length())
+    {
+      return "";
+    } 
     return line.substring(idx + 1);
   }
 
+  /**
+   * Reads an external module description. This describes either an optional or
+   * a required module.
+   * 
+   * @param reader the reader from where to read the module
+   * @return the read module, never null
+   * @throws IOException if an error occures.
+   */
   private DefaultModuleInfo readExternalModule (ReaderHelper reader)
       throws IOException
   {
@@ -289,40 +440,78 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     return mi;
   }
 
-
+  /**
+   * Returns the name of this module.
+   *  
+   * @see org.jfree.report.modules.Module#getName()
+   * 
+   * @return the module name
+   */
   public String getName()
   {
     return name;
   }
 
+  /**
+   * Defines the name of the module.
+   * 
+   * @param name the module name.
+   */
   protected void setName(String name)
   {
     this.name = name;
   }
 
+  /**
+   * Returns the module description. 
+   * @see org.jfree.report.modules.Module#getDescription()
+   * 
+   * @return the description of the module.
+   */
   public String getDescription()
   {
     return description;
   }
 
+  /**
+   * Defines the description of the module.
+   * 
+   * @param description the module's desciption.
+   */
   protected void setDescription(String description)
   {
     this.description = description;
   }
 
+  /**
+   * Returns the producer of the module.
+   *  
+   * @see org.jfree.report.modules.Module#getProducer()
+   * 
+   * @return the producer.
+   */
   public String getProducer()
   {
     return producer;
   }
 
+  /**
+   * Defines the producer of the module.
+   * 
+   * @param producer the producer.
+   */
   protected void setProducer(String producer)
   {
     this.producer = producer;
   }
 
-  private ModuleInfo[] requiredModules;
-  private ModuleInfo[] optionalModules;
-
+  /**
+   * Returns a copy of the required modules array. This array contains all
+   * description of the modules that need to be present to make this module work.  
+   * @see org.jfree.report.modules.Module#getRequiredModules()
+   * 
+   * @return an array of all required modules.
+   */
   public ModuleInfo[] getRequiredModules()
   {
     ModuleInfo[] retval = new ModuleInfo[requiredModules.length];
@@ -330,6 +519,13 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     return retval;
   }
 
+  /**
+   * Returns a copy of the required modules array. This array contains all
+   * description of the optional modules that may improve the modules functonality.  
+   * @see org.jfree.report.modules.Module#getRequiredModules()
+   * 
+   * @return an array of all required modules.
+   */
   public ModuleInfo[] getOptionalModules()
   {
     ModuleInfo[] retval = new ModuleInfo[optionalModules.length];
@@ -337,18 +533,34 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     return retval;
   }
 
+  /**
+   * Defines the required module descriptions for this module.
+   * 
+   * @param requiredModules the required modules.
+   */
   protected void setRequiredModules(ModuleInfo[] requiredModules)
   {
     this.requiredModules = new ModuleInfo[requiredModules.length];
     System.arraycopy(requiredModules, 0, this.requiredModules, 0, requiredModules.length);
   }
 
+  /**
+   * Defines the optional module descriptions for this module.
+   * 
+   * @param optionalModules the optional modules.
+   */
   protected void setOptionalModules(ModuleInfo[] optionalModules)
   {
     this.optionalModules = new ModuleInfo[optionalModules.length];
     System.arraycopy(optionalModules, 0, this.optionalModules, 0, optionalModules.length);
   }
 
+  /**
+   * Returns a string representation of this module. 
+   * @see java.lang.Object#toString()
+   * 
+   * @return the string representation of this module for debugging purposes.
+   */
   public String toString ()
   {
     StringBuffer buffer = new StringBuffer();
@@ -375,7 +587,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   }
 
   /**
-   * tries to load a class to indirectly check for the existence
+   * Tries to load a class to indirectly check for the existence
    * of a certain library.
    *
    * @param name the name of the library class.
@@ -408,6 +620,13 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     PackageManager.getInstance().getPackageConfiguration().load(in);
   }
 
+  /**
+   * Tries to load an module initializer and uses this initializer to initialize
+   * the module.
+   * 
+   * @param classname the class name of the initializer.
+   * @throws ModuleInitializeException if an error occures
+   */
   public void performExternalInitialize (String classname)
     throws ModuleInitializeException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AWTPrintingGUIModule.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
+ * $Id: AWTPrintingGUIModule.java,v 1.4 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,22 +43,43 @@ import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The module definition for the AWT printing export gui module.
+ * The module contains 2 export plugins, the page setup plugin
+ * and the printing plugin.
+ * 
+ * @author Thomas Morgner
+ */
 public class AWTPrintingGUIModule extends AbstractModule
 {
+  /** The printing export plugin preference key. */ 
   private static final String PRINT_ORDER_KEY = 
     "org.jfree.report.modules.gui.print.Order";
+  /** The printing export plugin enable key. */
   private static final String PRINT_ENABLE_KEY = 
     "org.jfree.report.modules.gui.print.Enable";
+  /** The pagesetup export plugin preference key. */ 
   private static final String PAGESETUP_ORDER_KEY = 
     "org.jfree.report.modules.gui.print.pagesetup.Order";
+  /** The pagesetup export plugin enable key. */
   private static final String PAGESETUP_ENABLE_KEY = 
     "org.jfree.report.modules.gui.print.pagesetup.Enable";
 
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public AWTPrintingGUIModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module and registes it with the export plugin factory. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty

@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * XLSExportResources_nl.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  Hendri Smit;
+ * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HtmlExportResources_nl.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -43,8 +43,16 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * Dutch language resource for the excel export GUI.
+ * 
+ * @author Hendri Smit
+ */
 public class XLSExportResources_nl extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public XLSExportResources_nl()
   {
   }

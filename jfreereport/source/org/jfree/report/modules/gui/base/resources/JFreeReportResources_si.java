@@ -28,22 +28,21 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_si.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: JFreeReportResources_si.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
-
-
-
 
 /**
  * Slovenian Language Resources.
  *
  * @author  Sergey M Mozgovoi
  */
-
 public class JFreeReportResources_si extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   */
   public JFreeReportResources_si()
   {
   }

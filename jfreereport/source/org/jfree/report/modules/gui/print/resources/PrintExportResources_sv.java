@@ -25,10 +25,10 @@
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  Thomas Dilts;
+ * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PrintExportResources_sv.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,8 +43,16 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * Swedish language resource for the printing export GUI.
+ * 
+ * @author Thomas Dilts
+ */
 public class PrintExportResources_sv extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public PrintExportResources_sv()
   {
   }

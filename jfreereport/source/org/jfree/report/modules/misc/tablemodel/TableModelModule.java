@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TableModelModule.java,v 1.1 2003/07/10 20:06:00 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 10.07.2003 : Initial version
+ * 10-Jul-2003 : Initial version
  *  
  */
 
@@ -41,13 +41,28 @@ package org.jfree.report.modules.misc.tablemodel;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the table model utility classes module.
+ * 
+ * @author Thomas Morgner
+ */
 public class TableModelModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public TableModelModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
   }

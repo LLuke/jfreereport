@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleComparator.java,v 1.1 2003/07/10 20:05:59 taqua Exp $
+ * $Id: ModuleComparator.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,18 @@ package org.jfree.report.modules;
 
 import java.util.Comparator;
 
+/**
+ * Compares two modules for order. A module is considered less than an other
+ * module if the module is a required module of the compared module. Modules
+ * are considered equal if they have no relation.
+ * 
+ * @author Thomas Morgner
+ */
 public class ModuleComparator implements Comparator
 {
+  /**
+   * DefaultConstructor.
+   */
   public ModuleComparator()
   {
   }
@@ -91,6 +101,14 @@ public class ModuleComparator implements Comparator
     }
   }
 
+  /**
+   * Checks, whether a module is a base module of an given module.
+   * 
+   * @param mod the module which to check
+   * @param mi the module info of the suspected base module.
+   * @return true, if the given module info describes a base module of the
+   * given module, false otherwise. 
+   */
   private boolean isBaseModule (final Module mod, final ModuleInfo mi)
   {
     ModuleInfo[] info = mod.getRequiredModules();

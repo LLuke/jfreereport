@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.5 2003/06/29 16:59:27 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -151,7 +151,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
   /**
    * Initializes the plugin to work with the given PreviewProxy.
    *
-   * @param proxy
+   * @param proxy the preview proxy that is used to display the preview component.
    */
   public void init(final PreviewProxy proxy)
   {

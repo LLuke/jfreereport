@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * HtmlExportResources.java
+ * HtmlExportResources_fr.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  PR;
+ * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_fr.java,v 1.2 2003/07/11 09:20:55 mimil Exp $
+ * $Id: HtmlExportResources_fr.java,v 1.3 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -43,8 +43,16 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * French language resource for the HTML export GUI.
+ * 
+ * @author PR
+ */
 public class HtmlExportResources_fr extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public HtmlExportResources_fr()
   {
   }

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_nl.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.4 2003/07/21 20:46:56 taqua Exp $
  */
 package org.jfree.report.modules.gui.base.resources;
 
@@ -41,6 +41,9 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_nl extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   */
   public JFreeReportResources_nl()
   {
   }

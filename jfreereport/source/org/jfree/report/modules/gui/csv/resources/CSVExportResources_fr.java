@@ -25,14 +25,14 @@
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
+ * Original Author:  PR;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_fr.java,v 1.4 2003/07/23 16:02:20 taqua Exp $
+ * $Id: CSVExportResources_fr.java,v 1.5 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -43,6 +43,11 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * French language resource for the CSV export GUI.
+ * 
+ * @author PR
+ */
 public class CSVExportResources_fr extends JFreeReportResources
 {
   /**

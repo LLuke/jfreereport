@@ -25,14 +25,14 @@
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  PR;
+ * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_fr.java,v 1.2 2003/07/11 09:20:55 mimil Exp $
+ * $Id: PlainTextExportResources_fr.java,v 1.3 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -43,6 +43,11 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * French language resource for the plain text export GUI.
+ * 
+ * @author PR
+ */
 public class PlainTextExportResources_fr extends JFreeReportResources
 {
   /**

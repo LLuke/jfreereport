@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.3 2003/07/25 01:06:00 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.4 2003/08/18 18:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -1594,6 +1594,7 @@ public class HtmlExportDialog extends JDialog
    * Returns the HTML encoding property value for the given report
    * configuration instance.
    *
+   * @param config the report configuration from where to read the property.
    * @return the HTML encoding property value.
    */
   public String getHTMLTargetEncoding(final ReportConfiguration config)
@@ -1606,6 +1607,7 @@ public class HtmlExportDialog extends JDialog
    * Sets the HTML encoding property value in the given report configuration
    * instance.
    *
+   * @param config the report configuration from where to read the property.
    * @param targetEncoding  the new encoding.
    */
   public static void setHTMLTargetEncoding

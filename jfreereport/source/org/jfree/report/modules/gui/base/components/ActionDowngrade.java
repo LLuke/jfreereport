@@ -28,10 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionDowngrade.java,v 1.6 2003/06/27 14:25:25 taqua Exp $
+ * $Id: ActionDowngrade.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * ChangeLog
  * ---------
+ * 07-Jul-2003: Ported from com.jrefinery to org.jfree
  */
 package org.jfree.report.modules.gui.base.components;
 

@@ -28,80 +28,165 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultModuleInfo.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: DefaultModuleInfo.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *
  */
 
 package org.jfree.report.modules;
 
+/**
+ * Provides a default implementation of the module info interface.
+ * 
+ * @author Thomas Morgner
+ */
 public class DefaultModuleInfo implements ModuleInfo
 {
+  /** The name of the module class. */
   private String moduleClass;
+  /** The major version of the described module. */
   private String majorVersion;
+  /** The minor version of the described module. */
   private String minorVersion;
+  /** The patchlevel version of the described module. */
   private String patchLevel;
 
+  /**
+   * DefaultConstructor.
+   */
   public DefaultModuleInfo()
   {
   }
 
+  /**
+   * Creates a new module info an initalizes it with the given values.
+   * 
+   * @param moduleClass the class name of the module implementation holding the module
+   * description.
+   * @param majorVersion the modules major version.
+   * @param minorVersion the modules minor version.
+   * @param patchLevel the modules patchlevel.
+   * @throws NullPointerException if the moduleClass is null.
+   */
   public DefaultModuleInfo(String moduleClass, String majorVersion,
                            String minorVersion, String patchLevel)
   {
+    if (moduleClass == null)
+    {
+      throw new NullPointerException("Module class must not be null.");
+    }
     this.moduleClass = moduleClass;
     this.majorVersion = majorVersion;
     this.minorVersion = minorVersion;
     this.patchLevel = patchLevel;
   }
 
+  /**
+   * Returns the class name of the module described implementation.
+   *  
+   * @see org.jfree.report.modules.ModuleInfo#getModuleClass()
+   * 
+   * @return the module class name.
+   */
   public String getModuleClass()
   {
     return moduleClass;
   }
 
-  protected void setModuleClass(String moduleClass)
+  /**
+   * Defines the module class name.
+   * 
+   * @param moduleClass the class name of the module implementation.
+   */
+  public void setModuleClass(String moduleClass)
   {
+    if (moduleClass == null)
+    {
+      throw new NullPointerException();
+    }
     this.moduleClass = moduleClass;
   }
 
+  /**
+   * Returns the major version of the module. This property may be 
+   * null to indicate that the module version is not specified.
+   * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
+   * 
+   * @return the major version.
+   */
   public String getMajorVersion()
   {
     return majorVersion;
   }
 
-  protected void setMajorVersion(String majorVersion)
+  /**
+   * Defines the major version of the module. This property may be 
+   * null to indicate that the module version is not specified.
+   * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
+   * 
+   * @param majorVersion the major version.
+   */
+  public void setMajorVersion(String majorVersion)
   {
     this.majorVersion = majorVersion;
   }
 
+  /**
+   * Returns the minor version of the module. This property may be 
+   * null to indicate that the module version is not specified.
+   * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
+   * 
+   * @return the minor version.
+   */
   public String getMinorVersion()
   {
     return minorVersion;
   }
 
-  protected void setMinorVersion(String minorVersion)
+  /**
+   * Defines the minor version of the module. This property may be 
+   * null to indicate that the module version is not specified.
+   * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
+   * 
+   * @param minorVersion the minor version.
+   */
+  public void setMinorVersion(String minorVersion)
   {
     this.minorVersion = minorVersion;
   }
 
+  /**
+   * Returns the patch level version of the module. This property may be 
+   * null to indicate that the module version is not specified.
+   * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
+   * 
+   * @return the patch level version.
+   */
   public String getPatchLevel()
   {
     return patchLevel;
   }
 
-  protected void setPatchLevel(String patchLevel)
+  /**
+   * Defines the patch level version of the module. This property may be 
+   * null to indicate that the module version is not specified.
+   * @see org.jfree.report.modules.ModuleInfo#getMajorVersion()
+   * 
+   * @param patchLevel the patch level version.
+   */
+  public void setPatchLevel(String patchLevel)
   {
     this.patchLevel = patchLevel;
   }
 
   /**
    * Two moduleinfos are equal,if they have the same module class.
-   * @param o
-   * @return
+   * 
+   * @param o the other object to compare.
+   * @return true, if the module points to the same module, false otherwise.
    */
   public boolean equals(Object o)
   {
@@ -123,6 +208,12 @@ public class DefaultModuleInfo implements ModuleInfo
     return true;
   }
 
+  /**
+   * Computes an hashcode for this module information. 
+   * @see java.lang.Object#hashCode()
+   * 
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     int result;
@@ -130,6 +221,13 @@ public class DefaultModuleInfo implements ModuleInfo
     return result;
   }
 
+  /**
+   * Returns a string representation of this module information.
+   *  
+   * @see java.lang.Object#toString()
+   *  
+   * @return a string describing this class.
+   */
   public String toString ()
   {
     StringBuffer buffer = new StringBuffer();

@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.2 2003/07/11 09:20:42 mimil Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -42,6 +42,9 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_fr extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   */
   public JFreeReportResources_fr()
   {
   }

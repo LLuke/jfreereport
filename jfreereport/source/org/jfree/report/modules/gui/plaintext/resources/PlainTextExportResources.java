@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PlainTextExportResources.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,8 +43,16 @@ import java.awt.event.KeyEvent;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
+/**
+ * English language resource for the PDF export GUI.
+ * 
+ * @author Thomas Morgner
+ */
 public class PlainTextExportResources extends JFreeReportResources
 {
+  /**
+   * DefaultConstructor.
+   */
   public PlainTextExportResources()
   {
   }

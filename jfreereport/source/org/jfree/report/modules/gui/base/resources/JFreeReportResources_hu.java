@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  *
  *
- * $Id: JFreeReportResources_hu.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: JFreeReportResources_hu.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  *
  */
@@ -44,6 +44,9 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_hu extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   */
   public JFreeReportResources_hu()
   {
   }
