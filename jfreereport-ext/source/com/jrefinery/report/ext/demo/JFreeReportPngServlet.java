@@ -30,10 +30,10 @@
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.chart.ChartUtilities;
+import com.jrefinery.report.demo.FirstDemoTableModel;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.demo.FirstDemoTableModel;
+import com.keypoint.PngEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -54,7 +54,7 @@ import java.net.URL;
  *
  * @author Jeevan Sunkersett
  */
-public class JFreeReportJpegServlet extends HttpServlet
+public class JFreeReportPngServlet extends HttpServlet
 {
   /**
    * Maps the GET request to the POST request.
@@ -134,12 +134,14 @@ public class JFreeReportJpegServlet extends HttpServlet
 
       worker.processPage(page);
 
-      response.setHeader("Content-Type", "image/jpeg");
-      response.setHeader("Content-Disposition","inline;filename=\"report-page-" + page + ".jpg\"");
+      response.setHeader("Content-Type", "image/png");
+      response.setHeader("Content-Disposition","inline;filename=\"report-page-" + page + ".png\"");
 
       ServletOutputStream out = response.getOutputStream();
       // from JFreeChart ...
-      ChartUtilities.writeBufferedImageAsJPEG(out, image);
+      PngEncoder encoder = new PngEncoder(image, true, 0, 9);
+      byte[] data = encoder.pngEncode();
+      out.write(data);
       out.flush();
     }
     catch (Exception e)
