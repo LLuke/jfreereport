@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTextMetaElement.java,v 1.5 2005/03/03 17:07:59 taqua Exp $
+ * $Id: HtmlTextMetaElement.java,v 1.6 2005/03/29 18:32:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -62,7 +62,10 @@ public class HtmlTextMetaElement extends HtmlMetaElement
     final String text = String.valueOf(content.getContent());
     if (text.trim().length() == 0)
     {
-      pout.write("&nbsp;");
+      if (emptyCellsUseCSS)
+      {
+        pout.write("&nbsp;");
+      }
     }
     else
     {
