@@ -28,7 +28,9 @@
  *
  *  Changes:
  *  -----------------
- *  10-May-2002: Initial version
+ *  10-May-2002 : Initial version
+ *  16-May-2002 : recalculate line width when orientation changed
+ * 
  */
 package com.jrefinery.report;
 
@@ -43,6 +45,9 @@ import java.awt.Shape;
  */
 public class LineShapeElement extends ShapeElement
 {
+  private Line2D m_line;
+  private boolean m_clacWidth;
+
   public LineShapeElement ()
   {
     setShape(new Line2D.Float());
@@ -55,7 +60,10 @@ public class LineShapeElement extends ShapeElement
    */
   public void setLine (Line2D line)
   {
-    setShape(line);
+    m_line = line;
+    m_clacWidth = (m_line.getX1() == m_line.getX2()) && (m_line.getY1() == m_line.getY2());
+
+    setShape((Line2D) line.clone());
   }
 
   /**
@@ -85,9 +93,10 @@ public class LineShapeElement extends ShapeElement
   public void draw (OutputTarget target, Band band, float bandX, float bandY)
   {
     Line2D l = getLine();
-    if ((l.getX1()==l.getX2()) && (l.getY1()==l.getY2()))
+
+    if (m_clacWidth && ((float) l.getX2()) != target.getUsableWidth())
     {
-      l.setLine(0.0d, l.getY1(), target.getUsableWidth(), l.getY2());
+      l.setLine(0.0d, m_line.getY1(), target.getUsableWidth(), m_line.getY1());
     }
     super.draw (target, band, bandX, bandY);
   }
