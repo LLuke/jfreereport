@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: JFreeReportCoreModule.java,v 1.1 2003/08/30 15:04:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,6 +38,8 @@
 
 package org.jfree.report;
 
+import java.io.InputStream;
+
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
@@ -45,7 +47,14 @@ public class JFreeReportCoreModule extends AbstractModule
 {
   public JFreeReportCoreModule() throws ModuleInitializeException
   {
-    loadModuleInfo();
+    final InputStream in = getClass().getResourceAsStream
+        ("coremodule.properties");
+    if (in == null)
+    {
+      throw new ModuleInitializeException
+          ("File 'coremodule.properties' not found in JFreeReport package.");
+    }
+    loadModuleInfo(in);
   }
 
   /**

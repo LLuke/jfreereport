@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.7 2003/08/28 17:45:44 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.8 2003/08/31 19:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.util.Properties;
 import java.util.TreeSet;
 
 import org.jfree.report.modules.PackageManager;
+import org.jfree.report.Boot;
 import org.jfree.util.Configuration;
 
 /**
@@ -363,7 +364,7 @@ public class ReportConfiguration implements Configuration, Serializable
       final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
       globalConfig.insertConfiguration(systemConfig);
 
-      PackageManager.getInstance().init();
+      Boot.start();
     }
     return globalConfig;
   }

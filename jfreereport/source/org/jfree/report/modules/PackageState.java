@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageState.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PackageState.java,v 1.6 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,6 @@
 
 package org.jfree.report.modules;
 
-import java.util.Comparator;
-
 import org.jfree.report.util.Log;
 
 /**
@@ -48,7 +46,7 @@ import org.jfree.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class PackageState implements Comparable
+public class PackageState
 {
   /** A constant defining that the package is new. */
   public static final int STATE_NEW = 0;
@@ -63,22 +61,6 @@ public class PackageState implements Comparable
   private final Module module;
   /** The state of the module. */
   private int state;
-  /** A reference to the module comparator to sort modules by dependency. */
-  private static ModuleComparator comparator;
-
-  /**
-   * Provides a singleton interface to the comparator.
-   *
-   * @return the module comparator.
-   */
-  protected static Comparator getComparator()
-  {
-    if (comparator == null)
-    {
-      comparator = new ModuleComparator();
-    }
-    return comparator;
-  }
 
   /**
    * Creates a new package state for the given module. The module state will
@@ -88,8 +70,28 @@ public class PackageState implements Comparable
    */
   public PackageState(final Module module)
   {
+    this (module, STATE_NEW);
+  }
+
+  /**
+   * Creates a new package state for the given module. The module state will
+   * be initialized to STATE_NEW.
+   *
+   * @param module the module.
+   */
+  public PackageState(final Module module, final int state)
+  {
+    if (module == null)
+    {
+      throw new NullPointerException("Module must not be null.");
+    }
+    if (state != STATE_CONFIGURED && state != STATE_ERROR &&
+        state != STATE_INITIALIZED && state != STATE_NEW)
+    {
+      throw new IllegalArgumentException("State is not valid");
+    }
     this.module = module;
-    this.state = STATE_NEW;
+    this.state = state;
   }
 
   /**
@@ -182,23 +184,29 @@ public class PackageState implements Comparable
     return false;
   }
 
-  /**
-   * Compares the modules of the package state by using the module comparator.
-   *
-   * @param   o the Object to be compared.
-   * @return  a negative integer, zero, or a positive integer as this object
-   *          is less than, equal to, or greater than the specified object.
-   *
-   * @throws ClassCastException if the specified object's type prevents it
-   *         from being compared to this Object.
-   */
-  public int compareTo(final Object o)
+  public boolean equals(Object o)
   {
-    if (o == null)
+    if (this == o)
     {
-      return 1;
+      return true;
     }
-    final PackageState state = (PackageState) o;
-    return getComparator().compare(this.getModule(), state.getModule());
+    if (!(o instanceof PackageState))
+    {
+      return false;
+    }
+
+    final PackageState packageState = (PackageState) o;
+
+    if (!module.getModuleClass().equals(packageState.module.getModuleClass()))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return module.hashCode();
   }
 }

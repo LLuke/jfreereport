@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.9 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.10 2003/08/27 20:19:52 taqua Exp $
  *
  * Changes
  * --------
@@ -50,7 +50,7 @@ import org.jfree.report.util.Worker;
  *
  * @author Thomas Morgner.
  */
-public class ExportPluginFactory
+public final class ExportPluginFactory
 {
   /**
    * A class to manage the plugin module definitions.
@@ -215,7 +215,7 @@ public class ExportPluginFactory
    * DefaultConstructor. Defines a new export plugin factory.
    *
    */
-  protected ExportPluginFactory()
+  private ExportPluginFactory()
   {
     exportPlugins = new ArrayList();
   }
@@ -292,6 +292,7 @@ public class ExportPluginFactory
     final PluginDefinition[] def = (PluginDefinition[])
         exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
 
+    Log.debug ("A total of " + exportPlugins.size() + " is available.");
     Arrays.sort(def);
     final ArrayList retval = new ArrayList();
 
@@ -306,6 +307,10 @@ public class ExportPluginFactory
           ep.defineWorker(worker);
           retval.add(ep);
         }
+        else
+        {
+          Log.debug ("Cannot create plugin: " + definition.getPluginClass());
+        }
       }
       else
       {
@@ -313,6 +318,7 @@ public class ExportPluginFactory
             " is not enabled."));
       }
     }
+    Log.debug ("Plugins: " + retval);
     return retval;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStorage.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: FileConfigStorage.java,v 1.7 2003/08/28 17:45:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -99,9 +99,10 @@ public class FileConfigStorage implements ConfigStorage
       throw new IllegalArgumentException("The give path is not valid.");
     }
     final File target = new File(baseDirectory, configPath);
-    if (target.canWrite() == false)
+    if (target.exists() == true && target.canWrite() == false)
     {
-      Log.info ("The configuration file is not writeable. Ignoring.");
+      Log.info ("The configuration file is not writeable. Ignoring " + target);
+      return;
     }
     try
     {
@@ -111,7 +112,7 @@ public class FileConfigStorage implements ConfigStorage
     }
     catch (Exception e)
     {
-      throw new ConfigStoreException("Failed to write config" + configPath, e);
+      throw new ConfigStoreException("Failed to write config " + configPath, e);
     }
   }
 

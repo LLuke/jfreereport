@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.3 2003/08/31 19:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
 package org.jfree.report.util;
 
 import java.io.Serializable;
+import java.io.PrintStream;
 
 import org.jfree.util.LogTarget;
 
@@ -50,6 +51,9 @@ import org.jfree.util.LogTarget;
  */
 public class SystemOutLogTarget implements LogTarget, Serializable
 {
+  /** The printstream we use .. */
+  private PrintStream printStream;
+
   /**
    * The default constructor.
    * <p>
@@ -57,6 +61,16 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    */
   public SystemOutLogTarget()
   {
+    this (System.out);
+  }
+
+  public SystemOutLogTarget(PrintStream printStream)
+  {
+    if (printStream == null)
+    {
+      throw new NullPointerException();
+    }
+    this.printStream = printStream;
   }
 
   /**
@@ -73,8 +87,8 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     {
       level = 3;
     }
-    System.out.print(LEVELS[level]);
-    System.out.println(message);
+    printStream.print(LEVELS[level]);
+    printStream.println(message);
     if (level < 3)
     {
       System.out.flush();
@@ -98,9 +112,9 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     {
       level = 3;
     }
-    System.out.print(LEVELS[level]);
-    System.out.println(message);
-    e.printStackTrace(System.out);
+    printStream.print(LEVELS[level]);
+    printStream.println(message);
+    e.printStackTrace(printStream);
     if (level < 3)
     {
       System.out.flush();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.11 2003/08/27 20:19:52 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.12 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * -------
@@ -751,7 +751,7 @@ public class PreviewProxyBase extends JComponent
         (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true");
     setLargeIconsEnabled(largeIconsProperty);
 
-    final ExportPluginFactory factory = new ExportPluginFactory();
+    final ExportPluginFactory factory = ExportPluginFactory.getInstance();
     exportPlugIns = factory.createExportPlugIns
       (proxy, report.getReportConfiguration(), exportWorker);
     pluginActions = new HashMap(exportPlugIns.size());

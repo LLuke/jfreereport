@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ModuleNodeFactory.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,18 +41,18 @@ package org.jfree.report.modules.gui.config.model;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Comparator;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jfree.report.Boot;
+import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.report.modules.Module;
 import org.jfree.report.modules.PackageManager;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.JFreeReportCoreModule;
 import org.xml.sax.SAXException;
 
 public class ModuleNodeFactory
@@ -106,9 +106,9 @@ public class ModuleNodeFactory
 
   private ModuleNodeFactory ()
   {
+    Boot.start();
     PackageManager pm = PackageManager.getInstance();
-    pm.init();
-    activeModules = pm.getActiveModules();
+    activeModules = pm.getAllModules();
     Arrays.sort(activeModules, new ModuleSorter());
     globalNodes = new ArrayList();
     localNodes = new ArrayList();

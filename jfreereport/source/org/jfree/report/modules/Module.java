@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Module.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: Module.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -98,4 +98,13 @@ public interface Module extends ModuleInfo
    * @return the module name
    */
   public String getName();
+
+  /**
+   * Returns the modules subsystem. If this module is not part of an subsystem
+   * then return the modules name, but never null.
+   *
+   * @return the name of the subsystem.
+   */
+  public String getSubSystem ();
+
 }

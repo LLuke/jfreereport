@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.11 2003/08/28 19:36:44 taqua Exp $
+ * $Id: PackageManager.java,v 1.12 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,13 +40,12 @@ package org.jfree.report.modules;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 
+import org.jfree.report.Boot;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PackageConfiguration;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.JFreeReportCoreModule;
 
 /**
  * The PackageManager is used to load and configure the modules of JFreeReport.
@@ -101,18 +100,6 @@ public final class PackageManager
     packageConfiguration = new PackageConfiguration();
     modules = new ArrayList();
     initSections = new ArrayList();
-
-    addModule(JFreeReportCoreModule.class.getName());
-    initializeModules();
-  }
-
-  /**
-   * Initializes the default module name spaces.
-   */
-  public synchronized void init()
-  {
-    init("org.jfree.report.modules.");
-    init("org.jfree.report.ext.modules.");
   }
 
   /**
@@ -138,12 +125,13 @@ public final class PackageManager
   }
 
   /**
-   * Initializes the given module prefix. The package manager will search the
-   * report configuration for module definitions that start with that prefix.
+   * Loads all modules mentioned in the report configuration starting with
+   * the given prefix. This method is used during the boot process of
+   * JFreeReport. You should never need to call this method directly.
    *
    * @param modulePrefix the module prefix.
    */
-  public synchronized void init(final String modulePrefix)
+  public void load (String modulePrefix)
   {
     if (initSections.contains(modulePrefix))
     {
@@ -161,8 +149,7 @@ public final class PackageManager
         addModule(config.getConfigProperty(key));
       }
     }
-    Log.debug("Loaded a total of " + modules.size() + " modules.");
-    initializeModules();
+    Log.debug("Loaded a total of " + modules.size() + " modules under prefix: " + modulePrefix);
   }
 
   /**
@@ -171,28 +158,34 @@ public final class PackageManager
    */
   public synchronized void initializeModules()
   {
-    Collections.sort(modules);
+    // sort by subsystems and dependency
+    PackageSorter.sort(modules);
 
     for (int i = 0; i < modules.size(); i++)
     {
       final PackageState mod = (PackageState) modules.get(i);
       if (mod.configure())
       {
-        Log.debug("Conf: " + mod.getModule().getModuleClass());
+        Log.debug("Conf: " + mod.getModule().getModuleClass() +
+            "[" + mod.getModule().getSubSystem() + "]");
       }
     }
+
     for (int i = 0; i < modules.size(); i++)
     {
       final PackageState mod = (PackageState) modules.get(i);
       if (mod.initialize())
       {
-        Log.debug("Init: " + mod.getModule().getModuleClass());
+        Log.debug("Init: " + mod.getModule().getModuleClass() +
+            "[" + mod.getModule().getSubSystem() + "]");
       }
     }
   }
 
   /**
    * Adds a module to the package manager.
+   * Once all modules are added, you have to call initializeModules()
+   * to configure and initialize the new modules.
    *
    * @param modClass the module class
    */
@@ -201,7 +194,7 @@ public final class PackageManager
     final ArrayList loadModules = new ArrayList();
     final ModuleInfo modInfo = new DefaultModuleInfo
         (modClass, null, null, null);
-    if (loadModule(modInfo, loadModules, false))
+    if (loadModule(modInfo, new ArrayList(), loadModules, false))
     {
       for (int i = 0; i < loadModules.size(); i++)
       {
@@ -210,6 +203,10 @@ public final class PackageManager
       }
     }
   }
+
+  private static final int RETURN_MODULE_LOADED = 0;
+  private static final int RETURN_MODULE_UNKNOWN = 1;
+  private static final int RETURN_MODULE_ERROR = 2;
 
   /**
    * Checks, whether the given module is already loaded in either the given
@@ -220,7 +217,7 @@ public final class PackageManager
    * @param module the module specification that is checked.
    * @return true, if the module is already loaded, false otherwise.
    */
-  private boolean containsModule(final ArrayList tempModules, final ModuleInfo module)
+  private int containsModule(final ArrayList tempModules, final ModuleInfo module)
   {
     if (tempModules != null)
     {
@@ -230,7 +227,7 @@ public final class PackageManager
       {
         if (mods[i].getModuleClass().equals(module.getModuleClass()))
         {
-          return true;
+          return RETURN_MODULE_LOADED;
         }
       }
     }
@@ -241,10 +238,25 @@ public final class PackageManager
     {
       if (packageStates[i].getModule().getModuleClass().equals(module.getModuleClass()))
       {
-        return true;
+        if (packageStates[i].getState() == PackageState.STATE_ERROR)
+        {
+          return RETURN_MODULE_ERROR;
+        }
+        else
+        {
+          return RETURN_MODULE_LOADED;
+        }
       }
     }
-    return false;
+    return RETURN_MODULE_UNKNOWN;
+  }
+
+  private void dropFailedModule (PackageState state)
+  {
+    if (modules.contains(state) == false)
+    {
+      modules.add(state);
+    }
   }
 
   /**
@@ -256,7 +268,8 @@ public final class PackageManager
    * @param modules the list of previously loaded modules for this module.
    * @return true, if the module was loaded successfully, false otherwise.
    */
-  private boolean loadModule(final ModuleInfo moduleInfo, final ArrayList modules, boolean fatal)
+  private boolean loadModule(final ModuleInfo moduleInfo, final ArrayList incompleteModules,
+                             final ArrayList modules, boolean fatal)
   {
     try
     {
@@ -268,16 +281,39 @@ public final class PackageManager
         // module conflict!
         Log.debug("Module " + module.getName() + ": required version: " + moduleInfo +
             ", but found Version: " + module);
+        PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+        dropFailedModule(state);
         return false;
       }
 
-      if (containsModule(modules, module) == false)
+      int moduleContained = containsModule(modules, module);
+      if (moduleContained == RETURN_MODULE_ERROR)
       {
+        // the module caused harm before ...
+        Log.debug ("Indicated failure for module: " + module.getModuleClass());
+        PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+        dropFailedModule(state);
+        return false;
+      }
+      else if (moduleContained == RETURN_MODULE_UNKNOWN)
+      {
+        if (incompleteModules.contains(module))
+        {
+          // we assume that loading will continue ...
+          Log.error ("Circular module reference: This module definition is invalid: " + module.getClass());
+          PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+          dropFailedModule(state);
+          return false;
+        }
+        incompleteModules.add(module);
         final ModuleInfo[] required = module.getRequiredModules();
         for (int i = 0; i < required.length; i++)
         {
-          if (loadModule(required[i], modules, true) == false)
+          if (loadModule(required[i], incompleteModules, modules, true) == false)
           {
+            Log.debug ("Indicated failure for module: " + module.getModuleClass());
+            PackageState state = new PackageState(module, PackageState.STATE_ERROR);
+            dropFailedModule(state);
             return false;
           }
         }
@@ -285,17 +321,18 @@ public final class PackageManager
         final ModuleInfo[] optional = module.getOptionalModules();
         for (int i = 0; i < optional.length; i++)
         {
-          if (loadModule(optional[i], modules, true) == false)
+          if (loadModule(optional[i], incompleteModules, modules, true) == false)
           {
             Log.debug(new Log.SimpleMessage("Optional module: ",
                 optional[i].getModuleClass(), " was not loaded."));
           }
         }
         // maybe a dependent module defined the same base module ...
-        if (containsModule(modules, module) == false)
+        if (containsModule(modules, module) == RETURN_MODULE_UNKNOWN)
         {
           modules.add(module);
         }
+        incompleteModules.remove(module);
       }
       return true;
     }
@@ -416,7 +453,7 @@ public final class PackageManager
 
   /**
    * Returns the default package configuration. Private report configuration
-   * instances may be inserted. These inserted configuration can never override
+   * instances may be inserted here. These inserted configuration can never override
    * the settings from this package configuration.
    *
    * @return the package configuration.
@@ -426,7 +463,14 @@ public final class PackageManager
     return packageConfiguration;
   }
 
-  public Module[] getActiveModules ()
+  /**
+   * Returns an array of the currently active modules. The module definition
+   * returned contain all known modules, including buggy and unconfigured
+   * instances.
+   *
+   * @return the modules.
+   */
+  public Module[] getAllModules ()
   {
     Module[] mods = new Module[modules.size()];
     for (int i = 0; i < modules.size(); i++)
@@ -437,13 +481,33 @@ public final class PackageManager
     return mods;
   }
 
+  /**
+   * Returns all active modules. This array does only contain modules
+   * which were successfully configured and initialized.
+   *
+   * @return the list of all active modules.
+   */
+  public Module[] getActiveModules ()
+  {
+    Module[] mods = new Module[modules.size()];
+    for (int i = 0; i < modules.size(); i++)
+    {
+      PackageState state = (PackageState) modules.get(i);
+      if (state.getState() == PackageState.STATE_INITIALIZED)
+      {
+        mods[i] = state.getModule();
+      }
+    }
+    return mods;
+  }
+
   public static void main (String [] args)
   {
-    PackageManager.getInstance().init();
-    Module[] mods = PackageManager.getInstance().getActiveModules();
+    Boot.start();
+    Module[] mods = PackageManager.getInstance().getAllModules();
     for (int i = 0; i < mods.length; i++)
     {
-      System.out.println (mods[i]);
+      System.out.println (mods[i].getSubSystem() + " " + mods[i].getName());
     }
     System.out.println ("A total of " + mods.length + " modules is available.");
   }

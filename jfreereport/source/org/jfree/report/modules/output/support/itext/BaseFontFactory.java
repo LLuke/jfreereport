@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.8 2003/08/25 14:29:32 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.9 2003/08/28 17:45:44 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.Enumeration;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
@@ -55,6 +56,7 @@ import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.report.util.HashNMap;
 
 /**
  * The BaseFontFactory is used to find and register all TrueType fonts for embedding them
@@ -166,6 +168,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    * font names.
    */
   private static final String FONTS_STORAGE_PATH = "registered_itext_fonts";
+  private static final String KNOWN_FONTS_PATH = "known_itext_font_files";
 
   /**
    * Creates a new factory.
@@ -183,16 +186,40 @@ public final class BaseFontFactory extends DefaultFontMapper
   public synchronized void registerDefaultFontPath()
   {
     final ConfigStorage store = ConfigFactory.getInstance().getSystemStorage();
-    Properties knownFonts = new Properties();
+    HashNMap knownFonts = new HashNMap();
+    Properties seenFiles = new Properties();
     if (store.existsProperties(FONTS_STORAGE_PATH))
     {
       try
       {
-        knownFonts = store.loadProperties(FONTS_STORAGE_PATH, null);
+        Properties propKnownFonts = store.loadProperties(FONTS_STORAGE_PATH, null);
+        Enumeration keys = propKnownFonts.keys();
+        while (keys.hasMoreElements())
+        {
+          String fontName = (String) keys.nextElement();
+          String fileName = propKnownFonts.getProperty(fontName);
+          knownFonts.add(fileName, fontName);
+        }
+        Log.info ("Registering fonts for the iText library; using a cached font registry.");
       }
       catch (ConfigStoreException cse)
       {
         Log.info("Unable to load font configuration, rebuilding.");
+      }
+    }
+    else
+    {
+      Log.info ("Registering fonts for the iText library.");
+    }
+    if (store.existsProperties(KNOWN_FONTS_PATH))
+    {
+      try
+      {
+        seenFiles = store.loadProperties(KNOWN_FONTS_PATH, null);
+      }
+      catch (ConfigStoreException cse)
+      {
+        Log.info("Unable to load known font files, rebuilding.");
       }
     }
 
@@ -216,33 +243,35 @@ public final class BaseFontFactory extends DefaultFontMapper
     {
       final String userhome = System.getProperty("user.home");
       Log.debug("Detected MacOS (Property 'mrj.version' is present.");
-      registerFontPath(new File(userhome + "/Library/Fonts"), encoding, knownFonts);
-      registerFontPath(new File("/Library/Fonts"), encoding, knownFonts);
-      registerFontPath(new File("/Network/Library/Fonts"), encoding, knownFonts);
-      registerFontPath(new File("/System/Library/Fonts"), encoding, knownFonts);
+      registerFontPath(new File(userhome + "/Library/Fonts"), encoding, knownFonts, seenFiles);
+      registerFontPath(new File("/Library/Fonts"), encoding, knownFonts, seenFiles);
+      registerFontPath(new File("/Network/Library/Fonts"), encoding, knownFonts, seenFiles);
+      registerFontPath(new File("/System/Library/Fonts"), encoding, knownFonts, seenFiles);
     }
     else if (StringUtil.startsWithIgnoreCase(osname, "windows"))
     {
-      registerWindowsFontPath(encoding, knownFonts);
+      registerWindowsFontPath(encoding, knownFonts, seenFiles);
     }
     else
     {
       Log.debug("Assuming unix like file structures");
       // Assume X11 is installed in the default location.
-      registerFontPath(new File("/usr/X11R6/lib/X11/fonts"), encoding, knownFonts);
-      registerFontPath(new File("/usr/share/fonts"), encoding, knownFonts);
+      registerFontPath(new File("/usr/X11R6/lib/X11/fonts"), encoding, knownFonts, seenFiles);
+      registerFontPath(new File("/usr/share/fonts"), encoding, knownFonts, seenFiles);
     }
-    registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding, knownFonts);
+    registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding, knownFonts, seenFiles);
 
     try
     {
       store.storeProperties(FONTS_STORAGE_PATH, fontsByName);
+      store.storeProperties(KNOWN_FONTS_PATH, seenFiles);
     }
     catch (ConfigStoreException cse)
     {
       Log.info("Failed to store font configuration. This error is non-fatal, " +
           "the font configuration will be rebuild from scratch, if necessary.");
     }
+    Log.info("Completed font registration.");
     initialized = true;
   }
 
@@ -251,7 +280,9 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @param encoding the default font encoding.
    */
-  private void registerWindowsFontPath(final String encoding, final Properties knownFonts)
+  private void registerWindowsFontPath(final String encoding,
+                                       final HashNMap knownFonts,
+                                       final Properties seenFiles)
   {
     Log.debug("Found windows in os name, assuming DOS/Win32 structures");
     // Assume windows
@@ -284,7 +315,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     if (fontPath != null)
     {
       final File file = new File(fontPath);
-      registerFontPath(file, encoding, knownFonts);
+      registerFontPath(file, encoding, knownFonts, seenFiles);
     }
   }
 
@@ -297,27 +328,44 @@ public final class BaseFontFactory extends DefaultFontMapper
   public synchronized void registerFontPath
       (final File file, final String encoding)
   {
-    registerFontPath(file, encoding, new Properties());
+    registerFontPath(file, encoding, new HashNMap(), new Properties());
   }
 
   private synchronized void registerFontPath
-      (final File file, final String encoding, final Properties knownFonts)
+      (final File file, final String encoding,
+       final HashNMap knownFonts, final Properties seenFiles)
   {
     if (file.exists() && file.isDirectory() && file.canRead())
     {
       final File[] files = file.listFiles(FONTPATHFILTER);
       for (int i = 0; i < files.length; i++)
       {
-        if (files[i].isDirectory())
+        File currentFile = files[i];
+        if (currentFile.isDirectory())
         {
-          registerFontPath(files[i], encoding, knownFonts);
+          registerFontPath(currentFile, encoding, knownFonts, seenFiles);
         }
         else
         {
-          String fileName = files[i].toString();
-          if (knownFonts.containsValue(fileName) == false)
+          String fileName = currentFile.toString();
+          String cachedAccessTime = seenFiles.getProperty(fileName);
+          String newAccessTime =
+              String.valueOf (currentFile.lastModified() + "," + currentFile.length());
+
+          // the font file is not known ... or has changed.
+          if (newAccessTime.equals(cachedAccessTime) == false)
           {
             registerFontFile(fileName, encoding);
+            seenFiles.put(fileName, newAccessTime);
+          }
+          else
+          {
+            Iterator it = knownFonts.getAll(fileName);
+            while (it.hasNext())
+            {
+              String fontName = (String) it.next();
+              fontsByName.put(fontName, fileName);
+            }
           }
         }
       }

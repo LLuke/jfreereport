@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: AbstractModule.java,v 1.8 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,8 +43,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import org.jfree.report.util.Log;
 
 /**
  * The abstract module provides a default implementation of the module interface.
@@ -185,12 +183,15 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
   /** The list of optional modules. */
   private ModuleInfo[] optionalModules;
 
+  private String[]dependentSubSystems;
   /** The name of the module. */
   private String name;
   /** A short description of the module. */
   private String description;
   /** The name of the module producer. */
   private String producer;
+  /** The modules subsystem. */
+  private String subsystem;
 
   /**
    * Default Constructor.
@@ -367,6 +368,10 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
         else if (key.equals("description"))
         {
           setDescription(b);
+        }
+        else if (key.equals("subsystem"))
+        {
+          setSubSystem(b);
         }
         else if (key.equals("version.major"))
         {
@@ -580,7 +585,7 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
    *
    * @param optionalModules the optional modules.
    */
-  protected void setOptionalModules(final ModuleInfo[] optionalModules)
+  public void setOptionalModules(final ModuleInfo[] optionalModules)
   {
     this.optionalModules = new ModuleInfo[optionalModules.length];
     System.arraycopy(optionalModules, 0, this.optionalModules, 0, optionalModules.length);
@@ -675,5 +680,30 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     {
       throw new ModuleInitializeException("Failed to load specified initializer class.", e);
     }
+  }
+
+  /**
+   * Returns the modules subsystem. If this module is not part of an subsystem
+   * then return the modules name, but never null.
+   *
+   * @return the name of the subsystem.
+   */
+  public String getSubSystem()
+  {
+    if (subsystem == null)
+    {
+      return getName();
+    }
+    return subsystem;
+  }
+
+  /**
+   * Defines the subsystem name.
+   *
+   * @param name
+   */
+  protected void setSubSystem (String name)
+  {
+    this.subsystem = name;
   }
 }
