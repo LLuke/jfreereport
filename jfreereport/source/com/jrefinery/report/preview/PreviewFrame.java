@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.36 2002/09/16 16:59:16 mungady Exp $
+ * $Id: PreviewFrame.java,v 1.37 2002/11/09 00:09:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -516,7 +516,7 @@ public class PreviewFrame
       try
       {
         int page = Integer.parseInt(result);
-        if (page > 0 && page < reportPane.getNumberOfPages())
+        if (page > 0 && page <= reportPane.getNumberOfPages())
         {
           reportPane.setPageNumber(page);
         }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.40 2002/11/05 18:56:40 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.41 2002/11/06 21:03:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -357,7 +357,7 @@ public class JFreeReportDemo extends JFrame
     }
     else if (index == 8)
     {
-      preview("/com/jrefinery/report/demo/report5.xml", data1);
+      preview("/com/jrefinery/report/demo/report6.xml", data1);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.36 2002/11/06 22:15:13 taqua Exp $
+ * $Id: JFreeReport.java,v 1.37 2002/11/14 21:52:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,7 +77,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
-import java.awt.print.Paper;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
@@ -129,9 +128,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /** Storage for the expressions in the report. */
   private ExpressionCollection expressions;
-
-  /** The report name. */
-  private String name;
 
   /** An ordered list of report groups (each group defines its own header and footer). */
   private GroupList groups;
@@ -490,7 +486,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    */
   public GroupList getGroups ()
   {
-    return this.groups;
+    return (GroupList) this.groups.clone();
   }
 
   /**
@@ -528,7 +524,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
                                            + groups.size ());
     }
 
-    return (Group) groups.get (count);
+    return groups.get (count);
   }
 
   /**
@@ -665,7 +661,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   public static ReportState processReport (OutputTarget target, JFreeReport report)
           throws ReportProcessingException
   {
-    int page = 1;
     ReportState rs = new StartState (report);
     ReportProcessor prc = new ReportProcessor (target, true, rs.getReport().getPageFooter ());
 
@@ -717,7 +712,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     {
       StartState startState = (StartState) state;
 
-      PageFormat p = output.getPageFormat();
       // PrepareRuns, part 1: resolve the function depencies by running the report
       // until all function levels are completed.
       JFreeReport report = state.getReport();
@@ -817,7 +811,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     if (currPage.isStart())
     {
       prc = new ReportProcessor (target, draw, currPage.getReport().getPageFooter ());
-      state = (ReportState) currPage.advance(prc);
+      state = currPage.advance(prc);
     }
     else
     {
@@ -839,7 +833,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     }
 
     int page = state.getCurrentPage ();
-    boolean pageDone = false;
 
     // Print the pageHeader before any other item.
     ReportEvent event = new ReportEvent (state);

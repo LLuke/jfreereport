@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessor.java,v 1.14 2002/10/15 20:37:13 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.15 2002/10/16 18:33:40 taqua Exp $
  *
  * Changes
  * -------
@@ -143,6 +143,7 @@ public class ReportProcessor implements JFreeReportConstants
       dheight = band.getHeight ();
     }
 
+    Log.debug ("Cursor: " + cursor.getY() + " DHeight: " + dheight + " y: " + y);
     cursor.advance (y - cursor.getY () + dheight);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.23 2002/09/13 15:38:03 mungady Exp $
+ * $Id: Band.java,v 1.24 2002/11/05 18:56:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -261,6 +261,16 @@ public abstract class Band implements Serializable, Cloneable
     {
       return 0;
     }
+    boolean isDynamic = false;
+    for (int i = 0; i < allElements.size() && isDynamic == false; i++)
+    {
+      Object o = allElements.get (i);
+      if (o instanceof TextElement)
+      {
+        TextElement te = (TextElement) o;
+        isDynamic = te.isDynamic();
+      }
+    }
     float maxheight = getHeight();
 
     Rectangle2D bounds = new Rectangle2D.Float();
@@ -286,11 +296,14 @@ public abstract class Band implements Serializable, Cloneable
         {
           Log.error("Failed to draw band", ex);
         }
-        double eh = target.getCursor().getElementBounds().getY()
-                  + target.getCursor().getElementBounds().getHeight();
-        if (eh > maxheight)
+        if (isDynamic)
         {
-          maxheight = (float) eh;
+          double eh = target.getCursor().getElementBounds().getY()
+                    + target.getCursor().getElementBounds().getHeight();
+          if (eh > maxheight)
+          {
+            maxheight = (float) eh;
+          }
         }
       }
     }
