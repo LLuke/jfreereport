@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.1 2003/03/04 23:21:49 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.2 2003/03/23 16:51:23 mimil Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -147,11 +147,11 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"menu.help.name", "Aide"},
             {"menu.help.mnemonic", new Character ('H')},
 
-            {"file.save.pdfdescription", "PDF documents"},
+            {"file.save.pdfdescription", "Documents PDF"},
             {"statusline.pages", "Page {0} de {1}"},
-            {"statusline.error", "Reportgeneration produced an error: {0}"},
-            {"error.processingfailed.title", "Report processing failed"},
-            {"error.processingfailed.message", "Error on processing this report: {0}"},
+            {"statusline.error", "Reportgeneration à produit une erreur: {0}"},
+            {"error.processingfailed.title", "Echec du traitement du Report"},
+            {"error.processingfailed.message", "Erreur lors du traitement de ce Report: {0}"},
             {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
             {"error.savefailed.title", "Erreur durant la sauvegarde"},
             {"error.printfailed.message", "Erreur à l'impression : {0}"},
@@ -163,8 +163,8 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"pdfsavedialog.filename", "Nom du fichier"},
             {"pdfsavedialog.author", "Auteur"},
             {"pdfsavedialog.title", "Titre"},
-            {"pdfsavedialog.selectFile", "Selectionner un fichier"},
-            {"pdfsavedialog.security", "Paramêtre de sécurité et d'encodage"},
+            {"pdfsavedialog.selectFile", "Sélectionner un fichier"},
+            {"pdfsavedialog.security", "Paramètres de sécurité et d'encodage"},
 
             {"pdfsavedialog.securityNone", "Pas de sécurité"},
             {"pdfsavedialog.security40bit", "Encodage en 40 bits"},
@@ -190,16 +190,16 @@ public class JFreeReportResources_fr extends JFreeReportResources
 
             {"pdfsavedialog.allowCopy", "Autoriser la copie"},
             {"pdfsavedialog.allowPrinting", "Autoriser l'impression"},
-            {"pdfsavedialog.allowDegradedPrinting", "Autoriser les impression de dégradés"},
-            {"pdfsavedialog.allowScreenreader", "Autiriser l'usage de lecteur d'écran"},
+            {"pdfsavedialog.allowDegradedPrinting", "Autoriser les impressions de dégradés"},
+            {"pdfsavedialog.allowScreenreader", "Autoriser l'usage de lecteur d'écran"},
             {"pdfsavedialog.allowAssembly", "Autoriser (Re-)assemblage"},
             {"pdfsavedialog.allowModifyContents", "Autoriser les modifications du contenu"},
             {"pdfsavedialog.allowModifyAnnotations", "Autoriser les modifications des annotations"},
-            {"pdfsavedialog.allowFillIn", "Autoriser le remplssage des formules"},
+            {"pdfsavedialog.allowFillIn", "Autoriser le remplissage des formules"},
 
-            {"pdfsavedialog.option.noprinting", "Aucune imprssion"},
-            {"pdfsavedialog.option.degradedprinting", "Basse qualité d'impression"},
-            {"pdfsavedialog.option.fullprinting", "Impression autorisé"},
+            {"pdfsavedialog.option.noprinting", "Aucune impression"},
+            {"pdfsavedialog.option.degradedprinting", "Qualité basse d'impression"},
+            {"pdfsavedialog.option.fullprinting", "Impression autorisée"},
 
             {"pdfsavedialog.cancel", "Annuler"},
             {"pdfsavedialog.confirm", "Confirmer"},
