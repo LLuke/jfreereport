@@ -1,5 +1,7 @@
 package org.jfree.pixie.wmf.records;
 
+import java.io.InputStream;
+
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
@@ -7,17 +9,47 @@ import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
  * This function is not in the validity list of Microsofts
- * WindowsMetafile Records. The Function ID is 0x0922, but there is
- * not other description available ...
+ * WindowsMetafile Records.
+ * <p>
+ *
  */
 public class MfCmdBitBlt extends MfCmd
 {
+  private static final int POS_ROP = 0;
+  private static final int POS_Y_SOURCE_ORIGIN = 1;
+  private static final int POS_X_SOURCE_ORIGIN = 2;
+  private static final int POS_DESTINATION_Y_EXT = 3;
+  private static final int POS_DESTINATION_X_EXT = 4;
+  private static final int POS_Y_DESTINATION_ORIGIN= 5;
+  private static final int POS_X_DESTINATION_ORIGIN = 6;
+  private static final int POS_BITMAP_WIDTH = 7;
+  private static final int POS_BITMAP_HEIGHT = 8;
+  private static final int POS_BYTES_PER_RASTER_LINE = 9;
+  private static final int POS_COLOR_PLANES_BITMAP = 10;
+  private static final int POS_ADJACENT_COLOR_BITS = 11;
+  private static final int POS_DEVICE_DEPENDENT_BITMAP_BITS = 12;
+
+  private int rop;
+  private int sourceY;
+  private int sourceX;
+  private int destXExt;
+  private int destYExt;
+  private int destXOrigin;
+  private int destYOrigin;
+  private int bitmapWidth;
+  private int bitmapHeight;
+  private int bytesPerRasterLine;
+  private int colorPlanesBitmap;
+  private int adjacentColorBits;
+  private byte[] deviceDependentBitmap;
+
   public MfCmdBitBlt ()
   {
   }
 
   public void replay (final WmfFile file)
   {
+    // this command is not implemented ...
   }
 
   public MfCmd getInstance ()
@@ -27,13 +59,27 @@ public class MfCmdBitBlt extends MfCmd
 
   public void setRecord (final MfRecord record)
   {
-    System.out.println ("Old BitBlit is not yet implemented.");
+    setRop(record.getParam (POS_ROP));
+    setSourceX(record.getParam (POS_Y_SOURCE_ORIGIN));
+    setSourceY(record.getParam (POS_X_SOURCE_ORIGIN));
+    setDestXExt(record.getParam (POS_DESTINATION_X_EXT));
+    setDestYExt(record.getParam (POS_DESTINATION_Y_EXT));
+    setDestXOrigin(record.getParam (POS_X_DESTINATION_ORIGIN));
+    setDestYOrigin(record.getParam (POS_Y_DESTINATION_ORIGIN));
+
+    setBitmapWidth(record.getParam (POS_BITMAP_WIDTH));
+    setBitmapHeight(record.getParam (POS_BITMAP_HEIGHT));
+    setBytesPerRasterLine(record.getParam (POS_BYTES_PER_RASTER_LINE));
+    setColorPlanesBitmap(record.getParam (POS_COLOR_PLANES_BITMAP));
+    setAdjacentColorBits(record.getParam (POS_ADJACENT_COLOR_BITS));
+    // todo read the bitmap data from the record ...
   }
+
 
   public String toString ()
   {
     final StringBuffer b = new StringBuffer ();
-    b.append ("[OLD_BIT_BLT] is not implemented");
+    b.append ("[OLD_BIT_BLT]");
     return b.toString ();
   }
 
@@ -57,6 +103,153 @@ public class MfCmdBitBlt extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    throw new RecordCreationException("CmdBitBlt is not supported");
+    // todo this is not yet correctly implemented ...
+    MfRecord record = new MfRecord(12 + (deviceDependentBitmap.length / 4));
+    record.setParam (POS_ROP, getRop());
+    record.setParam (POS_Y_SOURCE_ORIGIN, getSourceX());
+    record.setParam (POS_X_SOURCE_ORIGIN, getSourceY());
+    record.setParam (POS_DESTINATION_X_EXT, getDestXExt());
+    record.setParam (POS_DESTINATION_Y_EXT, getDestYExt());
+    record.setParam (POS_X_DESTINATION_ORIGIN, getDestXOrigin());
+    record.setParam (POS_Y_DESTINATION_ORIGIN, getDestYOrigin());
+
+    record.setParam (POS_BITMAP_WIDTH, getBitmapWidth());
+    record.setParam (POS_BITMAP_HEIGHT, getBitmapHeight());
+    record.setParam (POS_BYTES_PER_RASTER_LINE, getBytesPerRasterLine());
+    record.setParam (POS_COLOR_PLANES_BITMAP, getColorPlanesBitmap());
+    record.setParam (POS_ADJACENT_COLOR_BITS, getAdjacentColorBits());
+
+    // todo: Write the bitmap data ...
+    return record;
+  }
+
+  public int getAdjacentColorBits()
+  {
+    return adjacentColorBits;
+  }
+
+  public void setAdjacentColorBits(int adjacentColorBits)
+  {
+    this.adjacentColorBits = adjacentColorBits;
+  }
+
+  public int getBitmapHeight()
+  {
+    return bitmapHeight;
+  }
+
+  public void setBitmapHeight(int bitmapHeight)
+  {
+    this.bitmapHeight = bitmapHeight;
+  }
+
+  public int getBitmapWidth()
+  {
+    return bitmapWidth;
+  }
+
+  public void setBitmapWidth(int bitmapWidth)
+  {
+    this.bitmapWidth = bitmapWidth;
+  }
+
+  public int getBytesPerRasterLine()
+  {
+    return bytesPerRasterLine;
+  }
+
+  public void setBytesPerRasterLine(int bytesPerRasterLine)
+  {
+    this.bytesPerRasterLine = bytesPerRasterLine;
+  }
+
+  public int getColorPlanesBitmap()
+  {
+    return colorPlanesBitmap;
+  }
+
+  public void setColorPlanesBitmap(int colorPlanesBitmap)
+  {
+    this.colorPlanesBitmap = colorPlanesBitmap;
+  }
+
+  public int getDestXExt()
+  {
+    return destXExt;
+  }
+
+  public void setDestXExt(int destXExt)
+  {
+    this.destXExt = destXExt;
+  }
+
+  public int getDestXOrigin()
+  {
+    return destXOrigin;
+  }
+
+  public void setDestXOrigin(int destXOrigin)
+  {
+    this.destXOrigin = destXOrigin;
+  }
+
+  public int getDestYExt()
+  {
+    return destYExt;
+  }
+
+  public void setDestYExt(int destYExt)
+  {
+    this.destYExt = destYExt;
+  }
+
+  public int getDestYOrigin()
+  {
+    return destYOrigin;
+  }
+
+  public void setDestYOrigin(int destYOrigin)
+  {
+    this.destYOrigin = destYOrigin;
+  }
+
+  public byte[] getDeviceDependentBitmap()
+  {
+    return deviceDependentBitmap;
+  }
+
+  public void setDeviceDependentBitmap(byte[] deviceDependentBitmap)
+  {
+    this.deviceDependentBitmap = deviceDependentBitmap;
+  }
+
+  public int getRop()
+  {
+    return rop;
+  }
+
+  public void setRop(int rop)
+  {
+    this.rop = rop;
+  }
+
+  public int getSourceX()
+  {
+    return sourceX;
+  }
+
+  public void setSourceX(int sourceX)
+  {
+    this.sourceX = sourceX;
+  }
+
+  public int getSourceY()
+  {
+    return sourceY;
+  }
+
+  public void setSourceY(int sourceY)
+  {
+    this.sourceY = sourceY;
   }
 }

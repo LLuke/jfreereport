@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreateFont.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
+ * $Id: MfCmdCreateFont.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -69,6 +69,12 @@ import java.awt.Font;
  */
 public class MfCmdCreateFont extends MfCmd
 {
+  public static final int CHARSET_ANSI = 0;
+  public static final int CHARSET_DEFAULT = 1;
+  public static final int CHARSET_SYMBOL = 2;
+  public static final int CHARSET_SHIFTJIS = 128;
+  public static final int CHARSET_OEM = 255;
+
   private static int FONT_FACE_MAX = 31;
   private static int FIXED_RECORD_SIZE = 9;
   private static int POS_HEIGHT = 0;
@@ -191,10 +197,8 @@ public class MfCmdCreateFont extends MfCmd
     final int escape = record.getParam (POS_ESCAPEMENT);
     final int orientation = record.getParam (POS_ORIENTATION);
     final int weight = record.getParam (POS_WEIGHT);
-    // todo check whether this is correct ...
     final int italic = record.getParam (POS_FLAGS1) & 0xFF00;
     final int underline = record.getParam (POS_FLAGS1) & 0x00FF;
-    // todo check whether this is correct ..
     final int strikeout = record.getParam (POS_FLAGS2) & 0xFF00;
     final int charset = record.getParam (POS_FLAGS2) & 0x00FF;
     final int outprec = record.getParam (POS_PRECISION) & 0xFF00;

@@ -13,6 +13,13 @@ import java.awt.Color;
 
 public class MfCmdPatBlt extends MfCmd
 {
+  private static final int RECORD_SIZE = 6;
+  private static final int POS_ROP = 0;
+  private static final int POS_HEIGHT = 2;
+  private static final int POS_WIDTH = 3;
+  private static final int POS_Y = 4;
+  private static final int POS_X = 5;
+
   private int rop;
   private int height;
   private int width;
@@ -90,13 +97,6 @@ public class MfCmdPatBlt extends MfCmd
   {
     this.rop = rop;
   }
-
-  private static final int RECORD_SIZE = 6;
-  private static final int POS_ROP = 0;
-  private static final int POS_HEIGHT = 2;
-  private static final int POS_WIDTH = 3;
-  private static final int POS_Y = 4;
-  private static final int POS_X = 5;
 
   /**
    * Reads the command data from the given record and adjusts the internal

@@ -20,14 +20,14 @@
     <property name="projectdir" value=".."/>
     <property name="builddir" value="${projectdir}/build"/>
     <property name="libdir" value="${projectdir}/lib"/>
-    <property name="JCommon-jar" value="jcommon-0.8.1.jar"/>
+    <property name="JCommon-jar" value="jcommon-0.9.1a.jar"/>
 
     <path id="build.classpath">
       <pathelement location="${libdir}/${JCommon-jar}"/>
     </path>
 
     <property name="pixie.name" value="pixie"/>
-    <property name="pixie.version" value="0.8.0"/>
+    <property name="pixie.version" value="0.8.1"/>
   </target>
 
   <!-- Compile the Pixie classes -->
@@ -197,27 +197,6 @@
   <target name="all"
     depends="compile,javadoc,make-zip,make-targz"
     description="Compiles Pixie, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
-  </target>
-
-  <!-- Read the latest sources from the CVS -->
-  <target name="cvs-checkout" description="Retrieves the latest sources from the cvs archive at sourceforge.">
-    <cvspass cvsroot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
-      password=""
-      />
-    <cvs cvsRoot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
-      package="pixie"
-      compression="true" compressionlevel="5"
-      dest="."
-      />
-  </target>
-
-  <!-- Checkout the sources from sourceforge and rebuild JFreeReport -->
-  <!-- Warning: This requires a different basedir -->
-  <target name="cvs-rebuild"
-    depends="cvs-checkout"
-    description="Checks out the sources from sourceforge and rebuilds the sources by using the ant-script within the sources">
-    <property name="projectdir" value="."/>
-    <ant antfile="ant/build.xml" dir="pixie" target="all"/>
   </target>
 
 </project>

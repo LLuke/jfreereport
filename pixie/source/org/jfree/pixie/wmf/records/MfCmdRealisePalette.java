@@ -7,7 +7,7 @@ import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
  * Synchronizes the Metafile-Palette with the device-dependent palette
- * This is not used here, as java does use 24-Bit TrueColors to display colors.
+ * This is not used here, as java uses 24-Bit TrueColors to display colors.
  * <p>
  * The record itself is empty.
  */

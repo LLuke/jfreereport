@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdOffsetWindowOrg.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
+ * $Id: MfCmdOffsetWindowOrg.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,8 @@ public class MfCmdOffsetWindowOrg extends MfCmd
   {
     final MfDcState state = file.getCurrentState ();
     final Point p = getScaledDestination ();
-    state.setWindowOrg (state.getWindowOrgX () + p.x, state.getWindowOrgY () + p.y);
+    state.setWindowOrg
+        (state.getWindowOrgX () + p.x, state.getWindowOrgY () + p.y);
   }
 
   /**

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreatePatternBrush.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
+ * $Id: MfCmdCreatePatternBrush.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,21 @@ import org.jfree.pixie.wmf.records.MfCmd;
  * the CreateDIBSection function, or it can be a device-dependent bitmap.
  * <p>
  * No DIB related function is yet fully implemented...
+ * <p>
+ * todo 
  */
 public class MfCmdCreatePatternBrush extends MfCmd
 {
+  private static final int POS_BITMAP_WIDTH = 0;
+  private static final int POS_BITMAP_HEIGHT = 1;
+  private static final int POS_BYTES_PER_LINE = 2;
+  // ColorPlanes on byte pos 6 and bits per pixel on pos 7
+  private static final int POS_COLOR_PLANES = 3;
+  private static final int POS_BITS_PER_PIXEL = 3;
+  // ?? 32 bit value ...
+  private static final int POS_POINTER_BITVALUES = 4;
+  private static final int POS_BITPATTERN = 6;
+
   private BufferedImage image;
 
   public MfCmdCreatePatternBrush ()

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfHeader.java,v 1.1 2003/03/09 20:38:17 taqua Exp $
+ * $Id: MfHeader.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,60 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- A buffer which represents a Metafile header.
+ * A buffer which represents a Metafile header.
+ * <p>
+ * The meta file header has the following structure
+ * <table border="1">
+ * <tr>
+ * <th>offset</th>
+ * <th>length in bytes</th>
+ * <th>name</th>
+ * <th>meaning</th>
+ * </tr>
+ * <tr>
+ * <td>0x00</td>
+ * <td>2</td>
+ * <td>mfType</td>
+ * <td>MetaFile type: 0x1 = memory based meta file, 0x2 = disk based meta file</td>
+ * </tr>
+ * <tr>
+ * <td>0x02</td>
+ * <td>2</td>
+ * <td>mfHeader</td>
+ * <td>length of header in words (16bit)</td>
+ * </tr>
+ * <tr>
+ * <td>0x04</td>
+ * <td>2</td>
+ * <td>mfVersion</td>
+ * <td>Windows version used to save the file as BCD number.
+ * 0x30 for windows 3.0, 0x31 for win3.1 etc.</td>
+ * </tr>
+ * <tr>
+ * <td>0x06</td>
+ * <td>4</td>
+ * <td>mfSize</td>
+ * <td>File length in words</td>
+ * </tr>
+ * <tr>
+ * <td>0x0A</td>
+ * <td>2</td>
+ * <td>mfNoObj</td>
+ * <td>maximum number of objects in the file</td>
+ * </tr>
+ * <tr>
+ * <td>0x0c</td>
+ * <td>4</td>
+ * <td>mfMaxRec</td>
+ * <td>Maximum record length</td>
+ * </tr>
+ * <tr>
+ * <td>0x10</td>
+ * <td>2</td>
+ * <td>mfnoPar</td>
+ * <td>Not used</td>
+ * </tr>
+ * </table>
  */
 public class MfHeader extends Buffer
 {
@@ -54,37 +107,44 @@ public class MfHeader extends Buffer
   private static final int PLACEABLE_HEADER_SIZE = 22;
   private static final int STANDARD_HEADER_SIZE = 18;
 
-  /** Metadata Positions ... */
-  private static final int WMF_FILE_TYPE = 22;     // WORD
-  private static final int WMF_HEADER_SIZE = 24;   // WORD
-  private static final int WMF_VERSION = 26;       // WORD
-  private static final int WMF_FILE_SIZE = 28;     // DWORD
-  private static final int WMF_NUM_OF_REC = 32;    // WORD
-  private static final int WMF_MAX_REC_SIZE = 34;  // DWORD
-  private static final int WMF_NUM_PARAMS = 38;    // WORD always 0 not used
+  /**
+   * Metadata Positions
+   * This implementation always reserves space for both the standard and the
+   * extended wmf header; the standard header is always placed after the extended
+   * header.
+   */
+  private static final int WMF_FILE_TYPE = PLACEABLE_HEADER_SIZE + 0x0;     // WORD
+  private static final int WMF_HEADER_SIZE = PLACEABLE_HEADER_SIZE + 0x2;   // WORD
+  // private static final int WMF_VERSION = PLACEABLE_HEADER_SIZE + 0x4;       // WORD
+  private static final int WMF_FILE_SIZE = PLACEABLE_HEADER_SIZE + 0x06;     // DWORD
+  private static final int WMF_NUM_OF_REC = PLACEABLE_HEADER_SIZE + 0x0a;    // WORD
+  private static final int WMF_MAX_REC_SIZE = PLACEABLE_HEADER_SIZE + 0x0c;  // DWORD
+//  private static final int WMF_NUM_PARAMS = PLACEABLE_HEADER_SIZE + 0x10;    // WORD always 0 not used
 
   /** MetaData type: WmfFile is a memory copy. */
   private static final int WMF_TYPE_MEM = 0;
   /** MetaData type: WmfFile is a disk copy. */
-  private static final int WMF_TYPE_DISK = 1;
+//  private static final int WMF_TYPE_DISK = 1;
 
   /** A magic number indicating that this is a Aldus WMF file. */
   private static final int ALDUS_MAGIC_NUMBER_VAL = 0x9ac6cdd7;
 
   private static final int ALDUS_MAGIC_NUMBER_POS = 0;
-  private static final int ALDUS_HANDLE_POS = 4;
+//  private static final int ALDUS_HANDLE_POS = 4;
   private static final int ALDUS_POS_LEFT = 6;
   private static final int ALDUS_POS_TOP = 8;
   private static final int ALDUS_POS_RIGHT = 10;
   private static final int ALDUS_POS_BOTTOM = 12;
   private static final int ALDUS_RESOLUTION = 14; // units per inch
-  private static final int ALDUS_RESERVED = 16;
-  private static final int ALDUS_CHECKSUM = 20;
+//  private static final int ALDUS_RESERVED = 16;
+//  private static final int ALDUS_CHECKSUM = 20;
 
   /**
    * Is the given input a metafile? We have to guess by reading the header
    * and/or by looking at the file name.
    *
+   * @param inName the file name of the stream source
+   * @param in the input stream.
    * @return either QUALITY_NO, QUALITY_MAYBE or QUALITY_YES.
    */
   public static int isMetafile (final String inName, final InputStream in)
@@ -144,15 +204,16 @@ public class MfHeader extends Buffer
     read (in, 0, 4);
     if (isPlaceable ())
     {
+      // read the standard header and the extended Aldus header
       read (in, 4, total - 4);
     }
     else
     {
-      // Ignore the space for the placeable header
-      for (int i = 0; i < 4; i++)
-      {
-        bytes[PLACEABLE_HEADER_SIZE + i] = bytes[i];
-      }
+      // Ignore the space for the placeable header, move the (already read)
+      // standard header information to the correct position (after the space
+      // of the (non-existent) extended header
+      move(0, PLACEABLE_HEADER_SIZE, 4);
+      // read the remaining bytes of the standard header ...
       read (in, PLACEABLE_HEADER_SIZE + 4, STANDARD_HEADER_SIZE - 4);
     }
 

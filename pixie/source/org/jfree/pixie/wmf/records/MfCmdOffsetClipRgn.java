@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdOffsetClipRgn.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
+ * $Id: MfCmdOffsetClipRgn.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,8 @@ import java.awt.Rectangle;
 
 /**
  * Moves the current Clipping Region (@see CreateRegion) to the specified
- * position
+ * position, starting with the current region. This will result in a relative
+ * move operation. The specified values are no absolute values. 
  */
 public class MfCmdOffsetClipRgn extends MfCmd
 {
@@ -73,8 +74,8 @@ public class MfCmdOffsetClipRgn extends MfCmd
     final MfDcState state = file.getCurrentState ();
     final Rectangle clipRect = state.getClipRegion ();
     final Point p = getScaledDestination ();
-    clipRect.x = p.x;
-    clipRect.y = p.y;
+    clipRect.x += p.x;
+    clipRect.y += p.y;
     state.setClipRegion (clipRect);
   }
 

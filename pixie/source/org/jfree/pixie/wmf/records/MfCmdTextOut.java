@@ -9,6 +9,11 @@ import org.jfree.pixie.wmf.records.MfCmd;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+/**
+ * Prints the given string. That record is as weird as everything in windows.
+ * First parameter is the string length, then follows the string and finally
+ * the x and y coordinates (in that order) where to print the string.
+ */
 public class MfCmdTextOut extends MfCmd
 {
   private int x;
@@ -25,7 +30,7 @@ public class MfCmdTextOut extends MfCmd
   /**
    * Replays the command on the given WmfFile.
    *
-   * @param metafile the meta file.
+   * @param file the meta file.
    */
   public void replay (final WmfFile file)
   {

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdResizePalette.java,v 1.2 2003/03/15 17:16:57 taqua Exp $
+ * $Id: MfCmdResizePalette.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,10 @@ import org.jfree.pixie.wmf.records.MfCmd;
  */
 public class MfCmdResizePalette extends MfCmd
 {
+  private static final int RECORD_SIZE = 1;
+  private static final int POS_NEW_PALETTE_SIZE = 0;
+  private int paletteSize;
+
   public MfCmdResizePalette ()
   {
   }
@@ -81,7 +85,7 @@ public class MfCmdResizePalette extends MfCmd
    */
   public void setRecord (final MfRecord record)
   {
-    System.out.println ("ResizePalette is not yet implemented.");
+    setPaletteSize(record.getParam(POS_NEW_PALETTE_SIZE));
   }
 
   /**
@@ -91,7 +95,10 @@ public class MfCmdResizePalette extends MfCmd
    */
   public MfRecord getRecord() throws RecordCreationException
   {
-    throw new RecordCreationException("This method is not implemented");
+    MfRecord record = new MfRecord(RECORD_SIZE);
+    record.setType(getFunction());
+    record.setParam(POS_NEW_PALETTE_SIZE, getPaletteSize());
+    return record;
   }
 
   /**
@@ -124,5 +131,15 @@ public class MfCmdResizePalette extends MfCmd
    */
   protected void scaleYChanged ()
   {
+  }
+
+  public int getPaletteSize()
+  {
+    return paletteSize;
+  }
+
+  public void setPaletteSize(int paletteSize)
+  {
+    this.paletteSize = paletteSize;
   }
 }

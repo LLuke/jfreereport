@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreateBrush.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
+ * $Id: MfCmdCreateBrush.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.BrushConstants;
 import org.jfree.pixie.wmf.records.MfCmd;
+import org.jfree.util.Log;
 
 import java.awt.Color;
 
@@ -49,8 +50,16 @@ import java.awt.Color;
  * The CreateBrushIndirect function creates a logical brush that has the
  * specified style, color, and pattern.
  * <p>
- * The style is one of the BS_* constants defined in {@link org.jfree.pixie.wmf.BrushConstants}.
- * The hatch is one of the HS_* constants defined in {@link org.jfree.pixie.wmf.BrushConstants}.
+ * The style is one of the BS_* constants defined in
+ * {@link org.jfree.pixie.wmf.BrushConstants}.
+ * The hatch is one of the HS_* constants defined in
+ * {@link org.jfree.pixie.wmf.BrushConstants}.
+ * <p>
+ * The record size is variable.
+ * First parameter defines the style, n next parameters define the color
+ * table for the brush and the last parameter defines the hatch.
+ * <p>
+ * todo reimplement this record type for all brushes..
  */
 public class MfCmdCreateBrush extends MfCmd
 {
@@ -174,6 +183,10 @@ public class MfCmdCreateBrush extends MfCmd
    */
   public void setRecord (final MfRecord record)
   {
+    if (record.getLength() != 14)
+    {
+      Log.warn ("Unknown type of CreateBrushIndirect encountered.");
+    }
     final int style = record.getParam (PARAM_STYLE);
     final int color = record.getLongParam (PARAM_COLOR);
     final int hatch = record.getParam (PARAM_HATCH);

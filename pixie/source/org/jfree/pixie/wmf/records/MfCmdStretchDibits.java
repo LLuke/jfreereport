@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public class MfCmdStretchDibits extends MfCmd
 {
-  private static final int RECORD_BASE_SIZE = 11;
+//  private static final int RECORD_BASE_SIZE = 11;
   private static final int POS_ROP = 0;
   private static final int POS_USAGE = 2;
   private static final int POS_SRC_H = 3;

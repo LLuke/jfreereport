@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetDibitsToDevice.java,v 1.2 2003/03/21 21:31:56 taqua Exp $
+ * $Id: MfCmdSetDibitsToDevice.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,19 @@ import org.jfree.pixie.wmf.records.MfCmd;
 // not know of any bitmaps right now, so this records is ignored.
 public class MfCmdSetDibitsToDevice extends MfCmd
 {
+  private static final int POS_FLAG_COLOR_PALETTE = 0;
+  private static final int POS_SCANLINE_COUNT = 1;
+  private static final int POS_FIRST_SCANLINE = 2;
+  private static final int POS_SOURCE_Y_DIB = 3;
+  private static final int POS_SOURCE_X_DIB = 4;
+  private static final int POS_DIB_HEIGHT = 5;
+  private static final int POS_DIB_WIDTH = 6;
+  private static final int POS_ORIGIN_DEST_RECT_Y = 7;
+  private static final int POS_ORIGIN_DEST_RECT_X = 8;
+  private static final int POS_BITMAP_HEADER = 9;
+  // the bit map data follows the header.
+  // the record has a variable size ...
+  
   public MfCmdSetDibitsToDevice ()
   {
   }

@@ -35,7 +35,8 @@ public class GDIPalette
     final int b = in.read ();
     final int g = in.read ();
     final int r = in.read ();
-    final int filler = in.read ();
+    //final int filler =  
+    in.read ();
     return b + (g << 8) + (r << 16);
   }
 

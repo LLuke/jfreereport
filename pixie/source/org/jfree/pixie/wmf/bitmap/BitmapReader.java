@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 12:01:58 AM
  *
- * $Id: BitmapReader.java,v 1.1 2003/03/09 20:38:22 taqua Exp $
+ * $Id: BitmapReader.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  */
 package org.jfree.pixie.wmf.bitmap;
 
@@ -171,7 +171,7 @@ public class BitmapReader
     final Image image;
     // No Palatte data for 24-bit format but scan lines are
     // padded out to even 4-byte boundaries.
-    final int xwidth = bh.nsizeimage / bh.nheight;
+//    final int xwidth = bh.nsizeimage / bh.nheight;
     final int[] ndata = new int[bh.nheight * bh.nwidth];
     final byte[] brgb = new byte[bh.nwidth * 4 * bh.nheight];
     fs.read(brgb, 0, bh.nwidth * 4 * bh.nheight);

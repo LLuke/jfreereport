@@ -2,35 +2,30 @@
  * Date: Mar 9, 2003
  * Time: 1:46:07 AM
  *
- * $Id: G2Recorder.java,v 1.1 2003/03/09 20:38:12 taqua Exp $
+ * $Id: G2Recorder.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  */
 package org.jfree.pixie.g2recorder;
 
-import java.awt.AWTPermission;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.TexturePaint;
-import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import org.jfree.pixie.AbstractGraphics2D;
@@ -253,7 +248,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @see Graphics#setPaintMode
    * @see AlphaComposite
    * @see SecurityManager#checkPermission
-   * @see AWTPermission
+   * @see java.awt.AWTPermission
    */
   public void setComposite(final Composite comp)
   {
@@ -270,8 +265,8 @@ public class G2Recorder extends AbstractGraphics2D
    * @param paint the <code>Paint</code> object to be used to generate
    * color during the rendering process, or <code>null</code>
    * @see Graphics#setColor
-   * @see GradientPaint
-   * @see TexturePaint
+   * @see java.awt.GradientPaint
+   * @see java.awt.TexturePaint
    */
   public void setPaint(final Paint paint)
   {
@@ -497,7 +492,7 @@ public class G2Recorder extends AbstractGraphics2D
    * @return a reference to an instance of FontRenderContext.
    * @see FontRenderContext
    * @see Font#createGlyphVector
-   * @see TextLayout
+   * @see java.awt.font.TextLayout
    * @since     1.2
    */
 
@@ -720,9 +715,9 @@ public class G2Recorder extends AbstractGraphics2D
    * a <code>Graphics</code> object only if it was created
    * directly from a component or another <code>Graphics</code> object.
    * @see         Graphics#finalize
-   * @see         Component#paint
-   * @see         Component#update
-   * @see         Component#getGraphics
+   * @see         java.awt.Component#paint
+   * @see         java.awt.Component#update
+   * @see         java.awt.Component#getGraphics
    * @see         Graphics#create
    */
   public void dispose()

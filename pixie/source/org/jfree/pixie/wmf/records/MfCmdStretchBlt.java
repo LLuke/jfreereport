@@ -24,7 +24,7 @@ public class MfCmdStretchBlt extends MfCmd
   /**
    * Replays the command on the given WmfFile.
    *
-   * @param metafile the meta file.
+   * @param file the meta file.
    */
   public void replay (final WmfFile file)
   {

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: Buffer.java,v 1.1 2003/03/09 20:38:16 taqua Exp $
+ * $Id: Buffer.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.io.InputStream;
 public class Buffer
 {
   /** The memory itself. */
-  protected byte bytes[] = null;
+  private byte bytes[] = null;
 
   /** The current length of the memory. */
   private int length;
@@ -144,6 +144,19 @@ public class Buffer
       len -= blockSize;
       setLength(offset);
     }
+  }
+
+  /**
+   * Moves the buffer contents from the source offset to the target offset,
+   * the areas should not overlap.
+   *
+   * @param sourceoffset
+   * @param length
+   * @param targetoffset
+   */
+  protected void move (int sourceoffset, int length, int targetoffset)
+  {
+    System.arraycopy(bytes, sourceoffset, bytes, targetoffset, length);
   }
 
   /**

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfRecord.java,v 1.1 2003/03/09 20:38:19 taqua Exp $
+ * $Id: MfRecord.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,26 @@ import java.io.InputStream;
 
 /**
  * A Windows metafile record.
+ * <p>
+ * Every record has a standard header.
+ * <table border="1">
+ * <tr>
+ * <th>bytes</th>
+ * <th>meaning</th>
+ * </tr>
+ * <tr>
+ * <td>4</td>
+ * <td>Size of header in words</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>type of the record</td>
+ * </tr>
+ * <tr>
+ * <td>n*2</td>
+ * <td>array with n words parameters</td>
+ * </tr>
+ * </table>
  */
 public class MfRecord extends Buffer
 {

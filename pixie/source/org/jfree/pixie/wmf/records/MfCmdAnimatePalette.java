@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdAnimatePalette.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdAnimatePalette.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -57,15 +57,48 @@ import java.awt.Color;
  *
  * This function is not implemented. However, you can use this implementation
  * to create a valid record.
+ * <table border="1">
+ * <tr>
+ * <th>offset</th>
+ * <th>length in bytes</th>
+ * <th>meaning</th>
+ * </tr>
+ * <tr>
+ * <td>0x0</td>
+ * <td>4</td>
+ * <td>RecordSize (variable)</td>
+ * </tr>
+ * <tr>
+ * <td>0x4</td>
+ * <td>2</td>
+ * <td>record type (0x0436)</td>
+ * </tr>
+ * <tr>
+ * <td>0x6</td>
+ * <td>2</td>
+ * <td>first palette entry to be animated</td>
+ * </tr>
+ * <tr>
+ * <td>0x8</td>
+ * <td>2</td>
+ * <td>number of animated entries</td>
+ * </tr>
+ * <tr>
+ * <td>0xa</td>
+ * <td>n*4</td>
+ * <td>palette entry array with (1 byte red, 1 byte green, 1 byte blue, 1 byte flags)</td>
+ * </tr>
+ * </table>
  */
 public class MfCmdAnimatePalette extends MfCmd
 {
-  private int hPalette;
-  private Color[] colors;
-
-  private static final int POS_HPALETTE = 0;
+  /** the position of the first entry within the palette that should be animated. */
+  private static final int POS_START_ANIMATE_COLOR = 0;
   private static final int POS_CENTRIES = 1;
   private static final int POS_START_ENTRIES = 2;
+  private int posStartAnimate;
+  private Color[] colors;
+
 
   /**
    * DefaultConstructor.
@@ -96,10 +129,12 @@ public class MfCmdAnimatePalette extends MfCmd
   {
     final int cEntries = getEntriesCount();
     if (cEntries == 0)
+    {
       throw new RecordCreationException("Empty AnimatePaletteRecord is not valid");
+    }
 
     final MfRecord record = new MfRecord(2 + cEntries * 2);
-    record.setParam(POS_HPALETTE, getHPalette());
+    record.setParam(POS_START_ANIMATE_COLOR, getPosStartAnimate());
     record.setParam(POS_CENTRIES, cEntries);
 
     final Color[] colors = new Color[cEntries];
@@ -124,8 +159,8 @@ public class MfCmdAnimatePalette extends MfCmd
   public void setRecord (final MfRecord record)
   {
     // the handle to the palette object
-    final int hPalette = record.getParam (POS_HPALETTE);
-    setHPalette(hPalette);
+    final int hPalette = record.getParam (POS_START_ANIMATE_COLOR);
+    setPosStartAnimate(hPalette);
     // the number of defined entries ...
     final int cEntries = record.getParam (POS_CENTRIES);
     final Color[] colors = new Color[cEntries];
@@ -158,7 +193,7 @@ public class MfCmdAnimatePalette extends MfCmd
   public void replay (final WmfFile file)
   {
     // do nothing
-    System.out.println ("Animate Palette is not implemented");
+    // System.out.println ("Animate Palette is not implemented");
   }
 
   /**
@@ -169,8 +204,8 @@ public class MfCmdAnimatePalette extends MfCmd
   public String toString ()
   {
     final StringBuffer b = new StringBuffer ();
-    b.append ("[ANIMATE_PALETTE] hPalette=");
-    b.append (getHPalette ());
+    b.append ("[ANIMATE_PALETTE] posStartAnimate=");
+    b.append (getPosStartAnimate());
     b.append (" entriesCount=");
     b.append (getEntriesCount ());
     return b.toString ();
@@ -186,21 +221,47 @@ public class MfCmdAnimatePalette extends MfCmd
     return new MfCmdAnimatePalette ();
   }
 
-  public int getHPalette ()
+  /**
+   * Returns the position of the first color that should be animated in the current
+   * palette.
+   *
+   * @return the position of the color.
+   */
+  public int getPosStartAnimate ()
   {
-    return hPalette;
+    return posStartAnimate;
   }
 
-  public void setHPalette (final int hPalette)
+  /**
+   * Defines the position of the first color that should be animated in the current
+   * palette.
+   *
+   * @param hPalette the index of the color, not negative.
+   */
+  public void setPosStartAnimate (final int hPalette)
   {
-    this.hPalette = hPalette;
+    if (posStartAnimate < 0)
+    {
+      throw new IndexOutOfBoundsException("Palette indices must be positive.");
+    }
+    this.posStartAnimate = hPalette;
   }
 
+  /**
+   * Returns the colors defined for this command.
+   *
+   * @return the colors
+   */
   public Color[] getEntries ()
   {
     return colors;
   }
 
+  /**
+   * Defines the colors that should be animated.
+   *
+   * @param colors the colors.
+   */
   public void setEntries (final Color[] colors)
   {
     this.colors = colors;

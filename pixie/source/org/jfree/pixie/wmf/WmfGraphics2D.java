@@ -2,29 +2,22 @@
  * Date: Mar 9, 2003
  * Time: 3:03:51 PM
  *
- * $Id: WmfGraphics2D.java,v 1.2 2003/05/09 10:25:08 taqua Exp $
+ * $Id: WmfGraphics2D.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
  */
 package org.jfree.pixie.wmf;
 
-import java.awt.Graphics;
-import java.awt.Shape;
-import java.awt.Image;
-import java.awt.GraphicsConfiguration;
-import java.awt.AlphaComposite;
-import java.awt.AWTPermission;
-import java.awt.Composite;
-import java.awt.GradientPaint;
-import java.awt.TexturePaint;
-import java.awt.Paint;
-import java.awt.BasicStroke;
-import java.awt.Stroke;
-import java.awt.RenderingHints;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;

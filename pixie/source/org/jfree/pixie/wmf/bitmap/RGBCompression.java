@@ -98,8 +98,8 @@ public class RGBCompression extends BitmapCompression
            
            
         final int[] data = expandMonocrome (iByte, pal);
-        final int left = (target.length - i*8);
-        final int size = Math.min (8, left);
+//        final int left = (target.length - i*8);
+//        final int size = Math.min (8, left);
     
         for (int ij = 0; ij < 8; ij++)
         {

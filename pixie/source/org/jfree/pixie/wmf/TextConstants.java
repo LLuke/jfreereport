@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogBrush.java,v 1.1 2003/02/25 20:58:07 taqua Exp $
+ * $Id: TextConstants.java,v 1.1 2003/03/09 20:38:20 taqua Exp $
  *
  * Changes
  * -------

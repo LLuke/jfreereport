@@ -1,3 +1,10 @@
-29-Aug-2002 : Downport to JDK1.2.2 : Altered WmfImageProducer to use less 
+19-Jan-2004 : Some final changes and discontinued for now. Implementing the writing
+              support seems useless in a free world, where SVG is available. Some minor
+              fixes were made in the WMF-Reading, it is still not complete (and as there
+              is no useable documentation available, I doubt it ever will be complete).
+
+              Use SVG instead. 
+
+29-Aug-2002 : Downport to JDK1.2.2 : Altered WmfImageProducer to use less
               memory on producing.
 
