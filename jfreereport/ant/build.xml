@@ -109,7 +109,10 @@
         <!-- include the butterfly image file -->
         <copy file="${projectdir}/source/com/jrefinery/report/demo/anim0002.wmf" tofile="${projectdir}/build/com/jrefinery/report/demo/anim0002.wmf" />
 
-	      <!-- make the jar file -->
+        <!-- include the gorilla image file -->
+        <copy file="${projectdir}/source/com/jrefinery/report/demo/gorilla.jpg" tofile="${projectdir}/build/com/jrefinery/report/demo/gorilla.jpg" />
+
+        <!-- make the jar file -->
         <jar jarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
              basedir="${projectdir}/build"
 	           includes="com/jrefinery/report/demo/**">
