@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * WaitingImageObserver.java
  * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morger
+ * Original Author:  Thomas Morgner
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.3 2002/12/12 12:26:57 mungady Exp $
+ * $Id: WaitingImageObserver.java,v 1.4 2003/02/25 15:42:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,7 +36,10 @@
  * 16-May-2002 : Line delimiters adjusted
  * 04-Jun-2002 : Documentation and added a NullPointerCheck for the constructor.
  * 14-Jul-2002 : BugFixed: WaitingImageObserver dead-locked (bugfix by Stefan Prange)
+ * 18-Mar-2003 : Updated header and made minor Javadoc changes (DG);
+ * 
  */
+
 package com.jrefinery.report.util;
 
 import java.awt.Graphics;
@@ -46,8 +49,8 @@ import java.awt.image.ImageObserver;
 import java.io.Serializable;
 
 /**
- * This image observer blocks until the image is completly loaded. AWT
- * deferres the loading of images until they are painted on a graphic.
+ * This image observer blocks until the image is completely loaded. AWT
+ * defers the loading of images until they are painted on a graphic.
  *
  * While printing reports it is not very nice, not to know whether a image
  * was completely loaded, so this observer forces the loading of the image
