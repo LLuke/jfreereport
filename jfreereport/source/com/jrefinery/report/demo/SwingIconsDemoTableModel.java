@@ -20,19 +20,20 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------
- * FirstDemoTableModel.java
- * ------------------------
+ * -----------------------------
+ * SwingIconsDemoTableModel.java
+ * -----------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FirstDemoTableModel.java,v 1.5 2003/02/25 17:20:38 mungady Exp $
+ * $Id: FirstDemoTableModel.java,v 1.6 2003/02/26 13:57:36 mungady Exp $
  *
  * Changes
  * -------
  * 25-Feb-2003 : Added standard header and Javadocs (DG);
+ * 27-Feb-2003 : Renamed FirstDemoTableModel --> SwingIconsDemoTableModel (DG);
  *
  */
 
@@ -53,17 +54,17 @@ import com.jrefinery.report.util.IOUtils;
 import com.jrefinery.report.util.Log;
 
 /**
- * A table model implementation for the First.java demo application.  The model reads
+ * A table model implementation for the SwingIconsDemo.java demo application.  The model reads
  * the contents of the file "jlfgr-1_0.jar", which must be reachable via the classpath.
  * 
  * @author Thomas Morgner.
  */
-public class FirstDemoTableModel extends IconTableModel
+public class SwingIconsDemoTableModel extends IconTableModel
 {
   /**
    * Creates a new table model.
    */
-  public FirstDemoTableModel()
+  public SwingIconsDemoTableModel()
   {
     this(null);
   }
@@ -73,7 +74,7 @@ public class FirstDemoTableModel extends IconTableModel
    * 
    * @param url  the url for the jlfgr-1_0.jar file (or <code>null</code> to search the classpath).
    */
-  public FirstDemoTableModel(URL url)
+  public SwingIconsDemoTableModel(URL url)
   {
     if (url == null)
     {
@@ -104,7 +105,7 @@ public class FirstDemoTableModel extends IconTableModel
   }
 
   /**
-   * Reads the icon data from the jar file (copied from First.java).
+   * Reads the icon data from the jar file.
    * 
    * @param in  the input stream.
    */
@@ -139,7 +140,7 @@ public class FirstDemoTableModel extends IconTableModel
   }
 
   /**
-   * Reads an icon from the jar file (copied from First.java).
+   * Reads an icon from the jar file.
    * 
    * @param in  the input stream.
    * 
@@ -163,7 +164,7 @@ public class FirstDemoTableModel extends IconTableModel
   }
 
   /**
-   * Returns the category (copied from First.java).
+   * Returns the category.
    * 
    * @param fullName  the icon file path/name.
    * 
@@ -177,13 +178,13 @@ public class FirstDemoTableModel extends IconTableModel
   }
 
   /**
-   * Returns the name (copied from First.java).
+   * Returns the name.
    * 
    * @param fullName  the icon file path/name.
    * 
    * @return The name extracted from the full name.
    */
-  private String getName(String fullName) //copied from First.java
+  private String getName(String fullName) 
   {
     int start = fullName.lastIndexOf("/") + 1;
     int end = fullName.indexOf(".");

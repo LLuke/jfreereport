@@ -20,20 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------
- * First.java
- * ----------
+ * -------------------
+ * SwingIconsDemo.java
+ * -------------------
  * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: First.java,v 1.18 2003/02/25 17:20:37 mungady Exp $
+ * $Id: First.java,v 1.19 2003/02/26 13:57:36 mungady Exp $
  *
  * Changes
  * -------
  * 15-Jul-2002 : Version 1 (DG);
  * 20-Nov-2002 : Corrected possible read error if the icon is not read completely from the zip file;
+ * 27-Feb-2003 : Renamed First.java --> SwingIconsDemo.java (DG);
  *
  */
 
@@ -72,7 +73,7 @@ import com.jrefinery.ui.RefineryUtilities;
  *
  * @author David Gilbert
  */
-public class First extends ApplicationFrame implements ActionListener
+public class SwingIconsDemo extends ApplicationFrame implements ActionListener
 {
   /** The data for the report. */
   private TableModel data;
@@ -85,7 +86,7 @@ public class First extends ApplicationFrame implements ActionListener
    *
    * @param title  the frame title.
    */
-  public First(String title)
+  public SwingIconsDemo(String title)
   {
     super(title);
     setJMenuBar(createMenuBar());
@@ -142,7 +143,7 @@ public class First extends ApplicationFrame implements ActionListener
    */
   private TableModel readData()
   {
-    return new FirstDemoTableModel();
+    return new SwingIconsDemoTableModel();
   }
 
   /**
@@ -174,7 +175,7 @@ public class First extends ApplicationFrame implements ActionListener
     {
       if (this.report == null)
       {
-        URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+        URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
         this.report = parseReport(in);
         this.report.setData(this.data);
       }
@@ -195,7 +196,7 @@ public class First extends ApplicationFrame implements ActionListener
   }
 
   /**
-   * Reads the report from the first.xml report template.
+   * Reads the report from the swing-icons.xml report template.
    *
    * @param templateURL The template location.
    *
@@ -227,7 +228,7 @@ public class First extends ApplicationFrame implements ActionListener
   public static void main(String[] args)
   {
     ReportConfiguration.getGlobalConfig().setLogLevel("Error");
-    First frame = new First("First Report");
+    SwingIconsDemo frame = new SwingIconsDemo("Swing Icons Report");
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
