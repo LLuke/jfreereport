@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id:$
- * $Author:$
- * $Date:$
+ * $Id: WaitingImageObserverTestCase.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Author: taqua $
+ * $Date: 2002/07/08 22:10:35 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -133,7 +133,7 @@ public class WaitingImageObserverTestCase extends TestCase
   public void testRun ()
   {
     // locks until the image is either loaded or the loading definitly fails
-    varWaitingImageObserver.run();
+    varWaitingImageObserver.waitImageLoaded();
     assertTrue("ImageDimensions filled", image.getHeight(null) != 0);
     assertTrue("ImageDimensions filled", image.getWidth(null) != 0);
   }

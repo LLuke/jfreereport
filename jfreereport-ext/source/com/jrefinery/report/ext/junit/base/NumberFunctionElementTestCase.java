@@ -7,9 +7,9 @@
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id: NumberFunctionElementTestCase.java,v 1.1 2002/07/08 22:10:35 taqua Exp $
+ * $Id: NumberFunctionElementTestCase.java,v 1.2 2002/07/10 19:22:47 taqua Exp $
  * $Author: taqua $
- * $Date: 2002/07/08 22:10:35 $
+ * $Date: 2002/07/10 19:22:47 $
  */
 package com.jrefinery.report.ext.junit.base;
 
@@ -19,6 +19,7 @@ import java.awt.Toolkit;
 import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
+import java.text.NumberFormat;
 
 import com.jrefinery.report.NumberFunctionElement;
 
@@ -109,13 +110,21 @@ public class NumberFunctionElementTestCase extends TestCase
    * java.text.NumberFormat getFormatter()
    * from tested class
    */
-  public void testGetFormatter() {
+  public void testGetFormatter () throws Exception
+  {
+    try
+    {
+      varNumberFunctionElement.setFormatter ((java.text.NumberFormat) null);
+      assertTrue ("Require nullpointer", false);
+    }
+    catch (NullPointerException npe)
+    {
+    }
+    NumberFormat format = NumberFormat.getInstance();
 
-    varNumberFunctionElement.setFormatter((java.text.NumberFormat)null);
-    assertEquals((java.text.NumberFormat)null, varNumberFunctionElement.getFormatter());
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-    varNumberFunctionElement.setFormatter((java.text.NumberFormat)null);
-    assertEquals((java.text.NumberFormat)null, varNumberFunctionElement.getFormatter());
+    varNumberFunctionElement.setFormatter (format);
+    assertEquals (format, varNumberFunctionElement.getFormatter ());
+    assertEquals (((NumberFunctionElement) varNumberFunctionElement.clone()).getFormatter(), format);
 
   } // end of testGetFormatter()
 
@@ -124,25 +133,15 @@ public class NumberFunctionElementTestCase extends TestCase
    * void setDecimalFormatString(java.lang.String)
    * from tested class
    */
-  public void testSetDecimalFormatString1195259493() {
+  public void testSetDecimalFormatString1195259493 ()
+  {
+    varNumberFunctionElement.setDecimalFormatString("##0");
+    assertEquals(varNumberFunctionElement.getFormatter().format(0), "0");
 
-    assertTrue("Warning! This new test method with no real test code inside.", false);
+    varNumberFunctionElement.setDecimalFormatString("##0.00");
+    assertEquals(varNumberFunctionElement.getFormatter().format(0), "0.00");
 
   } // end of testSetDecimalFormatString1195259493(java.lang.String)
 
-  /**
-   * Method for testing how works original method:
-   * void setFormatter(java.text.NumberFormat)
-   * from tested class
-   */
-  public void testSetFormatter1906575595() {
-
-    varNumberFunctionElement.setFormatter((java.text.NumberFormat)null);
-    assertEquals((java.text.NumberFormat)null, varNumberFunctionElement.getFormatter());
-    assertTrue("Warning! This new test method with no real test code inside.", false);
-    varNumberFunctionElement.setFormatter((java.text.NumberFormat)null);
-    assertEquals((java.text.NumberFormat)null, varNumberFunctionElement.getFormatter());
-
-  } // end of testSetFormatter1906575595(java.text.NumberFormat)
 
 } // end of NumberFunctionElementTestCase
