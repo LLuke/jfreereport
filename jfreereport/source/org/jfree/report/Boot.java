@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.4 2003/09/14 15:43:06 taqua Exp $
+ * $Id: Boot.java,v 1.5 2003/11/07 18:33:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -104,6 +104,9 @@ public final class Boot
       return;
     }
     bootInProgress = true;
+
+    final JFreeReportInfo info = new JFreeReportInfo();
+    Log.info (info.getName() + " " + info.getVersion());
 
     if (isStrictFP() == false)
     {
