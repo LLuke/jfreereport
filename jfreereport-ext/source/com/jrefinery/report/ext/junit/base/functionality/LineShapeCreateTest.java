@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineShapeCreateTest.java,v 1.1 2003/06/11 20:44:34 taqua Exp $
+ * $Id: LineShapeCreateTest.java,v 1.2 2003/06/20 12:02:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -89,7 +89,6 @@ public class LineShapeCreateTest extends TestCase
     public void drawShape(Shape shape)
     {
       shapeCount++;
-      Log.debug (shape.getBounds2D());
     }
 
     public int getShapeCount()

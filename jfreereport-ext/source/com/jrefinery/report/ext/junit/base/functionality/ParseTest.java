@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParseTest.java,v 1.3 2003/06/13 22:55:51 taqua Exp $
+ * $Id: ParseTest.java,v 1.4 2003/06/16 15:34:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -65,7 +65,26 @@ public class ParseTest extends TestCase
       assertNotNull(url);
       try
       {
-        ReportGenerator.getInstance().parseReport(url);
+        assertNotNull(ReportGenerator.getInstance().parseReport(url));
+      }
+      catch (Exception e)
+      {
+        Log.debug("Failed to parse " + url, e);
+        fail();
+      }
+    }
+  }
+
+  public void testParseCloneReport() throws Exception
+  {
+    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
+    {
+      URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      assertNotNull(url);
+      try
+      {
+        JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+        report.clone();
       }
       catch (Exception e)
       {

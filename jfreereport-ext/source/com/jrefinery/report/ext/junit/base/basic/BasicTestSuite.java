@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicTestSuite.java,v 1.3 2003/06/16 15:34:34 taqua Exp $
+ * $Id: BasicTestSuite.java,v 1.4 2003/06/20 12:02:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,6 +61,7 @@ public class BasicTestSuite extends TestSuite
     addTest(new LayoutTestSuite(LayoutTestSuite.class.getName()));
     addTest(new UtilTestSuite(UtilTestSuite.class.getName()));
     addTest(new StyleTestSuite(StyleTestSuite.class.getName()));
+
   }
 
 

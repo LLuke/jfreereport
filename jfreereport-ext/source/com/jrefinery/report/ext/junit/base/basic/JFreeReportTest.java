@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: JFreeReportTest.java,v 1.2 2003/06/10 18:17:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -83,6 +83,12 @@ public class JFreeReportTest extends TestCase
     ObjectInputStream oin = new ObjectInputStream(new ByteArrayInputStream(bo.toByteArray()));
     JFreeReport e2 = (JFreeReport) oin.readObject();
     assertNotNull(e2); // cannot assert equals, as this is not implemented.
+  }
+
+  public void testClone() throws Exception
+  {
+    JFreeReport report = new JFreeReport();
+    assertNotNull(report.clone());
   }
 
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParserTest.java,v 1.1 2003/06/13 22:58:25 taqua Exp $
+ * $Id: CharacterEntityParserTest.java,v 1.2 2003/06/20 12:02:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,7 +49,7 @@ public class CharacterEntityParserTest extends TestCase
     String testNative = "Test is a הצü<&> test";
     String testEncoded = "Test is a &auml;&ouml;&uuml;&lt;&amp;&gt; test";
     CharacterEntityParser ep = CharacterEntityParser.createHTMLEntityParser();
-    Log.debug (ep.decodeEntities(testEncoded));
+    //Log.debug (ep.decodeEntities(testEncoded));
     assertEquals(testNative, ep.decodeEntities(testEncoded));
     assertEquals(testEncoded, ep.encodeEntities(testNative));
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleSheetCollectionTest.java,v 1.1 2003/06/20 12:05:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,7 +44,12 @@ import junit.framework.TestCase;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleSheetCollection;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
-// todo write me!
+import com.jrefinery.report.Band;
+import com.jrefinery.report.Element;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.ext.junit.base.basic.ElementTest;
+
+
 public class StyleSheetCollectionTest extends TestCase
 {
   public StyleSheetCollectionTest()
@@ -71,8 +76,16 @@ public class StyleSheetCollectionTest extends TestCase
     es1a.addParent(es2a);
 
     StyleSheetCollection sc = new StyleSheetCollection();
-    es1.setStyleSheetCollection(sc);
-    es1a.setStyleSheetCollection(sc);
+    es1.registerStyleSheetCollection(sc);
+    es1a.registerStyleSheetCollection(sc);
+
+    assertStylesConnected(es1, sc);
+    assertStylesConnected(es1a, sc);
+
+    es1.unregisterStyleSheetCollection(sc);
+    es1a.unregisterStyleSheetCollection(sc);
+    assertStylesConnected(es1, null);
+    assertStylesConnected(es1a, null);
   }
 
   public void testCollectSimpleCrash ()
@@ -90,12 +103,12 @@ public class StyleSheetCollectionTest extends TestCase
     es1a.addParent(es2a);
 
     StyleSheetCollection sc = new StyleSheetCollection();
-    es1.setStyleSheetCollection(sc);
+    es1.registerStyleSheetCollection(sc);
 
     try
     {
       StyleSheetCollection sc2 = new StyleSheetCollection();
-      es2.setStyleSheetCollection(sc2);
+      es2.registerStyleSheetCollection(sc2);
       fail();
     }
     catch (Exception e)
@@ -118,10 +131,10 @@ public class StyleSheetCollectionTest extends TestCase
     es1a.addParent(es2a);
 
     StyleSheetCollection sc = new StyleSheetCollection();
-    es1.setStyleSheetCollection(sc);
+    es1.registerStyleSheetCollection(sc);
 
     StyleSheetCollection sc2 = new StyleSheetCollection();
-    es1a.setStyleSheetCollection(sc2);
+    es1a.registerStyleSheetCollection(sc2);
   }
 
   public void testClone () throws Exception
@@ -139,8 +152,8 @@ public class StyleSheetCollectionTest extends TestCase
     es1a.addParent(es2a);
 
     StyleSheetCollection sc = new StyleSheetCollection();
-    es1.setStyleSheetCollection(sc);
-    es1a.setStyleSheetCollection(sc);
+    es1.registerStyleSheetCollection(sc);
+    es1a.registerStyleSheetCollection(sc);
 
     StyleSheetCollection scc = (StyleSheetCollection) sc.clone();
     ElementStyleSheet esC1 = scc.getFirst("es1");
@@ -186,8 +199,8 @@ public class StyleSheetCollectionTest extends TestCase
     es1a.addParent(es2a);
 
     StyleSheetCollection sc = new StyleSheetCollection();
-    es1.setStyleSheetCollection(sc);
-    es1a.setStyleSheetCollection(sc);
+    es1.registerStyleSheetCollection(sc);
+    es1a.registerStyleSheetCollection(sc);
 
     StyleSheetCollection scc = (StyleSheetCollection) sc.clone();
     ElementStyleSheet esX1 = (ElementStyleSheet) es1.clone();
@@ -239,5 +252,127 @@ public class StyleSheetCollectionTest extends TestCase
     return null;
   }
 
+  public void testBand ()
+  {
+    ElementStyleSheet esGlobal = new ElementStyleSheet("es-global");
+    ElementStyleSheet esGlobalBand = new ElementStyleSheet("es-global-band");
+    ElementStyleSheet esGlobalBandDefault = new ElementStyleSheet("es-global-banddefault");
+
+    Band b = new Band ();
+    b.getStyle().addParent(esGlobalBand);
+    b.getBandDefaults().addParent(esGlobalBandDefault);
+
+    ElementTest.ElementImpl e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b.addElement(e);
+
+    e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b.addElement(e);
+
+    Band b2 = new Band ();
+    b.getStyle().addParent(esGlobalBand);
+    b.getBandDefaults().addParent(esGlobalBandDefault);
+
+    e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b2.addElement(e);
+
+    e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b2.addElement(e);
+
+    b.addElement(b2);
+
+    StyleSheetCollection sc = new StyleSheetCollection();
+    b.registerStyleSheetCollection(sc);
+    assertStyleCollectionConnected(b, sc);
+
+    b.unregisterStyleSheetCollection(sc);
+    assertStyleCollectionConnected(b, null);
+  }
+
+  private void assertStyleCollectionConnected(Band band, StyleSheetCollection sc)
+  {
+    assertStylesConnected(band.getStyle(), sc);
+    assertStylesConnected(band.getBandDefaults(), sc);
+    Element[] elements = band.getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      assertTrue(elements[i].getStyleSheetCollection() == sc);
+      if (elements[i] instanceof Band)
+      {
+        assertStyleCollectionConnected((Band) elements[i], sc);
+      }
+      else
+      {
+        assertStylesConnected(elements[i].getStyle(), sc);
+      }
+    }
+  }
+
+  private void assertStylesConnected (ElementStyleSheet es, StyleSheetCollection sc)
+  {
+    if (es.isGlobalDefault())
+      return;
+
+    assertTrue(es.getName() + " " + es.hashCode() + " - " + es.getStyleSheetCollection(), es.getStyleSheetCollection() == sc);
+    List parents = es.getParents();
+    for (int i = 0; i < parents.size(); i++)
+    {
+      assertStylesConnected((ElementStyleSheet) parents.get(i), sc);
+    }
+    parents = es.getDefaultParents();
+    for (int i = 0; i < parents.size(); i++)
+    {
+      assertStylesConnected((ElementStyleSheet) parents.get(i), sc);
+    }
+  }
+
+  public void testBandPreConnected ()
+  {
+    ElementStyleSheet esGlobal = new ElementStyleSheet("es-global");
+    ElementStyleSheet esGlobalBand = new ElementStyleSheet("es-global-band");
+    ElementStyleSheet esGlobalBandDefault = new ElementStyleSheet("es-global-banddefault");
+
+    Band b = new Band ();
+    StyleSheetCollection sc = new StyleSheetCollection();
+    b.registerStyleSheetCollection(sc);
+
+    assertStyleCollectionConnected(b, sc);
+
+    b.getStyle().addParent(esGlobalBand);
+    assertStyleCollectionConnected(b, sc);
+
+    b.getBandDefaults().addParent(esGlobalBandDefault);
+    assertStyleCollectionConnected(b, sc);
+
+    ElementTest.ElementImpl e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b.addElement(e);
+
+    e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b.addElement(e);
+
+    Band b2 = new Band ();
+    b.getStyle().addParent(esGlobalBand);
+    b.getBandDefaults().addParent(esGlobalBandDefault);
+
+    e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b2.addElement(e);
+
+    e = new ElementTest.ElementImpl();
+    e.getStyle().addParent(esGlobal);
+    b2.addElement(e);
+
+    b.addElement(b2);
+
+    assertStyleCollectionConnected(b, sc);
+
+    b.unregisterStyleSheetCollection(sc);
+    assertStyleCollectionConnected(b, null);
+  }
 
 }
