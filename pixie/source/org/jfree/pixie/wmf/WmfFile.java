@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: WmfFile.java,v 1.5 2004/10/22 11:59:28 taqua Exp $
+ * $Id: WmfFile.java,v 1.6 2004/11/21 16:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
+import java.util.Arrays;
 
 import org.jfree.pixie.wmf.records.CommandFactory;
 import org.jfree.pixie.wmf.records.MfCmd;
@@ -82,7 +83,7 @@ public class WmfFile implements Drawable
   private Stack dcStack;
   private MfPalette palette;
 
-  private String inName;
+  //private String inName;
   private InputStream in;
   private MfHeader header;
   private int fileSize;
@@ -116,7 +117,7 @@ public class WmfFile implements Drawable
   public WmfFile (final URL input, final int imageX, final int imageY)
           throws IOException
   {
-    this(new BufferedInputStream(input.openStream()), input.toString(), imageX, imageY);
+    this(new BufferedInputStream(input.openStream()), imageX, imageY);
   }
 
   /**
@@ -125,26 +126,25 @@ public class WmfFile implements Drawable
   public WmfFile (final String inName, final int imageX, final int imageY)
           throws FileNotFoundException, IOException
   {
-    this(new BufferedInputStream(new FileInputStream(inName)), inName, imageX, imageY);
+    this(new BufferedInputStream(new FileInputStream(inName)), imageX, imageY);
   }
 
   /**
    * Initialize metafile for reading from filename.
    */
-  public WmfFile (final InputStream in, final String inName, final int imageX,
+  public WmfFile (final InputStream in, final int imageX,
                   final int imageY)
           throws FileNotFoundException, IOException
   {
-    this.inName = inName;
     this.in = in;
     this.imageWidth = imageX;
     this.imageHeight = imageY;
     records = new ArrayList();
     dcStack = new Stack();
     palette = new MfPalette();
-    resetStates();
     readHeader();
     parseRecords();
+    resetStates();
   }
 
   public Dimension getImageSize ()
@@ -154,6 +154,7 @@ public class WmfFile implements Drawable
 
   public void resetStates ()
   {
+    Arrays.fill(objects, null);
     dcStack.clear();
     dcStack.push(new MfDcState(this));
   }
@@ -212,11 +213,9 @@ public class WmfFile implements Drawable
     }
     else
     {
-      throw new IOException(inName + "is not a real metafile");
+      throw new IOException("The given file is not a real metafile");
     }
   }
-
-  public int maxRec = 10000;
 
   /**
    * Fetch a record.
@@ -472,7 +471,7 @@ public class WmfFile implements Drawable
     return image;
   }
 
-  public void draw (final Graphics2D graphics, final Rectangle2D bounds)
+  public synchronized void draw (final Graphics2D graphics, final Rectangle2D bounds)
   {
 
     // this adjusts imageWidth and imageHeight
@@ -486,10 +485,6 @@ public class WmfFile implements Drawable
 
     for (int i = 0; i < records.size(); i++)
     {
-      if (i > maxRec)
-      {
-        break;
-      }
       try
       {
         final MfCmd command = (MfCmd) records.get(i);

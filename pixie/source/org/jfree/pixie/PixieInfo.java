@@ -26,12 +26,13 @@ public class PixieInfo extends ProjectInfo
   }
 
   /**
-   * Creates a new instance.
+   * Creates a new instance. (Must be public so that we can instantiate
+   * the library-info using Class.newInstance(..)).
    */
-  private PixieInfo ()
+  public PixieInfo ()
   {
     setName("Pixie");
-    setVersion("0.8.3");
+    setVersion("0.8.4");
     setInfo("Pixie is a viewer library for WindowsMetaFiles (WMF)");
     setCopyright
             ("(C)opyright 2000-2004, by Thomas Morgner, Object Refinery Limited and Contributors");

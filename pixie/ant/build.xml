@@ -82,7 +82,7 @@
 
   <!-- Make .zip distribution for Pixie -->
   <!-- as an separate download -->
-  <target name="make-zip" depends="compile, compile-junit">
+  <target name="make-zip" depends="compile">
 
     <!-- make a temporary distribution directory -->
     <mkdir dir="distribution"/>
@@ -136,7 +136,7 @@
   <!-- Make .tar.gz distribution for Pixie -->
   <!-- the war file is not included, as it can be rebuild easily and is also available -->
   <!-- as an separate download -->
-  <target name="make-targz" depends="compile, compile-junit">
+  <target name="make-targz" depends="compile">
 
     <!-- make a temporary distribution directory -->
     <mkdir dir="distribution"/>
