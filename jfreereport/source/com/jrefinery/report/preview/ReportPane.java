@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.20 2002/09/05 08:31:52 taqua Exp $
+ * $Id: ReportPane.java,v 1.21 2002/09/06 17:02:42 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -546,7 +546,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
       setError(e);
       super.paintComponent(g);
     }
-    graphCache = null;
   }
 
   /** Supports the Printable interface by drawing a report on a single page. */

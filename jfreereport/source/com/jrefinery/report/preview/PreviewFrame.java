@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.31 2002/09/06 17:02:41 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.32 2002/09/06 17:56:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -96,6 +96,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.RepaintManager;
 import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -469,12 +470,14 @@ public class PreviewFrame
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     JScrollPane s1 = new JScrollPane(reportPaneHolder);
+    s1.setDoubleBuffered(false);
     //s1.setBorder(null);
     s1.getVerticalScrollBar().setUnitIncrement(20);
 
     JPanel scrollPaneHolder = new JPanel();
     scrollPaneHolder.setLayout(new BorderLayout());
     scrollPaneHolder.add(s1, BorderLayout.CENTER);
+    scrollPaneHolder.setDoubleBuffered(false);
 
     scrollPaneHolder.add(createStatusBar(), BorderLayout.SOUTH);
     content.add(scrollPaneHolder);
@@ -1112,7 +1115,19 @@ public class PreviewFrame
 
   public void dispose ()
   {
-    Log.debug (" ------------------> FRAME DISPOSED -------------------->");
+    //Log.debug (" ------------------> FRAME DISPOSED -------------------->");
     super.dispose();
+
+    // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
+    // I dont want this here, as PreviewFrames are evil and resource expensive ...
+    RepaintManager.setCurrentManager(null);
+
   }
+/*
+  protected void finalize() throws Throwable
+  {
+    Log.debug (" ------------------> FRAME FINALIZED -------------------->");
+    super.finalize();
+  }
+*/
 }
