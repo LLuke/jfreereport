@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: AbstractKeyEditor.java,v 1.2 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 31.08.2003 : Initial version
+ * 31-Aug-2003 : Initial version
  *  
  */
 
@@ -48,7 +48,6 @@ import javax.swing.JPanel;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.resources.ConfigResources;
 import org.jfree.report.util.ImageUtils;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -59,18 +58,35 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
 {
+  /** The name of the resource bundle implementation used to translate texts. */
   private static final String RESOURCE_BUNDLE =
       ConfigResources.class.getName();
+  /** A constant for the "validInput" property name. */
+  public static final String VALID_INPUT_PROPERTY = "validInput";
 
-  private Icon errorIcon;
-  private Icon emptyIcon;
+  /** The error icon used for the key editors. */
+  private static Icon errorIcon;
+  /** The empty icon used for the key editors. */
+  private static Icon emptyIcon;
 
+  /** The report configuration that provides the values for this editor. */
   private ReportConfiguration config;
+  /** The config description entry that provides the definition for this key. */
   private ConfigDescriptionEntry entry;
+  /** A flag indicating whether the input is valid. */
   private boolean validInput;
+  /** A label that holds the error indicator icons. */
   private JLabel stateLabel;
+  /** the resource bundle instance used to translate the text. */
   private ResourceBundle resources;
 
+  /**
+   * Creates a new key editor for the given report configuration and key
+   * entry. 
+   * 
+   * @param config the report configuration that supplies the value for the editor
+   * @param entry the entry description provides the meta data for the edited key.
+   */
   public AbstractKeyEditor (ReportConfiguration config, ConfigDescriptionEntry entry)
   {
     this.resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
@@ -80,6 +96,11 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
     stateLabel = new JLabel(getEmptyIcon());
   }
 
+  /**
+   * Returns the empty icon for this an all derived editors.
+   * 
+   * @return the empty icon.
+   */
   protected Icon getEmptyIcon ()
   {
     if (emptyIcon == null)
@@ -92,6 +113,11 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
     return emptyIcon;
   }
 
+  /**
+   * Returns the error icon for this an all derived editors.
+   * 
+   * @return the error icon.
+   */
   protected Icon getErrorIcon ()
   {
     if (errorIcon == null)
@@ -101,6 +127,11 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
     return errorIcon;
   }
 
+  /**
+   * Defines the content pane for this editor. 
+   * 
+   * @param contentPane the new content pane
+   */
   protected void setContentPane(JPanel contentPane)
   {
     removeAll();
@@ -108,47 +139,82 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
     add (stateLabel, BorderLayout.EAST);
   }
 
-
+  /**
+   * Returns the report configuration instance used for this editor.
+   * 
+   * @return the report configuration instance of this editor.
+   */
   public ReportConfiguration getConfig()
   {
     return config;
   }
 
+  /**
+   * Returns the config description entry of this editor. 
+   * 
+   * @return the config description entry.
+   */
   public ConfigDescriptionEntry getEntry()
   {
     return entry;
   }
 
+  /**
+   * Loads the value from the configuration.
+   * 
+   * @return the value of the edited key from the configuration.
+   */
   protected String loadValue ()
   {
     return config.getConfigProperty(entry.getKeyName());
   }
-
+  
+  /**
+   * Stores the value to the configuration.
+   * 
+   * @param o the new value for the key of the editor.
+   */
   protected void storeValue (String o)
   {
     config.setConfigProperty(entry.getKeyName(), o);
   }
 
+  /**
+   * Removes the value from the configuration; the configuration
+   * will fall back to the default value from the global configuration.
+   * <p>  
+   * Deleting the value triggers the <code>isDefined</code> property.
+   */
   protected void deleteValue ()
   {
     config.setConfigProperty(entry.getKeyName(), null);
   }
 
-  public abstract void reset ();
-  public abstract void store ();
-
+  /**
+   * Returns true, if the component validated the entered values, false
+   * otherwise.
+   * 
+   * @return true, if the input is valid, false otherwise.
+   */
   public boolean isValidInput()
   {
     return validInput;
   }
 
+  /**
+   * Defines, whether the input is valid. This should be called after
+   * the value of the component changed.
+   *  
+   * @param validInput true, if the input should be considered valid,
+   * false otherwise.
+   */
   protected void setValidInput(boolean validInput)
   {
     if (this.validInput != validInput)
     {
       boolean oldValue = this.validInput;
       this.validInput = validInput;
-      firePropertyChange("ValidInput", oldValue, validInput);
+      firePropertyChange(VALID_INPUT_PROPERTY, oldValue, validInput);
       if (this.validInput == false)
       {
         stateLabel.setIcon(getErrorIcon());
@@ -158,17 +224,27 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
         stateLabel.setIcon(getEmptyIcon());
       }
     }
-    else
-    {
-      Log.debug ("No change: " + validInput);
-    }
   }
 
+  /**
+   * Checks, whether the local key has a defined value in the local
+   * report configuration.   
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#isDefined()
+   * 
+   * @return true, if the key is defined, false otherwise.
+   */
   public boolean isDefined ()
   {
     return config.isLocallyDefined(entry.getKeyName());
   }
 
+  /**
+   * Returns the editor component; this implementation returns the "this"
+   * reference. 
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#getComponent()
+   * 
+   * @return a reference to this object.
+   */
   public JComponent getComponent()
   {
     return this;

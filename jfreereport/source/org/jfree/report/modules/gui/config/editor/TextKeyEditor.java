@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: TextKeyEditor.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 31.08.2003 : Initial version
+ * 31-Aug-2003 : Initial version
  *  
  */
 
@@ -48,12 +48,25 @@ import javax.swing.event.DocumentEvent;
 
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.Log;
 
+/**
+ * The text key editor is used to edit a free form text.
+ * 
+ * @author Thomas Morgner
+ */
 public class TextKeyEditor extends AbstractKeyEditor
 {
+  /**
+   * An handler class that validates the content whenever a change
+   * in the text document occurs.
+   *  
+   * @author Thomas Morgner
+   */
   private class DocumentChangeHandler implements DocumentListener
   {
+    /**
+     * Default Constructor. 
+     */
     public DocumentChangeHandler()
     {
     }
@@ -92,10 +105,22 @@ public class TextKeyEditor extends AbstractKeyEditor
     }
   }
 
+  /** The editor component for the key content. */
   private JTextField content;
+  /** the label that names the content. */
   private JLabel entryLabel;
+  /** a carrier component that acts as content pane. */
   private JPanel entryLabelCarrier;
 
+  /**
+   * Creates a new text key editor for the given configuration and description
+   * entry. The given display name will be used as label text.
+   * 
+   * @param config the report configuration from where to read the configuration
+   * values.
+   * @param entry the entry description supplies the meta data.
+   * @param displayName the label content.
+   */
   public TextKeyEditor(ReportConfiguration config, ConfigDescriptionEntry entry, String displayName)
   {
     super(config, entry);
@@ -118,17 +143,30 @@ public class TextKeyEditor extends AbstractKeyEditor
     reset();
   }
 
+  /**
+   * This method validates the content of the text field. In this implementation
+   * no validation is done and all text is accepted.
+   *
+   */
   public void validateContent ()
   {
-    Log.debug ("Do something else.");
     setValidInput(true);
   }
 
+  /**
+   * Resets the value to the defaults from the report configuration. 
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#reset()
+   */
   public void reset()
   {
     content.setText(loadValue());
   }
 
+  /**
+   * Stores the input as new value for the report configuration. This method
+   * does nothing, if the content is not valid. 
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#store()
+   */
   public void store()
   {
     if (isValidInput())
@@ -144,6 +182,10 @@ public class TextKeyEditor extends AbstractKeyEditor
     }
   }
 
+  /**
+   * Returns the content from the input field.
+   * @return the input field text.
+   */
   public String getContent()
   {
     return content.getText();
@@ -165,12 +207,24 @@ public class TextKeyEditor extends AbstractKeyEditor
     content.setEnabled(enabled);
   }
 
+  /**
+   * Defines the preferred width of the label. 
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#setLabelWidth(int)
+   * 
+   * @param width the new preferred width.
+   */
   public void setLabelWidth(int width)
   {
     Dimension prefSize = entryLabel.getPreferredSize();
     entryLabelCarrier.setPreferredSize(new Dimension(width, prefSize.height));
   }
 
+  /**
+   * Returns the preferred width of the label. 
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#getLabelWidth()
+   * 
+   * @return the preferred width.
+   */
   public int getLabelWidth()
   {
     Dimension prefSize = entryLabel.getPreferredSize();
@@ -180,5 +234,4 @@ public class TextKeyEditor extends AbstractKeyEditor
     }
     return 0;
   }
-
 }

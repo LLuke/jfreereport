@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: ClassKeyEditor.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,15 +42,29 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 
+/**
+ * The class key editor is used to edit report configuration keys which
+ * take the name of an class as value.
+ * 
+ * @author Thomas Morgner
+ */
 public class ClassKeyEditor extends TextKeyEditor
 {
+  /** The base class, to which all value classes must be assignable. */
   private Class baseClass;
 
+  /**
+   * Creates a new class key editor for the given entry and configuration.
+   * The given display name will be used as label text.
+   * 
+   * @param config the report configuration.
+   * @param entry the configuration description entry that describes the key 
+   * @param displayName the text for the label
+   */
   public ClassKeyEditor(ReportConfiguration config, 
       ClassConfigDescriptionEntry entry, String displayName)
   {
-    super(config, entry, "C:" + displayName);
-    Log.debug ("Constructing ...");
+    super(config, entry, displayName);
     baseClass = entry.getBaseClass();
     if (baseClass == null)
     {
@@ -60,6 +74,11 @@ public class ClassKeyEditor extends TextKeyEditor
     validateContent();
   }
 
+  /**
+   * Checks, whether the given value is a valid classname and is assignable
+   * from the base class. 
+   * @see org.jfree.report.modules.gui.config.editor.TextKeyEditor#validateContent()
+   */
   public void validateContent()
   {
     if (baseClass == null)
@@ -77,6 +96,6 @@ public class ClassKeyEditor extends TextKeyEditor
       // ignored ..
       setValidInput(false);
     }
-    Log.debug ("Validate ClassContent:" + getContent() + " is Valid: " + isValidInput());
+    // Log.debug ("Validate ClassContent:" + getContent() + " is Valid: " + isValidInput());
   }
 }

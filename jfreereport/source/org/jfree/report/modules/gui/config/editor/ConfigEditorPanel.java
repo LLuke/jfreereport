@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigEditorPanel.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 30.08.2003 : Initial version
+ * 30-Aug-2003 : Initial version
  *  
  */
 
@@ -49,26 +49,38 @@ import javax.swing.UIManager;
 import org.jfree.report.modules.Module;
 import org.jfree.report.modules.gui.config.VerticalLayout;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The container component that is responsible for creating and managing the 
+ * module editor for the currently selected module.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConfigEditorPanel extends JPanel
 {
+  /** The currently edited module. */
   private Module module;
+  /** The report configuration used to edit the module. */
   private ReportConfiguration config;
-
+  
+  /** A component holding the module description. */
   private JTextArea descriptionArea;
+  /** A component holding the name of the module. */
   private JTextArea moduleNameField;
+  /** A component holding the producer of the current module. */
   private JTextArea producerField;
 
+  /** The message format used to create the module name and version. */
   private MessageFormat moduleNameFormat;
+  /** The container to hold the editor. */
   private JPanel editorArea;
 
+  /** The current module editor (may be null). */
   private ModuleEditor moduleEditor;
 
   /**
-   * Creates a new <code>JPanel</code> with a double buffer
-   * and a flow layout.
+   * Creates a new ConfigEditorPanel.
    */
   public ConfigEditorPanel()
   {
@@ -113,12 +125,15 @@ public class ConfigEditorPanel extends JPanel
     add (editorArea, BorderLayout.CENTER);
   }
 
-  public Module getModule()
-  {
-    return module;
-  }
-
-  public void setModule(Module module,
+  /**
+   * Defines the currently edited module and initializes an module editor
+   * for that module.
+   * 
+   * @param module the module that should be edited.
+   * @param config the report configuration that supplies the values for the module.
+   * @param entries a list of entries which should be edited.
+   */
+  public void editModule(Module module,
                         ReportConfiguration config,
                         ConfigDescriptionEntry[] entries)
   {
@@ -134,34 +149,40 @@ public class ConfigEditorPanel extends JPanel
     producerField.setText(module.getProducer());
     descriptionArea.setText(module.getDescription());
 
+    editorArea.removeAll();
+
     moduleEditor = EditorFactory.getInstance().getModule
         (module, config, entries);
-    editorArea.removeAll();
-    editorArea.add(moduleEditor.getComponent());
-    moduleEditor.reset();
+    if (moduleEditor != null)
+    {
+      editorArea.add(moduleEditor.getComponent());
+      moduleEditor.reset();
+    }
     invalidate();
   }
 
-  public ReportConfiguration getConfig()
-  {
-    return config;
-  }
-
+  /**
+   * Resets the currently edited module to the default values from the 
+   * report configuration.
+   */
   public void reset()
   {
-    moduleEditor.reset();
+    if (moduleEditor != null)
+    {
+      moduleEditor.reset();
+    }
   }
 
+  /**
+   * Stores all values from the module editor into the report configuration.
+   *
+   */
   public void store()
   {
-    moduleEditor.store();
+    if (moduleEditor != null)
+    {
+      moduleEditor.store();
+    }
   }
 
-  public void debug ()
-  {
-    Log.debug (descriptionArea.getMinimumSize());
-    Log.debug (editorArea.getMinimumSize());
-    Log.debug (moduleNameField.getMinimumSize());
-    Log.debug (producerField.getMinimumSize());
-  }
 }
