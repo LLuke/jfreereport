@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.8 2003/03/20 18:28:34 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.9 2003/04/09 16:15:44 mungady Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Area;
 
 /**
  * Utility class, which resizes a Shape.
@@ -53,8 +54,6 @@ public class ShapeTransform
    * Translates the given shape. The shape is translated to the origin supplied
    * in <code>point</code>. If scaling is requested, the shape will also be scaled
    * using an AffineTransform.
-   *
-   * todo limit the shape dimension if no scaling is requested.
    *
    * @param s the shape that should be transformed
    * @param scale true, if the shape should be scaled, false otherwise
@@ -109,10 +108,14 @@ public class ShapeTransform
 
         // now retranslate the shape to its original position ...
         af = AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY());
-        s = af.createTransformedShape(s);
+        return af.createTransformedShape(s);
       }
     }
 
-    return s;
+    Rectangle2D rect = s.getBounds2D();
+    rect.setRect(rect.getX(), rect.getY(), dim.getWidth(), dim.getHeight());
+    Area a = new Area (s);
+    a.intersect(new Area (rect));
+    return a;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellData.java,v 1.4 2003/02/26 16:42:28 mungady Exp $
+ * $Id: RTFCellData.java,v 1.5 2003/05/02 12:40:43 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public abstract class RTFCellData extends TableCellData
   public RTFCellData(Rectangle2D outerBounds, RTFCellStyle style)
   {
     super(outerBounds);
-    if (style == null) 
+    if (style == null)
     {
       throw new NullPointerException("Style is null");
     }
@@ -84,7 +84,7 @@ public abstract class RTFCellData extends TableCellData
    * Creates a iText TableCell with some content in it.
    *
    * @return the cell with the content.
-   * @throws DocumentException if the cell could not be created.
+   * @throws DocumentException if there is a problem adding the cell to the document.
    */
   public abstract Cell getCell() throws DocumentException;
 }

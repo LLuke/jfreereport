@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.7 2003/02/27 10:35:39 mungady Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.8 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
    *
    * @param bounds  the bounds.
    */
-  public VerticalBoundsAlignment(Rectangle2D bounds)
+  protected VerticalBoundsAlignment(Rectangle2D bounds)
   {
     super(bounds);
   }

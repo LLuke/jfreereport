@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.5 2003/02/26 16:42:29 mungady Exp $
+ * $Id: RTFCellDataFactory.java,v 1.6 2003/05/02 12:40:43 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
 
     if (e instanceof Band)
     {
-      return createBandCell(e, rect);
+      return createBandCell(rect);
     }
 
     Object value = e.getValue();

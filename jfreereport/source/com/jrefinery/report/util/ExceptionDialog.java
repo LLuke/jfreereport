@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExceptionDialog.java,v 1.13 2002/12/11 00:41:42 mungady Exp $
+ * $Id: ExceptionDialog.java,v 1.14 2003/05/02 12:40:46 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class ExceptionDialog extends JDialog
     /**
      * Default constructor.
      */
-    public OKAction ()
+    private OKAction ()
     {
       putValue (NAME, UIManager.getDefaults ().getString ("OptionPane.okButtonText"));
     }
@@ -96,7 +96,7 @@ public class ExceptionDialog extends JDialog
     /**
      * Default constructor.
      */
-    public DetailsAction ()
+    private DetailsAction ()
     {
       putValue (NAME, ">>");
     }

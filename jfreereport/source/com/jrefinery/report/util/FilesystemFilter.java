@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FilesystemFilter.java,v 1.4 2003/02/26 13:58:04 mungady Exp $
+ * $Id: FilesystemFilter.java,v 1.5 2003/05/02 12:40:46 taqua Exp $
  *
  * Changes
  * -------
@@ -179,7 +179,7 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
    *
    * @return true, if this filter accepts directories, false otherwise
    */
-  public boolean isAcceptDirectories()
+  private boolean isAcceptDirectories()
   {
     return accDirs;
   }

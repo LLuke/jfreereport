@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.9 2003/03/26 10:49:24 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.10 2003/04/09 15:53:22 mungady Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      *
      * @param s  the graphics device.
      */
-    public OutputTargetState(OutputTarget s)
+    private OutputTargetState(OutputTarget s)
     {
       save(s);
     }
@@ -108,7 +108,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
      * @param target  the output target, that receives the restored state.
      * @throws OutputTargetException if the state restoration failed.
      */
-    public void restore(OutputTarget target)
+    private void restore(OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
@@ -164,10 +164,8 @@ public class DummyOutputTarget extends AbstractOutputTarget
 
   /**
    * Closes the target. The request is not forwarded to the backend.
-   *
-   * @throws OutputTargetException if there is some problem closing the target.
    */
-  public void close() throws OutputTargetException
+  public void close()
   {
     isOpen = false;
   }
@@ -176,10 +174,8 @@ public class DummyOutputTarget extends AbstractOutputTarget
    * This method does nothing.
    *
    * @param page  the physical page.
-   *
-   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void beginPage(PhysicalPage page) throws OutputTargetException
+  public void beginPage(PhysicalPage page)
   {
     state = new OutputTargetState(this);
   }

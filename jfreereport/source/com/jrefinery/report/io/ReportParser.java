@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.3 2003/04/29 22:12:59 taqua Exp $
+ * $Id: ReportParser.java,v 1.4 2003/05/11 13:39:16 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import org.jfree.xml.Parser;
  * queries with getResult();
  * <p>
  * This parser produces JFreeReport objects.
+ *
+ * @author Thomas Morgner
  */
 public class ReportParser extends Parser
 {

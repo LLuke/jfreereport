@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.6 2003/05/09 17:12:13 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.7 2003/05/11 13:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -58,19 +58,19 @@ public class ExcelDataCellStyle
   /** A flag indicating whether to enable excels word wrapping. */
   private boolean wrapText;
 
-  /** the horizontal text alignment */
+  /** the horizontal text alignment. */
   private ElementAlignment horizontalAlignment;
 
-  /** the vertical text alignment */
+  /** the vertical text alignment. */
   private ElementAlignment verticalAlignment;
 
   /** the font definition for the cell. */
   private FontDefinition fontDefinition;
 
-  /** the text color */
+  /** the text color. */
   private Color textColor;
 
-  /** the data style */
+  /** the data style. */
   private String dataStyle;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.37 2003/04/24 18:08:43 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.38 2003/05/02 12:39:01 taqua Exp $
  *
  * Changes
  * -------
@@ -304,7 +304,7 @@ public class DataRowBackend implements Cloneable
    *
    * @return The flag.
    */
-  public boolean isPreviewMode()
+  protected boolean isPreviewMode()
   {
     return false;
   }
@@ -534,7 +534,7 @@ public class DataRowBackend implements Cloneable
   /**
    * Ensures that the columnLock does match the number of columns in this row.
    */
-  protected void revalidateColumnLock()
+  private void revalidateColumnLock()
   {
     if (getColumnCount() != columnlocks.length)
     {

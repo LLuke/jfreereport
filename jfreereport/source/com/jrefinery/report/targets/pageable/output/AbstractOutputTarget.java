@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.14 2003/03/26 10:49:23 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.15 2003/04/09 15:53:21 mungady Exp $
  *
  * Changes
  * -------
@@ -91,7 +91,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param format  the page format.
    */
-  public AbstractOutputTarget(PageFormat format)
+  protected AbstractOutputTarget(PageFormat format)
   {
     this(format, format);
   }
@@ -102,7 +102,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param logical  the page format used by this target for layouting.
    * @param physical  the page format used by this target for printing.
    */
-  public AbstractOutputTarget(PageFormat logical, PageFormat physical)
+  protected AbstractOutputTarget(PageFormat logical, PageFormat physical)
   {
     this(new LogicalPageImpl(logical, physical));
   }
@@ -112,7 +112,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param logicalPage  the logical page.
    */
-  public AbstractOutputTarget(LogicalPage logicalPage)
+  protected AbstractOutputTarget(LogicalPage logicalPage)
   {
     properties = new HashMap();
     this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);

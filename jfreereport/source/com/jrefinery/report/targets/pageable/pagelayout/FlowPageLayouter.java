@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.7 2003/02/25 15:42:25 taqua Exp $
+ * $Id: FlowPageLayouter.java,v 1.8 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,6 @@ public class FlowPageLayouter extends PageLayouter
   public LayoutTask getTaskForEvent (ReportEvent event)
   {
     LayoutTask task = new LayoutTask();
-//    task.setEvent (event);
     tasks.push(task);
     return task;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.6 2003/05/08 21:46:16 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.7 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,6 @@ public class LineBreakIterator implements Iterator
     }
 
     // recognize \n, \r, \r\n
-    boolean omitLF = false;
 
     int nChars = text.length;
     int nextChar = position;
@@ -106,13 +105,6 @@ public class LineBreakIterator implements Iterator
       boolean eol = false;
       char c = 0;
       int i;
-
-      /* Skip a leftover '\n', if necessary */
-      if (omitLF && (text[nextChar] == '\n'))
-      {
-        nextChar++;
-      }
-      omitLF = false;
 
       // search the next line break, either \n or \r
       for (i = nextChar; i < nChars; i++)

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.12 2003/04/06 20:43:00 taqua Exp $
+ * $Id: ReportStateList.java,v 1.13 2003/05/02 12:40:32 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public class ReportStateList
      * @param list  the list.
      * @param maxChildCount the maximum number of elements in this list.
      */
-    public MasterList (ReportStateList list, int maxChildCount)
+    private MasterList (ReportStateList list, int maxChildCount)
     {
       super (maxChildCount);
       this.master = list;
@@ -244,7 +244,7 @@ public class ReportStateList
    *
    * @return the dummy output target.
    */
-  public OutputTarget getDummyWriter()
+  private OutputTarget getDummyWriter()
   {
     return dummyWriter;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.18 2003/05/06 14:03:58 taqua Exp $
+ * $Id: TextParagraph.java,v 1.19 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class TextParagraph extends ContentContainer
    *
    * @return the size calculator.
    */
-  public SizeCalculator getSizeCalculator()
+  private SizeCalculator getSizeCalculator()
   {
     return sizeCalculator;
   }
@@ -205,6 +205,7 @@ public class TextParagraph extends ContentContainer
     int lineLength = mytext.length();
     if (lineLength == 0)
     {
+      returnLines.add ("");
       return returnLines;
     }
 
@@ -214,7 +215,7 @@ public class TextParagraph extends ContentContainer
       // we can assume, that if the first character is a white space, then all
       // characters are whitespaces, as the word break iterator searches for
       // whitespace boundries ...
-      while ((lineStartPos < lineLength) && (Character.isWhitespace(mytext.charAt(lineStartPos))))
+      while ((lineStartPos < lineLength) && (isWhitespace(mytext.charAt(lineStartPos))))
       {
         lineStartPos++;
       }
@@ -245,6 +246,25 @@ public class TextParagraph extends ContentContainer
       }
     }
     return returnLines;
+  }
+
+  /**
+   * Tests, whether the given character is a whitespace (but not a breakline).
+   *
+   * @param c the character that should be tested.
+   * @return true, if this is a whitespace character, but not a
+   * linebreak character, false otherwise.
+   */
+  private boolean isWhitespace (char c)
+  {
+    if (c == '\n' || c == '\r')
+    {
+      return false;
+    }
+    else
+    {
+      return Character.isWhitespace(c);
+    }
   }
 
   /**

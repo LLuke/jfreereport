@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.10 2003/04/24 18:08:58 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.11 2003/05/02 12:40:36 taqua Exp $
  *
  * Changes
  * -------
  * 28-Jan-2003 : Initial version
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.targets.table;
@@ -56,10 +56,10 @@ import org.jfree.ui.FloatDimension;
 /**
  * A base implementation of the {@link TableCellDataFactory} interface, which is able to handle
  * background cell and band cells.
- * 
+ *
  * @see TableBandArea
  * @see TableCellData
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class AbstractTableCellDataFactory implements TableCellDataFactory
@@ -68,12 +68,11 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
    * Create a band cell for the given element. A band cell is used to create
    * borders for the band bounds, and contains no other data or formats.
    *
-   * @param e  the band for which the band area should be created.
    * @param rect  the bounds of the element.
-   * 
+   *
    * @return The band area or <code>null<code>, if the band has a height or width of 0.
    */
-  public TableCellData createBandCell(Element e, Rectangle2D rect)
+  public TableCellData createBandCell(Rectangle2D rect)
   {
     if (rect.getHeight() == 0 || rect.getWidth() == 0)
     {
@@ -93,8 +92,8 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
    * @param e  the element that defines the background, usually a {@link ShapeElement}.
    * @param shape  the shape that should be used as background.
    * @param bounds  the element's bounds within the table.
-   * 
-   * @return the generated {@link TableCellBackground} or <code>null</code> if the background 
+   *
+   * @return the generated {@link TableCellBackground} or <code>null</code> if the background
    *         shape is not supported.
    */
   public TableCellBackground createBackground (Element e, Shape shape, Rectangle2D bounds)

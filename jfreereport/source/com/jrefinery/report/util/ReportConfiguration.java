@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.43 2003/05/02 17:16:12 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.44 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -425,16 +425,19 @@ public class ReportConfiguration implements Configuration
   /** The 'HTML encoding' property key. */
   public static final String HTML_OUTPUT_ENCODING
       = "com.jrefinery.report.targets.table.html.Encoding";
+  /** A default value of the 'HTML encoding' property key. */
   public static final String HTML_OUTPUT_ENCODING_DEFAULT = "UTF-16";
 
   /** The 'CSV encoding' property key. */
   public static final String CSV_OUTPUT_ENCODING
       = "com.jrefinery.report.targets.csv.Encoding";
+  /** A default value of the 'CSV encoding' property key. */
   public static final String CSV_OUTPUT_ENCODING_DEFAULT = getPlatformDefaultEncoding();
 
   /** The 'XML encoding' property key. */
   public static final String TEXT_OUTPUT_ENCODING
       = "com.jrefinery.report.targets.pageable.output.PlainText.Encoding";
+  /** A default value of the 'XML encoding' property key. */
   public static final String TEXT_OUTPUT_ENCODING_DEFAULT = getPlatformDefaultEncoding();
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.9 2003/04/09 00:12:30 mungady Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.10 2003/05/14 14:08:36 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class DefaultSizeCalculator implements SizeCalculator
     /**
      * creates a new BuggyFontRendererDetector.
      */
-    public BuggyFontRendererDetector ()
+    private BuggyFontRendererDetector ()
     {
       isAliased = ReportConfiguration.getGlobalConfig().isG2TargetUseAliasing();
 
@@ -152,7 +152,7 @@ public class DefaultSizeCalculator implements SizeCalculator
      *
      * @return a font render context that is valid and not affected by the bugs.
      */
-    public FontRenderContext createFontRenderContext ()
+    private FontRenderContext createFontRenderContext ()
     {
       if (fontRenderContext == null)
       {

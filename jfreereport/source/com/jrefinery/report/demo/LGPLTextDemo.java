@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.6 2003/04/24 18:08:45 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.7 2003/05/02 12:39:35 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class LGPLTextDemo extends ApplicationFrame implements ActionListener
      *
      * @return the menu bar.
      */
-    public JMenuBar createMenuBar()
+    private JMenuBar createMenuBar()
     {
         JMenuBar mb = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -110,7 +110,7 @@ public class LGPLTextDemo extends ApplicationFrame implements ActionListener
      *
      * @return a panel containing the basic user interface.
      */
-    public JPanel createContent()
+    private JPanel createContent()
     {
         JPanel content = new JPanel(new BorderLayout());
         content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));

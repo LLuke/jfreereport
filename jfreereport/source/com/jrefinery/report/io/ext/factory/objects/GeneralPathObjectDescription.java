@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GeneralPathObjectDescription.java,v 1.1 2003/05/09 17:12:13 taqua Exp $
+ * $Id: GeneralPathObjectDescription.java,v 1.2 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * An Object Description for general shapes and the GeneralPath-class.
+ *
+ * @author Thomas Morgner
  */
 public class GeneralPathObjectDescription extends AbstractObjectDescription
 {

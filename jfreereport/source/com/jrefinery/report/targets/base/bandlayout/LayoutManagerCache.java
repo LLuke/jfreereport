@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.2 2003/04/06 18:11:30 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.3 2003/04/09 15:49:55 mungady Exp $
  *
  * Changes
  * -------
@@ -58,10 +58,10 @@ public class LayoutManagerCache
   private static class ElementCacheCarrier
   {
     /** The minimum size. */
-    public Dimension2D minSize;
+    private Dimension2D minSize;
     
     /** The preferred size. */
-    public Dimension2D prefSize;
+    private Dimension2D prefSize;
   }
 
   /** The put count. */

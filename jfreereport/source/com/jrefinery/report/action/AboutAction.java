@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.13 2003/02/02 23:43:48 taqua Exp $
+ * $Id: AboutAction.java,v 1.14 2003/05/02 12:39:32 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public abstract class AboutAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public AboutAction (ResourceBundle resources)
+  protected AboutAction (ResourceBundle resources)
   {
     putValue (NAME, resources.getString ("action.about.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.about.description"));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.10 2003/04/23 16:26:49 taqua Exp $
+ * $Id: TextLine.java,v 1.11 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public class TextLine implements Content
    *
    * @return the size calculator.
    */
-  public SizeCalculator getSizeCalculator()
+  private SizeCalculator getSizeCalculator()
   {
     return sizeCalc;
   }

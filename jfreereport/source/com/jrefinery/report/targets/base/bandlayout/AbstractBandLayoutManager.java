@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.10 2003/04/24 18:08:56 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.11 2003/05/02 12:40:29 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
   /**
    * Default constructor.
    */
-  public AbstractBandLayoutManager()
+  protected AbstractBandLayoutManager()
   {
   }
 

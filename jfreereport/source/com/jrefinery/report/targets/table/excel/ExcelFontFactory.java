@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.6 2003/02/26 13:58:03 mungady Exp $
+ * $Id: ExcelFontFactory.java,v 1.7 2003/05/02 12:40:39 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  */
 public class ExcelFontFactory
 {
-  /** The list of fonts that we have used so far */
+  /** The list of fonts that we have used so far. */
   private ArrayList fontList = null;
 
   /** The workbook that is used to create the font. */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.13 2003/02/26 16:42:03 mungady Exp $
+ * $Id: GotoPageAction.java,v 1.14 2003/05/02 12:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
    *
    * @param resources Localised resources for the action.
    */
-  public GotoPageAction (ResourceBundle resources)
+  protected GotoPageAction (ResourceBundle resources)
   {
     this.putValue (NAME, resources.getString ("action.gotopage.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.gotopage.description"));

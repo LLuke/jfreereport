@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.7 2003/02/25 14:10:20 taqua Exp $
+ * $Id: IconTableModel.java,v 1.8 2003/05/02 12:39:34 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.demo;
 
 import java.awt.Image;
 import java.util.List;
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -58,7 +59,7 @@ public class IconTableModel extends AbstractTableModel
    */
   public IconTableModel ()
   {
-    this.data = new java.util.ArrayList ();
+    this.data = new ArrayList ();
   }
 
   /**
@@ -69,7 +70,7 @@ public class IconTableModel extends AbstractTableModel
    * @param icon The icon.
    * @param size The size of the icon image in bytes.
    */
-  public void addIconEntry (String name, String category, Image icon, Long size)
+  protected void addIconEntry (String name, String category, Image icon, Long size)
   {
     Object[] item = new Object[4];
     item[0] = name;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingSupport.java,v 1.4 2003/04/23 17:13:44 taqua Exp $
+ * $Id: EncodingSupport.java,v 1.5 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public class EncodingSupport
   /** Storage for the known encodings. */
   private static HashMap knownEncodings;
 
-  /** the string that should be encoded */
+  /** the string that should be encoded. */
   private static final String TEST_STRING = " ";
 
   /**

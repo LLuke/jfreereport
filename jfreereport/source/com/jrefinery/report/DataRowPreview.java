@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowPreview.java,v 1.1 2003/04/06 20:42:33 taqua Exp $
+ * $Id: DataRowPreview.java,v 1.2 2003/04/09 15:45:46 mungady Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ public class DataRowPreview extends DataRowBackend
    * @return true, as this is a preview version of a DataRowBackend, and not all functionality
    * may be available.
    */
-  public boolean isPreviewMode()
+  protected boolean isPreviewMode()
   {
     return true;
   }

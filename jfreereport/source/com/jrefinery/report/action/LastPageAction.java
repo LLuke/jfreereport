@@ -59,7 +59,7 @@ public abstract class LastPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public LastPageAction (ResourceBundle resources)
+  protected LastPageAction (ResourceBundle resources)
   {
     putValue (NAME, resources.getString ("action.lastpage.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.lastpage.description"));

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.63 2003/04/24 18:08:45 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.64 2003/05/02 12:39:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -621,7 +621,7 @@ public class JFreeReportDemo extends JFrame
    *
    * @return false if the user decides not to exit the application.
    */
-  public boolean attemptExit()
+  protected boolean attemptExit()
   {
     boolean close =
         JOptionPane.showConfirmDialog(

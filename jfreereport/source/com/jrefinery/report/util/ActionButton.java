@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionButton.java,v 1.10 2003/02/02 22:46:44 taqua Exp $
+ * $Id: ActionButton.java,v 1.11 2003/05/02 12:40:44 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -203,7 +203,7 @@ public class ActionButton extends JButton
    *
    * @return the property change handler.
    */
-  protected ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
+  private ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
   {
     if (propertyChangeHandler == null)
     {

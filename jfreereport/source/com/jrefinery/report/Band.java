@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.53 2003/04/24 18:08:43 taqua Exp $
+ * $Id: Band.java,v 1.54 2003/05/02 12:39:01 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -179,7 +179,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
    *                              values.
    */
-  public synchronized void addElement (Element element)
+  public synchronized void addElement (final Element element)
   {
     addElement(allElements.size(), element);
   }

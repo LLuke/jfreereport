@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.9 2003/05/02 12:40:46 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.10 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
  */
 package com.jrefinery.report.util;
 
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -195,7 +194,6 @@ public class CharacterEntityParser
    * @param writer the writer which should receive the encoded contents.
    */
   public void encodeEntities (String value, HtmlWriter writer)
-    throws IOException
   {
     for (int i = 0; i < value.length(); i++)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableContainer.java,v 1.3 2003/04/09 00:10:32 mungady Exp $
+ * $Id: DrawableElement.java,v 1.3 2003/04/09 15:45:47 mungady Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ package com.jrefinery.report;
  */
 public class DrawableElement extends Element
 {
-  /** The content type for the element */
+  /** The content type for the element. */
   public static final String CONTENT_TYPE = "drawable/generic";
 
   /**

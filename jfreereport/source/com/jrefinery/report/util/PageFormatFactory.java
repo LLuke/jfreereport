@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.21 2003/04/24 18:08:58 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.22 2003/05/02 12:40:47 taqua Exp $
  *
  * Changes
  * -------
@@ -550,7 +550,7 @@ public class PageFormatFactory
   /**
    * Default constructor.
    */
-  protected PageFormatFactory()
+  private PageFormatFactory()
   {
   }
 

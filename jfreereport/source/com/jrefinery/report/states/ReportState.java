@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.35 2003/05/02 12:40:27 taqua Exp $
+ * $Id: ReportState.java,v 1.36 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -199,7 +199,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Returns the number of rows.
-   * 
+   *
    * @return The number of row.
    */
   protected int getNumberOfRows()
@@ -274,7 +274,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * state.  Each transition will usually involve some processing of the report.
    *
    * @return the next report state.
-   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   public abstract ReportState advance () throws ReportProcessingException;
@@ -493,7 +492,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * The next few advances may render the reportstate copy invalid.
    *
    * @param progress  a carrier for the result.
-   * 
+   *
    * @return a progress object of this state.
    */
   public ReportStateProgress createStateProgress (ReportStateProgress progress)
@@ -513,7 +512,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Clones the report state.
    *
    * @return a clone.
-   * 
+   *
    * @throws CloneNotSupportedException if there is a cloning problem.
    */
   public Object clone() throws CloneNotSupportedException
@@ -521,10 +520,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     ReportState result = (ReportState) super.clone ();
     LevelledExpressionList functions = (LevelledExpressionList) getFunctions ().clone();
     result.setFunctions (functions);
-
-    // todo remove the cloning of the report definition by moving the
-    // datarowConnector into the report itself
-    // then we have a single point to connect our DataRow to ..
     result.report = (ReportDefinition) report.clone();
     result.dataRow = (DataRowBackend) dataRow.clone ();
     result.dataRow.setFunctions (functions);
@@ -601,7 +596,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * @param oldState  the old state.
      * @param message  the message.
      */
-    public StateProceedMessage(ReportState currentState, ReportStateProgress oldState, 
+    public StateProceedMessage(ReportState currentState, ReportStateProgress oldState,
                                String message)
     {
       this.currentState = currentState;

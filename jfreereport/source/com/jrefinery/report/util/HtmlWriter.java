@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlWriter.java,v 1.2 2003/05/02 12:40:47 taqua Exp $
+ * $Id: HtmlWriter.java,v 1.3 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,8 @@ import java.io.UnsupportedEncodingException;
  * This class provides the methods <code>printEncoded</code> for printing
  * the text contents. The PrintStream methods can be used to write tags
  * and attributes.
+ *
+ * @author Thomas Morgner
  */
 public class HtmlWriter extends PrintStream
 {
@@ -85,8 +87,11 @@ public class HtmlWriter extends PrintStream
    *                    whenever a byte array is written, one of the
    *                    <code>println</code> methods is invoked, or a newline
    *                    character or byte (<code>'\n'</code>) is written
+   * @param  encoding   The encoding used for the printEncoded methods.
    *
    * @see java.io.PrintWriter#PrintWriter(OutputStream, boolean)
+   * @throws UnsupportedEncodingException if the given encoding is invalid on this
+   * system.
    */
   public HtmlWriter(OutputStream out, boolean autoFlush, String encoding)
       throws UnsupportedEncodingException

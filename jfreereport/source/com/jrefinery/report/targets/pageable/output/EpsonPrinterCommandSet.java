@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.9 2003/03/18 19:39:09 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.10 2003/05/02 12:40:34 taqua Exp $
  *
  * Changes
  * -------
@@ -413,7 +413,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * @return the epson byte code.
    * @throws UnsupportedEncodingException if the encoding is not supported.
    */
-  public static int[] translateCodePage(String cp)
+  private static int[] translateCodePage(String cp)
       throws UnsupportedEncodingException
   {
     if (StringUtil.startsWithIgnoreCase(cp, "cp"))

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.15 2003/02/26 16:42:04 mungady Exp $
+ * $Id: ZoomInAction.java,v 1.16 2003/05/02 12:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public abstract class ZoomInAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public ZoomInAction (ResourceBundle resources)
+  protected ZoomInAction (ResourceBundle resources)
   {
     putValue (NAME, resources.getString ("action.zoomIn.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.zoomIn.description"));

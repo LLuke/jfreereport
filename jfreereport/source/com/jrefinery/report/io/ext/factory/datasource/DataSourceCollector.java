@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.12 2003/05/02 16:35:01 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.13 2003/05/11 13:39:16 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -57,7 +57,7 @@ public class DataSourceCollector implements DataSourceFactory
   private ArrayList factories;
   /** The comparator used to compare class instances. */
   private ClassComparator comparator;
-  /** The parser/report configuration */
+  /** The parser/report configuration. */
   private Configuration config;
 
   /**

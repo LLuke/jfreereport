@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.9 2003/05/09 17:12:13 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.10 2003/05/11 13:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -150,7 +150,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
 
     if (element instanceof Band)
     {
-      return createBandCell(element, bounds);
+      return createBandCell(bounds);
     }
 
     /**

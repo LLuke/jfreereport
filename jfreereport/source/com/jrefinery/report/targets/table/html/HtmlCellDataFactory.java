@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.11 2003/02/25 15:42:40 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.12 2003/02/26 16:42:27 mungady Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,7 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
 
     if (e instanceof Band)
     {
-      return createBandCell(e, rect);
+      return createBandCell(rect);
     }
 
     Object value = e.getValue();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.12 2002/12/02 17:29:11 taqua Exp $
+ * $Id: Function.java,v 1.13 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,6 @@ import com.jrefinery.report.event.ReportListener;
  * a report. A report FunctionCollection is used to control the functions. Functions are
  * required to be cloneable.
  * <p>
- * Todo: Give a better overview how functions are integrated into JFreeReport.
  *
  * @author Thomas Morgner
  */

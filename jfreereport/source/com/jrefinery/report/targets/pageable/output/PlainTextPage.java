@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.11 2003/02/27 10:35:40 mungady Exp $
+ * $Id: PlainTextPage.java,v 1.12 2003/03/07 16:56:04 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,7 @@ public class PlainTextPage
      * @param y the row of the text
      * @param w the number of characters of the text that should be printed.
      */
-    public TextDataChunk(String text, FontDefinition font, int x, int y, int w)
+    protected TextDataChunk(String text, FontDefinition font, int x, int y, int w)
     {
       this.text = text;
       this.font = font;
@@ -243,7 +243,7 @@ public class PlainTextPage
    * @param y the line
    * @return the text chunk or null.
    */
-  protected TextDataChunk getChunk(int x, int y)
+  private TextDataChunk getChunk(int x, int y)
   {
     return pageBuffer[x][y];
   }

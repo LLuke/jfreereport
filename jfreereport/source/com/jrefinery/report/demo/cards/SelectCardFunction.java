@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SelectCardFunction.java,v 1.1 2003/04/02 21:24:01 taqua Exp $
+ * $Id: SelectCardFunction.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,9 @@ import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionInitializeException;
 
 /**
+ * The SelectCardFunction defines the visiblity of the card bands depending
+ * on the current card type.
+ * 
  * Valid property names are:
  * <ul>
  * <li>Account

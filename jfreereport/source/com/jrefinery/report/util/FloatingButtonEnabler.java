@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatingButtonEnabler.java,v 1.9 2002/12/11 00:41:42 mungady Exp $
+ * $Id: FloatingButtonEnabler.java,v 1.10 2003/05/02 12:40:46 taqua Exp $
  *
  */
 package com.jrefinery.report.util;
@@ -51,7 +51,7 @@ public class FloatingButtonEnabler extends MouseAdapter
   /**
    * Default constructor.
    */
-  protected FloatingButtonEnabler ()
+  private FloatingButtonEnabler ()
   {
   }
 

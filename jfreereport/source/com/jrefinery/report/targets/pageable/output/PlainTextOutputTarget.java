@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.17 2003/03/07 13:47:40 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.18 2003/03/07 16:56:04 taqua Exp $
  *
  * Changes
  * -------
@@ -112,7 +112,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source the source outputtarget.
      */
-    public PlainTextState(OutputTarget source)
+    private PlainTextState(OutputTarget source)
     {
       save(source);
     }
@@ -122,7 +122,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source  the OutputTarget.
      */
-    public void save(OutputTarget source)
+    private void save(OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -135,7 +135,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      * @param target  the OutputTarget.
      * @throws OutputTargetException if restoring the output target state failed.
      */
-    public void restore(OutputTarget target)
+    private void restore(OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
@@ -162,7 +162,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      * @param characterWidth the character width in points (1/72 inch).
      * @param characterHeight the character height in points (1/72 inch).
      */
-    public PlainTextSizeCalculator(float characterWidth, float characterHeight)
+    private PlainTextSizeCalculator(float characterWidth, float characterHeight)
     {
       this.characterWidth = characterWidth;
       this.characterHeight = characterHeight;
@@ -336,10 +336,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
 
   /**
    * Closes the target.
-   *
-   * @throws OutputTargetException if there is some problem closing the target.
    */
-  public void close() throws OutputTargetException
+  public void close()
   {
     open = false;
   }
@@ -349,10 +347,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * make it possible to restore the complete output target.
    *
    * @param page  the physical page.
-   *
-   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void beginPage(PhysicalPage page) throws OutputTargetException
+  public void beginPage(PhysicalPage page)
   {
     currentPageHeight = (int) (page.getPageFormat().getImageableHeight() / characterHeight);
     currentPageWidth = (int) (page.getPageFormat().getImageableWidth() / characterWidth);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.36 2003/04/09 15:53:22 mungady Exp $
+ * $Id: G2OutputTarget.java,v 1.37 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -173,7 +173,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param s  the graphics device.
      */
-    public G2State(G2OutputTarget s)
+    private G2State(G2OutputTarget s)
     {
       save(s);
     }
@@ -183,7 +183,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param source  the Graphics2D.
      */
-    public void save(G2OutputTarget source)
+    private void save(G2OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -199,7 +199,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      * @param target  the Graphics2D.
      * @throws OutputTargetException if restoring the state failes.
      */
-    public void restore(G2OutputTarget target)
+    private void restore(G2OutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
@@ -252,7 +252,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param g2  the graphics device (null not permitted).
    */
-  public void setGraphics2D(Graphics2D g2)
+  private void setGraphics2D(Graphics2D g2)
   {
     if (g2 == null)
     {
@@ -261,16 +261,6 @@ public class G2OutputTarget extends AbstractOutputTarget
 
     this.g2 = (Graphics2D) g2.create();
     applyStandardRenderingHints(this.g2);
-  }
-
-  /**
-   * Returns the Graphics2D object assigned to the output target.
-   *
-   * @return the Graphics2D.
-   */
-  public Graphics2D getGraphics2D()
-  {
-    return g2;
   }
 
   /**
@@ -309,10 +299,8 @@ public class G2OutputTarget extends AbstractOutputTarget
    * A page is starting.  This target saves the current state of the Graphics2D device.
    *
    * @param page  the physical page.
-   *
-   * @throws OutputTargetException if there is a problem with the target.
    */
-  public void beginPage(PhysicalPage page) throws OutputTargetException
+  public void beginPage(PhysicalPage page)
   {
     this.currentPage = page;
     Rectangle2D pageBounds = currentPage.getBounds();
@@ -528,7 +516,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if the argument is not an instance of G2State.
    */
-  public void restoreState() throws OutputTargetException
+  private void restoreState() throws OutputTargetException
   {
     savedState.restore(this);
   }
@@ -539,7 +527,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the state container.
    */
-  protected G2State saveState()
+  private G2State saveState()
   {
     return new G2State(this);
   }

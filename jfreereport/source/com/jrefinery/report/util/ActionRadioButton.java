@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionRadioButton.java,v 1.1 2003/02/28 12:02:39 taqua Exp $
+ * $Id: ActionRadioButton.java,v 1.2 2003/05/02 12:40:46 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -203,7 +203,7 @@ public class ActionRadioButton extends JRadioButton
    *
    * @return the property change handler.
    */
-  protected ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
+  private ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
   {
     if (propertyChangeHandler == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageComparator.java,v 1.4 2003/02/05 21:48:27 taqua Exp $
+ * $Id: ImageComparator.java,v 1.5 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class ImageComparator
      * 
      * @param image the image data used for comparison.
      */
-    public CompleteImageCompareData(byte[] image)
+    private CompleteImageCompareData(byte[] image)
     {
       this.image = image;
     }
@@ -133,7 +133,7 @@ public class ImageComparator
      * @param digestMD5Data the MD5 digest data
      * @param digestSHAData the SHA1 digest data
      */
-    public DigestImageCompareData(byte[] digestMD5Data, byte[] digestSHAData)
+    private DigestImageCompareData(byte[] digestMD5Data, byte[] digestSHAData)
     {
       if (digestMD5Data == null ||  digestSHAData == null)
       {

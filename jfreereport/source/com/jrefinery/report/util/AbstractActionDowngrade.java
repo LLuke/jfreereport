@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.10 2003/04/09 15:55:03 mungady Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.11 2003/05/02 12:40:44 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
   /**
    * Creates a new action with a default (transparent) icon.
    */
-  public AbstractActionDowngrade()
+  protected AbstractActionDowngrade()
   {
     putValue (SMALL_ICON, TRANSPARENT_EMPTY_ICON_16);
     putValue ("ICON24", TRANSPARENT_EMPTY_ICON_24);

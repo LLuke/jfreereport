@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.20 2003/02/25 14:07:22 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.21 2003/05/02 12:39:44 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public abstract class AbstractExpression implements Expression
    * Creates an unnamed expression. Make sure the name of the expression is set using 
    * {@link #setName} before the expression is added to the report's expression collection.
    */
-  public AbstractExpression()
+  protected AbstractExpression()
   {
     setName("");
     this.properties = new Properties();

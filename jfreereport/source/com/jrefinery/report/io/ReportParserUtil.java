@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParserUtil.java,v 1.1 2003/04/23 16:26:09 taqua Exp $
+ * $Id: ReportParserUtil.java,v 1.2 2003/05/11 13:39:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ import org.xml.sax.SAXException;
 
 /**
  * A helper class to make parsing the xml files a lot easier.
+ *
+ * @author Thomas Morgner
  */
 public class ReportParserUtil
 {

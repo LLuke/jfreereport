@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.13 2003/04/09 15:50:26 mungady Exp $
+ * $Id: TextContent.java,v 1.14 2003/05/02 12:40:31 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.util.List;
 
 import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.util.LineBreakIterator;
+import com.jrefinery.report.util.Log;
 
 /**
  * A container for text content. The content will be split into paragraphs.
@@ -59,7 +60,7 @@ public class TextContent extends ContentContainer
 
   /**
    * Creates a new container for text. The line height can be used to extend the height
-   * of a single text line. It can not be used to narrow down the text line. 
+   * of a single text line. It can not be used to narrow down the text line.
    *
    * @param value  the text.
    * @param lineHeight the height of a text line
@@ -95,7 +96,7 @@ public class TextContent extends ContentContainer
    *
    * @return the size calculator.
    */
-  public SizeCalculator getSizeCalculator()
+  private SizeCalculator getSizeCalculator()
   {
     return sizeCalculator;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PathIteratorSegmentObjectDescription.java,v 1.1 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,12 +42,40 @@ import java.awt.geom.PathIterator;
 import org.jfree.xml.factory.objects.AbstractObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
 
+/**
+ * Describes the PathIteratorSegment object for the object factories used
+ * in the parser.
+ *
+ * @see org.jfree.xml.factory.objects.ClassFactory
+ * @see org.jfree.xml.factory.objects.ObjectDescription
+ * @author Thomas Morgner
+ */
 public class PathIteratorSegmentObjectDescription extends AbstractObjectDescription
 {
+  /**
+   * A constant defining a possible string representation of a
+   * PathIterator constant.
+   */
   private static final String SEG_MOVE_TO = "move-to";
+  /**
+   * A constant defining a possible string representation of a
+   * PathIterator constant.
+   */
   private static final String SEG_LINE_TO = "line-to";
+  /**
+   * A constant defining a possible string representation of a
+   * PathIterator constant.
+   */
   private static final String SEG_CUBIC_TO = "cubic-to";
+  /**
+   * A constant defining a possible string representation of a
+   * PathIterator constant.
+   */
   private static final String SEG_QUAD_TO = "quad-to";
+  /**
+   * A constant defining a possible string representation of a
+   * PathIterator constant.
+   */
   private static final String SEG_CLOSE = "close";
 
   /**
@@ -87,6 +115,13 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
     return seg;
   }
 
+  /**
+   * Parses the given string representation and returns the path iterator
+   * type or -1 if the string does not represent a path iterator value.
+   *
+   * @param segment the string that contains the PathIterator type.
+   * @return the parsed PathIterator type or -1.
+   */
   private int parseSegmentType (String segment)
   {
     if (segment == null)
@@ -116,6 +151,14 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
     return -1;
   }
 
+  /**
+   * Creates a string representation of the given PathIterator segment type.
+   *
+   * @param segment the segment type
+   * @return the segment type as string
+   * @throws IllegalArgumentException if the segment type is none of the
+   * predefined PathIterator types.
+   */
   private String createSegmentType (int segment)
   {
     switch (segment)
@@ -126,9 +169,16 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
       case PathIterator.SEG_MOVETO: return SEG_MOVE_TO;
       case PathIterator.SEG_QUADTO: return SEG_QUAD_TO;
     }
-    return null;
+    throw new IllegalArgumentException("The segment type is invalid.");
   }
 
+  /**
+   * Reads the given parameter as float or returns 0 if the parameter
+   * is not specified.
+   *
+   * @param name the parameter name
+   * @return the float value of the parameter or 0.
+   */
   private float getFloatParameter (String name)
   {
     Float o = (Float) getParameter(name);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlFilesystem.java,v 1.5 2003/02/24 20:13:59 taqua Exp $
+ * $Id: HtmlFilesystem.java,v 1.6 2003/02/26 16:42:27 mungady Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ import com.jrefinery.report.ImageReference;
  * Similiar to the DirectoryHtmlFilesystem, the generated Html-File and the supplementary
  * data files (images and external Stylesheet definition) into a directory in a ZIP-File.
  * The data files can be written into a separated data directory within the ZIP-File.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface HtmlFilesystem

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.7 2003/02/28 12:02:39 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.8 2003/05/02 12:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class ResultSetTableModelFactory
   /**
    * Default constructor. This is a Singleton, use getInstance().
    */
-  protected ResultSetTableModelFactory()
+  private ResultSetTableModelFactory()
   {
   }
 
@@ -139,7 +139,7 @@ public class ResultSetTableModelFactory
      * @param objects1  the column names.
      * @param res  the result set.
      */
-    public CloseableDefaultTableModel(Object[][] objects, Object[] objects1, ResultSet res)
+    private CloseableDefaultTableModel(Object[][] objects, Object[] objects1, ResultSet res)
     {
       super(objects, objects1);
       this.res = res;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.27 2003/05/02 12:40:40 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.28 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -93,6 +93,7 @@ public class HtmlProducer extends TableProducer
 
   /** the fileencoding for the main html file. */
   public static final String ENCODING = "Encoding";
+  /** a default value for the fileencoding of the main html file. */
   public static final String ENCODING_DEFAULT = "UTF-8";
 
   /** the content cache for the main html file. */

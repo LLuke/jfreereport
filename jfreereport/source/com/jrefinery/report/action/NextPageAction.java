@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: NextPageAction.java,v 1.14 2003/02/02 23:43:48 taqua Exp $
+ * $Id: NextPageAction.java,v 1.15 2003/05/02 12:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public abstract class NextPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public NextPageAction (ResourceBundle resources)
+  protected NextPageAction (ResourceBundle resources)
   {
     putValue (NAME, resources.getString ("action.forward.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.forward.description"));

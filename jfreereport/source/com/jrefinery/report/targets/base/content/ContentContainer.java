@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.6 2003/04/06 18:11:30 taqua Exp $
+ * $Id: ContentContainer.java,v 1.7 2003/04/09 15:50:23 mungady Exp $
  *
  * Changes
  * -------
@@ -114,7 +114,7 @@ public class ContentContainer implements Content
    *
    * @param cp  the content to add.
    */
-  public void addContentPart (Content cp)
+  protected void addContentPart (Content cp)
   {
     content.add (cp);
   }

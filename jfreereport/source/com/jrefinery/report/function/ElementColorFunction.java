@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.5 2003/04/24 18:08:47 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.6 2003/05/02 12:39:50 taqua Exp $
  *
  * Changes
  * -------
@@ -62,10 +62,10 @@ public class ElementColorFunction extends AbstractFunction
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
-  /** the color if the field is TRUE */
+  /** the color if the field is TRUE. */
   private Color elementColorTrue;
   
-  /** the color if the field is FALSE */
+  /** the color if the field is FALSE. */
   private Color elementColorFalse;
   
   /** The color object descripion. */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoundsAlignment.java,v 1.6 2003/02/27 10:35:39 mungady Exp $
+ * $Id: BoundsAlignment.java,v 1.7 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public abstract class BoundsAlignment
    *
    * @return the reference bounds.
    */
-  public Rectangle2D getReferenceBounds()
+  protected Rectangle2D getReferenceBounds()
   {
     return referenceBounds;
   }

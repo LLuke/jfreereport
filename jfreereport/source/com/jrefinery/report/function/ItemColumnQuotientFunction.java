@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientFunction.java,v 1.2 2003/04/08 14:41:48 mungady Exp $
+ * $Id: ItemColumnQuotientFunction.java,v 1.3 2003/04/09 15:47:30 mungady Exp $
  *
  * Changes
  * -------
@@ -71,10 +71,10 @@ public class ItemColumnQuotientFunction extends AbstractFunction
   /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
-  /** The parser for performing data conversion */
+  /** The parser for performing data conversion. */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The datasource of the parser. */
   private StaticDataSource datasource;
 
   /**

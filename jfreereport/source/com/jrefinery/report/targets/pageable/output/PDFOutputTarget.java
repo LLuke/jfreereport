@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.35 2003/05/02 12:40:35 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.36 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -249,7 +249,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the default font encoding.
    */
-  public static final String getDefaultFontEncoding()
+  private static final String getDefaultFontEncoding()
   {
     return BaseFontFactory.getDefaultFontEncoding();
   }
@@ -405,7 +405,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     if (imageRef.getImage() != null)
     {
-      // since version 0.99 iText supports Alpha-PNGs 
+      // since version 0.99 iText supports Alpha-PNGs
       WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
       obs.waitImageLoaded();
 
@@ -681,10 +681,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * make it possible to restore the complete outputtarget.
    *
    * @param format  the physical page.
-   *
-   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void beginPage(PhysicalPage format) throws OutputTargetException
+  public void beginPage(PhysicalPage format)
   {
     if (isOpen() == false)
     {
@@ -713,7 +711,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the permissions.
    */
-  protected int getPermissions()
+  private int getPermissions()
   {
     Boolean allowPrinting = (Boolean) getProperty(SECURITY_ALLOW_PRINTING, Boolean.FALSE);
     Boolean allowModifyContents =
@@ -889,7 +887,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the font encoding.
    */
-  public String getFontEncoding()
+  private String getFontEncoding()
   {
     return (String) getProperty(ENCODING, getDefaultFontEncoding());
   }
@@ -922,7 +920,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the 'embed fonts' flag.
    */
-  protected boolean isEmbedFonts()
+  private boolean isEmbedFonts()
   {
     return getProperty(EMBED_FONTS, "false").equals("true");
   }
@@ -932,7 +930,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param embedFonts  the new flag value.
    */
-  protected void setEmbedFonts(boolean embedFonts)
+  private void setEmbedFonts(boolean embedFonts)
   {
     setProperty(EMBED_FONTS, String.valueOf(embedFonts));
   }
@@ -964,7 +962,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the document.
    */
-  protected Document getDocument()
+  private Document getDocument()
   {
     return pdfDocument;
   }
@@ -974,7 +972,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param document  the document (null not permitted).
    */
-  protected void setDocument(Document document)
+  private void setDocument(Document document)
   {
     if (document == null)
     {
@@ -1071,7 +1069,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
      * @param font  the font.
      * @param fontSize  the font size.
      */
-    public PDFSizeCalculator(BaseFont font, float fontSize)
+    private PDFSizeCalculator(BaseFont font, float fontSize)
     {
       this.baseFont = font;
       this.fontSize = fontSize;
@@ -1146,7 +1144,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the internal operation bounds.
    */
-  public Rectangle2D getInternalOperationBounds()
+  private Rectangle2D getInternalOperationBounds()
   {
     return internalOperationBounds;
   }

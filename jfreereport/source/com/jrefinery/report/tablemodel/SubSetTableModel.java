@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.10 2003/04/08 14:30:40 mungady Exp $
+ * $Id: SubSetTableModel.java,v 1.11 2003/05/02 12:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class SubSetTableModel implements TableModel
     /**
      * Default Constructor.
      */
-    public TableEventTranslator()
+    private TableEventTranslator()
     {
       listeners = new ArrayList();
     }
@@ -107,7 +107,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void addTableModelListener (TableModelListener l)
+    private void addTableModelListener (TableModelListener l)
     {
       listeners.add(l);
     }
@@ -117,7 +117,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void removeTableModelListener (TableModelListener l)
+    private void removeTableModelListener (TableModelListener l)
     {
       listeners.remove(l);
     }

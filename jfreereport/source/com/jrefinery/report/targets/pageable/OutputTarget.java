@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.12 2003/03/07 16:56:02 taqua Exp $
+ * $Id: OutputTarget.java,v 1.13 2003/04/09 16:13:48 mungady Exp $
  *
  * Changes
  * -------
@@ -113,20 +113,16 @@ public interface OutputTarget extends LayoutSupport
 
   /**
    * Closes the target.
-   *
-   * @throws OutputTargetException if there is some problem closing the target.
    */
-  public void close () throws OutputTargetException;
+  public void close ();
 
   /**
    * Signals that a page is being started.  Stores the state of the target to
    * make it possible to restore the complete output target.
    *
    * @param page  the physical page.
-   *
-   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void beginPage (PhysicalPage page) throws OutputTargetException;
+  public void beginPage (PhysicalPage page);
 
   /**
    * Signals that the current page is ended.  Some targets need to know when a page is finished,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.9 2003/04/06 18:11:31 taqua Exp $
+ * $Id: LevelList.java,v 1.10 2003/04/09 15:55:06 mungady Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class LevelList implements Cloneable
     /**
      * Default constructor.
      */
-    public DescendingComparator()
+    private DescendingComparator()
     {
     }
 
@@ -198,7 +198,7 @@ public class LevelList implements Cloneable
      * @param list  the list (null not permitted).
      * @param level  the level.
      */
-    public ElementLevelList(LevelList list, int level)
+    private ElementLevelList(LevelList list, int level)
     {
       if (list == null) 
       {
@@ -222,7 +222,7 @@ public class LevelList implements Cloneable
      * 
      * @return An iterator.
      */
-    public Iterator createIterator ()
+    private Iterator createIterator ()
     {
       return new ElementLevelListIterator(datalist);
     }

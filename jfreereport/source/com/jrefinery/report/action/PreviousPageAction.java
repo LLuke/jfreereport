@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviousPageAction.java,v 1.16 2003/02/26 16:42:03 mungady Exp $
+ * $Id: PreviousPageAction.java,v 1.17 2003/05/02 12:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public abstract class PreviousPageAction extends AbstractActionDowngrade
    *
    * @param resources  localised resources.
    */
-  public PreviousPageAction (ResourceBundle resources)
+  protected PreviousPageAction (ResourceBundle resources)
   {
     putValue (NAME, resources.getString ("action.back.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.back.description"));

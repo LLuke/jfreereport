@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.7 2003/04/05 18:57:18 taqua Exp $
+ * $Id: OperationModule.java,v 1.8 2003/04/09 15:52:52 mungady Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public abstract class OperationModule
    *
    * @param content  the content type (null not permitted).
    */
-  public OperationModule(String content)
+  protected OperationModule(String content)
   {
     if (content == null)
     {
