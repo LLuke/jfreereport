@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.23 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ReportPane.java,v 1.24 2002/09/16 16:59:17 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,7 +48,8 @@ package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ReportState;
+import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.ReportStateList;
 import com.jrefinery.report.targets.G2OutputTarget;
 import com.jrefinery.report.targets.OutputTarget;
@@ -677,7 +678,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
       setPageStateList (null);
       try
       {
-        ReportState state = new ReportState.Start (getReport ());
+        ReportState state = new StartState (getReport ());
         ReportStateList list = state.getReport ().repaginate (target, state);
         Number i = (Number) state.getProperty (JFreeReport.REPORT_PAGECOUNT_PROPERTY);
         if (i == null)

@@ -137,5 +137,12 @@ public interface Expression extends Cloneable
    */
   public Object clone() throws CloneNotSupportedException;
 
+  /**
+   * The depency level defines the level of execution for this function. Higher depency functions are
+   * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
+   * depency possible) to 2^31 (upper limit of int).
+   */
+  public int getDepencyLevel ();
 
+  public void setDepencyLevel (int deplevel);
 }

@@ -49,6 +49,8 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Hashtable;
+import java.util.Enumeration;
+
 import com.jrefinery.report.util.Log;
 
 /**
@@ -573,4 +575,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
     return new String(textdata);
   }
 
+  protected Enumeration getPropertyNames ()
+  {
+    return properties.keys();
+  }
 }

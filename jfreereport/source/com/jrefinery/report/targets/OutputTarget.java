@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.5 2002/09/01 15:49:31 taqua Exp $
+ * $Id: OutputTarget.java,v 1.6 2002/09/13 15:38:09 mungady Exp $
  *
  * Changes
  * -------
@@ -346,4 +346,10 @@ public interface OutputTarget
    */
   public void drawImage (ImageReference image) throws OutputTargetException;
 
+  /**
+   * When the dummyMode is active, everything is done as if the report should be printed,
+   * so that any font calculations can be done.But DONT! Write the report , if streaming,
+   * write to the NullStream, but NEVER EVER do any real output.
+   */
+  public OutputTarget createDummyWriter ();
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.26 2002/09/13 15:38:09 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.27 2002/09/16 16:59:17 mungady Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.NullOutputStream;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
@@ -394,7 +395,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
         try
         {
           addFont(filename, encoding);
-          Log.debug("Registered truetype font " + filename);
         }
         catch (Exception e)
         {
@@ -416,12 +416,19 @@ public class PDFOutputTarget extends AbstractOutputTarget
     private void addFont(String font, String encoding)
         throws DocumentException, IOException
     {
-      BaseFont bfont = BaseFont.createFont(font, encoding, true);
+      if (fontsByName.containsValue(font))
+        throw new IllegalArgumentException();
+
+      BaseFont bfont = BaseFont.createFont(font, encoding, true, false, null, null);
       String[][] fi = bfont.getFullFontName();
       for (int i = 0; i < fi.length; i++)
       {
         String[] ffi = fi[i];
-        fontsByName.put(ffi[3], font);
+        if (fontsByName.containsKey(ffi[3])==false)
+        {
+          fontsByName.put(ffi[3], font);
+          Log.debug("Registered truetype font " + ffi[3] + "; File=" + font);
+        }
       }
     }
 
@@ -503,7 +510,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     super(pageFormat);
     this.out = out;
-    this.embedFonts = embedFonts;
+    setEmbedFonts (embedFonts);
     this.baseFonts = new TreeMap();
     setFontEncoding(getDefaultFontEncoding());
   }
@@ -846,17 +853,17 @@ public class PDFOutputTarget extends AbstractOutputTarget
         {
           try
           {
-            f = BaseFont.createFont(fontKey, encoding, this.embedFonts);
+            f = BaseFont.createFont(fontKey, encoding, isEmbedFonts(), false, null, null);
           }
           catch (DocumentException de)
           {
             // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
-            f = BaseFont.createFont(fontKey, stringEncoding, this.embedFonts);
+            f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), false, null, null);
           }
         }
         else
         {
-          f = BaseFont.createFont(fontKey, stringEncoding, this.embedFonts);
+          f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), false, null, null);
         }
       }
       catch (Exception e)
@@ -868,7 +875,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         // fallback .. use BaseFont.HELVETICA as default
         try
         {
-          f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, this.embedFonts);
+          f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, isEmbedFonts(), false, null, null);
         }
         catch (Exception e)
         {
@@ -1275,7 +1282,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     PdfContentByte cb = this.writer.getDirectContent();
     cb.beginText();
-    cb.setFontAndSize(this.baseFont, this.fontSize);
+    cb.setFontAndSize(this.baseFont, getFontSize());
 
     float y2 = (float) (bounds.getY() + bounds.getHeight());
     if (alignment == Element.LEFT)
@@ -1492,4 +1499,30 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this.encoding = encoding;
   }
 
+  protected boolean isEmbedFonts()
+  {
+    return embedFonts;
+  }
+
+  protected void setEmbedFonts(boolean embedFonts)
+  {
+    this.embedFonts = embedFonts;
+  }
+
+  /**
+   * When the dummyMode is active, everything is done as if the report should be printed,
+   * so that any font calculations can be done.But DONT! Write the report , if streaming,
+   * write to the NullStream, but NEVER EVER do any real output.
+   */
+  public OutputTarget createDummyWriter()
+  {
+    PDFOutputTarget dummy = new PDFOutputTarget (new NullOutputStream(), getPageFormat(), isEmbedFonts());
+    Enumeration enum = getPropertyNames();
+    while (enum.hasMoreElements())
+    {
+      String key = (String) enum.nextElement();
+      dummy.setProperty(key, getProperty(key));
+    }
+    return dummy;
+  }
 }

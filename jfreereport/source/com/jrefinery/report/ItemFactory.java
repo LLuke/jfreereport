@@ -44,6 +44,7 @@ import com.jrefinery.report.filter.NumberFormatFilter;
 import com.jrefinery.report.filter.SimpleDateFormatFilter;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.URLFilter;
+import com.jrefinery.report.function.ExpressionCollection;
 
 import javax.swing.table.TableModel;
 import java.awt.Font;
@@ -94,7 +95,7 @@ public class ItemFactory
   {
 
     SimpleDateFormatFilter filter = new SimpleDateFormatFilter();
-    filter.setFormatString(format);
+    if (format != null) filter.setFormatString(format);
     filter.setDataSource(new DataRowDataSource(field));
 
     TextElement dateElement = new TextElement();
@@ -639,7 +640,7 @@ public class ItemFactory
                                                 String field)
   {
     DecimalFormatFilter filter = new DecimalFormatFilter();
-    filter.setFormatString(format);
+    if (format != null) filter.setFormatString(format);
     filter.setDataSource(new DataRowDataSource(field));
 
     TextElement element = new TextElement();
@@ -997,7 +998,8 @@ public class ItemFactory
                                          PageFooter pfooter,
                                          GroupList groups,
                                          ItemBand items,
-                                         FunctionCollection functions,
+                                         ExpressionCollection functions,
+                                         ExpressionCollection expressions,
                                          PageFormat pageformat,
                                          TableModel data)
   {
@@ -1026,6 +1028,10 @@ public class ItemFactory
     if (functions != null)
     {
       report.setFunctions(functions);
+    }
+    if (expressions != null)
+    {
+      report.setExpressions(expressions);
     }
     if (data != null)
     {

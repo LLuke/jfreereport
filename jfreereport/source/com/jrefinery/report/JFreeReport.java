@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.27 2002/09/08 13:18:56 taqua Exp $
+ * $Id: JFreeReport.java,v 1.28 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -63,10 +63,14 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.Expression;
+import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
+import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.states.StartState;
+import com.jrefinery.report.states.FinishState;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -109,20 +113,26 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /** Information about the JFreeReport class library. */
   private static JFreeReportInfo info;
 
-  /** The report name. */
-  private String name;
+  /** The table model containing the data for the report. */
+  private TableModel data;
+
+  /** The page format for the report (determines the page size, and therefore the report width). */
+  private PageFormat defaultPageFormat;
 
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
 
-  /** An ordered list of report groups (each group defines its own header and footer). */
-  private GroupList groups;
-
   /** Storage for the functions in the report. */
-  private FunctionCollection functions;
+  private ExpressionCollection functions;
 
   /** Storage for the expressions in the report. */
   private ExpressionCollection expressions;
+
+  /** The report name. */
+  private String name;
+
+  /** An ordered list of report groups (each group defines its own header and footer). */
+  private GroupList groups;
 
   /** The report header band (if not null, printed once at the start of the report). */
   private ReportHeader reportHeader;
@@ -138,12 +148,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /** The item band - used once for each row of data. */
   private ItemBand itemBand;
-
-  /** The table model containing the data for the report. */
-  private TableModel data;
-
-  /** The page format for the report (determines the page size, and therefore the report width). */
-  private PageFormat defaultPageFormat;
 
   /**
    * The default constructor. Creates an empty but fully initialized report.
@@ -162,7 +166,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     setDefaultPageFormat (null);
     setItemBand (new ItemBand ());
     setGroups (new GroupList ());
-    setFunctions (new FunctionCollection ());
+    setFunctions (new ExpressionCollection ());
     setExpressions(new ExpressionCollection());
   }
 
@@ -210,7 +214,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
     // store the functions in a Map using the function name as the key.
 
-    setFunctions (new FunctionCollection (functions));
+    setFunctions (new ExpressionCollection (functions));
   }
 
   /**
@@ -230,6 +234,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws NullPointerException if one of the <i>not null</i>-parameters is null.
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
+   * <!-- changed expressions to fit functions parameter -->
    */
   public JFreeReport (
           String name,
@@ -242,12 +247,12 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
           Collection functions,
           TableModel data,
           PageFormat defaultPageFormat,
-          ExpressionCollection expressions)
+          Collection expressions)
           throws FunctionInitializeException
   {
     this (name, reportHeader, reportFooter, pageHeader, pageFooter, itemBand,
           groups, functions, data, defaultPageFormat);
-    setExpressions(expressions);
+    setExpressions( new ExpressionCollection(expressions));
   }
 
 
@@ -550,7 +555,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @return The function collection.
    */
-  public FunctionCollection getFunctions ()
+  public ExpressionCollection getFunctions ()
   {
     return this.functions;
   }
@@ -560,7 +565,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param functions The collection of functions.
    */
-  public void setFunctions (FunctionCollection functions)
+  public void setFunctions (ExpressionCollection functions)
   {
     if (functions == null)
     {
@@ -632,7 +637,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @param target  the output target.
    *
-   * @return the last state of the report (usually ReportState.Finish).
+   * @return the last state of the report (usually ReportState.FinishState).
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
@@ -648,7 +653,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param target  the output target.
    * @param report  the report.
    *
-   * @return The last state of the report, usually ReportState.Finish
+   * @return The last state of the report, usually ReportState.FinishState
    *
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
@@ -656,7 +661,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
           throws ReportProcessingException
   {
     int page = 1;
-    ReportState rs = new ReportState.Start (report);
+    ReportState rs = new StartState (report);
     ReportProcessor prc = new ReportProcessor (target, true, rs.getReport().getPageFooter ());
 
     // To a repagination
@@ -694,19 +699,43 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     {
       throw new ReportProcessingException ("Need a start state for repagination");
     }
+
+    StartState startState = (StartState) state;
+
+    // PrepareRuns, part 1: resolve the function depencies by running the report
+    // until all function levels are completed.
+    JFreeReport report = state.getReport();
+
+    // all prepare runs have this property set, test details with getLevel()
+    state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+
+    // the levels are defined from +inf to 0
+    // we dont draw and we do not collect states in a StateList yet
+    OutputTarget dummyOutput = output.createDummyWriter();
+    Iterator it = startState.getLevels();
+    while (it.hasNext())
+    {
+      int level = ((Integer) it.next()).intValue();
+      while (!state.isFinish ())
+      {
+        ReportState oldstate = state;
+        state = processPage (dummyOutput, state, false);
+        if (!state.isProceeding (oldstate))
+        {
+          throw new ReportProcessingException ("State did not proceed, bailing out!");
+        }
+      }
+      state = new StartState((FinishState) state, level);
+    }
+
+    // part 2: Print the complete report in DummyMode
     ReportStateList pageStates = new ReportStateList (state.getReport(), output);
 
-    ReportProcessor prc = new ReportProcessor (output, false, state.getReport().getPageFooter ());
-    state = state.advance (prc);
-
-    state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
-    pageStates.add (state);
-    state = processPage (output, state, false);
     while (!state.isFinish ())
     {
       pageStates.add (state);
       ReportState oldstate = state;
-      state = processPage (output, state, false);
+      state = processPage (dummyOutput, state, true);
 
       if (!state.isProceeding (oldstate))
       {
@@ -716,6 +745,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     state.setProperty (REPORT_PAGECOUNT_PROPERTY, new Integer (state.getCurrentPage () - 1));
     state.setProperty (REPORT_PAGEFORMAT_PROPERTY, output.getPageFormat ());
     state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+
+    // part 3: (done by processing the ReportStateList:) Print the report
     return pageStates;
   }
 
@@ -731,7 +762,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param currPage The report state at the beginning of the current page.
    * @param draw A flag that indicates whether or not the report is being written to the target.
    *
-   * @return The report state suitable for the next page or ReportState.Finish.
+   * @return The report state suitable for the next page or ReportState.FinishState.
    *
    * @throws IllegalArgumentException if the given state is a start or a finish state.
    * @throws ReportProcessingException if there is a problem processing the report.
@@ -741,15 +772,25 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
           final ReportState currPage,
           boolean draw) throws ReportProcessingException
   {
-    if (currPage.isStart ())
-    {
-      throw new IllegalArgumentException ("No start state for processpage allowed");
-    }
+    // just crash to make sure that FinishStates are caught outside, we cannot handle them here
     if (currPage.isFinish ())
     {
       throw new IllegalArgumentException ("No finish state for processpage allowed");
     }
-    ReportState state = (ReportState) currPage.clone ();
+
+    ReportState state = null;
+    ReportProcessor prc = null;
+    if (currPage.isStart())
+    {
+      prc = new ReportProcessor (target, draw, currPage.getReport().getPageFooter ());
+      state = (ReportState) currPage.advance(prc);
+    }
+    else
+    {
+      state = (ReportState) currPage.clone ();
+      prc = new ReportProcessor (target, draw, state.getReport().getPageFooter ());
+    }
+
     try
     {
       if (draw)
@@ -765,7 +806,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
     int page = state.getCurrentPage ();
     boolean pageDone = false;
-    ReportProcessor prc = new ReportProcessor (target, draw, state.getReport().getPageFooter ());
 
     // Print the pageHeader before any other item.
     ReportEvent event = new ReportEvent (state);
@@ -835,7 +875,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   public Object clone () throws CloneNotSupportedException
   {
     JFreeReport report = (JFreeReport) super.clone ();
-    report.functions = (FunctionCollection) this.functions.clone ();
     report.data = data; // data is defined to be immutable, so don't clone the thing
     report.defaultPageFormat = (PageFormat) defaultPageFormat.clone ();
     report.groups = (GroupList) groups.clone ();
@@ -845,6 +884,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     report.properties = (ReportProperties) properties.clone ();
     report.reportFooter = (ReportFooter) reportFooter.clone ();
     report.reportHeader = (ReportHeader) reportHeader.clone ();
+    report.functions = (ExpressionCollection) this.functions.clone ();
     report.expressions = (ExpressionCollection) expressions.clone();
     return report;
   }

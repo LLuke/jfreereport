@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.35 2002/09/16 14:13:46 mungady Exp $
+ * $Id: JFreeReportDemo.java,v 1.36 2002/09/17 09:49:10 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -615,22 +615,29 @@ public class JFreeReportDemo extends JFrame
 
     try
     {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      try
+      {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      }
+      catch (Exception e)
+      {
+        System.out.println("Look and feel problem.");
+      }
+
+      //PDFOutputTarget.getFontFactory().registerDefaultFontPath();
+
+      String baseName = "com.jrefinery.report.demo.resources.DemoResources";
+      ResourceBundle resources = ResourceBundle.getBundle(baseName);
+
+      JFreeReportDemo frame = new JFreeReportDemo(resources);
+      frame.pack();
+      RefineryUtilities.centerFrameOnScreen(frame);
+      frame.setVisible(true);
     }
-    catch (Exception e)
+    catch (Throwable th)
     {
-      System.out.println("Look and feel problem.");
+      th.printStackTrace();
     }
-
-    PDFOutputTarget.getFontFactory().registerDefaultFontPath();
-
-    String baseName = "com.jrefinery.report.demo.resources.DemoResources";
-    ResourceBundle resources = ResourceBundle.getBundle(baseName);
-
-    JFreeReportDemo frame = new JFreeReportDemo(resources);
-    frame.pack();
-    RefineryUtilities.centerFrameOnScreen(frame);
-    frame.setVisible(true);
   }
 
 }

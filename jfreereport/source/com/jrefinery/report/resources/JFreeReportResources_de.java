@@ -77,7 +77,7 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
 
             {"action.firstpage.name", "Anfang"},
-            {"action.firstpage.description", "Gehe zum Start"},
+            {"action.firstpage.description", "Gehe zum StartState"},
 
             {"action.lastpage.name", "Ende"},
             {"action.lastpage.description", "Gehe zum Ende"},

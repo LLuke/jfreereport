@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessor.java,v 1.12 2002/09/11 14:32:00 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.13 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import com.jrefinery.report.util.Log;
  * detailed knowledge of the printing process. All printing centric state information is
  * concentrated in this class.
  * <p>
- * ToDo: Better support for layout
+ * Warning: This class will completly change in the next days, dont take the stuff here too serious for now!
  *
  * @author TM
  */

@@ -8,7 +8,6 @@
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.FunctionCollection;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
@@ -24,6 +23,7 @@ import com.jrefinery.report.function.ElementVisibilitySwitchFunction;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.ItemSumFunction;
 import com.jrefinery.report.function.ReportPropertyFunction;
+import com.jrefinery.report.function.ExpressionCollection;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -279,9 +279,9 @@ public class SampleReport1
    *
    * @throws FunctionInitializeException if there is a problem initialising the functions.
    */
-  private FunctionCollection createFunctions () throws FunctionInitializeException
+  private ExpressionCollection createFunctions () throws FunctionInitializeException
   {
-    FunctionCollection functions = new FunctionCollection ();
+    ExpressionCollection functions = new ExpressionCollection ();
     ReportPropertyFunction reportDate = new ReportPropertyFunction ();
     reportDate.setName ("report_date");
     reportDate.setProperty ("reportProperty", "report.date");

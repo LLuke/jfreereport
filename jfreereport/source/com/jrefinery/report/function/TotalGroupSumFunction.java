@@ -36,7 +36,7 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportState;
+import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
@@ -155,15 +155,17 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   public void reportStarted(ReportEvent event)
   {
+    currentIndex = -1;
     if (event.getState().isPrepareRun() == false)
     {
-      currentIndex = -1;
       return;
     }
-
-    currentIndex = -1;
-    results.clear();
-    groupResult = new GroupSum();
+    else
+    {
+      results.clear();
+      // just make sure that we dont get any nullpointerexceptions ...
+      groupResult = new GroupSum();
+    }
   }
 
   /**
@@ -187,6 +189,7 @@ public class TotalGroupSumFunction extends AbstractFunction
         {
           // Activate the current group, which was filled in the prepare run.
           currentIndex += 1;
+          Log.debug ("TotalGroupSumFunction believes in Group " + currentIndex  + " of " + results.size());
           groupResult = (GroupSum) results.get(currentIndex);
         }
         else

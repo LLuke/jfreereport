@@ -76,6 +76,23 @@ public class ParserUtil
     }
   }
 
+  public static int parseInt (String text, int defaultVal)
+  {
+    if (text == null)
+    {
+      return defaultVal;
+    }
+
+    try
+    {
+      return Integer.parseInt(text);
+    }
+    catch (NumberFormatException nfe)
+    {
+      return defaultVal;
+    }
+  }
+
   /**
    * Parses the string <code>text</code> into an float. If text is null or does not
    * contain a parsable value, the message given in <code>message</code> is used to

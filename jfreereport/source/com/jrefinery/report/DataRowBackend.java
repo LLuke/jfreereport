@@ -36,6 +36,7 @@ package com.jrefinery.report;
 
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.Function;
+import com.jrefinery.report.function.LeveledExpressionList;
 import com.jrefinery.report.util.Log;
 
 import javax.swing.table.TableModel;
@@ -110,7 +111,7 @@ public class DataRowBackend implements Cloneable
      * @param functions the current function collection
      * @throws IllegalStateException as this is a readonly implementation
      */
-    public void setFunctions(FunctionCollection functions)
+    public void setFunctions(LeveledExpressionList functions)
     {
       throw new IllegalStateException("This is a preview, not changable");
     }
@@ -126,20 +127,6 @@ public class DataRowBackend implements Cloneable
      * @throws IllegalStateException as this is a readonly implementation
      */
     public void setTablemodel(TableModel tablemodel)
-    {
-      throw new IllegalStateException("This is a preview, not changable");
-    }
-
-    /**
-     * Assigns an ExpressionCollection to the DataRowBackend. This is a readonly implementation
-     * and will always throw an IllegalStateException.
-     *
-     * @param expressions the expressions for this DataRowBackend
-     *
-     * @throws NullPointerException if the expressioncollection parameter is null.
-     * @throws IllegalStateException as this is a readonly implementation.
-     */
-    public void setExpressions (ExpressionCollection expressions)
     {
       throw new IllegalStateException("This is a preview, not changable");
     }
@@ -186,7 +173,7 @@ public class DataRowBackend implements Cloneable
      *
      * @return the currently set function collection
      */
-    public FunctionCollection getFunctions()
+    public LeveledExpressionList getFunctions()
     {
       return db.getFunctions();
     }
@@ -219,11 +206,8 @@ public class DataRowBackend implements Cloneable
   /** The preview DataRowBackend. */
   private DataRowBackend preview;
 
-  /** The expressions. */
-  private ExpressionCollection expressions;
-
   /** The functions (set by the report state). */
-  private FunctionCollection functions;
+  private LeveledExpressionList functions;
 
   /** The table model (set by the report state). */
   private TableModel tablemodel;
@@ -250,7 +234,7 @@ public class DataRowBackend implements Cloneable
    *
    * @return the currently set function collection
    */
-  public FunctionCollection getFunctions()
+  public LeveledExpressionList getFunctions()
   {
     return functions;
   }
@@ -293,7 +277,7 @@ public class DataRowBackend implements Cloneable
    *
    * @param functions the current function collection
    */
-  public void setFunctions(FunctionCollection functions)
+  public void setFunctions(LeveledExpressionList functions)
   {
     this.functions = functions;
     revalidateColumnLock();
@@ -356,18 +340,13 @@ public class DataRowBackend implements Cloneable
           returnValue = getTablemodel().getValueAt(getCurrentRow(), col);
         }
       }
-      else if (col < getFunctionEndIndex())
+      else
       {
         col -= getTableEndIndex();
         if (isPreviewMode() == false)
         {
-          returnValue = getFunctions().getFunction(col).getValue();
+          returnValue = getFunctions().getValue(col);
         }
-      }
-      else
-      {
-        col -= getFunctionEndIndex();
-        returnValue = getExpressions().getExpression(col).getValue();
       }
     }
     catch (Exception e)
@@ -421,11 +400,7 @@ public class DataRowBackend implements Cloneable
    */
   public int getColumnCount()
   {
-    if (getExpressions() == null)
-    {
-      return getFunctionEndIndex();
-    }
-    return (getFunctionEndIndex() + getExpressions().size());
+    return getFunctionEndIndex();
   }
 
   /**
@@ -455,6 +430,7 @@ public class DataRowBackend implements Cloneable
         return i;
       }
     }
+    Log.debug ("No Such Column _ " + name );
     return -1;
   }
 
@@ -479,28 +455,17 @@ public class DataRowBackend implements Cloneable
     {
       return getTablemodel().getColumnName(col);
     }
-    else if (col < getFunctionEndIndex())
+    else
     {
       col -= getTableEndIndex();
-      Function f = getFunctions().getFunction(col);
+      Log.debug ("Requesting Column: " + col + " from Functions");
+      Expression f = getFunctions().getExpression(col);
       if (f == null)
       {
         Log.debug("No such function " + col);
         return null;
       }
       return f.getName();
-    }
-    else
-    {
-      col -= getFunctionEndIndex();
-      Expression ex = getExpressions().getExpression(col);
-      if (ex == null)
-      {
-        Log.debug("No such expression " + col);
-        return null;
-      }
-
-      return ex.getName();
     }
   }
 
@@ -580,33 +545,6 @@ public class DataRowBackend implements Cloneable
       return getTableEndIndex();
     }
     return getTableEndIndex() + getFunctions().size();
-  }
-
-  /**
-   * Returns the expression collection used in this DataRow.
-   *
-   * @return the expression collection
-   */
-  public ExpressionCollection getExpressions()
-  {
-    return expressions;
-  }
-
-  /**
-   * Assigns an ExpressionCollection to the DataRowBackend.
-   *
-   * @param expressions the expressions for this DataRowBackend.
-   *
-   * @throws NullPointerException if the expressioncollection parameter is null.
-   */
-  public void setExpressions(ExpressionCollection expressions)
-  {
-    if (expressions == null)
-    {
-      throw new NullPointerException();
-    }
-    this.expressions = expressions;
-    revalidateColumnLock();
   }
 
   /**

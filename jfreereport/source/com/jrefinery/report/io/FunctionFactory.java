@@ -41,6 +41,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.Properties;
+import java.util.ArrayList;
 
 /**
  * The functionFactory creates functions and adds these functions to the FunctionCollection
@@ -264,6 +265,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   {
     String name = handler.generateName (attr.getValue ("name"));
     String className = attr.getValue ("class");
+    int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
+
     if (className == null)
     {
       throw new SAXException ("Expression class not specified");
@@ -272,8 +275,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     try
     {
       Class fnC = Class.forName (className);
-      this.currentFunction = (Expression) fnC.newInstance ();
-      this.currentFunction.setName (name);
+      setCurrentExpression ((Expression) fnC.newInstance ());
+      getCurrentExpression().setName (name);
+      getCurrentExpression().setDepencyLevel(depLevel);
     }
     catch (ClassNotFoundException e)
     {
@@ -305,6 +309,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   {
     String name = handler.generateName (attr.getValue ("name"));
     String className = attr.getValue ("class");
+    int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
+
     if (className == null)
     {
       throw new SAXException ("Function class not specified");
@@ -313,8 +319,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     try
     {
       Class fnC = Class.forName (className);
-      this.currentFunction = (Function) fnC.newInstance ();
-      this.currentFunction.setName (name);
+      setCurrentFunction ((Function) fnC.newInstance ());
+      getCurrentFunction().setName (name);
+      getCurrentFunction().setDepencyLevel(depLevel);
     }
     catch (ClassNotFoundException e)
     {
@@ -487,5 +494,6 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     currentProps.setProperty (currentProperty, currentText.toString ());
     currentText = null;
   }
+
 }
 

@@ -13,7 +13,8 @@
 <report name="Sample Report 1" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="18">
-        <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center" baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
+        <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+        <label x="754" y="0" width="100%" height="10" alignment="center">Ha! on the bottom printed!</label>
     </reportheader>
 
     <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
@@ -23,7 +24,7 @@
 
     <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
         <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
-        <date-function name="date1" x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="report_date"/>
+        <date-function name="date1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" function="report_date"/>
         <line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
     </pageheader>
 

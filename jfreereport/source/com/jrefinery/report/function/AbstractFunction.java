@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.18 2002/09/16 16:59:12 mungady Exp $
+ * $Id: AbstractFunction.java,v 1.19 2002/09/17 09:49:10 mungady Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,8 @@ public abstract class AbstractFunction implements Function
 {
   /** The DataRow assigned within this function. */
   private DataRow dataRow;
+
+  private int depency;
 
   /** Storage for the function properties. */
   private Properties properties;
@@ -360,5 +362,21 @@ public abstract class AbstractFunction implements Function
   public boolean isActive()
   {
     return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
+  }
+
+  /**
+   * The depency level defines the level of execution for this function. Higher depency functions are
+   * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
+   * depency possible) to 2^31 (upper limit of int).
+   */
+  public int getDepencyLevel()
+  {
+    return depency;
+  }
+
+  public void setDepencyLevel(int deplevel)
+  {
+    if (deplevel < 0) throw new IllegalArgumentException("No negative depency allowed for userdefined expressions");
+    this.depency = deplevel;
   }
 }

@@ -35,6 +35,7 @@ package com.jrefinery.report;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.WeakReferenceList;
+import com.jrefinery.report.states.ReportState;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFormatFilter.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
+ * $Id: NumberFormatFilter.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.filter;
+
+import com.jrefinery.report.util.Log;
 
 import java.text.Format;
 import java.text.NumberFormat;
@@ -197,4 +199,19 @@ public class NumberFormatFilter extends FormatFilter
     return getNumberFormat ().getMaximumFractionDigits ();
   }
 
+  /**
+   * Returns the formatted string. The value is read using the data source given
+   * and formated using the formatter of this object. The formating is guaranteed to
+   * completly form the object to an string or to return the defined NullValue.
+   * <p>
+   * If format, datasource or object are null, the NullValue is returned.
+   *
+   * @return The formatted value.
+   */
+  public Object getValue()
+  {
+    Log.debug ("GetValue: " + super.getValue());
+    Log.debug ("NullString : = " + super.getNullValue());
+    return super.getValue();
+  }
 }

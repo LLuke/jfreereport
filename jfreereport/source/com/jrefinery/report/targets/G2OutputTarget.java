@@ -28,13 +28,13 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.18 2002/09/10 10:52:14 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.19 2002/09/13 15:38:09 mungady Exp $
  *
  * Changes
  * -------
  * 21-Feb-2002 : Version 1 (DG);
  * 18-Apr-2002 : MultilineText is working again, ImageElement support
- * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
+ * 16-May-2002 : Interface of drawShape changed so we can draw different line width (JS)
  * 08-Jun-2002 : Documentation
  * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
  * 26-Aug-2002 : Fixed drawString: Text was placed too deep, Fontheight is defined MaxAscent,
@@ -46,6 +46,7 @@ package com.jrefinery.report.targets;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.NullOutputStream;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -61,6 +62,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
+import java.util.Enumeration;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
@@ -468,4 +470,20 @@ public class G2OutputTarget extends AbstractOutputTarget
     return new G2State(this.getGraphics2D());
   }
 
+  /**
+   * When the dummyMode is active, everything is done as if the report should be printed,
+   * so that any font calculations can be done.But DONT! Write the report , if streaming,
+   * write to the NullStream, but NEVER EVER do any real output.
+   */
+  public OutputTarget createDummyWriter()
+  {
+    G2OutputTarget dummy = new G2OutputTarget (createEmptyGraphics(), getPageFormat());
+    Enumeration enum = getPropertyNames();
+    while (enum.hasMoreElements())
+    {
+      String key = (String) enum.nextElement();
+      dummy.setProperty(key, getProperty(key));
+    }
+    return dummy;
+  }
 }

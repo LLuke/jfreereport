@@ -33,6 +33,7 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
+
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -52,6 +53,8 @@ public abstract class AbstractExpression implements Expression
 {
   /** The expression name. */
   private String name;
+
+  private int depency;
 
   /** Storage for the expression properties. */
   private Properties properties;
@@ -249,5 +252,21 @@ public abstract class AbstractExpression implements Expression
   public boolean isActive()
   {
     return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
+  }
+
+  /**
+   * The depency level defines the level of execution for this function. Higher depency functions are
+   * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
+   * depency possible) to 2^31 (upper limit of int).
+   */
+  public int getDepencyLevel()
+  {
+    return depency;
+  }
+
+  public void setDepencyLevel(int deplevel)
+  {
+    if (deplevel < 0) throw new IllegalArgumentException("No negative depency allowed for userdefined expressions");
+    this.depency = deplevel;
   }
 }
