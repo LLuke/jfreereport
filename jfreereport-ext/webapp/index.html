@@ -1,0 +1,39 @@
+<html>
+<head><title>JFreeReport servlet</title></head>
+<body>
+<h2>Setup instructions</h2>
+<p>
+  You will have to manually fill the WEB-INF directory with the following
+  files:
+  
+<ul>
+<li>WEB-INF/lib/jfreereport-{version}.jar
+<p>JFreeReport with at least version 0.8.1</p>
+<li>WEB-INF/lib/jfreereport-{version}-demo.jar
+<p>JFreeReport demopackage. The version must fit the jfreereport.jar.</p>
+<li>WEB-INF/lib/iText-0.96.jar
+<p>An recent iText library. We supply version 0.96.</p>
+<li>WEB-INF/lib/jcommon-0.7.1.jar
+<p>JCommon must be at least version 0.7.1.</p>
+<li>WEB-INF/lib/jfreechar-0.9.4.jar
+<p>JFreeChart is used to encode the images for the JPEG-Servlet.</p>
+<li>WEB-INF/lib/pixie.jar
+<p>Pixie provides support for WMF-Images.</p>
+<li>WEB-INF/lib/junit.jar
+<p>JUnit is not required here, but needed when rebuilding the project..</p>
+<li>WEB-INF/lib/bsh-1.2b6.jar
+<p>The BeanShell provides the scripting interface for BSHExpression.</p>
+<li>WEB-INF/lib/jlfgr-1_0.jar
+<p>This IconCollection is used to fill the tablemodel.</p>
+<li>WEB-INF/web.xml
+<p>The web.xml defines the available servlets an their mapping into the
+servlets URI namespace.</p>
+</pre>
+</p>
+<ul>
+    <li><a href="pdfreport">PDF-Servlet</a>
+    <li><a href="htmlreport">HTML-Servlet</a>
+    <li><a href="jpegreport?page=0">First page of the JPEG-Servlet</a>
+</ul>
+</body>
+</html>

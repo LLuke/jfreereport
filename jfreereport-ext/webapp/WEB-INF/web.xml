@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+    <servlet>
+        <servlet-name>pdfreport</servlet-name>
+        <servlet-class>com.jrefinery.report.ext.demo.JFreeReportServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>jpegreport</servlet-name>
+        <servlet-class>com.jrefinery.report.ext.demo.JFreeReportPngServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>htmlreport</servlet-name>
+        <servlet-class>com.jrefinery.report.ext.demo.JFreeReportHtmlServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+	<servlet-name>pdfreport</servlet-name>
+	<url-pattern>/pdfreport</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+	<servlet-name>htmlreport</servlet-name>
+	<url-pattern>/htmlreport</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+	<servlet-name>jpegreport</servlet-name>
+	<url-pattern>/jpegreport</url-pattern>
+    </servlet-mapping>
+
+</web-app>
