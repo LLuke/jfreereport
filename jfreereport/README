@@ -226,7 +226,7 @@ fully use the available space (or the oposite effect, that the field
 does not obey to the defined limitations).
 
 
-14. USING TRUETYPE FONTS
+13. USING TRUETYPE FONTS
 ------------------------
 Unix: If you want to use TrueType in Java, you will have to copy all
   needed TrueType fonts to the $JRE/lib/fonts directory. After copying

@@ -42,6 +42,9 @@ A list of changes in recent versions:
         * The writer supports comments and templates now. Comments are only 
           preserved in extended report formats for now.
          
+        * The excel export defines the printer setup according to the report 
+          configuration or the defined page format of the report.
+           
         * We have a simple JDK 1.4 printing implementation. 
        
 0.8.3e: (16-Jul-2003)

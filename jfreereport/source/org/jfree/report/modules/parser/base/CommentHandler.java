@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommentHandler.java,v 1.1 2003/07/20 19:32:12 taqua Exp $
+ * $Id: CommentHandler.java,v 1.2 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 20.07.2003 : Initial version
+ * 20-Jul-2003 : Initial version
  *  
  */
 
@@ -43,14 +43,28 @@ import java.util.ArrayList;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 
+/**
+ * The comment handler is used to collect all XML comments from the 
+ * SAX parser. The parser implementation must support comments to make
+ * this feature work.
+ * 
+ * @author Thomas Morgner
+ */
 public class CommentHandler implements LexicalHandler
 {
+  /** A constant marking a comment on the opening tag. */
   public static final String OPEN_TAG_COMMENT = "parser.comment.open";
+  /** A constant marking a comment on the closing tag. */
   public static final String CLOSE_TAG_COMMENT = "parser.comment.close";
 
+  /** A list containing all collected comments. */
   private ArrayList comment;
+  /** a flag marking whether the SAX parser is currently working in the DTD. */
   private boolean inDTD;
 
+  /**
+   * DefaultConstructor.
+   */
   public CommentHandler()
   {
     comment = new ArrayList();
@@ -174,6 +188,10 @@ public class CommentHandler implements LexicalHandler
     //Log.debug ("Comment: String: " + comment);
   }
 
+  /**
+   * Returns all collected comments as string array.
+   * @return the array containing all comments.
+   */
   public String[] getComments()
   {
     if (comment.isEmpty())
@@ -183,6 +201,9 @@ public class CommentHandler implements LexicalHandler
     return (String[]) comment.toArray(new String[comment.size()]);
   }
 
+  /**
+   * Clears all comments.
+   */
   public void clearComments ()
   {
     comment.clear();
