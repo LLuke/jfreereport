@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.7 2003/09/13 15:14:41 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.8 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -276,6 +276,7 @@ public strictfp class LogicalPageImpl implements LogicalPage
    */
   public void addBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {
+    Log.debug ("Adding band...");
     final Spool operations = spoolBand(bounds, band);
     if (operations.isEmpty())
     {

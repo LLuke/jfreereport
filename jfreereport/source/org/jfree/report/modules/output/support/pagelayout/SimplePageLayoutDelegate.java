@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.1 2003/10/01 20:41:41 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.2 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,8 +42,8 @@ import java.io.Serializable;
 
 import org.jfree.report.Band;
 import org.jfree.report.Group;
-import org.jfree.report.ReportDefinition;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
@@ -420,7 +420,7 @@ public class SimplePageLayoutDelegate implements
       setLastPagebreak(true);
 
       final Band b = event.getReport().getReportFooter();
-      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED, 
+      worker.print(b, SimplePageLayoutWorker.BAND_PRINTED,
         SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
     }
     catch (FunctionProcessingException fe)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.10 2003/09/30 19:47:30 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.11 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,8 @@ import org.jfree.report.Band;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.function.Expression;
+import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
@@ -948,7 +948,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
         // yes, I hate this code too...
         DataRowConnector.disconnectDataSources(band, impl.getDataRowConnector());
         DataRowConnector.connectDataSources(band, impl.getDataRowConnector());
-        print(band, BAND_SPOOLED, PAGEBREAK_BEFORE_IGNORED);
+        print(band, BAND_PRINTED, PAGEBREAK_BEFORE_IGNORED);
       }
       catch (CloneNotSupportedException cne)
       {
