@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.3 2002/06/06 16:00:59 mungady Exp $
+ * $Id: FormatFilter.java,v 1.4 2002/06/06 21:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class FormatFilter implements DataFilter
   /**
    * Default constructor.
    */
-  protected FormatFilter ()
+  public FormatFilter ()
   {
     nullvalue = "-";
   }

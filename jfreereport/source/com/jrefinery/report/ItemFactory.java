@@ -93,7 +93,7 @@ public class ItemFactory
     dateElement.setAlignment (alignment);
     dateElement.setFont (font);
     dateElement.setNullString (nullString);
-    dateElement.getTextFilter ().setDataSource (filter);
+    dateElement.setDataSource (filter);
     return dateElement;
   }
 
@@ -132,7 +132,7 @@ public class ItemFactory
     dateElement.setAlignment (alignment);
     dateElement.setFont (font);
     dateElement.setNullString (nullString);
-    dateElement.getTextFilter ().setDataSource (filter);
+    dateElement.setDataSource (filter);
     return dateElement;
   }
 
@@ -171,7 +171,7 @@ public class ItemFactory
     dateElement.setAlignment (alignment);
     dateElement.setFont (font);
     dateElement.setNullString (nullString);
-    dateElement.getTextFilter ().setDataSource (filter);
+    dateElement.setDataSource (filter);
     return dateElement;
   }
 
@@ -210,7 +210,7 @@ public class ItemFactory
     dateElement.setAlignment (alignment);
     dateElement.setFont (font);
     dateElement.setNullString (nullString);
-    dateElement.getTextFilter ().setDataSource (filter);
+    dateElement.setDataSource (filter);
     return dateElement;
   }
 
@@ -243,7 +243,7 @@ public class ItemFactory
     gElement.setAlignment (alignment);
     gElement.setFont (font);
     gElement.setNullString (nullString);
-    gElement.getTextFilter ().setDataSource (new ReportDataSource (function));
+    gElement.setDataSource (new ReportDataSource (function));
     return gElement;
   }
 
@@ -353,7 +353,7 @@ public class ItemFactory
     label.setPaint (paint);
     label.setAlignment (alignment);
     label.setFont (font);
-    label.getTextFilter ().setDataSource (new StaticDataSource (labeltext));
+    label.setDataSource (new StaticDataSource (labeltext));
     return label;
   }
 
@@ -434,7 +434,7 @@ public class ItemFactory
     text.setAlignment (alignment);
     text.setFont (font);
     text.setNullString (nullstring);
-    text.getTextFilter ().setDataSource (new ReportDataSource (field));
+    text.setDataSource (new ReportDataSource (field));
     return text;
   }
 
@@ -473,7 +473,7 @@ public class ItemFactory
     element.setAlignment (alignment);
     element.setFont (font);
     element.setNullString (nullString);
-    element.getTextFilter ().setDataSource (filter);
+    element.setDataSource (filter);
     return element;
   }
 
@@ -512,7 +512,7 @@ public class ItemFactory
     element.setAlignment (alignment);
     element.setFont (font);
     element.setNullString (nullString);
-    element.getTextFilter ().setDataSource (filter);
+    element.setDataSource (filter);
     return element;
   }
 
@@ -551,7 +551,7 @@ public class ItemFactory
     element.setAlignment (alignment);
     element.setFont (font);
     element.setNullString (nullString);
-    element.getTextFilter ().setDataSource (filter);
+    element.setDataSource (filter);
     return element;
   }
 
@@ -590,7 +590,7 @@ public class ItemFactory
     element.setAlignment (alignment);
     element.setFont (font);
     element.setNullString (nullString);
-    element.getTextFilter ().setDataSource (filter);
+    element.setDataSource (filter);
     return element;
   }
 
@@ -623,7 +623,7 @@ public class ItemFactory
     element.setAlignment (alignment);
     element.setFont (font);
     element.setNullString (nullString);
-    element.getTextFilter ().setDataSource (new ReportDataSource (field));
+    element.setDataSource (new ReportDataSource (field));
     return element;
   }
 
@@ -656,7 +656,7 @@ public class ItemFactory
     element.setAlignment (alignment);
     element.setFont (font);
     element.setNullString (nullString);
-    element.getTextFilter ().setDataSource (new FunctionDataSource (function));
+    element.setDataSource (new FunctionDataSource (function));
     return element;
   }
 

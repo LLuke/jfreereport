@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.5 2002/05/28 19:28:22 taqua Exp $
+ * $Id: DateElement.java,v 1.6 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -67,8 +67,7 @@ public class DateElement extends DataElement
   {
     formatter = new DateFormatFilter ();
     setFormatString (null);
-    DataFilter df = getTextFilter ();
-    df.setDataSource (formatter);
+    setDataSource (formatter);
     formatter.setDataSource (getReportDataSource ());
   }
 

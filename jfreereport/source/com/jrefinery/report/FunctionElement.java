@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: FunctionElement.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,7 @@ public abstract class FunctionElement extends TextElement
   protected FunctionElement ()
   {
     functionsource = new FunctionDataSource ();
-    DataFilter df = getTextFilter ();
-    df.setDataSource (functionsource);
+    setDataSource (functionsource);
     setFunctionName ("");
   }
 

@@ -49,7 +49,7 @@ public class NumberFormatParser extends FormatParser
    * <P>
    * Uses a general number format for the current locale.
    */
-  protected NumberFormatParser ()
+  public NumberFormatParser ()
   {
     setNumberFormat (NumberFormat.getInstance ());
   }

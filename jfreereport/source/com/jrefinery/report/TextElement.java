@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.11 2002/06/04 21:44:34 taqua Exp $
+ * $Id: TextElement.java,v 1.12 2002/06/23 12:25:57 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,6 +44,7 @@
  * 24-May-2002 : BugFix: Alignment was not initialized and made pdf-printing imposible.
  * 04-Jun-2002 : Documentation.
  * 19-Jun-2002 : More documentation
+ * 02-Jul-2002 : TextElements constructor has to be public, of course.
  */
 
 package com.jrefinery.report;
@@ -101,7 +102,7 @@ public class TextElement extends Element
   /**
    * Constructs an element using a Rectangle2D.
    */
-  protected TextElement ()
+  public TextElement ()
   {
     stringfilter = new StringFilter ();
     super.setDataSource (stringfilter);
@@ -263,7 +264,7 @@ public class TextElement extends Element
    */
   public String getFormattedText ()
   {
-    return String.valueOf (super.getValue ());
+    return String.valueOf (getValue ());
   }
 
   /**
@@ -271,16 +272,8 @@ public class TextElement extends Element
    */
   public final Object getValue ()
   {
-    return getFormattedText ();
-  }
-
-  /**
-   * Returns the internal string filter. This Filter cannot be replaced and this function
-   * cannot be changed.
-   */
-  protected final DataFilter getTextFilter ()
-  {
-    return stringfilter;
+    stringfilter.setDataSource(getDataSource());
+    return stringfilter.getValue();
   }
 
   /**
@@ -303,16 +296,4 @@ public class TextElement extends Element
     b.append ("}");
     return b.toString ();
   }
-
-  /**
-   * Defines a new DataSource. This replaces the datasource assigned with the internal
-   * StringFilter.
-   */
-  public void setDataSource (DataSource ds)
-  {
-    if (ds == null) throw new NullPointerException ("Datasource is null");
-    if (stringfilter == null) return;
-    stringfilter.setDataSource (ds);
-  }
-
 }

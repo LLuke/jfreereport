@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes
  * -------
@@ -68,8 +68,7 @@ public class NumberFunctionElement extends FunctionElement
   {
     filter = new NumberFormatFilter();
     setDecimalFormatString(null);
-    DataFilter df = getTextFilter();
-    df.setDataSource(filter);
+    setDataSource(filter);
     filter.setDataSource(getFunctionDataSource());
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
+ * $Id: DataElement.java,v 1.7 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,8 +71,7 @@ public abstract class DataElement extends TextElement
     fieldsource.setField("");
 
     // Register this elements data source with the text elements string filter.
-    DataFilter parentFilter = super.getTextFilter();
-    parentFilter.setDataSource(fieldsource);
+    setDataSource(fieldsource);
   }
 
   /**

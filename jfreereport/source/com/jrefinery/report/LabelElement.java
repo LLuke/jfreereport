@@ -63,7 +63,7 @@ public class LabelElement extends TextElement
   public LabelElement ()
   {
     label = new StaticDataSource ();
-    getTextFilter ().setDataSource (label);
+    setDataSource (label);
   }
 
   /**

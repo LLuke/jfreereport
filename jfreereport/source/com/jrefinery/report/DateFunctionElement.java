@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFunctionElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: DateFunctionElement.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,7 @@ public class DateFunctionElement extends FunctionElement
   {
     formatter = new DateFormatFilter ();
     setFormatString (null);
-    DataFilter df = getTextFilter ();
-    df.setDataSource (formatter);
+    setDataSource (formatter);
     formatter.setDataSource (getFunctionDataSource ());
   }
 
