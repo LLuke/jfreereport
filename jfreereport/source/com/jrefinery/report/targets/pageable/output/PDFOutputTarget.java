@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.30 2003/03/07 13:47:40 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.31 2003/03/07 16:56:04 taqua Exp $
  *
  * Changes
  * -------
@@ -53,8 +53,10 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Graphics2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Dimension2D;
 import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -1152,6 +1154,29 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void drawDrawable(DrawableContainer drawable)
   {
+    // cant be done using Wmf, as Wmf does not support Unicode and Bitmaps... damn
+
     // not yet implemented, needs WMF Converter ...
+    // only the drawable clippingbounds region will be drawn.
+    // the clipping is set to the clipping bounds of the drawable
+
+    // the clipping bounds are relative to the drawable dimension,
+    // they are not influenced by the drawables position on the page
+
+    Rectangle2D clipBounds = drawable.getClippingBounds();
+
+    Graphics2D target = writer.getDirectContent().createGraphics((float) clipBounds.getWidth(),
+                                                                 (float) clipBounds.getHeight());
+    target.translate(-clipBounds.getX(), -clipBounds.getY());
+    target.clip(new Rectangle2D.Float( 0, 0,
+                                      (float) clipBounds.getWidth(),
+                                      (float) clipBounds.getHeight()));
+
+    Dimension2D drawableSize = drawable.getDrawableSize();
+    Rectangle2D drawBounds = new Rectangle2D.Float(0,0,
+                                                   (float) drawableSize.getWidth(),
+                                                   (float) drawableSize.getHeight());
+    drawable.getDrawable().draw(target, drawBounds);
+    target.dispose();
   }
 }

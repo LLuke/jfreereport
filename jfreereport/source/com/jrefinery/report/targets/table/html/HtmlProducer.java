@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.20 2003/02/26 16:42:27 mungady Exp $
+ * $Id: HtmlProducer.java,v 1.21 2003/03/04 20:29:01 taqua Exp $
  *
  * Changes
  * -------
@@ -37,14 +37,12 @@
 package com.jrefinery.report.targets.table.html;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.Deflater;
@@ -59,7 +57,7 @@ import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.IOUtils;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.LineBreakIterator;
 
 /**
  * The TableProducer is responsible for creating the produced Table. After
@@ -70,53 +68,53 @@ import com.jrefinery.report.util.Log;
  * <p>
  * The generated HTML code is cached and written after the last cell was created,
  * to insert the StyleSheet into the html header.
- * 
+ *
  * @author Thomas Morgner
  */
 public class HtmlProducer extends TableProducer
 {
   /** the printwriter for the main html file. */
   private PrintWriter pout;
-  
+
   /** the cell data factory used for creating the content cells. */
   private HtmlCellDataFactory cellDataFactory;
-  
+
   /** the character entity parser converts Strings into the HTML format. */
   private static CharacterEntityParser entityParser;
-  
+
   /** the style collection is used to create the style sheet and the cell styles. */
   private HtmlStyleCollection styleCollection;
-  
+
   /** the Filesystem is used to store the main html file and any external content. */
   private HtmlFilesystem filesystem;
-  
+
   /** a flag indicating whether to use XHTML output. */
   private boolean useXHTML;
-  
+
   /** the fileencoding for the main html file. */
   public static final String ENCODING = "Encoding";
 
   /** the content cache for the main html file. */
   private ByteArrayOutputStream content;
-  
+
   /** a flag indicating whether this producer is open. */
   private boolean isOpen;
 
   /** the standard XHTML document type declaration and header. */
   private static final String[] XHTML_HEADER = {
-       "<!DOCTYPE html",
-       "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
-       "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"",
-       "<html xmlns=\"http://www.w3.org/1999/xhtml\" >",
-       "<head>"};
+    "<!DOCTYPE html",
+    "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
+    "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"",
+    "<html xmlns=\"http://www.w3.org/1999/xhtml\" >",
+    "<head>"};
 
   /** the standard HTML4 document type declaration and header. */
   private static final String[] HTML4_HEADER = {
-       "<!DOCTYPE HTML ",
-       "     PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
-       "     \"http://www.w3.org/TR/html4/strict.dtd\">",
-       "<html>",
-       "<head>"};
+    "<!DOCTYPE HTML ",
+    "     PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
+    "     \"http://www.w3.org/TR/html4/strict.dtd\">",
+    "<html>",
+    "<head>"};
 
 
   /**
@@ -131,7 +129,7 @@ public class HtmlProducer extends TableProducer
                       boolean useXHTML)
   {
     super(strict);
-    if (filesystem == null) 
+    if (filesystem == null)
     {
       throw new NullPointerException();
     }
@@ -151,7 +149,7 @@ public class HtmlProducer extends TableProducer
    */
   public String getEncoding()
   {
-    return String.valueOf (getProperty(ENCODING, "UTF-8"));
+    return String.valueOf(getProperty(ENCODING, "UTF-8"));
   }
 
   /**
@@ -160,7 +158,7 @@ public class HtmlProducer extends TableProducer
    *
    * @return the character entity parser instance.
    */
-  private static CharacterEntityParser getEntityParser ()
+  private static CharacterEntityParser getEntityParser()
   {
     if (entityParser == null)
     {
@@ -175,7 +173,7 @@ public class HtmlProducer extends TableProducer
   public void open()
   {
     this.content = new ByteArrayOutputStream();
-    DeflaterOutputStream deflaterStream 
+    DeflaterOutputStream deflaterStream
         = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
     try
     {
@@ -227,12 +225,12 @@ public class HtmlProducer extends TableProducer
         if (styleCollection.isRegistered(style))
         {
           String name = styleCollection.lookupName(style);
-          cssbuffer.append (".");
-          cssbuffer.append (name);
-          cssbuffer.append (" { ");
-          cssbuffer.append (styleCollection.createStyleSheetDefinition(style));
-          cssbuffer.append (" } ");
-          cssbuffer.append (System.getProperty("line.separator", "\n"));
+          cssbuffer.append(".");
+          cssbuffer.append(name);
+          cssbuffer.append(" { ");
+          cssbuffer.append(styleCollection.createStyleSheetDefinition(style));
+          cssbuffer.append(" } ");
+          cssbuffer.append(System.getProperty("line.separator", "\n"));
         }
       }
       HtmlReferenceData cssRef = filesystem.createCSSReference(cssbuffer.toString());
@@ -242,9 +240,9 @@ public class HtmlProducer extends TableProducer
       // write the standard headers
       if (useXHTML)
       {
-        writer.print ("<?xml version=\"1.0\" encoding=\"");
-        writer.print (getEncoding());
-        writer.println ("\"?>");
+        writer.print("<?xml version=\"1.0\" encoding=\"");
+        writer.print(getEncoding());
+        writer.println("\"?>");
         // now finish the style sheet definition
         for (int i = 0; i < XHTML_HEADER.length; i++)
         {
@@ -290,8 +288,8 @@ public class HtmlProducer extends TableProducer
       content = null;
       pout = null;
 
-      InflaterInputStream infIn 
-         = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
+      InflaterInputStream infIn
+          = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
       InputStreamReader inReader = new InputStreamReader(infIn);
 
       IOUtils.getInstance().copyWriter(inReader, writer);
@@ -302,7 +300,7 @@ public class HtmlProducer extends TableProducer
     }
     catch (IOException ioe)
     {
-      throw new FunctionProcessingException ("Failed to write", ioe);
+      throw new FunctionProcessingException("Failed to write", ioe);
     }
 
     isOpen = false;
@@ -328,10 +326,10 @@ public class HtmlProducer extends TableProducer
    */
   public void beginPage(String name)
   {
-    pout.println ("<hr><h3>");
-    pout.println (name);
-    pout.println ("</h3><hr>");
-    pout.println ("<p>");
+    pout.println("<hr><h3>");
+    pout.println(name);
+    pout.println("</h3><hr>");
+    pout.println("<p>");
     pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
     //pout.println("<table border=\"2\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
   }
@@ -365,7 +363,7 @@ public class HtmlProducer extends TableProducer
    * @param background the (unmerged) background styles.
    * @return the background style sheet definition.
    */
-  protected String createHtmlBackgroundStyle (List background)
+  protected String createHtmlBackgroundStyle(List background)
   {
     TableCellBackground bg = createTableCellStyle(background);
     if (bg == null)
@@ -380,7 +378,7 @@ public class HtmlProducer extends TableProducer
    *
    * @param layout the layouted cells.
    */
-  private void generatePage (TableGridLayout layout)
+  private void generatePage(TableGridLayout layout)
   {
     pout.println();
 
@@ -397,7 +395,7 @@ public class HtmlProducer extends TableProducer
         if (gridElement == null)
         {
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
-          pout.println ("<!-- No Element -->");
+          pout.println("<!-- No Element -->");
           pout.println("<td style=\"width:" + width + "pt\"></td>");
           printed = true;
           continue;
@@ -411,7 +409,7 @@ public class HtmlProducer extends TableProducer
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
           if (gridPosition == null)
           {
-            pout.println ("<!-- gridposition is null -->");
+            pout.println("<!-- gridposition is null -->");
           }
           else
           {
@@ -428,7 +426,7 @@ public class HtmlProducer extends TableProducer
             pout.print("; ");
             pout.print(style);
           }
-          pout.println ("\"></td>");
+          pout.println("\"></td>");
           printed = true;
           continue;
         }
@@ -510,7 +508,7 @@ public class HtmlProducer extends TableProducer
    * @param text the text that should be printed.
    * @param useXHTML true, if XHTML is generated, false otherwise.
    */
-  public static void printText (PrintWriter pout, String text, boolean useXHTML)
+  public static void printText(PrintWriter pout, String text, boolean useXHTML)
   {
     if (text.length() == 0)
     {
@@ -518,35 +516,32 @@ public class HtmlProducer extends TableProducer
       return;
     }
 
-    try
+    LineBreakIterator iterator = new LineBreakIterator(text);
+    int oldPos = 0;
+    int pos = iterator.nextWithEnd();
+    boolean flagStart = true;
+    while (pos != LineBreakIterator.DONE)
     {
-      BufferedReader reader = new BufferedReader(new StringReader(text));
-      String readLine;
-      boolean flagStart = true;
-      while ((readLine = reader.readLine()) != null)
+      String readLine = text.substring(oldPos, pos);
+      oldPos = pos;
+      pos = iterator.nextWithEnd();
+
+      if (flagStart == true)
       {
-        if (flagStart == true)
+        flagStart = false;
+      }
+      else
+      {
+        if (useXHTML)
         {
-          flagStart = false;
+          pout.println("<br />&nbsp;");
         }
         else
         {
-          if (useXHTML)
-          {
-            pout.println("<br />&nbsp;");
-          }
-          else
-          {
-            pout.println("<br>&nbsp;");
-          }
+          pout.println("<br>&nbsp;");
         }
-        pout.print(getEntityParser().encodeEntities(readLine));
       }
-      reader.close();
-    }
-    catch (IOException ioe)
-    {
-      Log.info("This will not happen.", ioe);
+      pout.print(getEntityParser().encodeEntities(readLine));
     }
   }
 }

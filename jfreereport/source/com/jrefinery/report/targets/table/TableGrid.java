@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.8 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableGrid.java,v 1.9 2003/02/25 15:42:30 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,8 @@ import java.util.TreeSet;
  * <p>
  * The TableGrid has two modes of operation. In the strict layoutmode, all bounds
  * of the cells are used to define the generated cells. The strict layout mode tries
- * to layout the cells, so that the generated results equal the printed layout.
+ * to layout the cells in a way, that the generated results nearly equals the printed
+ * layout.
  * <p>
  * If strict mode is disabled, only the origin of the TableCellData is used to
  * define the generated cells. This reduces the table complexity, the table appears

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.29 2003/03/08 20:28:46 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.30 2003/03/09 17:48:59 taqua Exp $
  *
  * Changes
  * -------
@@ -607,5 +607,6 @@ public class G2OutputTarget extends AbstractOutputTarget
                                                    (float) drawableSize.getWidth(),
                                                    (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);
+    target.dispose();
   }
 }
