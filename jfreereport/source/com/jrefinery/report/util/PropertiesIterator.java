@@ -24,8 +24,10 @@
  * PropertiesIterator.java
  * -----------------------
  *
- * ChangeLog
- * ---------
+ * $Id$
+ *
+ * Changes
+ * -------
  * 20-Aug-2002 : Initial version
  * 22-Aug-2002 : Removed logging statements
  * 01-Sep-2002 : Documentation

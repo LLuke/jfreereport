@@ -28,6 +28,8 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
+ * $Id$
+ *
  * Changes
  * -------
  * 24-Apr-2002 : Created to enable the XML-Parser to load external resources.

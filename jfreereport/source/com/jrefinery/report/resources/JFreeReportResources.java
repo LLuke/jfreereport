@@ -24,6 +24,8 @@
  * JFreeReportResources.java
  * -------------------------
  *
+ * $Id$
+ *
  */
 package com.jrefinery.report.resources;
 

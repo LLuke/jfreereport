@@ -44,7 +44,7 @@
   <rectangle x="510" y="11" width="85" height="22" draw="true" fill="false"/>
   <label x="510" y="11" width="85" height="22">Team:</label>
 
-  <rectangle x="595" y="0" width="114" height="33" draw="true" fill="false"/>
+  <rectangle x="595" y="0" width="114" height="33" draw="true" fill="true" color="#878787"/>
   <label x="595" y="0" width="114" height="33">State of advancement</label>
 
   <rectangle x="709" y="0" width="70" height="33" draw="true" fill="false"/>

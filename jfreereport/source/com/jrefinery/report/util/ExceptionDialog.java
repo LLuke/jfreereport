@@ -23,6 +23,11 @@
  * --------------------
  * ExceptionDialog.java
  * --------------------
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 30-May-2002 : Initial version
  * 09-Jun-2002 : Documentation
  */

@@ -25,7 +25,10 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
  * ChangeLog
+ * --------------------------------------
  * 21-May-2002 : Initial version
  * 06-Jun-2002 : Documentation
  * 03-Jul-2002 : Serializable, Cloneable implemented

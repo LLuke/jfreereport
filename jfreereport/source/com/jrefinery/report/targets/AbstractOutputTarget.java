@@ -25,6 +25,10 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 21-May-2002 : Initial version
  * 22-May-2002 : TextAlignment fixed
  * 23-May-2002 : Replaced System.out logging with Log-class

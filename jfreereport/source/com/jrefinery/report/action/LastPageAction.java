@@ -25,6 +25,8 @@
  * -------------------
  * Original Author:  Joerg Schoemer;
  *
+ * $Id$
+ *
  * 29-May-2002 : Initial version
  * 05-Jun-2002 : Documentation update.
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.

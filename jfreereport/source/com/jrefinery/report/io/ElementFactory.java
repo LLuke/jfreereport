@@ -25,6 +25,10 @@
  * -------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 10-May-2002 : Initial version
  * 16-May-2002 : parseStroke added for line width
  * 22-May-2002 : Structured parsing functions: all tags have a startXXX and endXXX function

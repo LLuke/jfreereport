@@ -25,6 +25,10 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 25-Apr-2002 : Initial version
  * 09-Jun-2002 : Implements the CloseableTableModel interface
  */

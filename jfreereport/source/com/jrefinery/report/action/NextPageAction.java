@@ -25,6 +25,8 @@
  * -------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
  * Changes
  * -------
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.

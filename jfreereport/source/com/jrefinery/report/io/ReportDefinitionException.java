@@ -25,6 +25,10 @@
  * ------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 24-Apr-2002 : Initial version
  * 31-Aug-2002 : Documentation; changed PrintStackTrace for better tracing
  */

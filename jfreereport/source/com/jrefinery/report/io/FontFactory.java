@@ -25,6 +25,10 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 10-May-2002 : Initial version
  * 20-May-2002 : The default font is no longer hardcoded into the factory. It uses the Bands
  *               default font as fallback.

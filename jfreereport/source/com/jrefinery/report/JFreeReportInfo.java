@@ -25,6 +25,8 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
  * Changes:
  * --------
  * 10-May-2002 : Extracted from JFreeReport to declare this class public.

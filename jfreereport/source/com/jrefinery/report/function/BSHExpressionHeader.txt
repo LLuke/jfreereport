@@ -1,3 +1,6 @@
+/**
+ * $Id$
+ */
 import com.jrefinery.report.*;
 import java.util.Properties;
 

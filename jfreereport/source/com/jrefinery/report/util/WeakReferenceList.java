@@ -23,6 +23,11 @@
  * ----------------------
  * WeakReferenceList.java
  * ----------------------
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 31-May-2002 : Initial version
  * 09-Jun-2002 : Documentation
  */

@@ -25,6 +25,8 @@
  * ----------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
+ * $Id$
+ *
  * Changes
  * -------
  * 27-Jul-2002 : Initial version

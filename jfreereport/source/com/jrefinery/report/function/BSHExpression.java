@@ -24,6 +24,8 @@
  * BSHExpression.java
  * ------------------
  *
+ * $Id$
+ *
  * ChangeLog
  * ---------
  * 12-Aug-2002 : Initial version

@@ -23,6 +23,10 @@
  * ------------------------
  * CloseableTableModel.java
  * ------------------------
+ * $Id$
+ *
+ * Changes
+ * -------
  * 09-Jun-2002 : Initial version to correct the fact, that resultsets are not closed when
  *               the tablemodel is no longer in use.
  */

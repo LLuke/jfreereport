@@ -24,6 +24,8 @@
  * PDFSaveDialog.java
  * ------------------
  *
+ * $Id$
+ *
  * Changes
  * --------
  * 26-Aug-2002 : Initial version

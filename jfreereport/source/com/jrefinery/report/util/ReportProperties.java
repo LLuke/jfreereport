@@ -25,6 +25,10 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 26-May-2002 : Created ReportProperties as a small scale hashtable with protected string keys.
  *               This implementation guarantees that all keys are strings.
  * 09-Jun-2002 : Documentation

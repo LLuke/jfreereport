@@ -25,6 +25,8 @@
  * -----------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
+ * $Id$
+ *
  * Changes
  * -------
  * 12-Aug-2002 : Initial version

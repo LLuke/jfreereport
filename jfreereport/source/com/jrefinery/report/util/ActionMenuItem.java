@@ -24,6 +24,8 @@
  * ActionMenuItem.java
  * -------------------
  *
+ * $Id$
+ *
  * ChangeLog
  * ---------
  * 30-Aug-2002 : Initial version

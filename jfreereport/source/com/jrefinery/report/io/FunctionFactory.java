@@ -25,6 +25,10 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 10-May-2002 : Initial version
  * 23-May-2002 : Rewrite and better structured, divided into several start* & end* methods
  * 08-Jun-2002 : Documentation

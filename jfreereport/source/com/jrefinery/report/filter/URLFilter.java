@@ -25,6 +25,8 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
  * Changes
  * -------
  * 06-Jun-2002 : Outsourced from ImageLoadFilter.

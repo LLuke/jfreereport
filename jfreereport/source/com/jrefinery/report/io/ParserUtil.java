@@ -25,6 +25,10 @@
  * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 2002-05-21: Contains utility functions to make parsing easier.
  */
 package com.jrefinery.report.io;

@@ -24,6 +24,8 @@
  * ReportStateList.java
  * --------------------
  *
+ * $Id$
+ *
  * Changes
  * -------
  * 31-May-2002 : Initial version

@@ -24,8 +24,10 @@
  * AbstractActionDowngrade.java
  * ----------------------------
  *
- * ChangeLog
- * ---------
+ * $Id$
+ *
+ * Changes
+ * -------
  * 30-Aug-2002 : Initial version
  */
 package com.jrefinery.report.util;

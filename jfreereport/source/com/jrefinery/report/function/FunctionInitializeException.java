@@ -28,6 +28,8 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
+ * $Id$
+ *
  * Changes
  * -------
  * 10-May-2002 : Version 1 (TM);

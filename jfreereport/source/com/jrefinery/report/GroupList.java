@@ -28,6 +28,8 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
+ * $Id$
+ *
  * Changes:
  * --------
  * 11-May-2002 : Version 1 (TM);

@@ -24,6 +24,8 @@
  * PageTotalFunction.java
  * -----------------------
  *
+ * $Id$
+ *
  * ChangeLog
  * ----------------
  * 16-Oct-2002 : Initial version

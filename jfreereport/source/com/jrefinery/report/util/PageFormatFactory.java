@@ -25,6 +25,10 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 27-Jul-2002 : Initial version, empty class :(
  * 26-Aug-2002 : Coded all defined Postscript-PaperFormats as defined by Adobe.
  * 30-Aug-2002 : Added method to define the paper using a String constant referring to a constant

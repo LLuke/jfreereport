@@ -25,6 +25,10 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 16-May-2002 : Initial version
  * 27-May-2002 : Support for the rectangle element
  * 09-Jun-2002 : Documentation
