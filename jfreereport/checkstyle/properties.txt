@@ -1,4 +1,5 @@
 checkstyle.maxlinelen 100
+checkstyle.maxparameters 30
 checkstyle.lcurly.type nl
 checkstyle.lcurly.method nl
 checkstyle.lcurly.other nl
