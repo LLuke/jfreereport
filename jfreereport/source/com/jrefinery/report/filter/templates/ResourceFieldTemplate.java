@@ -1,9 +1,41 @@
 /**
- * Date: Jan 24, 2003
- * Time: 6:14:09 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ResourceFieldTemplate.java,v 1.1 2003/01/25 02:50:56 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------------
+ * ResourceFieldTemplate.java
+ * --------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id $
+ *
+ * Changes (from 18-Feb-2003)
+ * -------------------------
+ * 18-Feb-2003 : Added standard header and Javadocs (DG);
+ *  
  */
+
 package com.jrefinery.report.filter.templates;
 
 import com.jrefinery.report.DataRow;
@@ -15,13 +47,28 @@ import com.jrefinery.report.filter.StringFilter;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * A resource field template.
+ * 
+ * @author Thomas Morgner
+ */
 public class ResourceFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {
+  /** A data-row accessor. */
   private DataRowDataSource dataRowDataSource;
+  
+  /** A string filter. */
   private StringFilter stringFilter;
+  
+  /** A resource file filter. */
   private ResourceFileFilter resourceFilter;
+  
+  /** The resource class name. */
   private String resourceClassName;
 
+  /**
+   * Creates a new template.
+   */
   public ResourceFieldTemplate()
   {
     dataRowDataSource = new DataRowDataSource();
@@ -31,21 +78,43 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
     stringFilter.setDataSource(resourceFilter);
   }
 
+  /**
+   * Returns the field name.
+   * 
+   * @return The field name.
+   */
   public String getField()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
 
+  /**
+   * Sets the field name.
+   * 
+   * @param field  the field name.
+   */
   public void setField(String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
 
+  /**
+   * Returns the resource class name.
+   * 
+   * @return The resource class name.
+   */
   public String getResourceClassName()
   {
     return resourceClassName;
   }
 
+  /**
+   * Sets the resource class name.
+   * 
+   * @param resourceClassName  the resource class name.
+   * 
+   * @throws MissingResourceException if the resource is missing.
+   */
   public void setResourceClassName(String resourceClassName)
     throws MissingResourceException
   {
@@ -53,11 +122,21 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
     this.resourceClassName = resourceClassName;
   }
 
+  /**
+   * Returns the string that represents a <code>null</code> value.
+   * 
+   * @return The string that represents a <code>null</code> value.
+   */
   public String getNullValue()
   {
     return stringFilter.getNullValue();
   }
 
+  /**
+   * Sets the string that represents a <code>null</code> value.
+   * 
+   * @param nullValue  the string that represents a <code>null</code> value.
+   */
   public void setNullValue(String nullValue)
   {
     stringFilter.setNullValue(nullValue);
@@ -74,7 +153,7 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
   }
 
   /**
-   * Clones this <code>DataSource</code>.
+   * Clones the template.
    *
    * @return the clone.
    *
@@ -90,7 +169,7 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
   }
 
   /**
-   * Connects the DataRow to the data source.
+   * Connects a {@link DataRow} to the data source.
    *
    * @param row  the data row.
    *

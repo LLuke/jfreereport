@@ -1,9 +1,41 @@
 /**
- * Date: Jan 14, 2003
- * Time: 6:18:08 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ImageURLElementTemplate.java,v 1.1 2003/01/14 21:04:55 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------------
+ * ImageURLElementTemplate.java
+ * ----------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id $
+ *
+ * Changes (from 18-Feb-2003)
+ * -------------------------
+ * 18-Feb-2003 : Added standard header and Javadocs (DG);
+ *  
  */
+
 package com.jrefinery.report.filter.templates;
 
 import com.jrefinery.report.filter.ImageLoadFilter;
@@ -12,12 +44,25 @@ import com.jrefinery.report.filter.URLFilter;
 
 import java.net.URL;
 
+/**
+ * An image URL element template.
+ * 
+ * @author Thomas Morgner
+ */
 public class ImageURLElementTemplate extends AbstractTemplate
 {
+  /** The image load filter. */
   private ImageLoadFilter imageLoadFilter;
+  
+  /** A static datasource. */
   private StaticDataSource staticDataSource;
+  
+  /** A URL filter. */
   private URLFilter urlFilter;
 
+  /**
+   * Creates a new template.
+   */
   public ImageURLElementTemplate()
   {
     staticDataSource = new StaticDataSource();
@@ -27,21 +72,41 @@ public class ImageURLElementTemplate extends AbstractTemplate
     imageLoadFilter.setDataSource(urlFilter);
   }
 
+  /**
+   * Sets the URL for the template.
+   * 
+   * @param content  the URL.
+   */
   public void setContent(String content)
   {
     staticDataSource.setValue(content);
   }
 
+  /**
+   * Returns the URL text for the template.
+   * 
+   * @return The URL text.
+   */
   public String getContent()
   {
     return (String) (staticDataSource.getValue());
   }
 
+  /**
+   * Returns the base URL.
+   * 
+   * @return The URL.
+   */
   public URL getBaseURL()
   {
     return urlFilter.getBaseURL();
   }
 
+  /**
+   * Sets the base URL.
+   * 
+   * @param baseURL  the URL.
+   */
   public void setBaseURL(URL baseURL)
   {
     urlFilter.setBaseURL(baseURL);
@@ -58,7 +123,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
   }
 
   /**
-   * Clones this <code>DataSource</code>.
+   * Clones the template.
    *
    * @return the clone.
    *
@@ -72,4 +137,5 @@ public class ImageURLElementTemplate extends AbstractTemplate
     template.staticDataSource = (StaticDataSource) template.urlFilter.getDataSource();
     return template;
   }
+  
 }
