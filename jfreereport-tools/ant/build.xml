@@ -1,0 +1,128 @@
+<!--
+
+<!DOCTYPE project PUBLIC "-//ANT//DTD project//EN" "ant.dtd">
+
+-->
+
+<!-- An ANT build file for JFreeReport -->
+
+<!-- Based on a script written by David Gilbert -->
+
+<!-- To run this script, you need to make sure the libraries used by -->
+<!-- JFreeReport are copied to the ../lib directory (or edit the -->
+<!-- init-general task to point to the appropriate jar files). -->
+
+<!-- This script will create temporary directories ../build and -->
+<!-- ../distribution, as working areas.  A ../javadoc directory will -->
+<!-- be created for the Javadoc HTML pages. -->
+
+<!-- If you have comments about this script, please post a message -->
+<!-- in the JFreeReport forum. -->
+
+<project name="jfreereport-ext" default="all" basedir="..">
+
+  <!-- Runns some tests, to identify the used JDK implementation -->
+  <target name="init">
+    <description>Runs tests to retrieve the JDK version</description>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <available classname="java.util.Timer" property="java-1.3.present"/>
+
+    <available classname="java.nio.Buffer" property="java-1.4.present"/>
+
+    <echo>
+      Available features:
+        Java1.3    : ${java-1.3.present}
+        Java1.4    : ${java-1.4.present}
+    </echo>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  BeanDoclet classes                                            -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="compile" depends="init">
+
+    <echo>Building BeanInfo Doclet</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}"
+      debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/dev/**/*.java"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${common-logging-jar-file}"/>
+        <pathelement location="${libdir}/${common-collections-jar-file}"/>
+        <pathelement location="${libdir}/${common-beanutils-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <!-- include the report definition files -->
+    <copy todir="build">
+      <fileset dir="source">
+        <include name="**/*.xml"/>
+        <include name="**/*.gif"/>
+        <include name="**/*.dbf"/>
+      </fileset>
+    </copy>
+
+    <!-- make the jar -->
+    <jar jarfile="${jfreereport-tools-jar-file}" basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+  <!-- Generate the JFreeReport JavaDoc HTML pages -->
+  <target name="javadoc" depends="init">
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="JFreeReport Extension Class Library"
+      overview="source/overview.html">
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${common-logging-jar-file}"/>
+        <pathelement location="${libdir}/${common-collections-jar-file}"/>
+        <pathelement location="${libdir}/${common-beanutils-jar-file}"/>
+      </classpath>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/report/**"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="generateinfo" depends="init, compile">
+    <path id="doclet.classpath">
+      <pathelement location="${libdir}/${gnujaxp-jar-file}"/>
+      <pathelement location="${jfreereport-tools-jar-file}"/>
+      <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      <pathelement location="${libdir}/${common-logging-jar-file}"/>
+      <pathelement location="${libdir}/${common-collections-jar-file}"/>
+      <pathelement location="${libdir}/${common-beanutils-jar-file}"/>
+    </path>
+    <javadoc
+        doclet="org.jfree.report.dev.beans.BeanInfoDoclet"
+        docletpathref="doclet.classpath">
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </classpath>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/report/dev"/>
+      </packageset>
+    </javadoc>
+
+  </target>
+  <target name="all" depends="init, compile, javadoc"/>
+</project>
+
