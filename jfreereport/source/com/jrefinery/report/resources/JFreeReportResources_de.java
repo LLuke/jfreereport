@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.16 2002/11/07 21:45:28 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.17 2002/11/13 10:48:56 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -116,6 +116,7 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}"},
             {"error.printfailed.title", "Druck fehlgeschlagen"},
 
+            {"pdfsavedialog.warningTitle", "Warnung"},
             {"pdfsavedialog.dialogtitle", "Bericht in eine PDF-Datei speichern ..."},
             {"pdfsavedialog.filename", "Dateiname"},
             {"pdfsavedialog.author", "Autor"},

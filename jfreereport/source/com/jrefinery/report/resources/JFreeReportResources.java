@@ -24,7 +24,7 @@
  * JFreeReportResources.java
  * -------------------------
  *
- * $Id: JFreeReportResources.java,v 1.25 2002/11/07 21:45:28 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.26 2002/11/13 10:48:56 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -72,7 +72,7 @@ public class JFreeReportResources extends ListResourceBundle
         lastKey = row[0];
         elements.put (row[0], row[1]);
       }
-      Object o = getIcon ("com/jrefinery/report/resources/SaveAs16.gif");
+      getIcon ("com/jrefinery/report/resources/SaveAs16.gif");
     }
     catch (Exception e)
     {
@@ -255,6 +255,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.ownerpasswordEmpty", "The owner-password is empty. Users may be " +
               "able to change security constraints. Continue anyway?" },
 
+            {"pdfsavedialog.warningTitle", "Warning"},
             {"pdfsavedialog.errorTitle", "Error"},
             {"pdfsavedialog.targetIsEmpty", "Please specify a filename for the pdf file."},
             {"pdfsavedialog.targetIsNoFile", "The selected target is no ordinary file."},
