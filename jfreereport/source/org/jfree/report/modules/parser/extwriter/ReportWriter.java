@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ReportWriter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -173,7 +173,8 @@ public class ReportWriter
   private void loadObjectFactories()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
-    final List l = (List) hints.getHint(getReport(), ParserConfigHandler.OBJECT_FACTORY_HINT, List.class);
+    final List l = (List) 
+      hints.getHint(getReport(), ParserConfigHandler.OBJECT_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
@@ -237,7 +238,8 @@ public class ReportWriter
     {
       return;
     }
-    final ElementFactory[] list = (ElementFactory[]) loadParserHintFactories(l, ElementFactory.class);
+    final ElementFactory[] list = 
+      (ElementFactory[]) loadParserHintFactories(l, ElementFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addElementFactory(list[i]);
@@ -256,7 +258,8 @@ public class ReportWriter
     {
       return;
     }
-    final StyleKeyFactory[] list = (StyleKeyFactory[]) loadParserHintFactories(l, StyleKeyFactory.class);
+    final StyleKeyFactory[] list = 
+      (StyleKeyFactory[]) loadParserHintFactories(l, StyleKeyFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addStyleKeyFactory(list[i]);

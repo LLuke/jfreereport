@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources_de.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportResources_de.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -104,7 +104,8 @@ public class PlainTextExportResources_de extends JFreeReportResources
         {"error.savefailed.title", "Speichern fehlgeschlagen"},
 
         {"plaintext-export.progressdialog.title", "Exportiere in eine Text Datei ..."},
-        {"plaintext-export.progressdialog.message", "Der Bericht wird nun in eine Text Datei exportiert ..."},
+        {"plaintext-export.progressdialog.message", 
+            "Der Bericht wird nun in eine Text Datei exportiert ..."},
 
       };
 

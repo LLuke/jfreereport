@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -166,7 +166,8 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       throw new NullPointerException("Name must be specified.");
     }
     final ReportBuilderHints hints = writer.getReport().getReportBuilderHints();
-    final List l = (List) hints.getHint(writer.getReport(), "ext.parser.template-definition", List.class);
+    final List l = (List) hints.getHint
+      (writer.getReport(), "ext.parser.template-definition", List.class);
     if (l == null)
     {
       return null;
@@ -176,7 +177,8 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       return null;
     }
 
-    final TemplateDescription[] td = (TemplateDescription[]) l.toArray(new TemplateDescription[l.size()]);
+    final TemplateDescription[] td = 
+      (TemplateDescription[]) l.toArray(new TemplateDescription[l.size()]);
     for (int i = 0; i < td.length; i++)
     {
       if (td[i].getName().equals(name))

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.6 2003/08/24 15:13:23 taqua Exp $
+ * $Id: Log.java,v 1.7 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public final class Log extends org.jfree.util.Log
   private static final SystemOutLogTarget DEFAULT_LOG_TARGET = new SystemOutLogTarget();
 
   /** The JFreeReport log instance. */
-  private static final Log jfreeReportLog;
+  private static final Log JFREEREPORTLOG;
 
   /**
    * Private to prevent creating instances.
@@ -111,10 +111,10 @@ public final class Log extends org.jfree.util.Log
 
   static
   {
-    jfreeReportLog = new Log();
-    org.jfree.util.Log.defineLog(jfreeReportLog);
-    jfreeReportLog.addTarget(Log.DEFAULT_LOG_TARGET);
-    jfreeReportLog.setDebuglevel(DEBUG);
+    JFREEREPORTLOG = new Log();
+    org.jfree.util.Log.defineLog(JFREEREPORTLOG);
+    JFREEREPORTLOG.addTarget(Log.DEFAULT_LOG_TARGET);
+    JFREEREPORTLOG.setDebuglevel(DEBUG);
   }
 
   /**
@@ -124,7 +124,7 @@ public final class Log extends org.jfree.util.Log
    */
   public static Log getJFreeReportLog()
   {
-    return jfreeReportLog;
+    return JFREEREPORTLOG;
   }
 
   /**

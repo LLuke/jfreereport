@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.9 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.10 2003/08/26 17:35:50 taqua Exp $
  *
  * Changes
  * -------
@@ -601,6 +601,8 @@ public class PreviewProxyBase extends JComponent
     {
       zoomFactor = factorIndex;
       this.putValue(Action.NAME, String.valueOf((int) (ZOOM_FACTORS[factorIndex] * 100)) + " %");
+      this.putValue(SMALL_ICON, createTransparentImage(16, 16));
+      this.putValue("ICON24", createTransparentImage(24, 24));
     }
 
     /**
@@ -746,7 +748,8 @@ public class PreviewProxyBase extends JComponent
     setLargeIconsEnabled(largeIconsProperty);
 
     final ExportPluginFactory factory = new ExportPluginFactory();
-    exportPlugIns = factory.createExportPlugIns(proxy, report.getReportConfiguration(), exportWorker);
+    exportPlugIns = factory.createExportPlugIns
+      (proxy, report.getReportConfiguration(), exportWorker);
     pluginActions = new HashMap(exportPlugIns.size());
     final Iterator it = exportPlugIns.iterator();
     while (it.hasNext())
@@ -1895,6 +1898,7 @@ public class PreviewProxyBase extends JComponent
         }
         catch (InterruptedException ie)
         {
+          // ignored
         }
       }
       getWorker().setWorkload(new Runnable()

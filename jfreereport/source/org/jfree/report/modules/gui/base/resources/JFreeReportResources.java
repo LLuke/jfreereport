@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -121,7 +121,7 @@ public class JFreeReportResources extends ListResourceBundle
    *
    * @return the image.
    */
-  public static BufferedImage createTransparentImage(final int width, final int height)
+  protected static BufferedImage createTransparentImage(final int width, final int height)
   {
     final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     final int[] data = img.getRGB(0, 0, width, height, null, 0, width);
@@ -138,7 +138,7 @@ public class JFreeReportResources extends ListResourceBundle
    *
    * @return the image icon.
    */
-  public static ImageIcon getIcon(final String filename)
+  protected static ImageIcon getIcon(final String filename)
   {
 
     final URL in = Thread.currentThread().getContextClassLoader().getResource(filename);

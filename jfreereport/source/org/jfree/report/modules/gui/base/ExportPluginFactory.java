@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.8 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.9 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * --------
@@ -74,7 +74,8 @@ public class ExportPluginFactory
      * @param enableKey the report configuration key that triggers the visiblity
      * of the plugin.
      */
-    public PluginDefinition(final Class pluginClass, final String preference, final String enableKey)
+    public PluginDefinition
+      (final Class pluginClass, final String preference, final String enableKey)
     {
       if (pluginClass == null)
       {

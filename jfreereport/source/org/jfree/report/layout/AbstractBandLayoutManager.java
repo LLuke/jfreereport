@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -481,7 +481,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected point.
    */
-  protected static Point2D correctPoint(final Point2D dim, final Dimension2D base, final Point2D retval)
+  protected static Point2D correctPoint
+    (final Point2D dim, final Dimension2D base, final Point2D retval)
   {
     double x = dim.getX();
     double y = dim.getY();

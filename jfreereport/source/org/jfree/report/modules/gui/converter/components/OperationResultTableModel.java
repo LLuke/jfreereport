@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: OperationResultTableModel.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -123,9 +123,9 @@ public class OperationResultTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param	rowIndex	the row whose value is to be queried
-   * @param	columnIndex 	the column whose value is to be queried
-   * @return	the value Object at the specified cell
+   * @param rowIndex the row whose value is to be queried
+   * @param columnIndex the column whose value is to be queried
+   * @return the value Object at the specified cell
    */
   public Object getValueAt(int rowIndex, int columnIndex)
   {

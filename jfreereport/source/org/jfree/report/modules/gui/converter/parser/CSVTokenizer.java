@@ -30,7 +30,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CSVTokenizer.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -116,11 +116,11 @@ public class CSVTokenizer implements Enumeration
    * <code>false</code>, the separator string is skipped and only
    * serve as separator between tokens.
    *
-   * @param	aString			a string to be parsed.
-   * @param	theSeparator	the separator
-   * 							(CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB, CSVTokenizer.SPACE, etc.).
-   * @param	theQuate		the quate
-   * 							(CSVTokenizer.SINGLE_QUATE, CSVTokenizer.DOUBLE_QUATE, etc.).
+   * @param aString a string to be parsed.
+   * @param theSeparator the separator
+   *        (CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB, CSVTokenizer.SPACE, etc.).
+   * @param theQuate the quate
+   *        (CSVTokenizer.SINGLE_QUATE, CSVTokenizer.DOUBLE_QUATE, etc.).
    */
   public CSVTokenizer(String aString, String theSeparator, String theQuate)
   {
@@ -148,9 +148,9 @@ public class CSVTokenizer implements Enumeration
    * the separator for separating tokens.
    * Separator string themselves will not be treated as tokens.
    *
-   * @param	aString			a string to be parsed.
-   * @param	theSeparator	the separator
-   * 							(CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB, CSVTokenizer.SPACE, etc.).
+   * @param aString a string to be parsed.
+   * @param theSeparator the separator
+   *        (CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB, CSVTokenizer.SPACE, etc.).
    */
   public CSVTokenizer(String aString, String theSeparator)
   {
@@ -163,7 +163,7 @@ public class CSVTokenizer implements Enumeration
    * <code>CSVTokenizer.SEPARATOR_COMMA</code>.
    * Separator string themselves will not be treated as tokens.
    *
-   * @param	aString			a string to be parsed.
+   * @param aString a string to be parsed.
    *
    */
   public CSVTokenizer(String aString)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XLSExportResources.java,v 1.4 2003/08/24 15:08:19 taqua Exp $
+ * $Id: XLSExportResources.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,7 +105,8 @@ public class XLSExportResources extends JFreeReportResources
         {"excelexportdialog.strict-layout", "Perform strict table layouting on export."},
 
         {"excel-export.progressdialog.title", "Exporting to an Excel file ..."},
-        {"excel-export.progressdialog.message", "The report is now exported into an Excel workbook ..."},
+        {"excel-export.progressdialog.message", 
+          "The report is now exported into an Excel workbook ..."},
 
       };
 

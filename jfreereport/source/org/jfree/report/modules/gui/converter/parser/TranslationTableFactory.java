@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TranslationTableFactory.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -79,12 +79,21 @@ public final class TranslationTableFactory
 
     public boolean equals(Object o)
     {
-      if (this == o) return true;
-      if (!(o instanceof ContextRule)) return false;
+      if (this == o)
+      { 
+        return true;
+      }
+      if (!(o instanceof ContextRule))
+      { 
+        return false;
+      }
 
       final ContextRule contextRule = (ContextRule) o;
 
-      if (!name.equals(contextRule.name)) return false;
+      if (!name.equals(contextRule.name))
+      { 
+        return false;
+      }
 
       return true;
     }

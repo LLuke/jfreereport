@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ReportDefinition.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -116,14 +116,16 @@ public interface ReportDefinition extends Cloneable
   public int getGroupCount();
 
   /**
-   * Returns the group at the specified index or null, if there is no such group.
+   * Returns the group at the specified index or null, if there 
+   * is no such group.
    *
    * @param count  the group index.
    *
    * @return the requested group.
    *
-   * @throws java.lang.IllegalArgumentException if the count is negative.
-   * @throws java.lang.IndexOutOfBoundsException if the count is greater than the number of defined groups.
+   * @throws IllegalArgumentException if the count is negative.
+   * @throws IndexOutOfBoundsException if the count is greater than 
+   * the number of defined groups.
    */
   public Group getGroup(int count);
 

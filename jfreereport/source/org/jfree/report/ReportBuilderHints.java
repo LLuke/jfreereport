@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.7 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.8 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -286,9 +286,10 @@ public class ReportBuilderHints implements Serializable
    * @param target the target object for which the hint is specified.
    * @param hint the hint name
    * @param hintValue the hint value (not null)
-   * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
+   * @throws IllegalArgumentException if the specified hint is no list type.
    */
-  public void addHintList(final Serializable target, final String hint, final Serializable hintValue)
+  public void addHintList
+    (final Serializable target, final String hint, final Serializable hintValue)
   {
     this.addHintList(target, hint, hintValue, true);
   }
@@ -302,9 +303,10 @@ public class ReportBuilderHints implements Serializable
    * @param hint the hint name
    * @param hintValue the hint value (not null)
    * @param unique true, if the value should be unique within the list
-   * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
+   * @throws IllegalArgumentException if the specified hint is no list type.
    */
-  public void addHintList(final Serializable target, final String hint, final Serializable hintValue, final boolean unique)
+  public void addHintList (final Serializable target, 
+    final String hint, final Serializable hintValue, final boolean unique)
   {
     if (hintValue == null)
     {

@@ -160,6 +160,12 @@
   </target>
 
   <target name="copy-resources-gui-converter">
+    <copy file="source/org/jfree/report/modules/gui/converter/parser/translations.properties"
+      tofile="build/org/jfree/report/modules/gui/converter/parser/translations.properties"/>
+
+    <copy file="source/org/jfree/report/modules/gui/converter/parser/contextmap.properties"
+      tofile="build/org/jfree/report/modules/gui/converter/parser/contextmap.properties"/>
+
     <copy file="source/org/jfree/report/modules/gui/converter/module.properties"
       tofile="build/org/jfree/report/modules/gui/converter/module.properties"/>
   </target>

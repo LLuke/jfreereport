@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<!DOCTYPE config-description [
+
+<!ELEMENT config-description  (key*)>
+<!ELEMENT key                 (description?, (class | enum | text))>
+<!ATTLIST key
+   name   CDATA #REQUIRED
+   global CDATA #IMPLIED
+ >
+
+<!ELEMENT description         (#PCDATA)>
+<!ELEMENT class               (EMPTY)>
+<!ATTLIST class
+  instanceof CDATA #REQUIRED
+ >
+
+<!ELEMENT enum               (text)*>
+<!ELEMENT text               (#PCDATA)>
+ ]>
+<!--
+  Flame me for not making this document translateable   >:)
+ -->
+<config-description>
+  <key name="org.jfree.report.LogTarget" global="true">
+    <description>Selects which implementation is responsible for logging.</description>
+    <class instanceof="org.jfree.util.LogTarget"/>
+  </key>
+
+  <key name="org.jfree.report.LogLevl" global="true">
+    <description>The minimum loglevel that is logged.</description>
+    <enum>
+      <text>Debug</text>
+      <text>Info</text>
+      <text>Warn</text>
+      <text>Error</text>
+    </enum>
+  </key>
+
+  <key name="org.jfree.report.ConfigStore" global="true">
+    <description>Selects which implementation is responsible for storing configuration information.</description>
+    <class instanceof="org.jfree.report.modules.misc.configstore.base.ConfigStorage"/>
+  </key>
+
+  <key name="org.jfree.report.StrictErrorHandling" global="true">
+    <description>Defines a stricter error handling, if set to true, then all errors that occur during the report processing will cause the report processing to fail. It is safe to set this to true, as valid reports never throw exceptions.</description>
+    <enum>
+      <text>true</text>
+      <text>false</text>
+    </enum>
+  </key>
+
+  <key name="org.jfree.report.layout.fontrenderer.UseAliasing" global="true">
+    <description>Enable aliasing for Graphics2D. This may result is textlayout errors on some systems. If your text is not correctly aligned, disable this property.</description>
+    <enum>
+      <text>true</text>
+      <text>false</text>
+    </enum>
+  </key>
+
+  <key name="org.jfree.report.layout.fontrenderer.IsBuggyFRC" global="true">
+    <description>This is a override setting. Some Graphics2D implementations have problems with the font positioning. I don't know a way to resolve that bug, try setting this property to "true" to resolve wrong/buggy string draw results.</description>
+    <enum>
+      <text>true</text>
+      <text>false</text>
+    </enum>
+  </key>
+
+  <key name="org.jfree.report.WarnInvalidColumns" global="true">
+    <description>Should the datarow print warning on invalid columns? Invalid column requests always return null. If set to true, an additional logging entry is added.</description>
+    <enum>
+      <text>true</text>
+      <text>false</text>
+    </enum>
+  </key>
+
+  <key name="org.jfree.report.NoDefaultDebug">
+    <description>Defines, whether the debugging system should be disabled by default. This option will surpress all output, no single line of debug information will be printed. If you want to remove System.out-debugging on the server side, try to switch to a Log4J-LogTarget instead.</description>
+    <enum>
+      <text>true</text>
+      <text>false</text>
+    </enum>
+  </key>
+
+</config-description>

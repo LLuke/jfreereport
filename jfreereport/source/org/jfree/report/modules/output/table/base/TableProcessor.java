@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.6 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableProcessor.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -319,13 +319,6 @@ public abstract class TableProcessor
     }
     while (hasNext == true);
 
-    // root of evilness here ... pagecount should not be handled specially ...
-    // The pagecount should not be added as report property, there are functions to
-    // do this.
-    /*
-    state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
-                      new Integer(state.getCurrentPage() - 1));
-    */
     state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // finally prepeare the returned start state.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources.java,v 1.4 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportResources.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -112,7 +112,8 @@ public class PlainTextExportResources extends JFreeReportResources
         {"plain-text-exportdialog.font-settings", "Font settings"},
 
         {"plaintext-export.progressdialog.title", "Exporting to a text file ..."},
-        {"plaintext-export.progressdialog.message", "The report is now exported into a text file ..."},
+        {"plaintext-export.progressdialog.message", 
+          "The report is now exported into a text file ..."},
 
       };
 

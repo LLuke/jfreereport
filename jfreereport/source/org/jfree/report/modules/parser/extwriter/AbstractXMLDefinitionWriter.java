@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -277,7 +277,8 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    * @param hintName the hint name used to store the comment
    * @throws IOException if an error occured.
    */
-  protected void writeComment(final Writer writer, final CommentHintPath path, final String hintName)
+  protected void writeComment
+      (final Writer writer, final CommentHintPath path, final String hintName)
       throws IOException
   {
     final String[] comment = (String[]) getReport().getReportBuilderHints().getHint

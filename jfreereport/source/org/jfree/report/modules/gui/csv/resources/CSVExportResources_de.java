@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_de.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: CSVExportResources_de.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -115,7 +115,8 @@ public class CSVExportResources_de extends JFreeReportResources
         {"csvexportdialog.csv-file-description", "Text-Dateien mit komma getrennten Werten."},
 
         {"cvs-export.progressdialog.title", "Exportiere in eine CSV-Datei ..."},
-        {"cvs-export.progressdialog.message", "Der Bericht wird nun in eine CSV Datei exportiert ..."},
+        {"cvs-export.progressdialog.message", 
+          "Der Bericht wird nun in eine CSV Datei exportiert ..."},
       };
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.4 2003/08/24 15:13:23 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -302,6 +302,8 @@ public class LayoutManagerCache
    */
   public static void printResults()
   {
-    Log.debug("CacheResults: " + getCount + ":" + putCount + " Ratio: " + (getCount / (double) putCount));
+    Log.debug("CacheResults: " + 
+        getCount + ":" + putCount + " Ratio: " + 
+        (getCount / (double) putCount));
   }
 }

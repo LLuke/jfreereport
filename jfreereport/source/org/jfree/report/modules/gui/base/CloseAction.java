@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CloseAction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: CloseAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -69,5 +69,7 @@ public abstract class CloseAction extends AbstractActionDowngrade
         resources.getObject("action.close.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
         resources.getObject("action.close.accelerator"));
+    this.putValue(SMALL_ICON, createTransparentImage(16, 16));
+    this.putValue("ICON24", createTransparentImage(24, 24));
   }
 }

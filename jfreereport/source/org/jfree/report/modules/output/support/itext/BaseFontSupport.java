@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.5 2003/08/24 15:06:42 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -192,7 +192,8 @@ public class BaseFontSupport
     }
     catch (Exception e)
     {
-      Log.warn(new Log.SimpleMessage("BaseFont.createFont failed. Key = ", fontKey, e.getMessage()));
+      Log.warn(new Log.SimpleMessage
+        ("BaseFont.createFont failed. Key = ", fontKey, e.getMessage()));
     }
     // fallback .. use BaseFont.HELVETICA as default
     try

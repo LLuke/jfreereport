@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.4 2003/08/24 15:08:19 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -125,7 +125,8 @@ public class ExcelExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
-    final ExcelExportTask task = new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
+    final ExcelExportTask task = 
+      new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
     delegateTask(task);
     synchronized (task)
     {

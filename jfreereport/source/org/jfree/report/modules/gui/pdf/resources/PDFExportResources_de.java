@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportResources_de.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFExportResources_de.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -133,7 +133,8 @@ public class PDFExportResources_de extends JFreeReportResources
         {"pdfsavedialog.confirm", "OK"},
 
         {"pdf-export.progressdialog.title", "Exportiere in eine PDF-Datei ..."},
-        {"pdf-export.progressdialog.message", "Der Bericht wird nun in ein PDF-Dokument gespeichert ..."},
+        {"pdf-export.progressdialog.message", 
+            "Der Bericht wird nun in ein PDF-Dokument gespeichert ..."},
 
       };
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SeverityLevel.java,v 1.1 2003/08/26 17:37:28 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -67,12 +67,22 @@ public final class SeverityLevel implements Serializable
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof SeverityLevel)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    
+    if (!(o instanceof SeverityLevel))
+    { 
+      return false;
+    }
 
     final SeverityLevel severityLevel = (SeverityLevel) o;
 
-    if (!myName.equals(severityLevel.myName)) return false;
+    if (!myName.equals(severityLevel.myName))
+    { 
+      return false;
+    }
 
     return true;
   }

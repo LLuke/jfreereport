@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportResources_de.java,v 1.4 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportResources_de.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -132,7 +132,8 @@ public class HtmlExportResources_de extends JFreeReportResources
         {"error.validationfailed.title", "Eingabe\u00fcberpr\u00fcfung fehlgeschlagen"},
 
         {"html-export.progressdialog.title", "Exportiere in eine HTML-Datei ..."},
-        {"html-export.progressdialog.message", "Der Bericht wird nun in eine HTML Datei exportiert ..."},
+        {"html-export.progressdialog.message", 
+          "Der Bericht wird nun in eine HTML Datei exportiert ..."},
 
       };
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.2 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -265,9 +265,9 @@ public class DataRowBackend implements Cloneable
    *
    * @return The item value.
    *
-   * @throws java.lang.IndexOutOfBoundsException if the index is negative or greater than the number of
+   * @throws IndexOutOfBoundsException if the index is negative or greater than the number of
    *         columns in this row.
-   * @throws java.lang.IllegalStateException if a deadlock is detected.
+   * @throws IllegalStateException if a deadlock is detected.
    */
   public Object get(final int column)
   {
@@ -339,9 +339,9 @@ public class DataRowBackend implements Cloneable
    *
    * @return The item value.
    *
-   * @throws java.lang.IndexOutOfBoundsException if the index is negative or greater than the number of
+   * @throws IndexOutOfBoundsException if the index is negative or greater than the number of
    *         columns in this row.
-   * @throws java.lang.IllegalStateException if a deadlock is detected.
+   * @throws IllegalStateException if a deadlock is detected.
    */
   public Object get(final String name)
   {
@@ -394,7 +394,7 @@ public class DataRowBackend implements Cloneable
     if (warnInvalidColumns)
     {
       // print an warning for the logs.
-      Log.warn(new org.jfree.util.Log.SimpleMessage("Invalid column name specified on query: ", name));
+      Log.warn(new Log.SimpleMessage("Invalid column name specified on query: ", name));
     }
     return -1;
   }
@@ -464,7 +464,7 @@ public class DataRowBackend implements Cloneable
    *
    * @return the clone.
    *
-   * @throws java.lang.CloneNotSupportedException should never happen.
+   * @throws CloneNotSupportedException should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TranslationTable.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -97,7 +97,9 @@ public class TranslationTable
     {
       Log.debug ("Unable to load the translation set.");
     }
-    TranslationTable table = new TranslationTable(translations, "report-definition.parser-config.object-factory");
-    Log.debug (table.translateAttribute("class", "com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory"));
+    TranslationTable table = new TranslationTable
+      (translations, "report-definition.parser-config.object-factory");
+    Log.debug (table.translateAttribute
+      ("class", "com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory"));
   }
 }

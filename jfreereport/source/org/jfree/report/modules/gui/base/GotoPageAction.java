@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,8 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
         resources.getObject("action.gotopage.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
         resources.getObject("action.gotopage.accelerator"));
+    this.putValue(SMALL_ICON, createTransparentImage(16, 16));
+    this.putValue("ICON24", createTransparentImage(24, 24));
   }
 
 }

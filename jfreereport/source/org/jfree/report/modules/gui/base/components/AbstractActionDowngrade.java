@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.Icon;
 
 /**
  * A class that allows Action features introduced in JDK 1.3 to be used with JDK 1.2.2, by
@@ -67,18 +68,6 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
   public static final String MNEMONIC_KEY = ActionDowngrade.MNEMONIC_KEY;
 
   /**
-   * A transparent 16x16 icon.
-   */
-  private static final ImageIcon TRANSPARENT_EMPTY_ICON_16 =
-      new ImageIcon(createTransparentImage(16, 16));
-
-  /**
-   * A transparent 24x24 icon.
-   */
-  private static final ImageIcon TRANSPARENT_EMPTY_ICON_24 =
-      new ImageIcon(createTransparentImage(24, 24));
-
-  /**
    * Creates a transparent image, which can be used for aligning menu items.
    *
    * @param width  the image width.
@@ -86,13 +75,13 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    *
    * @return a transparent image.
    */
-  public static BufferedImage createTransparentImage(final int width, final int height)
+  public static Icon createTransparentImage(final int width, final int height)
   {
     final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     final int[] data = img.getRGB(0, 0, width, height, null, 0, width);
     Arrays.fill(data, 0x00000000);
     img.setRGB(0, 0, width, height, data, 0, width);
-    return img;
+    return new ImageIcon(img);
   }
 
   /**
@@ -100,7 +89,5 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    */
   protected AbstractActionDowngrade()
   {
-    putValue(SMALL_ICON, TRANSPARENT_EMPTY_ICON_16);
-    putValue("ICON24", TRANSPARENT_EMPTY_ICON_24);
   }
 }

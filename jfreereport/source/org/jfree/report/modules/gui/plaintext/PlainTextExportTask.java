@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.1 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.2 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -132,7 +132,8 @@ public class PlainTextExportTask extends ExportTask
           new FileOutputStream(
               new File(fileName)));
       final PrinterCommandSet pc = getPrinterCommandSet(out, report);
-      final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+      final PlainTextOutputTarget target = 
+        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
       target.configure(report.getReportConfiguration());
 
       final PageableReportProcessor proc = new PageableReportProcessor(report);

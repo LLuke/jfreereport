@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.2 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -98,7 +98,7 @@ public class ReportDefinitionImpl implements ReportDefinition
    *
    * @param report  the report.
    *
-   * @throws java.lang.CloneNotSupportedException if there is a problem cloning.
+   * @throws CloneNotSupportedException if there is a problem cloning.
    */
   public ReportDefinitionImpl(final JFreeReport report) throws CloneNotSupportedException
   {
@@ -220,8 +220,8 @@ public class ReportDefinitionImpl implements ReportDefinition
    *
    * @return the requested group.
    *
-   * @throws java.lang.IllegalArgumentException if the count is negative.
-   * @throws java.lang.IndexOutOfBoundsException if the count is greater than the number of defined groups.
+   * @throws IllegalArgumentException if the count is negative.
+   * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
    */
   public Group getGroup(final int count)
   {
@@ -243,7 +243,7 @@ public class ReportDefinitionImpl implements ReportDefinition
    * Creates and returns a copy of this object.
    *
    * @return     a clone of this instance.
-   * @exception  java.lang.CloneNotSupportedException  if the object's class does not
+   * @exception  CloneNotSupportedException  if the object's class does not
    *               support the <code>Cloneable</code> interface. Subclasses
    *               that override the <code>clone</code> method can also
    *               throw this exception to indicate that an instance cannot

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ExcelPrintSetupFactory.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ExcelPrintSetupFactory.java,v 1.4 2003/08/26 16:03:10 taqua Exp $
  *
  * Changes
  * -------
@@ -204,7 +204,8 @@ public final class ExcelPrintSetupFactory
 
   /** A standard page format mapping for excel. */
   public static final ExcelPageDefinition FANFOLDGERMANLEGAL = new ExcelPageDefinition
-      ((short) 41, PageFormatFactory.FANFOLDGERMANLEGAL[0], PageFormatFactory.FANFOLDGERMANLEGAL[1]);
+      ((short) 41, PageFormatFactory.FANFOLDGERMANLEGAL[0], 
+          PageFormatFactory.FANFOLDGERMANLEGAL[1]);
 
   /**
    * A read only page format mapping definiton to map a page format to an
