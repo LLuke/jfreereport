@@ -26,11 +26,15 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
+ * 16-May-2002 : parseStroke added for line width
+ * 
  */
 package com.jrefinery.report.io;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Paint;
+import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -220,6 +224,7 @@ public class ElementFactory
       ImageElement element = new ImageElement();
       element.setName(elementName);
       element.setImageReference(imgRef);
+
       return element;
     }
     catch (IOException mfule)
@@ -239,11 +244,18 @@ public class ElementFactory
 
     Line2D line = new Line2D.Float(x1, y1, x2, y2);
     LineShapeElement element = new LineShapeElement();
+    element.setStroke(parseStroke(atts.getValue("weight")));
     element.setPaint(parseColor(atts.getValue("color")));
     element.setBounds(new Rectangle2D.Float(x1, y1, x2 - x1, y2 - y1));
     element.setName(name);
     element.setLine(line);
     return element;
+  }
+
+  protected Stroke parseStroke(String weight) {
+    Float w = new Float(weight);
+
+    return new BasicStroke(w.floatValue());
   }
 
   protected Paint parseColor(String color)
@@ -403,4 +415,5 @@ public class ElementFactory
   {
     return null;
   }
+
 }
