@@ -136,6 +136,7 @@ public class KeyedQueue implements Serializable, Cloneable
 
   public Object clone () throws CloneNotSupportedException
   {
+    System.out.println ("Cloned QUEUE: " + list.size());
     KeyedQueue q = (KeyedQueue) super.clone ();
     q.list = (LinkedList) list.clone ();
     q.table = (Hashtable) table.clone ();

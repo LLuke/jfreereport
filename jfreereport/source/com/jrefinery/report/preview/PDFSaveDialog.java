@@ -61,6 +61,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Frame;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -205,10 +207,27 @@ public class PDFSaveDialog extends JDialog
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
+  public PDFSaveDialog(Frame owner)
+  {
+    super(owner);
+    initConstructor();
+  }
+
+  public PDFSaveDialog(Dialog owner)
+  {
+    super(owner);
+    initConstructor();
+  }
+
   /**
    * DefaultConstructor. The created dialog is modal.
    */
   public PDFSaveDialog()
+  {
+    initConstructor();
+  }
+
+  private void initConstructor ()
   {
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.20 2002/08/31 14:00:17 taqua Exp $
+ * $Id: Band.java,v 1.21 2002/09/05 08:31:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -328,25 +328,6 @@ public abstract class Band implements Serializable, Cloneable
     StringBuffer b = new StringBuffer();
     b.append(this.getClass().getName());
     return b.toString();
-  }
-
-  /**
-   * Queries the last datasource in the chain of targets and filters.
-   * <p>
-   * The last datasource is used to feed data into the data processing chain.
-   * The result of this computation is retrieved by the element using the
-   * registered datasource to query the queue.
-   */
-  public static DataSource getLastDatasource(DataTarget e)
-  {
-    if (e == null) throw new NullPointerException();
-    DataSource s = e.getDataSource();
-    if (s instanceof DataTarget)
-    {
-      DataTarget tgt = (DataTarget) s;
-      return getLastDatasource(tgt);
-    }
-    return s;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.22 2002/09/01 15:49:31 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.23 2002/09/05 08:31:52 taqua Exp $
  *
  * Changes
  * -------
@@ -379,15 +379,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * of  <code>"com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT"</code> is set to
    * <code>true</code>
    */
+/*
   static
-  {/*
+  {
     String prop = System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT", "false");
     if (prop.equalsIgnoreCase ("true"))
     {
       getFontFactory ().registerDefaultFontPath ();
-    }*/
+    }
   }
-
+*/
   /**
    * Creates a PDFBandCursor to support coordinate space transformation.
    */

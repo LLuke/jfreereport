@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.29 2002/09/01 15:49:31 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.30 2002/09/05 08:25:01 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,6 +47,9 @@
  *               Printing supports the pageable interface.
  * 08-Jun-2002 : Documentation and the pageFormat property is removed. The pageformat is defined
  *               in the JFreeReport-object and passed to the ReportPane.
+ * 06-Sep-2002 : Added Dispose on Component-hide, so that this Frame can be garbageCollected. Without this
+ *               Construct, the PreviewFrame would never be GarbageCollected and would cause
+ *               OutOfMemoryExceptions when the program runs a longer time.
  */
 
 package com.jrefinery.report.preview;
@@ -97,9 +100,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -424,6 +430,18 @@ public class PreviewFrame
   {
     // get a locale-specific resource bundle...
     setLargeIconsEnabled(true);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+    // Handle a JDK-Bug: Windows are not GCd if dispose is not called manually.
+    // DisposedState is undone when show() or pack() is called, so this does no harm
+    addComponentListener(new ComponentAdapter()
+    {
+      public void componentHidden(ComponentEvent e)
+      {
+        ((Window) (e.getComponent())).dispose();
+        System.out.println("Window is disposed...");
+      }
+    });
 
     ResourceBundle resources = getResources();
 
@@ -443,7 +461,7 @@ public class PreviewFrame
     content.add(toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane(report);
-    reportPane.addPropertyChangeListener(this);
+    //reportPane.addPropertyChangeListener(this);
 
     JPanel reportPaneHolder = new JPanel(new CenterLayout());
     reportPaneHolder.add(reportPane);
@@ -462,25 +480,13 @@ public class PreviewFrame
     content.add(scrollPaneHolder);
     setContentPane(content);
 
-    pdfSaveDialog = new PDFSaveDialog();
+    pdfSaveDialog = new PDFSaveDialog(this);
     pdfSaveDialog.pack();
   }
 
   public PDFSaveDialog getPdfSaveDialog()
   {
     return pdfSaveDialog;
-  }
-
-  /**
-   * Disposes the frame and clears all resources.
-   */
-  public void dispose()
-  {
-    reportPane.removePropertyChangeListener(this);
-    super.dispose();
-    this.removeAll();
-    this.reportPane = null;
-    this.resources = null;
   }
 
   /**
@@ -547,7 +553,7 @@ public class PreviewFrame
   public void attemptPageSetup()
   {
     PrinterJob pj = PrinterJob.getPrinterJob();
-    PageFormat pf = pj.pageDialog(reportPane.getOutputTarget().getPageFormat());
+    PageFormat pf = pj.pageDialog(reportPane.getPageFormat());
 
     reportPane.setPageFormat(pf);
     validateButtons();
@@ -680,7 +686,6 @@ public class PreviewFrame
     zoomIndex = index;
     reportPane.setZoomFactor(getZoomFactor());
     zoomSelect.setSelectedIndex(zoomIndex);
-    //validateButtons();
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.14 2002/08/22 21:08:23 taqua Exp $
+ * $Id: ImageElement.java,v 1.15 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes:
  * --------
@@ -118,7 +118,12 @@ public class ImageElement extends Element
    */
   public float getY ()
   {
-
     return (float) getBounds ().getY ();
+  }
+
+  public Object clone() throws CloneNotSupportedException
+  {
+    System.out.println ("Element Cloned: " + getDataSource());
+    return super.clone();
   }
 }

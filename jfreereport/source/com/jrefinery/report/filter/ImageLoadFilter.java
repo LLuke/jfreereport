@@ -74,7 +74,7 @@ public class ImageLoadFilter implements DataFilter
    */
   public ImageLoadFilter ()
   {
-    this (10);
+    this (1);
   }
 
   /**
@@ -153,6 +153,7 @@ public class ImageLoadFilter implements DataFilter
    */
   public Object clone () throws CloneNotSupportedException
   {
+    System.out.println ("ImageLoadFilter: cloned");
     ImageLoadFilter il = (ImageLoadFilter) super.clone ();
     il.imageCache = (KeyedQueue) imageCache.clone ();
     if (source != null) il.source = (DataSource) source.clone ();

@@ -244,7 +244,6 @@ public class ReportGenerator
     if (generator == null)
     {
       generator = new ReportGenerator ();
-      generator.initFromSystem ();
     }
     return generator;
   }

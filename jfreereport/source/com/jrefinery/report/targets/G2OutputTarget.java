@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.15 2002/08/29 19:15:35 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.16 2002/09/01 15:49:31 taqua Exp $
  *
  * Changes
  * -------
@@ -280,12 +280,23 @@ public class G2OutputTarget extends AbstractOutputTarget
   {
     Rectangle2D bounds = getCursor().getDrawBounds();
     if (image.getImage() != null)
-      g2.drawImage(image.getImage(),
-          (int) (bounds.getX()),
-          (int) (bounds.getY()),
-          (int) bounds.getWidth(),
-          (int) bounds.getHeight(),
-          null);
+    {
+      try
+      {
+        g2.drawImage(image.getImage(),
+            (int) (bounds.getX()),
+            (int) (bounds.getY()),
+            (int) bounds.getWidth(),
+            (int) bounds.getHeight(),
+            null);
+      }
+      catch (Throwable th)
+      {
+        th.printStackTrace();
+        Log.debug ("System.FreeMem: " + Runtime.getRuntime().freeMemory());
+        Log.debug ("System.TotalMem: " + Runtime.getRuntime().totalMemory());
+      }
+    }
   }
 
   /**

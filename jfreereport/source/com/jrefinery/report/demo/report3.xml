@@ -48,7 +48,7 @@
         <string-field x="0" y="96" width="200" height="12" alignment="left" fieldname="street"/>
         <string-field x="0" y="120" width="200" height="12" alignment="left" fieldname="town"/>
 
-        <string-function x="0" y="224" width="165" height="12" alignment="left" fontstyle="bold" function="expr"/>
+        <string-function x="0" y="224" width="100%" height="12" alignment="left" fontstyle="bold" function="expr"/>
 
 <!--        <date-function x="258" y="224" width="200" height="12" alignment="left" format="EEE, MMM d, yyyy" function="printdate"/> -->
         <label x="0" y="290" width="450" height="12" alignment="left"

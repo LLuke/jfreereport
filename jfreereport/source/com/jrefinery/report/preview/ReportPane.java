@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.19 2002/09/01 15:49:31 taqua Exp $
+ * $Id: ReportPane.java,v 1.20 2002/09/05 08:31:52 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -92,9 +92,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** The report currently being displayed in the pane; */
   protected JFreeReport report;
 
-  /** The page format corresponding to the current printer setup; */
-  //	private PageFormat pageFormat;
-
   /** The current page number; */
   private int pageNumber;
 
@@ -110,14 +107,14 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** A flag to indicate whether the border is painted or not */
   private boolean borderPainted;
 
-  /** The output target for drawing to the screen.*/
-  protected G2OutputTarget target;
-
   /** The last error that occured while printing or painting the report */
   private Exception error;
 
   /** A state variable containing true, if the report is currently beeing paginated */
   private boolean isPaginating;
+
+  /** PageFormat */
+  private PageFormat pageFormat;
 
   /** A simple class performing the locking for huge paginating runs */
   private class PaginateLock
@@ -143,22 +140,21 @@ public class ReportPane extends JComponent implements Printable, Pageable
    * is created and the reports defaultPageFormat is used for printing.
    *
    * @param report The report to display within the pane;
-   */
-  public ReportPane (JFreeReport report)
   {
     this (report, new G2OutputTarget (G2OutputTarget.createEmptyGraphics (), report.getDefaultPageFormat ()));
   }
+   */
 
   /**
    * Standard constructor - builds a report pane to display the specified report.
    * @param report The report to display within the pane;
    * @param target The current outputtarget, contains the current PageFormat on which to print.
    */
-  public ReportPane (JFreeReport report, G2OutputTarget target)
+  public ReportPane (JFreeReport report)
   {
-    setDoubleBuffered (false);
-    this.target = target;
+    setDoubleBuffered (true);
     this.report = report;
+    setPageFormat(report.getDefaultPageFormat());
     setBorderPainted (false);
     setPageNumber (1);
     setZoomFactor (1.0);
@@ -191,7 +187,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public PageFormat getPageFormat ()
   {
-    return getOutputTarget ().getPageFormat ();
+    return pageFormat;
   }
 
   /**
@@ -224,12 +220,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
    * @param pageFormat The new page format;
    *
    */
-  public void setPageFormat (PageFormat pageFormat)
+  public void setPageFormat (PageFormat _pageFormat)
   {
-    if (pageFormat == null)
+    if (_pageFormat == null)
       throw new NullPointerException ("PageFormat must not be null");
 
-    getOutputTarget ().setPageFormat (pageFormat);
+    this.pageFormat = _pageFormat;
     setPageStateList (null);
     graphCache = null;
 
@@ -429,38 +425,35 @@ public class ReportPane extends JComponent implements Printable, Pageable
          * set to true.
          */
         Rectangle2D printingArea = new Rectangle2D.Float (innerX, innerY, innerW, innerH);
-        synchronized (target)
+        G2OutputTarget target = new G2OutputTarget(g2, getPageFormat());
+        try
         {
-          target.setGraphics2D (g2);
+          if (!isPaginated ())
+          {
+            repaginate (target);
+          }
+        }
+        catch (ReportProcessingException rpe)
+        {
+          Log.error ("Repaginate failed: ", rpe);
+          setError (rpe);
+        }
+
+        int pageNumber = getPageNumber ();
+        if (pageNumber > 0)
+        {
+          ReportState state = (ReportState) getPageStateList ().get (pageNumber - 1);
           try
           {
-            if (!isPaginated ())
-            {
-              repaginate (target);
-            }
+            ReportState s2 = state.getReport().processPage (target, state, true);
           }
           catch (ReportProcessingException rpe)
           {
             Log.error ("Repaginate failed: ", rpe);
             setError (rpe);
           }
-
-          int pageNumber = getPageNumber ();
-          if (pageNumber > 0)
-          {
-            ReportState state = (ReportState) getPageStateList ().get (pageNumber - 1);
-            try
-            {
-              ReportState s2 = report.processPage (target, state, true);
-            }
-            catch (ReportProcessingException rpe)
-            {
-              Log.error ("Repaginate failed: ", rpe);
-              setError (rpe);
-            }
-          }
-          target.setGraphics2D (G2OutputTarget.createEmptyGraphics ());
         }
+
         /** Paint Page Shadow */
         Rectangle2D southborder =
                 new Rectangle2D.Double (
@@ -524,6 +517,13 @@ public class ReportPane extends JComponent implements Printable, Pageable
           g2.setPaint (Color.gray);
           g2.draw (printingArea);
         }
+
+        // Dispose the temporary graphics object, it is no longer needed
+        // if graphcache is null, the image is not cached, so do not dispose...
+        if (graphCache != null)
+        {
+          g2.dispose();
+        }
       }
 
       if (graphCache != null)
@@ -546,6 +546,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
       setError(e);
       super.paintComponent(g);
     }
+    graphCache = null;
   }
 
   /** Supports the Printable interface by drawing a report on a single page. */
@@ -565,7 +566,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
         return NO_SUCH_PAGE;
 
       ReportState state = (ReportState) getPageStateList ().get (pageIndex);
-      report.processPage (target, state, true);
+      state.getReport().processPage (target, state, true);
     }
     catch (ReportProcessingException rpe)
     {
@@ -608,7 +609,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
       try
       {
         ReportState state = new ReportState.Start (getReport ());
-        ReportStateList list = getReport ().repaginate (target, state);
+        ReportStateList list = state.getReport ().repaginate (target, state);
         Number i = (Number) state.getProperty (JFreeReport.REPORT_PAGECOUNT_PROPERTY);
         if (i == null)
         {
@@ -656,14 +657,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * Returns the assigned OutputTarget for this ReportPane.
-   */
-  public G2OutputTarget getOutputTarget ()
-  {
-    return target;
-  }
-
-  /**
    * clears the error state.
    */
   public void clearError ()
@@ -678,5 +671,4 @@ public class ReportPane extends JComponent implements Printable, Pageable
   {
     return error;
   }
-
 }

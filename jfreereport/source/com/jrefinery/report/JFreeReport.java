@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.24 2002/08/16 20:13:35 taqua Exp $
+ * $Id: JFreeReport.java,v 1.25 2002/08/19 22:06:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -587,6 +587,12 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     return data;
   }
 
+  public ReportState processReport (OutputTarget target)
+          throws ReportProcessingException
+  {
+    return JFreeReport.processReport(target, this);
+  }
+
   /**
    * Sends the entire report to the specified target. The report is always drawn.
    *
@@ -596,12 +602,12 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
-  public ReportState processReport (OutputTarget target)
+  public static ReportState processReport (OutputTarget target, JFreeReport report)
           throws ReportProcessingException
   {
     int page = 1;
-    ReportState rs = new ReportState.Start (this);
-    ReportProcessor prc = new ReportProcessor (target, true, getPageFooter ());
+    ReportState rs = new ReportState.Start (report);
+    ReportProcessor prc = new ReportProcessor (target, true, rs.getReport().getPageFooter ());
 
     // To a repagination
     ReportStateList rl = repaginate (target, rs);
@@ -612,7 +618,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     while (!rs.isFinish ())
     {
       ReportState nrs = processPage (target, rs, true);
-      Log.error (String.valueOf (getProperty (REPORT_DATE_PROPERTY)));
+      Log.error (String.valueOf (rs.getProperty (REPORT_DATE_PROPERTY)));
       if (nrs.isProceeding (rs) == false)
       {
         throw new ReportProcessingException ("Report is not proceeding");
@@ -628,13 +634,13 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * @param output The output target.
    * @param state The report state.
    */
-  public ReportStateList repaginate (OutputTarget output, ReportState state)
+  public static ReportStateList repaginate (OutputTarget output, ReportState state)
           throws ReportProcessingException
   {
     if (state.isStart () != true) throw new ReportProcessingException ("Need a start state for repagination");
-    ReportStateList pageStates = new ReportStateList (this, output);
+    ReportStateList pageStates = new ReportStateList (state.getReport(), output);
 
-    ReportProcessor prc = new ReportProcessor (output, false, getPageFooter ());
+    ReportProcessor prc = new ReportProcessor (output, false, state.getReport().getPageFooter ());
     state = state.advance (prc);
 
     state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
@@ -673,7 +679,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    *
    * @throws IllegalArgumentException if the given state is a start or a finish state.
    */
-  public ReportState processPage (
+  public static ReportState processPage (
           OutputTarget target,
           final ReportState currPage,
           boolean draw) throws ReportProcessingException
@@ -699,7 +705,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
     int page = state.getCurrentPage ();
     boolean pageDone = false;
-    ReportProcessor prc = new ReportProcessor (target, draw, getPageFooter ());
+    ReportProcessor prc = new ReportProcessor (target, draw, state.getReport().getPageFooter ());
 
     // Print the pageHeader before any other item.
     ReportEvent event = new ReportEvent (state);
@@ -707,7 +713,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     //getPageHeader ().populateElements (state);
     if (page == 1)
     {
-      if (getPageHeader ().isDisplayOnFirstPage ())
+      if (state.getReport().getPageHeader ().isDisplayOnFirstPage ())
       {
         prc.printPageHeader (state.getReport().getPageHeader ());
       }
@@ -732,7 +738,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     //getPageFooter ().populateElements (state);
     if (page == 1)
     {
-      if (getPageFooter ().isDisplayOnFirstPage ())
+      if (state.getReport().getPageFooter ().isDisplayOnFirstPage ())
       {
         prc.printPageFooter (state.getReport().getPageFooter ());
       }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.29 2002/08/29 19:15:34 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.30 2002/08/31 16:50:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -103,7 +103,10 @@ public class JFreeReportDemo extends JFrame
 
     public void actionPerformed(ActionEvent event)
     {
+      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " Total: " + Runtime.getRuntime().totalMemory());
+      System.gc();
       displayAbout();
+      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " Total: " + Runtime.getRuntime().totalMemory());
     }
   }
 
@@ -330,6 +333,7 @@ public class JFreeReportDemo extends JFrame
     try
     {
       report1 = gen.parseReport(in, in);
+//       report1 = new JFreeReport();
 
     }
     catch (Exception ioe)
@@ -348,6 +352,7 @@ public class JFreeReportDemo extends JFrame
     report1.setData(data);
 
     PreviewFrame frame1 = new PreviewFrame(report1);
+    frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     frame1.pack();
     RefineryUtilities.positionFrameRandomly(frame1);
     frame1.setVisible(true);
@@ -522,7 +527,7 @@ public class JFreeReportDemo extends JFrame
     {
     }
 
-    PDFOutputTarget.getFontFactory().registerDefaultFontPath();
+//    PDFOutputTarget.getFontFactory().registerDefaultFontPath();
 
     String baseName = "com.jrefinery.report.demo.resources.DemoResources";
     ResourceBundle resources = ResourceBundle.getBundle(baseName);

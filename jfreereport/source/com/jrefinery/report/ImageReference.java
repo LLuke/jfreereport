@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.15 2002/08/14 21:14:04 taqua Exp $
+ * $Id: ImageReference.java,v 1.16 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes:
  * --------
@@ -42,6 +42,7 @@
 package com.jrefinery.report;
 
 import gnu.bhresearch.pixie.wmf.WmfImageProducer;
+import gnu.bhresearch.pixie.wmf.WmfFile;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -93,14 +94,15 @@ public class ImageReference implements Serializable, Cloneable
 
       if (c1 == 0xD7 && c2 == 0xCD)
       {
-        image = Toolkit.getDefaultToolkit ().createImage (new WmfImageProducer (url));
+        WmfFile wmfFile = new WmfFile(url);
+        image = wmfFile.replay();
+        //image = Toolkit.getDefaultToolkit ().createImage (new WmfImageProducer (url));
       }
       else
       {
         this.url = url;
         image = Toolkit.getDefaultToolkit ().getImage (url);
         WaitingImageObserver obs = new WaitingImageObserver (image);
-
         obs.waitImageLoaded ();
       }
     }
