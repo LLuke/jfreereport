@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------
+ * --------------------------
  * ReportListenerAdapter.java
- * ------------
+ * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  Thomas Morgner
@@ -32,74 +32,92 @@
  * --------------------------
  *
  * 10-May-2002 : Created the EventInterface for JFreeReport
+ * 17-Jul-2002 : Updated header and Javadocs (DG);
  *
  */
 package com.jrefinery.report.event;
 
+/**
+ * A base class that provides empty implementations of the methods in the ReportListener interface.
+ */
 public class ReportListenerAdapter implements ReportListener
 {
   /**
-   * Is called when the reportgeneration started. The Event carries an ReportState.Started
-   * state. Use this to initialize the report.
+   * An empty implementation of the reportStarted method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void reportStarted (ReportEvent event)
   {
   }
 
   /**
-   * ReportFinished. The report generation has finished. The last record is read and all
-   * groups are closed.
+   * An empty implementation of the reportFinished method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void reportFinished (ReportEvent event)
   {
   }
 
   /**
-   * A new page is beeing processed.
+   * An empty implementation of the pageStarted method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void pageStarted (ReportEvent event)
   {
   }
 
   /**
-   * The page is finished
+   * An empty implementation of the pageFinished method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void pageFinished (ReportEvent event)
   {
   }
 
   /**
-   * A new group has started. The group can be determined by the reportstate's getCurrentGroup()
-   * function.
+   * An empty implementation of the groupStarted method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void groupStarted (ReportEvent event)
   {
   }
 
   /**
-   * The currentGroup is closed. The group can be determined by the reportstate's getCurrentGroup()
+   * An empty implementation of the groupFinished method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void groupFinished (ReportEvent event)
   {
   }
 
   /**
-   * The ItemsSection is beeing processed. The next events will be itemsAdvanced events until the
-   * itemsFinished event is raised.
+   * An empty implementation of the itemsStarted method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void itemsStarted (ReportEvent event)
   {
   }
 
   /**
-   * The itemBand is finished, the report starts to close open groups.
+   * An empty implementation of the itemsFinished method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void itemsFinished (ReportEvent event)
   {
   }
 
   /**
-   * A new row is read. This event is raised before an ItemBand is printed.
+   * An empty implementation of the itemsAdvanced method defined in the ReportListener interface.
+   *
+   * @param event The event.
    */
   public void itemsAdvanced (ReportEvent event)
   {

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,19 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------
+ * ----------------
  * ReportEvent.java
- * ------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ----------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  Thomas Morgner
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  * Changes (from 10-May-2002)
  * --------------------------
  *
  * 10-May-2002 : Created the EventInterface for JFreeReport
  * 05-Jun-2002 : cleared the interface,Documentation
+ * 17-Jul-2002 : Updated header and Javadocs (DG);
+ *
  */
 package com.jrefinery.report.event;
 
@@ -42,16 +44,19 @@ import com.jrefinery.report.ReportState;
 import java.util.EventObject;
 
 /**
- * The ReportEvent carries the information which reportstate generated the event.
+ * Represents a report event.
+ * <P>
+ * Includes information regarding which ReportState generated the event.
  */
 public class ReportEvent extends EventObject
 {
+  /** The report state. */
   private ReportState state;
 
   /**
-   * Creates a new ReportEvent. Neither report or state are allowed to be null.
+   * Creates a new ReportEvent.
    *
-   * @param state the current state of the processed report.
+   * @param state The current state of the processed report (null not allowed).
    */
   public ReportEvent (ReportState state)
   {
@@ -60,24 +65,27 @@ public class ReportEvent extends EventObject
   }
 
   /**
-   * Convience method to extract the report which was processed when the ReportEvent
-   * was fired. This function will never return null
+   * Returns the ReportState, which is the source of the event.
+   * <P>
+   * This function will never return null.
    *
-   * @returns the report being processed.
+   * @return The state.
+   */
+  public ReportState getState ()
+  {
+    return (ReportState) getSource ();
+  }
+
+  /**
+   * Returns the report that generated the event.
+   * <P>
+   * This is a convenience method that extracts the report from the report state.
+   *
+   * @return The report.
    */
   public JFreeReport getReport ()
   {
     return getState ().getReport ();
   }
 
-  /**
-   * returns the ReportState, which is the source of the event. This function will never
-   * return null.
-   *
-   * @return the current state of the report processing.
-   */
-  public ReportState getState ()
-  {
-    return (ReportState) getSource ();
-  }
 }
