@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.2 2003/01/29 18:37:11 taqua Exp $
  *
  * Changes
  * -------
@@ -333,7 +333,9 @@ public class StaticLayoutManager implements BandLayoutManager
   private double alignUp (double value, double boundry)
   {
     if (boundry == 0)
+    {
       return value;
+    }
 
     return Math.ceil(value / boundry) * boundry;
   }

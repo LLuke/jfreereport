@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:19:44 PM
  *
- * $Id: TableProducer.java,v 1.6 2003/01/28 22:05:26 taqua Exp $
+ * $Id: TableProducer.java,v 1.7 2003/01/29 21:57:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -77,13 +77,11 @@ public abstract class TableProducer
     // do nothing if the band is invisble
     if (band.isVisible() == false)
     {
-      Log.debug ("Band is invisible" + band);
       return;
     }
 
     if (bounds.getHeight() == 0)
     {
-      Log.debug ("Band has no height: " + band);
       return;
     }
 
@@ -94,7 +92,6 @@ public abstract class TableProducer
   {
     if (bounds.getHeight() == 0)
     {
-      Log.debug ("Band has no height: ", new Exception());
       return;
     }
     // handle the band itself, the band's bounds are already translated.

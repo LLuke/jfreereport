@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.3 2003/01/29 03:13:04 taqua Exp $
+ * $Id: TableWriter.java,v 1.4 2003/01/29 18:37:13 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -155,8 +155,6 @@ public class TableWriter extends AbstractFunction
 
   public void endPage ()
   {
-    Log.debug ("EndPage;" + isPageEmpty + " + " + getCurrentEvent().getState());
-
     if (inEndPage == true)
     {
       throw new IllegalStateException ("Already in startPage or endPage");
@@ -216,7 +214,6 @@ public class TableWriter extends AbstractFunction
     if (!isInEndPage() && (isPageEmpty == false) &&
         b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
     {
-      Log.debug  ("PAGEBREAK AFTER PRINT");
       endPage();
       startPage();
     }
@@ -257,7 +254,6 @@ public class TableWriter extends AbstractFunction
     try
     {
       setCurrentEvent(event);
-      Log.debug ("CurrentEvent: " + event.getState());
 
       producer.open();
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.18 2003/01/29 18:37:13 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.19 2003/01/29 23:05:55 taqua Exp $
  *
  * Changes
  * -------
@@ -477,16 +477,12 @@ public class SimplePageLayouter extends PageLayouter
     {
       createSaveState(b);
 
-      Log.debug ("Logical-Page: " + getLogicalPage().isEmpty());
-
       if (endPage(ENDPAGE_REQUESTED) == false)
       {
-        Log.debug ("Page is empty, printing anyway");
         // no pagebreak was done, the band was printed to an already empty page
         return print(b, false);
       }
       // a pagebreak was requested, printing is delayed
-      Log.debug ("Page has content, printing on next page");
       setStartNewPage(true);
       return false;
     }
@@ -534,10 +530,6 @@ public class SimplePageLayouter extends PageLayouter
     Rectangle2D bounds = doLayout(b);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
                    bounds.getWidth(), bounds.getHeight());
-    Log.debug ("PrintBottom: " + bounds);
-    Log.debug ("PrintBottom: Reserve_ " + getCursor());
-    Log.debug ("PrintBottom: Bounds_ " + bounds.getHeight());
-    Log.debug ("PrintBottom: LogPage_ " + getLogicalPage().getHeight());
     return doPrint(bounds, b, false);
   }
 
@@ -766,12 +758,15 @@ public class SimplePageLayouter extends PageLayouter
       return; // no state yet, maybe the first state?
     }
 
-    Log.debug ("State: " + anchestor.getCurrentPage() + " " + anchestor.getCurrentDataItem() + " " + anchestor.getDataRow());
+    Log.debug (new Log.SimpleMessage("State: " ,
+                                     new Integer(anchestor.getCurrentPage()) ,
+                                     new Log.SimpleMessage (" " ,
+                                                            new Integer(anchestor.getCurrentDataItem()),
+                                                            " " ,
+                                                            anchestor.getDataRow())));
 
     getLogicalPage().open();
     startPage(anchestor);
-
-    Log.debug ("getLogicalPage: " + getLogicalPage().isOpen());
 
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
@@ -784,7 +779,6 @@ public class SimplePageLayouter extends PageLayouter
     if (anchestor instanceof PostReportFooterState && state.getBand() != null)
     {
       createSaveState(null);
-      Log.debug ("Forced ENDPAGE");
       endPage(ENDPAGE_FORCED);
     }
   }

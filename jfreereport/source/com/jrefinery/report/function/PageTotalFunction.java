@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.11 2003/01/08 19:33:23 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.12 2003/01/14 21:07:08 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -42,8 +42,6 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
 
@@ -180,8 +178,10 @@ public class PageTotalFunction extends PageFunction
             groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
+          Log.error (groupPages);
           throw new IllegalStateException("No page-storage for the current state: "
                                           + event.getState().getCurrentDataItem());
+
         }
       }
     }

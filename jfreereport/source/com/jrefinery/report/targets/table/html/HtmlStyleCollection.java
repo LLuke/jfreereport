@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 6:17:21 AM
  *
- * $Id: HtmlStyleCollection.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.3 2003/01/27 18:24:55 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -62,7 +62,6 @@ public class HtmlStyleCollection
     // if the table does not contain this style, it is not registered.
     if (name == null)
     {
-      Log.debug ("There is no such style ");
       return false;
     }
     return true;
@@ -173,7 +172,7 @@ public class HtmlStyleCollection
     }
     catch (Exception ofe)
     {
-      Log.debug ("Failed to refactor the color value");
+      Log.debug ("Failed to compute the color value");
     }
     return null;
   }

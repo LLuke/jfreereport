@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 9:40:17 AM
  *
- * $Id: TableGridLayout.java,v 1.5 2003/01/29 18:37:13 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.6 2003/01/29 21:57:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -120,13 +120,14 @@ public class TableGridLayout
     // +1 for outer boundry ...
     int width = xCuts.length;
     int height = yCuts.length;
+/*
     Log.info ("Created GridLayout with " + width + ", " + height);
 
     for (int i = 0; i < xCuts.length; i++)
     {
       Log.info ("X-Cuts: " + xCuts[i]);
     }
-
+*/
     data = new Object[width][height];
 
     for (int i = 0; i < positions.length; i++)
@@ -146,13 +147,15 @@ public class TableGridLayout
     TableGridPosition gPos = new TableGridPosition(pos);
     gPos.setCol(findBoundry(xCuts, (int) bounds.getX()));
     gPos.setRow(findBoundry(yCuts, (int) bounds.getY()));
-    gPos.setColSpan(Math.max(1, findBoundry(xCuts, maxBoundsX) - gPos.getCol()));
-    gPos.setRowSpan(Math.max(1, findBoundry(yCuts, maxBoundsY) - gPos.getRow()));
+    gPos.setColSpan(Math.max(1, findBoundry(xCuts, maxBoundsX, true) - gPos.getCol()));
+    gPos.setRowSpan(Math.max(1, findBoundry(yCuts, maxBoundsY, true) - gPos.getRow()));
 
+/*
     Log.info ("AddTablePos: Col=" + gPos.getCol() +
               "; Row= " + gPos.getRow() +
               "; ColSpan=" + gPos.getColSpan() +
               "; RowSpan=" + gPos.getRowSpan() + "; -> " + pos.debugChunk + " Bounds: "+ bounds);
+*/
 /*
     if (pos instanceof TableBandArea)
     {
@@ -251,14 +254,12 @@ public class TableGridLayout
     }
   }
 
-
-  private int findBoundry (int[] data, int d)
+  public static int findBoundry (int[] data, int d)
   {
-    int retval = xx(data, d);
-    Log.info ("Found: " + retval + " -> " + d);
-    return retval;
+    return findBoundry(data, d, false);
   }
-  private int xx (int[] data, int d)
+
+  public static int findBoundry (int[] data, int d, boolean up)
   {
     for (int i = 0; i < data.length; i++)
     {
@@ -267,14 +268,20 @@ public class TableGridLayout
       {
         return i;
       }
-      else
+      if (dV > d)
       {
-        if (dV > d)
+        if (i == 0)
+          return 0;
+        else
         {
-          if (i == 0)
-            return 0;
+          if (up)
+          {
+            return i;
+          }
           else
+          {
             return i - 1;
+          }
         }
       }
     }

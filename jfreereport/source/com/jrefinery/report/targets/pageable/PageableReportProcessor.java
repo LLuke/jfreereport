@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.15 2003/01/29 18:37:12 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.16 2003/01/29 21:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -242,7 +242,7 @@ public class PageableReportProcessor
           if (level == -1)
           {
             pageStates.add(state);
-            Log.debug ("Added State: " + state);
+//            Log.debug ("Added State: " + state);
           }
           ReportState oldstate = state;
           state = processPage(state, dummyOutput);

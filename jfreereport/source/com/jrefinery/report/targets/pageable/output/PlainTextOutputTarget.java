@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 1:49:26 PM
  *
- * $Id: PlainTextOutputTarget.java,v 1.2 2003/01/29 21:57:12 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.3 2003/01/29 23:05:22 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -347,16 +347,10 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     Rectangle2D bounds = getOperationBounds();
 
-    Log.debug (bounds);
-    Log.debug ("ImageHeight: " + getLogicalPage().getHeight());
-    Log.debug ("CharacterHeight: " + characterHeight);
-    Log.debug ("PageHeight: " + pageBuffer.getHeight());
-
     int x = (int) Math.floor(bounds.getX() / characterWidth);
     int y = (int) Math.floor(bounds.getY() / characterHeight);
     int w = (int) Math.floor(bounds.getWidth() / characterWidth);
 
-    Log.debug ("X = " + x + " Y = " + y + " W = " + w);
     pageBuffer.addTextChunk(x, y, w, text, getFont());
   }
 

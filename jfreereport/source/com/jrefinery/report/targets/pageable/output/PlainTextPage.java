@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 2:30:07 PM
  *
- * $Id: PlainTextPage.java,v 1.1 2003/01/29 18:37:12 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.2 2003/01/29 23:05:22 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -103,10 +103,12 @@ public class PlainTextPage
       {
         pageBuffer[x+i][y] = chunk;
       }
+      /*
       else
       {
         Log.debug ("Character already filled!");
       }
+      */
     }
   }
 

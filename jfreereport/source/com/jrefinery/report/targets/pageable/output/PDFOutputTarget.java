@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.14 2003/01/29 18:37:12 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.15 2003/01/29 21:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -656,11 +656,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     catch (BadElementException be)
     {
-      Log.debug("Caught illegal Image, will recode to PNG instead", be);
+      Log.info("Caught illegal Image, will recode to PNG instead", be);
     }
     catch (IOException ioe)
     {
-      Log.debug("Unable to read the raw-data, will try to recode image-data.", ioe);
+      Log.info("Unable to read the raw-data, will try to recode image-data.", ioe);
     }
 
     if (imageRef.getImage() != null)
@@ -912,15 +912,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
       if (title != null)
       {
-        Log.debug ("Added Title: " + title);
-        Log.debug ("" + getDocument().addTitle(title));
+        getDocument().addTitle(title);
       }
       if (author != null)
       {
-        Log.debug ("Added Author: " + author);
-        Log.debug ("" + getDocument().addAuthor(author));
+        getDocument().addAuthor(author);
       }
-      Log.debug ("Added Creator: " + title);
       getDocument().addCreator(CREATOR);
       getDocument().addCreationDate();
 
@@ -1194,7 +1191,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       throw new NullPointerException();
     }
-    Log.debug ("Font defined !!! " + encoding);
     setProperty(ENCODING, encoding);
   }
 
@@ -1329,7 +1325,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     if (getDocument() == null)
     {
-      Log.debug ("Document is null, assuming that the document is closed ...");
+      //Log.debug ("Document is null, assuming that the document is closed ...");
       return false;
     }
     return getDocument().isOpen();

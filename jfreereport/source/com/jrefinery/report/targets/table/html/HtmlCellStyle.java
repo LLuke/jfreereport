@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:59:00 PM
  *
- * $Id: HtmlCellStyle.java,v 1.4 2003/01/27 03:17:43 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.5 2003/01/27 18:24:54 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -57,7 +57,6 @@ public class HtmlCellStyle
     if (this == o) return true;
     if (!(o instanceof HtmlCellStyle))
     {
-      Log.debug ("Not the same class");
       return false;
     }
 
@@ -65,22 +64,18 @@ public class HtmlCellStyle
 
     if (!font.equals(style.font))
     {
-      Log.debug ("Not the same font");
       return false;
     }
     if (!fontColor.equals(style.fontColor))
     {
-      Log.debug ("Not the same fontcolor");
       return false;
     }
     if (!horizontalAlignment.equals(style.horizontalAlignment))
     {
-      Log.debug ("Not the same horizontal alignment");
       return false;
     }
     if (!verticalAlignment.equals(style.verticalAlignment))
     {
-      Log.debug ("Not the same vertical alignment");
       return false;
     }
 

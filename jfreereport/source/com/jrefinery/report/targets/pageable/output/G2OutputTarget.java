@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.13 2003/01/29 18:37:12 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.14 2003/01/29 21:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -592,31 +592,5 @@ public class G2OutputTarget extends AbstractOutputTarget
     super.setOperationBounds(bounds);
     // then apply the new bounds operation
     g2.transform(AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY()));
-  }
-
-  public static void main (String [] args)
-  {
-    //G2OutputTarget ot = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), new PageFormat());
-
-
-    printMe(false);
-    printMe(true);
-  }
-
-  private static void printMe (boolean alias)
-  {
-    String myText = "A simple text with not tricks and traps";
-    FontRenderContext frc_fract = new FontRenderContext(null, alias, true);
-    FontRenderContext frc_int = new FontRenderContext(null, alias, false);
-
-    Font font = new Font ("Serif", Font.PLAIN, 10);
-    TextLayout lay = new TextLayout(myText, font, frc_fract);
-    Log.debug ("\nText: 10: Lay:   " + lay.getBounds());
-    Log.debug ("Text: 10: Fract: " + font.getStringBounds(myText, 0, myText.length(), frc_fract));
-    Log.debug ("Text: 10: Int  : " + font.getStringBounds(myText, 0, myText.length(), frc_int));
-    Log.debug ("Text: 10: GVi  : " + font.createGlyphVector(frc_int, myText).getOutline().getBounds2D());
-    Log.debug ("Text: 10: GViv : " + font.createGlyphVector(frc_int, myText).getOutline().getBounds2D());
-    Log.debug ("Text: 10: GVf  : " + font.createGlyphVector(frc_fract, myText).getOutline().getBounds2D());
-    Log.debug ("Text: 10: GVfv : " + font.createGlyphVector(frc_fract, myText).getOutline().getBounds2D());
   }
 }

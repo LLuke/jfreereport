@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 10:44:22 PM
  *
- * $Id$
+ * $Id: ImageComparator.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -60,7 +60,7 @@ public class ImageComparator
     }
     catch (NoSuchAlgorithmException nse)
     {
-      Log.debug ("No MD5 algorithm available");
+      Log.info ("No MD5 algorithm available");
     }
     try
     {
@@ -68,7 +68,7 @@ public class ImageComparator
     }
     catch (NoSuchAlgorithmException nse)
     {
-      Log.debug ("No MD5 algorithm available");
+      Log.info ("No SHA algorithm available");
     }
   }
 
