@@ -28,20 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdInvertRegion.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdInvertRegion.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
-import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Graphics2D;
 
+import org.jfree.pixie.wmf.MfLogRegion;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.MfLogRegion;
 
 /**
  * Inverts the colors in the specified region
@@ -75,24 +75,24 @@ public class MfCmdInvertRegion extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdInvertRegion ();
+    return new MfCmdInvertRegion();
   }
 
   private static final int RECORD_SIZE = 1;
   private static final int POS_REGION = 0;
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    region = record.getParam (POS_REGION);
+    region = record.getParam(POS_REGION);
   }
 
   /**
@@ -119,15 +119,15 @@ public class MfCmdInvertRegion extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[INVERT_REGION] region=");
-    b.append (getRegion ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[INVERT_REGION] region=");
+    b.append(getRegion());
+    return b.toString();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

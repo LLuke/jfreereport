@@ -4,17 +4,15 @@ import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * The SetTextAlign function sets the text-alignment flags for the
- * specified device context.
- *
- * Specifies the text alignment by using a mask of the values in the
- * following list. Only one flag can be chosen from those that affect
- * horizontal and vertical alignment. In addition, only one of the two
- * flags that alter the current position can be chosen.
- *
+ * The SetTextAlign function sets the text-alignment flags for the specified device
+ * context.
+ * <p/>
+ * Specifies the text alignment by using a mask of the values in the following list. Only
+ * one flag can be chosen from those that affect horizontal and vertical alignment. In
+ * addition, only one of the two flags that alter the current position can be chosen.
+ * <p/>
  * The default values are TA_LEFT, TA_TOP, and TA_NOUPDATECP
  */
 public class MfCmdSetTextAlign extends MfCmd
@@ -35,8 +33,8 @@ public class MfCmdSetTextAlign extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    state.setTextAlign (textAlignMode);
+    final MfDcState state = file.getCurrentState();
+    state.setTextAlign(textAlignMode);
   }
 
   /**
@@ -46,22 +44,22 @@ public class MfCmdSetTextAlign extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetTextAlign ();
+    return new MfCmdSetTextAlign();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int id = record.getParam (POS_TEXT_ALIGNMENT);
-    setTextAlignMode (id);
+    final int id = record.getParam(POS_TEXT_ALIGNMENT);
+    setTextAlignMode(id);
   }
 
 
@@ -70,7 +68,8 @@ public class MfCmdSetTextAlign extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_TEXT_ALIGNMENT, getTextAlignMode());
@@ -78,8 +77,8 @@ public class MfCmdSetTextAlign extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -100,17 +99,17 @@ public class MfCmdSetTextAlign extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SET_TEXT_ALIGN] textAlign=");
-    b.append (getTextAlignMode ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SET_TEXT_ALIGN] textAlign=");
+    b.append(getTextAlignMode());
+    return b.toString();
   }
 
   /**
    * A callback function to inform the object, that the x scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleXChanged()
+  protected void scaleXChanged ()
   {
   }
 
@@ -118,7 +117,7 @@ public class MfCmdSetTextAlign extends MfCmd
    * A callback function to inform the object, that the y scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleYChanged()
+  protected void scaleYChanged ()
   {
   }
 }

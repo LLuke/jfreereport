@@ -1,202 +1,194 @@
-<!-- An ANT build file for Pixie -->
-
-<!-- Based on a script written by David Gilbert. -->
-<!-- 12-Nov-2002 -->
-
-<!-- This script will create temporary directories ../build and -->
+<!--
+<!DOCTYPE project PUBLIC "-//ANT//DTD project//EN" "ant.dtd">
+-->
+<!-- An ANT build file for Pixie                                     -->
+<!-- Based on a script written by David Gilbert                      -->
+<!--                                                                 -->
+<!-- To run this script, you need to make sure the libraries used by -->
+<!-- Pixie are copied to the ../lib directory (or edit the           -->
+<!-- init-general task to point to the appropriate jar files).       -->
+<!--                                                                 -->
+<!-- This script will create temporary directories ../build and      -->
 <!-- ../distribution, as working areas.  A ../javadoc directory will -->
-<!-- be created for the Javadoc HTML pages. -->
+<!-- be created for the Javadoc HTML pages.                          -->
+<!--                                                                 -->
+<!-- If you have comments about this script, please post a message   -->
+<!-- in the Pixie forum.                                             -->
 
-<!-- If you have comments about this script, please post a message -->
-<!-- in the JFreeReport forum. -->
+<project name="pixie" default="all" basedir="..">
 
-<project name="pixie" default="all" basedir=".">
+  <target name="init">
 
-  <!-- Initialisation. -->
-  <target name="init" description="Initialise parameters.">
-    <tstamp/>
-    <!-- BaseDirectory is different for either cvs target and build target -->
-    <!-- base dir is set elsewhere and cannot be redefined :( -->
-    <property name="projectdir" value=".."/>
-    <property name="builddir" value="${projectdir}/build"/>
-    <property name="libdir" value="${projectdir}/lib"/>
-    <property name="JCommon-jar" value="jcommon-0.9.7.jar"/>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="${antfile.dir}/build.properties"/>
 
-    <path id="build.classpath">
-      <pathelement location="${libdir}/${JCommon-jar}"/>
-    </path>
-
-    <property name="pixie.name" value="pixie"/>
-    <property name="pixie.version" value="0.8.2"/>
   </target>
 
-  <!-- Compile the Pixie classes -->
-  <target name="compile" depends="init"
-    description="Compile the Pixie source code.">
+  <target name="compile" depends="init">
+    <echo>Building Pixie</echo>
 
     <!-- create a temp build directory -->
-    <mkdir dir="${projectdir}/build"/>
+    <mkdir dir="build"/>
 
     <!-- compile the source -->
-    <javac srcdir="${projectdir}/source"
-      destdir="${projectdir}/build">
-      <classpath refid="build.classpath"/>
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/pixie/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </classpath>
     </javac>
 
+    <!-- include the resource files -->
+    <copy todir="build">
+      <fileset dir="source">
+        <include name="**/*.xml"/>
+        <include name="**/*.jpg"/>
+        <include name="**/*.gif"/>
+        <include name="**/*.png"/>
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+
     <!-- make the jar -->
-    <jar jarfile="${projectdir}/${pixie.name}-${pixie.version}.jar"
-      basedir="${projectdir}/build"/>
+    <jar jarfile="${pixie-jar-file}"
+      basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${manifest-lib-prefix}/${jcommon-jar-file}"/>
+      </manifest>
+    </jar>
 
     <!-- delete the temp directory -->
-    <delete dir="${projectdir}/build"/>
+    <delete dir="build"/>
   </target>
 
   <!-- Generate the Pixie JavaDoc HTML pages -->
+  <!-- Dont expect too much yet, as most classes are still undocumented -->
   <target name="javadoc" depends="init">
-    <delete dir="${projectdir}/javadoc"/>
-    <mkdir dir="${projectdir}/javadoc"/>
-    <javadoc destdir="${projectdir}/javadoc"
-      windowtitle="Pixie Class Library"
-      overview="../source/overview.html">
-      <classpath refid="build.classpath"/>
-      <packageset dir="${projectdir}/source" defaultexcludes="yes">
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="Pixie Library"
+      overview="source/overview.html">
+      <packageset dir="source" defaultexcludes="yes">
         <include name="org/jfree/pixie/**"/>
       </packageset>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </classpath>
     </javadoc>
   </target>
 
   <!-- Make .zip distribution for Pixie -->
-  <target name="make-zip" depends="compile">
+  <!-- as an separate download -->
+  <target name="make-zip" depends="compile, compile-junit">
 
     <!-- make a temporary distribution directory -->
-    <mkdir dir="${projectdir}/distribution"/>
+    <mkdir dir="distribution"/>
 
     <!-- copy across README -->
-    <copy file="${projectdir}/README" tofile="${projectdir}/distribution/README"/>
+    <copy file="README" tofile="distribution/README"/>
+
+    <!-- copy across Licences -->
+    <copy file="licence-LGPL.txt" tofile="distribution/Licence"/>
 
     <!-- copy across ChangeLog -->
-    <copy file="${projectdir}/ChangeLog" tofile="${projectdir}/distribution/ChangeLog"/>
+    <copy file="ChangeLog" tofile="distribution/ChangeLog"/>
 
-    <!-- copy across LICENCE -->
-    <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt"/>
-
-    <!-- copy across runtime jar file and demo jar file -->
-    <copy file="${projectdir}/${pixie.name}-${pixie.version}.jar" tofile="${projectdir}/distribution/${pixie.name}-${pixie.version}.jar"/>
+    <!-- copy across runtime jar file -->
+    <copy file="${pixie-jar-file}" tofile="distribution/${pixie-jar-file}"/>
 
     <!-- copy across source files -->
-    <copy todir="${projectdir}/distribution/source">
-      <fileset dir="${projectdir}/source"/>
-    </copy>
-
-    <!-- copy across resource files -->
-    <copy todir="${projectdir}/distribution/resource">
-      <fileset dir="${projectdir}/res"/>
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
     </copy>
 
     <!-- copy across lib files -->
-    <copy todir="${projectdir}/distribution/lib">
-      <fileset dir="${projectdir}/lib"/>
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy todir="${projectdir}/distribution/ant">
-      <fileset dir="${projectdir}/ant"/>
+    <copy todir="distribution/ant">
+      <fileset dir="ant"/>
     </copy>
 
-    <!-- copy across checkstyle property file -->
-    <!--
-    <copy todir="${projectdir}/distribution/checkstyle">
-      <fileset dir="${projectdir}/checkstyle"/>
-    </copy>
-    -->
     <!-- convert end-of-line characters in text files -->
     <!-- end of file does not need to be marked, and causes trouble if it is -->
-    <fixcrlf srcdir="${projectdir}/distribution/source"
+    <fixcrlf srcdir="distribution/source"
       eol="crlf" eof="remove"
       excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
-    <fixcrlf srcdir="${projectdir}/distribution/ant"
+    <fixcrlf srcdir="distribution/ant"
       eol="crlf" eof="remove"/>
 
     <!-- make the zip file -->
-    <zip zipfile="${projectdir}/${pixie.name}-${pixie.version}.zip">
-      <zipfileset dir="${projectdir}/distribution"
+    <zip zipfile="${pixie.name}-${pixie.version}.zip">
+      <zipfileset dir="distribution"
         prefix="${pixie.name}-${pixie.version}"/>
     </zip>
 
     <!-- delete the temporary distribution directory -->
-    <delete dir="${projectdir}/distribution"/>
+    <delete dir="distribution"/>
 
   </target>
 
   <!-- Make .tar.gz distribution for Pixie -->
-  <target name="make-targz" depends="compile">
+  <!-- the war file is not included, as it can be rebuild easily and is also available -->
+  <!-- as an separate download -->
+  <target name="make-targz" depends="compile, compile-junit">
 
     <!-- make a temporary distribution directory -->
-    <mkdir dir="${projectdir}/distribution"/>
+    <mkdir dir="distribution"/>
 
     <!-- copy across README -->
-    <copy file="${projectdir}/README" tofile="${projectdir}/distribution/README"/>
+    <copy file="README" tofile="distribution/README"/>
+
+    <!-- copy across Licences -->
+    <copy file="licence-LGPL.txt" tofile="distribution/Licence"/>
 
     <!-- copy across ChangeLog -->
-    <copy file="${projectdir}/ChangeLog" tofile="${projectdir}/distribution/ChangeLog"/>
+    <copy file="ChangeLog" tofile="distribution/ChangeLog"/>
 
-    <!-- copy across LICENCE -->
-    <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt"/>
-
-    <!-- copy across runtime jar file and demo jar file -->
-    <copy file="${projectdir}/${pixie.name}-${pixie.version}.jar" tofile="${projectdir}/distribution/${pixie.name}-${pixie.version}.jar"/>
+    <!-- copy across runtime jar file -->
+    <copy file="${pixie-jar-file}" tofile="distribution/${pixie-jar-file}"/>
 
     <!-- copy across source files -->
-    <copy todir="${projectdir}/distribution/source">
-      <fileset dir="${projectdir}/source"/>
-    </copy>
-
-    <!-- copy across resource files -->
-    <copy todir="${projectdir}/distribution/resource">
-      <fileset dir="${projectdir}/res"/>
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
     </copy>
 
     <!-- copy across lib files -->
-    <copy todir="${projectdir}/distribution/lib">
-      <fileset dir="${projectdir}/lib"/>
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy todir="${projectdir}/distribution/ant">
-      <fileset dir="${projectdir}/ant"/>
+    <copy todir="distribution/ant">
+      <fileset dir="ant"/>
     </copy>
 
-    <!-- copy across checkstyle property file -->
-    <!--
-    <copy todir="${projectdir}/distribution/checkstyle">
-      <fileset dir="${projectdir}/checkstyle"/>
-    </copy>
-    -->
     <!-- convert end-of-line characters in text files -->
-    <fixcrlf srcdir="${projectdir}/distribution/source"
+    <fixcrlf srcdir="distribution/source"
       eol="lf" eof="remove"
       excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
-    <fixcrlf srcdir="${projectdir}/distribution/ant"
+    <fixcrlf srcdir="distribution/ant"
       eol="lf" eof="remove"/>
 
     <!-- make the tar.gz file -->
-    <tar tarfile="${projectdir}/${pixie.name}-${pixie.version}.tar">
-      <tarfileset dir="${projectdir}/distribution"
+    <tar tarfile="${pixie.name}-${pixie.version}.tar">
+      <tarfileset dir="distribution"
         prefix="${pixie.name}-${pixie.version}"/>
     </tar>
-    <gzip zipfile="${projectdir}/${pixie.name}-${pixie.version}.tar.gz"
-      src="${projectdir}/${pixie.name}-${pixie.version}.tar"/>
-    <delete file="${projectdir}/${pixie.name}-${pixie.version}.tar"/>
+    <gzip zipfile="${pixie.name}-${pixie.version}.tar.gz"
+      src="${pixie.name}-${pixie.version}.tar"/>
+    <delete file="${pixie.name}-${pixie.version}.tar"/>
 
     <!-- delete the temporary distribution directory -->
-    <delete dir="${projectdir}/distribution"/>
+    <delete dir="distribution"/>
 
   </target>
 
-  <!-- ALL -->
-  <target name="all"
-    depends="compile,javadoc,make-zip,make-targz"
-    description="Compiles Pixie, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
-  </target>
-
+  <target name="all" depends="init, compile, javadoc, make-zip, make-targz"/>
 </project>
+

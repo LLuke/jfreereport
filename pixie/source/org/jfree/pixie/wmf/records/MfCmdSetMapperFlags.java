@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetMapperFlags.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSetMapperFlags.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,12 @@ import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * This records is ignored, as it is used to map fonts into the given
- * aspect ratio. This affects only BitMap-fonts, as TrueTypeFonts are
- * always able to scale to any aspect ratio.
- *
+ * This records is ignored, as it is used to map fonts into the given aspect ratio. This
+ * affects only BitMap-fonts, as TrueTypeFonts are always able to scale to any aspect
+ * ratio.
+ * <p/>
  * In java all fonts are considered true-type.
  */
 public class MfCmdSetMapperFlags extends MfCmd
@@ -66,8 +65,8 @@ public class MfCmdSetMapperFlags extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    state.setMapperFlag (mapperflags);
+    final MfDcState state = file.getCurrentState();
+    state.setMapperFlag(mapperflags);
   }
 
   /**
@@ -77,22 +76,22 @@ public class MfCmdSetMapperFlags extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetMapperFlags ();
+    return new MfCmdSetMapperFlags();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int id = record.getLongParam (POS_MAPFLAGS);
-    setMapperFlags (id);
+    final int id = record.getLongParam(POS_MAPFLAGS);
+    setMapperFlags(id);
   }
 
   /**
@@ -100,7 +99,8 @@ public class MfCmdSetMapperFlags extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setLongParam(POS_MAPFLAGS, getMapperFlags());
@@ -108,8 +108,8 @@ public class MfCmdSetMapperFlags extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -130,17 +130,17 @@ public class MfCmdSetMapperFlags extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[MAPPERFLAGS] mapperflags=");
-    b.append (getMapperFlags ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[MAPPERFLAGS] mapperflags=");
+    b.append(getMapperFlags());
+    return b.toString();
   }
 
   /**
    * A callback function to inform the object, that the x scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleXChanged()
+  protected void scaleXChanged ()
   {
   }
 
@@ -148,7 +148,7 @@ public class MfCmdSetMapperFlags extends MfCmd
    * A callback function to inform the object, that the y scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleYChanged()
+  protected void scaleYChanged ()
   {
   }
 }

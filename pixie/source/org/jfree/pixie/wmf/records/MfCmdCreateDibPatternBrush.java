@@ -28,26 +28,26 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreateDibPatternBrush.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdCreateDibPatternBrush.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import org.jfree.pixie.wmf.MfLogBrush;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 import org.jfree.pixie.wmf.bitmap.DIBReader;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 // This structure should include a bitmap. This implementation does
 // not know of any bitmaps right now, so this records is ignored.
 // todo ...
+
 public class MfCmdCreateDibPatternBrush extends MfCmd
 {
   private static final int POS_BITMAP_TYPE = 0;
@@ -66,20 +66,21 @@ public class MfCmdCreateDibPatternBrush extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord () throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     /**
      * Requires a DIB-Writer, this is not yet supported
      */
-    throw new RecordCreationException ("CreateDIBPatternBrush is not yet supported");
+    throw new RecordCreationException("CreateDIBPatternBrush is not yet supported");
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
@@ -87,8 +88,8 @@ public class MfCmdCreateDibPatternBrush extends MfCmd
   {
     try
     {
-      final DIBReader reader = new DIBReader ();
-      setImage(reader.setRecord (record));
+      final DIBReader reader = new DIBReader();
+      setImage(reader.setRecord(record));
     }
     catch (IOException ioe)
     {
@@ -103,21 +104,24 @@ public class MfCmdCreateDibPatternBrush extends MfCmd
 
   public void setImage (final BufferedImage image)
   {
-    if (image == null) throw new NullPointerException();
+    if (image == null)
+    {
+      throw new NullPointerException();
+    }
     this.image = image;
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[CREATE_DIB_PATTERN_BRUSH] ");
-    b.append (" no internals known ");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[CREATE_DIB_PATTERN_BRUSH] ");
+    b.append(" no internals known ");
+    return b.toString();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -133,12 +137,12 @@ public class MfCmdCreateDibPatternBrush extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfLogBrush lbrush = new MfLogBrush ();
-    lbrush.setStyle (MfLogBrush.BS_DIBPATTERN);
-    lbrush.setBitmap (image);
+    final MfLogBrush lbrush = new MfLogBrush();
+    lbrush.setStyle(MfLogBrush.BS_DIBPATTERN);
+    lbrush.setBitmap(image);
 
-    file.getCurrentState ().setLogBrush (lbrush);
-    file.storeObject (lbrush);
+    file.getCurrentState().setLogBrush(lbrush);
+    file.storeObject(lbrush);
   }
 
   /**
@@ -148,7 +152,7 @@ public class MfCmdCreateDibPatternBrush extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdCreateDibPatternBrush ();
+    return new MfCmdCreateDibPatternBrush();
   }
 
   /**

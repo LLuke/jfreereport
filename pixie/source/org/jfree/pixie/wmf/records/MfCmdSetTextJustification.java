@@ -4,13 +4,11 @@ import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * The SetTextJustification function specifies the amount of space
- * the system should add to the break characters in a string of text.
- * The space is added when an application calls the TextOut or
- * ExtTextOut functions.
+ * The SetTextJustification function specifies the amount of space the system should add
+ * to the break characters in a string of text. The space is added when an application
+ * calls the TextOut or ExtTextOut functions.
  */
 public class MfCmdSetTextJustification extends MfCmd
 {
@@ -32,8 +30,8 @@ public class MfCmdSetTextJustification extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    state.setTextJustification (extraSpaceLength, breakCount);
+    final MfDcState state = file.getCurrentState();
+    state.setTextJustification(extraSpaceLength, breakCount);
   }
 
   /**
@@ -43,34 +41,34 @@ public class MfCmdSetTextJustification extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetTextJustification ();
+    return new MfCmdSetTextJustification();
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SET_TEXT_JUSTIFICATION] breakCount=");
-    b.append (getBreakCount ());
-    b.append (" extraSpaceLength=");
-    b.append (getExtraSpaceLength ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SET_TEXT_JUSTIFICATION] breakCount=");
+    b.append(getBreakCount());
+    b.append(" extraSpaceLength=");
+    b.append(getExtraSpaceLength());
+    return b.toString();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int spaceLength = record.getParam (POS_SPACELENGTH);
-    final int breakCount = record.getParam (POS_BREAKCOUNT);
-    setExtraSpaceLength (spaceLength);
-    setBreakCount (breakCount);
+    final int spaceLength = record.getParam(POS_SPACELENGTH);
+    final int breakCount = record.getParam(POS_BREAKCOUNT);
+    setExtraSpaceLength(spaceLength);
+    setBreakCount(breakCount);
   }
 
   /**
@@ -78,7 +76,8 @@ public class MfCmdSetTextJustification extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_BREAKCOUNT, getBreakCount());
@@ -87,8 +86,8 @@ public class MfCmdSetTextJustification extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -121,7 +120,7 @@ public class MfCmdSetTextJustification extends MfCmd
    * A callback function to inform the object, that the x scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleXChanged()
+  protected void scaleXChanged ()
   {
   }
 
@@ -129,7 +128,7 @@ public class MfCmdSetTextJustification extends MfCmd
    * A callback function to inform the object, that the y scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleYChanged()
+  protected void scaleYChanged ()
   {
   }
 }

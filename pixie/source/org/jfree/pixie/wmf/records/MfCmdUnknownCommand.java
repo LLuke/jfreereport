@@ -2,11 +2,9 @@ package org.jfree.pixie.wmf.records;
 
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * This function is not in the validity list of Microsofts
- * WindowsMetafile Records.
+ * This function is not in the validity list of Microsofts WindowsMetafile Records.
  */
 public class MfCmdUnknownCommand extends MfCmd
 {
@@ -22,7 +20,7 @@ public class MfCmdUnknownCommand extends MfCmd
 
   public MfCmd getInstance ()
   {
-    return new MfCmdUnknownCommand ();
+    return new MfCmdUnknownCommand();
   }
 
   public void setRecord (final MfRecord record)
@@ -34,16 +32,17 @@ public class MfCmdUnknownCommand extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     throw new RecordCreationException("The {Unknown Command} is not writeable");
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[UNKNOWN COMMAND] " + Integer.toHexString (getFunction ()));
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[UNKNOWN COMMAND] " + Integer.toHexString(getFunction()));
+    return b.toString();
   }
 
   public void setFunction (final int function)
@@ -60,7 +59,7 @@ public class MfCmdUnknownCommand extends MfCmd
    * A callback function to inform the object, that the x scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleXChanged()
+  protected void scaleXChanged ()
   {
   }
 
@@ -68,7 +67,7 @@ public class MfCmdUnknownCommand extends MfCmd
    * A callback function to inform the object, that the y scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleYChanged()
+  protected void scaleYChanged ()
   {
   }
 }

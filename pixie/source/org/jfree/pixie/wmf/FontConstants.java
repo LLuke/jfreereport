@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: FontConstants.java,v 1.1 2003/03/09 20:38:16 taqua Exp $
+ * $Id: FontConstants.java,v 1.2 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -56,8 +56,7 @@ public interface FontConstants
   public static final int FF_DONTCARE = (0 << 4);
 
   /**
-   * Variable stroke width, serifed.
-   * Times Roman, Century Schoolbook, etc.
+   * Variable stroke width, serifed. Times Roman, Century Schoolbook, etc.
    */
   public static final int FF_ROMAN = (1 << 4);
 

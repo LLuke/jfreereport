@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdPaintRgn.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdPaintRgn.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -66,20 +66,20 @@ public class MfCmdPaintRgn extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfLogRegion regio = file.getRegionObject (region);
+    final MfLogRegion regio = file.getRegionObject(region);
 
-    final MfDcState state = file.getCurrentState ();
-    state.setLogRegion (regio);
-    final MfLogBrush brush = state.getLogBrush ();
+    final MfDcState state = file.getCurrentState();
+    state.setLogRegion(regio);
+    final MfLogBrush brush = state.getLogBrush();
 
-    final Graphics2D graph = file.getGraphics2D ();
-    final Rectangle rec = scaleRect (regio.getBounds ());
+    final Graphics2D graph = file.getGraphics2D();
+    final Rectangle rec = scaleRect(regio.getBounds());
 
-    if (brush.isVisible ())
+    if (brush.isVisible())
     {
-      state.preparePaint ();
-      graph.fill (rec);
-      state.postPaint ();
+      state.preparePaint();
+      graph.fill(rec);
+      state.postPaint();
     }
   }
 
@@ -90,21 +90,21 @@ public class MfCmdPaintRgn extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdPaintRgn ();
+    return new MfCmdPaintRgn();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    region = record.getParam (POS_REGION);
+    region = record.getParam(POS_REGION);
   }
 
   /**
@@ -130,8 +130,8 @@ public class MfCmdPaintRgn extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -142,10 +142,10 @@ public class MfCmdPaintRgn extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[PAINT_REGION] region=");
-    b.append (getRegion ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[PAINT_REGION] region=");
+    b.append(getRegion());
+    return b.toString();
   }
 
   /**

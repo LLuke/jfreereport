@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEscape.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdEscape.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,17 +38,16 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * The layout of META_ESC is unknown, but it doesnt matter,
- * as it has no effect on on screen metafile display.
- * <p>
- * This sends MCI-Informations to the device-driver. Java and all
- * non-windows systems have no use of Windows-Driver-Details at all.
- * <p>
- * Wine just dumps the given data into the file. As we operate in
- * a non native environment, this record could never be implemented.
+ * The layout of META_ESC is unknown, but it doesnt matter, as it has no effect on on
+ * screen metafile display.
+ * <p/>
+ * This sends MCI-Informations to the device-driver. Java and all non-windows systems have
+ * no use of Windows-Driver-Details at all.
+ * <p/>
+ * Wine just dumps the given data into the file. As we operate in a non native
+ * environment, this record could never be implemented.
  */
 public class MfCmdEscape extends MfCmd
 {
@@ -67,9 +66,9 @@ public class MfCmdEscape extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[ESCAPE] is not used and will not be implemented");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[ESCAPE] is not used and will not be implemented");
+    return b.toString();
   }
 
   /**
@@ -79,26 +78,26 @@ public class MfCmdEscape extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdEscape ();
+    return new MfCmdEscape();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    System.out.println ("Escape is not implemented.");
+    System.out.println("Escape is not implemented.");
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

@@ -28,44 +28,29 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreateFont.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdCreateFont.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Font;
+
 import org.jfree.pixie.wmf.MfLogFont;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Font;
 
 /**
  * The CreateFontIndirect function creates a logical font that has the specified
- * characteristics. The font can subsequently be selected as the current font for
- * any device context.
- * <p>
- <code>
- typedef struct tagLOGFONT {
- LONG lfHeight;
- LONG lfWidth;
- LONG lfEscapement;
- LONG lfOrientation;
- LONG lfWeight;
- BYTE lfItalic;
- BYTE lfUnderline;
- BYTE lfStrikeOut;
- BYTE lfCharSet;
- BYTE lfOutPrecision;
- BYTE lfClipPrecision;
- BYTE lfQuality;
- BYTE lfPitchAndFamily;
- TCHAR lfFaceName[LF_FACESIZE];
- } LOGFONT, *PLOGFONT;
- </code>
+ * characteristics. The font can subsequently be selected as the current font for any
+ * device context.
+ * <p/>
+ * <code> typedef struct tagLOGFONT { LONG lfHeight; LONG lfWidth; LONG lfEscapement; LONG
+ * lfOrientation; LONG lfWeight; BYTE lfItalic; BYTE lfUnderline; BYTE lfStrikeOut; BYTE
+ * lfCharSet; BYTE lfOutPrecision; BYTE lfClipPrecision; BYTE lfQuality; BYTE
+ * lfPitchAndFamily; TCHAR lfFaceName[LF_FACESIZE]; } LOGFONT, *PLOGFONT; </code>
  */
 public class MfCmdCreateFont extends MfCmd
 {
@@ -117,12 +102,12 @@ public class MfCmdCreateFont extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfLogFont lfont = new MfLogFont ();
-    lfont.setFace (getFontFace ());
-    lfont.setSize (getScaledHeight ());
+    final MfLogFont lfont = new MfLogFont();
+    lfont.setFace(getFontFace());
+    lfont.setSize(getScaledHeight());
     int style = 0;
     // should be bold ?
-    if (getWeight () > 650)
+    if (getWeight() > 650)
     {
       style = Font.BOLD;
     }
@@ -130,16 +115,16 @@ public class MfCmdCreateFont extends MfCmd
     {
       style = Font.PLAIN;
     }
-    if (isItalic ())
+    if (isItalic())
     {
       style += Font.ITALIC;
     }
-    lfont.setStyle (style);
-    lfont.setUnderline (isUnderline ());
-    lfont.setStrikeOut (isStrikeout ());
-    lfont.setRotation (getEscapement () / 10);
-    file.getCurrentState ().setLogFont (lfont);
-    file.storeObject (lfont);
+    lfont.setStyle(style);
+    lfont.setUnderline(isUnderline());
+    lfont.setStrikeOut(isStrikeout());
+    lfont.setRotation(getEscapement() / 10);
+    file.getCurrentState().setLogFont(lfont);
+    file.storeObject(lfont);
   }
 
   /**
@@ -149,7 +134,7 @@ public class MfCmdCreateFont extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdCreateFont ();
+    return new MfCmdCreateFont();
   }
 
   /**
@@ -181,7 +166,7 @@ public class MfCmdCreateFont extends MfCmd
 
   public void setRecord (final MfRecord record)
   {
-    int height = record.getParam (POS_HEIGHT);
+    int height = record.getParam(POS_HEIGHT);
     if (height == 0)
     {
       // a default height is requested, we use a default height of 10
@@ -193,48 +178,54 @@ public class MfCmdCreateFont extends MfCmd
       height *= -1;
     }
 
-    final int width = record.getParam (POS_WIDTH);
-    final int escape = record.getParam (POS_ESCAPEMENT);
-    final int orientation = record.getParam (POS_ORIENTATION);
-    final int weight = record.getParam (POS_WEIGHT);
-    final int italic = record.getParam (POS_FLAGS1) & 0xFF00;
-    final int underline = record.getParam (POS_FLAGS1) & 0x00FF;
-    final int strikeout = record.getParam (POS_FLAGS2) & 0xFF00;
-    final int charset = record.getParam (POS_FLAGS2) & 0x00FF;
-    final int outprec = record.getParam (POS_PRECISION) & 0xFF00;
-    final int clipprec = record.getParam (POS_PRECISION) & 0x00FF;
-    final int quality = record.getParam (POS_QUALITY) & 0xFF00;
-    final int pitch = record.getParam (POS_QUALITY) & 0x00FF;
+    final int width = record.getParam(POS_WIDTH);
+    final int escape = record.getParam(POS_ESCAPEMENT);
+    final int orientation = record.getParam(POS_ORIENTATION);
+    final int weight = record.getParam(POS_WEIGHT);
+    final int italic = record.getParam(POS_FLAGS1) & 0xFF00;
+    final int underline = record.getParam(POS_FLAGS1) & 0x00FF;
+    final int strikeout = record.getParam(POS_FLAGS2) & 0xFF00;
+    final int charset = record.getParam(POS_FLAGS2) & 0x00FF;
+    final int outprec = record.getParam(POS_PRECISION) & 0xFF00;
+    final int clipprec = record.getParam(POS_PRECISION) & 0x00FF;
+    final int quality = record.getParam(POS_QUALITY) & 0xFF00;
+    final int pitch = record.getParam(POS_QUALITY) & 0x00FF;
     // A fontname must not exceed the length of 32 including the null-terminator
-    final String facename = record.getStringParam (POS_FONTFACE, 32);
+    final String facename = record.getStringParam(POS_FONTFACE, 32);
 
-    setCharset (charset);
-    setClipPrecision (clipprec);
-    setEscapement (escape);
-    setFontFace (facename);
-    setHeight (height);
-    setItalic (italic != 0);
-    setOrientation (orientation);
-    setOutputPrecision (outprec);
-    setPitchAndFamily (pitch);
-    setQuality (quality);
-    setStrikeout (strikeout != 0);
-    setUnderline (underline != 0);
-    setWeight (weight);
-    setWidth (width);
+    setCharset(charset);
+    setClipPrecision(clipprec);
+    setEscapement(escape);
+    setFontFace(facename);
+    setHeight(height);
+    setItalic(italic != 0);
+    setOrientation(orientation);
+    setOutputPrecision(outprec);
+    setPitchAndFamily(pitch);
+    setQuality(quality);
+    setStrikeout(strikeout != 0);
+    setUnderline(underline != 0);
+    setWeight(weight);
+    setWidth(width);
   }
 
   private int formFlags (final boolean f1, final boolean f2)
   {
     int retval = 0;
-    if (f1) retval += 0x0100;
-    if (f2) retval += 1;
+    if (f1)
+    {
+      retval += 0x0100;
+    }
+    if (f2)
+    {
+      retval += 1;
+    }
     return (retval);
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -306,7 +297,7 @@ public class MfCmdCreateFont extends MfCmd
   public void setHeight (final int height)
   {
     this.height = height;
-    scaleYChanged ();
+    scaleYChanged();
   }
 
   public int getHeight ()
@@ -322,7 +313,7 @@ public class MfCmdCreateFont extends MfCmd
   public void setWidth (final int width)
   {
     this.width = width;
-    scaleXChanged ();
+    scaleXChanged();
   }
 
   /**
@@ -331,7 +322,7 @@ public class MfCmdCreateFont extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_width = getScaledX (width);
+    scaled_width = getScaledX(width);
   }
 
   /**
@@ -340,7 +331,7 @@ public class MfCmdCreateFont extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_height = getScaledY (height);
+    scaled_height = getScaledY(height);
   }
 
   public int getWidth ()
@@ -420,25 +411,25 @@ public class MfCmdCreateFont extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[CREATE_FONT] face=");
-    b.append (getFontFace ());
-    b.append (" height=");
-    b.append (getHeight ());
-    b.append (" width=");
-    b.append (getWidth ());
-    b.append (" weight=");
-    b.append (getWeight ());
-    b.append (" italic=");
-    b.append (isItalic ());
-    b.append (" Strikeout=");
-    b.append (isStrikeout ());
-    b.append (" Underline=");
-    b.append (isUnderline ());
-    b.append (" outprecision=");
-    b.append (getOutputPrecision ());
-    b.append (" escapement=");
-    b.append (getEscapement ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[CREATE_FONT] face=");
+    b.append(getFontFace());
+    b.append(" height=");
+    b.append(getHeight());
+    b.append(" width=");
+    b.append(getWidth());
+    b.append(" weight=");
+    b.append(getWeight());
+    b.append(" italic=");
+    b.append(isItalic());
+    b.append(" Strikeout=");
+    b.append(isStrikeout());
+    b.append(" Underline=");
+    b.append(isUnderline());
+    b.append(" outprecision=");
+    b.append(getOutputPrecision());
+    b.append(" escapement=");
+    b.append(getEscapement());
+    return b.toString();
   }
 }

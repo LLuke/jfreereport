@@ -1,17 +1,12 @@
 package org.jfree.pixie.wmf.records;
 
-import java.io.InputStream;
-
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * This function is not in the validity list of Microsofts
- * WindowsMetafile Records.
- * <p>
- *
+ * This function is not in the validity list of Microsofts WindowsMetafile Records.
+ * <p/>
  */
 public class MfCmdBitBlt extends MfCmd
 {
@@ -20,7 +15,7 @@ public class MfCmdBitBlt extends MfCmd
   private static final int POS_X_SOURCE_ORIGIN = 2;
   private static final int POS_DESTINATION_Y_EXT = 3;
   private static final int POS_DESTINATION_X_EXT = 4;
-  private static final int POS_Y_DESTINATION_ORIGIN= 5;
+  private static final int POS_Y_DESTINATION_ORIGIN = 5;
   private static final int POS_X_DESTINATION_ORIGIN = 6;
   private static final int POS_BITMAP_WIDTH = 7;
   private static final int POS_BITMAP_HEIGHT = 8;
@@ -54,33 +49,33 @@ public class MfCmdBitBlt extends MfCmd
 
   public MfCmd getInstance ()
   {
-    return new MfCmdBitBlt ();
+    return new MfCmdBitBlt();
   }
 
   public void setRecord (final MfRecord record)
   {
-    setRop(record.getParam (POS_ROP));
-    setSourceX(record.getParam (POS_Y_SOURCE_ORIGIN));
-    setSourceY(record.getParam (POS_X_SOURCE_ORIGIN));
-    setDestXExt(record.getParam (POS_DESTINATION_X_EXT));
-    setDestYExt(record.getParam (POS_DESTINATION_Y_EXT));
-    setDestXOrigin(record.getParam (POS_X_DESTINATION_ORIGIN));
-    setDestYOrigin(record.getParam (POS_Y_DESTINATION_ORIGIN));
+    setRop(record.getParam(POS_ROP));
+    setSourceX(record.getParam(POS_Y_SOURCE_ORIGIN));
+    setSourceY(record.getParam(POS_X_SOURCE_ORIGIN));
+    setDestXExt(record.getParam(POS_DESTINATION_X_EXT));
+    setDestYExt(record.getParam(POS_DESTINATION_Y_EXT));
+    setDestXOrigin(record.getParam(POS_X_DESTINATION_ORIGIN));
+    setDestYOrigin(record.getParam(POS_Y_DESTINATION_ORIGIN));
 
-    setBitmapWidth(record.getParam (POS_BITMAP_WIDTH));
-    setBitmapHeight(record.getParam (POS_BITMAP_HEIGHT));
-    setBytesPerRasterLine(record.getParam (POS_BYTES_PER_RASTER_LINE));
-    setColorPlanesBitmap(record.getParam (POS_COLOR_PLANES_BITMAP));
-    setAdjacentColorBits(record.getParam (POS_ADJACENT_COLOR_BITS));
+    setBitmapWidth(record.getParam(POS_BITMAP_WIDTH));
+    setBitmapHeight(record.getParam(POS_BITMAP_HEIGHT));
+    setBytesPerRasterLine(record.getParam(POS_BYTES_PER_RASTER_LINE));
+    setColorPlanesBitmap(record.getParam(POS_COLOR_PLANES_BITMAP));
+    setAdjacentColorBits(record.getParam(POS_ADJACENT_COLOR_BITS));
     // todo read the bitmap data from the record ...
   }
 
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[OLD_BIT_BLT]");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[OLD_BIT_BLT]");
+    return b.toString();
   }
 
   public int getFunction ()
@@ -101,154 +96,155 @@ public class MfCmdBitBlt extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     // todo this is not yet correctly implemented ...
     MfRecord record = new MfRecord(12 + (deviceDependentBitmap.length / 4));
-    record.setParam (POS_ROP, getRop());
-    record.setParam (POS_Y_SOURCE_ORIGIN, getSourceX());
-    record.setParam (POS_X_SOURCE_ORIGIN, getSourceY());
-    record.setParam (POS_DESTINATION_X_EXT, getDestXExt());
-    record.setParam (POS_DESTINATION_Y_EXT, getDestYExt());
-    record.setParam (POS_X_DESTINATION_ORIGIN, getDestXOrigin());
-    record.setParam (POS_Y_DESTINATION_ORIGIN, getDestYOrigin());
+    record.setParam(POS_ROP, getRop());
+    record.setParam(POS_Y_SOURCE_ORIGIN, getSourceX());
+    record.setParam(POS_X_SOURCE_ORIGIN, getSourceY());
+    record.setParam(POS_DESTINATION_X_EXT, getDestXExt());
+    record.setParam(POS_DESTINATION_Y_EXT, getDestYExt());
+    record.setParam(POS_X_DESTINATION_ORIGIN, getDestXOrigin());
+    record.setParam(POS_Y_DESTINATION_ORIGIN, getDestYOrigin());
 
-    record.setParam (POS_BITMAP_WIDTH, getBitmapWidth());
-    record.setParam (POS_BITMAP_HEIGHT, getBitmapHeight());
-    record.setParam (POS_BYTES_PER_RASTER_LINE, getBytesPerRasterLine());
-    record.setParam (POS_COLOR_PLANES_BITMAP, getColorPlanesBitmap());
-    record.setParam (POS_ADJACENT_COLOR_BITS, getAdjacentColorBits());
+    record.setParam(POS_BITMAP_WIDTH, getBitmapWidth());
+    record.setParam(POS_BITMAP_HEIGHT, getBitmapHeight());
+    record.setParam(POS_BYTES_PER_RASTER_LINE, getBytesPerRasterLine());
+    record.setParam(POS_COLOR_PLANES_BITMAP, getColorPlanesBitmap());
+    record.setParam(POS_ADJACENT_COLOR_BITS, getAdjacentColorBits());
 
     // todo: Write the bitmap data ...
     return record;
   }
 
-  public int getAdjacentColorBits()
+  public int getAdjacentColorBits ()
   {
     return adjacentColorBits;
   }
 
-  public void setAdjacentColorBits(int adjacentColorBits)
+  public void setAdjacentColorBits (int adjacentColorBits)
   {
     this.adjacentColorBits = adjacentColorBits;
   }
 
-  public int getBitmapHeight()
+  public int getBitmapHeight ()
   {
     return bitmapHeight;
   }
 
-  public void setBitmapHeight(int bitmapHeight)
+  public void setBitmapHeight (int bitmapHeight)
   {
     this.bitmapHeight = bitmapHeight;
   }
 
-  public int getBitmapWidth()
+  public int getBitmapWidth ()
   {
     return bitmapWidth;
   }
 
-  public void setBitmapWidth(int bitmapWidth)
+  public void setBitmapWidth (int bitmapWidth)
   {
     this.bitmapWidth = bitmapWidth;
   }
 
-  public int getBytesPerRasterLine()
+  public int getBytesPerRasterLine ()
   {
     return bytesPerRasterLine;
   }
 
-  public void setBytesPerRasterLine(int bytesPerRasterLine)
+  public void setBytesPerRasterLine (int bytesPerRasterLine)
   {
     this.bytesPerRasterLine = bytesPerRasterLine;
   }
 
-  public int getColorPlanesBitmap()
+  public int getColorPlanesBitmap ()
   {
     return colorPlanesBitmap;
   }
 
-  public void setColorPlanesBitmap(int colorPlanesBitmap)
+  public void setColorPlanesBitmap (int colorPlanesBitmap)
   {
     this.colorPlanesBitmap = colorPlanesBitmap;
   }
 
-  public int getDestXExt()
+  public int getDestXExt ()
   {
     return destXExt;
   }
 
-  public void setDestXExt(int destXExt)
+  public void setDestXExt (int destXExt)
   {
     this.destXExt = destXExt;
   }
 
-  public int getDestXOrigin()
+  public int getDestXOrigin ()
   {
     return destXOrigin;
   }
 
-  public void setDestXOrigin(int destXOrigin)
+  public void setDestXOrigin (int destXOrigin)
   {
     this.destXOrigin = destXOrigin;
   }
 
-  public int getDestYExt()
+  public int getDestYExt ()
   {
     return destYExt;
   }
 
-  public void setDestYExt(int destYExt)
+  public void setDestYExt (int destYExt)
   {
     this.destYExt = destYExt;
   }
 
-  public int getDestYOrigin()
+  public int getDestYOrigin ()
   {
     return destYOrigin;
   }
 
-  public void setDestYOrigin(int destYOrigin)
+  public void setDestYOrigin (int destYOrigin)
   {
     this.destYOrigin = destYOrigin;
   }
 
-  public byte[] getDeviceDependentBitmap()
+  public byte[] getDeviceDependentBitmap ()
   {
     return deviceDependentBitmap;
   }
 
-  public void setDeviceDependentBitmap(byte[] deviceDependentBitmap)
+  public void setDeviceDependentBitmap (byte[] deviceDependentBitmap)
   {
     this.deviceDependentBitmap = deviceDependentBitmap;
   }
 
-  public int getRop()
+  public int getRop ()
   {
     return rop;
   }
 
-  public void setRop(int rop)
+  public void setRop (int rop)
   {
     this.rop = rop;
   }
 
-  public int getSourceX()
+  public int getSourceX ()
   {
     return sourceX;
   }
 
-  public void setSourceX(int sourceX)
+  public void setSourceX (int sourceX)
   {
     this.sourceX = sourceX;
   }
 
-  public int getSourceY()
+  public int getSourceY ()
   {
     return sourceY;
   }
 
-  public void setSourceY(int sourceY)
+  public void setSourceY (int sourceY)
   {
     this.sourceY = sourceY;
   }

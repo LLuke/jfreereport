@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BrushConstants.java,v 1.1 2003/03/09 20:38:15 taqua Exp $
+ * $Id: BrushConstants.java,v 1.2 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -36,8 +36,8 @@
 package org.jfree.pixie.wmf;
 
 /**
- * The BrushConstants were defined in the Windows-API and are used do define
- * the appearance of Wmf-Brushes.
+ * The BrushConstants were defined in the Windows-API and are used do define the
+ * appearance of Wmf-Brushes.
  */
 public interface BrushConstants
 {
@@ -57,7 +57,7 @@ public interface BrushConstants
   /* Hatch Style: -----. */
   public static final int HS_HORIZONTAL = 0;
   /* Hatch Style: |||||. */
-  public static final int HS_VERTICAL = 1;       
+  public static final int HS_VERTICAL = 1;
   /* Hatch Style: \\\\\\\ . */
   public static final int HS_FDIAGONAL = 2;
   /* Hatch Style: //////// . */

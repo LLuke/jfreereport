@@ -28,21 +28,20 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdExtFloodFill.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdExtFloodFill.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+import java.awt.Point;
+
 import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Color;
-import java.awt.Point;
 
 public class MfCmdExtFloodFill extends MfCmd
 {
@@ -68,19 +67,19 @@ public class MfCmdExtFloodFill extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[EXT_FLOOD_FILL] filltype=");
-    b.append (getFillType ());
-    b.append (" color=");
-    b.append (getColor ());
-    b.append (" target=");
-    b.append (getTarget ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[EXT_FLOOD_FILL] filltype=");
+    b.append(getFillType());
+    b.append(" color=");
+    b.append(getColor());
+    b.append(" target=");
+    b.append(getTarget());
+    return b.toString();
   }
 
   public MfCmd getInstance ()
   {
-    return new MfCmdExtFloodFill ();
+    return new MfCmdExtFloodFill();
   }
 
   private static final int RECORD_SIZE = 5;
@@ -91,17 +90,19 @@ public class MfCmdExtFloodFill extends MfCmd
 
   public void setRecord (final MfRecord record)
   {
-    final int filltype = record.getParam (POS_FILLTYPE);
-    final int c = record.getLongParam (POS_COLOR);
-    final Color color = new GDIColor (c);
-    final int y = record.getParam (POS_Y);
-    final int x = record.getParam (POS_X);
-    setTarget (x, y);
-    setColor (color);
-    setFillType (filltype);
+    final int filltype = record.getParam(POS_FILLTYPE);
+    final int c = record.getLongParam(POS_COLOR);
+    final Color color = new GDIColor(c);
+    final int y = record.getParam(POS_Y);
+    final int x = record.getParam(POS_X);
+    setTarget(x, y);
+    setColor(color);
+    setFillType(filltype);
   }
 
-  /** Writer function */
+  /**
+   * Writer function
+   */
   public MfRecord getRecord ()
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
@@ -130,20 +131,20 @@ public class MfCmdExtFloodFill extends MfCmd
 
   public Point getTarget ()
   {
-    return new Point (x, y);
+    return new Point(x, y);
   }
 
   public Point getScaledTarget ()
   {
-    return new Point (scaled_x, scaled_y);
+    return new Point(scaled_x, scaled_y);
   }
 
   public void setTarget (final int x, final int y)
   {
     this.x = x;
     this.y = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public void setColor (final Color c)
@@ -158,11 +159,11 @@ public class MfCmdExtFloodFill extends MfCmd
 
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
+    scaled_x = getScaledX(x);
   }
 
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
+    scaled_y = getScaledY(y);
   }
 }

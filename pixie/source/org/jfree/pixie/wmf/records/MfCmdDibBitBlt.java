@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdDibBitBlt.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdDibBitBlt.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -48,20 +48,20 @@ import org.jfree.pixie.wmf.bitmap.DIBReader;
 
 /**
  * BitBlockTransfer - Copies PixelData of a rectangle to another position
- *
+ * <p/>
  * <pre>
-BOOL BitBlt(
-  HDC hdcDest, // handle to destination DC
-  int nXDest,  // x-coord of destination upper-left corner
-  int nYDest,  // y-coord of destination upper-left corner
-  int nWidth,  // width of destination rectangle
-  int nHeight, // height of destination rectangle
-  HDC hdcSrc,  // handle to source DC
-  int nXSrc,   // x-coordinate of source upper-left corner
-  int nYSrc,   // y-coordinate of source upper-left corner
-  DWORD dwRop  // raster operation code
-);
- </pre>
+ * BOOL BitBlt(
+ * HDC hdcDest, // handle to destination DC
+ * int nXDest,  // x-coord of destination upper-left corner
+ * int nYDest,  // y-coord of destination upper-left corner
+ * int nWidth,  // width of destination rectangle
+ * int nHeight, // height of destination rectangle
+ * HDC hdcSrc,  // handle to source DC
+ * int nXSrc,   // x-coordinate of source upper-left corner
+ * int nYSrc,   // y-coordinate of source upper-left corner
+ * DWORD dwRop  // raster operation code
+ * );
+ * </pre>
  */
 public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
 {
@@ -101,12 +101,12 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
   {
   }
 
-  public BufferedImage getImage()
+  public BufferedImage getImage ()
   {
     return image;
   }
 
-  public void setImage(final BufferedImage image)
+  public void setImage (final BufferedImage image)
   {
     this.image = image;
   }
@@ -123,14 +123,14 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[BIT_BLT] records=");
-    b.append (getOperation ());
-    b.append (" source=");
-    b.append (getOrigin ());
-    b.append (" destination=");
-    b.append (getDestination ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[BIT_BLT] records=");
+    b.append(getOperation());
+    b.append(" source=");
+    b.append(getOrigin());
+    b.append(" destination=");
+    b.append(getDestination());
+    return b.toString();
 
   }
 
@@ -140,9 +140,9 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
    */
   protected void scaleXChanged ()
   {
-    scaled_sourceX = getScaledX (sourceX);
-    scaled_destX = getScaledX (destX);
-    scaled_destWidth = getScaledX (destWidth);
+    scaled_sourceX = getScaledX(sourceX);
+    scaled_destX = getScaledX(destX);
+    scaled_destWidth = getScaledX(destWidth);
   }
 
   /**
@@ -151,9 +151,9 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
    */
   protected void scaleYChanged ()
   {
-    scaled_sourceY = getScaledY (sourceY);
-    scaled_destY = getScaledY (destY);
-    scaled_destHeight = getScaledY (destHeight);
+    scaled_sourceY = getScaledY(sourceY);
+    scaled_destY = getScaledY(destY);
+    scaled_destHeight = getScaledY(destHeight);
   }
 
   /**
@@ -163,12 +163,12 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdDibBitBlt ();
+    return new MfCmdDibBitBlt();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -181,28 +181,28 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
   {
     sourceX = x;
     sourceY = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public Point getOrigin ()
   {
-    return new Point (sourceX, sourceY);
+    return new Point(sourceX, sourceY);
   }
 
   public Rectangle getSource ()
   {
-    return new Rectangle (sourceX, sourceY, destWidth, destHeight);
+    return new Rectangle(sourceX, sourceY, destWidth, destHeight);
   }
 
   public Point getScaledOrigin ()
   {
-    return new Point (scaled_sourceX, scaled_sourceY);
+    return new Point(scaled_sourceX, scaled_sourceY);
   }
 
   public Rectangle getScaledSource ()
   {
-    return new Rectangle (scaled_sourceX, scaled_sourceY, scaled_destWidth, scaled_destHeight);
+    return new Rectangle(scaled_sourceX, scaled_sourceY, scaled_destWidth, scaled_destHeight);
   }
 
   public void setDestination (final int x, final int y, final int w, final int h)
@@ -211,18 +211,18 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
     destY = y;
     destWidth = w;
     destHeight = h;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public Rectangle getDestination ()
   {
-    return new Rectangle (destX, destY, destWidth, destHeight);
+    return new Rectangle(destX, destY, destWidth, destHeight);
   }
 
   public Rectangle getScaledDestination ()
   {
-    return new Rectangle (scaled_destX, scaled_destY, scaled_destWidth, scaled_destHeight);
+    return new Rectangle(scaled_destX, scaled_destY, scaled_destWidth, scaled_destHeight);
   }
 
   public void setOperation (final int op)
@@ -240,7 +240,8 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
    *
    * @return the created record.
    */
-  public MfRecord getRecord () throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     if (image == null)
     {
@@ -266,45 +267,45 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int rop = record.getLongParam (POS_OPERATION);
-    final int sy = record.getParam (POS_SRC_Y);
-    final int sx = record.getParam (POS_SRC_X);
-    setOperation (rop);
-    setOrigin (sx, sy);
+    final int rop = record.getLongParam(POS_OPERATION);
+    final int sy = record.getParam(POS_SRC_Y);
+    final int sx = record.getParam(POS_SRC_X);
+    setOperation(rop);
+    setOrigin(sx, sy);
 
-    if (record.getLength () == (MfRecord.RECORD_HEADER_SIZE + 8 * 2))
+    if (record.getLength() == (MfRecord.RECORD_HEADER_SIZE + 8 * 2))
     {
       // Simple form
-      final int dh = record.getParam (SIMPLE_POS_HEIGHT);
-      final int dw = record.getParam (SIMPLE_POS_WIDTH);
-      final int dy = record.getParam (SIMPLE_POS_DST_Y);
-      final int dx = record.getParam (SIMPLE_POS_DST_X);
-      setDestination (dx, dy, dw, dh);
+      final int dh = record.getParam(SIMPLE_POS_HEIGHT);
+      final int dw = record.getParam(SIMPLE_POS_WIDTH);
+      final int dy = record.getParam(SIMPLE_POS_DST_Y);
+      final int dx = record.getParam(SIMPLE_POS_DST_X);
+      setDestination(dx, dy, dw, dh);
     }
     else
     {
       // Complex form
-      final int dh = record.getParam (EXT_POS_HEIGHT);
-      final int dw = record.getParam (EXT_POS_WIDTH);
-      final int dy = record.getParam (EXT_POS_DST_Y);
-      final int dx = record.getParam (EXT_POS_DST_X);
-      setDestination (dx, dy, dw, dh);
+      final int dh = record.getParam(EXT_POS_HEIGHT);
+      final int dw = record.getParam(EXT_POS_WIDTH);
+      final int dy = record.getParam(EXT_POS_DST_Y);
+      final int dx = record.getParam(EXT_POS_DST_X);
+      setDestination(dx, dy, dw, dh);
       try
       {
         // The sourceDib follows on Position 8 til the end if this is not the simple
         // form.
-        final DIBReader reader = new DIBReader ();
-        setImage(reader.setRecord (record, RECORD_BASE_SIZE_EXT));
+        final DIBReader reader = new DIBReader();
+        setImage(reader.setRecord(record, RECORD_BASE_SIZE_EXT));
       }
       catch (IOException ioe)
       {

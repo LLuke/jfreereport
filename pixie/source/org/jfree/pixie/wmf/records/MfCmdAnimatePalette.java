@@ -28,24 +28,23 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdAnimatePalette.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdAnimatePalette.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+
 import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Color;
 
 /**
  * The AnimatePalette function replaces entries in the specified logical palette.
- *
+ * <p/>
  * <pre>
  * BOOL AnimatePalette(
  *  HPALETTE hpal,           // handle to logical palette
@@ -54,45 +53,21 @@ import java.awt.Color;
  *  CONST PALETTEENTRY *ppe  // first replacement
  * );
  * </pre>
- *
- * This function is not implemented. However, you can use this implementation
- * to create a valid record.
- * <table border="1">
- * <tr>
- * <th>offset</th>
- * <th>length in bytes</th>
- * <th>meaning</th>
- * </tr>
- * <tr>
- * <td>0x0</td>
- * <td>4</td>
- * <td>RecordSize (variable)</td>
- * </tr>
- * <tr>
- * <td>0x4</td>
- * <td>2</td>
- * <td>record type (0x0436)</td>
- * </tr>
- * <tr>
- * <td>0x6</td>
- * <td>2</td>
- * <td>first palette entry to be animated</td>
- * </tr>
- * <tr>
- * <td>0x8</td>
- * <td>2</td>
- * <td>number of animated entries</td>
- * </tr>
- * <tr>
- * <td>0xa</td>
- * <td>n*4</td>
- * <td>palette entry array with (1 byte red, 1 byte green, 1 byte blue, 1 byte flags)</td>
- * </tr>
- * </table>
+ * <p/>
+ * This function is not implemented. However, you can use this implementation to create a
+ * valid record. <table border="1"> <tr> <th>offset</th> <th>length in bytes</th>
+ * <th>meaning</th> </tr> <tr> <td>0x0</td> <td>4</td> <td>RecordSize (variable)</td>
+ * </tr> <tr> <td>0x4</td> <td>2</td> <td>record type (0x0436)</td> </tr> <tr>
+ * <td>0x6</td> <td>2</td> <td>first palette entry to be animated</td> </tr> <tr>
+ * <td>0x8</td> <td>2</td> <td>number of animated entries</td> </tr> <tr> <td>0xa</td>
+ * <td>n*4</td> <td>palette entry array with (1 byte red, 1 byte green, 1 byte blue, 1
+ * byte flags)</td> </tr> </table>
  */
 public class MfCmdAnimatePalette extends MfCmd
 {
-  /** the position of the first entry within the palette that should be animated. */
+  /**
+   * the position of the first entry within the palette that should be animated.
+   */
   private static final int POS_START_ANIMATE_COLOR = 0;
   private static final int POS_CENTRIES = 1;
   private static final int POS_START_ENTRIES = 2;
@@ -115,7 +90,9 @@ public class MfCmdAnimatePalette extends MfCmd
   public int getEntriesCount ()
   {
     if (colors == null)
+    {
       return 0;
+    }
 
     return colors.length;
   }
@@ -125,7 +102,8 @@ public class MfCmdAnimatePalette extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord () throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final int cEntries = getEntriesCount();
     if (cEntries == 0)
@@ -149,9 +127,9 @@ public class MfCmdAnimatePalette extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
    * This method is not implemented, as a Palette implementation is still missing.
    *
    * @param record the record.
@@ -159,24 +137,24 @@ public class MfCmdAnimatePalette extends MfCmd
   public void setRecord (final MfRecord record)
   {
     // the handle to the palette object
-    final int hPalette = record.getParam (POS_START_ANIMATE_COLOR);
+    final int hPalette = record.getParam(POS_START_ANIMATE_COLOR);
     setPosStartAnimate(hPalette);
     // the number of defined entries ...
-    final int cEntries = record.getParam (POS_CENTRIES);
+    final int cEntries = record.getParam(POS_CENTRIES);
     final Color[] colors = new Color[cEntries];
 
     for (int i = 0; i < cEntries; i++)
     {
       final int cr = record.getLongParam(i * 2 + POS_START_ENTRIES);
-      final GDIColor color = new GDIColor (cr);
+      final GDIColor color = new GDIColor(cr);
       colors[i] = color;
     }
-    setEntries (colors);
+    setEntries(colors);
   }
 
   /**
-   * Reads the function identifiert .Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifiert .Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return MfType.ANIMATE_PALETTE.
    */
@@ -203,12 +181,12 @@ public class MfCmdAnimatePalette extends MfCmd
    */
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[ANIMATE_PALETTE] posStartAnimate=");
-    b.append (getPosStartAnimate());
-    b.append (" entriesCount=");
-    b.append (getEntriesCount ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[ANIMATE_PALETTE] posStartAnimate=");
+    b.append(getPosStartAnimate());
+    b.append(" entriesCount=");
+    b.append(getEntriesCount());
+    return b.toString();
   }
 
   /**
@@ -218,7 +196,7 @@ public class MfCmdAnimatePalette extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdAnimatePalette ();
+    return new MfCmdAnimatePalette();
   }
 
   /**

@@ -28,27 +28,26 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdEllipse.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdEllipse.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
-import org.jfree.pixie.wmf.MfDcState;
-import org.jfree.pixie.wmf.MfRecord;
-import org.jfree.pixie.wmf.MfType;
-import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 
+import org.jfree.pixie.wmf.MfDcState;
+import org.jfree.pixie.wmf.MfRecord;
+import org.jfree.pixie.wmf.MfType;
+import org.jfree.pixie.wmf.WmfFile;
+
 /**
- * The Ellipse function draws an ellipse. The center of the ellipse is the center
- * of the specified bounding rectangle. The ellipse is outlined by using the current
- * pen and is filled by using the current brush.
+ * The Ellipse function draws an ellipse. The center of the ellipse is the center of the
+ * specified bounding rectangle. The ellipse is outlined by using the current pen and is
+ * filled by using the current brush.
  */
 public class MfCmdEllipse extends MfCmd
 {
@@ -78,25 +77,25 @@ public class MfCmdEllipse extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final Graphics2D graph = file.getGraphics2D ();
-    final Rectangle rec = getScaledBounds ();
+    final Graphics2D graph = file.getGraphics2D();
+    final Rectangle rec = getScaledBounds();
 
-    final Ellipse2D ellipse = new Ellipse2D.Double ();
-    ellipse.setFrame (rec.x, rec.y, rec.width, rec.height);
+    final Ellipse2D ellipse = new Ellipse2D.Double();
+    ellipse.setFrame(rec.x, rec.y, rec.width, rec.height);
 
-    final MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState();
 
-    if (state.getLogBrush ().isVisible ())
+    if (state.getLogBrush().isVisible())
     {
-      state.preparePaint ();
-      graph.fill (ellipse);
-      state.postPaint ();
+      state.preparePaint();
+      graph.fill(ellipse);
+      state.postPaint();
     }
-    if (state.getLogPen ().isVisible ())
+    if (state.getLogPen().isVisible())
     {
-      state.prepareDraw ();
-      graph.draw (ellipse);
-      state.postDraw ();
+      state.prepareDraw();
+      graph.draw(ellipse);
+      state.postDraw();
     }
 
   }
@@ -108,25 +107,25 @@ public class MfCmdEllipse extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdEllipse ();
+    return new MfCmdEllipse();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int bottom = record.getParam (POS_BOTTOM);
-    final int right = record.getParam (POS_RIGHT);
-    final int top = record.getParam (POS_TOP);
-    final int left = record.getParam (POS_LEFT);
-    setBounds (left, top, right - left, bottom - top);
+    final int bottom = record.getParam(POS_BOTTOM);
+    final int right = record.getParam(POS_RIGHT);
+    final int top = record.getParam(POS_TOP);
+    final int left = record.getParam(POS_LEFT);
+    setBounds(left, top, right - left, bottom - top);
 
   }
 
@@ -139,29 +138,29 @@ public class MfCmdEllipse extends MfCmd
   {
     final Rectangle rc = getBounds();
     final MfRecord record = new MfRecord(RECORD_SIZE);
-    record.setParam(POS_BOTTOM, (int)(rc.getY() + rc.getHeight()));
-    record.setParam(POS_RIGHT, (int)(rc.getX() + rc.getWidth()));
-    record.setParam(POS_TOP, (int)(rc.getY()));
-    record.setParam(POS_LEFT, (int)(rc.getX()));
+    record.setParam(POS_BOTTOM, (int) (rc.getY() + rc.getHeight()));
+    record.setParam(POS_RIGHT, (int) (rc.getX() + rc.getWidth()));
+    record.setParam(POS_TOP, (int) (rc.getY()));
+    record.setParam(POS_LEFT, (int) (rc.getX()));
     return record;
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[ELLIPSE] bounds=");
-    b.append (getBounds ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[ELLIPSE] bounds=");
+    b.append(getBounds());
+    return b.toString();
   }
 
   public Rectangle getBounds ()
   {
-    return new Rectangle (x, y, width, height);
+    return new Rectangle(x, y, width, height);
   }
 
   public Rectangle getScaledBounds ()
   {
-    return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
+    return new Rectangle(scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
   public void setBounds (final int x, final int y, final int width, final int height)
@@ -170,8 +169,8 @@ public class MfCmdEllipse extends MfCmd
     this.y = y;
     this.width = width;
     this.height = height;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   /**
@@ -180,8 +179,8 @@ public class MfCmdEllipse extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
-    scaled_width = getScaledX (width);
+    scaled_x = getScaledX(x);
+    scaled_width = getScaledX(width);
   }
 
   /**
@@ -190,13 +189,13 @@ public class MfCmdEllipse extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
-    scaled_height = getScaledY (height);
+    scaled_y = getScaledY(y);
+    scaled_height = getScaledY(height);
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

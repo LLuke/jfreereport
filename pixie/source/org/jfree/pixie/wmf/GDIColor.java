@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: GDIColor.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: GDIColor.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,15 @@ package org.jfree.pixie.wmf;
 import java.awt.Color;
 
 /**
- * A color implementation, that supports some additional flags defined by
- * the Windows API, but has no Alpha-Channel. This is a BGR color implementation,
- * the flags are stored in the highest byte.
+ * A color implementation, that supports some additional flags defined by the Windows API,
+ * but has no Alpha-Channel. This is a BGR color implementation, the flags are stored in
+ * the highest byte.
  */
 public class GDIColor extends Color
 {
-  /** The color flags. */
+  /**
+   * The color flags.
+   */
   private int flags;
 
   public static final int PC_RESERVED = 0x01;
@@ -58,20 +60,20 @@ public class GDIColor extends Color
    */
   public GDIColor (final int colorref)
   {
-    this (getR (colorref), getG (colorref), getB (colorref), getFlags (colorref));
+    this(getR(colorref), getG(colorref), getB(colorref), getFlags(colorref));
   }
 
   /**
    * Creates a new GDI Color instance.
    *
-   * @param r the red channel.
-   * @param g the green channel.
-   * @param b the blue channel.
+   * @param r     the red channel.
+   * @param g     the green channel.
+   * @param b     the blue channel.
    * @param flags the Windows Color flags.
    */
   public GDIColor (final int r, final int g, final int b, final int flags)
   {
-    super (r, g, b);
+    super(r, g, b);
     this.flags = flags;
   }
 

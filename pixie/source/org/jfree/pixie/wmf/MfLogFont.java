@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogFont.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfLogFont.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@ import java.awt.Font;
 import java.awt.geom.AffineTransform;
 
 /**
-	A Windows metafile logical font object.
-*/
+ * A Windows metafile logical font object.
+ */
 public class MfLogFont implements WmfObject
 {
   private String face;
@@ -49,9 +49,11 @@ public class MfLogFont implements WmfObject
   private boolean strikeout;
   private boolean underline;
   private double rotation;
-  
-  /** Construct from a metafile record. */
-  public MfLogFont()
+
+  /**
+   * Construct from a metafile record.
+   */
+  public MfLogFont ()
   {
   }
 
@@ -59,9 +61,11 @@ public class MfLogFont implements WmfObject
   {
     this.face = face;
   }
-  
-  /** The name of the font face. */
-  public String getFace()
+
+  /**
+   * The name of the font face.
+   */
+  public String getFace ()
   {
     return face;
   }
@@ -72,14 +76,18 @@ public class MfLogFont implements WmfObject
   }
 
 
-  /** The size, in logical units. */
-  public int getSize()
+  /**
+   * The size, in logical units.
+   */
+  public int getSize ()
   {
     return size;
   }
 
-  /** The font style. */
-  public int getStyle()
+  /**
+   * The font style.
+   */
+  public int getStyle ()
   {
     return style;
   }
@@ -89,44 +97,46 @@ public class MfLogFont implements WmfObject
     this.style = style;
   }
 
-  /** True if this is an underlined font. */
-  public boolean isUnderline()
+  /**
+   * True if this is an underlined font.
+   */
+  public boolean isUnderline ()
   {
     return underline;
   }
-  
+
   public void setUnderline (final boolean underline)
   {
     this.underline = underline;
   }
-  
+
   public boolean isStrikeOut ()
   {
     return strikeout;
   }
-  
+
   public void setStrikeOut (final boolean b)
   {
     this.strikeout = b;
   }
-  
+
   public Font createFont ()
   {
-    final Font retfont = new Font (getFace(), getStyle(), getSize());
-    final double rot = Math.sin (Math.toRadians(-rotation));
-    return retfont.deriveFont (AffineTransform.getRotateInstance(rot));
+    final Font retfont = new Font(getFace(), getStyle(), getSize());
+    final double rot = Math.sin(Math.toRadians(-rotation));
+    return retfont.deriveFont(AffineTransform.getRotateInstance(rot));
   }
 
   public int getType ()
   {
     return OBJ_FONT;
   }
-  
+
   public double getRotation ()
   {
     return rotation;
   }
-  
+
   public void setRotation (final double d)
   {
     this.rotation = d;

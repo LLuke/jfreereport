@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdDeleteObject.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdDeleteObject.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,10 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * Removes an object from the object list. An wmf-object is either
- * a Pen, a palette, a brush, a font or a region.
+ * Removes an object from the object list. An wmf-object is either a Pen, a palette, a
+ * brush, a font or a region.
  */
 public class MfCmdDeleteObject extends MfCmd
 {
@@ -59,7 +58,7 @@ public class MfCmdDeleteObject extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    file.deleteObject (objectId);
+    file.deleteObject(objectId);
   }
 
   /**
@@ -69,30 +68,30 @@ public class MfCmdDeleteObject extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdDeleteObject ();
+    return new MfCmdDeleteObject();
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[DELETE_OBJECT] object=");
-    b.append (getObjectId ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[DELETE_OBJECT] object=");
+    b.append(getObjectId());
+    return b.toString();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int id = record.getParam (0);
-    setObjectId (id);
+    final int id = record.getParam(0);
+    setObjectId(id);
   }
 
   /**
@@ -108,8 +107,8 @@ public class MfCmdDeleteObject extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

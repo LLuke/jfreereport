@@ -28,33 +28,32 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreatePen.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdCreatePen.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+
 import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfLogPen;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Color;
 
 /**
- * The CreatePenIndirect function creates a logical cosmetic pen that has
- * the style, width, and color specified in a structure.
- * <p>
+ * The CreatePenIndirect function creates a logical cosmetic pen that has the style,
+ * width, and color specified in a structure.
+ * <p/>
  * <pre>
- typedef struct tagLOGPEN {
-  UINT     lopnStyle;
-  POINT    lopnWidth;
-  COLORREF lopnColor;
-} LOGPEN, *PLOGPEN;
- </pre>
+ * typedef struct tagLOGPEN {
+ * UINT     lopnStyle;
+ * POINT    lopnWidth;
+ * COLORREF lopnColor;
+ * } LOGPEN, *PLOGPEN;
+ * </pre>
  */
 public class MfCmdCreatePen extends MfCmd
 {
@@ -79,13 +78,13 @@ public class MfCmdCreatePen extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfLogPen lpen = new MfLogPen ();
-    lpen.setStyle (getStyle ());
-    lpen.setColor (getColor ());
-    lpen.setWidth (getScaledWidth ());
+    final MfLogPen lpen = new MfLogPen();
+    lpen.setStyle(getStyle());
+    lpen.setColor(getColor());
+    lpen.setWidth(getScaledWidth());
 
-    file.getCurrentState ().setLogPen (lpen);
-    file.storeObject (lpen);
+    file.getCurrentState().setLogPen(lpen);
+    file.storeObject(lpen);
   }
 
   /**
@@ -95,12 +94,12 @@ public class MfCmdCreatePen extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdCreatePen ();
+    return new MfCmdCreatePen();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -124,35 +123,35 @@ public class MfCmdCreatePen extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int style = record.getParam (POS_STYLE);
-    final int width = record.getParam (POS_WIDTH);
-    final int color = record.getLongParam (POS_COLOR);
+    final int style = record.getParam(POS_STYLE);
+    final int width = record.getParam(POS_WIDTH);
+    final int color = record.getLongParam(POS_COLOR);
 
-    setStyle (style);
-    setWidth (width);
-    setColor (new GDIColor (color));
+    setStyle(style);
+    setWidth(width);
+    setColor(new GDIColor(color));
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[CREATE_PEN] style=");
-    b.append (getStyle ());
-    b.append (" width=");
-    b.append (getWidth ());
-    b.append (" color=");
-    b.append (getColor ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[CREATE_PEN] style=");
+    b.append(getStyle());
+    b.append(" width=");
+    b.append(getWidth());
+    b.append(" color=");
+    b.append(getColor());
+    return b.toString();
   }
 
 
@@ -179,7 +178,7 @@ public class MfCmdCreatePen extends MfCmd
   public void setWidth (final int width)
   {
     this.width = width;
-    scaleXChanged ();
+    scaleXChanged();
   }
 
   public Color getColor ()
@@ -206,7 +205,7 @@ public class MfCmdCreatePen extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_width = getScaledX (width);
+    scaled_width = getScaledX(width);
   }
 
 }

@@ -28,12 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdFrameRegion.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdFrameRegion.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
+
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfLogBrush;
@@ -41,16 +46,10 @@ import org.jfree.pixie.wmf.MfLogRegion;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 
 /**
- * The FrameRgn function draws a border around the
- * specified region by using the specified brush.
+ * The FrameRgn function draws a border around the specified region by using the specified
+ * brush.
  */
 public class MfCmdFrameRegion extends MfCmd
 {
@@ -72,37 +71,37 @@ public class MfCmdFrameRegion extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfLogBrush brush = file.getBrushObject (brushObjectNr);
-    final MfLogRegion regio = file.getRegionObject (regionObjectNr);
+    final MfLogBrush brush = file.getBrushObject(brushObjectNr);
+    final MfLogRegion regio = file.getRegionObject(regionObjectNr);
 
-    final MfDcState state = file.getCurrentState ();
-    state.setLogRegion (regio);
-    state.setLogBrush (brush);
+    final MfDcState state = file.getCurrentState();
+    state.setLogRegion(regio);
+    state.setLogBrush(brush);
 
-    final Graphics2D graph = file.getGraphics2D ();
-    final Rectangle rec = scaleRect (regio.getBounds ());
+    final Graphics2D graph = file.getGraphics2D();
+    final Rectangle rec = scaleRect(regio.getBounds());
 
-    if (brush.isVisible ())
+    if (brush.isVisible())
     {
-      final Dimension dim = getScaledDimension ();
+      final Dimension dim = getScaledDimension();
       // upper side
-      final Rectangle2D rect = new Rectangle2D.Double ();
-      rect.setFrame (rec.x, rec.y, rec.width, dim.height);
-      state.preparePaint ();
-      graph.fill (rect);
+      final Rectangle2D rect = new Rectangle2D.Double();
+      rect.setFrame(rec.x, rec.y, rec.width, dim.height);
+      state.preparePaint();
+      graph.fill(rect);
 
       // lower side
-      rect.setFrame (rec.x, rec.y - dim.height, rec.width, dim.height);
-      graph.fill (rect);
+      rect.setFrame(rec.x, rec.y - dim.height, rec.width, dim.height);
+      graph.fill(rect);
 
       // east
-      rect.setFrame (rec.x, rec.y, dim.width, rec.height);
-      graph.fill (rect);
+      rect.setFrame(rec.x, rec.y, dim.width, rec.height);
+      graph.fill(rect);
 
       // west
-      rect.setFrame (rec.width - dim.width, rec.y, dim.width, rec.height);
-      graph.fill (rect);
-      state.postPaint ();
+      rect.setFrame(rec.width - dim.width, rec.y, dim.width, rec.height);
+      graph.fill(rect);
+      state.postPaint();
     }
   }
 
@@ -113,12 +112,12 @@ public class MfCmdFrameRegion extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdFrameRegion ();
+    return new MfCmdFrameRegion();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -128,23 +127,23 @@ public class MfCmdFrameRegion extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int height = record.getParam (0);
-    final int width = record.getParam (1);
-    final int regio = record.getParam (2);
-    final int brush = record.getParam (3);
-    setBrush (brush);
-    setRegion (regio);
-    setDimension (width, height);
+    final int height = record.getParam(0);
+    final int width = record.getParam(1);
+    final int regio = record.getParam(2);
+    final int brush = record.getParam(3);
+    setBrush(brush);
+    setRegion(regio);
+    setDimension(width, height);
   }
 
   /**
@@ -165,22 +164,22 @@ public class MfCmdFrameRegion extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[FRAME_REGION] region=");
-    b.append (getRegion ());
-    b.append (" brush=");
-    b.append (getBrush ());
-    b.append (" dimension=");
-    b.append (getDimension ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[FRAME_REGION] region=");
+    b.append(getRegion());
+    b.append(" brush=");
+    b.append(getBrush());
+    b.append(" dimension=");
+    b.append(getDimension());
+    return b.toString();
   }
 
   public void setDimension (final int width, final int height)
   {
     this.width = width;
     this.height = height;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public void setDimension (final Dimension dim)
@@ -194,7 +193,7 @@ public class MfCmdFrameRegion extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_width = getScaledX (width);
+    scaled_width = getScaledX(width);
   }
 
   /**
@@ -203,17 +202,17 @@ public class MfCmdFrameRegion extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_height = getScaledY (height);
+    scaled_height = getScaledY(height);
   }
 
   public Dimension getDimension ()
   {
-    return new Dimension (width, height);
+    return new Dimension(width, height);
   }
 
   public Dimension getScaledDimension ()
   {
-    return new Dimension (scaled_width, scaled_height);
+    return new Dimension(scaled_width, scaled_height);
   }
 
   public int getBrush ()

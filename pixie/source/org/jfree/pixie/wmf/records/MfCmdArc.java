@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdArc.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdArc.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -41,23 +41,21 @@ import java.awt.Rectangle;
 import java.awt.geom.Arc2D;
 
 import org.jfree.pixie.wmf.MfDcState;
-import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
+import org.jfree.pixie.wmf.WmfFile;
 
 /**
  * The Arc function draws an elliptical arc.
- * <p>
- * The points (nLeftRect, nTopRect) and (nRightRect, nBottomRect)
- * specify the bounding rectangle. An ellipse formed by the specified
- * bounding rectangle defines the curve of the arc. The arc extends
- * in the current drawing direction from the point where it intersects
- * the radial from the center of the bounding rectangle to the
- * (nXStartArc, nYStartArc) point. The arc ends where it intersects the
- * radial from the center of the bounding rectangle to the (nXEndArc,
- * nYEndArc) point. If the starting point and ending point are the same,
- * a complete ellipse is drawn.
- * <p>
+ * <p/>
+ * The points (nLeftRect, nTopRect) and (nRightRect, nBottomRect) specify the bounding
+ * rectangle. An ellipse formed by the specified bounding rectangle defines the curve of
+ * the arc. The arc extends in the current drawing direction from the point where it
+ * intersects the radial from the center of the bounding rectangle to the (nXStartArc,
+ * nYStartArc) point. The arc ends where it intersects the radial from the center of the
+ * bounding rectangle to the (nXEndArc, nYEndArc) point. If the starting point and ending
+ * point are the same, a complete ellipse is drawn.
+ * <p/>
  * The arc is drawn using the current pen; it is not filled.
  */
 public class MfCmdArc extends MfCmd
@@ -103,10 +101,10 @@ public class MfCmdArc extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
-    scaled_width = getScaledX (width);
-    scaled_xstart = getScaledX (xstart);
-    scaled_xend = getScaledX (xend);
+    scaled_x = getScaledX(x);
+    scaled_width = getScaledX(width);
+    scaled_xstart = getScaledX(xstart);
+    scaled_xend = getScaledX(xend);
   }
 
   /**
@@ -115,10 +113,10 @@ public class MfCmdArc extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
-    scaled_height = getScaledY (height);
-    scaled_ystart = getScaledY (xstart);
-    scaled_yend = getScaledY (xend);
+    scaled_y = getScaledY(y);
+    scaled_height = getScaledY(height);
+    scaled_ystart = getScaledY(xstart);
+    scaled_yend = getScaledY(xend);
   }
 
   /**
@@ -128,7 +126,7 @@ public class MfCmdArc extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdArc ();
+    return new MfCmdArc();
   }
 
   /**
@@ -138,35 +136,35 @@ public class MfCmdArc extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final Graphics2D graph = file.getGraphics2D ();
-    final Rectangle rec = getScaledBounds ();
-    final Point start = getScaledStartingIntersection ();
-    final Point end = getScaledEndingIntersection ();
+    final Graphics2D graph = file.getGraphics2D();
+    final Rectangle rec = getScaledBounds();
+    final Point start = getScaledStartingIntersection();
+    final Point end = getScaledEndingIntersection();
 
-    final Arc2D arc = new Arc2D.Double ();
-    arc.setArcType (Arc2D.OPEN);
-    arc.setFrame (rec.x, rec.y, rec.width, rec.height);
-    arc.setAngles (start.x, start.y, end.x, end.y);
+    final Arc2D arc = new Arc2D.Double();
+    arc.setArcType(Arc2D.OPEN);
+    arc.setFrame(rec.x, rec.y, rec.width, rec.height);
+    arc.setAngles(start.x, start.y, end.x, end.y);
 
-    final MfDcState state = file.getCurrentState ();
+    final MfDcState state = file.getCurrentState();
 
-    if (state.getLogBrush ().isVisible ())
+    if (state.getLogBrush().isVisible())
     {
-      state.preparePaint ();
-      graph.fill (arc);
-      state.postPaint ();
+      state.preparePaint();
+      graph.fill(arc);
+      state.postPaint();
     }
-    if (state.getLogPen ().isVisible ())
+    if (state.getLogPen().isVisible())
     {
-      state.prepareDraw ();
-      graph.draw (arc);
-      state.postDraw ();
+      state.prepareDraw();
+      graph.draw(arc);
+      state.postDraw();
     }
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -177,12 +175,12 @@ public class MfCmdArc extends MfCmd
 
   public Rectangle getBounds ()
   {
-    return new Rectangle (x, y, width, height);
+    return new Rectangle(x, y, width, height);
   }
 
   public Rectangle getScaledBounds ()
   {
-    return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
+    return new Rectangle(scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
   public void setBounds (final int x, final int y, final int width, final int height)
@@ -191,68 +189,68 @@ public class MfCmdArc extends MfCmd
     this.y = y;
     this.width = width;
     this.height = height;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public void setStartingIntersection (final int x, final int y)
   {
     xstart = x;
     ystart = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public Point getStartingIntersection ()
   {
-    return new Point (xstart, ystart);
+    return new Point(xstart, ystart);
   }
 
   public Point getScaledStartingIntersection ()
   {
-    return new Point (scaled_xstart, scaled_ystart);
+    return new Point(scaled_xstart, scaled_ystart);
   }
 
   public void setEndingIntersection (final int x, final int y)
   {
     xend = x;
     yend = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public Point getEndingIntersection ()
   {
-    return new Point (xend, yend);
+    return new Point(xend, yend);
   }
 
   public Point getScaledEndingIntersection ()
   {
-    return new Point (scaled_xend, scaled_yend);
+    return new Point(scaled_xend, scaled_yend);
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int xend = record.getParam (PARAM_X_END_POS);
-    final int yend = record.getParam (PARAM_Y_END_POS);
-    final int xstart = record.getParam (PARAM_X_START_POS);
-    final int ystart = record.getParam (PARAM_Y_START_POS);
-    final int bottom = record.getParam (PARAM_BOTTOM_POS);
-    final int right = record.getParam (PARAM_RIGHT_POS);
-    final int top = record.getParam (PARAM_TOP_POS);
-    final int left = record.getParam (PARAM_LEFT_POS);
-    setBounds (left, top, right - left, bottom - top);
-    setStartingIntersection (xstart, ystart);
-    setEndingIntersection (xend, yend);
+    final int xend = record.getParam(PARAM_X_END_POS);
+    final int yend = record.getParam(PARAM_Y_END_POS);
+    final int xstart = record.getParam(PARAM_X_START_POS);
+    final int ystart = record.getParam(PARAM_Y_START_POS);
+    final int bottom = record.getParam(PARAM_BOTTOM_POS);
+    final int right = record.getParam(PARAM_RIGHT_POS);
+    final int top = record.getParam(PARAM_TOP_POS);
+    final int left = record.getParam(PARAM_LEFT_POS);
+    setBounds(left, top, right - left, bottom - top);
+    setStartingIntersection(xstart, ystart);
+    setEndingIntersection(xend, yend);
   }
 
   /**
@@ -269,24 +267,24 @@ public class MfCmdArc extends MfCmd
 
     record.setParam(PARAM_LEFT_POS, (int) bounds.getX());
     record.setParam(PARAM_TOP_POS, (int) bounds.getY());
-    record.setParam(PARAM_RIGHT_POS, (int)(bounds.getX() + bounds.getWidth()));
-    record.setParam(PARAM_BOTTOM_POS, (int)(bounds.getY() + bounds.getHeight()));
-    record.setParam(PARAM_Y_START_POS, (int)(start.getY()));
-    record.setParam(PARAM_X_START_POS, (int)(start.getX()));
-    record.setParam(PARAM_Y_END_POS, (int)(end.getY()));
-    record.setParam(PARAM_X_END_POS, (int)(end.getX()));
+    record.setParam(PARAM_RIGHT_POS, (int) (bounds.getX() + bounds.getWidth()));
+    record.setParam(PARAM_BOTTOM_POS, (int) (bounds.getY() + bounds.getHeight()));
+    record.setParam(PARAM_Y_START_POS, (int) (start.getY()));
+    record.setParam(PARAM_X_START_POS, (int) (start.getX()));
+    record.setParam(PARAM_Y_END_POS, (int) (end.getY()));
+    record.setParam(PARAM_X_END_POS, (int) (end.getX()));
     return record;
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[ARC] bounds=");
-    b.append (getBounds ());
-    b.append (" startIntersection=");
-    b.append (getStartingIntersection ());
-    b.append (" endingIntersection=");
-    b.append (getEndingIntersection ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[ARC] bounds=");
+    b.append(getBounds());
+    b.append(" startIntersection=");
+    b.append(getStartingIntersection());
+    b.append(" endingIntersection=");
+    b.append(getEndingIntersection());
+    return b.toString();
   }
 }

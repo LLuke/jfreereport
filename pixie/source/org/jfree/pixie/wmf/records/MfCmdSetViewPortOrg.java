@@ -1,20 +1,19 @@
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Point;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Point;
 
 /**
- * Defines the upper left corner of the viewport. The size of the
- * viewport is defined using setViewportExt.
- * <p>
- * SetViewportOrgEx specifies which device point maps to the logical
- * point (0,0). It has the effect of shifting the axes so that the
- * logical point (0,0) no longer refers to the upper-left corner.
+ * Defines the upper left corner of the viewport. The size of the viewport is defined
+ * using setViewportExt.
+ * <p/>
+ * SetViewportOrgEx specifies which device point maps to the logical point (0,0). It has
+ * the effect of shifting the axes so that the logical point (0,0) no longer refers to the
+ * upper-left corner.
  */
 public class MfCmdSetViewPortOrg extends MfCmd
 {
@@ -38,9 +37,9 @@ public class MfCmdSetViewPortOrg extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    final Point p = getScaledTarget ();
-    state.setViewportOrg (p.x, p.y);
+    final MfDcState state = file.getCurrentState();
+    final Point p = getScaledTarget();
+    state.setViewportOrg(p.x, p.y);
   }
 
   /**
@@ -50,31 +49,31 @@ public class MfCmdSetViewPortOrg extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetViewPortOrg ();
+    return new MfCmdSetViewPortOrg();
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SET_VIEWPORT_ORG] target=");
-    b.append (getTarget ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SET_VIEWPORT_ORG] target=");
+    b.append(getTarget());
+    return b.toString();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int y = record.getParam (POS_Y);
-    final int x = record.getParam (POS_X);
-    setTarget (x, y);
+    final int y = record.getParam(POS_Y);
+    final int x = record.getParam(POS_X);
+    setTarget(x, y);
   }
 
   /**
@@ -82,7 +81,8 @@ public class MfCmdSetViewPortOrg extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     final Point p = getTarget();
@@ -93,25 +93,25 @@ public class MfCmdSetViewPortOrg extends MfCmd
 
   public Point getTarget ()
   {
-    return new Point (x, y);
+    return new Point(x, y);
   }
 
   public void setTarget (final int x, final int y)
   {
     this.x = x;
     this.y = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public Point getScaledTarget ()
   {
-    return new Point (scaled_x, scaled_y);
+    return new Point(scaled_x, scaled_y);
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -126,7 +126,7 @@ public class MfCmdSetViewPortOrg extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
+    scaled_x = getScaledX(x);
   }
 
   /**
@@ -135,6 +135,6 @@ public class MfCmdSetViewPortOrg extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
+    scaled_y = getScaledY(y);
   }
 }

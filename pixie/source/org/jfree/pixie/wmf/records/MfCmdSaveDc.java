@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSaveDc.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSaveDc.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,11 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * Saves the DeviceContext. The device context contains the current viewport,
- * clipping and scaling as well as the current color, brush and font, etc.
- * <p>
+ * Saves the DeviceContext. The device context contains the current viewport, clipping and
+ * scaling as well as the current color, brush and font, etc.
+ * <p/>
  * This operation has no parameters.
  */
 public class MfCmdSaveDc extends MfCmd
@@ -59,7 +58,7 @@ public class MfCmdSaveDc extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    file.saveDCState ();
+    file.saveDCState();
   }
 
   /**
@@ -69,15 +68,15 @@ public class MfCmdSaveDc extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSaveDc ();
+    return new MfCmdSaveDc();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
@@ -90,14 +89,15 @@ public class MfCmdSaveDc extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     return new MfRecord(0);
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -108,9 +108,9 @@ public class MfCmdSaveDc extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SAVE_DC]");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SAVE_DC]");
+    return b.toString();
   }
 
   /**

@@ -5,84 +5,83 @@ import java.awt.Rectangle;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
  * Currently i have no clue, how this is implemented.
- *
+ * <p/>
  * From The WINE-Sources:
- * <p>
+ * <p/>
  * <pre>
- *	The layout of the record looks something like this:
- *
- *	 rdParm	meaning
- *	 0		Always 0?
- *	 1		Always 6?
- *	 2		Looks like a handle? - not constant
- *	 3		0 or 1 ??
- *	 4		Total number of bytes
- *	 5		No. of separate bands = n [see below]
- *	 6		Largest number of x co-ords in a band
- *	 7-10		Bounding box x1 y1 x2 y2
- *	 11-...		n bands
- *
- *	 Regions are divided into bands that are uniform in the
- *	 y-direction. Each band consists of pairs of on/off x-coords and is
- *	 written as
- *		m y0 y1 x1 x2 x3 ... xm m
- *	 into successive rdParm[]s.
- *
- *	 This is probably just a dump of the internal RGNOBJ?
+ * 	The layout of the record looks something like this:
+ * <p/>
+ * 	 rdParm	meaning
+ * 	 0		Always 0?
+ * 	 1		Always 6?
+ * 	 2		Looks like a handle? - not constant
+ * 	 3		0 or 1 ??
+ * 	 4		Total number of bytes
+ * 	 5		No. of separate bands = n [see below]
+ * 	 6		Largest number of x co-ords in a band
+ * 	 7-10		Bounding box x1 y1 x2 y2
+ * 	 11-...		n bands
+ * <p/>
+ * 	 Regions are divided into bands that are uniform in the
+ * 	 y-direction. Each band consists of pairs of on/off x-coords and is
+ * 	 written as
+ * 		m y0 y1 x1 x2 x3 ... xm m
+ * 	 into successive rdParm[]s.
+ * <p/>
+ * 	 This is probably just a dump of the internal RGNOBJ?
  * </pre>
- * <p>
+ * <p/>
  * <pre>
- static BOOL MF_Play_MetaCreateRegion( METARECORD *mr, HRGN hrgn )
- {
-     WORD band, pair;
-     WORD *start, *end;
-     INT16 y0, y1;
-     HRGN hrgn2 = CreateRectRgn( 0, 0, 0, 0 );
-
-     for(band  = 0, start = &(mr->rdParm[11]);
-                    band < mr->rdParm[5];
-                    band++, start = end + 1)
-     {
-       if(*start / 2 != (*start + 1) / 2)
-       {
-          WARN("Delimiter not even.\n");
-          DeleteObject( hrgn2 );
-          return FALSE;
-       }
-
-       end = start + *start + 3;
-       if(end > (WORD *)mr + mr->rdSize)
-       {
-         WARN("End points outside record.\n");
-         DeleteObject( hrgn2 );
-         return FALSE;
-       }
-
-       if(*start != *end)
-       {
-         WARN("Mismatched delimiters.\n");
-         DeleteObject( hrgn2 );
-         return FALSE;
-       }
-
-       y0 = *(INT16 *)(start + 1);
-       y1 = *(INT16 *)(start + 2);
-       for(pair = 0; pair < *start / 2; pair++)
-       {
-         SetRectRgn( hrgn2, *(INT16 *)(start + 3 + 2*pair), y0,
-           *(INT16 *)(start + 4 + 2*pair), y1 );
-         CombineRgn(hrgn, hrgn, hrgn2, RGN_OR);
-       }
-     }
-     DeleteObject( hrgn2 );
-     return TRUE;
-   }
- </pre>
- </p>
+ * static BOOL MF_Play_MetaCreateRegion( METARECORD *mr, HRGN hrgn )
+ * {
+ * WORD band, pair;
+ * WORD *start, *end;
+ * INT16 y0, y1;
+ * HRGN hrgn2 = CreateRectRgn( 0, 0, 0, 0 );
+ * <p/>
+ * for(band  = 0, start = &(mr->rdParm[11]);
+ * band < mr->rdParm[5];
+ * band++, start = end + 1)
+ * {
+ * if(*start / 2 != (*start + 1) / 2)
+ * {
+ * WARN("Delimiter not even.\n");
+ * DeleteObject( hrgn2 );
+ * return FALSE;
+ * }
+ * <p/>
+ * end = start + *start + 3;
+ * if(end > (WORD *)mr + mr->rdSize)
+ * {
+ * WARN("End points outside record.\n");
+ * DeleteObject( hrgn2 );
+ * return FALSE;
+ * }
+ * <p/>
+ * if(*start != *end)
+ * {
+ * WARN("Mismatched delimiters.\n");
+ * DeleteObject( hrgn2 );
+ * return FALSE;
+ * }
+ * <p/>
+ * y0 = *(INT16 *)(start + 1);
+ * y1 = *(INT16 *)(start + 2);
+ * for(pair = 0; pair < *start / 2; pair++)
+ * {
+ * SetRectRgn( hrgn2, *(INT16 *)(start + 3 + 2*pair), y0,
+ * (INT16 *)(start + 4 + 2*pair), y1 );
+ * CombineRgn(hrgn, hrgn, hrgn2, RGN_OR);
+ * }
+ * }
+ * DeleteObject( hrgn2 );
+ * return TRUE;
+ * }
+ * </pre>
+ * </p>
  */
 public class MfCmdCreateRegion extends MfCmd
 {
@@ -98,21 +97,24 @@ public class MfCmdCreateRegion extends MfCmd
 
   public void setRecord (final MfRecord record)
   {
-    System.out.println ("Create Region is not implemented.");
+    System.out.println("Create Region is not implemented.");
 
   }
 
-  /** Writer function */
+  /**
+   * Writer function
+   */
   public MfRecord getRecord ()
   {
     final int len = 0;
-    final int bands = 0; final int maxBands = 0;
+    final int bands = 0;
+    final int maxBands = 0;
 
     final MfRecord record = new MfRecord(0);
-    record.setParam(0,0);
-    record.setParam(1,6);
-    record.setParam(2,0x1234);
-    record.setParam(3,0);
+    record.setParam(0, 0);
+    record.setParam(1, 6);
+    record.setParam(2, 0x1234);
+    record.setParam(3, 0);
     record.setParam(4, len * 2);
     record.setParam(5, bands);
     record.setParam(6, maxBands);
@@ -129,10 +131,10 @@ public class MfCmdCreateRegion extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[CREATE_REGION] ");
-    b.append (" no internals known (see WINE for details)");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[CREATE_REGION] ");
+    b.append(" no internals known (see WINE for details)");
+    return b.toString();
   }
 
 
@@ -147,7 +149,7 @@ public class MfCmdCreateRegion extends MfCmd
 
   public MfCmd getInstance ()
   {
-    return new MfCmdCreateRegion ();
+    return new MfCmdCreateRegion();
   }
 
   protected void scaleXChanged ()
@@ -158,52 +160,52 @@ public class MfCmdCreateRegion extends MfCmd
   {
   }
 
-  public int getRegionX()
+  public int getRegionX ()
   {
     return regionX;
   }
 
-  public void setRegionX(final int regionX)
+  public void setRegionX (final int regionX)
   {
     this.regionX = regionX;
   }
 
-  public int getRegionY()
+  public int getRegionY ()
   {
     return regionY;
   }
 
-  public void setRegionY(final int regionY)
+  public void setRegionY (final int regionY)
   {
     this.regionY = regionY;
   }
 
-  public int getRegionWidth()
+  public int getRegionWidth ()
   {
     return regionWidth;
   }
 
-  public void setRegionWidth(final int regionWidth)
+  public void setRegionWidth (final int regionWidth)
   {
     this.regionWidth = regionWidth;
   }
 
-  public int getRegionHeight()
+  public int getRegionHeight ()
   {
     return regionHeight;
   }
 
-  public void setRegionHeight(final int regionHeight)
+  public void setRegionHeight (final int regionHeight)
   {
     this.regionHeight = regionHeight;
   }
 
-  public Rectangle[] getRects()
+  public Rectangle[] getRects ()
   {
     return rects;
   }
 
-  public void setRects(final Rectangle[] rects)
+  public void setRects (final Rectangle[] rects)
   {
     this.rects = rects;
   }

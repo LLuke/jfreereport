@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfDcState.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
+ * $Id: MfDcState.java,v 1.4 2004/10/22 11:59:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 /**
- Track the state of the DeviceContext of a Windows metafile.
+ * Track the state of the DeviceContext of a Windows metafile.
  */
 public class MfDcState implements Cloneable
 {
@@ -54,7 +54,9 @@ public class MfDcState implements Cloneable
     public MfScale (final int xNum, final int xDenom, final int yNum, final int yDenom)
     {
       if (xNum == 0 || yNum == 0 || xDenom == 0 || yDenom == 0)
-        throw new IllegalArgumentException ("Illegal Scaling");
+      {
+        throw new IllegalArgumentException("Illegal Scaling");
+      }
 
       this.xNum = xNum;
       this.yNum = yNum;
@@ -120,8 +122,8 @@ public class MfDcState implements Cloneable
     bkColor = Color.white;
     textColor = Color.black;
 
-    this.logBrush = new MfLogBrush ();
-    this.logPen = new MfLogPen ();
+    this.logBrush = new MfLogBrush();
+    this.logPen = new MfLogPen();
     this.parent = parent;
   }
 
@@ -167,23 +169,27 @@ public class MfDcState implements Cloneable
 
     if (copy.clipRegion != null)
     {
-      this.clipRegion = new Rectangle (copy.clipRegion);
+      this.clipRegion = new Rectangle(copy.clipRegion);
     }
   }
 
   public void restoredState ()
   {
-    final Graphics2D graphic = parent.getGraphics2D ();
+    final Graphics2D graphic = parent.getGraphics2D();
     if (logBrush != null)
     {
-      updateBrushBackground ();
-      graphic.setPaint (logBrush.getPaint ());
+      updateBrushBackground();
+      graphic.setPaint(logBrush.getPaint());
     }
     if (logPen != null)
-      graphic.setStroke (logPen.getStroke ());
+    {
+      graphic.setStroke(logPen.getStroke());
+    }
 
     if (logFont != null)
-      graphic.setFont (logFont.createFont ());
+    {
+      graphic.setFont(logFont.createFont());
+    }
 
   }
 
@@ -195,7 +201,7 @@ public class MfDcState implements Cloneable
   {
     if (clipRegion == null)
     {
-      return new Rectangle (viewportOrgX, viewportOrgY, viewportExtX, viewportExtY);
+      return new Rectangle(viewportOrgX, viewportOrgY, viewportExtX, viewportExtY);
     }
     return clipRegion;
   }
@@ -215,7 +221,7 @@ public class MfDcState implements Cloneable
     if (this.bkmode != bkmode)
     {
       this.bkmode = bkmode;
-      updateBrushBackground ();
+      updateBrushBackground();
     }
   }
 
@@ -223,11 +229,11 @@ public class MfDcState implements Cloneable
   {
     if (bkmode == BrushConstants.TRANSPARENT)
     {
-      logBrush.setBackgroundColor (new Color (MfLogBrush.COLOR_FULL_ALPHA, true));
+      logBrush.setBackgroundColor(new Color(MfLogBrush.COLOR_FULL_ALPHA, true));
     }
     else
     {
-      logBrush.setBackgroundColor (getBkColor ());
+      logBrush.setBackgroundColor(getBkColor());
     }
   }
 
@@ -412,20 +418,24 @@ public class MfDcState implements Cloneable
   public void setFgColor (final Color fgColor)
   {
     if (fgColor == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
     this.fgColor = fgColor;
-    logBrush.setColor (fgColor);
-    logPen.setColor (fgColor);
+    logBrush.setColor(fgColor);
+    logPen.setColor(fgColor);
   }
 
   public void setBkColor (final Color bkColor)
   {
     if (bkColor == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
     this.bkColor = bkColor;
-    logBrush.setBackgroundColor (bkColor);
+    logBrush.setBackgroundColor(bkColor);
   }
 
   public Color getFgColor ()
@@ -456,7 +466,9 @@ public class MfDcState implements Cloneable
   public void setLogFont (final MfLogFont logFont)
   {
     if (logFont == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
     this.logFont = logFont;
   }
@@ -464,26 +476,32 @@ public class MfDcState implements Cloneable
   public void setLogBrush (final MfLogBrush logBrush)
   {
     if (logBrush == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
     this.logBrush = logBrush;
-    updateBrushBackground ();
-    parent.getGraphics2D ().setPaint (logBrush.getPaint ());
+    updateBrushBackground();
+    parent.getGraphics2D().setPaint(logBrush.getPaint());
   }
 
   public void setLogPen (final MfLogPen logPen)
   {
     if (logPen == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
     this.logPen = logPen;
-    parent.getGraphics2D ().setStroke (logPen.getStroke ());
+    parent.getGraphics2D().setStroke(logPen.getStroke());
   }
 
   public void setLogPalette (final MfLogPalette logPalette)
   {
     if (logPalette == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
     this.logPalette = logPalette;
   }
@@ -491,7 +509,9 @@ public class MfDcState implements Cloneable
   public void setLogRegion (final MfLogRegion logRegion)
   {
     if (logRegion == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
     this.logRegion = logRegion;
   }
@@ -510,28 +530,28 @@ public class MfDcState implements Cloneable
 
   public void prepareDraw ()
   {
-    parent.getGraphics2D ().setPaint (logPen.getColor ());
+    parent.getGraphics2D().setPaint(logPen.getColor());
   }
 
   public void postDraw ()
   {
-    parent.getGraphics2D ().setPaint (logBrush.getPaint ());
+    parent.getGraphics2D().setPaint(logBrush.getPaint());
   }
 
   public void prepareDrawText ()
   {
-    parent.getGraphics2D ().setPaint (textColor);
-    parent.getGraphics2D ().setFont (logFont.createFont ());
+    parent.getGraphics2D().setPaint(textColor);
+    parent.getGraphics2D().setFont(logFont.createFont());
   }
 
   public void postDrawText ()
   {
-    parent.getGraphics2D ().setPaint (logBrush.getPaint ());
+    parent.getGraphics2D().setPaint(logBrush.getPaint());
   }
 
   public void preparePaint ()
   {
-    parent.getGraphics2D ().setPaint (logBrush.getPaint ());
+    parent.getGraphics2D().setPaint(logBrush.getPaint());
   }
 
   public void postPaint ()
@@ -549,12 +569,12 @@ public class MfDcState implements Cloneable
     return (textAlign & TextConstants.TA_BASELINE);
   }
 
-  public MfLogRegion getLogRegion()
+  public MfLogRegion getLogRegion ()
   {
     return logRegion;
   }
 
-  public MfLogPalette getLogPalette()
+  public MfLogPalette getLogPalette ()
   {
     return logPalette;
   }

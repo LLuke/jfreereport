@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 2:39:19 PM
  *
- * $Id: SetRenderingHintsOperation.java,v 1.1 2003/03/09 20:38:15 taqua Exp $
+ * $Id: SetRenderingHintsOperation.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  */
 package org.jfree.pixie.g2recorder;
 
@@ -13,12 +13,12 @@ public class SetRenderingHintsOperation implements G2Operation
 {
   private RenderingHints renderingHints;
 
-  public SetRenderingHintsOperation(final RenderingHints renderingHints)
+  public SetRenderingHintsOperation (final RenderingHints renderingHints)
   {
     this.renderingHints = renderingHints;
   }
 
-  public void draw(final Graphics2D g2)
+  public void draw (final Graphics2D g2)
   {
     g2.setRenderingHints(renderingHints);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSelectPalette.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSelectPalette.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,10 @@ import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.WmfObject;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * Activates the specified Palette Object. The object must be previously defined
- * for the device context by using createPalette().
+ * Activates the specified Palette Object. The object must be previously defined for the
+ * device context by using createPalette().
  */
 public class MfCmdSelectPalette extends MfCmd
 {
@@ -64,17 +63,19 @@ public class MfCmdSelectPalette extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final WmfObject object = file.getObject (objectId);
+    final WmfObject object = file.getObject(objectId);
     if (object == null)
-      throw new NullPointerException ();
+    {
+      throw new NullPointerException();
+    }
 
-    switch (object.getType ())
+    switch (object.getType())
     {
       case WmfObject.OBJ_PALETTE:
-        file.getCurrentState ().setLogPalette ((MfLogPalette) object);
+        file.getCurrentState().setLogPalette((MfLogPalette) object);
         break;
       default:
-        throw new IllegalStateException ("Object is no palette");
+        throw new IllegalStateException("Object is no palette");
     }
 
   }
@@ -86,22 +87,22 @@ public class MfCmdSelectPalette extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSelectPalette ();
+    return new MfCmdSelectPalette();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int id = record.getParam (POS_OBJECT_ID);
-    setObjectId (id);
+    final int id = record.getParam(POS_OBJECT_ID);
+    setObjectId(id);
   }
 
   /**
@@ -109,7 +110,8 @@ public class MfCmdSelectPalette extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_OBJECT_ID, getObjectId());
@@ -117,8 +119,8 @@ public class MfCmdSelectPalette extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -139,10 +141,10 @@ public class MfCmdSelectPalette extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SELECT_PALETTE] object=");
-    b.append (getObjectId ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SELECT_PALETTE] object=");
+    b.append(getObjectId());
+    return b.toString();
   }
 
   /**

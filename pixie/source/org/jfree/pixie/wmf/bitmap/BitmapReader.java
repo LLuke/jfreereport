@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 12:01:58 AM
  *
- * $Id: BitmapReader.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: BitmapReader.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  */
 package org.jfree.pixie.wmf.bitmap;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class BitmapReader
 {
   // build an int from a byte array - convert little to big endian
-  public static int constructInt(final byte[] in, final int offset)
+  public static int constructInt (final byte[] in, final int offset)
   {
     int ret = ((int) in[offset + 3] & 0xff);
     ret = (ret << 8) | ((int) in[offset + 2] & 0xff);
@@ -27,7 +27,7 @@ public class BitmapReader
 
   // build an int from a byte array - convert little to big endian
   // set high order bytes to 0xfff
-  public static int constructInt3(final byte[] in, final int offset)
+  public static int constructInt3 (final byte[] in, final int offset)
   {
     int ret = 0xff;
     ret = (ret << 8) | ((int) in[offset + 2] & 0xff);
@@ -37,7 +37,7 @@ public class BitmapReader
   }
 
   // build an int from a byte array - convert little to big endian
-  public static long constructLong(final byte[] in, final int offset)
+  public static long constructLong (final byte[] in, final int offset)
   {
     long ret = ((long) in[offset + 7] & 0xff);
     ret |= (ret << 8) | ((long) in[offset + 6] & 0xff);
@@ -51,14 +51,14 @@ public class BitmapReader
   }
 
   // build an double from a byte array - convert little to big endian
-  public static double constructDouble(final byte[] in, final int offset)
+  public static double constructDouble (final byte[] in, final int offset)
   {
     final long ret = constructLong(in, offset);
     return (Double.longBitsToDouble(ret));
   }
 
   // build an short from a byte array - convert little to big endian
-  public static short constructShort(final byte[] in, final int offset)
+  public static short constructShort (final byte[] in, final int offset)
   {
     short ret = (short) ((short) in[offset + 1] & 0xff);
     ret = (short) ((ret << 8) | (short) ((short) in[offset + 0] & 0xff));
@@ -84,7 +84,8 @@ public class BitmapReader
     public int nclrimp;
 
     // read in the bitmap header
-    public void read(final FileInputStream fs) throws IOException
+    public void read (final FileInputStream fs)
+            throws IOException
     {
       final int bflen = 14;  // 14 byte BITMAPFILEHEADER
       final byte[] bf = new byte[bflen];
@@ -134,7 +135,7 @@ public class BitmapReader
     }
   }
 
-  public static Image read(final FileInputStream fs)
+  public static Image read (final FileInputStream fs)
   {
     try
     {
@@ -142,13 +143,19 @@ public class BitmapReader
       bh.read(fs);
 
       if (bh.nbitcount == 24)
+      {
         return (readMap24(fs, bh));
+      }
 
       if (bh.nbitcount == 32)
+      {
         return (readMap32(fs, bh));
+      }
 
       if (bh.nbitcount == 8)
+      {
         return (readMap8(fs, bh));
+      }
 
       fs.close();
     }
@@ -166,7 +173,8 @@ public class BitmapReader
    * @param bh header struct
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  protected static Image readMap32(final FileInputStream fs, final BitmapHeader bh) throws IOException
+  protected static Image readMap32 (final FileInputStream fs, final BitmapHeader bh)
+          throws IOException
   {
     final Image image;
     // No Palatte data for 24-bit format but scan lines are
@@ -187,8 +195,8 @@ public class BitmapReader
     }
 
     image = Toolkit.getDefaultToolkit().createImage
-        (new MemoryImageSource(bh.nwidth, bh.nheight,
-                               ndata, 0, bh.nwidth));
+            (new MemoryImageSource(bh.nwidth, bh.nheight,
+                    ndata, 0, bh.nwidth));
     fs.close();
     return (image);
   }
@@ -201,7 +209,8 @@ public class BitmapReader
    * @param bh header struct
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  protected static Image readMap24(final FileInputStream fs, final BitmapHeader bh) throws IOException
+  protected static Image readMap24 (final FileInputStream fs, final BitmapHeader bh)
+          throws IOException
   {
     final Image image;
 
@@ -225,8 +234,8 @@ public class BitmapReader
     }
 
     image = Toolkit.getDefaultToolkit().createImage
-        (new MemoryImageSource(bh.nwidth, bh.nheight,
-                               ndata, 0, bh.nwidth));
+            (new MemoryImageSource(bh.nwidth, bh.nheight,
+                    ndata, 0, bh.nwidth));
 
     fs.close();
     return (image);
@@ -239,7 +248,8 @@ public class BitmapReader
    * @param bh header struct
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  protected static Image readMap8(final FileInputStream fs, final BitmapHeader bh) throws IOException
+  protected static Image readMap8 (final FileInputStream fs, final BitmapHeader bh)
+          throws IOException
   {
     final Image image;
 
@@ -295,7 +305,7 @@ public class BitmapReader
       for (int i8 = 0; i8 < bh.nwidth; i8++)
       {
         ndata8[bh.nwidth * (bh.nheight - j8 - 1) + i8] =
-            npalette[((int) bdata[nindex8] & 0xff)];
+        npalette[((int) bdata[nindex8] & 0xff)];
         nindex8++;
       }
 
@@ -303,8 +313,8 @@ public class BitmapReader
     }
 
     image = Toolkit.getDefaultToolkit().createImage
-        (new MemoryImageSource(bh.nwidth, bh.nheight,
-                               ndata8, 0, bh.nwidth));
+            (new MemoryImageSource(bh.nwidth, bh.nheight,
+                    ndata8, 0, bh.nwidth));
     return (image);
   }
 
@@ -315,7 +325,7 @@ public class BitmapReader
    * @param sdir full path name
    * @return Image Object, be sure to check for (Image)null !!!!
    */
-  public static Image load(final String sdir)
+  public static Image load (final String sdir)
   {
     try
     {

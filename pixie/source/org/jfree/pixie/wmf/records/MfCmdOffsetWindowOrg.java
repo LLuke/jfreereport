@@ -28,24 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdOffsetWindowOrg.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdOffsetWindowOrg.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Point;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Point;
 
 /**
- * Moves the current Window Region to the specified
- * position
+ * Moves the current Window Region to the specified position
  */
 public class MfCmdOffsetWindowOrg extends MfCmd
 {
@@ -69,10 +67,10 @@ public class MfCmdOffsetWindowOrg extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    final Point p = getScaledDestination ();
+    final MfDcState state = file.getCurrentState();
+    final Point p = getScaledDestination();
     state.setWindowOrg
-        (state.getWindowOrgX () + p.x, state.getWindowOrgY () + p.y);
+            (state.getWindowOrgX() + p.x, state.getWindowOrgY() + p.y);
   }
 
   /**
@@ -82,28 +80,28 @@ public class MfCmdOffsetWindowOrg extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdOffsetWindowOrg ();
+    return new MfCmdOffsetWindowOrg();
   }
 
   public Point getDestination ()
   {
-    return new Point (x, y);
+    return new Point(x, y);
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[OFFSET_WINDOWORG] destination=");
-    b.append (getDestination ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[OFFSET_WINDOWORG] destination=");
+    b.append(getDestination());
+    return b.toString();
   }
 
   public void setDestination (final int x, final int y)
   {
     this.x = x;
     this.y = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
 
   }
 
@@ -127,8 +125,8 @@ public class MfCmdOffsetWindowOrg extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -138,24 +136,24 @@ public class MfCmdOffsetWindowOrg extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int y = record.getParam (POS_Y);
-    final int x = record.getParam (POS_X);
-    setDestination (x, y);
+    final int y = record.getParam(POS_Y);
+    final int x = record.getParam(POS_X);
+    setDestination(x, y);
   }
 
   public Point getScaledDestination ()
   {
-    return new Point (scaled_x, scaled_y);
+    return new Point(scaled_x, scaled_y);
   }
 
   /**
@@ -164,7 +162,7 @@ public class MfCmdOffsetWindowOrg extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
+    scaled_x = getScaledX(x);
   }
 
   /**
@@ -173,7 +171,7 @@ public class MfCmdOffsetWindowOrg extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
+    scaled_y = getScaledY(y);
   }
 
 }

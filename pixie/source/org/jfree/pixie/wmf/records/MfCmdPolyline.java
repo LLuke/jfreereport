@@ -28,29 +28,27 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdPolyline.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdPolyline.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 
 /**
- * The Polyline function draws a series of line segments by connecting
- * the points in the specified array.
- * <p>
- * The polyline does not use the current cursor position as starting
- * point of the first line. The starting point is defined by the first
- * coordinate of the point-array.
+ * The Polyline function draws a series of line segments by connecting the points in the
+ * specified array.
+ * <p/>
+ * The polyline does not use the current cursor position as starting point of the first
+ * line. The starting point is defined by the first coordinate of the point-array.
  */
 public class MfCmdPolyline extends MfCmd
 {
@@ -71,29 +69,29 @@ public class MfCmdPolyline extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final Graphics2D graph = file.getGraphics2D ();
-    final MfDcState state = file.getCurrentState ();
-    int cx = state.getCurPosX ();
-    int cy = state.getCurPosY ();
-    final int[] points_x = getScaledPointsX ();
-    final int[] points_y = getScaledPointsY ();
+    final Graphics2D graph = file.getGraphics2D();
+    final MfDcState state = file.getCurrentState();
+    int cx = state.getCurPosX();
+    int cy = state.getCurPosY();
+    final int[] points_x = getScaledPointsX();
+    final int[] points_y = getScaledPointsY();
 
-    if (state.getLogPen ().isVisible ())
+    if (state.getLogPen().isVisible())
     {
-      state.prepareDraw ();
+      state.prepareDraw();
       cx = points_x[0];
       cy = points_y[0];
       for (int i = 1; i < count; i++)
       {
         final int destX = points_x[i];
         final int destY = points_y[i];
-        graph.draw (new Line2D.Double (cx, cy, destX, destY));
+        graph.draw(new Line2D.Double(cx, cy, destX, destY));
         cx = destX;
         cy = destY;
       }
       state.postDraw();
     }
-    state.setCurPos (cx, cy);
+    state.setCurPos(cx, cy);
   }
 
   /**
@@ -103,12 +101,12 @@ public class MfCmdPolyline extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdPolyline ();
+    return new MfCmdPolyline();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -119,48 +117,51 @@ public class MfCmdPolyline extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[POLYLINE] count=");
-    b.append (getPointCount ());
-    final int l = getPointCount ();
-    final int[] points_x = getPointsX ();
-    final int[] points_y = getPointsY ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[POLYLINE] count=");
+    b.append(getPointCount());
+    final int l = getPointCount();
+    final int[] points_x = getPointsX();
+    final int[] points_y = getPointsY();
 
     for (int i = 0; i < l; i++)
     {
-      if (i != 0) b.append (",");
+      if (i != 0)
+      {
+        b.append(",");
+      }
 
-      b.append (" (");
-      b.append (points_x[i]);
-      b.append (",");
-      b.append (points_y[i]);
-      b.append (") ");
+      b.append(" (");
+      b.append(points_x[i]);
+      b.append(",");
+      b.append(points_y[i]);
+      b.append(") ");
     }
-    return b.toString ();
+    return b.toString();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int count = record.getParam (0);
+    final int count = record.getParam(0);
     final int[] points_x = new int[count];
     final int[] points_y = new int[count];
 
     for (int i = 0; i < count; i++)
     {
-      points_x[i] = record.getParam (1 + 2 * i);
-      points_y[i] = record.getParam (2 + 2 * i);
+      points_x[i] = record.getParam(1 + 2 * i);
+      points_y[i] = record.getParam(2 + 2 * i);
     }
-    setPointCount (count);
-    setPoints (points_x, points_y);
+    setPointCount(count);
+    setPoints(points_x, points_y);
   }
 
   /**
@@ -168,9 +169,10 @@ public class MfCmdPolyline extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
-    final MfRecord record = new MfRecord(getPointCount()* 2 + 1);
+    final MfRecord record = new MfRecord(getPointCount() * 2 + 1);
     final int count = getPointCount();
     final int[] points_x = getPointsX();
     final int[] points_y = getPointsY();
@@ -194,8 +196,8 @@ public class MfCmdPolyline extends MfCmd
   {
     this.points_x = points_x;
     this.points_y = points_y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
 
   }
 
@@ -230,7 +232,7 @@ public class MfCmdPolyline extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_points_x = applyScaleX (points_x, scaled_points_x);
+    scaled_points_x = applyScaleX(points_x, scaled_points_x);
   }
 
   /**
@@ -239,6 +241,6 @@ public class MfCmdPolyline extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_points_y = applyScaleY (points_y, scaled_points_y);
+    scaled_points_y = applyScaleY(points_y, scaled_points_y);
   }
 }

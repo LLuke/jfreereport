@@ -1,16 +1,14 @@
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Dimension;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Dimension;
 
 /**
  * Sets the size of the window.
- *
  */
 public class MfCmdSetWindowExt extends MfCmd
 {
@@ -34,9 +32,9 @@ public class MfCmdSetWindowExt extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    final Dimension dim = getScaledDimension ();
-    state.setWindowExt (dim.width, dim.height);
+    final MfDcState state = file.getCurrentState();
+    final Dimension dim = getScaledDimension();
+    state.setWindowExt(dim.width, dim.height);
   }
 
   /**
@@ -46,23 +44,23 @@ public class MfCmdSetWindowExt extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetWindowExt ();
+    return new MfCmdSetWindowExt();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int height = record.getParam (POS_HEIGHT);
-    final int width = record.getParam (POS_WIDTH);
-    setDimension (width, height);
+    final int height = record.getParam(POS_HEIGHT);
+    final int width = record.getParam(POS_WIDTH);
+    setDimension(width, height);
   }
 
   /**
@@ -70,7 +68,8 @@ public class MfCmdSetWindowExt extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     final Dimension dim = getDimension();
@@ -81,28 +80,28 @@ public class MfCmdSetWindowExt extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SET_WINDOW_EXT] dimension=");
-    b.append (getDimension ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SET_WINDOW_EXT] dimension=");
+    b.append(getDimension());
+    return b.toString();
   }
 
   public Dimension getDimension ()
   {
-    return new Dimension (width, height);
+    return new Dimension(width, height);
   }
 
   public Dimension getScaledDimension ()
   {
-    return new Dimension (scaled_width, scaled_height);
+    return new Dimension(scaled_width, scaled_height);
   }
 
   public void setDimension (final int w, final int h)
   {
     this.width = w;
     this.height = h;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   /**
@@ -111,7 +110,7 @@ public class MfCmdSetWindowExt extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_width = getScaledX (width);
+    scaled_width = getScaledX(width);
   }
 
   /**
@@ -120,12 +119,12 @@ public class MfCmdSetWindowExt extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_height = getScaledY (height);
+    scaled_height = getScaledY(height);
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

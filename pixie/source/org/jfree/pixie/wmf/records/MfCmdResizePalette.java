@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdResizePalette.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdResizePalette.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,10 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * The ResizePalette function increases or decreases the size of a logical
- * palette based on the specified value.
+ * The ResizePalette function increases or decreases the size of a logical palette based
+ * on the specified value.
  */
 public class MfCmdResizePalette extends MfCmd
 {
@@ -71,15 +70,15 @@ public class MfCmdResizePalette extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdResizePalette ();
+    return new MfCmdResizePalette();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
@@ -93,7 +92,8 @@ public class MfCmdResizePalette extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     MfRecord record = new MfRecord(RECORD_SIZE);
     record.setType(getFunction());
@@ -102,8 +102,8 @@ public class MfCmdResizePalette extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -114,9 +114,9 @@ public class MfCmdResizePalette extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[RESIZE_PALETTE] is not implemented");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[RESIZE_PALETTE] is not implemented");
+    return b.toString();
   }
 
   /**
@@ -133,12 +133,12 @@ public class MfCmdResizePalette extends MfCmd
   {
   }
 
-  public int getPaletteSize()
+  public int getPaletteSize ()
   {
     return paletteSize;
   }
 
-  public void setPaletteSize(int paletteSize)
+  public void setPaletteSize (int paletteSize)
   {
     this.paletteSize = paletteSize;
   }

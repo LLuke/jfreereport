@@ -28,23 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetPixel.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSetPixel.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+
 import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
 
 /**
  * Draws a single pixel with the given color on the specified position.
@@ -73,13 +72,13 @@ public class MfCmdSetPixel extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final Point p = getScaledTarget ();
-    final Graphics2D g = file.getGraphics2D ();
-    final MfDcState state = file.getCurrentState ();
+    final Point p = getScaledTarget();
+    final Graphics2D g = file.getGraphics2D();
+    final MfDcState state = file.getCurrentState();
 
-    state.prepareDraw ();
-    g.drawLine (p.x, p.y, p.x, p.y);
-    state.postDraw ();
+    state.prepareDraw();
+    g.drawLine(p.x, p.y, p.x, p.y);
+    state.postDraw();
   }
 
   /**
@@ -89,7 +88,7 @@ public class MfCmdSetPixel extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetPixel ();
+    return new MfCmdSetPixel();
   }
 
   /**
@@ -97,7 +96,8 @@ public class MfCmdSetPixel extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
@@ -108,40 +108,40 @@ public class MfCmdSetPixel extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int c = record.getLongParam (POS_COLOR);
-    final Color color = new GDIColor (c);
-    final int y = record.getParam (POS_Y);
-    final int x = record.getParam (POS_X);
-    setTarget (x, y);
-    setColor (color);
+    final int c = record.getLongParam(POS_COLOR);
+    final Color color = new GDIColor(c);
+    final int y = record.getParam(POS_Y);
+    final int x = record.getParam(POS_X);
+    setTarget(x, y);
+    setColor(color);
   }
 
   public Point getTarget ()
   {
-    return new Point (x, y);
+    return new Point(x, y);
   }
 
   public Point getScaledTarget ()
   {
-    return new Point (scaled_x, scaled_y);
+    return new Point(scaled_x, scaled_y);
   }
 
   public void setTarget (final int x, final int y)
   {
     this.x = x;
     this.y = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public void setTarget (final Point point)
@@ -161,8 +161,8 @@ public class MfCmdSetPixel extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -173,12 +173,12 @@ public class MfCmdSetPixel extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SET_PIXEL] target=");
-    b.append (getTarget ());
-    b.append (" color=");
-    b.append (getColor ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SET_PIXEL] target=");
+    b.append(getTarget());
+    b.append(" color=");
+    b.append(getColor());
+    return b.toString();
   }
 
   /**
@@ -187,7 +187,7 @@ public class MfCmdSetPixel extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
+    scaled_x = getScaledX(x);
   }
 
   /**
@@ -196,6 +196,6 @@ public class MfCmdSetPixel extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
+    scaled_y = getScaledY(y);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: PenConstants.java,v 1.1 2003/03/09 20:38:20 taqua Exp $
+ * $Id: PenConstants.java,v 1.2 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -36,8 +36,8 @@
 package org.jfree.pixie.wmf;
 
 /**
- * The PenConstants were defined in the Windows-API and are used do define
- * the appearance of Wmf-Pens.
+ * The PenConstants were defined in the Windows-API and are used do define the appearance
+ * of Wmf-Pens.
  */
 public interface PenConstants
 {

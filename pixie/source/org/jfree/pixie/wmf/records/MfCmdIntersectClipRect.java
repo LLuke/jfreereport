@@ -28,26 +28,24 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdIntersectClipRect.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdIntersectClipRect.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 
 /**
- * top, left, right and bottom define the points of the clipping region,
- * the resultant clipping region is the intersection of this region and the
- * original region.
+ * top, left, right and bottom define the points of the clipping region, the resultant
+ * clipping region is the intersection of this region and the original region.
  */
 public class MfCmdIntersectClipRect extends MfCmd
 {
@@ -78,15 +76,13 @@ public class MfCmdIntersectClipRect extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    final Rectangle rect = state.getClipRegion ();
-    final Rectangle2D rec2 = rect.createIntersection (getScaledIntersectClipRect ());
-    state.setClipRegion (
-            new Rectangle (
-                    (int) rec2.getX (),
-                    (int) rec2.getY (),
-                    (int) rec2.getWidth (),
-                    (int) rec2.getHeight ()));
+    final MfDcState state = file.getCurrentState();
+    final Rectangle rect = state.getClipRegion();
+    final Rectangle2D rec2 = rect.createIntersection(getScaledIntersectClipRect());
+    state.setClipRegion(new Rectangle((int) rec2.getX(),
+            (int) rec2.getY(),
+            (int) rec2.getWidth(),
+            (int) rec2.getHeight()));
   }
 
   /**
@@ -96,12 +92,12 @@ public class MfCmdIntersectClipRect extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdIntersectClipRect ();
+    return new MfCmdIntersectClipRect();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -112,48 +108,49 @@ public class MfCmdIntersectClipRect extends MfCmd
 
   public Rectangle getIntersectClipRect ()
   {
-    return new Rectangle (x, y, width, height);
+    return new Rectangle(x, y, width, height);
   }
 
   public Rectangle getScaledIntersectClipRect ()
   {
-    return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
+    return new Rectangle(scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[INTERSECT_CLIP_RECT] bounds=");
-    b.append (getIntersectClipRect ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[INTERSECT_CLIP_RECT] bounds=");
+    b.append(getIntersectClipRect());
+    return b.toString();
   }
 
-  public void setIntersectClipRect (final int x, final int y, final int width, final int height)
+  public void setIntersectClipRect (final int x, final int y, final int width,
+                                    final int height)
   {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int bottom = record.getParam (POS_BOTTOM);
-    final int right = record.getParam (POS_RIGHT);
-    final int top = record.getParam (POS_TOP);
-    final int left = record.getParam (POS_LEFT);
-    setIntersectClipRect (left, top, right - left, bottom - top);
+    final int bottom = record.getParam(POS_BOTTOM);
+    final int right = record.getParam(POS_RIGHT);
+    final int top = record.getParam(POS_TOP);
+    final int left = record.getParam(POS_LEFT);
+    setIntersectClipRect(left, top, right - left, bottom - top);
   }
 
   /**
@@ -165,10 +162,10 @@ public class MfCmdIntersectClipRect extends MfCmd
   {
     final Rectangle rc = getIntersectClipRect();
     final MfRecord record = new MfRecord(RECORD_SIZE);
-    record.setParam(POS_BOTTOM, (int)(rc.getY() + rc.getHeight()));
-    record.setParam(POS_RIGHT, (int)(rc.getX() + rc.getWidth()));
-    record.setParam(POS_TOP, (int)(rc.getY()));
-    record.setParam(POS_LEFT, (int)(rc.getX()));
+    record.setParam(POS_BOTTOM, (int) (rc.getY() + rc.getHeight()));
+    record.setParam(POS_RIGHT, (int) (rc.getX() + rc.getWidth()));
+    record.setParam(POS_TOP, (int) (rc.getY()));
+    record.setParam(POS_LEFT, (int) (rc.getX()));
     return record;
   }
 
@@ -178,8 +175,8 @@ public class MfCmdIntersectClipRect extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
-    scaled_width = getScaledX (width);
+    scaled_x = getScaledX(x);
+    scaled_width = getScaledX(width);
   }
 
   /**
@@ -188,7 +185,7 @@ public class MfCmdIntersectClipRect extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
-    scaled_height = getScaledY (height);
+    scaled_y = getScaledY(y);
+    scaled_height = getScaledY(height);
   }
 }

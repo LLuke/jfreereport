@@ -28,26 +28,24 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdFloodFill.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdFloodFill.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+import java.awt.Point;
+
 import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Color;
-import java.awt.Point;
 
 /**
- * The FloodFill function fills an area of the display surface with the
- * current brush. The area is assumed to be bounded as specified by the
- * crFill parameter.
+ * The FloodFill function fills an area of the display surface with the current brush. The
+ * area is assumed to be bounded as specified by the crFill parameter.
  */
 public class MfCmdFloodFill extends MfCmd
 {
@@ -83,26 +81,26 @@ public class MfCmdFloodFill extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdFloodFill ();
+    return new MfCmdFloodFill();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int c = record.getLongParam (POS_COLOR);
-    final Color color = new GDIColor (c);
-    final int y = record.getParam (POS_Y);
-    final int x = record.getParam (POS_X);
-    setTarget (x, y);
-    setColor (color);
+    final int c = record.getLongParam(POS_COLOR);
+    final Color color = new GDIColor(c);
+    final int y = record.getParam(POS_Y);
+    final int x = record.getParam(POS_X);
+    setTarget(x, y);
+    setColor(color);
   }
 
   /**
@@ -122,22 +120,22 @@ public class MfCmdFloodFill extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[FLOOD_FILL] color=");
-    b.append (getColor ());
-    b.append (" target=");
-    b.append (getTarget ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[FLOOD_FILL] color=");
+    b.append(getColor());
+    b.append(" target=");
+    b.append(getTarget());
+    return b.toString();
   }
 
   public Point getTarget ()
   {
-    return new Point (x, y);
+    return new Point(x, y);
   }
 
   public Point getScaledTarget ()
   {
-    return new Point (scaled_x, scaled_y);
+    return new Point(scaled_x, scaled_y);
   }
 
   public void setTarget (final Point point)
@@ -149,8 +147,8 @@ public class MfCmdFloodFill extends MfCmd
   {
     this.x = x;
     this.y = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public void setColor (final Color c)
@@ -164,8 +162,8 @@ public class MfCmdFloodFill extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -180,7 +178,7 @@ public class MfCmdFloodFill extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
+    scaled_x = getScaledX(x);
   }
 
   /**
@@ -189,6 +187,6 @@ public class MfCmdFloodFill extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
+    scaled_y = getScaledY(y);
   }
 }

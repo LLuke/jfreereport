@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdPolygon.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
+ * $Id: MfCmdPolygon.java,v 1.5 2004/10/22 11:59:28 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,9 @@ import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
 
 /**
- * The Polygon function draws a polygon consisting of two or more vertices connected
- * by straight lines. The polygon is outlined by using the current pen and filled by
- * using the current brush and polygon fill mode.
+ * The Polygon function draws a polygon consisting of two or more vertices connected by
+ * straight lines. The polygon is outlined by using the current pen and filled by using
+ * the current brush and polygon fill mode.
  */
 public class MfCmdPolygon extends MfCmd
 {
@@ -67,22 +67,22 @@ public class MfCmdPolygon extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final Graphics2D graph = file.getGraphics2D ();
+    final Graphics2D graph = file.getGraphics2D();
 
-    final Polygon polygon = new Polygon (getScaledPointsX (), getScaledPointsY (), getPointCount ());
-    final MfDcState state = file.getCurrentState ();
+    final Polygon polygon = new Polygon(getScaledPointsX(), getScaledPointsY(), getPointCount());
+    final MfDcState state = file.getCurrentState();
 
-    if (state.getLogBrush ().isVisible ())
+    if (state.getLogBrush().isVisible())
     {
-      state.preparePaint ();
-      graph.fill (polygon);
-      state.postPaint ();
+      state.preparePaint();
+      graph.fill(polygon);
+      state.postPaint();
     }
-    if (state.getLogPen ().isVisible ())
+    if (state.getLogPen().isVisible())
     {
-      state.prepareDraw ();
-      graph.draw (polygon);
-      state.postDraw ();
+      state.prepareDraw();
+      graph.draw(polygon);
+      state.postDraw();
     }
   }
 
@@ -93,12 +93,12 @@ public class MfCmdPolygon extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdPolygon ();
+    return new MfCmdPolygon();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -109,48 +109,51 @@ public class MfCmdPolygon extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[POLYGON] count=");
-    b.append (getPointCount ());
-    final int l = getPointCount ();
-    final int[] points_x = getPointsX ();
-    final int[] points_y = getPointsY ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[POLYGON] count=");
+    b.append(getPointCount());
+    final int l = getPointCount();
+    final int[] points_x = getPointsX();
+    final int[] points_y = getPointsY();
 
     for (int i = 0; i < l; i++)
     {
-      if (i != 0) b.append (",");
+      if (i != 0)
+      {
+        b.append(",");
+      }
 
-      b.append (" (");
-      b.append (points_x[i]);
-      b.append (",");
-      b.append (points_y[i]);
-      b.append (") ");
+      b.append(" (");
+      b.append(points_x[i]);
+      b.append(",");
+      b.append(points_y[i]);
+      b.append(") ");
     }
-    return b.toString ();
+    return b.toString();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int count = record.getParam (0);
+    final int count = record.getParam(0);
     final int[] points_x = new int[count];
     final int[] points_y = new int[count];
 
     for (int i = 0; i < count; i++)
     {
-      points_x[i] = record.getParam (1 + 2 * i);
-      points_y[i] = record.getParam (2 + 2 * i);
+      points_x[i] = record.getParam(1 + 2 * i);
+      points_y[i] = record.getParam(2 + 2 * i);
     }
-    setPointCount (count);
-    setPoints (points_x, points_y);
+    setPointCount(count);
+    setPoints(points_x, points_y);
   }
 
   /**
@@ -158,9 +161,10 @@ public class MfCmdPolygon extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
-    final MfRecord record = new MfRecord(getPointCount()* 2 + 1);
+    final MfRecord record = new MfRecord(getPointCount() * 2 + 1);
     final int count = getPointCount();
     final int[] points_x = getPointsX();
     final int[] points_y = getPointsY();
@@ -184,8 +188,8 @@ public class MfCmdPolygon extends MfCmd
   {
     this.points_x = points_x;
     this.points_y = points_y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public int[] getPointsX ()
@@ -219,7 +223,7 @@ public class MfCmdPolygon extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_points_x = applyScaleX (points_x, scaled_points_x);
+    scaled_points_x = applyScaleX(points_x, scaled_points_x);
   }
 
   /**
@@ -228,6 +232,6 @@ public class MfCmdPolygon extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_points_y = applyScaleY (points_y, scaled_points_y);
+    scaled_points_y = applyScaleY(points_y, scaled_points_y);
   }
 }

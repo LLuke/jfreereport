@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetDibitsToDevice.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSetDibitsToDevice.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 // This structure should include a bitmap. This implementation does
 // not know of any bitmaps right now, so this records is ignored.
+
 public class MfCmdSetDibitsToDevice extends MfCmd
 {
   private static final int POS_FLAG_COLOR_PALETTE = 0;
@@ -77,34 +77,34 @@ public class MfCmdSetDibitsToDevice extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetDibitsToDevice ();
+    return new MfCmdSetDibitsToDevice();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    System.out.println ("SetDibitsToDevice is not implemented.");
+    System.out.println("SetDibitsToDevice is not implemented.");
 
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SET_DIBITS_TO_DEVICE] <<windows specific, will not be implemented>>");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SET_DIBITS_TO_DEVICE] <<windows specific, will not be implemented>>");
+    return b.toString();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

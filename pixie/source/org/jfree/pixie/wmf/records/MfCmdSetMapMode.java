@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetMapMode.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSetMapMode.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,11 @@ import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * The SetMapMode function sets the mapping mode of the specified
- * device context. The mapping mode defines the unit of measure used
- * to transform page-space units into device-space units, and also
- * defines the orientation of the device's x and y axes.
+ * The SetMapMode function sets the mapping mode of the specified device context. The
+ * mapping mode defines the unit of measure used to transform page-space units into
+ * device-space units, and also defines the orientation of the device's x and y axes.
  *
  * @see org.jfree.pixie.wmf.MappingConstants
  */
@@ -67,8 +65,8 @@ public class MfCmdSetMapMode extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    state.setMapMode (mapmode);
+    final MfDcState state = file.getCurrentState();
+    state.setMapMode(mapmode);
   }
 
   /**
@@ -78,22 +76,22 @@ public class MfCmdSetMapMode extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetMapMode ();
+    return new MfCmdSetMapMode();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int id = record.getParam (0);
-    setMapMode (id);
+    final int id = record.getParam(0);
+    setMapMode(id);
   }
 
   /**
@@ -101,7 +99,8 @@ public class MfCmdSetMapMode extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_MAPMODE, getMapMode());
@@ -109,8 +108,8 @@ public class MfCmdSetMapMode extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -126,10 +125,10 @@ public class MfCmdSetMapMode extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[MAPMODE] mapmode=");
-    b.append (getMapMode ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[MAPMODE] mapmode=");
+    b.append(getMapMode());
+    return b.toString();
   }
 
   public void setMapMode (final int id)
@@ -141,7 +140,7 @@ public class MfCmdSetMapMode extends MfCmd
    * A callback function to inform the object, that the x scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleXChanged()
+  protected void scaleXChanged ()
   {
   }
 
@@ -149,7 +148,7 @@ public class MfCmdSetMapMode extends MfCmd
    * A callback function to inform the object, that the y scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleYChanged()
+  protected void scaleYChanged ()
   {
   }
 }

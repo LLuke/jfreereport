@@ -16,7 +16,9 @@ public class GDIPalette
   public void setNoOfImportantColors (final int colors)
   {
     if (colors > noColors)
-      throw new IllegalArgumentException ("There may be not more important colors than colors defined in the palette.");
+    {
+      throw new IllegalArgumentException("There may be not more important colors than colors defined in the palette.");
+    }
   }
 
   public void readPalette (final InputStream in)
@@ -25,18 +27,18 @@ public class GDIPalette
     colors = new int[noColors];
     for (int i = 0; i < noColors; i++)
     {
-      colors[i] = readNextColor (in);
+      colors[i] = readNextColor(in);
     }
   }
 
   private int readNextColor (final InputStream in)
           throws IOException
   {
-    final int b = in.read ();
-    final int g = in.read ();
-    final int r = in.read ();
+    final int b = in.read();
+    final int g = in.read();
+    final int r = in.read();
     //final int filler =  
-    in.read ();
+    in.read();
     return b + (g << 8) + (r << 16);
   }
 

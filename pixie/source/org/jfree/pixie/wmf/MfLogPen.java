@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogPen.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfLogPen.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@ import java.awt.Color;
 import java.awt.Stroke;
 
 /**
- A Windows metafile logical pen object.
+ * A Windows metafile logical pen object.
  */
 public class MfLogPen implements WmfObject, PenConstants
 {
@@ -52,7 +52,9 @@ public class MfLogPen implements WmfObject, PenConstants
   private Color color;
 
 
-  /** The default pen for a new DC. */
+  /**
+   * The default pen for a new DC.
+   */
   public MfLogPen ()
   {
     style = PS_SOLID;
@@ -60,7 +62,9 @@ public class MfLogPen implements WmfObject, PenConstants
     color = Color.black;
   }
 
-  /** Return one of the PS_ styles. */
+  /**
+   * Return one of the PS_ styles.
+   */
   public int getStyle ()
   {
     return style;
@@ -73,7 +77,9 @@ public class MfLogPen implements WmfObject, PenConstants
     this.joinType = style & 0x0000F000;
   }
 
-  /** Return width. */
+  /**
+   * Return width.
+   */
   public int getWidth ()
   {
     return width;
@@ -84,7 +90,9 @@ public class MfLogPen implements WmfObject, PenConstants
     this.width = width;
   }
 
-  /** Return color of the current pen, or null. */
+  /**
+   * Return color of the current pen, or null.
+   */
   public Color getColor ()
   {
     return color;
@@ -95,7 +103,9 @@ public class MfLogPen implements WmfObject, PenConstants
     this.color = color;
   }
 
-  /** True if  not a dashed or dotted style. */
+  /**
+   * True if  not a dashed or dotted style.
+   */
   public boolean isSimpleStyle ()
   {
     switch (style)
@@ -111,7 +121,7 @@ public class MfLogPen implements WmfObject, PenConstants
 
   public boolean isVisible ()
   {
-    return getStyle () != PS_NULL;
+    return getStyle() != PS_NULL;
   }
 
   public int getType ()
@@ -121,11 +131,11 @@ public class MfLogPen implements WmfObject, PenConstants
 
   public Stroke getStroke ()
   {
-    if (isSimpleStyle ())
+    if (isSimpleStyle())
     {
-      return new BasicStroke (getWidth (), getEndCap (), getJoinType (), 0);
+      return new BasicStroke(getWidth(), getEndCap(), getJoinType(), 0);
     }
-    return new BasicStroke (getWidth (), getEndCap (), getJoinType (), 0, getDashes (), 0);
+    return new BasicStroke(getWidth(), getEndCap(), getJoinType(), 0, getDashes(), 0);
   }
 
   private int getJoinType ()
@@ -160,7 +170,7 @@ public class MfLogPen implements WmfObject, PenConstants
 
   private float[] getDashes ()
   {
-    switch (getStyle ())
+    switch (getStyle())
     {
       case PS_DASH:
         return DASH_DASH;
@@ -171,21 +181,21 @@ public class MfLogPen implements WmfObject, PenConstants
       case PS_DASHDOTDOT:
         return DASH_DASHDOTDOT;
       default:
-        throw new IllegalStateException ("Illegal Pen defined");
+        throw new IllegalStateException("Illegal Pen defined");
     }
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("MfLogPen:=");
-    b.append (" width=");
-    b.append (getWidth ());
-    b.append (" style=");
-    b.append (getStyle ());
-    b.append (" color=");
-    b.append (getColor ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("MfLogPen:=");
+    b.append(" width=");
+    b.append(getWidth());
+    b.append(" style=");
+    b.append(getStyle());
+    b.append(" color=");
+    b.append(getColor());
+    return b.toString();
   }
 
 }

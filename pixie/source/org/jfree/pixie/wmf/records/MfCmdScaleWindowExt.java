@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdScaleWindowExt.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
+ * $Id: MfCmdScaleWindowExt.java,v 1.5 2004/10/22 11:59:28 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,8 @@ public class MfCmdScaleWindowExt extends MfCmd
   public void replay (final WmfFile file)
   {
     file.getGraphics2D().scale
-        ((double) getXNum() / (double) getXDenom(),
-         (double) getYNum() / (double) getYDenom());
+            ((double) getXNum() / (double) getXDenom(),
+                    (double) getYNum() / (double) getYDenom());
   }
 
   /**
@@ -73,7 +73,8 @@ public class MfCmdScaleWindowExt extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_X_DENOM, getXDenom());
@@ -90,12 +91,12 @@ public class MfCmdScaleWindowExt extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdScaleWindowExt ();
+    return new MfCmdScaleWindowExt();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -106,35 +107,35 @@ public class MfCmdScaleWindowExt extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SCALE_WINDOW] scaleX=");
-    b.append (getXNum ());
-    b.append ("/");
-    b.append (getXDenom ());
-    b.append (" scaley=");
-    b.append (getYNum ());
-    b.append ("/");
-    b.append (getYDenom ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SCALE_WINDOW] scaleX=");
+    b.append(getXNum());
+    b.append("/");
+    b.append(getXDenom());
+    b.append(" scaley=");
+    b.append(getYNum());
+    b.append("/");
+    b.append(getYDenom());
+    return b.toString();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int yD = record.getParam (0);
-    final int yN = record.getParam (1);
-    final int xD = record.getParam (2);
-    final int xN = record.getParam (3);
-    setXScale (xN, xD);
-    setYScale (yN, yD);
+    final int yD = record.getParam(0);
+    final int yN = record.getParam(1);
+    final int xD = record.getParam(2);
+    final int xN = record.getParam(3);
+    setXScale(xN, xD);
+    setYScale(yN, yD);
   }
 
   public void setXScale (final int xNum, final int xDenom)

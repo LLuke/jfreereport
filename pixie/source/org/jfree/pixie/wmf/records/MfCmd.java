@@ -28,27 +28,31 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmd.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Rectangle;
+
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.WmfFile;
 
-import java.awt.Rectangle;
-
 /**
- * This is the base class for all WMF-Records. A WMF record specifies a
- * single command for drawing a element of the image.
+ * This is the base class for all WMF-Records. A WMF record specifies a single command for
+ * drawing a element of the image.
  */
 public abstract class MfCmd
 {
-  /** The X-Scale for the command. */
+  /**
+   * The X-Scale for the command.
+   */
   private float scaleX;
-  /** The Y-Scale for the command. */
+  /**
+   * The Y-Scale for the command.
+   */
   private float scaleY;
 
   /**
@@ -65,22 +69,23 @@ public abstract class MfCmd
    *
    * @return the created record.
    */
-  public abstract MfRecord getRecord () throws RecordCreationException;
+  public abstract MfRecord getRecord ()
+          throws RecordCreationException;
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public abstract void setRecord (MfRecord record);
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -114,11 +119,11 @@ public abstract class MfCmd
     this.scaleY = scaleY;
     if (oldScaleX != scaleX)
     {
-      scaleXChanged ();
+      scaleXChanged();
     }
     if (oldScaleY != scaleY)
     {
-      scaleYChanged ();
+      scaleYChanged();
     }
   }
 
@@ -142,12 +147,12 @@ public abstract class MfCmd
    */
   protected Rectangle scaleRect (final Rectangle r)
   {
-    final Rectangle retval = new Rectangle ();
-    retval.x = getScaledX (r.x);
-    retval.y = getScaledY (r.y);
+    final Rectangle retval = new Rectangle();
+    retval.x = getScaledX(r.x);
+    retval.y = getScaledY(r.y);
 
-    retval.width = getScaledWidth (r.width);
-    retval.height = getScaledHeight (r.height);
+    retval.width = getScaledWidth(r.width);
+    retval.height = getScaledHeight(r.height);
     return retval;
   }
 
@@ -184,20 +189,23 @@ public abstract class MfCmd
   }
 
   /**
-   * Applies the new x-scaling to all values in the array n and places
-   * the values in the array dest. Additionally dest is also returned
-   * as return value.
+   * Applies the new x-scaling to all values in the array n and places the values in the
+   * array dest. Additionally dest is also returned as return value.
    *
-   * @param n the unscaled source values
+   * @param n    the unscaled source values
    * @param dest the array to store the scaled values
    * @return dest.
    */
   protected int[] applyScaleX (final int[] n, int[] dest)
   {
     if (dest == null)
+    {
       dest = new int[n.length];
+    }
     else if (dest.length < n.length)
+    {
       dest = new int[n.length];
+    }
 
     for (int i = 0; i < n.length; i++)
     {
@@ -207,20 +215,23 @@ public abstract class MfCmd
   }
 
   /**
-   * Applies the new y-scaling to all values in the array n and places
-   * the values in the array dest. Additionally dest is also returned
-   * as return value.
+   * Applies the new y-scaling to all values in the array n and places the values in the
+   * array dest. Additionally dest is also returned as return value.
    *
-   * @param n the unscaled source values
+   * @param n    the unscaled source values
    * @param dest the array to store the scaled values
    * @return dest.
    */
   protected int[] applyScaleY (final int[] n, int[] dest)
   {
     if (dest == null)
+    {
       dest = new int[n.length];
+    }
     else if (dest.length < n.length)
+    {
       dest = new int[n.length];
+    }
 
     for (int i = 0; i < n.length; i++)
     {

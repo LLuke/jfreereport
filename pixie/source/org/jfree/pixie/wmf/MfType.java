@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfType.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfType.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -120,90 +120,98 @@ public class MfType
   public final static int OLD_BIT_BLT = 0x0922;
 
 
-  /** Type bit flags. */
+  /**
+   * Type bit flags.
+   */
   public final static int STATE = 0x01;
   public final static int VECTOR = 0x02;
   public final static int RASTER = 0x04;
   public final static int MAPPING_MODE = 0x08;
 
-  /** All the known types. The last is the default. */
+  /**
+   * All the known types. The last is the default.
+   */
   private static MfType[] ntab =
           {
-            new MfType (PAINTREGION, "MfPaintRegion", VECTOR),
-            new MfType (ARC, "MfArc", VECTOR),
-            new MfType (CHORD, "MfChord", VECTOR),
-            new MfType (ELLIPSE, "MfEllipse", VECTOR),
-            new MfType (EXCLUDE_CLIP_RECT, "MfExcludeClipRect", STATE),
-            new MfType (FLOOD_FILL, "MfFloodFill", VECTOR),
-            new MfType (INTERSECT_CLIP_RECT, "MfIntersectClipRect", STATE),
-            new MfType (LINE_TO, "MfLineTo", VECTOR),
-            new MfType (MOVE_TO, "MfMoveTo", STATE),
-            new MfType (OFFSET_CLIP_RGN, "MfOffsetclipRgn", STATE),
-            new MfType (OFFSET_VIEWPORT_ORG, "MfOffsetViewportOrg", STATE | MAPPING_MODE),
-            new MfType (OFFSET_WINDOW_ORG, "MfOffsetWindowOrg", STATE | MAPPING_MODE),
-            new MfType (PAT_BLT, "MfPatBlt", RASTER),
-            new MfType (PIE, "MfPie", VECTOR),
-            new MfType (REALISE_PALETTE, "MfRealisePalette", STATE),
-            new MfType (RECTANGLE, "MfRectangle", VECTOR),
-            new MfType (RESIZE_PALETTE, "MfResizePalette", STATE),
-            new MfType (RESTORE_DC, "MfRestoreDC", STATE | MAPPING_MODE),
-            new MfType (ROUND_RECT, "MfRoundRect", VECTOR),
-            new MfType (SAVE_DC, "MfSaveDC", STATE),
-            new MfType (SCALE_VIEWPORT_EXT, "MfScaleViewportExt", STATE | MAPPING_MODE),
-            new MfType (SCALE_WINDOW_EXT, "MfScaleWindowExt", STATE | MAPPING_MODE),
-            new MfType (SET_BK_COLOR, "MfSetBkColor", STATE),
-            new MfType (SET_BK_MODE, "MfSetBkMode", STATE),
-            new MfType (SET_MAP_MODE, "MfSetMapMode", STATE | MAPPING_MODE),
-            new MfType (SET_MAPPER_FLAGS, "MfSetMapperFlags", STATE),
-            new MfType (SET_PIXEL, "MfSetPixel", RASTER),
-            new MfType (SET_POLY_FILL_MODE, "MfSetPolyFillMode", STATE),
-            new MfType (SET_ROP2, "MfSetROP2", STATE),
-            new MfType (SET_STRETCH_BLT_MODE, "MfSetStretchBltMode", STATE),
-            new MfType (SET_TEXT_ALIGN, "MfSetTextAlign", STATE),
-            new MfType (SET_TEXT_CHAR_EXTRA, "MfSetTextCharExtra", STATE),
-            new MfType (SET_TEXT_COLOR, "MfSetTextColor", STATE),
-            new MfType (SET_TEXT_JUSTIFICATION, "MfSetTextJustification", STATE),
-            new MfType (SET_VIEWPORT_EXT, "MfSetViewportExt", STATE | MAPPING_MODE),
-            new MfType (SET_VIEWPORT_ORG, "MfSetViewportOrg", STATE | MAPPING_MODE),
-            new MfType (SET_WINDOW_EXT, "MfSetWindowExt", STATE | MAPPING_MODE),
-            new MfType (SET_WINDOW_ORG, "MfSetWindowOrg", STATE | MAPPING_MODE),
-            new MfType (ANIMATE_PALETTE, "MfAnimatePalette", STATE),
-            new MfType (BIT_BLT, "MfBitBlt", RASTER),
-            new MfType (OLD_BIT_BLT, "MfOldBitBlt", RASTER),
-            new MfType (CREATE_BRUSH_INDIRECT, "MfCreateBrush", STATE),
-            new MfType (CREATE_FONT_INDIRECT, "MfCreateFont", STATE),
-            new MfType (CREATE_PALETTE, "MfCreatePalette", STATE),
-            new MfType (OLD_CREATE_PATTERN_BRUSH, "MfOldCreatePatternBrush", STATE),
-            new MfType (CREATE_PATTERN_BRUSH, "MfCreatePatternBrush", STATE),
-            new MfType (CREATE_PEN_INDIRECT, "MfCreatePen", STATE),
-            new MfType (CREATE_REGION, "MfCreateRegion", STATE),
-            new MfType (DELETE_OBJECT, "MfDeleteObject", STATE),
+            new MfType(PAINTREGION, "MfPaintRegion", VECTOR),
+            new MfType(ARC, "MfArc", VECTOR),
+            new MfType(CHORD, "MfChord", VECTOR),
+            new MfType(ELLIPSE, "MfEllipse", VECTOR),
+            new MfType(EXCLUDE_CLIP_RECT, "MfExcludeClipRect", STATE),
+            new MfType(FLOOD_FILL, "MfFloodFill", VECTOR),
+            new MfType(INTERSECT_CLIP_RECT, "MfIntersectClipRect", STATE),
+            new MfType(LINE_TO, "MfLineTo", VECTOR),
+            new MfType(MOVE_TO, "MfMoveTo", STATE),
+            new MfType(OFFSET_CLIP_RGN, "MfOffsetclipRgn", STATE),
+            new MfType(OFFSET_VIEWPORT_ORG, "MfOffsetViewportOrg", STATE | MAPPING_MODE),
+            new MfType(OFFSET_WINDOW_ORG, "MfOffsetWindowOrg", STATE | MAPPING_MODE),
+            new MfType(PAT_BLT, "MfPatBlt", RASTER),
+            new MfType(PIE, "MfPie", VECTOR),
+            new MfType(REALISE_PALETTE, "MfRealisePalette", STATE),
+            new MfType(RECTANGLE, "MfRectangle", VECTOR),
+            new MfType(RESIZE_PALETTE, "MfResizePalette", STATE),
+            new MfType(RESTORE_DC, "MfRestoreDC", STATE | MAPPING_MODE),
+            new MfType(ROUND_RECT, "MfRoundRect", VECTOR),
+            new MfType(SAVE_DC, "MfSaveDC", STATE),
+            new MfType(SCALE_VIEWPORT_EXT, "MfScaleViewportExt", STATE | MAPPING_MODE),
+            new MfType(SCALE_WINDOW_EXT, "MfScaleWindowExt", STATE | MAPPING_MODE),
+            new MfType(SET_BK_COLOR, "MfSetBkColor", STATE),
+            new MfType(SET_BK_MODE, "MfSetBkMode", STATE),
+            new MfType(SET_MAP_MODE, "MfSetMapMode", STATE | MAPPING_MODE),
+            new MfType(SET_MAPPER_FLAGS, "MfSetMapperFlags", STATE),
+            new MfType(SET_PIXEL, "MfSetPixel", RASTER),
+            new MfType(SET_POLY_FILL_MODE, "MfSetPolyFillMode", STATE),
+            new MfType(SET_ROP2, "MfSetROP2", STATE),
+            new MfType(SET_STRETCH_BLT_MODE, "MfSetStretchBltMode", STATE),
+            new MfType(SET_TEXT_ALIGN, "MfSetTextAlign", STATE),
+            new MfType(SET_TEXT_CHAR_EXTRA, "MfSetTextCharExtra", STATE),
+            new MfType(SET_TEXT_COLOR, "MfSetTextColor", STATE),
+            new MfType(SET_TEXT_JUSTIFICATION, "MfSetTextJustification", STATE),
+            new MfType(SET_VIEWPORT_EXT, "MfSetViewportExt", STATE | MAPPING_MODE),
+            new MfType(SET_VIEWPORT_ORG, "MfSetViewportOrg", STATE | MAPPING_MODE),
+            new MfType(SET_WINDOW_EXT, "MfSetWindowExt", STATE | MAPPING_MODE),
+            new MfType(SET_WINDOW_ORG, "MfSetWindowOrg", STATE | MAPPING_MODE),
+            new MfType(ANIMATE_PALETTE, "MfAnimatePalette", STATE),
+            new MfType(BIT_BLT, "MfBitBlt", RASTER),
+            new MfType(OLD_BIT_BLT, "MfOldBitBlt", RASTER),
+            new MfType(CREATE_BRUSH_INDIRECT, "MfCreateBrush", STATE),
+            new MfType(CREATE_FONT_INDIRECT, "MfCreateFont", STATE),
+            new MfType(CREATE_PALETTE, "MfCreatePalette", STATE),
+            new MfType(OLD_CREATE_PATTERN_BRUSH, "MfOldCreatePatternBrush", STATE),
+            new MfType(CREATE_PATTERN_BRUSH, "MfCreatePatternBrush", STATE),
+            new MfType(CREATE_PEN_INDIRECT, "MfCreatePen", STATE),
+            new MfType(CREATE_REGION, "MfCreateRegion", STATE),
+            new MfType(DELETE_OBJECT, "MfDeleteObject", STATE),
 //    new MfType( DRAW_TEXT, "MfDrawText", VECTOR ),
-            new MfType (ESCAPE, "MfEscape", STATE),
-            new MfType (EXT_TEXT_OUT, "MfExtTextOut", VECTOR),
-            new MfType (POLYGON, "MfPolygon", VECTOR),
-            new MfType (POLY_POLYGON, "MfPolyPolygon", VECTOR),
-            new MfType (POLYLINE, "MfPolyline", VECTOR),
-            new MfType (SELECT_CLIP_REGION, "MfSelectClipRegion", STATE),
-            new MfType (SELECT_OBJECT, "MfSelectObject", STATE),
-            new MfType (SELECT_PALETTE, "MfSelectPalette", STATE),
-            new MfType (SET_DIBITS_TO_DEVICE, "MfSetDIBitsToDevice", RASTER),
-            new MfType (SET_PALETTE_ENTRIES, "MfSetPaletteEntries", STATE),
-            new MfType (OLD_STRETCH_BLT, "MfOldStretchBlt", RASTER),
-            new MfType (STRETCH_BLT, "MfStretchBlt", RASTER),
-            new MfType (STRETCH_DIBITS, "MfStretchDIBits", RASTER),
-            new MfType (TEXT_OUT, "MfTextOut", VECTOR),
-            new MfType (END_OF_FILE, "MfEndOfFile", STATE),
-            new MfType (-1, "MfUnknown", 0)
+            new MfType(ESCAPE, "MfEscape", STATE),
+            new MfType(EXT_TEXT_OUT, "MfExtTextOut", VECTOR),
+            new MfType(POLYGON, "MfPolygon", VECTOR),
+            new MfType(POLY_POLYGON, "MfPolyPolygon", VECTOR),
+            new MfType(POLYLINE, "MfPolyline", VECTOR),
+            new MfType(SELECT_CLIP_REGION, "MfSelectClipRegion", STATE),
+            new MfType(SELECT_OBJECT, "MfSelectObject", STATE),
+            new MfType(SELECT_PALETTE, "MfSelectPalette", STATE),
+            new MfType(SET_DIBITS_TO_DEVICE, "MfSetDIBitsToDevice", RASTER),
+            new MfType(SET_PALETTE_ENTRIES, "MfSetPaletteEntries", STATE),
+            new MfType(OLD_STRETCH_BLT, "MfOldStretchBlt", RASTER),
+            new MfType(STRETCH_BLT, "MfStretchBlt", RASTER),
+            new MfType(STRETCH_DIBITS, "MfStretchDIBits", RASTER),
+            new MfType(TEXT_OUT, "MfTextOut", VECTOR),
+            new MfType(END_OF_FILE, "MfEndOfFile", STATE),
+            new MfType(-1, "MfUnknown", 0)
           };
 
-  /** Map a 16-bit type id onto an object. */
+  /**
+   * Map a 16-bit type id onto an object.
+   */
   public static MfType get (final int id)
   {
     for (int i = 0; i < ntab.length; i++)
     {
       if (ntab[i].id == id)
+      {
         return ntab[i];
+      }
     }
     return ntab[ntab.length - 1]; // Not found.
   }

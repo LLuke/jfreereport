@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: MfLogBrush.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfLogBrush.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
 /**
- A Windows metafile logical brush object.
+ * A Windows metafile logical brush object.
  */
 public class MfLogBrush implements WmfObject
 {
@@ -146,19 +146,21 @@ public class MfLogBrush implements WmfObject
   private Paint lastPaint;
   private BufferedImage bitmap;
 
-  /** The default brush for a new DC. */
+  /**
+   * The default brush for a new DC.
+   */
   public MfLogBrush ()
   {
     style = BS_SOLID;
     color = Color.white;
-    bgColor = new Color (COLOR_FULL_ALPHA);
+    bgColor = new Color(COLOR_FULL_ALPHA);
     hatch = HS_HORIZONTAL;
 
   }
 
   public boolean isVisible ()
   {
-    return getStyle () != BS_NULL;
+    return getStyle() != BS_NULL;
   }
 
   public int getType ()
@@ -166,7 +168,9 @@ public class MfLogBrush implements WmfObject
     return OBJ_BRUSH;
   }
 
-  /** The style of this brush. */
+  /**
+   * The style of this brush.
+   */
   public int getStyle ()
   {
     return style;
@@ -177,7 +181,9 @@ public class MfLogBrush implements WmfObject
     this.style = style;
   }
 
-  /** Return the color of the current brush, or null. */
+  /**
+   * Return the color of the current brush, or null.
+   */
   public Color getColor ()
   {
     return color;
@@ -189,7 +195,9 @@ public class MfLogBrush implements WmfObject
     lastPaint = null;
   }
 
-  /** The hatch style of this brush. */
+  /**
+   * The hatch style of this brush.
+   */
   public int getHatchedStyle ()
   {
     return hatch;
@@ -204,37 +212,39 @@ public class MfLogBrush implements WmfObject
   public Paint getPaint ()
   {
     if (lastPaint != null)
+    {
       return lastPaint;
+    }
 
-    switch (getStyle ())
+    switch (getStyle())
     {
       case BS_SOLID:
-        lastPaint = getColor ();
+        lastPaint = getColor();
         break;
       case BS_NULL:
-        lastPaint = new GDIColor (COLOR_FULL_ALPHA);
+        lastPaint = new GDIColor(COLOR_FULL_ALPHA);
       case BS_HATCHED:
         {
-          final BufferedImage image = createHatchStyle ();
-          lastPaint = new TexturePaint (image, new Rectangle (0, 0, image.getWidth (), image.getHeight ()));
+          final BufferedImage image = createHatchStyle();
+          lastPaint = new TexturePaint(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
           break;
         }
       case BS_DIBPATTERN:
         {
           if (bitmap == null)
           {
-            lastPaint = new GDIColor (COLOR_FULL_ALPHA);
+            lastPaint = new GDIColor(COLOR_FULL_ALPHA);
           }
           else
           {
-            lastPaint = new TexturePaint (bitmap, new Rectangle (0, 0, bitmap.getWidth (), bitmap.getHeight ()));
+            lastPaint = new TexturePaint(bitmap, new Rectangle(0, 0, bitmap.getWidth(), bitmap.getHeight()));
           }
           break;
         }
       default:
         {
           // Unknown Paint Mode
-          lastPaint = new GDIColor (COLOR_FULL_ALPHA);
+          lastPaint = new GDIColor(COLOR_FULL_ALPHA);
         }
     }
     return lastPaint;
@@ -242,39 +252,39 @@ public class MfLogBrush implements WmfObject
 
   private BufferedImage createHatchStyle ()
   {
-    final int style = getHatchedStyle ();
+    final int style = getHatchedStyle();
 
-    final BufferedImage image = new BufferedImage (8, 8, BufferedImage.TYPE_INT_ARGB);
+    final BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
     switch (style)
     {
       case HS_HORIZONTAL:
-        image.setRGB (0, 0, 8, 8, transform (IMG_HS_HORIZONTAL), 0, 8);
+        image.setRGB(0, 0, 8, 8, transform(IMG_HS_HORIZONTAL), 0, 8);
         break;
       case HS_VERTICAL:
-        image.setRGB (0, 0, 8, 8, transform (IMG_HS_VERTICAL), 0, 8);
+        image.setRGB(0, 0, 8, 8, transform(IMG_HS_VERTICAL), 0, 8);
         break;
       case HS_FDIAGONAL:
-        image.setRGB (0, 0, 8, 8, transform (IMG_HS_FDIAGONAL), 0, 8);
+        image.setRGB(0, 0, 8, 8, transform(IMG_HS_FDIAGONAL), 0, 8);
         break;
       case HS_BDIAGONAL:
-        image.setRGB (0, 0, 8, 8, transform (IMG_HS_BDIAGONAL), 0, 8);
+        image.setRGB(0, 0, 8, 8, transform(IMG_HS_BDIAGONAL), 0, 8);
         break;
       case HS_CROSS:
-        image.setRGB (0, 0, 8, 8, transform (IMG_HS_CROSS), 0, 8);
+        image.setRGB(0, 0, 8, 8, transform(IMG_HS_CROSS), 0, 8);
         break;
       case HS_DIAGCROSS:
-        image.setRGB (0, 0, 8, 8, transform (IMG_HS_DIAGCROSS), 0, 8);
+        image.setRGB(0, 0, 8, 8, transform(IMG_HS_DIAGCROSS), 0, 8);
         break;
       default:
-        throw new IllegalArgumentException ();
+        throw new IllegalArgumentException();
     }
     return image;
   }
 
   public int[] transform (final boolean[] data)
   {
-    final int color = getColor ().getRGB ();
-    final int bgColor = getBackgroundColor ().getRGB ();
+    final int color = getColor().getRGB();
+    final int bgColor = getBackgroundColor().getRGB();
 
     final int[] retval = new int[data.length];
     for (int i = 0; i < retval.length; i++)

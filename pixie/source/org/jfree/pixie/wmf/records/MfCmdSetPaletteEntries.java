@@ -28,26 +28,25 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSetPaletteEntries.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSetPaletteEntries.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+
 import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Color;
 
 /**
  * As with every palette-function: I'm not sure if this is correctly implemented.
- *
- * The SetPaletteEntries function sets RGB (red, green, blue) color values and
- * flags in a range of entries in a logical palette.
+ * <p/>
+ * The SetPaletteEntries function sets RGB (red, green, blue) color values and flags in a
+ * range of entries in a logical palette.
  */
 public class MfCmdSetPaletteEntries extends MfCmd
 {
@@ -81,7 +80,7 @@ public class MfCmdSetPaletteEntries extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSetPaletteEntries ();
+    return new MfCmdSetPaletteEntries();
   }
 
   public Color[] getEntries ()
@@ -95,30 +94,30 @@ public class MfCmdSetPaletteEntries extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int hPalette = record.getParam (POS_H_PALETTE);
-    final int cStart = record.getParam (POS_CSTART);
-    final int cEntries = record.getParam (POS_CENTRIES);
+    final int hPalette = record.getParam(POS_H_PALETTE);
+    final int cStart = record.getParam(POS_CSTART);
+    final int cEntries = record.getParam(POS_CENTRIES);
     final Color[] colors = new Color[cEntries];
 
     for (int i = 0; i < cEntries; i++)
     {
-      final int colorRef = record.getLongParam (2*i + BASE_RECORD_SIZE);
-      final GDIColor color = new GDIColor (colorRef);
+      final int colorRef = record.getLongParam(2 * i + BASE_RECORD_SIZE);
+      final GDIColor color = new GDIColor(colorRef);
       colors[i] = color;
     }
     setStartPos(cStart);
-    setEntries (colors);
-    setHPalette (hPalette);
+    setEntries(colors);
+    setHPalette(hPalette);
   }
 
   /**
@@ -126,11 +125,14 @@ public class MfCmdSetPaletteEntries extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final Color[] cEntries = getEntries();
     if (cEntries == null)
+    {
       throw new NullPointerException("No CEntries set");
+    }
 
     final MfRecord record = new MfRecord(2 * cEntries.length + BASE_RECORD_SIZE);
     record.setParam(POS_H_PALETTE, getHPalette());
@@ -139,24 +141,24 @@ public class MfCmdSetPaletteEntries extends MfCmd
 
     for (int i = 0; i < cEntries.length; i++)
     {
-      record.setLongParam (2*i + BASE_RECORD_SIZE, GDIColor.translateColor(cEntries[i]));
+      record.setLongParam(2 * i + BASE_RECORD_SIZE, GDIColor.translateColor(cEntries[i]));
     }
     return record;
   }
 
-  public int getStartPos()
+  public int getStartPos ()
   {
     return startPos;
   }
 
-  public void setStartPos(final int startPos)
+  public void setStartPos (final int startPos)
   {
     this.startPos = startPos;
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -177,26 +179,26 @@ public class MfCmdSetPaletteEntries extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SET_PALETTE_ENTRIES] entriesCount=");
+    final StringBuffer b = new StringBuffer();
+    b.append("[SET_PALETTE_ENTRIES] entriesCount=");
     if (getEntries() == null)
     {
       b.append(0);
     }
     else
     {
-      b.append (getEntries ().length);
+      b.append(getEntries().length);
     }
-    b.append (" hpalette=");
-    b.append (hPalette);
-    return b.toString ();
+    b.append(" hpalette=");
+    b.append(hPalette);
+    return b.toString();
   }
 
   /**
    * A callback function to inform the object, that the x scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleXChanged()
+  protected void scaleXChanged ()
   {
   }
 
@@ -204,7 +206,7 @@ public class MfCmdSetPaletteEntries extends MfCmd
    * A callback function to inform the object, that the y scale has changed and the
    * internal coordinate values have to be adjusted.
    */
-  protected void scaleYChanged()
+  protected void scaleYChanged ()
   {
   }
 }

@@ -28,30 +28,28 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdDibStretchBlt.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdDibStretchBlt.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
-import org.jfree.pixie.wmf.MfRecord;
-import org.jfree.pixie.wmf.MfType;
-import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.bitmap.DIBReader;
-import org.jfree.pixie.wmf.records.MfCmd;
-
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import org.jfree.pixie.wmf.MfRecord;
+import org.jfree.pixie.wmf.MfType;
+import org.jfree.pixie.wmf.WmfFile;
+import org.jfree.pixie.wmf.bitmap.DIBReader;
+
 /**
- * The StretchBlt function copies a bitmap from a source rectangle into a
- * destination rectangle, stretching or compressing the bitmap to fit the
- * dimensions of the destination rectangle, if necessary. The system stretches
- * or compresses the bitmap according to the stretching mode currently set
- * in the destination device context.
- * <p>
+ * The StretchBlt function copies a bitmap from a source rectangle into a destination
+ * rectangle, stretching or compressing the bitmap to fit the dimensions of the
+ * destination rectangle, if necessary. The system stretches or compresses the bitmap
+ * according to the stretching mode currently set in the destination device context.
+ * <p/>
  * RasterOperations are ignored ..
  */
 public class MfCmdDibStretchBlt extends MfCmd
@@ -97,7 +95,7 @@ public class MfCmdDibStretchBlt extends MfCmd
   public void replay (final WmfFile file)
   {
     file.getGraphics2D().drawImage(image, srcX, srcY, srcW, srcH,
-                                   scaled_destX, scaled_destY, scaled_destW, scaled_destH, null);
+            scaled_destX, scaled_destY, scaled_destW, scaled_destH, null);
   }
 
   /**
@@ -107,12 +105,12 @@ public class MfCmdDibStretchBlt extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdDibStretchBlt ();
+    return new MfCmdDibStretchBlt();
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -132,39 +130,39 @@ public class MfCmdDibStretchBlt extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int rop = record.getLongParam (POS_OPERATION);
-    final int ySrc = record.getParam (POS_SRC_Y);
-    final int xSrc = record.getParam (POS_SRC_X);
-    final int srcH = record.getParam (POS_SRC_HEIGHT);
-    final int srcW = record.getParam (POS_SRC_WIDTH);
-    final int destH = record.getParam (POS_DST_HEIGHT);
-    final int destW = record.getParam (POS_DST_WIDTH);
-    final int yDest = record.getParam (POS_DST_Y);
-    final int xDest = record.getParam (POS_DST_X);
+    final int rop = record.getLongParam(POS_OPERATION);
+    final int ySrc = record.getParam(POS_SRC_Y);
+    final int xSrc = record.getParam(POS_SRC_X);
+    final int srcH = record.getParam(POS_SRC_HEIGHT);
+    final int srcW = record.getParam(POS_SRC_WIDTH);
+    final int destH = record.getParam(POS_DST_HEIGHT);
+    final int destW = record.getParam(POS_DST_WIDTH);
+    final int yDest = record.getParam(POS_DST_Y);
+    final int xDest = record.getParam(POS_DST_X);
 
     try
     {
-      final DIBReader reader = new DIBReader ();
-      setImage(reader.setRecord (record, POS_DIB));
+      final DIBReader reader = new DIBReader();
+      setImage(reader.setRecord(record, POS_DIB));
     }
     catch (IOException ioe)
     {
       // failed to load the bitmap ..
     }
 
-    setROP (rop);
-    setSrcRect (xSrc, ySrc, srcH, srcW);
-    setDestRect (xDest, yDest, destH, destW);
+    setROP(rop);
+    setSrcRect(xSrc, ySrc, srcH, srcW);
+    setDestRect(xDest, yDest, destH, destW);
   }
 
   /**
@@ -172,31 +170,32 @@ public class MfCmdDibStretchBlt extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     throw new RecordCreationException("StretchBlt is not supported");
   }
 
-  public BufferedImage getImage()
+  public BufferedImage getImage ()
   {
     return image;
   }
 
-  public void setImage(final BufferedImage image)
+  public void setImage (final BufferedImage image)
   {
     this.image = image;
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[STRETCH_BLT] rop=");
-    b.append (getROP ());
-    b.append (" srcRect=");
-    b.append (getSrcRect ());
-    b.append (" destRect=");
-    b.append (getDestRect ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[STRETCH_BLT] rop=");
+    b.append(getROP());
+    b.append(" srcRect=");
+    b.append(getSrcRect());
+    b.append(" destRect=");
+    b.append(getDestRect());
+    return b.toString();
   }
 
 
@@ -206,8 +205,8 @@ public class MfCmdDibStretchBlt extends MfCmd
     this.srcY = y;
     this.srcW = w;
     this.srcH = h;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public void setDestRect (final int x, final int y, final int w, final int h)
@@ -216,23 +215,23 @@ public class MfCmdDibStretchBlt extends MfCmd
     this.destY = y;
     this.destW = w;
     this.destH = h;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public Rectangle getSrcRect ()
   {
-    return new Rectangle (srcX, srcY, srcW, srcH);
+    return new Rectangle(srcX, srcY, srcW, srcH);
   }
 
   public Rectangle getDestRect ()
   {
-    return new Rectangle (destX, destY, destW, destH);
+    return new Rectangle(destX, destY, destW, destH);
   }
 
   public Rectangle getScaledDestRect ()
   {
-    return new Rectangle (scaled_destX, scaled_destY, scaled_destW, scaled_destH);
+    return new Rectangle(scaled_destX, scaled_destY, scaled_destW, scaled_destH);
   }
 
   /**
@@ -241,8 +240,8 @@ public class MfCmdDibStretchBlt extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_destX = getScaledX (destX);
-    scaled_destW = getScaledX (destW);
+    scaled_destX = getScaledX(destX);
+    scaled_destW = getScaledX(destW);
   }
 
   /**
@@ -251,7 +250,7 @@ public class MfCmdDibStretchBlt extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_destY = getScaledY (destY);
-    scaled_destH = getScaledY (destH);
+    scaled_destY = getScaledY(destY);
+    scaled_destH = getScaledY(destH);
   }
 }

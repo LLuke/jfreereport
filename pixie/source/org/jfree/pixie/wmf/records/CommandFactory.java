@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommandFactory.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: CommandFactory.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -54,11 +54,13 @@ public class CommandFactory
     return commandFactory;
   }
 
-  public CommandFactory()
+  public CommandFactory ()
   {
   }
 
-  /** A global collection of all known record types. */
+  /**
+   * A global collection of all known record types.
+   */
   private Hashtable recordTypes;
 
   /**
@@ -71,85 +73,85 @@ public class CommandFactory
       return;
     }
 
-    recordTypes = new Hashtable ();
+    recordTypes = new Hashtable();
 
-    registerCommand (new MfCmdAnimatePalette ());
-    registerCommand (new MfCmdArc ());
-    registerCommand (new MfCmdDibBitBlt ());
-    registerCommand (new MfCmdChord ());
-    registerCommand (new MfCmdCreateBrush ());
-    registerCommand (new MfCmdCreateDibPatternBrush ());
-    registerCommand (new MfCmdCreateFont ());
-    registerCommand (new MfCmdCreatePen ());
-    registerCommand (new MfCmdCreatePalette ());
-    registerCommand (new MfCmdCreatePatternBrush ());
-    registerCommand (new MfCmdCreateRegion ());
-    registerCommand (new MfCmdDeleteObject ());
-    registerCommand (new MfCmdEllipse ());
-    registerCommand (new MfCmdEscape ());
-    registerCommand (new MfCmdExcludeClipRect ());
-    registerCommand (new MfCmdExtFloodFill ());
-    registerCommand (new MfCmdExtTextOut ());
-    registerCommand (new MfCmdFillRegion ());
-    registerCommand (new MfCmdFrameRegion ());
-    registerCommand (new MfCmdFloodFill ());
-    registerCommand (new MfCmdInvertRegion ());
-    registerCommand (new MfCmdIntersectClipRect ());
-    registerCommand (new MfCmdLineTo ());
-    registerCommand (new MfCmdMoveTo ());
-    registerCommand (new MfCmdOffsetClipRgn ());
-    registerCommand (new MfCmdOffsetViewportOrg ());
-    registerCommand (new MfCmdOffsetWindowOrg ());
-    registerCommand (new MfCmdBitBlt ());
-    registerCommand (new MfCmdStretchBlt ());
-    registerCommand (new MfCmdPatBlt ());
-    registerCommand (new MfCmdPaintRgn ());
-    registerCommand (new MfCmdPie ());
-    registerCommand (new MfCmdPolyPolygon ());
-    registerCommand (new MfCmdPolygon ());
-    registerCommand (new MfCmdPolyline ());
-    registerCommand (new MfCmdRealisePalette ());
-    registerCommand (new MfCmdRectangle ());
-    registerCommand (new MfCmdRestoreDc ());
-    registerCommand (new MfCmdResizePalette ());
-    registerCommand (new MfCmdRoundRect ());
-    registerCommand (new MfCmdSaveDc ());
-    registerCommand (new MfCmdScaleWindowExt ());
-    registerCommand (new MfCmdScaleViewportExt ());
-    registerCommand (new MfCmdSelectClipRegion ());
-    registerCommand (new MfCmdSelectObject ());
-    registerCommand (new MfCmdSelectPalette ());
-    registerCommand (new MfCmdSetBkMode ());
-    registerCommand (new MfCmdSetBkColor ());
-    registerCommand (new MfCmdSetDibitsToDevice ());
-    registerCommand (new MfCmdSetMapperFlags ());
-    registerCommand (new MfCmdSetMapMode ());
-    registerCommand (new MfCmdSetPaletteEntries ());
-    registerCommand (new MfCmdSetPolyFillMode ());
-    registerCommand (new MfCmdSetPixel ());
-    registerCommand (new MfCmdSetRop2 ());
-    registerCommand (new MfCmdSetStretchBltMode ());
-    registerCommand (new MfCmdSetTextCharExtra ());
-    registerCommand (new MfCmdSetTextAlign ());
-    registerCommand (new MfCmdSetTextColor ());
-    registerCommand (new MfCmdSetTextJustification ());
-    registerCommand (new MfCmdSetViewPortExt ());
-    registerCommand (new MfCmdSetViewPortOrg ());
-    registerCommand (new MfCmdSetWindowExt ());
-    registerCommand (new MfCmdSetWindowOrg ());
-    registerCommand (new MfCmdDibStretchBlt ());
-    registerCommand (new MfCmdStretchDibits ());
-    registerCommand (new MfCmdTextOut ());
+    registerCommand(new MfCmdAnimatePalette());
+    registerCommand(new MfCmdArc());
+    registerCommand(new MfCmdDibBitBlt());
+    registerCommand(new MfCmdChord());
+    registerCommand(new MfCmdCreateBrush());
+    registerCommand(new MfCmdCreateDibPatternBrush());
+    registerCommand(new MfCmdCreateFont());
+    registerCommand(new MfCmdCreatePen());
+    registerCommand(new MfCmdCreatePalette());
+    registerCommand(new MfCmdCreatePatternBrush());
+    registerCommand(new MfCmdCreateRegion());
+    registerCommand(new MfCmdDeleteObject());
+    registerCommand(new MfCmdEllipse());
+    registerCommand(new MfCmdEscape());
+    registerCommand(new MfCmdExcludeClipRect());
+    registerCommand(new MfCmdExtFloodFill());
+    registerCommand(new MfCmdExtTextOut());
+    registerCommand(new MfCmdFillRegion());
+    registerCommand(new MfCmdFrameRegion());
+    registerCommand(new MfCmdFloodFill());
+    registerCommand(new MfCmdInvertRegion());
+    registerCommand(new MfCmdIntersectClipRect());
+    registerCommand(new MfCmdLineTo());
+    registerCommand(new MfCmdMoveTo());
+    registerCommand(new MfCmdOffsetClipRgn());
+    registerCommand(new MfCmdOffsetViewportOrg());
+    registerCommand(new MfCmdOffsetWindowOrg());
+    registerCommand(new MfCmdBitBlt());
+    registerCommand(new MfCmdStretchBlt());
+    registerCommand(new MfCmdPatBlt());
+    registerCommand(new MfCmdPaintRgn());
+    registerCommand(new MfCmdPie());
+    registerCommand(new MfCmdPolyPolygon());
+    registerCommand(new MfCmdPolygon());
+    registerCommand(new MfCmdPolyline());
+    registerCommand(new MfCmdRealisePalette());
+    registerCommand(new MfCmdRectangle());
+    registerCommand(new MfCmdRestoreDc());
+    registerCommand(new MfCmdResizePalette());
+    registerCommand(new MfCmdRoundRect());
+    registerCommand(new MfCmdSaveDc());
+    registerCommand(new MfCmdScaleWindowExt());
+    registerCommand(new MfCmdScaleViewportExt());
+    registerCommand(new MfCmdSelectClipRegion());
+    registerCommand(new MfCmdSelectObject());
+    registerCommand(new MfCmdSelectPalette());
+    registerCommand(new MfCmdSetBkMode());
+    registerCommand(new MfCmdSetBkColor());
+    registerCommand(new MfCmdSetDibitsToDevice());
+    registerCommand(new MfCmdSetMapperFlags());
+    registerCommand(new MfCmdSetMapMode());
+    registerCommand(new MfCmdSetPaletteEntries());
+    registerCommand(new MfCmdSetPolyFillMode());
+    registerCommand(new MfCmdSetPixel());
+    registerCommand(new MfCmdSetRop2());
+    registerCommand(new MfCmdSetStretchBltMode());
+    registerCommand(new MfCmdSetTextCharExtra());
+    registerCommand(new MfCmdSetTextAlign());
+    registerCommand(new MfCmdSetTextColor());
+    registerCommand(new MfCmdSetTextJustification());
+    registerCommand(new MfCmdSetViewPortExt());
+    registerCommand(new MfCmdSetViewPortOrg());
+    registerCommand(new MfCmdSetWindowExt());
+    registerCommand(new MfCmdSetWindowOrg());
+    registerCommand(new MfCmdDibStretchBlt());
+    registerCommand(new MfCmdStretchDibits());
+    registerCommand(new MfCmdTextOut());
   }
 
   private void registerCommand (final MfCmd command)
   {
-    if (recordTypes.get (new Integer (command.getFunction ())) != null)
+    if (recordTypes.get(new Integer(command.getFunction())) != null)
     {
-      throw new IllegalArgumentException ("Already registered");
+      throw new IllegalArgumentException("Already registered");
     }
 
-    recordTypes.put (new Integer (command.getFunction ()), command);
+    recordTypes.put(new Integer(command.getFunction()), command);
   }
 
   public MfCmd getCommand (final int function)
@@ -159,13 +161,13 @@ public class CommandFactory
       registerAllKnownTypes();
     }
 
-    final MfCmd cmd = (MfCmd) recordTypes.get (new Integer (function));
+    final MfCmd cmd = (MfCmd) recordTypes.get(new Integer(function));
     if (cmd == null)
     {
-      final MfCmdUnknownCommand ucmd = new MfCmdUnknownCommand ();
-      ucmd.setFunction (function);
+      final MfCmdUnknownCommand ucmd = new MfCmdUnknownCommand();
+      ucmd.setFunction(function);
       return ucmd;
     }
-    return cmd.getInstance ();
+    return cmd.getInstance();
   }
 }

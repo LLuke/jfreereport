@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdSelectClipRegion.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdSelectClipRegion.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.WmfObject;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 public class MfCmdSelectClipRegion extends MfCmd
 {
@@ -60,17 +59,19 @@ public class MfCmdSelectClipRegion extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final WmfObject object = file.getObject (objectId);
+    final WmfObject object = file.getObject(objectId);
     if (object == null)
-      throw new IllegalStateException ("No Such Object defined: " + objectId);
+    {
+      throw new IllegalStateException("No Such Object defined: " + objectId);
+    }
 
-    switch (object.getType ())
+    switch (object.getType())
     {
       case WmfObject.OBJ_REGION:
-        file.getCurrentState ().setLogRegion ((MfLogRegion) object);
+        file.getCurrentState().setLogRegion((MfLogRegion) object);
         break;
       default:
-        throw new IllegalStateException ("Object is no region");
+        throw new IllegalStateException("Object is no region");
     }
   }
 
@@ -81,22 +82,22 @@ public class MfCmdSelectClipRegion extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdSelectClipRegion ();
+    return new MfCmdSelectClipRegion();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int id = record.getParam (POS_OBJECT_ID);
-    setObjectId (id);
+    final int id = record.getParam(POS_OBJECT_ID);
+    setObjectId(id);
   }
 
   /**
@@ -104,7 +105,8 @@ public class MfCmdSelectClipRegion extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     record.setParam(POS_OBJECT_ID, getObjectId());
@@ -112,8 +114,8 @@ public class MfCmdSelectClipRegion extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -129,10 +131,10 @@ public class MfCmdSelectClipRegion extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[SELECT_CLIPREGION] object=");
-    b.append (getObjectId ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[SELECT_CLIPREGION] object=");
+    b.append(getObjectId());
+    return b.toString();
   }
 
   public void setObjectId (final int id)

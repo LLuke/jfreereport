@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 2:51:03 PM
  *
- * $Id: CopyAreaOperation.java,v 1.1 2003/03/09 20:38:10 taqua Exp $
+ * $Id: CopyAreaOperation.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  */
 package org.jfree.pixie.g2recorder;
 
@@ -17,7 +17,8 @@ public class CopyAreaOperation implements G2Operation
   private int dx;
   private int dy;
 
-  public CopyAreaOperation(final int x, final int y, final int width, final int height, final int dx, final int dy)
+  public CopyAreaOperation (final int x, final int y, final int width, final int height,
+                            final int dx, final int dy)
   {
     this.x = x;
     this.y = y;
@@ -27,8 +28,8 @@ public class CopyAreaOperation implements G2Operation
     this.dy = dy;
   }
 
-  public void draw(final Graphics2D g2)
+  public void draw (final Graphics2D g2)
   {
-    g2.copyArea(x,y,width, height,dx, dy);
+    g2.copyArea(x, y, width, height, dx, dy);
   }
 }

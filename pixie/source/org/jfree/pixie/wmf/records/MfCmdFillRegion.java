@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdFillRegion.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdFillRegion.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -69,24 +69,24 @@ public class MfCmdFillRegion extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfLogBrush brush = file.getBrushObject (brushObjectNr);
-    final MfLogRegion regio = file.getRegionObject (regionObjectNr);
+    final MfLogBrush brush = file.getBrushObject(brushObjectNr);
+    final MfLogRegion regio = file.getRegionObject(regionObjectNr);
 
-    final MfDcState state = file.getCurrentState ();
-    state.setLogRegion (regio);
-    state.setLogBrush (brush);
+    final MfDcState state = file.getCurrentState();
+    state.setLogRegion(regio);
+    state.setLogBrush(brush);
 
-    final Graphics2D graph = file.getGraphics2D ();
-    final Rectangle rec = scaleRect (regio.getBounds ());
+    final Graphics2D graph = file.getGraphics2D();
+    final Rectangle rec = scaleRect(regio.getBounds());
 
-    final Rectangle2D rect = new Rectangle2D.Double ();
-    rect.setFrame (rec.x, rec.y, rec.width, rec.height);
+    final Rectangle2D rect = new Rectangle2D.Double();
+    rect.setFrame(rec.x, rec.y, rec.width, rec.height);
 
-    if (brush.isVisible ())
+    if (brush.isVisible())
     {
-      state.preparePaint ();
-      graph.fill (rect);
-      state.postPaint ();
+      state.preparePaint();
+      graph.fill(rect);
+      state.postPaint();
     }
   }
 
@@ -97,24 +97,24 @@ public class MfCmdFillRegion extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdFillRegion ();
+    return new MfCmdFillRegion();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int regio = record.getParam (POS_REGION);
-    final int brush = record.getParam (POS_BRUSH);
-    setBrush (brush);
-    setRegion (regio);
+    final int regio = record.getParam(POS_REGION);
+    final int brush = record.getParam(POS_BRUSH);
+    setBrush(brush);
+    setRegion(regio);
   }
 
   /**
@@ -132,12 +132,12 @@ public class MfCmdFillRegion extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[FILL_REGION] brush=");
-    b.append (getBrush ());
-    b.append (" region=");
-    b.append (getRegion ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[FILL_REGION] brush=");
+    b.append(getBrush());
+    b.append(" region=");
+    b.append(getRegion());
+    return b.toString();
   }
 
   public int getBrush ()
@@ -161,8 +161,8 @@ public class MfCmdFillRegion extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

@@ -38,18 +38,18 @@ public class BitmapHeader
 
   public void setRecord (final MfRecord record, final int offset)
   {
-    dataOffset = record.getInt (offset + BMPH_DATA_OFFSET);
-    headerSize = record.getInt (offset + BMPH_HEADERSIZE);
-    width = record.getInt (offset + BMPH_WIDTH);
-    height = record.getInt (offset + BMPH_HEIGHT);
-    noPlanes = record.getShort (offset + BMPH_NO_PLANES);
-    bitPerPixel = record.getShort (offset + BMPH_BPP);
-    compression = record.getInt (offset + BMPH_COMPRESSION);
-    dataSize = record.getInt (offset + BMPH_DATASIZE);
-    hres = record.getInt (offset + BMPH_HRES);
-    vres = record.getInt (offset + BMPH_VRES);
-    noColors = record.getInt (offset + BMPH_NO_COLORS);
-    noImportantColors = record.getInt (offset + BMPH_NO_IMPORTANT_COLORS);
+    dataOffset = record.getInt(offset + BMPH_DATA_OFFSET);
+    headerSize = record.getInt(offset + BMPH_HEADERSIZE);
+    width = record.getInt(offset + BMPH_WIDTH);
+    height = record.getInt(offset + BMPH_HEIGHT);
+    noPlanes = record.getShort(offset + BMPH_NO_PLANES);
+    bitPerPixel = record.getShort(offset + BMPH_BPP);
+    compression = record.getInt(offset + BMPH_COMPRESSION);
+    dataSize = record.getInt(offset + BMPH_DATASIZE);
+    hres = record.getInt(offset + BMPH_HRES);
+    vres = record.getInt(offset + BMPH_VRES);
+    noColors = record.getInt(offset + BMPH_NO_COLORS);
+    noImportantColors = record.getInt(offset + BMPH_NO_IMPORTANT_COLORS);
 
     if (height < 0)
     {
@@ -57,7 +57,7 @@ public class BitmapHeader
       height = -height;
     }
 
-    fixPalette ();
+    fixPalette();
   }
 
   private void fixPalette ()
@@ -65,10 +65,14 @@ public class BitmapHeader
     if (bitPerPixel < 16)
     {
       if (noColors == 0)
-        noColors = (int) Math.pow (2, bitPerPixel);
+      {
+        noColors = (int) Math.pow(2, bitPerPixel);
+      }
 
       if (noImportantColors == 0)
-        noImportantColors = (int) Math.pow (2, bitPerPixel);
+      {
+        noImportantColors = (int) Math.pow(2, bitPerPixel);
+      }
     }
   }
 
@@ -122,17 +126,17 @@ public class BitmapHeader
     return isTopDown;
   }
 
-  public int getDataOffset()
+  public int getDataOffset ()
   {
     return dataOffset;
   }
 
-  public int getDataSize()
+  public int getDataSize ()
   {
     return dataSize;
   }
 
-  public int getNoPlanes()
+  public int getNoPlanes ()
   {
     return noPlanes;
   }

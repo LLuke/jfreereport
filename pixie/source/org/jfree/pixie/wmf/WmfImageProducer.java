@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: WmfImageProducer.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
+ * $Id: WmfImageProducer.java,v 1.3 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -44,64 +44,67 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- *	Implements the ImageProducer interface for the MetaFiles
+ * Implements the ImageProducer interface for the MetaFiles
  */
 public class WmfImageProducer implements ImageProducer
 {
   private WmfFile metafile;
   private ArrayList consumers;
 
-  public WmfImageProducer(final String inName, final int width, final int height)
-      throws IOException
+  public WmfImageProducer (final String inName, final int width, final int height)
+          throws IOException
   {
     consumers = new ArrayList();
     metafile = new WmfFile(inName, width, height);
 //    metafile.replay ();
   }
 
-  public WmfImageProducer(final URL inName, final int width, final int height)
-      throws IOException
+  public WmfImageProducer (final URL inName, final int width, final int height)
+          throws IOException
   {
     consumers = new ArrayList();
     metafile = new WmfFile(inName, width, height);
 //    metafile.replay ();
   }
 
-  public WmfImageProducer(final URL inName)
-      throws IOException
+  public WmfImageProducer (final URL inName)
+          throws IOException
   {
     consumers = new ArrayList();
     metafile = new WmfFile(inName);
 //    metafile.replay ();
   }
 
-  public synchronized void addConsumer(final ImageConsumer ic)
+  public synchronized void addConsumer (final ImageConsumer ic)
   {
-    if (isConsumer(ic)) return;
+    if (isConsumer(ic))
+    {
+      return;
+    }
 
     consumers.add(ic);
   }
 
 
-  public synchronized boolean isConsumer(final ImageConsumer ic)
+  public synchronized boolean isConsumer (final ImageConsumer ic)
   {
     return consumers.contains(ic);
   }
 
 
-  public synchronized void removeConsumer(final ImageConsumer ic)
+  public synchronized void removeConsumer (final ImageConsumer ic)
   {
     consumers.remove(ic);
   }
 
 
-  public synchronized void requestTopDownLeftRightResend(final ImageConsumer ic)
+  public synchronized void requestTopDownLeftRightResend (final ImageConsumer ic)
   {
     startProduction(ic);
   }
 
 
-  public synchronized void startProduction(final ImageConsumer pic)
+  public synchronized void startProduction (final ImageConsumer pic)
   {
     if (pic != null)
     {
@@ -133,9 +136,13 @@ public class WmfImageProducer implements ImageProducer
     {
       int rows = 0;
       if ((i + LINES) > h)
+      {
         rows = h - i;
+      }
       else
+      {
         rows = LINES;
+      }
 
       pixels = image.getRGB(0, i, w, rows, pixels, 0, w);
       for (int j = 0; j < cons.length; j++)

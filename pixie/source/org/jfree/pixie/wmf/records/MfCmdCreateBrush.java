@@ -28,37 +28,33 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreateBrush.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdCreateBrush.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+
+import org.jfree.pixie.wmf.BrushConstants;
 import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfLogBrush;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.BrushConstants;
-import org.jfree.pixie.wmf.records.MfCmd;
 import org.jfree.util.Log;
 
-import java.awt.Color;
-
 /**
- * The CreateBrushIndirect function creates a logical brush that has the
- * specified style, color, and pattern.
- * <p>
- * The style is one of the BS_* constants defined in
- * {@link org.jfree.pixie.wmf.BrushConstants}.
- * The hatch is one of the HS_* constants defined in
- * {@link org.jfree.pixie.wmf.BrushConstants}.
- * <p>
- * The record size is variable.
- * First parameter defines the style, n next parameters define the color
- * table for the brush and the last parameter defines the hatch.
- * <p>
+ * The CreateBrushIndirect function creates a logical brush that has the specified style,
+ * color, and pattern.
+ * <p/>
+ * The style is one of the BS_* constants defined in {@link org.jfree.pixie.wmf.BrushConstants}.
+ * The hatch is one of the HS_* constants defined in {@link org.jfree.pixie.wmf.BrushConstants}.
+ * <p/>
+ * The record size is variable. First parameter defines the style, n next parameters
+ * define the color table for the brush and the last parameter defines the hatch.
+ * <p/>
  * todo reimplement this record type for all brushes..
  */
 public class MfCmdCreateBrush extends MfCmd
@@ -80,14 +76,14 @@ public class MfCmdCreateBrush extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[CREATE_BRUSH] style=");
-    b.append (getStyle ());
-    b.append (" color=");
-    b.append (getColor ());
-    b.append (" hatch=");
-    b.append (getHatch ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[CREATE_BRUSH] style=");
+    b.append(getStyle());
+    b.append(" color=");
+    b.append(getColor());
+    b.append(" hatch=");
+    b.append(getHatch());
+    return b.toString();
   }
 
   /**
@@ -97,13 +93,13 @@ public class MfCmdCreateBrush extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfLogBrush lbrush = new MfLogBrush ();
-    lbrush.setStyle (getStyle ());
-    lbrush.setColor (getColor ());
-    lbrush.setHatchedStyle (getHatch ());
+    final MfLogBrush lbrush = new MfLogBrush();
+    lbrush.setStyle(getStyle());
+    lbrush.setColor(getColor());
+    lbrush.setHatchedStyle(getHatch());
 
-    file.getCurrentState ().setLogBrush (lbrush);
-    file.storeObject (lbrush);
+    file.getCurrentState().setLogBrush(lbrush);
+    file.storeObject(lbrush);
   }
 
   /**
@@ -113,7 +109,7 @@ public class MfCmdCreateBrush extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdCreateBrush ();
+    return new MfCmdCreateBrush();
   }
 
   public void setStyle (final int style)
@@ -129,16 +125,16 @@ public class MfCmdCreateBrush extends MfCmd
   public void setHatch (final int hatch)
   {
     if (hatch != BrushConstants.BS_DIBPATTERN &&
-        hatch != BrushConstants.BS_DIBPATTERN8X8 &&
-        hatch != BrushConstants.BS_DIBPATTERNPT &&
-        hatch != BrushConstants.BS_HATCHED &&
-        hatch != BrushConstants.BS_HOLLOW &&
-        hatch != BrushConstants.BS_INDEXED &&
-        hatch != BrushConstants.BS_MONOPATTERN &&
-        hatch != BrushConstants.BS_NULL &&
-        hatch != BrushConstants.BS_PATTERN &&
-        hatch != BrushConstants.BS_PATTERN8X8 &&
-        hatch != BrushConstants.BS_SOLID)
+            hatch != BrushConstants.BS_DIBPATTERN8X8 &&
+            hatch != BrushConstants.BS_DIBPATTERNPT &&
+            hatch != BrushConstants.BS_HATCHED &&
+            hatch != BrushConstants.BS_HOLLOW &&
+            hatch != BrushConstants.BS_INDEXED &&
+            hatch != BrushConstants.BS_MONOPATTERN &&
+            hatch != BrushConstants.BS_NULL &&
+            hatch != BrushConstants.BS_PATTERN &&
+            hatch != BrushConstants.BS_PATTERN8X8 &&
+            hatch != BrushConstants.BS_SOLID)
     {
       throw new IllegalArgumentException("The specified pattern is invalid");
     }
@@ -162,8 +158,8 @@ public class MfCmdCreateBrush extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -173,11 +169,11 @@ public class MfCmdCreateBrush extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
@@ -185,14 +181,14 @@ public class MfCmdCreateBrush extends MfCmd
   {
     if (record.getLength() != 14)
     {
-      Log.warn ("Unknown type of CreateBrushIndirect encountered.");
+      Log.warn("Unknown type of CreateBrushIndirect encountered.");
     }
-    final int style = record.getParam (PARAM_STYLE);
-    final int color = record.getLongParam (PARAM_COLOR);
-    final int hatch = record.getParam (PARAM_HATCH);
-    setStyle (style);
-    setColor (new GDIColor (color));
-    setHatch (hatch);
+    final int style = record.getParam(PARAM_STYLE);
+    final int color = record.getLongParam(PARAM_COLOR);
+    final int hatch = record.getParam(PARAM_HATCH);
+    setStyle(style);
+    setColor(new GDIColor(color));
+    setHatch(hatch);
   }
 
   /**

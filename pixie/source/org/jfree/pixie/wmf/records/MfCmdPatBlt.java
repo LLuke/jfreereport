@@ -1,15 +1,14 @@
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
-import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.ROPConstants;
-import org.jfree.pixie.wmf.MfDcState;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Rectangle;
-import java.awt.Graphics2D;
-import java.awt.Color;
+import org.jfree.pixie.wmf.WmfFile;
 
 public class MfCmdPatBlt extends MfCmd
 {
@@ -40,7 +39,7 @@ public class MfCmdPatBlt extends MfCmd
     {
       case ROPConstants.PATCOPY:
         {
-          final MfDcState state = file.getCurrentState ();
+          final MfDcState state = file.getCurrentState();
           state.preparePaint();
           final Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
           g2.setPaintMode();
@@ -50,7 +49,7 @@ public class MfCmdPatBlt extends MfCmd
         }
       case ROPConstants.PATINVERT:
         {
-          final MfDcState state = file.getCurrentState ();
+          final MfDcState state = file.getCurrentState();
           state.preparePaint();
           final Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
           g2.setXORMode(g2.getColor());
@@ -85,7 +84,7 @@ public class MfCmdPatBlt extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdPatBlt ();
+    return new MfCmdPatBlt();
   }
 
   public int getROP ()
@@ -99,23 +98,23 @@ public class MfCmdPatBlt extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int rop = record.getLongParam (POS_ROP);
-    final int height = record.getParam (POS_HEIGHT);
-    final int width = record.getParam (POS_WIDTH);
-    final int top = record.getParam (POS_X);
-    final int left = record.getParam (POS_Y);
-    setBounds (left, top, width, height);
-    setROP (rop);
+    final int rop = record.getLongParam(POS_ROP);
+    final int height = record.getParam(POS_HEIGHT);
+    final int width = record.getParam(POS_WIDTH);
+    final int top = record.getParam(POS_X);
+    final int left = record.getParam(POS_Y);
+    setBounds(left, top, width, height);
+    setROP(rop);
   }
 
   /**
@@ -137,22 +136,22 @@ public class MfCmdPatBlt extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[PAT_BLT] rop=");
-    b.append (getROP ());
-    b.append (" bounds=");
-    b.append (getBounds ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[PAT_BLT] rop=");
+    b.append(getROP());
+    b.append(" bounds=");
+    b.append(getBounds());
+    return b.toString();
   }
 
   public Rectangle getBounds ()
   {
-    return new Rectangle (x, y, width, height);
+    return new Rectangle(x, y, width, height);
   }
 
   public Rectangle getScaledBounds ()
   {
-    return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
+    return new Rectangle(scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
   public void setBounds (final int x, final int y, final int width, final int height)
@@ -161,8 +160,8 @@ public class MfCmdPatBlt extends MfCmd
     this.y = y;
     this.width = width;
     this.height = height;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
 
   }
 
@@ -172,8 +171,8 @@ public class MfCmdPatBlt extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
-    scaled_width = getScaledX (width);
+    scaled_x = getScaledX(x);
+    scaled_width = getScaledX(width);
   }
 
   /**
@@ -182,13 +181,13 @@ public class MfCmdPatBlt extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
-    scaled_height = getScaledY (height);
+    scaled_y = getScaledY(y);
+    scaled_height = getScaledY(height);
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

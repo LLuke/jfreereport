@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdRestoreDc.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdRestoreDc.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,26 +38,19 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
- * The RestoreDC function restores a device context (DC) to the specified
- * state. The DC is restored by popping state information off a stack
- * created by earlier calls to the SaveDC function.
- *
- <code>
-BOOL RestoreDC(
- HDC hdc,       // handle to DC
- int nSavedDC   // restore state
-);
-</code>
- *
- * Parameters
- * nSavedDC [in] Specifies the saved state to be restored. If this parameter
- * is positive, nSavedDC represents a specific instance of the state to be
- * restored. If this parameter is negative, nSavedDC represents an instance
- * relative to the current state. For example, –1 restores the most recently
- * saved state.
+ * The RestoreDC function restores a device context (DC) to the specified state. The DC is
+ * restored by popping state information off a stack created by earlier calls to the
+ * SaveDC function.
+ * <p/>
+ * <code> BOOL RestoreDC( HDC hdc,       // handle to DC int nSavedDC   // restore state
+ * ); </code>
+ * <p/>
+ * Parameters nSavedDC [in] Specifies the saved state to be restored. If this parameter is
+ * positive, nSavedDC represents a specific instance of the state to be restored. If this
+ * parameter is negative, nSavedDC represents an instance relative to the current state.
+ * For example, –1 restores the most recently saved state.
  */
 public class MfCmdRestoreDc extends MfCmd
 {
@@ -75,15 +68,17 @@ public class MfCmdRestoreDc extends MfCmd
   public void replay (final WmfFile file)
   {
     if (dcId == 0)
+    {
       return;
+    }
 
     if (dcId > 0)
     {
-      file.restoreDCState (dcId);
+      file.restoreDCState(dcId);
     }
     else
     {
-      file.restoreDCState (file.getStateCount () - dcId);
+      file.restoreDCState(file.getStateCount() - dcId);
     }
   }
 
@@ -94,22 +89,22 @@ public class MfCmdRestoreDc extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdRestoreDc ();
+    return new MfCmdRestoreDc();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int id = record.getParam (0);
-    setNSavedDC (id);
+    final int id = record.getParam(0);
+    setNSavedDC(id);
   }
 
   /**
@@ -117,7 +112,8 @@ public class MfCmdRestoreDc extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(1);
     record.setParam(0, getNSavedDC());
@@ -125,8 +121,8 @@ public class MfCmdRestoreDc extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -147,10 +143,10 @@ public class MfCmdRestoreDc extends MfCmd
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[RESTORE_DC] nSavedDC=");
-    b.append (getNSavedDC ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[RESTORE_DC] nSavedDC=");
+    b.append(getNSavedDC());
+    return b.toString();
   }
 
   /**

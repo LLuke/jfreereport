@@ -28,26 +28,25 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdOffsetClipRgn.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdOffsetClipRgn.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.jfree.pixie.wmf.MfDcState;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
-import java.awt.Point;
-import java.awt.Rectangle;
 
 /**
- * Moves the current Clipping Region (@see CreateRegion) to the specified
- * position, starting with the current region. This will result in a relative
- * move operation. The specified values are no absolute values. 
+ * Moves the current Clipping Region (@see CreateRegion) to the specified position,
+ * starting with the current region. This will result in a relative move operation. The
+ * specified values are no absolute values.
  */
 public class MfCmdOffsetClipRgn extends MfCmd
 {
@@ -71,12 +70,12 @@ public class MfCmdOffsetClipRgn extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final MfDcState state = file.getCurrentState ();
-    final Rectangle clipRect = state.getClipRegion ();
-    final Point p = getScaledDestination ();
+    final MfDcState state = file.getCurrentState();
+    final Rectangle clipRect = state.getClipRegion();
+    final Point p = getScaledDestination();
     clipRect.x += p.x;
     clipRect.y += p.y;
-    state.setClipRegion (clipRect);
+    state.setClipRegion(clipRect);
   }
 
   /**
@@ -86,20 +85,20 @@ public class MfCmdOffsetClipRgn extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdOffsetClipRgn ();
+    return new MfCmdOffsetClipRgn();
   }
 
   public Point getDestination ()
   {
-    return new Point (x, y);
+    return new Point(x, y);
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[OFFSET_CLIP_RECT] destination=");
-    b.append (getDestination ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[OFFSET_CLIP_RECT] destination=");
+    b.append(getDestination());
+    return b.toString();
   }
 
   public void setDestination (final Point p)
@@ -111,14 +110,14 @@ public class MfCmdOffsetClipRgn extends MfCmd
   {
     this.x = x;
     this.y = y;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
 
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -129,19 +128,19 @@ public class MfCmdOffsetClipRgn extends MfCmd
 
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int y = record.getParam (POS_Y);
-    final int x = record.getParam (POS_X);
-    setDestination (x, y);
+    final int y = record.getParam(POS_Y);
+    final int x = record.getParam(POS_X);
+    setDestination(x, y);
   }
 
   /**
@@ -160,7 +159,7 @@ public class MfCmdOffsetClipRgn extends MfCmd
 
   public Point getScaledDestination ()
   {
-    return new Point (scaled_x, scaled_y);
+    return new Point(scaled_x, scaled_y);
   }
 
   /**
@@ -169,7 +168,7 @@ public class MfCmdOffsetClipRgn extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
+    scaled_x = getScaledX(x);
   }
 
   /**
@@ -178,6 +177,6 @@ public class MfCmdOffsetClipRgn extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
+    scaled_y = getScaledY(y);
   }
 }

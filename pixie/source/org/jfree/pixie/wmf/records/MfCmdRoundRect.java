@@ -28,27 +28,26 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdRoundRect.java,v 1.3 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdRoundRect.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.pixie.wmf.records;
 
-import org.jfree.pixie.wmf.MfDcState;
-import org.jfree.pixie.wmf.MfRecord;
-import org.jfree.pixie.wmf.MfType;
-import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.records.MfCmd;
-
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 
+import org.jfree.pixie.wmf.MfDcState;
+import org.jfree.pixie.wmf.MfRecord;
+import org.jfree.pixie.wmf.MfType;
+import org.jfree.pixie.wmf.WmfFile;
+
 /**
- * The RoundRect function draws a rectangle with rounded corners. The rectangle
- * is outlined by using the current pen and filled by using the current brush.
+ * The RoundRect function draws a rectangle with rounded corners. The rectangle is
+ * outlined by using the current pen and filled by using the current brush.
  */
 public class MfCmdRoundRect extends MfCmd
 {
@@ -85,24 +84,24 @@ public class MfCmdRoundRect extends MfCmd
    */
   public void replay (final WmfFile file)
   {
-    final Graphics2D graph = file.getGraphics2D ();
-    final Rectangle rec = getScaledBounds ();
-    final Dimension dim = getScaledRoundingDim ();
-    final RoundRectangle2D shape = new RoundRectangle2D.Double ();
-    shape.setRoundRect (rec.x, rec.y, rec.width, rec.height, dim.width, dim.height);
-    final MfDcState state = file.getCurrentState ();
+    final Graphics2D graph = file.getGraphics2D();
+    final Rectangle rec = getScaledBounds();
+    final Dimension dim = getScaledRoundingDim();
+    final RoundRectangle2D shape = new RoundRectangle2D.Double();
+    shape.setRoundRect(rec.x, rec.y, rec.width, rec.height, dim.width, dim.height);
+    final MfDcState state = file.getCurrentState();
 
-    if (state.getLogBrush ().isVisible ())
+    if (state.getLogBrush().isVisible())
     {
-      state.preparePaint ();
-      graph.fill (shape);
-      state.postPaint ();
+      state.preparePaint();
+      graph.fill(shape);
+      state.postPaint();
     }
-    if (state.getLogPen ().isVisible ())
+    if (state.getLogPen().isVisible())
     {
-      state.prepareDraw ();
-      graph.draw (shape);
-      state.postDraw ();
+      state.prepareDraw();
+      graph.draw(shape);
+      state.postDraw();
     }
   }
 
@@ -113,38 +112,38 @@ public class MfCmdRoundRect extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdRoundRect ();
+    return new MfCmdRoundRect();
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[ROUND_RECTANGLE] bounds=");
-    b.append (getBounds ());
-    b.append (" roundingDim=");
-    b.append (getRoundingDim ());
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[ROUND_RECTANGLE] bounds=");
+    b.append(getBounds());
+    b.append(" roundingDim=");
+    b.append(getRoundingDim());
+    return b.toString();
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
-   * After the raw record was read from the datasource, the record is parsed
-   * by the concrete implementation.
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
+   * After the raw record was read from the datasource, the record is parsed by the
+   * concrete implementation.
    *
    * @param record the raw data that makes up the record.
    */
   public void setRecord (final MfRecord record)
   {
-    final int rHeight = record.getParam (POS_ROUND_HEIGHT);
-    final int rWidth = record.getParam (POS_ROUND_WIDTH);
-    final int bottom = record.getParam (POS_BOTTOM);
-    final int right = record.getParam (POS_RIGHT);
-    final int top = record.getParam (POS_TOP);
-    final int left = record.getParam (POS_LEFT);
-    setBounds (left, top, right - left, bottom - top);
-    setRoundingDim (rWidth, rHeight);
+    final int rHeight = record.getParam(POS_ROUND_HEIGHT);
+    final int rWidth = record.getParam(POS_ROUND_WIDTH);
+    final int bottom = record.getParam(POS_BOTTOM);
+    final int right = record.getParam(POS_RIGHT);
+    final int top = record.getParam(POS_TOP);
+    final int left = record.getParam(POS_LEFT);
+    setBounds(left, top, right - left, bottom - top);
+    setRoundingDim(rWidth, rHeight);
   }
 
   /**
@@ -152,7 +151,8 @@ public class MfCmdRoundRect extends MfCmd
    *
    * @return the created record.
    */
-  public MfRecord getRecord() throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final MfRecord record = new MfRecord(RECORD_SIZE);
     final Dimension rDim = getRoundingDim();
@@ -168,12 +168,12 @@ public class MfCmdRoundRect extends MfCmd
 
   public Rectangle getBounds ()
   {
-    return new Rectangle (x, y, width, height);
+    return new Rectangle(x, y, width, height);
   }
 
   public Rectangle getScaledBounds ()
   {
-    return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
+    return new Rectangle(scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
   public void setBounds (final int x, final int y, final int width, final int height)
@@ -182,8 +182,8 @@ public class MfCmdRoundRect extends MfCmd
     this.y = y;
     this.width = width;
     this.height = height;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
 
   }
 
@@ -191,18 +191,18 @@ public class MfCmdRoundRect extends MfCmd
   {
     this.roundWidth = w;
     this.roundHeight = h;
-    scaleXChanged ();
-    scaleYChanged ();
+    scaleXChanged();
+    scaleYChanged();
   }
 
   public Dimension getRoundingDim ()
   {
-    return new Dimension (roundWidth, roundHeight);
+    return new Dimension(roundWidth, roundHeight);
   }
 
   public Dimension getScaledRoundingDim ()
   {
-    return new Dimension (scaled_roundWidth, scaled_roundHeight);
+    return new Dimension(scaled_roundWidth, scaled_roundHeight);
   }
 
   /**
@@ -211,9 +211,9 @@ public class MfCmdRoundRect extends MfCmd
    */
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX (x);
-    scaled_width = getScaledX (width);
-    scaled_roundWidth = getScaledX (roundWidth);
+    scaled_x = getScaledX(x);
+    scaled_width = getScaledX(width);
+    scaled_roundWidth = getScaledX(roundWidth);
   }
 
   /**
@@ -222,14 +222,14 @@ public class MfCmdRoundRect extends MfCmd
    */
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY (y);
-    scaled_height = getScaledY (height);
-    scaled_roundHeight = getScaledY (roundHeight);
+    scaled_y = getScaledY(y);
+    scaled_height = getScaledY(height);
+    scaled_roundHeight = getScaledY(roundHeight);
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */

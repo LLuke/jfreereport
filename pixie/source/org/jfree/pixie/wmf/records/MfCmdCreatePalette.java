@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdCreatePalette.java,v 1.4 2003/07/03 16:13:36 taqua Exp $
+ * $Id: MfCmdCreatePalette.java,v 1.5 2004/01/19 18:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,11 @@ package org.jfree.pixie.wmf.records;
 
 import java.awt.Color;
 
+import org.jfree.pixie.wmf.GDIColor;
 import org.jfree.pixie.wmf.MfLogPalette;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
-import org.jfree.pixie.wmf.GDIColor;
-import org.jfree.pixie.wmf.records.MfCmd;
 
 /**
  * Palette function not supported
@@ -61,8 +60,8 @@ public class MfCmdCreatePalette extends MfCmd
   }
 
   /**
-   * Reads the function identifier. Every record type is identified by a
-   * function number corresponding to one of the Windows GDI functions used.
+   * Reads the function identifier. Every record type is identified by a function number
+   * corresponding to one of the Windows GDI functions used.
    *
    * @return the function identifier.
    */
@@ -79,23 +78,28 @@ public class MfCmdCreatePalette extends MfCmd
   public int getEntriesCount ()
   {
     if (colors == null)
+    {
       return 0;
+    }
 
     return colors.length;
   }
 
   /**
-   * Creates a new record based on the data stored in the MfCommand.
-   * <i>This function may or may not work, there is not much HQ documentation
-   * about metafiles available in the net. </i>
+   * Creates a new record based on the data stored in the MfCommand. <i>This function may
+   * or may not work, there is not much HQ documentation about metafiles available in the
+   * net. </i>
    *
    * @return the created record.
    */
-  public MfRecord getRecord () throws RecordCreationException
+  public MfRecord getRecord ()
+          throws RecordCreationException
   {
     final int cEntries = getEntriesCount();
     if (cEntries == 0)
+    {
       throw new RecordCreationException("Empty CreatePaletteRecord is not valid");
+    }
 
     final MfRecord record = new MfRecord(2 + cEntries * 2);
     record.setParam(POS_HPALETTE, getHPalette());
@@ -113,9 +117,9 @@ public class MfCmdCreatePalette extends MfCmd
   }
 
   /**
-   * Reads the command data from the given record and adjusts the internal
-   * parameters according to the data parsed.
-   * <p>
+   * Reads the command data from the given record and adjusts the internal parameters
+   * according to the data parsed.
+   * <p/>
    * This method is not implemented, as a Palette implementation is still missing.
    *
    * @param record the record.
@@ -123,35 +127,35 @@ public class MfCmdCreatePalette extends MfCmd
   public void setRecord (final MfRecord record)
   {
     // the handle to the palette object ignored
-    final int hPalette = record.getParam (POS_HPALETTE);
+    final int hPalette = record.getParam(POS_HPALETTE);
     setHPalette(hPalette);
     // the number of defined entries ...
-    final int cEntries = record.getParam (POS_CENTRIES);
+    final int cEntries = record.getParam(POS_CENTRIES);
     final Color[] colors = new Color[cEntries];
 
     for (int i = 0; i < cEntries; i++)
     {
       final int cr = record.getLongParam(i * 2 + POS_START_ENTRIES);
-      final GDIColor color = new GDIColor (cr);
+      final GDIColor color = new GDIColor(cr);
       colors[i] = color;
     }
-    setEntries (colors);
+    setEntries(colors);
   }
 
   public void replay (final WmfFile file)
   {
     // no real implementation, as palettes are not yet fully supported ...
-    final MfLogPalette pal = new MfLogPalette ();
-    file.getCurrentState ().setLogPalette (pal);
-    file.storeObject (pal);
+    final MfLogPalette pal = new MfLogPalette();
+    file.getCurrentState().setLogPalette(pal);
+    file.storeObject(pal);
   }
 
   public String toString ()
   {
-    final StringBuffer b = new StringBuffer ();
-    b.append ("[CREATE_PALETTE] ");
-    b.append (" no internals known ");
-    return b.toString ();
+    final StringBuffer b = new StringBuffer();
+    b.append("[CREATE_PALETTE] ");
+    b.append(" no internals known ");
+    return b.toString();
   }
 
   /**
@@ -161,7 +165,7 @@ public class MfCmdCreatePalette extends MfCmd
    */
   public MfCmd getInstance ()
   {
-    return new MfCmdCreatePalette ();
+    return new MfCmdCreatePalette();
   }
 
   /**

@@ -2,7 +2,7 @@
  * Date: Mar 9, 2003
  * Time: 2:06:43 PM
  *
- * $Id: FillShapeOperation.java,v 1.1 2003/03/09 20:38:11 taqua Exp $
+ * $Id: FillShapeOperation.java,v 1.2 2003/07/03 16:13:36 taqua Exp $
  */
 package org.jfree.pixie.g2recorder;
 
@@ -13,12 +13,12 @@ public class FillShapeOperation implements G2Operation
 {
   private Shape shape;
 
-  public FillShapeOperation(final Shape shape)
+  public FillShapeOperation (final Shape shape)
   {
     this.shape = shape;
   }
 
-  public void draw(final Graphics2D g2)
+  public void draw (final Graphics2D g2)
   {
     g2.fill(shape);
   }

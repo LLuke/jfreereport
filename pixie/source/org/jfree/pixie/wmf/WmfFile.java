@@ -28,7 +28,7 @@
  * Original Author:  David R. Harris
  * Contributor(s):   Thomas Morgner
  *
- * $Id: WmfFile.java,v 1.4 2004/01/19 18:36:25 taqua Exp $
+ * $Id: WmfFile.java,v 1.5 2004/10/22 11:59:28 taqua Exp $
  *
  * Changes
  * -------
@@ -52,10 +52,10 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
+import org.jfree.pixie.wmf.records.CommandFactory;
 import org.jfree.pixie.wmf.records.MfCmd;
 import org.jfree.pixie.wmf.records.MfCmdSetWindowExt;
 import org.jfree.pixie.wmf.records.MfCmdSetWindowOrg;
-import org.jfree.pixie.wmf.records.CommandFactory;
 import org.jfree.ui.Drawable;
 import org.jfree.util.Log;
 
@@ -73,7 +73,7 @@ public class WmfFile implements Drawable
 
   private static final int MAX_PICTURE_SIZE = getMaxPictureSize();
 
-  private static int getMaxPictureSize()
+  private static int getMaxPictureSize ()
   {
     return 1200;
   }
@@ -101,20 +101,20 @@ public class WmfFile implements Drawable
   private int imageX = 0;
   private int imageY = 0;
 
-  public WmfFile(final URL input)
-      throws IOException
+  public WmfFile (final URL input)
+          throws IOException
   {
     this(input, -1, -1);
   }
 
-  public WmfFile(final String input)
-      throws IOException
+  public WmfFile (final String input)
+          throws IOException
   {
     this(input, -1, -1);
   }
 
-  public WmfFile(final URL input, final int imageX, final int imageY)
-      throws IOException
+  public WmfFile (final URL input, final int imageX, final int imageY)
+          throws IOException
   {
     this(new BufferedInputStream(input.openStream()), input.toString(), imageX, imageY);
   }
@@ -122,8 +122,8 @@ public class WmfFile implements Drawable
   /**
    * Initialize metafile for reading from filename.
    */
-  public WmfFile(final String inName, final int imageX, final int imageY)
-      throws FileNotFoundException, IOException
+  public WmfFile (final String inName, final int imageX, final int imageY)
+          throws FileNotFoundException, IOException
   {
     this(new BufferedInputStream(new FileInputStream(inName)), inName, imageX, imageY);
   }
@@ -131,8 +131,9 @@ public class WmfFile implements Drawable
   /**
    * Initialize metafile for reading from filename.
    */
-  public WmfFile(final InputStream in, final String inName, final int imageX, final int imageY)
-      throws FileNotFoundException, IOException
+  public WmfFile (final InputStream in, final String inName, final int imageX,
+                  final int imageY)
+          throws FileNotFoundException, IOException
   {
     this.inName = inName;
     this.in = in;
@@ -148,16 +149,16 @@ public class WmfFile implements Drawable
 
   public Dimension getImageSize ()
   {
-    return new Dimension (maxWidth, maxHeight);
+    return new Dimension(maxWidth, maxHeight);
   }
 
-  public void resetStates()
+  public void resetStates ()
   {
     dcStack.clear();
     dcStack.push(new MfDcState(this));
   }
 
-  public MfPalette getPalette()
+  public MfPalette getPalette ()
   {
     return palette;
   }
@@ -165,7 +166,7 @@ public class WmfFile implements Drawable
   /**
    * Return true if the input is a metafile
    */
-  public static int isMetafile(final String inName, final InputStream in)
+  public static int isMetafile (final String inName, final InputStream in)
   {
     return MfHeader.isMetafile(inName, in);
   }
@@ -173,12 +174,12 @@ public class WmfFile implements Drawable
   /**
    * Return Placeable and Windows headers that were read earlier.
    */
-  public MfHeader getHeader()
+  public MfHeader getHeader ()
   {
     return header;
   }
 
-  public Graphics2D getGraphics2D()
+  public Graphics2D getGraphics2D ()
   {
     return graphics;
   }
@@ -186,7 +187,7 @@ public class WmfFile implements Drawable
   /**
    * Check class invariant.
    */
-  public void assertValid()
+  public void assertValid ()
   {
     if (filePos < 0 || filePos > fileSize)
     {
@@ -197,7 +198,8 @@ public class WmfFile implements Drawable
   /**
    * Read Placeable and Windows headers.
    */
-  public MfHeader readHeader() throws IOException
+  public MfHeader readHeader ()
+          throws IOException
   {
     header = new MfHeader();
     header.read(in);
@@ -219,10 +221,13 @@ public class WmfFile implements Drawable
   /**
    * Fetch a record.
    */
-  public MfRecord readNextRecord() throws IOException
+  public MfRecord readNextRecord ()
+          throws IOException
   {
     if (filePos >= fileSize)
+    {
       return null;
+    }
 
     assertValid();
 
@@ -234,7 +239,8 @@ public class WmfFile implements Drawable
   /**
    * Read and interpret the body of the metafile.
    */
-  protected void parseRecords() throws IOException
+  protected void parseRecords ()
+          throws IOException
   {
     minX = Integer.MAX_VALUE;
     minY = Integer.MAX_VALUE;
@@ -248,7 +254,7 @@ public class WmfFile implements Drawable
       final MfCmd cmd = cmdFactory.getCommand(mf.getType());
       if (cmd == null)
       {
-        System.out.println("Failed to parse record " + mf.getType());
+        Log.info("Failed to parse record " + mf.getType());
       }
       else
       {
@@ -258,8 +264,8 @@ public class WmfFile implements Drawable
         {
           final MfCmdSetWindowOrg worg = (MfCmdSetWindowOrg) cmd;
           final Point p = worg.getTarget();
-          minX = Math.min (p.x, minX);
-          minY = Math.min (p.y, minY);
+          minX = Math.min(p.x, minX);
+          minY = Math.min(p.y, minY);
         }
         else if (cmd.getFunction() == MfType.SET_WINDOW_EXT)
         {
@@ -267,8 +273,6 @@ public class WmfFile implements Drawable
           final Dimension d = worg.getDimension();
           maxWidth = Math.max(maxWidth, d.width);
           maxHeight = Math.max(maxHeight, d.height);
-          System.out.println("New Maximum size: " + d);
-          System.out.println("New Maximum size: " + maxWidth + ", " + maxHeight);
         }
         records.add(cmd);
       }
@@ -295,7 +299,7 @@ public class WmfFile implements Drawable
   /**
    * <!-- Yes, this is from iText lib -->
    */
-  public void scaleToFit(final float fitWidth, final float fitHeight)
+  public void scaleToFit (final float fitWidth, final float fitHeight)
   {
     final float percentX = (fitWidth * 100) / maxWidth;
     final float percentY = (fitHeight * 100) / maxHeight;
@@ -305,10 +309,9 @@ public class WmfFile implements Drawable
   /**
    * Scale the image to a certain percentage.
    *
-   * @param		percent		the scaling percentage
-   * <!-- Yes, this is from iText lib -->
+   * @param		percent		the scaling percentage <!-- Yes, this is from iText lib -->
    */
-  public void scalePercent(final float percent)
+  public void scalePercent (final float percent)
   {
     scalePercent(percent, percent);
   }
@@ -317,10 +320,10 @@ public class WmfFile implements Drawable
    * Scale the width and height of an image to a certain percentage.
    *
    * @param		percentX	the scaling percentage of the width
-   * @param		percentY	the scaling percentage of the height
-   * <!-- Yes, this is from iText lib -->
+   * @param		percentY	the scaling percentage of the height <!-- Yes, this is from iText
+   * lib -->
    */
-  public void scalePercent(final float percentX, final float percentY)
+  public void scalePercent (final float percentX, final float percentY)
   {
     imageWidth = (int) ((maxWidth * percentX) / 100f);
     imageHeight = (int) ((maxHeight * percentY) / 100f);
@@ -328,40 +331,45 @@ public class WmfFile implements Drawable
     imageY = (int) ((minY * percentY) / 100f);
   }
 
-  public static void main(final String[] args) throws Exception
+  public static void main (final String[] args)
+          throws Exception
   {
     final WmfFile wmf = new WmfFile("./pixie/res/test.wmf", 800, 600);
     wmf.replay();
   }
 
-  public MfDcState getCurrentState()
+  public MfDcState getCurrentState ()
   {
     return (MfDcState) dcStack.peek();
   }
 
   // pushes a state on the stack
-  public void saveDCState()
+  public void saveDCState ()
   {
     final MfDcState currentState = getCurrentState();
     dcStack.push(new MfDcState(currentState));
 
   }
 
-  public int getStateCount()
+  public int getStateCount ()
   {
     return dcStack.size();
   }
 
   // Pops a state out
-  public void restoreDCState(final int state)
+  public void restoreDCState (final int state)
   {
     if ((state > 0) == false)
+    {
       throw new IllegalArgumentException();
+    }
 
     if (dcStack.size() > 1 + state)
     {
       for (int i = 0; i < state; i++)
+      {
         dcStack.pop();
+      }
 
       getCurrentState().restoredState();
     }
@@ -374,7 +382,7 @@ public class WmfFile implements Drawable
   /**
    * Return the next free slot from the objects table.
    */
-  protected int findFreeSlot()
+  protected int findFreeSlot ()
   {
     for (int slot = 0; slot < objects.length; slot++)
     {
@@ -388,73 +396,83 @@ public class WmfFile implements Drawable
   }
 
 
-  public void storeObject(final WmfObject o)
+  public void storeObject (final WmfObject o)
   {
     final int idx = findFreeSlot();
     objects[idx] = o;
   }
 
-  public void deleteObject(final int slot)
+  public void deleteObject (final int slot)
   {
     if ((slot < 0) || (slot >= objects.length))
+    {
       throw new IllegalArgumentException("Range violation");
+    }
 
     objects[slot] = null;
   }
 
-  public WmfObject getObject(final int slot)
+  public WmfObject getObject (final int slot)
   {
     if ((slot < 0) || (slot >= objects.length))
+    {
       throw new IllegalStateException("Range violation");
+    }
 
     return objects[slot];
   }
 
-  public MfLogBrush getBrushObject(final int slot)
+  public MfLogBrush getBrushObject (final int slot)
   {
     final WmfObject obj = getObject(slot);
     if (obj.getType() == WmfObject.OBJ_BRUSH)
+    {
       return (MfLogBrush) obj;
+    }
     throw new IllegalStateException("Object " + slot + " was no brush");
   }
 
-  public MfLogPen getPenObject(final int slot)
+  public MfLogPen getPenObject (final int slot)
   {
     final WmfObject obj = getObject(slot);
     if (obj.getType() == WmfObject.OBJ_PEN)
+    {
       return (MfLogPen) obj;
+    }
     throw new IllegalStateException("Object " + slot + " was no pen");
   }
 
-  public MfLogRegion getRegionObject(final int slot)
+  public MfLogRegion getRegionObject (final int slot)
   {
     final WmfObject obj = getObject(slot);
     if (obj.getType() == WmfObject.OBJ_REGION)
+    {
       return (MfLogRegion) obj;
+    }
     throw new IllegalStateException("Object " + slot + " was no region");
   }
 
-  public synchronized BufferedImage replay()
+  public synchronized BufferedImage replay ()
   {
     return replay(imageWidth, imageHeight);
   }
 
 
-  public synchronized BufferedImage replay(final int imageX, final int imageY)
+  public synchronized BufferedImage replay (final int imageX, final int imageY)
   {
     final BufferedImage image = new BufferedImage(imageX, imageY, BufferedImage.TYPE_INT_ARGB);
     final Graphics2D graphics = image.createGraphics();
 
     // clear the image area ...
-    graphics.setPaint(new Color (0,0,0,0));
+    graphics.setPaint(new Color(0, 0, 0, 0));
     graphics.fill(new Rectangle(0, 0, imageX, imageY));
 
-    draw(graphics, new Rectangle2D.Float (0,0, imageX, imageY));
+    draw(graphics, new Rectangle2D.Float(0, 0, imageX, imageY));
     graphics.dispose();
     return image;
   }
 
-  public void draw(final Graphics2D graphics, final Rectangle2D bounds)
+  public void draw (final Graphics2D graphics, final Rectangle2D bounds)
   {
 
     // this adjusts imageWidth and imageHeight
@@ -462,14 +480,16 @@ public class WmfFile implements Drawable
     // adjust translation if needed ...
     graphics.translate(-bounds.getX(), -bounds.getY());
     // adjust to the image origin
-    Log.debug("Dimensions: " + imageX + " " + imageY);
     graphics.translate(-imageX, -imageY);
 
     this.graphics = graphics;
 
     for (int i = 0; i < records.size(); i++)
     {
-      if (i > maxRec) break;
+      if (i > maxRec)
+      {
+        break;
+      }
       try
       {
         final MfCmd command = (MfCmd) records.get(i);
@@ -478,7 +498,7 @@ public class WmfFile implements Drawable
       }
       catch (Exception e)
       {
-        System.out.println("Error on records i = " + i);
+        Log.warn("Error while processing image record #" + i);
         e.printStackTrace();
       }
     }
