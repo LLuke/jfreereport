@@ -345,7 +345,7 @@
     <mkdir dir="javadoc"/>
     <javadoc destdir="javadoc"
       windowtitle="JFreeReport Extension Class Library"
-      overview="../source/overview.html">
+      overview="source/overview.html">
       <classpath>
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>

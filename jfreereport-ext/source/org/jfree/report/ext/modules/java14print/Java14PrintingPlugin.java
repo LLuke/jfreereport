@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintingPlugin.java,v 1.2 2003/08/20 19:24:58 taqua Exp $
+ * $Id: Java14PrintingPlugin.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,18 +38,18 @@
 
 package org.jfree.report.ext.modules.java14print;
 
+import java.util.ResourceBundle;
 import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.ServiceUI;
-import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.print.PrintingPlugin;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * A replacement to use the JDK 1.4 printing API. This class does
@@ -59,6 +59,12 @@ import org.jfree.report.modules.gui.print.PrintingPlugin;
  */
 public class Java14PrintingPlugin extends PrintingPlugin
 {
+  /** Localised resources. */
+  private final ResourceBundle resources;
+
+  /** The progress dialog that is used to monitor the printing progress. */
+  private final ReportProgressDialog progressDialog;
+
   /** A clear text failure description for the error message of the dialog. */
   private String failureDescription;
 
@@ -67,6 +73,13 @@ public class Java14PrintingPlugin extends PrintingPlugin
    */
   public Java14PrintingPlugin()
   {
+    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    progressDialog = new ReportProgressDialog();
+    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
+    progressDialog.setTitle(resources.getString("printing-export.progressdialog.title"));
+    progressDialog.setMessage(resources.getString("printing-export.progressdialog.message"));
+    progressDialog.pack();
+    RefineryUtilities.positionFrameRandomly(progressDialog);
   }
 
   /**
@@ -114,19 +127,19 @@ public class Java14PrintingPlugin extends PrintingPlugin
       setFailureDescription("Print job cancelled.");
       return true;
     }
-
-    try
+    else
     {
-      DocPrintJob job = service.createPrintJob();
-      SimpleDoc document = new SimpleDoc
-        (getBase().getPageable(), DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
-      job.print(document, attributes);
-      return true;
-    }
-    catch (PrintException pe)
-    {
-      setFailureDescription(pe.getMessage());
-      return false;
+      Java14PrintExportTask task = new Java14PrintExportTask
+          (progressDialog, service, getBase().getPageable(), attributes);
+      delegateTask(task);
+      synchronized (task)
+      {
+        if (task.isTaskDone() == false)
+        {
+          progressDialog.setVisible(true);
+        }
+      }
+      return handleExportResult(task);
     }
   }
 
