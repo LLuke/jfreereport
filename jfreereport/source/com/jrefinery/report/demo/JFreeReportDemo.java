@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.4 2002/05/16 13:39:38 jaosch Exp $
+ * $Id: JFreeReportDemo.java,v 1.5 2002/05/16 16:58:19 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -216,7 +216,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void preview1()
   {
-    File in = new File(getClass().getResource("report1.xml").getFile());
+    File in = new File(getClass().getResource("com/jrefinery/report/demo/report1.xml").getFile());
     if (in == null)
     {
       JOptionPane.showMessageDialog(this, "ReportDefinition report1.xml not found");
@@ -257,7 +257,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void preview2()
   {
-    File in = new File(getClass().getResource("report2.xml").getFile());
+    File in = new File(getClass().getResource("com/jrefinery/report/demo/report2.xml").getFile());
     if (in == null)
     {
       JOptionPane.showMessageDialog(
@@ -298,7 +298,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
   {
     // it would be nice to load the report file from the arcive with 
     // getResourceAsStream() ! (JS)
-    File in = new File(getClass().getResource("report3.xml").getFile());
+    File in = new File(getClass().getResource("com/jrefinery/report/demo/report3.xml").getFile());
     if (in == null)
     {
       JOptionPane.showMessageDialog(

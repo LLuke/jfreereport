@@ -30,7 +30,7 @@
  *  -----------------
  *  10-May-2002 : Initial version
  *  16-May-2002 : recalculate line width when orientation changed
- * 
+ *
  */
 package com.jrefinery.report;
 
@@ -50,7 +50,7 @@ public class LineShapeElement extends ShapeElement
 
   public LineShapeElement ()
   {
-    setShape(new Line2D.Float());
+    setLine(new Line2D.Float());
   }
 
   /**

@@ -1,9 +1,14 @@
 package com.jrefinery.report.resources;
 
+import com.jrefinery.report.util.Log;
+
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.ListResourceBundle;
+import java.net.URL;
 
 public class JFreeReportResources extends ListResourceBundle
 {
@@ -29,22 +34,22 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.save-as.description", "Save to PDF format"},
       { "action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
       { "action.save-as.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_A, KeyEvent.CTRL_MASK)},
-      { "action.save-as.small-icon", getIcon("SaveAs16.gif")},
-      { "action.save-as.icon", getIcon("SaveAs24.gif")},
+      { "action.save-as.small-icon", getIcon("com/jrefinery/report/resources/SaveAs16.gif")},
+      { "action.save-as.icon", getIcon("com/jrefinery/report/resources/SaveAs24.gif")},
   
       { "action.page-setup.name", "Page Setup"},
       { "action.page-setup.description", "Page Setup"},
       { "action.page-setup.mnemonic", new Integer (KeyEvent.VK_G)},
-      { "action.page-setup.small-icon", getIcon("PageSetup16.gif")},
-      { "action.page-setup.icon", getIcon("PageSetup24.gif")},
+      { "action.page-setup.small-icon", getIcon("com/jrefinery/report/resources/PageSetup16.gif")},
+      { "action.page-setup.icon", getIcon("com/jrefinery/report/resources/PageSetup24.gif")},
 //      { "action.page-setup.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
   
       { "action.print.name", "Print..."},
       { "action.print.description", "Print report"},
       { "action.print.mnemonic", new Integer (KeyEvent.VK_P)},
       { "action.print.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
-      { "action.print.small-icon", getIcon("Print16.gif")},
-      { "action.print.icon", getIcon("Print24.gif")},
+      { "action.print.small-icon", getIcon("com/jrefinery/report/resources/Print16.gif")},
+      { "action.print.icon", getIcon("com/jrefinery/report/resources/Print24.gif")},
   
       { "action.close.name", "Close"},
       { "action.close.description", "Close print preview window"},
@@ -54,14 +59,14 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.about.name", "About..."},
       { "action.about.description", "Information about the application"},
       { "action.about.mnemonic", new Integer (KeyEvent.VK_A)},
-      { "action.about.small-icon", getIcon("About16.gif")},
-      { "action.about.icon", getIcon("About24.gif")},
+      { "action.about.small-icon", getIcon("com/jrefinery/report/resources/About16.gif")},
+      { "action.about.icon", getIcon("com/jrefinery/report/resources/About24.gif")},
 
-      { "action.back.icon", getIcon("Back24.gif") },
-      { "action.forward.icon", getIcon("Forward24.gif") },
-      { "action.zoomIn.icon", getIcon("ZoomIn24.gif") },
-      { "action.zoomOut.icon", getIcon("ZoomOut24.gif") },
-      { "action.information.icon", getIcon("Information24.gif") },
+      { "action.back.icon", getIcon("com/jrefinery/report/resources/Back24.gif") },
+      { "action.forward.icon", getIcon("com/jrefinery/report/resources/Forward24.gif") },
+      { "action.zoomIn.icon", getIcon("com/jrefinery/report/resources/ZoomIn24.gif") },
+      { "action.zoomOut.icon", getIcon("com/jrefinery/report/resources/ZoomOut24.gif") },
+      { "action.information.icon", getIcon("com/jrefinery/report/resources/Information24.gif") },
 
     // preview frame...
       { "preview-frame.title", "Print Preview"},
@@ -81,7 +86,20 @@ public class JFreeReportResources extends ListResourceBundle
       { "dialog.exit.message", "Are you sure you want to exit?"},
     };
   
-  protected static ImageIcon getIcon(String iconName) {
-    return new ImageIcon(res.getClass().getResource(iconName));
+  /**
+   * Attempts to load an image from classpath. If this failes, an empty
+   * image icon is returned.
+   */
+  public static ImageIcon getIcon(String filename)
+  {
+
+    URL in = ClassLoader.getSystemResource(filename);
+    if (in == null)
+    {
+      Log.debug ("Unable to load file: " + filename);
+      return new ImageIcon();
+    }
+    Image img = Toolkit.getDefaultToolkit().getImage(in);
+    return new ImageIcon(img);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.3 2002/05/16 17:07:21 jaosch Exp $
+ * $Id: PreviewFrame.java,v 1.4 2002/05/16 22:09:55 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -93,6 +93,7 @@ import com.jrefinery.report.G2OutputTarget;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.CloseAction;
 import com.jrefinery.report.action.PageSetupAction;
@@ -803,30 +804,6 @@ public class PreviewFrame
     super.validate();
   }
 
-  /**
-   * Attempts to load an image from classpath. If this failes, an empty
-   * image icon is returned.
-   */
-  public static ImageIcon secureResourceLoad(String filename)
-  {
-
-    URL in = ClassLoader.getSystemResource(filename);
-    if (in == null)
-    {
-      //      System.out.println ("File " + filename + " is not on classpath");
-      //      System.out.println (System.getProperty ("java.class.path"));
-      //
-
-      return new ImageIcon();
-    }
-    Image img = Toolkit.getDefaultToolkit().getImage(in);
-    if (img != null)
-    {
-      img = img.getScaledInstance(16, 16, Image.SCALE_SMOOTH);
-    }
-    return new ImageIcon(img);
-  }
-  
   /**
    * @see JFrame#processWindowEvent(WindowEvent)
    */

@@ -260,12 +260,12 @@ public class ElementFactory
         Float w = new Float(weight);
         return new BasicStroke(w.floatValue());
       }
-      return new BasicStroke(1);
     }
     catch (NumberFormatException nfe)
     {
       Log.debug ("Invalid weight for line element", nfe);
     }
+    return new BasicStroke(1);
   }
 
   protected Paint parseColor(String color)

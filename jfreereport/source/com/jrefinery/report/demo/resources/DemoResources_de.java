@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.1 2002/05/14 21:35:04 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.2 2002/05/16 13:04:16 jaosch Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class DemoResources_de extends JFreeReportResources
   }
 
   /** The resources to be localised. */
-  static final Object[][] contents = {
+  private static final Object[][] contents = {
     { "project.name", "JFreeReport" },
     { "project.version", "0.7.2" }, 
     { "project.info", "http://www.object-refinery.com/jfreereport/index.html" }, 
@@ -84,14 +84,14 @@ public class DemoResources_de extends JFreeReportResources
     { "action.print-preview.description", "Den Bericht in der Seitenansicht betrachten." },
     { "action.print-preview.mnemonic", new Integer(KeyEvent.VK_P) }, 
     { "action.print-preview.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK) },
-    { "action.print-preview.small-icon", getIcon("PrintPreview16.gif")},
-    { "action.print-preview.icon", getIcon("PrintPreview24.gif")},
+    { "action.print-preview.small-icon", getIcon("com/jrefinery/report/resources/PrintPreview16.gif")},
+    { "action.print-preview.icon", getIcon("com/jrefinery/report/resources/PrintPreview24.gif")},
 
     { "action.about.name", "Über..." }, 
     { "action.about.description", "Informationen über JFreeReport" }, 
     { "action.about.mnemonic", new Integer(KeyEvent.VK_A) },
-    { "action.about.small-icon", getIcon("About16.gif")},
-    { "action.about.icon", getIcon("About24.gif")},
+    { "action.about.small-icon", getIcon("com/jrefinery/report/resources/About16.gif")},
+    { "action.about.icon", getIcon("com/jrefinery/report/resources/About24.gif")},
 
 //      {"action.print-preview.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
 

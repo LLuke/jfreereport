@@ -28,7 +28,6 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LabelElement.java,v 1.1.1.1 2002/04/25 17:02:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
