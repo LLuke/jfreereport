@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.41 2003/02/03 18:52:45 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.42 2003/02/03 20:32:01 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -100,6 +100,18 @@ public class JFreeReportResources extends ListResourceBundle
     return CONTENTS;
   }
 
+  public void printAll ()
+  {
+    Object[][] c = getContents();
+    for (int i = 0; i < c.length; i++)
+    {
+      Object[] cc = c[i];
+      System.out.print(cc[0]);
+      System.out.print("=");
+      System.out.println(cc[1]);
+
+    }
+  }
   /**
    * Creates a transparent image.  These can be used for aligning menu items.
    *

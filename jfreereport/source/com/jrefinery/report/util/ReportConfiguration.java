@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.32 2003/02/05 17:56:03 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.33 2003/02/09 18:43:06 taqua Exp $
  *
  * Changes
  * -------
@@ -369,6 +369,13 @@ public class ReportConfiguration
 
   /** Disable strict layout by default */ 
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
+
+  public static final String ENABLE_EXPORT_PDF = "com.jrefinery.report.preview.plugin.pdf";
+  public static final String ENABLE_EXPORT_CSV = "com.jrefinery.report.preview.plugin.csv";
+  public static final String ENABLE_EXPORT_HTML = "com.jrefinery.report.preview.plugin.html";
+  public static final String ENABLE_EXPORT_EXCEL = "com.jrefinery.report.preview.plugin.excel";
+  public static final String ENABLE_EXPORT_PLAIN = "com.jrefinery.report.preview.plugin.plain";
+
 
   /** Storage for the configuration properties. */
   private Properties configuration;
@@ -822,5 +829,55 @@ public class ReportConfiguration
   public void setStrictTableLayout (boolean strict)
   {
     setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
+  }
+
+  public boolean isEnableExportCSV()
+  {
+    return getConfigProperty(ENABLE_EXPORT_CSV, "false").equalsIgnoreCase("true");
+  }
+
+  public void setEnableExportCSV(boolean enableExportCSV)
+  {
+    setConfigProperty(ENABLE_EXPORT_CSV, String.valueOf(enableExportCSV));
+  }
+
+  public boolean isEnableExportHTML()
+  {
+    return getConfigProperty(ENABLE_EXPORT_HTML, "false").equalsIgnoreCase("true");
+  }
+
+  public void setEnableExportHTML(boolean enableExportHTML)
+  {
+    setConfigProperty(ENABLE_EXPORT_HTML, String.valueOf(enableExportHTML));
+  }
+
+  public boolean isEnableExportPlain()
+  {
+    return getConfigProperty(ENABLE_EXPORT_PLAIN, "false").equalsIgnoreCase("true");
+  }
+
+  public void setEnableExportPlain(boolean enableExportPlain)
+  {
+    setConfigProperty(ENABLE_EXPORT_PLAIN, String.valueOf(enableExportPlain));
+  }
+
+  public boolean isEnableExportPDF()
+  {
+    return getConfigProperty(ENABLE_EXPORT_PDF, "false").equalsIgnoreCase("true");
+  }
+
+  public void setEnableExportPDF(boolean enableExportPDF)
+  {
+    setConfigProperty(ENABLE_EXPORT_PDF, String.valueOf(enableExportPDF));
+  }
+
+  public boolean isEnableExportExcel()
+  {
+    return getConfigProperty(ENABLE_EXPORT_EXCEL, "false").equalsIgnoreCase("true");
+  }
+
+  public void setEnableExportExcel(boolean enableExportExcel)
+  {
+    setConfigProperty(ENABLE_EXPORT_EXCEL, String.valueOf(enableExportExcel));
   }
 }

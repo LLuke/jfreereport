@@ -24,8 +24,11 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.23 2003/02/07 23:20:50 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.24 2003/02/10 19:33:47 taqua Exp $
  *
+ * Changes
+ * -------
+ * 16-Feb-2003 : Corrected version submitted by Helmut Leininger
  *
  */
 package com.jrefinery.report.resources;
@@ -43,13 +46,13 @@ public class JFreeReportResources_de extends JFreeReportResources
   /**
    * Unicode translation:
    *
-   * ä - \u00E4
-   * Ä - \u00C4
-   * ö - \u00f6
-   * Ö - \u00d6
-   * ü - \u00dc
-   * Ü - \u00fc
-   * ß - \u00df
+   * Ã¤ - \u00E4
+   * Ã„ - \u00C4
+   * Ã¶ - \u00f6
+   * Ã– - \u00d6
+   * Ã¼ - \u00dc
+   * Ãœ - \u00fc
+   * ÃŸ - \u00df
    *
    */
   /**
@@ -138,15 +141,15 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"file.save.pdfdescription", "PDF Dateien"},
         {"statusline.pages", "Seite {0} von {1}"},
         {"statusline.error", "Die ReportGenerierung ist fehlgeschlagen: {0}"},
-        {"statusline.repaginate", "Erzeuge Seitenumbr\u00dcche ..."},
+        {"statusline.repaginate", "Erzeuge Seitenumbr\u00fcche ..."},
         {"error.processingfailed.title", "Fehler beim bearbeiten des Berichtes"},
         {"error.processingfailed.message", "Die Berichtsgenerierung ist fehlgeschlagen: {0}"},
         {"error.savefailed.message", "Der Bericht konnte nicht gespeichert werden: {0}"},
         {"error.savefailed.title", "Speichern fehlgeschlagen"},
         {"error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}"},
         {"error.printfailed.title", "Druck fehlgeschlagen"},
-        {"error.validationfailed.message", "Die \u00fcberpr\u00dcfung der Benutzereingaben schlug fehl."},
-        {"error.validationfailed.title", "Eingabe\u00dcberpr\u00dcfung fehlgeschlagen"},
+        {"error.validationfailed.message", "Die \u00fcberpr\u00fcfung der Benutzereingaben schlug fehl."},
+        {"error.validationfailed.title", "Eingabe\u00fcberpr\u00fcfung fehlgeschlagen"},
 
         {"pdfsavedialog.warningTitle", "Warnung"},
         {"pdfsavedialog.dialogtitle", "Bericht in eine PDF-Datei speichern ..."},
@@ -154,17 +157,17 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"pdfsavedialog.author", "Autor"},
         {"pdfsavedialog.title", "Titel"},
         {"pdfsavedialog.selectFile", "Ausw\u00e4hlen"},
-        {"pdfsavedialog.security", "Sicherheitseinstellungen und Verschl\u00dcsselung"},
+        {"pdfsavedialog.security", "Sicherheitseinstellungen und Verschl\u00fcsselung"},
 
         {"pdfsavedialog.securityNone", "Keine Sicherheit"},
-        {"pdfsavedialog.security40bit", "Verschl\u00dcsselung mit 40Bit Schl\u00dcssel"},
-        {"pdfsavedialog.security128bit", "Verschl\u00dcsselung mit 128Bit Schl\u00dcssel"},
+        {"pdfsavedialog.security40bit", "Verschl\u00fcsselung mit 40Bit Schl\u00fcssel"},
+        {"pdfsavedialog.security128bit", "Verschl\u00fcsselung mit 128Bit Schl\u00fcssel"},
         {"pdfsavedialog.userpassword", "Benutzerkennwort"},
         {"pdfsavedialog.userpasswordconfirm", "Wiederholen"},
-        {"pdfsavedialog.userpasswordNoMatch", "Die Benutzerkennworte stimmen nicht \u00dcberein."},
+        {"pdfsavedialog.userpasswordNoMatch", "Die Benutzerkennworte stimmen nicht \u00fcberein."},
         {"pdfsavedialog.ownerpassword", "Hauptkennwort"},
         {"pdfsavedialog.ownerpasswordconfirm", "Wiederholen"},
-        {"pdfsavedialog.ownerpasswordNoMatch", "Die Hauptkennworte stimmen nicht \u00dcberein."},
+        {"pdfsavedialog.ownerpasswordNoMatch", "Die Hauptkennworte stimmen nicht \u00fcberein."},
 
         {"pdfsavedialog.ownerpasswordEmpty", "Das Benutzerpasswort ist leer. Benutzer sind " +
       "m\u00f6glicherweise in der Lage die Sicherheitsbeschr\u00e4nkungen zu umgehen. Trotzdem fortfahren?"},
@@ -175,20 +178,20 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"pdfsavedialog.targetIsNoFile", "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
         {"pdfsavedialog.targetIsNotWritable",
          "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
-      + "\u00dcberschreiben."},
+      + "\u00fcberschreiben."},
         {"pdfsavedialog.targetOverwriteConfirmation",
-         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00dcberschrieben werden?"},
-        {"pdfsavedialog.targetOverwriteTitle", "Datei \u00dcberschreiben?"},
+         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00fcberschrieben werden?"},
+        {"pdfsavedialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
 
 
         {"pdfsavedialog.allowCopy", "Kopieren zulassen"},
         {"pdfsavedialog.allowPrinting", "Drucken zulassen"},
         {"pdfsavedialog.allowDegradedPrinting", "Drucken in verminderter Qualit\u00e4t zulassen"},
-        {"pdfsavedialog.allowScreenreader", "Inhaltszugriff f\u00dcr Sehbehinderte aktiveren"},
+        {"pdfsavedialog.allowScreenreader", "Inhaltszugriff f\u00fcr Sehbehinderte aktivieren"},
         {"pdfsavedialog.allowAssembly", "Zusammensetzen erlauben"},
         {"pdfsavedialog.allowModifyContents", "Inhalt darf ge\u00e4ndert werden"},
-        {"pdfsavedialog.allowModifyAnnotations", "Anmerkungen d\u00dcrfen ge\u00e4ndert werden"},
-        {"pdfsavedialog.allowFillIn", "Formularfelder d\u00dcrfen ge\u00e4ndert werden"},
+        {"pdfsavedialog.allowModifyAnnotations", "Anmerkungen d\u00fcrfen ge\u00e4ndert werden"},
+        {"pdfsavedialog.allowFillIn", "Formularfelder d\u00fcrfen ge\u00e4ndert werden"},
 
         {"pdfsavedialog.option.noprinting", "Kein Drucken"},
         {"pdfsavedialog.option.degradedprinting", "Drucken mit verminderter Qualit\u00e4t"},
@@ -208,14 +211,14 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"excelexportdialog.warningTitle", "Warnung"},
         {"excelexportdialog.errorTitle", "Fehler"},
         {"excelexportdialog.targetIsEmpty",
-         "Bitte geben Sie einen Dateinamen f\u00dcr die Excel-Datei an."},
+         "Bitte geben Sie einen Dateinamen f\u00fcr die Excel-Datei an."},
         {"excelexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
         {"excelexportdialog.targetIsNotWritable",
          "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
-      + "\u00dcberschreiben."},
+      + "\u00fcberschreiben."},
         {"excelexportdialog.targetOverwriteConfirmation",
-         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00dcberschrieben werden?"},
-        {"excelexportdialog.targetOverwriteTitle", "Datei \u00dcberschreiben?"},
+         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00fcberschrieben werden?"},
+        {"excelexportdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
 
         {"excelexportdialog.cancel", "Abbrechen"},
         {"excelexportdialog.confirm", "OK"},
@@ -233,10 +236,10 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"htmlexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
         {"htmlexportdialog.targetIsNotWritable",
          "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
-      + "\u00dcberschreiben."},
+      + "\u00fcberschreiben."},
         {"htmlexportdialog.targetOverwriteConfirmation",
-         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00dcberschrieben werden?"},
-        {"htmlexportdialog.targetOverwriteTitle", "Datei \u00dcberschreiben?"},
+         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00fcberschrieben werden?"},
+        {"htmlexportdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
 
         {"htmlexportdialog.cancel", "Abbrechen"},
         {"htmlexportdialog.confirm", "OK"},
@@ -269,15 +272,15 @@ public class JFreeReportResources_de extends JFreeReportResources
 
         {"csvexportdialog.warningTitle", "Warnung"},
         {"csvexportdialog.errorTitle", "Fehler"},
-        {"csvexportdialog.targetIsEmpty", "Bitte geben Sie einen Dateinamen f\u00dcr die CSV-Datei an."},
+        {"csvexportdialog.targetIsEmpty", "Bitte geben Sie einen Dateinamen f\u00fcr die CSV-Datei an."},
         {"csvexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gew\u00f6hnliche Datei."},
         {"csvexportdialog.targetIsNotWritable",
          "Sie besitzen keine ausreichenden Rechte um die ausgew\u00e4hlte Datei zu "
-      + "\u00dcberschreiben."},
+      + "\u00fcberschreiben."},
 
         {"csvexportdialog.targetOverwriteConfirmation",
-         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00dcberschrieben werden?"},
-        {"csvexportdialog.targetOverwriteTitle", "Datei \u00dcberschreiben?"},
+         "Die Datei ''{0}'' existiert bereits. Soll diese Datei \u00fcberschrieben werden?"},
+        {"csvexportdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
 
         {"csvexportdialog.cancel", "Abbrechen"},
         {"csvexportdialog.confirm", "OK"},
@@ -308,8 +311,8 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"convertdialog.targetIsNoFile", "Die Zieldatei ist keine normale Datei."},
         {"convertdialog.targetIsNotWritable", "Die Zieldatei ist nicht beschreibbar."},
         {"convertdialog.targetOverwriteConfirmation",
-         "Die Zieldatei existiert bereits.\nSoll die Datei \u00dcberschrieben werden?"},
-        {"convertdialog.targetOverwriteTitle", "Datei \u00dcberschreiben?"},
+         "Die Zieldatei existiert bereits.\nSoll die Datei \u00fcberschrieben werden?"},
+        {"convertdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
         {"convertdialog.title", "Report-Konverter"},
 
         {"plain-text-exportdialog.cancel", "Abbrechen"},
@@ -332,9 +335,14 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"plain-text-exportdialog.targetIsNotWritable",
          "Die Zieldatei kann nicht beschrieben werden."},
         {"plain-text-exportdialog.targetOverwriteConfirmation",
-         "Die Zieldatei existiert bereits. Soll diese Datei \u00dcberschrieben werden?"},
-        {"plain-text-exportdialog.targetOverwriteTitle", "Datei \u00dcberschreiben?"},
+         "Die Zieldatei existiert bereits. Soll diese Datei \u00fcberschrieben werden?"},
+        {"plain-text-exportdialog.targetOverwriteTitle", "Datei \u00fcberschreiben?"},
         {"plain-text-exportdialog.warningTitle", "Warnung"},
 
       };
+
+  public static void main (String [] args)
+  {
+    new JFreeReportResources_de().printAll();
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.21 2003/02/09 18:43:05 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.22 2003/02/12 17:36:09 taqua Exp $
  *
  * Changes
  * -------
@@ -294,6 +294,7 @@ public class PageableReportProcessor
           if (level == -1)
           {
             pageStates.add(state);
+            Log.debug ("State: " + state);
           }
           ReportState oldstate = state;
           state = processPage(state, dummyOutput);
@@ -338,6 +339,7 @@ public class PageableReportProcessor
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
       // finally return the saved page states.
+      Log.debug ("PageSize: " + pageStates.size());
       return pageStates;
     }
     catch (OutputTargetException ote)

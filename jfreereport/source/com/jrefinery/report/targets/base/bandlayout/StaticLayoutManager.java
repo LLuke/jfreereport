@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.7 2003/02/07 22:35:06 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.8 2003/02/08 20:43:19 taqua Exp $
  *
  * Changes
  * -------
@@ -264,12 +264,14 @@ public class StaticLayoutManager implements BandLayoutManager
       {
         return new FloatDimension();
       }
-      return new FloatDimension(contentBounds.getWidth(), contentBounds.getHeight());
+      return new FloatDimension(Math.max (minSize.getWidth(), contentBounds.getWidth()),
+                                Math.max (minSize.getHeight(), contentBounds.getHeight()));
     }
     catch (Exception ex)
     {
       Log.warn ("Error while calculating the content bounds: ", ex);
-      return new FloatDimension(bounds.getWidth(), bounds.getHeight());
+      return new FloatDimension(Math.max (minSize.getWidth(), bounds.getWidth()),
+                                Math.max (minSize.getHeight(), bounds.getHeight()));
     }
   }
 

@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id: PreviewProxyBase.java,v 1.5 2003/02/02 23:43:51 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.6 2003/02/08 19:32:06 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -746,7 +746,7 @@ public class PreviewProxyBase extends JComponent
     setLargeIconsEnabled(true);
 
     ExportPluginFactory factory = new ExportPluginFactory();
-    exportPlugIns = factory.createExportPlugIns(proxy);
+    exportPlugIns = factory.createExportPlugIns(proxy, report.getReportConfiguration());
 
     // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
     // DisposedState is undone when show() or pack() is called, so this does no harm.
