@@ -31,10 +31,9 @@ public class MfCmdAnimatePalette extends MfCmd
 
   public MfCmdAnimatePalette ()
   {
-
   }
 
-  public int getEntiesCount ()
+  public int getEntriesCount ()
   {
     return cEntries;
   }
@@ -55,6 +54,24 @@ public class MfCmdAnimatePalette extends MfCmd
     this.colors = colors;
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    int cEntries = getEntriesCount();
+    MfRecord record = new MfRecord(2 + cEntries * 2);
+    record.setParam(0, getHPalette());
+    record.setParam(1, cEntries);
+
+    Color[] colors = new Color[cEntries];
+
+    for (int i = 0; i < cEntries; i++)
+    {
+      Color c = colors[i];
+      record.setLongParam(i + 2, GDIColor.translateColor(c));
+    }
+    return record;
+  }
+
   public void setRecord (MfRecord record)
   {
     int hPalette = record.getParam (0);
@@ -63,7 +80,7 @@ public class MfCmdAnimatePalette extends MfCmd
 
     for (int i = 0; i < cEntries; i++)
     {
-      int cr = record.getInt (i + 2);
+      int cr = record.getLongParam(i + 2);
       GDIColor color = new GDIColor (cr);
       colors[i] = color;
     }
@@ -88,7 +105,7 @@ public class MfCmdAnimatePalette extends MfCmd
     b.append ("[ANIMATE_PALETTE] hPalette=");
     b.append (getHPalette ());
     b.append (" entriesCount=");
-    b.append (getEntiesCount ());
+    b.append (getEntriesCount ());
     return b.toString ();
   }
 
@@ -107,10 +124,12 @@ public class MfCmdAnimatePalette extends MfCmd
     this.hPalette = hPalette;
   }
 
+  /** No scaling needed */
   protected void scaleXChanged ()
   {
   }
 
+  /** No scaling needed */
   protected void scaleYChanged ()
   {
   }

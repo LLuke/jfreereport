@@ -13,6 +13,20 @@ import java.awt.image.BufferedImage;
  * BitBlockTransfer - Copies PixelData of a rectangle to another position
  *
  * !Check, as DIB is not implemented.
+ * <pre>
+BOOL BitBlt(
+  HDC hdcDest, // handle to destination DC
+  int nXDest,  // x-coord of destination upper-left corner
+  int nYDest,  // y-coord of destination upper-left corner
+  int nWidth,  // width of destination rectangle
+  int nHeight, // height of destination rectangle
+  HDC hdcSrc,  // handle to source DC
+  int nXSrc,   // x-coordinate of source upper-left corner
+  int nYSrc,   // y-coordinate of source upper-left corner
+  DWORD dwRop  // raster operation code
+);
+ </pre>
+ *
  */
 public class MfCmdBitBlt extends MfCmd implements ROPConstants
 {
@@ -142,6 +156,23 @@ public class MfCmdBitBlt extends MfCmd implements ROPConstants
   public int getOperation ()
   {
     return operation;
+  }
+
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord();
+    record.setLongParam(0, getOperation()));
+    Rectangle source = getSource();
+    record.setParam(2, (int) source.getY()));
+    record.setParam(3, (int) source.getX()));
+    // Ignore the handle to the device context
+    Rectangle dest = getDestination();
+    record.setParam(4, (int) dest.getHeight()));
+    record.setParam(5, (int) dest.getWidth()));
+    record.setParam(6, (int) dest.getY()));
+    record.setParam(7, (int) dest.getX()));
+    return record;
   }
 
   public void setRecord (MfRecord record)

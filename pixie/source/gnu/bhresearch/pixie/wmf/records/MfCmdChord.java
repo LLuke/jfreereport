@@ -181,6 +181,25 @@ public class MfCmdChord extends MfCmd
     setEndingIntersection (xend, yend);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(8);
+    Rectangle bounds = getBounds();
+    Point start = getStartingIntersection();
+    Point end = getEndingIntersection();
+
+    record.setParam(7, (int) bounds.getX());
+    record.setParam(6, (int) bounds.getY());
+    record.setParam(5, (int)(bounds.getX() + bounds.getWidth()));
+    record.setParam(4, (int)(bounds.getY() + bounds.getHeight()));
+    record.setParam(3, (int)(start.getY()));
+    record.setParam(2, (int)(start.getX()));
+    record.setParam(1, (int)(end.getY()));
+    record.setParam(0, (int)(end.getX()));
+    return record;
+  }
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

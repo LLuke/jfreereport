@@ -75,4 +75,24 @@ public class GDIColor extends Color
   {
     return super.toString ();
   }
+
+  public static int translateColor (Color c)
+  {
+    int red = c.getRed();
+    int green = c.getGreen();
+    int blue = c.getBlue();
+    int flags = 0;
+
+    if (c instanceof GDIColor)
+    {
+      GDIColor gc = (GDIColor) c;
+      flags = gc.getFlags();
+    }
+
+    int retval = flags;
+    retval = (retval << 8) + blue;
+    retval = (retval << 8) + green;
+    retval = (retval << 8) + red;
+    return retval;
+  }
 }

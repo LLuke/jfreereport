@@ -19,15 +19,24 @@ public class MfRecord extends Buffer
 
   private MfType type = null;
 
+  public MfRecord ()
+  {
+  }
+
+  public MfRecord (int parcount)
+  {
+    super (parcount * 2 + RECORD_HEADER);
+  }
+
   /** Read a record from an input stream. */
   public void read (InputStream in, String inName)
           throws IOException
   {
-    super.read (in, 0, 6, inName);
-    int remaining = getInt (0) * 2 - 6;
+    super.read (in, 0, RECORD_HEADER, inName);
+    int remaining = getInt (0) * 2 - RECORD_HEADER;
     if (remaining > 0)
     {
-      super.read (in, 6, remaining, inName);
+      super.read (in, RECORD_HEADER, remaining, inName);
     }
     type = MfType.get (getType ());
   }
@@ -38,25 +47,45 @@ public class MfRecord extends Buffer
     return getShort (4);
   }
 
+  public void setType (int type)
+  {
+    setShort(4, type);
+  }
+
   /** Return a 16-bit param from the given offset. Offset is in 16-bit
    words. */
   public int getParam (int p)
   {
-    return getShort (p * 2 + 6);
+    return getShort (p * 2 + RECORD_HEADER);
+  }
+
+  public void setParam (int p, int value)
+  {
+    setShort(p * 2 + RECORD_HEADER, value);
   }
 
   /** Return a 32-bit param from the given offset. Offset is in 16-bit
    words. */
   public int getLongParam (int p)
   {  // Offset is in 16-bit words.
-    return getInt (p * 2 + 6);
+    return getInt (p * 2 + RECORD_HEADER);
+  }
+
+  public void setLongParam (int p, int value)
+  {
+    setInt(p * 2 + RECORD_HEADER, value);
   }
 
   /** Return a string param from the given offset. Offset is in 16-bit
    words. */
   public String getStringParam (int p, int len)
   {
-    return getString (p * 2 + 6, len);
+    return getString (p * 2 + RECORD_HEADER, len);
+  }
+
+  public void setStringParam (int p, String s)
+  {
+    setString(p * 2 + RECORD_HEADER, s);
   }
 
   /** Return the name of this type of record. */

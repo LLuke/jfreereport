@@ -92,6 +92,16 @@ public class MfCmdCreateBrush extends MfCmd
     setHatch (hatch);
   }
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    MfRecord record = new MfRecord(4);
+    record.setParam(0, getStyle());
+    record.setLongParam(1, GDIColor.translateColor(getColor()));
+    record.setParam(3, getHatch());
+    return record;
+  }
+
   protected void scaleXChanged ()
   {
   }

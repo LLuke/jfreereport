@@ -26,10 +26,15 @@ public class Buffer
   /**
    * The current length of the memory.
    */
-  protected int len;
+  private int length;
 
   public Buffer ()
   {
+  }
+
+  public Buffer (int length)
+  {
+    setCapacity(length);
   }
 
   /**
@@ -37,13 +42,19 @@ public class Buffer
    */
   public final int getLength ()
   {
-    return len;
+    return length;
+  }
+
+  protected void setLength (int len)
+  {
+    Assert.assert(len <= bytes.length);
+    this.length = len;
   }
 
   /** Ensure we have enough space. */
   public void setCapacity (int capacity)
   {
-    Assert.assert (capacity >= len);
+    Assert.assert (capacity >= getLength());
 
     if (bytes == null || bytes.length == 0)
     {
@@ -72,9 +83,9 @@ public class Buffer
   {
     Assert.assert (orig >= 0);
     Assert.assert (len >= 0);
-    Assert.assert (orig + len <= buf.len);
+    Assert.assert (orig + len <= buf.getLength());
 
-    this.len = len;
+    setLength(len);
     bytes = new byte[len];
     System.arraycopy (buf.bytes, orig, bytes, 0, len);
   }
@@ -96,8 +107,15 @@ public class Buffer
         throw new EOFException (filename);
       offset += blockSize;
       len -= blockSize;
-      this.len = offset;
+      setLength(offset);
     }
+  }
+
+  public void setInt (int offset, int value)
+  {
+    Assert.assert (offset <= getLength() - 4);
+    setShort (offset, value & 0x0ffff);
+    setShort (offset+2, value >> 16);
   }
 
   /**
@@ -105,8 +123,15 @@ public class Buffer
    */
   public int getInt (int offset)
   {
-    Assert.assert (offset <= len - 4);
+    Assert.assert (offset <= getLength() - 4);
     return (getShort (offset) & 0x0ffff) | (getShort (offset + 2) << 16);
+  }
+
+  public void setShort (int offset, int shortval)
+  {
+    Assert.assert (offset <= getLength() - 2);
+    bytes[offset] = (byte) (shortval & 0x0ff);
+    bytes[offset + 1] = (byte) (shortval >> 8);
   }
 
   /**
@@ -114,15 +139,38 @@ public class Buffer
    */
   public int getShort (int offset)
   {
-    Assert.assert (offset <= len - 2);
+    Assert.assert (offset <= getLength() - 2);
     return (bytes[offset] & 0x0ff) | (bytes[offset + 1] << 8);
+  }
+
+  public void setByte (int offset, int value)
+  {
+    Assert.assert (offset <= getLength() - 1);
+    bytes[offset] = (byte) (value & 0x0ff);
   }
 
   /** Return the 8-bit int at the given byte offset. */
   public int getByte (int offset)
   {
-    Assert.assert (offset <= len - 1);
+    Assert.assert (offset <= getLength() - 1);
     return bytes[offset] & 0x0ff;
+  }
+
+  public void setString (int offset, String str)
+  {
+    Assert.assert ((offset + str.length()) <= getLength() - 1);
+    byte[] b = str.getBytes();
+
+    int len = getLength() - offset;
+
+    for (int i = 0; i < len; i++)
+    {
+      bytes[offset + i] = b[offset];
+    }
+    if ((offset + len) < getLength())
+    {
+      bytes[offset + len] = 0;
+    }
   }
 
   /**

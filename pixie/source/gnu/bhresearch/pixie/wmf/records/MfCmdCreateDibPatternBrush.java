@@ -15,17 +15,37 @@ public class MfCmdCreateDibPatternBrush extends MfCmd
 {
   private BufferedImage image;
 
+  /** Writer function */
+  public MfRecord getRecord ()
+  {
+    /**
+     * Requires a DIB-Writer, is not yet supported
+     */
+    return null;
+  }
+
   public void setRecord (MfRecord record)
   {
     try
     {
       DIBReader reader = new DIBReader ();
-      image = reader.setRecord (record);
+      setImage(reader.setRecord (record));
     }
     catch (Exception e)
     {
       e.printStackTrace ();
     }
+  }
+
+  public BufferedImage getImage ()
+  {
+    return image;
+  }
+
+  public void setImage (BufferedImage image)
+  {
+    if (image == null) throw new NullPointerException();
+    this.image = image;
   }
 
   public String toString ()
