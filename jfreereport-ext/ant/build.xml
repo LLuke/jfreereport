@@ -244,18 +244,13 @@
     <delete dir="build"/>
   </target>
 
+
   <!-- ************************************************************** -->
   <!--                                                                -->
   <!--  Java 1.4 configstore module                                   -->
   <!--                                                                -->
   <!-- ************************************************************** -->
-
-  <target name="compile-module-ext-java14config" depends="init" if="java-1.4.present">
-    <echo>Building Java 1.4 config modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
+  <target name="build-module-ext-java14config" if="java-1.4.present">
     <!-- compile the source -->
     <javac srcdir="source"
       destdir="build" target="${build.target}"
@@ -273,6 +268,15 @@
         <include name="**/*.properties"/>
       </fileset>
     </copy>
+  </target>
+
+  <target name="compile-module-ext-java14config" depends="init" if="java-1.4.present">
+    <echo>Building Java 1.4 config modules</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-java14config"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-ext-java14config-file}"
@@ -288,13 +292,7 @@
   <!--  Java 1.4 log module                                           -->
   <!--                                                                -->
   <!-- ************************************************************** -->
-
-  <target name="compile-module-ext-java14log" depends="init" if="java-1.4.present">
-    <echo>Building Java 1.4 log modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
+  <target name="build-module-ext-java14log" if="java-1.4.present">
     <!-- compile the source -->
     <javac srcdir="source"
       destdir="build" target="${build.target}"
@@ -313,6 +311,16 @@
       </fileset>
     </copy>
 
+  </target>
+
+  <target name="compile-module-ext-java14log" depends="init" if="java-1.4.present">
+    <echo>Building Java 1.4 log modules</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-java14log"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-java14log-file}"
       basedir="build">
@@ -327,13 +335,7 @@
   <!--  Java 1.4 printing API module                                  -->
   <!--                                                                -->
   <!-- ************************************************************** -->
-
-  <target name="compile-module-ext-java14print" depends="init" if="java-1.4.present">
-    <echo>Building Java 1.4 print modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
+  <target name="build-module-ext-java14print" if="java-1.4.present">
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
@@ -351,6 +353,16 @@
       </fileset>
     </copy>
 
+  </target>
+
+  <target name="compile-module-ext-java14print" depends="init" if="java-1.4.present">
+    <echo>Building Java 1.4 print modules</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-java14print"/>
+    
     <!-- make the jar -->
     <jar jarfile="${module-ext-java14print-file}"
       basedir="build">
@@ -365,13 +377,7 @@
   <!--  Apache Log4J logging integration                              -->
   <!--                                                                -->
   <!-- ************************************************************** -->
-
-  <target name="compile-module-ext-log4jlog" depends="init" if="log4j.present">
-    <echo>Building Log4J logging modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
+  <target name="build-module-ext-log4jlog" if="log4j.present">
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
@@ -390,6 +396,16 @@
       </fileset>
     </copy>
 
+  </target>
+
+  <target name="compile-module-ext-log4jlog" depends="init" if="log4j.present">
+    <echo>Building Log4J logging modules</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-log4jlog"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-log4jlog-file}"
       basedir="build">
@@ -398,6 +414,116 @@
     <!-- delete the temp directory -->
     <delete dir="build"/>
   </target>
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  java 1.4 ImageIO module                                       -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+  <target name="build-module-ext-java14imageio" if="java-1.4.present">
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/ext/modules/java14imageio/*.java"/>
+      <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <!-- include the report definition files -->
+    <copy todir="build/org/jfree/report/ext/modules/java14imageio">
+      <fileset dir="source/org/jfree/report/ext/modules/java14imageio">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="compile-module-ext-java14imageio" depends="init" if="java-1.4.present">
+    <echo>Building Log4J logging modules</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-java14imageio"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-ext-java14imageio-file}"
+      basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  BarCode support module                                        -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+  <target name="build-module-ext-barcode">
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/ext/modules/barcode/**"/>
+      <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <!-- include the report definition files -->
+    <copy todir="build/org/jfree/report/ext/modules/barcode">
+      <fileset dir="source/org/jfree/report/ext/modules/barcode">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="compile-module-ext-barcode" depends="init">
+    <echo>Building Log4J logging modules</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-barcode"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-ext-barcode-file}"
+      basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+
+
+  <target name="compile-all-modules">
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-barcode"/>
+    <antcall target="build-module-ext-java14config"/>
+    <antcall target="build-module-ext-java14imageio"/>
+    <antcall target="build-module-ext-java14log"/>
+    <antcall target="build-module-ext-java14print"/>
+    <antcall target="build-module-ext-log4jlog"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-ext-all-file}"
+      basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+
 
   <!-- Generate the JFreeReport JavaDoc HTML pages -->
   <target name="javadoc" depends="init">
@@ -441,6 +567,7 @@
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jaxp-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jakarta-poi-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
@@ -589,6 +716,22 @@
 
   </target>
 
-  <target name="all" depends="init, compile, javadoc, build-war, make-zip, make-targz"/>
+  <target name="maven-bundle" depends="compile-all-modules" >
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+    <!-- copy across Licences -->
+    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
+    <copy file="maven-jfreereport-ext-project.xml" tofile="distribution/project.xml"/>
+    <copy file="${module-ext-all-file}" tofile="distribution/${module-ext-all-file}"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-ext-bundle-file}" basedir="distribution"/>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+  </target>
+
+
+  <target name="all" depends="init, compile, javadoc, build-war, make-zip, make-targz,maven-bundle"/>
 </project>
 

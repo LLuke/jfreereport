@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumTest.java,v 1.4 2003/11/07 20:38:48 taqua Exp $
+ * $Id: TotalGroupSumTest.java,v 1.5 2003/12/21 23:49:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -83,7 +83,7 @@ public class TotalGroupSumTest extends TestCase
      *
      * @param event The event.
      */
-    public void reportInitialized(ReportEvent event)
+    public void reportInitialized(final ReportEvent event)
     {
       Log.debug ("Index reset");
       index = 0;
@@ -94,7 +94,7 @@ public class TotalGroupSumTest extends TestCase
      *
      * @param event  the event.
      */
-    public void groupFinished(ReportEvent event)
+    public void groupFinished(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
@@ -109,7 +109,7 @@ public class TotalGroupSumTest extends TestCase
      *
      * @param event  the event.
      */
-    public void groupStarted(ReportEvent event)
+    public void groupStarted(final ReportEvent event)
     {
       if (event.getLevel() >= 0)
       {
@@ -118,12 +118,12 @@ public class TotalGroupSumTest extends TestCase
       assertSum(event);
     }
 
-    private void assertSum(ReportEvent event)
+    private void assertSum(final ReportEvent event)
     {
       // the number of continents in the report1
       if (FunctionUtilities.getCurrentGroup(event).getName().equals("Continent Group"))
       {
-        Number n = (Number) event.getDataRow().get("continent-total-gc");
+        final Number n = (Number) event.getDataRow().get("continent-total-gc");
         Log.debug ("Event:" + event.getState().getCurrentDisplayItem() + " index " + index);
         assertEquals("continent-total-gc", SUMS[index], n.intValue());
       }
@@ -161,23 +161,23 @@ public class TotalGroupSumTest extends TestCase
       report = ReportGenerator.getInstance().parseReport(url);
       report.setData(REPORT2.getReportTableModel());
       report.addExpression(new TotalGroupCountVerifyFunction());
-      GroupList list = report.getGroups();
+      final GroupList list = report.getGroups();
       // make sure that there is no default group ...
-      Group g = list.getGroupByName("default");
+      final Group g = list.getGroupByName("default");
       if (g != null)
       {
         list.remove(g);
       }
       report.setGroups(list);
 
-      TotalGroupSumFunction f = new TotalGroupSumFunction();
+      final TotalGroupSumFunction f = new TotalGroupSumFunction();
       f.setName("continent-total-gc");
       f.setGroup("Continent Group");
       f.setField("Population");
       f.setDependencyLevel(1);
       report.addExpression(f);
 
-      TotalGroupSumFunction f2 = new TotalGroupSumFunction();
+      final TotalGroupSumFunction f2 = new TotalGroupSumFunction();
       f2.setName("total-gc");
       f2.setField("Population");
       f2.setDependencyLevel(1);
