@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.1 2002/05/14 21:35:05 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.2 2002/05/16 13:39:57 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,6 +41,7 @@
  *               directly to create menus and buttons.
  * 16-May-2002 : Line delimiters adjusted
  *               close behaviour unified
+ *               reset the mnemonics of the toolBar buttons
  * 
  */
 
@@ -662,8 +663,14 @@ public class PreviewFrame
     ResourceBundle resources = getResources();
 
     JToolBar toolbar = new JToolBar();
-    toolbar.add(saveAsAction);
-    toolbar.add(printAction);
+    JButton sa = toolbar.add(saveAsAction);
+    sa.setIcon((ImageIcon) saveAsAction.getValue("ICON24"));
+    // reset Mnemonic
+    sa.setMnemonic(0);
+    sa = toolbar.add(printAction);
+    sa.setIcon((ImageIcon) printAction.getValue("ICON24"));
+    // reset Mnemonic
+    sa.setMnemonic(0);
 
     ImageIcon icon3 = (ImageIcon) resources.getObject("action.back.icon");
     back = new JButton(icon3);
