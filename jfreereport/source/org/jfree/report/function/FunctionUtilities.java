@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.5 2003/10/08 19:48:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.function;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.Group;
+import org.jfree.report.util.Log;
 import org.jfree.report.event.ReportEvent;
 
 /**
@@ -104,12 +105,15 @@ public final class FunctionUtilities
     }
 
     final Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+    Log.debug ("Group name " + groupName + " vs. " + group.getName());
     if (groupName.equals(group.getName()))
     {
+      Log.debug ("-> true");
       return true;
     }
     else
     {
+      Log.debug ("-> false");
       return false;
     }
   }
@@ -139,9 +143,14 @@ public final class FunctionUtilities
     {
       return false;
     }
+    if (debug)
+    Log.debug ("Event: " + event.getState().getLevel() + " - " +
+        f.getDependencyLevel() + " vs. " +
+        (event.getState().getLevel() == f.getDependencyLevel()));
     return (event.getState().getLevel() == f.getDependencyLevel());
   }
 
+  public static boolean debug;
   /**
    * Returns true or false.
    *

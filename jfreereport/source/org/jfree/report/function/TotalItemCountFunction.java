@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.3 2003/10/18 19:32:12 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.4 2003/10/22 14:49:41 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.function;
 
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.jfree.report.event.ReportEvent;
 
@@ -147,10 +147,15 @@ public class TotalItemCountFunction extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
+    if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
+    {
+      return;
+    }
+
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
-      groupResult = new ItemCountStorage();
-      results.add(groupResult);
+        groupResult = new ItemCountStorage();
+        results.add(groupResult);
     }
     else
     {
