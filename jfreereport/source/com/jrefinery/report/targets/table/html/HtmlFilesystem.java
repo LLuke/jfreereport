@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlFilesystem.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlFilesystem.java,v 1.4 2003/02/24 16:48:56 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ public interface HtmlFilesystem
    *
    * @param reference the image reference containing the data.
    * @return the generated HtmlReference, never null.
-   * @throws IOException
+   * @throws IOException if IO errors occured while creating the reference.
    */
   public HtmlReferenceData createImageReference(ImageReference reference) throws IOException;
 
@@ -87,7 +87,7 @@ public interface HtmlFilesystem
    *
    * @param styleSheet the stylesheet data, which should be referenced.
    * @return the generated HtmlReference, never null.
-   * @throws IOException
+   * @throws IOException if IO errors occured while creating the reference.
    */
   public HtmlReferenceData createCSSReference (String styleSheet) throws IOException;
 

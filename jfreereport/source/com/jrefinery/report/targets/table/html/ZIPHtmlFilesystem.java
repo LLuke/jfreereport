@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.8 2003/02/22 18:52:31 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.9 2003/02/24 16:48:58 taqua Exp $
  *
  * Changes
  * -------
@@ -58,23 +58,54 @@ import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * Similiar to the DirectoryHtmlFilesystem, the generated Html-File and the supplementary
+ * data files (images and external Stylesheet definition) into a directory in a ZIP-File.
+ * The data files can be written into a separated data directory within the ZIP-File.
+ * <p>
+ * External referenced content can either be copied into the data directory or could
+ * be included as linked content. This behaviour is controled by the <code>copyExternalImages</code>
+ * flag.
+ */
 public class ZIPHtmlFilesystem implements HtmlFilesystem
 {
+  /** a simple counter carrier. */
   private class CounterRef
   {
+    /** a counter. */
     public int count;
   }
 
+  /** The name of the data directory within the ZIP-file. */
   private String dataDirectory;
+
+  /** the target zip output stream. */
   private ZipOutputStream zipOut;
+  /** the buffer for caching the root stream, until all external data is generated. */
   private ByteArrayOutputStream rootBase;
+  /** the root stream for writing the main html file. */
   private OutputStream rootStream;
+  /** A collection of all used file names for generating external content. */
   private Hashtable usedNames;
+  /** A collection of all referenced external content. */
   private Hashtable usedURLs;
+  /** A collection of all previously encoded images. */
   private Hashtable encodedImages;
+  /** the image comparator used to compare generated images. */
   private ImageComparator comparator;
+  /** A flag indicating whether to copy external references into the data directory. */
   private boolean copyExternalImages;
 
+  /**
+   * Creates a new ZIPHtmlFilesystem. The given output stream is used to write
+   * a generated Zip-File. The given data directory must denote a relative directory
+   * within the ZIP file.
+   *
+   * @param out the target output stream.
+   * @param dataDirectory the data directory, relative within the ZIP file.
+   * @throws IOException if an IO error occurs.
+   * @throws IllegalArgumentException if the data directory is invalid.
+   */
   public ZIPHtmlFilesystem(OutputStream out, String dataDirectory)
     throws IOException
   {
@@ -90,7 +121,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     // dataDirectory creation ...
     File dataDir = new File (dataDirectory);
     File baseDir = new File ("");
-    if (dataDir.isAbsolute() || IOUtils.getInstance().isSubDirectory(baseDir, dataDir))
+    if (dataDir.isAbsolute() || IOUtils.getInstance().isSubDirectory(baseDir, dataDir) == false)
     {
       throw new IllegalArgumentException("The data directory is no relative directory in the zip file");
     }
@@ -110,23 +141,60 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     this.encodedImages = new Hashtable();
   }
 
-  // contains the HTML file
-
+  /**
+   * The root stream is used to write the main HTML-File. Any external content is
+   * referenced from this file.
+   *
+   * @return the output stream of the main HTML file.
+   * @throws IOException if an IO error occured, while providing the root stream.
+   */
   public OutputStream getRootStream() throws IOException
   {
     return rootStream;
   }
 
+  /**
+   * Returns true, if external content should be copied into the DataDirectory of
+   * the ZIPFile or false if the content should be included as linked content.
+   * <p>
+   * Linked content reduces the filesize, but the reader of the report will need access
+   * to the linked files. If you pan to use the report offline, then it is best to
+   * copy all referenced data into the zip file.
+   *
+   * @return true, if external referenced content should be copied into the ZIP file,
+   * false otherwise.
+   */
   public boolean isCopyExternalImages()
   {
     return copyExternalImages;
   }
 
+  /**
+   * Defines, whether external content should be copied into the DataDirectory of
+   * the ZIPFile or should be included as linked content.
+   * <p>
+   * Linked content reduces the filesize, but the reader of the report will need access
+   * to the linked files. If you pan to use the report offline, then it is best to
+   * copy all referenced data into the zip file.
+   *
+   * @param copyExternalImages true, if external referenced content should be copied into the ZIP file,
+   * false otherwise.
+   */
   public void setCopyExternalImages(boolean copyExternalImages)
   {
     this.copyExternalImages = copyExternalImages;
   }
 
+  /**
+   * Tests, whether the given URL points to a supported file format for common
+   * browsers. Returns true if the URL references a JPEG, PNG or GIF image, false
+   * otherwise.
+   * <p>
+   * The checked filetypes are the ones recommended by the W3C.
+   *
+   * @param url the url that should be tested.
+   * @return true, if the content type is supported by the browsers, false otherwise.
+   */
   protected boolean isSupportedImageFormat (URL url)
   {
     String file = url.getFile();
@@ -149,6 +217,22 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     return false;
   }
 
+  /**
+   * Creates a HtmlReference for ImageData. If the target filesystem does not support
+   * this reference type, return an empty content reference, but never null.
+   * <p>
+   * If the image was generated during the report processing or is not in a commonly
+   * supported format, then the image is recoded as PNG and the recoded image is
+   * included in the data directory.
+   * <p>
+   * If external referenced data should be copied into the data directory, then
+   * the Image content is read and copied into the data directory.
+   *
+   * @param reference the image reference containing the data.
+   * @return the generated HtmlReference, never null.
+   * @throws IOException if IO errors occured while creating the reference.
+   * @see ZIPHtmlFilesystem#isSupportedImageFormat
+   */
   public HtmlReferenceData createImageReference(ImageReference reference)
     throws IOException
   {
@@ -233,6 +317,12 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     }
   }
 
+  /**
+   * Creates an unique name for resources in the data directory.
+   *
+   * @param base the basename.
+   * @return the unique name generated using the basename.
+   */
   private String createName (String base)
   {
     CounterRef ref = (CounterRef) usedNames.get (base);
@@ -249,6 +339,14 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     }
   }
 
+  /**
+   * Creates a HtmlReference for StyleSheetData. If the target filesystem does not
+   * support external stylesheets, return an inline stylesheet reference.
+   *
+   * @param styleSheet the stylesheet data, which should be referenced.
+   * @return the generated HtmlReference, never null.
+   * @throws IOException if IO errors occured while creating the reference.
+   */
   public HtmlReferenceData createCSSReference(String styleSheet)
     throws IOException
   {
@@ -265,6 +363,12 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     return new HRefReferenceData(baseName);
   }
 
+  /**
+   * Close the Filesystem and write any buffered content. The filesystem will not
+   * be accessed, after close was called.
+   *
+   * @throws IOException if the close operation failed.
+   */
   public void close() throws IOException
   {
     String entryName = createName("report") + ".html";

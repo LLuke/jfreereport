@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -42,21 +42,52 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 
+/**
+ * The StreamHtmlFilesystem is an Implementation for streamed HTML output.
+ * <p>
+ * The generated content is a single Html-Stream, without any external generated
+ * data. The generated HTML Stream has an inline style sheet definition and supports
+ * external images. The external images must be loaded from HTTP, HTTPS or FTP sources,
+ * generated images or images loaded from the local filesystem are not supported.
+ */
 public class StreamHtmlFilesystem implements HtmlFilesystem
 {
+  /** the output stream */
   private OutputStream root;
 
+  /**
+   * Creates a new StreamHtmlFilesystem for the given output stream.
+   *
+   * @param root the output stream for the main file.
+   */
   public StreamHtmlFilesystem(OutputStream root)
   {
     this.root = root;
   }
 
-  // contains the HTML file
+  /**
+   * The root stream is used to write the main HTML-File. Any external content is
+   * referenced from this file.
+   *
+   * @return the output stream of the main HTML file.
+   * @throws IOException if an IO error occured, while providing the root stream.
+   */
   public OutputStream getRootStream() throws IOException
   {
     return root;
   }
 
+  /**
+   * Creates a HtmlReference for ImageData. If the target filesystem does not support
+   * this reference type, return an empty content reference, but never null.
+   * <p>
+   * This implementation returns the external reference for all image references which
+   * are loaded from an HTTP, HTTPS or FTP source.
+   *
+   * @param reference the image reference containing the data.
+   * @return the generated HtmlReference, never null.
+   * @throws IOException
+   */
   public HtmlReferenceData createImageReference(ImageReference reference)
       throws IOException
   {
@@ -77,14 +108,28 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
     return new EmptyContentHtmlReferenceData();
   }
 
+  /**
+   * Returns an inline stylesheet reference.
+   *
+   * @param styleSheet the stylesheet data, which should be referenced.
+   * @return an InternalCSSReferenceData for the given stylesheet.
+   * @throws IOException
+   */
   public HtmlReferenceData createCSSReference(String styleSheet)
       throws IOException
   {
     return new InternalCSSReferenceData(styleSheet);
   }
 
+  /**
+   * Close the Filesystem and write any buffered content. The used stream is
+   * flushed, but not closed.
+   *
+   * @throws IOException if the close operation failed.
+   */
   public void close() throws IOException
   {
     // nothing to do, closing the stream is up to the caller ...
+    root.flush();
   }
 }

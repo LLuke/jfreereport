@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.6 2003/02/20 00:39:37 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.7 2003/02/21 18:12:49 taqua Exp $
  *
  * Changes
  * -------
@@ -53,12 +53,20 @@ import java.net.URL;
 import java.util.Hashtable;
 
 /**
- * 
+ * Writes the generated Html-File and the supplementary data files (images and
+ * external Stylesheet definition) into a directory. The data files can be written
+ * into a separated data directory.
+ * <p>
+ * External referenced content can either be copied into the data directory or could
+ * be included as linked content. This behaviour is controled by the <code>copyExternalImages</code>
+ * flag.
  */
 public class DirectoryHtmlFilesystem implements HtmlFilesystem
 {
+  /** a simple counter carrier. */
   private class CounterRef
   {
+    /** a counter. */
     public int count;
   }
 
@@ -104,12 +112,45 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
 
   }
 
+  /**
+   * Returns true, if external content should be copied into the DataDirectory of
+   * the ZIPFile or false if the content should be included as linked content.
+   * <p>
+   * Linked content reduces the filesize, but the reader of the report will need access
+   * to the linked files. If you pan to use the report offline, then it is best to
+   * copy all referenced data into the zip file.
+   *
+   * @return true, if external referenced content should be copied into the ZIP file,
+   * false otherwise.
+   */
+  public boolean isCopyExternalImages()
+  {
+    return copyExternalImages;
+  }
+
+  /**
+   * Defines, whether external content should be copied into the DataDirectory of
+   * the ZIPFile or should be included as linked content.
+   * <p>
+   * Linked content reduces the filesize, but the reader of the report will need access
+   * to the linked files. If you pan to use the report offline, then it is best to
+   * copy all referenced data into the zip file.
+   *
+   * @param copyExternalImages true, if external referenced content should be copied into the ZIP file,
+   * false otherwise.
+   */
   public void setCopyExternalImages(boolean copyExternalImages)
   {
     this.copyExternalImages = copyExternalImages;
   }
 
-  // contains the HTML file
+  /**
+   * The root stream is used to write the main HTML-File. Any external content is
+   * referenced from this file.
+   *
+   * @return the output stream of the main HTML file.
+   * @throws IOException if an IO error occured, while providing the root stream.
+   */
   public OutputStream getRootStream()
       throws IOException
   {
@@ -120,6 +161,16 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     return rootStream;
   }
 
+  /**
+   * Tests, whether the given URL points to a supported file format for common
+   * browsers. Returns true if the URL references a JPEG, PNG or GIF image, false
+   * otherwise.
+   * <p>
+   * The checked filetypes are the ones recommended by the W3C.
+   *
+   * @param url the url that should be tested.
+   * @return true, if the content type is supported by the browsers, false otherwise.
+   */
   protected boolean isSupportedImageFormat (URL url)
   {
     String file = url.getFile();
@@ -142,6 +193,15 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     return false;
   }
 
+  /**
+   * Creates a HtmlReference for ImageData. If the target filesystem does not support
+   * this reference type, return an empty content reference, but never null.
+   *
+   * @param reference the image reference containing the data.
+   * @return the generated HtmlReference, never null.
+   * @throws IOException if IO errors occured while creating the reference.
+   * @see DirectoryHtmlFilesystem#isSupportedImageFormat
+   */
   public HtmlReferenceData createImageReference(ImageReference reference)
     throws IOException
   {
@@ -213,11 +273,12 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
   }
 
-  public boolean isCopyExternalImages ()
-  {
-    return copyExternalImages;
-  }
-
+  /**
+   * Creates an unique name for resources in the data directory.
+   *
+   * @param base the basename.
+   * @return the unique name generated using the basename.
+   */
   private String createName (String base)
   {
     CounterRef ref = (CounterRef) usedNames.get (base);
@@ -234,6 +295,14 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
   }
 
+  /**
+   * Creates a HtmlReference for StyleSheetData. If the target filesystem does not
+   * support external stylesheets, return an inline stylesheet reference.
+   *
+   * @param styleSheet the stylesheet data, which should be referenced.
+   * @return the generated HtmlReference, never null.
+   * @throws IOException if IO errors occured while creating the reference.
+   */
   public HtmlReferenceData createCSSReference(String styleSheet)
     throws IOException
   {
@@ -246,6 +315,12 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     return new HRefReferenceData(baseName);
   }
 
+  /**
+   * Close the Filesystem and write any buffered content. The filesystem will not
+   * be accessed, after close was called.
+   *
+   * @throws IOException if the close operation failed.
+   */
   public void close() throws IOException
   {
     rootStream.close();
