@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: StringFieldTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -39,8 +39,10 @@
 package org.jfree.report.filter.templates;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
+import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.StringFilter;
 
 /**
@@ -48,7 +50,8 @@ import org.jfree.report.filter.StringFilter;
  *
  * @author Thomas Morgner
  */
-public class StringFieldTemplate extends AbstractTemplate implements DataRowConnectable
+public class StringFieldTemplate extends AbstractTemplate
+    implements DataRowConnectable, ReportConnectable
 {
   /** The data-row data source. */
   private DataRowDataSource dataRowDataSource;
@@ -158,4 +161,19 @@ public class StringFieldTemplate extends AbstractTemplate implements DataRowConn
     dataRowDataSource.disconnectDataRow(row);
   }
 
+
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
+  }
+
+  protected DataRowDataSource getDataRowDataSource()
+  {
+    return dataRowDataSource;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldTemplate.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: NumberFieldTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -41,17 +41,20 @@ package org.jfree.report.filter.templates;
 import java.text.DecimalFormat;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DecimalFormatFilter;
 import org.jfree.report.filter.StringFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 /**
  * A number field template.
  *
  * @author Thomas Morgner
  */
-public class NumberFieldTemplate extends AbstractTemplate implements DataRowConnectable
+public class NumberFieldTemplate extends AbstractTemplate
+    implements DataRowConnectable, ReportConnectable
 {
   /** A decimal format filter. */
   private DecimalFormatFilter decimalFormatFilter;
@@ -207,4 +210,19 @@ public class NumberFieldTemplate extends AbstractTemplate implements DataRowConn
     dataRowDataSource.disconnectDataRow(row);
   }
 
+
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
+  }
+
+  protected DataRowDataSource getDataRowDataSource()
+  {
+    return dataRowDataSource;
+  }
 }

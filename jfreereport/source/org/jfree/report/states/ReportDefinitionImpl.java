@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.3 2003/08/27 20:19:54 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.4 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,11 @@ import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.Band;
+import org.jfree.report.DataRow;
+import org.jfree.report.Element;
+import org.jfree.report.filter.DataSource;
+import org.jfree.report.filter.ReportConnectable;
+import org.jfree.report.filter.DataTarget;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
@@ -123,7 +128,97 @@ public class ReportDefinitionImpl implements ReportDefinition
     pageHeader.updateStyleSheetCollection(styleSheetCollection);
     watermark.updateStyleSheetCollection(styleSheetCollection);
     dataRowConnector = new DataRowConnector();
-    DataRowConnector.connectDataSources(this, dataRowConnector);
+    connect();
+  }
+
+  protected void connect ()
+  {
+    connectBand(reportHeader);
+    connectBand(reportFooter);
+    connectBand(pageHeader);
+    connectBand(pageFooter);
+    connectBand(itemBand);
+    connectBand(watermark);
+
+    for (int i = 0; i < groups.size(); i++)
+    {
+      Group g = groups.get(i);
+      connectBand(g.getHeader());
+      connectBand(g.getFooter());
+    }
+
+  }
+
+  protected void connectBand (Band b)
+  {
+    Element[] elements = b.getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      connectDataSource(elements[i].getDataSource());
+      if (elements[i] instanceof Band)
+      {
+        connectBand((Band) elements[i]);
+      }
+    }
+  }
+
+  protected void connectDataSource (DataSource ds)
+  {
+    if (ds instanceof ReportConnectable)
+    {
+      ReportConnectable rc = (ReportConnectable) ds;
+      rc.registerReportDefinition(this);
+    }
+    if (ds instanceof DataTarget)
+    {
+      DataTarget dt = (DataTarget) ds;
+      connectDataSource(dt.getDataSource());
+    }
+  }
+
+  protected void disconnect ()
+  {
+    disconnectBand(reportHeader);
+    disconnectBand(reportFooter);
+    disconnectBand(pageHeader);
+    disconnectBand(pageFooter);
+    disconnectBand(itemBand);
+    disconnectBand(watermark);
+
+    for (int i = 0; i < groups.size(); i++)
+    {
+      Group g = groups.get(i);
+      disconnectBand(g.getHeader());
+      disconnectBand(g.getFooter());
+    }
+
+  }
+
+  protected void disconnectBand (Band b)
+  {
+    Element[] elements = b.getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      disconnectDataSource(elements[i].getDataSource());
+      if (elements[i] instanceof Band)
+      {
+        disconnectBand((Band) elements[i]);
+      }
+    }
+  }
+
+  protected void disconnectDataSource (DataSource ds)
+  {
+    if (ds instanceof ReportConnectable)
+    {
+      ReportConnectable rc = (ReportConnectable) ds;
+      rc.unregisterReportDefinition(this);
+    }
+    if (ds instanceof DataTarget)
+    {
+      DataTarget dt = (DataTarget) ds;
+      connectDataSource(dt.getDataSource());
+    }
   }
 
   /**
@@ -275,9 +370,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
     report.watermark.updateStyleSheetCollection(report.styleSheetCollection);
     report.dataRowConnector = new DataRowConnector();
-    // disconnect the old datarow and connect the new one ..
-    DataRowConnector.disconnectDataSources(report, dataRowConnector);
-    DataRowConnector.connectDataSources(report, report.dataRowConnector);
+    report.connect();
     return report;
   }
 
@@ -309,5 +402,10 @@ public class ReportDefinitionImpl implements ReportDefinition
   public Band getWatermark()
   {
     return watermark;
+  }
+
+  public DataRow getDataRow()
+  {
+    return dataRowConnector;
   }
 }

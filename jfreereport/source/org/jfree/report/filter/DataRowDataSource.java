@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowDataSource.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -43,30 +43,24 @@ package org.jfree.report.filter;
 import java.io.Serializable;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 
 /**
  * A DataSource that can access values from the 'data-row'. The data-row contains all values from
  * the current row of the report's <code>TableModel</code>, plus the current values of the defined
  * expressions and functions for the report.
  * <p>
- * This class replaces the three classes: <code>ExpressionDataSource</code>,
- * <code>FunctionDataSource</code> and <code>ReportDataSource</code>.
- * <p>
  * @see org.jfree.report.DataRow
  *
  * @author Thomas Morgner
  */
-public class DataRowDataSource implements DataSource, DataRowConnectable, Serializable
+public class DataRowDataSource
+    implements DataSource, DataRowConnectable, Serializable, ReportConnectable
 {
   /**  The name of the field/expression/function referenced by this data source. */
   private String dataSourceColumnName;
 
-  /**
-   * The DataRow connected with this DataSource. The datarow will not be serialized,
-   * as it is assigned during the report processing and we dont support serializing during
-   * that state.
-   */
-  private transient DataRow dataRow;
+  private transient ReportDefinition reportDefinition;
 
   /**
    * Default constructor.
@@ -134,7 +128,8 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
   }
 
   /**
-   * Clones the data source.
+   * Clones the data source. A previously registered report definition
+   * is not inherited to the clone.
    *
    * @return a clone.
    *
@@ -142,7 +137,9 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    */
   public Object clone() throws CloneNotSupportedException
   {
-    return super.clone();
+    DataRowDataSource drs = (DataRowDataSource) super.clone();
+    drs.reportDefinition = null;
+    return drs;
   }
 
   /**
@@ -155,16 +152,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    */
   public void connectDataRow(final DataRow row) throws IllegalStateException
   {
-    if (row == null)
-    {
-      throw new NullPointerException("DataRowDataSource.connectDataRow: null data-row.");
-    }
-    if (dataRow != null)
-    {
-      throw new IllegalStateException("DataRowDataSource.connectDataRow: "
-          + "datarow already connected.");
-    }
-    dataRow = row;
+    throw new UnsupportedOperationException("connectDataRow is deprecated.");
   }
 
   /**
@@ -180,15 +168,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    */
   public void disconnectDataRow(final DataRow row) throws IllegalStateException
   {
-    if (row == null)
-    {
-      throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
-    }
-    if (dataRow == null)
-    {
-      throw new IllegalStateException("There is no datarow connected");
-    }
-    dataRow = null;
+    throw new UnsupportedOperationException("disconnectDataRow is deprecated.");
   }
 
   /**
@@ -198,7 +178,35 @@ public class DataRowDataSource implements DataSource, DataRowConnectable, Serial
    */
   public DataRow getDataRow()
   {
-    return dataRow;
+    if (reportDefinition == null)
+    {
+      return null;
+    }
+    return reportDefinition.getDataRow();
   }
+
+
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != null)
+    {
+      throw new IllegalStateException("Already connected.");
+    }
+    if (reportDefinition == null)
+    {
+      throw new NullPointerException("The given report definition is null");
+    }
+    this.reportDefinition = reportDefinition;
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != reportDefinition)
+    {
+      throw new IllegalStateException("This report definition is not registered.");
+    }
+    this.reportDefinition = null;
+  }
+
 
 }

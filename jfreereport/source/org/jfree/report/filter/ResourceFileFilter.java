@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -38,6 +38,7 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import org.jfree.report.util.Log;
+import org.jfree.report.ReportDefinition;
 
 /**
  * Lookup a key from a datasource using a ResourceBundle.
@@ -47,13 +48,16 @@ import org.jfree.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ResourceFileFilter implements DataFilter, Serializable
+public class ResourceFileFilter
+    implements DataFilter, Serializable, ReportConnectable
 {
   /** the used resource bundle. */
   private ResourceBundle resources;
 
   /** the filtered data source. */
   private DataSource dataSource;
+
+  private ReportDefinition reportDefinition;
 
   /**
    * Creates a new ResourceFileFilter.
@@ -133,6 +137,7 @@ public class ResourceFileFilter implements DataFilter, Serializable
   {
     final ResourceFileFilter filter = (ResourceFileFilter) super.clone();
     filter.dataSource = (DataSource) dataSource.clone();
+    filter.reportDefinition = null;
     return filter;
   }
 
@@ -154,5 +159,27 @@ public class ResourceFileFilter implements DataFilter, Serializable
   public void setDataSource(final DataSource ds)
   {
     this.dataSource = ds;
+  }
+
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != null)
+    {
+      throw new IllegalStateException("Already connected.");
+    }
+    if (reportDefinition == null)
+    {
+      throw new NullPointerException("The given report definition is null");
+    }
+    this.reportDefinition = reportDefinition;
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != reportDefinition)
+    {
+      throw new IllegalStateException("This report definition is not registered.");
+    }
+    this.reportDefinition = null;
   }
 }

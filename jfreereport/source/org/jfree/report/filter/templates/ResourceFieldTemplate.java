@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceFieldTemplate.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ResourceFieldTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -42,17 +42,20 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ResourceFileFilter;
 import org.jfree.report.filter.StringFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 /**
  * A resource field template, which reads a String value from a ResourceBundle.
  *
  * @author Thomas Morgner
  */
-public class ResourceFieldTemplate extends AbstractTemplate implements DataRowConnectable
+public class ResourceFieldTemplate extends AbstractTemplate
+    implements DataRowConnectable, ReportConnectable
 {
   /** A data-row accessor. */
   private DataRowDataSource dataRowDataSource;
@@ -195,4 +198,21 @@ public class ResourceFieldTemplate extends AbstractTemplate implements DataRowCo
     dataRowDataSource.disconnectDataRow(row);
   }
 
+
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().registerReportDefinition(reportDefinition);
+    resourceFilter.registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
+    resourceFilter.unregisterReportDefinition(reportDefinition);
+  }
+
+  protected DataRowDataSource getDataRowDataSource()
+  {
+    return dataRowDataSource;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFieldTemplate.java,v 1.3 2003/11/05 18:28:56 taqua Exp $
+ * $Id: DrawableFieldTemplate.java,v 1.4 2003/11/07 18:33:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,9 +39,11 @@
 package org.jfree.report.filter.templates;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DrawableFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 /**
  * An drawable field template. The drawable content will be read from
@@ -50,7 +52,7 @@ import org.jfree.report.filter.DrawableFilter;
  * @author Thomas Morgner
  */
 public class DrawableFieldTemplate extends AbstractTemplate
-    implements DataRowConnectable
+    implements DataRowConnectable, ReportConnectable
 {
   /** The data row reader. */
   private DataRowDataSource dataRowDataSource;
@@ -140,4 +142,18 @@ public class DrawableFieldTemplate extends AbstractTemplate
     dataRowDataSource.disconnectDataRow(row);
   }
 
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
+  }
+
+  protected DataRowDataSource getDataRowDataSource()
+  {
+    return dataRowDataSource;
+  }
 }

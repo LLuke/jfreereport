@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageFieldTemplate.java,v 1.3 2003/11/01 19:52:27 taqua Exp $
+ * $Id: ImageFieldTemplate.java,v 1.4 2003/11/05 18:28:56 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -39,9 +39,11 @@
 package org.jfree.report.filter.templates;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ImageRefFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 /**
  * An image field template. The image content will be read from
@@ -50,7 +52,7 @@ import org.jfree.report.filter.ImageRefFilter;
  * @author Thomas Morgner
  */
 public class ImageFieldTemplate extends AbstractTemplate
-    implements DataRowConnectable
+    implements DataRowConnectable, ReportConnectable
 {
   /** The data row reader. */
   private DataRowDataSource dataRowDataSource;
@@ -140,4 +142,18 @@ public class ImageFieldTemplate extends AbstractTemplate
     dataRowDataSource.disconnectDataRow(row);
   }
 
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
+  }
+
+  protected DataRowDataSource getDataRowDataSource()
+  {
+    return dataRowDataSource;
+  }
 }

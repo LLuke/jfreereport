@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.4 2003/08/27 20:19:52 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.5 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes
  * -------
@@ -118,7 +118,7 @@ public interface ReportDefinition extends Cloneable
   public int getGroupCount();
 
   /**
-   * Returns the group at the specified index or null, if there 
+   * Returns the group at the specified index or null, if there
    * is no such group.
    *
    * @param count  the group index.
@@ -126,7 +126,7 @@ public interface ReportDefinition extends Cloneable
    * @return the requested group.
    *
    * @throws IllegalArgumentException if the count is negative.
-   * @throws IndexOutOfBoundsException if the count is greater than 
+   * @throws IndexOutOfBoundsException if the count is greater than
    * the number of defined groups.
    */
   public Group getGroup(int count);
@@ -140,4 +140,6 @@ public interface ReportDefinition extends Cloneable
    * @return the stylesheet collection of the report, never null.
    */
   public StyleSheetCollection getStyleSheetCollection();
+
+  public DataRow getDataRow ();
 }

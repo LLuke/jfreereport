@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.8 2003/12/04 18:03:50 taqua Exp $
+ * $Id: JFreeReport.java,v 1.9 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -210,6 +210,7 @@ public class JFreeReport implements Cloneable, Serializable
     this.itemBand = new ItemBand();
     this.itemBand.registerStyleSheetCollection(this.styleSheetCollection);
     this.watermark = new Band();
+    this.watermark.registerStyleSheetCollection(this.styleSheetCollection);
 
     this.data = new DefaultTableModel();
     this.functions = new ExpressionCollection();

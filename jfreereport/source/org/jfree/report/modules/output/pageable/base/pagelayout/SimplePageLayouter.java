@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.12 2003/11/05 14:56:16 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.13 2003/11/07 18:33:54 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,8 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
+import org.jfree.report.Group;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
@@ -60,8 +62,6 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.Spool;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
-import org.jfree.report.states.DataRowConnector;
-import org.jfree.report.states.ReportDefinitionImpl;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleSheet;
 
@@ -98,17 +98,17 @@ public strictfp class SimplePageLayouter extends PageLayouter
   protected static class SimpleLayoutManagerState extends PageLayouter.LayoutManagerState
   {
     /** The band. */
-    private final Band band;
+    private final Object bandID;
 
     /**
      * Creates a new state.  The band can be <code>null</code> if there is no band to be printed
      * on the next page.
      *
-     * @param band  the band.
+     * @param bandID  the band.
      */
-    public SimpleLayoutManagerState(final Band band)
+    public SimpleLayoutManagerState(final Object bandID)
     {
-      this.band = band;
+      this.bandID = bandID;
     }
 
     /**
@@ -116,9 +116,9 @@ public strictfp class SimplePageLayouter extends PageLayouter
      *
      * @return the band.
      */
-    public Band getBand()
+    public Object getBandID()
     {
-      return band;
+      return bandID;
     }
 
     /**
@@ -128,7 +128,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
      */
     public String toString()
     {
-      return "State={" + band + "}";
+      return "State={" + bandID + "}";
     }
   }
 
@@ -874,7 +874,14 @@ public strictfp class SimplePageLayouter extends PageLayouter
    */
   protected void createSaveState(final Band b)
   {
-    state = new SimpleLayoutManagerState(b);
+    if (b == null)
+    {
+      state = new SimpleLayoutManagerState(null);
+    }
+    else
+    {
+      state = new SimpleLayoutManagerState(b.getTreeLock());
+    }
   }
 
   /**
@@ -932,34 +939,53 @@ public strictfp class SimplePageLayouter extends PageLayouter
 
     setRestartingPage(true);
     // if there was a pagebreak_after_print, there is no band to print for now
-    if (state.getBand() != null)
+    if (state.getBandID() != null)
     {
-      try
-      {
-        final Band band = (Band) state.getBand().clone();
-        // update the dataRow to the current dataRow instance...
-        final ReportState state = getCurrentEvent().getState();
-        // todo: How to resolve this update in a clean way. How to change the
-        // element connection so that it is smarter and not that weird ...
-
-        // resolving the issue on the element level may work ...
-        // using elements as template stamp instead of content source?
-        final ReportDefinitionImpl impl = (ReportDefinitionImpl) state.getReport();
-        // yes, I hate this code too...
-        DataRowConnector.disconnectDataSources(band, impl.getDataRowConnector());
-        DataRowConnector.connectDataSources(band, impl.getDataRowConnector());
-        print(band, BAND_PRINTED, PAGEBREAK_BEFORE_IGNORED);
-      }
-      catch (CloneNotSupportedException cne)
-      {
-        throw new ReportProcessingException
-            ("Unable to initialize the new page. Clone failed.", cne);
-      }
+      final ReportState reportstate = getCurrentEvent().getState();
+      final ReportDefinition impl = reportstate.getReport();
+      final Band band = getBandForID(impl, state.getBandID());
+      print(band, BAND_PRINTED, PAGEBREAK_BEFORE_IGNORED);
     }
     clearSaveState();
     setRestartingPage(false);
   }
 
+  private Band getBandForID (ReportDefinition def, Object id)
+  {
+    if (def.getReportHeader().getTreeLock() == id)
+    {
+      return def.getReportHeader();
+    }
+    if (def.getReportFooter().getTreeLock() == id)
+    {
+      return def.getReportFooter();
+    }
+    if (def.getPageHeader().getTreeLock() == id)
+    {
+      return def.getPageHeader();
+    }
+    if (def.getPageFooter().getTreeLock() == id)
+    {
+      return def.getPageFooter();
+    }
+    if (def.getItemBand().getTreeLock() == id)
+    {
+      return def.getItemBand();
+    }
+    for (int i = 0; i < def.getGroupCount(); i++)
+    {
+      Group g = def.getGroup(i);
+      if (g.getHeader().getTreeLock() == id)
+      {
+        return g.getHeader();
+      }
+      if (g.getFooter().getTreeLock() == id)
+      {
+        return g.getFooter();
+      }
+    }
+    return null;
+  }
   /**
    * Clears the layout state.
    */

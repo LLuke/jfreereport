@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowConnector.java,v 1.3 2003/08/27 20:19:54 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.4 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes
  * -------
@@ -192,23 +192,11 @@ public class DataRowConnector implements DataRow
    *
    * @param report the report which will be connected
    * @param con  the data row connector.
+   * @deprecated datarow connectors are not used anymore
    */
   public static void connectDataSources(final ReportDefinition report, final DataRowConnector con)
   {
-    DataRowConnector.connectDataSources(report.getPageFooter(), con);
-    DataRowConnector.connectDataSources(report.getPageHeader(), con);
-    DataRowConnector.connectDataSources(report.getReportFooter(), con);
-    DataRowConnector.connectDataSources(report.getReportHeader(), con);
-    DataRowConnector.connectDataSources(report.getItemBand(), con);
-    DataRowConnector.connectDataSources(report.getWatermark(), con);
-
-    final int groupCount = report.getGroupCount();
-    for (int i = 0; i < groupCount; i++)
-    {
-      final Group g = report.getGroup(i);
-      DataRowConnector.connectDataSources(g.getFooter(), con);
-      DataRowConnector.connectDataSources(g.getHeader(), con);
-    }
+    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
   }
 
   /**
@@ -216,27 +204,11 @@ public class DataRowConnector implements DataRow
    *
    * @param band the band which will be connected.
    * @param con  the connector.
+   * @deprecated datarow connectors are not used anymore
    */
   public static void connectDataSources(final Band band, final DataRowConnector con)
   {
-    final Element[] elements = band.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      final Element e = elements[i];
-      if (e instanceof Band)
-      {
-        connectDataSources((Band) e, con);
-      }
-      else
-      {
-        final DataSource ds = getLastDatasource(e);
-        if (ds instanceof DataRowConnectable)
-        {
-          final DataRowConnectable dc = (DataRowConnectable) ds;
-          dc.connectDataRow(con);
-        }
-      }
-    }
+    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
   }
 
   /**
@@ -245,23 +217,12 @@ public class DataRowConnector implements DataRow
    *
    * @param report  the report which will be disconnected from this DataRow.
    * @param con  the connector.
+   * @deprecated datarow connectors are not used anymore
    */
   public static void disconnectDataSources
     (final ReportDefinition report, final DataRowConnector con)
   {
-    disconnectDataSources(report.getPageFooter(), con);
-    disconnectDataSources(report.getPageHeader(), con);
-    disconnectDataSources(report.getReportFooter(), con);
-    disconnectDataSources(report.getReportHeader(), con);
-    disconnectDataSources(report.getItemBand(), con);
-    disconnectDataSources(report.getWatermark(), con);
-    final int groupCount = report.getGroupCount();
-    for (int i = 0; i < groupCount; i++)
-    {
-      final Group g = report.getGroup(i);
-      disconnectDataSources(g.getFooter(), con);
-      disconnectDataSources(g.getHeader(), con);
-    }
+    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
   }
 
   /**
@@ -269,27 +230,11 @@ public class DataRowConnector implements DataRow
    *
    * @param band  the band which will be disconnected from this DataRow.
    * @param con  the connector.
+   * @deprecated datarow connectors are not used anymore
    */
   public static void disconnectDataSources(final Band band, final DataRowConnector con)
   {
-    final List l = band.getElements();
-    for (int i = 0; i < l.size(); i++)
-    {
-      final Element e = (Element) l.get(i);
-      if (e instanceof Band)
-      {
-        disconnectDataSources((Band) e, con);
-      }
-      else
-      {
-        final DataSource ds = getLastDatasource(e);
-        if (ds instanceof DataRowConnectable)
-        {
-          final DataRowConnectable dc = (DataRowConnectable) ds;
-          dc.disconnectDataRow(con);
-        }
-      }
-    }
+    throw new UnsupportedOperationException("DataRowConnectors are no longer used.");
   }
 
   /**

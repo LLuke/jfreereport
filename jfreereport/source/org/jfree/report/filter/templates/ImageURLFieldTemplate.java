@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldTemplate.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ImageURLFieldTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -41,10 +41,12 @@ package org.jfree.report.filter.templates;
 import java.net.URL;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ImageLoadFilter;
 import org.jfree.report.filter.URLFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 /**
  * An image URL field template, which reads the image from an URL supplied from
@@ -52,7 +54,8 @@ import org.jfree.report.filter.URLFilter;
  *
  * @author Thomas Morgner
  */
-public class ImageURLFieldTemplate extends AbstractTemplate implements DataRowConnectable
+public class ImageURLFieldTemplate extends AbstractTemplate
+    implements DataRowConnectable, ReportConnectable
 {
   /** An image load filter. */
   private ImageLoadFilter imageLoadFilter;
@@ -168,4 +171,19 @@ public class ImageURLFieldTemplate extends AbstractTemplate implements DataRowCo
     dataRowDataSource.disconnectDataRow(row);
   }
 
+
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
+  }
+
+  protected DataRowDataSource getDataRowDataSource()
+  {
+    return dataRowDataSource;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeFieldTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ShapeFieldTemplate.java,v 1.3 2003/11/05 18:28:56 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,11 @@
 package org.jfree.report.filter.templates;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ShapeFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 /**
  * A shape field template.
@@ -49,7 +51,7 @@ import org.jfree.report.filter.ShapeFilter;
  * @author Thomas Morgner.
  */
 public class ShapeFieldTemplate extends AbstractTemplate
-    implements DataRowConnectable
+    implements DataRowConnectable, ReportConnectable
 {
   /** The data row reader. */
   private DataRowDataSource dataRowDataSource;
@@ -140,4 +142,18 @@ public class ShapeFieldTemplate extends AbstractTemplate
   }
 
 
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
+  }
+
+  protected DataRowDataSource getDataRowDataSource()
+  {
+    return dataRowDataSource;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceLabelTemplate.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ResourceLabelTemplate.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -41,6 +41,8 @@ package org.jfree.report.filter.templates;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.jfree.report.ReportDefinition;
+import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.ResourceFileFilter;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.filter.StringFilter;
@@ -51,6 +53,7 @@ import org.jfree.report.filter.StringFilter;
  * @author Thomas Morgner
  */
 public class ResourceLabelTemplate extends AbstractTemplate
+    implements ReportConnectable
 {
   /** A static datasource. */
   private StaticDataSource staticDataSource;
@@ -165,6 +168,17 @@ public class ResourceLabelTemplate extends AbstractTemplate
     template.resourceFilter = (ResourceFileFilter) template.stringFilter.getDataSource();
     template.staticDataSource = (StaticDataSource) template.resourceFilter.getDataSource();
     return template;
+  }
+
+
+  public void registerReportDefinition(ReportDefinition reportDefinition)
+  {
+    resourceFilter.registerReportDefinition(reportDefinition);
+  }
+
+  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  {
+    resourceFilter.unregisterReportDefinition(reportDefinition);
   }
 
 }
