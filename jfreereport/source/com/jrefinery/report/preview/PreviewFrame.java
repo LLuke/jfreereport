@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.20 2002/06/09 17:29:30 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.21 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -445,6 +445,10 @@ public class PreviewFrame
     content.add (toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane (report);
+    reportPane.addPropertyChangeListener (this);
+/*    reportPane.addPropertyChangeListener (ReportPane.NUMBER_OF_PAGES_PROPERTY, this);
+    reportPane.addPropertyChangeListener (ReportPane.PAGENUMBER_PROPERTY, this);
+    reportPane.addPropertyChangeListener (ReportPane.ERROR_PROPERTY, this);*/
 
     JPanel reportPaneHolder = new JPanel (new CenterLayout ());
     reportPaneHolder.add (reportPane);
@@ -484,8 +488,6 @@ public class PreviewFrame
   protected ReportPane createReportPane (JFreeReport report)
   {
     ReportPane reportPane = new ReportPane (report, new G2OutputTarget (G2OutputTarget.createEmptyGraphics (), report.getDefaultPageFormat ()));
-    reportPane.addPropertyChangeListener (ReportPane.NUMBER_OF_PAGES_PROPERTY, this);
-    reportPane.addPropertyChangeListener (ReportPane.PAGENUMBER_PROPERTY, this);
     return reportPane;
   }
 
@@ -1076,6 +1078,7 @@ public class PreviewFrame
       {
         Exception ex = reportPane.getError ();
 
+        ex.printStackTrace();
         getStatus ().setText (
                 MessageFormat.format (
                         getResources ().getString ("statusline.error"),
@@ -1127,5 +1130,9 @@ public class PreviewFrame
   public void setLargeIconsEnabled (boolean b)
   {
     largeIconsEnabled = b;
+  }
+
+  public static void main (String[] args)
+  {
   }
 }

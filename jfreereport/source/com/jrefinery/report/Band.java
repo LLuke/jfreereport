@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.16 2002/08/19 21:17:29 taqua Exp $
+ * $Id: Band.java,v 1.17 2002/08/20 20:58:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,6 +47,8 @@
  * 04-Jun-2002 : Public methods throw exceptions on illegal values. Documentation update.
  * 04-Jul-2002 : Serializable and Cloneable
  * 08-Aug-2002 : Band visibility support added. Bands can be hidden using the visible-property
+ * 22-Aug-2002 : Height contains now a special value (-100) to adjust the band to fit the available pageheight
+ *               This is a temprary fix and gets reomved with the next layout update
  */
 
 package com.jrefinery.report;
@@ -86,7 +88,7 @@ public abstract class Band implements Serializable, Cloneable
 {
 
   /** The default font. */
-  public static final transient Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);
+  public static final transient Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 10);
 
   /** The default paint. */
   public static final transient Paint DEFAULT_PAINT = Color.black;
@@ -115,20 +117,20 @@ public abstract class Band implements Serializable, Cloneable
    * Constructs a new band (initially empty).
    * @param height The height of the band.
    */
-  protected Band ()
+  protected Band()
   {
-    setDefaultFont (DEFAULT_FONT);
-    setDefaultPaint (DEFAULT_PAINT);
-    allElements = new ArrayList ();
-    dataElements = new HashNMap ();
-    functionElements = new HashNMap ();
+    setDefaultFont(DEFAULT_FONT);
+    setDefaultPaint(DEFAULT_PAINT);
+    allElements = new ArrayList();
+    dataElements = new HashNMap();
+    functionElements = new HashNMap();
     visible = true;
   }
 
   /**
    * Returns the height of the band (in points).
    * @return The height. */
-  public float getHeight ()
+  public float getHeight()
   {
     return height;
   }
@@ -136,7 +138,7 @@ public abstract class Band implements Serializable, Cloneable
   /**
    * defines the height of the band (in points).
    */
-  public void setHeight (float height)
+  public void setHeight(float height)
   {
     this.height = height;
   }
@@ -146,7 +148,7 @@ public abstract class Band implements Serializable, Cloneable
    *
    * @return The font.
    */
-  public Font getDefaultFont ()
+  public Font getDefaultFont()
   {
     return this.defaultFont;
   }
@@ -156,9 +158,9 @@ public abstract class Band implements Serializable, Cloneable
    *
    * @param font The font.
    */
-  public void setDefaultFont (Font font)
+  public void setDefaultFont(Font font)
   {
-    if (font == null) throw new NullPointerException ();
+    if (font == null) throw new NullPointerException();
     this.defaultFont = font;
   }
 
@@ -167,7 +169,7 @@ public abstract class Band implements Serializable, Cloneable
    *
    * @return The paint.
    */
-  public Paint getDefaultPaint ()
+  public Paint getDefaultPaint()
   {
     return this.defaultPaint;
   }
@@ -178,9 +180,9 @@ public abstract class Band implements Serializable, Cloneable
    * @param paint The paint.
    * @throws NullPointerException if the given paint is null
    */
-  public void setDefaultPaint (Paint paint)
+  public void setDefaultPaint(Paint paint)
   {
-    if (paint == null) throw new NullPointerException ();
+    if (paint == null) throw new NullPointerException();
     this.defaultPaint = paint;
   }
 
@@ -191,30 +193,30 @@ public abstract class Band implements Serializable, Cloneable
    * @throws NullPointerException if the Element is null or contains Null-Values.
    * @throws IllegalArgumentException if the element violates validity rules
    */
-  public void addElement (Element element)
+  public void addElement(Element element)
   {
     if (element == null)
-      throw new NullPointerException ("Cannot add null-Element");
-    if (element.getName () == null)
-      throw new IllegalArgumentException ("Element is not valid: Valid elements need a name");
-    if (element.getBounds () == null)
-      throw new IllegalArgumentException ("Element is not valid: Valid elements need filled bounds");
+      throw new NullPointerException("Cannot add null-Element");
+    if (element.getName() == null)
+      throw new IllegalArgumentException("Element is not valid: Valid elements need a name");
+    if (element.getBounds() == null)
+      throw new IllegalArgumentException("Element is not valid: Valid elements need filled bounds");
 
-    allElements.add (element);
-    DataSource ds = getLastDatasource (element);
+    allElements.add(element);
+    DataSource ds = getLastDatasource(element);
     if (ds instanceof ReportDataSource)
     {
       ReportDataSource rds = (ReportDataSource) ds;
-      if (rds.getField () == null)
-        throw new IllegalArgumentException ("DataSource is not valid: ReportDataSources need a field set");
-      dataElements.add (rds.getField (), rds);
+      if (rds.getField() == null)
+        throw new IllegalArgumentException("DataSource is not valid: ReportDataSources need a field set");
+      dataElements.add(rds.getField(), rds);
     }
     else if (ds instanceof FunctionDataSource)
     {
       FunctionDataSource fe = (FunctionDataSource) ds;
-      if (fe.getFunction () == null)
-        throw new IllegalArgumentException ("DataSource is not valid: FunctionDataSources need a function name set");
-      functionElements.add (fe.getFunction (), fe);
+      if (fe.getFunction() == null)
+        throw new IllegalArgumentException("DataSource is not valid: FunctionDataSources need a function name set");
+      functionElements.add(fe.getFunction(), fe);
     }
 
   }
@@ -224,19 +226,19 @@ public abstract class Band implements Serializable, Cloneable
    * @param elements The element collection.
    * @throws NullPointerException if the collection given is null
    */
-  public void addElements (Collection elements)
+  public void addElements(Collection elements)
   {
 
     if (elements == null)
     {
-      throw new NullPointerException ();
+      throw new NullPointerException();
     }
 
-    Iterator iterator = elements.iterator ();
-    while (iterator.hasNext ())
+    Iterator iterator = elements.iterator();
+    while (iterator.hasNext())
     {
-      Element element = (Element) iterator.next ();
-      addElement (element);
+      Element element = (Element) iterator.next();
+      addElement(element);
     }
 
   }
@@ -248,61 +250,55 @@ public abstract class Band implements Serializable, Cloneable
    * @param y The y-coordinate.
    * @throws NullPointerException if the target given is null
    */
-  public float draw (OutputTarget target, float x, float y) throws OutputTargetException
+  public float draw(OutputTarget target, float x, float y) throws OutputTargetException
   {
-    if (target == null) throw new NullPointerException ();
-    if (isVisible () == false) return 0;
+    if (target == null) throw new NullPointerException();
+    if (isVisible() == false) return 0;
     float maxheight = 0;
 
-    Rectangle2D bounds = new Rectangle2D.Float ();
-    bounds.setRect (x, y, target.getUsableWidth (), getHeight ());
-    target.setClippingArea (bounds);
+    Rectangle2D bounds = new Rectangle2D.Float();
+    bounds.setRect(x, y, target.getUsableWidth(), getHeight());
+    target.setClippingArea(bounds);
 
-    target.setPaint (getDefaultPaint ());
-    Iterator iterator = allElements.iterator ();
-    while (iterator.hasNext ())
+    target.setPaint(getDefaultPaint());
+    Iterator iterator = allElements.iterator();
+    while (iterator.hasNext())
     {
-      Element e = (Element) iterator.next ();
-      if (e.isVisible ())
+      Element e = (Element) iterator.next();
+      if (e.isVisible())
       {
-        target.getCursor ().setElementBounds (translateBounds (target, e.getBounds ()));
+        target.getCursor().setElementBounds(translateBounds(target, e.getBounds()));
         try
         {
-          Object state = target.saveState ();
-          e.draw (target, this);
-          target.restoreState (state);
+          Object state = target.saveState();
+          e.draw(target, this);
+          target.restoreState(state);
         }
         catch (OutputTargetException ex)
         {
-          Log.error ("Failed to draw band", ex);
+          Log.error("Failed to draw band", ex);
         }
-        double eh = target.getCursor ().getElementBounds().getY () +
-                target.getCursor ().getElementBounds().getHeight ();
+        double eh = target.getCursor().getElementBounds().getY() +
+            target.getCursor().getElementBounds().getHeight();
         if (eh > maxheight)
         {
           maxheight = (float) eh;
         }
       }
-/*      else
-      {
-        System.out.println ("Element " + e + " is not visible");
-      }
-*/
     }
-//    Log.debug ("############ End Draw: " + maxheight);
     return maxheight;
   }
 
   /**
    * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
    */
-  private Rectangle2D translateBounds (OutputTarget target, Rectangle2D bounds)
+  private Rectangle2D translateBounds(OutputTarget target, Rectangle2D bounds)
   {
-    float x = fixValue (bounds.getX (), target.getUsableWidth ());
-    float y = fixValue (bounds.getY (), getHeight ());
-    float w = fixValue (bounds.getWidth (), target.getUsableWidth ());
-    float h = fixValue (bounds.getHeight (), getHeight ());
-    bounds.setRect (x, y, w, h);
+    float x = fixValue(bounds.getX(), target.getUsableWidth());
+    float y = fixValue(bounds.getY(), getHeight());
+    float w = fixValue(bounds.getWidth(), target.getUsableWidth());
+    float h = fixValue(bounds.getHeight(), getHeight());
+    bounds.setRect(x, y, w, h);
     return bounds;
   }
 
@@ -310,7 +306,7 @@ public abstract class Band implements Serializable, Cloneable
    * Helperfunction:
    * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
    */
-  private float fixValue (double value, double full)
+  private float fixValue(double value, double full)
   {
     if (value >= 0) return (float) value;
     float retval = (float) (value * full / -100);
@@ -323,15 +319,15 @@ public abstract class Band implements Serializable, Cloneable
    * @returns the first element found or null if there is no such element.
    * @throws NullPointerException if the given name is null
    */
-  public Element getElement (String name)
+  public Element getElement(String name)
   {
-    if (name == null) throw new NullPointerException ();
+    if (name == null) throw new NullPointerException();
 
-    Iterator it = allElements.iterator ();
-    while (it.hasNext ())
+    Iterator it = allElements.iterator();
+    while (it.hasNext())
     {
-      Element e = (Element) it.next ();
-      if (e.getName ().equals (name))
+      Element e = (Element) it.next();
+      if (e.getName().equals(name))
       {
         return e;
       }
@@ -342,24 +338,24 @@ public abstract class Band implements Serializable, Cloneable
   /**
    * @returns an immutable list of all registered elements for this band.
    */
-  public List getElements ()
+  public List getElements()
   {
-    return Collections.unmodifiableList (allElements);
+    return Collections.unmodifiableList(allElements);
   }
 
   /**
    * @returns a string representation of this band and all contained elements.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer b = new StringBuffer ();
-    b.append (this.getClass ().getName ());
-    b.append ("={functions=");
-    b.append (functionElements);
-    b.append (", dataelements=");
-    b.append (dataElements);
-    b.append ("}");
-    return b.toString ();
+    StringBuffer b = new StringBuffer();
+    b.append(this.getClass().getName());
+    b.append("={functions=");
+    b.append(functionElements);
+    b.append(", dataelements=");
+    b.append(dataElements);
+    b.append("}");
+    return b.toString();
   }
 
   /**
@@ -369,24 +365,24 @@ public abstract class Band implements Serializable, Cloneable
    * The result of this computation is retrieved by the element using the
    * registered datasource to query the queue.
    */
-  public static DataSource getLastDatasource (DataTarget e)
+  public static DataSource getLastDatasource(DataTarget e)
   {
-    if (e == null) throw new NullPointerException ();
-    DataSource s = e.getDataSource ();
+    if (e == null) throw new NullPointerException();
+    DataSource s = e.getDataSource();
     if (s instanceof DataTarget)
     {
       DataTarget tgt = (DataTarget) s;
-      return getLastDatasource (tgt);
+      return getLastDatasource(tgt);
     }
     return s;
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    Band b = (Band) super.clone ();
-    b.allElements = new ArrayList ();
-    b.dataElements = new HashNMap ();
-    b.functionElements = new HashNMap ();
+    Band b = (Band) super.clone();
+    b.allElements = new ArrayList();
+    b.dataElements = new HashNMap();
+    b.functionElements = new HashNMap();
     Iterator it = allElements.iterator();
     while (it.hasNext())
     {
@@ -396,12 +392,12 @@ public abstract class Band implements Serializable, Cloneable
     return b;
   }
 
-  public boolean isVisible ()
+  public boolean isVisible()
   {
     return visible;
   }
 
-  public void setVisible (boolean visible)
+  public void setVisible(boolean visible)
   {
     this.visible = visible;
   }

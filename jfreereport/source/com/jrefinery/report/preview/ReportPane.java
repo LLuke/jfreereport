@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.12 2002/05/31 19:29:00 taqua Exp $
+ * $Id: ReportPane.java,v 1.13 2002/06/08 16:28:59 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -36,6 +36,7 @@
  * 20-May-2002 : Adjusted to catch ReportProcessingException on processPage.
  * 26-May-2002 : Changed Repagination bahaviour. Implemented the Pageable-interface
  * 08-Jun-2002 : Documentation
+ * 22-Aug-2002 : BugFix: Errors while processing the report did not trigger a PropertyChangeEvent
  */
 
 package com.jrefinery.report.preview;
@@ -612,10 +613,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /**
    * sets the last error occured. The error can be cleared with the clearError() function.
    */
-  private void setError (Exception error)
+  public void setError (Exception error)
   {
-    Exception oldError = error;
+    Exception oldError = this.error;
     this.error = error;
+    //System.out.println("Error: " + oldError.getMessage() + " + " + error.getMessage());
     firePropertyChange (ERROR_PROPERTY, oldError, error);
   }
 
@@ -658,4 +660,5 @@ public class ReportPane extends JComponent implements Printable, Pageable
   {
     return error;
   }
+
 }

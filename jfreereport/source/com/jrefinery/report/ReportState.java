@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.24 2002/08/19 22:06:02 taqua Exp $
+ * $Id: ReportState.java,v 1.25 2002/08/20 20:58:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,6 +47,7 @@
  * 11-May-2002 : A bug in the ReportPropertyHandling is fixed.
  * 24-Jun-2002 : Populate Elements must not be called before Function values are calculated.
  * 28-Jul-2002 : Added datarow support, the report is now cloned on start
+ * 21-Aug-2002 : isProceeding() was buggy, did not test the reportstate correctly (returned always true)
  */
 
 package com.jrefinery.report;
@@ -907,11 +908,20 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public boolean isProceeding (ReportState oldstate)
   {
-    if ((getCurrentGroupIndex () != oldstate.getCurrentGroupIndex ())
-            || (getCurrentDataItem () >= oldstate.getCurrentDataItem ())
-            || (getCurrentPage () != oldstate.getCurrentPage ())
-            || (oldstate.getClass ().equals (getClass ())))
+    if (getCurrentGroupIndex () != oldstate.getCurrentGroupIndex ())
     {
+      System.out.println ("Is proceeding: CurrentGroup!");
+      return true;
+    }
+    if (getCurrentDataItem () > oldstate.getCurrentDataItem ())
+    {
+      System.out.println ("Is proceeding: DataItem!" + getCurrentDataItem () + " >=" + oldstate.getCurrentDataItem ());
+      return true;
+    }
+    if (getCurrentPage () != oldstate.getCurrentPage () && this.getClass() != oldstate.getClass())
+            ///*|| (oldstate.getClass ().equals (getClass ()))*/)
+    {
+      System.out.println ("Is proceeding: CurrentPage!");
       return true;
     }
     return false;

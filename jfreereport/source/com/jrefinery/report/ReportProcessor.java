@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.9 2002/08/08 13:40:14 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.10 2002/08/08 15:28:38 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
@@ -112,6 +112,12 @@ public class ReportProcessor implements JFreeReportConstants
         Log.error ("Unable to draw band", e);
       }
     }
+    if (band.getHeight() == -100)
+    {
+      setPageDone();
+      return;
+    }
+
     if (dheight < band.getHeight ())
       dheight = band.getHeight ();
 
@@ -255,6 +261,9 @@ public class ReportProcessor implements JFreeReportConstants
       return false;
 
     if (band.isVisible () == false)
+      return true;
+
+    if (band.getHeight() == -100)
       return true;
 
     if (cursor.isSpaceFor (band.getHeight ()) == false)
