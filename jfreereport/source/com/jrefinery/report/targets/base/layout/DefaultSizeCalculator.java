@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.8 2003/04/06 18:11:30 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.9 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
@@ -106,39 +106,39 @@ public class DefaultSizeCalculator implements SizeCalculator
       boolean buggyOverride = ReportConfiguration.getGlobalConfig().isG2BuggyFRC();
       Log.debug ("This is a buggy version of the font-renderer context: " + isBuggyVersion);
       Log.debug ("The buggy-value is defined in the configuration     : " + buggyOverride);
-      if (isAliased())
+      if (isBuggyVersion)
       {
-        Log.debug ("The G2OutputTarget uses Antialiasing. \n" 
-                   + "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n"
-                   + "If there are problems with the string-placement, please report your \n"
-                   + "Operating System version and your JDK Version to "
-                   + "www.object-refinery.com/jfreereport.\n");
-      }
-      else
-      {
-        if (isBuggyVersion)
+        if (isAliased())
         {
-          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" 
-                     + "If your FontRenderer is buggy (text is not displayed correctly by "
+          Log.debug ("The G2OutputTarget uses Antialiasing. \n"
+                     + "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n"
+                     + "If there are problems with the string-placement, please report your \n"
+                     + "Operating System version and your JDK Version to "
+                     + "www.object-refinery.com/jfreereport.\n");
+        }
+        else
+        {
+          Log.debug ("The G2OutputTarget does not use Antialiasing. \n"
+                     + "Your FontRenderer is buggy (text is not displayed correctly by "
                      + "default).\n" 
-                     + "The system was able to detect this and will try to correct the bug. \n" 
+                     + "The system was able to detect this and tries to correct that bug. \n"
                      + "If your strings are not displayed correctly, report your Operating System "
                      + "version and your \n" 
                      + "JDK Version to www.object-refinery.com/jfreereport\n");
         }
-        else
-        {
-          Log.debug ("The G2OutputTarget does not use Antialiasing. \n" 
-                     + "If your FontRenderer seems to be ok. \n" 
-                     + "If your strings are not displayed correctly, try to enable the "
-                     + "configuration key \n" 
-                     + "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"\n" 
-                     + "in the file 'jfreereport.properties' or set this property as "
-                     + "System-property. \n" 
-                     + "If the bug remains alive, please report your Operating System version "
-                     + "and your \n JDK Version to www.object-refinery.com/jfreereport.\n");
-        }
       }
+      else
+      {
+        Log.debug ("Your FontRenderer seems to be ok, our tests didn't produce buggy results. \n"
+                   + "If your strings are not displayed correctly, try to enable the "
+                   + "configuration key \n"
+                   + "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"\n"
+                   + "in the file 'jfreereport.properties' or set this property as "
+                   + "System-property. \n"
+                   + "If the bug remains alive, please report your Operating System version "
+                   + "and your \n JDK Version to www.object-refinery.com/jfreereport.\n");
+      }
+      Log.debug ("If text layouting is working as expected, no further action is required.");
 
       if (buggyOverride == true)
       {

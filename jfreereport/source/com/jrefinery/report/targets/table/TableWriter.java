@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.18 2003/04/06 18:11:31 taqua Exp $
+ * $Id: TableWriter.java,v 1.19 2003/05/02 12:40:37 taqua Exp $
  *
  * Changes
  * -------
@@ -100,9 +100,6 @@ public class TableWriter extends AbstractFunction
   /** A flag indicating whether the current page is empty. */
   private boolean isPageEmpty;
   
-  /** A flag that indicates if the report state is currently inside the item group. */
-  private boolean isInItemGroup;
-
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
@@ -445,31 +442,12 @@ public class TableWriter extends AbstractFunction
      * Repeating group header are only printed while ItemElements are
      * processed.
      */
-    if (isInItemGroup)
+    for (int gidx = event.getState().getCurrentGroupIndex(); gidx >= 0; gidx--)
     {
-      int gidx = event.getState().getCurrentGroupIndex();
-      while (gidx >= 0)
+      Group g = event.getReport().getGroup(gidx);
+      if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
       {
-        Group g = null;
-        if (gidx >= 0)
-        {
-          g = event.getReport().getGroup(gidx);
-        }
-        if (g == null)
-        {
-          gidx--;
-          continue;
-        }
-
-        if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
-        {
-          print(g.getHeader());
-          break;
-        }
-        else
-        {
-          gidx--;
-        }
+        print(g.getHeader());
       }
     }
   }
@@ -555,8 +533,6 @@ public class TableWriter extends AbstractFunction
   public void itemsStarted(ReportEvent event)
   {
     setCurrentEvent(event);
-    isInItemGroup = true;
-    // this event does nothing
   }
 
   /**
@@ -570,7 +546,6 @@ public class TableWriter extends AbstractFunction
   {
     // this event does nothing
     setCurrentEvent(event);
-    isInItemGroup = false;
   }
 
   /**

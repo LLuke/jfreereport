@@ -164,7 +164,48 @@ encodings. A sample for such an property file can be found as resource
 sources.
 
 
-12. OTHER FEEDBACK
+12. "BUGGY FONTRENDERER CONTEXT" MESSAGE APPEARS IN THE LOGS
+------------------------------------------------------------
+A message like this one appears in the logs:
+
+  DEBUG: This is a buggy version of the font-renderer context: false
+  DEBUG: The buggy-value is defined in the configuration : false
+  DEBUG: The G2OutputTarget uses Antialiasing.
+  The FontRendererBugs should not be visible in TextAntiAliasing-Mode.
+  If there are problems with the string-placement, please report your
+  Operating System version and your JDK Version to www.object-refinery.com/jfreereport.
+
+This is a debug message, so (as with every debug message) it may have
+no meaning at all. But this one has .. :)
+
+DEBUG: This is a buggy version of the font-renderer context: true
+DEBUG: The G2OutputTarget uses Antialiasing.
+
+means, that your AWT implementation behaves different when
+fonts are rendered with aliasing enabled than it would do
+without aliasing. Most Sun JDKs have this bug, which got
+finally fixed in JDK >1.4.
+
+The FontMetrics implementation is not correct, when Aliasing
+is disabled (the computed font size is not the same as the
+used space when printing the string). In that case, we just
+use our own FontMetrics calculation methods, and it seems to
+work...
+
+But our method is not foolprof, as it is no standard
+function, and it is possible, that our fix may not work on
+other JDKs or may cause the layout be get even more weird.
+So if your layout looks weird and text elements behave
+strangely, then you should report your JDK version and
+OperatingSystem to us. If everything looks fine, then ignore
+the message ...
+
+If this bug strikes you, you will see that non-left aligned texts
+are printed on wrong positions, while left-aligned text does not
+fully use the available space (or the oposite effect, that the field
+does not obey to the defined limitations).
+
+13. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the
 JFreeReport forum.

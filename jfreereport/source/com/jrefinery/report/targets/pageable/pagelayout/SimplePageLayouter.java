@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.45 2003/05/09 17:12:13 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.46 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -145,9 +145,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   /** A useful constant. */
   private static final boolean ENDPAGE_REQUESTED = false;
 
-  /** A flag that indicates if the report state is currently inside the item group. */
-  private boolean isInItemGroup;
-
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
@@ -223,11 +220,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new IllegalStateException();
     }
-    isInItemGroup = false;
     setCurrentEvent(event);
     if (getCurrentEvent() == null)
     {
-      throw new NullPointerException("asdlkasdl");
+      throw new NullPointerException("getCurrentEvent() returned null");
     }
     try
     {
@@ -261,7 +257,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new IllegalStateException();
     }
-    isInItemGroup = false;
   }
 
   /**
@@ -280,7 +275,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     try
     {
       setCurrentEvent(event);
-      isInItemGroup = false;
       restartPage();
       createSaveState(null);
       saveCurrentState();
@@ -311,7 +305,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new IllegalStateException();
     }
-    isInItemGroup = true;
   }
 
   /**
@@ -377,15 +370,12 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
        * Repeating group header are only printed while ItemElements are
        * processed.
        */
-      if (isInItemGroup)
+      for (int gidx = event.getState().getCurrentGroupIndex(); gidx >= 0; gidx--)
       {
-        for (int gidx = event.getState().getCurrentGroupIndex(); gidx >= 0; gidx--)
+        Group g = getReport().getGroup(gidx);
+        if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
         {
-          Group g = getReport().getGroup(gidx);
-          if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
-          {
-            print(g.getHeader(), true);
-          }
+          print(g.getHeader(), true);
         }
       }
 
