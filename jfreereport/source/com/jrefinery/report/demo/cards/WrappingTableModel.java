@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WrappingTableModel.java,v 1.1 2003/04/02 21:24:01 taqua Exp $
+ * $Id: WrappingTableModel.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,11 @@
 package com.jrefinery.report.demo.cards;
 
 import java.util.ArrayList;
-
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.tablemodel.TableModelInfo;
-import com.jrefinery.report.util.Log;
 
 /**
  * A wrapping table model.
@@ -200,7 +198,6 @@ public class WrappingTableModel implements TableModel
    */
   public int getRowCount()
   {
-    Log.debug ("RowCount: " +  Math.ceil(model.getRowCount() / 2.0));
     return (int) Math.ceil(model.getRowCount() / 2.0);
   }
 

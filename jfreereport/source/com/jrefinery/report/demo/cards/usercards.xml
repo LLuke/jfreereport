@@ -2,11 +2,6 @@
 <!DOCTYPE report-definition
   PUBLIC "-//JFreeReport//DTD report definition//EN//extended"
          "http://jfreereport.sourceforge.net/extreport.dtd">
-<!--
- This report definition was created by the ReportDefinitionWriter.
-
- The file needs a review, it can be heavily optimized ...
--->
 <report-definition name="Business-cards">
   <parser-config>
     <object-factory class="com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector"/>
@@ -885,7 +880,6 @@
     </itemband>
   </report-description>
   <functions>
-    <function class="com.jrefinery.report.function.EventMonitorFunction" name="monitor"/>
     <property-ref name="c_name">The Phone Company</property-ref>
     <property-ref name="c_address">11 Graham Bell Ave.
 12312 San Francisco 
