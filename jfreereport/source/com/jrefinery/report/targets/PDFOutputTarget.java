@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.19 2002/08/23 19:18:09 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.20 2002/08/26 10:54:54 taqua Exp $
  *
  * Changes
  * -------
@@ -94,6 +94,23 @@ import java.util.TreeMap;
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
+  public static final String SECURITY_ALLOW_PRINTING = "AllowPrinting";
+  public static final String SECURITY_ALLOW_MODIFY_CONTENTS = "AllowModifyContents";
+  public static final String SECURITY_ALLOW_COPY = "AllowCopy";
+  public static final String SECURITY_ALLOW_MODIFY_ANNOTATIONS = "AllowModifyAnnotations";
+  public static final String SECURITY_ALLOW_FILLIN = "AllowFillIn";
+  public static final String SECURITY_ALLOW_SCREENREADERS = "AllowScreenReaders";
+  public static final String SECURITY_ALLOW_ASSEMBLY = "AllowAssembly";
+  public static final String SECURITY_ALLOW_DEGRADED_PRINTING = "AllowDegradedPrinting";
+
+  public static final String SECURITY_ENCRYPTION = "Encryption";
+  public static final Boolean SECURITY_ENCRYPTION_40BIT = Boolean.FALSE;
+  public static final Boolean SECURITY_ENCRYPTION_128BIT = Boolean.TRUE;
+
+  public static final String SECURITY_USERPASSWORD = "userpassword";
+  public static final String SECURITY_OWNERPASSWORD = "ownerpassword";
+
+  private static final String CREATOR = JFreeReport.getInfo().getName() + " version " + JFreeReport.getInfo().getVersion();
 
   /** The output stream. */
   private OutputStream out;
@@ -932,7 +949,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param title The report title.
    * @param author The report author.
    */
-  public void open(String title, String author) throws OutputTargetException
+  public void open() throws OutputTargetException
   {
     PageFormat pageFormat = getPageFormat();
     float urx = (float) pageFormat.getWidth();
@@ -958,13 +975,30 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
 
       this.document = new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom);
-      document.addTitle(title);
-      document.addAuthor(author);
-      document.addCreator(
-          JFreeReport.getInfo().getName() + " version " + JFreeReport.getInfo().getVersion());
+
+      String title = (String) getProperty(TITLE);
+      String author = (String) getProperty(AUTHOR);
+
+      if (title != null) document.addTitle(title);
+      if (author != null) document.addAuthor(author);
+      document.addCreator(CREATOR);
       document.addCreationDate();
 
       writer = PdfWriter.getInstance(document, out);
+
+      Boolean encrypt = (Boolean) getProperty(SECURITY_ENCRYPTION);
+      if (encrypt != null)
+      {
+        if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == false &&
+            encrypt.equals(SECURITY_ENCRYPTION_40BIT) == false)
+        {
+          throw new OutputTargetException("Invalid Encryption entered");
+        }
+        String userpassword = (String) getProperty(SECURITY_USERPASSWORD);
+        String ownerpassword = (String) getProperty(SECURITY_OWNERPASSWORD);
+        writer.setEncryption(encrypt.booleanValue(), userpassword, ownerpassword, getPermissions());
+      }
+
       this.document.open();
 
       try
@@ -983,6 +1017,30 @@ public class PDFOutputTarget extends AbstractOutputTarget
       throw new OutputTargetException("Opening Document failed.", e);
     }
 
+  }
+
+  protected int getPermissions ()
+  {
+    Boolean allowPrinting = (Boolean) getProperty(SECURITY_ALLOW_PRINTING, Boolean.FALSE);
+    Boolean allowModifyContents = (Boolean) getProperty(SECURITY_ALLOW_MODIFY_CONTENTS, Boolean.FALSE);
+    Boolean allowModifyAnnotations = (Boolean) getProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, Boolean.FALSE);
+    Boolean allowCopy = (Boolean) getProperty(SECURITY_ALLOW_COPY, Boolean.FALSE);
+    Boolean allowFillIn = (Boolean) getProperty(SECURITY_ALLOW_FILLIN, Boolean.FALSE);
+    Boolean allowScreenReaders = (Boolean) getProperty(SECURITY_ALLOW_SCREENREADERS, Boolean.FALSE);
+    Boolean allowAssembly = (Boolean) getProperty(SECURITY_ALLOW_ASSEMBLY, Boolean.FALSE);
+    Boolean allowDegradedPrinting = (Boolean) getProperty(SECURITY_ALLOW_DEGRADED_PRINTING, Boolean.FALSE);
+
+
+    int permissions = 0;
+    if (allowPrinting.booleanValue()) permissions += PdfWriter.AllowPrinting;
+    if (allowModifyContents.booleanValue()) permissions += PdfWriter.AllowModifyContents;
+    if (allowModifyAnnotations.booleanValue()) permissions += PdfWriter.AllowModifyAnnotations;
+    if (allowCopy.booleanValue()) permissions += PdfWriter.AllowCopy;
+    if (allowFillIn.booleanValue()) permissions += PdfWriter.AllowFillIn;
+    if (allowScreenReaders.booleanValue()) permissions += PdfWriter.AllowScreenReaders;
+    if (allowAssembly.booleanValue()) permissions += PdfWriter.AllowAssembly;
+    if (allowDegradedPrinting.booleanValue()) permissions += PdfWriter.AllowDegradedPrinting;
+    return permissions;
   }
 
   /**

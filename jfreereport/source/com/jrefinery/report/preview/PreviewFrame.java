@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.23 2002/08/22 21:08:24 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.24 2002/08/23 19:18:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -416,6 +416,7 @@ public class PreviewFrame
   //private JFreeReport report;
   private JLabel statusHolder;
   private JToolBar toolbar;
+  private PDFSaveDialog pdfSaveDialog;
 
   /**
    * Constructs a PreviewFrame that displays the specified report, and has the specified width
@@ -467,6 +468,14 @@ public class PreviewFrame
     scrollPaneHolder.add (createStatusBar (), BorderLayout.SOUTH);
     content.add (scrollPaneHolder);
     setContentPane (content);
+
+    pdfSaveDialog = new PDFSaveDialog();
+    pdfSaveDialog.pack();
+  }
+
+  public PDFSaveDialog getPdfSaveDialog()
+  {
+    return pdfSaveDialog;
   }
 
   /**
@@ -536,42 +545,7 @@ public class PreviewFrame
    */
   public void attemptSaveAs ()
   {
-    JFileChooser fileChooser = new JFileChooser ();
-    ExtensionFileFilter filter = new ExtensionFileFilter ("PDF Documents", ".pdf");
-    fileChooser.addChoosableFileFilter (filter);
-
-    int option = fileChooser.showSaveDialog (this);
-    if (option == JFileChooser.APPROVE_OPTION)
-    {
-      PrinterJob pj = PrinterJob.getPrinterJob ();
-      PageFormat pf = pj.validatePage (reportPane.getPageFormat ());
-      File selFile = fileChooser.getSelectedFile ();
-      String selFileName = selFile.getAbsolutePath ();
-
-      // Test if ends of pdf
-
-      if (selFileName.toUpperCase ().endsWith (".PDF") == false)
-      {
-        selFileName = selFileName + ".pdf";
-      }
-      try
-      {
-        OutputStream out = new FileOutputStream (new File (selFileName));
-        PDFOutputTarget target = new PDFOutputTarget (out, pf, true);
-        target.setFontEncoding("Identity-H");
-        target.open ("Title", "Author");
-        reportPane.getReport ().processReport (target);
-        target.close ();
-      }
-      catch (IOException ioe)
-      {
-        showExceptionDialog ("error.savefailed", ioe);
-      }
-      catch (Exception re)
-      {
-        showExceptionDialog ("error.processingfailed", re);
-      }
-    }
+    getPdfSaveDialog().savePDF(reportPane.getReport(), reportPane.getPageFormat());
   }
 
   /**
@@ -582,10 +556,6 @@ public class PreviewFrame
     PrinterJob pj = PrinterJob.getPrinterJob ();
     PageFormat pf = pj.pageDialog (reportPane.getOutputTarget ().getPageFormat ());
 
-    Log.debug ("PageFormat: Imagable X: " + pf.getImageableX());
-    Log.debug ("PageFormat: Imagable Y: " + pf.getImageableY());
-    Log.debug ("PageFormat: Imagable W: " + pf.getImageableWidth());
-    Log.debug ("PageFormat: Imagable H: " + pf.getImageableHeight());
     reportPane.setPageFormat (pf);
     validate ();
     pack ();

@@ -47,6 +47,8 @@ import java.io.StringReader;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.Hashtable;
 
 /**
  * The abstract OutputTarget implements common code for all OutputTargets. It contains
@@ -63,6 +65,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /** The cursor for the target. */
   private BandCursor cursor;
 
+  private Hashtable properties;
+
   /**
    * Creates the outputtarget and adds a default cursor to this band by calling createCursor().
    * Override createCursor to define a different cursor.
@@ -72,9 +76,36 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   public AbstractOutputTarget(PageFormat format)
   {
+    properties = new Hashtable();
     cursor = createCursor();
     setPageFormat(format);
   }
+
+  public void setProperty (String property, Object value)
+  {
+    if (value == null)
+    {
+      properties.remove(property);
+    }
+    else
+    {
+      properties.put(property, value);
+    }
+  }
+
+  public Object getProperty (String property)
+  {
+    return getProperty(property, null);
+  }
+
+  public Object getProperty (String property, Object defaultValue)
+  {
+    Object retval = properties.get (property);
+    if (retval == null) return defaultValue;
+    return retval;
+  }
+
+
 
   /**
    * Creates a new cursor for this band. The cursor is used to calculate the position of an

@@ -176,6 +176,32 @@ public class JFreeReportResources extends ListResourceBundle
             {"error.printfailed.message", "Error on printing the report: {0}"},
             {"error.printfailed.title", "Error on printing"},
 
+            {"pdfsavedialog.dialogtitle", "Saving Report into a PDF-File ..."},
+            {"pdfsavedialog.filename", "Filename"},
+            {"pdfsavedialog.author", "Author"},
+            {"pdfsavedialog.title", "Title"},
+            {"pdfsavedialog.selectFile", "Select File"},
+            {"pdfsavedialog.security", "Security Settings and Encryption"},
+
+            {"pdfsavedialog.securityNone", "No Security"},
+            {"pdfsavedialog.security40bit", "Encrypt with 40 bit keys"},
+            {"pdfsavedialog.security128bit", "Encrypt with 128 bit keys"},
+            {"pdfsavedialog.userpassword", "User Password"},
+            {"pdfsavedialog.userpasswordconfirm", "Confirm"},
+            {"pdfsavedialog.ownerpassword", "Owner Password"},
+            {"pdfsavedialog.ownerpasswordconfirm", "Confirm"},
+
+            {"pdfsavedialog.allowCopy", "Allow Copy"},
+            {"pdfsavedialog.allowPrinting", "Allow Printing"},
+            {"pdfsavedialog.allowDegradedPrinting", "Allow Degraded Printing"},
+            {"pdfsavedialog.allowScreenreader", "Allow Usage Of Screenreaders"},
+            {"pdfsavedialog.allowAssembly", "Allow (Re-)assembly"},
+            {"pdfsavedialog.allowModifyContents", "Allow Modifications of Contents"},
+            {"pdfsavedialog.allowModifyAnnotations", "Allow Modification Of Annotations"},
+            {"pdfsavedialog.allowFillIn", "Allow Fill In of Formulardata"},
+
+            {"pdfsavedialog.cancel", "Cancel"},
+            {"pdfsavedialog.confirm", "Confirm"},
 
           };
 

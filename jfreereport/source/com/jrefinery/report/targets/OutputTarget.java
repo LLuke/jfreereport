@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.2 2002/05/28 19:38:10 taqua Exp $
+ * $Id: OutputTarget.java,v 1.3 2002/08/08 13:40:14 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,8 @@ import java.awt.print.PageFormat;
  */
 public interface OutputTarget
 {
+  public static final String TITLE = "title";
+  public static final String AUTHOR = "author";
 
   /**
    * Opens the target.
@@ -66,7 +68,12 @@ public interface OutputTarget
    * @param title The report title.
    * @param author The report author.
    */
-  public void open (String title, String author) throws OutputTargetException;
+  public void open () throws OutputTargetException;
+
+  public void setProperty (String property, Object value);
+
+  public Object getProperty (String property);
+  public Object getProperty (String property, Object defaultValue);
 
   /**
    * Closes the target.
