@@ -27,12 +27,13 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PDFOutputTarget.java,v 1.1.1.1 2002/04/25 17:02:29 taqua Exp $
  *
  * Changes
  * -------
  * 21-Feb-2002 : Version 1 (DG);
  * 24-Apr-2002 : Support for Images and MultiLineElements.
+ * 07-May-2002 : Small change for source of JFreeReport info to set creator of PDF document (DG);
  */
 
 package com.jrefinery.report.pdf;
@@ -45,9 +46,11 @@ import java.awt.geom.Line2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.io.OutputStream;
+import java.text.BreakIterator;
+import java.util.Vector;
 import java.util.Map;
 import java.util.TreeMap;
-import com.lowagie.text.Image;
+//import com.lowagie.text.Image;
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
@@ -59,8 +62,6 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.OutputTarget;
 import com.jrefinery.report.Element;
-import java.text.BreakIterator;
-import java.util.Vector;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -316,7 +317,7 @@ public class PDFOutputTarget implements OutputTarget {
         // haven't looked into how to do this with iText yet...
     }
 
-    public void drawImage (ImageReference imageRef, float x, float y) 
+    public void drawImage (ImageReference imageRef, float x, float y)
     {
       try
       {
@@ -330,7 +331,7 @@ public class PDFOutputTarget implements OutputTarget {
         be.printStackTrace ();
       }
     }
-    
+
     /**
      * Draws a shape at the specified location.  At the moment, this method only supports drawing
      * lines (instances of Line2D).
@@ -396,7 +397,7 @@ public class PDFOutputTarget implements OutputTarget {
                                                    marginTop, marginBottom);
             document.addTitle(title);
             document.addAuthor(author);
-            document.addCreator(JFreeReport.NAME+" version "+JFreeReport.VERSION);
+            document.addCreator(JFreeReport.INFO.getName()+" version "+JFreeReport.INFO.getVersion());
             document.addCreationDate();
             writer = PdfWriter.getInstance(document, out);
             this.document.open();
@@ -420,13 +421,13 @@ public class PDFOutputTarget implements OutputTarget {
      * @param x The x-coordinate for the band.
      * @param y The y-coordinate for the band.
      */
-    public void drawMultiLineText (String mytext, float x1, float y1, float x2, float y2, int align) 
+    public void drawMultiLineText (String mytext, float x1, float y1, float x2, float y2, int align)
     {
       Vector lines = breakLines (mytext, x2 - x1);
       int fontheight = fontSize;
 
       for (int i = 0; i < lines.size(); i++) {
-    	    String line = (String)lines.elementAt(i);
+            String line = (String)lines.elementAt(i);
           drawString (line, x1, y1 + i*fontheight, x2, y2, align);
       }
 
@@ -435,34 +436,34 @@ public class PDFOutputTarget implements OutputTarget {
     /**
      * Breaks the text into multiple lines
      */
-    private Vector breakLines (String mytext, float w) 
+    private Vector breakLines (String mytext, float w)
     {
       BreakIterator breakit = BreakIterator.getWordInstance ();
       breakit.setText (mytext);
-      
+
       //Font font = g2.getFont ();
-      
+
       Vector lines = new Vector();
       int pos = 0;
       int len = mytext.length();
 
-      while (pos < len) 
+      while (pos < len)
       {
          int last = breakit.next ();
          float x = 0;
 
-         while (x < w && last != BreakIterator.DONE) 
+         while (x < w && last != BreakIterator.DONE)
          {
            x = (float) baseFont.getWidthPoint(mytext, fontSize);
            last = breakit.next ();
          }
 
-         if (last == BreakIterator.DONE) 
+         if (last == BreakIterator.DONE)
          {
            lines.add (mytext.substring (pos));
            pos = len;
          }
-         else 
+         else
          {
            lines.add (mytext.substring (pos, last));
            pos = last;
