@@ -25,7 +25,7 @@
  * -------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: DataRowBackend.java,v 1.20 2002/11/07 21:45:19 taqua Exp $
  *
  * Changes
  * -------
@@ -442,7 +442,7 @@ public class DataRowBackend implements Cloneable
         return i;
       }
     }
-    //Log.warn ("No Such Column: " + name );
+    Log.warn ("No Such Column: " + name );
     return -1;
   }
 
