@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: $
+ * $Id: ExportPluginFactory.java,v 1.6 2003/02/25 14:45:31 mungady Exp $
  *
  * Changes
  * --------
@@ -37,10 +37,12 @@
  */
 package com.jrefinery.report.preview;
 
-import java.awt.Dialog;
-import java.awt.Frame;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 
 /**
@@ -53,20 +55,6 @@ public class ExportPluginFactory
   /** The plug-in enable prefix. */
   public static final String PLUGIN_ENABLE_PREFIX = "com.jrefinery.report.preview.plugin.";
 
-  /** The PDF plug-in key. */
-  public static final String PLUGIN_PDF = "pdf";
-
-  /** The CSV plug-in key. */
-  public static final String PLUGIN_CSV = "csv";
-
-  /** The HTML plug-in key. */
-  public static final String PLUGIN_HTML = "html";
-
-  /** The EXCEL plug-in key. */
-  public static final String PLUGIN_EXCEL = "excel";
-
-  /** The PLAIN plug-in key. */
-  public static final String PLUGIN_PLAIN = "plain";
 
   /**
    * Creates an Excel plug-in.
@@ -75,131 +63,20 @@ public class ExportPluginFactory
    * 
    * @return The plug-in.
    */
-  protected ExportPlugin createExcelPlugIn (PreviewProxy proxy)
+  protected ExportPlugin createPlugIn (PreviewProxy proxy, String className)
   {
-    ExcelExportDialog excelExportDialog;
-
-    if (proxy instanceof Frame)
+    try
     {
-      excelExportDialog = new ExcelExportDialog((Frame) proxy);
+      Class c = Class.forName(className);
+      ExportPlugin ep = (ExportPlugin) c.newInstance();
+      ep.init(proxy);
+      return ep;
     }
-    else if (proxy instanceof Dialog)
+    catch (Exception e)
     {
-      excelExportDialog = new ExcelExportDialog((Dialog) proxy);
+      Log.warn ("Unable to create the export plugin: " + className, e);
+      return null;
     }
-    else
-    {
-      excelExportDialog = new ExcelExportDialog();
-    }
-    excelExportDialog.pack();
-    return excelExportDialog;
-  }
-
-  /**
-   * Creates an HTML plug-in.
-   * 
-   * @param proxy  the preview proxy.
-   * 
-   * @return The plug-in.
-   */
-  protected ExportPlugin createHTMLPlugin (PreviewProxy proxy)
-  {
-    HtmlExportDialog htmlExportDialog;
-
-    if (proxy instanceof Frame)
-    {
-      htmlExportDialog = new HtmlExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      htmlExportDialog = new HtmlExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      htmlExportDialog = new HtmlExportDialog();
-    }
-    htmlExportDialog.pack();
-    return htmlExportDialog;
-  }
-
-  /**
-   * Creates a plain text plug-in.
-   * 
-   * @param proxy  the preview proxy.
-   * 
-   * @return The plug-in.
-   */
-  protected ExportPlugin createPlainTextPlugin (PreviewProxy proxy)
-  {
-    PlainTextExportDialog plainTextExportDialog;
-
-    if (proxy instanceof Frame)
-    {
-      plainTextExportDialog = new PlainTextExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      plainTextExportDialog = new PlainTextExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      plainTextExportDialog = new PlainTextExportDialog();
-    }
-    plainTextExportDialog.pack();
-    return plainTextExportDialog;
-  }
-
-  /**
-   * Creates a CSV plug-in.
-   * 
-   * @param proxy  the preview proxy.
-   * 
-   * @return The plug-in.
-   */
-  protected ExportPlugin createCSVPlugin (PreviewProxy proxy)
-  {
-    CSVExportDialog csvExportDialog;
-
-    if (proxy instanceof Frame)
-    {
-      csvExportDialog = new CSVExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      csvExportDialog = new CSVExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      csvExportDialog = new CSVExportDialog();
-    }
-    csvExportDialog.pack();
-    return csvExportDialog;
-  }
-
-  /**
-   * Creates a PDF plug-in.
-   * 
-   * @param proxy  the preview proxy.
-   * 
-   * @return The plug-in.
-   */
-  protected ExportPlugin createPDFPlugin (PreviewProxy proxy)
-  {
-    PDFSaveDialog pdfSaveDialog;
-    if (proxy instanceof Frame)
-    {
-      pdfSaveDialog = new PDFSaveDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      pdfSaveDialog = new PDFSaveDialog((Dialog) proxy);
-    }
-    else
-    {
-      pdfSaveDialog = new PDFSaveDialog();
-    }
-    pdfSaveDialog.pack();
-    return pdfSaveDialog;
   }
 
   /**
@@ -225,28 +102,45 @@ public class ExportPluginFactory
    */
   public ArrayList createExportPlugIns (PreviewProxy proxy, ReportConfiguration config)
   {
+    InputStream in = getClass().getResourceAsStream
+        ("/com/jrefinery/report/preview/previewplugins.properties");
 
+    Properties prop = new Properties ();
+
+    try
+    {
+      prop.load(in);
+    }
+    catch (Exception e)
+    {
+      Log.warn ("Unable to load export plugin configuration.");
+    }
+
+    String availablePlugins = prop.getProperty("available.plugins", "");
+    StringTokenizer strtok = new StringTokenizer(availablePlugins, ",");
     ArrayList retval = new ArrayList();
 
-    if (isPluginEnabled(config, PLUGIN_PLAIN))
+    while (strtok.hasMoreElements())
     {
-      retval.add (createPlainTextPlugin(proxy));
-    }
-    if (isPluginEnabled(config, PLUGIN_PDF))
-    {
-      retval.add (createPDFPlugin(proxy));
-    }
-    if (isPluginEnabled(config, PLUGIN_EXCEL))
-    {
-      retval.add (createExcelPlugIn(proxy));
-    }
-    if (isPluginEnabled(config, PLUGIN_HTML))
-    {
-      retval.add (createHTMLPlugin(proxy));
-    }
-    if (isPluginEnabled(config, PLUGIN_CSV))
-    {
-      retval.add (createCSVPlugin(proxy));
+      String plugin = strtok.nextToken().trim();
+      String pluginClass = prop.getProperty(plugin);
+      if (pluginClass == null)
+      {
+        Log.warn (new Log.SimpleMessage("Plugin ", plugin, " is not defined."));
+        continue;
+      }
+      if (isPluginEnabled(config, plugin))
+      {
+        ExportPlugin ep = createPlugIn(proxy, pluginClass);
+        if (ep != null)
+        {
+          retval.add (ep);
+        }
+      }
+      else
+      {
+        Log.warn (new Log.SimpleMessage("Plugin ", plugin, " is not enabled."));
+      }
     }
     return retval;
   }

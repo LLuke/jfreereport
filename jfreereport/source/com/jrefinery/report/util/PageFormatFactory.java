@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.23 2003/05/14 22:26:40 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.24 2003/06/01 17:39:27 taqua Exp $
  *
  * Changes
  * -------
@@ -754,6 +754,28 @@ public class PageFormatFactory
                           + " Y " + pf.getImageableY()
                           + " H: " + pf.getImageableHeight()
                           + " W: " + pf.getImageableWidth());
+  }
+
+  /**
+   * Tests, whether the given two page format objects are equal.
+   *
+   * @param pf1 the first page format that should be compared.
+   * @param pf2 the second page format that should be compared.
+   * @return true, if both page formats are equal, false otherwise.
+   */
+  public static boolean isEqual (PageFormat pf1, PageFormat pf2)
+  {
+    if (pf1 == pf2) return true;
+    if (pf1.getOrientation() != pf2.getOrientation()) return false;
+    Paper p1 = pf1.getPaper();
+    Paper p2 = pf2.getPaper();
+    if (p1.getWidth() != p2.getWidth()) return false;
+    if (p1.getHeight() != p2.getHeight()) return false;
+    if (p1.getImageableX() != p2.getImageableX()) return false;
+    if (p1.getImageableY() != p2.getImageableY()) return false;
+    if (p1.getImageableWidth() != p2.getImageableWidth()) return false;
+    if (p1.getImageableHeight() != p2.getImageableHeight()) return false;
+    return true;
   }
 
   /**

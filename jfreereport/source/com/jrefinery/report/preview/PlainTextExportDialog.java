@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.12 2003/04/24 18:08:55 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.13 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * --------
@@ -92,7 +92,7 @@ import org.jfree.ui.ExtensionFileFilter;
  *
  * @author Thomas Morgner.
  */
-public class PlainTextExportDialog extends JDialog implements ExportPlugin
+public class PlainTextExportDialog extends JDialog 
 {
   /**
    * Internal action class to confirm the dialog and to validate the input.

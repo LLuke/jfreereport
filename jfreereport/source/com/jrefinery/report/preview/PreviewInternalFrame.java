@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.2 2003/02/25 14:45:41 mungady Exp $
+ * $Id: PreviewInternalFrame.java,v 1.3 2003/05/02 12:40:25 taqua Exp $
  *
  * Changes
  * -------
@@ -115,7 +115,8 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
    */
   private void init(JFreeReport report) throws ReportProcessingException
   {
-    base = new PreviewProxyBase(report, this);
+    base = new PreviewProxyBase(this);
+    base.init(report);
     registerCloseActions();
     setContentPane(base);
   }

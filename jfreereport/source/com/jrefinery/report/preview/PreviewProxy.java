@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxy.java,v 1.2 2003/02/25 14:45:43 mungady Exp $
+ * $Id: PreviewProxy.java,v 1.3 2003/05/02 12:40:26 taqua Exp $
  *
  * Changes
  * --------
@@ -92,4 +92,12 @@ public interface PreviewProxy
    * @param title  the title.
    */
   public void setTitle (String title);
+
+  /**
+   * Returns the proxybase used to implement the behaviour of the report
+   * preview component.
+   *
+   * @return the proxybase of this preview component.
+   */
+  public PreviewProxyBase getBase ();
 }

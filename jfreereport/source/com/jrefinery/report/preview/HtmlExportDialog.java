@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.17 2003/04/24 18:08:55 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.18 2003/05/02 12:40:22 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -94,7 +93,7 @@ import org.jfree.io.IOUtils;
  *
  * @author Heiko Evermann
  */
-public class HtmlExportDialog extends JDialog implements ExportPlugin
+public class HtmlExportDialog extends JDialog
 {
   /** Export to a single stream or file. */
   public static final int EXPORT_STREAM = 0;
@@ -1534,7 +1533,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Initialises the Excel export dialog from the settings in the report configuration.
+   * Initialises the Html export dialog from the settings in the report configuration.
    *
    * @param config  the report configuration.
    */
@@ -1542,86 +1541,6 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   {
     encodingModel.ensureEncodingAvailable(config.getHTMLTargetEncoding());
     setEncoding(config.getHTMLTargetEncoding());
-  }
-
-  /**
-   * Returns the action display name.
-   * 
-   * @return The display name.
-   */
-  public String getDisplayName()
-  {
-    return resources.getString ("action.export-to-html.name");
-  }
-
-  /**
-   * Returns the short description for the action.
-   * 
-   * @return The short description.
-   */
-  public String getShortDescription()
-  {
-    return resources.getString ("action.export-to-html.description");
-  }
-
-  /**
-   * Returns the small icon for the action.
-   * 
-   * @return The icon.
-   */
-  public Icon getSmallIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-html.small-icon");
-  }
-
-  /**
-   * Returns the large icon for the action.
-   * 
-   * @return The icon.
-   */
-  public Icon getLargeIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-html.icon");
-  }
-
-  /**
-   * Returns the accelerator key for the action.
-   * 
-   * @return The accelerator key.
-   */
-  public KeyStroke getAcceleratorKey()
-  {
-    return (KeyStroke) resources.getObject ("action.export-to-html.accelerator");
-  }
-
-  /**
-   * Returns the mnemonic key code for the action.
-   * 
-   * @return The key code.
-   */
-  public Integer getMnemonicKey()
-  {
-    return (Integer) resources.getObject ("action.export-to-html.mnemonic");
-  }
-
-  /**
-   * Returns <code>false</code>.
-   * 
-   * @return A boolean.
-   */
-  public boolean isSeparated()
-  {
-    return false;
-  }
-
-  /**
-   * Returns <code>false</code>.
-   * 
-   * @return A boolean.
-   */
-  public boolean isAddToToolbar()
-  {
-    return false;
   }
 
   /**

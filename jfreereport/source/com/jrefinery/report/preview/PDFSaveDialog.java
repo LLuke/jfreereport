@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.30 2003/04/11 14:11:45 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.31 2003/05/02 12:40:23 taqua Exp $
  *
  * Changes
  * --------
@@ -99,7 +99,7 @@ import com.jrefinery.report.util.ReportConfiguration;
  *
  * @author Thomas Morgner
  */
-public class PDFSaveDialog extends JDialog implements ExportPlugin
+public class PDFSaveDialog extends JDialog 
 {
   /** Useful constant. */
   private static final int CBMODEL_NOPRINTING = 0;
@@ -1462,86 +1462,6 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key,
                                           String.valueOf(orgVal));
     return (val.equalsIgnoreCase("true"));
-  }
-
-  /**
-   * Returns the display name.
-   * 
-   * @return The display name.
-   */
-  public String getDisplayName()
-  {
-    return resources.getString ("action.save-as.name");
-  }
-
-  /**
-   * Returns the short description for the action.
-   * 
-   * @return The short description.
-   */
-  public String getShortDescription()
-  {
-    return resources.getString ("action.save-as.description");
-  }
-
-  /**
-   * Returns the small icon for the action.
-   * 
-   * @return The icon.
-   */
-  public Icon getSmallIcon()
-  {
-    return (Icon) resources.getObject ("action.save-as.small-icon");
-  }
-
-  /**
-   * Returns the large icon for the action.
-   * 
-   * @return The icon.
-   */
-  public Icon getLargeIcon()
-  {
-    return (Icon) resources.getObject ("action.save-as.icon");
-  }
-
-  /**
-   * Returns the accelerator key for the action.
-   * 
-   * @return The accelerator key.
-   */
-  public KeyStroke getAcceleratorKey()
-  {
-    return (KeyStroke) resources.getObject ("action.save-as.accelerator");
-  }
-
-  /**
-   * Returns the mnemonic key code.
-   * 
-   * @return The key code.
-   */
-  public Integer getMnemonicKey()
-  {
-    return (Integer) resources.getObject ("action.save-as.mnemonic");
-  }
-
-  /**
-   * Returns <code>true</code>.
-   * 
-   * @return <code>true</code>.
-   */
-  public boolean isSeparated()
-  {
-    return true;
-  }
-
-  /**
-   * Returns <code>true</code>.
-   * 
-   * @return <code>true</code>.
-   */
-  public boolean isAddToToolbar()
-  {
-    return true;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.3 2003/02/25 14:45:30 mungady Exp $
+ * $Id: ExportAction.java,v 1.4 2003/05/02 12:40:22 taqua Exp $
  *
  * Changes
  * --------
@@ -39,6 +39,7 @@ package com.jrefinery.report.preview;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.ActionDowngrade;
@@ -48,14 +49,17 @@ import com.jrefinery.report.util.ActionDowngrade;
  * 
  * @author Thomas Morgner. 
  */
-public class ExportAction extends AbstractAction implements ActionDowngrade
+public class ExportAction extends AbstractAction implements ActionDowngrade, Runnable
 {
   /** The export plug-in. */
   private ExportPlugin plugin;
   
   /** The report. */ 
   private JFreeReport report;
-  
+
+  /** The backend that is used to execute the report. */
+  private PreviewProxyBase proxyBase;
+
   /**
    * Defines an <code>Action</code> object with a default description string and default icon.
    * 
@@ -115,6 +119,16 @@ public class ExportAction extends AbstractAction implements ActionDowngrade
     this.report = report;
   }
 
+  public PreviewProxyBase getProxyBase()
+  {
+    return proxyBase;
+  }
+
+  public void setProxyBase(PreviewProxyBase proxyBase)
+  {
+    this.proxyBase = proxyBase;
+  }
+
   /**
    * Exports the current report using the installed export plug-in.
    * 
@@ -122,6 +136,37 @@ public class ExportAction extends AbstractAction implements ActionDowngrade
    */
   public void actionPerformed(ActionEvent e)
   {
-    plugin.performExport(report);
+    if (plugin.isControlPlugin() == false)
+    {
+      SwingUtilities.invokeLater(this);
+    }
+    else
+    {
+      run();
+    }
+  }
+
+  /**
+   * When an object implementing interface <code>Runnable</code> is used
+   * to create a thread, starting the thread causes the object's
+   * <code>run</code> method to be called in that separately executing
+   * thread.
+   * <p>
+   * The general contract of the method <code>run</code> is that it may
+   * take any action whatsoever.
+   *
+   * @see     Thread#run()
+   */
+  public void run()
+  {
+    boolean retval = plugin.performExport(report);
+    if (plugin.isRepaginateOnSuccess() && retval == true)
+    {
+      proxyBase.performPagination();
+    }
+    if (plugin.isControlPlugin() == false && retval == false)
+    {
+      proxyBase.setStatusText("Export failed: " + plugin.getDisplayName());
+    }
   }
 }

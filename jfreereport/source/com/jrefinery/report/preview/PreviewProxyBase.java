@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.18 2003/04/24 18:08:55 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.19 2003/05/02 12:40:26 taqua Exp $
  *
  * Changes
  * -------
  * 25-Feb-2003 : Added standard header and Javadocs (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.preview;
@@ -48,11 +48,8 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
@@ -78,7 +75,6 @@ import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.RepaintManager;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.jrefinery.report.JFreeReport;
@@ -88,9 +84,7 @@ import com.jrefinery.report.action.FirstPageAction;
 import com.jrefinery.report.action.GotoPageAction;
 import com.jrefinery.report.action.LastPageAction;
 import com.jrefinery.report.action.NextPageAction;
-import com.jrefinery.report.action.PageSetupAction;
 import com.jrefinery.report.action.PreviousPageAction;
-import com.jrefinery.report.action.PrintAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
 import com.jrefinery.report.targets.base.bandlayout.LayoutManagerCache;
@@ -111,12 +105,12 @@ import org.xml.sax.SAXException;
 
 /**
  * A preview proxy.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class PreviewProxyBase extends JComponent
 {
-  /** ??. */
+  /** The worker thread which is used to perform the repagination. */
   private Worker paginationWorker;
 
   /** The default width of the report pane. */
@@ -287,7 +281,7 @@ public class PreviewProxyBase extends JComponent
             new Integer(reportPane.getPageNumber()),
             new Integer(reportPane.getNumberOfPages())
           };
-          getStatus().setText(
+          setStatusText(
               MessageFormat.format(
                   getResources().getString("statusline.pages"),
                   params
@@ -308,7 +302,7 @@ public class PreviewProxyBase extends JComponent
           new Integer(reportPane.getPageNumber()),
           new Integer(reportPane.getNumberOfPages())
         };
-        getStatus().setText(
+        setStatusText(
             MessageFormat.format(
                 getResources().getString("statusline.pages"),
                 params
@@ -323,7 +317,7 @@ public class PreviewProxyBase extends JComponent
           Exception ex = reportPane.getError();
 
           ex.printStackTrace();
-          getStatus().setText(
+          setStatusText(
               MessageFormat.format(
                   getResources().getString("statusline.error"),
                   new Object[]{ex.getMessage()}
@@ -487,77 +481,6 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Default 'print' action for the frame.
-   */
-  private class DefaultPrintAction extends PrintAction implements Runnable
-  {
-    /**
-     * Creates a 'print' action.
-     */
-    public DefaultPrintAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * Prints the report.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-      SwingUtilities.invokeLater(this);
-    }
-
-    /**
-     * The workload for this action.
-     */
-    public void run()
-    {
-      try
-      {
-        attemptPrint();
-      }
-      catch (PrinterException pe)
-      {
-        // to do : report this to the user.
-      }
-    }
-  }
-
-  /**
-   * Default 'page setup' action for the frame.
-   */
-  private class DefaultPageSetupAction extends PageSetupAction implements Runnable
-  {
-    /**
-     * Creates a 'page setup' action.
-     */
-    public DefaultPageSetupAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * perform page setup.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-      SwingUtilities.invokeLater(this);
-    }
-
-    /**
-     * The workload for this action.
-     */
-    public void run()
-    {
-      attemptPageSetup();
-    }
-  }
-
-  /**
    * Default 'about' action (does nothing).
    */
   private class DefaultAboutAction extends AboutAction
@@ -682,7 +605,7 @@ public class PreviewProxyBase extends JComponent
 
   /**
    * Returns the worker.
-   * 
+   *
    * @return The worker.
    */
   protected Worker getWorker ()
@@ -702,12 +625,6 @@ public class PreviewProxyBase extends JComponent
 
   /** The 'about' action. */
   private WrapperAction aboutAction;
-
-  /** The 'page setup' action. */
-  private WrapperAction pageSetupAction;
-
-  /** The 'print' action. */
-  private WrapperAction printAction;
 
   /** The 'close' action. */
   private WrapperAction closeAction;
@@ -734,7 +651,7 @@ public class PreviewProxyBase extends JComponent
   private WrapperAction gotoAction;
 
   /** The available zoom factors. */
-  private static final float[] 
+  private static final float[]
       ZOOM_FACTORS = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f, 3.0f, 4.0f};
 
   /** The default zoom index (corresponds to a zoomFactor of 1.0. */
@@ -776,15 +693,11 @@ public class PreviewProxyBase extends JComponent
   /**
    * Creates a preview proxy.
    *
-   * @param report  the report to preview.
    * @param proxy  the proxy.
-   *
-   * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewProxyBase(JFreeReport report, PreviewProxy proxy) throws ReportProcessingException
+  public PreviewProxyBase(PreviewProxy proxy)
   {
     this.proxy = proxy;
-    init(report);
   }
 
   /**
@@ -794,7 +707,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  private void init (JFreeReport report) throws ReportProcessingException
+  public void init (JFreeReport report) throws ReportProcessingException
   {
     setLargeIconsEnabled(true);
 
@@ -1052,35 +965,6 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Displays a printer page setup dialog, then updates the report pane with the new page size.
-   */
-  protected void attemptPageSetup()
-  {
-    PrinterJob pj = PrinterJob.getPrinterJob();
-    PageFormat pf = pj.pageDialog(reportPane.getPageFormat());
-
-    reportPane.setVisible(false);
-    reportPane.setPageFormat(pf);
-    performPagination();
-    //proxy.pack();
-  }
-
-  /**
-   * Prints the report.
-   *
-   * @throws PrinterException if there is a problem printing the report.
-   */
-  protected void attemptPrint() throws PrinterException
-  {
-    PrinterJob pj = PrinterJob.getPrinterJob();
-    pj.setPageable(reportPane);
-    if (pj.printDialog())
-    {
-      pj.print();
-    }
-  }
-
-  /**
    * Returns the report pane, which implements the Pageable interface.
    *
    * @return the report pane.
@@ -1226,14 +1110,12 @@ public class PreviewProxyBase extends JComponent
   /**
    * Creates all actions by calling the createXXXAction functions and assigning them to
    * the local variables.
-   * 
+   *
    * @param defaultCloseAction  the default close action.
    */
   private void createDefaultActions(Action defaultCloseAction)
   {
     gotoAction = new WrapperAction(createDefaultGotoAction());
-    pageSetupAction = new WrapperAction(createDefaultPageSetupAction());
-    printAction = new WrapperAction(createDefaultPrintAction());
     aboutAction = new WrapperAction(createDefaultAboutAction());
     closeAction = new WrapperAction(defaultCloseAction);
     firstPageAction = new WrapperAction(createDefaultFirstPageAction());
@@ -1318,26 +1200,6 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * creates the PageSetupAction used in this previewframe.
-   *
-   * @return the 'page setup' action.
-   */
-  protected Action createDefaultPageSetupAction()
-  {
-    return new DefaultPageSetupAction();
-  }
-
-  /**
-   * Creates the PrintAction used in this previewframe.
-   *
-   * @return the 'print' action.
-   */
-  protected Action createDefaultPrintAction()
-  {
-    return new DefaultPrintAction();
-  }
-
-  /**
    * Creates the FirstPageAction used in this previewframe.
    *
    * @return the 'first page' action.
@@ -1362,11 +1224,15 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the status label.
    */
-  protected JLabel getStatus()
+  public String getStatusText()
   {
-    return statusHolder;
+    return statusHolder.getText();
   }
 
+  public void setStatusText(String text)
+  {
+    statusHolder.setText(text);
+  }
   /**
    * Creates the statusbar for this frame. Use setStatus() to display text on the status bar.
    *
@@ -1404,31 +1270,25 @@ public class PreviewProxyBase extends JComponent
     fileMenu.setMnemonic(mnemonic.charValue());
 
     Iterator it = exportPlugIns.iterator();
-    boolean addedSeparator = true;
+    boolean addedItem= it.hasNext();
     while (it.hasNext())
     {
       ExportPlugin plugIn = (ExportPlugin) it.next();
       ExportAction action = new ExportAction(plugIn);
       action.setReport(report);
-      fileMenu.add(createMenuItem(action));
+      action.setProxyBase(this);
+
       if (plugIn.isSeparated())
       {
         fileMenu.addSeparator();
-        addedSeparator = true;
       }
-      else
-      {
-        addedSeparator = false;
-      }
+      fileMenu.add(createMenuItem(action));
     }
-    if (addedSeparator == false)
+    if (addedItem == true)
     {
       fileMenu.addSeparator();
     }
 
-    fileMenu.add(createMenuItem(pageSetupAction));
-    fileMenu.add(createMenuItem(printAction));
-    fileMenu.add(new JSeparator());
     fileMenu.add(createMenuItem(closeAction));
 
     // the navigation menu ...
@@ -1517,7 +1377,7 @@ public class PreviewProxyBase extends JComponent
   /**
    * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
    * in and out, and an about box.
-   * 
+   *
    * @param report  the report.
    *
    * @return A completely initialized JToolBar.
@@ -1527,7 +1387,7 @@ public class PreviewProxyBase extends JComponent
     JToolBar toolbar = new JToolBar();
 
     Iterator it = exportPlugIns.iterator();
-    boolean addedSeparator = true;
+    boolean addedItem = it.hasNext();
     while (it.hasNext())
     {
       ExportPlugin plugIn = (ExportPlugin) it.next();
@@ -1537,24 +1397,18 @@ public class PreviewProxyBase extends JComponent
       }
       ExportAction action = new ExportAction(plugIn);
       action.setReport(report);
-      toolbar.add(createButton(action));
+      action.setProxyBase(this);
       if (plugIn.isSeparated())
       {
         toolbar.addSeparator();
-        addedSeparator = true;
       }
-      else
-      {
-        addedSeparator = false;
-      }
+      toolbar.add(createButton(action));
     }
-    if (addedSeparator == false)
+    if (addedItem == true)
     {
       toolbar.addSeparator();
     }
 
-    toolbar.add(createButton(printAction));
-    toolbar.addSeparator();
     toolbar.add(createButton(firstPageAction));
     toolbar.add(createButton(previousPageAction));
     toolbar.add(createButton(nextPageAction));
@@ -1632,11 +1486,6 @@ public class PreviewProxyBase extends JComponent
     // no goto, if there is only one page
     getGotoAction().setEnabled(mp > 1);
 
-    // always allow to change the page settings
-    getPageSetupAction().setEnabled(true);
-    // dont allow printing if the repagination failed
-    getPrintAction().setEnabled(mp > 0);
-
     getZoomOutAction().setEnabled(zoomSelect.getSelectedIndex() != 0);
     getZoomInAction().setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
   }
@@ -1652,8 +1501,6 @@ public class PreviewProxyBase extends JComponent
     getFirstPageAction().setEnabled(false);
     getZoomOutAction().setEnabled(false);
     getZoomInAction().setEnabled(false);
-    getPageSetupAction().setEnabled(false);
-    getPrintAction().setEnabled(false);
   }
 
   /**
@@ -1707,46 +1554,6 @@ public class PreviewProxyBase extends JComponent
   public void setAboutAction(Action aboutAction)
   {
     this.aboutAction.setParent(aboutAction);
-  }
-
-  /**
-   * Returns the 'Page Setup' action.
-   *
-   * @return the 'Page Setup' action.
-   */
-  public Action getPageSetupAction()
-  {
-    return pageSetupAction.getParent();
-  }
-
-  /**
-   * Sets the 'Page Setup' action.
-   *
-   * @param pageSetupAction  the 'Page Setup' action.
-   */
-  public void setPageSetupAction(Action pageSetupAction)
-  {
-    this.pageSetupAction.setParent(pageSetupAction);
-  }
-
-  /**
-   * Returns the 'Print' action.
-   *
-   * @return the 'Print' action.
-   */
-  public Action getPrintAction()
-  {
-    return printAction.getParent();
-  }
-
-  /**
-   * Sets the 'Print' action.
-   *
-   * @param printAction  the 'Print' action.
-   */
-  public void setPrintAction(Action printAction)
-  {
-    this.printAction.setParent(printAction);
   }
 
   /**
@@ -1915,12 +1722,12 @@ public class PreviewProxyBase extends JComponent
   public void performPagination ()
   {
     disableButtons();
-    getStatus().setText(getResources().getString("statusline.repaginate"));
+    setStatusText(getResources().getString("statusline.repaginate"));
 
     Worker worker = getWorker();
     synchronized (worker)
     {
-      while (worker.isAvailable() == false) 
+      while (worker.isAvailable() == false)
       {
         // wait until the worker is done with his current job
       }

@@ -20,115 +20,58 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------
- * ExportPlugin.java
- * -----------------
+ * ------------------------------
+ * PageSetupPlugin.java
+ * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPlugin.java,v 1.3 2003/02/25 14:45:31 mungady Exp $
+ * $Id$
  *
  * Changes
- * --------
- * 25-Feb-2003 : Added standard header and Javadocs (DG);
+ * -------------------------
+ * 13.06.2003 : Initial version
  *
  */
+
 package com.jrefinery.report.preview;
 
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterJob;
+import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.PageFormatFactory;
 
-/**
- * An export plug-in is a class that can work with the {@link ExportAction} class to implement
- * an export function for reports.
- * 
- * @author Thomas Morgner.
- */
-public interface ExportPlugin
+public class PageSetupPlugin implements ExportPlugin
 {
-  /**
-   * Exports a report.
-   * 
-   * @param report  the report.
-   * 
-   * @return A boolean.
-   */
-  public boolean performExport (JFreeReport report);
+  /** Localised resources. */
+  private ResourceBundle resources;
 
-  /**
-   * Returns the display name for the export action.
-   * 
-   * @return The display name.
-   */
-  public String getDisplayName();
-  
-  /**
-   * Returns the short description for the export action.
-   * 
-   * @return The short description.
-   */
-  public String getShortDescription();
-
-  /**
-   * Returns the small icon for the export action.
-   * 
-   * @return The icon.
-   */
-  public Icon getSmallIcon();
-
-  /**
-   * Returns the large icon for the export action.
-   * 
-   * @return The icon.
-   */
-  public Icon getLargeIcon();
-  
-  /**
-   * Returns the accelerator key for the export action.
-   * 
-   * @return The accelerator key.
-   */
-  public KeyStroke getAcceleratorKey();
-
-  /**
-   * Returns the mnemonic key code.
-   * 
-   * @return The code.
-   */
-  public Integer getMnemonicKey();
-  
-  /**
-   * Returns true if the action is separated, and false otherwise.
-   * 
-   * @return A boolean.
-   */
-  public boolean isSeparated ();
-
-  /**
-   * Returns true if the action should be added to the toolbar, and false otherwise.
-   * 
-   * @return A boolean.
-   */
-  public boolean isAddToToolbar();
-
-  /**
-   * Returns true, if the report should be repaginated after the plugin was sucessfully
-   * executed.
-   *
-   * @return a boolean.
-   */
-  public boolean isRepaginateOnSuccess();
+  /** The base resource class. */
+  public static final String BASE_RESOURCE_CLASS =
+      "com.jrefinery.report.resources.JFreeReportResources";
 
   /**
    * Initializes the plugin to work with the given PreviewProxy.
    *
    * @param proxy
    */
-  public void init (PreviewProxy proxy);
+  public void init(PreviewProxy proxy)
+  {
+  }
+
+  /**
+   * Default Constructor.
+   */
+  public PageSetupPlugin()
+  {
+    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+  }
 
   /**
    * Returns true, when this export plugin is used to configure the report or an other
@@ -136,6 +79,121 @@ public interface ExportPlugin
    *
    * @return true if this is a control plugin, false otherwise.
    */
-  public boolean isControlPlugin ();
+  public boolean isControlPlugin()
+  {
+    return true;
+  }
 
+  /**
+   * Exports a report.
+   *
+   * @param report  the report.
+   *
+   * @return A boolean.
+   */
+  public boolean performExport(JFreeReport report)
+  {
+    PrinterJob pj = PrinterJob.getPrinterJob();
+    PageFormat pf = pj.pageDialog(report.getDefaultPageFormat());
+    if (PageFormatFactory.isEqual(pf, report.getDefaultPageFormat()))
+    {
+      report.setDefaultPageFormat(pf);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  /**
+   * Returns the display name for the export action.
+   *
+   * @return The display name.
+   */
+  public String getDisplayName()
+  {
+    return (resources.getString("action.page-setup.name"));
+  }
+
+  /**
+   * Returns the short description for the export action.
+   *
+   * @return The short description.
+   */
+  public String getShortDescription()
+  {
+    return (resources.getString("action.page-setup.description"));
+  }
+
+  /**
+   * Returns the small icon for the export action.
+   *
+   * @return The icon.
+   */
+  public Icon getSmallIcon()
+  {
+    return (Icon) resources.getObject("action.page-setup.small-icon");
+  }
+
+  /**
+   * Returns the large icon for the export action.
+   *
+   * @return The icon.
+   */
+  public Icon getLargeIcon()
+  {
+    return (Icon) resources.getObject("action.page-setup.icon");
+  }
+
+  /**
+   * Returns the accelerator key for the export action.
+   *
+   * @return The accelerator key.
+   */
+  public KeyStroke getAcceleratorKey()
+  {
+    return null;
+  }
+
+  /**
+   * Returns the mnemonic key code.
+   *
+   * @return The code.
+   */
+  public Integer getMnemonicKey()
+  {
+    return (Integer) resources.getObject("action.page-setup.mnemonic");
+  }
+
+  /**
+   * Returns true if the action is separated, and false otherwise.
+   *
+   * @return A boolean.
+   */
+  public boolean isSeparated()
+  {
+    return true;
+  }
+
+  /**
+   * Returns true if the action should be added to the toolbar, and false otherwise.
+   *
+   * @return A boolean.
+   */
+  public boolean isAddToToolbar()
+  {
+    return false;
+  }
+
+  /**
+   * Returns true, if the report should be repaginated after the plugin was sucessfully
+   * executed.
+   *
+   * @return a boolean.
+   */
+  public boolean isRepaginateOnSuccess()
+  {
+    return true;
+  }
 }

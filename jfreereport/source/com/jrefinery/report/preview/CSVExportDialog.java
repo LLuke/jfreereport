@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.9 2003/04/24 18:08:54 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.10 2003/05/02 12:40:21 taqua Exp $
  *
  * Changes
  * --------
@@ -58,7 +58,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -88,7 +87,7 @@ import org.jfree.ui.ExtensionFileFilter;
  * 
  * @author Thomas Morgner.
  */
-public class CSVExportDialog extends JDialog implements ExportPlugin
+public class CSVExportDialog extends JDialog
 {
   /**
    * Internal action class to confirm the dialog and to validate the input.
@@ -956,86 +955,6 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     {
       txSeparatorOther.setEnabled(false);
     }
-  }
-
-  /**
-   * Returns the display name for the CSV dialog.
-   * 
-   * @return The name.
-   */
-  public String getDisplayName()
-  {
-    return resources.getString ("action.export-to-csv.name");
-  }
-
-  /**
-   * Returns a short description for the CSV dialog.
-   * 
-   * @return The description.
-   */
-  public String getShortDescription()
-  {
-    return resources.getString ("action.export-to-csv.description");
-  }
-
-  /**
-   * Returns the small icon for the dialog.
-   * 
-   * @return The icon.
-   */
-  public Icon getSmallIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-csv.small-icon");
-  }
-
-  /**
-   * Returns the large icon for the dialog.
-   * 
-   * @return The icon.
-   */
-  public Icon getLargeIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-csv.icon");
-  }
-
-  /**
-   * Returns the accelerator key for the action associated with the dialog.
-   * 
-   * @return The key stroke.
-   */
-  public KeyStroke getAcceleratorKey()
-  {
-    return (KeyStroke) resources.getObject ("action.export-to-csv.accelerator");
-  }
-
-  /**
-   * Returns the mnemonic key code for the action associated with the dialog.
-   * 
-   * @return The key code.
-   */
-  public Integer getMnemonicKey()
-  {
-    return (Integer) resources.getObject ("action.export-to-csv.mnemonic");
-  }
-
-  /**
-   * Returns a flag that...
-   * 
-   * @return <code>false</code> always.
-   */
-  public boolean isSeparated()
-  {
-    return false;
-  }
-
-  /**
-   * Returns a flag that...
-   * 
-   * @return <code>false</code> always.
-   */
-  public boolean isAddToToolbar()
-  {
-    return false;
   }
 
   /**

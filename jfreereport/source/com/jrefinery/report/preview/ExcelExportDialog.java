@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExcelExportDialog.java,v 1.10 2003/03/13 17:41:52 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.11 2003/05/02 12:40:22 taqua Exp $
  *
  * Changes
  * --------
@@ -87,7 +87,7 @@ import com.jrefinery.report.util.StringUtil;
  *
  * @author Heiko Evermann
  */
-public class ExcelExportDialog extends JDialog implements ExportPlugin
+public class ExcelExportDialog extends JDialog
 {
   /**
    * Internal action class to confirm the dialog and to validate the input.
@@ -237,7 +237,8 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   {
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-    setTitle(getResources().getString("excelexportdialog.dialogtitle"));
+    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    setTitle(resources.getString("excelexportdialog.dialogtitle"));
     initialize();
     clear();
 
@@ -252,17 +253,12 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Retrieves the resources for the dialog. If the resources are not initialized,
-   * they get loaded on the first call to this method.
+   * Returns the resource bundle used for that dialog.
    *
-   * @return The resource bundle.
+   * @return the resource bundle
    */
-  private ResourceBundle getResources()
+  public ResourceBundle getResources()
   {
-    if (resources == null)
-    {
-      resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
-    }
     return resources;
   }
 
@@ -623,85 +619,6 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     // nothing to initialize so far. We have much less options than in "save to PDF"
   }
 
-  /**
-   * Returns a short description for the Excel dialog.
-   * 
-   * @return The description.
-   */
-  public String getShortDescription()
-  {
-    return resources.getString ("action.export-to-excel.description");
-  }
-
-  /**
-   * Returns the small icon for the dialog.
-   * 
-   * @return The icon.
-   */
-  public Icon getSmallIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-excel.small-icon");
-  }
-
-  /**
-   * Returns the large icon for the dialog.
-   * 
-   * @return The icon.
-   */
-  public Icon getLargeIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-excel.icon");
-  }
-
-  /**
-   * Returns the accelerator key for the action associated with the dialog.
-   * 
-   * @return The key stroke.
-   */
-  public KeyStroke getAcceleratorKey()
-  {
-    return (KeyStroke) resources.getObject ("action.export-to-excel.accelerator");
-  }
-
-  /**
-   * Returns the mnemonic key code for the action associated with the dialog.
-   * 
-   * @return The key code.
-   */
-  public Integer getMnemonicKey()
-  {
-    return (Integer) resources.getObject ("action.export-to-excel.mnemonic");
-  }
-
-  /**
-   * Returns the display name.
-   * 
-   * @return The display name.
-   */
-  public String getDisplayName()
-  {
-    return resources.getString ("action.export-to-excel.name");
-  }
-
-  /**
-   * Returns <code>false</code>.
-   * 
-   * @return A boolean.
-   */
-  public boolean isSeparated()
-  {
-    return false;
-  }
-
-  /**
-   * Returns <code>false</code>.
-   * 
-   * @return A boolean.
-   */
-  public boolean isAddToToolbar()
-  {
-    return false;
-  }
 
   /**
    * For debugging.

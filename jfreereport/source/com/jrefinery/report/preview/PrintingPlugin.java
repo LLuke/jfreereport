@@ -20,100 +20,152 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------
- * ExportPlugin.java
- * -----------------
+ * ------------------------------
+ * PrintingPlugin.java
+ * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPlugin.java,v 1.3 2003/02/25 14:45:31 mungady Exp $
+ * $Id$
  *
- * Changes
- * --------
- * 25-Feb-2003 : Added standard header and Javadocs (DG);
- *
+ * Changes 
+ * -------------------------
+ * 13.06.2003 : Initial version
+ *  
  */
+
 package com.jrefinery.report.preview;
 
+import java.awt.print.PrinterJob;
+import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import com.jrefinery.report.JFreeReport;
 
-/**
- * An export plug-in is a class that can work with the {@link ExportAction} class to implement
- * an export function for reports.
- * 
- * @author Thomas Morgner.
- */
-public interface ExportPlugin
+public class PrintingPlugin implements ExportPlugin
 {
+  private PreviewProxyBase proxyBase;
+
+  /** Localised resources. */
+  private ResourceBundle resources;
+
+  /** The base resource class. */
+  public static final String BASE_RESOURCE_CLASS =
+      "com.jrefinery.report.resources.JFreeReportResources";
+
+
+  public PrintingPlugin()
+  {
+    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+  }
+
   /**
    * Exports a report.
-   * 
+   *
    * @param report  the report.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean performExport (JFreeReport report);
+  public boolean performExport(JFreeReport report)
+  {
+    try
+    {
+      PrinterJob pj = PrinterJob.getPrinterJob();
+      pj.setPageable(proxyBase.getPageable());
+      if (pj.printDialog())
+      {
+        pj.print();
+      }
+      return true;
+    }
+    catch (Exception e)
+    {
+      return false;
+    }
+  }
 
   /**
    * Returns the display name for the export action.
-   * 
+   *
    * @return The display name.
    */
-  public String getDisplayName();
-  
+  public String getDisplayName()
+  {
+    return (resources.getString ("action.print.name"));
+  }
+
   /**
    * Returns the short description for the export action.
-   * 
+   *
    * @return The short description.
    */
-  public String getShortDescription();
+  public String getShortDescription()
+  {
+    return (resources.getString ("action.print.description"));
+  }
 
   /**
    * Returns the small icon for the export action.
-   * 
+   *
    * @return The icon.
    */
-  public Icon getSmallIcon();
+  public Icon getSmallIcon()
+  {
+    return (Icon) (resources.getObject ("action.print.small-icon"));
+  }
 
   /**
    * Returns the large icon for the export action.
-   * 
+   *
    * @return The icon.
    */
-  public Icon getLargeIcon();
-  
+  public Icon getLargeIcon()
+  {
+    return (Icon) (resources.getObject ("action.print.icon"));
+  }
+
   /**
    * Returns the accelerator key for the export action.
-   * 
+   *
    * @return The accelerator key.
    */
-  public KeyStroke getAcceleratorKey();
+  public KeyStroke getAcceleratorKey()
+  {
+    return (KeyStroke) (resources.getObject ("action.print.accelerator"));
+  }
 
   /**
    * Returns the mnemonic key code.
-   * 
+   *
    * @return The code.
    */
-  public Integer getMnemonicKey();
-  
+  public Integer getMnemonicKey()
+  {
+    return (Integer) (resources.getObject ("action.print.mnemonic"));
+  }
+
   /**
    * Returns true if the action is separated, and false otherwise.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean isSeparated ();
+  public boolean isSeparated()
+  {
+    return false;
+  }
 
   /**
    * Returns true if the action should be added to the toolbar, and false otherwise.
-   * 
+   *
    * @return A boolean.
    */
-  public boolean isAddToToolbar();
+  public boolean isAddToToolbar()
+  {
+    return true;
+  }
 
   /**
    * Returns true, if the report should be repaginated after the plugin was sucessfully
@@ -121,14 +173,20 @@ public interface ExportPlugin
    *
    * @return a boolean.
    */
-  public boolean isRepaginateOnSuccess();
+  public boolean isRepaginateOnSuccess()
+  {
+    return false;
+  }
 
   /**
    * Initializes the plugin to work with the given PreviewProxy.
    *
    * @param proxy
    */
-  public void init (PreviewProxy proxy);
+  public void init(PreviewProxy proxy)
+  {
+    proxyBase = proxy.getBase();
+  }
 
   /**
    * Returns true, when this export plugin is used to configure the report or an other
@@ -136,6 +194,8 @@ public interface ExportPlugin
    *
    * @return true if this is a control plugin, false otherwise.
    */
-  public boolean isControlPlugin ();
-
+  public boolean isControlPlugin()
+  {
+    return false;
+  }
 }

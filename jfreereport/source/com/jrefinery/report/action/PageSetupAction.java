@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageSetupAction.java,v 1.16 2003/05/02 12:39:33 taqua Exp $
+ * $Id: PageSetupAction.java,v 1.17 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import com.jrefinery.report.util.ActionDowngrade;
  * Page setup action for a print preview frame.
  *
  * @author David Gilbert
+ * @deprecated Export modules are now defined by plugin-interfaces.
  */
 public abstract class PageSetupAction extends AbstractActionDowngrade implements Runnable
 {
