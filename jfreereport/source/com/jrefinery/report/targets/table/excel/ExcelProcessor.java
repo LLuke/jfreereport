@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:00 PM
  *
- * $Id: ExcelProcessor.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.2 2003/01/25 20:34:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -36,9 +36,17 @@ public class ExcelProcessor extends TableProcessor
 
   public TableProducer createProducer(boolean dummy)
   {
+    ExcelProducer prod = null;
     if (dummy == true)
-      return new ExcelProducer(new NullOutputStream(), isStrictLayout());
+    {
+      prod = new ExcelProducer(new NullOutputStream(), isStrictLayout());
+      prod.setDummy(true);
+    }
     else
-      return new ExcelProducer(getOutputStream(), isStrictLayout());
+    {
+      prod = new ExcelProducer(getOutputStream(), isStrictLayout());
+      prod.setDummy(false);
+    }
+    return prod;
   }
 }

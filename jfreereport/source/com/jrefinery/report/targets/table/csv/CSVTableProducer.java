@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 4:47:35 PM
  *
- * $Id: CSVTableProducer.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.2 2003/01/25 20:34:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -51,7 +51,10 @@ public class CSVTableProducer extends TableProducer
 
   public void endPage()
   {
-    generatePage(layoutGrid());
+    if (isDummy() == false)
+    {
+      generatePage(layoutGrid());
+    }
     clearCells();
   }
 

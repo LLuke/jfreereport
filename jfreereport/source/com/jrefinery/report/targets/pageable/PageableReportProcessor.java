@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.14 2003/01/29 03:13:02 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.15 2003/01/29 18:37:12 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
-import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
 import com.jrefinery.report.util.Log;
 
 import java.awt.print.PageFormat;
@@ -111,7 +110,6 @@ public class PageableReportProcessor
    */
   public void setOutputTarget(OutputTarget outputTarget)
   {
-    if (this.outputTarget != null) throw new IllegalAccessError("Redefinition?");
     this.outputTarget = outputTarget;
   }
 
@@ -175,15 +173,11 @@ public class PageableReportProcessor
       throw new ReportProcessingException("Repaginating returned no pages");
     }
     ReportState rs = list.get(0);
-    PlainTextOutputTarget ot = (PlainTextOutputTarget) getOutputTarget();
-    Log.debug ("                                   ProcessReport: " + ot.isDummyTarget());
 
     rs = processPage(rs, getOutputTarget());
     while (!rs.isFinish())
     {
       ReportState nrs = processPage(rs, getOutputTarget());
-      ot = (PlainTextOutputTarget) getOutputTarget();
-      Log.debug ("                                   ProcessReport: " + ot.isDummyTarget());
       if ((nrs.isFinish() == false) && nrs.isProceeding(rs) == false)
       {
         throw new ReportProcessingException("Report is not proceeding");
@@ -324,10 +318,6 @@ public class PageableReportProcessor
     {
       throw new NullPointerException("State != null");
     }
-
-    PlainTextOutputTarget ot = (PlainTextOutputTarget) getOutputTarget();
-    Log.debug ("                                   ProcessPage: " + ot.hashCode());
-    Log.debug ("                                   ProcessPage: " + out.hashCode());
 
     // just crash to make sure that FinishStates are caught outside, we cannot handle them here
     if (currPage.isFinish())

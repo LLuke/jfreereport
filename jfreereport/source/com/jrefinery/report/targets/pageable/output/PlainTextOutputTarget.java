@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 1:49:26 PM
  *
- * $Id$
+ * $Id: PlainTextOutputTarget.java,v 1.1 2003/01/29 18:37:12 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -133,7 +133,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   private PlainTextState savedState;
   private PlainTextPage pageBuffer;
   private PlainTextPageFactory factory;
-  private boolean isDummyTarget;
 
   /**
    * Creates a new output target.  Both the logical page size and the physical page size will be
@@ -145,7 +144,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     super(format);
     this.factory = factory;
-    this.setDummyTarget(false);
   }
 
   /**
@@ -158,7 +156,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     super(logical, physical);
     this.factory = factory;
-    this.setDummyTarget(false);
   }
 
   /**
@@ -170,7 +167,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     super(logicalPage);
     this.factory = factory;
-    this.setDummyTarget(false);
   }
 
   /**
@@ -180,7 +176,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public void open() throws OutputTargetException
   {
-    Log.debug ("I dummy: " + isDummyTarget());
     try
     {
       Integer lpi = (Integer) getProperty(LPI_PROPERTY, LPI_PROPERTY_DEFAULT);
@@ -216,16 +211,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     open = false;
   }
 
-  public boolean isDummyTarget()
-  {
-    return isDummyTarget;
-  }
-
-  public void setDummyTarget(boolean dummyTarget)
-  {
-    isDummyTarget = dummyTarget;
-  }
-
   /**
    * Signals that a page is being started.  Stores the state of the target to
    * make it possible to restore the complete output target.
@@ -252,11 +237,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     try
     {
-      Log.debug ("Write: " + hashCode() + " -> " + isDummyTarget());
-      if (isDummyTarget() == false)
-      {
-        pageBuffer.writePage(factory.getOutputStream());
-      }
+      pageBuffer.writePage(factory.getOutputStream());
     }
     catch (IOException ioe)
     {
@@ -412,9 +393,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public OutputTarget createDummyWriter()
   {
-    PlainTextOutputTarget retval = new PlainTextOutputTarget (getLogicalPage(), getPageFactory());
-    retval.setDummyTarget(true);
-    return retval;
+    //PlainTextOutputTarget retval = new PlainTextOutputTarget (getLogicalPage(), getPageFactory());
+    return new DummyOutputTarget(this);
   }
 
   public PlainTextPageFactory getPageFactory()

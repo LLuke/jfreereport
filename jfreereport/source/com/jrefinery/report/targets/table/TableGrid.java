@@ -2,11 +2,9 @@
  * Date: Jan 25, 2003
  * Time: 8:40:14 AM
  *
- * $Id: TableGrid.java,v 1.3 2003/01/27 18:24:53 taqua Exp $
+ * $Id: TableGrid.java,v 1.4 2003/01/28 22:05:25 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
-
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -17,9 +15,6 @@ public class TableGrid
 {
   private TreeSet xBounds;
   private TreeSet yBounds;
-
-  private int[] yBoundsArray;
-  private int[] xBoundsArray;
 
   private ArrayList elements;
   private boolean strict;
@@ -82,37 +77,52 @@ public class TableGrid
 
   public int[] getXCuts()
   {
-    if (xBoundsArray == null)
+    if (xBounds.size() == 0)
+      return new int[0];
+
+    int[] xBoundsArray = new int[xBounds.size()];
+    Iterator it = xBounds.iterator();
+    int count = 0;
+    while (it.hasNext())
     {
-      int[] xBoundsArray = new int[xBounds.size()];
-      Iterator it = xBounds.iterator();
-      int count = 0;
-      while (it.hasNext())
-      {
-        Integer i = (Integer) it.next();
-        xBoundsArray[count] = i.intValue();
-        count += 1;
-      }
-      this.xBoundsArray = xBoundsArray;
+      Integer i = (Integer) it.next();
+      xBoundsArray[count] = i.intValue();
+      count += 1;
     }
-    return xBoundsArray;
+
+    if (!strict)
+    {
+      return xBoundsArray;
+    }
+    // in strict mode, all boundries are added. The last boundry does
+    // not define a start of a cell, so it is removed.
+
+    int[] retval = new int[xBoundsArray.length - 1];
+    System.arraycopy(xBoundsArray, 0, retval, 0, retval.length);
+    return retval;
   }
 
   public int[] getYCuts()
   {
-    if (yBoundsArray == null)
+    int[] yBoundsArray = new int[yBounds.size()];
+    Iterator it = yBounds.iterator();
+    int count = 0;
+    while (it.hasNext())
     {
-      int[] yBoundsArray = new int[yBounds.size()];
-      Iterator it = yBounds.iterator();
-      int count = 0;
-      while (it.hasNext())
-      {
-        Integer i = (Integer) it.next();
-        yBoundsArray[count] = i.intValue();
-        count += 1;
-      }
-      this.yBoundsArray = yBoundsArray;
+      Integer i = (Integer) it.next();
+      yBoundsArray[count] = i.intValue();
+      count += 1;
     }
-    return yBoundsArray;
+
+    if (!strict)
+    {
+      return yBoundsArray;
+    }
+    // in strict mode, all boundries are added. The last boundry does
+    // not define a start of a cell, so it is removed.
+
+    int[] retval = new int[yBoundsArray.length - 1];
+    System.arraycopy(yBoundsArray, 0, retval, 0, retval.length);
+    return retval;
   }
 }

@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:19:44 PM
  *
- * $Id: TableProducer.java,v 1.5 2003/01/27 18:24:54 taqua Exp $
+ * $Id: TableProducer.java,v 1.6 2003/01/28 22:05:26 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -18,10 +18,12 @@ import java.util.List;
 public abstract class TableProducer
 {
   private TableGrid grid;
+  private boolean dummy;
 
   public TableProducer(boolean strictLayout)
   {
     grid = new TableGrid(strictLayout);
+    dummy = false;
   }
 
   /** A useful constant for specifying the PDF creator. */
@@ -185,7 +187,7 @@ public abstract class TableProducer
       {
         parentClass = parent.getClass();
       }
-      data.debugChunk = new Log.SimpleMessage("Element",
+      data.debugChunk = new Log.SimpleMessage("Element ",
                                               e.getClass().getName(),
                                               " -> " ,
                                               new Log.SimpleMessage(
@@ -227,5 +229,13 @@ public abstract class TableProducer
     return (bg);
   }
 
+  public boolean isDummy ()
+  {
+    return dummy;
+  }
 
+  public void setDummy(boolean dummy)
+  {
+    this.dummy = dummy;
+  }
 }

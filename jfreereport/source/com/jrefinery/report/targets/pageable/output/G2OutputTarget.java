@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.12 2003/01/29 03:13:04 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.13 2003/01/29 18:37:12 taqua Exp $
  *
  * Changes
  * -------
@@ -538,6 +538,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public OutputTarget createDummyWriter()
   {
+    /*
     G2OutputTarget dummy = new G2OutputTarget(getLogicalPage(),
                                               createEmptyGraphics());
     Enumeration enum = getPropertyNames();
@@ -547,6 +548,8 @@ public class G2OutputTarget extends AbstractOutputTarget
       dummy.setProperty(key, getProperty(key));
     }
     return dummy;
+    */
+    return new DummyOutputTarget(this);
   }
 
   /**

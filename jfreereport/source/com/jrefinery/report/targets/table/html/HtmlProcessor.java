@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:05:56 PM
  *
- * $Id: HtmlProcessor.java,v 1.3 2003/01/25 20:34:12 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.4 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -42,11 +42,20 @@ public class HtmlProcessor extends TableProcessor
 
   public TableProducer createProducer(boolean dummy)
   {
+    HtmlProducer prod = null;
     if (dummy == true)
-      return new HtmlProducer(new StreamHtmlFilesystem(new NullOutputStream()),
+    {
+      prod = new HtmlProducer(new StreamHtmlFilesystem(new NullOutputStream()),
                               getReport().getName(), isStrictLayout(), useXHTML );
+      prod.setDummy(true);
+    }
     else
-      return new HtmlProducer(getFilesystem(), getReport().getName(),
+    {
+      prod = new HtmlProducer(getFilesystem(), getReport().getName(),
                               isStrictLayout(), useXHTML);
+      prod.setDummy(false);
+    }
+
+    return prod;
   }
 }

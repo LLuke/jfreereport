@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.9 2003/01/28 22:05:35 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.10 2003/01/29 18:37:14 taqua Exp $
  *
  * This file now produces valid HTML4
  */
@@ -199,15 +199,19 @@ public class HtmlProducer extends TableProducer
 
   public void endPage()
   {
-    generatePage(layoutGrid());
-    pout.println("</table>");
+    if (isDummy() == false)
+    {
+      generatePage(layoutGrid());
+    }
+    pout.println("</table></p>");
     clearCells();
   }
 
   public void beginPage(String name)
   {
-    //pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
-    pout.println("<table border=\"2\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+    pout.println ("<p>");
+    pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+    //pout.println("<table border=\"2\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
   }
 
   public TableCellDataFactory getCellDataFactory()
@@ -245,16 +249,26 @@ public class HtmlProducer extends TableProducer
         if (gridElement == null)
         {
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
-          pout.println("<td style=\"width:" + width + "pt\">&nbsp;</td>");
+          pout.println ("<!-- No Element -->");
+          pout.println("<td style=\"width:" + width + "pt\"></td>");
           printed = true;
           continue;
         }
 
         TableGridPosition gridPosition = gridElement.getRoot();
-        if (gridPosition == null)
+        if (gridPosition == null || gridPosition.isInvalidCell())
         {
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
-          pout.print("<td   style=\"width:");
+          if (gridPosition == null)
+          {
+            pout.println ("<!-- gridposition is null -->");
+          }
+          else
+          {
+            pout.println("<!-- is invalid cell -->");
+          }
+
+          pout.print("<td style=\"width:");
           pout.print(width);
           pout.print("pt");
 
@@ -264,7 +278,7 @@ public class HtmlProducer extends TableProducer
             pout.print("; ");
             pout.print(style);
           }
-          pout.print ("\">&nbsp;</td>");
+          pout.println ("\"></td>");
           printed = true;
           continue;
         }
@@ -272,7 +286,6 @@ public class HtmlProducer extends TableProducer
         if (gridPosition.isOrigin(x, y) == false)
         {
           // this is a spanned field.
-
           continue;
         }
 
@@ -333,11 +346,6 @@ public class HtmlProducer extends TableProducer
       if (!printed)
       {
         Log.debug ("The Row at " + y + " was not printed");
-/*        for (int x = 0; x < layout.getWidth(); x++)
-        {
-          Log.debug(layout.getData(x,y).getRoot());
-          Log.debug(layout.getData(x,y).getBackground());
-        }*/
       }
       pout.println("</tr>");
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.13 2003/01/29 03:13:04 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.14 2003/01/29 18:37:12 taqua Exp $
  *
  * Changes
  * -------
@@ -1227,6 +1227,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public OutputTarget createDummyWriter()
   {
+    /*
     PDFOutputTarget dummy = new PDFOutputTarget(new NullOutputStream(),
                                                 getLogicalPage(), isEmbedFonts());
     Enumeration enum = getPropertyNames();
@@ -1235,7 +1236,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String key = (String) enum.nextElement();
       dummy.setProperty(key, getProperty(key));
     }
-    return dummy;
+    */
+    return new DummyOutputTarget(this);
   }
 
   /**

@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 9:40:17 AM
  *
- * $Id: TableGridLayout.java,v 1.4 2003/01/28 22:05:25 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.5 2003/01/29 18:37:13 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -73,6 +73,7 @@ public class TableGridLayout
           Log.warn (new Log.SimpleMessage("+            added: " , pos.getElement().debugChunk));
           Log.warn (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()) , "  Row=" , new Integer(root.getRow())));
           */
+          pos.setInvalidCell(true);
         }
       }
     }
@@ -119,7 +120,13 @@ public class TableGridLayout
     // +1 for outer boundry ...
     int width = xCuts.length;
     int height = yCuts.length;
-    Log.debug ("Created GridLayout with " + width + ", " + height);
+    Log.info ("Created GridLayout with " + width + ", " + height);
+
+    for (int i = 0; i < xCuts.length; i++)
+    {
+      Log.info ("X-Cuts: " + xCuts[i]);
+    }
+
     data = new Object[width][height];
 
     for (int i = 0; i < positions.length; i++)
@@ -137,10 +144,15 @@ public class TableGridLayout
     int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
 
     TableGridPosition gPos = new TableGridPosition(pos);
-    gPos.setCol(findBoundry(xCuts, (int) bounds.getX(), false));
-    gPos.setRow(findBoundry(yCuts, (int) bounds.getY(), false));
-    gPos.setColSpan(Math.max(1, findBoundry(xCuts, maxBoundsX, true) - gPos.getCol()));
-    gPos.setRowSpan(Math.max(1, findBoundry(yCuts, maxBoundsY, true) - gPos.getRow()));
+    gPos.setCol(findBoundry(xCuts, (int) bounds.getX()));
+    gPos.setRow(findBoundry(yCuts, (int) bounds.getY()));
+    gPos.setColSpan(Math.max(1, findBoundry(xCuts, maxBoundsX) - gPos.getCol()));
+    gPos.setRowSpan(Math.max(1, findBoundry(yCuts, maxBoundsY) - gPos.getRow()));
+
+    Log.info ("AddTablePos: Col=" + gPos.getCol() +
+              "; Row= " + gPos.getRow() +
+              "; ColSpan=" + gPos.getColSpan() +
+              "; RowSpan=" + gPos.getRowSpan() + "; -> " + pos.debugChunk + " Bounds: "+ bounds);
 /*
     if (pos instanceof TableBandArea)
     {
@@ -159,19 +171,7 @@ public class TableGridLayout
       int endX = gPos.getCol() + gPos.getColSpan();
       for (int posX = startX; posX < endX; posX ++)
       {
-        try
-        {
-          addToGrid(posX, posY, gPos);
-        }
-        catch (IndexOutOfBoundsException ie)
-        {
-          Log.debug ("DebugChunk: " + pos.debugChunk);
-          Log.debug ("gPos.getCol: " + gPos.getCol());// + " -> " + getColumnStart(gPos.getCol()));
-          Log.debug ("gPos.getRow: " + gPos.getRow());// + " -> " + getRowStart(gPos.getRow()));
-          Log.debug ("gPos.getColSpan: " + gPos.getColSpan());// + " -> " + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
-          Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan());// + " -> " + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
-          throw ie;
-        }
+        addToGrid(posX, posY, gPos);
       }
     }
 
@@ -251,7 +251,14 @@ public class TableGridLayout
     }
   }
 
-  private int findBoundry (int[] data, int d, boolean upperBounds)
+
+  private int findBoundry (int[] data, int d)
+  {
+    int retval = xx(data, d);
+    Log.info ("Found: " + retval + " -> " + d);
+    return retval;
+  }
+  private int xx (int[] data, int d)
   {
     for (int i = 0; i < data.length; i++)
     {
@@ -264,22 +271,13 @@ public class TableGridLayout
       {
         if (dV > d)
         {
-          if (upperBounds)
-          {
-            return i;
-          }
+          if (i == 0)
+            return 0;
           else
-          {
-            if (i == 0)
-              return 0;
-            else
-              return i - 1;
-          }
+            return i - 1;
         }
       }
     }
-    return data.length - 1;
+    return data.length;
   }
-
-
 }
