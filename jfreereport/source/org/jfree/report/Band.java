@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
+ * $Id: Band.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -552,5 +552,61 @@ public class Band extends Element implements Serializable, Cloneable
     super.updateStyleSheetCollection(sc);
 
     registerStyleSheetCollection(sc);
+  }
+
+  /**
+   * Returns, whether the page layout manager should perform a pagebreak
+   * before this page is printed. This will have no effect on empty pages
+   * or if the band is no root-level band.
+   *
+   * @return true, if to force a pagebreak before this band is printed, false
+   * otherwise
+   */
+  public boolean isPagebreakBeforePrint()
+  {
+    return getStyle().getBooleanStyleProperty
+        (BandStyleSheet.PAGEBREAK_BEFORE);
+  }
+
+  /**
+   * Defines, whether the page layout manager should perform a pagebreak
+   * before this page is printed. This will have no effect on empty pages
+   * or if the band is no root-level band.
+   *
+   * @param pagebreakBeforePrint set to true, if to force a pagebreak before
+   * this band is printed, false otherwise
+   */
+  public void setPagebreakBeforePrint(boolean pagebreakBeforePrint)
+  {
+    getStyle().setBooleanStyleProperty
+        (BandStyleSheet.PAGEBREAK_BEFORE, pagebreakBeforePrint);
+  }
+
+  /**
+   * Returns, whether the page layout manager should perform a pagebreak
+   * before this page is printed. This will have no effect on empty pages
+   * or if the band is no root-level band.
+   *
+   * @return true, if to force a pagebreak before this band is printed, false
+   * otherwise
+   */
+  public boolean isPagebreakAfterPrint()
+  {
+    return getStyle().getBooleanStyleProperty
+        (BandStyleSheet.PAGEBREAK_AFTER);
+  }
+
+  /**
+   * Defines, whether the page layout manager should perform a pagebreak
+   * before this page is printed. This will have no effect on empty pages
+   * or if the band is no root-level band.
+   *
+   * @param pagebreakAfterPrint set to true, if to force a pagebreak before 
+   * this band is printed, false otherwise
+   */
+  public void setPagebreakAfterPrint(boolean pagebreakAfterPrint)
+  {
+    getStyle().setBooleanStyleProperty
+        (BandStyleSheet.PAGEBREAK_AFTER, pagebreakAfterPrint);
   }
 }
