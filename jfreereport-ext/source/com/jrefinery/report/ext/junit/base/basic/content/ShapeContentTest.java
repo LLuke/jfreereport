@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ShapeContentTest.java,v 1.1 2003/06/11 20:39:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,7 @@ import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
 import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
+import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.layout.DefaultLayoutSupport;
 import junit.framework.TestCase;
 
@@ -82,6 +83,24 @@ public class ShapeContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+
+    eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
+    assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+  }
+
+  public void testLineContent() throws Exception
+  {
+    ShapeElement se = new ShapeElement();
+    se.setDataSource(new StaticDataSource(new Line2D.Float(40, 70, 140, 70)));
+    DefaultContentFactory df = new DefaultContentFactory();
+    df.addModule(new ShapeContentFactoryModule());
+    assertTrue(df.canHandleContent(se.getContentType()));
+    ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
+    assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+
+    eli = new ElementLayoutInformation(new Rectangle2D.Float(40, 70, 140, 70));
+    Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
+    assertEquals(new Rectangle2D.Float(40, 70, 100, 0), c.getBounds());
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
     assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LineShapeCreateTest.java,v 1.1 2003/06/11 20:44:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,10 +51,13 @@ import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportHeader;
+import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.report.util.Log;
 import junit.framework.TestCase;
+import org.jfree.xml.ParserUtil;
 
 public class LineShapeCreateTest extends TestCase
 {
@@ -86,6 +89,7 @@ public class LineShapeCreateTest extends TestCase
     public void drawShape(Shape shape)
     {
       shapeCount++;
+      Log.debug (shape.getBounds2D());
     }
 
     public int getShapeCount()
@@ -155,4 +159,30 @@ public class LineShapeCreateTest extends TestCase
     prp.processReport();
     assertEquals(lsd.getShapeCount(), 10);
   }
+
+  public void testDoReport2() throws Exception
+  {
+    JFreeReport report = new JFreeReport();
+    Line2D line = new Line2D.Float(40, 70, 140, 70);
+    ShapeElement element = ItemFactory.createLineShapeElement(
+        null,
+        Color.black,
+        ParserUtil.parseStroke("1"),
+        line);
+    report.getReportHeader().addElement(element);
+    PageFormatFactory pff = PageFormatFactory.getInstance();
+    Paper paper = pff.createPaper("A0");
+    PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
+    assertEquals((int) pf.getHeight(), PageFormatFactory.A0[1]);
+    assertEquals((int) pf.getWidth(), PageFormatFactory.A0[0]);
+    report.setDefaultPageFormat(pf);
+    assertEquals(report.getDefaultPageFormat(), pf);
+    LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
+    PageableReportProcessor prp = new PageableReportProcessor(report);
+    prp.setOutputTarget(lsd);
+    lsd.open();
+    prp.processReport();
+    assertEquals(lsd.getShapeCount(), 1);
+  }
+
 }

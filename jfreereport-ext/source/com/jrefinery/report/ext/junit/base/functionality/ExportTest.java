@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.2 2003/06/10 18:17:27 taqua Exp $
+ * $Id: ExportTest.java,v 1.3 2003/06/13 22:55:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,7 +73,7 @@ public class ExportTest extends TestCase
         Log.debug("   PLAIN_TEXT ..");
         assertTrue(FunctionalityTestLib.createPlainText(report));
         Log.debug("   RTF ..");
-        //createRTF(report); // todo fix the memory leak
+        FunctionalityTestLib.createRTF(report); 
         Log.debug("   STREAM_HTML ..");
         FunctionalityTestLib.createStreamHTML(report);
         Log.debug("   EXCEL ..");

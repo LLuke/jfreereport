@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FunctionalityTestLib.java,v 1.1 2003/06/13 22:58:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -78,25 +78,25 @@ import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
 public class FunctionalityTestLib
 {
   public final static ReportTest[] REPORTS = {
-//    new ReportTest ("/com/jrefinery/report/demo/report1.xml", new SampleData1()),
-//    new ReportTest ("/com/jrefinery/report/demo/report1a.xml", new SampleData1()),
-//    new ReportTest ("/com/jrefinery/report/demo/report2.xml", new SampleData2()),
-//    new ReportTest ("/com/jrefinery/report/demo/report2a.xml", new SampleData2()),
-//    new ReportTest ("/com/jrefinery/report/demo/report2b.xml", new SampleData2()),
-//    new ReportTest ("/com/jrefinery/report/demo/report2c.xml", new SampleData2()),
-//    new ReportTest ("/com/jrefinery/report/demo/report2d.xml", new SampleData2()),
-//    new ReportTest ("/com/jrefinery/report/demo/report3.xml", new SampleData3()),
-//    new ReportTest ("/com/jrefinery/report/demo/report4.xml", new SampleData4()),
-//    new ReportTest ("/com/jrefinery/report/demo/report5.xml", new DefaultTableModel()),
-//    new ReportTest ("/com/jrefinery/report/demo/lgpl.xml", new DefaultTableModel()),
-//    new ReportTest ("/com/jrefinery/report/demo/OpenSourceDemo.xml", new OpenSourceProjects()),
-//    new ReportTest ("/com/jrefinery/report/demo/PercentageDemo.xml", PercentageDemo.createData()),
-//    new ReportTest ("/com/jrefinery/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
-//    new ReportTest ("/com/jrefinery/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
-//    new ReportTest ("/com/jrefinery/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
+    new ReportTest ("/com/jrefinery/report/demo/report1.xml", new SampleData1()),
+    new ReportTest ("/com/jrefinery/report/demo/report1a.xml", new SampleData1()),
+    new ReportTest ("/com/jrefinery/report/demo/report2.xml", new SampleData2()),
+    new ReportTest ("/com/jrefinery/report/demo/report2a.xml", new SampleData2()),
+    new ReportTest ("/com/jrefinery/report/demo/report2b.xml", new SampleData2()),
+    new ReportTest ("/com/jrefinery/report/demo/report2c.xml", new SampleData2()),
+    new ReportTest ("/com/jrefinery/report/demo/report2d.xml", new SampleData2()),
+    new ReportTest ("/com/jrefinery/report/demo/report3.xml", new SampleData3()),
+    new ReportTest ("/com/jrefinery/report/demo/report4.xml", new SampleData4()),
+    new ReportTest ("/com/jrefinery/report/demo/report5.xml", new DefaultTableModel()),
+    new ReportTest ("/com/jrefinery/report/demo/lgpl.xml", new DefaultTableModel()),
+    new ReportTest ("/com/jrefinery/report/demo/OpenSourceDemo.xml", new OpenSourceProjects()),
+    new ReportTest ("/com/jrefinery/report/demo/PercentageDemo.xml", PercentageDemo.createData()),
+    new ReportTest ("/com/jrefinery/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
+    new ReportTest ("/com/jrefinery/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
+    new ReportTest ("/com/jrefinery/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
     new ReportTest ("/com/jrefinery/report/io/ext/factory/objects/ObjectReferenceReport.xml", ObjectReferenceGenerator.createData()),
-//    new ReportTest ("/com/jrefinery/report/io/ext/factory/stylekey/StyleKeyReferenceReport.xml", StyleKeyReferenceGenerator.createData()),
-//    new ReportTest ("/com/jrefinery/report/io/ext/factory/datasource/DataSourceReferenceReport.xml", DataSourceReferenceGenerator.createData())
+    new ReportTest ("/com/jrefinery/report/io/ext/factory/stylekey/StyleKeyReferenceReport.xml", StyleKeyReferenceGenerator.createData()),
+    new ReportTest ("/com/jrefinery/report/io/ext/factory/datasource/DataSourceReferenceReport.xml", DataSourceReferenceGenerator.createData())
   };
 
   public static boolean createPlainText(JFreeReport report)

@@ -53,7 +53,7 @@
       <pathelement location="${jfreereport-libdir}/${POI-jar}"/>
       <pathelement location="${jfreereport-dir}/${JFreeReport-jar}"/>
       <pathelement location="${jfreereport-dir}/${JFreeReport-demo-jar}"/>
-      <pathelement location="${libdir}/${JFreeChart-jar}"/>
+<!--      <pathelement location="${libdir}/${JFreeChart-jar}"/> -->
       <pathelement location="${libdir}/${junit-jar}"/>
       <pathelement location="${libdir}/${log4j-jar}"/>
       <pathelement location="${libdir}/${servlet-jar}"/>
@@ -69,13 +69,13 @@
     <property name="builddir" value="${projectdir}/build"/>
     <property name="libdir" value="${projectdir}/lib"/>
 
-    <property name="JFreeChart-jar" value="jfreechart-0.9.6.jar"/>
+<!--    <property name="JFreeChart-jar" value="jfreechart-0.9.8.jar"/> -->
     <property name="junit-jar" value="junit.jar"/>
     <property name="log4j-jar" value="log4j-1.2.3.jar"/>
     <property name="servlet-jar" value="servlet.jar"/>
 
     <property name="jfreereport-ext.name" value="jfreereport-ext"/>
-    <property name="jfreereport-ext.version" value="0.8.3"/>
+    <property name="jfreereport-ext.version" value="0.8.3c"/>
   </target>
 
   <!-- rebuild the base distribution if necessary -->
@@ -190,7 +190,7 @@
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${POI-jar}"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-dir}/${JFreeReport-jar}"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-dir}/${JFreeReport-demo-jar}"/>
-    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${JFreeChart-jar}" failonerror="false"/>
+<!--    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${JFreeChart-jar}" failonerror="false"/> -->
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${junit-jar}" failonerror="false"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${log4j-jar}" failonerror="false"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.jar"/>
