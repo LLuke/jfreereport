@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * ParserHints.java
+ * ReportBuilderHints.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportBuilderHints.java,v 1.1 2003/07/14 19:38:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -36,12 +36,14 @@
  *  
  */
 
-package org.jfree.report.modules.parser.base;
+package org.jfree.report;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
-public class ParserHints implements Serializable
+public class ReportBuilderHints implements Serializable
 {
   public static class ParserHintKey implements Serializable
   {
@@ -96,7 +98,7 @@ public class ParserHints implements Serializable
 
   private HashMap map;
 
-  public ParserHints()
+  public ReportBuilderHints()
   {
     this.map = new HashMap();
   }
@@ -112,4 +114,55 @@ public class ParserHints implements Serializable
     return map.get(new ParserHintKey(target, hint));
   }
 
+  public Object getHint (Object target, String hint, Class objectType)
+  {
+    Object o = map.get(new ParserHintKey(target, hint));
+    if (o == null)
+    {
+      return null;
+    }
+    if (objectType.isAssignableFrom(o.getClass()))
+    {
+      return o;
+    }
+    return null;
+  }
+
+  /**
+   * Adds an hint into an ArrayList. If the hint is no list hint, a
+   * IllegalArgumentException is thrown. If the speocified hint value is
+   * already contained in that list, no action is taken.
+   *
+   * @param target the target object for which the hint is specified.
+   * @param hint the hint name
+   * @param hintValue the hint value (not null)
+   * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
+   */
+  public void addHintList (Object target, String hint, Object hintValue)
+  {
+    if (hintValue == null)
+    {
+      throw new NullPointerException("Hintvalue is null.");
+    }
+
+    Object o = getHint(target, hint);
+    List hintList = null;
+    if (o != null)
+    {
+      if (o instanceof List == false)
+      {
+        throw new IllegalArgumentException("The parser hint " + hint + " is no list type.");
+      }
+      hintList = (List) o;
+    }
+    else
+    {
+      hintList = new ArrayList();
+      putHint(target, hint, hintList);
+    }
+    if (hintList.contains(hintValue) == false)
+    {
+      hintList.add(hintValue);
+    }
+  }
 }
