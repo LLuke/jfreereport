@@ -291,7 +291,7 @@
     <target name="cvs-rebuild"
             depends="cvs-checkout"
             description="Checksout the sources from sourceforge and rebuilds the sources by using the ant-script within the sources">
-        <ant antfile="jfreereport-cvs/ant/build.xml" dir="jfreereport-cvs" target="all"/>
+        <ant antfile="jfreereport/ant/build.xml" dir="jfreereport" target="all"/>
     </target>
 
 </project>
