@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.18 2003/03/04 20:28:59 taqua Exp $
+ * $Id: TableProducer.java,v 1.19 2003/03/18 18:28:45 taqua Exp $
  *
  * Changes
  * -------
@@ -244,8 +244,6 @@ public abstract class TableProducer
    */
   private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
   {
-
-
     float w = (float) Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
     float h = (float) Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     Rectangle2D rc = new Rectangle2D.Float(

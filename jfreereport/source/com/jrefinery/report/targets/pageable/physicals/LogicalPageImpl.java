@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.30 2003/03/09 17:48:59 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.31 2003/03/18 22:35:25 taqua Exp $
  *
  * Changes
  * -------
@@ -345,11 +345,13 @@ public class LogicalPageImpl implements LogicalPage
     // do nothing if the band is invisble
     if (band.isVisible() == false)
     {
+      //Log.debug ("The Band is not visible!");
       return;
     }
     // do nothing if the band has a height of 0 (also invisible)
     if (bounds.getHeight() == 0)
     {
+      //Log.debug ("The Band has a height of 0!");
       return;
     }
 
@@ -373,7 +375,7 @@ public class LogicalPageImpl implements LogicalPage
       if (e instanceof Band)
       {
         Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-        spoolBand(translateSubRect(bbounds, bounds), (Band) e, spool);
+        spoolBand(translateSubRect(bounds, bbounds), (Band) e, spool);
       }
       else
       {
@@ -421,7 +423,7 @@ public class LogicalPageImpl implements LogicalPage
   {
     if (e.isVisible() == false)
     {
-      // Log.debug ("The Element " + e + " is not visible");
+      //Log.debug ("The Element " + e + " is not visible");
       return;
     }
     ContentFactory factory = outputTarget.getContentFactory();
