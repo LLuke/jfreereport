@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -46,7 +46,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.3 2003/09/08 18:11:48 taqua Exp $
+ * $Id: Expression.java,v 1.4 2004/03/16 15:09:23 taqua Exp $
  *
  * ChangeLog
  * ------------

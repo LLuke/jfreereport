@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.5 2003/08/28 19:36:30 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.6 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------
