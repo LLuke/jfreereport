@@ -1,18 +1,40 @@
-/*
- * Copyright (c) 1998, 1999 by Free Software Foundation, Inc.
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License as published
- * by the Free Software Foundation, version 2. (see COPYING.LIB)
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation
- * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ------------------------
+ * CharacterEntityParser.java
+ * ------------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: CharacterEntityParser.java,v 1.6 2002/12/11 00:41:42 mungady Exp $
+ *
+ * Changes
+ * -------
+ * 21-Jan-2003 : Initial version
+ * 27-Jan-2003 : Removed external file-depencies
+ * 04-Feb-2003 : Code optimisation
  */
 package com.jrefinery.report.util;
 
@@ -22,15 +44,21 @@ import java.util.Properties;
 /**
  * The character entity parser replaces all known occurences of an entity
  * in the format &amp;entityname;.
- *
- * Abhängikeiten: Keine
  */
 public class CharacterEntityParser
 {
+  /** the entities, keyed by entity name */
   private Properties entities;
+  /** the reverse lookup entities, keyed by character */
   private Properties reverese;
 
-  private CharacterEntityParser(Properties characterEntities)
+  /**
+   * Creates a new CharacterEntityParser and initializes the parser with
+   * the given set of entities.
+   *
+   * @param characterEntities the entities used for the parser
+   */
+  protected CharacterEntityParser(Properties characterEntities)
   {
     entities = characterEntities;
     reverese = new Properties();
@@ -43,11 +71,23 @@ public class CharacterEntityParser
     }
   }
 
+  /**
+   * create a new Character entity parser and initializes the parser with
+   * the entities defined in the HTML4 standard.
+   *
+   * @return the CharacterEntityParser initialized with HTML4 entities.
+   */
   public static CharacterEntityParser createHTMLEntityParser ()
   {
     return new CharacterEntityParser(new HTMLCharacterEntities());
   }
 
+  /**
+   * create a new Character entity parser and initializes the parser with
+   * the entities defined in the XML standard.
+   *
+   * @return the CharacterEntityParser initialized with XML entities.
+   */
   public static CharacterEntityParser createXMLEntityParser ()
   {
     Properties entities = new Properties();
@@ -59,17 +99,32 @@ public class CharacterEntityParser
     return new CharacterEntityParser(entities);
   }
 
+  /**
+   * returns the entities used in the parser.
+   *
+   * @return the properties for this parser.
+   */
   private Properties getEntities()
   {
     return entities;
   }
 
+  /**
+   * returns the reverse-lookup table for the entities.
+   *
+   * @return the reverse-lookup properties for this parsers.
+   */
   private Properties getReverese()
   {
     return reverese;
   }
 
-  public String lookupCharacter(String key)
+  /**
+   *
+   * @param key
+   * @return
+   */
+  private String lookupCharacter(String key)
   {
     String val = getEntities().getProperty(key);
     if (val == null)
@@ -80,7 +135,12 @@ public class CharacterEntityParser
       return val;
   }
 
-  public String lookupEntity(String character)
+  /**
+   *
+   * @param character
+   * @return
+   */
+  private String lookupEntity(String character)
   {
     String val = getReverese().getProperty(character);
     if (val == null)
@@ -91,6 +151,11 @@ public class CharacterEntityParser
       return "&" + val + ";";
   }
 
+  /**
+   *
+   * @param value
+   * @return
+   */
   public String encodeEntities (String value)
   {
     StringBuffer b = new StringBuffer(value.length());
@@ -102,6 +167,11 @@ public class CharacterEntityParser
     return b.toString();
   }
 
+  /**
+   *
+   * @param value
+   * @return
+   */
   public String decodeEntities(String value)
   {
     int parserIndex = 0;
@@ -140,13 +210,6 @@ public class CharacterEntityParser
       value = bufValue.toString();
     }
     return bufValue.toString();
-  }
-
-  public static void main (String [] args)
-  {
-    CharacterEntityParser html = createXMLEntityParser();
-
-    Log.debug (html.decodeEntities(html.encodeEntities("The \" is encoded right")));
   }
 }
 

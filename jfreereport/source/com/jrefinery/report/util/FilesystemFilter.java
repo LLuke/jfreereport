@@ -1,18 +1,38 @@
-/*
- * Copyright (c) 1998, 1999 by Free Software Foundation, Inc.
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License as published
- * by the Free Software Foundation, version 2. (see COPYING.LIB)
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software Foundation
- * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------
+ * FilesystemFilter.java
+ * -------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 30-Jan-2003 : Initial version
  */
 package com.jrefinery.report.util;
 
@@ -21,22 +41,51 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
+/**
+ * A generic filesystem filter which implements FilenameFilter and the
+ * Swing FileFilter. Multiple extensions can be registered for a single filetype.
+ */
 public class FilesystemFilter extends FileFilter implements FilenameFilter
 {
   private ArrayList fileext;
   private String descr;
   private boolean accDirs;
 
+  /**
+   * Creates a filesystem filter for the given extension with the description
+   * supplied in <code>descr</code>. Directories are accepted by default.
+   *
+   * @param fileext the file extension that should be accepted
+   * @param descr the description for this filetype
+   */
   public FilesystemFilter(String fileext, String descr)
   {
     this(fileext, descr, true);
   }
 
+  /**
+   * Creates a filesystem filter for the given extension with the description
+   * supplied in <code>descr</code>. Directories are accepted if <code>accDirs</code>
+   * is set to <code>true</code>.
+   *
+   * @param fileext the file extension that should be accepted
+   * @param descr the description for this filetype
+   * @param accDirs true, if directories should be acceptable for this filter.
+   */
   public FilesystemFilter(String fileext, String descr, boolean accDirs)
   {
     this (new String[]{fileext}, descr, accDirs);
   }
 
+  /**
+   * Creates a filesystem filter for the given extensions with the description
+   * supplied in <code>descr</code>. Directories are accepted if <code>accDirs</code>
+   * is set to <code>true</code>.
+   *
+   * @param fileext the file extensions that should be accepted
+   * @param descr the description for this filetype
+   * @param accDirs true, if directories should be acceptable for this filter.
+   */
   public FilesystemFilter(String[] fileext, String descr, boolean accDirs)
   {
     this.fileext = new ArrayList();
@@ -48,10 +97,18 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
     this.accDirs = accDirs;
   }
 
+  /**
+   * Tests if a specified file should be included in a file list.
+   *
+   * @param   dir    the directory in which the file was found.
+   * @param   name   the name of the file.
+   * @return  <code>true</code> if and only if the name should be
+   * included in the file list; <code>false</code> otherwise.
+   */
   public boolean accept(File dir, String name)
   {
     File f = new File(dir, name);
-    if (f.isDirectory() && acceptsDirectories())
+    if (f.isDirectory() && isAcceptDirectories())
       return true;
 
     for (int i = 0; i < fileext.size(); i++)
@@ -63,9 +120,14 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
     return false;
   }
 
+  /**
+   * Whether the given file is accepted by this filter.
+   *
+   * @return true, if the file should be accepted for this filter, false otherwise.
+   */
   public boolean accept(File dir)
   {
-    if (dir.isDirectory() && acceptsDirectories())
+    if (dir.isDirectory() && isAcceptDirectories())
       return true;
 
     String name = dir.getName();
@@ -78,21 +140,41 @@ public class FilesystemFilter extends FileFilter implements FilenameFilter
     return false;
   }
 
+  /**
+   * The description of this filter. For example: "JPG and GIF Images"
+   * @see javax.swing.filechooser.FileView#getName
+   * @return the description for this filter.
+   */
   public String getDescription()
   {
     return descr;
   }
 
-  public void acceptDirectories(boolean b)
+  /**
+   * Sets whether this filter accepts directories.
+   *
+   * @param b set to <code>true</code> to accept directories, false otherwise
+   */
+  public void setAcceptDirectories(boolean b)
   {
     accDirs = b;
   }
 
-  public boolean acceptsDirectories()
+  /**
+   * checks, whether this filter should accept directories.
+   *
+   * @return true, if this filter accepts directories, false otherwise
+   */
+  public boolean isAcceptDirectories()
   {
     return accDirs;
   }
 
+  /**
+   * Add this extension to the filter.
+   *
+   * @param ext the extension that should be added to this filter.
+   */
   public void addExtension (String ext)
   {
     fileext.add(ext);
