@@ -115,6 +115,9 @@ The layout manager uses a more aggressive caching. If your functions alter
 The simple parser now support sub-bands. Band default values will only be
   directly inherited to the child elements.
 
+The preview components should be closed using the "close()" method, to
+  properly shutdown the worker threads.
+  
 ---------------------------------------------------------------------------
 Changes from 0.8.3c to 0.8.3d
 
