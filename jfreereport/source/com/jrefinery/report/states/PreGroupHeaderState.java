@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.8 2002/12/02 17:43:48 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.9 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,8 @@
 package com.jrefinery.report.states;
 
 /**
- * Processes an groupheader. If there is not enough space to print the header,
- * no transition is done, else a PostGroupHeaderState-State gets activated.
- * Before the print, a groupStartEvent gets fired.
- * <p>
- * Before the group is printed, the group is activated and the currentGroup state
- * is adjusted using the enterGroup() function.
+ * Processes an groupheader. Activates the next group and fires the GroupStartEvent
+ * for that group. then the PostGroupHeaderState-State gets activated.
  */
 public class PreGroupHeaderState extends ReportState
 {
@@ -57,7 +53,8 @@ public class PreGroupHeaderState extends ReportState
   }
 
   /**
-   * Advances from this state to the '<code>POST-GROUP-HEADER</code>' state.
+   * Advances from this state to the '<code>POST-GROUP-HEADER</code>' state after
+   * fireing the GroupStartedEvent.
    *
    * @return  the next state ('<code>POST-GROUP-HEADER</code>').
    */

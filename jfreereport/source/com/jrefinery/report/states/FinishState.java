@@ -26,7 +26,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FinishState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
+ * $Id: FinishState.java,v 1.3 2002/12/02 17:43:44 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ package com.jrefinery.report.states;
 import com.jrefinery.report.ReportProcessingException;
 
 /**
- * The report is done. No advance will be done, every call to advance will return this
- * FinishState-State.
+ * The report is done. No advance will be done, every call to advance will throw an
+ * ReportProcessingException.
  */
 public class FinishState extends ReportState
 {

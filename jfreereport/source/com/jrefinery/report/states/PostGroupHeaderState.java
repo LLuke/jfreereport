@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupHeaderState.java,v 1.3 2002/12/02 17:43:45 taqua Exp $
+ * $Id: PostGroupHeaderState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@ package com.jrefinery.report.states;
 
 /**
  * The groupHeader has been printed. If there are more groups defined, activate them
- * and print their header. If no more groups can be activated, start printing the items.
+ * by creating a new PreGroupHeader state for the next group. If no more groups can
+ * be activated, start printing the items by creating a PreItemGroupState.
+ * <p>
  * Transition: PreGroupHeaderState or PreItemHeader
- * (this thing changes the currentGroup, but the other behaviour is
- * like StartGroup)
  *
  * @author David Gilbert
  */

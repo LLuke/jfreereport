@@ -25,7 +25,7 @@
  * --------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: Log.java,v 1.9 2002/11/29 12:07:29 mungady Exp $
+ * $Id: Log.java,v 1.10 2002/12/06 18:21:15 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,44 @@ import java.util.ArrayList;
  */
 public final class Log
 {
+  /**
+   * LogHelper class to print memory usage message if needed.
+   */
+  public static class MemoryUsageMessage
+  {
+    private String message;
+
+    public MemoryUsageMessage(String message)
+    {
+      this.message = message;
+    }
+
+    public String toString ()
+    {
+      return (message
+                + "Free: " + Runtime.getRuntime().freeMemory() + "; "
+                + "Total: " + Runtime.getRuntime().totalMemory());
+    }
+  }
+
+  /**
+   * LogHelper class to print memory usage message if needed.
+   */
+  public static class SimpleMessage
+  {
+    private String message;
+    private Object param;
+
+    public SimpleMessage(String message, Object param)
+    {
+      this.message = message;
+    }
+
+    public String toString ()
+    {
+      return (message + param.toString());
+    }
+  }
 
   /**
    * Loglevel ERROR

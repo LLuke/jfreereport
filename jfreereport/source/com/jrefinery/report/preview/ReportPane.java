@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.30 2002/12/02 20:42:55 taqua Exp $
+ * $Id: ReportPane.java,v 1.31 2002/12/04 19:49:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -177,7 +177,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     }
     catch (FunctionInitializeException fe)
     {
-      throw new ReportProcessingException();
+      throw new ReportProcessingException("unable to create the PageableReportProcessor",fe);
     }
     setPageFormat(report.getDefaultPageFormat());
     setBorderPainted (false);

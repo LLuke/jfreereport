@@ -25,7 +25,7 @@
  * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ParserUtil.java,v 1.11 2002/11/07 21:45:28 taqua Exp $
+ * $Id: ParserUtil.java,v 1.12 2002/12/02 17:30:49 taqua Exp $
  *
  * Changes
  * -------
@@ -182,7 +182,7 @@ public class ParserUtil
     }
     catch (NumberFormatException nfe)
     {
-      Log.debug("Invalid weight for line element", nfe);
+      Log.debug("Invalid weight for stroke", nfe);
     }
     return new BasicStroke(1);
   }

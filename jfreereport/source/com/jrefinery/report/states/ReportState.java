@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.9 2002/12/05 12:18:46 mungady Exp $
+ * $Id: ReportState.java,v 1.10 2002/12/05 17:05:10 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -532,15 +532,42 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     // a state proceeds if it is an other class than the old state
     if (this.getClass().equals(oldstate.getClass()) == false)
     {
-      Log.debug ("State did proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " 
-                 + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
+      Log.debug (new StateProceedMessage(this, oldstate.getClass(), "State did proceed: In Group: "));
       return true;
     }
 
-    Log.debug ("State did not proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " 
-               + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
-    Log.debug ("Old State: " + oldstate.getClass());
+    Log.debug (new StateProceedMessage(this, oldstate.getClass(), "State did not proceed: In Group: "));
     return false;
+  }
+
+  /**
+   * LogHelper. The Message is created when the toString() method is called.
+   * If logging is disabled, no toString() gets called and no resources are wasted.
+   */
+  private static class StateProceedMessage
+  {
+    private ReportState currentState;
+    private Class oldState;
+    private String message;
+
+    public StateProceedMessage(ReportState currentState, Class oldState, String message)
+    {
+      this.currentState = currentState;
+      this.oldState = oldState;
+      this.message = message;
+    }
+
+    public String toString ()
+    {
+      return message +
+          currentState.getCurrentGroupIndex() +
+          ", DataItem: " +
+          currentState.getCurrentDataItem() +
+          ",Page: " +
+          currentState.getCurrentPage() +
+          " Class: " + currentState.getClass() + "\n" +
+          "Old State: " + oldState;
+    }
   }
 
   /**
@@ -727,7 +754,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public boolean isAncestor (ReportState state)
   {
-    Log.debug ("Me: " + getAncestorHashcode() + " Him: " + state.getAncestorHashcode());
     return (state.getAncestorHashcode() == getAncestorHashcode());
   }
   

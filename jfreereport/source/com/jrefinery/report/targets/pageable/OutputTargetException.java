@@ -25,7 +25,7 @@
  * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: OutputTargetException.java,v 1.1 2002/12/02 17:56:51 taqua Exp $
+ * $Id: OutputTargetException.java,v 1.2 2002/12/03 16:30:53 mungady Exp $
  *
  * Changes
  * -------
@@ -34,8 +34,7 @@
  */
 package com.jrefinery.report.targets.pageable;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import com.jrefinery.report.util.StackableException;
 
 /**
  * An OutputTargetException is thrown if a element could not be printed in the target or
@@ -43,11 +42,8 @@ import java.io.PrintWriter;
  *
  * @author DG
  */
-public class OutputTargetException extends Exception
+public class OutputTargetException extends StackableException
 {
-  /** The parent exception. */
-  private Exception parent;
-
   /**
    * Creates an exception.
    *
@@ -56,8 +52,7 @@ public class OutputTargetException extends Exception
    */
   public OutputTargetException (String message, Exception ex)
   {
-    super (message);
-    parent = ex;
+    super (message, ex);
   }
 
   /**
@@ -69,45 +64,4 @@ public class OutputTargetException extends Exception
   {
     super (message);
   }
-
-  /**
-   * Returns the parent exception (possibly null).
-   *
-   * @return the parent exception.
-   */
-  public Exception getParent ()
-  {
-    return parent;
-  }
-
-  /**
-   * Prints the stack trace to the specified stream.
-   *
-   * @param stream  the output stream.
-   */
-  public void printStackTrace (PrintStream stream)
-  {
-    super.printStackTrace (stream);
-    if (getParent () != null)
-    {
-      stream.println ("ParentException: ");
-      getParent ().printStackTrace (stream);
-    }
-  }
-
-  /**
-   * Prints the stack trace to the specified writer.
-   *
-   * @param writer  the writer.
-   */
-  public void printStackTrace (PrintWriter writer)
-  {
-    super.printStackTrace (writer);
-    if (getParent () != null)
-    {
-      writer.println ("ParentException: ");
-      getParent ().printStackTrace (writer);
-    }
-  }
-
 }

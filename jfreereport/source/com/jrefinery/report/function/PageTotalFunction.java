@@ -24,7 +24,7 @@
  * PageTotalFunction.java
  * -----------------------
  *
- * $Id: PageTotalFunction.java,v 1.5 2002/11/07 21:45:27 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.7 2002/12/02 17:29:20 taqua Exp $
  *
  * ChangeLog
  * ----------------
@@ -130,7 +130,6 @@ public class PageTotalFunction extends PageFunction
         {
           throw new IllegalStateException("No page-storage for the current state: " + event.getState().getCurrentDataItem());
         }
-        Log.debug("PageStorage: " + pageStorage.getPage() + " @ " + event.getState().getCurrentDisplayItem());
       }
     }
   }
@@ -164,7 +163,6 @@ public class PageTotalFunction extends PageFunction
         // informed of this.
         //this.setPage(getPage() - 1);
 
-        Log.debug ("GroupStarted: Request to start new PageStorage: @[" + event.getState().getCurrentDataItem());
         isGroupStarted = true;
         // This PageStorage is only null, if the report has never reached the first report start event
       }
@@ -183,7 +181,6 @@ public class PageTotalFunction extends PageFunction
    */
   public void reportStarted(ReportEvent event)
   {
-    Log.debug ("ReportStarted: " + this.hashCode());
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       this.groupPages.clear();
@@ -192,8 +189,6 @@ public class PageTotalFunction extends PageFunction
 
   public void setPage(int page)
   {
-    Log.debug ("SetPage: " + page);
-
     if (this.pageStorage != null)
       this.pageStorage.setPage(page);
   }

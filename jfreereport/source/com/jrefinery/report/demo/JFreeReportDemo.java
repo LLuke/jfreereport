@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.45 2002/11/29 12:02:15 mungady Exp $
+ * $Id: JFreeReportDemo.java,v 1.46 2002/12/02 17:16:54 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -419,10 +419,6 @@ public class JFreeReportDemo extends JFrame
     }
 
     report1.setData(data);
-    //report1.setData (new DefaultTableModel());
-
-//    ReportValidator v = new ReportValidator(report1);
-//    v.validateReport();
 
     try
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.3 2002/12/02 17:43:44 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import com.jrefinery.report.ReportProcessingException;
  * Prints the itemBand. Before the band is printed, the items are advanced and the next
  * data row gets activated. Before any row has been read, the currentItem state is
  * BEFORE_FIRST_ITEM, comparable to ResultSet.isBeforeFirst () in java.sql.ResultSet.
- * After the item has advanced and before the band is printed, the elements are populated and an
- * itemsAdvanced-Event is fired.
+ * After the item has advanced the elements are populated and an
+ * itemsAdvancedEvent is fired.
  * <p>
  * If the activated Item is the last item in its group, the next state will be an
  * PostItemGroupHeader.  In the other case, the current state remains this ItemsAdvanced state.
@@ -78,9 +78,6 @@ public class InItemGroupState extends ReportState
     advanceItem ();
 
     fireItemsAdvancedEvent ();
-
-//    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-//    rpc.processItemBand (itemBand);
 
     // we have more data to work on
     // If the group is done, print the GroupFooter of the parent

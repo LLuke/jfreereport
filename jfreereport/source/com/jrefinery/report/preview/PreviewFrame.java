@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.41 2002/12/03 20:31:00 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.42 2002/12/04 19:49:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -287,7 +287,6 @@ public class PreviewFrame
       }
       else if (property.equals(ReportPane.ZOOMFACTOR_PROPERTY))
       {
-        Log.debug("ZoomFactor changed!");
         validateButtons();
         validate();
       }

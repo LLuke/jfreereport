@@ -28,16 +28,21 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.9 2002/11/07 21:45:19 taqua Exp $
+ * $Id: GroupList.java,v 1.10 2002/12/06 17:17:38 mungady Exp $
  *
  * Changes:
  * --------
  * 11-May-2002 : Version 1 (TM);
  * 16-May-2002 : Added Javadoc comments (DG);
  * 29-Aug-2002 : TreeSet does no cloning in JDK 1.2.2, it returns a "new TreeSet()".
+<<<<<<< GroupList.java
+ *               Why would a sane programmer mess up the source like this?
+ * 06-Dec-2002 : Added validity check to the group list.
+=======
  *               Why would a sane programmer mess up the source like this?
  * 06-Dec-2002 : Updated Javadocs (DG);
  *
+>>>>>>> 1.10
  */
 
 package com.jrefinery.report;
@@ -54,6 +59,10 @@ import java.util.TreeSet;
  * guaranteed to be listed before any more specific subgroup.
  * <p>
  * Groups are ordered by comparing the declared fieldnames for the groups.
+ * A subgroup of an group must contain all fields from its parent plus at least one
+ * new field.
+ * <p>
+ * This implementation is not synchronized.
  *
  * @author Thomas Morgner
  */
@@ -171,9 +180,14 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    * @param o  the object (must be an instance of the Group class).
    *
    * @return true if the list did not already contain the specified element.
+   * Returns always true, as the old value is removed if needed.
    */
   public boolean add (Object o)
   {
+    if (o == null)
+    {
+      throw new NullPointerException ("Try to add null");
+    }
     if (o instanceof Group)
     {
       cache = null;
@@ -186,11 +200,6 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     }
     else
     {
-      if (o == null)
-      {
-        throw new NullPointerException ("Try to add null");
-      }
-
       throw new ClassCastException ("Group required, was " + o.getClass ().getName ());
     }
   }
@@ -199,7 +208,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    * Clones the list.
    * <p>
    * Warning: No real cloning involved due to a bug in JDK 1.2.2; TreeSet does not clone, so
-   * we can't too.
+   * we can't do it either.
    *
    * @return a clone.
    */
@@ -220,5 +229,33 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
       }
     }
     return l;
+  }
+
+  /**
+   * Validates the groups contained in this list. All groups are valid,
+   * when every sub group contains all fields of its parent and has more
+   * elements than its parent.
+   *
+   * @return true, if the group list is valid, false otherwise.
+   */
+  public boolean isValid ()
+  {
+    if (size() == 0) return true;
+
+    Group parent = get(0);
+    for (int i = 1; i < size(); i++)
+    {
+      Group sub = get(i);
+      if (sub.getFields().containsAll(parent.getFields()) == false)
+      {
+        return false;
+      }
+      if (sub.getFields().size() == parent.getFields().size())
+      {
+        return false;
+      }
+      parent = sub;
+    }
+    return true;
   }
 }

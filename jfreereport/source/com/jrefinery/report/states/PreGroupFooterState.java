@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupFooterState.java,v 1.4 2002/12/02 17:43:47 taqua Exp $
+ * $Id: PreGroupFooterState.java,v 1.5 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,7 @@
 package com.jrefinery.report.states;
 
 /**
- * If there is not enough space to print the footer, the footer returns itself to
- * wait for the pageBreak. After the groupFinished Event has been fired and the footer
- * is printed, the PostGroupFooterState gets active.
+ * Fires the groupFinished Event and advances to PostGroupFooter.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -59,7 +57,8 @@ public class PreGroupFooterState extends ReportState
   }
 
   /**
-   * Advances from this state to the '<code>POST-GROUP-FOOTER</code>' state.
+   * Advances from this state to the '<code>POST-GROUP-FOOTER</code>' state
+   * after firing the GroupFinished Event.
    *
    * @return the next report state ('<code>POST-GROUP-FOOTER</code>').
    */

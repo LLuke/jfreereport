@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.5 2002/12/04 16:27:30 mungady Exp $
+ * $Id: PageableReportProcessor.java,v 1.6 2002/12/05 16:57:59 mungady Exp $
  *
  * Changes
  * -------
@@ -149,8 +149,7 @@ public class PageableReportProcessor
     }
     catch (Exception e)
     {
-      e.printStackTrace();
-      throw new ReportProcessingException();
+      throw new ReportProcessingException("Unable to create the layoutmanager", e);
     }
   }
 
@@ -220,7 +219,7 @@ public class PageableReportProcessor
       Iterator it = startState.getLevels();
       while (it.hasNext())
       {
-        Log.debug("Will Process: " + it.next());
+        Log.debug(new Log.SimpleMessage("Will Process: " , it.next()));
       }
 
       it = startState.getLevels();
@@ -241,7 +240,7 @@ public class PageableReportProcessor
 
       do
       {
-        Log.debug ("Processing Level " + level);
+        Log.debug (new Log.SimpleMessage("Processing Level " , new Integer(level)));
         if (level == -1)
         {
           pageStates = new ReportStateList(this);
@@ -272,14 +271,9 @@ public class PageableReportProcessor
       }
       while (hasNext == true);
 
-      Log.debug("DummyMode done " 
-                + "Free: " + Runtime.getRuntime().freeMemory() + "; " 
-                + "Total: " + Runtime.getRuntime().totalMemory());
+      Log.debug (new Log.MemoryUsageMessage("DummyWriting Done"));
 
       dummyOutput.close();
-      Log.debug("DummyWriting Done " 
-                + "Free: " + Runtime.getRuntime().freeMemory() + "; " 
-                + "Total: " + Runtime.getRuntime().totalMemory());
       // root of evilness here ... pagecount should not be handled specially ...
 
       state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY, 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.4 2002/11/07 21:45:27 taqua Exp $
+ * $Id: FunctionProcessingException.java,v 1.1 2002/12/02 17:29:12 taqua Exp $
  *
  * Changes
  * -------
@@ -39,19 +39,18 @@
 
 package com.jrefinery.report.function;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import com.jrefinery.report.util.StackableRuntimeException;
 
 /**
  * An exception that indicates that a function has not been correctly initialised.
  *
  * @author TM
  */
-public class FunctionProcessingException extends RuntimeException
+public class FunctionProcessingException extends StackableRuntimeException
 {
-
-  /** The parent exception. */
-  private Exception parent;
+  public FunctionProcessingException()
+  {
+  }
 
   /**
    * Creates an exception.
@@ -59,10 +58,9 @@ public class FunctionProcessingException extends RuntimeException
    * @param message  the exception message.
    * @param ex  the parent exception.
    */
-  public FunctionProcessingException (String message, Exception ex)
+  public FunctionProcessingException(String message, Exception ex)
   {
-    super (message);
-    parent = ex;
+    super(message, ex);
   }
 
   /**
@@ -70,48 +68,8 @@ public class FunctionProcessingException extends RuntimeException
    *
    * @param message  the exception message.
    */
-  public FunctionProcessingException (String message)
+  public FunctionProcessingException(String message)
   {
-    super (message);
-  }
-
-  /**
-   * Returns the parent exception (possibly null).
-   *
-   * @return the parent exception.
-   */
-  public Exception getParent ()
-  {
-    return parent;
-  }
-
-  /**
-   * Prints the stack trace to the specified stream.
-   *
-   * @param stream  the output stream.
-   */
-  public void printStackTrace (PrintStream stream)
-  {
-    super.printStackTrace (stream);
-    if (getParent () != null)
-    {
-      stream.println ("ParentException: ");
-      getParent ().printStackTrace (stream);
-    }
-  }
-
-  /**
-   * Prints the stack trace to the specified writer.
-   *
-   * @param writer  the writer.
-   */
-  public void printStackTrace (PrintWriter writer)
-  {
-    super.printStackTrace (writer);
-    if (getParent () != null)
-    {
-      writer.println ("ParentException: ");
-      getParent ().printStackTrace (writer);
-    }
+    super(message);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.42 2002/12/04 19:49:13 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.1 2002/12/04 20:05:37 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -272,7 +272,6 @@ public class PreviewDialog
       }
       else if (property.equals(ReportPane.ZOOMFACTOR_PROPERTY))
       {
-        Log.debug("ZoomFactor changed!");
         validateButtons();
         validate();
       }
@@ -770,8 +769,7 @@ public class PreviewDialog
     init(report);
   }
 
-  private void init (JFreeReport report)
-    throws ReportProcessingException
+  private void init (JFreeReport report) throws ReportProcessingException
   {
     // get a locale-specific resource bundle...
     setLargeIconsEnabled(true);

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id$
+ * $Id: ReportFactory.java,v 1.16 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -183,7 +183,6 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     defRightMargin = parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
     Paper p = format.getPaper();
-//    Log.debug ("Defined: Top = " + defTopMargin + " , Left = " + defLeftMargin + " , Bottom = " + defBottomMargin + " , Right = " + defRightMargin);
     switch (format.getOrientation())
     {
       case PageFormat.PORTRAIT:

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreReportFooterState.java,v 1.4 2002/12/02 17:43:50 taqua Exp $
+ * $Id: PreReportFooterState.java,v 1.5 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,8 @@
 package com.jrefinery.report.states;
 
 /**
- * At least the report has been finished. There is no more data to print, so just print
- * the reportFooter and advance to the state FinishState. Before printing the header fire the
- * reportFinished event.
+ * At least the report has been finished. There is no more data to print, so just fire
+ * that ReportFinishedEvent and advance to the state FinishState. 
  *
  * @author David Gilbert
  * @author Thomas Morgner
