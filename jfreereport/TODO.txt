@@ -20,3 +20,10 @@
 * Reconfigure the table sheet name definition process, it is almost impossible
   to disable that!
 * Implement function sets (see #note-1030630)
+
+* maybe it would be wise to change the parser factories to be more
+  extensible in a way that they can be configured at runtime.
+* Complete the module definition ...
+  Document the changes and write a converter for report definitions
+  from 0.8.3 to 0.8.4
+* pluggable input support (WMF, SVG etc)
