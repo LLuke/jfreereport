@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.39 2002/11/27 12:20:34 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.40 2002/12/02 17:40:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -76,6 +76,7 @@ import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -655,6 +656,25 @@ public class PreviewFrame
     }
   }
 
+  protected class ZoomSetAction extends AbstractActionDowngrade
+  {
+    private int zoomFactor;
+
+    public ZoomSetAction(int factorIndex)
+    {
+      zoomFactor = factorIndex;
+      this.putValue(Action.NAME, String.valueOf((int) (ZOOM_FACTORS[factorIndex] * 100)) + " %");
+    }
+
+    /**
+     * Invoked when an action occurs.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      setZoomFactor(zoomFactor);
+    }
+  }
+
   /** The base class for localised resources. */
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
@@ -1229,70 +1249,53 @@ public class PreviewFrame
     JMenuBar menuBar = new JMenuBar();
     // first the file menu
 
-    String menuName = resources.getString("menu.file.name");
-    JMenu fileMenu = new JMenu(menuName);
+    JMenu fileMenu = new JMenu(resources.getString("menu.file.name"));
     Character mnemonic = (Character) resources.getObject("menu.file.mnemonic");
     fileMenu.setMnemonic(mnemonic.charValue());
 
-    JMenuItem gotoItem = new ActionMenuItem(gotoAction);
-    KeyStroke accelerator = (KeyStroke) getGotoAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
-    if (accelerator != null)
-    {
-      gotoItem.setAccelerator(accelerator);
-    }
-    fileMenu.add(gotoItem);
-
+    fileMenu.add(createMenuItem(saveAsAction));
     fileMenu.addSeparator();
-
-    JMenuItem saveAsItem = new ActionMenuItem(saveAsAction);
-    accelerator = (KeyStroke) getSaveAsAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
-    if (accelerator != null)
-    {
-      saveAsItem.setAccelerator(accelerator);
-    }
-    fileMenu.add(saveAsItem);
-
-    fileMenu.addSeparator();
-
-    JMenuItem setupItem = new ActionMenuItem(pageSetupAction);
-    accelerator = (KeyStroke) getPageSetupAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
-    if (accelerator != null)
-    {
-      setupItem.setAccelerator(accelerator);
-    }
-    fileMenu.add(setupItem);
-
-    JMenuItem printItem = new ActionMenuItem(printAction);
-    accelerator = (KeyStroke) getPrintAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
-    if (accelerator != null)
-    {
-      printItem.setAccelerator(accelerator);
-    }
-    fileMenu.add(printItem);
-
+    fileMenu.add(createMenuItem(pageSetupAction));
+    fileMenu.add(createMenuItem(printAction));
     fileMenu.add(new JSeparator());
+    fileMenu.add(createMenuItem(closeAction));
 
-    JMenuItem closeItem = new ActionMenuItem(closeAction);
-    accelerator = (KeyStroke) getCloseAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
-    if (accelerator != null)
+    // the navigation menu ...
+    JMenu navMenu = new JMenu(resources.getString("menu.navigation.name"));
+    mnemonic = (Character) resources.getObject("menu.navigation.mnemonic");
+    navMenu.setMnemonic(mnemonic.charValue());
+
+    navMenu.add(createMenuItem(gotoAction));
+    navMenu.addSeparator();
+    navMenu.add(createMenuItem(firstPageAction));
+    navMenu.add(createMenuItem(previousPageAction));
+    navMenu.add(createMenuItem(nextPageAction));
+    navMenu.add(createMenuItem(lastPageAction));
+
+    // the navigation menu ...
+    JMenu zoomMenu = new JMenu(resources.getString("menu.zoom.name"));
+    mnemonic = (Character) resources.getObject("menu.zoom.mnemonic");
+    zoomMenu.setMnemonic(mnemonic.charValue());
+
+    zoomMenu.add (createMenuItem(zoomInAction));
+    zoomMenu.add (createMenuItem(zoomOutAction));
+    zoomMenu.add(new JSeparator());
+    for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
-      closeItem.setAccelerator(accelerator);
+      zoomMenu.add (createMenuItem(new ZoomSetAction(i)));
     }
-    fileMenu.add(closeItem);
 
     // then the help menu
-
-    menuName = resources.getString("menu.help.name");
-    JMenu helpMenu = new JMenu(menuName);
+    JMenu helpMenu = new JMenu(resources.getString("menu.help.name"));
     mnemonic = (Character) resources.getObject("menu.help.mnemonic");
     helpMenu.setMnemonic(mnemonic.charValue());
-
-    JMenuItem aboutItem = new ActionMenuItem(aboutAction);
-    helpMenu.add(aboutItem);
+    helpMenu.add(createMenuItem(aboutAction));
 
     // finally, glue together the menu and return it
 
     menuBar.add(fileMenu);
+    menuBar.add(navMenu);
+    menuBar.add(zoomMenu);
     menuBar.add(helpMenu);
 
     return menuBar;
@@ -1320,6 +1323,17 @@ public class PreviewFrame
     button.setText(null);
     FloatingButtonEnabler.getInstance().addButton(button);
     return button;
+  }
+
+  protected JMenuItem createMenuItem (Action action)
+  {
+    JMenuItem menuItem = new ActionMenuItem(action);
+    KeyStroke accelerator = (KeyStroke) action.getValue(ActionDowngrade.ACCELERATOR_KEY);
+    if (accelerator != null)
+    {
+      menuItem.setAccelerator(accelerator);
+    }
+    return menuItem;
   }
 
   /**
