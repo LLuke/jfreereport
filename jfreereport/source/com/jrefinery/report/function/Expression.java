@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.11 2002/12/02 17:29:09 taqua Exp $
+ * $Id: Expression.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
  *
  * ChangeLog
  * ------------
@@ -143,18 +143,21 @@ public interface Expression extends Cloneable
   public Object clone() throws CloneNotSupportedException;
 
   /**
-   * The depency level defines the level of execution for this function. Higher depency functions
-   * are executed before lower depency functions. The range for depencies is defined to start
-   * from 0 (lowest depency possible) to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency functions
+   * are executed before lower dependency functions. For ordinary functions and expressions,
+   * the range for dependencies is defined to start from 0 (lowest dependency possible)
+   * to 2^31 (upper limit of int).
+   * <p>
+   * Levels below 0 are reserved for system-functionality (printing and layouting).
    *
    * @return the level.
    */
-  public int getDepencyLevel();
+  public int getDependencyLevel();
 
   /**
    * Sets the dependency level for the expression.
    *
    * @param level  the level.
    */
-  public void setDepencyLevel(int level);
+  public void setDependencyLevel(int level);
 }

@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * --------------------------
- * LeveledExpressionList.java
+ * LevelledExpressionList.java
  * --------------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeveledExpressionList.java,v 1.6 2002/12/05 17:00:04 mungady Exp $
+ * $Id: LevelledExpressionList.java,v 1.7 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import java.util.Iterator;
  *
  * @author Thomas Morgner
  */
-public class LeveledExpressionList implements ReportListener, Cloneable
+public class LevelledExpressionList implements ReportListener, Cloneable
 {
   /** A list of expressions and associated levels. */
   private LevelList expressionList;
@@ -66,7 +66,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * @param ec  the expressions.
    * @param fc  the functions.
    */
-  public LeveledExpressionList(ExpressionCollection ec, ExpressionCollection fc)
+  public LevelledExpressionList(ExpressionCollection ec, ExpressionCollection fc)
   {
     expressionList = new LevelList();
     initializeExpressions(ec);
@@ -521,7 +521,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       if (f != null)
       {
         expressionList.add(f);
-        expressionList.setLevel(f, f.getDepencyLevel());
+        expressionList.setLevel(f, f.getDependencyLevel());
       }
     }
   }
@@ -541,7 +541,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
       if (f != null)
       {
         expressionList.add(f);
-        expressionList.setLevel(f, f.getDepencyLevel());
+        expressionList.setLevel(f, f.getDependencyLevel());
       }
     }
   }
@@ -612,7 +612,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    LeveledExpressionList ft = (LeveledExpressionList) super.clone();
+    LevelledExpressionList ft = (LevelledExpressionList) super.clone();
     ft.expressionList = (LevelList) expressionList.clone();
     ft.expressionList.clear();
 

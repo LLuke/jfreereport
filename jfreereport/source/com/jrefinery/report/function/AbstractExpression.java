@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.14 2002/12/11 01:10:40 mungady Exp $
+ * $Id: AbstractExpression.java,v 1.15 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public abstract class AbstractExpression implements Expression
   private String name;
 
   /** The dependency level. */
-  private int depency;
+  private int dependency;
 
   /** Storage for the expression properties. */
   private Properties properties;
@@ -264,15 +264,18 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * The depency level defines the level of execution for this function. Higher depency functions
-   * are executed before lower depency functions. The range for depencies is defined to start
-   * from 0 (lowest depency possible) to 2^31 (upper limit of int).
+   * The dependency level defines the level of execution for this function. Higher dependency functions
+   * are executed before lower dependency functions. For ordinary functions and expressions,
+   * the range for dependencies is defined to start from 0 (lowest dependency possible)
+   * to 2^31 (upper limit of int).
+   * <p>
+   * Levels below 0 are reserved for system-functionality (printing and layouting).
    *
-   * @return the level.
+   * @return the dependency level for this function
    */
-  public int getDepencyLevel()
+  public int getDependencyLevel()
   {
-    return depency;
+    return dependency;
   }
 
   /**
@@ -280,13 +283,13 @@ public abstract class AbstractExpression implements Expression
    *
    * @param level  the level.
    */
-  public void setDepencyLevel(int level)
+  public void setDependencyLevel(int level)
   {
     if (level < 0)
     {
       throw new IllegalArgumentException("No negative dependency allowed for user-defined "
                                          + "expressions.");
     }
-    this.depency = level;
+    this.dependency = level;
   }
 }
