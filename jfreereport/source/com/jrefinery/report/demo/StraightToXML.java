@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToXML.java,v 1.2 2003/02/02 23:43:49 taqua Exp $
+ * $Id: StraightToXML.java,v 1.3 2003/02/04 17:56:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.xml.XMLProcessor;
 
@@ -89,7 +90,7 @@ public class StraightToXML
     }
     catch (Exception e)
     {
-      System.out.println(e.toString());
+      Log.debug ("Failed to parse", e);
     }
     return result;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: KeyedQueue.java,v 1.9 2002/11/07 21:45:29 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.10 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -195,7 +195,6 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public Object clone () throws CloneNotSupportedException
   {
-    System.out.println ("Cloned QUEUE: " + list.size());
     KeyedQueue q = (KeyedQueue) super.clone ();
     q.list = (LinkedList) list.clone ();
     q.table = (Hashtable) table.clone ();

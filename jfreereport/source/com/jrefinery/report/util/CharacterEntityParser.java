@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.6 2002/12/11 00:41:42 mungady Exp $
+ * $Id: CharacterEntityParser.java,v 1.4 2003/02/05 21:48:27 taqua Exp $
  *
  * Changes
  * -------
@@ -120,9 +120,10 @@ public class CharacterEntityParser
   }
 
   /**
+   * Looks up the character for the entity name specified in <code>key</code>.
    *
-   * @param key
-   * @return
+   * @param key the entity name
+   * @return the character as string with a length of 1
    */
   private String lookupCharacter(String key)
   {
@@ -136,9 +137,10 @@ public class CharacterEntityParser
   }
 
   /**
+   * Performs a reverse lookup, to retrieve the entity name for a given character.
    *
-   * @param character
-   * @return
+   * @param character the character that should be translated into the entity
+   * @return the entity name for the character or the untranslated character.
    */
   private String lookupEntity(String character)
   {
@@ -152,9 +154,11 @@ public class CharacterEntityParser
   }
 
   /**
+   * Encode the given String, so that all known entites are encoded. All characters
+   * represented by these entites are now removed from the string.
    *
-   * @param value
-   * @return
+   * @param value the original string
+   * @return the encoded string.
    */
   public String encodeEntities (String value)
   {
@@ -168,9 +172,10 @@ public class CharacterEntityParser
   }
 
   /**
+   * Decode the string, all known entities are replaced by their resolved characters.
    *
-   * @param value
-   * @return
+   * @param value the string that should be decoded.
+   * @return the decoded string.
    */
   public String decodeEntities(String value)
   {

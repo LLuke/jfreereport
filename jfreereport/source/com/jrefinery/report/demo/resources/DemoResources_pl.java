@@ -21,13 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------
- * DemoResources_pl.java ------------------ (C)opyright 2002, by Simba
- * Management Limited.
+ * DemoResources_pl.java
+ * ------------------
+ * (C)opyright 2002, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.12 2002/12/12 12:26:55 mungady Exp $
+ * $Id: DemoResources_pl.java,v 1.1 2003/01/30 12:38:44 pbzdyl Exp $
  *
  * Changes
  * -------
@@ -100,7 +101,7 @@ public class DemoResources_pl extends JFreeReportResources
 
 
     {"report.definitionnotfound", "Definicja raportu {0} nie znaleziona w \u015bcie\u017ce (classpath)"},
-    {"report.definitionfailure.message", "Nie mo\u017cna za\u0142adowaæ definicji raportu {0}."},
+    {"report.definitionfailure.message", "Nie mo\u017cna za\u0142adowaï¿½ definicji raportu {0}."},
     {"report.definitionfailure.title", "B\u0142\u0105d podczas \u0142adowania (Loader error)"},
     {"report.definitionnull", "Definicja raportu nie zosta\u0142a wygenerowana"},
     {"error", "B\u0142\u0105d"},

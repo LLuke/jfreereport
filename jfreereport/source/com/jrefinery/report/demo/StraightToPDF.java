@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.3 2002/12/18 20:31:47 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.4 2003/02/04 17:56:08 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.Log;
 
 import javax.swing.table.TableModel;
 import java.awt.print.PageFormat;
@@ -92,7 +93,7 @@ public class StraightToPDF
     }
     catch (Exception e)
     {
-      System.out.println(e.toString());
+      Log.debug ("Failed to parse", e);
     }
     return result;
   }

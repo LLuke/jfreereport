@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.4 2003/02/04 17:56:08 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.1 2003/02/05 13:26:24 taqua Exp $
  *
  * Changes
  * -------
@@ -169,7 +169,12 @@ public class StraightToEverything
     }
   }
 
-
+  /**
+   * Saves a report to plain text format.
+   *
+   * @param report  the report.
+   * @param filename target file name.
+   */
   public static void createPlainText (JFreeReport report, String filename)
     throws Exception
   {
@@ -184,6 +189,12 @@ public class StraightToEverything
     fout.close();
   }
 
+  /**
+   * Saves a report to rich-text format (RTF).
+   *
+   * @param report  the report.
+   * @param filename target file name.
+   */
   public static void createRTF (JFreeReport report, String filename)
     throws Exception
   {
@@ -195,6 +206,12 @@ public class StraightToEverything
     fout.close();
   }
 
+  /**
+   * Saves a report to CSV format.
+   *
+   * @param report  the report.
+   * @param filename target file name.
+   */
   public static void createCSV (JFreeReport report, String filename)
     throws Exception
   {
@@ -206,6 +223,12 @@ public class StraightToEverything
     fout.close();
   }
 
+  /**
+   * Saves a report to Excel format.
+   *
+   * @param report  the report.
+   * @param filename target file name.
+   */
   public static void createXLS (JFreeReport report, String filename)
     throws Exception
   {
@@ -217,6 +240,12 @@ public class StraightToEverything
     fout.close();
   }
 
+  /**
+   * Saves a report into a single HTML format.
+   *
+   * @param report  the report.
+   * @param filename target file name.
+   */
   public static void createStreamHTML (JFreeReport report, String filename)
     throws Exception
   {
@@ -228,6 +257,12 @@ public class StraightToEverything
     fout.close();
   }
 
+  /**
+   * Saves a report to HTML. The HTML file is stored in a directory.
+   *
+   * @param report  the report.
+   * @param filename target file name.
+   */
   public static void createDirectoryHTML (JFreeReport report, String filename)
     throws Exception
   {
@@ -236,6 +271,12 @@ public class StraightToEverything
     pr.processReport();
   }
 
+  /**
+   * Saves a report in a ZIP file. The zip file contains a HTML document.
+   *
+   * @param report  the report.
+   * @param filename target file name.
+   */
   public static void createZIPHTML (JFreeReport report, String filename)
     throws Exception
   {

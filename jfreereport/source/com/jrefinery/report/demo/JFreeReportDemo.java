@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.51 2003/02/02 23:43:49 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.52 2003/02/04 17:56:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -116,12 +116,8 @@ public class JFreeReportDemo extends JFrame
      */
     public void actionPerformed(ActionEvent event)
     {
-      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " "
-                        + "Total: " + Runtime.getRuntime().totalMemory());
       System.gc();
       displayAbout();
-      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " "
-                        + "Total: " + Runtime.getRuntime().totalMemory());
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.17 2003/02/01 22:10:36 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.18 2003/02/04 17:56:28 taqua Exp $
  *
  * Changes
  * -------
@@ -449,7 +449,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     if (imageRef.getImage() != null)
     {
-      PngEncoder encoder = new PngEncoder(imageRef.getImage());
+      // use best compression and preserve Alpha-Channel ...
+      PngEncoder encoder = new PngEncoder(imageRef.getImage(), true, PngEncoder.FILTER_NONE, 9);
       byte[] data = encoder.pngEncode();
       return Image.getInstance(data);
     }

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 8:17:01 PM
  *
- * $Id: BeanObjectDescription.java,v 1.4 2003/01/23 18:07:45 taqua Exp $
+ * $Id: BeanObjectDescription.java,v 1.5 2003/02/01 18:27:03 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -165,14 +165,6 @@ public class BeanObjectDescription extends AbstractObjectDescription
       b.append(methodName.substring(4));
     }
     return b.toString();
-  }
-
-  public static void main(String[] args)
-  {
-    BeanObjectDescription o = new BeanObjectDescription(FloatDimension.class);
-    o.setParameter("height", new Float(100));
-    o.setParameter("width", new Float(100));
-    System.out.println(o.createObject());
   }
 
   public void setParameterFromObject(Object o)
