@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageDefinition.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,8 +48,35 @@ public interface PageDefinition extends Cloneable, Serializable
   public float getHeight();
 
   public int getPageCount();
+
+  /**
+   * Returns all page positions as array.
+   * @see PageDefinition#getPagePosition(int)
+   * @return the collected page positions
+   */
   public Rectangle2D[] getPagePositions();
+
+  /**
+   * Describes the internal position of the given page within
+   * the logical page. The logical page does not include any
+   * page margins, the printable area for a page starts at
+   * (0,0).
+   *
+   * @param pos
+   * @return
+   */
   public Rectangle2D getPagePosition (int pos);
+
+  /**
+   * Returns the page format for the given page number.
+   * The page format contains local coordinates - that means
+   * that the point (0,0) denotes the upper left corner of
+   * this returned page format and not global coordinates.
+   *
+   * @param pos the position of the pageformat within the page
+   * @return the given pageformat.
+   */
   public PageFormat getPageFormat(int pos);
+
   public Object clone () throws CloneNotSupportedException;
 }

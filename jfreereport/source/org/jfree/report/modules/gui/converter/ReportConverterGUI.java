@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.10 2003/09/15 18:26:50 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.11 2003/11/07 18:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,6 @@ import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.converter.components.OperationResultTableModel;
 import org.jfree.report.modules.gui.converter.parser.ConverterParserFrontend;
-import org.jfree.report.modules.gui.converter.resources.ConverterResources;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
 import org.jfree.report.modules.parser.ext.factory.objects.BandLayoutClassFactory;
@@ -101,7 +100,7 @@ public class ReportConverterGUI extends JFrame
 {
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      ConverterResources.class.getName();
+      "org.jfree.report.modules.gui.converter.resources.converter-resources";
 
   /**
    * An action for selecting the target.

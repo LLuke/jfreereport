@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationResultTableModel.java,v 1.4 2003/09/15 18:26:50 taqua Exp $
+ * $Id: OperationResultTableModel.java,v 1.5 2003/11/07 18:33:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,8 @@ package org.jfree.report.modules.gui.converter.components;
 import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.report.modules.gui.converter.resources.ConverterResources;
 import org.jfree.report.modules.parser.base.OperationResult;
+import org.jfree.report.modules.gui.converter.ReportConverterGUI;
 
 /**
  * The operation result tablemodel is used to display the parser and converter
@@ -91,7 +91,7 @@ public class OperationResultTableModel extends AbstractTableModel
    */
   public OperationResultTableModel(final OperationResult[] data)
   {
-    this.resources = ResourceBundle.getBundle(ConverterResources.class.getName());
+    this.resources = ResourceBundle.getBundle(ReportConverterGUI.BASE_RESOURCE_CLASS);
     setData(data);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageSorter.java,v 1.3 2003/09/15 18:26:50 taqua Exp $
+ * $Id: PackageSorter.java,v 1.4 2003/11/07 18:33:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -197,11 +197,11 @@ public final class PackageSorter
   }
 
   /**
-   * Sorts the given list of package states. 
-   * 
-   * ToDo: The algorithm used is simple and not optimized, 
-   * we could write something better in a near future. 
-   *  
+   * Sorts the given list of package states. The packages
+   * are sorted by their dependencies in a way so that all
+   * dependent packages are placed on lower positions than
+   * the packages which declared the dependency. 
+   *
    * @param modules the list of modules.
    */
   public static void sort (final List modules)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.11 2003/11/07 18:33:56 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.12 2004/03/16 15:09:53 taqua Exp $
  *
  * Changes
  * -------
@@ -242,7 +242,7 @@ public strictfp class TableCellBackground
    * This function returns a <code>this</code> reference if the background
    * was not merged.
    * <p>
-   * todo: This method is inaccurate ..
+   * todo: This method is plain wrong ..
    *
    * @param background the other background cell
    * @return a union of the background informations.
@@ -262,7 +262,8 @@ public strictfp class TableCellBackground
       }
     }
 
-    final Rectangle2D cellBounds = background.getBounds();
+    final Rectangle2D cellBounds =
+            background.getBounds().createIntersection(getBounds());
 
 //    Log.debug ("This: " + this);
 //    Log.debug ("  BG: " + background);
@@ -460,7 +461,7 @@ public strictfp class TableCellBackground
    * @param paint the overlay color
    * @return the merged colors.
    */
-  private Color addColor(final Color base, final Color paint)
+  private static Color addColor(final Color base, final Color paint)
   {
     final BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     final Graphics g = img.getGraphics();

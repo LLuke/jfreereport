@@ -1,5 +1,5 @@
 <!--
-  Report DTD for JFreeReport version 0.8.1.
+  Report DTD for JFreeReport version 0.8.4-8.
 
 	ChangeLog:
 
@@ -21,6 +21,8 @@
               additional font style attributes added
               all elements except the shape elements now able to be dynamic
   2003-05-20: Added support for generic shape-field and drawable-field (since version 0.8.2)
+  ..
+  2004-04-04: Added support for fixed position of bands ..
  -->
 
 <!ENTITY % boolean
@@ -187,6 +189,9 @@
   rightmargin    CDATA           #IMPLIED
   topmargin      CDATA           #IMPLIED
   bottommargin   CDATA           #IMPLIED
+  vertical-pages    CDATA        #IMPLIED
+  horizontal-pages  CDATA        #IMPLIED
+
 >
 
 <!--
@@ -218,6 +223,7 @@
   height         CDATA           #IMPLIED
    %basicform;
   %fontdef;
+  fixed-position CDATA          #IMPLIED
 >
 
 <!ELEMENT reportfooter ( %itemelements; )>
@@ -226,6 +232,7 @@
   height         CDATA          #IMPLIED
   %basicform;
   %fontdef;
+  fixed-position CDATA          #IMPLIED
 >
 
 
@@ -298,6 +305,7 @@
   height                    CDATA         #IMPLIED
   %basicform;
   %fontdef;
+  fixed-position CDATA          #IMPLIED
 >
 
 <!--
@@ -311,6 +319,7 @@
   height                    CDATA         #IMPLIED
   %basicform;
   %fontdef;
+  fixed-position CDATA          #IMPLIED
 >
 
 <!--
@@ -344,6 +353,7 @@
   height         CDATA          #IMPLIED
   %basicform;
   %fontdef;
+  fixed-position CDATA          #IMPLIED
 >
 
 <!--
@@ -353,10 +363,10 @@
   -->
 <!ELEMENT band ( %itemelements; )>
 <!ATTLIST band
-  height         CDATA          #IMPLIED
-  width          CDATA          #IMPLIED
   x              CDATA          #REQUIRED
   y              CDATA          #REQUIRED
+  width          CDATA          #IMPLIED
+  height         CDATA          #IMPLIED
   %basicform;
   %fontdef;
 >
@@ -371,9 +381,9 @@
   -->
 <!ELEMENT resource-label   (#PCDATA)>
 <!ATTLIST resource-label
-  height         CDATA          #REQUIRED
   %basicform;
   %position;
+  height         CDATA          #REQUIRED
   %fontdef;
   nullstring     CDATA          #IMPLIED
   dynamic        (%boolean;)    #IMPLIED
@@ -390,9 +400,9 @@
   -->
 <!ELEMENT resource-field   EMPTY>
 <!ATTLIST resource-field
-  height         CDATA          #REQUIRED
   %basicform;
   %position;
+  height         CDATA          #REQUIRED
   %fontdef;
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
@@ -407,9 +417,9 @@
   -->
 <!ELEMENT label   (#PCDATA)>
 <!ATTLIST label
-  height         CDATA          #REQUIRED
   %basicform;
   %position;
+  height         CDATA          #REQUIRED
   %fontdef;
   nullstring     CDATA          #IMPLIED
   dynamic        (%boolean;)    #IMPLIED
@@ -422,9 +432,9 @@
   -->
 <!ELEMENT string-field   EMPTY>
 <!ATTLIST string-field
-  height         CDATA          #REQUIRED
   %basicform;
   %position;
+  height         CDATA          #REQUIRED
   %fontdef;
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
@@ -436,9 +446,9 @@
 
 <!ELEMENT number-field   EMPTY>
 <!ATTLIST number-field
-  height         CDATA          #REQUIRED
   %basicform;
   %position;
+  height         CDATA          #REQUIRED
   %fontdef;
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
@@ -450,9 +460,9 @@
 
 <!ELEMENT date-field   EMPTY>
 <!ATTLIST date-field
-  height         CDATA          #REQUIRED
   %basicform;
   %position;
+  height         CDATA          #REQUIRED
   %fontdef;
   format		           CDATA         #IMPLIED
   fieldname            CDATA         #REQUIRED
@@ -471,8 +481,8 @@
 <!ELEMENT imageref   EMPTY>
 <!ATTLIST imageref
   %position;
-  src         CDATA #REQUIRED
   height      CDATA #REQUIRED
+  src         CDATA #REQUIRED
   name        CDATA #IMPLIED
   dynamic     (%boolean;)   #IMPLIED
   scale       (%boolean;)   #IMPLIED
@@ -487,8 +497,8 @@
 <!ELEMENT image-field   EMPTY>
 <!ATTLIST image-field
   %position;
-  fieldname   CDATA #REQUIRED
   height      CDATA #REQUIRED
+  fieldname   CDATA #REQUIRED
   name        CDATA #IMPLIED
   dynamic     (%boolean;)   #IMPLIED
   scale       (%boolean;)   #IMPLIED
@@ -503,8 +513,8 @@
 <!ELEMENT drawable-field   EMPTY>
 <!ATTLIST drawable-field
   %position;
-  fieldname   CDATA #REQUIRED
   height      CDATA #REQUIRED
+  fieldname   CDATA #REQUIRED
   name        CDATA #IMPLIED
 >
 
@@ -551,8 +561,8 @@
 <!ELEMENT rectangle EMPTY>
 <!ATTLIST rectangle
   %position;
-  %basicform;
   height         CDATA   #REQUIRED
+  %basicform;
   draw     (%boolean;)   #IMPLIED
   fill     (%boolean;)   #IMPLIED
   weight    CDATA        #IMPLIED
@@ -568,8 +578,8 @@
 <!ELEMENT shape-field EMPTY>
 <!ATTLIST shape-field
   %position;
-  %basicform;
   height         CDATA   #REQUIRED
+  %basicform;
   fieldname      CDATA   #REQUIRED
   dynamic  (%boolean;)   #IMPLIED
   draw     (%boolean;)   #IMPLIED

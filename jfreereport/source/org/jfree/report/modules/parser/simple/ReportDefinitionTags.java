@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.4 2003/12/06 15:24:02 taqua Exp $
  *
  * Changes
  * -------
@@ -285,4 +285,7 @@ public interface ReportDefinitionTags
 
   /** The configuration tag. */
   public static final String CONFIGURATION_TAG = "configuration";
+
+  public static final String VERTICAL_PAGES = "vertical-pages";
+  public static final String HORIZONTAL_PAGES = "horizontal-pages";
 }

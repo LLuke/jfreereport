@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.13 2004/03/16 15:09:24 taqua Exp $
+ * $Id: ReportPane.java,v 1.14 2004/03/27 20:21:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -68,10 +68,9 @@ import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.PageProcess;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.base.ReportStateList;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
-import org.jfree.report.states.ReportState;
 import org.jfree.report.util.Log;
 
 /**
@@ -125,9 +124,6 @@ public class ReportPane extends JComponent
 
   /** The number of pages required for the report given the current page format. */
   private int pageCount;
-
-  /** Storage for end-of-page state information. */
-  private ReportStateList pageStateList;
 
   /** A flag to indicate whether the border is painted or not. */
   private boolean borderPainted;
@@ -192,10 +188,12 @@ public class ReportPane extends JComponent
   /** The report processor. */
   private PageableReportProcessor processor;
 
+  private PageProcess pageProcess;
+
   /** The repagination listeners. */
   private ArrayList repaginationListeners;
   /** The registered repagination listeners as object array to gain performance. */
-  private Object[] repaginationListenersCache;
+  private transient Object[] repaginationListenersCache;
 
   /**
    * Creates a report pane to display the specified report.
@@ -271,38 +269,6 @@ public class ReportPane extends JComponent
   }
 
   /**
-   * Returns the current pageStates as a list.
-   *
-   * @return the report state list.
-   */
-  protected ReportStateList getPageStateList()
-  {
-    return pageStateList;
-  }
-
-  /**
-   * Sets the current page state list after the report has been repaginated.
-   * Fires the paginating PropertyChangeEvent after the report is paginated.
-   *
-   * @param list  the report state list.
-   */
-  protected void setPageStateList(final ReportStateList list)
-  {
-    final ReportStateList oldList;
-    synchronized (paginateLock)
-    {
-      oldList = pageStateList;
-      if (oldList != null)
-      {
-        oldList.clear();
-      }
-
-      this.pageStateList = list;
-    }
-    firePropertyChange(PAGINATED_PROPERTY, oldList == null, list == null);
-  }
-
-  /**
    * Returns the page format.
    *
    * @return The current page format;
@@ -344,7 +310,7 @@ public class ReportPane extends JComponent
    */
   protected boolean isPaginated()
   {
-    return (pageStateList != null);
+    return (pageProcess != null);
   }
 
   /**
@@ -675,11 +641,9 @@ public class ReportPane extends JComponent
       final int pageNumber = getPageNumber();
       if (pageNumber > 0)
       {
-        // todo: warning Not Physical page!
-        final ReportState state = getPageStateList().get(pageNumber - 1);
         try
         {
-          getProcessor().processPage(state);
+          getProcessor().processPage(getPageProcess(), pageNumber - 1, true);
         }
         catch (ReportProcessingException rpe)
         {
@@ -725,9 +689,7 @@ public class ReportPane extends JComponent
         return NO_SUCH_PAGE;
       }
 
-      // todo: warning: Not physical page
-      final ReportState state = getPageStateList().get(pageIndex);
-      getProcessor().processPage(state);
+      getProcessor().processPage(getPageProcess(), pageIndex, true);
       getProcessor().setOutputTarget(null);
       target.close();
     }
@@ -742,6 +704,11 @@ public class ReportPane extends JComponent
       setError(rpe);
     }
     return PAGE_EXISTS;
+  }
+
+  public PageProcess getPageProcess ()
+  {
+    return pageProcess;
   }
 
   /**
@@ -777,7 +744,7 @@ public class ReportPane extends JComponent
 
     synchronized (paginateLock)
     {
-      setPageStateList(null);
+      setPaginated(false);
       setPaginating(true);
 
       boolean addedOutputTarget = false;
@@ -799,18 +766,18 @@ public class ReportPane extends JComponent
 
       try
       {
-        final ReportStateList list = processor.repaginate();
-        int pageCount = 0;
-        int pageNr = 0;
-        if (list.size() > 0)
-        {
-          // the report state list stores one state for every page.
-          pageNr = 1;
-          pageCount = list.size();
-        }
+        processor.repaginate();
+        final int pageCount = processor.getPageCount();
         setCurrentPageCount(pageCount);
-        setPageNumber(pageNr);
-        setPageStateList(list);
+        if (pageCount > 0)
+        {
+          setPageNumber(1);
+        }
+        else
+        {
+          setPageNumber(0);
+        }
+        setPaginated(true);
 
       }
       finally
@@ -824,9 +791,9 @@ public class ReportPane extends JComponent
     }
   }
 
-  public void setPrinting(boolean printing)
+  public void setPrinting(final boolean printing)
   {
-    boolean oldPrinting = isPrinting();
+    final boolean oldPrinting = isPrinting();
     if (isPaginating())
     {
       throw new IllegalStateException("Is currently paginating.");
@@ -845,9 +812,9 @@ public class ReportPane extends JComponent
     firePropertyChange(PRINTING_PROPERTY, oldPrinting, printing);
   }
 
-  protected void setPaginating (boolean paginating)
+  protected void setPaginating (final boolean paginating)
   {
-    boolean oldPaginating = isPaginating();
+    final boolean oldPaginating = isPaginating();
     synchronized (paginateLock)
     {
       if (paginating)
@@ -936,9 +903,28 @@ public class ReportPane extends JComponent
     // Log.debug ("Dispose the report pane ...");
     // clean up a little bit
     // this is safe, the report is repaginated if needed
-    setPageStateList(null);
+    setPaginated(false);
     // is regenerated on next repaint
     graphCache = null;
+  }
+
+  protected void setPaginated (final boolean paginated)
+  {
+    if (paginated == isPaginated())
+    {
+      return;
+    }
+    final boolean oldPaginated = isPaginated();
+    if (paginated == true)
+    {
+      this.pageProcess = processor.createPageProcess();
+    }
+    else
+    {
+      this.pageProcess = null;
+      processor.resetPagination();
+    }
+    firePropertyChange(PAGINATED_PROPERTY, oldPaginated, paginated);
   }
 
   /**

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.10 2003/12/21 20:51:44 taqua Exp $
+ * $Id: ReportFactory.java,v 1.11 2004/03/16 15:09:55 taqua Exp $
  *
  * Changes
  * -------
@@ -129,7 +129,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
     else if (tagName.equals(GROUPS_TAG))
     {
-      startGroups(atts);
+      startGroups();
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
@@ -137,7 +137,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
     else if (tagName.equals(FUNCTIONS_TAG))
     {
-      startFunctions(atts);
+      startFunctions();
     }
     else if (tagName.equals(PROPERTY_TAG))
     {
@@ -288,8 +288,6 @@ public class ReportFactory extends AbstractReportDefinitionHandler
       return;
     }
 
-
-
     final JFreeReport report = new JFreeReport();
     final String name = atts.getValue(NAME_ATT);
     if (name != null)
@@ -304,6 +302,9 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     float defLeftMargin = (float) format.getImageableX();
     float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
         - format.getImageableX());
+
+    final int verticalPages = ParserUtil.parseInt(atts.getValue(VERTICAL_PAGES), 1);
+    final int horizontalPages = ParserUtil.parseInt(atts.getValue(HORIZONTAL_PAGES), 1);
 
     format = createPageFormat(format, atts);
 
@@ -333,7 +334,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
 
     format.setPaper(p);
-    report.setPageDefinition(new SimplePageDefinition (format));
+    report.setPageDefinition
+            (new SimplePageDefinition (format, verticalPages, horizontalPages));
 
     //PageFormatFactory.logPageFormat(format);
     getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
@@ -352,7 +354,6 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * @return the page format.
    *
    * @throws SAXException if there is an error parsing the report.
-   * @deprecated Create PageDefinitions instead
    */
   private PageFormat createPageFormat(final PageFormat format, final Attributes atts)
       throws SAXException
@@ -414,10 +415,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   /**
    * Creates a new group list for the report. The group factory will be the new default handler
    * for SAX Events.
-   *
-   * @param atts  the element attributes.
    */
-  private void startGroups(final Attributes atts)
+  private void startGroups()
   {
     getParser().pushFactory(new GroupFactory(getReportParser(), GROUPS_TAG));
   }
@@ -425,10 +424,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   /**
    * Creates a new function collection for the report. The FunctionFactory will be the new
    * default handler for SAX Events
-   *
-   * @param atts  the element attributes.
    */
-  private void startFunctions(final Attributes atts)
+  private void startFunctions()
   {
     getParser().pushFactory(new FunctionFactory(getReportParser(), FUNCTIONS_TAG));
   }

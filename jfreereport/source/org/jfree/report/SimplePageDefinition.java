@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.2 2004/03/27 20:20:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,48 +49,94 @@ import org.jfree.report.util.SerializerHelper;
 public class SimplePageDefinition implements PageDefinition
 {
   private transient PageFormat format;
+  private int pageCountHorizontal;
+  private int pageCountVertical;
+  private Rectangle2D[] pagePositions;
+
+  public SimplePageDefinition(final PageFormat format,
+                              final int x, final int y)
+  {
+    if (format == null)
+    {
+      throw new NullPointerException("Format must not be null");
+    }
+    if (x < 1)
+    {
+      throw new IllegalArgumentException("PageCount must be greater or equal to 1");
+    }
+    if (y < 1)
+    {
+      throw new IllegalArgumentException("PageCount must be greater or equal to 1");
+    }
+    this.format = (PageFormat) format.clone();
+    this.pageCountHorizontal = x;
+    this.pageCountVertical = y;
+    this.pagePositions = new Rectangle2D[pageCountHorizontal * pageCountVertical];
+
+    final float width = (float) format.getImageableWidth();
+    final float height = (float) format.getImageableHeight();
+    float pageStartY = 0;
+    for (int vert = 0; vert < pageCountVertical; vert++)
+    {
+      float pageStartX = 0;
+      for (int hor = 0; hor < pageCountHorizontal; hor++)
+      {
+        final Rectangle2D rect =
+                new Rectangle2D.Float(pageStartX, pageStartY, width, height);
+        pagePositions[vert * pageCountVertical + hor] = rect;
+        pageStartX += width;
+      }
+      pageStartY += height;
+    }
+  }
 
   public SimplePageDefinition(final PageFormat format)
   {
-    this.format = (PageFormat) format.clone();
-  }
-
-  public float getHeight()
-  {
-    return (float) format.getImageableHeight();
+    this (format, 1, 1);
   }
 
   public int getPageCount()
   {
-    return 1;
+    return pageCountHorizontal * pageCountVertical;
   }
 
   public PageFormat getPageFormat(final int pos)
   {
-    if (pos != 0)
+    if (pos < 0 || pos > getPageCount())
     {
-      throw new IndexOutOfBoundsException("Index must be '0'");
+      throw new IndexOutOfBoundsException("Index is invalid");
     }
     return (PageFormat) format.clone();
   }
 
   public Rectangle2D getPagePosition(final int pos)
   {
-    if (pos != 0)
+    if (pos < 0 || pos > getPageCount())
     {
-      throw new IndexOutOfBoundsException("Index must be '0'");
+      throw new IndexOutOfBoundsException("Index is invalid");
     }
-    return new Rectangle2D.Float(0,0, getWidth(), getHeight());
+    return pagePositions[pos].getBounds2D();
   }
 
   public Rectangle2D[] getPagePositions()
   {
-    return new Rectangle2D[]{getPagePosition(0)};
+    final Rectangle2D[] rects =
+            new Rectangle2D.Float[pagePositions.length];
+    for (int i = 0; i < pagePositions.length; i++)
+    {
+      rects[i] = pagePositions[i].getBounds2D();
+    }
+    return rects;
+  }
+
+  public float getHeight()
+  {
+    return (float) (format.getImageableHeight() * pageCountVertical);
   }
 
   public float getWidth()
   {
-    return (float) format.getImageableWidth();
+    return (float) (format.getImageableWidth() * pageCountHorizontal);
   }
 
   /**

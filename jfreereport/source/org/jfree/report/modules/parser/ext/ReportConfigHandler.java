@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.9 2003/12/04 18:04:06 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.10 2004/03/16 15:09:54 taqua Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,9 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
 
   /** The 'default page format' tag name. */
   public static final String DEFAULT_PAGEFORMAT_TAG = "defaultpageformat";
+
+  public static final String VERTICAL_PAGES = "vertical-pages";
+  public static final String HORIZONTAL_PAGES = "horizontal-pages";
 
   /** The 'configuration' tag name. */
   public static final String CONFIGURATION_TAG = "configuration";
@@ -240,7 +243,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   {
     final JFreeReport report = getReport();
 
-    // todo page format changed
+    // todo page format changed, how to reflect that
     PageFormat format = new PageFormat();//report.getDefaultPageFormat();
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
@@ -248,6 +251,9 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     float defLeftMargin = (float) format.getImageableX();
     float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
         - format.getImageableX());
+
+    final int verticalPages = ParserUtil.parseInt(atts.getValue(VERTICAL_PAGES), 1);
+    final int horizontalPages = ParserUtil.parseInt(atts.getValue(HORIZONTAL_PAGES), 1);
 
     format = createPageFormat(format, atts);
 
@@ -278,7 +284,8 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     }
 
     format.setPaper(p);
-    report.setPageDefinition(new SimplePageDefinition (format));
+    report.setPageDefinition
+            (new SimplePageDefinition (format, verticalPages, horizontalPages));
   }
 
   /**

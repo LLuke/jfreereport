@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.12 2003/12/21 20:51:41 taqua Exp $
+ * $Id: JFreeReport.java,v 1.13 2004/03/16 15:09:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -107,7 +107,8 @@ import org.jfree.report.util.ReportProperties;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class JFreeReport implements Cloneable, Serializable
+public class JFreeReport
+        implements Cloneable, Serializable
 {
 
   /** Key for the 'report name' property. */
@@ -724,7 +725,7 @@ public class JFreeReport implements Cloneable, Serializable
     return watermark;
   }
 
-  public void setWatermark(Watermark watermark)
+  public void setWatermark(final Watermark watermark)
   {
     if (watermark == null)
     {

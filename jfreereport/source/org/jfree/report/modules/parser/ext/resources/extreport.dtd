@@ -44,6 +44,17 @@
       SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
+<!ENTITY % pageformat-definition
+ "width          CDATA            #IMPLIED
+  height         CDATA            #IMPLIED
+  pageformat     %pageFormats;    #IMPLIED
+  orientation    (%orientations;) #IMPLIED
+  leftmargin     CDATA            #IMPLIED
+  rightmargin    CDATA            #IMPLIED
+  topmargin      CDATA            #IMPLIED
+  bottommargin   CDATA            #IMPLIED"
+>
+
 <!--
 
   The root element for all extended report definitions. The order of the child elements
@@ -213,15 +224,11 @@
  -->
 <!ELEMENT defaultpageformat EMPTY>
 <!ATTLIST defaultpageformat
-  width          CDATA            #IMPLIED
-  height         CDATA            #IMPLIED
-  pageformat     %pageFormats;    #IMPLIED
-  orientation    (%orientations;) #IMPLIED
-  leftmargin     CDATA            #IMPLIED
-  rightmargin    CDATA            #IMPLIED
-  topmargin      CDATA            #IMPLIED
-  bottommargin   CDATA            #IMPLIED
+  %pageformat-definition;
+  vertical-pages    CDATA  #IMPLIED
+  horizontal-pages  CDATA  #IMPLIED
 >
+
 
 <!--
 

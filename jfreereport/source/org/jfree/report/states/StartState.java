@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: StartState.java,v 1.3 2003/12/06 17:15:22 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 
 /**
@@ -85,10 +84,8 @@ public final class StartState extends ReportState
    *
    * @param fstate  the finish state.
    * @param level  the level.
-   *
-   * @throws ReportProcessingException if the State could not be initialized properly.
    */
-  public StartState(final FinishState fstate, final int level) throws ReportProcessingException
+  public StartState(final FinishState fstate, final int level)
   {
     super(fstate, true);
     getFunctions().setLevel(level);

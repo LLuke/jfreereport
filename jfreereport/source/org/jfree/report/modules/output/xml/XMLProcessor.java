@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.6 2003/12/21 20:51:43 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.7 2004/03/16 15:09:54 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,6 @@
  */
 package org.jfree.report.modules.output.xml;
 
-import java.awt.print.PageFormat;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;

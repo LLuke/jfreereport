@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.6 2003/12/21 20:51:44 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.7 2004/03/16 15:09:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -112,6 +112,37 @@ public class ReportDefinitionImpl implements ReportDefinition
    *
    * @throws CloneNotSupportedException if there is a problem cloning.
    */
+  public ReportDefinitionImpl(final ReportDefinition report) throws CloneNotSupportedException
+  {
+    groups = new UnmodifiableGroupList((GroupList) report.getGroups().clone());
+    properties = (ReportProperties) report.getProperties().clone();
+    reportFooter = (ReportFooter) report.getReportFooter().clone();
+    reportHeader = (ReportHeader) report.getReportHeader().clone();
+    pageFooter = (PageFooter) report.getPageFooter().clone();
+    pageHeader = (PageHeader) report.getPageHeader().clone();
+    itemBand = (ItemBand) report.getItemBand().clone();
+    watermark = (Watermark) report.getWatermark().clone();
+    reportConfiguration = report.getReportConfiguration();
+    pageDefinition = (PageDefinition) report.getPageDefinition().clone();
+    styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
+    groups.updateStyleSheetCollection(styleSheetCollection);
+    itemBand.updateStyleSheetCollection(styleSheetCollection);
+    reportFooter.updateStyleSheetCollection(styleSheetCollection);
+    reportHeader.updateStyleSheetCollection(styleSheetCollection);
+    pageFooter.updateStyleSheetCollection(styleSheetCollection);
+    pageHeader.updateStyleSheetCollection(styleSheetCollection);
+    watermark.updateStyleSheetCollection(styleSheetCollection);
+    dataRowConnector = new DataRowConnector();
+    connect();
+  }
+
+  /**
+   * Creates a report definition from a report object.
+   *
+   * @param report  the report.
+   *
+   * @throws CloneNotSupportedException if there is a problem cloning.
+   */
   public ReportDefinitionImpl(final JFreeReport report) throws CloneNotSupportedException
   {
     groups = new UnmodifiableGroupList((GroupList) report.getGroups().clone());
@@ -147,16 +178,16 @@ public class ReportDefinitionImpl implements ReportDefinition
 
     for (int i = 0; i < groups.size(); i++)
     {
-      Group g = groups.get(i);
+      final Group g = groups.get(i);
       connectBand(g.getHeader());
       connectBand(g.getFooter());
     }
 
   }
 
-  protected void connectBand (Band b)
+  protected void connectBand (final Band b)
   {
-    Element[] elements = b.getElementArray();
+    final Element[] elements = b.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       connectDataSource(elements[i].getDataSource());
@@ -167,16 +198,16 @@ public class ReportDefinitionImpl implements ReportDefinition
     }
   }
 
-  protected void connectDataSource (DataSource ds)
+  protected void connectDataSource (final DataSource ds)
   {
     if (ds instanceof ReportConnectable)
     {
-      ReportConnectable rc = (ReportConnectable) ds;
+      final ReportConnectable rc = (ReportConnectable) ds;
       rc.registerReportDefinition(this);
     }
     if (ds instanceof DataTarget)
     {
-      DataTarget dt = (DataTarget) ds;
+      final DataTarget dt = (DataTarget) ds;
       connectDataSource(dt.getDataSource());
     }
   }
@@ -192,16 +223,16 @@ public class ReportDefinitionImpl implements ReportDefinition
 
     for (int i = 0; i < groups.size(); i++)
     {
-      Group g = groups.get(i);
+      final Group g = groups.get(i);
       disconnectBand(g.getHeader());
       disconnectBand(g.getFooter());
     }
 
   }
 
-  protected void disconnectBand (Band b)
+  protected void disconnectBand (final Band b)
   {
-    Element[] elements = b.getElementArray();
+    final Element[] elements = b.getElementArray();
     for (int i = 0; i < elements.length; i++)
     {
       disconnectDataSource(elements[i].getDataSource());
@@ -212,16 +243,16 @@ public class ReportDefinitionImpl implements ReportDefinition
     }
   }
 
-  protected void disconnectDataSource (DataSource ds)
+  protected void disconnectDataSource (final DataSource ds)
   {
     if (ds instanceof ReportConnectable)
     {
-      ReportConnectable rc = (ReportConnectable) ds;
+      final ReportConnectable rc = (ReportConnectable) ds;
       rc.unregisterReportDefinition(this);
     }
     if (ds instanceof DataTarget)
     {
-      DataTarget dt = (DataTarget) ds;
+      final DataTarget dt = (DataTarget) ds;
       connectDataSource(dt.getDataSource());
     }
   }

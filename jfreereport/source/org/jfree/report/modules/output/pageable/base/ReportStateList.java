@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.6 2003/08/25 14:29:31 taqua Exp $
+ * $Id: ReportStateList.java,v 1.7 2004/03/16 15:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -155,7 +155,7 @@ public class ReportStateList
       for (int i = 0; i <= count; i++)
       {
         progress = state.createStateProgress(progress);
-        state = master.getReportProcessor().processDummyPage(state, true);
+        state = processDummyPage(state, true);
         set(state, i + 1);
         if (state.isFinish())
         {
@@ -168,7 +168,24 @@ public class ReportStateList
       }
       return state;
     }
+
+    /**
+     * Todo Change me !
+     * @param currPage
+     * @param failOnError
+     * @return
+     * @throws ReportProcessingException
+     */
+    protected ReportState processDummyPage(final ReportState currPage, final boolean failOnError)
+        throws ReportProcessingException
+    {
+      final PageProcess pageProcess = master.getPageProcess();
+      final ReportState state = pageProcess.processPage(currPage, failOnError);
+      pageProcess.clear();
+      return state;
+    }
   }
+
 
   /**
    * The list of master states. This is a list of WeakReferenceLists. These WeakReferenceLists
@@ -192,11 +209,30 @@ public class ReportStateList
   /** The number of elements in this list. */
   private int size;
 
-  /** The report processor that the state list relates to. */
-  private PageableReportProcessor proc;
+  private PageProcess pageProcess;
 
-  /** The dummy output target. */
-  private OutputTarget dummyWriter;
+  /**
+   * Creates a new reportstatelist. The list will be filled using the specified report
+   * and output target. Filling of the list is done elsewhere.
+   *
+   * @param proc the reportprocessor used to restore lost states (null not permitted).
+   *
+   * @throws NullPointerException if the report processor is <code>null</code>.
+   */
+  public ReportStateList(final PageProcess proc)
+  {
+    if (proc == null)
+    {
+      throw new NullPointerException("ReportProcessor null");
+    }
+
+    this.pageProcess = proc;
+
+    primaryStates = new ArrayList();
+    masterStates4 = new ArrayList();
+    masterStates10 = new ArrayList();
+
+  }
 
   /**
    * Returns the index of the WeakReferenceList in the master list.
@@ -211,50 +247,9 @@ public class ReportStateList
     return (int) Math.floor(pos / maxListSize);
   }
 
-  /**
-   * Creates a new reportstatelist. The list will be filled using the specified report
-   * and output target. Filling of the list is done elsewhere.
-   *
-   * @param proc the reportprocessor used to restore lost states (null not permitted).
-   *
-   * @throws OutputTargetException if there is a problem with the output target.
-   * @throws NullPointerException if the report processor is <code>null</code>.
-   */
-  public ReportStateList(final PageableReportProcessor proc) throws OutputTargetException
+  protected PageProcess getPageProcess ()
   {
-    if (proc == null)
-    {
-      throw new NullPointerException("ReportProcessor null");
-    }
-    // this.report = report;
-    this.proc = proc;
-    dummyWriter = proc.getOutputTarget();
-    dummyWriter.open();
-
-    primaryStates = new ArrayList();
-    masterStates4 = new ArrayList();
-    masterStates10 = new ArrayList();
-
-  }
-
-  /**
-   * Returns the dummy output target.
-   *
-   * @return the dummy output target.
-   */
-  protected OutputTarget getDummyWriter()
-  {
-    return dummyWriter;
-  }
-
-  /**
-   * Returns the used report processor.
-   *
-   * @return the used report processor.
-   */
-  protected PageableReportProcessor getReportProcessor()
-  {
-    return proc;
+    return pageProcess;
   }
 
   /**
