@@ -217,14 +217,16 @@ public class ExpressionCollection implements Cloneable
     return expressionList.size ();
   }
 
-  public Function getFunction (int pos)
+  public Expression getExpression (int pos)
   {
-    return (Function) expressionList.get (pos);
+    return (Expression) expressionList.get (pos);
   }
 
   public Object clone () throws CloneNotSupportedException
   {
     ExpressionCollection col = (ExpressionCollection) super.clone ();
+    col.expressionPositions = new Hashtable ();
+    col.expressionList = new ArrayList ();
     col.privateAddAll(expressionList);
     return col;
   }

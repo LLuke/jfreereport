@@ -33,6 +33,7 @@ package com.jrefinery.report;
 
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.Expression;
+import com.jrefinery.report.util.Log;
 
 import javax.swing.table.TableModel;
 import java.util.Hashtable;
@@ -185,7 +186,7 @@ public class DataRowBackend implements Cloneable
     }
     else if (col < getFunctionEndIndex())
     {
-      col -= getTablemodel ().getColumnCount ();
+      col -= getTableEndIndex();
       if (isPreviewMode ())
       {
         System.out.println ("Is Preview Mode => null");
@@ -195,7 +196,8 @@ public class DataRowBackend implements Cloneable
     }
     else
     {
-      return getExpressions().getFunction (col).getValue ();
+      col -= getFunctionEndIndex();
+      return getExpressions().getExpression(col).getValue ();
     }
   }
 
@@ -209,7 +211,7 @@ public class DataRowBackend implements Cloneable
     int idx = findColumn (name);
     if (idx == -1)
     {
-      System.out.println ("Is InvalidIndex => null");
+      System.out.println ("Is InvalidIndex (" + name + ") => null");
       return null;
     }
     return get (idx);
@@ -217,7 +219,7 @@ public class DataRowBackend implements Cloneable
 
   public int getColumnCount ()
   {
-    return (getTablemodel ().getColumnCount () + getFunctions ().size ());
+    return (getTableEndIndex() + getFunctionEndIndex() + getExpressions().size());
   }
 
   /**
@@ -258,14 +260,22 @@ public class DataRowBackend implements Cloneable
       col -= getTableEndIndex();
       Function f =getFunctions ().getFunction (col);
       if (f == null)
+      {
+        Log.debug ("No such function " + col);
         return null;
+      }
       return f.getName ();
     }
     else
     {
       col -= getFunctionEndIndex();
-      Expression ex =getExpressions().getFunction(col);
-      if (ex == null) return null;
+      Expression ex =getExpressions().getExpression(col);
+      if (ex == null)
+      {
+        Log.debug ("No such expression " + col);
+        return null;
+      }
+
       return ex.getName();
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.23 2002/08/14 21:14:04 taqua Exp $
+ * $Id: JFreeReport.java,v 1.24 2002/08/16 20:13:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,6 +60,7 @@ package com.jrefinery.report;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.Log;
@@ -483,6 +484,16 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
               "No such group defined. " + count + " vs. " + groups.size ());
 
     return (Group) groups.get (count);
+  }
+
+  /**
+   * Adds a function to the report's collection of functions.
+   *
+   * @param function The function.
+   */
+  public void addExpression (Expression function) throws FunctionInitializeException
+  {
+    expressions.add (function);
   }
 
   /**

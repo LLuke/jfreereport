@@ -32,6 +32,7 @@ package com.jrefinery.report.io;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -46,7 +47,7 @@ import java.util.Properties;
 public class FunctionFactory extends DefaultHandler implements ReportDefinitionTags
 {
   private JFreeReport report;
-  private Function currentFunction;
+  private Expression currentFunction;
   private Properties currentProperties;
   private StringBuffer currentText;
   private String currentProperty;
@@ -91,6 +92,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     {
       startDataRef (atts);
     }
+    else if (elementName.equals(EXPRESSION_TAG))
+    {
+      startExpression (atts);
+    }
     else
       throw new SAXException ("Expected one of 'function', 'functions', 'data-ref', 'properties', 'property' tag");
   }
@@ -116,7 +121,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
    */
   protected Function getCurrentFunction ()
   {
-    return currentFunction;
+    return (Function) currentFunction;
   }
 
   /**
@@ -124,6 +129,23 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
    * to the reports function collection.
    */
   protected void setCurrentFunction (Function function)
+  {
+    this.currentFunction = function;
+  }
+
+  /**
+   * @returns the current function to be produced
+   */
+  protected Expression getCurrentExpression ()
+  {
+    return (Expression) currentFunction;
+  }
+
+  /**
+   * defines the current function. This function gets properties set and is then added
+   * to the reports function collection.
+   */
+  protected void setCurrentExpression (Expression function)
   {
     this.currentFunction = function;
   }
@@ -167,11 +189,40 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
    * starts a new function collection. Function collections are already contained in
    * the report, so this function does nothing.
    */
-  protected void startFunctions (Attributes atts)
+  protected void startFunctions (Attributes attr)
           throws SAXException
   {
   }
 
+  protected void startExpression (Attributes attr)
+      throws SAXException
+  {
+    String name = handler.generateName (attr.getValue ("name"));
+    String className = attr.getValue ("class");
+    if (className == null)
+    {
+      throw new SAXException ("Expression class not specified");
+    }
+
+    try
+    {
+      Class fnC = Class.forName (className);
+      this.currentFunction = (Expression) fnC.newInstance ();
+      this.currentFunction.setName (name);
+    }
+    catch (ClassNotFoundException e)
+    {
+      throw new SAXException ("Expression " + name + " class=" + className + " is not valid: ClassNotFound: " + e.getMessage ());
+    }
+    catch (IllegalAccessException e)
+    {
+      throw new SAXException ("Expression " + name + " class=" + className + " is not valid: IllegalAccess: " + e.getMessage ());
+    }
+    catch (InstantiationException e)
+    {
+      throw new SAXException ("Expression " + name + " class=" + className + " is not valid: Instantiation: " + e.getMessage ());
+    }
+  }
 
   /**
    * starts and loads a function by instantating the functions class. The function must
@@ -246,6 +297,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     {
       endProperty ();
     }
+    else if (elementName.equals (EXPRESSION_TAG))
+    {
+      endExpression();
+    }
     else
       throw new SAXException ("Expected function tag");
 
@@ -260,7 +315,20 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   {
     try
     {
-      getReport ().addFunction (currentFunction);
+      getReport ().addFunction (getCurrentFunction());
+    }
+    catch (FunctionInitializeException fie)
+    {
+      throw new SAXException (fie);
+    }
+  }
+
+  protected void endExpression ()
+    throws SAXException
+  {
+    try
+    {
+      getReport ().addExpression (getCurrentExpression());
     }
     catch (FunctionInitializeException fie)
     {
@@ -292,7 +360,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   protected void endProperties ()
           throws SAXException
   {
-    Function f = getCurrentFunction ();
+    Expression f = getCurrentExpression();
     if (f == null)
       throw new SAXException ("End properties reached without a function defined");
     f.setProperties (currentProperties);

@@ -55,10 +55,18 @@
         <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
         <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
         <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
-        <number-function name="Population Percent" x="360" y="0" width="76" height="8" alignment="right" format="#,##0.00 '%'" function="percent"/>
+        <string-function name="Counter" x="360" y="0" width="76" height="8" alignment="right" format="#,##0.00 '%'" function="expression"/>
+        <number-function name="Population Percent" x="440" y="0" width="76" height="8" alignment="right" format="#,##0.00 '%'" function="percent"/>
     </items>
 
     <functions>
+      <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
+        <properties>
+          <property name="expression">
+            getValue () { return "Expression"; }
+          </property>
+        </properties>
+      </expression>
       <function name="report_date" class="com.jrefinery.report.function.ReportPropertyFunction">
         <properties>
           <property name="reportProperty">report.date</property>

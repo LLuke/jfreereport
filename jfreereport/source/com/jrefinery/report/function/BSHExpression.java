@@ -44,6 +44,7 @@ public class BSHExpression extends AbstractExpression
 
   public void initialize() throws FunctionInitializeException
   {
+    if (getName() == null) throw new FunctionInitializeException("No null name allowed");
     InputStream in = this.getClass().getClassLoader().getResourceAsStream(BSHHEADERFILE);
     if (in == null) throw new FunctionInitializeException("Unable to locate BSHHeaderFile");
 

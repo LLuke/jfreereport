@@ -78,6 +78,7 @@ public interface ReportDefinitionTags
 
   public static final String FUNCTIONS_TAG = "functions";
   public static final String FUNCTION_TAG = "function";
+  public static final String EXPRESSION_TAG = "expression";
   public static final String DATAREF_TAG = "data-ref";
   public static final String FONT_NAME_ATT = "fontname";
   public static final String FONT_STYLE_ATT = "fontstyle";

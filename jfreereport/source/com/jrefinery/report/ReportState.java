@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.22 2002/08/19 21:17:29 taqua Exp $
+ * $Id: ReportState.java,v 1.23 2002/08/19 21:24:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -663,6 +663,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     DataRowBackend dr = new DataRowBackend ();
     dr.setTablemodel (getReport ().getData ());
     dr.setFunctions (getFunctions ());
+    dr.setExpressions(getReport().getExpressions());
     dr.setCurrentRow (getCurrentDisplayItem ());
     setDataRowBackend (dr);
   }
