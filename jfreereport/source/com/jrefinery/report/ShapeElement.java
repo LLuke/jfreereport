@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: ShapeElement.java,v 1.3 2002/05/16 13:18:36 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,12 +37,16 @@
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  * 12-May-2002 : Declared abstract and moved line functionality into LineShapeElement-class
  * 16-May-2002 : using protected member m_paint instead of getter methode
+ *               stroke property added (JS)
+ * 
  */
 
 package com.jrefinery.report;
 
+import java.awt.BasicStroke;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.awt.Stroke;
 
 import com.jrefinery.report.util.Log;
 
@@ -52,15 +56,20 @@ import com.jrefinery.report.util.Log;
  */
 public abstract class ShapeElement extends Element
 {
+  /** default stroke size. */
+  private final static BasicStroke STROKE = new BasicStroke(0.5f);
 
   /** The shape to draw. */
   private Shape shape;
+  
+  private Stroke m_stroke;
 
   /**
    * Constructs a shape element.
    */
   public ShapeElement()
   {
+    m_stroke = STROKE;
   }
 
   /**
@@ -96,6 +105,7 @@ public abstract class ShapeElement extends Element
     b.append(", shape=");
     b.append(getShape());
     b.append("}");
+
     return b.toString();
   }
 
@@ -120,9 +130,27 @@ public abstract class ShapeElement extends Element
     }
 
     Shape s = getShape();
-
-    target.drawShape(s, bandX, bandY);
+    target.drawShape(this, bandX, bandY);
     Log.debug(this.toString());
   }
 
+  /**
+   * Gets the stroke.
+   * @return Returns a Stroke
+   */
+  public Stroke getStroke()
+  {
+    return m_stroke;
+  }
+
+  /**
+   * Sets the stroke.
+   * @param stroke The stroke to set
+   */
+  public void setStroke(Stroke stroke)
+  {
+    if (stroke != null) {
+      m_stroke = stroke;
+    }
+  }
 }
