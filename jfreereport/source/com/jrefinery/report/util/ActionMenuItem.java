@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionMenuItem.java,v 1.7 2002/12/02 17:44:47 taqua Exp $
+ * $Id: ActionMenuItem.java,v 1.8 2002/12/11 00:41:42 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -46,6 +46,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.awt.Insets;
 
 /**
  * The ActionMenuItem is used to connect an Action and its properties to an MenuItem.
@@ -113,10 +114,18 @@ public class ActionMenuItem extends JMenuItem
         else if (event.getPropertyName().equals(ActionDowngrade.MNEMONIC_KEY))
         {
           Object o = ac.getValue(ActionDowngrade.MNEMONIC_KEY);
-          if (o != null && o instanceof Character)
+          if (o != null)
           {
-            Character c = (Character) o;
-            setMnemonic(c.charValue());
+            if (o instanceof Character)
+            {
+              Character c = (Character) o;
+              setMnemonic(c.charValue());
+            }
+            else if (o instanceof Integer)
+            {
+              Integer c = (Integer) o;
+              setMnemonic(c.intValue());
+            }
           }
         }
       }
@@ -266,11 +275,20 @@ public class ActionMenuItem extends JMenuItem
       setEnabled(action.isEnabled());
 
       Object o = newAction.getValue(ActionDowngrade.MNEMONIC_KEY);
-      if (o != null && o instanceof Character)
+      if (o != null)
       {
-        Character c = (Character) o;
-        setMnemonic(c.charValue());
+        if (o instanceof Character)
+        {
+          Character c = (Character) o;
+          setMnemonic(c.charValue());
+        }
+        else if (o instanceof Integer)
+        {
+          Integer c = (Integer) o;
+          setMnemonic(c.intValue());
+        }
       }
+
       o = newAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
       if (o instanceof KeyStroke && o != null)
       {

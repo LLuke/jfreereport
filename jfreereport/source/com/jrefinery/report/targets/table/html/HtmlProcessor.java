@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:05:56 PM
  *
- * $Id: HtmlProcessor.java,v 1.4 2003/01/27 03:17:43 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.5 2003/01/29 21:57:13 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -17,18 +17,26 @@ public class HtmlProcessor extends TableProcessor
 {
   private HtmlFilesystem filesystem;
   private boolean useXHTML;
+  private String encoding;
 
   public HtmlProcessor(JFreeReport report)
     throws ReportProcessingException, FunctionInitializeException
   {
     this (report, false);
   }
-
-  public HtmlProcessor(JFreeReport report, boolean useXHTML) throws ReportProcessingException, FunctionInitializeException
+  public HtmlProcessor(JFreeReport report, boolean useXHTML, String encoding)
+      throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
     this.useXHTML = useXHTML;
+    this.encoding = encoding;
   }
+
+  public HtmlProcessor(JFreeReport report, boolean useXHTML) throws ReportProcessingException, FunctionInitializeException
+  {
+    this (report, useXHTML, System.getProperty("file.encoding", "UTF-8"));
+  }
+
 
   public HtmlFilesystem getFilesystem()
   {
@@ -40,19 +48,29 @@ public class HtmlProcessor extends TableProcessor
     this.filesystem = filesystem;
   }
 
+  public String getEncoding()
+  {
+    return encoding;
+  }
+
+  public void setEncoding(String encoding)
+  {
+    this.encoding = encoding;
+  }
+
   public TableProducer createProducer(boolean dummy)
   {
     HtmlProducer prod = null;
     if (dummy == true)
     {
       prod = new HtmlProducer(new StreamHtmlFilesystem(new NullOutputStream()),
-                              getReport().getName(), isStrictLayout(), useXHTML );
+                              getReport().getName(), isStrictLayout(), useXHTML, getEncoding());
       prod.setDummy(true);
     }
     else
     {
       prod = new HtmlProducer(getFilesystem(), getReport().getName(),
-                              isStrictLayout(), useXHTML);
+                              isStrictLayout(), useXHTML, getEncoding());
       prod.setDummy(false);
     }
 

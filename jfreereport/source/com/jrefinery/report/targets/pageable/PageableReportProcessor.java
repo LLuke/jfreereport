@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.16 2003/01/29 21:57:12 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.17 2003/01/30 00:04:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.targets.pageable;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportInterruptedException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
@@ -68,6 +69,8 @@ public class PageableReportProcessor
   /** The output target. */
   private OutputTarget outputTarget;
 
+  private boolean handleInterruptedState;
+
   /**
    * Creates a new ReportProcessor.
    *
@@ -91,6 +94,16 @@ public class PageableReportProcessor
     String layouter = (String) this.report.getProperty(LAYOUTMANAGER_NAME);
     PageLayouter lm = getLayoutManager(layouter);
     this.report.addFunction(lm);
+  }
+
+  public boolean isHandleInterruptedState()
+  {
+    return handleInterruptedState;
+  }
+
+  public void setHandleInterruptedState(boolean handleInterruptedState)
+  {
+    this.handleInterruptedState = handleInterruptedState;
   }
 
   /**
@@ -217,12 +230,6 @@ public class PageableReportProcessor
       dummyOutput.open();
 
       Iterator it = startState.getLevels();
-      while (it.hasNext())
-      {
-        Log.debug(new Log.SimpleMessage("Will Process: " , it.next()));
-      }
-
-      it = startState.getLevels();
       boolean hasNext = true;
       int level = 0;
       if (it.hasNext())
@@ -232,7 +239,6 @@ public class PageableReportProcessor
 
       do
       {
-        Log.debug (new Log.SimpleMessage("Processing Level " , new Integer(level)));
         if (level == -1)
         {
           pageStates = new ReportStateList(this);
@@ -242,7 +248,6 @@ public class PageableReportProcessor
           if (level == -1)
           {
             pageStates.add(state);
-//            Log.debug ("Added State: " + state);
           }
           ReportState oldstate = state;
           state = processPage(state, dummyOutput);
@@ -263,10 +268,6 @@ public class PageableReportProcessor
         }
       }
       while (hasNext == true);
-
-      Log.debug (new Log.MemoryUsageMessage("DummyWriting Done "));
-      Log.debug (new Log.SimpleMessage("Number of pages in the list: ", new Integer(pageStates.size())));
-      Log.debug (new Log.SimpleMessage("Number of pages in the state: ", new Integer(state.getCurrentPage() - 1)));
 
       dummyOutput.close();
       // root of evilness here ... pagecount should not be handled specially ...
@@ -299,12 +300,15 @@ public class PageableReportProcessor
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
    * @throws IllegalArgumentException if the given state is a start or a finish state.
-   * @throws ReportProcessingException if there is a problem processing the report.
+   * @throws ReportProcessingException if there is a problem processing the report or the current thread has been interrupted.
    */
   public ReportState processPage(final ReportState currPage, OutputTarget out) 
       throws ReportProcessingException
   {
-    Log.error ("Entered ProcessPage");
+    if (isHandleInterruptedState() && Thread.interrupted())
+    {
+      throw new ReportInterruptedException("Current thread is interrupted. Returning.");
+    }
 
     if (out == null)
     {
@@ -335,7 +339,6 @@ public class PageableReportProcessor
     // to this is non-fatal. the next redesign is planed here :)
     if (lm.isPageEnded())
     {
-      Log.info("PageEnded after Restore.");
       state = state.advance();
       if (state.isFinish() == false)
         throw new ReportProcessingException("State finished page during restore");
@@ -356,9 +359,6 @@ public class PageableReportProcessor
         }
       }
     }
-
-    Log.error ("Left ProcessPage");
     return state;
   }
-  
 }

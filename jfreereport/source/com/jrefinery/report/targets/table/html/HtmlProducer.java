@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.10 2003/01/29 18:37:14 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.11 2003/01/29 21:57:13 taqua Exp $
  *
  * This file now produces valid HTML4
  */
@@ -15,8 +15,8 @@ import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.IOUtils;
+import com.jrefinery.report.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.OutputStreamWriter;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.Deflater;
@@ -41,11 +42,11 @@ public class HtmlProducer extends TableProducer
   private HtmlStyleCollection styleCollection;
   private HtmlFilesystem filesystem;
   private boolean useXHTML;
+  private String encoding;
 
   private ByteArrayOutputStream content;
   private boolean isOpen;
   private static final String[] XHTML_HEADER = {
-       "<?xml version=\"1.0\" encoding=\"us-ascii\"?>",
        "<!DOCTYPE html",
        "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
        "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"",
@@ -61,9 +62,16 @@ public class HtmlProducer extends TableProducer
 
 
   public HtmlProducer(HtmlFilesystem filesystem,
-                      String reportName, boolean strict, boolean useXHTML)
+                      String reportName,
+                      boolean strict,
+                      boolean useXHTML,
+                      String encoding)
   {
     super(strict);
+    if (filesystem == null) throw new NullPointerException();
+    if (reportName == null) reportName = "unnamed report";
+    if (encoding == null) throw new NullPointerException();
+    
     this.filesystem = filesystem;
     this.content = null;
     this.pout = null;
@@ -71,6 +79,12 @@ public class HtmlProducer extends TableProducer
     this.styleCollection = new HtmlStyleCollection();
     this.cellDataFactory = new HtmlCellDataFactory(styleCollection, useXHTML);
     this.useXHTML = useXHTML;
+    this.encoding = encoding;
+  }
+
+  public String getEncoding()
+  {
+    return encoding;
   }
 
   private static CharacterEntityParser getEntityParser ()
@@ -86,12 +100,18 @@ public class HtmlProducer extends TableProducer
   {
     this.content = new ByteArrayOutputStream();
     DeflaterOutputStream deflaterStream = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
-    this.pout = new PrintWriter(deflaterStream);
+    try
+    {
+      this.pout = new PrintWriter(new OutputStreamWriter(deflaterStream, getEncoding()));
+    }
+    catch (IOException ioe)
+    {
+      throw new FunctionProcessingException("Failed to create the writer", ioe);
+    }
 
     // the style sheet definition will be inserted right before the content is written ...
     pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
-    // todo get the file encoding
-    pout.print("us-ascii");
+    pout.print(getEncoding());
     if (useXHTML)
     {
       pout.println("\" />");
@@ -140,6 +160,9 @@ public class HtmlProducer extends TableProducer
         // now finish the style sheet definition
         for (int i = 0; i < XHTML_HEADER.length; i++)
         {
+          writer.print ("<?xml version=\"1.0\" encoding=\"");
+          writer.print (getEncoding());
+          writer.print ("\"?>");
           writer.println(XHTML_HEADER[i]);
         }
       }

@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: ExcelExportDialog.java,v 1.2 2003/01/18 20:47:35 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.3 2003/01/30 22:52:43 taqua Exp $
  *
  * Changes
  * --------
@@ -40,17 +40,16 @@
 package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.table.excel.ExcelProcessor;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
-import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.FilesystemFilter;
-import com.jrefinery.ui.ExtensionFileFilter;
+import com.jrefinery.report.util.ReportConfiguration;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -69,8 +68,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -88,7 +85,7 @@ import java.util.ResourceBundle;
  *
  * @author Heiko Evermann
  */
-public class ExcelExportDialog extends JDialog
+public class ExcelExportDialog extends JDialog implements ExportPlugin
 {
   /**
    * Internal action class to confirm the dialog and to validate the input.
@@ -586,7 +583,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return true or false.
    */
-  public boolean exportToExcel(JFreeReport report)
+  public boolean performExport(JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
@@ -663,5 +660,45 @@ public class ExcelExportDialog extends JDialog
   public void initFromConfiguration(ReportConfiguration config)
   {
   	// nothing to initialize so far. We have much less options than in "save to PDF"
+  }
+
+  public String getShortDescription()
+  {
+    return resources.getString ("action.export-to-excel.description");
+  }
+
+  public Icon getSmallIcon()
+  {
+    return (Icon) resources.getObject ("action.export-to-excel.small-icon");
+  }
+
+  public Icon getLargeIcon()
+  {
+    return (Icon) resources.getObject ("action.export-to-excel.icon");
+  }
+
+  public KeyStroke getAcceleratorKey()
+  {
+    return (KeyStroke) resources.getObject ("action.export-to-excel.accelerator");
+  }
+
+  public Integer getMnemonicKey()
+  {
+    return (Integer) resources.getObject ("action.export-to-excel.mnemonic");
+  }
+
+  public String getDisplayName()
+  {
+    return resources.getString ("action.export-to-excel.name");
+  }
+
+  public boolean isSeparated()
+  {
+    return false;
+  }
+
+  public boolean isAddToToolbar()
+  {
+    return false;
   }
 }

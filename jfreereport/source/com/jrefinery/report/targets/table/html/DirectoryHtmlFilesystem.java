@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 5:58:35 PM
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.2 2003/01/29 18:37:14 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.3 2003/02/01 22:10:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -36,6 +36,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   private Hashtable usedURLs;
   private Hashtable encodedImages;
   private ImageComparator comparator;
+  private boolean copyExternalImages;
 
   public DirectoryHtmlFilesystem (File file)
     throws IOException
@@ -68,6 +69,11 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
       this.dataDirectory = dataDirectory;
     }
 
+  }
+
+  public void setCopyExternalImages(boolean copyExternalImages)
+  {
+    this.copyExternalImages = copyExternalImages;
   }
 
   // contains the HTML file
@@ -174,9 +180,9 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
   }
 
-  private boolean isCopyExternalImages ()
+  public boolean isCopyExternalImages ()
   {
-    return false;
+    return copyExternalImages;
   }
 
   private String createName (String base)

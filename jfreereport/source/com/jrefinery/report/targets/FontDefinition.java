@@ -2,7 +2,7 @@
  * Date: Jan 24, 2003
  * Time: 4:08:26 PM
  *
- * $Id: FontDefinition.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
+ * $Id: FontDefinition.java,v 1.3 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
@@ -13,6 +13,12 @@ import java.awt.Font;
 
 public class FontDefinition implements Serializable, Cloneable
 {
+  public static boolean BOLD = true;
+  public static boolean ITALIC = true;
+  public static boolean UNDERLINE = true;
+  public static boolean STRIKETHROUGH = true;
+  public static boolean PLAIN = false;
+
   private String fontEncoding;
   private String fontName;
   private int fontSize;
@@ -36,6 +42,11 @@ public class FontDefinition implements Serializable, Cloneable
     isStrikeThrough = strikeThrough;
     this.fontEncoding = encoding;
     this.embeddedFont = embedded;
+  }
+
+  public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic, boolean underline, boolean strikeThrough)
+  {
+    this (fontName, fontSize, bold, italic, underline, strikeThrough, null, false);
   }
 
   public FontDefinition(String fontName, int fontSize)

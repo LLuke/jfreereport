@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.37 2003/01/22 19:38:29 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.38 2003/01/30 22:52:45 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -281,6 +281,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"file.save.pdfdescription", "PDF documents"},
             {"statusline.pages", "Page {0} of {1}"},
             {"statusline.error", "Reportgeneration produced an error: {0}"},
+            {"statusline.repaginate", "Calculating pagebreaks, please wait."},
             {"error.processingfailed.title", "Report processing failed"},
             {"error.processingfailed.message", "Error on processing this report: {0}"},
             {"error.savefailed.message", "Error on saving the PDF file: {0}"},
@@ -352,10 +353,19 @@ public class JFreeReportResources extends ListResourceBundle
             {"excelexportdialog.confirm", "Confirm"},
 
             {"htmlexportdialog.dialogtitle", "Export Report into an Html-File ..."},
+
             {"htmlexportdialog.filename", "Filename"},
+            {"htmlexportdialog.datafilename", "Data Directory"},
+            {"htmlexportdialog.copy-external-references", "Copy external references"},
+
             {"htmlexportdialog.author", "Author"},
             {"htmlexportdialog.title", "Title"},
-            {"htmlexportdialog.selectFile", "Select File"},
+            {"htmlexportdialog.encoding", "Encoding"},
+            {"htmlexportdialog.selectZipFile", "Select File"},
+            {"htmlexportdialog.selectStreamFile", "Select File"},
+            {"htmlexportdialog.selectDirFile", "Select File"},
+
+            {"htmlexportdialog.strictlayout", "Perform strict table layouting on export."},
 
             {"htmlexportdialog.warningTitle", "Warning"},
             {"htmlexportdialog.errorTitle", "Error"},

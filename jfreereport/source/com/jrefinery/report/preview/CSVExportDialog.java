@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:48:58 PM
  *
- * $Id$
+ * $Id: CSVExportDialog.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -19,6 +19,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -48,7 +49,7 @@ import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-public class CSVExportDialog extends JDialog
+public class CSVExportDialog extends JDialog implements ExportPlugin
 {
   /**
    * Internal action class to confirm the dialog and to validate the input.
@@ -738,7 +739,7 @@ public class CSVExportDialog extends JDialog
    *
    * @return true or false.
    */
-  public boolean exportToCSV(JFreeReport report)
+  public boolean performExport(JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
@@ -895,5 +896,45 @@ public class CSVExportDialog extends JDialog
     {
       txSeparatorOther.setEnabled(false);
     }
+  }
+
+  public String getDisplayName()
+  {
+    return resources.getString ("action.export-to-csv.name");
+  }
+
+  public String getShortDescription()
+  {
+    return resources.getString ("action.export-to-csv.description");
+  }
+
+  public Icon getSmallIcon()
+  {
+    return (Icon) resources.getObject ("action.export-to-csv.small-icon");
+  }
+
+  public Icon getLargeIcon()
+  {
+    return (Icon) resources.getObject ("action.export-to-csv.icon");
+  }
+
+  public KeyStroke getAcceleratorKey()
+  {
+    return (KeyStroke) resources.getObject ("action.export-to-csv.accelerator");
+  }
+
+  public Integer getMnemonicKey()
+  {
+    return (Integer) resources.getObject ("action.export-to-csv.mnemonic");
+  }
+
+  public boolean isSeparated()
+  {
+    return false;
+  }
+
+  public boolean isAddToToolbar()
+  {
+    return false;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.35 2002/12/12 15:36:05 taqua Exp $
+ * $Id: ReportPane.java,v 1.36 2003/02/02 16:06:57 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,9 +51,11 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
+import com.jrefinery.report.targets.pageable.output.DummyOutputTarget;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.ReportStateList;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.util.Log;
 
 import javax.swing.JComponent;
@@ -101,7 +103,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   public static final String BORDER_PROPERTY = "borderPainted";
 
   /** The size of the paper border. */
-  private double paperBorderPixel = 6;
+  private static final double PAPERBORDER_PIXEL = 6;
 
   /**
    * For performance reasons, I buffer the rendered image and
@@ -127,13 +129,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** The last error that occurred while printing or painting the report */
   private Exception error;
 
-  /** PageFormat */
-  private PageFormat pageFormat;
-
   /** The report. */
   private JFreeReport report;
 
-  /** 
+  /**
    * A simple class performing the locking for huge paginating runs.
    */
   private static class PaginateLock
@@ -167,7 +166,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
   /** The report processor. */
   private PageableReportProcessor processor;
-  
+
   /**
    * Creates a report pane to display the specified report.
    *
@@ -187,10 +186,20 @@ public class ReportPane extends JComponent implements Printable, Pageable
     {
       throw new ReportProcessingException("unable to create the PageableReportProcessor", fe);
     }
-    setPageFormat(report.getDefaultPageFormat());
-    setBorderPainted (false);
-    setPageNumber (1);
+
+    borderPainted = false;
+    pageNumber = 1;
     setZoomFactor (1.0);
+  }
+
+  public boolean isHandleInterruptedState()
+  {
+    return processor.isHandleInterruptedState();
+  }
+
+  public void setHandleInterruptedState(boolean handleInterruptedState)
+  {
+    processor.setHandleInterruptedState (handleInterruptedState);
   }
 
   /**
@@ -228,7 +237,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public PageFormat getPageFormat ()
   {
-    return pageFormat;
+    return report.getDefaultPageFormat();
   }
 
   /**
@@ -279,12 +288,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
       throw new NullPointerException ("PageFormat must not be null");
     }
 
-    this.pageFormat = pageFormat;
+    this.report.setDefaultPageFormat(pageFormat);
     setPageStateList (null);
     graphCache = null;
 
-    int w = (int) ((pageFormat.getWidth () + paperBorderPixel) * zoomFactor);
-    int h = (int) ((pageFormat.getHeight () + paperBorderPixel) * zoomFactor);
+    int w = (int) ((pageFormat.getWidth () + PAPERBORDER_PIXEL) * zoomFactor);
+    int h = (int) ((pageFormat.getHeight () + PAPERBORDER_PIXEL) * zoomFactor);
     super.setSize (w, h);
   }
 
@@ -301,6 +310,13 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public int getNumberOfPages ()
   {
+    if (isPaginating())
+    {
+      // we are currently in the process of repagination, dont try to
+      // repaginate ...
+      return pageCount;
+    }
+
     if (isPaginated() == false)
     {
       try
@@ -359,7 +375,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public void setPageNumber (int page)
   {
-    if (page > getNumberOfPages ())
+    if (page > getNumberOfPages())
     {
       return;
     }
@@ -369,7 +385,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
       page = 0;
     }
 
-    if (page <= getNumberOfPages ())
+    if (page <= getNumberOfPages())
     {
       int oldpage = pageNumber;
       pageNumber = page;
@@ -391,8 +407,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
     graphCache = null;
 
     PageFormat pageFormat = getPageFormat ();
-    int w = (int) ((pageFormat.getWidth () + paperBorderPixel) * zoomFactor);
-    int h = (int) ((pageFormat.getHeight () + paperBorderPixel) * zoomFactor);
+    int w = (int) ((pageFormat.getWidth () + PAPERBORDER_PIXEL) * zoomFactor);
+    int h = (int) ((pageFormat.getHeight () + PAPERBORDER_PIXEL) * zoomFactor);
     super.setSize (w, h);
     firePropertyChange (ZOOMFACTOR_PROPERTY, new Double (oldzoom), new Double (factor));
   }
@@ -492,7 +508,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
         target.open();
         getProcessor().setOutputTarget(target);
 
-
         try
         {
           if (!isPaginated ())
@@ -527,14 +542,14 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
         getProcessor().setOutputTarget(null);
         target.close();
-        
+
         /** Paint Page Shadow */
         Rectangle2D southborder =
                 new Rectangle2D.Double (
-                        outerX + paperBorderPixel - 2,
+                        outerX + PAPERBORDER_PIXEL - 2,
                         outerY + outerH - 2,
                         outerW,
-                        paperBorderPixel);
+                        PAPERBORDER_PIXEL);
 
         g2.setPaint (UIManager.getColor ("controlShadow"));
 
@@ -542,8 +557,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
         Rectangle2D eastborder =
                 new Rectangle2D.Double (
                         outerW - 2,
-                        outerY - 2 + paperBorderPixel,
-                        paperBorderPixel,
+                        outerY - 2 + PAPERBORDER_PIXEL,
+                        PAPERBORDER_PIXEL,
                         outerH);
         g2.fill (eastborder);
 /*
@@ -574,7 +589,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
                         outerW - (innerX + innerW) - 2,
                         (innerH));
         g2.fill (unprintArea);
-*/        
+*/
         Rectangle2D transPageArea = null;
         if (zoomFactor > 1.49)
         {
@@ -688,9 +703,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  protected void repaginate ()
+  public void repaginate ()
           throws ReportProcessingException
   {
+//    Log.error ("Why repaginate?", new Exception());
     if (isPaginated ())
     {
       // Is already done
@@ -700,9 +716,30 @@ public class ReportPane extends JComponent implements Printable, Pageable
     {
       throw new IllegalStateException ("Already paginating");
     }
+
+    boolean addedOutputTarget = false;
+
     synchronized (paginateLock)
     {
+      if (getProcessor().getOutputTarget() == null)
+      {
+        try
+        {
+          OutputTarget target = new DummyOutputTarget(new G2OutputTarget(G2OutputTarget.createEmptyGraphics(),
+                                                                         getPageFormat()));
+          target.open();
+          getProcessor().setOutputTarget(target);
+        }
+        catch (OutputTargetException oe)
+        {
+          // does not happen when using the dummy target
+        }
+        addedOutputTarget = true;
+      }
+
+      paginateLock.setPaginating(true);
       setPageStateList (null);
+
       try
       {
         ReportStateList list = processor.repaginate ();
@@ -720,10 +757,13 @@ public class ReportPane extends JComponent implements Printable, Pageable
         setCurrentPageCount (pageCount);
         setPageNumber (pageNr);
         setPageStateList (list);
-        paginateLock.setPaginating (false);
       }
       finally
       {
+        if (addedOutputTarget)
+        {
+          getProcessor().setOutputTarget(null);
+        }
         paginateLock.setPaginating (false);
       }
     }
@@ -797,5 +837,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
     setPageStateList(null);
     // is regenerated on next repaint
     graphCache = null;
+  }
+
+  public static void main (String [] args) throws Exception
+  {
+    ReportPane pane = new ReportPane (new JFreeReport());
+    Log.debug ("" + pane.getNumberOfPages());
   }
 }

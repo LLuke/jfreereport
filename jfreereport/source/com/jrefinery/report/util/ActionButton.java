@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ActionButton.java,v 1.8 2002/12/05 16:48:12 mungady Exp $
+ * $Id: ActionButton.java,v 1.9 2002/12/11 00:41:42 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -114,10 +114,18 @@ public class ActionButton extends JButton
         else if (event.getPropertyName().equals(ActionDowngrade.MNEMONIC_KEY))
         {
           Object o = ac.getValue(ActionDowngrade.MNEMONIC_KEY);
-          if (o != null && o instanceof Character)
+          if (o != null)
           {
-            Character c = (Character) o;
-            setMnemonic(c.charValue());
+            if (o instanceof Character)
+            {
+              Character c = (Character) o;
+              setMnemonic(c.charValue());
+            }
+            else if (o instanceof Integer)
+            {
+              Integer c = (Integer) o;
+              setMnemonic(c.intValue());
+            }
           }
         }
       }
@@ -259,10 +267,18 @@ public class ActionButton extends JButton
       setEnabled(action.isEnabled());
 
       Object o = newAction.getValue(ActionDowngrade.MNEMONIC_KEY);
-      if (o != null && o instanceof Character)
+      if (o != null)
       {
-        Character c = (Character) o;
-        setMnemonic(c.charValue());
+        if (o instanceof Character)
+        {
+          Character c = (Character) o;
+          setMnemonic(c.charValue());
+        }
+        else if (o instanceof Integer)
+        {
+          Integer c = (Integer) o;
+          setMnemonic(c.intValue());
+        }
       }
       o = newAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
       if (o instanceof KeyStroke && o != null)

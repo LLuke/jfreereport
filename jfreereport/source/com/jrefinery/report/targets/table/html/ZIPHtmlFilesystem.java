@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 7:06:56 PM
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.2 2003/01/29 18:37:14 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.3 2003/02/01 22:10:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -43,6 +43,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   private Hashtable usedURLs;
   private Hashtable encodedImages;
   private ImageComparator comparator;
+  private boolean copyExternalImages;
 
   public ZIPHtmlFilesystem(OutputStream out, String dataDirectory)
   {
@@ -73,6 +74,16 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   public OutputStream getRootStream() throws IOException
   {
     return rootStream;
+  }
+
+  public boolean isCopyExternalImages()
+  {
+    return copyExternalImages;
+  }
+
+  public void setCopyExternalImages(boolean copyExternalImages)
+  {
+    this.copyExternalImages = copyExternalImages;
   }
 
   protected boolean isSupportedImageFormat (URL url)
@@ -152,7 +163,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       }
       return new ImageReferenceData(name);
     }
-    else
+    else if (isCopyExternalImages())
     {
       URL url = reference.getSourceURL();
       String name = (String) usedURLs.get(url);
@@ -176,6 +187,11 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
         usedURLs.put(url, name);
       }
       return new ImageReferenceData(name);
+    }
+    else
+    {
+      String baseName = reference.getSourceURL().toExternalForm();
+      return new ImageReferenceData(baseName);
     }
   }
 

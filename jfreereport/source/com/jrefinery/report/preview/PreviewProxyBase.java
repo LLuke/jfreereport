@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id: PreviewProxyBase.java,v 1.2 2003/01/18 20:47:35 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.3 2003/01/22 19:38:29 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -10,8 +10,6 @@ import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.action.AboutAction;
-import com.jrefinery.report.action.ExportToExcelAction;
-import com.jrefinery.report.action.ExportToHtmlAction;
 import com.jrefinery.report.action.FirstPageAction;
 import com.jrefinery.report.action.GotoPageAction;
 import com.jrefinery.report.action.LastPageAction;
@@ -19,10 +17,8 @@ import com.jrefinery.report.action.NextPageAction;
 import com.jrefinery.report.action.PageSetupAction;
 import com.jrefinery.report.action.PreviousPageAction;
 import com.jrefinery.report.action.PrintAction;
-import com.jrefinery.report.action.SaveAsAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
-import com.jrefinery.report.action.ExportToCSVAction;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionButton;
@@ -33,6 +29,7 @@ import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WindowSizeLimiter;
+import com.jrefinery.report.util.Worker;
 import org.xml.sax.SAXException;
 
 import javax.swing.AbstractAction;
@@ -57,13 +54,12 @@ import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import java.awt.BorderLayout;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -75,112 +71,19 @@ import java.awt.print.PrinterJob;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Iterator;
 
 public class PreviewProxyBase extends JComponent
 {
+  private Worker paginationWorker;
+
   /** The default width of the report pane. */
   public static final int DEFAULT_REPORT_PANE_WIDTH = 640;
 
   /** The default height of the report pane. */
   public static final int DEFAULT_REPORT_PANE_HEIGHT = 480;
-
-  /**
-   * Default 'Export to Excel' action for the frame.
-   */
-  protected class DefaultExportToExcelAction extends ExportToExcelAction implements Runnable
-  {
-    /**
-     * Creates a 'save as' action.
-     */
-    public DefaultExportToExcelAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * Closes the preview frame.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-      SwingUtilities.invokeLater(this);
-    }
-
-    /**
-     * Passes control to the frame which will present a dialog to save the report in PDF format.
-     */
-    public void run()
-    {
-      attemptExportToExcel();
-    }
-  }
-
-
-  /**
-   * Default 'Export to Excel' action for the frame.
-   */
-  protected class DefaultExportToHtmlAction extends ExportToHtmlAction implements Runnable
-  {
-    /**
-     * Creates a 'save as' action.
-     */
-    public DefaultExportToHtmlAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * Closes the preview frame.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-      SwingUtilities.invokeLater(this);
-    }
-
-    /**
-     * Passes control to the frame which will present a dialog to save the report in PDF format.
-     */
-    public void run()
-    {
-      attemptExportToHtml();
-    }
-  }
-
-  /**
-   * Default 'Export to Excel' action for the frame.
-   */
-  protected class DefaultExportToCSVAction extends ExportToCSVAction implements Runnable
-  {
-    /**
-     * Creates a 'save as' action.
-     */
-    public DefaultExportToCSVAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * Closes the preview frame.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-      SwingUtilities.invokeLater(this);
-    }
-
-    /**
-     * Passes control to the frame which will present a dialog to save the report in PDF format.
-     */
-    public void run()
-    {
-      attemptExportToCSV();
-    }
-  }
 
   /**
    * A wrapper action.
@@ -335,7 +238,29 @@ public class PreviewProxyBase extends JComponent
     {
       String property = event.getPropertyName();
 
-      if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
+      if (property.equals(ReportPane.PAGINATED_PROPERTY))
+      {
+        if (reportPane.isPaginated())
+        {
+          // is paginated ...
+          Object[] params = new Object[]{
+            new Integer(reportPane.getPageNumber()),
+            new Integer(reportPane.getNumberOfPages())
+          };
+          getStatus().setText(
+              MessageFormat.format(
+                  getResources().getString("statusline.pages"),
+                  params
+              )
+          );
+          validateButtons();
+        }
+        else
+        {
+          // is not paginated ... ignore event ...
+        }
+      }
+      else if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
           || property.equals(ReportPane.NUMBER_OF_PAGES_PROPERTY))
       {
 
@@ -372,38 +297,6 @@ public class PreviewProxyBase extends JComponent
         validateButtons();
         validate();
       }
-    }
-  }
-
-  /**
-   * Default 'save as' action for the frame.
-   */
-  protected class DefaultSaveAsAction extends SaveAsAction implements Runnable
-  {
-    /**
-     * Creates a 'save as' action.
-     */
-    public DefaultSaveAsAction()
-    {
-      super(getResources());
-    }
-
-    /**
-     * Closes the preview frame.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-      SwingUtilities.invokeLater(this);
-    }
-
-    /**
-     * Passes control to the frame which will present a dialog to save the report in PDF format.
-     */
-    public void run()
-    {
-      attemptSaveAs();
     }
   }
 
@@ -744,15 +637,22 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
+  protected Worker getWorker ()
+  {
+    if (paginationWorker == null)
+    {
+      paginationWorker = new Worker();
+      paginationWorker.setPriority(Thread.MIN_PRIORITY);
+    }
+    return paginationWorker;
+  }
+
   /** The base class for localised resources. */
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
   /** The 'about' action. */
   private WrapperAction aboutAction;
-
-  /** The 'save as' action. */
-  private WrapperAction saveAsAction;
 
   /** The 'page setup' action. */
   private WrapperAction pageSetupAction;
@@ -784,10 +684,6 @@ public class PreviewProxyBase extends JComponent
   /** The 'goto' action. */
   private WrapperAction gotoAction;
 
-  private WrapperAction exportToExcelAction;
-  private WrapperAction exportToHtmlAction;
-  private WrapperAction exportToCSVAction;
-
   /** The available zoom factors. */
   private static final double[] ZOOM_FACTORS = {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0};
 
@@ -815,9 +711,6 @@ public class PreviewProxyBase extends JComponent
   /** Toolbar. */
   private JToolBar toolbar;
 
-  /** A dialog for specifying PDF file properties. */
-  private PDFSaveDialog pdfSaveDialog;
-
   /** The maximum size. */
   private Dimension maximumSize;
 
@@ -826,14 +719,7 @@ public class PreviewProxyBase extends JComponent
 
   private PreviewProxy proxy;
 
-  /** A dialog for specifying Excel file properties. */
-  private ExcelExportDialog excelExportDialog;
-
-  /** A dialog for specifying Excel file properties. */
-  private HtmlExportDialog htmlExportDialog;
-
-  /** A dialog for specifying Excel file properties. */
-  private CSVExportDialog csvExportDialog;
+  private ArrayList exportPlugIns;
 
   /**
    * Creates a preview dialog.
@@ -859,13 +745,30 @@ public class PreviewProxyBase extends JComponent
   {
     setLargeIconsEnabled(true);
 
+    ExportPluginFactory factory = new ExportPluginFactory();
+    exportPlugIns = factory.createExportPlugIns(proxy);
+
     // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
     // DisposedState is undone when show() or pack() is called, so this does no harm.
     proxy.addComponentListener(new ComponentAdapter()
     {
       public void componentHidden(ComponentEvent e)
       {
-        ((Window) (e.getComponent())).dispose();
+        try
+        {
+          getWorker().interrupt();
+        }
+        catch (SecurityException se)
+        {
+          // not allowed to access the thread ...
+        }
+
+        Component c = e.getComponent();
+        if (c instanceof Window)
+        {
+          Window w = (Window) c;
+          w.dispose();
+        }
       }
     });
 
@@ -878,16 +781,17 @@ public class PreviewProxyBase extends JComponent
     createDefaultActions(proxy.createDefaultCloseAction());
 
     // set up the menu
-    proxy.setJMenuBar(createMenuBar(resources));
+    proxy.setJMenuBar(createMenuBar(resources, report));
 
     // set up the content with a toolbar and a report pane
     setLayout(new BorderLayout());
     setDoubleBuffered(false);
-    toolbar = createToolBar();
+    toolbar = createToolBar(report);
     add(toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane(report);
     reportPane.addPropertyChangeListener(createReportPanePropertyChangeListener());
+    reportPane.setVisible(false);
 
     JPanel reportPaneHolder = new JPanel(new CenterLayout());
     reportPaneHolder.add(reportPane);
@@ -908,31 +812,8 @@ public class PreviewProxyBase extends JComponent
 
     applyDefinedDimension(report);
 
-    if (proxy instanceof Frame)
-    {
-      pdfSaveDialog = new PDFSaveDialog((Frame) proxy);
-      excelExportDialog = new ExcelExportDialog((Frame) proxy);
-      htmlExportDialog = new HtmlExportDialog((Frame) proxy);
-      csvExportDialog = new CSVExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      pdfSaveDialog = new PDFSaveDialog((Dialog) proxy);
-      excelExportDialog = new ExcelExportDialog((Dialog) proxy);
-      htmlExportDialog = new HtmlExportDialog((Dialog) proxy);
-      csvExportDialog = new CSVExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      pdfSaveDialog = new PDFSaveDialog();
-      excelExportDialog = new ExcelExportDialog();
-      htmlExportDialog = new HtmlExportDialog();
-      csvExportDialog = new CSVExportDialog();
-    }
-    pdfSaveDialog.pack();
-    excelExportDialog.pack();
-    htmlExportDialog.pack();
-    csvExportDialog.pack();
+    performPagination();
+    Log.info ("Pagination started");
   }
 
   /**
@@ -1068,16 +949,6 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Returns the PDF save dialog.
-   *
-   * @return the PDF save dialog.
-   */
-  public PDFSaveDialog getPdfSaveDialog()
-  {
-    return pdfSaveDialog;
-  }
-
-  /**
    * Creates a report pane listener.
    *
    * @return the listener.
@@ -1128,14 +999,6 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Presents a "Save As" dialog to the user, enabling him/her to save the report in PDF format.
-   */
-  protected void attemptSaveAs()
-  {
-    getPdfSaveDialog().savePDF(reportPane.getReport(), reportPane.getPageFormat());
-  }
-
-  /**
    * Displays a printer page setup dialog, then updates the report pane with the new page size.
    */
   protected void attemptPageSetup()
@@ -1143,9 +1006,10 @@ public class PreviewProxyBase extends JComponent
     PrinterJob pj = PrinterJob.getPrinterJob();
     PageFormat pf = pj.pageDialog(reportPane.getPageFormat());
 
+    reportPane.setVisible(false);
     reportPane.setPageFormat(pf);
-    validateButtons();
-    proxy.pack();
+    performPagination();
+    //proxy.pack();
   }
 
   /**
@@ -1320,7 +1184,6 @@ public class PreviewProxyBase extends JComponent
   private void createDefaultActions(Action defaultCloseAction)
   {
     gotoAction = new WrapperAction(createDefaultGotoAction());
-    saveAsAction = new WrapperAction(createDefaultSaveAsAction());
     pageSetupAction = new WrapperAction(createDefaultPageSetupAction());
     printAction = new WrapperAction(createDefaultPrintAction());
     aboutAction = new WrapperAction(createDefaultAboutAction());
@@ -1331,9 +1194,6 @@ public class PreviewProxyBase extends JComponent
     previousPageAction = new WrapperAction(createDefaultPreviousPageAction());
     zoomInAction = new WrapperAction(createDefaultZoomInAction());
     zoomOutAction = new WrapperAction(createDefaultZoomOutAction());
-    exportToExcelAction = new WrapperAction(createDefaultExportToExcelAction());
-    exportToHtmlAction = new WrapperAction(createDefaultExportToHtmlAction());
-    exportToCSVAction = new WrapperAction(createDefaultExportToCSVAction());
   }
 
   /**
@@ -1390,36 +1250,6 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Creates the ExportToExcel Action used in this previewframe.
-   *
-   * @return the 'export to Excel' action.
-   */
-  protected Action createDefaultExportToExcelAction()
-  {
-    return new DefaultExportToExcelAction();
-  }
-
-  /**
-   * Creates the ExportToExcel Action used in this previewframe.
-   *
-   * @return the 'export to Excel' action.
-   */
-  protected Action createDefaultExportToHtmlAction()
-  {
-    return new DefaultExportToHtmlAction();
-  }
-
-  /**
-   * Creates the ExportToExcel Action used in this previewframe.
-   *
-   * @return the 'export to Excel' action.
-   */
-  protected Action createDefaultExportToCSVAction()
-  {
-    return new DefaultExportToCSVAction();
-  }
-
-  /**
    * Creates a zoom select action.
    *
    * @return the action.
@@ -1437,16 +1267,6 @@ public class PreviewProxyBase extends JComponent
   protected Action createDefaultGotoAction()
   {
     return new DefaultGotoAction();
-  }
-
-  /**
-   * Creates the SaveAsAction used in this previewframe.
-   *
-   * @return the 'save as' action.
-   */
-  protected Action createDefaultSaveAsAction()
-  {
-    return new DefaultSaveAsAction();
   }
 
   /**
@@ -1524,11 +1344,9 @@ public class PreviewProxyBase extends JComponent
    *
    * @return A ready-made JMenuBar.
    */
-  protected JMenuBar createMenuBar(ResourceBundle resources)
+  protected JMenuBar createMenuBar(ResourceBundle resources, JFreeReport report)
   {
-
     // create the menus
-
     JMenuBar menuBar = new JMenuBar();
     // first the file menu
 
@@ -1536,12 +1354,29 @@ public class PreviewProxyBase extends JComponent
     Character mnemonic = (Character) resources.getObject("menu.file.mnemonic");
     fileMenu.setMnemonic(mnemonic.charValue());
 
-    fileMenu.add(createMenuItem(saveAsAction));
-    fileMenu.addSeparator();
-    fileMenu.add(createMenuItem(exportToExcelAction));
-    fileMenu.add(createMenuItem(exportToHtmlAction));
-    fileMenu.add(createMenuItem(exportToCSVAction));
-    fileMenu.addSeparator();
+    Iterator it = exportPlugIns.iterator();
+    boolean addedSeparator = true;
+    while (it.hasNext())
+    {
+      ExportPlugin plugIn = (ExportPlugin) it.next();
+      ExportAction action = new ExportAction(plugIn);
+      action.setReport(report);
+      fileMenu.add(createMenuItem(action));
+      if (plugIn.isSeparated())
+      {
+        fileMenu.addSeparator();
+        addedSeparator = true;
+      }
+      else
+      {
+        addedSeparator = false;
+      }
+    }
+    if (addedSeparator == false)
+    {
+      fileMenu.addSeparator();
+    }
+
     fileMenu.add(createMenuItem(pageSetupAction));
     fileMenu.add(createMenuItem(printAction));
     fileMenu.add(new JSeparator());
@@ -1636,12 +1471,38 @@ public class PreviewProxyBase extends JComponent
    *
    * @return A completely initialized JToolBar.
    */
-  protected JToolBar createToolBar()
+  protected JToolBar createToolBar(JFreeReport report)
   {
     JToolBar toolbar = new JToolBar();
 
-    toolbar.add(createButton(saveAsAction));
+    Iterator it = exportPlugIns.iterator();
+    boolean addedSeparator = true;
+    while (it.hasNext())
+    {
+      ExportPlugin plugIn = (ExportPlugin) it.next();
+      if (plugIn.isAddToToolbar() == false)
+        continue;
+
+      ExportAction action = new ExportAction(plugIn);
+      action.setReport(report);
+      toolbar.add(createButton(action));
+      if (plugIn.isSeparated())
+      {
+        toolbar.addSeparator();
+        addedSeparator = true;
+      }
+      else
+      {
+        addedSeparator = false;
+      }
+    }
+    if (addedSeparator == false)
+    {
+      toolbar.addSeparator();
+    }
+
     toolbar.add(createButton(printAction));
+    toolbar.addSeparator();
     toolbar.add(createButton(firstPageAction));
     toolbar.add(createButton(previousPageAction));
     toolbar.add(createButton(nextPageAction));
@@ -1710,11 +1571,32 @@ public class PreviewProxyBase extends JComponent
 
     getLastPageAction().setEnabled(pn < mp);
     getNextPageAction().setEnabled(pn < mp);
-    getPreviousPageAction().setEnabled(pn != 1);
-    getFirstPageAction().setEnabled(pn != 1);
+
+    // no previous page, so dont enable
+    getPreviousPageAction().setEnabled(pn > 1);
+    getFirstPageAction().setEnabled(pn > 1);
+    // no goto, if there is only one page
+    getGotoAction().setEnabled(mp > 1);
+
+    // always allow to change the page settings
+    getPageSetupAction().setEnabled(true);
+    // dont allow printing if the repagination failed
+    getPrintAction().setEnabled(mp > 0);
 
     getZoomOutAction().setEnabled(zoomSelect.getSelectedIndex() != 0);
     getZoomInAction().setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
+  }
+
+  protected void disableButtons ()
+  {
+    getLastPageAction().setEnabled(false);
+    getNextPageAction().setEnabled(false);
+    getPreviousPageAction().setEnabled(false);
+    getFirstPageAction().setEnabled(false);
+    getZoomOutAction().setEnabled(false);
+    getZoomInAction().setEnabled(false);
+    getPageSetupAction().setEnabled(false);
+    getPrintAction().setEnabled(false);
   }
 
   /**
@@ -1744,7 +1626,6 @@ public class PreviewProxyBase extends JComponent
   {
     // cleanup the report pane, removes some cached resources ...
     reportPane.dispose();
-    pdfSaveDialog.dispose();
 
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
@@ -1769,86 +1650,6 @@ public class PreviewProxyBase extends JComponent
   public void setAboutAction(Action aboutAction)
   {
     this.aboutAction.setParent(aboutAction);
-  }
-
-  /**
-   * Returns the 'Save As' action.
-   *
-   * @return the 'Save As' action.
-   */
-  public Action getSaveAsAction()
-  {
-    return saveAsAction.getParent();
-  }
-
-  /**
-   * Sets the 'Save As' action.
-   *
-   * @param saveAsAction  the 'Save As' action.
-   */
-  public void setSaveAsAction(Action saveAsAction)
-  {
-    this.saveAsAction.setParent(saveAsAction);
-  }
-
-  /**
-   * Returns the 'Export to HTML' action.
-   *
-   * @return the 'Export to HTML' action.
-   */
-  public Action getExportToHtmlAction()
-  {
-    return exportToHtmlAction.getParent();
-  }
-
-  /**
-   * Sets the 'Export to HTML' action.
-   *
-   * @param saveAsAction  the 'Export to HTML' action.
-   */
-  public void setExportToHtmlAction(Action saveAsAction)
-  {
-    this.exportToHtmlAction.setParent(saveAsAction);
-  }
-
-  /**
-   * Returns the 'Export to CSV' action.
-   *
-   * @return the 'Export to CSV' action.
-   */
-  public Action getExportToCSVAction()
-  {
-    return exportToCSVAction.getParent();
-  }
-
-  /**
-   * Sets the 'Export to CSV' action.
-   *
-   * @param saveAsAction  the 'Export to CSV' action.
-   */
-  public void setExportToCSVAction(Action saveAsAction)
-  {
-    this.exportToCSVAction.setParent(saveAsAction);
-  }
-
-  /**
-   * Returns the 'Export to Excel' action.
-   *
-   * @return the 'Export to Excel' action.
-   */
-  public Action getExportToExcelAction()
-  {
-    return exportToExcelAction.getParent();
-  }
-
-  /**
-   * Sets the 'Export to Excel' action.
-   *
-   * @param saveAsAction  the 'Export to Excel' action.
-   */
-  public void setExportToExcelAction(Action saveAsAction)
-  {
-    this.exportToExcelAction.setParent(saveAsAction);
   }
 
   /**
@@ -2051,57 +1852,35 @@ public class PreviewProxyBase extends JComponent
     this.gotoAction.setParent(gotoAction);
   }
 
-  /**
-   * Presents a "Export to Excel" dialog to the user, enabling him/her to save the report in MS Excel format.
-   */
-  protected void attemptExportToExcel()
+  public void performPagination ()
   {
-    getExcelExportDialog().exportToExcel(reportPane.getReport());
-  }
+    disableButtons();
+    getStatus().setText(getResources().getString("statusline.repaginate"));
 
-  /**
-   * Presents a "Export to Excel" dialog to the user, enabling him/her to save the report in MS Excel format.
-   */
-  protected void attemptExportToHtml()
-  {
-    getHtmlExportDialog().exportToHtml(reportPane.getReport());
-  }
-
-  /**
-   * Presents a "Export to Excel" dialog to the user, enabling him/her to save the report in MS Excel format.
-   */
-  protected void attemptExportToCSV()
-  {
-    getCSVExportDialog().exportToCSV(reportPane.getReport());
-  }
-
-  /**
-   * Returns the Excel export dialog.
-   *
-   * @return the Excel export dialog.
-   */
-  public ExcelExportDialog getExcelExportDialog()
-  {
-    return excelExportDialog;
-  }
-
-  /**
-   * Returns the Excel export dialog.
-   *
-   * @return the Excel export dialog.
-   */
-  public HtmlExportDialog getHtmlExportDialog()
-  {
-    return htmlExportDialog;
-  }
-
-  /**
-   * Returns the Excel export dialog.
-   *
-   * @return the Excel export dialog.
-   */
-  public CSVExportDialog getCSVExportDialog()
-  {
-    return csvExportDialog;
+    Worker worker = getWorker();
+    synchronized (worker)
+    {
+      // waint until the worker is done with his current job
+      while (worker.isAvailable() == false);
+    }
+    getWorker().setWorkload(new Runnable ()
+    {
+      public void run()
+      {
+        try
+        {
+          reportPane.setHandleInterruptedState(true);
+          reportPane.setVisible(false);
+          reportPane.repaginate();
+          reportPane.setVisible(true);
+          reportPane.setHandleInterruptedState(false);
+        }
+        catch (Exception e)
+        {
+          Log.debug ("Failed to repaginate" , e);
+        }
+      }
+    });
+    Log.info ("Returned from Repagination" + Thread.currentThread());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.20 2002/12/12 12:26:56 mungady Exp $
+ * $Id: PDFSaveDialog.java,v 1.21 2003/01/30 22:52:44 taqua Exp $
  *
  * Changes
  * --------
@@ -56,6 +56,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -97,7 +98,7 @@ import java.util.ResourceBundle;
  *
  * @author Thomas Morgner
  */
-public class PDFSaveDialog extends JDialog
+public class PDFSaveDialog extends JDialog implements ExportPlugin
 {
   /** Useful constant. */
   private static final int CBMODEL_NOPRINTING = 0;
@@ -1229,11 +1230,10 @@ public class PDFSaveDialog extends JDialog
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into a PDF-File.
    *
    * @param report  the report being processed.
-   * @param pf  the pageformat used to write the report
    *
    * @return true or false.
    */
-  public boolean savePDF(JFreeReport report, PageFormat pf)
+  public boolean performExport (JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
@@ -1241,7 +1241,7 @@ public class PDFSaveDialog extends JDialog
     {
       return false;
     }
-    return writePDF(report, pf);
+    return writePDF(report, report.getDefaultPageFormat());
   }
 
   /**
@@ -1374,5 +1374,45 @@ public class PDFSaveDialog extends JDialog
     String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key,
                                           String.valueOf(orgVal));
     return (val.equalsIgnoreCase("true"));
+  }
+
+  public String getDisplayName()
+  {
+    return resources.getString ("action.save-as.name");
+  }
+
+  public String getShortDescription()
+  {
+    return resources.getString ("action.save-as.description");
+  }
+
+  public Icon getSmallIcon()
+  {
+    return (Icon) resources.getObject ("action.save-as.small-icon");
+  }
+
+  public Icon getLargeIcon()
+  {
+    return (Icon) resources.getObject ("action.save-as.icon");
+  }
+
+  public KeyStroke getAcceleratorKey()
+  {
+    return (KeyStroke) resources.getObject ("action.save-as.accelerator");
+  }
+
+  public Integer getMnemonicKey()
+  {
+    return (Integer) resources.getObject ("action.save-as.mnemonic");
+  }
+
+  public boolean isSeparated()
+  {
+    return true;
+  }
+
+  public boolean isAddToToolbar()
+  {
+    return true;
   }
 }
