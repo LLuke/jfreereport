@@ -3,6 +3,14 @@ releases. It contains hints on how to upgrade to a new version and how
 to cope with the possible changes of the report behaviour.
 
 ---------------------------------------------------------------------------
+Changes from 0.8.4 to 0.8.4-2
+
+The export plugin API changed to resolve several multithreading issues.
+
+A new output support module was created for the common code of all
+page layouters. The pageable-base and table-export-base modules now
+both depend on the module "output-support-pageable".
+
 Changes from 0.8.3g to 0.8.4
 
 Function releated changes

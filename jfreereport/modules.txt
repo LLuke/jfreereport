@@ -148,14 +148,21 @@ will be cached for faster startup times.
 The module requires the external library iText in version 1.00 to be
 present in the classpath.
 
-4.2.4 Pageable output targets
+4.2.4 output-support-pagelayout
 
-4.2.4.1 pageable-export-base
+This module contains the control code for the common pagelayouter. This
+code is responsible for translating report events into output events and
+is the base of all layout dependent output targets.
+
+4.2.5 Pageable output targets
+
+4.2.5.1 pageable-export-base
 
 This module contains common base classes for all pageable output targets.
 It is required by all pageable targets and by the preview components.
+It depends on the output-support-pageable module.
 
-4.2.4.2 graphics2D-pageable-export
+4.2.5.2 graphics2D-pageable-export
 
 The Graphics2D support module enables JFreeReport to output the report
 content to an java.awt.Graphics2D object. The preview components and the
@@ -164,7 +171,7 @@ export your reports into an java.awt.Image.
 
 This module requires the pageable export base for work.
 
-4.2.4.3 pdf-pageable-export
+4.2.5.3 pdf-pageable-export
 
 This module provides support to generate PDF content using the iText
 library. iText supports the generation of PDF documents supporting the
@@ -173,7 +180,7 @@ PDF specification version 1.2 to 1.5.
 This module will not work, if the iText support or the pageable-export-base
 modules are missing.
 
-4.2.4.4 plaintext-pageable-export
+4.2.5.4 plaintext-pageable-export
 
 The plaintext export can be used to generate text content from an report.
 This output target has several limitations:
@@ -208,13 +215,14 @@ text formating options.
 
 The plaintext export depends on the pageable base classes, of course.
 
-4.2.5 Table based output targets
+4.2.6 Table based output targets
 
-4.2.5.1 table-export-base
+4.2.6.1 table-export-base
 
 This module contains all base classes required for the table export.
+It depends on the output-support-pageable module.
 
-4.2.5.2 csv-table-export
+4.2.6.2 csv-table-export
 
 The CSV table export layouts the report content into a tablegrid. The
 generated table is printed into the CSV file. One row of the table
@@ -224,7 +232,7 @@ the limitations of the export format.
 
 This module depends on the "table-export-base".
 
-4.2.5.3 html-table-export
+4.2.6.3 html-table-export
 
 The HTML taget supports the generation of XHTML1.0 or HTML4.01 content.
 Images will be included in the generated content, depending on the selected
@@ -238,7 +246,7 @@ to copy the image content into the target files.
 
 The module will not work, if the "table-export-base" is missing.
 
-4.2.5.4 rtf-table-export
+4.2.6.4 rtf-table-export
 
 This target is barely usable now. The RTF content creation does not yet
 support images. All generated content is held in memory and printed when
@@ -248,7 +256,7 @@ available memory.
 The module requires the "itext-basefont-support" and the "table-export-base"
 to be present.
 
-4.2.5.5 excel-table-export
+4.2.6.5 excel-table-export
 
 The excel exports writes the report content into an MS-Office Excel file.
 The generated file will be compatible with Excel 97/2000.

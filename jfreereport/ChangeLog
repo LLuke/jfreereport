@@ -3,7 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
-0.8.4-2:
+0.8.4-2 (19-Oct-2003):
         * BugFix: Exceptions in the repagination did not close the progress
           monitor. 
 
@@ -23,6 +23,10 @@ A list of changes in recent versions:
 
         * BugFix: Serialization issues fixed for various functions.
         
+        * The preview components can now perform multiple exports at the
+          same time. Currently 10 parallel exports are possible, this will
+          be configurable later.
+          
         * The element color function does now work with all bands of an report.
         
         * The TotalItemSumFunction can be used to precompute group results.
