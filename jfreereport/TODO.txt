@@ -73,6 +73,17 @@ What changed:
   from the JFreeReport object is used as source now.
 * Horizontal lines no longer use the x1==x2; y1==y2 form of definition.
   They now use the relative coordinates like all other elements (width="100%")
+* LayoutManagerCache now uses the Element's InstanceID as key for the cache
+  This increases the performance a lot (HugeReport6: from 84 sec to 35 secs)
+  Elements that will have their sizes or position be modified by the user must
+  be marked uncachable by using the stylekey ELEMENT_LAYOUT_CACHABLE set to 'false'.
+* Images and Drawables are now loaded using a separate factory, so that Pixie
+  is no longer a hardcoded requirement
+* The PDF target caches the used images
+* Some minor performance improvements in the stylekey handling
+
 
 To be implemented: 
   Simple parser: Support for the new features
+  Text line breaking optimizations
+  
