@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutListener.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: LayoutListener.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------

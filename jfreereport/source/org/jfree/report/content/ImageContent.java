@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageContent.java,v 1.6 2004/03/16 15:09:22 taqua Exp $
+ * $Id: ImageContent.java,v 1.7 2004/03/27 20:21:14 taqua Exp $
  *
  * Changes
  * -------

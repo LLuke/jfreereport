@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PackageManager.java,v 1.18 2003/11/25 17:26:23 taqua Exp $
+ * $Id: PackageManager.java,v 1.19 2004/03/16 15:09:23 taqua Exp $
  *
  * Changes
  * -------------------------
