@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: GroupsHandler.java,v 1.3 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.xml.sax.SAXException;
 
 /**
  * A groups handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class GroupsHandler implements ReportDefinitionHandler
@@ -57,16 +57,16 @@ public class GroupsHandler implements ReportDefinitionHandler
 
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The parser. */
   private Parser parser;
-  
+
   /** The group list. */
   private GroupList groupList;
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
@@ -79,7 +79,7 @@ public class GroupsHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -88,12 +88,12 @@ public class GroupsHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -111,31 +111,31 @@ public class GroupsHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
                               + GROUP_TAG);
     }
   }
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
-   */  
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
+   */
   public void characters(char ch[], int start, int length) throws SAXException
   {
     // not used here
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -150,7 +150,7 @@ public class GroupsHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
                               + GROUP_TAG + ", " + finishTag);
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ElementHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -52,32 +52,32 @@ import java.util.Hashtable;
 
 /**
  * An element handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ElementHandler implements ReportDefinitionHandler
 {
   /** The 'style' tag. */
   public static final String STYLE_TAG = StylesHandler.STYLE_TAG;
-  
+
   /** The 'template' tag. */
   public static final String TEMPLATE_TAG = TemplatesHandler.TEMPLATE_TAG;
-  
+
   /** The 'datasource' tag. */
   public static final String DATASOURCE_TAG = DataSourceHandler.DATASOURCE_TAG;
 
-  /** ??. */
+  /** The finish tag is used to detect the end of the current processing level. */
   private String finishTag;
-  
+
   /** The parser. */
   private Parser parser;
-  
+
   /** The element. */
   private Element element;
-  
+
   /** A style collection. */
   private Hashtable styleCollection;
-  
+
   /** A template handler. */
   private TemplateHandler templateFactory;
 
@@ -89,7 +89,7 @@ public class ElementHandler implements ReportDefinitionHandler
 
   /**
    * Creates a new element handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param element  the element.
@@ -99,7 +99,7 @@ public class ElementHandler implements ReportDefinitionHandler
     this.finishTag = finishTag;
     this.parser = parser;
     this.element = element;
-    styleCollection 
+    styleCollection
         = (Hashtable) getParser().getConfigurationValue(StylesHandler.STYLES_COLLECTION);
     if (styleCollection == null)
     {
@@ -114,12 +114,12 @@ public class ElementHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -131,7 +131,7 @@ public class ElementHandler implements ReportDefinitionHandler
         throw new SAXException("A parent template must be specified");
       }
       TemplateDescription template = templateCollector.getTemplate(references);
-      if (template == null) 
+      if (template == null)
       {
         throw new SAXException("The template '" + references + "' is not defined");
       }
@@ -153,7 +153,7 @@ public class ElementHandler implements ReportDefinitionHandler
     else if (tagName.equals(STYLE_TAG))
     {
       ElementStyleSheet styleSheet = element.getStyle();
-      StyleSheetHandler styleSheetFactory 
+      StyleSheetHandler styleSheetFactory
           = new StyleSheetHandler(getParser(), STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
@@ -165,12 +165,12 @@ public class ElementHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */  
   public void characters(char ch[], int start, int length) throws SAXException
   {
@@ -178,11 +178,11 @@ public class ElementHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -208,14 +208,14 @@ public class ElementHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException("Expected '" + STYLE_TAG + "' or " 
+      throw new SAXException("Expected '" + STYLE_TAG + "' or "
                              + finishTag + "', found : " + tagName);
     }
   }
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -225,7 +225,7 @@ public class ElementHandler implements ReportDefinitionHandler
 
   /**
    * Returns the element.
-   * 
+   *
    * @return The element.
    */
   public Element getElement()
@@ -235,7 +235,7 @@ public class ElementHandler implements ReportDefinitionHandler
 
   /**
    * Returns the style collection.
-   * 
+   *
    * @return The style collection.
    */
   public Hashtable getStyleCollection()

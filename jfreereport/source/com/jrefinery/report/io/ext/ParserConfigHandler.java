@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: ParserConfigHandler.java,v 1.6 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -56,26 +56,26 @@ import org.xml.sax.SAXException;
 
 /**
  * A parser configuration handler.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ParserConfigHandler implements ReportDefinitionHandler
 {
   /** The 'stylekey-factory' tag name. */
   public static final String STYLEKEY_FACTORY_TAG = "stylekey-factory";
-  
+
   /** The 'template-factory' tag name. */
   public static final String TEMPLATE_FACTORY_TAG = "template-factory";
-  
+
   /** The 'object-factory' tag name. */
   public static final String OBJECT_FACTORY_TAG = "object-factory";
-  
+
   /** The 'datadefinition-factory' tag name. */
   public static final String DATADEFINITION_FACTORY_TAG = "datadefinition-factory";
-  
+
   /** The 'datasource-factory' tag name. */
   public static final String DATASOURCE_FACTORY_TAG = "datasource-factory";
-  
+
   /** The 'element-factory' tag name. */
   public static final String ELEMENT_FACTORY_TAG = "element-factory";
 
@@ -90,7 +90,7 @@ public class ParserConfigHandler implements ReportDefinitionHandler
 
   /**
    * The parser configuration handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
@@ -101,12 +101,12 @@ public class ParserConfigHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
@@ -114,7 +114,7 @@ public class ParserConfigHandler implements ReportDefinitionHandler
     if (tagName.equals(STYLEKEY_FACTORY_TAG))
     {
       String className = attrs.getValue(CLASS_ATTRIBUTE);
-      if (className == null) 
+      if (className == null)
       {
         throw new SAXException("Attribute 'class' is missing.");
       }
@@ -132,7 +132,7 @@ public class ParserConfigHandler implements ReportDefinitionHandler
     else if (tagName.equals(OBJECT_FACTORY_TAG))
     {
       String className = attrs.getValue(CLASS_ATTRIBUTE);
-      if (className == null) 
+      if (className == null)
       {
         throw new SAXException("Attribute 'class' is missing.");
       }
@@ -143,7 +143,7 @@ public class ParserConfigHandler implements ReportDefinitionHandler
     else if (tagName.equals(TEMPLATE_FACTORY_TAG))
     {
       String className = attrs.getValue(CLASS_ATTRIBUTE);
-      if (className == null) 
+      if (className == null)
       {
         throw new SAXException("Attribute 'class' is missing.");
       }
@@ -154,7 +154,7 @@ public class ParserConfigHandler implements ReportDefinitionHandler
     else if (tagName.equals(DATASOURCE_FACTORY_TAG))
     {
       String className = attrs.getValue(CLASS_ATTRIBUTE);
-      if (className == null) 
+      if (className == null)
       {
         throw new SAXException("Attribute 'class' is missing.");
       }
@@ -166,7 +166,7 @@ public class ParserConfigHandler implements ReportDefinitionHandler
     else if (tagName.equals(ELEMENT_FACTORY_TAG))
     {
       String className = attrs.getValue(CLASS_ATTRIBUTE);
-      if (className == null) 
+      if (className == null)
       {
         throw new SAXException("Attribute 'class' is missing.");
       }
@@ -192,11 +192,11 @@ public class ParserConfigHandler implements ReportDefinitionHandler
 
   /**
    * Creates a factory object.
-   * 
+   *
    * @param classname  the class name.
-   * 
+   *
    * @return The factory.
-   * 
+   *
    * @throws SAXException if the specified class cannot be loaded.
    */
   private Object createFactory (String classname) throws SAXException
@@ -215,26 +215,26 @@ public class ParserConfigHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   */  
+   */
   public void characters(char ch[], int start, int length)
   {
     // is not used ...
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
-    if (tagName.equals(STYLEKEY_FACTORY_TAG) 
+    if (tagName.equals(STYLEKEY_FACTORY_TAG)
         || tagName.equals(DATADEFINITION_FACTORY_TAG)
         || tagName.equals(TEMPLATE_FACTORY_TAG)
         || tagName.equals(DATASOURCE_FACTORY_TAG)
@@ -260,7 +260,7 @@ public class ParserConfigHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()

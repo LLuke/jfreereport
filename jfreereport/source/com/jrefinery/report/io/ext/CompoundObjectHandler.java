@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: CompoundObjectHandler.java,v 1.5 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -45,26 +45,26 @@ import org.xml.sax.SAXException;
 
 /**
  * A compound object handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CompoundObjectHandler extends BasicObjectHandler
 {
   /** The text for the 'compound-object' tag. */
   public static final String COMPOUND_OBJECT_TAG = "compound-object";
-  
+
   /** The text for the 'basic-object' tag. */
   public static final String BASIC_OBJECT_TAG = "basic-object";
 
   /** A basic object handler. */
   private BasicObjectHandler basicFactory;
-  
-  /** The parameter name. */  
+
+  /** The parameter name. */
   private String parameterName;
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param od  the object description.
@@ -76,12 +76,12 @@ public class CompoundObjectHandler extends BasicObjectHandler
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param targetObject  the class.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public CompoundObjectHandler(Parser parser, String finishTag, Class targetObject)
     throws SAXException
@@ -91,7 +91,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
 
   /**
    * Returns the object description.
-   * 
+   *
    * @return the object description.
    */
   private ObjectDescription getKeyObjectDescription ()
@@ -100,12 +100,12 @@ public class CompoundObjectHandler extends BasicObjectHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -121,7 +121,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       {
         throw new SAXException("No ObjectFactory for the key");
       }
-      
+
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
@@ -155,13 +155,13 @@ public class CompoundObjectHandler extends BasicObjectHandler
       {
         throw new SAXException("No ObjectFactory for the key");
       }
-      
+
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
         throw new SAXException("No such parameter");
       }
-      
+
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
@@ -180,20 +180,20 @@ public class CompoundObjectHandler extends BasicObjectHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
-                              + COMPOUND_OBJECT_TAG + ", " 
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + COMPOUND_OBJECT_TAG + ", "
                               + BASIC_OBJECT_TAG + ". ");
     }
   }
-  
+
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void characters(char ch[], int start, int length) throws SAXException
   {
@@ -201,11 +201,11 @@ public class CompoundObjectHandler extends BasicObjectHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -223,7 +223,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         {
           throw new SAXException("Parameter value is null");
         }
-        
+
         getKeyObjectDescription().setParameter(parameterName, o);
         basicFactory = null;
       }
@@ -244,11 +244,11 @@ public class CompoundObjectHandler extends BasicObjectHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
-                              + getFinishTag() + ", " 
-                              + COMPOUND_OBJECT_TAG + ", " 
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + getFinishTag() + ", "
+                              + COMPOUND_OBJECT_TAG + ", "
                               + BASIC_OBJECT_TAG + ". ");
     }
   }
-  
+
 }

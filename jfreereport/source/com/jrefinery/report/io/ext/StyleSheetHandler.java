@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: StyleSheetHandler.java,v 1.7 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -48,38 +48,38 @@ import java.util.Hashtable;
 
 /**
  * A style sheet handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class StyleSheetHandler implements ReportDefinitionHandler
 {
   /** The 'compound-key' tag name. */
   public static final String COMPOUND_KEY_TAG = "compound-key";
-  
+
   /** The 'basic-key' tag name. */
   public static final String BASIC_KEY_TAG = "basic-key";
-  
+
   /** The 'extends' tag name. */
   public static final String EXTENDS_TAG = "extends";
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The element style sheet. */
   private ElementStyleSheet sheet;
 
   /** The basic style key handler. */
   private BasicStyleKeyHandler basicFactory;
-  
+
   /** The style collection. */
   private Hashtable styleCollection;
 
-  /** 
+  /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param styleSheet  the style sheet.
@@ -98,12 +98,12 @@ public class StyleSheetHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
@@ -173,22 +173,22 @@ public class StyleSheetHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   */  
+   */
   public void characters(char ch[], int start, int length)
   {
     // no characters expected here ...
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
     throws SAXException
@@ -218,7 +218,7 @@ public class StyleSheetHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -228,7 +228,7 @@ public class StyleSheetHandler implements ReportDefinitionHandler
 
   /**
    * Sets the parser.
-   * 
+   *
    * @param parser  the parser.
    */
   public void setParser(Parser parser)

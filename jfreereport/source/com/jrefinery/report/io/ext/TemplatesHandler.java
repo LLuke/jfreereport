@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: TemplatesHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.xml.sax.SAXException;
 
 /**
  * A templates handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class TemplatesHandler implements ReportDefinitionHandler
@@ -57,19 +57,19 @@ public class TemplatesHandler implements ReportDefinitionHandler
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** A template collector. */
   private TemplateCollector templateCollector;
-  
+
   /** A template handler. */
   private TemplateHandler templateFactory;
 
   /**
    * Creates a new templates handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
@@ -87,12 +87,12 @@ public class TemplatesHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
@@ -109,7 +109,7 @@ public class TemplatesHandler implements ReportDefinitionHandler
     }
     String references = attrs.getValue("references");
     TemplateDescription template = templateCollector.getTemplate(references);
-    if (template == null) 
+    if (template == null)
     {
       throw new SAXException("The template '" + references + "' is not defined");
     }
@@ -123,22 +123,22 @@ public class TemplatesHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   */  
+   */
   public void characters(char ch[], int start, int length)
   {
     // ignore characters ...
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
     throws SAXException
@@ -151,16 +151,16 @@ public class TemplatesHandler implements ReportDefinitionHandler
     {
       getParser().popFactory().endElement(tagName);
     }
-    else 
+    else
     {
-      throw new SAXException("Wrong tag, expected one of " + finishTag + "," 
+      throw new SAXException("Wrong tag, expected one of " + finishTag + ","
                              + TEMPLATE_TAG);
     }
   }
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -170,7 +170,7 @@ public class TemplatesHandler implements ReportDefinitionHandler
 
   /**
    * Sets the parser.
-   * 
+   *
    * @param parser  the parser.
    */
   public void setParser(Parser parser)

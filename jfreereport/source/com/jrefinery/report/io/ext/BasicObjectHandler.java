@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: BasicObjectHandler.java,v 1.5 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -48,29 +48,29 @@ import org.xml.sax.SAXException;
 
 /**
  * A basic object handler.
- * 
+ *
  * @author Thomas Morgner
  */
 public class BasicObjectHandler implements ReportDefinitionHandler
 {
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** A buffer. */
   private StringBuffer buffer;
-  
+
   /** An object description. */
   private ObjectDescription objectDescription;
-  
+
   /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param od  the object description.
@@ -86,12 +86,12 @@ public class BasicObjectHandler implements ReportDefinitionHandler
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param targetObject  the class.
-   * 
-   * @throws SAXException  ??.
+   *
+   * @throws SAXException  if a parser error occurs.
    */
   public BasicObjectHandler(Parser parser, String finishTag, Class targetObject)
     throws SAXException
@@ -111,12 +111,12 @@ public class BasicObjectHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException as the basic object tag has no child elements.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -125,12 +125,12 @@ public class BasicObjectHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if an parser error occurs.
    */
   public void characters(char ch[], int start, int length) throws SAXException
   {
@@ -138,11 +138,11 @@ public class BasicObjectHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -157,7 +157,7 @@ public class BasicObjectHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -167,7 +167,7 @@ public class BasicObjectHandler implements ReportDefinitionHandler
 
   /**
    * Returns the object created by the handler.
-   * 
+   *
    * @return The object.
    */
   public Object getValue ()
@@ -177,7 +177,7 @@ public class BasicObjectHandler implements ReportDefinitionHandler
 
   /**
    * Returns the target object description.
-   * 
+   *
    * @return The object description.
    */
   protected ObjectDescription getTargetObjectDescription ()
@@ -187,7 +187,7 @@ public class BasicObjectHandler implements ReportDefinitionHandler
 
   /**
    * Returns the finish tag.
-   * 
+   *
    * @return The finish tag.
    */
   protected String getFinishTag()

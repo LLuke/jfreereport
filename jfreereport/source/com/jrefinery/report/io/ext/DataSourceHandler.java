@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: DataSourceHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.xml.sax.SAXException;
 
 /**
  * A datasource handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class DataSourceHandler extends CompoundObjectHandler
@@ -60,12 +60,12 @@ public class DataSourceHandler extends CompoundObjectHandler
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
-   * @param type  the type.
-   * 
-   * @throws SAXException ??.
+   * @param type  the datasource type.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public DataSourceHandler(Parser parser, String finishTag, String type)
     throws SAXException
@@ -74,14 +74,15 @@ public class DataSourceHandler extends CompoundObjectHandler
   }
 
   /**
-   * ??
-   * 
+   * Looks up the object description for the data source type and throws an
+   * exception if the data source type is not known.
+   *
    * @param parser  the parser.
-   * @param type  the type.
-   * 
+   * @param type  the data source type.
+   *
    * @return The object description.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   private static ObjectDescription lookupObjectDescription (Parser parser, String type)
     throws SAXException
@@ -97,12 +98,12 @@ public class DataSourceHandler extends CompoundObjectHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -122,11 +123,11 @@ public class DataSourceHandler extends CompoundObjectHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {

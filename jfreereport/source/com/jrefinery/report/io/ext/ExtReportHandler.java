@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: ExtReportHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -56,29 +56,29 @@ import java.util.Hashtable;
 
 /**
  * A handler for the extended report definition format.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ExtReportHandler implements ReportDefinitionHandler
 {
   /** The report definition tag name.*/
   public static final String REPORT_DEFINITION_TAG = InitialReportHandler.REPORT_DEFINITION_TAG;
-  
+
   /** The parser config tag name. */
   public static final String PARSER_CONFIG_TAG = "parser-config";
-  
+
   /** The report config tag name. */
   public static final String REPORT_CONFIG_TAG = "report-config";
-  
+
   /** The styles tag name. */
   public static final String STYLES_TAG = "styles";
-  
+
   /** The templates tag name. */
   public static final String TEMPLATES_TAG = "templates";
-  
+
   /** The report description tag name. */
   public static final String REPORT_DESCRIPTION_TAG = "report-description";
-  
+
   /** The functions tag name. */
   public static final String FUNCTIONS_TAG = "functions";
 
@@ -87,13 +87,13 @@ public class ExtReportHandler implements ReportDefinitionHandler
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
 
-  /** 
+  /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
@@ -113,12 +113,12 @@ public class ExtReportHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
@@ -214,7 +214,7 @@ public class ExtReportHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Creates a data source collector. 
+   * Creates a data source collector.
    */
   private void createDataSourceFactoryHolder ()
   {
@@ -247,7 +247,7 @@ public class ExtReportHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
@@ -258,11 +258,11 @@ public class ExtReportHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -313,7 +313,7 @@ public class ExtReportHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: BandHandler.java,v 1.5 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -48,17 +48,17 @@ import org.xml.sax.SAXException;
 
 /**
  * A band handler.
- * 
+ *
  * @author Thomas Morgner
  */
 public class BandHandler extends ElementHandler
 {
   /** The 'band' tag. */
   public static final String BAND_TAG = "band";
-  
+
   /** The 'element' tag. */
   public static final String ELEMENT_TAG = "element";
-  
+
   /** The 'default-style' tag. */
   public static final String DEFAULT_STYLE_TAG = "default-style";
 
@@ -67,7 +67,7 @@ public class BandHandler extends ElementHandler
 
   /**
    * Creates a new band handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param band  the band.
@@ -78,12 +78,12 @@ public class BandHandler extends ElementHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -106,7 +106,7 @@ public class BandHandler extends ElementHandler
       {
         throw new SAXException("The element's 'type' attribute is missing");
       }
-      
+
       ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getConfigurationValue(
           ParserConfigHandler.ELEMENT_FACTORY_TAG);
       Element element = fc.getElementForType(type);
@@ -134,7 +134,7 @@ public class BandHandler extends ElementHandler
 
   /**
    * Returns the band.
-   * 
+   *
    * @return The band.
    */
   private Band getBand ()
@@ -143,11 +143,11 @@ public class BandHandler extends ElementHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: FunctionsHandler.java,v 1.4 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -55,40 +55,40 @@ import java.util.Iterator;
 
 /**
  * A functions handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class FunctionsHandler implements ReportDefinitionHandler
 {
   /** The name of the function tag. */
   public static final String FUNCTION_TAG = "function";
-  
+
   /** The name of the expression tag. */
   public static final String EXPRESSION_TAG = "expression";
-  
+
   /** The name of the 'property-ref' tag. */
   public static final String PROPERTY_REF_TAG = "property-ref";
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
 
   /** The property name. */
   private String propertyName;
-  
+
   /** The expression handler. */
   private ExpressionHandler expressionHandler;
-  
+
   /** The property reference handler. */
   private BasicObjectHandler propertyRefHandler;
 
-  /** 
+  /**
    * Creates a new functions handler.
-   * 
+   *
    * @param parser  the parser.
-   * @param finishTag  the finish tag. 
+   * @param finishTag  the finish tag.
    */
   public FunctionsHandler(Parser parser, String finishTag)
   {
@@ -97,12 +97,12 @@ public class FunctionsHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
@@ -180,12 +180,12 @@ public class FunctionsHandler implements ReportDefinitionHandler
 
   /**
    * Loads an object description.
-   * 
+   *
    * @param className  the class name.
-   * 
+   *
    * @return The description.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   private ObjectDescription loadObjectDescription (String className)
     throws SAXException
@@ -205,14 +205,14 @@ public class FunctionsHandler implements ReportDefinitionHandler
 
   /**
    * Loads an expression.
-   * 
+   *
    * @param className  the class name.
    * @param expName  the expression name.
    * @param depLevel  the dependency level.
-   * 
+   *
    * @return The expression.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   private Expression loadExpression (String className, String expName, int depLevel)
     throws SAXException
@@ -244,22 +244,22 @@ public class FunctionsHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   */  
+   */
   public void characters(char ch[], int start, int length)
   {
     // ignore ..
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
     throws SAXException
@@ -311,7 +311,7 @@ public class FunctionsHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -321,7 +321,7 @@ public class FunctionsHandler implements ReportDefinitionHandler
 
   /**
    * Returns the report.
-   * 
+   *
    * @return The report.
    */
   private JFreeReport getReport ()
@@ -332,11 +332,11 @@ public class FunctionsHandler implements ReportDefinitionHandler
 
   /**
    * Returns <code>true</code> for...
-   * 
+   *
    * @param od  the object description.
-   * 
+   *
    * @return A boolean.
-   */ 
+   */
   private boolean isBasicObject(ObjectDescription od)
   {
     Iterator odNames = od.getParameterNames();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalCSSReferenceData.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: InternalCSSReferenceData.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,16 +36,29 @@
  */
 package com.jrefinery.report.targets.table.html;
 
+/**
+ * Encapsulates an internal stylesheet definition.
+ */
 public class InternalCSSReferenceData extends HtmlReferenceData
 {
+  /** the stylesheet definition. */
   private String styleData;
 
+  /**
+   * Creates an internal style sheet definition.
+   *
+   * @param data the style sheet definition data.
+   */
   public InternalCSSReferenceData(String data)
   {
     super(false);
     styleData = data;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getReference()
   {
     return styleData;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: ReportDescriptionHandler.java,v 1.4 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
 
 /**
  * A report description handler.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ReportDescriptionHandler implements ReportDefinitionHandler
@@ -78,18 +78,18 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The band handler. */
   private BandHandler bandFactory;
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
-   * @param finishTag  the finish tag. 
+   * @param finishTag  the finish tag.
    */
   public ReportDescriptionHandler(Parser parser, String finishTag)
   {
@@ -98,12 +98,12 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
@@ -183,11 +183,11 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   */  
+   */
   public void characters(char ch[], int start, int length)
   {
     // ignore the characters ...
@@ -195,7 +195,7 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
 
   /**
    * Returns the report.
-   * 
+   *
    * @return The report.
    */
   private JFreeReport getReport ()
@@ -205,11 +205,11 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName)
     throws SAXException
@@ -257,7 +257,7 @@ public class ReportDescriptionHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()

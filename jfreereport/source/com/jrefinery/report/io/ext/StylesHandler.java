@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: StylesHandler.java,v 1.4 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -48,34 +48,34 @@ import java.util.Hashtable;
 
 /**
  * A styles handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class StylesHandler implements ReportDefinitionHandler
 {
   /** The 'styles-collection' tag name. */
   public static final String STYLES_COLLECTION = "styles-collection";
-  
+
   /** The 'style' tag name. */
   public static final String STYLE_TAG = "style";
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The style collection. */
   private Hashtable styleCollection;
-  
+
   /** The style sheet. */
   private ElementStyleSheet styleSheet;
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
-   * @param finishTag  the finish tag. 
+   * @param finishTag  the finish tag.
    */
   public StylesHandler(Parser parser, String finishTag)
   {
@@ -89,12 +89,12 @@ public class StylesHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -107,7 +107,7 @@ public class StylesHandler implements ReportDefinitionHandler
       }
       styleSheet = new ElementStyleSheet(name);
 
-      StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(), 
+      StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(),
                                                                   STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
@@ -119,24 +119,24 @@ public class StylesHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
-   */  
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
+   */
   public void characters(char ch[], int start, int length) throws SAXException
   {
     // no such events ...
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -157,7 +157,7 @@ public class StylesHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()

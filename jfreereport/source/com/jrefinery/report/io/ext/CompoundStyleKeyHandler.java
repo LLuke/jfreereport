@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: CompoundStyleKeyHandler.java,v 1.6 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -46,14 +46,14 @@ import org.xml.sax.SAXException;
 
 /**
  * A compound style-key handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 {
   /** The compound object tag name. */
   public static final String COMPOUND_OBJECT_TAG = CompoundObjectHandler.COMPOUND_OBJECT_TAG;
-  
+
   /** The basic object tag name. */
   public static final String BASIC_OBJECT_TAG = CompoundObjectHandler.BASIC_OBJECT_TAG;
 
@@ -68,13 +68,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param name  the name.
    * @param c  the class.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public CompoundStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
     throws SAXException
@@ -91,7 +91,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 
   /**
    * Returns a description of the key.
-   * 
+   *
    * @return The description.
    */
   private ObjectDescription getKeyObjectDescription ()
@@ -100,12 +100,12 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -145,7 +145,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       {
         throw new SAXException ("Attribute 'name' is missing.");
       }
-      
+
       ObjectDescription od = getKeyObjectDescription();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
@@ -170,8 +170,8 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
-                              + COMPOUND_OBJECT_TAG + ", " 
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + COMPOUND_OBJECT_TAG + ", "
                               + BASIC_OBJECT_TAG + ". ");
     }
 
@@ -179,12 +179,12 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void characters(char ch[], int start, int length) throws SAXException
   {
@@ -192,11 +192,11 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -216,16 +216,16 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
-                              + getFinishTag() + ", " 
-                              + COMPOUND_OBJECT_TAG + ", " 
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + getFinishTag() + ", "
+                              + COMPOUND_OBJECT_TAG + ", "
                               + BASIC_OBJECT_TAG + ". ");
     }
   }
 
   /**
    * Returns the value.
-   * 
+   *
    * @return The value.
    */
   public Object getValue ()

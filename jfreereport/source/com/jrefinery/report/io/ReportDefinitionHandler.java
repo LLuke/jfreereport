@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ReportDefinitionHandler.java,v 1.3 2003/02/24 10:32:41 mungady Exp $
  *
  * Changes
  * -------
@@ -43,42 +43,43 @@ import org.xml.sax.SAXException;
 
 /**
  * A report definition handler.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface ReportDefinitionHandler
 {
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement (String tagName, Attributes attrs) throws SAXException;
-  
+
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
+   * @throws SAXException if a parser error occurs or the validation failed.
    */  
   public void characters(char ch[], int start, int length) throws SAXException;
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement (String tagName) throws SAXException;
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser ();

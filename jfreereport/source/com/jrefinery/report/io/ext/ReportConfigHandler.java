@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: ReportConfigHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import java.util.Properties;
 
 /**
  * A report configuration handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ReportConfigHandler implements ReportDefinitionHandler
@@ -105,16 +105,16 @@ public class ReportConfigHandler implements ReportDefinitionHandler
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The current property handler. */
   private PropertyHandler currentPropertyFactory;
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
@@ -125,12 +125,12 @@ public class ReportConfigHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
@@ -159,22 +159,22 @@ public class ReportConfigHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   */  
+   */
   public void characters(char ch[], int start, int length)
   {
     // is not used ... ignore all events ..
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -219,7 +219,7 @@ public class ReportConfigHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -229,7 +229,7 @@ public class ReportConfigHandler implements ReportDefinitionHandler
 
   /**
    * Sets the parser.
-   * 
+   *
    * @param parser  the parser.
    */
   public void setParser(Parser parser)
@@ -239,8 +239,8 @@ public class ReportConfigHandler implements ReportDefinitionHandler
 
   /**
    * Returns the report.
-   * 
-   * @return The report.   
+   *
+   * @return The report.
    */
   private JFreeReport getReport ()
   {
@@ -250,10 +250,10 @@ public class ReportConfigHandler implements ReportDefinitionHandler
 
   /**
    * Handles the page format.
-   * 
+   *
    * @param atts  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   private void handlePageFormat (Attributes atts) throws SAXException
   {

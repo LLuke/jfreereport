@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: PropertyHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -48,26 +48,26 @@ import java.util.Properties;
 
 /**
  * A property handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class PropertyHandler implements ReportDefinitionHandler
 {
   /** The 'property' tag name. */
   public static final String PROPERTY_TAG = "property";
-  
+
   /** The 'name' attribute text. */
   public static final String NAME_ATTR = "name";
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The properties. */
   private Properties properties;
-  
+
   /** The string buffer. */
   private StringBuffer buffer = null;
 
@@ -79,9 +79,9 @@ public class PropertyHandler implements ReportDefinitionHandler
 
   /**
    * Creates a new property handler.
-   * 
+   *
    * @param parser  the parser.
-   * @param finishTag  the finish tag. 
+   * @param finishTag  the finish tag.
    */
   public PropertyHandler (Parser parser, String finishTag)
   {
@@ -92,12 +92,12 @@ public class PropertyHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -115,13 +115,13 @@ public class PropertyHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
-   */  
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
+   */
   public void characters(char ch[], int start, int length) throws SAXException
   {
     // accumulate the characters in case the text is split into several chunks...
@@ -132,11 +132,11 @@ public class PropertyHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -158,7 +158,7 @@ public class PropertyHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -168,7 +168,7 @@ public class PropertyHandler implements ReportDefinitionHandler
 
   /**
    * Returns the properties.
-   * 
+   *
    * @return The properties.
    */
   public Properties getProperties()

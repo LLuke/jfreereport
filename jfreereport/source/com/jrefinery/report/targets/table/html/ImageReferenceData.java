@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReferenceData.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: ImageReferenceData.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,16 +36,32 @@
  */
 package com.jrefinery.report.targets.table.html;
 
+/**
+ * Defines a external image reference to an image file. The image is included
+ * in the generated content using the &lt;IMG&gt; html-tag.
+ */
 public class ImageReferenceData extends HtmlReferenceData
 {
+  /** the referenced file name */
   private String reference;
 
+  /**
+   * Creates a new external image reference.
+   *
+   * @param reference the referenced file name.
+   */
   public ImageReferenceData(String reference)
   {
     super(true);
     this.reference = reference;
   }
 
+  /**
+   * Generates the reference fragment, which should be inserted into the HTML-Code.
+   * This implementation returns the referenced file name.
+   *
+   * @return the referenced file name.
+   */
   public String getReference()
   {
     return reference;

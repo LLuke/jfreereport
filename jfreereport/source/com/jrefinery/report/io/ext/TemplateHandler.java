@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: TemplateHandler.java,v 1.5 2003/02/24 10:37:54 mungady Exp $
  *
  * Changes
  * -------
@@ -47,35 +47,35 @@ import org.xml.sax.SAXException;
 
 /**
  * A template handler.
- * 
- * @author Thomas Morgner. 
+ *
+ * @author Thomas Morgner.
  */
 public class TemplateHandler implements ReportDefinitionHandler
 {
   /** The compound object tag. */
   public static final String COMPOUND_OBJECT_TAG = "compound-object";
-  
+
   /** The basic object tag. */
   public static final String BASIC_OBJECT_TAG = "basic-object";
 
   /** A basic object handler. */
   private BasicObjectHandler basicFactory;
-  
+
   /** The parameter name. */
   private String parameterName;
 
   /** The parser. */
   private Parser parser;
-  
+
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The template description. */
   private TemplateDescription template;
 
   /**
    * Creates a new template handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param template  the template description.
@@ -85,19 +85,19 @@ public class TemplateHandler implements ReportDefinitionHandler
     this.parser = parser;
     this.finishTag = finishTag;
     this.template = template;
-    if (template == null) 
+    if (template == null)
     {
       throw new NullPointerException();
     }
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -161,35 +161,35 @@ public class TemplateHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
                               + COMPOUND_OBJECT_TAG + ", " + BASIC_OBJECT_TAG + ". ");
     }
   }
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
-   */  
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
+   */
   public void characters(char ch[], int start, int length) throws SAXException
   {
     // ignore ...
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
-    if ((tagName.equals(BASIC_OBJECT_TAG)) 
+    if ((tagName.equals(BASIC_OBJECT_TAG))
         || (tagName.equals(COMPOUND_OBJECT_TAG)))
     {
       Object o = basicFactory.getValue();
@@ -215,7 +215,7 @@ public class TemplateHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -225,7 +225,7 @@ public class TemplateHandler implements ReportDefinitionHandler
 
   /**
    * Returns the template description.
-   * 
+   *
    * @return The template description.
    */
   public TemplateDescription getTemplate()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,22 @@ package com.jrefinery.report.targets.table.html;
 import java.awt.geom.Rectangle2D;
 import java.io.PrintWriter;
 
+/**
+ * A wrapper for text content within the generated HtmlTable.
+ */
 public class HtmlTextCellData extends HtmlCellData
 {
+  /** the text content that should be printed within the cell. */
   private String value;
 
+  /**
+   * Creates a new HtmlTextCellData for the given content.
+   *
+   * @param outerBounds the cell bounds.
+   * @param value the text content.
+   * @param style the style definition for the cell.
+   * @param useXHTML a flag indicating whether to use XHTML.
+   */
   public HtmlTextCellData(Rectangle2D outerBounds, String value, HtmlCellStyle style, boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
@@ -50,11 +62,22 @@ public class HtmlTextCellData extends HtmlCellData
     this.value = value;
   }
 
+  /**
+   * Writes the (X)HTML-Code to print the Text-Content.
+   *
+   * @param pout the print writer, which receives the generated HTML-Code.
+   * @param filesystem not used.
+   */
   public void write(PrintWriter pout, HtmlFilesystem filesystem)
   {
     HtmlProducer.printText(pout, value, isUseXHTML());
   }
 
+  /**
+   * Gets a flag, which indicates whether this cell contains background definitions.
+   *
+   * @return false, as this is no background cell.
+   */
   public boolean isBackground()
   {
     return false;

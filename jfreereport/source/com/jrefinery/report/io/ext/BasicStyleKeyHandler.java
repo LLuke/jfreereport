@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.6 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -48,41 +48,41 @@ import org.xml.sax.SAXException;
 
 /**
  * Creates a new handler.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class BasicStyleKeyHandler implements ReportDefinitionHandler
 {
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The parser. */
   private Parser parser;
-  
+
   /** A buffer. */
   private StringBuffer buffer;
-  
+
   /** The style key factory. */
   private StyleKeyFactory keyfactory;
-  
+
   /** The style key. */
   private StyleKey key;
-  
+
   /** The key value class. */
   private Class keyValueClass;
-  
+
   /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
   /**
    * Creates a new handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param name  the name.
    * @param c  the class.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public BasicStyleKeyHandler(Parser parser, String finishTag, String name, Class c)
     throws SAXException
@@ -109,12 +109,12 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -123,12 +123,12 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void characters(char ch[], int start, int length) throws SAXException
   {
@@ -137,7 +137,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   /**
    * Returns the style key factory.
-   * 
+   *
    * @return The style key factory.
    */
   public StyleKeyFactory getKeyfactory()
@@ -146,11 +146,11 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -163,7 +163,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   /**
    * Returns the style key.
-   * 
+   *
    * @return The style key.
    */
   public StyleKey getStyleKey ()
@@ -173,18 +173,18 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   /**
    * Returns the value.
-   * 
+   *
    * @return The value.
    */
   public Object getValue ()
   {
-    return keyfactory.createBasicObject(key, entityParser.decodeEntities(buffer.toString()), 
+    return keyfactory.createBasicObject(key, entityParser.decodeEntities(buffer.toString()),
                                         keyValueClass);
   }
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -194,7 +194,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   /**
    * Returns the finish tag.
-   * 
+   *
    * @return The finish tag.
    */
   protected String getFinishTag()
@@ -204,7 +204,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
 
   /**
    * Returns the key value class.
-   * 
+   *
    * @return The class.
    */
   public Class getKeyValueClass()

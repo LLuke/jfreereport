@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: ExpressionHandler.java,v 1.3 2003/02/24 10:37:53 mungady Exp $
  *
  * Changes
  * -------
@@ -59,16 +59,16 @@ public class ExpressionHandler implements ReportDefinitionHandler
 
   /** The finish tag. */
   private String finishTag;
-  
+
   /** The property handler. */
   private PropertyHandler propertyHandler;
-  
+
   /** The expression. */
   private Expression expression;
 
   /**
    * Creates a new expression handler.
-   * 
+   *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param expression  the expression.
@@ -81,12 +81,12 @@ public class ExpressionHandler implements ReportDefinitionHandler
   }
 
   /**
-   * Callback to indicate that an XML element start tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element start tag has been read by the parser.
+   *
    * @param tagName  the tag name.
    * @param attrs  the attributes.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
@@ -103,24 +103,24 @@ public class ExpressionHandler implements ReportDefinitionHandler
 
   /**
    * Callback to indicate that some character data has been read.
-   * 
+   *
    * @param ch  the character array.
    * @param start  the start index for the characters.
    * @param length  the length of the character sequence.
-   * 
-   * @throws SAXException ??.
-   */  
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
+   */
   public void characters(char ch[], int start, int length) throws SAXException
   {
     // ignore ...
   }
 
   /**
-   * Callback to indicate that an XML element end tag has been read by the parser. 
-   * 
+   * Callback to indicate that an XML element end tag has been read by the parser.
+   *
    * @param tagName  the tag name.
-   * 
-   * @throws SAXException ??.
+   *
+   * @throws SAXException if a parser error occurs or the validation failed.
    */
   public void endElement(String tagName) throws SAXException
   {
@@ -141,7 +141,7 @@ public class ExpressionHandler implements ReportDefinitionHandler
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -151,7 +151,7 @@ public class ExpressionHandler implements ReportDefinitionHandler
 
   /**
    * Returns the expression.
-   * 
+   *
    * @return The expression.
    */
   public Expression getExpression()
