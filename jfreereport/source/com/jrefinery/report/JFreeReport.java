@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.36 2002/11/06 22:15:13 taqua Exp $
+ * $Id: JFreeReport.java,v 1.39 2002/12/02 18:23:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,6 +55,8 @@
  *               serializable process
  * 26-Jul-2002 : Removed method "isLastItemInHigherGroups()". The same functionality is implemented
  *               in Group.isLastItemInGroup()
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -100,7 +102,8 @@ import java.util.Iterator;
  *     <code>getGroup(String groupName).getGroupFooter()<code>.
  * </ul>
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class JFreeReport implements JFreeReportConstants, Cloneable, Serializable
 {
@@ -140,6 +143,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /** The item band - used once for each row of data. */
   private ItemBand itemBand;
 
+  /** The report configuration. */
   private ReportConfiguration reportConfiguration;
 
   /**
@@ -214,17 +218,17 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Constructs a report with the specified attributes.
    *
-   * @param name The name of the report.
-   * @param reportHeader The report header <i>not null</i>.
-   * @param reportFooter The report footer <i>not null</i>.
-   * @param pageHeader The page header <i>not null</i>.
-   * @param pageFooter The page footer <i>not null</i>.
-   * @param itemBand The item band <i>not null</i>.
-   * @param groups The report groups <i>not null</i>.
+   * @param name  the name of the report.
+   * @param reportHeader  the report header <i>not null</i>.
+   * @param reportFooter  the report footer <i>not null</i>.
+   * @param pageHeader  the page header <i>not null</i>.
+   * @param pageFooter  the page footer <i>not null</i>.
+   * @param itemBand  the item band <i>not null</i>.
+   * @param groups  the report groups <i>not null</i>.
    * @param functions  the report functions.
    * @param expressions  the report expressions.
-   * @param data The data for the report <i>not null</i>.
-   * @param defaultPageFormat The default page format.
+   * @param data  the data for the report <i>not null</i>.
+   * @param defaultPageFormat  the default page format.
    *
    * @throws NullPointerException if one of the <i>not null</i>-parameters is null.
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
@@ -246,7 +250,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   {
     this (name, reportHeader, reportFooter, pageHeader, pageFooter, itemBand,
           groups, functions, data, defaultPageFormat);
-    setExpressions( new ExpressionCollection(expressions));
+    setExpressions(new ExpressionCollection(expressions));
   }
 
 
@@ -254,7 +258,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * Sets the item band for the report. If the ItemBand is null, an
    * empty itemband is created
    *
-   * @param band The new item band.
+   * @param band  the new item band.
    */
   public void setItemBand (ItemBand band)
   {
@@ -267,8 +271,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /**
    * Returns the name of the report.
+   * <p>
+   * You can reference the report name in your XML report template file using the key
+   * '<code>report.name</code>'.
    *
-   * @return The name.
+   * @return the name.
    */
   public String getName ()
   {
@@ -279,10 +286,10 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the name of the report.
    * <P>
-   * The report name is stored as a property (NAME_PROPERTY = "report.name") of the report.  If you
-   * supply null as the name, the property is removed.
+   * The report name is stored as a property (key: <code>NAME_PROPERTY = "report.name"</code>) of 
+   * the report.  If you supply <code>null</code> as the name, the property is removed.
    *
-   * @param name The name of the report.
+   * @param name  the name of the report.
    */
   public void setName (String name)
   {
@@ -297,8 +304,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * Developers are free to add any properties they want to a report.  Use a
    * ReportPropertyFunction to retrieve the property during report generation.
    *
-   * @param key The key.
-   * @param value The value.
+   * @param key  the key.
+   * @param value  the value.
    */
   public void setProperty (String key, Object value)
   {
@@ -319,8 +326,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Returns the value of the property with the specified key.
    *
-   * @param key The key.
-   * @return The property value.
+   * @param key  the key.
+   *
+   * @return the property value.
    */
   public Object getProperty (String key)
   {
@@ -332,9 +340,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Sets the report header (null permitted).
+   * Sets the report header (null not permitted).
    *
-   * @param header The report header.
+   * @param header  the report header.
    */
   public void setReportHeader (ReportHeader header)
   {
@@ -347,6 +355,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
+   * Returns the report footer.
+   *
    * @return the report footer or null, if no report footer is defined.
    */
   public ReportHeader getReportHeader ()
@@ -355,9 +365,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Sets the report footer (null permitted).
+   * Sets the report footer (null not permitted).
    *
-   * @param footer The report footer.
+   * @param footer  the report footer.
    */
   public void setReportFooter (ReportFooter footer)
   {
@@ -370,6 +380,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
+   * Returns the page footer.
+   *
    * @return the report footer or null, if no report footer is defined.
    */
   public ReportFooter getReportFooter ()
@@ -378,9 +390,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Sets the page header (null permitted).
+   * Sets the page header (null not permitted).
    *
-   * @param header The page header.
+   * @param header  the page header.
    */
   public void setPageHeader (PageHeader header)
   {
@@ -403,7 +415,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the page footer (null permitted).
    *
-   * @param footer The page footer.
+   * @param footer  the page footer.
    */
   public void setPageFooter (PageFooter footer)
   {
@@ -424,7 +436,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * @return The item band for the report.
+   * @return the item band for the report.
    */
   public ItemBand getItemBand ()
   {
@@ -434,7 +446,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Adds a group to the report.
    *
-   * @param group The group.
+   * @param group  the group.
    */
   public void addGroup (Group group)
   {
@@ -447,7 +459,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * group contains no elements and starts at the first record of the
    * data and ends on the last record.
    *
-   * @param groupList The list of groups.
+   * @param groupList  the list of groups.
    */
   public void setGroups (GroupList groupList)
   {
@@ -475,7 +487,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Returns the list of groups for the report.
    *
-   * @return The group list.
+   * @return the group list.
    */
   public GroupList getGroups ()
   {
@@ -487,7 +499,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * <P>
    * Every report has at least one group defined.
    *
-   * @return The group count.
+   * @return the group count.
    */
   public int getGroupCount ()
   {
@@ -497,7 +509,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Returns the group at the specified index or null, if there is no such group.
    *
-   * @param count The group index.
+   * @param count  the group index.
    *
    * @return the requested group.
    *
@@ -523,7 +535,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Adds a function to the report's collection of functions.
    *
-   * @param function The function.
+   * @param function  the function.
    *
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
@@ -535,7 +547,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Adds a function to the report's collection of functions.
    *
-   * @param function The function.
+   * @param function  the function.
    *
    * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
@@ -547,7 +559,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Returns the report's collection of functions.
    *
-   * @return The function collection.
+   * @return the function collection.
    */
   public ExpressionCollection getFunctions ()
   {
@@ -557,7 +569,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the function collection.
    *
-   * @param functions The collection of functions.
+   * @param functions  the collection of functions.
    */
   public void setFunctions (ExpressionCollection functions)
   {
@@ -574,7 +586,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Returns the page format that will be used to output the report.
    *
-   * @return The current page format.
+   * @return the current page format.
    */
   public PageFormat getDefaultPageFormat ()
   {
@@ -586,7 +598,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * to define at least one suitable format. If no format is defined the systems default
    * page format is used.
    *
-   * @param format the default format or null, if no such format has been specified.
+   * @param format  the default format or null, if no such format has been specified.
    */
   public void setDefaultPageFormat (PageFormat format)
   {
@@ -603,7 +615,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
    * Reports are generated from a TableModel (as used by Swing's JTable). If you don't want to
    * give data to the report, use an empty TableModel instead of null.
    *
-   * @param data The data for the report.
+   * @param data  the data for the report.
    *
    * @throws NullPointerException if the given data is null.
    */
@@ -619,7 +631,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Returns the current data for this report.
    *
-   * @return The data in form of a table model.
+   * @return the data in form of a table model.
    */
   public TableModel getData ()
   {
@@ -702,6 +714,11 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     this.expressions = expressions;
   }
 
+  /**
+   * Returns the report configuration.
+   *
+   * @return the report configuration.
+   */
   public ReportConfiguration getReportConfiguration()
   {
     return reportConfiguration;

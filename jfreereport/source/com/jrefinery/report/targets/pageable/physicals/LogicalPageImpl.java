@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.2 2002/12/02 20:43:20 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.3 2002/12/04 16:21:33 mungady Exp $
  *
  * Changes
  * -------
@@ -56,8 +56,8 @@ import java.awt.print.PageFormat;
 import java.util.List;
 
 /**
- * A simple logical page implementation ... does work with a single physical page
- * and is not yet able to distribute its contents ...
+ * A simple logical page implementation. Does work with a single physical page
+ * and is not yet able to distribute its contents.
  *
  * @author Thomas Morgner
  */

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,68 +20,112 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * -------------------
  * FloatDimension.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -------------------
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: FloatDimension.java,v 1.1 2002/12/02 17:56:50 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
  */
 package com.jrefinery.report.targets;
 
-import java.awt.Component;
 import java.awt.geom.Dimension2D;
 import java.io.Serializable;
 
+/**
+ * A dimension object specified using <code>float</code> values.
+ *
+ * @author Thomas Morgner
+ */
 public class FloatDimension extends Dimension2D implements Cloneable, Serializable
 {
+  /** The width. */
   private float width;
+  
+  /** The height. */
   private float height;
 
+  /** 
+   * Creates a new dimension object with width and height set to zero. 
+   */
   public FloatDimension()
   {
-    width = 0;
-    height = 0;
+    width = 0.0f;
+    height = 0.0f;
   }
 
+  /**
+   * Creates a new dimension that is a copy of another dimension.
+   *
+   * @param fd  the dimension to copy.
+   */
   public FloatDimension(FloatDimension fd)
   {
     this.width = fd.width;
     this.height = fd.height;
   }
 
+  /**
+   * Creates a new dimension.
+   *
+   * @param width  the width.
+   * @param height  the height.
+   */
   public FloatDimension(double width, double height)
   {
     this.width = (float) width;
     this.height = (float) height;
   }
 
+  /**
+   * Returns the width.
+   *
+   * @return the width.
+   */
   public double getWidth()
   {
     return width;
   }
 
+  /**
+   * Returns the height.
+   *
+   * @return the height.
+   */
   public double getHeight()
   {
     return height;
   }
 
+  /**
+   * Sets the width.
+   *
+   * @param width  the width.
+   */
   public void setWidth(float width)
   {
     this.width = width;
   }
 
+  /**
+   * Sets the height.
+   *
+   * @param height  the height.
+   */
   public void setHeight(float height)
   {
     this.height = height;
   }
 
   /**
-   * Sets the size of this <code>Dimension</code> object to the
-   * specified width and height.
+   * Sets the size of this <code>Dimension</code> object to the specified width and height.
    * This method is included for completeness, to parallel the
    * {@link Component#getSize getSize} method of
    * {@link Component}.

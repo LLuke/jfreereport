@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * -------------------------
  * JFreeReportConstants.java
  * -------------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportConstants.java,v 1.10 2002/08/20 21:13:05 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.11 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes
  * -------
@@ -37,37 +37,42 @@
  *               JFreeReport.java source file.  Added action constants (DG);
  * 10-May-2002 : Documentation
  * 09-Jun-2002 : Removed the action commands, actions connect directly to their source.
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
 
 /**
  * Some constants for JFreeReport and PreviewPane.
+ * <p>
+ * A number of report property keys are defined.  These can be used to access report properties
+ * using the <code>getProperty(String)</code> method in the <code>JFreeReport</code> class.
  *
- * @author DG
+ * @author David Gilbert
  */
 public interface JFreeReportConstants
 {
 
-  /** Report property key. */
+  /** Key for the 'report name' property. */
   public static final String NAME_PROPERTY = "report.name";
 
-  /** Report property key. */
+  /** Key for the 'report date' property. */
   public static final String REPORT_DATE_PROPERTY = "report.date";
 
-  /** Report property key. */
+  /** Key for the 'report page format' property. */
   public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
 
-  /** Report property key. */
+  /** Key for the 'report page count' property. */
   public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
 
-  /** Report property key. */
+  /** Key for the 'report prepare run' property. */
   public static final String REPORT_PREPARERUN_PROPERTY = "report.preparerun";
 
-  /** Report property key. */
+  /** Key for the 'report definition source' property. */
   public static final String REPORT_DEFINITION_SOURCE = "report.definition.source";
 
-  /** Report property key. */
+  /** Key for the 'report definition content base' property. */
   public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
 
   /** A useful constant that signals that a page is full. */

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,20 @@
  * ---------------------
  * DataRowConnector.java
  * ---------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id: DataRowConnector.java,v 1.6 2002/11/07 21:45:19 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: DataRowConnector.java,v 1.7 2002/12/02 18:23:58 taqua Exp $
  *
  * Changes
  * -------
  * 27-Jul-2002 : Initial version
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.DataRowConnectable;
@@ -45,7 +51,9 @@ import java.util.List;
  * The DataRowConnector connects the DataRowBackend (which contains the data) with the
  * stateless elements.
  *
- * @author TM
+ * @see DataRowBackend
+ *
+ * @author Thomas Morgner
  */
 public class DataRowConnector implements DataRow
 {

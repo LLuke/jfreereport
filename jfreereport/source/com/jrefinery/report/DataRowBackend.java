@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * -------------------
  * DataRowBackend.java
  * -------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id: DataRowBackend.java,v 1.21 2002/11/07 21:53:15 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: DataRowBackend.java,v 1.22 2002/12/02 18:23:58 taqua Exp $
  *
  * Changes
  * -------
@@ -33,7 +36,10 @@
  * 01-Sep-2002 : Deadlockcheck added. If a column is accessed twice within a single query, (can
  *               happen on expression evaluation), a IllegalStateException is thrown
  * 02-Sep-2002 : Deadlock detection was no implemented correctly, fixed.
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report;
 
 import com.jrefinery.report.function.Expression;
@@ -45,15 +51,17 @@ import javax.swing.table.TableModel;
 import java.util.Hashtable;
 
 /**
- * The DataRow-Backend maintains the state of a datarow. Whenever a reportstate changes
+ * The DataRow-Backend maintains the state of a datarow. Whenever the  report state changes
  * the backend of the datarow is updated and then reconnected with the DataRowConnector.
  *
- * @author TM
+ * @see DataRowConnector
+ *
+ * @author Thomas Morgner
  */
 public class DataRowBackend implements Cloneable
 {
-  /**
-   * A 'preview' data row backend.
+  /** 
+   * A 'preview' data row backend. 
    */
   private static class DataRowPreview extends DataRowBackend
   {
@@ -283,7 +291,10 @@ public class DataRowBackend implements Cloneable
    */
   public void setFunctions(LeveledExpressionList functions)
   {
-    if (functions == null) throw new NullPointerException();
+    if (functions == null) 
+    {
+      throw new NullPointerException();
+    }
     this.functions = functions;
     revalidateColumnLock();
   }
@@ -562,6 +573,11 @@ public class DataRowBackend implements Cloneable
     return getTableEndIndex() + getFunctions().size();
   }
 
+  /**
+   * Returns the end index of the properties.
+   *
+   * @return the index.
+   */
   private int getPropertiesEndIndex()
   {
     if (getReportProperties() == null)
@@ -582,14 +598,27 @@ public class DataRowBackend implements Cloneable
     }
   }
 
+  /**
+   * Returns the report properties.
+   *
+   * @return the report properties.
+   */
   public ReportPropertiesList getReportProperties()
   {
     return reportProperties;
   }
 
+  /**
+   * Sets the report properties.
+   *
+   * @param properties  the report properties.
+   */
   public void setReportProperties(ReportPropertiesList properties)
   {
-    if (properties == null) throw new NullPointerException();
+    if (properties == null) 
+    {
+      throw new NullPointerException();
+    }
     this.reportProperties = properties;
     revalidateColumnLock();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.4 2002/12/03 16:30:56 mungady Exp $
+ * $Id: PageableReportProcessor.java,v 1.5 2002/12/04 16:27:30 mungady Exp $
  *
  * Changes
  * -------
@@ -125,11 +125,12 @@ public class PageableReportProcessor
   }
 
   /**
-   * Returns the layout manager.
+   * Returns the layout manager.  If the key is <code>null</code>, an instance of the
+   * <code>SimplePageLayouter</code> class is returned.
    *
-   * @param key  the key.
+   * @param key  the key (null permitted).
    *
-   * @return the layout manager.
+   * @return the page layouter.
    *
    * @throws ReportProcessingException if there is a processing error.
    */

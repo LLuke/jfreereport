@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,23 +20,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * --------------------------
  * LeveledExpressionList.java
- * --------------------
+ * --------------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeveledExpressionList.java,v 1.4 2002/12/02 17:29:18 taqua Exp $
+ * $Id: LeveledExpressionList.java,v 1.5 2002/12/02 18:25:51 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updates Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
@@ -46,12 +48,31 @@ import com.jrefinery.report.util.Log;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+/**
+ * A list of expressions/functions and associated levels.  This class listens for report events,
+ * then passes these events on to the expressions and functions in *descending* level order.
+ *
+ * @author Thomas Morgner
+ */
 public class LeveledExpressionList implements ReportListener, Cloneable
 {
+  /** A list of expressions and associated levels. */
   private LevelList expressionList;
+  
+  /** ??. */
   private Hashtable nameLookup;
+  
+  /** The level. */
   private int level;
 
+  /**
+   * Creates a new list.
+   *
+   * @param ec  the expressions.
+   * @param fc  the functions.
+   *
+   * @throws ReportInitialisationException ??.
+   */
   public LeveledExpressionList(ExpressionCollection ec, ExpressionCollection fc)
       throws ReportInitialisationException 
 
@@ -67,7 +88,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * <P>
    * The event carries a ReportState.Started state.  Use this to initialize the report.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -98,7 +119,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -109,7 +132,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * Receives notification that report generation has finished (the last record is read and all
    * groups are closed).
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void reportFinished(ReportEvent event)
   {
@@ -140,7 +163,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -149,7 +174,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   /**
    * Receives notification that a new page is being started.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void pageStarted(ReportEvent event)
   {
@@ -180,7 +205,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -189,7 +216,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   /**
    * Receives notification that a page is completed.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void pageFinished(ReportEvent event)
   {
@@ -220,7 +247,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -231,7 +260,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * <P>
    * The group can be determined by the report state's getCurrentGroup() function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void groupStarted(ReportEvent event)
   {
@@ -262,7 +291,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -273,7 +304,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * <P>
    * The group can be determined by the report state's getCurrentGroup() function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void groupFinished(ReportEvent event)
   {
@@ -304,7 +335,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -315,7 +348,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * <P>
    * The next events will be itemsAdvanced events until the itemsFinished event is raised.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void itemsStarted(ReportEvent event)
   {
@@ -346,7 +379,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -357,7 +392,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * <P>
    * The itemBand is finished, the report starts to close open groups.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void itemsFinished(ReportEvent event)
   {
@@ -388,7 +423,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -399,7 +436,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
    * <P>
    * This event is raised before an ItemBand is printed.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void itemsAdvanced(ReportEvent event)
   {
@@ -430,7 +467,9 @@ public class LeveledExpressionList implements ReportListener, Cloneable
         else
         {
           if (e.isActive())
+          {
             e.getValue();
+          }
         }
       }
     }
@@ -461,7 +500,8 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   /**
    * Disconnects the datarow from the expression.
    *
-   * @param dr the datarow to be connected.
+   * @param dr  the datarow to be connected.
+   *
    * @throws NullPointerException if the given datarow is null.
    */
   public void disconnectDataRow(DataRow dr)
@@ -477,6 +517,13 @@ public class LeveledExpressionList implements ReportListener, Cloneable
     }
   }
 
+  /**
+   * Initialises the expressions.
+   *
+   * @param expressionCollection  the expression collection.
+   *
+   * @throws ReportInitialisationException ??.
+   */
   private void initializeExpressions(ExpressionCollection expressionCollection)
     throws ReportInitialisationException
   {
@@ -493,6 +540,13 @@ public class LeveledExpressionList implements ReportListener, Cloneable
     }
   }
 
+  /**
+   * Initialises the functions.
+   *
+   * @param functionCollection  the function collection.
+   *
+   * @throws ReportInitialisationException ??.
+   */
   private void initializeFunctions(ExpressionCollection functionCollection)
       throws ReportInitialisationException
   {
@@ -510,17 +564,27 @@ public class LeveledExpressionList implements ReportListener, Cloneable
     }
   }
 
+  /**
+   * Adds a name to the collection.
+   *
+   * @param ex  the expression or function.
+   *
+   * @throws ReportInitialisationException if there is a duplicate function or expression name.
+   */
   private void addName(Expression ex) throws ReportInitialisationException
   {
     String name = ex.getName();
     if (nameLookup.containsKey(name))
+    {
       throw new ReportInitialisationException ("Duplicate Name found: " + name);
-
+    }
     nameLookup.put(name, ex);
   }
 
   /**
    * Size does not change, so it is cached.
+   *
+   * @return the size.
    */
   public int size()
   {
@@ -606,41 +670,89 @@ public class LeveledExpressionList implements ReportListener, Cloneable
     return ft;
   }
 
+  /**
+   * Sets the level.
+   *
+   * @param level  the level.
+   */
   public void setLevel(int level)
   {
     this.level = level;
   }
 
+  /**
+   * Gets the current level.
+   *
+   * @return the current level.
+   */
   public int getLevel()
   {
     return level;
   }
 
+  /**
+   * Returns an iterator that provides access to the levels in descending order.
+   *
+   * @return the iterator.
+   */
   public Iterator getLevelsDescending()
   {
     return expressionList.getLevelsDescending();
   }
 
+  /**
+   * Returns an iterator that provides access to the levels in ascending order.
+   *
+   * @return the iterator.
+   */
   public Iterator getLevelsAscending()
   {
     return expressionList.getLevelsAscending();
   }
 
+  /**
+   * Returns the values of an expression.
+   *
+   * @param index  the function/expression index.
+   *
+   * @return the value.
+   */
   public Object getValue(int index)
   {
     return ((Expression) expressionList.get(index)).getValue();
   }
 
+  /**
+   * Returns an expression.
+   *
+   * @param index  the function/expression index.
+   *
+   * @return the function/expression.
+   */
   public Expression getExpression(int index)
   {
     return ((Expression) expressionList.get(index));
   }
 
+  /**
+   * Returns the value of a function/expression.
+   *
+   * @param name  the function/expression name.
+   *
+   * @return the value.
+   */
   public Object getValue(String name)
   {
     return ((Expression) nameLookup.get(name)).getValue();
   }
 
+  /**
+   * Returns a function/expression.
+   *
+   * @param name  the function/expression name.
+   *
+   * @return the function/expression.
+   */
   public Expression getExpression(String name)
   {
     return (Expression) nameLookup.get(name);
