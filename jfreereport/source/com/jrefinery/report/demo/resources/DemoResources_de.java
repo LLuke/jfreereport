@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.8 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,8 @@ public class DemoResources_de extends JFreeReportResources
 {
   /**
    * Returns the contents of the resource bundle.
+   *
+   * @return an array of localised resources.
    */
   public Object[][] getContents ()
   {

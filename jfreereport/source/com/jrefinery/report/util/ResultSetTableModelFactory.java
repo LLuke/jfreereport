@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -------------------------------
  * ResultSetTableModelFactory.java
- * -----------------------
+ * -------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 25-Apr-2002 : Initial version
@@ -45,6 +45,8 @@ import java.util.Vector;
  *
  * The creation of default table models can be forces if the system property
  * "com.jrefinery.report.TableFactoryMode" is set to "simple".
+ *
+ * @author TM
  */
 public class ResultSetTableModelFactory
 {
@@ -52,7 +54,7 @@ public class ResultSetTableModelFactory
   private static ResultSetTableModelFactory defaultInstance;
 
   /**
-   * DefaultConstructor
+   * Default constructor.
    */
   public ResultSetTableModelFactory ()
   {
@@ -67,6 +69,12 @@ public class ResultSetTableModelFactory
    * <p>
    * If the resultset lacks the scollable features, the data will be copied into an
    * DefaultTableModel and the resultset gets closed.
+   *
+   * @param rs  the result set.
+   *
+   * @return a closeable table model.
+   *
+   * @throws SQLException if there is a problem with the result set.
    */
   public CloseableTableModel createTableModel (ResultSet rs)
           throws SQLException
@@ -92,6 +100,12 @@ public class ResultSetTableModelFactory
    */
   private class CloseableDefaultTableModel extends DefaultTableModel implements CloseableTableModel
   {
+    /**
+     * Creates a new closeable table model.
+     *
+     * @param objects  the table data.
+     * @param objects1  the column names.
+     */
     public CloseableDefaultTableModel (Object[][] objects, Object[] objects1)
     {
       super (objects, objects1);
@@ -113,6 +127,12 @@ public class ResultSetTableModelFactory
    * <p>
    * Hint: To customize the names of the columns, use the SQL-Column aliasing (done with
    * <code>SELECT nativecolumnname AS "JavaColumnName" FROM ....</code>
+   *
+   * @param rs  the result set.
+   *
+   * @return a closeable table model.
+   *
+   * @throws SQLException if there is a problem with the result set.
    */
   public CloseableTableModel generateDefaultTableModel (ResultSet rs)
           throws SQLException
@@ -143,6 +163,8 @@ public class ResultSetTableModelFactory
 
   /**
    * Returns the singleton instance of the factory.
+   *
+   * @return an instance of this factory.
    */
   public static ResultSetTableModelFactory getInstance ()
   {
@@ -152,4 +174,5 @@ public class ResultSetTableModelFactory
     }
     return defaultInstance;
   }
+
 }

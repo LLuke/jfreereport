@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------------
+ * ----------------------------
  * JFreeReportResources_de.java
- * -------------------------
+ * ----------------------------
  *
  */
 package com.jrefinery.report.resources;
@@ -31,20 +31,24 @@ import java.awt.event.KeyEvent;
 
 /**
  * German Language Resources
+ *
+ * @author TM
  */
 public class JFreeReportResources_de extends JFreeReportResources
 {
 
   /**
    * Returns the array of strings in the resource bundle.
+   *
+   * @return an array of localised resources.
    */
   public Object[][] getContents ()
   {
-    return contents;
+    return CONTENTS;
   }
 
   /** The resources to be localised. */
-  private static final Object[][] contents =
+  private static final Object[][] CONTENTS =
           {
             {"action.save-as.name", "Speichern als..."},
             {"action.save-as.description", "Speichert den Bericht als PDF-Datei"},
@@ -133,7 +137,7 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"pdfsavedialog.targetIsNoFile", "Der Dateiname zeigt auf keine gewöhnliche Datei."},
             {"pdfsavedialog.targetIsNotWritable",
                 "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu "
-               +"überschreiben."},
+              + "überschreiben."},
             {"pdfsavedialog.targetOverwriteConfirmation",
                 "Die Datei ''{0}'' existiert bereits. Soll diese Datei überschrieben werden?"},
             {"pdfsavedialog.targetOverwriteTitle", "Datei überschreiben?"},

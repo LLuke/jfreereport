@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.3 2002/08/08 15:28:43 taqua Exp $
+ * $Id: ImageCellRenderer.java,v 1.4 2002/09/16 14:13:46 mungady Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
 {
 
   /** The icon. */
-  protected ImageIcon icon = new ImageIcon ();
+  private ImageIcon icon = new ImageIcon ();
 
   /**
    * Constructs a new renderer.

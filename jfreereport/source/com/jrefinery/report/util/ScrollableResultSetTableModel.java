@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------------------------
  * ScrollableResultSetTableModel.java
- * -----------------------
+ * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 25-Apr-2002 : Initial version
@@ -44,6 +44,8 @@ import java.sql.SQLException;
  * memory.
  * <p>
  * Use the close() function to close the ResultSet contained in this model.
+ *
+ * @author TM
  */
 public class ScrollableResultSetTableModel extends AbstractTableModel implements CloseableTableModel
 {
@@ -64,6 +66,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
 
   /**
    * Constructs the model.
+   *
+   * @param resultset  the result set.
+   *
+   * @throws SQLException if there is a problem with the result set.
    */
   public ScrollableResultSetTableModel (ResultSet resultset) throws SQLException
   {
@@ -78,7 +84,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * DefaultConstructor.
+   * Default constructor.
    */
   protected ScrollableResultSetTableModel ()
   {
@@ -86,6 +92,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
 
   /**
    * Updates the result set in this model with the given ResultSet object.
+   *
+   * @param resultset the new result set.
+   *
+   * @throws SQLException if there is a problem with the result set.
    */
   public void updateResultSet (ResultSet resultset) throws SQLException
   {
@@ -124,7 +134,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       catch (SQLException e)
       {
         // Just in case the JDBC driver can't close a result set twice.
-        //				e.printStackTrace();
+        //  e.printStackTrace();
       }
     }
     resultset = null;
@@ -136,6 +146,8 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   /**
    * Get a rowCount. This can be a very expensive operation on large
    * datasets. Returns -1 if the total amount of rows is not known to the result set.
+   *
+   * @return the row count.
    */
   public int getRowCount ()
   {
@@ -170,6 +182,8 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    * Returns the number of columns in the ResultSet. Returns 0 if no result set is set
    * or the column count could not be retrieved.
    *
+   * @return the column count.
+   *
    * @see ResultSetMetaData#getColumnCount()
    */
   public int getColumnCount ()
@@ -196,6 +210,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   /**
    * Returns the columnLabel for the given column.
    *
+   * @param column  the column index.
+   *
+   * @return the column name.
+   *
    * @see ResultSetMetaData#getColumnLabel(int)
    */
   public String getColumnName (int column)
@@ -208,13 +226,19 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
       }
       catch (SQLException e)
       {
+        Log.info("ScrollableResultSetTableModel.getColumnName: SQLException.");
       }
     }
     return null;
   }
 
   /**
-   * returns the value of the specified row and the specified column from within the resultset.
+   * Returns the value of the specified row and the specified column from within the resultset.
+   *
+   * @param row  the row index.
+   * @param column  the column index.
+   *
+   * @return the value.
    */
   public Object getValueAt (int row, int column)
   {
@@ -234,7 +258,11 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * returns the class of the resultset column. Returns Object.class if an error occurred.
+   * Returns the class of the resultset column. Returns Object.class if an error occurred.
+   *
+   * @param column  the column index.
+   *
+   * @return the column class.
    */
   public Class getColumnClass (int column)
   {
@@ -254,7 +282,11 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
 
 
   /**
-   * returns the classname of the resultset column. Returns Object.class if an error occurred.
+   * Returns the classname of the resultset column. Returns Object.class if an error occurred.
+   *
+   * @param column  the column index.
+   *
+   * @return the column class name.
    */
   public String getColumnClassName (int column)
   {
@@ -276,6 +308,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    * Just removes the word class from the start of the classname string
    * McKoiDB version 0.92 was not able to properly return classnames of
    * resultset elements.
+   *
+   * @param classname  the class name.
+   *
+   * @return the modified class name.
    */
   private String mckoiDBFixClassName (String classname)
   {

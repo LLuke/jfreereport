@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------
+ * -------------------
  * ActionMenuItem.java
- * ----------------------
+ * -------------------
  *
  * ChangeLog
  * ---------
@@ -42,19 +42,28 @@ import java.beans.PropertyChangeEvent;
  * The ActionMenuItem is used to connect an Action and its properties to an MenuItem.
  * <P>
  * This functionality is already implemented in JDK 1.3 but needed for JDK 1.2.2 compatibility.
+ *
+ * @author TM
  */
 public class ActionMenuItem extends JMenuItem
 {
+  /** The action. */
   private Action action;
+
+  /** The property change handler. */
   private ActionEnablePropertyChangeHandler propertyChangeHandler;
 
   /**
    * Helperclass to handle the property change event raised by the action. Changed properties in
    * the action will affect the button.
    */
-  private class ActionEnablePropertyChangeHandler implements
-      PropertyChangeListener
+  private class ActionEnablePropertyChangeHandler implements PropertyChangeListener
   {
+    /**
+     * Receives notification of a property change event.
+     *
+     * @param event  the property change event.
+     */
     public void propertyChange(PropertyChangeEvent event)
     {
       try
@@ -80,7 +89,7 @@ public class ActionMenuItem extends JMenuItem
         Action ac = getAction();
         if (event.getPropertyName().equals (ActionDowngrade.ACCELERATOR_KEY))
         {
-          KeyStroke oldVal = (KeyStroke)event.getOldValue();
+          KeyStroke oldVal = (KeyStroke) event.getOldValue();
           if (oldVal != null)
           {
             unregisterKeyboardAction(oldVal);
@@ -109,37 +118,69 @@ public class ActionMenuItem extends JMenuItem
     }
   }
 
+  /**
+   * Default constructor.
+   */
   public ActionMenuItem()
   {
   }
 
+  /**
+   * Creates a menu item with the specified icon.
+   *
+   * @param icon  the icon.
+   */
   public ActionMenuItem(Icon icon)
   {
     super(icon);
   }
 
-  public ActionMenuItem(String s)
+  /**
+   * Creates a menu item with the specified label.
+   *
+   * @param text  the label.
+   */
+  public ActionMenuItem(String text)
   {
-    super(s);
+    super(text);
   }
 
-  public ActionMenuItem(String s, Icon icon)
+  /**
+   * Creates a menu item with the specified label and icon.
+   *
+   * @param text  the label.
+   * @param icon  the icon.
+   */
+  public ActionMenuItem(String text, Icon icon)
   {
-    super(s, icon);
+    super(text, icon);
   }
 
-  public ActionMenuItem(String s, int i)
+  /**
+   * Creates a new menu item with the specified label and mnemonic.
+   *
+   * @param text  the label.
+   * @param i  the mnemonic.
+   */
+  public ActionMenuItem(String text, int i)
   {
-    super(s, i);
+    super(text, i);
   }
 
+  /**
+   * Creates a new menu item based on the specified action.
+   *
+   * @param action  the action.
+   */
   public ActionMenuItem(Action action)
   {
     setAction(action);
   }
 
   /**
-   * returns the assigned action or null if no action has been assigned.
+   * Returns the assigned action or null if no action has been assigned.
+   *
+   * @return the action.
    */
   public Action getAction()
   {
@@ -148,7 +189,9 @@ public class ActionMenuItem extends JMenuItem
 
   /**
    * Returns and initializes the PropertyChangehandler for this ActionMenuItem.
-   * The PropertyChangeHandler monitors the action and updates the menuitem if necessary
+   * The PropertyChangeHandler monitors the action and updates the menuitem if necessary.
+   *
+   * @return the property change handler.
    */
   protected ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
   {
@@ -175,7 +218,7 @@ public class ActionMenuItem extends JMenuItem
   }
 
   /**
-   * Assignes the given action to this menuitem. The properties of the action will be assigned to
+   * Assigns the given action to this menuitem. The properties of the action will be assigned to
    * the menuitem. If an previous action was set, the old action is unregistered.
    * <p>
    * <ul>

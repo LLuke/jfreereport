@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.34 2002/09/13 15:38:07 mungady Exp $
+ * $Id: JFreeReportDemo.java,v 1.35 2002/09/16 14:13:46 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -189,13 +189,13 @@ public class JFreeReportDemo extends JFrame
   }
 
   /** Preview action. */
-  protected PreviewAction previewAction;
+  private PreviewAction previewAction;
 
   /** About action. */
-  protected AboutAction aboutAction;
+  private AboutAction aboutAction;
 
   /** Close action. */
-  protected CloseAction closeAction;
+  private CloseAction closeAction;
 
   /** A frame for displaying information about the demo application. */
   private AboutFrame aboutFrame;

@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------
+ * -----------------
  * ActionButton.java
- * ----------------------
+ * -----------------
  *
  * ChangeLog
  * ---------
@@ -41,19 +41,28 @@ import java.beans.PropertyChangeListener;
 /**
  * The ActionButton is used to connect an Action and its properties to a Button. This functionality
  * is already implemented in JDK 1.3 but needed for JDK 1.2.2 compatibility.
+ *
+ * @author TM
  */
 public class ActionButton extends JButton
 {
+  /** The action. */
   private Action action;
+
+  /** The property change handler. */
   private ActionEnablePropertyChangeHandler propertyChangeHandler;
 
   /**
    * Helperclass to handle the property change event raised by the action. Changed properties in
    * the action will affect the button.
    */
-  private class ActionEnablePropertyChangeHandler implements
-      PropertyChangeListener
+  private class ActionEnablePropertyChangeHandler implements PropertyChangeListener
   {
+    /**
+     * Receives notification of a property change event.
+     *
+     * @param event  the property change event.
+     */
     public void propertyChange(PropertyChangeEvent event)
     {
       try
@@ -132,10 +141,10 @@ public class ActionButton extends JButton
   }
 
   /**
-   * creates a ActionButton and sets the given text and icon on the button
+   * Creates an ActionButton and sets the given text and icon on the button.
    *
-   * @param text the label for the new button
-   * @param icon the icon for the button
+   * @param text  the label for the new button
+   * @param icon  the icon for the button
    */
   public ActionButton(String text, Icon icon)
   {
@@ -144,7 +153,7 @@ public class ActionButton extends JButton
 
 
   /**
-   * creates a ActionButton and sets the given icon on the button
+   * Creates an ActionButton and sets the given icon on the button
    *
    * @param icon the icon for the button
    */
@@ -155,10 +164,9 @@ public class ActionButton extends JButton
 
 
   /**
-   * creates a ActionButton and assignes the given action with the button.
+   * Nreates an ActionButton and assigns the given action with the button.
    *
-   * @param text the label for the new button
-   * @param icon the icon for the button
+   * @param action  the action.
    */
   public ActionButton (Action action)
   {
@@ -167,7 +175,9 @@ public class ActionButton extends JButton
 
 
   /**
-   * returns the assigned action or null if no action has been assigned.
+   * Returns the assigned action or null if no action has been assigned.
+   *
+   * @return the action (possibly null).
    */
   public Action getAction()
   {
@@ -177,7 +187,9 @@ public class ActionButton extends JButton
 
   /**
    * Returns and initializes the PropertyChangehandler for this ActionButton.
-   * The PropertyChangeHandler monitors the action and updates the button if necessary
+   * The PropertyChangeHandler monitors the action and updates the button if necessary.
+   *
+   * @return the property change handler.
    */
   protected ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
   {
@@ -204,7 +216,7 @@ public class ActionButton extends JButton
   }
 
   /**
-   * Assignes the given action to this button. The properties of the action will be assigned to
+   * Assigns the given action to this button. The properties of the action will be assigned to
    * the button. If an previous action was set, the old action is unregistered.
    * <p>
    * <ul>

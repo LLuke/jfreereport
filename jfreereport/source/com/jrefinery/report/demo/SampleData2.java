@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
+ * $Id: SampleData2.java,v 1.7 2002/09/16 14:13:46 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,7 +49,7 @@ public class SampleData2 extends AbstractTableModel
 {
 
   /** Storage for the data. */
-  protected Object data[][];
+  private Object data[][];
 
   /**
    * Default constructor - builds a sample data source.

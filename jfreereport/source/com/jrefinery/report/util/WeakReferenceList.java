@@ -20,10 +20,10 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------------
  * WeakReferenceList.java
- * ------------------------------
- * 31-May-2002 : initial version
+ * ----------------------
+ * 31-May-2002 : Initial version
  * 09-Jun-2002 : Documentation
  */
 package com.jrefinery.report.util;
@@ -51,15 +51,22 @@ import java.lang.ref.WeakReference;
  * <p>
  * This list is able to add or replace elements, but inserting or removing of elements is not
  * possible.
+ *
+ * @author TM
  */
 public abstract class WeakReferenceList implements Serializable, Cloneable
 {
+  /** The master element. */
   private Object master;
+
+  /** Storage for the references. */
   private Reference[] childs;
+
+  /** The maximum number of elements. */
   private int size;
 
   /**
-   * creates a new weak reference list. The storage of the list is limited to getMaxChildCount()
+   * Creates a new weak reference list. The storage of the list is limited to getMaxChildCount()
    * elements.
    */
   public WeakReferenceList ()
@@ -68,7 +75,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * returns the maximum number of children in this list.
+   * Returns the maximum number of children in this list.
    *
    * @return 25
    */
@@ -78,7 +85,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * returns the master element of this list. The master element is the element stored by
+   * Returns the master element of this list. The master element is the element stored by
    * a strong reference and cannot be garbage collected.
    *
    * @return the master element
@@ -89,7 +96,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * attempts to restore the child stored on the given index.
+   * Attempts to restore the child stored on the given index.
+   *
+   * @param index  the index.
    *
    * @return null if the child could not be restored or the restored child.
    */
@@ -98,6 +107,10 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Returns the child stored at the given index. If the child has been garbage collected,
    * it gets restored using the restoreChild function.
+   *
+   * @param index  the index.
+   *
+   * @return the object.
    */
   public Object get (int index)
   {
@@ -120,7 +133,11 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * replaces the child stored at the given index with the new child which can be null.
+   * Replaces the child stored at the given index with the new child which can be null.
+   *
+   * @param report  the object.
+   * @param index  the index.
+   *
    */
   public void set (Object report, int index)
   {
@@ -137,6 +154,8 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Creates a new reference for the given object.
    *
+   * @param o  the object.
+   *
    * @return a WeakReference for the object o without any ReferenceQueue attached.
    */
   protected Reference createReference (Object o)
@@ -147,6 +166,8 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Adds the element to the list. If the maximum size of the list is exceeded, this function
    * returns false to indicate that adding failed.
+   *
+   * @param rs  the object.
    *
    * @return true, if the object was successfully added to the list, false otherwise
    */
@@ -175,7 +196,11 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * returns true, if the given index denotes a master index of this list.
+   * Returns true, if the given index denotes a master index of this list.
+   *
+   * @param index  the index.
+   *
+   * @return true if the index is a master index.
    */
   protected boolean isMaster (int index)
   {
@@ -183,7 +208,11 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * returns the internal storage position for the child.
+   * Returns the internal storage position for the child.
+   *
+   * @param index  the index.
+   *
+   * @return the internal storage index.
    */
   protected int getChildPos (int index)
   {
@@ -191,7 +220,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   }
 
   /**
-   * returns the size of the list.
+   * Returns the size of the list.
+   *
+   * @return the size.
    */
   public int getSize ()
   {
@@ -200,6 +231,10 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
 
   /**
    * Serialisation support
+   *
+   * @param out  the output stream.
+   *
+   * @throws IOException if there is an I/O error.
    */
   private void writeObject (java.io.ObjectOutputStream out)
           throws IOException
@@ -218,6 +253,11 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
 
   /**
    * Serialisation support
+   *
+   * @param in  the input stream.
+   *
+   * @throws IOException if there is an I/O error.
+   * @throws ClassNotFoundException ??
    */
   private void readObject (java.io.ObjectInputStream in)
           throws IOException, ClassNotFoundException

@@ -204,7 +204,7 @@ public abstract class AbstractExpression implements Expression
    * Defines the datarow for this expression. A datarow is used to query the values of functions,
    * expressions and datasource fields in an uniform way.
    *
-   * @param dataRow assignes the datarow for this expression.
+   * @param dataRow assigns the datarow for this expression.
    */
   public void setDataRow(DataRow dataRow)
   {

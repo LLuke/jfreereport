@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.3 2002/08/31 14:00:22 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.4 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,8 @@ import java.math.BigDecimal;
  * This function produces a running total, no global total.
  * The function can be used in two ways:
  * <ul>
- * <li>to calculate a average value for the entire report;</li>
- * <li>to calculate a average value within a particular group;</li>
+ * <li>to calculate an average value for the entire report;</li>
+ * <li>to calculate an average value within a particular group;</li>
  * </ul>
  * This function expects its input values to be either java.lang.Number instances or Strings
  * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.

@@ -20,8 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
+ * ------------------------
  * CloseableTableModel.java
- * ------------------------------
+ * ------------------------
  * 09-Jun-2002 : Initial version to correct the fact, that resultsets are not closed when
  *               the tablemodel is no longer in use.
  */
@@ -32,6 +33,8 @@ import javax.swing.table.TableModel;
 /**
  * Extends the TableModel interface to be closeable. SQLResultSets need to be closed for
  * instance.
+ *
+ * @author TM
  */
 public interface CloseableTableModel extends TableModel
 {
@@ -40,6 +43,5 @@ public interface CloseableTableModel extends TableModel
    * remove all data.
    */
   public void close ();
-
 
 }

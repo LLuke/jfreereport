@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.17 2002/09/13 15:38:07 mungady Exp $
+ * $Id: AbstractFunction.java,v 1.18 2002/09/16 16:59:12 mungady Exp $
  *
  * Changes
  * -------
@@ -334,7 +334,7 @@ public abstract class AbstractFunction implements Function
    * Defines the datarow for this function. A datarow is used to query the values of functions,
    * expressions and datasource fields in an uniform way.
    *
-   * @param dataRow assignes the datarow for this expression.
+   * @param dataRow assigns the datarow for this expression.
    */
   public void setDataRow(DataRow dataRow)
   {

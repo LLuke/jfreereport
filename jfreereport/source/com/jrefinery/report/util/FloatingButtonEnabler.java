@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------------------
  * FloatingButtonEnabler.java
- * -----------------------
+ * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  */
@@ -35,17 +35,25 @@ import java.awt.event.MouseEvent;
 /**
  * Enables a button to have a simple floating effect. The border of the button is only visible,
  * when the mouse pointer is floating over the button.
+ *
+ * @author TM
  */
 public class FloatingButtonEnabler extends MouseAdapter
 {
+  /** A single instance. */
   private static FloatingButtonEnabler singleton;
 
+  /**
+   * Default constructor.
+   */
   protected FloatingButtonEnabler ()
   {
   }
 
   /**
-   * returns a default instance of this enabler
+   * Returns a default instance of this enabler.
+   *
+   * @return a shared instance of this class.
    */
   public static FloatingButtonEnabler getInstance ()
   {
@@ -58,6 +66,8 @@ public class FloatingButtonEnabler extends MouseAdapter
 
   /**
    * Adds a button to this enabler.
+   *
+   * @param button  the button.
    */
   public void addButton (AbstractButton button)
   {
@@ -66,7 +76,9 @@ public class FloatingButtonEnabler extends MouseAdapter
   }
 
   /**
-   * removes a button from the enabler
+   * Removes a button from the enabler.
+   *
+   * @param button  the button.
    */
   public void removeButton (AbstractButton button)
   {
@@ -75,7 +87,9 @@ public class FloatingButtonEnabler extends MouseAdapter
   }
 
   /**
-   * Triggers the drawing of the border when the mouse entered the button area
+   * Triggers the drawing of the border when the mouse entered the button area.
+   *
+   * @param e  the mouse event.
    */
   public void mouseEntered (MouseEvent e)
   {
@@ -90,7 +104,9 @@ public class FloatingButtonEnabler extends MouseAdapter
   }
 
   /**
-   * disables the drawing of the border when the mouse leaves the button area
+   * Disables the drawing of the border when the mouse leaves the button area.
+   *
+   * @param e  the mouse event.
    */
   public void mouseExited (MouseEvent e)
   {
@@ -100,6 +116,5 @@ public class FloatingButtonEnabler extends MouseAdapter
       button.setBorderPainted (false);
     }
   }
-
 
 }

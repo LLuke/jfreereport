@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -------------
  * HashNMap.java
- * -----------------------
+ * -------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 20-May-2002 : Initial version
@@ -40,13 +40,16 @@ import java.util.Set;
 /**
  * The HashNMap can be used to store multiple values by a single key value. The values stored
  * can be retrieved using a direct query or by creating an enumeration over the stored elements.
+ *
+ * @author TM
  */
 public class HashNMap implements Serializable, Cloneable
 {
+  /** The underlying storage. */
   private Hashtable table = null;
 
   /**
-   * Default Constructor
+   * Default constructor.
    */
   public HashNMap ()
   {
@@ -54,8 +57,11 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * Inserts a new key/value pair into the map. If such a pair already exists, it gets replaced
+   * Inserts a new key/value pair into the map.  If such a pair already exists, it gets replaced
    * with the given values.
+   *
+   * @param key  the key.
+   * @param val  the value.
    */
   public void put (Object key, Object val)
   {
@@ -67,6 +73,9 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * Adds a new key/value pair into this map. If the key is not yet in the map, it gets added
    * to the map and the call is equal to put(Object,Object).
+   *
+   * @param key  the key.
+   * @param val  the value.
    */
   public void add (Object key, Object val)
   {
@@ -82,8 +91,12 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * retrieves the first value registered for an key or null if there was no such key
+   * Retrieves the first value registered for an key or null if there was no such key
    * in the list.
+   *
+   * @param key  the key.
+   *
+   * @return the value.
    */
   public Object get (Object key)
   {
@@ -91,22 +104,31 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * retrieves the n-th value registered for an key or null if there was no such key
+   * Retrieves the n-th value registered for an key or null if there was no such key
    * in the list. An index out of bounds exception is thrown if there are less than
    * n elements registered to this key.
+   *
+   * @param key  the key.
+   * @param n  the index.
+   *
+   * @return the object.
    */
-  public Object get (Object key, int i)
+  public Object get (Object key, int n)
   {
     List v = (List) table.get (key);
     if (v == null)
     {
       return null;
     }
-    return v.get (i);
+    return v.get (n);
   }
 
   /**
-   * returns an iterator over all elements registered to the given key.
+   * Returns an iterator over all elements registered to the given key.
+   *
+   * @param key  the key.
+   *
+   * @return an iterator.
    */
   public Iterator getAll (Object key)
   {
@@ -119,7 +141,9 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * returns all registered keys as enumeration.
+   * Returns all registered keys as an enumeration.
+   *
+   * @return an enumeration of the keys.
    */
   public Enumeration keys ()
   {
@@ -127,7 +151,9 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * returns all registered keys as set.
+   * Returns all registered keys as set.
+   *
+   * @return a set of keys.
    */
   public Set keySet ()
   {
@@ -135,8 +161,11 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * removes the key/value pair from the map. If the removed entry was the last entry
+   * Removes the key/value pair from the map. If the removed entry was the last entry
    * for this key, the key gets also removed.
+   *
+   * @param key  the key.
+   * @param value  the value.
    */
   public void remove (Object key, Object value)
   {
@@ -154,7 +183,9 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * removes all elements for the given key.
+   * Removes all elements for the given key.
+   *
+   * @param key  the key.
    */
   public void removeAll (Object key)
   {
@@ -162,7 +193,7 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * clears all keys and values of this map
+   * Clears all keys and values of this map.
    */
   public void clear ()
   {
@@ -170,7 +201,9 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * tests whether this map contains the given key.
+   * Tests whether this map contains the given key.
+   *
+   * @param key  the key.
    *
    * @return true if the key is contained in the map
    */
@@ -180,9 +213,11 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * tests whether this map contains the given value.
+   * Tests whether this map contains the given value.
    *
-   * @return true if the value is registered in the map for an key
+   * @param value  the value.
+   *
+   * @return true if the value is registered in the map for an key.
    */
   public boolean containsValue (Object value)
   {
@@ -197,7 +232,9 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * tests whether this map contains the given key or value.
+   * Tests whether this map contains the given key or value.
+   *
+   * @param value  the value.
    *
    * @return true if the key or value is contained in the map
    */
@@ -212,6 +249,10 @@ public class HashNMap implements Serializable, Cloneable
 
   /**
    * Creates a deep copy of this HashNMap.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {

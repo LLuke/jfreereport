@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------
  * KeyedQueue.java
- * -----------------------
+ * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 20-May-2002 : Initial version
@@ -35,16 +35,23 @@ import java.util.LinkedList;
 
 /**
  * A keyed queue is a hashtable like structure which will store a certain number of
- * elements. If the defined element size is exceed, the firstly stored element gets removed.
+ * elements. If the defined element size is exceeded, the firstly stored element gets removed.
+ *
+ * @author TM
  */
 public class KeyedQueue implements Serializable, Cloneable
 {
+  /** Storage for the queued items. */
   private LinkedList list;
+
+  /** ?? */
   private Hashtable table;
+
+  /** The maximum number of items in the queue. */
   private int limit;
 
   /**
-   * creates a KeyedQueue with an initial limit of 10
+   * Creates a KeyedQueue with an initial limit of 10 items.
    */
   public KeyedQueue ()
   {
@@ -52,7 +59,9 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * creates a KeyedQueue with an initial limit if <code>limit</code>
+   * Creates a KeyedQueue with an initial limit if <code>limit</code> items.
+   *
+   * @param limit  the maximum number of items.
    */
   public KeyedQueue (int limit)
   {
@@ -62,7 +71,9 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * defines the maximal number of elements in the list.
+   * Defines the maximal number of elements in the queue.
+   *
+   * @param limit  the maximum number of items.
    */
   public void setLimit (int limit)
   {
@@ -74,7 +85,9 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * @return the maximal number of elements in the queue
+   * Returns the maximum number of elements in the queue.
+   *
+   * @return the maximum number of elements in the queue.
    */
   public int getLimit ()
   {
@@ -82,8 +95,11 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * adds a new key/value pair to the queue. If the pair is already contained in the
+   * Adds a new key/value pair to the queue. If the pair is already contained in the
    * list, it is moved to the first position so that is gets removed last.
+   *
+   * @param key  the key.
+   * @param ob  the value.
    */
   public void put (Object key, Object ob)
   {
@@ -110,7 +126,11 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * queries the queue for the value stored under the given key.
+   * Queries the queue for the value stored under the given key.
+   *
+   * @param key  the key.
+   *
+   * @return the value.
    */
   public Object get (Object key)
   {
@@ -123,7 +143,9 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * removes the entry stored under the given key.
+   * Removes the entry stored under the given key.
+   *
+   * @param key  the key.
    */
   public void remove (Object key)
   {
@@ -136,7 +158,7 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * removes the last element in the queue
+   * Removes the last element in the queue.
    */
   public void removeLast ()
   {
@@ -146,7 +168,7 @@ public class KeyedQueue implements Serializable, Cloneable
   }
 
   /**
-   * removes all elements in the queue
+   * Removes all elements in the queue
    */
   public void clear ()
   {
@@ -154,6 +176,13 @@ public class KeyedQueue implements Serializable, Cloneable
     list.clear ();
   }
 
+  /**
+   * Clones the queue.
+   *
+   * @return  a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     System.out.println ("Cloned QUEUE: " + list.size());
@@ -162,6 +191,5 @@ public class KeyedQueue implements Serializable, Cloneable
     q.table = (Hashtable) table.clone ();
     return q;
   }
-
 
 }

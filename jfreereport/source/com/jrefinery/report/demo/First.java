@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.9 2002/09/13 15:38:07 mungady Exp $
+ * $Id: First.java,v 1.10 2002/09/16 14:13:46 mungady Exp $
  *
  * Changes
  * -------
@@ -82,10 +82,10 @@ public class First extends ApplicationFrame implements ActionListener
 {
 
   /** The data for the report. */
-  protected TableModel data;
+  private TableModel data;
 
   /** The report (read from first.xml template). */
-  protected JFreeReport report;
+  private JFreeReport report;
 
   /**
    * Constructs the demo application.

@@ -178,13 +178,13 @@ public class HugeJFreeReportDemo extends JFrame
   }
 
   /** Preview action. */
-  protected PreviewAction previewAction;
+  private PreviewAction previewAction;
 
   /** About action. */
-  protected AboutAction aboutAction;
+  private AboutAction aboutAction;
 
   /** Close action. */
-  protected CloseAction closeAction;
+  private CloseAction closeAction;
 
   /** A frame for displaying information about the demo application. */
   private AboutFrame aboutFrame;
@@ -196,24 +196,24 @@ public class HugeJFreeReportDemo extends JFrame
   private JTabbedPane tabbedPane;
 
   /** ?? */
-  private previewConf[] previewData =
+  private PreviewConf[] previewData =
           {
-            new previewConf (
+            new PreviewConf (
                     "/com/jrefinery/report/demo/report1.xml",
                     new SampleData1 ()),
-            new previewConf (
+            new PreviewConf (
                     "/com/jrefinery/report/demo/report2.xml",
                     new SampleData2 ()),
-            new previewConf (
+            new PreviewConf (
                     "/com/jrefinery/report/demo/report3.xml",
                     new SampleData3 ()),
-            new previewConf (
+            new PreviewConf (
                     "/com/jrefinery/report/demo/report4.xml",
                     new SampleData4 ()),
-            new previewConf (
+            new PreviewConf (
                     "/com/jrefinery/report/demo/report2.xml",
                     new SampleData5 ()),
-            new previewConf (
+            new PreviewConf (
                     "/com/jrefinery/report/demo/report2.xml",
                     new SampleData6 ()),
           };
@@ -578,7 +578,7 @@ public class HugeJFreeReportDemo extends JFrame
   /**
    * ??
    */
-  private class previewConf
+  private class PreviewConf
   {
     /** The report template file. */
     String reportFile;
@@ -592,7 +592,7 @@ public class HugeJFreeReportDemo extends JFrame
      * @param reportFile  the report template file.
      * @param data  the data.
      */
-    public previewConf (String reportFile, AbstractTableModel data)
+    public PreviewConf (String reportFile, AbstractTableModel data)
     {
       this.reportFile = reportFile;
       this.data = data;

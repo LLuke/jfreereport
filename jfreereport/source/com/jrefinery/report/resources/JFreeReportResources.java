@@ -40,16 +40,23 @@ import java.util.Hashtable;
 import java.util.ListResourceBundle;
 
 /**
- * English Language Resources
+ * English Language Resources.
+ *
+ * @author TM
  */
 public class JFreeReportResources extends ListResourceBundle
 {
+  /**
+   * Default constructor.
+   */
   public JFreeReportResources ()
   {
   }
 
   /**
-   * Used to test the resourcebundle for null values
+   * Used to test the resourcebundle for null values.
+   *
+   * @param args  ignored.
    */
   public static void main (String[] args)
   {
@@ -57,9 +64,9 @@ public class JFreeReportResources extends ListResourceBundle
     try
     {
       Hashtable elements = new Hashtable ();
-      for (int i = 0; i < contents.length; i++)
+      for (int i = 0; i < CONTENTS.length; i++)
       {
-        Object[] row = contents[i];
+        Object[] row = CONTENTS[i];
         lastKey = row[0];
         elements.put (row[0], row[1]);
       }
@@ -73,16 +80,26 @@ public class JFreeReportResources extends ListResourceBundle
     System.exit (0);
   }
 
+  /** The resources. */
   private static JFreeReportResources res = new JFreeReportResources ();
 
+  /**
+   * Returns an array of localised resources.
+   *
+   * @return an array of localised resources.
+   */
   public Object[][] getContents ()
   {
-    return contents;
+    return CONTENTS;
   }
 
   /**
-   * Attempts to load an image from classpath. If this failes, an empty
+   * Attempts to load an image from classpath. If this fails, an empty
    * image icon is returned.
+   *
+   * @param filename  the file name.
+   *
+   * @return the image icon.
    */
   public static ImageIcon getIcon (String filename)
   {
@@ -98,7 +115,7 @@ public class JFreeReportResources extends ListResourceBundle
   }
 
   /** The resources to be localised. */
-  private static final Object[][] contents =
+  private static final Object[][] CONTENTS =
           {
             {"project.name", "JFreeReport"},
             {"project.version", "0.7.6"},

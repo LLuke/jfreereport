@@ -38,7 +38,7 @@ import javax.swing.table.AbstractTableModel;
 public class SampleData3 extends AbstractTableModel
 {
   /** Storage for the data. */
-  protected Object data[][];
+  private Object data[][];
 
   /**
    * Default constructor - builds a sample data source.
