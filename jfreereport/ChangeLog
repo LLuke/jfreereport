@@ -39,8 +39,8 @@ A list of changes in recent versions:
           shape use-cases.
 
         * Support for <include> tags for both parsers. This allows to split the
-          definition into several files; (Damn Beast: Not yet: ReportWriter creates
-          slightly cleaner code by removing unnecessary class specifications.) More to do!
+          definition into several files;  ReportWriter creates slightly cleaner
+          code by removing unnecessary class specifications. More to do!
 
         * BugFix: The string encoding 1251 (Windows Cyrillic) was not defined in
           the EncodingComboBox and therefore not visible.
