@@ -28,26 +28,25 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.1 2002/05/07 14:15:29 mungady Exp $
+ * $Id: AboutAction.java,v 1.1 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
+ * 16-May-2002 : Load images from jar (JS)
  */
 
 package com.jrefinery.report.action;
 
 import java.util.ResourceBundle;
-import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-import javax.swing.Action;
+
 import javax.swing.AbstractAction;
-import javax.swing.SwingUtilities;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.preview.PreviewFrame;
 
 /**
  * The About action is used to show some information about the current programm, to which
@@ -55,28 +54,38 @@ import com.jrefinery.report.preview.PreviewFrame;
  * <p>
  * This abstract class handles the locales specific initialisation.
  */
-public abstract class AboutAction extends AbstractAction {
 
-    /**
-     * Constructs a new action.
-     */
-    public AboutAction(ResourceBundle resources) {
+public abstract class AboutAction extends AbstractAction
+{
 
-        String name = resources.getString("action.about.name");
-        this.putValue(Action.NAME, name);
+  /**
+   * Constructs a new action.
+   */
 
-        String description = resources.getString("action.about.description");
-        this.putValue(Action.SHORT_DESCRIPTION, description);
+  public AboutAction(ResourceBundle resources)
+  {
 
-        Integer mnemonic = (Integer)resources.getObject("action.about.mnemonic");
-        this.putValue(Action.MNEMONIC_KEY, mnemonic);
+    String name = resources.getString("action.about.name");
 
-        ImageIcon icon16 = PreviewFrame.secureResourceLoad("About16.gif");
-        this.putValue(Action.SMALL_ICON, icon16);
+    this.putValue(Action.NAME, name);
 
-        ImageIcon icon24 = PreviewFrame.secureResourceLoad("About24.gif");
-        this.putValue("ICON24", icon24);
+    String description = resources.getString("action.about.description");
 
-        this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ABOUT_COMMAND);
-    }
+    this.putValue(Action.SHORT_DESCRIPTION, description);
+
+    Integer mnemonic = (Integer) resources.getObject("action.about.mnemonic");
+
+    this.putValue(Action.MNEMONIC_KEY, mnemonic);
+
+    ImageIcon icon16 = (ImageIcon) resources.getObject("action.about.small-icon");
+
+    this.putValue(Action.SMALL_ICON, icon16);
+
+    ImageIcon icon24 = (ImageIcon) resources.getObject("action.about.icon");
+
+    this.putValue("ICON24", icon24);
+
+    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ABOUT_COMMAND);
+
+  }
 }

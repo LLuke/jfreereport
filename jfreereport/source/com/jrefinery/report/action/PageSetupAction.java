@@ -28,25 +28,26 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageSetupAction.java,v 1.1 2002/05/07 14:06:00 mungady Exp $
+ * $Id: PageSetupAction.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
- *
+ * 16-May-2002 : Load images from jar (JS)
+ * 
  */
 
 package com.jrefinery.report.action;
 
-import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.preview.PreviewFrame;
+import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-import java.util.ResourceBundle;
+
+import com.jrefinery.report.JFreeReportConstants;
 
 /**
  * Page setup action for a print preview frame.
@@ -57,26 +58,25 @@ public abstract class PageSetupAction extends AbstractAction implements Runnable
   /**
    * Constructs a new action.
    */
-  public PageSetupAction (ResourceBundle resources)
+  public PageSetupAction(ResourceBundle resources)
   {
 
-    String name = resources.getString ("action.page-setup.name");
-    this.putValue (Action.NAME, name);
+    String name = resources.getString("action.page-setup.name");
+    this.putValue(Action.NAME, name);
 
-    String description = resources.getString ("action.page-setup.description");
-    this.putValue (Action.SHORT_DESCRIPTION, description);
+    String description = resources.getString("action.page-setup.description");
+    this.putValue(Action.SHORT_DESCRIPTION, description);
 
-    Integer mnemonic = (Integer) resources.getObject ("action.page-setup.mnemonic");
-    this.putValue (Action.MNEMONIC_KEY, mnemonic);
+    Integer mnemonic = (Integer) resources.getObject("action.page-setup.mnemonic");
+    this.putValue(Action.MNEMONIC_KEY, mnemonic);
 
-    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("PageSetup16.gif");
-    this.putValue (Action.SMALL_ICON, icon16);
+    ImageIcon icon16 = (ImageIcon) resources.getObject("action.page-setup.small-icon");
+    this.putValue(Action.SMALL_ICON, icon16);
 
-    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("PageSetup24.gif");
-    this.putValue ("ICON24", icon24);
+    ImageIcon icon24 = (ImageIcon) resources.getObject("action.page-setup.icon");
+    this.putValue("ICON24", icon24);
 
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.PAGE_SETUP_COMMAND);
+    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.PAGE_SETUP_COMMAND);
 
   }
-
 }

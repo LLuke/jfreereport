@@ -28,26 +28,27 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SaveAsAction.java,v 1.1 2002/05/07 14:06:00 mungady Exp $
+ * $Id: SaveAsAction.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
+ * 16-May-2002 : Load images from jar (JS)
  *
  */
 
 package com.jrefinery.report.action;
 
-import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.preview.PreviewFrame;
+import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
-import java.util.ResourceBundle;
+
+import com.jrefinery.report.JFreeReportConstants;
 
 /**
  * Save (to PDF) action for a print preview frame.
@@ -58,28 +59,27 @@ public abstract class SaveAsAction extends AbstractAction
   /**
    * Constructs a new action.
    */
-  public SaveAsAction (ResourceBundle resources)
+  public SaveAsAction(ResourceBundle resources)
   {
 
-    String name = resources.getString ("action.save-as.name");
-    this.putValue (Action.NAME, name);
+    String name = resources.getString("action.save-as.name");
+    this.putValue(Action.NAME, name);
 
-    String description = resources.getString ("action.save-as.description");
-    this.putValue (Action.SHORT_DESCRIPTION, description);
+    String description = resources.getString("action.save-as.description");
+    this.putValue(Action.SHORT_DESCRIPTION, description);
 
-    Integer mnemonic = (Integer) resources.getObject ("action.save-as.mnemonic");
-    this.putValue (Action.MNEMONIC_KEY, mnemonic);
+    Integer mnemonic = (Integer) resources.getObject("action.save-as.mnemonic");
+    this.putValue(Action.MNEMONIC_KEY, mnemonic);
 
-    KeyStroke accelerator = (KeyStroke) resources.getObject ("action.save-as.accelerator");
-    this.putValue (Action.ACCELERATOR_KEY, accelerator);
+    KeyStroke accelerator = (KeyStroke) resources.getObject("action.save-as.accelerator");
+    this.putValue(Action.ACCELERATOR_KEY, accelerator);
 
-    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("SaveAs16.gif");
-    this.putValue (Action.SMALL_ICON, icon16);
+    ImageIcon icon16 = (ImageIcon) resources.getObject("action.save-as.small-icon");
+    this.putValue(Action.SMALL_ICON, icon16);
 
-    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("SaveAs24.gif");
-    this.putValue ("ICON24", icon24);
+    ImageIcon icon24 = (ImageIcon) resources.getObject("action.save-as.icon");
+    this.putValue("ICON24", icon24);
 
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.SAVE_AS_COMMAND);
-
+    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.SAVE_AS_COMMAND);
   }
 }

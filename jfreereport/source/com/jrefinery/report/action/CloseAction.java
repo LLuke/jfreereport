@@ -28,23 +28,25 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.1 2002/05/07 14:06:00 mungady Exp $
+ * $Id: CloseAction.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
+ * 16-May-2002 : Load images from jar (JS)
  *
  */
 
 package com.jrefinery.report.action;
 
-import com.jrefinery.report.JFreeReportConstants;
+import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import java.util.ResourceBundle;
+
+import com.jrefinery.report.JFreeReportConstants;
 
 /**
  * An action for closing the print preview frame.
@@ -57,20 +59,18 @@ public abstract class CloseAction extends AbstractAction
    *
    * @param resources Localised resources for the action.
    */
-  public CloseAction (ResourceBundle resources)
+  public CloseAction(ResourceBundle resources)
   {
-    String name = resources.getString ("action.close.name");
-    this.putValue (Action.NAME, name);
+    String name = resources.getString("action.close.name");
+    this.putValue(Action.NAME, name);
 
-    String description = resources.getString ("action.close.description");
-    this.putValue (Action.SHORT_DESCRIPTION, description);
+    String description = resources.getString("action.close.description");
+    this.putValue(Action.SHORT_DESCRIPTION, description);
 
-    Integer mnemonic = (Integer) resources.getObject ("action.close.mnemonic");
-    this.putValue (Action.MNEMONIC_KEY, mnemonic);
+    Integer mnemonic = (Integer) resources.getObject("action.close.mnemonic");
+    this.putValue(Action.MNEMONIC_KEY, mnemonic);
 
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
+    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
 
   }
-
-
 }
