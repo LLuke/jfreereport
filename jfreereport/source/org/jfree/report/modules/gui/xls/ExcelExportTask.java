@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelExportTask.java,v 1.9 2004/05/07 14:29:43 mungady Exp $
+ * $Id: ExcelExportTask.java,v 1.10 2005/02/23 21:05:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -104,6 +104,14 @@ public class ExcelExportTask extends ExportTask
     final File file = new File(fileName);
     try
     {
+      final File directory = file.getParentFile();
+      if (directory.exists() == false)
+      {
+        if (directory.mkdirs() == false)
+        {
+          Log.warn("Can't create directories. Hoping and praying now..");
+        }
+      }
       out = new BufferedOutputStream(new FileOutputStream(file));
       final ExcelProcessor target = new ExcelProcessor(report);
       if (progressDialog != null)

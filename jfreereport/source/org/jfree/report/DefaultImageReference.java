@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.9 2005/03/09 21:13:00 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.10 2005/03/16 21:06:37 taqua Exp $
  *
  * Changes:
  * --------
@@ -412,6 +412,9 @@ public class DefaultImageReference
   /**
    * Defines a predefined scaling factor. That scaling will be applied before any layout
    * specific scaling is done.
+   * <p>
+   * If your image has a higher resolution than 72dpi, this factor should be a value
+   * lower than 1 (the image will be scaled down).
    *
    * @param sx the scale factor.
    * @param sy the scale factor.

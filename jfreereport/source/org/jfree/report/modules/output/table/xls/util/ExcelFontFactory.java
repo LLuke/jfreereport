@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.3 2005/01/25 00:17:15 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.4 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,12 @@
 package org.jfree.report.modules.output.table.xls.util;
 
 import java.util.HashMap;
+import java.awt.Color;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.report.modules.output.table.xls.HSSFFontWrapper;
+import org.jfree.report.style.FontDefinition;
 
 /**
  * This class keeps track of all fonts that we have used so far in our Excel file.
@@ -72,6 +74,13 @@ public class ExcelFontFactory
   {
     this.fonts = new HashMap();
     this.workbook = workbook;
+
+    // add the default font
+    // this MUST be the first one, that is created.
+    // oh, I hate Excel ...
+    final FontDefinition font = new FontDefinition("Arial", 10);
+    final HSSFFontWrapper wrapper = new HSSFFontWrapper(font, Color.black);
+    getExcelFont(wrapper);
   }
 
   /**

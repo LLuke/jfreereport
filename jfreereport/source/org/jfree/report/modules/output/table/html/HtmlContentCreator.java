@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.9 2005/03/21 14:39:44 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.10 2005/03/21 15:04:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -195,7 +195,7 @@ public class HtmlContentCreator extends TableContentCreator
       style = "";
     }
 
-    style += "table-layout: fixed";
+    style += "table-layout: fixed; empty-cells: show";
 
     pout.print("<table cellspacing=\"0\" cellpadding=\"0\" style=\"");
     pout.print(style);
@@ -610,20 +610,19 @@ public class HtmlContentCreator extends TableContentCreator
     {
       pout.print("<td class=\"");
       pout.print(cellStyleName);
-//      pout.print("\" style=\"");
-//      pout.print("width: ");
-//      pout.print(width);
-//      pout.print("pt");
-      pout.println("\">&nbsp;</td>");
     }
     else
     {
       pout.print("<td style=\"");
-//      pout.print("width: ");
-//      pout.print(width);
-//      pout.print("pt;");
       pout.print(style.getCSSString(HtmlStyle.INLINE));
-      pout.println("\">&nbsp;</td>");
+    }
+    if (isUseXHTML())
+    {
+      pout.println("\" />");
+    }
+    else
+    {
+      pout.println("\"></td>");
     }
   }
 

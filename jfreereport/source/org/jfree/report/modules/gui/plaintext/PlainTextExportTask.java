@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.15 2005/03/03 14:42:35 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.16 2005/03/04 12:08:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -190,6 +190,14 @@ public class PlainTextExportTask extends ExportTask
     final File file = new File(fileName);
     try
     {
+      final File directory = file.getParentFile();
+      if (directory.exists() == false)
+      {
+        if (directory.mkdirs() == false)
+        {
+          Log.warn("Can't create directories. Hoping and praying now..");
+        }
+      }
       out = new BufferedOutputStream(new FileOutputStream(file));
       final PrinterDriver pc = getPrinterCommandSet(out);
       final PlainTextOutputTarget target = new PlainTextOutputTarget(pc);

@@ -10,7 +10,7 @@
   </reportheader>
 
   <!-- REPORT FOOTER -->
-  <reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10" pagebreak-before="true">
+  <reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10" pagebreak-before-print="true">
     <label x="0" y="0" width="100%" height="20" alignment="center">END OF REPORT</label>
   </reportfooter>
 

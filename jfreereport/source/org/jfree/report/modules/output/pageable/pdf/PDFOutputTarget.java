@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.29 2005/03/10 19:05:49 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.30 2005/03/18 13:49:39 taqua Exp $
  *
  * Changes
  * -------
@@ -871,15 +871,19 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     if (getFont().isUnderline())
     {
+      cb.newPath();
       final float underlinePosition = (fontSize - ascent) * 0.8f;
       cb.moveTo(x1, getPageHeight() - y2 - underlinePosition);
       cb.lineTo(x2, getPageHeight() - y2 - underlinePosition);
+      cb.stroke();
     }
     if (getFont().isStrikeThrough())
     {
+      cb.newPath();
       final float strikethroughPosition = fontSize * 0.5f;
       cb.moveTo(x1, getPageHeight() - y2 + strikethroughPosition);
       cb.lineTo(x2, getPageHeight() - y2 + strikethroughPosition);
+      cb.stroke();
     }
   }
 

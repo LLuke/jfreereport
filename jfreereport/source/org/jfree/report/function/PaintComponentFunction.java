@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.14 2005/02/23 21:04:47 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.15 2005/03/16 21:06:47 taqua Exp $
  *
  * Changes
  * -------
@@ -241,7 +241,7 @@ public class PaintComponentFunction extends AbstractFunction
       comp.paint(graph);
       graph.dispose();
       image = bi;
-
+      Log.debug ("Image : " + image.getWidth(null) + ", " + image.getHeight(null)); 
       peerSupply.remove(comp);
     }
   }
@@ -261,7 +261,7 @@ public class PaintComponentFunction extends AbstractFunction
     try
     {
       final DefaultImageReference ref = new DefaultImageReference(image);
-      ref.setScale(1f / getScale(), 1f / getScale());
+      ref.setScale(1f/ getScale(), 1f/ getScale());
       return ref;
     }
     catch (IOException e)

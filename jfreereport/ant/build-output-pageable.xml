@@ -77,7 +77,7 @@
     <jar jarfile="${module-output-pageable-base-file}"
          basedir="build">
       <manifest>
-          <attribute name="Class-Path" value="${core-jar-file} ${module-output-support-pagelayout-file}"/>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-output-meta-file} ${module-output-support-pagelayout-file}"/>
       </manifest>
     </jar>
 

@@ -138,7 +138,7 @@
     <jar jarfile="${jfreereport-demo-jar-file}"
       basedir="build">
       <manifest>
-        <attribute name="Main-Class" value="org.jfree.report.demo.JFreeReportDemo"/>
+        <attribute name="Main-Class" value="org.jfree.report.demo.DemoFrontend"/>
         <attribute name="Class-Path" value="${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-base-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-beanshell-file} ${module-misc-configstore-base-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-gui-rtf-file} ${jfreereport-all-jar-file}"/>
       </manifest>
     </jar>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.11 2005/02/19 13:29:54 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.12 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -125,6 +125,16 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     return e;
   }
 
+  /**
+   * Creates a horizontal line. The line spans the complete width of the band (starts at 0
+   * and goes to 100%) and is on the given <code>y</code> position.
+   *
+   * @param name   the name of the line element (or zero for no name).
+   * @param paint  the paint (or zero for the default).
+   * @param stroke the stroke (or zero for the default).
+   * @param y1     the y position of the line.
+   * @return the created and fully initialized shape element.
+   */
   public static ShapeElement createHorizontalLine (final String name,
                                                    final Color paint,
                                                    final Stroke stroke,
@@ -136,13 +146,23 @@ public class StaticShapeElementFactory extends ShapeElementFactory
             true, false, true);
   }
 
+  /**
+   * Creates a vertical line. The line spans the complete height of the band (starts at 0
+   * and goes to 100%) and is on the given <code>x</code> position.
+   *
+   * @param name   the name of the line element (or zero for no name).
+   * @param paint  the paint (or zero for the default).
+   * @param stroke the stroke (or zero for the default).
+   * @param x      the x position of the line.
+   * @return the created and fully initialized shape element.
+   */
   public static ShapeElement createVerticalLine (final String name,
                                                  final Color paint,
                                                  final Stroke stroke,
-                                                 final double y1)
+                                                 final double x)
   {
-    // scale the line, is horizontal,the line is on pos 0,0 within the element
-    final Rectangle2D bounds = new Rectangle2D.Float(0, (float) y1, 00, -100);
+    // scale the line, is vertical,the line is on pos 0,0 within the element
+    final Rectangle2D bounds = new Rectangle2D.Float((float) x, 0, 0, -100);
     return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 0, 100),
             true, false, true);
   }
@@ -154,7 +174,9 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * <p/>
    * This method is now deprecated, as it has an unclean syntax. For horizontal lines use
    * the {@link StaticShapeElementFactory#createHorizontalLine(String, Color, Stroke,
-          * double)} method.
+          * double)} method. for all other lines use {@link StaticShapeElementFactory#createShapeElement(String,
+          * java.awt.geom.Rectangle2D, java.awt.Color, java.awt.Stroke, java.awt.Shape, boolean,
+          * boolean, boolean)}
    *
    * @param name   the name of the new element
    * @param paint  the line color of this element

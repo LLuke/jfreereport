@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.5 2005/02/19 13:30:02 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.6 2005/02/23 21:05:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -66,19 +66,34 @@ public class ExcelContentCreator extends TableContentCreator
 {
   /**
    * factor for transformation of internal scale to excel scale.
+   * This is called a Twips and is a 1/20th of a point.
+   * (In theory. In practice, that does not work out or font
+   * rendering is different in the Java and Windows World.
+   * It is (Windows uses 96dpi displays, we use 72dpi).
    */
-  private static final int XFACTOR = 55;
-
-  /**
-   * factor for transformation of internal scale to excel scale.
-   */
-  private static final int YFACTOR = 40;
+  private static final double HEIGHT_SCALE_FACTOR = 20d * 92d / 72d;
 
   private HSSFCellStyleProducer cellStyleProducer;
   private OutputStream outputStream;
   private boolean open;
   private HSSFWorkbook workbook;
   private HSSFSheet sheet;
+  /**
+   * This is a weird thing: According to
+   * http://support.microsoft.com/?kbid=214123
+   * this value depends on the Normal-Font used in the cells.
+   * <p>
+   * The actual width unit is 1/256th of a character. Now how to
+   * compute a character for a proportial font. Which one is used.
+   * These funny things make me wanting to hurt the guys who implemented
+   * that weird stuff in MS-Excel.
+   * <p>
+   * I now assume that Arial 10 is the default font (as given in the document
+   * above) and now assume that a character is 5 points wide
+   * (just guessing here [at least I'm not taking the same stuff as the
+   * original developer of that weird file format did as he wrote that stuff]).
+   */
+  private static final double SCALE_FACTOR = 2560f/50f;
 
   public ExcelContentCreator (final SheetLayoutCollection sheetLayoutCollection,
                               final OutputStream outputStream)
@@ -144,7 +159,6 @@ public class ExcelContentCreator extends TableContentCreator
     open = true;
     workbook = new HSSFWorkbook();
     cellStyleProducer = new HSSFCellStyleProducer(workbook);
-
   }
 
   /**
@@ -169,11 +183,13 @@ public class ExcelContentCreator extends TableContentCreator
     final SheetLayout layout = getCurrentLayout();
 
     final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
-    for (int i = 0; i < width; i++)
+    for (short i = 0; i < width; i++)
     {
-      final int cellWidth = (int) StrictGeomUtility.toExternalValue
+      final double cellWidth = StrictGeomUtility.toExternalValue
               (layout.getCellWidth(i, i + 1));
-      sheet.setColumnWidth((short) i, (short) (cellWidth * XFACTOR));
+      final double poiCellWidth = (cellWidth * SCALE_FACTOR);
+      sheet.setColumnWidth(i, (short) poiCellWidth);
+
     }
 
     final int height = go.getRowCount();
@@ -181,9 +197,10 @@ public class ExcelContentCreator extends TableContentCreator
     for (int y = layoutOffset; y < height + layoutOffset; y++)
     {
       final HSSFRow row = sheet.createRow((short) y);
-      final int lastRowHeight = (int) StrictGeomUtility.toExternalValue
+      final double lastRowHeight = StrictGeomUtility.toExternalValue
               (layout.getRowHeight(y));
-      row.setHeight((short) (lastRowHeight * YFACTOR));
+      // we use 1/72 as unit, Excel uses 1/20 so we have to convert
+      row.setHeight((short) (lastRowHeight * HEIGHT_SCALE_FACTOR));
 
       for (int x = 0; x < width; x++)
       {

@@ -3,6 +3,17 @@
 ---------------
 A list of changes in recent versions:
 0.8.5-3: (??)
+        * [BUG] The GUI-ExportTasks now create missing directories, if
+          necessary. The HTML-Directory Export's data directory is now
+          relative to the specified HTML file and no longer to the current
+          working directory.
+
+        * [BUG] Merging lines and backgrounds in the TableExports was invalid.
+
+        * [BUG] StaticLayoutManager's caching worked to hard and stored
+          intermediate values, which caused elements with a fixed width and
+          relative height to be way to large.
+
         * [BUG] The 'pagebreak-before-print' and 'pagebreak-after-print' of
            the SimpleXML DTD were inconsistent. Now all pagebreak attributes
            use the names given above, as these attribute names have been
@@ -15,14 +26,34 @@ A list of changes in recent versions:
         * [BUG] Duplicate logging of the project info can be confusing.
           Removed the log statement from JFreeReportBoot. (closes #1166415)
 
-        * The HTML-Export now uses the fixed table-layout alogorithm as
+        * [BUG] The PDF default encoding of the module configuration was set to
+          Cp1251 (which is cyrillic) but should have been set to Cp1252 (WinAnsi)
+          (closes #1165907)
+
+        * [BUG] The output-pageable-base module did not jave the output-meta
+          jar file included in the classpath. This seems to kill the demo on
+          some systems. (closes #1168342)
+
+        * [BUG] The HTML-Export now uses the fixed table-layout alogorithm as
           specified in the CSS-standard. Additionally, the total width of
           the table is now specified in the table tag to help the HTML renderer.
           Column widths are now specified using the '<col>' tag. (closes #1165992)
 
-        * [BUG] The PDF default encoding of the module configuration was set to
-          Cp1251 (which is cyrillic) but should have been set to Cp1252 (WinAnsi)
-          (closes #1165907)
+        * [BUG] The HTML-Export does no longer generate &nbsp; for empty cells.
+          The CSS-property "empty-cells: show" is used instead. (closes #1168156)
+
+        * [BUG] In the Excel-Export row heights and cell widths were unreliable.
+          The row height are now set according to the POI documentation (1/1440th
+          of an inch as unit).
+
+          For the cell heights Arial 10 is set as default font and all cell
+          heights are computed with an assumed character width of 5 points.
+          The way how cell widths are computed is way to weird, you wouldn't
+          believe it (I still have problems to believe it). 
+
+        * The Demo-Jar now uses the DemoFrontend class as Main class. This way,
+          all demos are accessible when running that jar.
+
 
 0.8.5-2: (18-Mar-2005)
         * [BUG] FontPath caching did not validate the cache integrety. This way,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.9 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.10 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -253,7 +253,7 @@ public class ItemHideFunction extends AbstractFunction
    *
    * @param event
    */
-  public void pageRolledBack (ReportEvent event)
+  public void pageRolledBack (final ReportEvent event)
   {
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.20 2005/03/03 17:07:57 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.21 2005/03/03 21:50:39 taqua Exp $
  *
  * Changes
  * -------
@@ -108,10 +108,11 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    */
   protected StrictDimension computeMinimumSize
           (final Element e, final StrictDimension containerBounds,
-           StrictDimension retval, final LayoutSupport support)
+           StrictDimension retval, final LayoutSupport support,
+           final boolean allowCaching)
   {
     final LayoutManagerCache cache = support.getCache();
-    final boolean isCacheable = cache.isCachable(e);
+    final boolean isCacheable = cache.isCachable(e) && allowCaching;
     if (isCacheable)
     {
       final StrictDimension cretval = cache.getMinSize(e.getObjectID());
@@ -209,10 +210,11 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
   protected StrictDimension computePreferredSize (final Element e,
                                                   final StrictDimension containerBounds,
                                                   StrictDimension retval,
-                                                  final LayoutSupport support)
+                                                  final LayoutSupport support,
+                                                  final boolean allowCaching)
   {
     final LayoutManagerCache cache = support.getCache();
-    final boolean isCachable = cache.isCachable(e);
+    final boolean isCachable = cache.isCachable(e) && allowCaching;
     if (isCachable)
     {
       final StrictDimension cretval = cache.getPrefSize(e.getObjectID());
@@ -357,6 +359,16 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             createLayoutInformationForPreferredSize(b, containerDims, support);
     final StrictDimension maxSize = eli.getMaximumSize();
     final StrictDimension minSize = eli.getMinimumSize();
+    final StrictDimension prefSize = eli.getPreferredSize();
+    if (prefSize != null)
+    {
+      // the user define a prefered size, so no computation is necessary.
+      if (isCacheable)
+      {
+        cache.setPrefSize(b, prefSize);
+      }
+      return prefSize;
+    }
 
     final StrictDimension base = new StrictDimension
             (maxSize.getWidth(), maxSize.getHeight());
@@ -395,7 +407,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
           // dont display, as this element is larger than the container ...
           continue;
         }
-        tmpResult = computePreferredSize(e, base, tmpResult, support);
+        tmpResult = computePreferredSize(e, base, tmpResult, support,
+                staticWidth && staticHeight);
 
         if (staticWidth)
         {
@@ -422,6 +435,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     //Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
     // final StrictDimension base = new StrictDimension(width, height);
     base.setHeight(alignUp(height, vAlignBorder));
+    // width remains 100% no matter what happens ..
 
     StrictDimension absDim = null;
     // calculate relative widths
@@ -455,7 +469,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
         }
 
         absDim = correctDimension
-                (computePreferredSize(e, base, absDim, support), base, absDim, support);
+                (computePreferredSize(e, base, absDim, support, true), base, absDim, support);
 
         if (staticWidth == false)
         {
@@ -574,7 +588,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
           // dont display, as this element is larger than the container ...
           continue;
         }
-        final StrictDimension size = computeMinimumSize(e, maxSize, tmpResult, support);
+        final StrictDimension size = computeMinimumSize
+                (e, maxSize, tmpResult, support, staticHeight && staticWidth);
 
         if (staticWidth)
         {
@@ -632,7 +647,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
           continue;
         }
         absDim = correctDimension
-                (computeMinimumSize(e, base, absDim, support), base, absDim, support);
+                (computeMinimumSize(e, base, absDim, support, true), base, absDim, support);
 
         if (staticWidth == false)
         {
@@ -737,7 +752,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
         continue;
       }
 
-      absDim = computePreferredSize(e, parentDim, absDim, support);
+      absDim = computePreferredSize(e, parentDim, absDim, support, true);
       // docmark: Compute preferred size does never return negative values!
       // Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + absDim);
 

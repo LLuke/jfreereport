@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.15 2005/03/03 21:50:42 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.16 2005/03/10 19:05:29 taqua Exp $
  *
  * Changes
  * -------
@@ -949,7 +949,7 @@ public class HtmlExportDialog extends AbstractExportDialog
 
     if (rbExportToDirectory.isSelected())
     {
-      final File dataDir = new File(getDataFilename());
+      final File dataDir = new File(f.getParentFile(), getDataFilename());
       if (dataDir.exists() == false)
       {
         final String dataDirKey1 = "htmlexportdialog.targetCreateDataDirConfirmation";

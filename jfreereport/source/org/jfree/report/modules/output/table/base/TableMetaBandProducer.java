@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableMetaBandProducer.java,v 1.6 2005/02/23 21:05:33 taqua Exp $
+ * $Id: TableMetaBandProducer.java,v 1.7 2005/03/21 14:58:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,12 +45,12 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.AnchorElement;
-import org.jfree.report.Band;
 import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.TextElement;
+import org.jfree.report.Band;
 import org.jfree.report.content.AnchorContent;
 import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.Content;
@@ -60,6 +60,7 @@ import org.jfree.report.content.ContentType;
 import org.jfree.report.content.EmptyContent;
 import org.jfree.report.content.ShapeContent;
 import org.jfree.report.layout.LayoutSupport;
+import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.style.ElementStyleSheet;
@@ -74,25 +75,21 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
   {
     super(support);
   }
-
-  /**
-   * Create a band cell for the given element. A band cell is used to create borders for
-   * the band bounds, and contains no other data or formats.
-   *
-   * @param rect the bounds of the element.
-   * @return The band area or <code>null<code>, if the band has a height or width of 0.
-   */
-  public MetaElement createBandCell (final StrictBounds rect)
-  {
-    if (rect.getHeight() == 0 || rect.getWidth() == 0)
-    {
-      // bands with a height of 0 are ignored ...
-      return null;
-    }
-    final ElementStyleSheet style = new MetaElementStyleSheet("metaband");
-    style.setStyleProperty(ElementStyleSheet.BOUNDS, rect);
-    return new TableBandArea(EmptyContent.getDefaultEmptyContent(), style, null);
-  }
+//
+//  /**
+//   * Create a band cell for the given element. A band cell is used to create borders for
+//   * the band bounds, and contains no other data or formats.
+//   *
+//   * @return The band area or <code>null<code>, if the band has a height or width of 0.
+//   */
+//  protected MetaBand createMetaBandInstace (final Band band,
+//                                            final ElementStyleSheet style,
+//                                            final MetaElement[] elements,
+//                                            final boolean spool)
+//  {
+//    return new TableCellBackground
+//            (elements, EmptyContent.getDefaultEmptyContent(), style, null);
+//  }
 
   /**
    * Handles the creation of background cells. This implementation translates lines and
@@ -212,6 +209,10 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
           bg.setBorderRight(color, strokeWidth);
         }
       }
+      else
+      {
+        Log.debug ("Will not handle shape of type: " + shape);
+      }
     }
     else if (backgroundStyle.getBooleanStyleProperty(ShapeElement.FILL_SHAPE))
     {
@@ -223,6 +224,14 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     return bg;
   }
 
+  /**
+   * This does not handle bands.
+   * @param e
+   * @param x
+   * @param y
+   * @return
+   * @throws ContentCreationException
+   */
   protected MetaElement createElement (final Element e,
                                        final long x, final long y)
           throws ContentCreationException
@@ -230,12 +239,6 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     if (e.isVisible() == false)
     {
       return null;
-    }
-
-    if (e instanceof Band)
-    {
-      final StrictBounds rect = createElementBounds(e.getStyle(), x, y);
-      return createBandCell(rect);
     }
 
     if (e.getContentType().equals(ShapeElement.CONTENT_TYPE))

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
+ * $Id: SheetLayout.java,v 1.5 2005/02/22 20:18:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 
 
@@ -54,6 +55,55 @@ import org.jfree.report.util.geom.StrictBounds;
  */
 public class SheetLayout
 {
+  /**
+   * How backgrounds for cells get computed
+   * --------------------------------------
+   *
+   * JFreeReport handles 4 background types:
+   *
+   * Bands
+   * -----
+   * Bands are no real backgrounds, as they do not influence the output,
+   * but they will be used to simplify the computation.
+   *
+   * Rectangles
+   * ----------
+   * Define the cell background (fill = true) and all 4 borders of a cell
+   * (draw == true).
+   *
+   * Horizontal & Vertical Lines
+   * ----------------
+   * These lines define the Top or Left border or a cell. Bottom and right
+   * borders get mapped into the Top/Left borders of the next cells.
+   *
+   * Joining
+   * -------
+   * When a background element is added, JFreeReport first checks, whether
+   * a background has been already defined for that cell position. If not,
+   * the given background is used as is.
+   *
+   * If there is a background defined, a merge operation starts. JFreeReport
+   * will try to join both background definitions.
+   * (This is done while adding the TableCellBackground to the SheetLayout)
+   *
+   * New Elements overwrite old elements. That means if there are two
+   * conflicting borders or backgrounds at a given position, any old border
+   * or background will be replaced as soon as a more current value appears.
+   *
+   * Lines, which make up the bottom most or right most borders, are held in
+   * a zero-width column or zero-height row. These columns are always there,
+   * if there is at least one background reaching to right or bottom of the report.
+   * A flag indicates, whether these cells are significant. (for validity this
+   * flag should mirror the result of an test "All Cells in these Row/Column are
+   * empty".
+   *
+   * These lines are not mapped into bottom cell lines, as the resulting
+   * merge would not be predictable and would depend on the order of the
+   * split operations. A predictable merge implementation would be by far
+   * more complex than this 'hack'.
+   */
+
+  /** An internal flag indicating that the upper or left bounds should be used. */
   private static final boolean UPPER_BOUNDS = true;
   private static final boolean LOWER_BOUNDS = false;
 
@@ -96,6 +146,35 @@ public class SheetLayout
     }
   }
 
+  private static class MergeState
+  {
+    private TableCellBackground savedOldBackground;
+    private TableCellBackground savedNewBackground;
+
+    public MergeState ()
+    {
+    }
+
+    public TableCellBackground getSavedNewBackground ()
+    {
+      return savedNewBackground;
+    }
+
+    public void setSavedNewBackground (final TableCellBackground savedNewBackground)
+    {
+      this.savedNewBackground = savedNewBackground;
+    }
+
+    public TableCellBackground getSavedOldBackground ()
+    {
+      return savedOldBackground;
+    }
+
+    public void setSavedOldBackground (final TableCellBackground savedOldBackground)
+    {
+      this.savedOldBackground = savedOldBackground;
+    }
+  }
   /**
    * A flag, defining whether to use strict layout mode.
    */
@@ -116,20 +195,23 @@ public class SheetLayout
    */
   private GenericObjectTable backend;
 
+  /** A flag indicating whether the last column holds a line definition. */
+  private boolean lastColumnCutIsSignificant;
+  /** A flag indicating whether the last row holds a line definition. */
+  private boolean lastRowCutIsSignificant;
+
   /**
    * The right border of the grid. This is needed when not being in the strict mode.
    */
   private long xMaxBounds;
-
   private long yMaxBounds;
-
-  private int rowCount;
-  private int colCount;
+  private Long xMaxBoundsKey;
+  private Long yMaxBoundsKey;
 
   private Long[] yKeysArray;
   private Long[] xKeysArray;
   private static final Long[] EMPTY_LONG_ARRAY = new Long[0];
-
+  private static final Long ZERO = new Long(0);
   /**
    * Creates a new TableGrid-object. If strict mode is enabled, all cell bounds are used
    * to create the table grid, resulting in a more complex layout.
@@ -138,13 +220,14 @@ public class SheetLayout
    */
   public SheetLayout (final boolean strict)
   {
+    Log.debug ("Layout is strict");
     xBounds = new TreeMap();
     yBounds = new TreeMap();
     this.strict = strict;
     this.xMaxBounds = 0;
     this.yMaxBounds = 0;
-    this.rowCount = 0;
-    this.colCount = 0;
+    this.yMaxBoundsKey = ZERO;
+    this.xMaxBoundsKey = ZERO;
     this.backend = new GenericObjectTable();
   }
 
@@ -159,92 +242,214 @@ public class SheetLayout
   public void add (final MetaElement element)
   {
     final StrictBounds bounds = element.getBounds();
+    if (element instanceof TableCellBackground)
+    {
+      Log.debug ("Found a Background: " + element.getBounds());
+    }
 
     // collect the bounds and add them to the xBounds and yBounds collection
     // if necessary...
     ensureXMapping(bounds.getX(), false);
     ensureYMapping(bounds.getY(), false);
 
-    final long elementWidth = (bounds.getWidth() + bounds.getX());
-    final long elementHeight = (bounds.getHeight() + bounds.getY());
+    final long elementRightX = (bounds.getWidth() + bounds.getX());
+    final long elementBottomY = (bounds.getHeight() + bounds.getY());
     final boolean isBackground = (element instanceof TableCellBackground);
 
     // an end cut is auxilary, if it is not a background and the layout is not strict
     final boolean aux = (isBackground == false) && (isStrict() == false);
-    ensureXMapping(elementWidth, aux);
-    ensureYMapping(elementHeight, aux);
+    ensureXMapping(elementRightX, aux);
+    ensureYMapping(elementBottomY, aux);
 
     if (isBackground)
     {
       final TableCellBackground background = (TableCellBackground) element;
       // now add the new element to the table ...
-      final SortedMap ySet = yBounds.subMap(new Long(bounds.getY()), new Long(elementHeight + 1));
-      final SortedMap xSet = xBounds.subMap(new Long(bounds.getX()), new Long(elementWidth + 1));
+      // the +1 makes sure, that we include the right and bottom element borders in the set
+      final SortedMap ySet = yBounds.subMap(new Long(bounds.getY()), new Long(elementBottomY + 1));
+      final SortedMap xSet = xBounds.subMap(new Long(bounds.getX()), new Long(elementRightX + 1));
 
-      final Object[] yKeys = ySet.keySet().toArray();
-      final Object[] xKeys = xSet.keySet().toArray();
+      final Long[] yKeys = (Long[]) ySet.keySet().toArray(new Long[ySet.size()]);
+      final Long[] xKeys = (Long[]) xSet.keySet().toArray(new Long[xSet.size()]);
 
-      // don't merge twice ...
-      TableCellBackground savedOldBackground = null;
-      TableCellBackground savedNewBackground = null;
-
-      // we iterate over all rows ..
-      // the yCuts also contains the End-Bounds (y+height);
-      // the EB's for the last element do not hold any content.
-      for (int y = 0; y < yKeys.length - 1; y++)
+      if (yKeys.length == 1)
       {
-        // get the index of the current row in the backend-table ...
-        final BoundsCut currentRowValue = (BoundsCut) yBounds.get(yKeys[y]);
-        final int currentRowIndex = currentRowValue.getPosition();
-
-        // for every row we iterate over all columns ...
-        for (int x = 0; x < xKeys.length - 1; x++)
-        {
-          // again get the column index for the backend table ...
-          final BoundsCut currentColumnValue = (BoundsCut) xBounds.get(xKeys[x]);
-          final int currentColumnIndex = currentColumnValue.getPosition();
-
-          // get the old background ... we will merge this one with the new ..
-          final TableCellBackground oldBackground =
-                  (TableCellBackground) backend.getObject(currentRowIndex, currentColumnIndex);
-          if (oldBackground == null)
-          {
-            // hey, we have no old background, so no merging is necessary ...
-            backend.setObject(currentRowIndex, currentColumnIndex, background);
-          }
-          // the background changed ... this means we have two elements occupying
-          // the space of the new element ...
-          else if (oldBackground != savedOldBackground)
-          {
-            // merge both backgrounds and start to add that background definition
-            // to the backend table.
-            savedOldBackground = oldBackground;
-            savedNewBackground = oldBackground.merge(background);
-            // we get a new instance if the merging worked ... or the old instance
-            // if merging did not change anything ...
-            if (savedNewBackground != oldBackground)
-            {
-              backend.setObject(currentRowIndex, currentColumnIndex, savedNewBackground);
-            }
-          }
-          // the current 'old' background continues .. replace all occurences of the
-          // old background with the newly created one ..
-          else if (oldBackground != savedNewBackground)
-          {
-            backend.setObject(currentRowIndex, currentColumnIndex, savedNewBackground);
-          }
-        }
+        processHorizontalLine (yKeys[0], xKeys, background);
+      }
+      else if (xKeys.length == 1)
+      {
+        processVerticalLine(yKeys, xKeys[0], background);
+      }
+      else
+      {
+        // this does nothing for yLength == 1 && xLength == 1
+        processAreaBackground(yKeys, xKeys, background);
       }
     }
 
     // finally update the collected maximums
-    if (xMaxBounds < elementWidth)
+    if (xMaxBounds < elementRightX)
     {
-      xMaxBounds = elementWidth;
+      xMaxBounds = elementRightX;
+      xMaxBoundsKey = new Long(xMaxBounds);
     }
-    if (yMaxBounds < elementHeight)
+    if (yMaxBounds < elementBottomY)
     {
-      yMaxBounds = elementHeight;
+      yMaxBounds = elementBottomY;
+      yMaxBoundsKey = new Long(yMaxBounds);
+    }
+  }
+
+  private void processVerticalLine (final Long[] yKeys, final Long xKey,
+                                    final TableCellBackground background)
+  {
+    // don't merge twice , therefore save the state ...
+    final MergeState state = new MergeState();
+
+    // again get the column index for the backend table ...
+    final BoundsCut currentColumnValue = (BoundsCut) xBounds.get(xKey);
+    final int currentColumnIndex = currentColumnValue.getPosition();
+    StrictBounds cellBounds = null;
+
+    // we iterate over all rows ..
+    // the yCuts also contains the End-Bounds (y+height);
+    // the EB's for the last element do not hold any content.
+    for (int y = 0; y < yKeys.length - 1; y++)
+    {
+      // get the index of the current row in the backend-table ...
+      final BoundsCut currentRowValue = (BoundsCut) yBounds.get(yKeys[y]);
+      final int currentRowIndex = currentRowValue.getPosition();
+      cellBounds = getCellBounds
+              (cellBounds, xKey, yKeys[y]);
+
+      performMergeCellBackground(currentRowIndex, currentColumnIndex, background, state, cellBounds);
+    }
+
+    if (xKey.equals(xMaxBoundsKey))
+    {
+      lastColumnCutIsSignificant = true;
+    }
+  }
+
+  private void processHorizontalLine (final Long yKey, final Long[] xKeys,
+                                      final TableCellBackground background)
+  {
+    // don't merge twice , therefore save the state ...
+    final MergeState state = new MergeState();
+    StrictBounds cellBounds = null;
+
+    // get the index of the current row in the backend-table ...
+    final BoundsCut currentRowValue = (BoundsCut) yBounds.get(yKey);
+    final int currentRowIndex = currentRowValue.getPosition();
+
+    // for every row we iterate over all columns ...
+    // but we do not touch the last column ..
+    for (int x = 0; x < xKeys.length - 1; x++)
+    {
+      // again get the column index for the backend table ...
+      final BoundsCut currentColumnValue = (BoundsCut) xBounds.get(xKeys[x]);
+      final int currentColumnIndex = currentColumnValue.getPosition();
+      cellBounds = getCellBounds (cellBounds, xKeys[x], yKey);
+
+      performMergeCellBackground(currentRowIndex, currentColumnIndex, background, state, cellBounds);
+    }
+
+    if (yKey.equals(yMaxBoundsKey))
+    {
+      lastRowCutIsSignificant = true;
+    }
+  }
+
+  private void processAreaBackground (final Long[] yKeys, final Long[] xKeys,
+                                      final TableCellBackground background)
+  {
+    // don't merge twice , therefore save the state ...
+    final MergeState state = new MergeState();
+    StrictBounds cellBounds = null;
+    // we iterate over all rows ..
+    // the yCuts also contains the End-Bounds (y+height);
+    // the EB's for the last element do not hold any content.
+    for (int y = 0; y < yKeys.length - 1; y++)
+    {
+      // get the index of the current row in the backend-table ...
+      final BoundsCut currentRowValue = (BoundsCut) yBounds.get(yKeys[y]);
+      final int currentRowIndex = currentRowValue.getPosition();
+
+      // for every row we iterate over all columns ...
+      // but we do not touch the last column ..
+      for (int x = 0; x < xKeys.length - 1; x++)
+      {
+        // again get the column index for the backend table ...
+        final BoundsCut currentColumnValue = (BoundsCut) xBounds.get(xKeys[x]);
+        final int currentColumnIndex = currentColumnValue.getPosition();
+
+        cellBounds = getCellBounds
+                (cellBounds, xKeys[x], yKeys[y]);
+        performMergeCellBackground(currentRowIndex, currentColumnIndex,
+                background, state, cellBounds);
+      }
+    }
+  }
+
+  private StrictBounds getCellBounds (final StrictBounds input,
+                                      final Long x, final Long y)
+  {
+    final long xVal = x.longValue();
+    final long yVal = y.longValue();
+    final Long[] xCuts = getXCuts();
+    final Long[] yCuts = getYCuts();
+    try
+    {
+      final long x2Val = xCuts[findXPosition(xVal + 1, UPPER_BOUNDS)].longValue();
+      final long y2Val = yCuts[findYPosition(yVal + 1, UPPER_BOUNDS)].longValue();
+      if (input == null)
+      {
+        return new StrictBounds(xVal, yVal, x2Val - xVal, y2Val - yVal);
+      }
+      input.setRect(xVal, yVal, x2Val - xVal, y2Val - yVal);
+    }
+    catch(ArrayIndexOutOfBoundsException ae)
+    {
+      final long y2Val = yCuts[findYPosition(yVal + 1, UPPER_BOUNDS)].longValue();
+    }
+    return input;
+  }
+
+  private void performMergeCellBackground (final int currentRowIndex,
+                                           final int currentColumnIndex,
+                                           final TableCellBackground background,
+                                           final MergeState state,
+                                           final StrictBounds bounds)
+  {
+    // get the old background ... we will merge this one with the new ..
+    final TableCellBackground oldBackground =
+            (TableCellBackground) backend.getObject(currentRowIndex, currentColumnIndex);
+    if (oldBackground == null)
+    {
+      // hey, we have no old background, so no merging is necessary ...
+      backend.setObject(currentRowIndex, currentColumnIndex, background);
+    }
+    // the background changed ... this means we have two elements occupying
+    // the space of the new element ...
+    else if (oldBackground != state.getSavedOldBackground())
+    {
+      // merge both backgrounds and start to add that background definition
+      // to the backend table.
+      state.setSavedOldBackground (oldBackground);
+      final TableCellBackground savedNewBackground = oldBackground.merge(background, bounds);
+      state.setSavedNewBackground (savedNewBackground);
+      // we get a new instance if the merging worked ... or the old instance
+      // if merging did not change anything ...
+      if (savedNewBackground != oldBackground)
+      {
+        backend.setObject(currentRowIndex, currentColumnIndex, state.getSavedNewBackground());
+      }
+    }
+    // the current 'old' background continues .. replace all occurences of the
+    // old background with the newly created one ..
+    else if (oldBackground != state.getSavedNewBackground())
+    {
+      backend.setObject(currentRowIndex, currentColumnIndex, state.getSavedNewBackground());
     }
   }
 
@@ -254,13 +459,19 @@ public class SheetLayout
     final BoundsCut cut = (BoundsCut) xBounds.get(key);
     if (cut == null)
     {
-      final int result = colCount;
+      final int result = xBounds.size();
       xBounds.put(key, new BoundsCut(result, aux));
-      colCount += 1;
       xKeysArray = null;
       // backend copy ...
       final int oldColumn = getPreviousColumn(coordinate);
-      columnInserted(coordinate, oldColumn, result);
+      if (coordinate < xMaxBounds)
+      {
+        columnInserted(coordinate, oldColumn, result);
+      }
+      else
+      {
+        lastColumnCutIsSignificant = false;
+      }
     }
     else if (cut.isAuxilary() && aux == false)
     {
@@ -271,10 +482,55 @@ public class SheetLayout
   protected void columnInserted (final long coordinate, final int oldColumn,
                                  final int newColumn)
   {
-    if (oldColumn != -1)
+    // now copy all entries from old column to new column
+    backend.copyColumn(oldColumn, newColumn);
+
+
+
+    for (int i = 0; i < backend.getRowCount(); i++)
     {
-      // now copy all entries from old column to new column
-      backend.copyColumn(oldColumn, newColumn);
+      final TableCellBackground bg =
+              (TableCellBackground) backend.getObject(i, newColumn);
+      if (bg == null)
+      {
+        continue;
+      }
+
+      // a column has been inserted. We have to check, whether the background has
+      // borders defined, which might be invalid now.
+      final StrictBounds bounds = bg.getBounds();
+      final StrictBounds mergedBounds = (StrictBounds) bounds.clone();
+
+      // cell areas do not grow by merging, they can only shrink ..
+      final long y = Math.max (mergedBounds.getY(), bg.getLeftBorderPos());
+      final long h = Math.max (0, Math.min
+              (mergedBounds.getHeight(), bg.getRightBorderPos() - y));
+
+      // if we have a valid width, then compute the intersection, else give 0
+      final long width = Math.max
+              (0, mergedBounds.getWidth() + mergedBounds.getX() - coordinate);
+      mergedBounds.setRect
+              (coordinate, y, width, h);
+      final TableCellBackground newBackground =
+              bg.createMergedInstance(mergedBounds);
+
+      if (bg.getColorLeft() != null)
+      {
+        if (bounds.getX() != coordinate)
+        {
+          // a border was found, but is invalid now.
+          newBackground.setBorderLeft(null, 0);
+        }
+      }
+      if (bg.getColorRight() != null)
+      {
+        if ((bounds.getX() + bounds.getWidth()) != coordinate)
+        {
+          // a border was found, but is invalid now.
+          newBackground.setBorderRight(null, 0);
+        }
+      }
+      backend.setObject(i, newColumn, newBackground);
     }
   }
 
@@ -296,6 +552,48 @@ public class SheetLayout
   {
     // now copy all entries from old column to new column
     backend.copyRow(oldRow, newRow);
+
+    // handle the backgrounds ..
+    final Long coordinateKey = new Long (coordinate);
+    StrictBounds cellBounds = null;
+    final Iterator entryIterator = xBounds.entrySet().iterator();
+    while (entryIterator.hasNext())
+    {
+      final Map.Entry entry = (Map.Entry) entryIterator.next();
+      final BoundsCut bcut = (BoundsCut) entry.getValue();
+      final int i = bcut.getPosition();
+      final TableCellBackground bg =
+              (TableCellBackground) backend.getObject(newRow, i);
+      if (bg == null)
+      {
+        continue;
+      }
+
+      // a row has been inserted. We have to check, whether the background has
+      // borders defined, which might be invalid now.
+      final StrictBounds bounds = bg.getCellBounds();
+      cellBounds = getCellBounds(cellBounds, (Long) entry.getKey(), coordinateKey);
+      final TableCellBackground newBackground =
+              bg.createMergedInstance(cellBounds);
+
+      if (bg.getColorTop() != null)
+      {
+        if (bounds.getY() != coordinate)
+        {
+          // a border was found, but is invalid now.
+          newBackground.setBorderTop(null, 0);
+        }
+      }
+      if (bg.getColorBottom() != null)
+      {
+        if ((bounds.getY() + bounds.getHeight()) != coordinate)
+        {
+          // a border was found, but is invalid now.
+          newBackground.setBorderBottom(null, 0);
+        }
+      }
+      backend.setObject(newRow, i, newBackground);
+    }
   }
 
   private int getPreviousRow (final long coordinate)
@@ -318,12 +616,21 @@ public class SheetLayout
     final BoundsCut cut = (BoundsCut) yBounds.get(key);
     if (cut == null)
     {
-      final int result = rowCount;
+      final int result = yBounds.size();
       yBounds.put(key, new BoundsCut(result, aux));
       yKeysArray = null;
-      rowCount += 1;
       final int oldRow = getPreviousRow(coordinate);
-      rowInserted(coordinate, oldRow, result);
+      if (coordinate < yMaxBounds)
+      {
+        // oh, an insert operation. Make sure that everyone updates its state.
+        rowInserted(coordinate, oldRow, result);
+      }
+      // else it would be an ADD; which should never copy old backgrounds..
+      else
+      {
+        // we got a new last Row (as this is a add-operation) so reset the flag.
+        lastRowCutIsSignificant = false;
+      }
     }
     else if (cut.isAuxilary() && aux == false)
     {
@@ -420,6 +727,10 @@ public class SheetLayout
       // warning: This might be stupid
       return cuts.length - 1;
     }
+    if (-pos == cuts.length + 1)
+    {
+      return cuts.length - 1;
+    }
     if (pos >= 0)
     {
       return pos;
@@ -450,6 +761,10 @@ public class SheetLayout
     final Long[] cuts = getYCuts();
     final int pos = Arrays.binarySearch(cuts, new Long(coordinate));
     if (pos == cuts.length)
+    {
+      return cuts.length - 1;
+    }
+    if (-pos == cuts.length + 1)
     {
       return cuts.length - 1;
     }
@@ -486,8 +801,7 @@ public class SheetLayout
       return EMPTY_LONG_ARRAY;
     }
 
-    final Long yMaxKey = new Long(yMaxBounds);
-    final boolean isEndContained = yBounds.containsKey(yMaxKey);
+    final boolean isEndContained = yBounds.containsKey(yMaxBoundsKey);
     if (isEndContained)
     {
       yKeysArray = new Long[yBounds.size()];
@@ -500,7 +814,7 @@ public class SheetLayout
     yKeysArray = (Long[]) yBounds.keySet().toArray(yKeysArray);
     if (!isEndContained)
     {
-      yKeysArray[yKeysArray.length - 1] = yMaxKey;
+      yKeysArray[yKeysArray.length - 1] = yMaxBoundsKey;
     }
     return yKeysArray;
   }
@@ -522,8 +836,7 @@ public class SheetLayout
       return EMPTY_LONG_ARRAY;
     }
 
-    final Long xMaxKey = new Long(xMaxBounds);
-    final boolean isEndContained = xBounds.containsKey(xMaxKey);
+    final boolean isEndContained = xBounds.containsKey(xMaxBoundsKey);
     if (isEndContained)
     {
       xKeysArray = new Long[xBounds.size()];
@@ -531,13 +844,13 @@ public class SheetLayout
     else
     {
       xKeysArray = new Long[xBounds.size() + 1];
-      xKeysArray[xKeysArray.length - 1] = xMaxKey;
+      xKeysArray[xKeysArray.length - 1] = xMaxBoundsKey;
     }
 
     xKeysArray = (Long[]) xBounds.keySet().toArray(xKeysArray);
     if (!isEndContained)
     {
-      xKeysArray[xKeysArray.length - 1] = xMaxKey;
+      xKeysArray[xKeysArray.length - 1] = xMaxBoundsKey;
     }
     return xKeysArray;
   }
@@ -596,27 +909,24 @@ public class SheetLayout
    */
   public long getRowHeight (final int row)
   {
-    if (row >= rowCount)
+    final Long[] yCuts = getYCuts();
+    if (row >= yCuts.length)
     {
       throw new IndexOutOfBoundsException
-              ("Row " + row + " is invalid. Max rows is " + rowCount);
+              ("Row " + row + " is invalid. Max valud row is " + yCuts.length);
     }
-    final Long[] yCuts = getYCuts();
-    if (row + 1 < yCuts.length)
+    final long bottomBorder;
+    if ((row + 1) < yCuts.length)
     {
-      return yCuts[row + 1].longValue() - yCuts[row].longValue();
+      bottomBorder = yCuts[row + 1].longValue();
+    }
+    else
+    {
+      bottomBorder = yMaxBounds;
     }
 
-    final Long lastElement = yCuts[yCuts.length - 1];
-    if (lastElement.longValue() < yMaxBounds)
-    {
-      // yMaxBounds is not contained in the treeset, therefore we
-      // can compute a valid height
-      final long retval = yMaxBounds - yCuts[row].longValue();
-      return retval;
-    }
-
-    throw new IndexOutOfBoundsException("RowHeight: " + (row + 1) + " >= " + yCuts.length);
+    final long retval = bottomBorder - yCuts[row].longValue();
+    return retval;
   }
 
   /**
@@ -631,7 +941,16 @@ public class SheetLayout
   public long getCellWidth (final int startCell, final int endCell)
   {
     final Long[] xCuts = getXCuts();
-    return xCuts[endCell].longValue() - xCuts[startCell].longValue();
+    final long rightBorder;
+    if (endCell >= xCuts.length)
+    {
+      rightBorder = xMaxBounds;
+    }
+    else
+    {
+      rightBorder = xCuts[endCell].longValue();
+    }
+    return rightBorder - xCuts[startCell].longValue();
   }
 
   /**
@@ -643,8 +962,14 @@ public class SheetLayout
   public int getColumnCount ()
   {
     final Long[] xCuts = getXCuts();
-    // do not include the EndOfTable marker
-    return xCuts.length - 1;
+    if (lastColumnCutIsSignificant)
+    {
+      return xCuts.length;
+    }
+    else
+    {
+      return xCuts.length - 1;
+    }
   }
 
   /**
@@ -656,7 +981,13 @@ public class SheetLayout
   public int getRowCount ()
   {
     final Long[] yCuts = getYCuts();
-    // do not include the EndOfTable marker
-    return yCuts.length - 1;
+    if (lastRowCutIsSignificant)
+    {
+      return yCuts.length;
+    }
+    else
+    {
+      return yCuts.length - 1;
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.5 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -142,7 +142,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     }
   }
 
-  protected void columnInserted (final int coordinate, final int oldColumn,
+  protected void columnInserted (final long coordinate, final int oldColumn,
                                  final int newColumn)
   {
     super.columnInserted(coordinate, oldColumn, newColumn);
@@ -150,7 +150,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     backgroundStyleTable.copyColumn(oldColumn, newColumn);
   }
 
-  protected void rowInserted (final int coordinate, final int oldRow, final int newRow)
+  protected void rowInserted (final long coordinate, final int oldRow, final int newRow)
   {
     super.rowInserted(coordinate, oldRow, newRow);
     contentStyleTable.copyRow(oldRow, newRow);
@@ -171,6 +171,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     {
       return;
     }
+    // Process all rows; this stores the row height ...
     long beginRow = yCuts[0].longValue();
     for (int i = 1; i < yCuts.length; i++)
     {
@@ -180,6 +181,9 @@ public strictfp class HtmlSheetLayout extends SheetLayout
       beginRow = end;
     }
 
+    // Process all elements; duplicate entries will not be processed twice
+    // Spanned elements are only stored in their upper left corner, as all
+    // other cells will be skipped anyway ..
     final HashSet completedElements = new HashSet();
     for (int layoutRow = 0; layoutRow < getRowCount(); layoutRow++)
     {
@@ -188,6 +192,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
         final TableCellBackground element = getElementAt(layoutRow, layoutCol);
         if (completedElements.contains(element))
         {
+          // we already had that one ...
           continue;
         }
         final HtmlTableCellStyle style = new HtmlTableCellStyle(element);

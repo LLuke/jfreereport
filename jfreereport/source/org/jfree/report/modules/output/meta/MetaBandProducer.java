@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.9 2005/02/23 21:05:27 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.10 2005/03/03 14:42:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -147,13 +147,22 @@ public class MetaBandProducer
     final MetaElement[] metaElementArray = (MetaElement[]) metaElements.toArray
             (new MetaElement[metaElements.size()]);
 
-    final MetaBand mband = new MetaBand(EmptyContent.getDefaultEmptyContent(),
-            createStyleForBand(band, parentX, parentY),
-            metaElementArray, spool);
+    final ElementStyleSheet styleForBand = createStyleForBand(band, parentX, parentY);
+    final MetaBand mband = createMetaBandInstace(band, styleForBand, metaElementArray, spool);
     mband.setName(band.getName());
     return mband;
   }
 
+  protected MetaBand createMetaBandInstace (final Band band,
+                                            final ElementStyleSheet style,
+                                            final MetaElement[] elements,
+                                            final boolean spool)
+  {
+    final MetaBand mband = new MetaBand(EmptyContent.getDefaultEmptyContent(),
+            style,
+            elements, spool);
+    return mband;
+  }
   /**
    * Creates a metaelement from the given report element. After that creation, the
    * metaelement will be independent from the original element.

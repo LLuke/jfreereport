@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StrictBounds.java,v 1.4 2005/03/03 23:00:27 taqua Exp $
  *
  * Changes
  * -------
@@ -216,7 +216,7 @@ public class StrictBounds implements Serializable, Cloneable
     final long x2 = Math.max(getX() + getWidth(), bounds.getX() + bounds.getWidth());
     final long y1 = Math.min(getY(), bounds.getY());
     final long y2 = Math.max(getY() + getHeight(), bounds.getY() + bounds.getHeight());
-    setRect(x1, y1, x2 - x1, y2 - y1);
+    setRect(x1, y1, Math.max (0, x2 - x1), Math.max (0, y2 - y1));
   }
 
   public StrictBounds createIntersection (final StrictBounds bounds)
@@ -226,7 +226,7 @@ public class StrictBounds implements Serializable, Cloneable
     final long x2 = Math.min(getX() + getWidth(), bounds.getX() + bounds.getWidth());
     final long y2 = Math.min(getY() + getHeight(), bounds.getY() + bounds.getHeight());
 
-    return new StrictBounds(x1, y1, x2 - x1, y2 - y1);
+    return new StrictBounds(x1, y1, Math.max(0, x2 - x1), Math.max(0, y2 - y1));
   }
 
 
@@ -311,5 +311,14 @@ public class StrictBounds implements Serializable, Cloneable
             .append(height)
             .append("}")
             .toString();
+  }
+
+  public StrictBounds createUnion (final StrictBounds bg)
+  {
+    final long x = Math.min(getX(), bg.getX());
+    final long y = Math.min(getY(), bg.getY());
+    final long w = Math.max(getX() + getWidth(), bg.getX() + bg.getWidth()) - x;
+    final long h = Math.max(getY() + getHeight(), bg.getY() + bg.getHeight()) - y;
+    return new StrictBounds(x, y, w, h);
   }
 }

@@ -6,7 +6,7 @@
   <id>jfreereport</id>
   <name>JFreeReport</name>
   <groupId>jfree</groupId>
-  <currentVersion>0.8.5-2</currentVersion>
+  <currentVersion>0.8.5-3</currentVersion>
   <organization>
     <name>JFree.org</name>
     <url>http://www.jfree.org/</url>
@@ -104,7 +104,7 @@
     <dependency>
       <groupId>itext</groupId>
       <artifactId>itext</artifactId>
-      <version>1.2</version>
+      <version>1.2.3</version>
       <url>http://www.lowagie.com/iText/</url>
     </dependency>
     

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaElement.java,v 1.6 2005/02/23 21:05:27 taqua Exp $
+ * $Id: MetaElement.java,v 1.7 2005/03/03 14:42:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -124,7 +124,7 @@ public class MetaElement implements Cloneable
     return name;
   }
 
-  public void setName (String name)
+  public void setName (final String name)
   {
     this.name = name;
   }

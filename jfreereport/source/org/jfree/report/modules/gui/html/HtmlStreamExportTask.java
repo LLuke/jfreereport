@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStreamExportTask.java,v 1.10 2004/05/07 14:29:50 mungady Exp $
+ * $Id: HtmlStreamExportTask.java,v 1.11 2005/02/23 21:04:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,6 +105,14 @@ public class HtmlStreamExportTask extends ExportTask
     final File file = new File(fileName);
     try
     {
+      final File directory = file.getParentFile();
+      if (directory.exists() == false)
+      {
+        if (directory.mkdirs() == false)
+        {
+          Log.warn("Can't create directories. Hoping and praying now..");
+        }
+      }
       out = new BufferedOutputStream(new FileOutputStream(file));
       final HtmlProcessor target = new HtmlProcessor(report);
       if (progressDialog != null)
