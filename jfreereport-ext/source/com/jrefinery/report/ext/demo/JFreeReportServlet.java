@@ -32,9 +32,12 @@ package com.jrefinery.report.ext.demo;
 
 import com.jrefinery.io.FileUtilities;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportInitialisationException;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
+import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.demo.IconTableModel;
 import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.targets.PDFOutputTarget;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -72,52 +75,67 @@ public class JFreeReportServlet extends HttpServlet
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
-    Log("in processRequest..." + getClass());
+    Log.debug("in processRequest..." + getClass());
 
-    URL rptFormat = getClass().getResource("/com/jrefinery/report/demo/first.xml");
     JFreeReport thisRpt = null;
     try
     {
-      ReportGenerator rg = ReportGenerator.getInstance();
-      Log(" (rg) -> " + rg);
-      thisRpt = rg.parseReport(rptFormat);
+      thisRpt = createReport();
     }
     catch (Exception e)
     {
-      Log(e.toString());
-      e.printStackTrace();
+      Log.debug ("Failed to parse the report" , e);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      return;
     }
-    Log(" thisRpt -> " + thisRpt);
-    if (null != thisRpt)
+
+    response.setHeader("Content-Type", "application/pdf");
+
+    response.setHeader("Content-Disposition", "attachment; filename=\"" + "unknown.pdf" + "\"");
+    //above line if enabled will pop-Out the browsers "File Download" dialog
+    //with the standard options: "Open from current location"/ "Save to disk"
+
+    ServletOutputStream out = response.getOutputStream();
+
+    try
     {
-      thisRpt.setData(readData()); //NOTE: NULL data cannot be set into the report.
-      response.setHeader("Content-Type", "application/pdf");
+      PDFOutputTarget target = new PDFOutputTarget(out, new PageFormat(), true);
+      target.setProperty(PDFOutputTarget.TITLE, "Title");
+      target.setProperty(PDFOutputTarget.AUTHOR, "Author");
+      target.open();
 
-      response.setHeader("Content-Disposition", "attachment; filename=\"" + "unknown.pdf" + "\"");
-      //above line if enabled will pop-Out the browsers "File Download" dialog
-      //with the standard options: "Open from current location"/ "Save to disk"
+      PageableReportProcessor proc = new PageableReportProcessor(thisRpt);
+      proc.setOutputTarget(target);
+      proc.processReport();
 
-      ServletOutputStream out = response.getOutputStream();
-
-      try
-      {
-        PDFOutputTarget target = new PDFOutputTarget(out, new PageFormat(), true);
-        target.setProperty(PDFOutputTarget.TITLE, "Title");
-        target.setProperty(PDFOutputTarget.AUTHOR, "Author");
-        target.open();
-        thisRpt.processReport(target);
-        target.close();
-      }
-      catch (Exception e)
-      {
-        e.printStackTrace();
-      }
+      target.close();
+    }
+    catch (Exception e)
+    {
+      Log.debug ("Failed to create the report", e);
     }
   }
 
-  private void Log(String s)
+  /**
+   * parses the report and returns the fully initialized report.
+   * @return
+   */
+  private JFreeReport createReport() throws ReportInitialisationException
   {
-    System.out.println(new StringBuffer("JFreeReportServlet::").append(s));
+    URL rptFormat = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+    if (rptFormat == null)
+      throw new ReportInitialisationException("The report was not found on the classpath");
+
+    try
+    {
+      JFreeReport thisRpt = ReportGenerator.getInstance().parseReport(rptFormat);
+      thisRpt.setData(readData()); //NOTE: NULL data cannot be set into the report.
+      return thisRpt;
+    }
+    catch (Exception e)
+    {
+      throw new ReportInitialisationException("Creating the report failed", e);
+    }
   }
 
   private TableModel readData() //copied from First.java
@@ -131,7 +149,7 @@ public class JFreeReportServlet extends HttpServlet
     File f = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
     if (f == null)
     {
-      Log("Unable to find jlfgr-1_0.jar\n" +
+      Log.debug("Unable to find jlfgr-1_0.jar\n" +
           "Unable to load the icons.\n" +
           "Please make sure you have the Java Look and Feel Graphics Repository in your classpath.\n" +
           "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository.");
@@ -158,7 +176,7 @@ public class JFreeReportServlet extends HttpServlet
     }
     catch (IOException e)
     {
-      Log("Unable to load the ICONS");
+      Log.debug("Unable to load the ICONS");
     }
     return result;
   }

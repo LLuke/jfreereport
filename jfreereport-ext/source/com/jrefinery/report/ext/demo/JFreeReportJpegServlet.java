@@ -30,16 +30,18 @@
  */
 package com.jrefinery.report.ext.demo;
 
+import com.jrefinery.chart.ChartUtilities;
 import com.jrefinery.io.FileUtilities;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportStateList;
+import com.jrefinery.report.ReportInitialisationException;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.demo.IconTableModel;
+import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.states.StartState;
-import com.jrefinery.report.targets.G2OutputTarget;
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.targets.PDFOutputTarget;
+import com.jrefinery.report.targets.pageable.PageableReportProcessor;
+import com.jrefinery.report.targets.pageable.ReportStateList;
+import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.util.Log;
 
 import javax.servlet.ServletException;
@@ -50,7 +52,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.ImageIcon;
 import javax.swing.table.TableModel;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
@@ -72,123 +73,149 @@ import java.util.zip.ZipFile;
  */
 public class JFreeReportJpegServlet extends HttpServlet
 {
+  private static class ReportRequestData
+  {
+    private JFreeReport report;
+    private PageableReportProcessor processor;
+    private ReportStateList pageStateList;
+  }
+
+  /**
+   * Maps the GET request to the POST request.
+   *
+   * @param request
+   * @param response
+   * @throws ServletException
+   * @throws IOException
+   */
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
     doPost(request, response);
   }
 
-  private JFreeReport createReport ()
-  {
-    URL rptFormat = getClass().getResource("/com/jrefinery/report/demo/first.xml");
-    JFreeReport thisRpt = null;
-    try
-    {
-      ReportGenerator rg = ReportGenerator.getInstance();
-      Log.debug(" (rg) -> " + rg);
-      thisRpt = rg.parseReport(rptFormat);
-      thisRpt.setData(readData()); //NOTE: NULL data cannot be set into the report.
-    }
-    catch (Exception e)
-    {
-      Log.debug(e.toString());
-      e.printStackTrace();
-    }
-    return thisRpt;
-  }
-
-  private ReportStateList getReportSession (HttpServletRequest request, OutputTarget target, JFreeReport report)
-  {
-    ReportStateList psl = null;
-    HttpSession session = request.getSession(true);
-    if (session.isNew())
-    {
-      try
-      {
-        psl = JFreeReport.repaginate(target, new StartState (report));
-        session.setAttribute("PageStateList", psl);
-      }
-      catch (Exception e)
-      {
-        e.printStackTrace();
-      }
-    }
-    else
-    {
-      psl = (ReportStateList) session.getAttribute("PageStateList");
-    }
-    return psl;
-  }
-
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
-    Log.debug("in processRequest..." + getClass());
+    Log.debug(new Log.SimpleMessage("in processRequest...", getClass()));
 
-    JFreeReport report = createReport();
-    PageFormat pf = report.getDefaultPageFormat();
+    BufferedImage image = null;
+    try
+    {
+      ReportRequestData data = openReportSession(request);
+
+      int page = 0;
+      String param = request.getParameter("page");
+      if (param != null)
+      {
+        try
+        {
+          page = Integer.parseInt(param);
+        }
+        catch (Exception e)
+        {
+          Log.debug("The page-parameter is invalid", e);
+          response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+          return;
+        }
+      }
+
+      if (page >= data.pageStateList.size() || page < 0)
+      {
+        Log.debug("The page-parameter is invalid");
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        return;
+      }
+
+      PageFormat pageFormat = data.report.getDefaultPageFormat();
+      image = createImage(pageFormat);
+      G2OutputTarget target = new G2OutputTarget(image.createGraphics(), pageFormat);
+      try
+      {
+        target.open();
+        ReportState state = data.pageStateList.get(page);
+        data.processor.processPage(state, target);
+        target.close();
+      }
+      catch (Exception e)
+      {
+        Log.debug("Error while generating the requested page", e);
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return;
+      }
+    }
+    catch (Exception e)
+    {
+      Log.debug("Failed to serve the request", e);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      return;
+    }
+
+    response.setHeader("Content-Type", "image/jpeg");
+    ServletOutputStream out = response.getOutputStream();
+    // from JFreeChart ...
+    ChartUtilities.writeBufferedImageAsJPEG(out, image);
+    out.flush();
+    out.close();
+  }
+
+  private ReportRequestData openReportSession(HttpServletRequest request)
+      throws ReportInitialisationException,
+      ReportProcessingException, FunctionInitializeException
+  {
+    ReportRequestData data = new ReportRequestData();
+    HttpSession session = request.getSession(true);
+    if (session.isNew())
+    {
+      data.report = createReport();
+      data.processor = new PageableReportProcessor(data.report);
+      // set a dummy target for the repagination
+      data.processor.setOutputTarget(new G2OutputTarget(G2OutputTarget.createEmptyGraphics(),
+                                                        data.report.getDefaultPageFormat()));
+      data.pageStateList = data.processor.repaginate();
+
+      // a new report has been created, now store the attribute in the session for a
+      // later use
+      session.setAttribute("PageStateList", data.pageStateList);
+      session.setAttribute("Report", data.report);
+    }
+    else
+    {
+      data.pageStateList = (ReportStateList) session.getAttribute("PageStateList");
+      data.report = (JFreeReport) session.getAttribute("Report");
+      data.processor = new PageableReportProcessor(data.report);
+    }
+    return data;
+  }
+
+  private BufferedImage createImage(PageFormat pf)
+  {
     double width = pf.getWidth();
     double height = pf.getHeight();
     //write the report to the temp file
     BufferedImage bi = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_BYTE_INDEXED);
-    Graphics2D g2 = bi.createGraphics();
-    G2OutputTarget target = new G2OutputTarget(g2, report.getDefaultPageFormat());
+    return bi;
+  }
 
-    target.setProperty(PDFOutputTarget.TITLE, "Title");
-    target.setProperty(PDFOutputTarget.AUTHOR, "Author");
+  /**
+   * parses the report and returns the fully initialized report.
+   * @return
+   */
+  private JFreeReport createReport() throws ReportInitialisationException
+  {
+    URL rptFormat = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+    if (rptFormat == null)
+      throw new ReportInitialisationException("The report was not found on the classpath");
 
-    ReportStateList psl = getReportSession(request, target, report);
-    HttpSession session = request.getSession(true);
-    if (session.isNew())
-    {
-      try
-      {
-        psl = JFreeReport.repaginate(target, new StartState (createReport()));
-        session.setAttribute("PageStateList", psl);
-      }
-      catch (Exception e)
-      {
-        e.printStackTrace();
-      }
-    }
-    else
-    {
-      psl = (ReportStateList) session.getAttribute("PageStateList");
-    }
-
-    int page = 0;
-    String param = request.getParameter("page");
-    if (param != null)
-    {
-      try
-      {
-        page = Integer.parseInt(param);
-      }
-      catch (Exception e)
-      {
-        Log.debug ("Invalid page parameter given");
-        page = 1;
-      }
-    }
     try
     {
-      target.open();
-      ReportState state = psl.get(page);
-      JFreeReport.processPage(target, state, true);
-      target.close();
-
-      response.setHeader("Content-Type", "image/jpeg");
-      ServletOutputStream out = response.getOutputStream();
-
-      // from JFreeChart ...
-      ChartUtilities.writeBufferedImageAsJPEG(out, bi);
-      out.flush();
-      out.close();
-
+      JFreeReport thisRpt = ReportGenerator.getInstance().parseReport(rptFormat);
+      thisRpt.setData(readData()); //NOTE: NULL data cannot be set into the report.
+      return thisRpt;
     }
     catch (Exception e)
     {
-      e.printStackTrace();
+      throw new ReportInitialisationException("Creating the report failed", e);
     }
   }
 
@@ -205,9 +232,9 @@ public class JFreeReportJpegServlet extends HttpServlet
     if (f == null)
     {
       Log.debug("Unable to find jlfgr-1_0.jar\n" +
-          "Unable to load the icons.\n" +
-          "Please make sure you have the Java Look and Feel Graphics Repository in your classpath.\n" +
-          "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository.");
+                "Unable to load the icons.\n" +
+                "Please make sure you have the Java Look and Feel Graphics Repository in your classpath.\n" +
+                "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository.");
 
       return result;
     }

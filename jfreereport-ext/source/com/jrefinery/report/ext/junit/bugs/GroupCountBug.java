@@ -34,13 +34,14 @@
  */
 package com.jrefinery.report.ext.junit.bugs;
 
-import com.jrefinery.report.targets.G2OutputTarget;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.ReportState;
-import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.GroupCountFunction;
+import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.PageableReportProcessor;
+import com.jrefinery.report.targets.pageable.ReportStateList;
+import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -75,7 +76,7 @@ public class GroupCountBug extends TestCase
 
   /**
    * Constructs a new set of tests.
-   * @param The name of the tests.
+   * @param name The name of the tests.
    */
   public GroupCountBug (String name)
   {
@@ -125,11 +126,12 @@ public class GroupCountBug extends TestCase
    */
   public void testGroupCount () throws Exception
   {
-
-    ReportState state = this.report.processReport (target);
+    PageableReportProcessor proc = new PageableReportProcessor(report);
+    proc.setOutputTarget(target);
+    ReportStateList list = proc.repaginate();
+    ReportState state = list.get(list.size() - 1);
     System.out.println (state.getClass().getName ());
-    Function function = state.getFunctions ().get ("f1");
-    Integer value = (Integer) function.getValue ();
+    Integer value = (Integer) state.getDataRow().get ("f1");
     this.assertEquals (new Integer (2), value);
 
   }

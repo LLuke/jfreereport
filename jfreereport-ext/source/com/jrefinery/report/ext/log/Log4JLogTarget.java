@@ -26,54 +26,54 @@ public class Log4JLogTarget implements LogTarget
     this.cat = cat;
   }
 
-  public void debug (String message)
+  public void debug (Object message)
   {
     cat.debug(message);
   }
 
-  public void debug (String message, Exception e)
+  public void debug (Object message, Exception e)
   {
     cat.debug (message, e);
   }
 
-  public void error (String message)
+  public void error (Object message)
   {
     cat.error (message);
   }
 
-  public void error (String message, Exception e)
+  public void error (Object message, Exception e)
   {
     cat.error (message, e);
   }
 
-  public void info (String message)
+  public void info (Object message)
   {
     cat.info(message);
   }
 
-  public void info (String message, Exception e)
+  public void info (Object message, Exception e)
   {
     cat.info (message, e);
   }
 
-  public void log (int level, String message)
+  public void log (int level, Object message)
   {
     Priority priority = Priority.toPriority(level);
     cat.log(priority, message);
   }
 
-  public void log (int level, String message, Exception e)
+  public void log (int level, Object message, Exception e)
   {
     Priority priority = Priority.toPriority(level);
     cat.log(priority, message, e);
   }
 
-  public void warn (String message)
+  public void warn (Object message)
   {
     cat.warn(message);
   }
 
-  public void warn (String message, Exception e)
+  public void warn (Object message, Exception e)
   {
     cat.warn (message, e);
   }
