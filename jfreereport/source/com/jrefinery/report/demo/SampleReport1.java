@@ -64,7 +64,7 @@ public class SampleReport1
             )
     );
     header.addElement (
-            ItemFactory.createDateFunction (
+            ItemFactory.createDateElement(
                     "date1",
                     new Rectangle2D.Float (0, 0, -100, 14),
                     null,
@@ -371,7 +371,7 @@ public class SampleReport1
             )
     );
     footer.addElement (
-            ItemFactory.createNumberFunction (
+            ItemFactory.createNumberElement(
                     "anonymous",
                     new Rectangle2D.Float (260, 0, 76, 12),
                     null,
