@@ -27,12 +27,13 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: JFreeReportConstants.java,v 1.1.1.1 2002/04/25 17:02:21 taqua Exp $
  *
  * Changes
  * -------
  * 28-Feb-2002 : Version 1, code transferred out of JFreeReport.java (DG);
- *
+ * 07-May-2002 : Removed info constants, these are now in JFreeReportInfo class in the
+ *               JFreeReport.java source file.  Added action constants (DG);
  */
 
 package com.jrefinery.report;
@@ -46,45 +47,10 @@ import com.jrefinery.ui.about.Library;
 
 public interface JFreeReportConstants {
 
-    /** The name of the library. */
-    public static final String NAME = "JFreeReport";
-
-    /** Version number. */
-    public static final String VERSION = "0.7.0";
-
-    /** Information. */
-    public static final String INFO = "http://www.object-refinery.com/jfreereport";
-
-    /** Copyright. */
-    public static final String COPYRIGHT = "(C)opyright 2000-2002, Simba Management Limited "
-                                          +"and Contributors";
-
-    /** The licence. */
-    public static final String LICENCE = Licences.LGPL;
-
-    /** The contributors. */
-    public static final List CONTRIBUTORS = Arrays.asList(
-
-        new Contributor[] {
-            new Contributor("David Gilbert", "david.gilbert@jrefinery.com"),
-            new Contributor("Thomas Morgner", "-")
-        }
-
-    );
-
-    /** The libraries that JFreeReport uses. */
-    public static final List LIBRARIES = Arrays.asList(
-
-        new Library[] {
-
-            new Library(JCommon.NAME, JCommon.VERSION, "LGPL", JCommon.INFO),
-            new Library("iText", "0.85", "LGPL", "http://www.lowagie.com/iText/index.html"),
-            new Library("GNU JAXP", "1.0beta1", "GPL with library exception",
-                        "http://www.gnu.org/software/classpathx/jaxp/")
-
-        }
-
-    );
+    public static final String SAVE_AS_COMMAND = "SAVE AS";
+    public static final String PAGE_SETUP_COMMAND = "PAGE SETUP";
+    public static final String PRINT_COMMAND = "PRINT";
+    public static final String CLOSE_COMMAND = "CLOSE";
 
     /** A useful constant that signals that a page is full. */
     public static final boolean PAGE_FULL = true;
