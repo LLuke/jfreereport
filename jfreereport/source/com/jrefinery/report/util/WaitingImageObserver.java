@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.4 2003/02/25 15:42:51 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.5 2003/03/18 15:41:01 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -65,6 +65,8 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
 
   /** The image. */
   private Image image;
+
+  private boolean error;
 
   /**
    * Creates a new ImageObserver for the given Image. The Oberver has to be started
@@ -110,11 +112,16 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
           int width,
           int height)
   {
-    if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS
-            || (infoflags & ImageObserver.ABORT) == ImageObserver.ABORT
+    if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS)
+    {
+      lock = false;
+      error = false;
+    }
+    else if ((infoflags & ImageObserver.ABORT) == ImageObserver.ABORT
             || (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
     {
       lock = false;
+      error = true;
     }
     return true;
   }
@@ -156,5 +163,10 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
   {
     WaitingImageObserver obs = (WaitingImageObserver) super.clone ();
     return obs;
+  }
+
+  public boolean isError()
+  {
+    return error;
   }
 }

@@ -1,13 +1,16 @@
 * Columns
 * PageBreaks within a band
 * Sub-Reporting
+* Smarter PageLayouting:
+  - FlowLayouter, LayoutAgents
+  - ContentDistribution over multiple physical pages
+* External style definitions for the ext-parser
+* Watermarks for Pages ...
+
 * more BandLayoutManagers for smarter layouting
   - FlowLayout
   - BoxLayout
   - GridBagLayout
-* Smarter PageLayouting:
-  - FlowLayouter, LayoutAgents
-  - ContentDistribution over multiple physical pages
 * Better Support for international Fonts in the PDF-Target
   - parse TTF-Files for supported Charsets/Unicode-Ranges
   - automaticly adjust encoding if nessesary
@@ -15,5 +18,4 @@
 * Create a report configuration interface for the TableTargets
 * Add Drawable Support
 * Implement JFreeChart adapter and Barcode stuff
-* External style definitions for the ext-parser
-* Watermarks for Pages ...
+* Writer Support for GeneralPath and Shapes

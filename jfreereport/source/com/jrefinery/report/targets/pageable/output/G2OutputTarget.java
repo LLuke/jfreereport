@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.32 2003/03/19 22:13:03 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.33 2003/03/26 10:49:24 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,7 @@ import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.WaitingImageObserver;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
@@ -455,7 +456,16 @@ public class G2OutputTarget extends AbstractOutputTarget
                                       (float) (Math.min(bounds.getWidth(), myBounds.getWidth())),
                                       (float) (Math.min(bounds.getHeight(), myBounds.getHeight()))));
         g2.transform(AffineTransform.getScaleInstance(image.getScaleX(), image.getScaleY()));
-        g2.drawImage(image.getImage(), (int) -myBounds.getX(), (int) -myBounds.getY(), null);
+        while (g2.drawImage(image.getImage(), (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
+        {
+          WaitingImageObserver obs = new WaitingImageObserver(image.getImage());
+          obs.waitImageLoaded();
+          if (obs.isError())
+          {
+            Log.warn ("The image observer detected an error while loading the Image");
+            break;
+          }
+        }
       }
       catch (Throwable th)
       {

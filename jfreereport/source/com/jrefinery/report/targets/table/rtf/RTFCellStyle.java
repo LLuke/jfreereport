@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.3 2003/02/25 11:57:58 taqua Exp $
+ * $Id: RTFCellStyle.java,v 1.4 2003/02/26 16:42:29 mungady Exp $
  *
  * Changes
  * -------
@@ -228,7 +228,7 @@ public class RTFCellStyle
     }
     else if (font.isSerif())
     {
-      family = Font.TIMES_NEW_ROMAN;
+      family = Font.TIMES_ROMAN;
     }
     p.setFont(new Font(family, font.getFontSize(), style, getFontColor()));
   }
