@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.6 2003/02/09 23:09:15 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.7 2003/03/26 10:49:23 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ImageContent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.9 2003/02/09 23:09:15 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.10 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -93,6 +93,10 @@ public class TextOperationModule extends OperationModule
       throw new NullPointerException("Value is null");
     }
     Content c = value.getContentForBounds(bounds);
+    if (c == null)
+    {
+      return new ArrayList();
+    }
     // Font
     FontDefinition font = e.getStyle().getFontDefinitionProperty();
 
