@@ -13,8 +13,14 @@ A list of changes in recent versions:
         * BugFix: Non-Embeddable fonts cause no longer fatal errors. If such
           an font is encountered, it will be included as non-embedded font.
 
-        * The element color function does not work with all bands of an report.
-         
+        * BugFix: The table targets were completly broken, they have been reworked
+          and all direct and indirect causes (aka bad code) was fixed.
+
+        * BugFix: SimpleParser's subbands did not work as expected.
+        
+        * The element color function does now work with all bands of an report.
+        
+        * (ElementVisiblitySwitch function does not work correctly)
 0.8.4-1:
         * BugFix: InternalFrame was not closed properly and caused NullPointers
           in Swing.
