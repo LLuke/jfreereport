@@ -14,12 +14,11 @@
 
   <target name="check-core">
     <available file="${core-jar-file}" type="file" property="core-jar-file-present"/>
+    <echo>Core (${core-jar-file}) present: ${core-jar-file-present}</echo>
   </target>
 
   <target name="rebuild-core" unless="core-jar-file-present" depends="check-core">
-    <echo>
-      Rebuilding core ...
-    </echo>
+    <echo>Rebuilding core ...</echo>
     <dirname property="antfile.dir" file="${ant.file}"/>
     <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
   </target>
@@ -28,9 +27,8 @@
     <tempfile property="resolve.tmp" prefix="jfreereport-build-" suffix="-tmp.properties"/>
 
     <echo file="${resolve.tmp}">#
-      # temporary build property file for ${module}
-      module-file=$${module-${module}-file}
-    </echo>
+# temporary build property file for ${module}
+module-file=$${module-${module}-file}</echo>
     <property file="${resolve.tmp}"/>
     <delete file="${resolve.tmp}"/>
     <available file="${module-file}" property="module-file-present"/>
@@ -71,7 +69,7 @@
     </javadoc>
   </target>
 
-  <target name="create-dist-dir" depends="build-all">
+  <target name="create-dist-dir" depends="init">
     <!-- make a temporary distribution directory -->
     <mkdir dir="distribution"/>
 
@@ -127,6 +125,7 @@
     <delete dir="distribution"/>
 
   </target>
+
   <!-- Make .zip distribution for JFreeReport -->
   <target name="make-zip">
 
@@ -151,7 +150,7 @@
   </target>
 
   <!-- Make .tar.gz distribution for JFreeReport -->
-  <target name="make-targz" depends="build-all">
+  <target name="make-targz">
 
     <antcall target="create-dist-dir"/>
 
