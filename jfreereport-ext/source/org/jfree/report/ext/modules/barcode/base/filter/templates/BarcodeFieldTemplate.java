@@ -2,21 +2,21 @@
  * Date: Jan 31, 2003
  * Time: 5:17:05 PM
  *
- * $Id: BarcodeFieldTemplate.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
+ * $Id: BarcodeFieldTemplate.java,v 1.1 2003/07/11 20:05:37 taqua Exp $
  */
 package org.jfree.report.ext.modules.barcode.base.filter.templates;
+
+import java.awt.Color;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.ext.modules.barcode.base.content.Barcode;
 import org.jfree.report.ext.modules.barcode.base.filter.BarcodeFilter;
+import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ImageRefFilter;
-import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.templates.AbstractTemplate;
 import org.jfree.report.style.FontDefinition;
-
-import java.awt.Color;
 
 public abstract class BarcodeFieldTemplate extends AbstractTemplate
     implements DataRowConnectable

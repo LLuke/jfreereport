@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumTest.java,v 1.1 2003/07/03 16:08:07 taqua Exp $
+ * $Id: TotalGroupSumTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,12 +40,11 @@ package org.jfree.report.ext.junit.base.functionality;
 
 import java.net.URL;
 
-import org.jfree.report.demo.SampleData2;
-import org.jfree.report.demo.SampleData1;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.util.Log;
-import org.jfree.report.modules.parser.base.ReportGenerator;
 import junit.framework.TestCase;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.demo.SampleData1;
+import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.util.Log;
 
 public class TotalGroupSumTest extends TestCase
 {

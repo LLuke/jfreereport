@@ -34,14 +34,13 @@
  */
 package org.jfree.report.ext.modules.barcode.base.content;
 
-import org.jfree.ui.FloatDimension;
-import org.jfree.report.ext.modules.barcode.base.content.Barcode;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
+
+import org.jfree.ui.FloatDimension;
 
 /** This class takes 2 barcodes, an EAN/UPC and a supplemental
  * and creates a single barcode with both combined in the

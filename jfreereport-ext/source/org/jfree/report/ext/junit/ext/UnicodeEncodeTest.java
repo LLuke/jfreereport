@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: UnicodeEncodeTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: UnicodeEncodeTest.java,v 1.2 2003/07/11 20:05:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,10 +38,7 @@
 
 package org.jfree.report.ext.junit.ext;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
 
-import org.jfree.report.util.Log;
 
 public class UnicodeEncodeTest
 {

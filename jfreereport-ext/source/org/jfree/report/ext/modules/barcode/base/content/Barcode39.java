@@ -34,19 +34,18 @@
  */
 package org.jfree.report.ext.modules.barcode.base.content;
 
-import org.jfree.report.ElementAlignment;
-import org.jfree.report.ext.modules.barcode.base.content.Barcode;
-import org.jfree.report.style.FontDefinition;
-import org.jfree.ui.FloatDimension;
-import org.jfree.report.util.Log;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Dimension2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.Log;
+import org.jfree.ui.FloatDimension;
 
 /** Implements the code 39 and code 39 extended. The default parameters are:
  * <pre>

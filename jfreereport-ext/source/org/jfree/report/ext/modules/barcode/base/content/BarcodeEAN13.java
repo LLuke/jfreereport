@@ -36,8 +36,6 @@ package org.jfree.report.ext.modules.barcode.base.content;
 
 import java.awt.Graphics2D;
 
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeEAN;
-
 public class BarcodeEAN13 extends BarcodeEAN
 {
   /** The bar positions that are guard bars.*/

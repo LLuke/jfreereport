@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogTarget.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: Java14LogTarget.java,v 1.1 2003/07/11 20:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,10 +36,10 @@
  */
 package org.jfree.report.ext.modules.java14log;
 
-import org.jfree.util.LogTarget;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.jfree.util.LogTarget;
 
 /**
  * A log target for the JDK 1.4 logging API. This target can be used

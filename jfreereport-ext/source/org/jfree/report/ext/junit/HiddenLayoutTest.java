@@ -2,7 +2,7 @@
  * Date: Feb 20, 2003
  * Time: 9:00:04 PM
  *
- * $Id: HiddenLayoutTest.java,v 1.4 2003/07/03 16:06:17 taqua Exp $
+ * $Id: HiddenLayoutTest.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
  */
 package org.jfree.report.ext.junit;
 
@@ -11,10 +11,10 @@ import java.net.URL;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.SampleData2;
-import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
+import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 
 public class HiddenLayoutTest

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupListTest.java,v 1.3 2003/07/03 16:06:17 taqua Exp $
+ * $Id: GroupListTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.ext.junit.base.basic;
 
+import junit.framework.TestCase;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
-import junit.framework.TestCase;
 
 public class GroupListTest extends TestCase
 {

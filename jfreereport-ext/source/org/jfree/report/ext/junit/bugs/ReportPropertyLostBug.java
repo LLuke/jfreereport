@@ -36,18 +36,18 @@ import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.SampleData1;
-import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.states.ReportState;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.base.ReportStateList;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
-import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
-import org.jfree.report.util.Log;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.demo.SampleData1;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.base.ReportStateList;
+import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
+import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.states.ReportState;
+import org.jfree.report.util.Log;
 
 public class ReportPropertyLostBug extends TestCase
 {
@@ -94,12 +94,12 @@ public class ReportPropertyLostBug extends TestCase
 
     final BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
     final Graphics2D g2 = (Graphics2D) buffer.getGraphics();
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
-    final org.jfree.report.modules.output.pageable.base.OutputTarget ot = new G2OutputTarget(g2, report.getDefaultPageFormat());
+    final PageableReportProcessor proc = new PageableReportProcessor(report);
+    final OutputTarget ot = new G2OutputTarget(g2, report.getDefaultPageFormat());
     ot.open();
     proc.setOutputTarget(ot);
 
-    final org.jfree.report.modules.output.pageable.base.ReportStateList list = proc.repaginate();
+    final ReportStateList list = proc.repaginate();
 
     for (int i = 0; i < 2; i++)
     {

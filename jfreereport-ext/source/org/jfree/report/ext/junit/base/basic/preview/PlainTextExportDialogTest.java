@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialogTest.java,v 1.1 2003/07/03 16:10:22 taqua Exp $
+ * $Id: PlainTextExportDialogTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,9 @@
 
 package org.jfree.report.ext.junit.base.basic.preview;
 
-import org.jfree.report.modules.gui.plaintext.PlainTextExportDialog;
 import junit.framework.TestCase;
+import org.jfree.report.modules.gui.plaintext.PlainTextExportDialog;
+import org.jfree.report.util.Log;
 
 public class PlainTextExportDialogTest extends TestCase
 {
@@ -54,6 +55,11 @@ public class PlainTextExportDialogTest extends TestCase
 
   public void testSelectEncoding ()
   {
+    if (System.getProperty("java.awt.headless", "false").equals("true"))
+    {
+      Log.debug ("Headless enviroment: Do not perform test: " + PlainTextExportDialogTest.class);
+      return;
+    }
     final PlainTextExportDialog d = new PlainTextExportDialog();
     d.setModal(true);
     d.setEncoding("Cp850");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.7 2003/07/03 16:06:19 taqua Exp $
+ * $Id: Log4JLogTarget.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,9 @@
  */
 package org.jfree.report.ext.log.log4j;
 
-import org.jfree.util.LogTarget;
 import org.apache.log4j.Category;
 import org.apache.log4j.Priority;
+import org.jfree.util.LogTarget;
 
 /**
  * The Log4J Target can be used to redirect the logging output into the

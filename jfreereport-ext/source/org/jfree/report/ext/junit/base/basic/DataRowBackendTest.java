@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendTest.java,v 1.3 2003/07/03 16:06:17 taqua Exp $
+ * $Id: DataRowBackendTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.ext.junit.base.basic;
 
 import javax.swing.table.DefaultTableModel;
 
-import org.jfree.report.DataRowBackend;
 import junit.framework.TestCase;
+import org.jfree.report.DataRowBackend;
 
 public class DataRowBackendTest extends TestCase
 {

@@ -34,17 +34,16 @@
  */
 package org.jfree.report.ext.modules.barcode.base.content;
 
-import org.jfree.report.ElementAlignment;
-import org.jfree.report.ext.modules.barcode.base.content.Barcode;
-import org.jfree.ui.FloatDimension;
-import org.jfree.report.style.FontDefinition;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.style.FontDefinition;
+import org.jfree.ui.FloatDimension;
 
 /** Implements the code interleaved 2 of 5. The text can include
  * non numeric characters that are printed but do not generate bars.

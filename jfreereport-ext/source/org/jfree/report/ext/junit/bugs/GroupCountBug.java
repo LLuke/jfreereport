@@ -41,17 +41,17 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.function.GroupCountFunction;
-import org.jfree.report.states.ReportState;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.base.ReportStateList;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.jfree.report.states.ReportState;
 
 /**
  * This test case has been compiled in response to a bug report by Steven Feinstein:

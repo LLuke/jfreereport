@@ -2,22 +2,22 @@
  * Date: Dec 12, 2002
  * Time: 10:09:52 PM
  *
- * $Id: FontRendererBug.java,v 1.4 2003/07/03 16:06:19 taqua Exp $
+ * $Id: FontRendererBug.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  */
 package org.jfree.report.ext.junit.bugs;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class FontRendererBug extends JPanel
 {

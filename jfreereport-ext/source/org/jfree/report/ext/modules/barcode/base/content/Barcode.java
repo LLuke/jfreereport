@@ -34,14 +34,14 @@
  */
 package org.jfree.report.ext.modules.barcode.base.content;
 
-import org.jfree.report.ElementAlignment;
-import org.jfree.report.style.FontDefinition;
-
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.FontMetrics;
+import java.awt.Image;
 import java.awt.geom.Dimension2D;
+
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.style.FontDefinition;
 
 /**
  * Base class containing properties and methods commom to all
@@ -51,28 +51,6 @@ import java.awt.geom.Dimension2D;
  */
 public abstract class Barcode implements Cloneable
 {
-  /** A type of barcode */
-//  public static final int EAN13 = 1;
-  /** A type of barcode */
-//  public static final int EAN8 = 2;
-  /** A type of barcode */
-//  public static final int UPCA = 3;
-  /** A type of barcode */
-//  public static final int UPCE = 4;
-  /** A type of barcode */
-//  public static final int SUPP2 = 5;
-  /** A type of barcode */
-//  public static final int SUPP5 = 6;
-  /** A type of barcode */
-//  public static final int POSTNET = 7;
-  /** A type of barcode */
-//  public static final int PLANET = 8;
-  /** A type of barcode */
-//  public static final int CODE128 = 9;
-  /** A type of barcode */
-//  public static final int CODE128_UCC = 10;
-  /** A type of barcode */
-//  public static final int CODE128_RAW = 10;
 
   public static final FontDefinition DEFAULT_FONT = new FontDefinition("SansSerif", 10);
 
@@ -284,45 +262,6 @@ public abstract class Barcode implements Cloneable
    * @return the size the barcode occupies.
    */
   public abstract Dimension2D getBarcodeSize();
-
-  /** Places the barcode in a <CODE>PdfContentByte</CODE>. The
-   * barcode is always placed at coodinates (0, 0). Use the
-   * translation matrix to move it elsewhere.<p>
-   * The bars and text are written in the following colors:<p>
-   * <P><TABLE BORDER=1>
-   * <TR>
-   *    <TH><P><CODE>barColor</CODE></TH>
-   *    <TH><P><CODE>textColor</CODE></TH>
-   *    <TH><P>Result</TH>
-   *    </TR>
-   * <TR>
-   *    <TD><P><CODE>null</CODE></TD>
-   *    <TD><P><CODE>null</CODE></TD>
-   *    <TD><P>bars and text painted with current fill color</TD>
-   *    </TR>
-   * <TR>
-   *    <TD><P><CODE>barColor</CODE></TD>
-   *    <TD><P><CODE>null</CODE></TD>
-   *    <TD><P>bars and text painted with <CODE>barColor</CODE></TD>
-   *    </TR>
-   * <TR>
-   *    <TD><P><CODE>null</CODE></TD>
-   *    <TD><P><CODE>textColor</CODE></TD>
-   *    <TD><P>bars painted with current color<br>text painted with <CODE>textColor</CODE></TD>
-   *    </TR>
-   * <TR>
-   *    <TD><P><CODE>barColor</CODE></TD>
-   *    <TD><P><CODE>textColor</CODE></TD>
-   *    <TD><P>bars painted with <CODE>barColor</CODE><br>text painted with <CODE>textColor</CODE></TD>
-   *    </TR>
-   * </TABLE>
-   *
-   * @param cb the <CODE>PdfContentByte</CODE> where the barcode will be placed
-   * @param barColor the color of the bars. It can be <CODE>null</CODE>
-   * @param textColor the color of the text. It can be <CODE>null</CODE>
-   * @return the dimensions the barcode occupies
-   */
-  //public abstract Rectangle placeBarcode(PdfContentByte cb, Color barColor, Color textColor);
 
   /** Creates an <CODE>Image</CODE> with the barcode.
    * @param barColor the color of the bars. It can be <CODE>null</CODE>

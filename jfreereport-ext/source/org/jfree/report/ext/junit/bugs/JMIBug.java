@@ -13,8 +13,8 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.SampleData1;
-import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.gui.base.PreviewFrame;
+import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.ui.RefineryUtilities;
 
 public class JMIBug

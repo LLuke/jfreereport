@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.1 2003/07/03 16:10:22 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,21 +38,19 @@
 
 package org.jfree.report.ext.junit.base.functionality;
 
-import java.io.OutputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
-import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
-import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
-import org.jfree.report.util.NullOutputStream;
-import org.jfree.report.util.Log;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.SampleData1;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
+import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
 import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.util.Log;
 
 public class PlainTextExportTest extends TestCase
 {
@@ -72,7 +70,7 @@ public class PlainTextExportTest extends TestCase
   private String exportReport (final JFreeReport report, final String encoding) throws Exception
   {
     final ByteArrayOutputStream bo = new ByteArrayOutputStream();
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor pr = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+    final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(bo);
     final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
     final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);

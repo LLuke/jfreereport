@@ -34,9 +34,6 @@
  */
 package org.jfree.report.ext.modules.barcode.base.content;
 
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeEAN;
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeSizeCalculator;
-
 import java.awt.Graphics2D;
 
 public class BarcodeUPCE extends BarcodeEAN

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectFactoryTest.java,v 1.2 2003/07/03 16:06:18 taqua Exp $
+ * $Id: ObjectFactoryTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.ext.junit.base.basic.io.ext;
 
 import java.awt.geom.Line2D;
 
-import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
 import junit.framework.TestCase;
+import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 
 public class ObjectFactoryTest extends TestCase

@@ -36,8 +36,6 @@ package org.jfree.report.ext.modules.barcode.base.content;
 
 import java.awt.Graphics2D;
 
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeEAN;
-
 public class BarcodeEAN8 extends BarcodeEAN
 {
   /** The total number of bars for EAN8.*/

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupTest.java,v 1.3 2003/07/03 16:06:17 taqua Exp $
+ * $Id: GroupTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.ext.junit.base.basic;
 
-import org.jfree.report.Group;
 import junit.framework.TestCase;
+import org.jfree.report.Group;
 
 public class GroupTest extends TestCase
 {
@@ -57,29 +57,6 @@ public class GroupTest extends TestCase
     assertNotNull(g1.getHeader());
     assertNotNull(g1.getName());
     assertNotNull(g1.toString());
-  }
-
-  public void testEquals()
-  {
-    final Group g1 = new Group();
-    g1.setName("");
-    final Group g2 = new Group();
-    g2.setName("");
-    assertTrue(g1.equals(g2));
-    assertTrue(g1.compareTo(g2) == 0);
-
-    g1.addField("Field");
-    g2.addField("Field");
-    assertTrue(g1.equals(g2));
-    assertTrue(g1.compareTo(g2) == 0);
-
-    g2.addField("Field");
-    assertTrue(g1.equals(g2));
-    assertTrue(g1.compareTo(g2) == 0);
-
-    g2.addField("Field2");
-    assertTrue(g1.equals(g2) == false);
-    assertTrue(g1.compareTo(g2) == -1);
   }
 
   public void testMethods()

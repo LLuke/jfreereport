@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupPageBreakTest.java,v 1.2 2003/07/03 16:06:19 taqua Exp $
+ * $Id: GroupPageBreakTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,8 @@ import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.base.ReportStateList;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.style.BandStyleSheet;
 
@@ -112,9 +114,9 @@ public class GroupPageBreakTest extends TestCase
     target.configure(report.getReportConfiguration());
     target.open();
 
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+    final PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
-    final org.jfree.report.modules.output.pageable.base.ReportStateList rsl = proc.repaginate();
+    final ReportStateList rsl = proc.repaginate();
     assertEquals(rsl.size(), 3);
     target.close();
   }
@@ -131,9 +133,9 @@ public class GroupPageBreakTest extends TestCase
     target.configure(report.getReportConfiguration());
     target.open();
 
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+    final PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
-    final org.jfree.report.modules.output.pageable.base.ReportStateList rsl = proc.repaginate();
+    final ReportStateList rsl = proc.repaginate();
     assertEquals(1, rsl.size());
     target.close();
   }
@@ -226,9 +228,9 @@ public class GroupPageBreakTest extends TestCase
     target.configure(report.getReportConfiguration());
     target.open();
 
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+    final PageableReportProcessor proc = new PageableReportProcessor(report);
     proc.setOutputTarget(target);
-    final org.jfree.report.modules.output.pageable.base.ReportStateList rsl = proc.repaginate();
+    final ReportStateList rsl = proc.repaginate();
     assertEquals(4, rsl.size());
     target.close();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.5 2003/07/03 16:06:19 taqua Exp $
+ * $Id: WriterTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,10 +43,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 
-import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.modules.parser.ext.writer.ReportConverter;
-import org.jfree.report.util.Log;
 import junit.framework.TestCase;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportBuilderHints;
+import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.modules.parser.ext.ExtReportHandler;
+import org.jfree.report.modules.parser.extwriter.ReportConverter;
+import org.jfree.report.modules.parser.extwriter.ReportWriter;
+import org.jfree.report.util.Log;
 import org.xml.sax.InputSource;
 
 public class WriterTest extends TestCase
@@ -75,6 +79,60 @@ public class WriterTest extends TestCase
       catch (Exception e)
       {
         Log.debug("Failed to write or parse " + url, e);
+        Log.debug (bo.toString("UTF-16"));
+        fail();
+      }
+    }
+  }
+
+  public void testWriteReport() throws Exception
+  {
+    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
+    {
+      final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      assertNotNull(url);
+      final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+      JFreeReport report = null;
+      try
+      {
+        report = ReportGenerator.getInstance().parseReport(url);
+        ReportBuilderHints ph = report.getReportBuilderHints();
+        String type = (String) ph.getHint(report, "parser.type", String.class);
+        if (type == null)
+        {
+          continue;
+        }
+        if (type.equals(ExtReportHandler.EXT_PARSER_TYPE_HINT_VALUE) == false)
+        {
+          continue;
+        }
+      }
+      catch (Exception e)
+      {
+        Log.debug("Failed to parse " + url, e);
+        fail();
+      }
+      try
+      {
+        final ReportWriter rc = new ReportWriter(report, "UTF-16", ReportWriter.createDefaultConfiguration(report));
+        final OutputStreamWriter owriter = new OutputStreamWriter (bo, "UTF-16");
+        rc.write(owriter);
+        owriter.close();
+      }
+      catch (Exception e)
+      {
+        Log.debug("Failed to write " + url, e);
+        fail();
+      }
+
+      try
+      {
+        final ByteArrayInputStream bin = new ByteArrayInputStream(bo.toByteArray());
+        ReportGenerator.getInstance().parseReport(new InputSource(bin), url);
+      }
+      catch (Exception e)
+      {
+        Log.debug("Failed to (re)parse " + url, e);
         Log.debug (bo.toString("UTF-16"));
         fail();
       }

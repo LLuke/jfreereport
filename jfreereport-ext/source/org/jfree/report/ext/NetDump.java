@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NetDump.java,v 1.4 2003/07/03 16:06:17 taqua Exp $
+ * $Id: NetDump.java,v 1.1 2003/07/08 14:21:45 taqua Exp $
  *
  * Changes
  * -------
@@ -36,14 +36,14 @@
  */
 package org.jfree.report.ext;
 
-import org.jfree.report.util.Log;
-
-import java.net.URL;
-import java.net.Socket;
-import java.io.OutputStream;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.URL;
+
+import org.jfree.report.util.Log;
 
 /**
  * The NetDump utility can be used to trace simple HTTP-Calls.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StaticTableModelProvider.java,v 1.3 2003/07/03 16:06:17 taqua Exp $
+ * $Id: StaticTableModelProvider.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,8 @@
  */
 package org.jfree.report.ext.servletdemo;
 
-import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  * Implements a TableModel provider for a given TableModel. The model

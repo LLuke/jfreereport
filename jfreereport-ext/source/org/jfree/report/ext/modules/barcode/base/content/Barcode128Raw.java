@@ -34,7 +34,7 @@
  */
 package org.jfree.report.ext.modules.barcode.base.content;
 
-import org.jfree.report.ext.modules.barcode.base.content.Barcode128;
+
 
 public class Barcode128Raw extends Barcode128
 {

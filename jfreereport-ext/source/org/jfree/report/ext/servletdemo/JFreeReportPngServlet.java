@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.8 2003/07/03 16:06:17 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
  *
  * Changes
  * -------
@@ -37,22 +37,22 @@
  */
 package org.jfree.report.ext.servletdemo;
 
-import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
-import org.jfree.report.util.Log;
-import com.keypoint.PngEncoder;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.SingleThreadModel;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.net.URL;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.SingleThreadModel;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.keypoint.PngEncoder;
+import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
+import org.jfree.report.util.Log;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used to generate

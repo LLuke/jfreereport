@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DebugOutputTarget.java,v 1.2 2003/07/03 16:06:19 taqua Exp $
+ * $Id: DebugOutputTarget.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,6 @@ import java.awt.print.PageFormat;
 
 import org.jfree.report.DrawableContainer;
 import org.jfree.report.ImageReference;
-import org.jfree.report.style.FontDefinition;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.layout.SizeCalculatorException;
@@ -54,6 +53,7 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
+import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
 
 public class DebugOutputTarget extends AbstractOutputTarget
@@ -78,9 +78,9 @@ public class DebugOutputTarget extends AbstractOutputTarget
   /**
    * Opens the target.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem opening the target.
+   * @throws OutputTargetException if there is some problem opening the target.
    */
-  public void open() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void open() throws OutputTargetException
   {
     open = true;
   }
@@ -117,9 +117,9 @@ public class DebugOutputTarget extends AbstractOutputTarget
    * Signals that the current page is ended.  Some targets need to know when a page is finished,
    * others can simply ignore this message.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem with the target.
+   * @throws OutputTargetException if there is some problem with the target.
    */
-  public void endPage() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void endPage() throws OutputTargetException
   {
   }
 
@@ -138,9 +138,9 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param font  the font.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the font.
+   * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont(final FontDefinition font) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setFont(final FontDefinition font) throws OutputTargetException
   {
     this.font = font;
   }
@@ -162,9 +162,9 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param stroke  the stroke.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the stroke.
+   * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke(final Stroke stroke) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setStroke(final Stroke stroke) throws OutputTargetException
   {
     this.stroke = stroke;
   }
@@ -184,9 +184,9 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param paint The paint.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(final Paint paint) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void setPaint(final Paint paint) throws OutputTargetException
   {
     this.paint = paint;
   }
@@ -232,9 +232,9 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param image The image to draw (as ImageReference for possible embedding of raw data).
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(final ImageReference image) throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+  public void drawImage(final ImageReference image) throws OutputTargetException
   {
   }
 
@@ -245,7 +245,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @return a dummy output target.
    */
-  public org.jfree.report.modules.output.pageable.base.OutputTarget createDummyWriter()
+  public OutputTarget createDummyWriter()
   {
     return new DummyOutputTarget(this);
   }

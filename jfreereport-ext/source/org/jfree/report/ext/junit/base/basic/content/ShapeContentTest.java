@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentTest.java,v 1.3 2003/07/03 16:06:18 taqua Exp $
+ * $Id: ShapeContentTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,14 +41,14 @@ package org.jfree.report.ext.junit.base.basic.content;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+import junit.framework.TestCase;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.filter.StaticDataSource;
-import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.content.Content;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.ShapeContentFactoryModule;
-import org.jfree.report.content.Content;
+import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.layout.DefaultLayoutSupport;
-import junit.framework.TestCase;
+import org.jfree.report.util.ElementLayoutInformation;
 
 public class ShapeContentTest extends TestCase
 {

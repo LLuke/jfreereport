@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.7 2003/07/03 16:06:17 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
  *
  * Changes
  * -------
@@ -37,15 +37,15 @@
  */
 package org.jfree.report.ext.servletdemo;
 
+import javax.servlet.http.HttpSession;
+
 import org.jfree.report.ReportInitialisationException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.report.states.ReportState;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.base.ReportStateList;
-
-import javax.servlet.http.HttpSession;
+import org.jfree.report.states.ReportState;
 
 /**
  * The report servlet worker provides the infrastructure needed to process the
@@ -58,13 +58,13 @@ public abstract class AbstractPageableReportServletWorker
     extends AbstractReportServletWorker
 {
   /** the report processor that should be used to process the report. */
-  private org.jfree.report.modules.output.pageable.base.PageableReportProcessor processor;
+  private PageableReportProcessor processor;
   /** the cached page state list, which is created during the repagination. */
-  private org.jfree.report.modules.output.pageable.base.ReportStateList pageStateList;
+  private ReportStateList pageStateList;
   /** a flag to indicated, whether the pagination is already done. */
   private boolean isPaginated;
   /** the used output target for repagination and report processing. */
-  private org.jfree.report.modules.output.pageable.base.OutputTarget outputTarget;
+  private OutputTarget outputTarget;
 
   /**
    * Creates a new AbstractPageableReportServletWorker for the given session.
@@ -83,7 +83,7 @@ public abstract class AbstractPageableReportServletWorker
    *
    * @return the defined output target.
    */
-  public org.jfree.report.modules.output.pageable.base.OutputTarget getOutputTarget()
+  public OutputTarget getOutputTarget()
   {
     return outputTarget;
   }
@@ -94,7 +94,7 @@ public abstract class AbstractPageableReportServletWorker
    * @param outputTarget the output target that should be used to repaginate
    * and process the report if necessary.
    */
-  public void setOutputTarget(final org.jfree.report.modules.output.pageable.base.OutputTarget outputTarget)
+  public void setOutputTarget(final OutputTarget outputTarget)
   {
     this.outputTarget = outputTarget;
   }
@@ -120,11 +120,11 @@ public abstract class AbstractPageableReportServletWorker
     if (isSessionRequired())
     {
       final HttpSession session = getSession();
-      processor = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(getReport());
+      processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
       processor.setOutputTarget(getOutputTarget());
 
-      pageStateList = (org.jfree.report.modules.output.pageable.base.ReportStateList) session.getAttribute(getPropertyPrefix() + "PageStateList");
+      pageStateList = (ReportStateList) session.getAttribute(getPropertyPrefix() + "PageStateList");
       if (pageStateList == null)
       {
         pageStateList = processor.repaginate();
@@ -135,7 +135,7 @@ public abstract class AbstractPageableReportServletWorker
     }
     else
     {
-      processor = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(getReport());
+      processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
       processor.setOutputTarget(getOutputTarget());
       pageStateList = processor.repaginate();
@@ -208,7 +208,7 @@ public abstract class AbstractPageableReportServletWorker
   {
     try
     {
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor processor = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(getReport());
+      final PageableReportProcessor processor = new PageableReportProcessor(getReport());
       processor.setOutputTarget(getOutputTarget());
       getOutputTarget().open();
       processor.processReport();

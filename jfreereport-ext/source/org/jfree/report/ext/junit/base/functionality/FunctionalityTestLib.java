@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.2 2003/07/14 17:41:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -60,6 +60,7 @@ import org.jfree.report.demo.cards.CardDemo;
 import org.jfree.report.modules.misc.referencedoc.DataSourceReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.ObjectReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.StyleKeyReferenceGenerator;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
@@ -101,7 +102,7 @@ public class FunctionalityTestLib
   {
     try
     {
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor pr = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      final PageableReportProcessor pr = new PageableReportProcessor(report);
       final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
       final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
       final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
@@ -188,7 +189,7 @@ public class FunctionalityTestLib
       target.configure(report.getReportConfiguration());
       target.open();
 
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 
@@ -224,7 +225,7 @@ public class FunctionalityTestLib
       target.configure(report.getReportConfiguration());
       target.open();
 
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setOutputTarget(target);
       proc.processReport();
 

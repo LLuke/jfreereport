@@ -34,15 +34,14 @@
  */
 package org.jfree.report.ext.modules.barcode.base.content;
 
-import org.jfree.ui.FloatDimension;
-import org.jfree.report.ext.modules.barcode.base.content.Barcode;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import org.jfree.ui.FloatDimension;
 
 /** Implements the Postnet and Planet barcodes. The default parameters are:
  * <pre>

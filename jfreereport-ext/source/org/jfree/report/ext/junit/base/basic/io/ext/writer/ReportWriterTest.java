@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterTest.java,v 1.4 2003/07/03 16:06:18 taqua Exp $
+ * $Id: ReportWriterTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,9 +42,11 @@ import java.awt.geom.Line2D;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.StaticDataSource;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
 import org.jfree.report.modules.parser.ext.factory.objects.BandLayoutClassFactory;
@@ -52,9 +54,10 @@ import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
-import org.jfree.report.modules.parser.ext.writer.DataSourceWriter;
-import org.jfree.report.modules.parser.ext.writer.ReportWriter;
-import junit.framework.TestCase;
+import org.jfree.report.modules.parser.extwriter.DataSourceWriter;
+import org.jfree.report.modules.parser.extwriter.ReportWriter;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
@@ -68,7 +71,12 @@ public class ReportWriterTest extends TestCase
 
   private ReportWriter createWriter()
   {
-    final ReportWriter writer = new ReportWriter(new JFreeReport(), "UTF-16");
+    final JFreeReport report = new JFreeReport();
+    ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
+    repConf.setConfigProperty
+        (Parser.CONTENTBASE_KEY, "file://tmp/");
+
+    final ReportWriter writer = new ReportWriter(report, "UTF-16", repConf);
     writer.addClassFactoryFactory(new URLClassFactory());
     writer.addClassFactoryFactory(new DefaultClassFactory());
     writer.addClassFactoryFactory(new BandLayoutClassFactory());
@@ -97,7 +105,7 @@ public class ReportWriterTest extends TestCase
     final StaticDataSource ds = new StaticDataSource(new Line2D.Float());
     final ClassFactory cc = writer.getClassFactoryCollector();
     final DataSourceWriter dsW = new DataSourceWriter(writer,
-        ds, cc.getDescriptionForClass(ds.getClass()), 0);
+        ds, cc.getDescriptionForClass(ds.getClass()), 0, new CommentHintPath());
     final Writer w = new OutputStreamWriter(System.out, "UTF-16");
     dsW.write(w);
     w.flush();

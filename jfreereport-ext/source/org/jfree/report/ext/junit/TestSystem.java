@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.6 2003/07/03 16:06:17 taqua Exp $
+ * $Id: TestSystem.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import javax.swing.table.TableModel;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.SampleData2;
-import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.gui.base.PreviewFrame;
+import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
 

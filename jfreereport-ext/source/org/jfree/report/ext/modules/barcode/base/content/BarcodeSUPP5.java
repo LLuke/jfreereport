@@ -36,9 +36,6 @@ package org.jfree.report.ext.modules.barcode.base.content;
 
 import java.awt.Graphics2D;
 
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeEAN;
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeSizeCalculator;
-
 public class BarcodeSUPP5 extends BarcodeEAN
 {
   /** The total number of bars for supplemental 5.*/

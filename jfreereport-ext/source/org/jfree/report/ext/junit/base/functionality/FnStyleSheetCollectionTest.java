@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FnStyleSheetCollectionTest.java,v 1.2 2003/07/03 16:06:19 taqua Exp $
+ * $Id: FnStyleSheetCollectionTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,19 +39,18 @@
 package org.jfree.report.ext.junit.base.functionality;
 
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
+import org.jfree.report.Band;
+import org.jfree.report.Element;
+import org.jfree.report.Group;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.cards.CardDemo;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.Band;
-import org.jfree.report.Group;
-import org.jfree.report.Element;
-import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.StyleSheetCollection;
+import org.jfree.report.util.Log;
 
 public class FnStyleSheetCollectionTest extends TestCase
 {

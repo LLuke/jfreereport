@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParseTest.java,v 1.6 2003/07/03 16:06:19 taqua Exp $
+ * $Id: ParseTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,10 +44,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 
+import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
-import junit.framework.TestCase;
 
 public class ParseTest extends TestCase
 {

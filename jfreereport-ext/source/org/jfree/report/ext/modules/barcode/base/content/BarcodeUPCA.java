@@ -36,9 +36,6 @@ package org.jfree.report.ext.modules.barcode.base.content;
 
 import java.awt.Graphics2D;
 
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeEAN13;
-import org.jfree.report.ext.modules.barcode.base.content.BarcodeSizeCalculator;
-
 public class BarcodeUPCA extends BarcodeEAN13
 {
   /** The bar positions that are guard bars.*/

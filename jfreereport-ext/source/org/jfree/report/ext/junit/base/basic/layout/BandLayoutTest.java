@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.2 2003/07/14 17:41:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,22 +38,22 @@
 
 package org.jfree.report.ext.junit.base.basic.layout;
 
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Line2D;
 import java.awt.Color;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
+import junit.framework.TestCase;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.Log;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.Log;
 import org.jfree.xml.ParserUtil;
-import junit.framework.TestCase;
 
 public class BandLayoutTest extends TestCase
 {

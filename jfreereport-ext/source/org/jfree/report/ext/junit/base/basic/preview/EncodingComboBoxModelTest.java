@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.2 2003/07/14 17:41:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report.ext.junit.base.basic.preview;
 
-import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.Properties;
+import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.Properties;
 import javax.swing.JComboBox;
 
 import junit.framework.TestCase;

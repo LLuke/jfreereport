@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentTest.java,v 1.2 2003/07/03 16:06:18 taqua Exp $
+ * $Id: DrawableContentTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,15 +40,15 @@ package org.jfree.report.ext.junit.base.basic.content;
 
 import java.awt.geom.Rectangle2D;
 
+import junit.framework.TestCase;
 import org.jfree.report.DrawableContainer;
 import org.jfree.report.DrawableElement;
-import org.jfree.report.ext.junit.TestDrawable;
-import org.jfree.report.filter.StaticDataSource;
-import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.DrawableContentFactoryModule;
+import org.jfree.report.ext.junit.TestDrawable;
+import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.layout.DefaultLayoutSupport;
-import junit.framework.TestCase;
+import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.ui.FloatDimension;
 
 public class DrawableContentTest extends TestCase

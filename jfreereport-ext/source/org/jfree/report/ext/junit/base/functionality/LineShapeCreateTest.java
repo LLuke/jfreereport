@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineShapeCreateTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
+ * $Id: LineShapeCreateTest.java,v 1.2 2003/07/14 17:41:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,12 +51,12 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.layout.BandLayoutManagerUtil;
-import org.jfree.report.layout.DefaultLayoutSupport;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
+import org.jfree.report.layout.BandLayoutManagerUtil;
+import org.jfree.report.layout.DefaultLayoutSupport;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.xml.ParserUtil;

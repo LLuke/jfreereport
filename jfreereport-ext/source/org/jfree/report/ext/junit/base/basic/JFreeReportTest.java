@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportTest.java,v 1.4 2003/07/03 16:06:17 taqua Exp $
+ * $Id: JFreeReportTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,8 +43,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.jfree.report.JFreeReport;
 import junit.framework.TestCase;
+import org.jfree.report.JFreeReport;
 
 public class JFreeReportTest extends TestCase
 {

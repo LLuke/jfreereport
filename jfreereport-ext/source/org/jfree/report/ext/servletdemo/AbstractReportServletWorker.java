@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractReportServletWorker.java,v 1.6 2003/07/03 16:06:17 taqua Exp $
+ * $Id: AbstractReportServletWorker.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,12 @@
  */
 package org.jfree.report.ext.servletdemo;
 
+import java.awt.print.PageFormat;
+import javax.servlet.http.HttpSession;
+
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInitialisationException;
 import org.jfree.report.ReportProcessingException;
-
-import javax.servlet.http.HttpSession;
-import java.awt.print.PageFormat;
 
 /**
  * The report servlet worker provides the infrastructure needed to process the
