@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.3 2003/08/24 15:03:59 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -80,8 +80,8 @@ public class ImageOperationModule extends OperationModule
     {
       return;
     }
-
-    col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
+    col.addOperation(new PhysicalOperation.SetBoundsOperation
+        (computeAlignmentBounds(e, value, bounds)));
     col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
     col.addOperation(new PhysicalOperation.PrintImageOperation(ic.getContent()));
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -261,7 +261,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
         in.write(data);
         in.flush();
         in.close();
-        name = IOUtils.getInstance().createRelativeURL(dataFile.toURL(), dataDirectory.toURL());
+        name = IOUtils.getInstance().createRelativeURL(dataFile.toURL(), rootFile.toURL());
         encodedImages.put(object, name);
       }
       return new ImageReferenceData(name);
@@ -286,7 +286,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
         in.write(data);
         in.flush();
         in.close();
-        name = IOUtils.getInstance().createRelativeURL(dataFile.toURL(), dataDirectory.toURL());
+        name = IOUtils.getInstance().createRelativeURL(dataFile.toURL(), rootFile.toURL());
         usedURLs.put(url, name);
       }
       return new ImageReferenceData(name);
@@ -305,7 +305,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
         urlIn.close();
         fout.close();
 
-        name = IOUtils.getInstance().createRelativeURL(dataFile.toURL(), dataDirectory.toURL());
+        name = IOUtils.getInstance().createRelativeURL(dataFile.toURL(), rootFile.toURL());
         usedURLs.put(url, name);
       }
       return new ImageReferenceData(name);
@@ -313,7 +313,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     else
     {
       final String baseName = IOUtils.getInstance().createRelativeURL(reference.getSourceURL(),
-          dataDirectory.toURL());
+          rootFile.toURL());
       return new ImageReferenceData(baseName);
     }
   }
@@ -356,7 +356,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     fout.write(styleSheet.getBytes());
     fout.close();
     final String baseName = IOUtils.getInstance().createRelativeURL(refFile.toURL(),
-        dataDirectory.toURL());
+        rootFile.toURL());
     return new HRefReferenceData(baseName);
   }
 

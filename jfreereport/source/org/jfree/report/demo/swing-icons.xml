@@ -694,6 +694,8 @@
             <basic-object name="height">24.0</basic-object>
             <basic-object name="width">-30.0</basic-object>
           </compound-key>
+          <basic-key name="alignment">center</basic-key>
+          <basic-key name="valignment">middle</basic-key> 
         </style>
         <template references="image-field">
           <basic-object name="field">Icon</basic-object>

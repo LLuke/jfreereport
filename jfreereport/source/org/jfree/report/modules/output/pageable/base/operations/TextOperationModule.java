@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.3 2003/08/24 15:03:59 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -112,36 +112,15 @@ public class TextOperationModule extends OperationModule
 
     final ElementAlignment va
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    final VerticalBoundsAlignment vba;
-    if (va.equals(ElementAlignment.TOP))
-    {
-      vba = new TopAlignment(bounds);
-    }
-    else if (va.equals(ElementAlignment.MIDDLE))
-    {
-      vba = new MiddleAlignment(bounds);
-    }
-    else
-    {
-      vba = new BottomAlignment(bounds);
-    }
+    final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
     // calculate the horizontal shift ... is applied later
     vba.calculateShift(cbounds);
 
     final ElementAlignment ha
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
-    if (ha.equals(ElementAlignment.CENTER))
-    {
-      addContent(c, col, new CenterAlignment(bounds), vba);
-    }
-    else if (ha.equals(ElementAlignment.RIGHT))
-    {
-      addContent(c, col, new RightAlignment(bounds), vba);
-    }
-    else
-    {
-      addContent(c, col, new LeftAlignment(bounds), vba);
-    }
+
+    HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
+    addContent(c, col, hba, vba);
   }
 
   /**

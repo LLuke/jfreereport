@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.6 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableProducer.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -564,5 +564,14 @@ public abstract class TableProducer
   public TableLayoutInfo getGridBoundsCollection()
   {
     return gridBoundsCollection;
+  }
+
+  /**
+   * Returns the current page. 
+   * @return
+   */
+  protected int getPage()
+  {
+    return page;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.3 2003/08/24 15:03:59 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -95,10 +95,12 @@ public class ShapeOperationModule extends OperationModule
       return;
     }
 
-    final Shape s = sc.getShape();
-    col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
+    col.addOperation(new PhysicalOperation.SetBoundsOperation
+        (computeAlignmentBounds(e, value, bounds)));
     col.addOperation(new PhysicalOperation.SetStrokeOperation(stroke));
     col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
+
+    final Shape s = sc.getShape();
     if (shouldDraw == true)
     {
       col.addOperation(new PhysicalOperation.PrintShapeOperation(s));

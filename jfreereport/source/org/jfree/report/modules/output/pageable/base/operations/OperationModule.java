@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: OperationModule.java,v 1.2 2003/08/24 15:03:59 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@ package org.jfree.report.modules.output.pageable.base.operations;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.content.Content;
 
 /**
@@ -134,4 +136,62 @@ public abstract class OperationModule
   public abstract void createOperations(PhysicalOperationsCollector col, Element e, Content value,
                                         Rectangle2D bounds);
 
+  public static VerticalBoundsAlignment getVerticalLayout (ElementAlignment va, Rectangle2D bounds)
+  {
+    if (va.equals(ElementAlignment.TOP))
+    {
+      return new TopAlignment(bounds);
+    }
+    else if (va.equals(ElementAlignment.MIDDLE))
+    {
+      return new MiddleAlignment(bounds);
+    }
+    else
+    {
+      return new BottomAlignment(bounds);
+    }
+  }
+
+  public static HorizontalBoundsAlignment getHorizontalLayout
+      (ElementAlignment ha, Rectangle2D bounds)
+  {
+    if (ha.equals(ElementAlignment.CENTER))
+    {
+      return new CenterAlignment(bounds);
+    }
+    else if (ha.equals(ElementAlignment.RIGHT))
+    {
+      return new RightAlignment(bounds);
+    }
+    else
+    {
+      return new LeftAlignment(bounds);
+    }
+  }
+
+  public static Rectangle2D computeAlignmentBounds
+      (Element e, Content content, Rectangle2D bounds)
+  {
+    Rectangle2D cbounds = content.getMinimumContentSize();
+    if (cbounds == null)
+    {
+      // if the content could not determine its minimum bounds, then skip ...
+      cbounds = bounds.getBounds2D();
+    }
+
+    final ElementAlignment va
+        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
+    final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
+    // calculate the horizontal shift ... is applied later
+    vba.calculateShift(cbounds);
+
+    final ElementAlignment ha
+        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
+
+    HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
+
+    // apply the precomputed shift ...
+    final Rectangle2D abounds = vba.applyShift(hba.align(content.getBounds()));
+    return abounds;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.6 2003/08/24 15:06:10 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,8 @@ import org.jfree.report.util.CharacterEntityParser;
  * <p>
  * The generated HTML code is cached and written after the last cell was created,
  * to insert the StyleSheet into the html header.
+ * <p>
+ * ToDo: create stylesheet entries for the table-cell definitions.
  *
  * @author Thomas Morgner
  */
@@ -299,6 +301,18 @@ public class HtmlProducer extends TableProducer
         csswriter.println();
       }
     }
+    final Iterator tableStyles = styleCollection.getRegisteredTableStyles();
+    while (tableStyles.hasNext())
+    {
+      final String style = (String) tableStyles.next();
+      final String styleName = styleCollection.getTableStyleClass(style);
+      csswriter.print(styleName);
+      csswriter.println(" { ");
+      csswriter.println(style);
+      csswriter.println(" } ");
+      csswriter.println();
+    }
+
     return filesystem.createCSSReference(cssbuffer.toString());
   }
 
@@ -373,7 +387,7 @@ public class HtmlProducer extends TableProducer
         pout.println(isGenerateXHTML() ? "<hr />" : "<hr>");
       }
       pout.println("<p>");
-      pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+      pout.println("<table cellspacing=\"0\" cellpadding=\"0\">");
     }
   }
 
@@ -424,12 +438,32 @@ public class HtmlProducer extends TableProducer
   private void generatePage(final TableGridLayout layout)
   {
     pout.println();
+    StringBuffer styleBuilder = new StringBuffer();
 
     for (int y = 0; y < layout.getHeight(); y++)
     {
       final int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
 
-      pout.println("<tr style=\"height:" + lastRowHeight + "pt\">");
+      styleBuilder.delete(0, styleBuilder.length());
+      styleBuilder.append("height");
+      styleBuilder.append(lastRowHeight);
+      styleBuilder.append("pt");
+
+      String trStyle = styleBuilder.toString();
+      String trStyleClass = styleCollection.getTableStyleClass(trStyle);
+      if (trStyleClass == null || isCreateBodyFragment())
+      {
+        pout.print("<tr style=\"");
+        pout.print(trStyle);
+        pout.println("\">");
+      }
+      else
+      {
+        pout.print("<tr class=\"");
+        pout.print(trStyleClass);
+        pout.println("\">");
+      }
+
       for (int x = 0; x < layout.getWidth(); x++)
       {
         final TableGridLayout.Element gridElement = layout.getData(x, y);
@@ -437,63 +471,83 @@ public class HtmlProducer extends TableProducer
         if (gridElement == null)
         {
           final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
-          pout.println("<!-- No Element -->");
-          pout.println("<td style=\"width:" + width + "pt\"></td>");
+          styleBuilder.delete(0, styleBuilder.length());
+          styleBuilder.append("width");
+          styleBuilder.append(width);
+          styleBuilder.append("pt");
+
+          pout.println("    <!-- No Element -->");
+          String tdStyle = styleBuilder.toString();
+          String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
+          if (tdStyleClass == null || isCreateBodyFragment())
+          {
+            pout.print("    <td style=\"");
+            pout.print(tdStyle);
+            pout.println("\">");
+          }
+          else
+          {
+            pout.print("    <td class=\"");
+            pout.print(tdStyleClass);
+            pout.println("\">");
+          }
+
           continue;
         }
 
         // no data cell defined, but there exists a background defintion
         // for that cell.
         final TableGridPosition gridPosition = gridElement.getRoot();
-        if (gridPosition == null || gridPosition.isInvalidCell())
+        if (gridPosition == null)
         {
-          final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
-          if (gridPosition == null)
-          {
-            pout.println("<!-- gridposition is null -->");
-          }
-          else
-          {
-            pout.println("<!-- is invalid cell -->");
-          }
-
-          pout.print("<td style=\"width:");
-          pout.print(width);
-          pout.print("pt");
-
-          final String style = createHtmlBackgroundStyle(gridElement.getBackground());
-          if (style != null)
-          {
-            pout.print("; ");
-            pout.print(style);
-          }
-          pout.println("\"></td>");
+          pout.println("<!-- gridpos null -->");
+        }
+        else if (gridPosition.isInvalidCell())
+        {
+          pout.println("<!-- invalid cell -->");
+        }
+        else if (gridPosition.isOrigin(x, y) == false)
+        {
+          // this is a spanned field, skip everything ...
           continue;
         }
 
-        // a spanned field
-        if (gridPosition.isOrigin(x, y) == false)
-        {
-          // this is a spanned field.
-          continue;
-        }
+        final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
+        styleBuilder.delete(0, styleBuilder.length());
+        styleBuilder.append("width");
+        styleBuilder.append(width);
+        styleBuilder.append("pt");
 
-        // real data ...
-        final HtmlCellData cellData = (HtmlCellData) gridPosition.getElement();
-
-        pout.print("    <td style=\"width:");
-        pout.print((int) gridPosition.getBounds().getWidth());
-        pout.print("pt");
-        pout.print("; height:");
-        pout.print((int) gridPosition.getBounds().getHeight());
-        pout.print("pt");
         final String style = createHtmlBackgroundStyle(gridElement.getBackground());
         if (style != null)
         {
-          pout.print("; ");
-          pout.print(style);
+          styleBuilder.append("; ");
+          styleBuilder.append(style);
         }
+        String tdStyle = styleBuilder.toString();
+        String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
+        if (tdStyleClass == null || isCreateBodyFragment())
+        {
+          pout.print("    <td style=\"");
+          pout.print(tdStyle);
+        }
+        else
+        {
+          pout.print("    <td class=\"");
+          pout.print(tdStyleClass);
+        }
+
+        // Something's wrong with the given grid position, we can't handle that
+        if (gridPosition == null || gridPosition.isInvalidCell())
+        {
+          pout.println("\">");
+          continue;
+        }
+
         pout.print("\" ");
+
+        // finally we print real data ...
+        final HtmlCellData cellData = (HtmlCellData) gridPosition.getElement();
 
         if (gridPosition.getRowSpan() > 1)
         {
@@ -535,6 +589,85 @@ public class HtmlProducer extends TableProducer
     }
   }
 
+//  /**
+//   * Generates and writes the HTML table specified by the given TableGridLayout.
+//   *
+//   * @param layout the layouted cells.
+//   */
+//  private void generateTableLayout(final TableGridLayout layout)
+//  {
+//    StringBuffer styleBuilder = new StringBuffer();
+//    for (int y = 0; y < layout.getHeight(); y++)
+//    {
+//      final int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
+//
+//      styleBuilder.delete(0, styleBuilder.length());
+//      styleBuilder.append("height");
+//      styleBuilder.append(lastRowHeight);
+//      styleBuilder.append("pt");
+//      styleCollection.registerTableStyle(styleBuilder.toString(), true);
+//
+//      for (int x = 0; x < layout.getWidth(); x++)
+//      {
+//        final TableGridLayout.Element gridElement = layout.getData(x, y);
+//        // no element defined for the given cell...
+//        if (gridElement == null)
+//        {
+//          final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
+//          styleBuilder.delete(0, styleBuilder.length());
+//          styleBuilder.append("width");
+//          styleBuilder.append(width);
+//          styleBuilder.append("pt");
+//          styleCollection.registerTableStyle(styleBuilder.toString(), false);
+//          continue;
+//        }
+//
+//        // no data cell defined, but there exists a background defintion
+//        // for that cell.
+//        final TableGridPosition gridPosition = gridElement.getRoot();
+//        if (gridPosition == null || gridPosition.isInvalidCell())
+//        {
+//          final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
+//          styleBuilder.delete(0, styleBuilder.length());
+//          styleBuilder.append("width");
+//          styleBuilder.append(width);
+//          styleBuilder.append("pt");
+//
+//          final String style = createHtmlBackgroundStyle(gridElement.getBackground());
+//          if (style != null)
+//          {
+//            styleBuilder.append("; ");
+//            styleBuilder.append(style);
+//          }
+//          styleCollection.registerTableStyle(styleBuilder.toString(), false);
+//          continue;
+//        }
+//
+//        // a spanned field
+//        if (gridPosition.isOrigin(x, y) == false)
+//        {
+//          // this is a spanned field.
+//          continue;
+//        }
+//        styleBuilder.delete(0, styleBuilder.length());
+//        styleBuilder.append("width");
+//        styleBuilder.append((int) gridPosition.getBounds().getWidth());
+//        styleBuilder.append("pt");
+//        styleBuilder.append("; height:");
+//        styleBuilder.append((int) gridPosition.getBounds().getHeight());
+//        styleBuilder.append("pt");
+//        final String style = createHtmlBackgroundStyle(gridElement.getBackground());
+//        if (style != null)
+//        {
+//          styleBuilder.append("; ");
+//          styleBuilder.append(style);
+//        }
+//
+//        x += gridPosition.getColSpan() - 1;
+//      }
+//    }
+//  }
+
   /**
    * Checks, whether to create a html body fragment. This fragment contains
    * no html header an generates no global CSS section.
@@ -574,4 +707,6 @@ public class HtmlProducer extends TableProducer
   {
     return getProperty(GENERATE_XHTML, "false").equals("true");
   }
+
+
 }

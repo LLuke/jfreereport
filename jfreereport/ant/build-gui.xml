@@ -177,7 +177,7 @@
   <!-- ************************************************************** -->
 
 
-  <target name="compile-module-gui-converter"
+  <target name="compile-module-gui-config"
     depends="compile-module-gui-base">
 
     <description>
