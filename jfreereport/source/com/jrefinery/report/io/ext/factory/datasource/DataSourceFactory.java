@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceFactory.java,v 1.5 2003/04/23 13:43:04 taqua Exp $
+ * $Id: DataSourceFactory.java,v 1.6 2003/04/24 18:08:50 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.io.ext.factory.datasource;
+
+import java.util.Iterator;
 
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -65,4 +67,11 @@ public interface DataSourceFactory extends ClassFactory
    * @return The name.
    */
   public String getDataSourceName (ObjectDescription od);
+
+  /**
+   * Returns the names of all registered datasources as iterator.
+   *
+   * @return the registered names.
+   */
+  public Iterator getRegisteredNames();
 }

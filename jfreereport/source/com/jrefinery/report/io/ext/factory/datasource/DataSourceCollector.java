@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.15 2003/05/27 08:32:26 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.16 2003/06/04 21:09:07 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.datasource;
@@ -41,14 +41,14 @@ package com.jrefinery.report.io.ext.factory.datasource;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jfree.util.Configuration;
+import org.jfree.xml.factory.objects.ClassComparator;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
-import org.jfree.xml.factory.objects.ClassComparator;
-import org.jfree.util.Configuration;
 
 /**
  * A {@link DataSourceFactory} created from a number of other factories.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DataSourceCollector implements DataSourceFactory
@@ -71,12 +71,12 @@ public class DataSourceCollector implements DataSourceFactory
 
   /**
    * Adds a factory to the collection.
-   * 
+   *
    * @param factory  the factory.
    */
-  public void addFactory (DataSourceFactory factory)
+  public void addFactory(DataSourceFactory factory)
   {
-    factories.add (factory);
+    factories.add(factory);
     if (getConfig() != null)
     {
       factory.configure(getConfig());
@@ -85,19 +85,19 @@ public class DataSourceCollector implements DataSourceFactory
 
   /**
    * Returns an iterator that provides access to the factories.
-   * 
+   *
    * @return The iterator.
    */
-  public Iterator getFactories ()
+  public Iterator getFactories()
   {
     return factories.iterator();
   }
 
   /**
    * Returns a data source description.
-   * 
+   *
    * @param name  the data source name.
-   * 
+   *
    * @return The description.
    */
   public ObjectDescription getDataSourceDescription(String name)
@@ -106,8 +106,8 @@ public class DataSourceCollector implements DataSourceFactory
     {
       DataSourceFactory fact = (DataSourceFactory) factories.get(i);
       ObjectDescription o = fact.getDataSourceDescription(name);
-      if (o != null) 
-      {  
+      if (o != null)
+      {
         return o.getInstance();
       }
     }
@@ -116,9 +116,9 @@ public class DataSourceCollector implements DataSourceFactory
 
   /**
    * Returns a data source name.
-   * 
+   *
    * @param od  the object description.
-   * 
+   *
    * @return The name.
    */
   public String getDataSourceName(ObjectDescription od)
@@ -137,9 +137,9 @@ public class DataSourceCollector implements DataSourceFactory
 
   /**
    * Returns a description for the class.
-   * 
+   *
    * @param c  the class.
-   * 
+   *
    * @return The description.
    */
   public ObjectDescription getDescriptionForClass(Class c)
@@ -148,8 +148,8 @@ public class DataSourceCollector implements DataSourceFactory
     {
       DataSourceFactory fact = (DataSourceFactory) factories.get(i);
       ObjectDescription o = fact.getDescriptionForClass(c);
-      if (o != null) 
-      { 
+      if (o != null)
+      {
         return o.getInstance();
       }
     }
@@ -158,11 +158,11 @@ public class DataSourceCollector implements DataSourceFactory
 
   /**
    * Returns a description for the super class.
-   * 
+   *
    * @param d  the class.
    * @param knownSuperClass the last known super class for the given class or null
    * if none was found yet.
-   * 
+   *
    * @return The object description suitable to create instances of the given class d.
    */
   public ObjectDescription getSuperClassObjectDescription
@@ -198,7 +198,7 @@ public class DataSourceCollector implements DataSourceFactory
 
   /**
    * Returns an iterator that provides access to the registered classes.
-   * 
+   *
    * @return The iterator.
    */
   public Iterator getRegisteredClasses()
@@ -247,12 +247,23 @@ public class DataSourceCollector implements DataSourceFactory
 
   }
 
-    /**
-     * Returns the currently set configuration or null, if none was set.
-     *
-     * @return the configuration.
-     */
-    public Configuration getConfig() {
-        return config;
-    }
+  /**
+   * Returns the currently set configuration or null, if none was set.
+   *
+   * @return the configuration.
+   */
+  public Configuration getConfig()
+  {
+    return config;
+  }
+
+  /**
+   * Returns the names of all registered datasources as iterator.
+   *
+   * @return the registered names.
+   */
+  public Iterator getRegisteredNames()
+  {
+    return new ArrayList().iterator();
+  }
 }

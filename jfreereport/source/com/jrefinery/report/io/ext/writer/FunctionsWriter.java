@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.12 2003/05/30 16:57:51 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.13 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -116,31 +116,41 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         tagName = FunctionsHandler.FUNCTION_TAG;
       }
 
-      Properties properties = new Properties();
-      properties.setProperty("name", expression.getName());
-      properties.setProperty("class", expression.getClass().getName());
-      writeTag(writer, tagName, properties, OPEN);
-
       Properties expressionProperties = expression.getProperties();
-      Enumeration enum = expressionProperties.keys();
-      if (enum.hasMoreElements())
+      if (expressionProperties.isEmpty())
       {
-        writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
-        while (enum.hasMoreElements())
-        {
-          String key = (String) enum.nextElement();
-          String value = expressionProperties.getProperty(key);
-          if (value != null)
-          {
-            writeTag(writer, "property", "name", key, OPEN);
-            writer.write(normalize(value));
-            writeCloseTag(writer, "property");
-          }
-        }
-        writeCloseTag(writer, ExpressionHandler.PROPERTIES_TAG);
+        Properties properties = new Properties();
+        properties.setProperty("name", expression.getName());
+        properties.setProperty("class", expression.getClass().getName());
+        writeTag(writer, tagName, properties, CLOSE);
       }
+      else
+      {
+        Properties properties = new Properties();
+        properties.setProperty("name", expression.getName());
+        properties.setProperty("class", expression.getClass().getName());
+        writeTag(writer, tagName, properties, OPEN);
 
-      writeCloseTag(writer, tagName);
+        Enumeration enum = expressionProperties.keys();
+        if (enum.hasMoreElements())
+        {
+          writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
+          while (enum.hasMoreElements())
+          {
+            String key = (String) enum.nextElement();
+            String value = expressionProperties.getProperty(key);
+            if (value != null)
+            {
+              writeTag(writer, "property", "name", key, OPEN);
+              writer.write(normalize(value));
+              writeCloseTag(writer, "property");
+            }
+          }
+          writeCloseTag(writer, ExpressionHandler.PROPERTIES_TAG);
+        }
+
+        writeCloseTag(writer, tagName);
+      }
     }
   }
 

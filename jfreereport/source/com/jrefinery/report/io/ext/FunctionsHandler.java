@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.11 2003/06/04 21:09:06 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.12 2003/06/10 16:07:49 taqua Exp $
  *
  * Changes
  * -------
@@ -305,7 +305,11 @@ public class FunctionsHandler implements ElementDefinitionHandler
     else if (tagName.equals(PROPERTY_REF_TAG))
     {
       getReport().setPropertyMarked(propertyName, true);
-      getReport().setProperty(propertyName, propertyRefHandler.getValue());
+      Object value = propertyRefHandler.getValue();
+      if ("".equals(value) == false)
+      {
+        getReport().setProperty(propertyName, propertyRefHandler.getValue());
+      }
     }
     else if (tagName.equals(finishTag))
     {

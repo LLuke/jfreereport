@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.11 2003/06/04 21:09:09 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.12 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -127,6 +127,7 @@ public abstract class AbstractXMLDefinitionWriter
       safeTags.add(FunctionsHandler.PROPERTY_REF_TAG);
 
       safeTags.add(GroupHandler.FIELDS_TAG);
+      safeTags.add(GroupHandler.FIELD_TAG, false, true);
       safeTags.add(GroupHandler.GROUP_FOOTER_TAG);
       safeTags.add(GroupHandler.GROUP_HEADER_TAG);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDataSourceFactory.java,v 1.9 2003/04/24 18:08:50 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.10 2003/06/04 21:09:07 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -112,5 +112,15 @@ public abstract class AbstractDataSourceFactory
       }
     }
     return null;
+  }
+
+  /**
+   * Returns the names of all registered datasources as iterator.
+   *
+   * @return the registered names.
+   */
+  public Iterator getRegisteredNames()
+  {
+    return dataSources.keySet().iterator();
   }
 }

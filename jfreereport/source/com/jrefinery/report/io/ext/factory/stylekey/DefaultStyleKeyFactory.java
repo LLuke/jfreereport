@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.5 2003/04/28 22:21:44 taqua Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.6 2003/05/23 20:12:15 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -73,6 +73,11 @@ public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory
     addKey(ElementStyleSheet.VALIGNMENT);
     addKey(ElementStyleSheet.VISIBLE);
     addKey(ElementStyleSheet.DYNAMIC_HEIGHT);
+    addKey(ElementStyleSheet.LINEHEIGHT);
+    addKey(ElementStyleSheet.EMBEDDED_FONT);
+    addKey(ElementStyleSheet.FONTENCODING);
+    addKey(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE);
+
     addKey(BandStyleSheet.DISPLAY_ON_FIRSTPAGE);
     addKey(BandStyleSheet.DISPLAY_ON_LASTPAGE);
     addKey(BandStyleSheet.PAGEBREAK_AFTER);

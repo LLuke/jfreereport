@@ -14,9 +14,9 @@
   </parser-config>
 
   <report-config>
-    <defaultpageformat orientation="portrait" pageformat="LETTER" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
+    <defaultpageformat orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
     <configuration>
-      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Author">Darkwing Duck</property>
+      <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Author">JFreeReport</property>
       <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">iso-8859-15</property>
     </configuration>
   </report-config>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.8 2003/06/04 21:09:09 taqua Exp $
+ * $Id: StylesWriter.java,v 1.9 2003/06/10 16:07:52 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,7 @@ package com.jrefinery.report.io.ext.writer;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -168,7 +166,13 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   private void collectStylesFromElement (Element element)
   {
     ElementStyleSheet elementSheet = element.getStyle();
-    addCollectableStyleSheet(elementSheet);
+
+    List parents = elementSheet.getParents();
+    for (int i = 0; i < parents.size(); i++)
+    {
+      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      addCollectableStyleSheet(es);
+    }
   }
 
   /**
