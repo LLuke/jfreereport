@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.5 2003/03/02 04:10:28 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.6 2003/03/02 19:19:25 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -79,7 +78,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
    * loads the tablemodel and generates a single page of the report. The generated
    * page is returned as StreamHtml file, with the implicit restriction, that generated
    * images are not included. External referenced images are included, if they are loaded
-   * from an Http or Ftp or File source. 
+   * from an Http or Ftp or File source.
    *
    * @param request the http request object.
    * @param response the http response object.
@@ -97,8 +96,10 @@ public class JFreeReportHtmlServlet extends HttpServlet
       throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
     }
 
+    URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
+    Log.debug ("Base: " + base);
     AbstractTableReportServletWorker worker =
-        new DefaultTableReportServletWorker(in, new SwingIconsDemoTableModel());
+        new DefaultTableReportServletWorker(in, new SwingIconsDemoTableModel(base));
 
     // display the content in the browser window (see RFC2183)
     response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.html" + "\"");

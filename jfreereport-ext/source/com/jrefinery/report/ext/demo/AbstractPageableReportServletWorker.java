@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.4 2003/03/02 19:19:24 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,8 @@ public abstract class AbstractPageableReportServletWorker
   private ReportStateList pageStateList;
   /** a flag to indicated, whether the pagination is already done. */
   private boolean isPaginated;
+  /** the used output target for repagination and report processing. */
+  private OutputTarget outputTarget;
 
   /**
    * Creates a new AbstractPageableReportServletWorker for the given session.
@@ -75,38 +77,65 @@ public abstract class AbstractPageableReportServletWorker
   }
 
   /**
-   * Repaginates the report.
+   * Gets the output target that should be used to process the report.
    *
-   * @param target the output target used for the repagination.
+   * @return the defined output target.
+   */
+  public OutputTarget getOutputTarget()
+  {
+    return outputTarget;
+  }
+
+  /**
+   * Defines the output target that should be used to process the report.
+   *
+   * @param outputTarget the output target that should be used to repaginate
+   * and process the report if necessary.
+   */
+  public void setOutputTarget(OutputTarget outputTarget)
+  {
+    this.outputTarget = outputTarget;
+  }
+
+  /**
+   * Repaginates the report. If no output target is set, a IllegalStateException is
+   * thrown.
+   *
    * @throws ReportInitialisationException if the report could not be initialized.
    * @throws ReportProcessingException if the report processing failes.
    * @throws FunctionInitializeException if the output function could not be initalized.
+   * @throws IllegalStateException if no output target is defined.
    */
-  private void repaginateReport(OutputTarget target)
+  private void repaginateReport()
       throws ReportInitialisationException,
       ReportProcessingException, FunctionInitializeException
   {
+    if (outputTarget == null)
+    {
+      throw new IllegalStateException("No Output target defined");
+    }
+
     if (isSessionRequired())
     {
       HttpSession session = getSession();
       processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
-      processor.setOutputTarget(target);
+      processor.setOutputTarget(getOutputTarget());
 
-      pageStateList = (ReportStateList) session.getAttribute("PageStateList");
+      pageStateList = (ReportStateList) session.getAttribute(getPropertyPrefix() + "PageStateList");
       if (pageStateList == null)
       {
         pageStateList = processor.repaginate();
         // a new report has been created, now store the attribute in the session for a
         // later use
-        session.setAttribute("PageStateList", pageStateList);
+        session.setAttribute(getPropertyPrefix() + "PageStateList", pageStateList);
       }
     }
     else
     {
       processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
-      processor.setOutputTarget(target);
+      processor.setOutputTarget(getOutputTarget());
       pageStateList = processor.repaginate();
     }
 
@@ -117,18 +146,17 @@ public abstract class AbstractPageableReportServletWorker
    * Returns the number of pages of the paginated report. If the pagination fails
    * one of the various exceptions is thrown.
    *
-   * @param target the output target that should be used to repaginate the report if necessary.
    * @return the number of pages for the report.
    * @throws ReportInitialisationException if the report could not be initialized.
    * @throws ReportProcessingException if the report processing failes.
    * @throws FunctionInitializeException if the output function could not be initalized.
    */
-  public int getNumberOfPages (OutputTarget target)
+  public int getNumberOfPages ()
     throws  ReportInitialisationException, ReportProcessingException, FunctionInitializeException
   {
     if (!isPaginated)
     {
-      repaginateReport(target);
+      repaginateReport();
     }
 
     if (pageStateList == null)
@@ -151,16 +179,15 @@ public abstract class AbstractPageableReportServletWorker
   {
     try
     {
-      OutputTarget target = processor.getOutputTarget();
-      target.open();
+      getOutputTarget().open();
       if (!isPaginated)
       {
-        repaginateReport(target);
+        repaginateReport();
       }
 
       ReportState state = pageStateList.get(page);
-      processor.processPage(state, target);
-      target.close();
+      processor.processPage(state, getOutputTarget());
+      getOutputTarget().close();
     }
     catch (Exception e)
     {
@@ -179,25 +206,15 @@ public abstract class AbstractPageableReportServletWorker
   {
     try
     {
-      OutputTarget target = processor.getOutputTarget();
-      target.open();
+      PageableReportProcessor processor = new PageableReportProcessor(getReport());
+      processor.setOutputTarget(getOutputTarget());
+      getOutputTarget().open();
       processor.processReport();
-      target.close();
+      getOutputTarget().close();
     }
     catch (Exception e)
     {
       throw new ReportProcessingException("Failed", e);
     }
-  }
-
-  /**
-   * Returns a property prefix for the various used report properties. This can
-   * be used to host several reports on a single session.
-   *
-   * @return the property prefix, an empty string by default.
-   */
-  protected String getPropertyPrefix()
-  {
-    return "";
   }
 }

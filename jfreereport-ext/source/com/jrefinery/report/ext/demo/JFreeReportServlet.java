@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.9 2003/03/02 04:10:28 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.10 2003/03/02 19:19:25 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class JFreeReportServlet extends HttpServlet
    * @param response the http response object.
    * @throws ServletException if an error occured, which could not be handled internaly.
    * @throws IOException if writing the generated contents failed.
-   */ 
+   */
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
@@ -94,10 +94,11 @@ public class JFreeReportServlet extends HttpServlet
       throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
     }
 
+    URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
     AbstractPageableReportServletWorker worker =
         new DefaultPageableReportServletWorker(null,
                                                in,
-                                               new SwingIconsDemoTableModel());
+                                               new SwingIconsDemoTableModel(base));
 
     try
     {
@@ -130,6 +131,7 @@ public class JFreeReportServlet extends HttpServlet
                                                    true);
       target.setProperty(PDFOutputTarget.TITLE, "Title");
       target.setProperty(PDFOutputTarget.AUTHOR, "Author");
+      worker.setOutputTarget(target);
       worker.processReport();
     }
     catch (Exception e)

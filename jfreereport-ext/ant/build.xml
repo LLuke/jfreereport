@@ -1,6 +1,7 @@
 <!--
 
 <!DOCTYPE project PUBLIC "-//ANT//DTD project//EN" "ant.dtd">
+
 -->
 
 <!-- An ANT build file for JFreeReport -->
@@ -34,7 +35,6 @@
     <property name="libdir" value="${projectdir}/lib"/>
 
     <property name="JFreeChart-jar" value="jfreechart-0.9.6.jar"/>
-    <property name="jlfgr-1_0" value="jlfgr-1_0.zip"/>
     <property name="junit-jar" value="junit.jar"/>
     <property name="log4j-jar" value="log4j-1.2.3.jar"/>
     <property name="servlet-jar" value="servlet.jar"/>
@@ -124,19 +124,36 @@
   </target>
 
   <target name="build-war" depends="compile">
-    <!-- create a temp build directory -->
     <mkdir dir="${projectdir}/warbuild"/>
 
-    <!-- copy across the resource files -->
     <copy todir="${projectdir}/warbuild">
       <fileset dir="${projectdir}/webapp">
         <exclude name="**/CVS"/>
       </fileset>
     </copy>
 
-    <!-- remove the temp build area
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${BeanShell-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${GnuJAXP-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${iText-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${JCommon-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${Pixie-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-libdir}/${POI-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-dir}/${JFreeReport-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${jfreereport-dir}/${JFreeReport-demo-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${JFreeChart-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${junit-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${log4j-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${servlet-jar}"/>
+    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.jar"/>
+
+    <!-- make the jar file -->
+    <jar jarfile="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.war"
+      basedir="${projectdir}/warbuild">
+    </jar>
+
+    <!-- remove the temp build area -->
     <delete dir="${projectdir}/warbuild"/>
--->
+
   </target>
 
   <target name="all" depends="compile, javadoc, build-war"/>

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.4 2003/03/02 04:10:28 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.5 2003/03/02 19:19:25 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,8 @@ public class JFreeReportPngServlet extends HttpServlet
    * for later calls. The <code>page</code> parameter must be set to a valid value,
    * or the page generation will fail.
    * <p>
-   * The page parameter is required, must be a valid positive integer.
+   * The page parameter is required, must be a valid positive integer. The first page
+   * is '0'.
    *
    * @param request the http request object.
    * @param response the http response object.
@@ -115,10 +116,11 @@ public class JFreeReportPngServlet extends HttpServlet
         throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
       }
 
+      URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
       AbstractPageableReportServletWorker worker =
           new DefaultPageableReportServletWorker(request.getSession(true),
                                                  in,
-                                                 new SwingIconsDemoTableModel());
+                                                 new SwingIconsDemoTableModel(base));
 
       String param = request.getParameter("page");
       if (param == null)
@@ -147,10 +149,11 @@ public class JFreeReportPngServlet extends HttpServlet
       g2.fillRect(0,0, (int) pageFormat.getWidth(), (int) pageFormat.getHeight());
 
       G2OutputTarget target = new G2OutputTarget(g2, pageFormat);
+      worker.setOutputTarget(target);
 
-      if (page >= worker.getNumberOfPages(target) || page < 0)
+      if (page >= worker.getNumberOfPages() || page < 0)
       {
-        Log.debug("The page-parameter is invalid: " + page + ": " + worker.getNumberOfPages(target));
+        Log.debug("The page-parameter is invalid: " + page + ": " + worker.getNumberOfPages());
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         return;
       }
