@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellData.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: TableCellData.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,18 @@ public abstract class TableCellData
   public Rectangle2D getBounds()
   {
     return (Rectangle2D) outerBounds.clone();
+  }
+
+  /**
+   * Redefines the bounds for this cell data. This should not be called from
+   * user implementations - it is only needed to merge background cells and
+   * should never used anywhere else.
+   *
+   * @param bounds the bounds.
+   */
+  protected void setBounds (Rectangle2D bounds)
+  {
+    outerBounds.setRect(bounds);
   }
 
   /**
