@@ -29,10 +29,10 @@
 package com.jrefinery.report.demo;
 
 import javax.swing.table.AbstractTableModel;
-import java.awt.GraphicsEnvironment;
 import java.awt.Font;
-import java.util.Comparator;
+import java.awt.GraphicsEnvironment;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SampleData4 extends AbstractTableModel
 {
@@ -42,10 +42,10 @@ public class SampleData4 extends AbstractTableModel
     {
       Font f1 = (Font) o;
       Font f2 = (Font) o1;
-      int comp = f1.getFamily().compareTo(f2.getFamily());
+      int comp = f1.getFamily ().compareTo (f2.getFamily ());
       if (comp == 0)
       {
-        comp = f1.getName().compareTo(f2.getName());
+        comp = f1.getName ().compareTo (f2.getName ());
       }
       return comp;
     }
@@ -55,8 +55,8 @@ public class SampleData4 extends AbstractTableModel
 
   public SampleData4 ()
   {
-    fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-    Arrays.sort(fonts, new FontComparator());
+    fonts = GraphicsEnvironment.getLocalGraphicsEnvironment ().getAllFonts ();
+    Arrays.sort (fonts, new FontComparator ());
   }
 
   /**
@@ -103,11 +103,11 @@ public class SampleData4 extends AbstractTableModel
   {
     if (column == 0)
     {
-      return fonts[row].getFamily();
+      return fonts[row].getFamily ();
     }
     else if (column == 1)
     {
-      return fonts[row].getName();
+      return fonts[row].getName ();
     }
     return "The five boxing wizards jump quickly.";
   }

@@ -36,6 +36,9 @@ import java.util.ResourceBundle;
 
 public abstract class PreviousPageAction extends AbstractAction
 {
+  /**
+   * Constructs a new action.
+   */
   public PreviousPageAction (ResourceBundle resources)
   {
     putValue(Action.NAME, resources.getString("action.back.name"));

@@ -28,55 +28,36 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewAction.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
+ * $Id: PreviewAction.java,v 1.5 2002/05/31 19:15:13 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
- *
+ * 05-Jun-2002 : Documentation.
  */
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.preview.PreviewFrame;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
+/**
+ * The preview action invokes the parsing and processing of the currently selected sample
+ * report. The actual work is done in the JFreeReportDemos method attemptPreview ()
+ */
 public abstract class PreviewAction extends AbstractAction
 {
   /**
-   * Constructs a new action.
+   * Constructs a new preview action.
    */
-  public PreviewAction(ResourceBundle resources)
+  public PreviewAction (ResourceBundle resources)
   {
-    String name = resources.getString("action.print-preview.name");
-    this.putValue(Action.NAME, name);
-
-    String description = resources.getString("action.print-preview.description");
-    this.putValue(Action.SHORT_DESCRIPTION, description);
-
-    Integer mnemonic =
-      (Integer) resources.getObject("action.print-preview.mnemonic");
-    this.putValue(Action.MNEMONIC_KEY, mnemonic);
-
-    KeyStroke accelerator =
-      (KeyStroke) resources.getObject("action.print-preview.accelerator");
-    this.putValue(Action.ACCELERATOR_KEY, accelerator);
-
-    ImageIcon icon16 = (ImageIcon) resources.getObject("action.print-preview.small-icon");
-    this.putValue(Action.SMALL_ICON, icon16);
-
-    ImageIcon icon24 = (ImageIcon) resources.getObject("action.print-preview.icon");
-    this.putValue("ICON24", icon24);
-
-    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportDemo.PRINT_PREVIEW_COMMAND);
-
+    this.putValue (Action.NAME, resources.getString ("action.print-preview.name"));
+    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.print-preview.description"));
+    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.print-preview.mnemonic"));
+    this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.print-preview.accelerator"));
+    this.putValue (Action.SMALL_ICON, resources.getObject ("action.print-preview.small-icon"));
+    this.putValue ("ICON24", resources.getObject ("action.print-preview.icon"));
   }
-
 }

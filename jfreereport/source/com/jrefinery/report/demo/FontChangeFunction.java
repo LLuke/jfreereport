@@ -28,75 +28,105 @@
  */
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.function.AbstractFunction;
-import com.jrefinery.report.function.FunctionInitializeException;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.function.AbstractFunction;
+import com.jrefinery.report.function.FunctionInitializeException;
 
 import javax.swing.table.TableModel;
 import java.awt.Font;
 
+/**
+ * This is a function used in report4-demo. The function demonstrates how to alter an
+ * elements property during the report generation. The elements font is changed base on
+ * the data provided in the reports datasource.
+ * <p>
+ * For every new item row in the report, the font for that row is changed to the fontname
+ * specified in the second column of the report data source.
+ * <p>
+ * Parameters:<br>
+ * The function expects the name of a field in the item band in the parameter "element".
+ * This functions value will always be null.
+ */
 public class FontChangeFunction extends AbstractFunction
 {
 
+  /**
+   * DefaultConstructor
+   */
   public FontChangeFunction ()
   {
   }
 
   /**
-   * The ItemsSection is beeing processed. The next events will be itemsAdvanced events until the
-   * itemsFinished event is raised.
-   */
-  public void itemsStarted (ReportEvent event)
-  {
-  }
-
-  /**
-   * Maps the pageStarted-method to the legacy function startPage (int).
+   * Before an ItemBand is printed, the report generator will call itemsAdvanced
+   * for all functions in the function collection. This is the right place to alter
+   * the font of the element defined in the "element" property, so that every ItemBand
+   * has the font set, that is defined in the data model.
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    if (event.getState().isPrepareRun()) return;
+    // if this is a preparerun, nothing gets printed and so no font change is required.
+    if (event.getState ().isPrepareRun ()) return;
 
-    TableModel data = event.getReport().getData ();
-    int row = event.getState().getCurrentDataItem();
+    TableModel data = event.getReport ().getData ();
+    int row = event.getState ().getCurrentDataItem ();
 
-    String fontname = (String) data.getValueAt(row, 1);
-    if (fontname == null)
-      return;
+    // Try to get the name of the font to be set.
+    // If the name is null, return without an excpetion, just do nothing.
+    String fontname = (String) data.getValueAt (row, 1);
+    if (fontname == null) return;
 
-    Element e = event.getReport().getItemBand().getElement(getElement());
-    if (e != null)
+    // Lookup the element by name. If there no element found, the getElement function
+    // returns null, so we have to check this case.
+    Element e = event.getReport ().getItemBand ().getElement (getElement ());
+
+    // set the font if an element was found.
+    if (e != null && (e instanceof TextElement))
     {
-      if (e instanceof TextElement)
-      {
-        TextElement tx = (TextElement) e;
-        tx.setFont(new Font (fontname, Font.PLAIN, 10));
-      }
+      TextElement tx = (TextElement) e;
+      tx.setFont (new Font (fontname, Font.PLAIN, 10));
     }
   }
 
   /**
-   *
+   * Performs the functions initialisation. The initialisation will fail, if the
+   * function has no valid name or the required parameter "element" is missing.
+   * <p>
+   * @see setElement
    */
   public void initialize () throws FunctionInitializeException
   {
-    super.initialize();
-    if (getProperty("element") == null)
-      throw new FunctionInitializeException("Element name must be specified");
+    super.initialize ();
+    if (getProperty ("element") == null)
+      throw new FunctionInitializeException ("Element name must be specified");
   }
 
+  /**
+   * Defines the name of the text element that gets it's font altered. If the element
+   * does not exist or is no text element, the function will do nothing.
+   * <p>
+   * This functions property is reachable by using the key "element" on getProperty.
+   */
   public void setElement (String name)
   {
-    setProperty("element", name);
+    setProperty ("element", name);
   }
 
+  /**
+   * Returns the name of the element that should get the font set. Returns an empty string,
+   * if the property is not set.
+   */
   public String getElement ()
   {
-    return getProperty("element", "");
+    return getProperty ("element", "");
   }
 
+  /**
+   * Returns the value calculated by this function. As this function does not calcalate values,
+   * this method does always return null.
+   */
   public Object getValue ()
   {
     return null;

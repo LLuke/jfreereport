@@ -34,17 +34,26 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
 
+/**
+ * The zoomIn action is used to increase the ZoomFactor of the report. Zooming
+ * can be increased in predefined steps from 25% to 400%. This abstract base class
+ * implements the locales specific initialisations, actual work is done in an internal
+ * subclass in PreviewFrame.
+ */
 public abstract class ZoomInAction extends AbstractAction
 {
+  /**
+   * Constructs a new action.
+   */
   public ZoomInAction (ResourceBundle resources)
   {
-    putValue(Action.NAME, resources.getString("action.zoomIn.name"));
-    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.zoomIn.description"));
-    putValue(Action.MNEMONIC_KEY, resources.getObject("action.zoomIn.mnemonic"));
-    putValue(Action.ACCELERATOR_KEY, resources.getObject("action.zoomIn.accelerator"));
-    putValue(Action.SMALL_ICON, resources.getObject("action.zoomIn.small-icon"));
-    putValue("ICON24", resources.getObject("action.zoomIn.icon"));
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMIN_COMMAND);
+    putValue (Action.NAME, resources.getString ("action.zoomIn.name"));
+    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.zoomIn.description"));
+    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.zoomIn.mnemonic"));
+    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.zoomIn.accelerator"));
+    putValue (Action.SMALL_ICON, resources.getObject ("action.zoomIn.small-icon"));
+    putValue ("ICON24", resources.getObject ("action.zoomIn.icon"));
+    putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMIN_COMMAND);
   }
 
 }

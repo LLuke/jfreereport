@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PrintAction.java,v 1.4 2002/05/26 20:05:12 taqua Exp $
+ * $Id: PrintAction.java,v 1.5 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -36,19 +36,16 @@
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
  * 16-May-2002 : Load images from jar (JS)
- *
+ * 05-Jun-2002 : Documentation, removed unused imports.
  */
 
 package com.jrefinery.report.action;
 
-import java.util.ResourceBundle;
+import com.jrefinery.report.JFreeReportConstants;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-
-import com.jrefinery.report.JFreeReportConstants;
+import java.util.ResourceBundle;
 
 /**
  * Print action for a print preview frame.
@@ -59,14 +56,14 @@ public abstract class PrintAction extends AbstractAction implements Runnable
   /**
    * Constructs a new action.
    */
-  public PrintAction(ResourceBundle resources)
+  public PrintAction (ResourceBundle resources)
   {
-    this.putValue(Action.NAME, resources.getString("action.print.name"));
-    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.print.description"));
-    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.print.mnemonic"));
-    this.putValue(Action.ACCELERATOR_KEY, resources.getObject("action.print.accelerator"));
-    this.putValue(Action.SMALL_ICON, resources.getObject("action.print.small-icon"));
-    this.putValue("ICON24", resources.getObject("action.print.icon"));
-    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.PRINT_COMMAND);
+    this.putValue (Action.NAME, resources.getString ("action.print.name"));
+    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.print.description"));
+    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.print.mnemonic"));
+    this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.print.accelerator"));
+    this.putValue (Action.SMALL_ICON, resources.getObject ("action.print.small-icon"));
+    this.putValue ("ICON24", resources.getObject ("action.print.icon"));
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.PRINT_COMMAND);
   }
 }

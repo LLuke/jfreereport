@@ -119,11 +119,11 @@ public class SampleData3 extends AbstractTableModel
     if (column == 7)
     {
       Integer i = (Integer) data[row][5];
-      Double  d = (Double) data[row][6];
-      return new Double (i.intValue() * d.doubleValue());
+      Double d = (Double) data[row][6];
+      return new Double (i.intValue () * d.doubleValue ());
     }
     else
-    return data[row][column];
+      return data[row][column];
   }
 
 }

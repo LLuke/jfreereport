@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageSetupAction.java,v 1.4 2002/05/26 20:05:12 taqua Exp $
+ * $Id: PageSetupAction.java,v 1.5 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -36,18 +36,16 @@
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
  * 16-May-2002 : Load images from jar (JS)
- * 
+ * 05-Jun-2002 : Documentation.
  */
 
 package com.jrefinery.report.action;
 
-import java.util.ResourceBundle;
+import com.jrefinery.report.JFreeReportConstants;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-
-import com.jrefinery.report.JFreeReportConstants;
+import java.util.ResourceBundle;
 
 /**
  * Page setup action for a print preview frame.
@@ -58,13 +56,13 @@ public abstract class PageSetupAction extends AbstractAction implements Runnable
   /**
    * Constructs a new action.
    */
-  public PageSetupAction(ResourceBundle resources)
+  public PageSetupAction (ResourceBundle resources)
   {
-    this.putValue(Action.NAME, resources.getString("action.page-setup.name"));
-    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.page-setup.description"));
-    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.page-setup.mnemonic"));
-    this.putValue(Action.SMALL_ICON, resources.getObject("action.page-setup.small-icon"));
-    this.putValue("ICON24", resources.getObject("action.page-setup.icon"));
-    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.PAGE_SETUP_COMMAND);
+    this.putValue (Action.NAME, resources.getString ("action.page-setup.name"));
+    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.page-setup.description"));
+    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.page-setup.mnemonic"));
+    this.putValue (Action.SMALL_ICON, resources.getObject ("action.page-setup.small-icon"));
+    this.putValue ("ICON24", resources.getObject ("action.page-setup.icon"));
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.PAGE_SETUP_COMMAND);
   }
 }

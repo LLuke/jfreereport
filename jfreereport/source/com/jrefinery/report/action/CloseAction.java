@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.5 2002/05/26 20:05:12 taqua Exp $
+ * $Id: CloseAction.java,v 1.6 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -36,35 +36,33 @@
  * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
  *               target environment. (TM)
  * 16-May-2002 : Load images from jar (JS)
- *
+ * 04-Jun-2002 : Documentation.
  */
 
 package com.jrefinery.report.action;
 
-import java.util.ResourceBundle;
+import com.jrefinery.report.JFreeReportConstants;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-
-import com.jrefinery.report.JFreeReportConstants;
+import java.util.ResourceBundle;
 
 /**
  * An action for closing the print preview frame.
  */
 public abstract class CloseAction extends AbstractAction
 {
-
   /**
    * Constructs a new action.
    *
    * @param resources Localised resources for the action.
    */
-  public CloseAction(ResourceBundle resources)
+  public CloseAction (ResourceBundle resources)
   {
-    this.putValue(Action.NAME, resources.getString("action.close.name"));
-    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.close.description"));
-    this.putValue(Action.MNEMONIC_KEY, resources.getObject("action.close.mnemonic"));
-    this.putValue(Action.ACCELERATOR_KEY, resources.getObject("action.close.accelerator"));
-    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
+    this.putValue (Action.NAME, resources.getString ("action.close.name"));
+    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.close.description"));
+    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.close.mnemonic"));
+    this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.close.accelerator"));
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
   }
 }

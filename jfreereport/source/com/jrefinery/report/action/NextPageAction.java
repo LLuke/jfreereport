@@ -36,6 +36,9 @@ import java.util.ResourceBundle;
 
 public abstract class NextPageAction extends AbstractAction
 {
+  /**
+   * Constructs a new action.
+   */
   public NextPageAction (ResourceBundle resources)
   {
     putValue(Action.NAME, resources.getString("action.forward.name"));

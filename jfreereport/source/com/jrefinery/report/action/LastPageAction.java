@@ -24,34 +24,40 @@
  * LastPageAction.java
  * -------------------
  * Original Author:  Joerg Schoemer;
- * 
+ *
+ * 29-May-2002 : Initial version
+ * 05-Jun-2002 : Documentation update.
  */
 
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.JFreeReportConstants;
 
-import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import java.util.ResourceBundle;
 
 /**
- * @author js
+ * Creates a new LastPageAction used by the PreviewPane to directly jump to the last
+ * page of the report. This abstract class is used for initializing the default locales,
+ * the actual work is done in an internal subclass in PreviewFrame.
  *
+ * @author js
  */
 public abstract class LastPageAction extends AbstractAction
 {
-
-  public LastPageAction(ResourceBundle resources)
+  /**
+   * Constructs a new action.
+   */
+  public LastPageAction (ResourceBundle resources)
   {
-    putValue(Action.NAME, resources.getString("action.lastpage.name"));
-    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.lastpage.description"));
-    putValue(Action.MNEMONIC_KEY, resources.getObject("action.lastpage.mnemonic"));
-    putValue(Action.ACCELERATOR_KEY, resources.getObject("action.lastpage.accelerator"));
-    putValue(Action.SMALL_ICON, resources.getObject("action.lastpage.small-icon"));
-    putValue("ICON24", resources.getObject("action.lastpage.icon"));
+    putValue (Action.NAME, resources.getString ("action.lastpage.name"));
+    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.lastpage.description"));
+    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.lastpage.mnemonic"));
+    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.lastpage.accelerator"));
+    putValue (Action.SMALL_ICON, resources.getObject ("action.lastpage.small-icon"));
+    putValue ("ICON24", resources.getObject ("action.lastpage.icon"));
 
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.LASTPAGE_COMMAND);
+    putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.LASTPAGE_COMMAND);
   }
 }

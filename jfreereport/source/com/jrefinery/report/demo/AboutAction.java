@@ -28,25 +28,25 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
+ * $Id: AboutAction.java,v 1.5 2002/05/31 19:15:13 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
- *
+ * 05-Jun-2002 : Documentation
  */
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.preview.PreviewFrame;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
-import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
+/**
+ * The About action is used to show some information about the demo programm of JFreeReport.
+ * <p>
+ * This abstract class handles the locales specific initialisation.
+ */
 public abstract class AboutAction extends AbstractAction
 {
   /**
@@ -54,22 +54,11 @@ public abstract class AboutAction extends AbstractAction
    */
   public AboutAction (ResourceBundle resources)
   {
-    String name = resources.getString ("action.about.name");
-    this.putValue (Action.NAME, name);
-
-    String description = resources.getString ("action.about.description");
-    this.putValue (Action.SHORT_DESCRIPTION, description);
-
-    Integer mnemonic = (Integer) resources.getObject ("action.about.mnemonic");
-    this.putValue (Action.MNEMONIC_KEY, mnemonic);
-
-    ImageIcon icon16 = (ImageIcon) resources.getObject("action.about.small-icon");
-    this.putValue (Action.SMALL_ICON, icon16);
-
-    ImageIcon icon24 = (ImageIcon) resources.getObject("action.about.icon");
-    this.putValue ("ICON24", icon24);
-
+    this.putValue (Action.NAME, resources.getString ("action.about.name"));
+    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.about.description"));
+    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.about.mnemonic"));
+    this.putValue (Action.SMALL_ICON, resources.getObject ("action.about.small-icon"));
+    this.putValue ("ICON24", resources.getObject ("action.about.icon"));
     this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.ABOUT_COMMAND);
-
   }
 }

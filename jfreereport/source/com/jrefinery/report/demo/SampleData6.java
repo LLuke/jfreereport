@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
+ * $Id: SampleData6.java,v 1.1 2002/05/31 19:15:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,56 +43,72 @@ import javax.swing.table.AbstractTableModel;
 /**
  * A sample data source for the JFreeReport Demo Application.
  */
-public class SampleData6 extends AbstractTableModel {
+public class SampleData6 extends AbstractTableModel
+{
 
-    /**
-     * Default constructor - builds a sample data source.
-     */
-    public SampleData6() {
-    }
+  /**
+   * Default constructor - builds a sample data source.
+   */
+  public SampleData6 ()
+  {
+  }
 
-    /**
-     * Returns the number of rows in the table model.
-     */
-    public int getRowCount() {
-        return 200000;
-    }
+  /**
+   * Returns the number of rows in the table model.
+   */
+  public int getRowCount ()
+  {
+    return 200000;
+  }
 
-    /**
-     * Returns the number of columns in the table model.
-     */
-    public int getColumnCount() {
-        return 5;
-    }
+  /**
+   * Returns the number of columns in the table model.
+   */
+  public int getColumnCount ()
+  {
+    return 5;
+  }
 
-    /**
-     * Returns the class of the data in the specified column.
-     */
-    public Class getColumnClass(int columnIndex) {
-        if (columnIndex==3) return Integer.class;
-        else if (columnIndex==4) return Double.class;
-        else return String.class;
-    }
+  /**
+   * Returns the class of the data in the specified column.
+   */
+  public Class getColumnClass (int columnIndex)
+  {
+    if (columnIndex == 3)
+      return Integer.class;
+    else if (columnIndex == 4)
+      return Double.class;
+    else
+      return String.class;
+  }
 
-    /**
-     * Returns the name of the specified column.
-     */
-    public String getColumnName(int columnIndex) {
-        if (columnIndex==0) return "Name";
-        else if (columnIndex==1) return "Color";
-        else if (columnIndex==2) return "Letter";
-        else if (columnIndex==3) return "Integer";
-        else if (columnIndex==4) return "Double";
-        else return null;
-    }
+  /**
+   * Returns the name of the specified column.
+   */
+  public String getColumnName (int columnIndex)
+  {
+    if (columnIndex == 0)
+      return "Name";
+    else if (columnIndex == 1)
+      return "Color";
+    else if (columnIndex == 2)
+      return "Letter";
+    else if (columnIndex == 3)
+      return "Integer";
+    else if (columnIndex == 4)
+      return "Double";
+    else
+      return null;
+  }
 
-    /**
-     * Returns the data value at the specified row and column.
-     */
-    public Object getValueAt(int row, int column) {
-      Integer number = new Integer(row);
-      Object[] rowdata = new Object[] { "One"+ number.toString(), "Red"+ number.toString(), "A"+ number.toString(), new Integer(1), new Double(1.1) };
-      return rowdata[column];
-    }
+  /**
+   * Returns the data value at the specified row and column.
+   */
+  public Object getValueAt (int row, int column)
+  {
+    Integer number = new Integer (row);
+    Object[] rowdata = new Object[]{"One" + number.toString (), "Red" + number.toString (), "A" + number.toString (), new Integer (1), new Double (1.1)};
+    return rowdata[column];
+  }
 
 }

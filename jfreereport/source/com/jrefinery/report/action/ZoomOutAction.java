@@ -34,17 +34,26 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
 
+/**
+ * The zoomOut action is used to decrease the ZoomFactor of the report. Zooming
+ * can be increased in predefined steps from 25% to 400%. This abstract base class
+ * implements the locales specific initialisations, actual work is done in an internal
+ * subclass in PreviewFrame.
+ */
 public abstract class ZoomOutAction extends AbstractAction
 {
+  /**
+   * Constructs a new action.
+   */
   public ZoomOutAction (ResourceBundle resources)
   {
-    putValue(Action.NAME, resources.getString("action.zoomOut.name"));
-    putValue(Action.SHORT_DESCRIPTION, resources.getString("action.zoomOut.description"));
-    putValue(Action.MNEMONIC_KEY, resources.getObject("action.zoomOut.mnemonic"));
-    putValue(Action.ACCELERATOR_KEY, resources.getObject("action.zoomOut.accelerator"));
-    putValue(Action.SMALL_ICON, resources.getObject("action.zoomOut.small-icon"));
-    putValue("ICON24", resources.getObject("action.zoomOut.icon"));
-    putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMOUT_COMMAND);
+    putValue (Action.NAME, resources.getString ("action.zoomOut.name"));
+    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.zoomOut.description"));
+    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.zoomOut.mnemonic"));
+    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.zoomOut.accelerator"));
+    putValue (Action.SMALL_ICON, resources.getObject ("action.zoomOut.small-icon"));
+    putValue ("ICON24", resources.getObject ("action.zoomOut.icon"));
+    putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.ZOOMOUT_COMMAND);
   }
 
 }
