@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.3 2002/05/14 21:35:03 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.4 2002/05/16 13:39:38 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,6 +66,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.JFreeReport;
@@ -510,24 +511,6 @@ public class JFreeReportDemo extends JFrame implements WindowListener
   {
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-
-  /**
-   * The starting point for the demonstration application.
-   */
-  public static void main(String[] args)
-  {
-    Log.addTarget(new SystemOutLogTarget());
-    String baseName = "com.jrefinery.report.demo.resources.DemoResources";
-    ResourceBundle resources = ResourceBundle.getBundle(baseName);
-
-    JFreeReportDemo frame = new JFreeReportDemo(resources);
-    frame.pack();
-    JRefineryUtilities.centerFrameOnScreen(frame);
-    frame.setVisible(true);
-  }
-  
   /**
    * @see JFrame#processWindowEvent(WindowEvent)
    */
@@ -538,5 +521,30 @@ public class JFreeReportDemo extends JFrame implements WindowListener
         super.processWindowEvent(windowEvent);
       }
     }
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * The starting point for the demonstration application.
+   */
+  public static void main(String[] args)
+  {
+    try
+    {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    }
+    catch (Exception e)
+    {
+    }
+    Log.addTarget(new SystemOutLogTarget());
+    String baseName = "com.jrefinery.report.demo.resources.DemoResources";
+    ResourceBundle resources = ResourceBundle.getBundle(baseName);
+
+    JFreeReportDemo frame = new JFreeReportDemo(resources);
+    frame.pack();
+    JRefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
   }
 }
