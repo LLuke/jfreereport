@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 7:06:26 PM
  *
- * $Id: ReportDescriptionWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.3 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -66,7 +66,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
     writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-    StyleWriter defaultStyleWriter = new StyleWriter(getReportWriter(), band.getStyle(), null);
+    StyleWriter defaultStyleWriter = new StyleWriter(getReportWriter(), band.getBandDefaults(), null);
     defaultStyleWriter.write(writer);
     writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
 

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 5:11:51 PM
  *
- * $Id: PropertyHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.2 2003/01/23 18:07:44 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -17,7 +17,7 @@ import com.jrefinery.report.util.CharacterEntityParser;
 
 public class PropertyHandler implements ReportDefinitionHandler
 {
-  public static final String PROPERTY = "property";
+  public static final String PROPERTY_TAG = "property";
   public static final String NAME_ATTR = "name";
 
   private Parser parser;
@@ -38,7 +38,7 @@ public class PropertyHandler implements ReportDefinitionHandler
 
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
-    if (tagName.equals(PROPERTY) == false)
+    if (tagName.equals(PROPERTY_TAG) == false)
       throw new SAXException("Expected 'property' tag");
 
     name = attrs.getValue(NAME_ATTR);
@@ -59,7 +59,7 @@ public class PropertyHandler implements ReportDefinitionHandler
 
   public void endElement(String tagName) throws SAXException
   {
-    if (tagName.equals(PROPERTY))
+    if (tagName.equals(PROPERTY_TAG))
     {
       properties.setProperty(name, entityParser.decodeEntities(buffer.toString()));
       name = null;

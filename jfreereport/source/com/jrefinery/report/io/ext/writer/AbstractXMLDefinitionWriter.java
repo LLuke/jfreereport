@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 1:01:18 PM
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.3 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -21,6 +21,7 @@ import com.jrefinery.report.io.ext.ReportDescriptionHandler;
 import com.jrefinery.report.io.ext.StyleSheetHandler;
 import com.jrefinery.report.io.ext.StylesHandler;
 import com.jrefinery.report.io.ext.TemplatesHandler;
+import com.jrefinery.report.io.ext.PropertyHandler;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -56,7 +57,7 @@ public abstract class AbstractXMLDefinitionWriter
       safeTags.add(BandHandler.ELEMENT_TAG);
 
       safeTags.add(CompoundObjectHandler.COMPOUND_OBJECT_TAG);
-      safeTags.add(CompoundObjectHandler.COMPOUND_OBJECT_TAG, false, true);
+      safeTags.add(CompoundObjectHandler.BASIC_OBJECT_TAG, false, true);
 
       safeTags.add(DataSourceHandler.DATASOURCE_TAG);
 
@@ -93,10 +94,11 @@ public abstract class AbstractXMLDefinitionWriter
       safeTags.add(StylesHandler.STYLE_TAG);
 
       safeTags.add(StyleSheetHandler.COMPOUND_KEY_TAG);
-      safeTags.add(StyleSheetHandler.COMPOUND_KEY_TAG, false, true);
+      safeTags.add(StyleSheetHandler.BASIC_KEY_TAG, false, true);
       safeTags.add(StyleSheetHandler.EXTENDS_TAG);
 
       safeTags.add(TemplatesHandler.TEMPLATE_TAG);
+      safeTags.add(PropertyHandler.PROPERTY_TAG);
     }
     return safeTags;
   }
