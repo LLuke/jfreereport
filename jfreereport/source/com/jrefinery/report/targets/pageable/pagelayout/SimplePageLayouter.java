@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.10 2002/12/13 10:43:45 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.11 2002/12/18 20:31:47 taqua Exp $
  *
  * Changes
  * -------
@@ -346,8 +346,8 @@ public class SimplePageLayouter extends PageLayouter
       Band b = getReport().getReportFooter();
 
       // if the band was printed on that page without PAGEBREAK_BEFORE
-      // force the final pagebreak.
-      if (printBand(b))
+      // the final pagebreak is forced later ..
+      if (printBand(b) && isPageEnded() == false)
       {
         createSaveState(null);
         endPage(ENDPAGE_FORCED);
@@ -716,16 +716,18 @@ public class SimplePageLayouter extends PageLayouter
 
     Log.debug ("State: " + anchestor.getCurrentPage() + " " + anchestor.getCurrentDataItem() + " " + anchestor.getDataRow());
     startPage(anchestor);
+
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
     {
       print(state.getBand(), false);
     }
     clearSaveState();
-    // this is the last valid state for the reporting, force the last pagebreak ..
-    if (anchestor instanceof PostReportFooterState)
+    // this is the last valid state for the reporting,
+    // force the last pagebreak if the reportfooter was printed here.
+    if (anchestor instanceof PostReportFooterState && state.getBand() != null)
     {
-      createSaveState(new Band());
+      createSaveState(null);
       endPage(ENDPAGE_FORCED);
     }
   }
