@@ -329,8 +329,8 @@
           <compound-object name="value" class="java.awt.geom.Line2D$Float">
             <basic-object name="x2">100.0</basic-object>
             <basic-object name="x1">0.0</basic-object>
-            <basic-object name="y2">30.0</basic-object>
-            <basic-object name="y1">30.0</basic-object>
+            <basic-object name="y2">0.0</basic-object>
+            <basic-object name="y1">0.0</basic-object>
           </compound-object>
         </datasource>
       </element>
@@ -517,8 +517,8 @@
           <compound-object name="value" class="java.awt.geom.Line2D$Float">
             <basic-object name="x2">100.0</basic-object>
             <basic-object name="x1">0.0</basic-object>
-            <basic-object name="y2">16.0</basic-object>
-            <basic-object name="y1">16.0</basic-object>
+            <basic-object name="y2">0.0</basic-object>
+            <basic-object name="y1">0.0</basic-object>
           </compound-object>
         </datasource>
       </element>
@@ -697,8 +697,8 @@
               <compound-object name="value" class="java.awt.geom.Line2D$Float">
                 <basic-object name="x2">100.0</basic-object>
                 <basic-object name="x1">0.0</basic-object>
-                <basic-object name="y2">30.0</basic-object>
-                <basic-object name="y1">30.0</basic-object>
+                <basic-object name="y2">0.0</basic-object>
+                <basic-object name="y1">0.0</basic-object>
               </compound-object>
             </datasource>
           </element>
@@ -952,8 +952,8 @@
           <compound-object name="value" class="java.awt.geom.Line2D$Float">
             <basic-object name="x2">100.0</basic-object>
             <basic-object name="x1">0.0</basic-object>
-            <basic-object name="y2">25.0</basic-object>
-            <basic-object name="y1">25.0</basic-object>
+            <basic-object name="y2">0.0</basic-object>
+            <basic-object name="y1">0.0</basic-object>
           </compound-object>
         </datasource>
       </element>
