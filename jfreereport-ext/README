@@ -1,0 +1,26 @@
+JFreeReport extensions
+----------------------
+
+The classes in this subproject extend JFreeReport with additional 
+functionality. While the base package uses only a limited number of 
+external libraries to perform the report generation (and remains small
+and clean), most advanced usage scenarios require additional functionality 
+which is usually provided by an almost infinite number of external libraries.
+
+The extensions here rely on JFreeReport while the base classes keep their
+clean and simple structures. Hopefully most classes in this subproject will
+keep a modular structure so that the user can remove unneeded parts easily.
+
+All extension packages will be located under the package 
+com.jrefinery.report.ext.
+
+Note:
+When adding functionality that requires additional libraries make sure that
+all depencies are documented.
+
+
+JFreeReport Tests:
+------------------
+
+JUnit test will be located in com.jrefinery.report.ext.junit and get removed
+from the base package.
