@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicJFreeChartDemo.java,v 1.2 2005/01/31 17:14:41 taqua Exp $
+ * $Id: BasicJFreeChartDemo.java,v 1.3 2005/02/19 20:12:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,6 +44,7 @@ import java.awt.geom.Point2D;
 import java.net.URL;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.Action;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -69,7 +70,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
   {
     public PreviewAPIReportAction()
     {
-      putValue(NAME, "Preview API Report");
+      putValue(Action.NAME, "Preview API Report");
     }
 
     /**
@@ -89,7 +90,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
 
     public PreviewXMLReportAction(final String resourceName, final String actionName)
     {
-      putValue(NAME, actionName);
+      putValue(Action.NAME, actionName);
       this.resourceName = resourceName;
     }
 
