@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class HtmlImageCellData extends HtmlCellData
       if (href.isExternal())
       {
         pout.print("<img src=\"");
-        pout.print(HtmlEncoderUtil.encodeUTF(href.getReference()));
+        pout.print(href.getReference());
         pout.print("\" width=\"");
         final Rectangle2D bounds = image.getBoundsScaled();
         pout.write(String.valueOf((int) bounds.getWidth()));
