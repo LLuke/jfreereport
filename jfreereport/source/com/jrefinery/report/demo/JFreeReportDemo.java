@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.8 2002/05/21 23:06:18 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.9 2002/05/23 22:32:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -73,6 +73,7 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.SystemOutLogTarget;
+import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.ui.JRefineryUtilities;
 import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.about.AboutFrame;
@@ -171,14 +172,18 @@ public class JFreeReportDemo extends JFrame implements WindowListener
 
     L1R2ButtonPanel buttons = new L1R2ButtonPanel("Help", "Preview", "Close");
 
+    FloatingButtonEnabler fle = new FloatingButtonEnabler();
     JButton helpButton = buttons.getLeftButton();
     helpButton.setAction(aboutAction);
+    fle.addButton(helpButton);
 
     JButton previewButton = buttons.getRightButton1();
     previewButton.setAction(previewAction);
+    fle.addButton(previewButton);
 
     JButton closeButton = buttons.getRightButton2();
     closeButton.setAction(closeAction);
+    fle.addButton(closeButton);
 
     buttons.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 4));
     content.add(buttons, BorderLayout.SOUTH);
@@ -398,7 +403,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
 
     // create the menus
     JMenuBar menuBar = new JMenuBar();
-
+    menuBar.setBorder(null);
     // first the file menu
     JMenu fileMenu = createJMenuItem("menu.file");
 
@@ -444,10 +449,13 @@ public class JFreeReportDemo extends JFrame implements WindowListener
   private JToolBar createToolBar(ResourceBundle resources)
   {
     JToolBar toolbar = new JToolBar();
+    toolbar.setBorder(null);
 
-    toolbar.add(previewAction);
+    FloatingButtonEnabler fle = new FloatingButtonEnabler();
+
+    fle.addButton(toolbar.add(previewAction));
     toolbar.addSeparator();
-    toolbar.add(aboutAction);
+    fle.addButton(toolbar.add(aboutAction));
 
     return toolbar;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.7 2002/05/18 16:23:49 taqua Exp $
+ * $Id: ReportState.java,v 1.8 2002/05/26 15:07:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -87,7 +87,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       setCurrentPage(1);
 
       // A PropertyHandler should set the properties.
-      report.setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
+      setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
 
       // Initialize the report before any band (and especially before the pageheader)
       // is printed.
@@ -770,6 +770,16 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public ReportProperties getProperties ()
   {
     return reportProperties;
+  }
+
+  /**
+   * @returns true, if this is a prepare run of the report engine. This state is used
+   * to do repagination, and is only done when the pageformat changes.
+   */
+  public boolean isPrepareRun ()
+  {
+    Boolean bool = (Boolean) getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+    return bool.booleanValue();
   }
 
   /**

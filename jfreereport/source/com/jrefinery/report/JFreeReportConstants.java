@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.3 2002/05/14 21:35:02 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.4 2002/05/26 15:07:35 taqua Exp $
  *
  * Changes
  * -------
@@ -50,12 +50,18 @@ public interface JFreeReportConstants
   public static final String REPORT_DATE_PROPERTY = "report.date";
   public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
   public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
+  public static final String REPORT_PREPARERUN_PROPERTY = "report.preparerun";
 
   public static final String SAVE_AS_COMMAND = "SAVE AS";
   public static final String PAGE_SETUP_COMMAND = "PAGE SETUP";
   public static final String PRINT_COMMAND = "PRINT";
   public static final String ABOUT_COMMAND = "ABOUT";
   public static final String CLOSE_COMMAND = "CLOSE";
+
+  public static final String NEXTPAGE_COMMAND = "PREVPAGE";
+  public static final String PREVPAGE_COMMAND = "NEXTPAGE";
+  public static final String ZOOMIN_COMMAND = "ZOOMIN";
+  public static final String ZOOMOUT_COMMAND = "ZOOMOUT";
 
   /** A useful constant that signals that a page is full. */
   public static final boolean PAGE_FULL = true;

@@ -1,12 +1,14 @@
 package com.jrefinery.report.resources;
 
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.G2OutputTarget;
 
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.util.ListResourceBundle;
 import java.net.URL;
 
@@ -62,10 +64,34 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.about.small-icon", getIcon("com/jrefinery/report/resources/About16.gif")},
       { "action.about.icon", getIcon("com/jrefinery/report/resources/About24.gif")},
 
+      { "action.back.name", "Back"},
+      { "action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
+      { "action.back.description", "Switch to the previous page"},
+      { "action.back.small-icon", getIcon("com/jrefinery/report/resources/Back16.gif") },
       { "action.back.icon", getIcon("com/jrefinery/report/resources/Back24.gif") },
+
+      { "action.forward.name", "Forward"},
+      { "action.forward.description", "Switch to the next page"},
+      { "action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
+      { "action.forward.small-icon", getIcon("com/jrefinery/report/resources/Forward16.gif") },
       { "action.forward.icon", getIcon("com/jrefinery/report/resources/Forward24.gif") },
+
+      { "action.zoomIn.name", "Zoom In"},
+      { "action.zoomIn.description", "Increase zoom"},
+      { "action.zoomIn.mnemonic", new Integer (KeyEvent.VK_PLUS)},
+      { "action.zoomIn.small-icon", getIcon("com/jrefinery/report/resources/ZoomIn16.gif") },
       { "action.zoomIn.icon", getIcon("com/jrefinery/report/resources/ZoomIn24.gif") },
+
+      { "action.zoomOut.name", "Zoom Out"},
+      { "action.zoomOut.description", "Decrease Zoom"},
+      { "action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
+      { "action.zoomOut.small-icon", getIcon("com/jrefinery/report/resources/ZoomOut16.gif") },
       { "action.zoomOut.icon", getIcon("com/jrefinery/report/resources/ZoomOut24.gif") },
+
+      { "action.information.name", "Information"},
+      { "action.information.mnemonic", new Integer (0)},
+      { "action.information.description", "Informations about JFreeReport"},
+      { "action.information.small-icon", getIcon("com/jrefinery/report/resources/Information16.gif") },
       { "action.information.icon", getIcon("com/jrefinery/report/resources/Information24.gif") },
 
     // preview frame...
@@ -75,15 +101,8 @@ public class JFreeReportResources extends ListResourceBundle
       { "menu.file.name", "File"},
       { "menu.file.mnemonic", new Character ('F')},
   
-      { "menu.file.exit", "Exit"},
-      { "menu.file.exit.mnemonic", new Character ('x')},
-  
       { "menu.help.name", "Help"},
       { "menu.help.mnemonic", new Character ('H')},
-  
-    // dialog messages...
-      { "dialog.exit.title", "Confirm exit..."},
-      { "dialog.exit.message", "Are you sure you want to exit?"},
     };
   
   /**
@@ -97,7 +116,7 @@ public class JFreeReportResources extends ListResourceBundle
     if (in == null)
     {
       Log.debug ("Unable to load file: " + filename);
-      return new ImageIcon();
+      return new ImageIcon(new BufferedImage (BufferedImage.TYPE_INT_RGB, 1, 1));
     }
     Image img = Toolkit.getDefaultToolkit().getImage(in);
     return new ImageIcon(img);

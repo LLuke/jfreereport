@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.9 2002/05/21 23:06:18 taqua Exp $
+ * $Id: JFreeReport.java,v 1.10 2002/05/26 15:07:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -110,7 +110,7 @@ public class JFreeReport implements JFreeReportConstants
   /** The table model containing the data for the report. */
   private TableModel data;
 
-  /** 
+  /**
    * The page format used for the report (determines the page size, and therefore the report
    * width). */
   private PageFormat defaultPageFormat;
@@ -541,6 +541,7 @@ public class JFreeReport implements JFreeReportConstants
     ReportProcessor prc = new ReportProcessor (output, false, getPageFooter ());
     state = state.advance (prc);
 
+    state.setProperty(REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
     pageStates.add (state);
     state = processPage (output, state, false);
     while (!state.isFinish ())
@@ -556,6 +557,7 @@ public class JFreeReport implements JFreeReportConstants
     }
     state.setProperty(REPORT_PAGECOUNT_PROPERTY, new Integer (state.getCurrentPage() - 1));
     state.setProperty(REPORT_PAGEFORMAT_PROPERTY, output.getPageFormat());
+    state.setProperty(REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
     return pageStates;
   }
 

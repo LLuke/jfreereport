@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: CloseAction.java,v 1.3 2002/05/16 13:35:27 jaosch Exp $
  *
  * Changes
  * -------
@@ -71,6 +71,5 @@ public abstract class CloseAction extends AbstractAction
     this.putValue(Action.MNEMONIC_KEY, mnemonic);
 
     this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
-
   }
 }

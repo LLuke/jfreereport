@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.8 2002/05/26 13:47:39 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.9 2002/05/26 15:07:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -96,11 +96,16 @@ import com.jrefinery.report.targets.G2OutputTarget;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.CloseAction;
 import com.jrefinery.report.action.PageSetupAction;
 import com.jrefinery.report.action.PrintAction;
 import com.jrefinery.report.action.SaveAsAction;
+import com.jrefinery.report.action.NextPageAction;
+import com.jrefinery.report.action.PreviousPageAction;
+import com.jrefinery.report.action.ZoomInAction;
+import com.jrefinery.report.action.ZoomOutAction;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.ui.ExtensionFileFilter;
@@ -140,6 +145,59 @@ public class PreviewFrame
       handleSaveAs();
     }
   }
+
+  private class DefaultNextPageAction extends NextPageAction
+  {
+    public DefaultNextPageAction()
+    {
+      super(getResources());
+    }
+
+    public void actionPerformed (ActionEvent e)
+    {
+      increasePageNumber();
+    }
+  }
+
+  private class DefaultPreviousPageAction extends PreviousPageAction
+  {
+    public DefaultPreviousPageAction()
+    {
+      super(getResources());
+    }
+
+    public void actionPerformed (ActionEvent e)
+    {
+      decreasePageNumber();
+    }
+  }
+
+  private class DefaultZoomInAction extends ZoomInAction
+  {
+    public DefaultZoomInAction()
+    {
+      super(getResources());
+    }
+
+    public void actionPerformed (ActionEvent e)
+    {
+      increaseZoom();
+    }
+  }
+
+  private class DefaultZoomOutAction extends ZoomOutAction
+  {
+    public DefaultZoomOutAction()
+    {
+      super(getResources());
+    }
+
+    public void actionPerformed (ActionEvent e)
+    {
+      decreaseZoom();
+    }
+  }
+
 
   private class DefaultPrintAction extends PrintAction implements Runnable
   {
@@ -222,6 +280,7 @@ public class PreviewFrame
     }
   }
 
+
   public static final String BASE_RESOURCE_CLASS =
     "com.jrefinery.report.resources.JFreeReportResources";
 
@@ -230,22 +289,16 @@ public class PreviewFrame
   private Action pageSetupAction;
   private Action printAction;
   private Action closeAction;
+  private Action nextPageAction;
+  private Action previousPageAction;
+  private Action zoomInAction;
+  private Action zoomOutAction;
 
   /** The available zoom factors. */
   private static final double[] zoomFactors = { 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 4.0 };
 
   /** The default zoom index (corresponds to a zoomFactor of 1.0. */
   private static final int DEFAULT_ZOOM_INDEX = 3;
-
-  /** Internal reference to enable and disable this button */
-  private JButton back;
-
-  /** Internal reference to enable and disable this button */
-  private JButton forward;
-
-  private JButton zoomIn;
-
-  private JButton zoomOut;
 
   /** The combobox enables a direct selection of the desired zoomFactor */
   private JComboBox zoomSelect;
@@ -256,12 +309,10 @@ public class PreviewFrame
   /** The pane that displays the report within the frame. */
   private ReportPane reportPane;
 
-  /** The preferred size of the frame. */
-
-  //protected Dimension preferredSize;
-
   /** Locale-specific resources. */
   private ResourceBundle resources;
+
+  private boolean largeIconsEnabled;
 
   private PageFormat pageFormat;
   private JFreeReport report;
@@ -306,6 +357,7 @@ public class PreviewFrame
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     JScrollPane s1 = new JScrollPane(reportPaneHolder);
+    s1.setBorder(null);
     JPanel scrollPaneHolder = new JPanel ();
     scrollPaneHolder.setLayout(new BorderLayout());
     scrollPaneHolder.add (s1, BorderLayout.CENTER);
@@ -380,23 +432,7 @@ public class PreviewFrame
 
     String command = event.getActionCommand();
 
-    if (command.equals("Back"))
-    {
-      decreasePageNumber();
-    }
-    else if (command.equals("Forward"))
-    {
-      increasePageNumber();
-    }
-    else if (command.equals("ZoomIn"))
-    {
-      increaseZoom();
-    }
-    else if (command.equals("ZoomOut"))
-    {
-      decreaseZoom();
-    }
-    else if (command.equals("ZoomSelect"))
+    if (command.equals("ZoomSelect"))
     {
       setZoomFactor(zoomSelect.getSelectedIndex());
     }
@@ -479,6 +515,7 @@ public class PreviewFrame
     PageFormat pf = pj.pageDialog(reportPane.getOutputTarget().getPageFormat());
     reportPane.setPageFormat(pf);
     validate();
+    pack ();
   }
 
   /**
@@ -602,6 +639,30 @@ public class PreviewFrame
     printAction = createDefaultPrintAction();
     aboutAction = createDefaultAboutAction();
     closeAction = createDefaultCloseAction();
+    nextPageAction = createDefaultNextPageAction();
+    previousPageAction = createDefaultPreviousPageAction();
+    zoomInAction = createDefaultZoomInAction();
+    zoomOutAction = createDefaultZoomOutAction();
+  }
+
+  protected Action createDefaultNextPageAction()
+  {
+    return new DefaultNextPageAction();
+  }
+
+  protected Action createDefaultPreviousPageAction()
+  {
+    return new DefaultPreviousPageAction();
+  }
+
+  protected Action createDefaultZoomInAction ()
+  {
+    return new DefaultZoomInAction();
+  }
+
+  protected Action createDefaultZoomOutAction ()
+  {
+    return new DefaultZoomOutAction();
   }
 
   protected Action createDefaultAboutAction()
@@ -721,46 +782,37 @@ public class PreviewFrame
     ResourceBundle resources = getResources();
 
     JToolBar toolbar = new JToolBar();
+    toolbar.setBorder(null);
+
+    FloatingButtonEnabler fle = new FloatingButtonEnabler();
+
     JButton sa = toolbar.add(saveAsAction);
-    sa.setIcon((ImageIcon) saveAsAction.getValue("ICON24"));
-    // reset Mnemonic
-    sa.setMnemonic(0);
+    fle.addButton(sa);
+
     sa = toolbar.add(printAction);
-    sa.setIcon((ImageIcon) printAction.getValue("ICON24"));
-    // reset Mnemonic
-    sa.setMnemonic(0);
+    fle.addButton(sa);
 
-    ImageIcon icon3 = (ImageIcon) resources.getObject("action.back.icon");
-    back = new JButton(icon3);
-    back.setActionCommand("Back");
-    back.addActionListener(this);
-    toolbar.add(back);
+    sa = toolbar.add(previousPageAction);
+    fle.addButton(sa);
 
-    ImageIcon icon4 = (ImageIcon) resources.getObject("action.forward.icon");
-    forward = new JButton(icon4);
-    forward.setActionCommand("Forward");
-    forward.addActionListener(this);
-    toolbar.add(forward);
+    sa = toolbar.add(nextPageAction);
+    fle.addButton(sa);
+
     toolbar.addSeparator();
 
-    ImageIcon icon5 = (ImageIcon) resources.getObject("action.zoomIn.icon");
-    zoomIn = new JButton(icon5);
-    zoomIn.setActionCommand("ZoomIn");
-    zoomIn.addActionListener(this);
-    toolbar.add(zoomIn);
+    sa = toolbar.add(zoomInAction);
+    fle.addButton(sa);
 
-    ImageIcon icon6 = (ImageIcon) resources.getObject("action.zoomOut.icon");
-    zoomOut = new JButton(icon6);
-    zoomOut.setActionCommand("ZoomOut");
-    zoomOut.addActionListener(this);
-    toolbar.add(zoomOut);
+    sa = toolbar.add(zoomOutAction);
+    fle.addButton(sa);
+
     toolbar.addSeparator();
 
     toolbar.add(createZoomPane());
     toolbar.addSeparator();
 
-    ImageIcon icon7 = (ImageIcon) resources.getObject("action.information.icon");
-    toolbar.add(new JButton(icon7));
+    sa = toolbar.add(aboutAction);
+    fle.addButton(sa);
 
     return toolbar;
   }
@@ -820,41 +872,11 @@ public class PreviewFrame
     int pn = reportPane.getPageNumber();
     int mp = reportPane.getNumberOfPages();
 
-    if (pn < mp)
-    {
-      forward.setEnabled(true);
-    }
-    else
-    {
-      forward.setEnabled(false);
-    }
+    nextPageAction.setEnabled (pn < mp);
+    previousPageAction.setEnabled(pn == 1);
 
-    if (pn == 1)
-    {
-      back.setEnabled(false);
-    }
-    else
-    {
-      back.setEnabled(true);
-    }
-
-    if (zoomSelect.getSelectedIndex() == 0)
-    {
-      zoomOut.setEnabled(false);
-    }
-    else
-    {
-      zoomOut.setEnabled(true);
-    }
-
-    if (zoomSelect.getSelectedIndex() == (zoomFactors.length - 1))
-    {
-      zoomIn.setEnabled(false);
-    }
-    else
-    {
-      zoomIn.setEnabled(true);
-    }
+    zoomOutAction.setEnabled(zoomSelect.getSelectedIndex() != 0);
+    zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (zoomFactors.length - 1));
 
     super.validate();
   }
@@ -900,6 +922,16 @@ public class PreviewFrame
     {
       decreaseZoom();
     }
+  }
+
+  public boolean isLargeIconsEnabled ()
+  {
+    return largeIconsEnabled;
+  }
+
+  public void setLargeIconsEnabled (boolean b)
+  {
+    largeIconsEnabled = b;
   }
 
   /**
