@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.7 2002/06/04 21:44:34 taqua Exp $
+ * $Id: ImageElement.java,v 1.8 2002/06/09 14:46:04 taqua Exp $
  *
  * Changes:
  * --------
@@ -90,7 +90,6 @@ public class ImageElement extends Element
    */
   public ImageReference getImageReference ()
   {
-
     return image;
   }
 

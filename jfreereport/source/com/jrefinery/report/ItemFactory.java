@@ -272,6 +272,30 @@ public class ItemFactory
   }
 
   /**
+   * Creates a new ImageElement.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the color of this element (currently not used)
+   * @param source the source url from where to load the image
+   * @throws NullPointerException if bounds, name or source are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
+  public static ImageFunctionElement createImageFunctionElement (String name,
+                                                 Rectangle2D bounds,
+                                                 Paint paint,
+                                                 String function)
+          throws IOException
+  {
+    ImageFunctionElement element = new ImageFunctionElement();
+    element.setName (name);
+    element.setPaint (paint);
+    element.setBounds (bounds);
+    element.setDataSource(new FunctionDataSource(function));
+    return element;
+  }
+
+  /**
    * Creates a new TextElement containing a label.
    *
    * @param name the name of the new element

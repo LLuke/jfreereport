@@ -65,6 +65,7 @@ public interface ReportDefinitionTags
   public static final String NUMBER_FIELD_TAG = "number-field";
   public static final String DATE_FIELD_TAG = "date-field";
   public static final String MULTILINE_FIELD_TAG = "multiline-field";
+  public static final String IMAGEFUNCTION_TAG = "image-function";
   public static final String GENERAL_FUNCTION_TAG = "general-function";
   public static final String STRING_FUNCTION_TAG = "string-function";
   public static final String NUMBER_FUNCTION_TAG = "number-function";

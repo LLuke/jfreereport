@@ -49,6 +49,7 @@ import com.jrefinery.report.RectangleShapeElement;
 import com.jrefinery.report.StringElement;
 import com.jrefinery.report.StringFunctionElement;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.ImageFunctionElement;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -131,6 +132,10 @@ public class ElementFactory
     else if (elementName.equals (IMAGEREF_TAG))
     {
       startImageRef (atts);
+    }
+    else if (elementName.equals (IMAGEFUNCTION_TAG))
+    {
+      startImageFunction (atts);
     }
     else if (elementName.equals (LINE_TAG))
     {
@@ -233,6 +238,10 @@ public class ElementFactory
     {
       endImageRef ();
     }
+    else if (elementName.equals (IMAGEFUNCTION_TAG))
+    {
+      endImageFunction ();
+    }
     else if (elementName.equals (LINE_TAG))
     {
       endLine ();
@@ -307,6 +316,30 @@ public class ElementFactory
 
   }
 
+  /**
+   * Create a ImageElement with an static ImageDataSource. The ImageData is read from
+   * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
+   * ReportDefintionContentHandler
+   */
+  protected void startImageFunction (Attributes atts) throws SAXException
+  {
+    String elementName = handler.generateName (atts.getValue ("name"));
+    String elementSource = atts.getValue ("function");
+    try
+    {
+      ImageFunctionElement element = ItemFactory.createImageFunctionElement (
+              elementName,
+              ParserUtil.getElementPosition (atts),
+              Color.white,
+              elementSource);
+      setCurrentElement (element);
+    }
+    catch (IOException mfule)
+    {
+      throw new SAXException (mfule.toString ());
+    }
+
+  }
   /**
    * Creates a LineShapeElement.
    */
@@ -473,6 +506,15 @@ public class ElementFactory
    * ends the rectangle shape element and adds it to the current band.
    */
   protected void endRectangle ()
+          throws SAXException
+  {
+    getCurrentBand ().addElement (getCurrentElement ());
+  }
+
+  /**
+   * ends the image element and adds it to the current band.
+   */
+  protected void endImageFunction ()
           throws SAXException
   {
     getCurrentBand ().addElement (getCurrentElement ());
