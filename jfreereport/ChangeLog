@@ -72,6 +72,11 @@ A list of changes in recent versions:
           local working directory. If that fails, the user now can specify a
           custom location for the icons.
 
+        * The PDFExportDialog now maps the UTF-8 and UTF-16 encodings to the
+          PDF Unicode encoding "Identity-H". Using the UTF-encodings directly
+          was a great way to produce reports without a single character of
+          text inside.
+
 0.8.5-2: (18-Mar-2005)
         * [BUG] FontPath caching did not validate the cache integrety. This way,
           some fonts might be left unregistered.
