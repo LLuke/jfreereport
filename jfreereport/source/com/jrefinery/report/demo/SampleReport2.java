@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.9 2003/04/09 16:21:35 mungady Exp $
+ * $Id: SampleReport2.java,v 1.10 2003/04/23 17:13:34 taqua Exp $
  *
  * Changes:
  * --------
@@ -54,7 +54,7 @@ import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.PaintComponentFunction;
 import com.jrefinery.report.preview.PDFSaveDialog;
-import com.jrefinery.ui.FloatDimension;
+import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;

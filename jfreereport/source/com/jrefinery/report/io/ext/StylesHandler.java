@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.8 2003/03/18 18:28:43 taqua Exp $
+ * $Id: StylesHandler.java,v 1.9 2003/04/23 13:39:21 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ package com.jrefinery.report.io.ext;
 import java.util.HashMap;
 
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

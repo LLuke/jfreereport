@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.7 2003/03/18 18:28:42 taqua Exp $
+ * $Id: ElementHandler.java,v 1.8 2003/04/23 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

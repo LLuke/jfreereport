@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.10 2003/04/06 18:11:31 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.11 2003/04/23 17:13:42 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
 package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.ui.FloatDimension;
+import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.Color;

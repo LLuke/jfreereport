@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.28 2003/04/08 14:05:28 mungady Exp $
+ * $Id: ReportGenerator.java,v 1.29 2003/04/23 13:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import java.net.URL;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.xml.ParserFrontend;
-import com.jrefinery.xml.ElementDefinitionException;
+import org.jfree.xml.ParserFrontend;
+import org.jfree.xml.ElementDefinitionException;
 import org.xml.sax.InputSource;
 
 /**
@@ -94,7 +94,7 @@ public class ReportGenerator extends ParserFrontend
    * @return the report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ElementDefinitionException if there is a problem parsing the report template.
+   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (String file) throws IOException, ElementDefinitionException
   {
@@ -116,7 +116,7 @@ public class ReportGenerator extends ParserFrontend
    * @return the report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ElementDefinitionException if there is a problem parsing the report template.
+   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file)
           throws ElementDefinitionException, IOException
@@ -138,7 +138,7 @@ public class ReportGenerator extends ParserFrontend
    * @return the parsed report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ElementDefinitionException if there is a problem parsing the report template.
+   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file, URL contentBase)
           throws ElementDefinitionException, IOException
@@ -166,7 +166,7 @@ public class ReportGenerator extends ParserFrontend
    * @return the parsed report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ElementDefinitionException if there is a problem parsing the report template.
+   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (File file) throws IOException, ElementDefinitionException
   {
@@ -187,7 +187,7 @@ public class ReportGenerator extends ParserFrontend
    *
    * @return the report.
    *
-   * @throws ElementDefinitionException if an error occurred.
+   * @throws org.jfree.xml.ElementDefinitionException if an error occurred.
    */
   public JFreeReport parseReport (InputSource input, URL contentBase)
           throws ElementDefinitionException

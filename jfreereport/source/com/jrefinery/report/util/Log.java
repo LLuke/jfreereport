@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.20 2003/02/26 13:58:04 mungady Exp $
+ * $Id: Log.java,v 1.21 2003/04/23 17:13:44 taqua Exp $
  *
  * Changes
  * -------
@@ -42,15 +42,15 @@
 
 package com.jrefinery.report.util;
 
-import com.jrefinery.util.LogTarget;
+import org.jfree.util.LogTarget;
 
 /**
- * A simple logging facility. Create a class implementing the {@link com.jrefinery.util.LogTarget} interface to use
+ * A simple logging facility. Create a class implementing the {@link org.jfree.util.LogTarget} interface to use
  * this feature.
  *
  * @author Thomas Morgner
  */
-public final class Log extends com.jrefinery.util.Log
+public final class Log extends org.jfree.util.Log
 {
   /**
    * A helper class to print memory usage message if needed.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.5 2003/02/25 12:48:19 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.6 2003/04/23 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.function.Expression;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

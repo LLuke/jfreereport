@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionProcessingException.java,v 1.3 2002/12/12 12:26:56 mungady Exp $
+ * $Id: FunctionProcessingException.java,v 1.4 2003/04/23 17:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.util.StackableRuntimeException;
+import org.jfree.util.StackableRuntimeException;
 
 /**
  * An exception that indicates that a function has not been correctly initialised.

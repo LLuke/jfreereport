@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.13 2003/03/09 17:48:59 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.14 2003/04/23 17:13:41 taqua Exp $
  *
  * Changes
  * -------
@@ -136,7 +136,7 @@ public abstract class PhysicalOperation
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
-      Log.debug (new com.jrefinery.util.Log.SimpleMessage("Physical Operation Comment: " , comment));
+      Log.debug (new Log.SimpleMessage("Physical Operation Comment: " , comment));
     }
   }
 

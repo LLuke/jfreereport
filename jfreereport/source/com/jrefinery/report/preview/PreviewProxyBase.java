@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.16 2003/04/07 18:08:06 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.17 2003/04/23 13:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,6 @@ import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.targets.base.bandlayout.LayoutManagerCache;
@@ -106,8 +105,9 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WindowSizeLimiter;
 import com.jrefinery.report.util.Worker;
-import com.jrefinery.xml.ParserUtil;
+import org.jfree.xml.ParserUtil;
 import org.xml.sax.SAXException;
+import org.jfree.layout.CenterLayout;
 
 /**
  * A preview proxy.

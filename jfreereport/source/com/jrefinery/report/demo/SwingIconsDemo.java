@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: First.java,v 1.19 2003/02/26 13:57:36 mungady Exp $
+ * $Id: SwingIconsDemo.java,v 1.1 2003/02/27 14:59:02 mungady Exp $
  *
  * Changes
  * -------
@@ -60,8 +60,8 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.ui.ApplicationFrame;
-import com.jrefinery.ui.RefineryUtilities;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * A demonstration application.

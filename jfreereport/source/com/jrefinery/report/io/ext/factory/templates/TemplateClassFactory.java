@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.3 2003/03/07 16:56:00 taqua Exp $
+ * $Id: TemplateClassFactory.java,v 1.4 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,7 +38,7 @@
 
 package com.jrefinery.report.io.ext.factory.templates;
 
-import com.jrefinery.xml.factory.objects.ClassFactoryImpl;
+import org.jfree.xml.factory.objects.ClassFactoryImpl;
 
 /**
  * A template class factory.

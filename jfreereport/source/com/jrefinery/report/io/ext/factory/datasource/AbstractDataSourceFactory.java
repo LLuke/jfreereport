@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDataSourceFactory.java,v 1.7 2003/03/18 18:28:43 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,8 +41,8 @@ package com.jrefinery.report.io.ext.factory.datasource;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.jrefinery.xml.factory.objects.ClassFactoryImpl;
-import com.jrefinery.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.factory.objects.ClassFactoryImpl;
+import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A base class for implementing the {@link DataSourceFactory} interface.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.3 2003/04/09 15:47:30 mungady Exp $
+ * $Id: ElementColorFunction.java,v 1.4 2003/04/23 13:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import java.awt.Color;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.xml.factory.objects.ColorObjectDescription;
+import org.jfree.xml.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 /**

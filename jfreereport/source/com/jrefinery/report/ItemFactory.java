@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.42 2003/04/09 00:10:33 mungady Exp $
+ * $Id: ItemFactory.java,v 1.43 2003/04/23 17:13:33 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ import com.jrefinery.report.filter.templates.ResourceFieldTemplate;
 import com.jrefinery.report.filter.templates.ResourceLabelTemplate;
 import com.jrefinery.report.filter.templates.StringFieldTemplate;
 import com.jrefinery.report.function.ExpressionCollection;
-import com.jrefinery.ui.FloatDimension;
+import org.jfree.ui.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandStyleSheet;

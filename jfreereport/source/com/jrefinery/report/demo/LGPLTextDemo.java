@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.4 2003/02/06 17:38:01 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.5 2003/02/26 16:42:07 mungady Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,6 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.ui.ApplicationFrame;
-import com.jrefinery.ui.RefineryUtilities;
 
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -58,6 +56,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * A simple JFreeReport demonstration.  The generated report contains

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.8 2003/02/28 12:02:38 taqua Exp $
+ * $Id: ReportConverter.java,v 1.9 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
 import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
 import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
-import com.jrefinery.xml.factory.objects.URLClassFactory;
+import org.jfree.xml.factory.objects.URLClassFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.DefaultStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.35 2003/04/09 00:10:32 mungady Exp $
+ * $Id: DataRowBackend.java,v 1.36 2003/04/23 17:13:33 taqua Exp $
  *
  * Changes
  * -------
@@ -290,7 +290,7 @@ public class DataRowBackend implements Cloneable
     }
     catch (Exception e)
     {
-      Log.error(new com.jrefinery.util.Log.SimpleMessage("Column " , new Integer(column),
+      Log.error(new Log.SimpleMessage("Column " , new Integer(column),
                                       " caused an error on get()", e));
     }
     finally
@@ -373,7 +373,7 @@ public class DataRowBackend implements Cloneable
     if (warnInvalidColumns)
     {
       // print an warning for the logs.
-      Log.warn(new com.jrefinery.util.Log.SimpleMessage("Invalid column name specified on query: ", name));
+      Log.warn(new Log.SimpleMessage("Invalid column name specified on query: ", name));
     }
     return -1;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.8 2003/02/25 12:48:18 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.9 2003/04/23 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ package com.jrefinery.report.io.ext;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.CharacterEntityParser;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

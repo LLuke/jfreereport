@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.7 2003/02/22 18:52:27 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import com.jrefinery.report.function.Function;
 import com.jrefinery.report.io.ext.ExpressionHandler;
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.ext.FunctionsHandler;
-import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
-import com.jrefinery.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.xml.factory.objects.ObjectDescription;
 import com.jrefinery.report.util.ReportProperties;
 
 import java.io.IOException;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.2 2003/04/09 00:12:29 mungady Exp $
+ * $Id: PercentageDemo.java,v 1.3 2003/04/09 16:21:35 mungady Exp $
  *
  * Changes
  * -------
@@ -61,8 +61,8 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.ui.ApplicationFrame;
-import com.jrefinery.ui.RefineryUtilities;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * A simple report where column 3 displays (column 1 / column 2) as a percentage.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.11 2003/03/18 18:28:46 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.12 2003/04/23 13:43:06 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.xml.factory.objects.ColorObjectDescription;
+import org.jfree.xml.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.table.TableCellBackground;
 

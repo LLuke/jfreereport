@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.7 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ReportWriter.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import com.jrefinery.xml.factory.objects.ClassFactory;
-import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.xml.factory.objects.ClassFactory;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;

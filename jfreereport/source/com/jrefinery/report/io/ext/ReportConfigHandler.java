@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.8 2003/02/26 16:42:17 mungady Exp $
+ * $Id: ReportConfigHandler.java,v 1.9 2003/04/23 13:39:21 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ import com.jrefinery.report.io.InitialReportHandler;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
-import com.jrefinery.xml.ParserUtil;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
+import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

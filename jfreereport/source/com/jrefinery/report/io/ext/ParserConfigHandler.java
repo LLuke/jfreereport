@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.9 2003/02/26 16:42:17 mungady Exp $
+ * $Id: ParserConfigHandler.java,v 1.10 2003/04/23 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -42,15 +42,15 @@ import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import com.jrefinery.xml.factory.objects.ClassFactory;
-import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.xml.factory.objects.ClassFactory;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

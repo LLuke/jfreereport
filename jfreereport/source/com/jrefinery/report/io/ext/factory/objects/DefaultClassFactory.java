@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultClassFactory.java,v 1.7 2003/03/07 16:55:57 taqua Exp $
+ * $Id: DefaultClassFactory.java,v 1.8 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -40,10 +40,10 @@ package com.jrefinery.report.io.ext.factory.objects;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.xml.factory.objects.JavaBaseClassFactory;
+import org.jfree.xml.factory.objects.JavaBaseClassFactory;
 
 /**
- * A default implementation of the {@link com.jrefinery.xml.factory.objects.ClassFactory} interface.
+ * A default implementation of the {@link org.jfree.xml.factory.objects.ClassFactory} interface.
  * 
  * @author Thomas Morgner
  */

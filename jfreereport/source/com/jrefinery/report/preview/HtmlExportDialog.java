@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.15 2003/04/11 14:11:44 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.16 2003/04/23 17:13:39 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ import com.jrefinery.report.targets.table.html.HtmlProducer;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FilesystemFilter;
-import com.jrefinery.io.IOUtils;
+import org.jfree.io.IOUtils;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
 

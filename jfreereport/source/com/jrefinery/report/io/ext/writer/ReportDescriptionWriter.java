@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.6 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import com.jrefinery.report.io.ext.GroupHandler;
 import com.jrefinery.report.io.ext.GroupsHandler;
 import com.jrefinery.report.io.ext.ReportDescriptionHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
-import com.jrefinery.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.factory.objects.ObjectDescription;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 

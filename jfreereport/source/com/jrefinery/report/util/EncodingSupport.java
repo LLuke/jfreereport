@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingSupport.java,v 1.3 2003/04/09 15:55:04 mungady Exp $
+ * $Id: EncodingSupport.java,v 1.4 2003/04/23 17:13:44 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@ package com.jrefinery.report.util;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
-import com.jrefinery.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A global registry for all supported encodings.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.7 2003/03/18 18:28:42 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.8 2003/04/23 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,12 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
-import com.jrefinery.xml.factory.objects.URLClassFactory;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.xml.factory.objects.URLClassFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignmentObjectDescription.java,v 1.3 2003/03/07 16:55:57 taqua Exp $
+ * $Id: AlignmentObjectDescription.java,v 1.4 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,8 +39,8 @@
 package com.jrefinery.report.io.ext.factory.objects;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.xml.factory.objects.AbstractObjectDescription;
-import com.jrefinery.xml.factory.objects.ObjectFactoryException;
+import org.jfree.xml.factory.objects.AbstractObjectDescription;
+import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * An object-description for an {@link ElementAlignment} object.
@@ -102,7 +102,7 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
    * 
    * @param o  the object (an {@link ElementAlignment} instance).
    * 
-   * @throws com.jrefinery.xml.factory.objects.ObjectFactoryException if the object is not recognised.
+   * @throws ObjectFactoryException if the object is not recognised.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {

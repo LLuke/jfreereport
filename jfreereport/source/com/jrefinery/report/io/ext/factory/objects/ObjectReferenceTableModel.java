@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.3 2003/03/07 16:55:57 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.4 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -44,9 +44,9 @@ import java.util.Iterator;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.jrefinery.xml.factory.objects.ObjectDescription;
-import com.jrefinery.xml.factory.objects.ClassFactory;
-import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.factory.objects.ClassFactory;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
 
 /**
  * A table model for the objects referenced by the class factories.

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.19 2003/02/25 14:07:32 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.20 2003/04/23 17:13:45 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package com.jrefinery.report.util;
 
-import com.jrefinery.ui.FloatDimension;
+import org.jfree.ui.FloatDimension;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;

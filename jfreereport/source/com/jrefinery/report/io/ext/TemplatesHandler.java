@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.8 2003/02/26 16:42:19 mungady Exp $
+ * $Id: TemplatesHandler.java,v 1.9 2003/04/23 13:39:21 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
-import com.jrefinery.xml.ElementDefinitionHandler;
-import com.jrefinery.xml.Parser;
+import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

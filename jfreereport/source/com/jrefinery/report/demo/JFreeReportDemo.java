@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.61 2003/04/09 16:21:34 mungady Exp $
+ * $Id: JFreeReportDemo.java,v 1.62 2003/04/12 13:36:11 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -85,8 +85,8 @@ import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.ui.RefineryUtilities;
-import com.jrefinery.ui.about.AboutFrame;
+import org.jfree.ui.about.AboutFrame;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * The main frame in the report demonstration application. This demo has huge reports

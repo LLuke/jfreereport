@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFilter.java,v 1.3 2003/04/09 00:12:30 mungady Exp $
+ * $Id: DrawableFilter.java,v 1.4 2003/04/23 17:13:35 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ package com.jrefinery.report.filter;
 import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.DrawableContainer;
-import com.jrefinery.ui.FloatDimension;
-import com.jrefinery.ui.Drawable;
+import org.jfree.ui.FloatDimension;
+import org.jfree.ui.Drawable;
 
 /**
  * A filter that converts an Drawable to an DrawableContainer. The DataSource is expected to 
@@ -50,7 +50,7 @@ import com.jrefinery.ui.Drawable;
  * container and this DrawableContainer is returned to the caller.
  *
  * @author Thomas Morgner
- * @see Drawable
+ * @see org.jfree.ui.Drawable
  */
 public class DrawableFilter implements DataFilter
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.14 2003/02/28 04:16:57 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.15 2003/04/05 18:57:09 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,11 +45,11 @@ package com.jrefinery.report;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-import com.jrefinery.JCommon;
-import com.jrefinery.ui.about.Contributor;
-import com.jrefinery.ui.about.Library;
-import com.jrefinery.ui.about.Licences;
-import com.jrefinery.ui.about.ProjectInfo;
+import org.jfree.JCommon;
+import org.jfree.ui.about.Contributor;
+import org.jfree.ui.about.Library;
+import org.jfree.ui.about.Licences;
+import org.jfree.ui.about.ProjectInfo;
 
 /**
  * Details about the JFreeReport project.

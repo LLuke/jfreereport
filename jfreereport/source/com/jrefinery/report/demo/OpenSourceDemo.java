@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.12 2003/04/11 14:11:42 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.13 2003/04/12 13:36:12 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,8 @@ import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WaitingImageObserver;
-import com.jrefinery.ui.ApplicationFrame;
-import com.jrefinery.ui.RefineryUtilities;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * A simple JFreeReport demonstration.  The generated report lists some free and open source
@@ -191,7 +191,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
       
       this.report.setData(this.data);
       
-      ReportConfiguration config = report.getReportConfiguration();
+      //ReportConfiguration config = report.getReportConfiguration();
       //config.setEnableExportExcel(false);
       //config.setEnableExportCSV(false);
       //config.setEnableExportHTML(false);

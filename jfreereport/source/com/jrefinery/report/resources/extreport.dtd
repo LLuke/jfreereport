@@ -97,7 +97,7 @@
   The object factory is used to create all data objects for the report definition.
   Objects are described in an
 
-    com.jrefinery.xml.factory.objects.ObjectDescription
+    org.jfree.xml.factory.objects.ObjectDescription
 
   The system knows BasicObjectDescriptions, for objects, which only have a single
   string property called "value" defined, and compound object descriptions for

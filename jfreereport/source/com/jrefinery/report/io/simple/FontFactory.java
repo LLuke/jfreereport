@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.6 2003/02/26 13:57:58 mungady Exp $
+ * $Id: FontFactory.java,v 1.7 2003/04/23 13:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -36,8 +36,8 @@
 package com.jrefinery.report.io.simple;
 
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.xml.ElementDefinitionException;
-import com.jrefinery.xml.ParserUtil;
+import org.jfree.xml.ElementDefinitionException;
+import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 
 /**
@@ -399,13 +399,13 @@ public class FontFactory implements ReportDefinitionTags
 
     if (attr.getValue(FS_STRIKETHR) != null)
     {
-      target.setStrikeThrough(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), 
+      target.setStrikeThrough(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR),
                                                                    false)));
     }
 
     if (attr.getValue(FS_UNDERLINE) != null)
     {
-      target.setUnderlined(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), 
+      target.setUnderlined(new Boolean(ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE),
                                                                 false)));
     }
 
@@ -432,7 +432,7 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @param target the target element style sheet, that should receive the created font definition.
-   * @throws ElementDefinitionException if the font cannot be created.
+   * @throws org.jfree.xml.ElementDefinitionException if the font cannot be created.
    */
   public void createFont (Attributes attr, ElementStyleSheet target)
           throws ElementDefinitionException
@@ -461,7 +461,7 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @return the created font information.
-   * @throws ElementDefinitionException if the font cannot be created.
+   * @throws org.jfree.xml.ElementDefinitionException if the font cannot be created.
    */
   public FontInformation createFont (Attributes attr)
           throws ElementDefinitionException

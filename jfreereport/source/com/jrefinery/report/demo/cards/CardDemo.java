@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardDemo.java,v 1.1 2003/04/02 21:24:00 taqua Exp $
+ * $Id: CardDemo.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import javax.swing.UIManager;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.demo.JFreeReportDemo;
-import com.jrefinery.ui.RefineryUtilities;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * A JFreeReport demo.

@@ -100,7 +100,7 @@
     <report-header name="report-header-band">
 
       <style>
-        <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
           <basic-object name="height" class="java.lang.Double">112.0</basic-object>
           <basic-object name="width" class="java.lang.Double">0.0</basic-object>
         </compound-key>
@@ -124,7 +124,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">2.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">18.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -148,7 +148,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">32.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">10.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -169,7 +169,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">44.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">10.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -190,7 +190,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">68.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">10.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -213,7 +213,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">92.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">10.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -237,7 +237,7 @@
 
       <style>
         <basic-key name="font-bold">true</basic-key>
-        <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
           <basic-object name="height" class="java.lang.Double">30.0</basic-object>
           <basic-object name="width" class="java.lang.Double">0.0</basic-object>
         </compound-key>
@@ -260,7 +260,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -287,7 +287,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">0.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -314,7 +314,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">30.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">0.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -341,7 +341,7 @@
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">10.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">12.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-50.0</basic-object>
           </compound-key>
@@ -362,7 +362,7 @@
             <basic-object name="x">-50.0</basic-object>
             <basic-object name="y">10.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">9.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-30.0</basic-object>
           </compound-key>
@@ -384,7 +384,7 @@
             <basic-object name="x">-80.0</basic-object>
             <basic-object name="y">10.0</basic-object>
           </compound-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">9.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
           </compound-key>
@@ -409,7 +409,7 @@
       <style>
         <basic-key name="font-bold">true</basic-key>
         <basic-key name="display-on-lastpage">true</basic-key>
-        <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
           <basic-object name="height" class="java.lang.Double">18.0</basic-object>
           <basic-object name="width" class="java.lang.Double">0.0</basic-object>
         </compound-key>
@@ -434,7 +434,7 @@
             <basic-object name="y">0.0</basic-object>
           </compound-key>
           <basic-key name="draw-shape">false</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -460,7 +460,7 @@
             <basic-object name="y">0.0</basic-object>
           </compound-key>
           <basic-key name="dynamic_height">false</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">14.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-50.0</basic-object>
           </compound-key>
@@ -481,7 +481,7 @@
             <basic-object name="y">0.0</basic-object>
           </compound-key>
           <basic-key name="dynamic_height">false</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">14.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
           </compound-key>
@@ -504,7 +504,7 @@
             <basic-object name="y">16.0</basic-object>
           </compound-key>
           <basic-key name="draw-shape">true</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">0.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -532,7 +532,7 @@
       <style>
         <basic-key name="font-bold">false</basic-key>
         <basic-key name="display-on-lastpage">true</basic-key>
-        <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
           <basic-object name="height" class="java.lang.Double">14.0</basic-object>
           <basic-object name="width" class="java.lang.Double">0.0</basic-object>
         </compound-key>
@@ -556,7 +556,7 @@
             <basic-object name="y">3.0</basic-object>
           </compound-key>
           <basic-key name="dynamic_height">false</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">9.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -606,7 +606,7 @@
           <style>
             <basic-key name="font-bold">true</basic-key>
             <basic-key name="repeat-header">false</basic-key>
-            <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
               <basic-object name="height" class="java.lang.Double">30.0</basic-object>
               <basic-object name="width" class="java.lang.Double">0.0</basic-object>
             </compound-key>
@@ -630,7 +630,7 @@
                 <basic-object name="y">0.0</basic-object>
               </compound-key>
               <basic-key name="draw-shape">false</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
               </compound-key>
@@ -657,7 +657,7 @@
                 <basic-object name="y">0.0</basic-object>
               </compound-key>
               <basic-key name="draw-shape">true</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">0.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
               </compound-key>
@@ -684,7 +684,7 @@
                 <basic-object name="y">30.0</basic-object>
               </compound-key>
               <basic-key name="draw-shape">true</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">0.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
               </compound-key>
@@ -710,7 +710,7 @@
                 <basic-object name="y">3.0</basic-object>
               </compound-key> 
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">12.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">92.0</basic-object>
               </compound-key>
@@ -731,7 +731,7 @@
               <basic-object name="y">3.0</basic-object>
               </compound-key>
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
               <basic-object name="height" class="java.lang.Double">12.0</basic-object>
               <basic-object name="width" class="java.lang.Double">120.0</basic-object>
               </compound-key>
@@ -757,7 +757,7 @@
                 <basic-object name="y">20.0</basic-object>
               </compound-key>
               <basic-key name="alignment">left</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">9.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-50.0</basic-object>
               </compound-key>
@@ -781,7 +781,7 @@
             <basic-object name="y">20.0</basic-object>
             </compound-key>
             <basic-key name="alignment">left</basic-key>
-            <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">9.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-30.0</basic-object>
             </compound-key>
@@ -805,7 +805,7 @@
             <basic-object name="y">20.0</basic-object>
             </compound-key>
             <basic-key name="alignment">right</basic-key>
-            <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">9.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
             </compound-key>
@@ -822,7 +822,7 @@
         <group-footer name="anonymousBand@8361137">
           <style>
             <basic-key name="font-bold">true</basic-key>
-            <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
               <basic-object name="height" class="java.lang.Double">30.0</basic-object>
               <basic-object name="width" class="java.lang.Double">0.0</basic-object>
             </compound-key>
@@ -845,7 +845,7 @@
                 <basic-object name="y">5.0</basic-object>
               </compound-key>
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">9.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">100.0</basic-object>
               </compound-key>
@@ -866,7 +866,7 @@
             <basic-object name="y">5.0</basic-object>
             </compound-key>
             <basic-key name="dynamic_height">false</basic-key>
-            <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">9.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-30.0</basic-object>
             </compound-key>
@@ -888,7 +888,7 @@
                 <basic-object name="y">5.0</basic-object>
               </compound-key>
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
                 <basic-object name="height" class="java.lang.Double">9.0</basic-object>
                 <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
               </compound-key>
@@ -914,7 +914,7 @@
       <!-- the band style -->
       <style>
         <basic-key name="font-bold">false</basic-key>
-        <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
           <basic-object name="height" class="java.lang.Double">26.0</basic-object>
           <basic-object name="width" class="java.lang.Double">0.0</basic-object>
         </compound-key>
@@ -939,7 +939,7 @@
             <basic-object name="y">25.0</basic-object>
           </compound-key>
           <basic-key name="draw-shape">true</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">0.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
           </compound-key>
@@ -966,7 +966,7 @@
             <basic-object name="y">8.0</basic-object>
           </compound-key>
           <basic-key name="dynamic_height">false</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">10.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-50.0</basic-object>
           </compound-key>
@@ -987,7 +987,7 @@
             <basic-object name="x">-50.0</basic-object>
             <basic-object name="y">1.0</basic-object>
           </compound-key> 
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">24.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-30.0</basic-object>
           </compound-key>
@@ -1009,7 +1009,7 @@
             <basic-object name="y">8.0</basic-object>
           </compound-key>
           <basic-key name="dynamic_height">false</basic-key>
-          <compound-key name="min-size" class="com.jrefinery.ui.FloatDimension">
+          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
             <basic-object name="height" class="java.lang.Double">10.0</basic-object>
             <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
           </compound-key>

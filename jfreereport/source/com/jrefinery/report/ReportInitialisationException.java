@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportInitialisationException.java,v 1.5 2003/02/05 15:38:13 taqua Exp $
+ * $Id: ReportInitialisationException.java,v 1.6 2003/04/23 17:13:34 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.util.StackableException;
+import org.jfree.util.StackableException;
 
 /**
  * An exception that is thrown when a report fails to initialise.

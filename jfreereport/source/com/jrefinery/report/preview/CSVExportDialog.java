@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.7 2003/03/13 17:41:51 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.8 2003/04/11 14:11:44 taqua Exp $
  *
  * Changes
  * --------
@@ -45,7 +45,6 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.LengthLimitingDocument;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -82,6 +81,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+
+import org.jfree.ui.ExtensionFileFilter;
 
 /**
  * A dialog for exporting a report to CSV format.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FloatDimension.java,v 1.8 2003/04/23 17:13:39 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package com.jrefinery.report.targets;
  * @deprecated this class moved into the JCommon library and is now located
  * in the package com.jrefinery.ui.
  */
-public class FloatDimension extends com.jrefinery.ui.FloatDimension
+public class FloatDimension extends org.jfree.ui.FloatDimension
 {
   /**
    * Creates a new dimension object with width and height set to zero.

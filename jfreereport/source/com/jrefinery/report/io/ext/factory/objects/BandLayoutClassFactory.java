@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutClassFactory.java,v 1.5 2003/03/07 16:55:57 taqua Exp $
+ * $Id: BandLayoutClassFactory.java,v 1.6 2003/04/23 13:43:04 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,8 +39,8 @@
 package com.jrefinery.report.io.ext.factory.objects;
 
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
-import com.jrefinery.xml.factory.objects.ClassFactoryImpl;
-import com.jrefinery.xml.factory.objects.ClassLoaderObjectDescription;
+import org.jfree.xml.factory.objects.ClassFactoryImpl;
+import org.jfree.xml.factory.objects.ClassLoaderObjectDescription;
 
 /**
  * A band layout class factory.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.10 2003/03/29 20:17:25 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.11 2003/04/11 14:11:45 taqua Exp $
  *
  * Changes
  * --------
@@ -85,8 +85,7 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.ui.ExtensionFileFilter;
+import org.jfree.ui.ExtensionFileFilter;
 
 /**
  * A dialog that is used to export reports to plain text.

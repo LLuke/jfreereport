@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.12 2003/02/05 17:56:03 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.13 2003/04/23 17:13:45 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ package com.jrefinery.report.util;
 
 import java.io.Serializable;
 
-import com.jrefinery.util.LogTarget;
+import org.jfree.util.LogTarget;
 
 /**
  * A log target that sends all log messages to the <code>System.out</code> stream.
@@ -53,7 +53,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   /**
    * The default constructor.
    * <p>
-   * All {@link com.jrefinery.util.LogTarget} implementations need a default constructor.
+   * All {@link org.jfree.util.LogTarget} implementations need a default constructor.
    */
   public SystemOutLogTarget()
   {
@@ -73,11 +73,8 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     {
       level = 3;
     }
-    if (level <= Log.getDebugLevel ())
-    {
-      System.out.print (LEVELS[level]);
-      System.out.println (message);
-    }
+    System.out.print (LEVELS[level]);
+    System.out.println (message);
   }
 
   /**
@@ -97,11 +94,8 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     {
       level = 3;
     }
-    if (level <= Log.getDebugLevel ())
-    {
-      System.out.print (LEVELS[level]);
-      System.out.println (message);
-      e.printStackTrace (System.out);
-    }
+    System.out.print (LEVELS[level]);
+    System.out.println (message);
+    e.printStackTrace (System.out);
   }
 }
