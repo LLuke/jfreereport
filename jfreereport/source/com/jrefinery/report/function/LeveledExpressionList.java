@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeveledExpressionList.java,v 1.3 2002/11/07 21:45:27 taqua Exp $
+ * $Id: LeveledExpressionList.java,v 1.4 2002/12/02 17:29:18 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.util.LevelList;
@@ -52,7 +53,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   private int level;
 
   public LeveledExpressionList(ExpressionCollection ec, ExpressionCollection fc)
-      throws ReportProcessingException
+      throws ReportInitialisationException 
 
   {
     expressionList = new LevelList();
@@ -477,7 +478,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   }
 
   private void initializeExpressions(ExpressionCollection expressionCollection)
-      throws ReportProcessingException
+    throws ReportInitialisationException
   {
     int size = expressionCollection.size();
     for (int i = 0; i < size; i++)
@@ -493,7 +494,7 @@ public class LeveledExpressionList implements ReportListener, Cloneable
   }
 
   private void initializeFunctions(ExpressionCollection functionCollection)
-      throws ReportProcessingException
+      throws ReportInitialisationException
   {
     int size = functionCollection.size();
     for (int i = 0; i < size; i++)
@@ -509,11 +510,11 @@ public class LeveledExpressionList implements ReportListener, Cloneable
     }
   }
 
-  private void addName(Expression ex) throws ReportProcessingException
+  private void addName(Expression ex) throws ReportInitialisationException
   {
     String name = ex.getName();
     if (nameLookup.containsKey(name))
-      throw new ReportProcessingException("Duplicate Name found: " + name);
+      throw new ReportInitialisationException ("Duplicate Name found: " + name);
 
     nameLookup.put(name, ex);
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupHeader.java,v 1.7 2002/08/08 15:28:38 taqua Exp $
+ * $Id: GroupHeader.java,v 1.8 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,6 +40,8 @@
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.targets.style.BandStyleSheet;
+
 /**
  * A report band that appears at the beginning of each instance of a group.
  *
@@ -48,17 +50,10 @@ package com.jrefinery.report;
 public class GroupHeader extends Band
 {
   /**
-   * Internal property, indicating whether a pagebreak should be triggered before this
-   * header is printed.
-   */
-  private boolean pageBreak;
-
-  /**
    * Constructs a group header band, containing no elements.
    */
   public GroupHeader ()
   {
-    pageBreak = false;
   }
 
   /**
@@ -67,7 +62,7 @@ public class GroupHeader extends Band
    */
   public boolean hasPageBreakBeforePrint ()
   {
-    return pageBreak;
+    return getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, false);
   }
 
   /**
@@ -77,7 +72,6 @@ public class GroupHeader extends Band
    */
   public void setPageBreakBeforePrint (boolean pageBreakBefore)
   {
-    this.pageBreak = pageBreakBefore;
+    getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean(pageBreakBefore));
   }
-
 }

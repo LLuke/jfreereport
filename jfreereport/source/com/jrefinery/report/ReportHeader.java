@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportHeader.java,v 1.6 2002/08/08 15:28:38 taqua Exp $
+ * $Id: ReportHeader.java,v 1.7 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,8 @@
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.targets.style.BandStyleSheet;
 
 /**
  * A report band that is printed once-only at the beginning of the report.  A report header is
@@ -51,11 +53,6 @@ package com.jrefinery.report;
  */
 public class ReportHeader extends Band
 {
-
-  /** Flag indicating whether or not the report header appears on its own on page 1 of the
-   report. */
-  private boolean ownPage;
-
   /**
    * Constructs a report header, initially containing no elements.
    */
@@ -69,8 +66,7 @@ public class ReportHeader extends Band
    */
   public void setOwnPage (boolean b)
   {
-    this.ownPage = b;
-
+    getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, new Boolean(b));
   }
 
   /**
@@ -79,6 +75,7 @@ public class ReportHeader extends Band
    */
   public boolean isOwnPage ()
   {
-    return this.ownPage;
+    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, Boolean.FALSE);
+    return b.booleanValue();
   }
 }

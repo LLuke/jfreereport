@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageFooter.java,v 1.6 2002/08/08 15:28:38 taqua Exp $
+ * $Id: PageFooter.java,v 1.7 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,6 +41,8 @@
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.targets.style.BandStyleSheet;
+
 /**
  * A report band that appears at the bottom of every page.  There is an option to suppress the
  * page footer on the first page, and an other option does the same for the last page.
@@ -49,12 +51,6 @@ package com.jrefinery.report;
  */
 public class PageFooter extends Band
 {
-
-  /** Flag that indicates whether or not the footer is printed on the first page of the report. */
-  private boolean displayOnFirstPage;
-
-  /** Flag that indicates whether or not the footer is printed on the last page of the report. */
-  private boolean displayOnLastPage;
 
   /**
    * Constructs a page footer containing no elements.
@@ -69,7 +65,7 @@ public class PageFooter extends Band
    */
   public boolean isDisplayOnFirstPage ()
   {
-    return this.displayOnFirstPage;
+    return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, false);
   }
 
   /**
@@ -79,7 +75,7 @@ public class PageFooter extends Band
    */
   public void setDisplayOnFirstPage (boolean b)
   {
-    this.displayOnFirstPage = b;
+    getStyle().setStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, new Boolean(b));
   }
 
   /**
@@ -88,16 +84,16 @@ public class PageFooter extends Band
    */
   public boolean isDisplayOnLastPage ()
   {
-    return this.displayOnLastPage;
+    return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, false);
   }
 
   /**
-   * defines whether the footer should be shown on the first page. This property defaults to
+   * defines whether the footer should be shown on the last page. This property defaults to
    * true.
    * @param b A flag indicating whether or not the footer is shown on the first page.
    */
   public void setDisplayOnLastPage (boolean b)
   {
-    this.displayOnLastPage = b;
+    getStyle().setStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, new Boolean(b));
   }
 }

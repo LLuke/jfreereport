@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PageableReportProcessor.java,v 1.1 2002/12/02 17:56:52 taqua Exp $
  *
  * Changes
  * -------
@@ -35,6 +35,7 @@ package com.jrefinery.report.targets.pageable;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
@@ -240,6 +241,10 @@ public class PageableReportProcessor
 
       // part 3: (done by processing the ReportStateList:) Print the report
       return pageStates;
+    }
+    catch (ReportInitialisationException re)
+    {
+      throw new ReportProcessingException("Unable to initialise StartState: " + re.getMessage());
     }
     catch (OutputTargetException ote)
     {

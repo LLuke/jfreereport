@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.14 2002/09/08 13:18:56 taqua Exp $
+ * $Id: Group.java,v 1.15 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,10 +55,7 @@ import java.util.List;
  * The order of the fields is important.
  *
  * @see GroupList
- *
  * @author DG
- *
- * @todo cache the fieldname to indexPos.
  */
 public class Group implements Serializable, Cloneable
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.22 2002/09/13 15:38:04 mungady Exp $
+ * $Id: TextElement.java,v 1.23 2002/11/29 11:28:48 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,8 +53,9 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.targets.OutputTargetException;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleSheet;
+import com.jrefinery.report.util.Log;
 
 import java.awt.Font;
 
@@ -87,37 +88,20 @@ import java.awt.Font;
  */
 public class TextElement extends Element
 {
+  public static final int LEFT   = 1;
+  public static final int RIGHT  = 2;
+  public static final int CENTER = 3;
+
   /** This elements stringfilter is used to convert any value into an string */
   private StringFilter stringfilter;
-
-  /** Font for displaying text. */
-  private Font font;
-
-  /** A flag indicating whether this elements text should be underlined */
-  private boolean isUnderlined;
-
-  /** A flag indicating whether this elements text should be striked through.*/
-  private boolean isStrikethr;
-
-  /** Text alignment: LEFT, CENTER, RIGHT. */
-  private int alignment;
-
-  /** Vertical alignment for text: TOP, MIDDLE or BOTTOM. */
-  private int verticalAlignment;
-
-  /** ?? */
-  private boolean dynamic;
 
   /**
    * Creates a new text element.
    */
   public TextElement()
   {
-    this.stringfilter = new StringFilter();
-    setAlignment(ElementConstants.LEFT);
-    this.verticalAlignment = ElementConstants.TOP;
+    stringfilter = new StringFilter();
     setNullString(null);
-    setDynamic(false);
   }
 
   /**
@@ -125,7 +109,7 @@ public class TextElement extends Element
    */
   public boolean isUnderlined()
   {
-    return isUnderlined;
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.UNDERLINED);
   }
 
   /**
@@ -135,7 +119,7 @@ public class TextElement extends Element
    */
   public void setUnderlined(boolean b)
   {
-    isUnderlined = b;
+    getStyle().setStyleProperty(ElementStyleSheet.UNDERLINED, new Boolean(b));
   }
 
   /**
@@ -143,7 +127,7 @@ public class TextElement extends Element
    */
   public boolean isStrikethrough()
   {
-    return isStrikethr;
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH);
   }
 
   /**
@@ -153,7 +137,7 @@ public class TextElement extends Element
    */
   public void setStrikethrough(boolean b)
   {
-    isStrikethr = b;
+    getStyle().setStyleProperty(ElementStyleSheet.STRIKETHROUGH, new Boolean(b));
   }
 
   /**
@@ -164,7 +148,7 @@ public class TextElement extends Element
    */
   public void setFont(Font f)
   {
-    this.font = f;
+    getStyle().setFontStyleProperty(f);
   }
 
   /**
@@ -174,7 +158,7 @@ public class TextElement extends Element
    */
   public Font getFont()
   {
-    return getFont(null);
+    return getStyle().getFontStyleProperty();
   }
 
   /**
@@ -190,29 +174,12 @@ public class TextElement extends Element
    * NullPointerException is thrown instead.
    *
    * @param band  the band.
-   *
+   * @deprecated the StyleSheet is used to resolve cascadings
    * @return the font.
    */
-  public Font getFont(Band band)
+  public Font getFont(StyleSheet band)
   {
-    if (band == null)
-    {
-      return font;
-    }
-
-    Font result = this.font;
-
-    if (this.font == null)
-    {
-      result = band.getDefaultFont();
-    }
-    if (result == null)
-    {
-      throw new NullPointerException("Neither element nor band have defined a font, invalid!");
-    }
-
-    return result;
-
+    return getFont();
   }
 
   /**
@@ -250,7 +217,9 @@ public class TextElement extends Element
    */
   public int getAlignment()
   {
-    return alignment;
+    ElementAlignment al = (ElementAlignment)
+        getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
+    return al.getOldAlignment();
   }
 
   /**
@@ -263,9 +232,17 @@ public class TextElement extends Element
    */
   public void setAlignment(int alignment)
   {
-    if (alignment == LEFT || alignment == RIGHT || alignment == CENTER)
+    if (alignment == LEFT)
     {
-      this.alignment = alignment;
+      getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
+    }
+    else if (alignment == RIGHT)
+    {
+      getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.RIGHT);
+    }
+    else if (alignment == CENTER)
+    {
+      getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.CENTER);
     }
     else
     {
@@ -283,7 +260,9 @@ public class TextElement extends Element
    */
   public int getVerticalAlignment()
   {
-    return this.verticalAlignment;
+    ElementAlignment al = (ElementAlignment)
+        getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
+    return al.getOldAlignment();
   }
 
   /**
@@ -296,31 +275,22 @@ public class TextElement extends Element
    */
   public void setVerticalAlignment(int alignment)
   {
-    if (alignment == TOP || alignment == BOTTOM || alignment == MIDDLE)
+    if (alignment == TOP)
     {
-      this.verticalAlignment = alignment;
+      getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
+    }
+    else if (alignment == BOTTOM)
+    {
+      getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.BOTTOM);
+    }
+    else if (alignment == MIDDLE)
+    {
+      getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.MIDDLE);
     }
     else
     {
       throw new IllegalArgumentException("The alignment must be one of TOP, BOTTOM or MIDDLE.");
     }
-  }
-
-  /**
-   * Draws the element at its position relative to the cursor for the current band.
-   *
-   * @param target  the output target.
-   * @param band  the band.
-   *
-   * @throws OutputTargetException if there is a problem with the target.
-   */
-  public void draw(OutputTarget target, Band band) throws OutputTargetException
-  {
-    target.setPaint(getPaint(band));
-    target.setFont(getFont(band));
-    target.drawMultiLineText(getFormattedText(),
-                             getAlignment(), getVerticalAlignment(),
-                             isDynamic());
   }
 
   /**
@@ -348,29 +318,6 @@ public class TextElement extends Element
   }
 
   /**
-   * Use this function with care, and don't depend on this too much, it gets removed as soon as the
-   * layouting is implemented.
-   *
-   * @return true, if the height of this textelement should be calculated dynamically
-   *
-   */
-  public boolean isDynamic()
-  {
-    return dynamic;
-  }
-
-  /**
-   * Use this function with care, and don't depend on this too much, it gets removed as soon as the
-   * layouting is implemented.
-   *
-   * @param dynamic set to true, if the height of this textelement should be calculated dynamically
-   */
-  public void setDynamic(boolean dynamic)
-  {
-    this.dynamic = dynamic;
-  }
-
-  /**
    * Debugging: returns the String representation of this element.
    *
    * @return a string.
@@ -381,14 +328,12 @@ public class TextElement extends Element
     b.append(this.getClass().getName());
     b.append("={ name=");
     b.append(getName());
-    b.append(", bounds=");
-    b.append(getBounds());
     b.append(", font=");
     b.append(getFont());
     b.append(", text=");
     b.append(getValue());
     b.append(", getFormattedText=");
-    b.append(getFormattedText());
+    b.append(getValue());
     b.append("}");
     return b.toString();
   }
@@ -405,5 +350,12 @@ public class TextElement extends Element
     TextElement te = (TextElement) super.clone();
     te.stringfilter = (StringFilter) stringfilter.clone();
     return te;
+  }
+
+  public static final String CONTENT_TYPE = "text/plain";
+
+  public String getContentType()
+  {
+    return CONTENT_TYPE;
   }
 }

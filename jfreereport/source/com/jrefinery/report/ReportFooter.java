@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportFooter.java,v 1.5 2002/08/08 15:28:38 taqua Exp $
+ * $Id: ReportFooter.java,v 1.6 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,8 @@
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.targets.style.BandStyleSheet;
+
 /**
  * A report band that appears as the very last band on the report.
  *
@@ -46,10 +48,6 @@ package com.jrefinery.report;
  */
 public class ReportFooter extends Band
 {
-
-  /** A flag that indicates that the report footer should appear on its own page. */
-  private boolean ownPage;
-
   /**
    * Constructs a report footer containing no elements.
    */
@@ -64,7 +62,8 @@ public class ReportFooter extends Band
    */
   public boolean isOwnPage ()
   {
-    return this.ownPage;
+    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, Boolean.FALSE);
+    return b.booleanValue();
   }
 
   /**
@@ -74,7 +73,7 @@ public class ReportFooter extends Band
    */
   public void setOwnPage (boolean b)
   {
-    this.ownPage = b;
+    getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean(b));
   }
 
 }

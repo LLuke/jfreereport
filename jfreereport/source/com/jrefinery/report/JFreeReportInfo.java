@@ -32,7 +32,6 @@
  * 10-May-2002 : Extracted from JFreeReport to declare this class public.
  * 16-May-2002 : added my name to the developer list ;-) (JS)
  * 12-Nov-2002 : Minor changes required to use JCommon 0.7.1 (DG)
- *
  */
 package com.jrefinery.report;
 
@@ -65,11 +64,11 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
     String baseResourceClass = "com.jrefinery.report.resources.JFreeReportResources";
     ResourceBundle resources = ResourceBundle.getBundle (baseResourceClass);
 
-    setName(resources.getString ("project.name"));
-    setVersion(resources.getString ("project.version"));
-    setInfo(resources.getString ("project.info"));
-    setCopyright(resources.getString ("project.copyright"));
-    setLicenceText(Licences.LGPL);
+    setName (resources.getString ("project.name"));
+    setVersion (resources.getString ("project.version"));
+    setInfo (resources.getString ("project.info"));
+    setCopyright (resources.getString ("project.copyright"));
+    setLicenceText (Licences.LGPL);
 
     setContributors(Arrays.asList (
             new Contributor[]
@@ -80,16 +79,18 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
             }
     ));
 
-    setLibraries(Arrays.asList (
+    setLibraries (Arrays.asList (
             new Library[]
             {
               new Library (JCommon.INFO),
               new Library ("JUnit", "3.7.1", "IBM Public Licence", "http://www.junit.org/"),
-              new Library ("iText", "0.95", "LGPL", "http://www.lowagie.com/iText/index.html"),
+              // 0.95 is also suitable ...
+              new Library ("iText", "0.94", "LGPL", "http://www.lowagie.com/iText/index.html"),
               new Library ("GNU JAXP", "1.0beta1", "GPL with library exception",
                       "http://www.gnu.org/software/classpathx/jaxp/"),
               new Library ("Pixie", "0.7.0", "LGPL",
-                      "http://sourceforge.net/projects/jfreereport/")
+                      "http://sourceforge.net/projects/jfreereport/"),
+              new Library ("BeanShell", "1.2B6", "LGPL", "http://www.beanshell.org/"),
             }
     ));
   }

@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: DataRowConnector.java,v 1.6 2002/11/07 21:45:19 taqua Exp $
  *
  * Changes
  * -------
@@ -103,6 +103,7 @@ public class DataRowConnector implements DataRow
    */
   public Object get (String col)
   {
+    if (dataRow == null) throw new IllegalStateException("Not connected");
     return dataRow.get (col);
   }
 
@@ -148,20 +149,20 @@ public class DataRowConnector implements DataRow
    *
    * @param report the report which will be connected
    */
-  public void connectDataSources (JFreeReport report)
+  public static void connectDataSources (JFreeReport report, DataRowConnector con)
   {
-    connectDataSources (report.getPageFooter ());
-    connectDataSources (report.getPageHeader ());
-    connectDataSources (report.getReportFooter ());
-    connectDataSources (report.getReportHeader ());
-    connectDataSources (report.getItemBand ());
+    connectDataSources (report.getPageFooter (), con);
+    connectDataSources (report.getPageHeader (), con);
+    connectDataSources (report.getReportFooter (), con);
+    connectDataSources (report.getReportHeader (), con);
+    connectDataSources (report.getItemBand (), con);
 
     int groupCount = report.getGroupCount ();
     for (int i = 0; i < groupCount; i++)
     {
       Group g = report.getGroup (i);
-      connectDataSources (g.getFooter ());
-      connectDataSources (g.getHeader ());
+      connectDataSources (g.getFooter (), con);
+      connectDataSources (g.getHeader (), con);
     }
   }
 
@@ -170,17 +171,24 @@ public class DataRowConnector implements DataRow
    *
    * @param band the band which will be connected.
    */
-  public void connectDataSources (Band band)
+  public static void connectDataSources (Band band, DataRowConnector con)
   {
     List l = band.getElements ();
     for (int i = 0; i < l.size (); i++)
     {
       Element e = (Element) l.get (i);
-      DataSource ds = getLastDatasource (e);
-      if (ds instanceof DataRowConnectable)
+      if (e instanceof Band)
       {
-        DataRowConnectable dc = (DataRowConnectable) ds;
-        dc.connectDataRow (this);
+        connectDataSources((Band) e, con);
+      }
+      else
+      {
+        DataSource ds = getLastDatasource (e);
+        if (ds instanceof DataRowConnectable)
+        {
+          DataRowConnectable dc = (DataRowConnectable) ds;
+          dc.connectDataRow (con);
+        }
       }
     }
   }
@@ -191,20 +199,20 @@ public class DataRowConnector implements DataRow
    *
    * @param report the report which will be disconnected from this DataRow.
    */
-  public void disconnectDataSources (JFreeReport report)
+  public static void disconnectDataSources (JFreeReport report, DataRowConnector con)
   {
-    disconnectDataSources (report.getPageFooter ());
-    disconnectDataSources (report.getPageHeader ());
-    disconnectDataSources (report.getReportFooter ());
-    disconnectDataSources (report.getReportHeader ());
-    disconnectDataSources (report.getItemBand ());
+    disconnectDataSources (report.getPageFooter (), con);
+    disconnectDataSources (report.getPageHeader (), con);
+    disconnectDataSources (report.getReportFooter (), con);
+    disconnectDataSources (report.getReportHeader (), con);
+    disconnectDataSources (report.getItemBand (), con);
 
     int groupCount = report.getGroupCount ();
     for (int i = 0; i < groupCount; i++)
     {
       Group g = report.getGroup (i);
-      disconnectDataSources (g.getFooter ());
-      disconnectDataSources (g.getHeader ());
+      disconnectDataSources (g.getFooter (), con);
+      disconnectDataSources (g.getHeader (), con);
     }
   }
 
@@ -213,17 +221,24 @@ public class DataRowConnector implements DataRow
    *
    * @param band the band which will be disconnected from this DataRow.
    */
-  public void disconnectDataSources (Band band)
+  public static void disconnectDataSources (Band band, DataRowConnector con)
   {
     List l = band.getElements ();
     for (int i = 0; i < l.size (); i++)
     {
       Element e = (Element) l.get (i);
-      DataSource ds = getLastDatasource (e);
-      if (ds instanceof DataRowConnectable)
+      if (e instanceof Band)
       {
-        DataRowConnectable dc = (DataRowConnectable) ds;
-        dc.disconnectDataRow (this);
+        disconnectDataSources((Band) e, con);
+      }
+      else
+      {
+        DataSource ds = getLastDatasource (e);
+        if (ds instanceof DataRowConnectable)
+        {
+          DataRowConnectable dc = (DataRowConnectable) ds;
+          dc.disconnectDataRow (con);
+        }
       }
     }
   }
@@ -253,5 +268,4 @@ public class DataRowConnector implements DataRow
     }
     return s;
   }
-
 }

@@ -25,7 +25,7 @@
  * -------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: DataRowBackend.java,v 1.20 2002/11/07 21:45:19 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.21 2002/11/07 21:53:15 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,6 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.function.Expression;
-import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.LeveledExpressionList;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportPropertiesList;
@@ -363,7 +362,7 @@ public class DataRowBackend implements Cloneable
     }
     catch (Exception e)
     {
-      Log.error ("Column " + column + " caused an error on get()", e);
+      Log.error("Column " + column + " caused an error on get()", e);
     }
     finally
     {
@@ -442,7 +441,7 @@ public class DataRowBackend implements Cloneable
         return i;
       }
     }
-    Log.warn ("No Such Column: " + name );
+    //Log.warn("No Such Column: " + name);
     return -1;
   }
 
@@ -473,7 +472,7 @@ public class DataRowBackend implements Cloneable
       Expression f = getFunctions().getExpression(col);
       if (f == null)
       {
-        Log.warn ("No such function: " + col);
+        Log.warn("No such function: " + col);
         return null;
       }
       return f.getName();
@@ -563,7 +562,7 @@ public class DataRowBackend implements Cloneable
     return getTableEndIndex() + getFunctions().size();
   }
 
-  private int getPropertiesEndIndex ()
+  private int getPropertiesEndIndex()
   {
     if (getReportProperties() == null)
     {

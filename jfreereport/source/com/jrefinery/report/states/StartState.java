@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: StartState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
+ * $Id: StartState.java,v 1.3 2002/12/02 17:43:50 taqua Exp $
  *
  * Changes
  * -------
@@ -34,6 +34,7 @@ package com.jrefinery.report.states;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportInitialisationException;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -52,7 +53,7 @@ public class StartState extends ReportState
    *
    * @param report  the report.
    */
-  public StartState (JFreeReport report) throws ReportProcessingException
+  public StartState (JFreeReport report) throws ReportInitialisationException
   {
     super (report);
     Iterator it = getLevels();

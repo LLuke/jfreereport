@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.6 2002/11/25 23:56:31 taqua Exp $
+ * $Id: ReportState.java,v 1.7 2002/12/02 17:43:50 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,6 +60,7 @@ import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.LeveledExpressionList;
 import com.jrefinery.report.util.Log;
@@ -118,7 +119,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param reportPar The report.
    */
   protected ReportState (JFreeReport reportPar)
-    throws ReportProcessingException
+    throws ReportInitialisationException
   {
     try
     {

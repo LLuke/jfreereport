@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.12 2002/09/05 08:31:51 taqua Exp $
+ * $Id: Element.java,v 1.13 2002/09/13 15:38:03 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -54,11 +54,11 @@ package com.jrefinery.report;
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.EmptyDataSource;
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.targets.OutputTargetException;
+import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleSheet;
 
 import java.awt.Paint;
-import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 /**
@@ -66,10 +66,10 @@ import java.io.Serializable;
  *
  * @author DG
  */
-public abstract class Element implements ElementConstants, DataTarget, Serializable, Cloneable
+public abstract class Element implements DataTarget, Serializable, Cloneable
 {
   /** A null datasource. */
-  private static final DataSource NULL_DATASOURCE = new EmptyDataSource ();
+  private static final DataSource NULL_DATASOURCE = new EmptyDataSource();
 
   /** The head of the data source chain. */
   private DataSource datasource;
@@ -77,14 +77,16 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
   /** The name of the element. */
   private String name;
 
-  /** The area that the element occupies within its band. */
-  private Rectangle2D area;
+  /** The stylesheet defines global appeareance for elements */
+  private ElementStyleSheet style;
 
-  /** The paint used to draw the element. */
-  private Paint paint;
+  public static final int LEFT = 1;
+  public static final int RIGHT = 2;
+  public static final int CENTER = 3;
 
-  /** The visiblity of an element is used to decide whether the element is printed */
-  private boolean visible;
+  public static final int TOP = 14;
+  public static final int MIDDLE = 15;
+  public static final int BOTTOM = 16;
 
   /**
    * Constructs an element.
@@ -95,19 +97,12 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    * datasource assigned with this element is set to a default source, which always
    * returns null.
    */
-  protected Element ()
+  protected Element()
   {
-    // Initialize the rectangles
-    this.area = new Rectangle2D.Float ();
-
-    // and inform all superclasses (if they override set bounds)
-    setBounds (new Rectangle2D.Float ());
-
-    setVisible (true);
-    setPaint (null);
-    setName ("anonymous@" + hashCode ());
-    // initialize the private datasource to be valid.
+    setName("anonymousElement@" + hashCode());
     datasource = NULL_DATASOURCE;
+    setStyle(new ElementStyleSheet(getName()));
+    getStyle().addParent(ElementDefaultStyleSheet.getDefaultStyle());
   }
 
   /**
@@ -116,35 +111,13 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @param name the name of this element (null not permitted)
    */
-  public void setName (String name)
+  public void setName(String name)
   {
     if (name == null)
     {
-      throw new NullPointerException ("The name must be valid");
+      throw new NullPointerException("The name must be valid");
     }
     this.name = name;
-  }
-
-  /**
-   * Defines the bounds for this element.
-   * <p>
-   * The bounds must not be null, or a NullPointerException is thrown.
-   * The contents of the bounds are copied into this elements bounds, the parameter
-   * object can be reused by the caller.
-   *
-   * @param bounds the bounds of this element
-   *
-   *  @throws NullPointerException
-   */
-  public void setBounds (Rectangle2D bounds)
-  {
-    if (bounds == null)
-    {
-      throw new NullPointerException ("Bounds must be valid");
-    }
-
-    this.area.setRect (bounds);
-
   }
 
   /**
@@ -152,7 +125,7 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @return The name.
    */
-  public String getName ()
+  public String getName()
   {
     return this.name;
   }
@@ -162,9 +135,11 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @return The m_paint.
    */
-  public Paint getPaint ()
+  public Paint getPaint()
   {
-    return getPaint (null);
+    Paint retval = (Paint) getStyle().getStyleProperty(ElementStyleSheet.PAINT);
+    if (retval == null) throw new IllegalStateException("No Paint Defined?");
+    return retval;
   }
 
   /**
@@ -180,29 +155,12 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    * NullPointerException is thrown instead.
    *
    * @param band  the band that the element belongs to (used to obtain default settings).
-   *
+   * @deprecated StyleSheets cascade by default, this method is no longer needed.
    * @return The paint for this element.
    */
-  public Paint getPaint (Band band)
+  public Paint getPaint(StyleSheet band)
   {
-    if (band == null)
-    {
-      return this.paint;
-    }
-
-    Paint result = this.paint;
-
-    if (this.paint == null)
-    {
-      result = band.getDefaultPaint ();
-    }
-    if (result == null)
-    {
-      throw new NullPointerException ("Neither element nor band have defined a Paint, this is not "
-                                    + "valid");
-    }
-    return result;
-
+    return getPaint();
   }
 
   /**
@@ -212,9 +170,9 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    * @param p  the m_paint for this element (null permitted).
    *
    */
-  public void setPaint (Paint p)
+  public void setPaint(Paint p)
   {
-    this.paint = p;
+    getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);
   }
 
   /**
@@ -224,7 +182,7 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @return the assigned datasource.
    */
-  public final DataSource getDataSource ()
+  public final DataSource getDataSource()
   {
     return datasource;
   }
@@ -237,11 +195,11 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @throws NullPointerException if an null-datasource is set.
    */
-  public void setDataSource (DataSource ds)
+  public void setDataSource(DataSource ds)
   {
     if (ds == null)
     {
-      throw new NullPointerException ("Null datasource is invalid");
+      throw new NullPointerException("Null datasource is invalid");
     }
     this.datasource = ds;
   }
@@ -251,38 +209,10 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @return the value of the datasource, which can be null.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    DataSource ds = getDataSource ();
-    return ds.getValue ();
-  }
-
-  /**
-   * Queries the bounds of this element using a new Rectangle2D object.
-   *
-   * @return The element bounds (in a new Rectangle2D).
-   */
-  public Rectangle2D getBounds ()
-  {
-    return getBounds (null);
-  }
-
-  /**
-   * Queries the bounds of this element. If carrier is null, a new rectangle is created,
-   * otherwise the bounds for this element are filled into the carrier.
-   *
-   * @param carrier  the rectangle2D object to carry the bounds of this element.
-   *
-   * @return  The element bounds.
-   */
-  public Rectangle2D getBounds (Rectangle2D carrier)
-  {
-    if (carrier == null)
-    {
-      carrier = new Rectangle2D.Float ();
-    }
-    carrier.setRect (area);
-    return carrier;
+    DataSource ds = getDataSource();
+    return ds.getValue();
   }
 
   /**
@@ -293,12 +223,12 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @return A boolean indicating equal or not equal.
    */
-  public boolean equals (Object o)
+  public boolean equals(Object o)
   {
     if (o instanceof Element)
     {
       Element el = (Element) o;
-      return el.getName ().equals (getName ());
+      return el.getName().equals(getName());
     }
     return false;
   }
@@ -309,9 +239,10 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @return the current visiblity state.
    */
-  public boolean isVisible ()
+  public boolean isVisible()
   {
-    return visible;
+    Boolean b = (Boolean) getStyle().getStyleProperty(ElementStyleSheet.VISIBLE, Boolean.FALSE);
+    return b.booleanValue();
   }
 
   /**
@@ -319,20 +250,10 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @param b the new visibility state
    */
-  public void setVisible (boolean b)
+  public void setVisible(boolean b)
   {
-    this.visible = b;
+    getStyle().setStyleProperty(ElementStyleSheet.VISIBLE, new Boolean(b));
   }
-
-  /**
-   * Draws the element at its location relative to the band.
-   *
-   * @param target The output target.
-   * @param band The band that the element is being drawn inside of.
-   *
-   * @throws OutputTargetException if there is any problem with the output target.
-   */
-  public abstract void draw (OutputTarget target, Band band) throws OutputTargetException;
 
   /**
    * Clones this Element.
@@ -341,12 +262,24 @@ public abstract class Element implements ElementConstants, DataTarget, Serializa
    *
    * @throws CloneNotSupportedException should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    Element e = (Element) super.clone ();
-    e.area = (Rectangle2D) area.clone ();
-    e.datasource = (DataSource) datasource.clone ();
+    Element e = (Element) super.clone();
+    e.style = (ElementStyleSheet) style.clone();
+    e.datasource = (DataSource) datasource.clone();
     return e;
   }
+
+  public ElementStyleSheet getStyle()
+  {
+    return style;
+  }
+
+  public void setStyle(ElementStyleSheet style)
+  {
+    this.style = style;
+  }
+
+  public abstract String getContentType ();
 
 }

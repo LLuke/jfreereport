@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupFooter.java,v 1.4 2002/06/04 19:20:37 taqua Exp $
+ * $Id: GroupFooter.java,v 1.5 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,12 +48,10 @@ package com.jrefinery.report;
  */
 public class GroupFooter extends Band
 {
-
   /**
    * Constructs a group footer band, containing no elements.
    */
   public GroupFooter ()
   {
   }
-
 }

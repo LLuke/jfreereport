@@ -56,14 +56,12 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.targets.OutputTargetException;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
+import com.jrefinery.report.targets.style.BandStyleSheet;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Paint;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.Dimension2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,109 +82,31 @@ import java.util.List;
  *
  * @author DG
  */
-public abstract class Band implements Serializable, Cloneable
+public class Band extends Element implements Serializable, Cloneable
 {
-
-  /** The default font. */
-  public static final transient Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 10);
-
-  /** The default paint. */
-  public static final transient Paint DEFAULT_PAINT = Color.black;
-
-  /** The height of the band. */
-  private float height;
-
-  /** The default font for this band. */
-  private Font defaultFont;
-
-  /** The default paint for this band. */
-  private Paint defaultPaint;
-
   /** All the elements for this band, stored by name. */
-  private List allElements;
+  private ArrayList allElements;
 
-  /** A flag controlling whether or not the band is visible. */
-  private boolean visible;
+  // The defaults for the elements contained in the band.
+  private ElementStyleSheet bandDefaults;
 
   /**
    * Constructs a new band (initially empty).
    */
-  protected Band()
+  public Band()
   {
-    setDefaultFont(DEFAULT_FONT);
-    setDefaultPaint(DEFAULT_PAINT);
+    getStyle().addParent(BandDefaultStyleSheet.getBandDefaultStyle());
+
+    setName("anonymousBand@" + hashCode());
     allElements = new ArrayList();
-    visible = true;
+
+    // naming ??
+    bandDefaults = new BandStyleSheet("default");
   }
 
-  /**
-   * Returns the height of the band (in points).
-   *
-   * @return The height.
-   */
-  public float getHeight()
+  public ElementStyleSheet getBandDefaults ()
   {
-    return height;
-  }
-
-  /**
-   * Defines the height of the band.
-   *
-   * @param height  the height (in points).
-   */
-  public void setHeight(float height)
-  {
-    this.height = height;
-  }
-
-  /**
-   * Returns the default font for the band.
-   *
-   * @return The font.
-   */
-  public Font getDefaultFont()
-  {
-    return this.defaultFont;
-  }
-
-  /**
-   * Sets the default font for the band.
-   *
-   * @param font The font.
-   */
-  public void setDefaultFont(Font font)
-  {
-    if (font == null)
-    {
-      throw new NullPointerException();
-    }
-    this.defaultFont = font;
-  }
-
-  /**
-   * Returns the default paint for the band.
-   *
-   * @return The paint.
-   */
-  public Paint getDefaultPaint()
-  {
-    return this.defaultPaint;
-  }
-
-  /**
-   * Sets the default paint for the band.
-   *
-   * @param paint The paint.
-   *
-   * @throws NullPointerException if the given paint is null
-   */
-  public void setDefaultPaint(Paint paint)
-  {
-    if (paint == null)
-    {
-      throw new NullPointerException();
-    }
-    this.defaultPaint = paint;
+    return bandDefaults;
   }
 
   /**
@@ -203,16 +123,8 @@ public abstract class Band implements Serializable, Cloneable
     {
       throw new NullPointerException("Cannot add null-Element");
     }
-    if (element.getName() == null)
-    {
-      throw new IllegalArgumentException("Element is not valid: Valid elements need a name");
-    }
-    if (element.getBounds() == null)
-    {
-      throw new IllegalArgumentException("Element is not valid: Valid elements need filled bounds");
-    }
-
     allElements.add(element);
+    element.getStyle().addParent(getBandDefaults());
   }
 
   /**
@@ -240,114 +152,6 @@ public abstract class Band implements Serializable, Cloneable
   }
 
   /**
-   * Draws the band onto the specified output target.
-   *
-   * @param target The output target.
-   * @param x The x-coordinate.
-   * @param y The y-coordinate.
-   *
-   * @return  maxheight.
-   *
-   * @throws NullPointerException if the target given is null.
-   * @throws OutputTargetException if there is some problem with the target.
-   */
-  public float draw(OutputTarget target, float x, float y) throws OutputTargetException
-  {
-    if (target == null)
-    {
-      throw new NullPointerException();
-    }
-    if (isVisible() == false)
-    {
-      return 0;
-    }
-    boolean isDynamic = false;
-    for (int i = 0; i < allElements.size() && isDynamic == false; i++)
-    {
-      Object o = allElements.get (i);
-      if (o instanceof TextElement)
-      {
-        TextElement te = (TextElement) o;
-        isDynamic = te.isDynamic();
-      }
-    }
-    float maxheight = getHeight();
-
-    Rectangle2D bounds = new Rectangle2D.Float();
-    bounds.setRect(x, y, target.getUsableWidth(), getHeight());
-    target.setClippingArea(bounds);
-
-    target.setPaint(getDefaultPaint());
-    Iterator iterator = allElements.iterator();
-    while (iterator.hasNext())
-    {
-      Element e = (Element) iterator.next();
-      if (e.isVisible())
-      {
-        Rectangle2D rect = translateBounds(target, e.getBounds());
-        target.getCursor().setElementBounds(rect);
-        try
-        {
-          Object state = target.saveState();
-          e.draw(target, this);
-          target.restoreState(state);
-        }
-        catch (OutputTargetException ex)
-        {
-          Log.error("Failed to draw band", ex);
-        }
-        if (isDynamic)
-        {
-          double eh = target.getCursor().getElementBounds().getY()
-                    + target.getCursor().getElementBounds().getHeight();
-          if (eh > maxheight)
-          {
-            maxheight = (float) eh;
-          }
-        }
-      }
-    }
-    return maxheight;
-  }
-
-  /**
-   * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
-   *
-   * @param target  the output target.
-   * @param bounds  the bounds (encoded with relative values).
-   *
-   * @return the bounds after translation to absolute values.
-   */
-  private Rectangle2D translateBounds(OutputTarget target, Rectangle2D bounds)
-  {
-    float x = fixValue(bounds.getX(), target.getUsableWidth());
-    float y = fixValue(bounds.getY(), getHeight());
-    float w = fixValue(bounds.getWidth(), target.getUsableWidth());
-    float h = fixValue(bounds.getHeight(), getHeight());
-    bounds.setRect(x, y, w, h);
-    return bounds;
-  }
-
-  /**
-   * Helperfunction:
-   * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
-   *
-   * @param value  the relative value.
-   * @param full  the value of 100%.
-   *
-   * @return the absolute value.
-   */
-  private float fixValue(double value, double full)
-  {
-    if (value >= 0)
-    {
-      return (float) value;
-    }
-    float retval = (float) (value * full / -100);
-    return retval;
-  }
-
-  /**
    * Returns the first element in that list which is registered by the given name
    *
    * @param name  the element name.
@@ -367,12 +171,19 @@ public abstract class Band implements Serializable, Cloneable
     while (it.hasNext())
     {
       Element e = (Element) it.next();
-      if (e.getName().equals(name))
-      {
-        return e;
-      }
+      if (e.getName() != null)
+        if (e.getName().equals(name))
+        {
+          return e;
+        }
     }
     return null;
+  }
+
+  public void removeElement (Element e)
+  {
+    e.getStyle().removeParent(getBandDefaults());
+    allElements.remove(e);
   }
 
   /**
@@ -381,6 +192,13 @@ public abstract class Band implements Serializable, Cloneable
   public List getElements()
   {
     return Collections.unmodifiableList(allElements);
+  }
+
+  public Element[] getElementArray ()
+  {
+    Element[] elements = new Element[allElements.size()];
+    elements = (Element[]) allElements.toArray(elements);
+    return elements;
   }
 
   /**
@@ -403,36 +221,39 @@ public abstract class Band implements Serializable, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     Band b = (Band) super.clone();
-    b.allElements = new ArrayList();
-    Iterator it = allElements.iterator();
-    while (it.hasNext())
+    b.bandDefaults = (ElementStyleSheet) bandDefaults.clone();
+    b.allElements = (ArrayList) allElements.clone();
+    b.allElements.clear();
+    for (int i = 0; i < allElements.size(); i++)
     {
-      Element e = (Element) it.next();
-      b.addElement((Element) e.clone());
+      Element e = (Element) allElements.get(i);
+      b.allElements.add (e.clone());
     }
     return b;
   }
 
-  /**
-   * Checks whether this band is visible. Invisible band are not printed and do not consume any
-   * height.
-   *
-   * @return true, if this band is visible.
-   */
-  public boolean isVisible()
+  public static final String CONTENT_TYPE = "X-container";
+
+  public String getContentType()
   {
-    return visible;
+    return CONTENT_TYPE;
   }
 
   /**
-   * Defines whether this band is visible. Invisible band are not printed and do not consume any
-   * height.
-   *
-   * @param visible set to true, to make this band visible, false otherwise.
+   * @deprecated do not manipulate the element properties that way, use a stylesheet
    */
-  public void setVisible(boolean visible)
+  public void setHeight (float height)
   {
-    this.visible = visible;
+    getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
   }
 
+  /**
+   * @deprecated do not manipulate the element properties that way, use a stylesheet and take care
+   * of the layoutmanager reading this data ...
+   */
+  public float getHeight ()
+  {
+    Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 0));
+    return (float) d.getHeight();
+  }
 }

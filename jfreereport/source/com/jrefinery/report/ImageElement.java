@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.18 2002/09/13 15:38:04 mungady Exp $
+ * $Id: ImageElement.java,v 1.19 2002/09/16 16:59:03 mungady Exp $
  *
  * Changes:
  * --------
@@ -44,20 +44,20 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.targets.OutputTargetException;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 /**
  * Used to draw images (Gif, JPEG, PNG or wmf) on a report band.
  * PNG Support needs JDK 1.3 or higher. This class encapsulates an
  * ImageReference into an element.
  * <p>
- * ToDo: Better scaling
  *
  * @author TM
  */
 public class ImageElement extends Element
 {
+  public static final String CONTENT_TYPE = "image/generic";
+
   /**
    * Constructs a image element.
    */
@@ -65,79 +65,51 @@ public class ImageElement extends Element
   {
   }
 
-  /**
-   * Draws the element at its location relative to the band co-ordinates supplied.
-   *
-   * @param target The target on which to print.
-   * @param band The band.
-   *
-   * @throws OutputTargetException if there is a problem with the target.
-   */
-  public void draw (OutputTarget target, Band band) throws OutputTargetException
+  public String getContentType()
   {
-    // set the paint...
-    target.setPaint (getPaint (band));
-    ImageReference ref = (ImageReference) getValue ();
-    if (ref != null)
-    {
-      target.drawImage (ref);
-    }
-  }
-
-
-  /**
-   * Returns the required width of the image (in points, 1/72 inch).
-   *
-   * @return The width.
-   */
-  public float getWidth ()
-  {
-
-    return (float) getBounds ().getWidth ();
+    return CONTENT_TYPE;
   }
 
   /**
-   * Returns the required height of the image (in points, 1/72 inch).
+   * Specifies whether the contents of this elements shape should be filled with this elements
+   * paint. By default this returns true.
    *
-   * @return the desired height of the image.
+   * @return true if the outline should be drawn, false otherwise
    */
-  public float getHeight ()
+  public boolean isScale()
   {
-
-    return (float) getBounds ().getHeight ();
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE);
   }
 
   /**
-   * Returns the required left origin of the image.
+   * Sets a flag that controls whether the shape should be scaled to fit the element bounds
    *
-   * @return The left origin.
+   * @param scale the flag.
    */
-  public float getX ()
+  public void setScale(boolean scale)
   {
-
-    return (float) getBounds ().getX ();
+    getStyle().setStyleProperty(ElementStyleSheet.SCALE, new Boolean(scale));
   }
 
   /**
-   * Returns the upper origin of the image.
+   * Specifies whether the contents of this elements shape should be filled with this elements
+   * paint. By default this returns true.
    *
-   * @return The upper origin.
+   * @return true if the outline should be drawn, false otherwise
    */
-  public float getY ()
+  public boolean isKeepAspectRatio()
   {
-    return (float) getBounds ().getY ();
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO);
   }
 
   /**
-   * Clones the element.
+   * Sets a flag that controls whether the shape should be scaled to fit the element bounds
    *
-   * @return a clone.
-   *
-   * @throws CloneNotSupportedException should never be thrown.
+   * @param kar the flag.
    */
-  public Object clone() throws CloneNotSupportedException
+  public void setKeepAspectRatio(boolean kar)
   {
-    return super.clone();
+    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(kar));
   }
 
 }

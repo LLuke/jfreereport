@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageHeader.java,v 1.4 2002/06/04 19:20:37 taqua Exp $
+ * $Id: PageHeader.java,v 1.5 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,6 +40,8 @@
  */
 package com.jrefinery.report;
 
+import com.jrefinery.report.targets.style.BandStyleSheet;
+
 
 /**
  * A report band used to print information at the top of every page in the report.  There is an
@@ -49,19 +51,11 @@ package com.jrefinery.report;
  */
 public class PageHeader extends Band
 {
-  /** Flag that indicates whether or not the footer is printed on the first page of the report. */
-  private boolean displayOnFirstPage;
-
-  /** Flag that indicates whether or not the footer is printed on the last page of the report. */
-  private boolean displayOnLastPage;
-
   /**
    * Constructs a page header.
    */
   public PageHeader ()
   {
-    displayOnFirstPage = true;
-    displayOnLastPage = true;
   }
 
   /**
@@ -70,7 +64,7 @@ public class PageHeader extends Band
    */
   public boolean isDisplayOnFirstPage ()
   {
-    return this.displayOnFirstPage;
+    return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE);
   }
 
   /**
@@ -80,7 +74,7 @@ public class PageHeader extends Band
    */
   public void setDisplayOnFirstPage (boolean b)
   {
-    this.displayOnFirstPage = b;
+    getStyle().setStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, new Boolean(b));
   }
 
   /**
@@ -89,7 +83,7 @@ public class PageHeader extends Band
    */
   public boolean isDisplayOnLastPage ()
   {
-    return this.displayOnLastPage;
+    return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE);
   }
 
   /**
@@ -99,7 +93,7 @@ public class PageHeader extends Band
    */
   public void setDisplayOnLastPage (boolean b)
   {
-    this.displayOnLastPage = b;
+    getStyle().setStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, new Boolean(b));
   }
 
 }

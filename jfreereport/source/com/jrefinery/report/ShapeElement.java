@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.16 2002/08/19 21:17:29 taqua Exp $
+ * $Id: ShapeElement.java,v 1.17 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,68 +45,54 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.targets.OutputTarget;
-import com.jrefinery.report.targets.OutputTargetException;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleKey;
 
 import java.awt.BasicStroke;
-import java.awt.Shape;
 import java.awt.Stroke;
 
 /**
  * Used to draw shapes (typically lines and boxes) on a report band. This is the abstract
  * base class for all specialized shape elements.
  *
+ * !!!! Complete REDESIGN! Use the Filters!
+ *
  * @author DG
  */
-public abstract class ShapeElement extends Element
+public class ShapeElement extends Element
 {
   /** default stroke size. */
   public static final BasicStroke DEFAULT_STROKE = new BasicStroke (0.5f);
 
-  /** The shape to draw. */
-  private Shape shape;
+  public static final StyleKey FILL_SHAPE = StyleKey.getStyleKey("fill-shape", Boolean.class);
+  public static final StyleKey DRAW_SHAPE = StyleKey.getStyleKey("draw-shape", Boolean.class);
 
-  /** The stroke. */
-  private Stroke stroke;
+  private static class ShapeElementDefaultStyleSheet extends ElementStyleSheet
+  {
+    public ShapeElementDefaultStyleSheet()
+    {
+      super("Shape-default");
+      setStyleProperty(ElementStyleSheet.STROKE, DEFAULT_STROKE);
+    }
+  }
 
-  /** Fill the shape? */
-  private boolean shouldFill;
+  private static ShapeElementDefaultStyleSheet defaultShapeStyle;
 
-  /** Draw the shape. */
-  private boolean shouldDraw;
+  public static ShapeElementDefaultStyleSheet getDefaultStyle ()
+  {
+    if (defaultShapeStyle == null)
+    {
+      defaultShapeStyle = new ShapeElementDefaultStyleSheet();
+    }
+    return defaultShapeStyle;
+  }
 
   /**
    * Constructs a shape element.
    */
   public ShapeElement ()
   {
-    setStroke (DEFAULT_STROKE);
-  }
-
-  /**
-   * Returns the shape to draw.
-   *
-   * @return the shape.
-   */
-  public Shape getShape ()
-  {
-    return shape;
-  }
-
-  /**
-   * Defines the shape to draw in this element. subclasses should not override this element
-   * directly instead they should provide accessor functionality suitable for their shape-type.
-   *
-   * @param shape  the shape.
-   */
-  protected void setShape (Shape shape)
-  {
-    if (shape == null)
-    {
-      throw new NullPointerException ("NullShape is not valid");
-    }
-
-    this.shape = shape;
+    getStyle().addParent(getDefaultStyle());
   }
 
   /**
@@ -119,62 +105,11 @@ public abstract class ShapeElement extends Element
     StringBuffer b = new StringBuffer ();
     b.append ("Shape={ name=");
     b.append (getName ());
-    b.append (", bounds=");
-    b.append (getBounds ());
     b.append (", shape=");
-    b.append (getShape ());
-    b.append (", stroke=");
-    b.append (getStroke ());
+    b.append (getValue());
     b.append ("}");
 
     return b.toString ();
-  }
-
-  /**
-   * Draws the element at its location relative to the band co-ordinates supplied.
-   *
-   * @param target The output target on which to draw.
-   * @param band The band.
-   *
-   * @throws OutputTargetException if there is a problem with the target.
-   */
-  public void draw (OutputTarget target, Band band) throws OutputTargetException
-  {
-    // set the paint...
-    target.setPaint (getPaint (band));
-    target.setStroke (getStroke ());
-    if (isShouldDraw ())
-    {
-      target.drawShape (getShape ());
-    }
-    if (isShouldFill ())
-    {
-      target.fillShape (getShape ());
-    }
-  }
-
-  /**
-   * Returns the stroke.
-   *
-   * @return the Stroke.
-   */
-  public Stroke getStroke ()
-  {
-    return this.stroke;
-  }
-
-  /**
-   * Sets the stroke.
-   *
-   * @param stroke  the stroke
-   */
-  public void setStroke (Stroke stroke)
-  {
-    if (stroke == null)
-    {
-      throw new NullPointerException ();
-    }
-    this.stroke = stroke;
   }
 
   /**
@@ -185,7 +120,7 @@ public abstract class ShapeElement extends Element
    */
   public boolean isShouldDraw ()
   {
-    return shouldDraw;
+    return getStyle().getBooleanStyleProperty(DRAW_SHAPE);
   }
 
   /**
@@ -196,7 +131,7 @@ public abstract class ShapeElement extends Element
    */
   public boolean isShouldFill ()
   {
-    return shouldFill;
+    return getStyle().getBooleanStyleProperty(FILL_SHAPE);
   }
 
   /**
@@ -206,7 +141,49 @@ public abstract class ShapeElement extends Element
    */
   public void setShouldDraw (boolean shouldDraw)
   {
-    this.shouldDraw = shouldDraw;
+    getStyle().setStyleProperty(DRAW_SHAPE, new Boolean(shouldDraw));
+  }
+
+  /**
+   * Specifies whether the contents of this elements shape should be filled with this elements
+   * paint. By default this returns true.
+   *
+   * @return true if the outline should be drawn, false otherwise
+   */
+  public boolean isScale()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE);
+  }
+
+  /**
+   * Sets a flag that controls whether the shape should be scaled to fit the element bounds
+   *
+   * @param scale the flag.
+   */
+  public void setScale(boolean scale)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.SCALE, new Boolean(scale));
+  }
+
+  /**
+   * Specifies whether the contents of this elements shape should be filled with this elements
+   * paint. By default this returns true.
+   *
+   * @return true if the outline should be drawn, false otherwise
+   */
+  public boolean isKeepAspectRatio()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO);
+  }
+
+  /**
+   * Sets a flag that controls whether the shape should be scaled to fit the element bounds
+   *
+   * @param kar the flag.
+   */
+  public void setKeepAspectRatio(boolean kar)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(kar));
   }
 
   /**
@@ -216,7 +193,23 @@ public abstract class ShapeElement extends Element
    */
   public void setShouldFill (boolean shouldFill)
   {
-    this.shouldFill = shouldFill;
+    getStyle().setStyleProperty(FILL_SHAPE, new Boolean(shouldFill));
   }
 
+  public static final String CONTENT_TYPE = "shape/generic";
+
+  public String getContentType()
+  {
+    return CONTENT_TYPE;
+  }
+
+  public Stroke getStroke ()
+  {
+    return (Stroke) getStyle().getStyleProperty(ElementStyleSheet.STROKE);
+  }
+
+  public void setStroke (Stroke stroke)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.STROKE, stroke);
+  }
 }
