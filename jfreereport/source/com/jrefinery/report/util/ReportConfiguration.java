@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.12 2002/12/08 23:29:48 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.13 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -459,7 +459,7 @@ public class ReportConfiguration
   }
 
   /**
-   * Returns true if logging is disabled.
+   * Returns <code>true</code> if logging is disabled, and <code>false</code> otherwise.
    *
    * @return boolean.
    */
@@ -470,6 +470,10 @@ public class ReportConfiguration
 
   /**
    * Sets the flag that disables logging.
+   * <p>
+   * To switch off logging globally, you can use the following code:
+   * <p>
+   * <code>ReportConfiguration.getGlobalConfig().setDisableLogging(true);</code>
    *
    * @param disableLogging  the flag.
    */
