@@ -36,10 +36,10 @@
         <property name="basedir" value=".." />
         <property name="builddir" value="${basedir}/build" />
         <property name="libdir" value="${basedir}/lib" />
-        <property name="BeanShell-jar" value="$bsh-1.2b6.jar" />
-        <property name="GnuJAXP-jar" value="$gnujaxp.jar" />
-        <property name="iText-jar" value="$iText-0.96.jar" />
-        <property name="JCommon-jar" value="$jcommon-0.7.1.jar" />
+        <property name="BeanShell-jar" value="bsh-1.2b6.jar" />
+        <property name="GnuJAXP-jar" value="gnujaxp.jar" />
+        <property name="iText-jar" value="iText-0.96.jar" />
+        <property name="JCommon-jar" value="jcommon-0.7.1.jar" />
         <property name="Pixie-jar" value="pixie.jar" />
         <property name="POI-jar" value="jakarta-poi-1.5.1-final-20020615.jar" />
 
