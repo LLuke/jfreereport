@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ElementDefinitionException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParserFrontend;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 /**
  * The reportgenerator initializes the parser and provides an interface
@@ -249,26 +245,5 @@ public class ReportGenerator extends ParserFrontend
       generator = new ReportGenerator();
     }
     return generator;
-  }
-
-  /**
-   * Configures the xml reader. Use this to set features or properties
-   * before the documents get parsed.
-   *
-   * @param parser the parser implementation that will handle the SAX-Callbacks.
-   * @param xmlReader the xml reader that should be configured.
-   */
-  protected void configureReader(final XMLReader xmlReader, final Parser parser)
-  {
-    final ReportParser rparser = (ReportParser) parser;
-    try
-    {
-      xmlReader.setProperty
-          ("http://xml.org/sax/properties/lexical-handler", rparser.getCommentHandler());
-    }
-    catch (SAXException se)
-    {
-      Log.debug("Comments are not supported by this SAX implementation.");
-    }
   }
 }

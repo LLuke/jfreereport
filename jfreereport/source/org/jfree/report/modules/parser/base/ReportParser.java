@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.13 2003/08/27 20:19:54 taqua Exp $
+ * $Id: ReportParser.java,v 1.14 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -57,8 +57,6 @@ public class ReportParser extends Parser
 {
   /** The key that stores the report defintion in the helper objects collection. */
   public static final String HELPER_OBJ_REPORT_NAME = "report";
-  /** The current comment handler used to receive xml comments. */
-  private final CommentHandler commentHandler;
 
   /**
    * Default constuctor. Initalizes the parser to use the JFreeReport parser
@@ -67,7 +65,6 @@ public class ReportParser extends Parser
   public ReportParser()
   {
     setInitialFactory(new InitialReportHandler(this));
-    commentHandler = new CommentHandler();
   }
 
   /**
@@ -119,25 +116,6 @@ public class ReportParser extends Parser
   }
 
   /**
-   * Returns the comment handler that is used to collect comments.
-   *
-   * @return the comment handler.
-   */
-  public CommentHandler getCommentHandler()
-  {
-    return commentHandler;
-  }
-
-  /**
-   * Returns the currently collected comments.
-   * @return the comments.
-   */
-  public String[] getComments()
-  {
-    return getCommentHandler().getComments();
-  }
-
-  /**
    * Checks whether this report is a included report and not the main
    * report definition.
    *
@@ -164,7 +142,6 @@ public class ReportParser extends Parser
     throws SAXException
   {
     super.endElement(tagName, namespace, qName);
-    getCommentHandler().clearComments();
   }
 
   /**
@@ -182,7 +159,6 @@ public class ReportParser extends Parser
                            final String qName, final Attributes attributes) throws SAXException
   {
     super.startElement(tagName, namespace, qName, attributes);
-    getCommentHandler().clearComments();
   }
 
   /**
