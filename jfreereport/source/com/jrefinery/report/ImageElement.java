@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.5 2002/05/21 23:06:18 taqua Exp $
+ * $Id: ImageElement.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes:
  * --------
@@ -105,14 +105,7 @@ public class ImageElement extends Element
   public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
     // set the paint...
-    if (m_paint != null)
-    {
-      target.setPaint(m_paint);
-    }
-    else
-    {
-      target.setPaint(band.getDefaultPaint());
-    }
+    target.setPaint(getPaint(band));
     target.drawImage(getImageReference());
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.9 2002/05/27 21:42:46 taqua Exp $
+ * $Id: ShapeElement.java,v 1.10 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -123,15 +123,7 @@ public abstract class ShapeElement extends Element
   public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
     // set the paint...
-    if (m_paint != null)
-    {
-      Log.debug ("Paint set to : "+ m_paint);
-      target.setPaint(m_paint);
-    }
-    else
-    {
-      target.setPaint(band.getDefaultPaint());
-    }
+    target.setPaint(getPaint(band));
     target.setStroke(getStroke());
     if (shouldDraw()) target.drawShape(getShape());
     if (shouldFill()) target.fillShape(getShape());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionElement.java,v 1.3 2002/05/21 23:06:18 taqua Exp $
+ * $Id: FunctionElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -36,18 +36,13 @@
  * 10-May-2002 : Removed all complex constructors
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
+ * 04-Jun-2002 : Documentation, removed useless imports.
  */
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.ReportDataSource;
-import com.jrefinery.report.filter.DataSource;
-import com.jrefinery.report.filter.FunctionDataSource;
 import com.jrefinery.report.filter.DataFilter;
-
-import java.awt.Font;
-import java.awt.Paint;
-import java.awt.geom.Rectangle2D;
+import com.jrefinery.report.filter.FunctionDataSource;
 
 /**
  * The base class for all elements in JFreeReport that display function values.
@@ -68,9 +63,10 @@ public abstract class FunctionElement extends TextElement
    */
   protected FunctionElement ()
   {
-    functionsource = new FunctionDataSource();
+    functionsource = new FunctionDataSource ();
     DataFilter df = getTextFilter ();
     df.setDataSource (functionsource);
+    setFunctionName ("");
   }
 
   /**
@@ -80,7 +76,7 @@ public abstract class FunctionElement extends TextElement
    */
   public String getFunctionName ()
   {
-    return functionsource.getFunction();
+    return functionsource.getFunction ();
   }
 
   /**
@@ -90,10 +86,14 @@ public abstract class FunctionElement extends TextElement
    */
   public void setFunctionName (String function)
   {
-    functionsource.setFunction(function);
+    functionsource.setFunction (function);
   }
 
-  protected FunctionDataSource getFunctionDataSource ()
+  /**
+   * @returns this FunctionElements root datasource. It is important, that this element
+   * is at the start of the filter queue, or the results may not be as expected.
+   */
+  protected final FunctionDataSource getFunctionDataSource ()
   {
     return functionsource;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.5 2002/05/21 23:06:18 taqua Exp $
+ * $Id: DataElement.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,6 +37,7 @@
  * 10-May-2002 : Removed all complex constructors and declared abstract
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
+ * 04-Jun-2002 : Documentation, declared the internal function getReportDataSource final.
  */
 
 package com.jrefinery.report;
@@ -48,6 +49,10 @@ import com.jrefinery.report.filter.DataFilter;
 /**
  * The base class for all report elements that display data (that is, information from the report's
  * data source) rather than just static information.
+ * <p>
+ * This element is deprecated since release 0.7.3. Use the filter API to form the same
+ * functionality. The filter API provides the class ReportDataSource for accessing fields
+ * of the report datasources current row.
  *
  * @deprecated form this element by stacking it together by using filters
  */
@@ -57,13 +62,17 @@ public abstract class DataElement extends TextElement
 
   /**
    * Constructs a data element using float coordinates.
+   * The fieldname is initialized to an empty string.
    * @deprecated Use filters to form a data element
    */
   protected DataElement()
   {
     fieldsource = new ReportDataSource();
-    DataFilter df = getTextFilter ();
-    df.setDataSource (fieldsource);
+    fieldsource.setField("");
+
+    // Register this elements data source with the text elements string filter.
+    DataFilter parentFilter = super.getTextFilter();
+    parentFilter.setDataSource(fieldsource);
   }
 
   /**
@@ -91,10 +100,10 @@ public abstract class DataElement extends TextElement
   }
 
   /**
-   * Returns the reportdatasource assigned to this field. Make sure you add this to the
+   * @returns the reportdatasource assigned to this field. Make sure you add this to the
    * end of the chain or you will not see any results.
    */
-  protected ReportDataSource getReportDataSource ()
+  protected final ReportDataSource getReportDataSource ()
   {
     return fieldsource;
   }

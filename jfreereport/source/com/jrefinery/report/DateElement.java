@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.4 2002/05/21 23:06:18 taqua Exp $
+ * $Id: DateElement.java,v 1.5 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,17 +36,16 @@
  * 10-May-2002 : Removed all compelex constructors
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
+ * 04-May-2002 : cleanup, documentation.
  */
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DateFormatFilter;
-import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataFilter;
+import com.jrefinery.report.filter.DateFormatFilter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * A data element that handles java.util.Date objects.
@@ -64,13 +63,13 @@ public class DateElement extends DataElement
    *
    * @deprecated form this element by stacking it together by using filters
    */
-  public DateElement()
+  public DateElement ()
   {
-    formatter = new DateFormatFilter();
-    setFormatString(null);
-    DataFilter df = getTextFilter();
-    df.setDataSource(formatter);
-    formatter.setDataSource(getReportDataSource());
+    formatter = new DateFormatFilter ();
+    setFormatString (null);
+    DataFilter df = getTextFilter ();
+    df.setDataSource (formatter);
+    formatter.setDataSource (getReportDataSource ());
   }
 
   /**
@@ -78,15 +77,15 @@ public class DateElement extends DataElement
    *
    * @deprecated form this element by stacking it together by using filters
    */
-  public void setFormatString(String s)
+  public void setFormatString (String s)
   {
     if (s == null)
     {
-      setFormatter(new SimpleDateFormat());
+      setFormatter (new SimpleDateFormat ());
     }
     else
     {
-      setFormatter(new SimpleDateFormat(s));
+      setFormatter (new SimpleDateFormat (s));
     }
   }
 
@@ -95,9 +94,9 @@ public class DateElement extends DataElement
    * return null.
    * @deprecated form this element by stacking it together by using filters
    */
-  public DateFormat getFormatter()
+  public DateFormat getFormatter ()
   {
-    return formatter.getDateFormat();
+    return formatter.getDateFormat ();
   }
 
   /**
@@ -105,17 +104,17 @@ public class DateElement extends DataElement
    * an exception is thrown.
    * @deprecated form this element by stacking it together by using filters
    */
-  public void setFormatter(DateFormat format)
+  public void setFormatter (DateFormat format)
   {
     if (format == null)
     {
-      throw new NullPointerException("Given format may not be null");
+      throw new NullPointerException ("Given format may not be null");
     }
     if (format instanceof SimpleDateFormat)
     {
-      this.formatter.setDateFormat((SimpleDateFormat) format);
+      this.formatter.setDateFormat ((SimpleDateFormat) format);
     }
     else
-      throw new ClassCastException("DEPRECATION: Only simple dateformat supported by default implementation");
+      throw new ClassCastException ("DEPRECATION: Only simple dateformat supported by default implementation");
   }
 }

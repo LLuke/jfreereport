@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.6 2002/05/27 21:42:46 taqua Exp $
+ * $Id: Element.java,v 1.7 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,16 +41,19 @@
  * 20-May-2002 : Support for DataTarget interface added. The drawing scheme has changed to fit
  *               the new OutputTarget implementation
  * 26-May-2002 : Elements visible property controls whether an element is drawn by its band
+ * 04-Jun-2002 : Documentation tags changed. A default name is generated, a default datasource
+ *               is set. Elements paint is no longer protected, the paint is retrieved by the
+ *               getPaint (Band) method. If neither band nor element have a paint declared, fail
+ *               with and exception.
  */
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.filter.DataSource;
+import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 
-import java.awt.Color;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
@@ -59,6 +62,16 @@ import java.awt.geom.Rectangle2D;
  */
 public abstract class Element implements ElementConstants, DataTarget
 {
+  private static final class NullDataSource implements DataSource
+  {
+    public Object getValue ()
+    {
+      return null;
+    }
+  }
+
+  private static final DataSource NULL_DATASOURCE = new NullDataSource ();
+
   private DataSource datasource;
 
   /** The name of the element. */
@@ -68,56 +81,72 @@ public abstract class Element implements ElementConstants, DataTarget
   private Rectangle2D area;
 
   /** The paint used to draw the element. */
-  protected Paint m_paint;
+  private Paint m_paint;
 
+  /** The visiblity of an element is used to decide whether the element is printed */
   private boolean visible;
 
   /**
    * Constructs an element.
+   * <p>
+   * The element is set to have no paint (the bands paint is used),
+   * the element is visible and has the bounds of (0,0,0,0). The name of the
+   * element is set to an anonymous construct ("anonymous@" + hashCode()) and the
+   * datasource assigned with this element is set to a default source, which always
+   * returns null.
    */
-  protected Element()
+  protected Element ()
   {
+    // Initialize the rectangles
+    this.area = new Rectangle2D.Float ();
+
+    // and inform all superclasses (if they override set bounds)
+    setBounds (new Rectangle2D.Float ());
+
     setVisible (true);
-    setPaint(Color.black);
-    setBounds(new Rectangle2D.Float());
+    setPaint (null);
+    setName ("anonymous@" + hashCode ());
+    // initialize the private datasource to be valid.
+    datasource = NULL_DATASOURCE;
   }
 
   /**
    * Defines the name for this element. The name must not be empty, or a NullPointerException
-   * is raised.
+   * is thrown.
    *
    * @param name the name of this element
    * @throws NullPointerException if the name is empty
    */
-  public void setName(String name)
+  public void setName (String name)
   {
-    if (name == null)
-      throw new NullPointerException("The name must be valid");
+    if (name == null) throw new NullPointerException ("The name must be valid");
     this.name = name;
   }
 
   /**
-   * Defines the bounds for this element. The bounds must not be null, or a NullPointerException
-   * is thrown.
+   * Defines the bounds for this element.
+   * <p>
+   * The bounds must not be null, or a NullPointerException is thrown.
+   * The contents of the bounds are copied into this elements bounds, the parameter
+   * object can be reused by the caller.
    *
    * @param bounds the bounds of this element
    * @throws NullPointerException
    */
-  public void setBounds(Rectangle2D bounds)
+  public void setBounds (Rectangle2D bounds)
   {
-    if (bounds == null)
-      throw new NullPointerException("Bounds must be valid");
+    if (bounds == null) throw new NullPointerException ("Bounds must be valid");
 
-    this.area = bounds;
+    this.area.setRect (bounds);
 
   }
 
   /**
-   * Returns the name of the element.
+   * Returns the name of the element. The name of the element cannot be null.
    *
    * @return The name.
    */
-  public String getName()
+  public String getName ()
   {
     return this.name;
   }
@@ -127,25 +156,57 @@ public abstract class Element implements ElementConstants, DataTarget
    *
    * @return The m_paint.
    */
-  public Paint getPaint()
+  public Paint getPaint ()
   {
-    return m_paint;
+    return getPaint (null);
   }
 
   /**
-   * Sets the m_paint for this element. The m_paint must not be null.
+   * Returns the paint  for this element.
+   * <p>
+   * If a paint has been explicitly set for the element,
+   * then it is used.  If nothing at all has been
+   * specified, the band's default paint is used.
+   * <p>
+   * If no band is specified, this function may return null.
+   * If a band is defined, the function will never return null.
+   * If neither the band and the element have defined a paint, a
+   * NullPointerException is thrown instead.
+   */
+  public Paint getPaint (Band band)
+  {
+    if (band == null)
+      return m_paint;
+
+    Paint result = this.m_paint;
+
+    if (this.m_paint == null)
+    {
+      result = band.getDefaultPaint ();
+    }
+    if (result == null)
+      throw new NullPointerException ("Neither element nor band have defined a Paint, this is not valid");
+
+    return result;
+
+  }
+
+  /**
+   * Sets the m_paint for this element. The m_paint can be null, in this case the
+   * default paint of the band used to draw this element is used.
    *
    * @param p the m_paint for this element
    * @throws NullPointerException if the m_paint is null
    */
-  public void setPaint(Paint p)
+  public void setPaint (Paint p)
   {
     m_paint = p;
   }
 
   /**
    * Returns the datasource for this element. You cannot override this function as the
-   * element needs always be the last consumer in the chain.
+   * element needs always be the last consumer in the chain of filters. This function
+   * must never return null.
    *
    * @return the assigned datasource.
    */
@@ -156,33 +217,34 @@ public abstract class Element implements ElementConstants, DataTarget
 
   /**
    * Define the datasource for this element. This datasource is queried on populateElements(),
-   * to fill in the values.
+   * to fill in the values. The datasource for an element must not be null.
+   *
+   * @throws NullPointerException if an null-datasource is set.
    */
   public void setDataSource (DataSource ds)
   {
     if (ds == null)
-      throw new NullPointerException("Null datasource is invalid");
+      throw new NullPointerException ("Null datasource is invalid");
     this.datasource = ds;
   }
 
   /**
-   * Queries this elements datasource for a value. If no datasource is set, null will be returned.
+   * Queries this elements datasource for a value.
    *
-   * @returns the value of the datasource, which can be null or also null if no datasource is set.
+   * @returns the value of the datasource, which can be null.
    */
   public Object getValue ()
   {
-    DataSource ds = getDataSource();
-    if (ds == null) return null;
-    return ds.getValue();
+    DataSource ds = getDataSource ();
+    return ds.getValue ();
   }
 
   /**
    * Queries the bounds of this element using a new Rectangle2D object.
    */
-  public Rectangle2D getBounds()
+  public Rectangle2D getBounds ()
   {
-    return getBounds(null);
+    return getBounds (null);
   }
 
   /**
@@ -191,11 +253,11 @@ public abstract class Element implements ElementConstants, DataTarget
    *
    * @param carrier the rectangle2D object to carry the bounds of this element.
    */
-  public Rectangle2D getBounds(Rectangle2D carrier)
+  public Rectangle2D getBounds (Rectangle2D carrier)
   {
     if (carrier == null)
-      carrier = new Rectangle2D.Float();
-    carrier.setRect(area);
+      carrier = new Rectangle2D.Float ();
+    carrier.setRect (area);
     return carrier;
   }
 
@@ -208,7 +270,7 @@ public abstract class Element implements ElementConstants, DataTarget
     if (o instanceof Element)
     {
       Element el = (Element) o;
-      return el.getName().equals(getName());
+      return el.getName ().equals (getName ());
     }
     return false;
   }
@@ -240,6 +302,6 @@ public abstract class Element implements ElementConstants, DataTarget
    * @param target The output target.
    * @param band The band that the element is being drawn inside of.
    */
-  public abstract void draw(OutputTarget target, Band band) throws OutputTargetException;
+  public abstract void draw (OutputTarget target, Band band) throws OutputTargetException;
 
 }

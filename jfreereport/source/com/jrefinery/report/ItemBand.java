@@ -28,13 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ItemBand.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: ItemBand.java,v 1.3 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Changed height from Number --> float (DG);
  * 10-May-2002 : Removed all complex constructors
+ * 04-Jun-2002 : Documentation tags changed.
  */
 
 package com.jrefinery.report;
@@ -46,7 +47,7 @@ package com.jrefinery.report;
 public class ItemBand extends Band
 {
   /**
-   * Constructs an item band with the specified height, containing no elements.
+   * Constructs an item band, containing no elements.
    */
   public ItemBand ()
   {

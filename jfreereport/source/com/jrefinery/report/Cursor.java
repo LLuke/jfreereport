@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.5 2002/05/21 23:06:18 taqua Exp $
+ * $Id: Cursor.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,6 +36,7 @@
  * 10-May-2002 : Declared all fields private and created accessor functions. Functionaltiy is
  *               encapsulated in functions.
  * 20-May-2002 : Added advanceTo to better support PageFooter drawing.
+ * 04-Jun-2002 : Documentation updated.
  */
 
 package com.jrefinery.report;
@@ -43,9 +44,10 @@ package com.jrefinery.report;
 import com.jrefinery.report.targets.OutputTarget;
 
 /**
- * A utility class for keeping track of the current position on a report page.
- *
- * @todo accessor
+ * A utility class for keeping track of the current position on a report page. The cursor
+ * is used by the ReportProcessor to determine the current position on the paper.
+ * The cursor is only able to advance forward. There is no way of reseting the cursor once
+ * it has moved.
  */
 public class Cursor
 {
@@ -69,6 +71,11 @@ public class Cursor
     pageBottom = y + target.getUsableHeight();
   }
 
+  /**
+   * Reserves the given space on the bottom of the page. This space is considered printed
+   * and does not get filled by the various bands and elements. This functionality is
+   * used to reserve space for the page footer.
+   */
   public void reserveSpace(float reserve)
   {
     if (reserve < 0)
@@ -89,7 +96,10 @@ public class Cursor
   }
 
   /**
-   * Adds the specified amount to the y-coordinate.
+   * Moves the cursor to the given y-coordinate. All space beween the current position
+   * before the move and the new position is considered filled and won't get filled by
+   * the generator.
+   *
    * @param amount The amount that the cursor should advance down the page.
    */
   public void advanceTo(float amount)

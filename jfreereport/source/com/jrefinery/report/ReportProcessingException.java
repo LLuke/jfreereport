@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessingException.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: ReportProcessingException.java,v 1.3 2002/05/28 19:28:22 taqua Exp $
  * Changes
  * -------------------------
  * 18-Apr-2002 : Created the Exception to better support errorhandling. The exception
@@ -35,12 +35,22 @@
  */
 package com.jrefinery.report;
 
+/**
+ * A ReportProcessingException is thrown, when a Error occured, while the report is being
+ * processed.
+ */
 public class ReportProcessingException extends Exception
 {
+  /**
+   * Initializes the exception without a message.
+   */
   public ReportProcessingException ()
   {
   }
 
+  /**
+   * Initializes the exception with the message added.
+   */
   public ReportProcessingException (String message)
   {
     super (message);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFunctionElement.java,v 1.3 2002/05/21 23:06:18 taqua Exp $
+ * $Id: DateFunctionElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import com.jrefinery.report.filter.DateFormatFilter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Presentation element for date functions.
@@ -63,11 +62,11 @@ public class DateFunctionElement extends FunctionElement
    */
   public DateFunctionElement ()
   {
-    formatter = new DateFormatFilter();
-    setFormatString(null);
-    DataFilter df = getTextFilter();
-    df.setDataSource(formatter);
-    formatter.setDataSource(getFunctionDataSource());
+    formatter = new DateFormatFilter ();
+    setFormatString (null);
+    DataFilter df = getTextFilter ();
+    df.setDataSource (formatter);
+    formatter.setDataSource (getFunctionDataSource ());
   }
 
   /**
@@ -93,7 +92,7 @@ public class DateFunctionElement extends FunctionElement
    */
   public DateFormat getFormatter ()
   {
-    return formatter.getDateFormat();
+    return formatter.getDateFormat ();
   }
 
   /**
@@ -107,6 +106,6 @@ public class DateFunctionElement extends FunctionElement
     {
       throw new NullPointerException ("Given format may not be null");
     }
-    this.formatter.setDateFormat(format);
+    this.formatter.setDateFormat (format);
   }
 }

@@ -25,6 +25,8 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
+ * 04-Jun-2002 : Officially documented. Added a public constructor and set the default null
+ *               value.
  */
 package com.jrefinery.report.filter;
 
@@ -32,6 +34,11 @@ public class StringFilter implements DataFilter
 {
   private DataSource source;
   private String nullvalue;
+
+  public StringFilter ()
+  {
+    nullvalue = "null";
+  }
 
   public void setNullValue (String nullvalue)
   {

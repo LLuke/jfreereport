@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StringElement.java,v 1.3 2002/05/21 23:06:18 taqua Exp $
+ * $Id: StringElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,7 +49,7 @@ package com.jrefinery.report;
 public class StringElement extends DataElement
 {
   /**
-   * Constructs a string element using float coordinates.
+   * Constructs a string element.
    */
   public StringElement ()
   {

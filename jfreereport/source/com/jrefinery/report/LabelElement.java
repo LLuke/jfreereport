@@ -35,16 +35,19 @@
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
- *
+ * 04-Jun-2002 : Documentation
  */
 
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.StaticDataSource;
 
-
 /**
  * An element that draws static text within a report band.
+ * <p>
+ * The same functionality can be achived by using a TextElement with a StaticDataSource
+ * added.
+ *
  * @deprecated form this element by stacking it together by using filters
  */
 public class LabelElement extends TextElement
@@ -53,15 +56,14 @@ public class LabelElement extends TextElement
   /** Text to display. */
   private StaticDataSource label;
 
-
   /**
    * Constructs a label element using float coordinates.
    * @deprecated form this element by stacking it together by using filters
    */
   public LabelElement ()
   {
-    label = new StaticDataSource();
-    getTextFilter().setDataSource(label);
+    label = new StaticDataSource ();
+    getTextFilter ().setDataSource (label);
   }
 
   /**
@@ -71,7 +73,7 @@ public class LabelElement extends TextElement
    */
   public String getLabel ()
   {
-    return String.valueOf(label.getValue());
+    return String.valueOf (label.getValue ());
   }
 
   /**
@@ -81,9 +83,12 @@ public class LabelElement extends TextElement
    */
   public void setLabel (String label)
   {
-    this.label.setValue(label);
+    this.label.setValue (label);
   }
 
+  /**
+   * Debugging function to print the contents of the element.
+   */
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();

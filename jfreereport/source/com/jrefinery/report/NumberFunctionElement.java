@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.3 2002/05/21 23:06:18 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 10-May-2002 : Removed all complex constructors
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
+ * 04-Jun-2002 : Documentation.
  */
 
 package com.jrefinery.report;
@@ -48,16 +49,20 @@ import java.text.NumberFormat;
 
 /**
  * Presentation Element for numerical functions.
+ * <p>
+ * To produce the same functionality use a TextElement and add a NumberFormatFilter and
+ * a FunctionDataSource to the element.
  *
- * @deprecated Use a plain text element and add a number format filter to the element.
- * Add a function datasource to the filter.
+ * @deprecated Use a plain text element and add a number format filter to the element
+ * and add a function datasource to the filter.
  */
 public class NumberFunctionElement extends FunctionElement
 {
   private NumberFormatFilter filter;
 
   /**
-   * Constructs a number element using float coordinates.
+   * Constructs a number element using float coordinates. This Element uses an DecimalFormat to transform the
+   * numbers into a string by default.
    */
   public NumberFunctionElement ()
   {

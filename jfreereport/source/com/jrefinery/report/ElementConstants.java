@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ElementConstants.java,v 1.3 2002/05/16 10:17:37 mungady Exp $
+ * $Id: ElementConstants.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package com.jrefinery.report;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Paint;
 
 /**
@@ -62,7 +61,7 @@ public interface ElementConstants
   /** The default paint. */
   public static final Paint DEFAULT_PAINT = Color.black;
 
-   /** The default alignment. */
+  /** The default alignment. */
   public static int DEFAULT_ALIGNMENT = Element.LEFT;
 
 }

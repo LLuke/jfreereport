@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   -;
  *
- * $Id: WaitingImageObserver.java,v 1.3 2002/05/16 13:21:54 jaosch Exp $
+ * $Id: WaitingImageObserver.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 15-Apr-2002 : first version used by ImageElement.
  * 16-May-2002 : Line delimiters adjusted
- *
+ * 04-Jun-2002 : Documentation and added a NullPointerCheck for the constructor.
  */
 package com.jrefinery.report;
 
@@ -59,9 +59,12 @@ public class WaitingImageObserver implements ImageObserver, Runnable
   /**
    * Creates a new ImageObserver for the given Image. The Oberver has to be started
    * by an external thread.
+   *
+   * @throws NullPointerException if the given image is null.
    */
-  public WaitingImageObserver(Image image)
+  public WaitingImageObserver (Image image)
   {
+    if (image == null) throw new NullPointerException ();
     this.image = image;
     lock = true;
   }
@@ -70,17 +73,17 @@ public class WaitingImageObserver implements ImageObserver, Runnable
    * Callback function used by AWT to inform that more data is availiable. The observer
    * waits until either all data is loaded or AWT signals that the image cannot be loaded.
    */
-  public boolean imageUpdate(
-    Image img,
-    int infoflags,
-    int x,
-    int y,
-    int width,
-    int height)
+  public boolean imageUpdate (
+          Image img,
+          int infoflags,
+          int x,
+          int y,
+          int width,
+          int height)
   {
     if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS
-      || (infoflags & ImageObserver.ABORT) == ImageObserver.ABORT
-      || (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
+            || (infoflags & ImageObserver.ABORT) == ImageObserver.ABORT
+            || (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
     {
       lock = false;
     }
@@ -91,17 +94,17 @@ public class WaitingImageObserver implements ImageObserver, Runnable
    * The workerthread. Simply draws the image to an BufferedImage's Graphics-Object
    * and waits for the AWT to load the image.
    */
-  public void run()
+  public void run ()
   {
-    BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-    Graphics g = img.getGraphics();
+    BufferedImage img = new BufferedImage (1, 1, BufferedImage.TYPE_INT_RGB);
+    Graphics g = img.getGraphics ();
 
     while (lock)
     {
-      g.drawImage(image, 0, 0, img.getWidth(this), img.getHeight(this), this);
+      g.drawImage (image, 0, 0, img.getWidth (this), img.getHeight (this), this);
       try
       {
-        Thread.currentThread().sleep(200);
+        Thread.currentThread ().sleep (200);
       }
       catch (InterruptedException e)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MultilineTextElement.java,v 1.4 2002/05/21 23:06:18 taqua Exp $
+ * $Id: MultilineTextElement.java,v 1.5 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -37,18 +37,21 @@
  * 10-May-2002 : Removed all compex constructors
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
+ * 04-Jun-2002 : Documentation and removed imports.
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.geom.Rectangle2D;
-
+/**
+ * This elements linebreaking capabilities are fully implemented in the TextElement. To
+ * get the DataElement functionality add an additional ReportDataSource to the TextElement.
+ *
+ * @deprecated this class is replaced by the TextElement in combination with the Filter API
+ */
 public class MultilineTextElement extends StringElement
 {
-
   /**
-   * Standard constructor - builds a string element using float coordinates.
+   * Standard constructor - builds a string.
    */
   public MultilineTextElement ()
   {

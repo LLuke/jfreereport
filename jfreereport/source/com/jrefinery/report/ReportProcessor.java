@@ -25,10 +25,11 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.5 2002/05/31 19:31:14 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
+ * 04-Jun-2002 : Documentation
  */
 package com.jrefinery.report;
 
@@ -50,7 +51,7 @@ public class ReportProcessor implements JFreeReportConstants
 
   /**
    * Creates a new ReportProcessor. The ReportProcessor will use the given output target
-   * to print. The pageFooter is used to reserve the needed space in the cursor.
+   * for printing. The pageFooter is used to reserve the needed space in the cursor.
    */
   public ReportProcessor (OutputTarget out, boolean draw, PageFooter pageFooter)
   {
@@ -110,6 +111,7 @@ public class ReportProcessor implements JFreeReportConstants
    * no printing is performed, but the cursor is advanced.
    *
    * @param reportHeader the reportheader to print.
+   * @throws NullPointerException if the given Band is null
    */
   public void printReportHeader (ReportHeader reportHeader)
   {
@@ -125,7 +127,8 @@ public class ReportProcessor implements JFreeReportConstants
    * Prints the given PageHeader on the current OutputTarget. If draw is false,
    * no printing is performed, but the cursor is advanced.
    *
-   * @param reportHeader the pageheader to print.
+   * @param pageHeader the pageheader to print.
+   * @throws NullPointerException if the given Band is null
    */
   public void printPageHeader (PageHeader pageHeader)
   {
@@ -139,7 +142,8 @@ public class ReportProcessor implements JFreeReportConstants
    * Prints the given PageFooter on the current OutputTarget. If draw is false,
    * no printing is performed, but the cursor is advanced.
    *
-   * @param reportHeader the pagefooter to print.
+   * @param pageFooter the pagefooter to print.
+   * @throws NullPointerException if the given Band is null
    */
   public void printPageFooter (PageFooter pageFooter)
   {
@@ -153,7 +157,8 @@ public class ReportProcessor implements JFreeReportConstants
    * Prints the given GroupHeader on the current OutputTarget. If draw is false,
    * no printing is performed, but the cursor is advanced.
    *
-   * @param reportHeader the groupheader to print.
+   * @param groupHeader the groupheader to print.
+   * @throws NullPointerException if the given Band is null
    */
   public void printGroupHeader (GroupHeader groupHeader)
   {
@@ -170,7 +175,8 @@ public class ReportProcessor implements JFreeReportConstants
    * Prints the given ItemBand on the current OutputTarget. If draw is false,
    * no printing is performed, but the cursor is advanced.
    *
-   * @param reportHeader the itemband to print.
+   * @param itemBand the itemband to print.
+   * @throws NullPointerException if the given Band is null
    */
   public void printItemBand (ItemBand itemBand)
   {
@@ -187,7 +193,8 @@ public class ReportProcessor implements JFreeReportConstants
    * Prints the given GroupFooter on the current OutputTarget. If draw is false,
    * no printing is performed, but the cursor is advanced.
    *
-   * @param reportHeader the GroupFooter to print.
+   * @param footer the GroupFooter to print.
+   * @throws NullPointerException if the given Band is null
    */
   public void printGroupFooter (GroupFooter footer)
   {
@@ -204,7 +211,8 @@ public class ReportProcessor implements JFreeReportConstants
    * Prints the given ReportFooter on the current OutputTarget. If draw is false,
    * no printing is performed, but the cursor is advanced.
    *
-   * @param reportHeader the reportfooter to print.
+   * @param footer the reportfooter to print.
+   * @throws NullPointerException if the given Band is null
    */
   public void printReportFooter (ReportFooter footer)
   {
@@ -220,6 +228,9 @@ public class ReportProcessor implements JFreeReportConstants
   /**
    * Tests whether there is enough space to print the given band. If there is not enough space,
    * set the pagedone flag, to signal that a pageBreak should be done.
+   *
+   * @param band the band which is tested
+   * @throws NullPointerException if the given Band is null
    */
   public boolean isSpaceFor (Band band)
   {
@@ -238,7 +249,8 @@ public class ReportProcessor implements JFreeReportConstants
   }
 
   /**
-   * declares that this page is fully printed.
+   * Declares that this page is fully printed. Every subsequent call to isSpaceFor will
+   * return false, as this page is completly printed.
    */
   public void setPageDone ()
   {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.3 2002/05/21 23:06:18 taqua Exp $
+ * $Id: NumberElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,7 +36,7 @@
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
- *
+ * 04-Jun-2002 : Documentation.
  */
 
 package com.jrefinery.report;
@@ -49,6 +49,11 @@ import java.text.NumberFormat;
 
 /**
  * A data element that displays numerical information.
+ * <p>
+ * To produce the same functionality use a TextElement and add a NumberFormatFilter and
+ * a ReportDataSource to the element.
+ *
+ * @deprecated Use the TextElement with filters to form an equal functionality.
  */
 public class NumberElement extends DataElement
 {
@@ -56,14 +61,8 @@ public class NumberElement extends DataElement
   private NumberFormatFilter formatter;
 
   /**
-   * Constructs a number element using float coordinates.
-   * @param name The name of the element.
-   * @param x The x-coordinate of the element (within its band).
-   * @param y The y-coordinate of the element (within its band).
-   * @param w The width of the element.
-   * @param h The height of the element.
-   * @param field The name of the field used to populate this element with data.
-   * @param format The format string for the number.
+   * Constructs a number element. This Element uses an DecimalFormat to transform the
+   * numbers into a string by default.
    */
   public NumberElement ()
   {
