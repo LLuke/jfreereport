@@ -4,7 +4,7 @@
     <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
 
-<report name="First Report" width="468" height="648">
+<report name="First Report" width="612" height="792">
 
     <!-- REPORT HEADER -->
     <!-- This band appears once at the beginning of the report.  In this example, -->
@@ -14,7 +14,7 @@
 
         <label name="label1"
                fontname="SansSerif" fontstyle="bold" fontsize="18"
-               x="0" y="0" width="100%" height="18"
+               x="0" y="2" width="100%" height="18"
                alignment="center"
             >Java Look and Feel Graphics Repository</label>
 
@@ -57,7 +57,7 @@
         <label name="label6"
                x="0" y="10" width="100%" height="24"
                alignment="left"
-            >REPORT TOTAL: Ä</label>
+            >REPORT TOTAL:</label>
 
         <number-function name="count1"
                          function="OverallCount"
@@ -77,25 +77,16 @@
     <!-- Displays the report name and date. -->
     <!-- Suppressed on the first page to avoid duplication with report header. -->
     <pageheader height="18"
-                onfirstpage="true" onlastpage="true"
+                onfirstpage="false" onlastpage="true"
                 fontname="SansSerif" fontstyle="bold" fontsize="9">
-<!--
+
+        <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" />
         <label name="label7"
-               x="0" y="0" width="76" height="9"
+               x="0" y="0" width="200" height="14"
                alignment="left"
                >Java Look and Feel Graphics Repository</label>
-
-        <date-function name="df1"
-                       function="Date"
-                       format="d-MMM-yyyy"
-                       x="0" y="0" width="100%" height="9"
-                       alignment="right"/>
-
-        <line name="line3" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
--->
-<rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" />
-<date-function name="df1" x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="Date" />
-<line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0" />
+        <date-function name="df1" x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="Date" />
+        <line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0" />
 
     </pageheader>
 
@@ -138,12 +129,12 @@
                 <line name="line5" x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
 
                 <label name="label8"
-                       x="0" y="3" width="76" height="12"
+                       x="0" y="3" width="92" height="12"
                        alignment="left"
                     >Category:</label>
 
                 <string-field name="sf1"
-                              x="96" y="3" width="76" height="12"
+                              x="96" y="3" width="120" height="12"
                               alignment="left"
                               fieldname="Category"/>
 
@@ -201,7 +192,7 @@
         <line name="line6" x1="0" y1="25" x2="0" y2="25" color="#DFDFDF" weight="0.1"/>
 
         <string-field name="sf2"
-                      x="0" y="8" width="76" height="10" alignment="left"
+                      x="0" y="8" width="220" height="10" alignment="left"
                       fieldname="Name"/>
 
         <image-field name="if1"
