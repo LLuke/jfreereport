@@ -38,6 +38,8 @@
  */
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
@@ -49,7 +51,7 @@ import java.util.ResourceBundle;
  *
  * @author js
  */
-public abstract class FirstPageAction extends AbstractAction
+public abstract class FirstPageAction extends AbstractActionDowngrade
 {
 
   /**
@@ -57,11 +59,11 @@ public abstract class FirstPageAction extends AbstractAction
    */
   public FirstPageAction (ResourceBundle resources)
   {
-    putValue (Action.NAME, resources.getString ("action.firstpage.name"));
-    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.firstpage.description"));
-    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.firstpage.mnemonic"));
-    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.firstpage.accelerator"));
-    putValue (Action.SMALL_ICON, resources.getObject ("action.firstpage.small-icon"));
+    putValue (NAME, resources.getString ("action.firstpage.name"));
+    putValue (SHORT_DESCRIPTION, resources.getString ("action.firstpage.description"));
+    putValue (MNEMONIC_KEY, resources.getObject ("action.firstpage.mnemonic"));
+    putValue (ACCELERATOR_KEY, resources.getObject ("action.firstpage.accelerator"));
+    putValue (SMALL_ICON, resources.getObject ("action.firstpage.small-icon"));
     putValue ("ICON24", resources.getObject ("action.firstpage.icon"));
   }
 }

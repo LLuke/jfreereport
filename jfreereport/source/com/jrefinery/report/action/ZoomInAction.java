@@ -32,6 +32,8 @@
  */
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
@@ -42,18 +44,18 @@ import java.util.ResourceBundle;
  * implements the locales specific initialisations, actual work is done in an internal
  * subclass in PreviewFrame.
  */
-public abstract class ZoomInAction extends AbstractAction
+public abstract class ZoomInAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new action.
    */
   public ZoomInAction (ResourceBundle resources)
   {
-    putValue (Action.NAME, resources.getString ("action.zoomIn.name"));
-    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.zoomIn.description"));
-    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.zoomIn.mnemonic"));
-    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.zoomIn.accelerator"));
-    putValue (Action.SMALL_ICON, resources.getObject ("action.zoomIn.small-icon"));
+    putValue (NAME, resources.getString ("action.zoomIn.name"));
+    putValue (SHORT_DESCRIPTION, resources.getString ("action.zoomIn.description"));
+    putValue (MNEMONIC_KEY, resources.getObject ("action.zoomIn.mnemonic"));
+    putValue (ACCELERATOR_KEY, resources.getObject ("action.zoomIn.accelerator"));
+    putValue (SMALL_ICON, resources.getObject ("action.zoomIn.small-icon"));
     putValue ("ICON24", resources.getObject ("action.zoomIn.icon"));
   }
 

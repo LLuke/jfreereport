@@ -32,7 +32,8 @@
  * --------
  * 11-May-2002 : Version 1 (TM);
  * 16-May-2002 : Added Javadoc comments (DG);
- *
+ * 29-Aug-2002 : TreeSet does no cloning in JDK 1.2.2, it returns a "new TreeSet()".
+ *               Why would a same programmer mess up the source like this?
  */
 
 package com.jrefinery.report;
@@ -179,9 +180,13 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     }
   }
 
+  /**
+   * Warning: No real cloning involved due to a bug in JDK 1.2.2; TreeSet does not clone, so we can't
+   * too.
+   */
   public Object clone ()
   {
-    GroupList l = (GroupList) super.clone ();
+    GroupList l = new GroupList();
     l.clear();
     for (int i = 0; i < size(); i++)
     {

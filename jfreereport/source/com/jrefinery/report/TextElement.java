@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.17 2002/08/08 15:28:38 taqua Exp $
+ * $Id: TextElement.java,v 1.18 2002/08/26 10:54:50 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -107,6 +107,7 @@ public class TextElement extends Element
     stringfilter = new StringFilter();
     setAlignment(ElementConstants.LEFT);
     setNullString(null);
+    setDynamic(false);
   }
 
   /**

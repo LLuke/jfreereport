@@ -31,22 +31,24 @@
  */
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
 
-public abstract class PreviousPageAction extends AbstractAction
+public abstract class PreviousPageAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new action.
    */
   public PreviousPageAction (ResourceBundle resources)
   {
-    putValue (Action.NAME, resources.getString ("action.back.name"));
-    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.back.description"));
-    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.back.mnemonic"));
-    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.back.accelerator"));
-    putValue (Action.SMALL_ICON, resources.getObject ("action.back.small-icon"));
+    putValue (NAME, resources.getString ("action.back.name"));
+    putValue (SHORT_DESCRIPTION, resources.getString ("action.back.description"));
+    putValue (MNEMONIC_KEY, resources.getObject ("action.back.mnemonic"));
+    putValue (ACCELERATOR_KEY, resources.getObject ("action.back.accelerator"));
+    putValue (SMALL_ICON, resources.getObject ("action.back.small-icon"));
     putValue ("ICON24", resources.getObject ("action.back.icon"));
   }
 

@@ -32,6 +32,8 @@
  */
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
@@ -42,18 +44,18 @@ import java.util.ResourceBundle;
  * implements the locales specific initialisations, actual work is done in an internal
  * subclass in PreviewFrame.
  */
-public abstract class ZoomOutAction extends AbstractAction
+public abstract class ZoomOutAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new action.
    */
   public ZoomOutAction (ResourceBundle resources)
   {
-    putValue (Action.NAME, resources.getString ("action.zoomOut.name"));
-    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.zoomOut.description"));
-    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.zoomOut.mnemonic"));
-    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.zoomOut.accelerator"));
-    putValue (Action.SMALL_ICON, resources.getObject ("action.zoomOut.small-icon"));
+    putValue (NAME, resources.getString ("action.zoomOut.name"));
+    putValue (SHORT_DESCRIPTION, resources.getString ("action.zoomOut.description"));
+    putValue (MNEMONIC_KEY, resources.getObject ("action.zoomOut.mnemonic"));
+    putValue (ACCELERATOR_KEY, resources.getObject ("action.zoomOut.accelerator"));
+    putValue (SMALL_ICON, resources.getObject ("action.zoomOut.small-icon"));
     putValue ("ICON24", resources.getObject ("action.zoomOut.icon"));
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.25 2002/08/26 22:02:13 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.26 2002/08/28 14:09:36 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,6 +71,9 @@ import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ActionDowngrade;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.Action;
@@ -94,6 +97,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
@@ -217,6 +221,73 @@ public class PreviewFrame
     public void actionPerformed (ActionEvent arg0)
     {
       lastPage ();
+    }
+
+    public Object getValue(String key)
+    {
+      return super.getValue(key);
+    }
+
+    public int hashCode()
+    {
+      return super.hashCode();
+    }
+
+    public synchronized void putValue(String key, Object newValue)
+    {
+      super.putValue(key, newValue);
+    }
+
+    public boolean equals(Object obj)
+    {
+      return super.equals(obj);
+    }
+
+    public boolean isEnabled()
+    {
+      return super.isEnabled();
+    }
+
+    public String toString()
+    {
+      return super.toString();
+    }
+
+    public synchronized void setEnabled(boolean newValue)
+    {
+      Log.debug ("SetEnabled: " + newValue);
+      super.setEnabled(newValue);
+    }
+
+    protected void finalize() throws Throwable
+    {
+      super.finalize();
+    }
+
+    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
+    {
+      Log.debug ("FirePropertyChange: " + propertyName);
+      Log.debug ("FirePropertyChange: " + oldValue);
+      Log.debug ("FirePropertyChange: " + newValue);
+      super.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    public synchronized void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+      Log.debug ("AddPropertyChangeListener: " + listener);
+      if (listener == null) throw new NullPointerException();
+      super.addPropertyChangeListener(listener);
+    }
+
+    public synchronized void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+      Log.debug ("RemovePropertyChangeListener: " + listener);
+      super.removePropertyChangeListener(listener);
+    }
+
+    protected Object clone() throws CloneNotSupportedException
+    {
+      return super.clone();
     }
   }
 
@@ -697,7 +768,7 @@ public class PreviewFrame
   protected void registerAction (Action action)
   {
     JComponent cp = getRootPane ();
-    KeyStroke key = (KeyStroke) action.getValue (Action.ACCELERATOR_KEY);
+    KeyStroke key = (KeyStroke) action.getValue (ActionDowngrade.ACCELERATOR_KEY);
     if (key != null)
     {
       cp.registerKeyboardAction (action, key, JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -882,38 +953,38 @@ public class PreviewFrame
     Character mnemonic = (Character) resources.getObject ("menu.file.mnemonic");
     fileMenu.setMnemonic (mnemonic.charValue ());
 
-    JMenuItem gotoItem = new JMenuItem (gotoAction);
-    KeyStroke accelerator = (KeyStroke) gotoAction.getValue (Action.ACCELERATOR_KEY);
+    JMenuItem gotoItem = new ActionMenuItem (gotoAction);
+    KeyStroke accelerator = (KeyStroke) gotoAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
       gotoItem.setAccelerator (accelerator);
     fileMenu.add (gotoItem);
 
     fileMenu.addSeparator ();
 
-    JMenuItem saveAsItem = new JMenuItem (saveAsAction);
-    accelerator = (KeyStroke) saveAsAction.getValue (Action.ACCELERATOR_KEY);
+    JMenuItem saveAsItem = new ActionMenuItem  (saveAsAction);
+    accelerator = (KeyStroke) saveAsAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
       saveAsItem.setAccelerator (accelerator);
     fileMenu.add (saveAsItem);
 
     fileMenu.addSeparator ();
 
-    JMenuItem setupItem = new JMenuItem (pageSetupAction);
-    accelerator = (KeyStroke) pageSetupAction.getValue (Action.ACCELERATOR_KEY);
+    JMenuItem setupItem = new ActionMenuItem  (pageSetupAction);
+    accelerator = (KeyStroke) pageSetupAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
       setupItem.setAccelerator (accelerator);
     fileMenu.add (setupItem);
 
-    JMenuItem printItem = new JMenuItem (printAction);
-    accelerator = (KeyStroke) printAction.getValue (Action.ACCELERATOR_KEY);
+    JMenuItem printItem = new ActionMenuItem  (printAction);
+    accelerator = (KeyStroke) printAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
       printItem.setAccelerator (accelerator);
     fileMenu.add (printItem);
 
     fileMenu.add (new JSeparator ());
 
-    JMenuItem closeItem = new JMenuItem (closeAction);
-    accelerator = (KeyStroke) closeAction.getValue (Action.ACCELERATOR_KEY);
+    JMenuItem closeItem = new ActionMenuItem  (closeAction);
+    accelerator = (KeyStroke) closeAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
       closeItem.setAccelerator (accelerator);
     fileMenu.add (closeItem);
@@ -925,7 +996,7 @@ public class PreviewFrame
     mnemonic = (Character) resources.getObject ("menu.help.mnemonic");
     helpMenu.setMnemonic (mnemonic.charValue ());
 
-    JMenuItem aboutItem = new JMenuItem (aboutAction);
+    JMenuItem aboutItem = new ActionMenuItem  (aboutAction);
     helpMenu.add (aboutItem);
 
     // finally, glue together the menu and return it
@@ -941,7 +1012,7 @@ public class PreviewFrame
    */
   protected JButton createButton (Action action)
   {
-    JButton button = new JButton (action);
+    JButton button = new ActionButton (action);
     if (isLargeIconsEnabled ())
     {
       Icon icon = (Icon) action.getValue ("ICON24");
@@ -1111,5 +1182,11 @@ public class PreviewFrame
 
   public static void main (String[] args)
   {
+    JFreeReport report = new JFreeReport();
+    report.setData(new DefaultTableModel());
+    PreviewFrame f = new PreviewFrame(report);
+      f.validate();
+    //f.pack();
+    //f.setVisible(true);
   }
 }

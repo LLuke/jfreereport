@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.5 2002/06/05 21:20:47 taqua Exp $
+ * $Id: CloseAction.java,v 1.6 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,8 @@
 
 package com.jrefinery.report.demo;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
@@ -45,7 +47,7 @@ import java.util.ResourceBundle;
 /**
  * An action for closing the demo programms frame.
  */
-public abstract class CloseAction extends AbstractAction
+public abstract class CloseAction extends AbstractActionDowngrade
 {
 
   /**
@@ -53,8 +55,8 @@ public abstract class CloseAction extends AbstractAction
    */
   public CloseAction (ResourceBundle resources)
   {
-    this.putValue (Action.NAME, resources.getString ("action.close.name"));
-    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.close.description"));
-    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.close.mnemonic"));
+    this.putValue (NAME, resources.getString ("action.close.name"));
+    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.close.description"));
+    this.putValue (MNEMONIC_KEY, resources.getObject ("action.close.mnemonic"));
   }
 }

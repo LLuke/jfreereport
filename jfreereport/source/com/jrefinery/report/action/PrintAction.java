@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PrintAction.java,v 1.7 2002/06/09 14:46:06 taqua Exp $
+ * $Id: PrintAction.java,v 1.8 2002/08/08 15:28:42 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@
 
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
@@ -49,7 +51,7 @@ import java.util.ResourceBundle;
 /**
  * Print action for a print preview frame.
  */
-public abstract class PrintAction extends AbstractAction implements Runnable
+public abstract class PrintAction extends AbstractActionDowngrade implements Runnable
 {
 
   /**
@@ -57,11 +59,11 @@ public abstract class PrintAction extends AbstractAction implements Runnable
    */
   public PrintAction (ResourceBundle resources)
   {
-    this.putValue (Action.NAME, resources.getString ("action.print.name"));
-    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.print.description"));
-    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.print.mnemonic"));
-    this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.print.accelerator"));
-    this.putValue (Action.SMALL_ICON, resources.getObject ("action.print.small-icon"));
+    this.putValue (NAME, resources.getString ("action.print.name"));
+    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.print.description"));
+    this.putValue (MNEMONIC_KEY, resources.getObject ("action.print.mnemonic"));
+    this.putValue (ACCELERATOR_KEY, resources.getObject ("action.print.accelerator"));
+    this.putValue (SMALL_ICON, resources.getObject ("action.print.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.print.icon"));
   }
 }

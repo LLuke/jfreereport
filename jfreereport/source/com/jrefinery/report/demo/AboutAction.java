@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.6 2002/06/05 21:20:47 taqua Exp $
+ * $Id: AboutAction.java,v 1.7 2002/06/05 21:45:11 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.demo;
+
+import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -47,17 +49,17 @@ import java.util.ResourceBundle;
  * <p>
  * This abstract class handles the locales specific initialisation.
  */
-public abstract class AboutAction extends AbstractAction
+public abstract class AboutAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new action.
    */
   public AboutAction (ResourceBundle resources)
   {
-    this.putValue (Action.NAME, resources.getString ("action.about.name"));
-    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.about.description"));
-    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.about.mnemonic"));
-    this.putValue (Action.SMALL_ICON, resources.getObject ("action.about.small-icon"));
+    this.putValue (NAME, resources.getString ("action.about.name"));
+    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.about.description"));
+    this.putValue (MNEMONIC_KEY, resources.getObject ("action.about.mnemonic"));
+    this.putValue (SMALL_ICON, resources.getObject ("action.about.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.about.icon"));
   }
 }

@@ -13,6 +13,7 @@ import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ActionButton;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -82,9 +83,7 @@ public class PDFSaveDialog extends JDialog
     {
       if (performValidate())
       {
-        System.out.println ("OK called");
         setConfirmed(true);
-        System.out.println ("OK called2 " + isConfirmed());
         setVisible(false);
       }
     }
@@ -99,7 +98,6 @@ public class PDFSaveDialog extends JDialog
 
     public void actionPerformed(ActionEvent e)
     {
-      System.out.println ("Cancel called");
       setConfirmed(false);
       setVisible(false);
     }
@@ -234,7 +232,7 @@ public class PDFSaveDialog extends JDialog
     JLabel lblFileName = new JLabel(getResources().getString("pdfsavedialog.filename"));
     JLabel lblAuthor = new JLabel(getResources().getString("pdfsavedialog.author"));
     JLabel lblTitel = new JLabel(getResources().getString("pdfsavedialog.title"));
-    JButton btnSelect = new JButton(getActionSelectFile());
+    JButton btnSelect = new ActionButton(getActionSelectFile());
 
     txAuthor = new JTextField();
     txFilename = new JTextField();
@@ -480,8 +478,8 @@ public class PDFSaveDialog extends JDialog
     gbc.anchor = GridBagConstraints.NORTH;
     contentPane.add(securityPanel, gbc);
 
-    btnCancel = new JButton(getActionCancel());
-    btnConfirm = new JButton(getActionConfirm());
+    btnCancel = new ActionButton(getActionCancel());
+    btnConfirm = new ActionButton(getActionConfirm());
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new GridLayout());
     buttonPanel.add(btnConfirm);

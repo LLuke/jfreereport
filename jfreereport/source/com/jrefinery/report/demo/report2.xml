@@ -91,7 +91,7 @@
 
     <!-- ITEMS -->
     <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
-        <string-field name="Name Element" x="0" y="0" width="76" height="8" alignment="left" fieldname="Name"/>
+        <string-field name="Name Element" x="0" y="0" width="140" height="8" alignment="left" fieldname="Name"/>
         <number-function name="element1" function="Count1" format="0" x="110" y="0" width="40" height="8" alignment="right"/>
         <string-field name="Letter Element" x="210" y="0" width="60" height="8" alignment="left" fieldname="Letter"/>
         <string-field name="Color Element" x="280" y="0" width="76" height="8" alignment="left" fieldname="Color"/>

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewAction.java,v 1.5 2002/05/31 19:15:13 taqua Exp $
+ * $Id: PreviewAction.java,v 1.6 2002/06/05 21:20:47 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,8 @@
 
 package com.jrefinery.report.demo;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
@@ -46,18 +48,18 @@ import java.util.ResourceBundle;
  * The preview action invokes the parsing and processing of the currently selected sample
  * report. The actual work is done in the JFreeReportDemos method attemptPreview ()
  */
-public abstract class PreviewAction extends AbstractAction
+public abstract class PreviewAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new preview action.
    */
   public PreviewAction (ResourceBundle resources)
   {
-    this.putValue (Action.NAME, resources.getString ("action.print-preview.name"));
-    this.putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.print-preview.description"));
-    this.putValue (Action.MNEMONIC_KEY, resources.getObject ("action.print-preview.mnemonic"));
-    this.putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.print-preview.accelerator"));
-    this.putValue (Action.SMALL_ICON, resources.getObject ("action.print-preview.small-icon"));
+    this.putValue (NAME, resources.getString ("action.print-preview.name"));
+    this.putValue (SHORT_DESCRIPTION, resources.getString ("action.print-preview.description"));
+    this.putValue (MNEMONIC_KEY, resources.getObject ("action.print-preview.mnemonic"));
+    this.putValue (ACCELERATOR_KEY, resources.getObject ("action.print-preview.accelerator"));
+    this.putValue (SMALL_ICON, resources.getObject ("action.print-preview.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.print-preview.icon"));
   }
 }

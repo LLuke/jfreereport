@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.13 2002/08/26 10:54:54 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.14 2002/08/26 22:02:13 taqua Exp $
  *
  * Changes
  * -------
@@ -344,7 +344,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   protected float getFontHeight()
   {
     FontMetrics fm = g2.getFontMetrics();
-    return fm.getAscent();
+    return fm.getAscent() - 1;
   }
 
   /**

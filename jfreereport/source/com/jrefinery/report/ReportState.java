@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.27 2002/08/22 21:08:24 taqua Exp $
+ * $Id: ReportState.java,v 1.28 2002/08/28 14:09:30 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -86,16 +86,16 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      */
     public ReportState advance (ReportProcessor rpc)
     {
-      JFreeReport report = getReport ();
-      setCurrentPage (1);
+      JFreeReport report = this.getReport ();
+      this.setCurrentPage (1);
 
       // A PropertyHandler should set the properties.
-      setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
+      this.setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
 
       // Initialize the report before any band (and especially before the pageheader)
       // is printed.
       ReportEvent event = new ReportEvent (this);
-      fireReportStartedEvent (event);
+      this.fireReportStartedEvent (event);
 
       return new PreReportHeader (this);
     }
@@ -154,10 +154,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      */
     public ReportState advance (ReportProcessor rpc)
     {
-      JFreeReport report = getReport ();
+      JFreeReport report = this.getReport ();
 
       ReportHeader reportHeader = report.getReportHeader ();
-      getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+      this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
       rpc.printReportHeader (reportHeader);
       return new PostReportHeader (this);
     }
@@ -220,9 +220,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     public ReportState advance (ReportProcessor rpc)
     {
-      enterGroup ();
+      this.enterGroup ();
 
-      Group group = (Group) getReport ().getGroup (getCurrentGroupIndex ());
+      Group group = (Group) this.getReport ().getGroup (this.getCurrentGroupIndex ());
 
       // if there is no header, fire the event and proceed to PostGroupHeader
 
@@ -230,7 +230,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
       if (handledPagebreak == false
               && header.hasPageBreakBeforePrint ()
-              && getCurrentDataItem () != BEFORE_FIRST_ROW)
+              && this.getCurrentDataItem () != BEFORE_FIRST_ROW)
       {
         handledPagebreak = true;
         rpc.setPageDone ();
@@ -241,9 +241,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         {
           // enough space, fire the events and proceed to PostGroupHeader
           ReportEvent event = new ReportEvent (this);
-          fireGroupStartedEvent (event);
+          this.fireGroupStartedEvent (event);
           //header.populateElements (this);
-          getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+          this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
           rpc.printGroupHeader (header);
           return new PostGroupHeader (this);
         }
@@ -251,7 +251,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       // Not enough space to print the header. Undo the GroupChange and wait until the
       // pagebreak has been done. After this the engine may return here to attemp another
       // print
-      leaveGroup ();
+      this.leaveGroup ();
       return this;
     }
 
@@ -286,7 +286,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      */
     protected boolean hasMoreGroups ()
     {
-      return getCurrentGroupIndex () < (getReport ().getGroupCount () - 1);
+      return this.getCurrentGroupIndex () < (this.getReport ().getGroupCount () - 1);
     }
 
     /**
@@ -334,8 +334,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       // Inform everybody, that now items will be processed.
 
       ReportEvent event = new ReportEvent (this);
-      fireItemsStartedEvent (event);
-      if (getReport().getData().getRowCount() == 0)
+      this.fireItemsStartedEvent (event);
+      if (this.getReport().getData().getRowCount() == 0)
       {
         return new PostItemGroup(this);
       }
@@ -371,7 +371,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     public ReportState advance (ReportProcessor rpc) throws ReportProcessingException
     {
-      JFreeReport report = getReport ();
+      JFreeReport report = this.getReport ();
       ItemBand itemBand = report.getItemBand ();
 
       // If there is enough space to print the itemband, advance the items, populate
@@ -379,23 +379,23 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       // here after the pagebreak.
       if (rpc.isSpaceFor (itemBand))
       {
-        advanceItem ();
+        this.advanceItem ();
 
-        int currItem = getCurrentDataItem ();
-        int currGroup = getCurrentGroupIndex ();
+        int currItem = this.getCurrentDataItem ();
+        int currGroup = this.getCurrentGroupIndex ();
 
         ReportEvent event = new ReportEvent (this);
-        fireItemsAdvancedEvent (event);
+        this.fireItemsAdvancedEvent (event);
         //itemBand.populateElements (this);
 
-        getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+        this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
         rpc.printItemBand (itemBand);
 
         // we have more data to work on
         // If the group is done, print the GroupFooter of the parent
-        Group group = getReport ().getGroup (getCurrentGroupIndex ());
+        Group group = report.getGroup (this.getCurrentGroupIndex ());
 
-        if (group.isLastItemInGroup (getDataRowBackend (), getDataRowBackend ().previewNextRow ()))
+        if (group.isLastItemInGroup (this.getDataRowBackend (), this.getDataRowBackend ().previewNextRow ()))
         //if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
         {
           return new PostItemGroup (this);
@@ -423,7 +423,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     public ReportState advance (ReportProcessor rpc)
     {
       ReportEvent event = new ReportEvent (this);
-      fireItemsFinishedEvent (event);
+      this.fireItemsFinishedEvent (event);
       return new PreGroupFooter (this);
     }
   }
@@ -442,8 +442,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     public ReportState advance (ReportProcessor rpc)
     {
-      Group group = (Group) getReport ().getGroup (getCurrentGroupIndex ());
-      FunctionCollection functions = getFunctions ();
+      Group group = (Group) this.getReport ().getGroup (this.getCurrentGroupIndex ());
+      FunctionCollection functions = this.getFunctions ();
 
       GroupFooter footer = group.getFooter ();
       if (rpc.isSpaceFor (footer))
@@ -451,10 +451,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         // There is a header and enough space to print it. The finishGroup event is
         // fired and PostGroupFooter activated after all work is done.
         ReportEvent event = new ReportEvent (this);
-        fireGroupFinishedEvent (event);
+        this.fireGroupFinishedEvent (event);
         //footer.populateElements (this);
 
-        getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+        this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
         rpc.printGroupFooter (footer);
         return new PostGroupFooter (this);
       }
@@ -489,7 +489,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     // is there a next row to read?
     private boolean hasMoreData ()
     {
-      return (getCurrentDataItem () < getReport ().getData ().getRowCount () - 1);
+      return (this.getCurrentDataItem () < this.getReport ().getData ().getRowCount () - 1);
     }
 
     /**
@@ -497,14 +497,14 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      */
     private boolean isLastGroup ()
     {
-      return getCurrentGroupIndex () == BEFORE_FIRST_GROUP;
+      return this.getCurrentGroupIndex () == BEFORE_FIRST_GROUP;
     }
 
     public ReportState advance (ReportProcessor rpc)
     {
       // leave the current group and activate the parent group.
       // if this was the last active group, the group index is now BEFORE_FIRST_GROUP
-      leaveGroup ();
+      this.leaveGroup ();
 
       if (isLastGroup ())
       {
@@ -525,8 +525,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         {
           // we have more data to work on
           // If the group is done, print the GroupFooter of the parent
-          Group group = getReport ().getGroup (getCurrentGroupIndex ());
-          if (group.isLastItemInGroup (getDataRowBackend (), getDataRowBackend ().previewNextRow ()))
+          Group group = this.getReport ().getGroup (this.getCurrentGroupIndex ());
+          if (group.isLastItemInGroup (this.getDataRowBackend (), this.getDataRowBackend ().previewNextRow ()))
 //          if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
           {
             // Parent is finished, print the footer
@@ -561,17 +561,17 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     public ReportState advance (ReportProcessor rpc)
     {
-      FunctionCollection functions = getFunctions ();
-      JFreeReport report = getReport ();
+      FunctionCollection functions = this.getFunctions ();
+      JFreeReport report = this.getReport ();
       ReportFooter reportFooter = report.getReportFooter ();
 
       if (rpc.isSpaceFor (reportFooter))
       {
         ReportEvent event = new ReportEvent (this);
-        fireReportFinishedEvent (event);
+        this.fireReportFinishedEvent (event);
         //reportFooter.populateElements (this);
 
-        getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+        this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
         rpc.printReportFooter (reportFooter);
         return new Finish (this);
       }

@@ -190,8 +190,8 @@ public class ExceptionDialog extends JDialog
     okAction = new OKAction ();
     detailsAction = new DetailsAction ();
 
-    JButton ok = new JButton (okAction);
-    JButton details = new JButton (detailsAction);
+    JButton ok = new ActionButton (okAction);
+    JButton details = new ActionButton (detailsAction);
 
     FloatingButtonEnabler.getInstance ().addButton (ok);
     FloatingButtonEnabler.getInstance ().addButton (details);

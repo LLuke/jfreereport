@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.27 2002/08/27 13:14:26 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.28 2002/08/28 10:37:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,6 +51,9 @@ import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
+import com.jrefinery.report.util.ActionDowngrade;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
@@ -73,6 +76,7 @@ import javax.swing.table.TableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -207,19 +211,23 @@ public class JFreeReportDemo extends JFrame
 
     content.add(tabbedPane);
 
-    L1R2ButtonPanel buttons = new L1R2ButtonPanel("Help", "Preview", "Close");
+    JPanel buttons = new JPanel();
+    buttons.setLayout(new GridLayout());
 
-    JButton helpButton = buttons.getLeftButton();
-    helpButton.setAction(aboutAction);
-    FloatingButtonEnabler.getInstance().addButton(helpButton);
+    ActionButton helpButton = new ActionButton();
+    helpButton.setAction (aboutAction);
+    FloatingButtonEnabler.getInstance ().addButton (helpButton);
+    buttons.add(helpButton);
 
-    JButton previewButton = buttons.getRightButton1();
-    previewButton.setAction(previewAction);
-    FloatingButtonEnabler.getInstance().addButton(previewButton);
+    ActionButton previewButton = new ActionButton ();
+    previewButton.setAction (previewAction);
+    FloatingButtonEnabler.getInstance ().addButton (previewButton);
+    buttons.add(previewButton);
 
-    JButton closeButton = buttons.getRightButton2();
-    closeButton.setAction(closeAction);
-    FloatingButtonEnabler.getInstance().addButton(closeButton);
+    ActionButton closeButton = new ActionButton();
+    closeButton.setAction (closeAction);
+    FloatingButtonEnabler.getInstance ().addButton (closeButton);
+    buttons.add(closeButton);
 
     buttons.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 4));
     content.add(buttons, BorderLayout.SOUTH);
@@ -429,21 +437,21 @@ public class JFreeReportDemo extends JFrame
     // first the file menu
     JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem printItem = new JMenuItem(previewAction);
-    KeyStroke accelerator = (KeyStroke) previewAction.getValue(Action.ACCELERATOR_KEY);
+    JMenuItem printItem = new ActionMenuItem(previewAction);
+    KeyStroke accelerator = (KeyStroke) previewAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
       printItem.setAccelerator(accelerator);
     fileMenu.add(printItem);
 
     fileMenu.add(new JSeparator());
 
-    JMenuItem exitItem = new JMenuItem(closeAction);
+    JMenuItem exitItem = new ActionMenuItem(closeAction);
     fileMenu.add(exitItem);
 
     // then the help menu
     JMenu helpMenu = createJMenuItem("menu.help");
 
-    JMenuItem aboutItem = new JMenuItem(aboutAction);
+    JMenuItem aboutItem = new ActionMenuItem(aboutAction);
     helpMenu.add(aboutItem);
 
     // finally, glue together the menu and return it
@@ -475,7 +483,7 @@ public class JFreeReportDemo extends JFrame
    */
   protected JButton createButton(Action action)
   {
-    JButton button = new JButton(action);
+    ActionButton button = new ActionButton (action);
     button.setMargin(new Insets(0, 0, 0, 0));
     button.setText(null);
     FloatingButtonEnabler.getInstance().addButton(button);

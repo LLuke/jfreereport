@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
+ * $Id: Function.java,v 1.8 2002/08/16 20:13:36 taqua Exp $
  *
  * Changes
  * -------
@@ -57,5 +57,5 @@ import com.jrefinery.report.event.ReportListener;
  */
 public interface Function extends ReportListener, Expression, Cloneable
 {
-
+  public Object clone () throws CloneNotSupportedException;
 }

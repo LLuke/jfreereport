@@ -32,6 +32,8 @@
 
 package com.jrefinery.report.action;
 
+import com.jrefinery.report.util.AbstractActionDowngrade;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
@@ -43,18 +45,18 @@ import java.util.ResourceBundle;
  *
  * @author js
  */
-public abstract class LastPageAction extends AbstractAction
+public abstract class LastPageAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new action.
    */
   public LastPageAction (ResourceBundle resources)
   {
-    putValue (Action.NAME, resources.getString ("action.lastpage.name"));
-    putValue (Action.SHORT_DESCRIPTION, resources.getString ("action.lastpage.description"));
-    putValue (Action.MNEMONIC_KEY, resources.getObject ("action.lastpage.mnemonic"));
-    putValue (Action.ACCELERATOR_KEY, resources.getObject ("action.lastpage.accelerator"));
-    putValue (Action.SMALL_ICON, resources.getObject ("action.lastpage.small-icon"));
+    putValue (NAME, resources.getString ("action.lastpage.name"));
+    putValue (SHORT_DESCRIPTION, resources.getString ("action.lastpage.description"));
+    putValue (MNEMONIC_KEY, resources.getObject ("action.lastpage.mnemonic"));
+    putValue (ACCELERATOR_KEY, resources.getObject ("action.lastpage.accelerator"));
+    putValue (SMALL_ICON, resources.getObject ("action.lastpage.small-icon"));
     putValue ("ICON24", resources.getObject ("action.lastpage.icon"));
   }
 }
