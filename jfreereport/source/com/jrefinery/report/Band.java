@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.26 2002/12/02 18:23:57 taqua Exp $
+ * $Id: Band.java,v 1.27 2002/12/06 17:16:58 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -52,6 +52,12 @@
  * 31-Aug-2002 : Removed separate stoage of Function and ReportDataSource elements. This stuff was
  *               no longer in use.
  * 05-Sep-2002 : Documentation
+ * 13-Sep-2002 : Ran checkstyle and fixed reported issues
+ * 05-Nov-2002 : BugFixes I: dynamic feature Q&D fixes
+ * 20-Nov-2002 : BugFixed II: more dynamic feature Q&D fixes
+ * 02-Dec-2002 : Removed the drawing and changed Band to use StyleSheets. Band is now an Element-
+ *               descentend. No more dynamic fixes, as it is not handled here anymore :)
+ * 06-Dec-2002 : Documentation update.
  */
 
 package com.jrefinery.report;
@@ -79,12 +85,27 @@ import java.util.List;
  * <p>
  * This implementation is not synchronized, to take care that you externally synchronize
  * it when using multiple threads.
+ * <p>
+ * A band's contents should not be modified after the report processing starts,
+ * so don't add Elements to the band's contained in or aquired from an report-state.
+ * <p>
+ * Bands contain a master stylesheet for all element contained in that band. This
+ * StyleSheet is registered in the child when the element is added to the band.
+ * <p>
+ * Bands now extend the Element-class, so it is possible to stack bands into another
+ * band.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public class Band extends Element implements Serializable, Cloneable
 {
+  /**
+   * the defined content type for the band. The content type is used when selecting
+   * the corrent display-method of an element.
+   */
+  public static final String CONTENT_TYPE = "X-container";
+
   /** All the elements for this band, stored by name. */
   private ArrayList allElements;
 
@@ -106,9 +127,12 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the default style-sheet for the band's elements.
+   * Returns the default StyleSheet for all childs of this band. This StyleSheet
+   * is used to define a set of common properties for all elements. Elements are
+   * free to override these global settings with private properties within the
+   * stylesheet.
    *
-   * @return the default style-sheet.
+   * @return the default style sheet for all childs of the band.
    */
   public ElementStyleSheet getBandDefaults ()
   {
@@ -121,7 +145,6 @@ public class Band extends Element implements Serializable, Cloneable
    * @param element  the element (null not permitted).
    *
    * @throws NullPointerException if the Element is null or contains Null-Values.
-   * @throws IllegalArgumentException if the element violates validity rules
    */
   public void addElement(Element element)
   {
@@ -160,7 +183,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param name  the element name.
    *
-   * @return the first element with the specified name, or <code>null</code> if there is no 
+   * @return the first element with the specified name, or <code>null</code> if there is no
    *         such element.
    *
    * @throws NullPointerException if the given name is null.
@@ -188,18 +211,20 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Removes an element from the band.
+   * Removes the given element from this band. You should not use this
+   * method on an band aquired from an ReportState or Function.
    *
-   * @param e  the element.
+   * @param e the element to be removed
    */
   public void removeElement (Element e)
   {
+    if (e == null) throw new NullPointerException();
     e.getStyle().removeParent(getBandDefaults());
     allElements.remove(e);
   }
 
   /**
-   * Returns a list of the elements in the band.
+   * Returns all child-elements of this band as immutable list.
    *
    * @return an immutable list of all registered elements for this band.
    */
@@ -221,15 +246,20 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns a string representation of the band and all the elements it contains, useful 
+   * Returns a string representation of the band and all the elements it contains, useful
    * mainly for debugging purposes.
    *
-   * @return a string.
+   * @return a string representation of this band.
    */
   public String toString()
   {
     StringBuffer b = new StringBuffer();
     b.append(this.getClass().getName());
+    b.append("={name=\"");
+    b.append(getName());
+    b.append("\", size=\"");
+    b.append(allElements.size());
+    b.append("\"}");
     return b.toString();
   }
 
@@ -255,13 +285,11 @@ public class Band extends Element implements Serializable, Cloneable
     return b;
   }
 
-  /** The content type. */
-  public static final String CONTENT_TYPE = "X-container";
-
-  /** 
-   * Returns a string indicating the band's content type.
+  /**
+   * Returns the content type of the element. For bands, the content type is by
+   * default "X-container".
    *
-   * @return the content type.
+   * @return the content type
    */
   public String getContentType()
   {
@@ -269,13 +297,18 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
-  
+
   /**
-   * Sets the height of the band.
+   * Defines the minimum height of the band.
+   * <p>
+   * This property is deprecated, please don't use it anymore.
+   * The minimum height can be defined using the MINIMUMSIZE property in the
+   * ElementStyleSheet if needed.
+   * <p>
+   * Using this method will remove any previously set minimumsize of this band.
    *
-   * @param height  the band height.
-   *
-   * @deprecated do not manipulate the element properties that way, use a stylesheet.
+   * @param height the new height. The minimum width is set to '0'.
+   * @deprecated do not manipulate the element properties that way, use a stylesheet
    */
   public void setHeight (float height)
   {
@@ -283,16 +316,15 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the band height.
+   * Queries the minimum size of this band and returns the height portion.
    *
-   * @return the band height.
-   *
-   * @deprecated do not manipulate the element properties that way, use a stylesheet and take care
-   * of the layoutmanager reading this data.
+   * @return the minimum height of this band.
+   * @deprecated do not manipulate the element properties that way, use a stylesheet
+   * and an suitable layoutmanager using the correct stylesheet properties ...
    */
   public float getHeight ()
   {
-    Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+    Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                                               new FloatDimension(0, 0));
     return (float) d.getHeight();
   }
