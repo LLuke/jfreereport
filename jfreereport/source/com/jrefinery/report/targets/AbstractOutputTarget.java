@@ -36,7 +36,8 @@
  * 23-Aug-2002 : breakLines was broken, fixed and removed useless code ..
  * 23-Aug-2002 : removed the strictmode, the reserved literal is now always added
  * 26-Aug-2002 : Corrected Fontheight calculations.
- * 02-Oct-2002 : BUG: breakLines() got a corrected word breaking (Aleksandr Gekht)
+ * 02-Oct-2002 : Bug: breakLines() got a corrected word breaking (Aleksandr Gekht)
+ * 06-Nov-2002 : Bug: LineBreaking again: Handled multiple linebreaks and empty lines
  */
 package com.jrefinery.report.targets;
 
@@ -44,11 +45,13 @@ import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -354,67 +357,94 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
     BreakIterator breakit = BreakIterator.getLineInstance();
     ArrayList returnLines = new ArrayList();
-
-    String currentLine = (String) mytext;
-    breakit.setText(currentLine);
-
-    int lineStartPos = 0;
-    int lineLength = currentLine.length();
-    while (lineStartPos < lineLength)
+    List lines = new ArrayList();
+    try
     {
-      int startPos = lineStartPos;
-      int endPos = 0;
-      float x = 0;
-
-      float w = width;
-
-      // add by leonlyong
-      int wordCnt = 0;
-
-      while ((endPos = breakit.next()) != BreakIterator.DONE)
+      BufferedReader reader = new BufferedReader(new StringReader(mytext));
+      String readLine = null;
+      while ((readLine = reader.readLine()) != null)
       {
+        lines.add(readLine);
+      }
+      reader.close();
+    }
+    catch (IOException ioe)
+    {
+      Log.info("This will not happen.", ioe);
+    }
+
+
+    for (int i = 0; i < lines.size(); i++)
+    {
+      String currentLine = (String) lines.get(i);
+      breakit.setText(currentLine);
+
+      int lineStartPos = 0;
+      int lineLength = currentLine.length();
+      if (lineLength == 0)
+      {
+        returnLines.add("");
+        continue;
+      }
+
+      while (lineStartPos < lineLength)
+      {
+        int startPos = lineStartPos;
+        int endPos = 0;
+        float x = 0;
+
+        float w = width;
+
         // add by leonlyong
-        wordCnt++;
+        int wordCnt = 0;
 
-        x += (float) getStringBounds(currentLine, startPos, endPos);
-        if ((maxLines != 0) && (returnLines.size() == (maxLines - 1)))
+        // check the complete line, break when the complete text is done or
+        // the end of the line has been reached.
+        while (((endPos = breakit.next()) != BreakIterator.DONE))
         {
-          if (x >= (w - reserved))
+          // add by leonlyong
+          wordCnt++;
+
+          x += (float) getStringBounds(currentLine, startPos, endPos);
+          if ((maxLines != 0) && (returnLines.size() == (maxLines - 1)))
           {
-            break;
-          }
-        }
-        else
-        {
-          if (x >= w)
-          {
-            // add by leonlyong
-            //when the first word of the line is too big
-            if (wordCnt == 1)
+            // here is the last line, check whether the reserved literal will fit in here.
+            // fixme: check whether the string can be finished wo. appending the literal.
+            if (x >= (w - reserved))
             {
-              while ((float) getStringBounds(currentLine, startPos, endPos) >= w)
-              {
-                endPos--;
-              }
-              startPos = endPos;
-              endPos = breakit.previous();
+              break;
             }
-
-            break;
           }
+          else
+          {
+            if (x >= w)
+            {
+              // add by leonlyong
+              //when the first word of the line is too big
+              if (wordCnt == 1)
+              {
+                while ((float) getStringBounds(currentLine, startPos, endPos) >= w)
+                {
+                  endPos--;
+                }
+                startPos = endPos;
+                endPos = breakit.previous();
+              }
+
+              break;
+            }
+          }
+          startPos = endPos;
         }
 
-        startPos = endPos;
-      }
+        // the complete text is finished, noting more to do here.
+        if (endPos == BreakIterator.DONE)
+        {
+          String addString = currentLine.substring(lineStartPos);
+          returnLines.add(addString);
+          break;
+        }
 
-      if (endPos == BreakIterator.DONE)
-      {
-        String addString = currentLine.substring(lineStartPos);
-        handleLineBreaks(returnLines, addString);
-        break;
-      }
-      else
-      {
         // if this is the last allowed row, add the RESERVED_LITERAL to the string ..
         if ((maxLines != 0) && (returnLines.size() == (maxLines - 1)))
         {
@@ -431,41 +461,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
            * as a single linebreak.
            */
           String addString = currentLine.substring(lineStartPos, startPos);
-          handleLineBreaks(returnLines, addString);
+          returnLines.add(addString);
           lineStartPos = startPos;
         }
       }
     }
     return returnLines;
-  }
-
-  private void handleLineBreaks (List returnLines, String addString)
-  {
-    int idx = addString.indexOf('\n');
-    if (idx != -1)
-    {
-      int lbrk = 0;
-      int prevIdx = idx;
-      while (idx != -1)
-      {
-        lbrk += 1;
-        idx = addString.indexOf('\n', idx + 1);
-      }
-
-      if (prevIdx != 0)
-      {
-        returnLines.add(addString.substring(0, prevIdx));
-      }
-
-      for (int i = 0; i < lbrk; i++)
-      {
-        returnLines.add (new String());
-      }
-    }
-    else
-    {
-      returnLines.add(addString);
-    }
   }
 
   private String appendReserveLit(String base, int lineStart, int start, float width)
