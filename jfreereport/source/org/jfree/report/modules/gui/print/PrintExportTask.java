@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.6 2003/09/10 18:20:25 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.7 2003/10/18 19:22:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,6 +43,7 @@ import java.awt.print.PrinterJob;
 
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ReportPane;
 import org.jfree.report.util.Log;
 
 /**
@@ -54,7 +55,7 @@ import org.jfree.report.util.Log;
 public class PrintExportTask extends ExportTask
 {
   /** The pageable that is used to create the printer content. */ 
-  private Pageable pageable;
+  private ReportPane pageable;
   /** The progress dialog that is used to monitor the export progress. */
   private ReportProgressDialog progressDialog;
   /** The desired printer job name. */
@@ -67,7 +68,7 @@ public class PrintExportTask extends ExportTask
    * @param progressDialog the progress dialog that will monitor the progress.
    * @param jobname the desired jobname (or null, if undefined)
    */
-  public PrintExportTask(final Pageable pageable, 
+  public PrintExportTask(final ReportPane pageable,
                          final ReportProgressDialog progressDialog,
                          final String jobname)
   {
@@ -104,7 +105,12 @@ public class PrintExportTask extends ExportTask
       progressDialog.setVisible(true);
       try
       {
-        pj.print();
+        synchronized (pageable.getReportLock())
+        {
+          pageable.setPrinting(true);
+          pj.print();
+          pageable.setPrinting(false);
+        }
         setTaskDone();
       }
       catch (Exception e)

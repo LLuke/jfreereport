@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ExportAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * --------
@@ -38,6 +38,8 @@
 package org.jfree.report.modules.gui.base;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
@@ -53,6 +55,22 @@ import org.jfree.report.util.Log;
  */
 public class ExportAction extends AbstractAction implements ActionDowngrade, Runnable
 {
+  private class ExportPluginListener implements PropertyChangeListener
+  {
+    /**
+     * This method gets called when a bound property is changed.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *   	and the property that has changed.
+     */
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+      if ("enabled".equals(evt.getPropertyName()))
+      {
+        setEnabled(plugin.isEnabled());
+      }
+    }
+  }
+
   /** The export plug-in. */
   private ExportPlugin plugin;
 
@@ -72,6 +90,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     }
 
     this.plugin = plugin;
+    plugin.addPropertyChangeListener(new ExportPluginListener());
     if (plugin.getAcceleratorKey() != null)
     {
       putValue(ActionDowngrade.ACCELERATOR_KEY, plugin.getAcceleratorKey());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.10 2003/11/07 16:26:18 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.11 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -109,7 +109,7 @@ public class PrintingPlugin extends AbstractExportPlugin
     final ReportProgressDialog progressDialog = createProgressDialog();
     getBase().addRepaginationListener(progressDialog);
     final PrintExportTask task = new PrintExportTask
-        (getBase().getPageable(), progressDialog,
+        (getBase().getReportPane(), progressDialog,
          report.getReportConfiguration().getConfigProperty
             ("org.jfree.report.modules.gui.print.JobName"));
     task.addExportTaskListener(new DefaultExportTaskListener());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPlugin.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ExportPlugin.java,v 1.6 2003/10/18 20:49:17 taqua Exp $
  *
  * Changes
  * --------
@@ -37,6 +37,7 @@
  */
 package org.jfree.report.modules.gui.base;
 
+import java.beans.PropertyChangeListener;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
@@ -146,4 +147,13 @@ public interface ExportPlugin
    * @param worker the worker pool from where to get the workers.
    */
   public void defineWorkerPool(WorkerPool worker);
+
+  public boolean isEnabled ();
+
+  public void setEnabled (boolean enabled);
+
+  public void addPropertyChangeListener (PropertyChangeListener l);
+  public void addPropertyChangeListener (String property, PropertyChangeListener l);
+  public void removePropertyChangeListener (PropertyChangeListener l);
+
 }

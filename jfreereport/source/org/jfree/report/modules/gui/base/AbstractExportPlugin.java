@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.8 2003/11/01 19:52:27 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.9 2003/11/07 18:33:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,8 @@ package org.jfree.report.modules.gui.base;
 
 import java.awt.Dialog;
 import java.awt.Frame;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import org.jfree.report.util.WorkerPool;
 
@@ -119,11 +121,21 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   /** The worker instance from the main dialog. */
   private WorkerPool worker;
 
+  private PropertyChangeSupport propertyChangeSupport;
+
+  private boolean enabled;
+
   /**
    * DefaultConstructor.
    */
   public AbstractExportPlugin()
   {
+    propertyChangeSupport = new PropertyChangeSupport(this);
+  }
+
+  protected PropertyChangeSupport getPropertyChangeSupport()
+  {
+    return propertyChangeSupport;
   }
 
   /**
@@ -340,4 +352,33 @@ public abstract class AbstractExportPlugin implements ExportPlugin
       return new ReportProgressDialog();
     }
   }
+
+  public void addPropertyChangeListener(PropertyChangeListener l)
+  {
+    propertyChangeSupport.addPropertyChangeListener(l);
+  }
+
+  public void addPropertyChangeListener(String property, PropertyChangeListener l)
+  {
+    propertyChangeSupport.addPropertyChangeListener(property, l);
+  }
+
+  public void removePropertyChangeListener(PropertyChangeListener l)
+  {
+    propertyChangeSupport.removePropertyChangeListener(l);
+  }
+
+  public void setEnabled(boolean enabled)
+  {
+    boolean oldEnabled = this.enabled;
+    this.enabled = enabled;
+    propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
+  }
+
+  public boolean isEnabled()
+  {
+    return enabled;
+  }
+
+  
 }

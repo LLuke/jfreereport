@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.29 2003/11/10 18:01:34 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.30 2003/11/10 18:04:42 taqua Exp $
  *
  * Changes
  * -------
@@ -647,6 +647,7 @@ public class PreviewProxyBase extends JComponent
   public static final String CONF_ALL_ENABLED = "enable";
   public static final String CONF_ALL_DISABLED = "disable";
   public static final String CONF_MENUBAR_ENABLED = "menubar";
+  public static final String REPORT_PANE_PROPERTY = "reportPane";
 
   /**
    * Creates a preview proxy.
@@ -795,12 +796,12 @@ public class PreviewProxyBase extends JComponent
       add(toolbar, BorderLayout.NORTH);
     }
 
-    zoomSelect = createZoomSelector();
-    buildExportPlugins(report);
-
     reportPane = createReportPane(report);
     reportPane.addPropertyChangeListener(new ReportPanePropertyChangeListener());
     reportPane.setVisible(false);
+
+    zoomSelect = createZoomSelector();
+    buildExportPlugins(report);
 
     final JPanel reportPaneHolder = new JPanel(new CenterLayout());
     reportPaneHolder.add(reportPane);
@@ -1042,7 +1043,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the report pane.
    */
-  protected ReportPane getReportPane()
+  public ReportPane getReportPane()
   {
     return reportPane;
   }
@@ -1638,11 +1639,7 @@ public class PreviewProxyBase extends JComponent
     {
       final ExportPlugin ep = (ExportPlugin) it.next();
       final ExportAction ea = (ExportAction) pluginActions.get(ep);
-      if (ep.isControlPlugin())
-      {
-        ea.setEnabled(true);
-      }
-      else
+      if (ep.isControlPlugin() == false)
       {
         ea.setEnabled(mp > 0);
       }
@@ -1774,6 +1771,25 @@ public class PreviewProxyBase extends JComponent
    */
   public void dispose()
   {
+    freeResources();
+    // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
+    // I dont want this here, as PreviewFrames are evil and resource expensive ...
+
+    // I hope this helps as well ...
+    // Setting the repaint manager to null is invalid, as the silly swing
+    // seems to loose all update requests.
+    //
+    // So we have to choose beween a memory leak or an invalid repaint operation
+    RepaintManager.currentManager(this).removeInvalidComponent(this);
+    RepaintManager.currentManager(this).markCompletelyClean(this);
+  }
+
+  /**
+   * Performs a minor dispose operation and interrupts the repagination
+   * worker.
+   */
+  protected final void freeResources ()
+  {
     try
     {
       // make sure that the pagination worker does no longer waste our time.
@@ -1791,17 +1807,6 @@ public class PreviewProxyBase extends JComponent
     }
     // cleanup the report pane, removes some cached resources ...
     reportPane.dispose();
-
-    // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
-    // I dont want this here, as PreviewFrames are evil and resource expensive ...
-
-    // I hope this helps as well ...
-    // Setting the repaint manager to null is invalid, as the silly swing
-    // seems to loose all update requests.
-    //
-    // So we have to choose beween a memory leak or an invalid repaint operation
-    RepaintManager.currentManager(this).removeInvalidComponent(this);
-    RepaintManager.currentManager(this).markCompletelyClean(this);
   }
 
   /**
@@ -2178,5 +2183,28 @@ public class PreviewProxyBase extends JComponent
   public void removeRepaginationListener(final RepaginationListener listener)
   {
     reportPane.removeRepaginationListener(listener);
+  }
+
+  public void setReport (JFreeReport report) throws ReportProcessingException
+  {
+    freeResources();
+    reportPane.removeRepaginationListener(progressDialog);
+    ReportPane oldPane = reportPane;
+    reportPane = new ReportPane(report);
+    // inform all listeners, that we have a new reportpane
+    firePropertyChange(REPORT_PANE_PROPERTY, oldPane, reportPane);
+    performPagination(report.getDefaultPageFormat());
+    Log.info("Refresh() started pagination ...");
+  }
+
+  public JFreeReport getReport (JFreeReport report)
+  {
+    return reportPane.getReport();
+  }
+
+  public void refresh () throws ReportProcessingException
+  {
+    JFreeReport report = reportPane.getReport();
+    setReport(report);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.7 2003/09/09 02:29:13 taqua Exp $
+ * $Id: ReportPane.java,v 1.8 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -107,6 +107,9 @@ public class ReportPane extends JComponent
   /** Literal text for the 'borderPainted' property. */
   public static final String BORDER_PROPERTY = "BorderPainted";
 
+  public static final String PRINTING_PROPERTY = "printing";
+  public static final String PAGINATING_PROPERTY = "paginating";
+
   /** The size of the paper border. */
   private static final float PAPERBORDER_PIXEL = 6f;
 
@@ -138,13 +141,22 @@ public class ReportPane extends JComponent
   /** The report. */
   private JFreeReport report;
 
+  protected static final int PAGINATE_IDLE = 0;
+  protected static final int PAGINATE_PAGINATING = 1;
+  protected static final int PAGINATE_PRINTING = 2;
+
   /**
    * A simple class performing the locking for huge paginating runs.
    */
   private static class PaginateLock
   {
     /** The 'paginate' state. */
-    private boolean paginateState;
+    private int paginateState;
+
+    public PaginateLock()
+    {
+      paginateState = PAGINATE_IDLE;
+    }
 
     /**
      * Returns the 'paginate' state.
@@ -153,7 +165,17 @@ public class ReportPane extends JComponent
      */
     public boolean isPaginating()
     {
-      return paginateState;
+      return paginateState == PAGINATE_PAGINATING;
+    }
+
+    /**
+     * Returns the 'paginate' state.
+     *
+     * @return the 'paginate' state.
+     */
+    public boolean isPrinting()
+    {
+      return paginateState == PAGINATE_PRINTING;
     }
 
     /**
@@ -161,7 +183,7 @@ public class ReportPane extends JComponent
      *
      * @param p  the flag.
      */
-    public void setPaginating(final boolean p)
+    public void setPaginateState(final int p)
     {
       paginateState = p;
     }
@@ -220,6 +242,17 @@ public class ReportPane extends JComponent
   public boolean isHandleInterruptedState()
   {
     return processor.isHandleInterruptedState();
+  }
+
+  /**
+   * Returns the report lock for the pagination. Use this to synchronize the
+   * various operations.
+   *
+   * @return the report lock
+   */
+  public Object getReportLock ()
+  {
+    return paginateLock;
   }
 
   /**
@@ -756,7 +789,7 @@ public class ReportPane extends JComponent
       // Is already done
       return;
     }
-    if (isPaginating())
+    if (isPaginating() || isPrinting())
     {
       throw new IllegalStateException("Already paginating");
     }
@@ -764,7 +797,8 @@ public class ReportPane extends JComponent
     synchronized (paginateLock)
     {
       setPageStateList(null);
-      paginateLock.setPaginating(true);
+      //paginateLock.setPaginateState(PAGINATE_PAGINATING);
+      setPaginating(true);
 
       boolean addedOutputTarget = false;
       if (getProcessor().getOutputTarget() == null)
@@ -806,9 +840,49 @@ public class ReportPane extends JComponent
         {
           getProcessor().setOutputTarget(null);
         }
-        paginateLock.setPaginating(false);
+        //paginateLock.setPaginateState(PAGINATE_IDLE);
+        setPaginating(false);
       }
     }
+  }
+
+  public void setPrinting(boolean printing)
+  {
+    boolean oldPrinting = isPrinting();
+    synchronized (paginateLock)
+    {
+      if (printing)
+      {
+        paginateLock.setPaginateState(PAGINATE_PRINTING);
+      }
+      else
+      {
+        paginateLock.setPaginateState(PAGINATE_IDLE);
+      }
+    }
+    firePropertyChange(PRINTING_PROPERTY, oldPrinting, printing);
+  }
+
+  protected void setPaginating (boolean paginating)
+  {
+    boolean oldPaginating = isPaginating();
+    synchronized (paginateLock)
+    {
+      if (paginating)
+      {
+        paginateLock.setPaginateState(PAGINATE_PAGINATING);
+      }
+      else
+      {
+        paginateLock.setPaginateState(PAGINATE_IDLE);
+      }
+    }
+    firePropertyChange(PAGINATING_PROPERTY, oldPaginating, paginating);
+  }
+
+  public boolean isPrinting()
+  {
+    return paginateLock.isPrinting();
   }
 
   /**

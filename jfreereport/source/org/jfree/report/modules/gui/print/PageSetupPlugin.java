@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.5 2003/11/07 16:26:18 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.6 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,14 +41,20 @@ package org.jfree.report.modules.gui.print;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.util.ResourceBundle;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
+import org.jfree.report.modules.gui.base.ReportPane;
+import org.jfree.report.modules.gui.base.PreviewProxy;
+import org.jfree.report.modules.gui.base.PreviewProxyBase;
 import org.jfree.report.modules.gui.print.resources.PrintExportResources;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.Log;
 
 /**
  * An export control plugin that handles the setup of page format objects for
@@ -58,6 +64,27 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public class PageSetupPlugin extends AbstractExportPlugin
 {
+  private class RepaginationListener implements PropertyChangeListener
+  {
+    /**
+     * This method gets called when a bound property is changed.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *   	and the property that has changed.
+     */
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+      if (ReportPane.PRINTING_PROPERTY.equals(evt.getPropertyName()) ||
+          ReportPane.PAGINATING_PROPERTY.equals(evt.getPropertyName()))
+      {
+        setEnabled((reportPane.isPrinting() || reportPane.isPaginating()) == false);
+      }
+      else if (PreviewProxyBase.REPORT_PANE_PROPERTY.equals(evt.getPropertyName()))
+      {
+        updateReportPane();
+      }
+    }
+  }
+
   /** Localised resources. */
   private final ResourceBundle resources;
 
@@ -65,12 +92,30 @@ public class PageSetupPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       PrintExportResources.class.getName();
 
+  private ReportPane reportPane;
+  private RepaginationListener repaginationListener;
+
   /**
    * Default Constructor.
    */
   public PageSetupPlugin()
   {
     resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    repaginationListener = new RepaginationListener();
+  }
+
+  /**
+   * Initializes the plugin to work with the given PreviewProxy.
+   *
+   * @param proxy the preview proxy that created this plugin.
+   * @throws NullPointerException if the proxy or the proxy's basecomponent
+   * is null.
+   */
+  public void init(PreviewProxy proxy)
+  {
+    super.init(proxy);
+    reportPane = proxy.getBase().getReportPane();
+    reportPane.addPropertyChangeListener(repaginationListener);
   }
 
   /**
@@ -204,4 +249,10 @@ public class PageSetupPlugin extends AbstractExportPlugin
         ("org.jfree.report.modules.gui.print.pagesetup.Separated", "false").equals("true");
   }
 
+  protected void updateReportPane ()
+  {
+    reportPane.removePropertyChangeListener(repaginationListener);
+    reportPane = getBase().getReportPane();
+    reportPane.addPropertyChangeListener(repaginationListener);
+  }
 }
