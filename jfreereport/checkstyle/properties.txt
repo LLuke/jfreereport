@@ -1,0 +1,7 @@
+checkstyle.maxlinelen 100
+checkstyle.lcurly.type nl
+checkstyle.lcurly.method nl
+checkstyle.lcurly.other nl
+checkstyle.rcurly alone
+checkstyle.ignore.public.in.interface yes
+checkstyle.javadoc.checkUnusedThrows yes
