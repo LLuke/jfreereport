@@ -23,12 +23,12 @@
  * -----------------
  * OutputTarget.java
  * -----------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.2 2002/12/03 16:30:51 mungady Exp $
+ * $Id: OutputTarget.java,v 1.3 2002/12/08 23:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@
  *               Created beginPage() state callback to property initialize new pages. FillShape
  *               added.
  * 31-Aug-2002 : Added properties to support a generic configuration interface
+ * 10-Dec-2002 : Javadoc updates (DG);
+ *
  */
 
 package com.jrefinery.report.targets.pageable;
@@ -60,7 +62,7 @@ import java.awt.geom.Rectangle2D;
  * JFreeReport currently implements two targets:  one for Graphics2D (screen and printer) and
  * one for Acrobat PDF files.
  *
- * @author DG
+ * @author David Gilbert
  */
 public interface OutputTarget
 {
@@ -248,9 +250,9 @@ public interface OutputTarget
   public void drawImage (ImageReference image) throws OutputTargetException;
 
   /**
-   * When the dummyMode is active, everything is done as if the report should be printed,
-   * so that any font calculations can be done.But DONT! Write the report , if streaming,
-   * write to the NullStream, but NEVER EVER do any real output.
+   * Creates an output target that mimics a real output target, but produces no output.
+   * This is used by the reporting engine when it makes its first pass through the report,
+   * calculating page boundaries etc.  The second pass will use a real output target.
    *
    * @return a dummy output target.
    */

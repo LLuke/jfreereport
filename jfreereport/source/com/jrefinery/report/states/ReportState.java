@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.11 2002/12/06 19:28:02 taqua Exp $
+ * $Id: ReportState.java,v 1.12 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,7 +60,6 @@ import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.LeveledExpressionList;
 import com.jrefinery.report.util.Log;
@@ -73,7 +72,7 @@ import java.util.Iterator;
  * Captures state information for a report while it is in the process of being displayed or
  * printed.  JFreeReport uses a state transition diagram to track progress through the report
  * generation.
- * <p>  
+ * <p>
  * The report processing will usually pass through many states for each page generated.  We
  * record the report state at the end of each page, so that we can jump directly to the start of
  * any page without having to regenerate all the preceding pages.
@@ -143,7 +142,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     DataRowConnector.connectDataSources (getReport (), dc);
     setDataRowConnector(dc);
 
-    LeveledExpressionList functions = new LeveledExpressionList(getReport().getExpressions(), 
+    LeveledExpressionList functions = new LeveledExpressionList(getReport().getExpressions(),
                                                                 getReport().getFunctions());
     setFunctions (functions);
     functions.connectDataRow(dc);
@@ -529,11 +528,13 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     // a state proceeds if it is an other class than the old state
     if (this.getClass().equals(oldstate.getClass()) == false)
     {
-      Log.debug (new StateProceedMessage(this, oldstate.getClass(), "State did proceed: In Group: "));
+      Log.debug (new StateProceedMessage(this, oldstate.getClass(),
+                                         "State did proceed: In Group: "));
       return true;
     }
 
-    Log.debug (new StateProceedMessage(this, oldstate.getClass(), "State did not proceed: In Group: "));
+    Log.debug (new StateProceedMessage(this, oldstate.getClass(),
+                                       "State did not proceed: In Group: "));
     return false;
   }
 
@@ -543,10 +544,22 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   private static class StateProceedMessage
   {
+    /** The current state. */
     private ReportState currentState;
+
+    /** The old state. */
     private Class oldState;
+
+    /** The message. */
     private String message;
 
+    /**
+     * Creates a new message.
+     *
+     * @param currentState  the current state.
+     * @param oldState  the old state.
+     * @param message  the message.
+     */
     public StateProceedMessage(ReportState currentState, Class oldState, String message)
     {
       this.currentState = currentState;
@@ -554,16 +567,17 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       this.message = message;
     }
 
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return the string.
+     */
     public String toString ()
     {
-      return message +
-          currentState.getCurrentGroupIndex() +
-          ", DataItem: " +
-          currentState.getCurrentDataItem() +
-          ",Page: " +
-          currentState.getCurrentPage() +
-          " Class: " + currentState.getClass() + "\n" +
-          "Old State: " + oldState;
+      return message + currentState.getCurrentGroupIndex() + ", DataItem: "
+                     + currentState.getCurrentDataItem() + ",Page: "
+                     + currentState.getCurrentPage() + " Class: "
+                     + currentState.getClass() + "\n" + "Old State: " + oldState;
     }
   }
 
@@ -596,7 +610,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Activates the next group by incrementing the current group index.  The outer-most group is 
+   * Activates the next group by incrementing the current group index.  The outer-most group is
    * given an index of zero, and this increases for each subgroup that is defined.
    */
   public void enterGroup ()
@@ -605,7 +619,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Deactivates the current group by decrementing the current group index.  
+   * Deactivates the current group by decrementing the current group index.
    */
   public void leaveGroup ()
   {
@@ -649,7 +663,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Fires a '<code>page-finished</code>' event.  The <code>pageFinished(...)</code> method is 
+   * Fires a '<code>page-finished</code>' event.  The <code>pageFinished(...)</code> method is
    * called for every report function.
    */
   public void firePageFinishedEvent ()
@@ -659,7 +673,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Fires a '<code>group-started</code>' event.  The <code>groupStarted(...)</code> method is 
+   * Fires a '<code>group-started</code>' event.  The <code>groupStarted(...)</code> method is
    * called for every report function.
    */
   public void fireGroupStartedEvent ()
@@ -736,7 +750,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Sets the ancestor hash code.
-   * 
+   *
    * @param ancestorHashcode  the ancestor hash code.
    */
   protected void setAncestorHashcode(int ancestorHashcode)
@@ -753,5 +767,5 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     return (state.getAncestorHashcode() == getAncestorHashcode());
   }
-  
+
 }

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,21 @@
  * ------------------
  * BSHExpression.java
  * ------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: BSHExpression.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: BSHExpression.java,v 1.9 2002/12/02 17:29:02 taqua Exp $
  *
  * ChangeLog
  * ---------
  * 12-Aug-2002 : Initial version
  * 27-Aug-2002 : Documentation
+ * 10-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.function;
 
 import bsh.Interpreter;
@@ -42,8 +49,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * The BSHExpression uses the BeanShell-Scripting framework to perform the calculation, the
- * expression itself is contained in a function called
+ * The BSHExpression uses the BeanShell scripting framework to perform the calculation.
+ * The expression itself is contained in a function called
  * <p>
  * <code>Object getValue()</code>
  * <p>
@@ -91,7 +98,7 @@ import java.io.Reader;
  </expression>
 </pre>
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class BSHExpression extends AbstractExpression
 {

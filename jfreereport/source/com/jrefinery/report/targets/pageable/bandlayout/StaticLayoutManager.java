@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.2 2002/12/03 13:49:16 mungady Exp $
+ * $Id: StaticLayoutManager.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -72,18 +72,18 @@ public class StaticLayoutManager implements BandLayoutManager
 {
   /** A key for the absolute position of an element. */
   public static final StyleKey ABSOLUTE_POS  = StyleKey.getStyleKey("absolute_pos", Point2D.class);
-  
+
   /** A key for the absolute dimension of an element. */
-  public static final StyleKey ABSOLUTE_DIM  = StyleKey.getStyleKey("absolute_dim", 
+  public static final StyleKey ABSOLUTE_DIM  = StyleKey.getStyleKey("absolute_dim",
                                                                     Dimension2D.class);
-  
+
   /** A key for the dynamic height flag for an element. */
-  public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height", 
+  public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
                                                                      Boolean.class);
 
   /** The output target. */
   private OutputTarget ot;
-  
+
   /** A cache for element attributes.  Not in use yet. */
   //private LayoutManagerCache elementCache;
 
@@ -170,7 +170,7 @@ public class StaticLayoutManager implements BandLayoutManager
   {
     // check if we can handle the content before doing anything...
     OperationModul mod = OperationFactory.getInstance().getModul(e.getContentType());
-    if (mod == null) 
+    if (mod == null)
     {
       return bounds;
     }
@@ -214,7 +214,7 @@ public class StaticLayoutManager implements BandLayoutManager
   private Dimension2D getMinimumSize(Element e)
   {
     Dimension2D retval = null;
-    
+
     // if this is a band, then try to calculate the min-size
     if (e instanceof Band)
     {
@@ -251,7 +251,7 @@ public class StaticLayoutManager implements BandLayoutManager
     // invisible bands do not need any space
     if (b.isVisible() == false)
     {
-      return new FloatDimension(0,0);
+      return new FloatDimension(0, 0);
     }
 
     //elementCache.setCurrentBand(b);
@@ -259,9 +259,9 @@ public class StaticLayoutManager implements BandLayoutManager
     double height = 0;
     double width = 0;
 
-    Dimension2D prefSize 
+    Dimension2D prefSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
-    
+
     // there is a preferredSize defined, don't calculate one...
     if (prefSize != null)
     {
@@ -269,7 +269,7 @@ public class StaticLayoutManager implements BandLayoutManager
       width = Math.max(width, prefSize.getWidth());
     }
 
-    Dimension2D minSize 
+    Dimension2D minSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
 
     // check for an minimum size and take that into account
@@ -304,7 +304,7 @@ public class StaticLayoutManager implements BandLayoutManager
       }
     }
     // now take the maximum limit defined for that band into account.
-    Dimension2D maxSize 
+    Dimension2D maxSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
     if (maxSize != null)
     {
@@ -345,21 +345,21 @@ public class StaticLayoutManager implements BandLayoutManager
    *
    * @param b  the band.
    *
-   * @return the minimum size. 
+   * @return the minimum size.
    */
   public Dimension2D minimumLayoutSize(Band b)
   {
     // invisible bands do not need any space
     if (b.isVisible() == false)
     {
-      return new FloatDimension(0,0);
+      return new FloatDimension(0, 0);
     }
     //elementCache.setCurrentBand(b);
 
     double height = 0;
     double width = 0;
 
-    Dimension2D minSize 
+    Dimension2D minSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
 
     if (minSize != null)
@@ -385,7 +385,7 @@ public class StaticLayoutManager implements BandLayoutManager
     }
 
     // now take the maximum limit defined for that band into account.
-    Dimension2D maxSize 
+    Dimension2D maxSize
         = (Dimension2D) b.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
     if (maxSize != null)
     {
@@ -412,7 +412,7 @@ public class StaticLayoutManager implements BandLayoutManager
     //elementCache.setCurrentBand(b);
     Element[] elements = b.getElementArray();
     Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
-    if (parentBounds == null) 
+    if (parentBounds == null)
     {
       throw new NullPointerException("Need the parent's bound set");
     }
@@ -424,10 +424,10 @@ public class StaticLayoutManager implements BandLayoutManager
       Element e = elements[i];
       Dimension2D size = correctDimension(getPreferredSize(e, parentBounds), parentDim);
 
-      Point2D absPos 
+      Point2D absPos
           = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
       absPos.setLocation(absPos.getX() + parentPoint.getX(), absPos.getY() + parentPoint.getY());
-      Rectangle2D bounds = new Rectangle2D.Double(absPos.getX(), absPos.getY(), 
+      Rectangle2D bounds = new Rectangle2D.Double(absPos.getX(), absPos.getY(),
                                                   size.getWidth(), size.getHeight());
       BandLayoutManagerUtil.setBounds(e, bounds);
     }
@@ -443,13 +443,13 @@ public class StaticLayoutManager implements BandLayoutManager
   private boolean isElementStaticWidth (Element e)
   {
     Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
-    if (absPos.getX() < 0) 
+    if (absPos.getX() < 0)
     {
       return false;
     }
-    Dimension2D maxSize 
+    Dimension2D maxSize
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
-    if (maxSize.getWidth() < 0) 
+    if (maxSize.getWidth() < 0)
     {
       return false;
     }
@@ -466,13 +466,13 @@ public class StaticLayoutManager implements BandLayoutManager
   private boolean isElementStaticHeight (Element e)
   {
     Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS);
-    if (absPos.getY() < 0) 
+    if (absPos.getY() < 0)
     {
       return false;
     }
-    Dimension2D maxSize 
+    Dimension2D maxSize
         = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
-    if (maxSize.getHeight() < 0) 
+    if (maxSize.getHeight() < 0)
     {
       return false;
     }
@@ -481,7 +481,7 @@ public class StaticLayoutManager implements BandLayoutManager
 
   /**
    * Clears any cached items used by the layout manager.
-   */  
+   */
   public void flushLayout()
   {
     //elementCache.flushCache();
@@ -523,15 +523,15 @@ public class StaticLayoutManager implements BandLayoutManager
   {
     double x = dim.getX();
     double y = dim.getY();
-    if (x < 0) 
+    if (x < 0)
     {
       x = (dim.getX() * base.getWidth() / -100);
     }
-    if (y < 0) 
+    if (y < 0)
     {
       y = (dim.getY() * base.getHeight() / -100);
     }
     return new Point2D.Double(x, y);
   }
-  
+
 }

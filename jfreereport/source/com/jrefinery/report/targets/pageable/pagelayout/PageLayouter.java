@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.5 2002/12/06 20:34:16 taqua Exp $
+ * $Id: PageLayouter.java,v 1.6 2002/12/07 13:06:46 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public abstract class PageLayouter extends AbstractFunction
    * The state is required to be cloneable and must support deep-cloning so that
    * the state can be restored multiple times whenever the page printing continues.
    */
-  protected static abstract class LayoutManagerState implements Cloneable
+  protected abstract static class LayoutManagerState implements Cloneable
   {
     /**
      * Creates a new state.
@@ -93,9 +93,9 @@ public abstract class PageLayouter extends AbstractFunction
    */
   private class CloneCarrier
   {
-    // dont clone these
+    /** The report. */              // don't clone these
     public JFreeReport report;
-    
+
     /** The logical page. */
     private LogicalPage logicalPage;
   }
@@ -106,13 +106,13 @@ public abstract class PageLayouter extends AbstractFunction
    * on the specific implementation of the PageLayouter.
    */
   private LayoutManagerState layoutManagerState;
-  
+
   /** The latest report event. */
   private ReportEvent currentEvent;
-  
+
   /** A clone carrier. */
   private CloneCarrier cloneCarrier;
-  
+
   /**
    * The depency level. Should be set to -1 or lower to ensure that this function
    * has the highest priority in the function collection.
@@ -129,7 +129,7 @@ public abstract class PageLayouter extends AbstractFunction
    * ReportProcessing exception, as this would result in an infinite loop.
    */
   private boolean finishingPage;
-  
+
   /**
    * The 'restarting page' flag. Is set to true, while the page is started.
    * The last saved state is restored and the page header gets prepared.
@@ -156,7 +156,7 @@ public abstract class PageLayouter extends AbstractFunction
    */
   public void setLogicalPage(LogicalPage logicalPage)
   {
-    if (logicalPage == null) 
+    if (logicalPage == null)
     {
       throw new NullPointerException("PageLayouter.setLogicalPage: logicalPage is null.");
     }
@@ -247,7 +247,7 @@ public abstract class PageLayouter extends AbstractFunction
    */
   private void setReport(JFreeReport report)
   {
-    if (report == null) 
+    if (report == null)
     {
       throw new NullPointerException("PageLayouter.setReport: report is null.");
     }
@@ -256,7 +256,7 @@ public abstract class PageLayouter extends AbstractFunction
 
   /**
    * Returns the current report event.
-   * 
+   *
    * @return the event.
    */
   protected ReportEvent getCurrentEvent()
@@ -324,11 +324,14 @@ public abstract class PageLayouter extends AbstractFunction
    * PageStartedEvent is fired. While this method is executed, the RestartingPage
    * flag is set to true.
    *
-   * @param state
+   * @param state  the report state (null not permitted).
    */
   protected void startPage (ReportState state)
   {
-    if (state == null) throw new NullPointerException();
+    if (state == null)
+    {
+      throw new NullPointerException("PageLayouter.startPage(...): state is null.");
+    }
 
     getLogicalPage().open();
     setRestartingPage(true);
@@ -372,7 +375,9 @@ public abstract class PageLayouter extends AbstractFunction
    * the previous page or the original last report state - or the processing
    * will print stupid things.
    *
-   * @param state
+   * @param state  the report state.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public abstract void restoreSaveState (ReportState state)
       throws ReportProcessingException;
@@ -400,9 +405,9 @@ public abstract class PageLayouter extends AbstractFunction
   }
 
   /**
-   * The depency level defines the level of execution for this function. Higher depency functions are
-   * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
-   * depency possible) to 2^31 (upper limit of int).
+   * The depency level defines the level of execution for this function. Higher depency functions
+   * are executed before lower depency functions. The range for depencies is defined to start
+   * from 0 (lowest depency possible) to 2^31 (upper limit of int).
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
    * an so before any userdefined function.
@@ -429,7 +434,7 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @return a clone of the function.
    *
-   * @throws java.lang.CloneNotSupportedException this should never happen.
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * -------------------------
  * AbstractOutputTarget.java
  * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: AbstractOutputTarget.java,v 1.24 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: AbstractOutputTarget.java,v 1.1 2002/12/02 17:57:00 taqua Exp $
  *
  * Changes
  * -------
@@ -60,17 +63,25 @@ import java.util.Hashtable;
  * The abstract OutputTarget implements common code for all OutputTargets. It contains
  * functions to manage the cursor, the pageformat and the line breaking of strings.
  *
- * @author TM
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public abstract class AbstractOutputTarget implements OutputTarget
 {
   /** Storage for the output target properties. */
   private Hashtable properties;
 
+  /** The logical page. */
   private LogicalPage logicalPage;
 
+  /** The operation bounds. */
   private Rectangle2D operationBounds;
 
+  /**
+   * Creates a new output target.
+   *
+   * @param logPage  the logical page.
+   */
   public AbstractOutputTarget(LogicalPage logPage)
   {
     properties = new Hashtable();
@@ -79,6 +90,11 @@ public abstract class AbstractOutputTarget implements OutputTarget
     operationBounds = new Rectangle2D.Double();
   }
 
+  /**
+   * Creates a new output target.
+   *
+   * @param format  the page format.
+   */
   public AbstractOutputTarget(PageFormat format)
   {
     this (format, format);
@@ -90,7 +106,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param logical the pageformat used by this target for layouting.
    * @param physical the pageformat used by this target for printing.
-   * @throws java.lang.NullPointerException if the format is null
+   *
+   * @throws NullPointerException if the format is null
    */
   public AbstractOutputTarget(PageFormat logical, PageFormat physical)
   {
@@ -105,7 +122,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param value the value of the property. If value is null, the property is removed from the
    * OutputTarget
    *
-   * @throws java.lang.NullPointerException if property is null
+   * @throws NullPointerException if property is null
    */
   public void setProperty(String property, Object value)
   {
@@ -143,10 +160,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * Queries the property named with <code>property</code>. If the property is not found, the
    * default value is returned.
    *
-   * @return the value stored under the given property name
    * @param property the name of the property to be queried
    * @param defaultValue the defaultvalue returned if there is no such property
-   * @throws java.lang.NullPointerException if <code>property</code> is null
+   *
+   * @return the value stored under the given property name
+   *
+   * @throws NullPointerException if <code>property</code> is null
    */
   public Object getProperty(String property, Object defaultValue)
   {
@@ -163,11 +182,21 @@ public abstract class AbstractOutputTarget implements OutputTarget
     return retval;
   }
 
+  /**
+   * Returns an enumeration of the property names.
+   *
+   * @return the enumeration.
+   */
   protected Enumeration getPropertyNames()
   {
     return properties.keys();
   }
 
+  /**
+   * Returns the default layout manager.
+   *
+   * @return the default layout manager.
+   */
   public BandLayoutManager getDefaultLayoutManager()
   {
     BandLayoutManager lm = new StaticLayoutManager();
@@ -175,12 +204,19 @@ public abstract class AbstractOutputTarget implements OutputTarget
     return lm;
   }
 
+  /**
+   * Returns the logical page.
+   *
+   * @return the logical page.
+   */
   public LogicalPage getLogicalPage()
   {
     return logicalPage;
   }
 
   /**
+   * Sets the operation bounds.
+   *
    * @param bounds  the bounds.
    */
   public void setOperationBounds(Rectangle2D bounds)
@@ -189,6 +225,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
+   * Returns the operation bounds.
+   *
    * @return the clipping area.
    */
   public Rectangle2D getOperationBounds()

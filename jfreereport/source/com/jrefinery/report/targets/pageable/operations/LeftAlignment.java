@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeftAlignment.java,v 1.3 2002/12/05 12:05:09 mungady Exp $
+ * $Id: LeftAlignment.java,v 1.4 2002/12/06 20:34:13 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,6 @@
  */
 
 package com.jrefinery.report.targets.pageable.operations;
-
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 
@@ -69,7 +67,7 @@ public class LeftAlignment extends HorizontalBoundsAlignment
    */
   public Rectangle2D align(Rectangle2D inner)
   {
-    if (inner == null) 
+    if (inner == null)
     {
       throw new NullPointerException("Inner Bound must not be null");
     }

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,8 +23,12 @@
  * -------------------------
  * JFreeReportResources.java
  * -------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: JFreeReportResources.java,v 1.29 2002/12/02 17:42:30 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: JFreeReportResources.java,v 1.30 2002/12/04 19:49:14 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -45,7 +49,7 @@ import java.util.Arrays;
 /**
  * English Language Resources.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class JFreeReportResources extends ListResourceBundle
 {
@@ -101,7 +105,7 @@ public class JFreeReportResources extends ListResourceBundle
     BufferedImage img = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
     int[] data = img.getRGB(0,0, width, height, null, 0, width);
     Arrays.fill(data, 0xff000000);
-    img.setRGB(0,0,width,height,data,0,width);
+    img.setRGB(0, 0, width, height, data, 0, width);
     return img;
   }
 

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ---------------------
  * AbstractFunction.java
  * ---------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.20 2002/10/15 20:37:22 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.21 2002/12/02 17:29:00 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
  * 05-Jun-2002 : Updated Javadoc comments (DG);
  * 27-Aug-2002 : Documentation and removed the deprecated functions
  * 31-Aug-2002 : Documentation update and removed isInitializedFunction
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
 
 package com.jrefinery.report.function;
@@ -60,13 +62,14 @@ import java.util.Properties;
  * have been set to a valid state and the function must be named. If the initialisation fails, a
  * FunctionInitializeException is thrown and the function get not added to the report.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public abstract class AbstractFunction implements Function
 {
   /** The DataRow assigned within this function. */
   private DataRow dataRow;
 
+  /** The dependency level. */
   private int depency;
 
   /** Storage for the function properties. */
@@ -363,18 +366,27 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * The depency level defines the level of execution for this function. Higher depency functions are
-   * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
-   * depency possible) to 2^31 (upper limit of int).
+   * The depency level defines the level of execution for this function. Higher depency functions
+   * are executed before lower depency functions. The range for depencies is defined to start
+   * from 0 (lowest depency possible) to 2^31 (upper limit of int).
    */
   public int getDepencyLevel()
   {
     return depency;
   }
 
-  public void setDepencyLevel(int deplevel)
+  /**
+   * Sets the dependency level.
+   *
+   * @param level  the level.
+   */
+  public void setDepencyLevel(int level)
   {
-    if (deplevel < 0) throw new IllegalArgumentException("No negative depency allowed for userdefined expressions");
-    this.depency = deplevel;
+    if (level < 0)
+    {
+      throw new IllegalArgumentException("No negative dependency allowed for user-defined "
+                                         + "expressions.");
+    }
+    this.depency = level;
   }
 }

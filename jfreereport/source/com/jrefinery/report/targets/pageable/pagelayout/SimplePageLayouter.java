@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.4 2002/12/06 20:34:16 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.5 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport, 
+ * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport,
  * simple and straightforward.
  * <p>
  * Layout Constraints used:
@@ -84,13 +84,13 @@ public class SimplePageLayouter extends PageLayouter
 {
   /** A useful constant. */
   private boolean ENDPAGE_FORCED = true;
-  
+
   /** A useful constant. */
   private boolean ENDPAGE_REQUESTED = false;
-  
+
   /** A flag that indicates if the report state is currently inside the item group. */
   private boolean isInItemGroup;
-  
+
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
@@ -101,9 +101,9 @@ public class SimplePageLayouter extends PageLayouter
   {
     /** The band. */
     private Band band;
-    
+
     /**
-     * Creates a new state.  The band can be <code>null</code> if there is no band to be printed 
+     * Creates a new state.  The band can be <code>null</code> if there is no band to be printed
      * on the next page.
      *
      * @param band  the band.
@@ -126,10 +126,10 @@ public class SimplePageLayouter extends PageLayouter
 
   /** The cursor used by the layouter. */
   private SimplePageLayoutCursor cursor;
-  
+
   /** The current state. */
   private SimpleLayoutManagerState state;
-  
+
   /** The spool. */
   private Spool spooledBand;
 
@@ -263,7 +263,7 @@ public class SimplePageLayouter extends PageLayouter
           }
         }
       }
-      // to do: do not print on last page ... how to get the information when the last page is 
+      // to do: do not print on last page ... how to get the information when the last page is
       // reached for all events?
     }
     catch (FunctionProcessingException fe)
@@ -311,7 +311,7 @@ public class SimplePageLayouter extends PageLayouter
       else
       {
         printBottom(b);
-      } 
+      }
     }
     catch (FunctionProcessingException fe)
     {
@@ -492,7 +492,7 @@ public class SimplePageLayouter extends PageLayouter
     // do not influence the reporting state
 
     Rectangle2D bounds = doLayout(b);
-    bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(), 
+    bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
                    bounds.getWidth(), bounds.getHeight());
     doPrint(bounds, b, false);
   }
@@ -507,7 +507,7 @@ public class SimplePageLayouter extends PageLayouter
    */
   protected Rectangle2D doLayout(Band band)
   {
-    BandLayoutManager lm 
+    BandLayoutManager lm
         = BandLayoutManagerUtil.getLayoutManager(band, getLogicalPage().getOutputTarget());
     Dimension2D fdim = lm.preferredLayoutSize(band);
 
@@ -533,8 +533,6 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @throws ReportProcessingException if the printing caused an detectable error
    * while printing the band
-   * @throws FunctionProcessingException if the OutputTarget was not able to process
-   * a request while printing.
    */
   protected void doPrint(Rectangle2D bounds, Band band, boolean spool)
     throws ReportProcessingException
@@ -624,7 +622,7 @@ public class SimplePageLayouter extends PageLayouter
    */
   protected SimplePageLayoutCursor getCursor()
   {
-    if (cursor == null) 
+    if (cursor == null)
     {
       throw new IllegalStateException("No cursor, no OutputTarget: " + hashCode());
     }
@@ -639,14 +637,14 @@ public class SimplePageLayouter extends PageLayouter
    */
   protected void setCursor(SimplePageLayoutCursor cursor)
   {
-    if (cursor == null) 
+    if (cursor == null)
     {
       throw new NullPointerException("SimplePageLayouter.setCursor(...): cursor is null.");
     }
     this.cursor = cursor;
   }
 
-  /** 
+  /**
    * Records state information.
    *
    * @param b  the band.
@@ -664,7 +662,7 @@ public class SimplePageLayouter extends PageLayouter
    */
   protected PageLayouter.LayoutManagerState saveCurrentState()
   {
-    if (state == null) 
+    if (state == null)
     {
       throw new NullPointerException();
     }
@@ -763,7 +761,7 @@ public class SimplePageLayouter extends PageLayouter
   public Object clone () throws CloneNotSupportedException
   {
     SimplePageLayouter sl = (SimplePageLayouter) super.clone();
-    if (spooledBand != null) 
+    if (spooledBand != null)
     {
       sl.spooledBand = (Spool) spooledBand.clone();
     }

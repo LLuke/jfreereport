@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,21 @@
  * -----------------------
  * PageTotalFunction.java
  * -----------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: PageTotalFunction.java,v 1.7 2002/12/02 17:29:20 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: PageTotalFunction.java,v 1.8 2002/12/06 19:27:53 taqua Exp $
  *
  * ChangeLog
- * ----------------
+ * ---------
  * 16-Oct-2002 : Initial version
  * 25-Oct-2002 : BugFix, grouped pagecounting was not working
+ * 10-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
@@ -41,8 +48,8 @@ import com.jrefinery.report.util.Log;
 import java.util.Hashtable;
 
 /**
- * This function will only work as expected in group mode if the named group has pagebreak set to true.
- * This function depends on pageEvents, so use it with PageableProcessor only.
+ * This function will only work as expected in group mode if the named group has pagebreak set to
+ * true.  This function depends on pageEvents, so use it with PageableProcessor only.
  *
  * FunctionFlow:
  *
@@ -66,32 +73,56 @@ public class PageTotalFunction extends PageFunction
 {
   /**
    * The current number is a shared secret over multiple report states and is shared
-   * among all states of a report (if global) or all states which belong to a group
+   * among all states of a report (if global) or all states which belong to a group.
    */
   private static class PageStorage
   {
+    /** The page. */
     private int page;
 
+    /**
+     * Creates a new page storage.
+     *
+     * @param page  the page.
+     */
     public PageStorage(int page)
     {
       this.page = page;
     }
 
+    /**
+     * Returns the page number.
+     *
+     * @return the page number.
+     */
     public int getPage()
     {
       return page;
     }
 
+    /**
+     * Sets the page number.
+     *
+     * @param page  the page number.
+     */
     public void setPage(int page)
     {
       this.page = page;
     }
   }
 
+  /** The page number. */
   private PageStorage pageStorage;
+
+  /** The group pages. */
   private Hashtable groupPages;
+
+  /** The group started flag. */
   private boolean isGroupStarted;
 
+  /**
+   * Creates a new page total function.
+   */
   public PageTotalFunction()
   {
     groupPages = new Hashtable();
@@ -100,8 +131,8 @@ public class PageTotalFunction extends PageFunction
   /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
-   *
-   * Prepared data is bound to the display item, the current displayed row. 
+   * <p>
+   * Prepared data is bound to the display item, the current displayed row.
    *
    * @param event Information about the event.
    */
@@ -136,14 +167,15 @@ public class PageTotalFunction extends PageFunction
 
   /**
    * Receives notification that a group has started.
-   * <P>
-   * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void groupStarted(ReportEvent event)
   {
-    if (getGroup() == null) return;
+    if (getGroup() == null)
+    {
+      return;
+    }
 
     JFreeReport report = event.getReport();
     Group group = report.getGroup(event.getState().getCurrentGroupIndex());
@@ -158,26 +190,26 @@ public class PageTotalFunction extends PageFunction
       {
         // Correct the calculation:
         // at this point it is sure, that the previous group has finished. We cannot use the
-        // group finished event, as this event is fired before the layouting is done. So the groupfooter
-        // can move to the next page (without throwing another event), and a function will not get
-        // informed of this.
+        // group finished event, as this event is fired before the layouting is done. So the
+        // groupfooter can move to the next page (without throwing another event), and a function
+        // will not get informed of this.
         //this.setPage(getPage() - 1);
 
         isGroupStarted = true;
-        // This PageStorage is only null, if the report has never reached the first report start event
+        // this PageStorage is only null, if the report has never reached the first report start
+        // event
       }
     }
   }
 
   /**
    * Receives notification that the report has started.
-   * Note: pageStorate is a shared object for all instances contained in the
+   * <p>
+   * Note: pageStorage is a shared object for all instances contained in the
    * start state, but reportStarted is called during the advancement. States
    * get cloned before the advancement is done ...
-   * <P>
-   * Maps the reportStarted-method to the legacy function startReport ().
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -187,12 +219,22 @@ public class PageTotalFunction extends PageFunction
     }
   }
 
+  /**
+   * Sets the page number.
+   *
+   * @param page  the page number.
+   */
   public void setPage(int page)
   {
     if (this.pageStorage != null)
       this.pageStorage.setPage(page);
   }
 
+  /**
+   * Returns the page number.
+   *
+   * @return the page number.
+   */
   public int getPage()
   {
     if (this.pageStorage == null)
@@ -217,9 +259,6 @@ public class PageTotalFunction extends PageFunction
   /**
    * Checks that the function has been correctly initialized.  If there is a problem, this method
    * throws a FunctionInitializeException.
-   * <P>
-   * The default implementation checks that the function name is not null, and calls the
-   * isInitialized() method (now deprecated).
    *
    * @throws FunctionInitializeException if the function name is not set or the call to
    * isInitialized returns false.
@@ -238,16 +277,31 @@ public class PageTotalFunction extends PageFunction
     pageStorage = new PageStorage(getStartPage() - 1);
   }
 
+  /**
+   * Returns the name of the group that this function acts upon.
+   *
+   * @return the group name.
+   */
   public String getGroup()
   {
     return getProperty("group");
   }
 
+  /**
+   * Sets the name of the group that the function acts upon.
+   *
+   * @param group  the group name.
+   */
   public void setGroup(String group)
   {
     setProperty("group", group);
   }
 
+  /**
+   * Returns the starting page number (defaults to 1).
+   *
+   * @return the starting page number.
+   */
   public int getStartPage()
   {
     return Integer.parseInt(getProperty("start", "1"));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.4 2002/12/07 14:58:33 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.5 2002/12/08 20:30:32 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@ package com.jrefinery.report.targets.pageable.physicals;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -48,7 +47,7 @@ import java.util.ArrayList;
  * Represents a physical page.
  * <p>
  * Here comes the last step of production, the bands are transfered from the Logical page
- * to the physical page.  That page does not know anything specific about bandtypes and how to 
+ * to the physical page.  That page does not know anything specific about bandtypes and how to
  * handle them, is just able to print all that is fed into the page and that's it.
  *
  * It will not decide when to make a pagebreak, logical page is responsible for that.
@@ -63,7 +62,7 @@ public class PhysicalPage
 
   /** The physical page format. */
   private PageFormat pageFormat;
-  
+
   /** The bounds. */
   private Rectangle2D bounds;
 
@@ -82,7 +81,7 @@ public class PhysicalPage
     this.bounds = bounds;
   }
 
-  /** 
+  /**
    * Adds an operation to the page.
    *
    * @param op  the operation.
@@ -94,9 +93,10 @@ public class PhysicalPage
 
   /**
    * Writes the page to an output target.
-   * 
+   *
    * @param ot  the output target.
    *
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public void write(OutputTarget ot) throws OutputTargetException
   {

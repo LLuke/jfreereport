@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,15 +23,21 @@
  * -----------------------
  * AbstractExpression.java
  * -----------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: AbstractExpression.java,v 1.12 2002/11/07 21:45:27 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: AbstractExpression.java,v 1.13 2002/12/02 17:28:59 taqua Exp $
  *
  * Changes
  * -------
  * 12-Aug-2002 : Initial version
  * 27-Aug-2002 : Documentation
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
@@ -49,13 +55,14 @@ import java.util.Properties;
  * <p>
  * todo: define a property query interface similar to the JDBC-Property interface
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public abstract class AbstractExpression implements Expression
 {
   /** The expression name. */
   private String name;
 
+  /** The dependency level. */
   private int depency;
 
   /** Storage for the expression properties. */
@@ -257,18 +264,27 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * The depency level defines the level of execution for this function. Higher depency functions are
-   * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
-   * depency possible) to 2^31 (upper limit of int).
+   * The depency level defines the level of execution for this function. Higher depency functions
+   * are executed before lower depency functions. The range for depencies is defined to start
+   * from 0 (lowest depency possible) to 2^31 (upper limit of int).
    */
   public int getDepencyLevel()
   {
     return depency;
   }
 
-  public void setDepencyLevel(int deplevel)
+  /**
+   * Sets the dependency level for the expression.
+   *
+   * @param level  the level.
+   */
+  public void setDepencyLevel(int level)
   {
-    if (deplevel < 0) throw new IllegalArgumentException("No negative depency allowed for userdefined expressions");
-    this.depency = deplevel;
+    if (level < 0)
+    {
+      throw new IllegalArgumentException("No negative dependency allowed for user-defined "
+                                         + "expressions.");
+    }
+    this.depency = level;
   }
 }

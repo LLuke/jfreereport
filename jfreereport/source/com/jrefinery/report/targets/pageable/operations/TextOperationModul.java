@@ -28,11 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModul.java,v 1.3 2002/12/05 12:05:10 mungady Exp $
+ * $Id: TextOperationModul.java,v 1.4 2002/12/06 20:34:14 taqua Exp $
  *
  * Changes
  * -------
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
@@ -77,15 +80,15 @@ public class TextOperationModul extends OperationModul
    */
   public List createOperations(Element e, Content value, Rectangle2D bounds)
   {
-    if (bounds == null) 
+    if (bounds == null)
     {
       throw new NullPointerException("Bounds is null");
     }
-    if (e == null) 
+    if (e == null)
     {
       throw new NullPointerException("element is null");
     }
-    if (value == null) 
+    if (value == null)
     {
       throw new NullPointerException("Value is null");
     }
@@ -106,7 +109,7 @@ public class TextOperationModul extends OperationModul
       cbounds = bounds;
     }
 
-    ElementAlignment va 
+    ElementAlignment va
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     VerticalBoundsAlignment vba = null;
     if (va.equals(ElementAlignment.TOP))
@@ -117,14 +120,14 @@ public class TextOperationModul extends OperationModul
     {
       vba = new MiddleAlignment(bounds);
     }
-    else 
+    else
     {
       vba = new BottomAlignment(bounds);
     }
     // calculate the horizontal shift ... is applied later
     vba.calculateShift(cbounds);
 
-    ElementAlignment ha 
+    ElementAlignment ha
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
     if (ha.equals(ElementAlignment.CENTER))
     {
@@ -150,7 +153,7 @@ public class TextOperationModul extends OperationModul
    * @param bounds  the bounds.
    * @param vba  the vertical bounds alignment.
    */
-  private void addContent (Content c, List list, HorizontalBoundsAlignment bounds, 
+  private void addContent (Content c, List list, HorizontalBoundsAlignment bounds,
                            VerticalBoundsAlignment vba)
   {
     if (c instanceof TextLine)
@@ -169,6 +172,17 @@ public class TextOperationModul extends OperationModul
     }
   }
 
+  /**
+   * Creates content.
+   *
+   * @param e  the element.
+   * @param bounds  the bounds.
+   * @param ot  the output target.
+   *
+   * @return the content.
+   *
+   * @throws OutputTargetException if there is a problem with the output target.
+   */
   public Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
     throws OutputTargetException
   {
@@ -178,7 +192,11 @@ public class TextOperationModul extends OperationModul
     return tc;
   }
 
-
+  /**
+   * Logs the content.
+   *
+   * @param c  the content.
+   */
   public static void print (Content c)
   {
     Log.debug ("Content = " + c + ", " + c.getBounds());

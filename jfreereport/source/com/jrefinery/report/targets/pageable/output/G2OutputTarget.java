@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.2 2002/12/02 18:55:35 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.3 2002/12/06 20:34:15 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
  * 26-Aug-2002 : Fixed drawString: Text was placed too deep, Fontheight is defined MaxAscent,
  *               not font.getFontheight()!
+ * 10-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report.targets.pageable.output;
@@ -71,7 +73,7 @@ import java.util.Enumeration;
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
  * to be printed on the screen and on the printer.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class G2OutputTarget extends AbstractOutputTarget
 {
@@ -81,14 +83,17 @@ public class G2OutputTarget extends AbstractOutputTarget
   /** The saved state of the Graphics2D device. */
   private G2State savedState;
 
+  /** The current age. */
   private PhysicalPage currentPage;
+
+  /** Temporary storage for the Graphics2D clip region. */
   private Shape originalClip;
 
   /** A dummy graphics2D. */
   private static Graphics2D dummyGraphics;
 
+  /** The open flag. */
   private boolean isOpen;
-
 
   /**
    * Creates an empty graphics by using a 1x1 pixel buffered image.
@@ -128,7 +133,9 @@ public class G2OutputTarget extends AbstractOutputTarget
     /** The background. */
     private Color mybackground;
 
+    /** The clip area. */
     private Shape myclip;
+
     /**
      * Create a new state.
      *
@@ -170,6 +177,12 @@ public class G2OutputTarget extends AbstractOutputTarget
     }
   }
 
+  /**
+   * Creates a new output target.
+   *
+   * @param page  the logical page.
+   * @param graphics  the graphics device.
+   */
   public G2OutputTarget (LogicalPage page, Graphics2D graphics)
   {
     super(page);
@@ -203,7 +216,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Sets the graphics device for this output target.
    *
-   * @param g2 The graphics device (null not permitted).
+   * @param g2  the graphics device (null not permitted).
    */
   public void setGraphics2D(Graphics2D g2)
   {
@@ -214,10 +227,13 @@ public class G2OutputTarget extends AbstractOutputTarget
 
     this.g2 = (Graphics2D) g2.create();
     this.g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-    this.g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-    this.g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-    this.g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+    this.g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                             RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    this.g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                             RenderingHints.VALUE_ANTIALIAS_OFF);
+    this.g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                             RenderingHints.VALUE_INTERPOLATION_BICUBIC);
   }
 
   /**
@@ -231,7 +247,9 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Opens the target.  No action is required for this particular target.
+   * Opens the target.
+   *
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public void open() throws OutputTargetException
   {
@@ -240,16 +258,20 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Closes the target.  No action is required for this particular target.
+   * Closes the target.
    */
   public void close()
   {
-    // do nothing.
     originalClip = null;
     savedState = null;
     isOpen = false;
   }
 
+  /**
+   * Returns <code>true</code> if the output target is open, and <code>false</code> otherwise.
+   *
+   * @return boolean.
+   */
   public boolean isOpen()
   {
     return isOpen;
@@ -258,7 +280,9 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * A page is starting.  This target saves the current state of the Graphics2D device.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the target.
+   * @param page  the physical page.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void beginPage(PhysicalPage page) throws OutputTargetException
   {
@@ -270,23 +294,27 @@ public class G2OutputTarget extends AbstractOutputTarget
                                                  currentPageFormat.getImageableWidth() + 1,
                                                  currentPageFormat.getImageableHeight() + 1);
     g2.clip(bounds);
-    g2.transform(AffineTransform.getTranslateInstance(currentPageFormat.getImageableX() + pageBounds.getX(),
-                                                      currentPageFormat.getImageableY() + pageBounds.getY()));
+    g2.transform(AffineTransform.getTranslateInstance(currentPageFormat.getImageableX()
+                                                      + pageBounds.getX(),
+                                                      currentPageFormat.getImageableY()
+                                                      + pageBounds.getY()));
     savedState = saveState();
   }
 
   /**
    * A page has ended.  This target restores the state of the Graphics2D device.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if there is a problem with the target.
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void endPage() throws OutputTargetException
   {
     PageFormat currentPageFormat = currentPage.getPageFormat();
     Rectangle2D pageBounds = currentPage.getBounds();
     g2.setClip(originalClip);
-    g2.transform(AffineTransform.getTranslateInstance(0 - currentPageFormat.getImageableX() - pageBounds.getX(),
-                                                      0 - currentPageFormat.getImageableY() - pageBounds.getY()));
+    g2.transform(AffineTransform.getTranslateInstance(0 - currentPageFormat.getImageableX()
+                                                      - pageBounds.getX(),
+                                                      0 - currentPageFormat.getImageableY()
+                                                      - pageBounds.getY()));
     restoreState();
   }
 
@@ -345,7 +373,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @param stroke  the stroke.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException this exception is not thrown here.
+   * @throws OutputTargetException this exception is not thrown here.
    */
   public void setStroke(Stroke stroke) throws OutputTargetException
   {
@@ -436,7 +464,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Restores the state of this graphics.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException if the argument is not an instance of G2State.
+   * @throws OutputTargetException if the argument is not an instance of G2State.
    */
   public void restoreState() throws OutputTargetException
   {
@@ -449,22 +477,24 @@ public class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the state container.
    *
-   * @throws com.jrefinery.report.targets.pageable.OutputTargetException not thrown here.
+   * @throws OutputTargetException not thrown here.
    */
   protected G2State saveState() throws OutputTargetException
   {
     return new G2State(this.getGraphics2D());
   }
 
-
- /**
-   * When the dummyMode is active, everything is done as if the report should be printed,
-   * so that any font calculations can be done.But DONT! Write the report , if streaming,
-   * write to the NullStream, but NEVER EVER do any real output.
+  /**
+   * Creates an output target that mimics a real output target, but produces no output.
+   * This is used by the reporting engine when it makes its first pass through the report,
+   * calculating page boundaries etc.  The second pass will use a real output target.
+   *
+   * @return a dummy output target.
    */
   public OutputTarget createDummyWriter()
   {
-    G2OutputTarget dummy = new G2OutputTarget(getLogicalPage().newInstance(), createEmptyGraphics());
+    G2OutputTarget dummy = new G2OutputTarget(getLogicalPage().newInstance(),
+                                              createEmptyGraphics());
     Enumeration enum = getPropertyNames();
     while (enum.hasMoreElements())
     {
@@ -474,21 +504,38 @@ public class G2OutputTarget extends AbstractOutputTarget
     return dummy;
   }
 
+  /**
+   * Configures the output target.
+   * <p>
+   * There are no configuration parameters that affect this output target, so this method
+   * does nothing.
+   *
+   * @param config  the configuration.
+   */
   public void configure(ReportConfiguration config)
   {
     // nothing to do here, G2OuputTarget is not configured in any way.
   }
 
-
+  /**
+   * A size calculator.
+   */
   private static class G2SizeCalculator implements SizeCalculator
   {
+    /**
+     * The font.
+     */
     private Font font;
 
+    /**
+     * Creates a new size calculator.
+     *
+     * @param font  the font.
+     */
     public G2SizeCalculator(Font font)
     {
       this.font = font;
     }
-
 
     /**
      * Returns the height of the current font. The font height specifies the distance between
@@ -516,10 +563,14 @@ public class G2OutputTarget extends AbstractOutputTarget
      */
     public float getStringWidth(String text, int lineStartPos, int endPos)
     {
-      if (lineStartPos < 0) throw new IllegalArgumentException();
+      if (lineStartPos < 0)
+      {
+        throw new IllegalArgumentException();
+      }
       if (lineStartPos > endPos)
+      {
         throw new IllegalArgumentException("LineStart on: " + lineStartPos + " End on " + endPos);
-
+      }
       FontRenderContext frc = new FontRenderContext(null, false, false);
 
       Rectangle2D textBounds2 = font.getStringBounds(text, lineStartPos, endPos, frc);
@@ -528,14 +579,25 @@ public class G2OutputTarget extends AbstractOutputTarget
       return x2;
     }
 
+    /**
+     * Converts this object to a string.
+     *
+     * @return a string.
+     */
     public String toString ()
     {
       return "OT: " + font;
     }
   }
 
-  // creates a size calculator for the current state of the outputtarget. that calculator
-  // is used to calc. the string width and line height and later maybe more ...
+  /**
+   * Creates a size calculator for the current state of the output target. The calculator
+   * is used to calculate the string width and line height and later maybe more.
+   *
+   * @param font  the font.
+   *
+   * @return the size calculator.
+   */
   public SizeCalculator createTextSizeCalculator(Font font)
   {
     G2SizeCalculator cal = new G2SizeCalculator(font);
@@ -543,6 +605,8 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
+   * Sets the operation bounds.
+   *
    * @param bounds  the bounds.
    */
   public void setOperationBounds(Rectangle2D bounds)

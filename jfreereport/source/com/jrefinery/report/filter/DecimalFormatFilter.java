@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,16 +23,22 @@
  * ------------------------
  * DecimalFormatFilter.java
  * ------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: DecimalFormatFilter.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: DecimalFormatFilter.java,v 1.9 2002/12/02 17:19:46 taqua Exp $
  *
  * ChangeLog
  * ---------
  * 21-May-2002 : Initial version
  * 06-Jun-2002 : Documentation updated
- * 08-Aug-2002 : Removed unused Imports
+ * 08-Aug-2002 : Removed unused imports
+ * 10-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.filter;
 
 import java.text.DecimalFormat;
@@ -52,7 +58,7 @@ import java.text.Format;
  * @see java.text.NumberFormat
  * @see java.lang.Number
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class DecimalFormatFilter extends NumberFormatFilter
 {
@@ -81,7 +87,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
   /**
    * Sets the format for the filter.
    *
-   * @param format The format.
+   * @param format  the format.
    *
    * @throws NullPointerException if the given format is null
    */
@@ -94,7 +100,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * Sets the format for the filter. If the given format is no Decimal format, a
    * ClassCastException is thrown
    *
-   * @param format The format.
+   * @param format  the format.
    *
    * @throws NullPointerException if the given format is null
    * @throws ClassCastException if the format is no decimal format
@@ -117,17 +123,9 @@ public class DecimalFormatFilter extends NumberFormatFilter
   }
 
   /**
-   * Copied from java.text.DecimalFormat:
-   * <p>
-   * Apply the given pattern to this Format object. A pattern is a short-hand
-   * specification for the various formatting properties. These properties can also be
-   * changed individually through the various setter methods.
-   * <p>
-   * There is no limit to integer digits are set by this routine, since that is the
-   * typical end-user desire; use setMaximumInteger if you want to set a real value.
-   * For negative numbers, use a second pattern, separated by a semicolon
+   * Applies a format string to the internal <code>DecimalFormat</code> instance.
    *
-   * @param format the format string
+   * @param format  the format string.
    */
   public void setFormatString (String format)
   {
@@ -146,18 +144,9 @@ public class DecimalFormatFilter extends NumberFormatFilter
   }
 
   /**
-   * Copied from java.text.DecimalFormat:
-   * <p>
-   * Apply the given pattern to this Format object. The pattern is assumed to be in a
-   * localized notation. A pattern is a short-hand specification for the various formatting
-   * properties. These properties can also be changed individually through the various
-   * setter methods.
-   * <p>
-   * There is no limit to integer digits are set by this routine, since that is the
-   * typical end-user desire; use setMaximumInteger if you want to set a real value.
-   * For negative numbers, use a second pattern, separated by a semicolon
+   * Applies a localised format string to the internal <code>DecimalFormat</code> instance.
    *
-   * @param format the format pattern for this format
+   * @param format  the format string.
    */
   public void setLocalizedFormatString (String format)
   {

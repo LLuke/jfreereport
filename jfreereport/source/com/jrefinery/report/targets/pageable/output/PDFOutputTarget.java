@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.6 2002/12/08 20:30:32 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.7 2002/12/08 23:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -1231,9 +1231,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * When the dummyMode is active, everything is done as if the report should be printed,
-   * so that any font calculations can be done.But DONT! Write the report , if streaming,
-   * write to the NullStream, but NEVER EVER do any real output.
+   * Creates an output target that mimics a real output target, but produces no output.
+   * This is used by the reporting engine when it makes its first pass through the report,
+   * calculating page boundaries etc.  The second pass will use a real output target.
    *
    * @return a dummy output target.
    */
@@ -1400,14 +1400,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private Rectangle2D internalOperationBounds;
 
   /**
-   * Creates a size calculator for the current state of the outputtarget. that calculator
-   * is used to calc. the string width and line height and later maybe more.
+   * Creates a 'size calculator' for the current state of the output target. The calculator
+   * is used to calculate the string width and line height and later maybe more.
    *
    * @param font  the font.
    *
    * @return the size calculator.
    *
-   * @throws OutputTargetException ??.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public SizeCalculator createTextSizeCalculator(Font font) throws OutputTargetException
   {
@@ -1416,6 +1416,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
+   * Sets the operation bounds.
+   *
    * @param bounds  the bounds.
    */
   public void setOperationBounds(Rectangle2D bounds)

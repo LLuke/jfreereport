@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2002/12/03 16:30:49 mungady Exp $
+ * $Id: CenterAlignment.java,v 1.2 2002/12/05 12:05:09 mungady Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,8 @@ public class CenterAlignment extends HorizontalBoundsAlignment
    */
   public Rectangle2D align(Rectangle2D inner)
   {
-    if (inner == null) {
+    if (inner == null)
+    {
       throw new NullPointerException("Inner Bound must not be null");
     }
     inner = outerBounds.createIntersection(inner);
