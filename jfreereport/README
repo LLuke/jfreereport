@@ -2,7 +2,7 @@
 * JFREEREPORT 0.8.1 *
 *********************
 
-13 December 2002
+28 February 2003
 
 1. INTRODUCTION
 ---------------
@@ -23,7 +23,19 @@ jfreechart-install.pdf file.  You can download this file from the
 JFreeReport home page. 
 
 
-3. JAVADOC HTML PAGES
+3. OTHER LIBRARIES
+------------------
+JFreeReport uses several other open source libraries:
+
+JCommon - http://www.object-refinery.com/jcommon/index.html
+BeanShell - http://www.beanshell.org
+GnuJAXP - http://www.gnu.org/software/classpathx/jaxp
+iText - http://www.lowagie.com/iText
+POI - http://jakarta.apache.org/poi
+JUnit - http://www.junit.org
+
+
+4. JAVADOC HTML PAGES
 ---------------------
 The Javadoc HTML pages for JFreeReport are available on-line at the
 JFreeReport home page.  You can also regenerate the Javadocs directly
@@ -31,7 +43,7 @@ from the source code.  There is a task in the Ant script (see below)
 that makes this relatively simple.
 
 
-4. SUPPORT
+5. SUPPORT
 ----------
 Free support is available via the JFreeReport forum, follow the link
 from the JFreeReport home page.  Please note that questions are
@@ -43,7 +55,7 @@ If you post a message in the forum, then everyone can see the
 question, and everyone can see the answer.
 
 
-5. REPORTING BUGS
+6. REPORTING BUGS
 -----------------
 If you find bugs in JFreeReport, we'd like to hear about it so that we
 can improve future releases of JFreeReport.  Please post a bug report
@@ -57,10 +69,10 @@ and the steps required to replicate the bug.  Include any other
 information that you think is relevant.
 
 
-6. ANT
+7. ANT
 ------
 We use an open source build tool called Ant to build JFreeReport.  An
-Ant script is included in the distribution:
+Ant script (tested using Ant 1.5.1) is included in the distribution:
 
     <jfreereport-directory>/ant/build.xml
 
@@ -72,7 +84,7 @@ Ant is licensed under the terms of the Apache Software License (a
 popular open source software license).
 
 
-7. CHECKSTYLE
+8. CHECKSTYLE
 -------------
 We use a free utility called Checkstyle to apply a consistent coding
 style to the JFreeReport source code.  You will find the Checkstyle
@@ -87,7 +99,7 @@ You can find out more about Checkstyle at:
 Checkstyle is licensed under the terms of the GNU LGPL.
 
 
-8. OTHER FEEDBACK
+9. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the
 JFreeReport forum.

@@ -3,7 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
-0.8.1 : (??-Feb-2003):
+0.8.1 : (28-Feb-2003):
         * BugFix: Corrected many bugs in the SimplePageLayouter.
 
         * BugFix: empty ReportProperties were not marked correctly.
