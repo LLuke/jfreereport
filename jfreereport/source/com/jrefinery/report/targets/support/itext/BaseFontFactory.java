@@ -2,7 +2,7 @@
  * Date: Feb 1, 2003
  * Time: 9:21:29 PM
  *
- * $Id: BaseFontFactory.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.2 2003/02/04 17:56:29 taqua Exp $
  */
 package com.jrefinery.report.targets.support.itext;
 
@@ -154,8 +154,8 @@ public class BaseFontFactory extends DefaultFontMapper
    * @param font  the font name.
    * @param encoding  the encoding.
    *
-   * @throws com.lowagie.text.DocumentException ??
-   * @throws java.io.IOException ??
+   * @throws com.lowagie.text.DocumentException if the base font could not be created
+   * @throws java.io.IOException if the base font file could not be read.
    */
   private void addFont(String font, String encoding)
       throws DocumentException, IOException

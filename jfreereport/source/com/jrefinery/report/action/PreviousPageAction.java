@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviousPageAction.java,v 1.13 2002/12/04 16:19:55 mungady Exp $
+ * $Id: PreviousPageAction.java,v 1.14 2003/02/02 23:43:48 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,6 @@ import java.util.ResourceBundle;
  * Creates a new PreviousPageAction used by the PreviewPane to directly jump to the previous
  * page of the report. This abstract class is used for initializing the default locales,
  * the actual work is done in an internal subclass in PreviewFrame.
- *
- * @author ??
  */
 public abstract class PreviousPageAction extends AbstractActionDowngrade
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.7 2003/02/02 23:43:52 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.8 2003/02/07 22:40:43 taqua Exp $
  *
  * Changes
  * -------
@@ -52,16 +52,12 @@ import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
-import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
 import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
 import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
+import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
 import com.jrefinery.report.targets.pageable.AlignedLogicalPageWrapper;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.pageable.operations.OperationFactory;
-import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
-import com.jrefinery.report.targets.pageable.operations.ImageOperationModule;
-import com.jrefinery.report.targets.pageable.operations.ShapeOperationModule;
 import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
 
 import java.awt.geom.Rectangle2D;
@@ -87,6 +83,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /** The operation bounds. */
   private Rectangle2D operationBounds;
 
+  /** The content factory used to create content for this output-target */
   private ContentFactory contentFactory;
 
   /**
@@ -97,7 +94,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   public AbstractOutputTarget(PageFormat format)
   {
-    this (format, format);
+    this(format, format);
   }
 
   /**
@@ -108,7 +105,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   public AbstractOutputTarget(PageFormat logical, PageFormat physical)
   {
-    this (new LogicalPageImpl(logical, physical));
+    this(new LogicalPageImpl(logical, physical));
   }
 
   /**
@@ -119,7 +116,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public AbstractOutputTarget(LogicalPage logicalPage)
   {
     properties = new Hashtable();
-    this.logicalPage = new AlignedLogicalPageWrapper (logicalPage.newInstance(), this);
+    this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
     this.logicalPage.setOutputTarget(this);
     operationBounds = new Rectangle2D.Double();
 
@@ -280,9 +277,15 @@ public abstract class AbstractOutputTarget implements OutputTarget
     return contentFactory;
   }
 
-  protected ContentFactory createContentFactory ()
+  /**
+   * Creates a default content factory, which supports all known content types.
+   * Override this method to supply an own implementation of the ContentFactory.
+   *
+   * @return a default content factory.
+   */
+  protected ContentFactory createContentFactory()
   {
-    DefaultContentFactory contentFactory = new DefaultContentFactory ();
+    DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
     contentFactory.addModule(new ImageContentFactoryModule());
     contentFactory.addModule(new ShapeContentFactoryModule());

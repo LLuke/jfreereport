@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.12 2002/12/04 16:19:55 mungady Exp $
+ * $Id: ZoomInAction.java,v 1.13 2003/02/02 23:43:48 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,6 @@ import java.util.ResourceBundle;
  * can be increased in predefined steps from 25% to 400%. This abstract base class
  * implements the locales specific initialisations, actual work is done in an internal
  * subclass in PreviewFrame.
- *
- * @author ??
  */
 public abstract class ZoomInAction extends AbstractActionDowngrade
 {

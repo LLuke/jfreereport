@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.20 2003/02/07 22:40:43 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.21 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -423,8 +423,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return an image.
    *
-   * @throws DocumentException ??
-   * @throws IOException ??
+   * @throws DocumentException if no PDFImageElement could be created using the given ImageReference.
+   * @throws IOException if the image could not be read.
    */
   private Image getImage(ImageReference imageRef) throws DocumentException, IOException
   {

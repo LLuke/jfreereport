@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.2 2003/02/04 17:56:29 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.3 2003/02/07 22:40:44 taqua Exp $
  *
  * Changes
  * -------
@@ -226,7 +226,7 @@ public class BaseFontSupport
    * @return the PDF font record.
    *
    * @throws java.io.IOException if there is an I/O problem.
-   * @throws com.lowagie.text.DocumentException ??.
+   * @throws com.lowagie.text.DocumentException if the BaseFont could not be created.
    */
   private BaseFontRecord createFontFromTTF (FontDefinition font, String filename,
                                            String encoding, String stringEncoding,

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.17 2003/02/04 17:56:28 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.18 2003/02/07 22:40:43 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   /** The open flag. */
   private boolean isOpen;
 
+  /** The current font definition for this outputtarget */
   private FontDefinition fontDefinition;
 
   /**
@@ -114,6 +115,14 @@ public class G2OutputTarget extends AbstractOutputTarget
     return dummyGraphics;
   }
 
+  /**
+   * Configures a Graphics2D object to use a predefined set of RenderingHints.
+   * This enables KEY_FRACTIONALMETRICS to value VALUE_FRACTIONALMETRICS_ON,
+   * KEY_ANTIALIASING to value VALUE_ANTIALIAS_OFF and sets the TextAliasing
+   * as defined by the DefaultFontRenderContext.
+   *
+   * @param g2 the graphics2D object that should be configured
+   */
   private static void applyStandardRenderingHints (Graphics2D g2)
   {
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
@@ -424,8 +433,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws the image contained in the given ImageReference. The image is drawn
-   * at
+   * Draws the image contained in the given ImageReference.
    *
    * @param image the image reference used to contain the image.
    */
@@ -449,8 +457,8 @@ public class G2OutputTarget extends AbstractOutputTarget
       catch (Throwable th)
       {
         // just in case the image drawing caused trouble ..
-        th.printStackTrace();
         Log.debug (new Log.MemoryUsageMessage ("Failure at drawImage"));
+        Log.debug (th);
       }
       g2.setTransform(transform);
       g2.setClip(s);
@@ -476,14 +484,6 @@ public class G2OutputTarget extends AbstractOutputTarget
     FontMetrics fm = g2.getFontMetrics();
     float baseline = (float) fm.getAscent();
     double cFact = getFont().getFont().getSize2D() / fm.getHeight();
-
-    /*
-    Rectangle2D ob = getOperationBounds();
-    Log.debug ("OperationBounds: " + ob);
-    g2.setColor(Color.lightGray);
-    g2.fill(new Rectangle2D.Double(0,0,ob.getWidth(), ob.getHeight()));
-    g2.setColor(Color.black);
-    */
 
     float correctedBaseline = (float) (baseline * cFact);
     g2.drawString(text, 0.0f, correctedBaseline);
@@ -532,17 +532,6 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public OutputTarget createDummyWriter()
   {
-    /*
-    G2OutputTarget dummy = new G2OutputTarget(getLogicalPage(),
-                                              createEmptyGraphics());
-    Enumeration enum = getPropertyNames();
-    while (enum.hasMoreElements())
-    {
-      String key = (String) enum.nextElement();
-      dummy.setProperty(key, getProperty(key));
-    }
-    return dummy;
-    */
     return new DummyOutputTarget(this);
   }
 

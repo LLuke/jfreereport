@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GotoPageAction.java,v 1.10 2002/12/04 16:19:55 mungady Exp $
+ * $Id: GotoPageAction.java,v 1.11 2003/02/02 23:43:48 taqua Exp $
  *
  * Changes
  * -------------------
@@ -50,8 +50,6 @@ import java.util.ResourceBundle;
  * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to
  * ask the user for the page. This is the abstract base for the action doing the
  * localisation specific initialisation.
- *
- * @author ??
  */
 public abstract class GotoPageAction extends AbstractActionDowngrade
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.21 2003/02/08 19:32:06 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.22 2003/02/09 22:49:40 taqua Exp $
  *
  * Changes
  * -------
@@ -162,12 +162,12 @@ public class LogicalPageImpl implements LogicalPage
     return operationFactory;
   }
   /**
-   * Returns the physical page at a particular row and column. The logical page
-   * can be split into multiple physical pages to display content that would not
-   * fit on a single page.
+   * Returns the physical page at a particular row and column of the PageGrid.
+   * The logical page can be split into multiple physical pages to display content
+   * that would not fit on a single page.
    *
-   * @param x ??.
-   * @param y ??.
+   * @param x the X-Coordinate in the page grid.
+   * @param y the Y-Coordinate in the page grid.
    *
    * @return the physical page.
    */

@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 5:53:06 AM
  *
- * $Id: RTFImageCellData.java,v 1.1 2003/02/01 22:10:37 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.2 2003/02/02 23:43:53 taqua Exp $
  */
 package com.jrefinery.report.targets.table.rtf;
 
@@ -63,8 +63,8 @@ public class RTFImageCellData extends RTFCellData
    *
    * @return an image.
    *
-   * @throws DocumentException ??
-   * @throws java.io.IOException ??
+   * @throws DocumentException if no PDFImageElement could be created using the given ImageReference.
+   * @throws IOException if the image could not be read.
    */
   private Image getImage(ImageReference imageRef) throws DocumentException, IOException
   {

@@ -1,8 +1,39 @@
 /**
- * Date: Jan 30, 2003
- * Time: 4:44:46 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: IBMPrinterCommandSet.java,v 1.1 2003/01/30 22:58:44 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * IBMPrinterCommandSet.java
+ * -------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: IBMPrinterCommandSet.java,v 1.3 2003/02/04 17:56:28 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 30-Jan-2003 : Initial version
+ * 10-Feb-2003 : Documentation
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -13,13 +44,38 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * Implements the printer command set for IBM compatible printers.
+ *
+ * @see PrinterCommandSet
+ * @see PlainTextOutputTarget
+ */
 public class IBMPrinterCommandSet extends PrinterCommandSet
 {
+  /**
+   * Creates a new IBMPrinterCommandSet.
+   *
+   * @param out the target output stream
+   * @param format the pageformat of the used report
+   * @param defaultCPI the characters-per-inch for the output.
+   * @param defaultLPI the lines-per-inch for the output.
+   */
   public IBMPrinterCommandSet(OutputStream out, PageFormat format, int defaultCPI, int defaultLPI)
   {
     super(out, format, defaultCPI, defaultLPI);
   }
 
+  /**
+   * Defines the new font for the printer. The font must be one of the supported fonts,
+   * the available fonts are defined in PrinterCommandSet. You may use additional fonts,
+   * if your printer supports them.
+   * <p>
+   * To use these fonts, specify the font parameter for the escape sequence 0x1b, 0x6b, [font-selection]
+   * as defined in your printers reference manual.
+   *
+   * @param fontSelection the printers font selection token.
+   * @throws IOException if there was an IOError while writing the command.
+   */
   public void setFont(byte fontSelection)
     throws IOException
   {
@@ -32,7 +88,14 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setFont(fontSelection);
   }
 
-  // in CPI
+  /**
+   * Defines the character width for the current font. The width is specified in
+   * Characters-per-inch. Valid values are 10, 12, 15, 17 and 20 cpi.
+   *
+   * @param charWidth the character width in CPI.
+   * @throws IOException if there was an IOError while writing the command or if the
+   *   character width is not supported by the printer.
+   */
   public void setCharacterWidth(byte charWidth)throws IOException
   {
     if (charWidth == getCharacterWidth()) return;
@@ -77,6 +140,16 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     }
   }
 
+  /**
+   * Defines the font style for the printed text. The IBM-CommandSet does not
+   * support strike-through.
+   *
+   * @param bold true, if the text should be printed in bold mode.
+   * @param italic true, if the text should be italic, false otherwise
+   * @param underline true, if the text should be underlined, false otherwise
+   * @param strike true, if the text should be strikethrough, false otherwise
+   * @throws IOException if there was an IOError while writing the command
+   */
   public void setFontStyle(boolean bold, boolean italic, boolean underline, boolean strike)
     throws IOException
   {
@@ -144,6 +217,12 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setFontStyle(bold, italic, underline, false);
   }
 
+  /**
+   * Defines the papersize in lines.
+   *
+   * @param lines the number of lines that could be printed on a single page.
+   * @throws IOException if there was an IOError while writing the command
+   */
   public void setPaperSize(int lines)
     throws IOException
   {
@@ -153,7 +232,13 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setPaperSize(lines);
   }
 
-  // seitenränder horizontal in zeichen ... (== leerzeichen)
+  /**
+   * Defines the horizontal borders for the current paper. The borders are given
+   * in characters.
+   *
+   * @param left the number of spaces printed on the start of a line.
+   * @param right the number of spaces left free on the right paper border.
+   */
   public void setHorizontalBorder(int left, int right)
     throws IOException
   {
@@ -164,7 +249,13 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setHorizontalBorder(left, right);
   }
 
-  // vertical in 1/1440 zoll ..
+  /**
+   * Defines the horizontal borders for the current paper. The borders are given
+   * in characters.
+   *
+   * @param top the number of blank lines printed on the start of a page.
+   * @param bottom the number of blank lines printed at the end of a page
+   */
   public void setVerticalBorder(int top, int bottom)
     throws IOException
   {
@@ -183,7 +274,12 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setVerticalBorder(top, bottom);
   }
 
-  // vertical in 1/1440 inch ..
+  /**
+   * Defines the line spacing for the printer, the spacing is given in
+   * 1/1440 inches.
+   *
+   * @param spaceInInch the linespacing in 1/1440 inches.
+   */
   public void setLineSpacing(int spaceInInch)
     throws IOException
   {
@@ -197,6 +293,13 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setLineSpacing(spaceInInch);
   }
 
+  /**
+   * Defines the code page for the text to be printed. The codepage is an
+   * 8-Bit encoding scheme to print non-ascii-characters.
+   *
+   * @param codepage the new codepage that should be used.
+   * @throws IOException if there was an IOError while writing the command
+   */
   public void setCodePage(String codepage)
     throws IOException
   {
@@ -214,6 +317,13 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setCodePage(codepage);
   }
 
+  /**
+   * Defines whether to print in AutoLF mode. If AutoLF is enabled, then a linefeed
+   * character is automaticly printed after every &lt;CR&gt; character.
+   *
+   * @param autoLF the new autoLF state
+   * @throws IOException if there was an IOError while writing the command
+   */
   public void setAutoLF(boolean autoLF)
     throws IOException
   {
@@ -238,13 +348,17 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     super.setAutoLF(autoLF);
   }
 
-  // dont know how to set printquality for IBM protocol ...
-  public void setPrintQuality(boolean letterQuality)
-    throws IOException
-  {
-    super.setPrintQuality(false);
-  }
-
+  /**
+   * Translates the given Codepage String into a Epson Byte Code. The encoding
+   * string must be in the format CpXXXX where XXXX is the number of the codepage.
+   * <p>
+   * You may test whether the printer supports a certain encoding by calling
+   * {@link EpsonPrinterCommandSet#isEncodingSupported}.
+   *
+   * @param cp the code page
+   * @return the epson byte code.
+   * @throws UnsupportedEncodingException if the encoding is not supported.
+   */
   public static int[] translateCodePage (String cp)
     throws UnsupportedEncodingException
   {
@@ -269,19 +383,41 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     throw new UnsupportedEncodingException("The encoding " + cp + " is no codepage encoding");
   }
 
+  /**
+   * This implementation is empty, as IBM printers handle the left border automaticly.
+   *
+   * @throws IOException if there was an IOError while writing the command
+   */
   public void startLine() throws IOException
   {
   }
 
+  /**
+   * This implementation is empty, as IBM printers handle the top borders automaticly.
+   *
+   * @throws IOException if there was an IOError while writing the command
+   */
   public void startPage() throws IOException
   {
   }
 
+  /**
+   * This implementation send the form feed command, IBM printers handle the bottom
+   * border automaticly.
+   *
+   * @throws IOException if there was an IOError while writing the command
+   */
   public void endPage() throws IOException
   {
     getOut().write(FORM_FEED);
   }
 
+  /**
+   * Checks, whether the given encoding string is supported by this printer command set.
+   *
+   * @param encoding the encoding that should be tested.
+   * @return true, if the encoding is valid, false otherwise.
+   */
   public boolean isEncodingSupported(String encoding)
   {
     try

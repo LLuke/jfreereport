@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WeakReferenceList.java,v 1.13 2003/01/07 15:10:36 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.14 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -275,7 +275,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    * @param in  the input stream.
    *
    * @throws IOException if there is an I/O error.
-   * @throws ClassNotFoundException ??
+   * @throws ClassNotFoundException if a serialized class is not defined on this system.
    */
   private void readObject (java.io.ObjectInputStream in)
           throws IOException, ClassNotFoundException

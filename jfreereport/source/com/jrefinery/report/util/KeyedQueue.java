@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: KeyedQueue.java,v 1.10 2002/12/11 00:41:42 mungady Exp $
+ * $Id: KeyedQueue.java,v 1.11 2003/02/06 17:38:19 taqua Exp $
  *
  * Changes
  * -------
@@ -51,10 +51,10 @@ import java.util.LinkedList;
  */
 public class KeyedQueue implements Serializable, Cloneable
 {
-  /** Storage for the queued items. */
+  /** Ordered storage for the queued items. */
   private LinkedList list;
 
-  /** ?? */
+  /** Keyed storage for the queued items. */
   private Hashtable table;
 
   /** The maximum number of items in the queue. */

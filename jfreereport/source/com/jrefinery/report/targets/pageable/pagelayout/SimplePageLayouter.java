@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.22 2003/02/08 19:32:06 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.23 2003/02/09 22:49:29 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,10 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
+import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.states.PostReportFooterState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
@@ -87,24 +89,6 @@ import java.awt.geom.Rectangle2D;
  */
 public class SimplePageLayouter extends PageLayouter
 {
-  /** A useful constant. */
-  private boolean ENDPAGE_FORCED = true;
-
-  /** A useful constant. */
-  private boolean ENDPAGE_REQUESTED = false;
-
-  /** A flag that indicates if the report state is currently inside the item group. */
-  private boolean isInItemGroup;
-
-  /** A flag that indicates that the current pagebreak will be the last one. */
-  private boolean isLastPageBreak;
-
-  /**
-   * A flag which indicates that a new page should be started before the next band
-   * is printed. Bool-or this flag with PageBreakBefore ...
-   */
-  private boolean startNewPage;
-
   /**
    * Represents the current state of the page layouter.
    */
@@ -135,6 +119,33 @@ public class SimplePageLayouter extends PageLayouter
     }
   }
 
+  /** small carrier class to transport the maximum page number for this report */
+  private static class PageCarrier
+  {
+    public int maxPages;
+  }
+
+  /** the page carrier for this pagelayouter contains the number of the last page */
+  private PageCarrier pageCarrier;
+
+  /** A useful constant. */
+  private static final boolean ENDPAGE_FORCED = true;
+
+  /** A useful constant. */
+  private static final boolean ENDPAGE_REQUESTED = false;
+
+  /** A flag that indicates if the report state is currently inside the item group. */
+  private boolean isInItemGroup;
+
+  /** A flag that indicates that the current pagebreak will be the last one. */
+  private boolean isLastPageBreak;
+
+  /**
+   * A flag which indicates that a new page should be started before the next band
+   * is printed. Bool-or this flag with PageBreakBefore ...
+   */
+  private boolean startNewPage;
+
   /** The cursor used by the layouter. */
   private SimplePageLayoutCursor cursor;
 
@@ -150,6 +161,40 @@ public class SimplePageLayouter extends PageLayouter
   public SimplePageLayouter()
   {
     setName("Layout");
+    pageCarrier = new PageCarrier();
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    SimplePageLayouter pl = (SimplePageLayouter) super.getInstance();
+    pl.pageCarrier = new PageCarrier();
+    return pl;
+  }
+
+  /**
+   * Returns the highest pagenumber found during the repagination process.
+   *
+   * @return the highest page number.
+   */
+  public int getMaxPage ()
+  {
+    return pageCarrier.maxPages;
+  }
+
+  /**
+   * Defines the highest pagenumber found during the repagination process.
+   *
+   * @param maxPage the highest page number.
+   */
+  protected void setMaxPage (int maxPage)
+  {
+    pageCarrier.maxPages = maxPage;
   }
 
   /**
@@ -234,6 +279,13 @@ public class SimplePageLayouter extends PageLayouter
       if (event.getState().getCurrentPage() == 1)
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
+        {
+          print(b, true);
+        }
+      }
+      else if (event.getState().getCurrentPage() == getMaxPage())
+      {
+        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
         {
           print(b, true);
         }
@@ -356,6 +408,14 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
+
+      Object prepareRun =
+          event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+      if (prepareRun.equals(Boolean.TRUE))
+      {
+        setMaxPage(event.getState().getCurrentPage());
+      }
+
       // force the last pagebreak ...
       isLastPageBreak = true;
 
@@ -806,7 +866,7 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @return true if the pageBreak is done, false otherwise.
    *
-   * @throws ReportProcessingException ??.
+   * @throws ReportProcessingException if finishing the page failed.
    */
   protected boolean endPage(boolean force) throws ReportProcessingException
   {

@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: NullOutputStream.java,v 1.4 2002/12/02 17:44:51 taqua Exp $
+ * $Id: NullOutputStream.java,v 1.5 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -80,12 +80,12 @@ public class NullOutputStream extends OutputStream
    * Writes to the stream (in this case, does nothing).
    *
    * @param bytes  the bytes.
-   * @param i  ??.
-   * @param i1  ??.
+   * @param      off   the start offset in the data.
+   * @param      len   the number of bytes to write.
    *
    * @throws IOException if there is an I/O problem.
    */
-  public void write(byte[] bytes, int i, int i1) throws IOException
+  public void write(byte[] bytes, int off, int len) throws IOException
   {
     // no i wont do anything here ...
   }

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.8 2003/02/04 17:56:27 taqua Exp $
+ * $Id: ReportStateList.java,v 1.9 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -97,11 +97,11 @@ public class ReportStateList
      * Creates a new master list.
      *
      * @param list  the list.
-     * @param masterPositions  ??.
+     * @param maxChildCount the maximum number of elements in this list.
      */
-    public MasterList (ReportStateList list, int masterPositions)
+    public MasterList (ReportStateList list, int maxChildCount)
     {
-      super (masterPositions);
+      super (maxChildCount);
       this.master = list;
     }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.6 2003/01/24 16:39:09 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.7 2003/02/05 13:25:29 taqua Exp $
  *
  * Changes
  * -------
@@ -68,13 +68,15 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
 
   /** A shared default style-sheet. */
   private static ElementDefaultStyleSheet defaultStyle;
+  /** a flag indicating the read-only state of this style sheet */
+  private boolean locked;
 
   /**
    * Creates a new style sheet.
    */
   protected ElementDefaultStyleSheet()
   {
-    super("GlobalBand");  // should this be 'GlobalElement'??
+    super("GlobalElement");
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
@@ -84,6 +86,28 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     setStyleProperty(ALIGNMENT, ElementAlignment.LEFT);
     setStyleProperty(VISIBLE, Boolean.TRUE);
     setStyleProperty(LINEHEIGHT, new Float(0));
+    setLocked(true);
+  }
+
+  /**
+   * Gets the locked state of this stylesheet. After the first initialization the
+   * stylesheet gets locked, so that it could not be changed anymore.
+   *
+   * @return true, if this stylesheet is readonly.
+   */
+  protected boolean isLocked()
+  {
+    return locked;
+  }
+
+  /**
+   * Defines the locked-state for this stylesheet.
+   *
+   * @param locked true, if the stylesheet is locked and read-only, false otherwise.
+   */
+  protected void setLocked(boolean locked)
+  {
+    this.locked = locked;
   }
 
   /**
@@ -98,6 +122,27 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
       defaultStyle = new ElementDefaultStyleSheet();
     }
     return defaultStyle;
+  }
+
+  /**
+   * Sets a style property (or removes the style if the value is <code>null</code>).
+   *
+   * @param key  the style key (<code>null</code> not permitted).
+   * @param value  the value.
+   * @throws NullPointerException if the given key is null.
+   * @throws ClassCastException if the value cannot be assigned with the given key.
+   * @throws UnsupportedOperationException as this style sheet is read only.
+   */
+  public void setStyleProperty(StyleKey key, Object value)
+  {
+    if (isLocked())
+    {
+      throw new UnsupportedOperationException("This stylesheet is readonly");
+    }
+    else
+    {
+      super.setStyleProperty(key, value);
+    }
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.7 2003/01/29 03:13:04 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.8 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,8 @@ public class BandDefaultStyleSheet extends BandStyleSheet
 {
   /** A shared default style-sheet. */
   private static BandDefaultStyleSheet defaultStyle;
+  /** a flag indicating the read-only state of this style sheet */
+  private boolean locked;
 
   /**
    * Creates a new default style sheet.
@@ -69,6 +71,28 @@ public class BandDefaultStyleSheet extends BandStyleSheet
     setStyleProperty(PAGEBREAK_BEFORE, Boolean.FALSE);
     setStyleProperty(DISPLAY_ON_FIRSTPAGE, Boolean.TRUE);
     setStyleProperty(DISPLAY_ON_LASTPAGE, Boolean.TRUE);
+    setLocked(true);
+  }
+
+  /**
+   * Gets the locked state of this stylesheet. After the first initialization the
+   * stylesheet gets locked, so that it could not be changed anymore.
+   *
+   * @return true, if this stylesheet is readonly.
+   */
+  protected boolean isLocked()
+  {
+    return locked;
+  }
+
+  /**
+   * Defines the locked-state for this stylesheet.
+   *
+   * @param locked true, if the stylesheet is locked and read-only, false otherwise.
+   */
+  protected void setLocked(boolean locked)
+  {
+    this.locked = locked;
   }
 
   /**
@@ -85,4 +109,24 @@ public class BandDefaultStyleSheet extends BandStyleSheet
     return defaultStyle;
   }
 
+  /**
+   * Sets a style property (or removes the style if the value is <code>null</code>).
+   *
+   * @param key  the style key (<code>null</code> not permitted).
+   * @param value  the value.
+   * @throws NullPointerException if the given key is null.
+   * @throws ClassCastException if the value cannot be assigned with the given key.
+   * @throws UnsupportedOperationException as this style sheet is read only.
+   */
+  public void setStyleProperty(StyleKey key, Object value)
+  {
+    if (isLocked())
+    {
+      throw new UnsupportedOperationException("This stylesheet is readonly");
+    }
+    else
+    {
+      super.setStyleProperty(key, value);
+    }
+  }
 }

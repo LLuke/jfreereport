@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.7 2003/01/14 23:48:12 taqua Exp $
+ * $Id: StartState.java,v 1.8 2003/02/04 17:56:23 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public final class StartState extends ReportState
    * @param fstate  the finish state.
    * @param level  the level.
    *
-   * @throws ReportProcessingException ??.
+   * @throws ReportProcessingException if the State could not be initialized properly.
    */
   public StartState (FinishState fstate, int level) throws ReportProcessingException
   {
