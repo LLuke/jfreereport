@@ -14,7 +14,7 @@
       <groupheader height="16" fontname="SansSerif" fontstyle="plain" fontsize="11">
         <line x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
         <label x="0" y="0" width="40%" height="100%"
-        >Family</label>
+          >Family</label>
         <string-field x="40%" y="0" width="60%" height="100%" alignment="left" fieldname="family"/>
       </groupheader>
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
@@ -27,7 +27,7 @@
     </group>
   </groups>
   <items height="30" fontname="Monospaced" fontstyle="plain" fontsize="10">
-    <string-field x="0" y="0" width="40%" height="50%" alignment="left" fieldname="fontname" />
+    <string-field x="0" y="0" width="40%" height="50%" alignment="left" fieldname="fontname"/>
     <string-field name="SampleElement" x="10%" y="50%" width="90%" height="50%" alignment="left" fieldname="sample"/>
   </items>
 
@@ -39,9 +39,9 @@
       </properties>
     </function>
     <function name="Count1" class="com.jrefinery.report.function.ItemCountFunction">
-			<properties>
-				<property name="group">fontfamily</property>
-			</properties>
+      <properties>
+        <property name="group">fontfamily</property>
+      </properties>
     </function>
   </functions>
 

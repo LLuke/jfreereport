@@ -146,7 +146,12 @@ Object getValue()
   // the dataRow is null during the initialization.
   if (dataRow == null) return null;
 
-  return new JButton (String.valueOf(dataRow.get("Name")));
+  Object o = dataRow.get("Name");
+  if (o != null)
+  {
+    return new JButton (String.valueOf (o));
+  }
+  return new JButton ();
 }
 ]]>
           </property>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.15 2003/05/02 12:39:48 taqua Exp $
+ * $Id: BSHExpression.java,v 1.16 2003/06/01 17:39:25 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -133,15 +133,17 @@ public class BSHExpression extends AbstractExpression implements Serializable
   {
     try
     {
-      interpreter.set("dataRow", getDataRow());
       interpreter.set("properties", getProperties());
+      interpreter.set("dataRow", getDataRow());
       return interpreter.eval("getValue ();");
     }
     catch (Exception e)
     {
-      Log.error("Evaluation error ", e);
+      e.printStackTrace();
+      Log.error(new Log.SimpleMessage("Evaluation error: ", e.getClass(), " - ",e.getMessage()));
+      throw new NullPointerException();
     }
-    return null;
+    //return null;
   }
 
   /**

@@ -603,11 +603,14 @@
           // dataRow is null before the function is initialized
           if (dataRow == null)
           {
-          Log.info (&quot;Returning null&quot;);
-          return &quot;DataRow null&quot;;
+            return null;
           }
 
           Number population = (Number) dataRow.get (&quot;Population&quot;);
+          if (population == null)
+          {
+            return null;
+          }
           long popK = (long)(population.longValue() / 1000);
 
           // return a string with the number of people in 1000'er

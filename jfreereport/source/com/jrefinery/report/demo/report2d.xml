@@ -164,7 +164,7 @@ Object getValue()
   // dataRow is null before the function is initialized
   if (dataRow == null)
   {
-    return "DataRow null";
+    return null;
   }
   return dataRow.get ("Double");
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.33 2003/04/24 18:08:56 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.34 2003/05/02 12:40:30 taqua Exp $
  *
  * Changes
  * -------
@@ -243,7 +243,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
     {
       throw new IllegalStateException(
-          "Layouting failed, getPreferredSize returned negative values.");
+          "Layouting failed, getPreferredSize returned negative values." + e.getName());
     }
 
     if (isCachable)
