@@ -38,7 +38,7 @@ import com.jrefinery.report.TextElement;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.demo.SampleData3;
 import com.jrefinery.report.demo.SampleData2;
-import com.jrefinery.ui.JRefineryUtilities;
+import com.jrefinery.ui.RefineryUtilities;
 
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
@@ -98,7 +98,7 @@ public class PdfTest
     PreviewFrame frame3 = new PreviewFrame(report3);
     frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame3.pack();
-    JRefineryUtilities.positionFrameRandomly(frame3);
+    RefineryUtilities.positionFrameRandomly(frame3);
     frame3.show();
     frame3.requestFocus();
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.18 2002/06/08 17:03:52 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.19 2002/06/09 17:29:30 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,7 +51,7 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.SystemOutLogTarget;
-import com.jrefinery.ui.JRefineryUtilities;
+import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.about.AboutFrame;
 
@@ -198,10 +198,10 @@ public class JFreeReportDemo extends JFrame
 
     tabbedPane = new JTabbedPane ();
     tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
-    tabbedPane.addTab (formExample(1), JRefineryUtilities.createTablePanel (data1));
-    tabbedPane.addTab (formExample(2), JRefineryUtilities.createTablePanel (data2));
-    tabbedPane.addTab (formExample(3), JRefineryUtilities.createTablePanel (data3));
-    tabbedPane.addTab (formExample(4), JRefineryUtilities.createTablePanel (data4));
+    tabbedPane.addTab (formExample(1), RefineryUtilities.createTablePanel (data1));
+    tabbedPane.addTab (formExample(2), RefineryUtilities.createTablePanel (data2));
+    tabbedPane.addTab (formExample(3), RefineryUtilities.createTablePanel (data3));
+    tabbedPane.addTab (formExample(4), RefineryUtilities.createTablePanel (data4));
 
     content.add (tabbedPane);
 
@@ -308,7 +308,7 @@ public class JFreeReportDemo extends JFrame
 
     PreviewFrame frame1 = new PreviewFrame (report1);
     frame1.pack ();
-    JRefineryUtilities.positionFrameRandomly (frame1);
+    RefineryUtilities.positionFrameRandomly (frame1);
     frame1.setVisible (true);
     frame1.requestFocus ();
   }
@@ -369,7 +369,7 @@ public class JFreeReportDemo extends JFrame
       aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.INFO);
 
       aboutFrame.pack ();
-      JRefineryUtilities.centerFrameOnScreen (aboutFrame);
+      RefineryUtilities.centerFrameOnScreen (aboutFrame);
     }
     aboutFrame.setVisible (true);
     aboutFrame.requestFocus ();
@@ -493,7 +493,7 @@ public class JFreeReportDemo extends JFrame
 
     JFreeReportDemo frame = new JFreeReportDemo (resources);
     frame.pack ();
-    JRefineryUtilities.centerFrameOnScreen (frame);
+    RefineryUtilities.centerFrameOnScreen (frame);
     frame.setVisible (true);
   }
 }

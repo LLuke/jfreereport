@@ -45,7 +45,7 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.SystemOutLogTarget;
-import com.jrefinery.ui.JRefineryUtilities;
+import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.about.AboutFrame;
 
@@ -200,22 +200,22 @@ public class HugeJFreeReportDemo extends JFrame
     tabbedPane.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     tabbedPane.addTab(
       "Example 1",
-      JRefineryUtilities.createTablePanel(previewData[0].m_data));
+      RefineryUtilities.createTablePanel(previewData[0].m_data));
     tabbedPane.addTab(
       "Example 2",
-      JRefineryUtilities.createTablePanel(previewData[1].m_data));
+      RefineryUtilities.createTablePanel(previewData[1].m_data));
     tabbedPane.addTab(
       "Example 3",
-      JRefineryUtilities.createTablePanel(previewData[2].m_data));
+      RefineryUtilities.createTablePanel(previewData[2].m_data));
     tabbedPane.addTab(
       "Example 4",
-      JRefineryUtilities.createTablePanel(previewData[3].m_data));
+      RefineryUtilities.createTablePanel(previewData[3].m_data));
     tabbedPane.addTab(
       "Example 5 (HUGE)",
-      JRefineryUtilities.createTablePanel(previewData[4].m_data));
+      RefineryUtilities.createTablePanel(previewData[4].m_data));
     tabbedPane.addTab(
       "Example 6 (HUGE)",
-      JRefineryUtilities.createTablePanel(previewData[5].m_data));
+      RefineryUtilities.createTablePanel(previewData[5].m_data));
 
     content.add (tabbedPane);
 
@@ -298,7 +298,7 @@ public class HugeJFreeReportDemo extends JFrame
 
     PreviewFrame frame1 = new PreviewFrame (report1);
     frame1.pack ();
-    JRefineryUtilities.positionFrameRandomly (frame1);
+    RefineryUtilities.positionFrameRandomly (frame1);
     frame1.setVisible (true);
     frame1.requestFocus ();
   }
@@ -359,7 +359,7 @@ public class HugeJFreeReportDemo extends JFrame
       aboutFrame = new AboutFrame (getResources().getString("action.about.name"), JFreeReport.INFO);
 
       aboutFrame.pack ();
-      JRefineryUtilities.centerFrameOnScreen (aboutFrame);
+      RefineryUtilities.centerFrameOnScreen (aboutFrame);
     }
     aboutFrame.setVisible (true);
     aboutFrame.requestFocus ();
@@ -482,7 +482,7 @@ public class HugeJFreeReportDemo extends JFrame
 
     HugeJFreeReportDemo frame = new HugeJFreeReportDemo (resources);
     frame.pack ();
-    JRefineryUtilities.centerFrameOnScreen (frame);
+    RefineryUtilities.centerFrameOnScreen (frame);
     frame.setVisible (true);
   }
 
