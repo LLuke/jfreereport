@@ -69,7 +69,7 @@
 
   <groups>
     <group name="Category Group">
-      <groupheader height="25" fontname="SansSerif" fontstyle="bold" fontsize="12" pagebreak-before-print="false">
+      <groupheader height="28" fontname="SansSerif" fontstyle="bold" fontsize="12" pagebreak-before-print="false">
         <string-field x="0" y="11" width="250" height="12" alignment="left" fieldname="Category"/>
         <line x1="0" y1="23" x2="100%" y2="23" weight="0.5"/>
       </groupheader>
@@ -84,15 +84,15 @@
   <items height="0"
     fontname="SansSerif" fontstyle="plain" fontsize="9">
 
-    <string-field x="0" y="7" width="140" height="10" alignment="left"
+    <string-field x="0" y="8" width="140" height="10" alignment="left"
       fontstyle="bold" fontsize="10"
       fieldname="Name"/>
 
-    <string-field x="140" y="7" width="100%" height="10" alignment="right"
+    <string-field x="140" y="8" width="100%" height="10" alignment="right"
       fontname="Monospaced" fontstyle="plain" fontsize="8" vertical-alignment="bottom"
-      fieldname="URL"/>
+      name="URL-Field" fieldname="URL"/>
 
-    <string-field x="0" y="20" width="100%" height="0" alignment="left"
+    <string-field x="0" y="24" width="100%" height="0" alignment="left"
       fontname="Serif"
       fieldname="Description" dynamic="true"/>
 
@@ -110,6 +110,12 @@
     <function name="OverallCount"
       class="org.jfree.report.function.ItemCountFunction"/>
 
+    <function name="AddHRefs" class="org.jfree.report.function.CreateHyperLinksFunction">
+      <properties>
+        <property name="field">URL</property>
+        <property name="element">URL-Field</property>
+      </properties>
+    </function>
   </functions>
 
 </report>

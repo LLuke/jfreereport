@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.5 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,6 +49,7 @@ import java.util.TreeMap;
 import org.jfree.report.Anchor;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -376,6 +377,15 @@ public class HtmlContentCreator extends TableContentCreator
         final HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
         final String cellStyleName = layout.getStyleCollection().getPublicName(style);
 
+        final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+        if (hrefTarget != null)
+        {
+          pout.print("<a href=\"");
+          pout.print(hrefTarget);
+          pout.print("\">");
+        }
+
+        // todo Move Link declaration outside ..
         if (cellStyleName != null || isCreateBodyFragment())
         {
           pout.print("<div class=\"");
@@ -401,7 +411,12 @@ public class HtmlContentCreator extends TableContentCreator
         {
           pout.println("<!-- Invalid element @(" + x + ", " + y + ") -->&nbsp;");
         }
-        pout.println("</div></td>");
+        pout.println("</div>");
+        if (hrefTarget != null)
+        {
+          pout.println("</a>");
+        }
+        pout.println("</td>");
       }
 
       pout.println("</tr>");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.12 2005/01/24 23:58:41 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.13 2005/02/23 21:04:39 taqua Exp $
  *
  * Changes
  * -------
@@ -185,7 +185,7 @@ public class StraightToEverything
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     // cpi = 10, lpi = 6
-    final TextFilePrinterDriver pc = new TextFilePrinterDriver(fout, 10, 6);
+    final TextFilePrinterDriver pc = new TextFilePrinterDriver(fout, 15, 10);
     final PlainTextOutputTarget target = new PlainTextOutputTarget(pc);
     pr.setOutputTarget(target);
     target.open();

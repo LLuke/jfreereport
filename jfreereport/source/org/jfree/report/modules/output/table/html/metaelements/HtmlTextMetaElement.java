@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTextMetaElement.java,v 1.3 2005/01/25 00:13:51 taqua Exp $
+ * $Id: HtmlTextMetaElement.java,v 1.4 2005/02/05 18:35:19 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -55,18 +55,7 @@ public class HtmlTextMetaElement extends HtmlMetaElement
 
   public void write (final PrintWriter pout, final HtmlFilesystem filesystem)
   {
-    final String hrefTarget = (String) getProperty(ElementStyleSheet.HREF_TARGET);
-    if (hrefTarget != null)
-    {
-      pout.print("<a href=\"");
-      pout.print(HtmlEncoderUtil.encodeUTF(hrefTarget));
-      pout.print(">");
-    }
     final RawContent content = (RawContent) getContent();
     HtmlEncoderUtil.printText(pout, String.valueOf(content.getContent()), isUsesXHTML());
-    if (hrefTarget != null)
-    {
-      pout.print("</a>");
-    }
   }
 }

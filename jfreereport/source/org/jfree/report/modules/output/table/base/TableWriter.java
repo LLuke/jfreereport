@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.19 2005/02/23 21:05:33 taqua Exp $
+ * $Id: TableWriter.java,v 1.20 2005/03/03 14:42:38 taqua Exp $
  *
  * Changes
  * -------
@@ -425,7 +425,7 @@ public strictfp class TableWriter
     // in this layouter the width of a band is always the full page width.
     // the height is not limited ...
     final long width = getMaxWidth();
-    final long height = Short.MAX_VALUE;
+    final long height = Integer.MAX_VALUE;
 
     final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band,
             getLayoutSupport(),

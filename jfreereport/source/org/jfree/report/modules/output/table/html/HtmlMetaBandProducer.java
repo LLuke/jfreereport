@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.7 2005/02/22 20:19:02 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.8 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,11 +52,13 @@ import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlImageMetaElement;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
+import org.jfree.report.modules.output.table.html.metaelements.HtmlMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
+import org.jfree.util.Log;
 
 public class HtmlMetaBandProducer extends TableMetaBandProducer
 {
@@ -78,8 +80,14 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     }
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-    return new HtmlTextMetaElement(new RawContent(rect, o),
+    final MetaElement me = new HtmlTextMetaElement(new RawContent(rect, o),
             createStyleForTextElement(e, x, y), useXHTML);
+    me.setName(e.getName());
+    if ("RH-02".equals(e.getName()))
+    {
+      Log.debug ("HERE");
+    }
+    return me;
   }
 
   protected MetaElement createImageCell
@@ -94,7 +102,9 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final ImageContent ic = new ImageContent((ImageContainer) o, (StrictBounds) rect.clone());
-    return new HtmlImageMetaElement(ic, createStyleForImageElement(e, x, y), useXHTML);
+    final HtmlMetaElement me = new HtmlImageMetaElement(ic, createStyleForImageElement(e, x, y), useXHTML);
+    me.setName(e.getName());
+    return me;
   }
 
   protected MetaElement createDrawableCell
