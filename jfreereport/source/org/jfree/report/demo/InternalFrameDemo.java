@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: InternalFrameDemo.java,v 1.1 2003/09/24 13:43:37 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 24.09.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.demo;
@@ -43,6 +43,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.beans.PropertyChangeListener;
 import javax.swing.table.TableModel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -203,15 +204,26 @@ public class InternalFrameDemo extends AbstractDemoFrame
          */
         public void internalFrameClosing(InternalFrameEvent e)
         {
-          desktop.remove(frame);
-          super.internalFrameClosing(e);
+          //desktop.remove(frame);
+        }
+
+        /**
+         * Invoked when an internal frame has been closed.
+         */
+        public void internalFrameClosed(InternalFrameEvent e)
+        {
+          frame.dispose();
         }
       });
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
+      frame.setClosable(true);
+      frame.setResizable(true);
       desktop.add(frame);
       frame.setVisible(true);
       frame.requestFocus();
+
+      Log.debug ("" + desktop.getComponentCount());
     }
     catch (ReportProcessingException rpe)
     {
@@ -254,7 +266,7 @@ public class InternalFrameDemo extends AbstractDemoFrame
     Boot.start();
 
     final InternalFrameDemo frame = new InternalFrameDemo("Open Source Demo");
-    frame.pack();
+    frame.setSize(300, 400);
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
   }

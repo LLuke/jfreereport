@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.18 2003/09/12 18:46:18 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.19 2003/09/24 13:43:37 taqua Exp $
  *
  * Changes
  * -------
@@ -722,7 +722,7 @@ public class PreviewProxyBase extends JComponent
   private boolean lockInterface;
   /** The action concentrator used to lock or unlock the interface. */
   private ActionConcentrator zoomActionConcentrator;
-  /** A flag that defines, whether the preview component is closed. */ 
+  /** A flag that defines, whether the preview component is closed. */
   private boolean closed;
 
 
@@ -1677,9 +1677,9 @@ public class PreviewProxyBase extends JComponent
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
 
     // I hope this helps as well ...
-    RepaintManager.currentManager(this).removeInvalidComponent(this);
-    RepaintManager.currentManager(this).markCompletelyClean(this);
-    //RepaintManager.setCurrentManager(null);
+    //RepaintManager.currentManager(this).removeInvalidComponent(this);
+    //RepaintManager.currentManager(this).markCompletelyClean(this);
+    RepaintManager.setCurrentManager(null);
   }
 
   /**
@@ -1930,7 +1930,7 @@ public class PreviewProxyBase extends JComponent
 
   /**
    * Paginates the report.
-   * 
+   *
    * @param format the new page format for the report.
    */
   protected void performPagination(final PageFormat format)
@@ -1980,7 +1980,7 @@ public class PreviewProxyBase extends JComponent
             progressDialog.setVisible(false);
             reportPane.removeRepaginationListener(progressDialog);
             setLockInterface(false);
-            Log.debug ("Pagination done: " + 
+            Log.debug ("Pagination done: " +
               ((System.currentTimeMillis() - startTime) / 1000) + " seconds.");
           }
           catch (ReportInterruptedException re)
@@ -2001,7 +2001,7 @@ public class PreviewProxyBase extends JComponent
    * Checks, whether the interface is locked. A locked interface has all
    * actions disabled and waits for a certain task to be completed. The only
    * actions that are always enabled are teh help and the exit actions.
-   *  
+   *
    * @return true, if the interface is in the locked state, or false otherwise.
    */
   public boolean isLockInterface()
@@ -2013,8 +2013,8 @@ public class PreviewProxyBase extends JComponent
    * Defines, whether the interface is locked. A locked interface has all
    * actions disabled and waits for a certain task to be completed. The only
    * actions that are always enabled are teh help and the exit actions.
-   *  
-   * @param lockInterface set to true, if the interface should be set into the 
+   *
+   * @param lockInterface set to true, if the interface should be set into the
    * locked state, or false otherwise.
    */
   public void setLockInterface(final boolean lockInterface)
@@ -2031,9 +2031,9 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Adds a repagination listener to this component. The listener will be 
+   * Adds a repagination listener to this component. The listener will be
    * informed about the pagination progress.
-   *  
+   *
    * @param listener the listener to be added.
    */
   public void addRepaginationListener(final RepaginationListener listener)
@@ -2043,7 +2043,7 @@ public class PreviewProxyBase extends JComponent
 
   /**
    * Removes the specified repagination listener from this component.
-   * 
+   *
    * @param listener the listener to be removed.
    */
   public void removeRepaginationListener(final RepaginationListener listener)

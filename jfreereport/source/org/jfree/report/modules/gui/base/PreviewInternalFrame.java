@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.6 2003/09/06 18:09:16 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.7 2003/09/09 21:31:36 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.gui.base;
 
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
+import java.beans.PropertyVetoException;
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
@@ -83,6 +84,13 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
       else
       {
         setVisible(false);
+        try
+        {
+          setClosed(true);
+        }
+        catch (PropertyVetoException pe)
+        {
+        }
       }
     }
   }
