@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: FontFactory.java,v 1.7 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -35,7 +35,6 @@
  */
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.Band;
 import org.xml.sax.Attributes;
 
 import java.awt.Font;
@@ -47,6 +46,8 @@ import java.awt.Font;
  */
 public class FontFactory implements ReportDefinitionTags
 {
+  public static final Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);
+
   /** The default font name. */
   private String defaultFontName;
 
@@ -69,7 +70,7 @@ public class FontFactory implements ReportDefinitionTags
    */
   public void init ()
   {
-    Font defaultFont = Band.DEFAULT_FONT;
+    Font defaultFont = DEFAULT_FONT;
     defaultFontName = defaultFont.getName ();
     defaultFontStyle = defaultFont.getStyle ();
     defaultFontSize = defaultFont.getSize ();
@@ -119,8 +120,8 @@ public class FontFactory implements ReportDefinitionTags
     String fontStyle = attr.getValue (FONT_STYLE_ATT);
     boolean isBold = false;
     boolean isItalic = false;
-    boolean isUnderline = false;
-    boolean isStriked = false;
+//    boolean isUnderline = false;
+//    boolean isStriked = false;
 
     int fs = def;
     if (fontStyle != null)

@@ -25,7 +25,7 @@
  * -------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ElementFactory.java,v 1.23 2002/11/07 21:45:27 taqua Exp $
+ * $Id: ElementFactory.java,v 1.24 2002/11/29 11:36:16 mungady Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ItemFactory;
-import com.jrefinery.report.LineShapeElement;
-import com.jrefinery.report.RectangleShapeElement;
+import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -113,6 +113,7 @@ public class ElementFactory extends DefaultHandler
   private String textElementFormatString;
 
   private boolean textElementDynamic;
+
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
    * and will add created element to this band. If unknown end-Tags are encountered, the
@@ -391,19 +392,13 @@ public class ElementFactory extends DefaultHandler
   {
     String elementName = handler.generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FIELDNAME_ATT);
-    try
-    {
-      ImageElement element = ItemFactory.createImageDataRowElement(
-          elementName,
-          ParserUtil.getElementPosition(atts),
-          Color.white,
-          elementSource);
-      getCurrentBand().addElement(element);
-    }
-    catch (IOException mfule)
-    {
-      throw new SAXException(mfule.toString());
-    }
+
+    ImageElement element = ItemFactory.createImageDataRowElement(
+        elementName,
+        ParserUtil.getElementPosition(atts),
+        Color.white,
+        elementSource);
+    getCurrentBand().addElement(element);
   }
 
   /**
@@ -419,19 +414,13 @@ public class ElementFactory extends DefaultHandler
   {
     String elementName = handler.generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FIELDNAME_ATT);
-    try
-    {
-      ImageElement element = ItemFactory.createImageURLElement(
-          elementName,
-          ParserUtil.getElementPosition(atts),
-          Color.white,
-          elementSource);
-      getCurrentBand().addElement(element);
-    }
-    catch (IOException mfule)
-    {
-      throw new SAXException(mfule.toString());
-    }
+
+    ImageElement element = ItemFactory.createImageURLElement(
+        elementName,
+        ParserUtil.getElementPosition(atts),
+        Color.white,
+        elementSource);
+    getCurrentBand().addElement(element);
   }
 
   /**
@@ -447,19 +436,13 @@ public class ElementFactory extends DefaultHandler
   {
     String elementName = handler.generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FUNCTIONNAME_ATT);
-    try
-    {
-      ImageElement element = ItemFactory.createImageDataRowElement(
-          elementName,
-          ParserUtil.getElementPosition(atts),
-          Color.white,
-          elementSource);
-      getCurrentBand().addElement(element);
-    }
-    catch (IOException mfule)
-    {
-      throw new SAXException(mfule.toString());
-    }
+
+    ImageElement element = ItemFactory.createImageDataRowElement(
+        elementName,
+        ParserUtil.getElementPosition(atts),
+        Color.white,
+        elementSource);
+    getCurrentBand().addElement(element);
   }
 
 
@@ -476,19 +459,13 @@ public class ElementFactory extends DefaultHandler
   {
     String elementName = handler.generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FUNCTIONNAME_ATT);
-    try
-    {
-      ImageElement element = ItemFactory.createImageURLElement(
-          elementName,
-          ParserUtil.getElementPosition(atts),
-          Color.white,
-          elementSource);
-      getCurrentBand().addElement(element);
-    }
-    catch (IOException mfule)
-    {
-      throw new SAXException(mfule.toString());
-    }
+
+    ImageElement element = ItemFactory.createImageURLElement(
+        elementName,
+        ParserUtil.getElementPosition(atts),
+        Color.white,
+        elementSource);
+    getCurrentBand().addElement(element);
   }
 
   /**
@@ -508,7 +485,7 @@ public class ElementFactory extends DefaultHandler
     float y2 = ParserUtil.parseFloat(atts.getValue("y2"), "Element y2 not specified");
 
     Line2D line = new Line2D.Float(x1, y1, x2, y2);
-    LineShapeElement element = ItemFactory.createLineShapeElement(
+    ShapeElement element = ItemFactory.createLineShapeElement(
         name,
         c,
         ParserUtil.parseStroke(atts.getValue("weight")),
@@ -531,7 +508,7 @@ public class ElementFactory extends DefaultHandler
     boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
     boolean shouldFill = ParserUtil.parseBoolean(atts.getValue("fill"), true);
 
-    RectangleShapeElement element = ItemFactory.createRectangleShapeElement(
+    ShapeElement element = ItemFactory.createRectangleShapeElement(
         name,
         c,
         ParserUtil.parseStroke(atts.getValue("weight")),
@@ -673,7 +650,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         getCurrentText());
 
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     clearCurrentText();
     getCurrentBand().addElement(te);
   }
@@ -756,7 +733,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -775,7 +752,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -786,15 +763,16 @@ public class ElementFactory extends DefaultHandler
    */
   protected void endGeneralField() throws SAXException
   {
+    // general field is deprecated, never support deprecated elements or they live forever
+    // there can be only one :)
     TextElement te = ItemFactory.createGeneralElement(textElementName,
         textElementBounds,
         textElementColor,
         textElementAlignment,
-        textElementVerticalAlignment,
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -814,7 +792,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -834,7 +812,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -854,7 +832,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -873,7 +851,7 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -893,7 +871,7 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.setDynamic(textElementDynamic);
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -912,7 +890,7 @@ public class ElementFactory extends DefaultHandler
     this.textElementFont = fontFactory.createFont(atts);
     this.textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), TextElement.LEFT);
     this.textElementVerticalAlignment = parseTextVerticalAlignment(atts.getValue(VALIGNMENT_ATT),
-                                                                   TextElement.TOP);
+                                                                   TextElement.BOTTOM);
     this.textElementColor = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     this.textElementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
   }
@@ -992,6 +970,8 @@ public class ElementFactory extends DefaultHandler
     getTextElementAttributes(atts);
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");
     textElementSourceName = atts.getValue(FIELDNAME_ATT);
+    if (textElementSourceName == null)
+      throw new SAXException("The fieldname-attribute is required");
   }
 
   /**
@@ -1006,6 +986,8 @@ public class ElementFactory extends DefaultHandler
     getTextElementAttributes(atts);
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");
     textElementSourceName = atts.getValue(FUNCTIONNAME_ATT);
+    if (textElementSourceName == null)
+      throw new SAXException("The fieldname-attribute is required");
   }
 
 }

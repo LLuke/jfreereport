@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BandFactory.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,10 @@ import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.style.BandStyleSheet;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -238,9 +242,22 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 
     // create the report header...
     ReportHeader reportHeader = new ReportHeader ();
-    reportHeader.setHeight (height);
-    reportHeader.setOwnPage (ownPage);
-    reportHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
+    reportHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    reportHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, new Boolean (ownPage));
+    reportHeader.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    String valign = attr.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      reportHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+                                                      ParserUtil.parseVerticalElementAlignment(valign));
+    }
+    String halign = attr.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      reportHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+                                                      ParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
     getReport ().setReportHeader (reportHeader);
     setCurrentBand (reportHeader);
     handler.setExpectedHandler (handler.createElementFactory ());
@@ -265,9 +282,22 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 
     // create the report footer...
     ReportFooter reportFooter = new ReportFooter ();
-    reportFooter.setHeight (height);
-    reportFooter.setOwnPage (ownPage);
-    reportFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
+    reportFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    reportFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean (ownPage));
+    reportFooter.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    String valign = attr.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      reportFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+                                                      ParserUtil.parseVerticalElementAlignment(valign));
+    }
+    String halign = attr.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      reportFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+                                                      ParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
     getReport ().setReportFooter (reportFooter);
     setCurrentBand (reportFooter);
     handler.setExpectedHandler (handler.createElementFactory ());
@@ -293,10 +323,23 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 
     // create the page header...
     PageHeader pageHeader = new PageHeader ();
-    pageHeader.setHeight (height);
+    pageHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
     pageHeader.setDisplayOnFirstPage (firstPage);
     pageHeader.setDisplayOnLastPage (lastPage);
-    pageHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
+    pageHeader.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    String valign = attr.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      pageHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+                                                    ParserUtil.parseVerticalElementAlignment(valign));
+    }
+    String halign = attr.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      pageHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+                                                    ParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
     setCurrentBand (pageHeader);
     getReport ().setPageHeader (pageHeader);
     handler.setExpectedHandler (handler.createElementFactory ());
@@ -322,10 +365,23 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 
     // create the page footer...
     PageFooter pageFooter = new PageFooter ();
-    pageFooter.setHeight (height);
+    pageFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
     pageFooter.setDisplayOnFirstPage (firstPage);
     pageFooter.setDisplayOnLastPage (lastPage);
-    pageFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
+    pageFooter.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    String valign = attr.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      pageFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+                                                    ParserUtil.parseVerticalElementAlignment(valign));
+    }
+    String halign = attr.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      pageFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+                                                    ParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
     setCurrentBand (pageFooter);
     getReport ().setPageFooter (pageFooter);
     handler.setExpectedHandler (handler.createElementFactory ());
@@ -347,8 +403,21 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     float height = ParserUtil.parseFloat (attr.getValue ("height"),
                                           "Element height not specified");
     ItemBand items = new ItemBand ();
-    items.setHeight (height);
-    items.setDefaultFont (fontFactory.createDefaultFont (attr));
+    items.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    items.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    String valign = attr.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      items.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+                                               ParserUtil.parseVerticalElementAlignment(valign));
+    }
+    String halign = attr.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      items.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+                                               ParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
     setCurrentBand (items);
     getReport ().setItemBand (items);
     handler.setExpectedHandler (handler.createElementFactory ());
@@ -403,5 +472,4 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   {
     handler.finishedHandler ();
   }
-
 }

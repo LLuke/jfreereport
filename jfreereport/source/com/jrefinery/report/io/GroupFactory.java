@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: GroupFactory.java,v 1.9 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,9 @@ import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.style.BandStyleSheet;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -185,11 +188,26 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     float height = ParserUtil.parseFloat (atts.getValue ("height"),
                                           "Element height not specified");
     boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"), false);
+    boolean repeat = ParserUtil.parseBoolean (atts.getValue (REPEAT_HEADER), false);
     // create the group header...
     GroupHeader groupHeader = new GroupHeader ();
-    groupHeader.setHeight (height);
-    groupHeader.setPageBreakBeforePrint (pageBreak);
-    groupHeader.setDefaultFont (fontFactory.createDefaultFont (atts));
+    groupHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean (pageBreak));
+    groupHeader.getStyle().setStyleProperty(BandStyleSheet.REPEAT_HEADER, new Boolean (repeat));
+    groupHeader.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (atts));
+    String valign = atts.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+                                                     ParserUtil.parseVerticalElementAlignment(valign));
+    }
+    String halign = atts.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+                                                     ParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
     currentGroup.setHeader (groupHeader);
 
     handler.getReportFactory ().setCurrentBand (groupHeader);
@@ -207,14 +225,29 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
   protected void startGroupFooter (Attributes atts) throws SAXException
   {
     // get the height...
+    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"), false);
     float height = ParserUtil.parseFloat (atts.getValue ("height"),
                                           "Element height not specified");
 
     // get the default font...
     // create the group footer...
     GroupFooter groupFooter = new GroupFooter ();
-    groupFooter.setHeight (height);
-    groupFooter.setDefaultFont (fontFactory.createDefaultFont (atts));
+    groupFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean (pageBreak));
+    groupFooter.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (atts));
+    String valign = atts.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+                                                     ParserUtil.parseVerticalElementAlignment(valign));
+    }
+    String halign = atts.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+                                                     ParserUtil.parseHorizontalElementAlignment(halign));
+    }
+
     currentGroup.setFooter (groupFooter);
 
     handler.getReportFactory ().setCurrentBand (groupFooter);

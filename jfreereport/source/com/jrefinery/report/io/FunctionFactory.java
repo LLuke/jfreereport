@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: FunctionFactory.java,v 1.13 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -37,15 +37,14 @@
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
-import com.jrefinery.report.function.Expression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.Properties;
-import java.util.ArrayList;
 
 /**
  * The functionFactory creates functions and adds these functions to the FunctionCollection
@@ -186,7 +185,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
    */
   protected Expression getCurrentExpression ()
   {
-    return (Expression) currentFunction;
+    return currentFunction;
   }
 
   /**
@@ -379,7 +378,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
    */
   public void characters (char[] ch, int start, int length)
   {
-    // @todo: Parse the default entities
+    // todo: Parse the default entities
     // accumulate the characters in case the text is split into several chunks...
     if (this.currentText != null)
     {

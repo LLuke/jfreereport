@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.8 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.9 2002/09/16 16:59:15 mungady Exp $
  *
  * Changes
  * -------
@@ -133,7 +133,7 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
    */
   public void finishedHandler ()
   {
-    Object o = currentHandler.pop ();
+    currentHandler.pop ();
   }
 
   /**

@@ -25,7 +25,7 @@
  * ------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ReportDefinitionException.java,v 1.11 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -36,8 +36,8 @@ package com.jrefinery.report.io;
 
 import org.xml.sax.SAXException;
 
-import java.io.PrintWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * A reportdefinition exception is thrown when the parsing of the report definition

@@ -25,7 +25,7 @@
  * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ParserUtil.java,v 1.11 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -34,6 +34,7 @@
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.ElementAlignment;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -282,6 +283,41 @@ public class ParserUtil
     }
     Rectangle2D.Float retval = new Rectangle2D.Float(x, y, w, h);
     return retval;
+  }
+
+
+  public static ElementAlignment parseVerticalElementAlignment (String value) throws SAXException
+  {
+    if (value.equals("top"))
+    {
+      return ElementAlignment.TOP;
+    }
+    if (value.equals("middle"))
+    {
+      return ElementAlignment.MIDDLE;
+    }
+    if (value.equals("bottom"))
+    {
+      return ElementAlignment.BOTTOM;
+    }
+    throw new SAXException("Invalid vertical alignment");
+  }
+
+  public static ElementAlignment parseHorizontalElementAlignment (String value) throws SAXException
+  {
+    if (value.equals("left"))
+    {
+      return ElementAlignment.LEFT;
+    }
+    if (value.equals("center"))
+    {
+      return ElementAlignment.CENTER;
+    }
+    if (value.equals("right"))
+    {
+      return ElementAlignment.RIGHT;
+    }
+    throw new SAXException("Invalid horizontal alignment");
   }
 
 }
