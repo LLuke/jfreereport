@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.54 2003/05/02 12:39:01 taqua Exp $
+ * $Id: Band.java,v 1.55 2003/05/14 22:26:25 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -99,7 +99,8 @@ import org.jfree.ui.FloatDimension;
  * StyleSheet is registered in the child when the element is added to the band.
  * <p>
  * Bands now extend the Element-class, so it is possible to stack bands into another
- * band.
+ * band. Trying to add a parent of an band as child to the band, will result in an
+ * exception.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -131,7 +132,7 @@ public class Band extends Element implements Serializable, Cloneable
     BandLayoutManager layout = new StaticLayoutManager();
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layout);
 
-    setName("anonymousBand@" + hashCode());
+    setName("anonymousBand@" + super.hashCode());
     allElements = new ArrayList();
 
     // band style sheets are not accessed by names. Names are important
@@ -142,7 +143,7 @@ public class Band extends Element implements Serializable, Cloneable
 
   /**
    * Returns the layout manager for the band.
-   * 
+   *
    * @return The layout manager.
    */
   public BandLayoutManager getLayout ()
@@ -152,7 +153,7 @@ public class Band extends Element implements Serializable, Cloneable
 
   /**
    * Sets the band layout manager.
-   * 
+   *
    * @param layoutManager  the layout manager.
    */
   public void setLayout (BandLayoutManager layoutManager)
@@ -189,7 +190,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param position  the position where to insert the element
    * @param element  the element that should be added
-   * 
+   *
    * @throws NullPointerException if the given element is null
    * @throws IllegalArgumentException if the position is invalid, either negative or
    * greater than the number of elements in this band.
@@ -344,7 +345,7 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns an array of the elements in the band.
+   * Returns an array of the elements in the band. This method never returns null.
    *
    * @return the elements.
    */
@@ -364,11 +365,17 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param index the element position within this band
    * @return the element
-   * @throws IndexOutOfBoundsException if the index is invalid. 
+   * @throws IndexOutOfBoundsException if the index is invalid.
    */
   public Element getElement (int index)
   {
-    return (Element) allElements.get(index);
+    if (allElementsCached == null)
+    {
+      Element[] elements = new Element[allElements.size()];
+      elements = (Element[]) allElements.toArray(elements);
+      allElementsCached = elements;
+    }
+    return allElementsCached[index];
   }
 
   /**

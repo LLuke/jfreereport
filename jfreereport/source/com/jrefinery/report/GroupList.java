@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.22 2003/04/09 00:10:33 mungady Exp $
+ * $Id: GroupList.java,v 1.23 2003/05/02 12:39:02 taqua Exp $
  *
  * Changes:
  * --------
@@ -159,9 +159,6 @@ public class GroupList implements Cloneable, Serializable
 
   /**
    * Clones the list.
-   * <p>
-   * Warning: No real cloning involved due to a bug in JDK 1.2.2; TreeSet does not clone, so
-   * we can't do it either.
    *
    * @return a clone.
    */

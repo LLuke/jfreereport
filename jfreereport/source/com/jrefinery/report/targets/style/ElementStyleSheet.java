@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.24 2003/04/06 20:43:00 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.25 2003/04/09 16:10:29 mungady Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,9 @@ import java.awt.Stroke;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,6 +57,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.util.SerializerHelper;
 import com.jrefinery.report.targets.FontDefinition;
 
 /**
@@ -147,7 +151,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   private String name;
 
   /** The style-sheet properties. */
-  private HashMap properties;
+  private transient HashMap properties;
 
   /** Storage for the parent style sheets (if any). */
   private ArrayList parents;
@@ -162,10 +166,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
   private ElementStyleSheet[] defaultCached;
   
   /** Style cache. */
-  private HashMap styleCache;
+  private transient HashMap styleCache;
 
   /** Style change support. */
-  private StyleChangeSupport styleChangeSupport;
+  private transient StyleChangeSupport styleChangeSupport;
   
   /** A flag that controls whether or not caching is allowed. */
   private boolean allowCaching;
@@ -761,4 +765,38 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     }
     styleChangeSupport.fireStyleRemoved(key);
   }
+
+  private void writeObject(ObjectOutputStream out)
+       throws IOException
+  {
+    out.defaultWriteObject();
+    int size = properties.size();
+    out.writeInt(size);
+    Iterator it = properties.keySet().iterator();
+    while (it.hasNext())
+    {
+      Object key = it.next();
+      out.writeObject(key);
+      Object value = properties.get(key);
+      SerializerHelper.getInstance().writeObject(value, out);
+    }
+  }
+
+  private void readObject(ObjectInputStream in)
+       throws IOException, ClassNotFoundException
+  {
+    styleChangeSupport = new StyleChangeSupport(this);
+
+    in.defaultReadObject();
+    int size = in.readInt();
+    properties = new HashMap(size);
+    for (int i = 0; i < size; i++)
+    {
+      Object key = in.readObject();
+      Object value = SerializerHelper.getInstance().readObject(in);
+      properties.put (key, value);
+    }
+  }
+
+  
 }
