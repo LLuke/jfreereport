@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.8 2003/02/07 22:42:07 taqua Exp $
+ * $Id: TableWriter.java,v 1.9 2003/02/11 20:20:20 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -121,7 +121,12 @@ public class TableWriter extends AbstractFunction
     float width = getMaxWidth();
     float height = Short.MAX_VALUE;
 
-    return BandLayoutManagerUtil.doLayout(band, getLayoutSupport(), width, height);
+    Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
+                                          getLayoutSupport(),
+                                          width,
+                                          height);
+    getCurrentEvent().getState().fireLayoutCompleteEvent();
+    return bounds;
   }
 
   protected void doPrint (Rectangle2D bounds, Band band)

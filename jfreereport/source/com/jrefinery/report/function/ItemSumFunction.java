@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.22 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemSumFunction.java,v 1.23 2003/01/14 21:06:58 taqua Exp $
  *
  * Changes
  * -------
@@ -257,8 +257,6 @@ public class ItemSumFunction extends AbstractFunction
     {
       throw new FunctionInitializeException("No Such Property : field");
     }
-    setField(fieldProp);
-    setGroup(getProperty(GROUP_PROPERTY));
   }
 
   /**

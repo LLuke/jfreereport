@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.23 2003/02/09 22:49:29 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.24 2003/02/10 19:33:51 taqua Exp $
  *
  * Changes
  * -------
@@ -606,10 +606,12 @@ public class SimplePageLayouter extends PageLayouter
   {
     float width = (float) getLogicalPage().getWidth();
     float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
-    return BandLayoutManagerUtil.doLayout(band,
+    Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
                                           getLogicalPage().getOutputTarget(),
                                           width,
                                           height);
+    getCurrentEvent().getState().fireLayoutCompleteEvent();
+    return bounds;
   }
 
   /**

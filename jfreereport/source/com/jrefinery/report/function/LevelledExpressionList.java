@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.1 2002/12/12 20:18:40 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.2 2003/01/14 21:07:02 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.function;
 import com.jrefinery.report.DataRow;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
+import com.jrefinery.report.event.LayoutListener;
 import com.jrefinery.report.util.LevelList;
 import com.jrefinery.report.util.Log;
 
@@ -52,7 +53,7 @@ import java.util.Iterator;
  *
  * @author Thomas Morgner
  */
-public class LevelledExpressionList implements ReportListener, Cloneable
+public class LevelledExpressionList implements ReportListener, Cloneable, LayoutListener
 {
   /** A list of expressions and associated levels. */
   private LevelList expressionList;
@@ -459,6 +460,43 @@ public class LevelledExpressionList implements ReportListener, Cloneable
           if (e.isActive())
           {
             e.getValue();
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Receives notification that the band layouting has completed.
+   * <P>
+   * The event carries the current report state.
+   *
+   * @param event The event.
+   */
+  public void layoutComplete(ReportEvent event)
+  {
+    Iterator it = expressionList.getLevelsDescending();
+    while (it.hasNext())
+    {
+      Integer level = (Integer) it.next();
+      if (level.intValue() < getLevel())
+      {
+        break;
+      }
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      while (itLevel.hasNext())
+      {
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof LayoutListener && e instanceof Function)
+        {
+          LayoutListener f = (LayoutListener) e;
+          try
+          {
+            f.layoutComplete(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
           }
         }
       }

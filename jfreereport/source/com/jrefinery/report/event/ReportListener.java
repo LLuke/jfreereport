@@ -28,11 +28,10 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ReportListener.java,v 1.5 2002/11/07 21:45:27 taqua Exp $
+ * $Id: ReportListener.java,v 1.6 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
- *
  * 10-May-2002 : Created the EventInterface for JFreeReport
  * 17-Jul-2002 : Updated header and Javadoc comments (DG);
  */

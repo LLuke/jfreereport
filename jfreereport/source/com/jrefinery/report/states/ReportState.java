@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.19 2003/01/14 23:48:12 taqua Exp $
+ * $Id: ReportState.java,v 1.20 2003/02/08 19:32:06 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -735,6 +735,15 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
     functions.itemsAdvanced (new ReportEvent(this));
+  }
+
+  /**
+   * Fires an 'layout-complete' event.
+   */
+  public void fireLayoutCompleteEvent()
+  {
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+    functions.layoutComplete(new ReportEvent(this));
   }
 
   /**
