@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -158,5 +158,22 @@ public class TemplateCollection implements Serializable
   public Configuration getConfig()
   {
     return config;
+  }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof TemplateCollection)) return false;
+
+    final TemplateCollection templateCollection = (TemplateCollection) o;
+
+    if (!templates.equals(templateCollection.templates)) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return templates.hashCode();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -118,7 +118,10 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       {
         continue;
       }
-      factories.add(o);
+      if (factories.contains(o) == false)
+      {
+        factories.add(o);
+      }
     }
     return factories.iterator();
   }

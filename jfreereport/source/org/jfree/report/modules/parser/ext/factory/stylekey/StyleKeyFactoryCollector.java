@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.14 2003/06/29 16:59:25 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -145,5 +145,22 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
       }
     }
     return list.iterator();
+  }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof StyleKeyFactoryCollector)) return false;
+
+    final StyleKeyFactoryCollector styleKeyFactoryCollector = (StyleKeyFactoryCollector) o;
+
+    if (!factories.equals(styleKeyFactoryCollector.factories)) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return factories.hashCode();
   }
 }

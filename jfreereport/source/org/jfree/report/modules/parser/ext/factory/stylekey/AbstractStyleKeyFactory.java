@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.16 2003/06/29 16:59:25 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -172,5 +172,22 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   public Iterator getRegisteredKeys()
   {
     return knownKeys.keySet().iterator();
+  }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof AbstractStyleKeyFactory)) return false;
+
+    final AbstractStyleKeyFactory abstractStyleKeyFactory = (AbstractStyleKeyFactory) o;
+
+    if (!knownKeys.equals(abstractStyleKeyFactory.knownKeys)) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return knownKeys.hashCode();
   }
 }

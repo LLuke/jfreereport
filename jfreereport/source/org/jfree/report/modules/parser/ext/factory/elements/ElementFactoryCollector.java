@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactoryCollector.java,v 1.8 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ElementFactoryCollector.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -100,5 +100,22 @@ public class ElementFactoryCollector implements ElementFactory
       }
     }
     return null;
+  }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof ElementFactoryCollector)) return false;
+
+    final ElementFactoryCollector elementFactoryCollector = (ElementFactoryCollector) o;
+
+    if (!factories.equals(elementFactoryCollector.factories)) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return factories.hashCode();
   }
 }

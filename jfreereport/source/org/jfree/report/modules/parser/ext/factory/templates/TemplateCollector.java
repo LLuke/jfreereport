@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollector.java,v 1.10 2003/06/29 16:59:25 taqua Exp $
+ * $Id: TemplateCollector.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -153,5 +153,25 @@ public class TemplateCollector extends TemplateCollection
       od.configure(config);
     }
 
+  }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof TemplateCollector)) return false;
+    if (!super.equals(o)) return false;
+
+    final TemplateCollector templateCollector = (TemplateCollector) o;
+
+    if (!factories.equals(templateCollector.factories)) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    int result = super.hashCode();
+    result = 29 * result + factories.hashCode();
+    return result;
   }
 }
