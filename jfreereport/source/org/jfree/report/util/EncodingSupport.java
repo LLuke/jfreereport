@@ -28,14 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingSupport.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
+ * $Id: EncodingSupport.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
  * 13.03.2003 : Initial version
  *
  */
-package org.jfree.report.modules.gui.base.components;
+package org.jfree.report.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;

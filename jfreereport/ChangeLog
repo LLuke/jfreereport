@@ -64,6 +64,9 @@ A list of changes in recent versions:
           import the extended reports from older versions. Changed class
           attributes will be translated to the new namespace.
 
+        * The PDF target can now control what PDF document version will be
+          generated.
+          
 0.8.3f: (24-Aug-2003)
         * BugFix: SwingIcons demo definition was invalid.
 

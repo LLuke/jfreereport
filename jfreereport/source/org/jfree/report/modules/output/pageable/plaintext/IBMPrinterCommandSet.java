@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IBMPrinterCommandSet.java,v 1.6 2003/08/25 14:29:31 taqua Exp $
+ * $Id: IBMPrinterCommandSet.java,v 1.7 2003/09/13 15:14:41 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.jfree.report.modules.gui.base.components.EncodingSupport;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.StringUtil;
 
 /**

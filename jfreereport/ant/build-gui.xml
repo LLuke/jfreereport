@@ -27,8 +27,18 @@
   <!-- ************************************************************** -->
   <!--                                                                -->
   <!--  GUI Base modules                                              -->
-  <!--                                                                -->
+  <!-- Depends Modules:                                               -->
+  <!--     pageable-graphics, pageable-base                           -->
   <!-- ************************************************************** -->
+
+  <target name="check-module-output-pageable-base" depends="init">
+    <available file="${module-output-pageable-base-file}" property="module-output-pageable-base-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-pageable-base" unless="module-output-pageable-base-file-present" depends="check-module-output-pageable-base">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-pageable.xml" target="compile-module-output-pageable-base"/>
+  </target>
 
   <target name="check-module-output-pageable-graphics" depends="init">
     <available file="${module-output-pageable-graphics-file}" property="module-output-pageable-graphics-file-present"/>
@@ -40,7 +50,7 @@
   </target>
 
   <target name="compile-module-gui-base"
-    depends="init, rebuild-module-output-pageable-graphics">
+    depends="init, rebuild-module-output-pageable-base, rebuild-module-output-pageable-graphics">
     <description>
       Compiles the GUI base module, contains the preview dialogs/frames etc.
     </description>
@@ -58,6 +68,7 @@
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-pageable-graphics-file}"/>
       </classpath>
     </javac>
@@ -96,8 +107,28 @@
   <!-- ************************************************************** -->
   <!--                                                                -->
   <!--  GUI Converter modules                                         -->
-  <!--                                                                -->
+  <!-- Depends Modules:                                               -->
+  <!--    parser-base, parser-ext, parser-simple, parser-extwriter,   -->
+  <!--    gui-base                                                    -->
   <!-- ************************************************************** -->
+
+  <target name="check-module-parser-base" depends="init">
+    <available file="${module-parser-base-file}" property="module-parser-base-file-present"/>
+  </target>
+
+  <target name="rebuild-module-parser-base" unless="module-parser-base-file-present" depends="check-module-parser-base">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-base"/>
+  </target>
+
+  <target name="check-module-parser-ext" depends="init">
+    <available file="${module-parser-ext-file}" property="module-parser-ext-file-present"/>
+  </target>
+
+  <target name="rebuild-module-parser-ext" unless="module-parser-ext-file-present" depends="check-module-parser-ext">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-ext"/>
+  </target>
 
   <target name="check-module-parser-simple" depends="init">
     <available file="${module-parser-simple-file}" property="module-parser-simple-file-present"/>
@@ -118,7 +149,11 @@
   </target>
 
   <target name="compile-module-gui-converter"
-    depends="compile-module-gui-base, rebuild-module-parser-simple, rebuild-module-parser-extwriter">
+    depends="compile-module-gui-base,
+      rebuild-module-parser-base,
+      rebuild-module-parser-simple,
+      rebuild-module-parser-ext,
+      rebuild-module-parser-extwriter">
 
     <description>
       Compiles the Report Converter GUI. The real report converter is contained
@@ -139,6 +174,8 @@
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-parser-base-file}"/>
+        <pathelement location="${module-parser-ext-file}"/>
         <pathelement location="${module-parser-extwriter-file}"/>
         <pathelement location="${module-parser-simple-file}"/>
       </classpath>
@@ -227,8 +264,8 @@
     <copy file="source/org/jfree/report/modules/gui/config/config-description.xml"
       tofile="build/org/jfree/report/modules/gui/config/config-description.xml"/>
 
-    <copy todir="build/org/jfree/report/modules/gui/base">
-      <fileset dir="source/org/jfree/report/modules/gui/base">
+    <copy todir="build/org/jfree/report/modules/gui/config">
+      <fileset dir="source/org/jfree/report/modules/gui/config">
         <include name="**/*.gif"/>
       </fileset>
     </copy>
@@ -239,6 +276,15 @@
   <!--  CSV Export GUI module                                         -->
   <!--                                                                -->
   <!-- ************************************************************** -->
+
+  <target name="check-module-output-table-base" depends="init">
+    <available file="${module-output-table-base-file}" property="module-output-table-base-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-table-base" unless="module-output-table-base-file-present" depends="check-module-output-table-base">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-base"/>
+  </target>
 
   <target name="check-module-output-csv"  depends="init">
     <available file="${module-output-csv-file}" property="module-output-csv-file-present"/>
@@ -260,6 +306,7 @@
 
   <target name="compile-module-gui-csv"
     depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
     rebuild-module-output-csv,
     rebuild-module-output-table-csv">
 
@@ -283,6 +330,7 @@
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
         <pathelement location="${module-output-csv-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-csv-file}"/>
       </classpath>
     </javac>
@@ -326,6 +374,7 @@
 
   <target name="compile-module-gui-html"
     depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
     rebuild-module-output-table-html">
 
     <description>
@@ -346,6 +395,7 @@
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-html-file}"/>
       </classpath>
     </javac>
@@ -390,6 +440,7 @@
 
   <target name="compile-module-gui-xls"
     depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
     rebuild-module-output-table-xls">
 
     <description>
@@ -410,6 +461,7 @@
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-xls-file}"/>
       </classpath>
     </javac>
@@ -454,6 +506,7 @@
 
   <target name="compile-module-gui-pdf"
     depends="compile-module-gui-base,
+    rebuild-module-output-pageable-base,
     rebuild-module-output-pageable-pdf">
 
     <description>
@@ -474,6 +527,7 @@
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-pageable-pdf-file}"/>
       </classpath>
     </javac>
@@ -518,6 +572,7 @@
 
   <target name="compile-module-gui-plaintext"
     depends="compile-module-gui-base,
+    rebuild-module-output-pageable-base,
     rebuild-module-output-pageable-plaintext">
 
     <description>
@@ -538,6 +593,7 @@
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-pageable-plaintext-file}"/>
       </classpath>
     </javac>

@@ -103,10 +103,12 @@
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
         <pathelement location="${libdir}/${pixie-jar-file}"/>
         <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-html-file}"/>
         <pathelement location="${module-output-table-xls-file}"/>
         <pathelement location="${module-output-table-rtf-file}"/>
         <pathelement location="${module-output-table-csv-file}"/>
+        <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-pageable-pdf-file}"/>
         <pathelement location="${module-output-pageable-plaintext-file}"/>
         <pathelement location="${module-output-xml-file}"/>

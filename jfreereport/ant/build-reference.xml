@@ -78,6 +78,7 @@
         <pathelement location="${module-output-table-html-file}"/>
         <pathelement location="${module-output-pageable-pdf-file}"/>
         <pathelement location="${module-parser-ext-file}"/>
+        <pathelement location="${module-parser-base-file}"/>
       </classpath>
     </javac>
 

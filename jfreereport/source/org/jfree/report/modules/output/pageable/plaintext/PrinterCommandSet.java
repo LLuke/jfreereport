@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.6 2003/09/13 15:14:41 taqua Exp $
  *
  * Changes
  * -------
@@ -703,7 +703,7 @@ public strictfp class PrinterCommandSet
    */
   public boolean isEncodingSupported(final String encoding)
   {
-    if (org.jfree.report.modules.gui.base.components.EncodingSupport.isSupportedEncoding(encoding))
+    if (org.jfree.report.util.EncodingSupport.isSupportedEncoding(encoding))
     {
       // if already checked there, then use it ...
       return true;

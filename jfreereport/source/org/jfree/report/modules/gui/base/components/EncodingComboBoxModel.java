@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.8 2003/08/26 17:35:50 taqua Exp $
  *
  * Changes
  * --------
@@ -290,7 +290,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public boolean addEncoding(final String name, final String description)
   {
-    if (org.jfree.report.modules.gui.base.components.EncodingSupport.isSupportedEncoding(name))
+    if (org.jfree.report.util.EncodingSupport.isSupportedEncoding(name))
     {
       encodings.add(new EncodingCarrier(name, description));
     }
