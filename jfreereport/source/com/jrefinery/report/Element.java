@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.15 2002/12/06 17:17:18 mungady Exp $
+ * $Id: Element.java,v 1.16 2002/12/06 17:59:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -119,6 +119,9 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public static final int BOTTOM = 16;
 
+  /** the parent for the element (the band where the element is contained in). */
+  private Band parent;
+
   /**
    * Constructs an element.
    * <p>
@@ -134,6 +137,33 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     datasource = NULL_DATASOURCE;
     style = new ElementStyleSheet(getName());
     style.addParent(ElementDefaultStyleSheet.getDefaultStyle());
+  }
+
+  /**
+   * Return the parent of the element. You can use this to explore the component tree.
+   * @return the parent of the element.
+   */
+  protected Band getParent()
+  {
+    return parent;
+  }
+
+  /**
+   * defines the parent of the element and adds the parents default settings
+   * to the stylesheet.
+   * @param parent (null allowed).
+   */
+  protected void setParent(Band parent)
+  {
+    if (this.parent != null)
+    {
+      getStyle().removeParent(this.parent.getBandDefaults());
+    }
+    this.parent = parent;
+    if (this.parent != null)
+    {
+      getStyle().addParent(this.parent.getBandDefaults());
+    }
   }
 
   /**

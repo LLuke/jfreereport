@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.31 2002/12/10 21:04:15 taqua Exp $
+ * $Id: Band.java,v 1.32 2002/12/11 01:00:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -154,8 +154,19 @@ public class Band extends Element implements Serializable, Cloneable
     {
       throw new NullPointerException("Band.addElement(...): element is null.");
     }
+
+    // check for component loops ... 
+    Band parent = getParent();
+    while (parent != null)
+    {
+      if (parent == element)
+      {
+        throw new IllegalArgumentException("Cannot add one of my parents to self");
+      }
+    }
+
     allElements.add(element);
-    element.getStyle().addParent(getBandDefaults());
+    element.setParent(this);
   }
 
   /**
@@ -226,8 +237,13 @@ public class Band extends Element implements Serializable, Cloneable
     {
       throw new NullPointerException();
     }
-    e.getStyle().removeParent(getBandDefaults());
+    if (e.getParent() != this)
+    {
+      // this is none of my childs, ignore the request ...
+      return;
+    }
     allElements.remove(e);
+    e.setParent(null);
   }
 
   /**
