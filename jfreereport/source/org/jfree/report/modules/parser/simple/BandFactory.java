@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.8 2003/12/06 15:24:02 taqua Exp $
+ * $Id: BandFactory.java,v 1.9 2003/12/21 20:51:44 taqua Exp $
  *
  * Changes
  * -------
@@ -195,7 +195,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @see org.jfree.report.ReportHeader
    */
-  public void startReportHeader(final Attributes attr)
+  private void startReportHeader(final Attributes attr)
       throws SAXException
   {
     // create the report header...
@@ -246,7 +246,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @see org.jfree.report.ReportFooter
    */
-  public void startReportFooter(final Attributes attr)
+  private void startReportFooter(final Attributes attr)
       throws SAXException
   {
     // create the report footer...
@@ -298,7 +298,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @see org.jfree.report.PageHeader
    */
-  public void startPageHeader(final Attributes attr)
+  private void startPageHeader(final Attributes attr)
       throws SAXException
   {
     // create the page header...
@@ -355,7 +355,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @see org.jfree.report.PageFooter
    */
-  public void startPageFooter(final Attributes attr)
+  private void startPageFooter(final Attributes attr)
       throws SAXException
   {
     // create the page header...
@@ -413,7 +413,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @see org.jfree.report.Watermark
    */
-  public void startWatermark(final Attributes attr)
+  private void startWatermark(final Attributes attr)
       throws SAXException
   {
     final Band watermark = getReport().getWatermark();
@@ -454,7 +454,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @see org.jfree.report.ItemBand
    */
-  public void startItems(final Attributes attr)
+  private void startItems(final Attributes attr)
       throws SAXException
   {
     final ItemBand items = getReport().getItemBand();
@@ -491,7 +491,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if a Parser error occurs.
    */
-  public void endWatermark() throws SAXException
+  private void endWatermark() throws SAXException
   {
     getParser().popFactory().endElement(WATERMARK_TAG);
   }
@@ -503,7 +503,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if a Parser error occurs.
    */
-  public void endItems() throws SAXException
+  private void endItems() throws SAXException
   {
     getParser().popFactory().endElement(ITEMS_TAG);
   }
@@ -515,7 +515,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if a parser error occurs.
    */
-  public void endPageHeader() throws SAXException
+  private void endPageHeader() throws SAXException
   {
     getParser().popFactory().endElement(PAGE_HEADER_TAG);
   }
