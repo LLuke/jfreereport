@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.19 2003/06/29 16:59:30 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -73,10 +73,10 @@ public class ExcelProducer extends TableProducer
   private ExcelCellDataFactory cellDataFactory;
 
   /** factor for transformation of internal scale to excel scale. */
-  private static final int XFACTOR = 43;
+  private static final int XFACTOR = 55;
 
   /** factor for transformation of internal scale to excel scale. */
-  private static final int YFACTOR = 30;
+  private static final int YFACTOR = 40;
 
   /** the excel workbook represents the excel document. */
   private HSSFWorkbook workbook;
