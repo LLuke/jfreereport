@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: CSVExportResources.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -110,7 +110,7 @@ public class CSVExportResources extends JFreeReportResources
 
         {"error.processingfailed.title", "Report processing failed"},
         {"error.processingfailed.message", "Error on processing this report: {0}"},
-        {"error.savefailed.message", "Error on saving the PDF file: {0}"},
+        {"error.savefailed.message", "Error on saving the CSV file: {0}"},
         {"error.savefailed.title", "Error on save"},
 
         {"csvexportdialog.csv-file-description", "Comma Separated Value files."},

@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PrintExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_nl.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PrintExportResources_nl.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,6 +80,9 @@ public class PrintExportResources_nl extends JFreeReportResources
 
         {"error.printfailed.message", "Afdrukken mislukt: {0}"},
         {"error.printfailed.title", "Fout tijdens afdrukken"},
+        {"printing-export.progressdialog.title", "Bezig met afdrukken van het rapport ..."},
+        {"printing-export.progressdialog.message", "Het rapport wordt nu afgedrukt ..."},
+
 
       };
 

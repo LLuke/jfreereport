@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PrintExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PrintExportResources_sv.java,v 1.5 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------------------------

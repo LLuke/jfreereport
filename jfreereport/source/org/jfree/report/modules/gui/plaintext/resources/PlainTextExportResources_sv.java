@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PlainTextExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportResources_sv.java,v 1.5 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,7 +44,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
- * Swedish language resource for the PDF export GUI.
+ * Swedish language resource for the PlainText export GUI.
  *
  * @author Thomas Dilts
  */
@@ -77,7 +77,7 @@ public class PlainTextExportResources_sv extends JFreeReportResources
 
         {"error.processingfailed.title", "Report generation misslyckades"},
         {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
-        {"error.savefailed.message", "Fel inträffade under PDF sparning: {0}"},
+        {"error.savefailed.message", "Fel inträffade under text sparning: {0}"},
         {"error.savefailed.title", "Fel under sparningen"},
 
         {"plain-text-exportdialog.dialogtitle", "Exportera rapporten till en vanlig text fil ..."},

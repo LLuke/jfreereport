@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PlainTextExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportResources.java,v 1.6 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,7 +44,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
- * English language resource for the PDF export GUI.
+ * English language resource for the PlainText export GUI.
  *
  * @author Thomas Morgner
  */
@@ -82,7 +82,7 @@ public class PlainTextExportResources extends JFreeReportResources
 
         {"error.processingfailed.title", "Report processing failed"},
         {"error.processingfailed.message", "Error on processing this report: {0}"},
-        {"error.savefailed.message", "Error on saving the PDF file: {0}"},
+        {"error.savefailed.message", "Error on saving the text file: {0}"},
         {"error.savefailed.title", "Error on save"},
 
         {"plain-text-exportdialog.dialogtitle", "Export Report into an Plain-Text-File ..."},

@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_fr.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportResources_fr.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -123,7 +123,7 @@ public class HtmlExportResources_fr extends JFreeReportResources
 
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement : {0}"},
         {"error.savefailed.title", "Erreur durant la sauvegarde"},
         {"error.validationfailed.message",
          "Erreur pendant la validation des entrées utilisateur."},

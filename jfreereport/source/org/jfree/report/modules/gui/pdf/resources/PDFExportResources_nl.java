@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_nl.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PDFExportResources_nl.java,v 1.6 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -128,6 +128,9 @@ public class PDFExportResources_nl extends JFreeReportResources
         {"pdfsavedialog.cancel", "Annuleren"},
         {"pdfsavedialog.confirm", "OK"},
 
+        {"pdf-export.progressdialog.title", "Bezig te exporteren naar PDF bestand ..."},
+        {"pdf-export.progressdialog.message", "Het rapport wordt omgezet in een PDF bestand ..."},
+        {"error.savefailed.message", "Opslaan als PDF mislukt: {0}"},
 
       };
 

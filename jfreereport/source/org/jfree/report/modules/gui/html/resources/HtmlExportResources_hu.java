@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_hu.java,v 1.4 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportResources_hu.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -76,7 +76,7 @@ public class HtmlExportResources_hu extends JFreeReportResources
 
         {"error.processingfailed.title", "A lista feldolgozása nem sikerült"},
         {"error.processingfailed.message", "A lista készítése során hiba történt: {0}"},
-        {"error.savefailed.message", "Hiba a PDF fájl mentésekor: {0}"},
+        {"error.savefailed.message", "Hiba a fájl mentésekor: {0}"},
         {"error.savefailed.title", "Hiba a mentéskor"},
         {"error.validationfailed.message", "Hiba a az adatbevitel ellenõrzésekor."},
         {"error.validationfailed.title", "Hiba az ellenõrzéskor"},

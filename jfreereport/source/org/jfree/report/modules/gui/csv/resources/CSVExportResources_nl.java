@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_nl.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVExportResources_nl.java,v 1.5 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -110,6 +110,11 @@ public class CSVExportResources_nl extends JFreeReportResources
         {"error.processingfailed.title", "Fout tijdens rapport generatie"},
         {"error.processingfailed.message", "Rapport generatie mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
+        {"error.savefailed.message", "Opslaan als CSV bestand mislukt: {0}"},
+
+        {"csvexportdialog.csv-file-description", "Comma Separated Value bestanden."},
+        {"cvs-export.progressdialog.title", "Bezig te exporteren naar CSV bestand ..."},
+        {"cvs-export.progressdialog.message", "Het rapport wordt omgezet in een CSV bestand ..."},
       };
 
 

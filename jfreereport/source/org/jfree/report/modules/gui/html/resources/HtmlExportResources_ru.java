@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_ru.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportResources_ru.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -85,7 +85,7 @@ public class HtmlExportResources_ru extends JFreeReportResources
       "\u0442\u0430: {0}"},
         {"error.savefailed.message",
          "\u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u0441\u043e\u0445\u0440" +
-      "\u0430\u043d\u0435\u043d\u0438\u0438 PDF \u0444\u0430\u0439\u043b\u0430: {0}"},
+      "\u0430\u043d\u0435\u043d\u0438\u0438 HTML \u0444\u0430\u0439\u043b\u0430: {0}"},
         {"error.savefailed.title",
          "\u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u0441\u043e\u0445\u0440" +
       "\u0430\u043d\u0435\u043d\u0438\u0438"},

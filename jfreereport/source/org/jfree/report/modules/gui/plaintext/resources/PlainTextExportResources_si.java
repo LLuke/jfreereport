@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PlainTextExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_si.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportResources_si.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
- * Slovenian language resource for the PDF export GUI.
+ * Slovenian language resource for the PlainText export GUI.
  *
  * @author Sergey M Mozgovoi
  */
@@ -73,7 +73,7 @@ public class PlainTextExportResources_si extends JFreeReportResources
 
         {"error.processingfailed.title", "Obdelava poro\u010Dila ni uspela"},
         {"error.processingfailed.message", "Napaka pri obdelavi poro\u010Dila: {0}"},
-        {"error.savefailed.message", "Napaka pri shranjevanju PDF datoteke: {0}"},
+        {"error.savefailed.message", "Napaka pri shranjevanju Plain-Text datoteke: {0}"},
         {"error.savefailed.title", "Napaka pri shranjevanju"},
 
         {"plain-text-exportdialog.dialogtitle", "Izvozi poro\u010Dilo v Plain-Text datoteko."},

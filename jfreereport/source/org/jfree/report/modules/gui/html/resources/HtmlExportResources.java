@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportResources.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportResources.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -127,7 +127,7 @@ public class HtmlExportResources extends JFreeReportResources
 
         {"error.processingfailed.title", "Report processing failed"},
         {"error.processingfailed.message", "Error on processing this report: {0}"},
-        {"error.savefailed.message", "Error on saving the PDF file: {0}"},
+        {"error.savefailed.message", "Error on saving the file: {0}"},
         {"error.savefailed.title", "Error on save"},
         {"error.validationfailed.message", "Error while validating the user input."},
         {"error.validationfailed.title", "Error on validation"},

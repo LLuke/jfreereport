@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_sv.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVExportResources_sv.java,v 1.5 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,7 +105,7 @@ public class CSVExportResources_sv extends JFreeReportResources
 
         {"error.processingfailed.title", "Report generation misslyckades"},
         {"error.processingfailed.message", "Fel när rapporten skapades: {0}"},
-        {"error.savefailed.message", "Fel inträffade under PDF sparning: {0}"},
+        {"error.savefailed.message", "Fel inträffade under CSV sparning: {0}"},
         {"error.savefailed.title", "Fel under sparningen"},
 
         {"csvexportdialog.csv-file-description", "Kommatecken-avskilda-värden-filer."},

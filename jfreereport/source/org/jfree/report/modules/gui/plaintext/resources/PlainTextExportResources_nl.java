@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PlainTextExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_nl.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportResources_nl.java,v 1.5 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,7 +44,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
- * Dutch language resource for the PDF export GUI.
+ * Dutch language resource for the PlainText export GUI.
  *
  * @author Hendri Smit
  */
@@ -100,6 +100,9 @@ public class PlainTextExportResources_nl extends JFreeReportResources
         {"error.processingfailed.title", "Fout tijdens rapport generatie"},
         {"error.processingfailed.message", "Rapport generatie mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
+        {"error.savefailed.message", "Opslaan als tekst mislukt: {0}"},
+        {"plaintext-export.progressdialog.title", "Bezig te exporteren naar tekst bestand ..."},
+        {"plaintext-export.progressdialog.message", "Het rapport wordt omgezet in een tekst bestand ..."},
 
       };
 

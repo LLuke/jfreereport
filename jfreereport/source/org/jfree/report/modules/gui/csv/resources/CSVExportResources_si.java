@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_si.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: CSVExportResources_si.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,7 +73,7 @@ public class CSVExportResources_si extends JFreeReportResources
 
         {"error.processingfailed.title", "Obdelava poro\u010Dila ni uspela"},
         {"error.processingfailed.message", "Napaka pri obdelavi poro\u010Dila: {0}"},
-        {"error.savefailed.message", "Napaka pri shranjevanju PDF datoteke: {0}"},
+        {"error.savefailed.message", "Napaka pri shranjevanju CSV datoteke: {0}"},
         {"error.savefailed.title", "Napaka pri shranjevanju"},
 
         {"csvexportdialog.dialogtitle", "Izvozi poro\u010Dilo v CSV datoteko ..."},

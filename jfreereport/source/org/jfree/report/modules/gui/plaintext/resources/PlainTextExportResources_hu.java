@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PlainTextExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_hu.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportResources_hu.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,7 +44,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
- * Hungarian language resource for the PDF export GUI.
+ * Hungarian language resource for the PlainText export GUI.
  *
  * @author Demeter F. Tamás
  */
@@ -76,7 +76,7 @@ public class PlainTextExportResources_hu extends JFreeReportResources
 
         {"error.processingfailed.title", "A lista feldolgozása nem sikerült"},
         {"error.processingfailed.message", "A lista készítése során hiba történt: {0}"},
-        {"error.savefailed.message", "Hiba a PDF fájl mentésekor: {0}"},
+        {"error.savefailed.message", "Hiba a text fájl mentésekor: {0}"},
         {"error.savefailed.title", "Hiba a mentéskor"},
 
         {"plain-text-exportdialog.dialogtitle",

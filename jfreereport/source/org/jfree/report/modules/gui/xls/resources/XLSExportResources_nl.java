@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_nl.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: XLSExportResources_nl.java,v 1.5 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -98,9 +98,10 @@ public class XLSExportResources_nl extends JFreeReportResources
 
         {"error.processingfailed.title", "Fout tijdens rapport generatie"},
         {"error.processingfailed.message", "Rapport generatie mislukt: {0}"},
-        {"error.savefailed.message", "Opslaan als PDF mislukt: {0}"},
+        {"error.savefailed.message", "Opslaan als Excel bestand mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
-
+        {"excel-export.progressdialog.title", "Bezig te exporteren naar Excel bestand ..."},
+        {"excel-export.progressdialog.message",  "Het rapport wordt omgezet in een Excel werkboek ..."},
       };
 
   /**

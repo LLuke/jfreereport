@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.4 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -71,7 +71,7 @@ public class CSVTableExportTask extends ExportTask
   }
 
   /**
-   * Exports the repotr into a PDF file.
+   * Exports the report into a CSV file.
    */
   public void run()
   {

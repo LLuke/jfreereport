@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PDFExportResources.java
+ * PlainTextExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_ru.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PlainTextExportResources_ru.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,7 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 /**
- * Russian language resource for the PDF export GUI.
+ * Russian language resource for the PlainText export GUI.
  *
  * @author Sergey M Mozgovoi
  */
@@ -85,7 +85,7 @@ public class PlainTextExportResources_ru extends JFreeReportResources
       "\u0442\u0430: {0}"},
         {"error.savefailed.message",
          "\u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u0441\u043e\u0445\u0440" +
-      "\u0430\u043d\u0435\u043d\u0438\u0438 PDF \u0444\u0430\u0439\u043b\u0430: {0}"},
+      "\u0430\u043d\u0435\u043d\u0438\u0438 PlainText \u0444\u0430\u0439\u043b\u0430: {0}"},
         {"error.savefailed.title",
          "\u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u0441\u043e\u0445\u0440" +
       "\u0430\u043d\u0435\u043d\u0438\u0438"},

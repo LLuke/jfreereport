@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_fr.java,v 1.7 2003/08/24 15:08:19 taqua Exp $
+ * $Id: CSVExportResources_fr.java,v 1.8 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -108,7 +108,7 @@ public class CSVExportResources_fr extends JFreeReportResources
 
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement en CSV : {0}"},
         {"error.savefailed.title", "Erreur durant l'enregistrement"},
 
         {"csvexportdialog.csv-file-description", "Fichiers séparés par une virgule."},

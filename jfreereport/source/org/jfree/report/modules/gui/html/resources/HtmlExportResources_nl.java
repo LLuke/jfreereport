@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_nl.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: HtmlExportResources_nl.java,v 1.5 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -78,8 +78,17 @@ public class HtmlExportResources_nl extends JFreeReportResources
         {"error.processingfailed.title", "Fout tijdens rapport generatie"},
         {"error.processingfailed.message", "Rapport generatie mislukt: {0}"},
         {"error.savefailed.title", "Fout tijdens opslaan"},
+        {"error.savefailed.message", "Opslaan als HTML bestand mislukt: {0}"},
         {"error.validationfailed.message", "Validatie van gebruikersinvoer mislukt."},
         {"error.validationfailed.title", "Fout tijdens validatie"},
+
+        {"htmlexportdialog.html-documents", "HTML documenten"},
+        {"htmlexportdialog.zip-archives", "ZIP archieven"},
+        {"htmlexportdialog.stream-export", "Bestand export"},
+        {"htmlexportdialog.directory-export", "Map export"},
+        {"htmlexportdialog.zip-export", "ZIP archief export"},
+        {"html-export.progressdialog.title", "Bezig te exporteren naar HTML bestand ..."},
+        {"html-export.progressdialog.message", "Het rapport wordt omgezet in een HTML bestand ..."},
 
         {"htmlexportdialog.dialogtitle", "Opslaan als HTML bestand..."},
         {"htmlexportdialog.filename", "Bestandsnaam"},
