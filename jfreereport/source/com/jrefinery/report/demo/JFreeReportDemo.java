@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.37 2002/10/15 20:37:19 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.38 2002/10/16 18:33:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -73,6 +73,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -272,6 +273,7 @@ public class JFreeReportDemo extends JFrame
                       RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Dynamic-Demo", RefineryUtilities.createTablePanel(data2));
+    tabbedPane.addTab("PDFBug", RefineryUtilities.createTablePanel(data1));
 
     content.add(tabbedPane);
 
@@ -353,6 +355,10 @@ public class JFreeReportDemo extends JFrame
     {
       preview("/com/jrefinery/report/demo/report2c.xml", data2);
     }
+    else if (index == 8)
+    {
+      preview("/com/jrefinery/report/demo/report5.xml", data1);
+    }
   }
 
   /**
@@ -422,6 +428,7 @@ public class JFreeReportDemo extends JFrame
     }
 
     report1.setData(data);
+    //report1.setData (new DefaultTableModel());
 
     PreviewFrame frame1 = new PreviewFrame(report1);
     frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

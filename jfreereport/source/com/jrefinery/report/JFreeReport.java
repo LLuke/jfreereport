@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.31 2002/10/21 14:41:56 taqua Exp $
+ * $Id: JFreeReport.java,v 1.32 2002/10/23 21:10:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -666,14 +666,22 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     ReportProcessor prc = new ReportProcessor (target, true, rs.getReport().getPageFooter ());
 
     // To a repagination
-    ReportStateList rl = repaginate (target, rs);
-    rl.clear ();
-    rs = rs.advance (prc);
+    Log.debug ("Start REPAGINATE" +
+               "Free: " + Runtime.getRuntime().freeMemory() + "; " +
+               "Total: " + Runtime.getRuntime().totalMemory());
+    repaginate (target, rs);
+    Log.debug ("Finished REPAGINATE" +
+               "Free: " + Runtime.getRuntime().freeMemory() + "; " +
+               "Total: " + Runtime.getRuntime().totalMemory());
 
+    rs = rs.advance (prc);
     rs = processPage (target, rs, true);
     while (!rs.isFinish ())
     {
       ReportState nrs = processPage (target, rs, true);
+      Log.debug ("Start PAGE " + rs.getCurrentPage() + "; " +
+                 "Free: " + Runtime.getRuntime().freeMemory() + "; " +
+                 "Total: " + Runtime.getRuntime().totalMemory());
       if (nrs.isProceeding (rs) == false)
       {
         throw new ReportProcessingException ("Report is not proceeding");
@@ -701,57 +709,74 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       throw new ReportProcessingException ("Need a start state for repagination");
     }
 
-    StartState startState = (StartState) state;
-
-    PageFormat p = output.getPageFormat();
-    // PrepareRuns, part 1: resolve the function depencies by running the report
-    // until all function levels are completed.
-    JFreeReport report = state.getReport();
-
-    // all prepare runs have this property set, test details with getLevel()
-    state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
-
-    // the levels are defined from +inf to 0
-    // we dont draw and we do not collect states in a StateList yet
-    OutputTarget dummyOutput = output.createDummyWriter();
-    Iterator it = startState.getLevels();
-    while (it.hasNext())
+    try
     {
-      int level = ((Integer) it.next()).intValue();
+      StartState startState = (StartState) state;
+
+      PageFormat p = output.getPageFormat();
+      // PrepareRuns, part 1: resolve the function depencies by running the report
+      // until all function levels are completed.
+      JFreeReport report = state.getReport();
+
+      // all prepare runs have this property set, test details with getLevel()
+      state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+
+      // the levels are defined from +inf to 0
+      // we dont draw and we do not collect states in a StateList yet
+      OutputTarget dummyOutput = output.createDummyWriter();
+      dummyOutput.open();
+      Iterator it = startState.getLevels();
+      while (it.hasNext())
+      {
+        int level = ((Integer) it.next()).intValue();
+        while (!state.isFinish ())
+        {
+          ReportState oldstate = state;
+          state = processPage (dummyOutput, state, false);
+          if ((!state.isFinish()) && (!state.isProceeding (oldstate)))
+          {
+            throw new ReportProcessingException ("State did not proceed, bailing out!");
+          }
+        }
+        state = new StartState((FinishState) state, level);
+      }
+
+      dummyOutput.close();
+      Log.debug ("DummyMode done " +
+                 "Free: " + Runtime.getRuntime().freeMemory() + "; " +
+                 "Total: " + Runtime.getRuntime().totalMemory());
+
+      // part 2: Print the complete report in DummyMode(do the layouting)
+      ReportStateList pageStates = new ReportStateList (state.getReport(), output);
+
       while (!state.isFinish ())
       {
+        pageStates.add (state);
         ReportState oldstate = state;
-        state = processPage (dummyOutput, state, false);
+        state = processPage (dummyOutput, state, true);
+
         if ((!state.isFinish()) && (!state.isProceeding (oldstate)))
         {
           throw new ReportProcessingException ("State did not proceed, bailing out!");
         }
       }
-      state = new StartState((FinishState) state, level);
+
+      Log.debug ("DummyWriting Done " +
+                 "Free: " + Runtime.getRuntime().freeMemory() + "; " +
+                 "Total: " + Runtime.getRuntime().totalMemory());
+      // root of evilness here ... pagecount should not be handled specially ...
+      state.setProperty (REPORT_PAGECOUNT_PROPERTY, new Integer (state.getCurrentPage () - 1));
+      state.setProperty (REPORT_PAGEFORMAT_PROPERTY, output.getPageFormat ());
+      state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+
+      // part 3: (done by processing the ReportStateList:) Print the report
+      return pageStates;
     }
-
-    // part 2: Print the complete report in DummyMode(do the layouting)
-    ReportStateList pageStates = new ReportStateList (state.getReport(), output);
-
-    while (!state.isFinish ())
+    catch (OutputTargetException ote)
     {
-      pageStates.add (state);
-      ReportState oldstate = state;
-      state = processPage (dummyOutput, state, true);
-
-      if ((!state.isFinish()) && (!state.isProceeding (oldstate)))
-      {
-        throw new ReportProcessingException ("State did not proceed, bailing out!");
-      }
+      Log.error ("Unable to repaginate Report:" , ote);
+      throw new ReportProcessingException(ote.getMessage());
     }
-
-    // root of evilness here ... pagecount should not be handled specially ...
-    state.setProperty (REPORT_PAGECOUNT_PROPERTY, new Integer (state.getCurrentPage () - 1));
-    state.setProperty (REPORT_PAGEFORMAT_PROPERTY, output.getPageFormat ());
-    state.setProperty (REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
-
-    // part 3: (done by processing the ReportStateList:) Print the report
-    return pageStates;
   }
 
   /**
