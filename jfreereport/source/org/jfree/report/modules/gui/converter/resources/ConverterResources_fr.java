@@ -55,6 +55,7 @@ public class ConverterResources_fr extends JFreeReportResources
         {"convertdialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
         {"convertdialog.targetOverwriteTitle", "Ecraser le fichier?"},
+        {"convertdialog.encoding", "Encodage"},
         {"convertdialog.targetFile", "Fichier cible"},
         {"convertdialog.sourceIsEmpty", "Le fichier source n'est pas spécifié"},
         {"convertdialog.sourceIsNoFile", "Le fichier source spécifié n'est pas un fichier ordinaire."},

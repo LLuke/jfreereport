@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -47,11 +47,12 @@ import java.util.Properties;
 
 import org.jfree.report.modules.parser.ext.CompoundObjectHandler;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtils;
+import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
 import org.jfree.xml.factory.objects.URLObjectDescription;
-import org.jfree.xml.Parser;
 
 /**
  * A writer.
@@ -253,7 +254,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     final Properties p = new Properties();
     p.setProperty("name", parameterName);
-    if ((parameterDefinition.equals(parameterValue.getClass())) == false)
+    if (isUseParameterObjectDescription(parameterDefinition, parameterValue) == false)
     {
       p.setProperty("class", parameterValue.getClass().getName());
     }
@@ -277,6 +278,25 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     }
 
   }
+
+  private boolean isUseParameterObjectDescription (final Class parameter, final Object o)
+  {
+    final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
+    ObjectDescription odObject = cc.getDescriptionForClass(o.getClass());
+    ObjectDescription odParameter = cc.getDescriptionForClass(parameter);
+
+    // search the most suitable super class object description ...
+    if (odObject == null)
+    {
+      odObject = cc.getSuperClassObjectDescription(o.getClass(), odObject);
+    }
+    if (odParameter == null)
+    {
+      odParameter = cc.getSuperClassObjectDescription(parameter, odParameter);
+    }
+    return ObjectUtils.equalOrBothNull(odParameter, odObject);
+  }
+
 
   /**
    * Returns <code>true</code> if this is a basic object, and <code>false</code> otherwise.

@@ -60,6 +60,7 @@ public class ConverterResources_si extends JFreeReportResources
         {"convertdialog.sourceIsNoFile", "Navedena izvorna datoteka ni navadna datoteka."},
         {"convertdialog.sourceIsNotReadable", "Izvorna datoteka ni berljiva."},
         {"convertdialog.sourceFile", "Izvorna datoteka"},
+        {"convertdialog.encoding", "Kodiranje"},
 
         {"convertdialog.action.selectTarget.name", "Izberi"},
         {"convertdialog.action.selectTarget.description", "Izberi ciljno datoteko."},

@@ -59,6 +59,7 @@ public class ConverterResources_sv extends JFreeReportResources
         {"convertdialog.sourceIsNoFile", "Källa filen är inte en vanlig fil."},
         {"convertdialog.sourceIsNotReadable", "Källa filen är skrivskydad."},
         {"convertdialog.sourceFile", "Källa fil"},
+        {"convertdialog.encoding", "Kodningen"},
 
         {"convertdialog.action.selectTarget.name", "Välja"},
         {"convertdialog.action.selectTarget.description", "Välja mål filen."},

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes
  * -------
@@ -509,7 +509,6 @@ public class PreviewProxyBase extends JComponent
      */
     public void actionPerformed(final ActionEvent e)
     {
-      LayoutManagerCache.printResults();
     }
   }
 

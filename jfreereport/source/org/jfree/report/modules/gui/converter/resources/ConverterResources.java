@@ -55,6 +55,7 @@ public class ConverterResources extends JFreeReportResources
          "The file ''{0}'' exists. Overwrite it?"},
         {"convertdialog.targetOverwriteTitle", "Overwrite file?"},
         {"convertdialog.targetFile", "Target file"},
+        {"convertdialog.encoding", "Encoding"},
         {"convertdialog.sourceIsEmpty", "The source file is not specified"},
         {"convertdialog.sourceIsNoFile", "The specified source file is no ordinary file."},
         {"convertdialog.sourceIsNotReadable", "The source file is not readable."},

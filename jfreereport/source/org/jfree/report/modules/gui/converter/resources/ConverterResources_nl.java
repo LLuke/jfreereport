@@ -53,6 +53,7 @@ public class ConverterResources_nl extends JFreeReportResources
         {"convertdialog.action.selectSource.name", "Selecteer"},
         {"convertdialog.action.selectTarget.description", "Selecteer doelbestand."},
         {"convertdialog.action.selectTarget.name", "Selecteer"},
+        {"convertdialog.encoding", "Encoderen"},
         {"convertdialog.errorTitle", "Fout"},
         {"convertdialog.sourceFile", "Bronbestand"},
         {"convertdialog.sourceIsEmpty", "Bronbestand is leeg."},

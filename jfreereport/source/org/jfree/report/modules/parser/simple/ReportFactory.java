@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.15 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ReportFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,12 @@ package org.jfree.report.modules.parser.simple;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.io.IOException;
+import java.net.URL;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.IncludeParser;
+import org.jfree.report.modules.parser.base.IncludeParserFrontend;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ReportRootHandler;
 import org.jfree.report.util.CharacterEntityParser;
@@ -138,6 +142,10 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     {
       startProperty(atts);
     }
+    else if (tagName.equals("include"))
+    {
+      handleIncludeParsing(atts);
+    }
     else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
@@ -148,6 +156,25 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
   }
 
+  public void handleIncludeParsing (final Attributes atts) throws SAXException
+  {
+    String file = atts.getValue("src");
+    if (file == null)
+    {
+      throw new SAXException("Required attribute 'src' is missing.");
+    }
+
+    try
+    {
+      URL target = new URL (getContentBase(), file);
+      IncludeParserFrontend parserFrontend = new IncludeParserFrontend(getParser());
+      parserFrontend.parse(target);
+    }
+    catch (IOException e)
+    {
+      throw new SAXException("Failure while including external report definition.", e);
+    }
+  }
 
   /**
    * Starts a new property entry within the report configuration section.
@@ -212,6 +239,9 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     {
       endConfiguration();
     }
+    else if (elementName.equals("include"))
+    {
+    }
     else if (elementName.equals(PROPERTY_TAG))
     {
       endProperty();
@@ -264,6 +294,12 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   public void startReport(final Attributes atts)
       throws SAXException
   {
+    if (isIncludedParsing())
+    {
+      // do nothing if this is called from an other parser ...
+      return;
+    }
+
     final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
 
 
@@ -416,5 +452,10 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   public void endReport()
       throws SAXException
   {
+  }
+
+  public boolean isIncludedParsing ()
+  {
+    return getParser().getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true");
   }
 }

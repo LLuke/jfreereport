@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.7 2003/06/27 14:25:18 taqua Exp $
+ * $Id: ReportParser.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@
 package org.jfree.report.modules.parser.base;
 
 import org.jfree.xml.Parser;
+import org.jfree.report.JFreeReport;
 
 /**
  * The report parser initializes the parsing engine and coordinates the parsing
@@ -77,5 +78,10 @@ public class ReportParser extends Parser
   public Object getResult()
   {
     return getHelperObject(InitialReportHandler.REPORT_DEFINITION_TAG);
+  }
+
+  public JFreeReport getReport ()
+  {
+    return (JFreeReport) getResult();
   }
 }

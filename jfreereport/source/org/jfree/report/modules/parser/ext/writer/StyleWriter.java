@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.19 2003/06/29 16:59:27 taqua Exp $
+ * $Id: StyleWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import org.jfree.report.style.StyleKey;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
+import org.jfree.util.ObjectUtils;
 
 /**
  * A style writer.
@@ -156,6 +157,24 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     return od;
   }
 
+  private boolean isUseKeyObjectDescription (final StyleKey key, final Object o)
+  {
+    final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
+    ObjectDescription odObject = cc.getDescriptionForClass(o.getClass());
+    ObjectDescription odKey = cc.getDescriptionForClass(key.getValueType());
+
+    // search the most suitable super class object description ...
+    if (odObject == null)
+    {
+      odObject = cc.getSuperClassObjectDescription(o.getClass(), odObject);
+    }
+    if (odKey == null)
+    {
+      odKey = cc.getSuperClassObjectDescription(key.getValueType(), odKey);
+    }
+    return ObjectUtils.equalOrBothNull(odKey, odObject);
+  }
+
   /**
    * Writes a stylekey.
    *
@@ -188,7 +207,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
 
     final Properties p = new Properties();
     p.setProperty("name", key.getName());
-    if ((key.getValueType().equals(o.getClass())) == false)
+    if (isUseKeyObjectDescription(key, o) == false)
     {
       p.setProperty("class", o.getClass().getName());
     }

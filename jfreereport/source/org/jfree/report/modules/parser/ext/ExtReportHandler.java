@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.15 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,8 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import java.util.HashMap;
-
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.IncludeParser;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ReportRootHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
@@ -106,15 +105,24 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public void init (final Parser parser, final String finishTag)
+  public void init (final Parser parser, final String finishTag) throws SAXException
   {
     this.parser = parser;
     this.finishTag = finishTag;
 
-    // create the initial JFreeReport object.
-    final JFreeReport report = new JFreeReport();
-    getParser().setHelperObject(REPORT_DEFINITION_TAG, report);
-    getParser().setHelperObject(StylesHandler.STYLES_COLLECTION, new HashMap());
+    if (parser.getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true"))
+    {
+      if (getParser().getHelperObject(REPORT_DEFINITION_TAG) == null)
+      {
+        throw new SAXException("This is an include report, but no report object found.");
+      }
+    }
+    else
+    {
+      // create the initial JFreeReport object.
+      final JFreeReport report = new JFreeReport();
+      getParser().setHelperObject(REPORT_DEFINITION_TAG, report);
+    }
     createClassFactoryHolder();
     createStyleKeyFactoryHolder();
     createTemplateFactoryHolder();

@@ -48,6 +48,7 @@ public class ConverterResources_ru extends JFreeReportResources
   private static final Object[][] CONTENTS =
       {
 
+        {"convertdialog.encoding", "\u041a\u043e\u0434\u0438\u0440\u043e\u0432\u043a\u0430"},
         {"convertdialog.targetIsEmpty",
          "\u0423\u043a\u0430\u0437\u0430\u043d\u043d\u044b\u0439 \u0444\u0430\u0439\u043b " +
       "\u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442"},

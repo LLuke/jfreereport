@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.16 2003/07/03 15:59:28 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -55,9 +55,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
 
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
+import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.converter.resources.ConverterResources;
 import org.jfree.report.modules.parser.ext.writer.ReportConverter;
 import org.jfree.report.util.FilesystemFilter;
@@ -87,6 +89,8 @@ public class ReportConverterGUI extends JFrame
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       ConverterResources.class.getName();
+
+  private EncodingComboBoxModel encodingModel;
 
   /**
    * An action for selecting the target.
@@ -174,8 +178,14 @@ public class ReportConverterGUI extends JFrame
    */
   public ReportConverterGUI()
   {
+    encodingModel = EncodingComboBoxModel.createDefaultModel();
+    encodingModel.ensureEncodingAvailable("UTF-16");
+    encodingModel.setSelectedIndex(encodingModel.indexOf("UTF-16"));
+    encodingModel.sort();
+
     sourceField = new JTextField();
     targetField = new JTextField();
+
     final JButton selectSourceButton = new ActionButton(new SelectSourceAction());
     final JButton selectTargetButton = new ActionButton(new SelectTargetAction());
     final JButton convertFilesButton = new ActionButton(new ConvertAction());
@@ -232,6 +242,23 @@ public class ReportConverterGUI extends JFrame
     gbc.insets = new Insets(3, 1, 1, 1);
     gbc.fill = GridBagConstraints.HORIZONTAL;
     contentPane.add(selectTargetButton, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(3, 1, 1, 1);
+    contentPane.add(new JLabel(getResources().getString("convertdialog.encoding")), gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.weightx = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(3, 1, 1, 1);
+    gbc.ipadx = 120;
+    contentPane.add(new JComboBox(encodingModel), gbc);
 
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
@@ -448,7 +475,8 @@ public class ReportConverterGUI extends JFrame
     try
     {
       Log.debug("Converting report ...");
-      converter.convertReport(getSourceFile(), getTargetFile(), "UTF-16");
+      String encoding = encodingModel.getSelectedEncoding();
+      converter.convertReport(getSourceFile(), getTargetFile(), encoding);
       return true;
     }
     catch (Exception e)

@@ -53,6 +53,7 @@ public class ConverterResources_de extends JFreeReportResources
         {"convertdialog.action.selectSource.name", "Ausw\u00e4hlen"},
         {"convertdialog.action.selectTarget.description", "W\u00e4hlt die Zieldatei aus"},
         {"convertdialog.action.selectTarget.name", "Ausw\u00e4hlen"},
+        {"convertdialog.encoding", "Zeichensatz"},
         {"convertdialog.errorTitle", "Fehler"},
         {"convertdialog.sourceFile", "Quelldatei"},
         {"convertdialog.sourceIsEmpty", "Es wurde keine Quelldatei angegeben."},

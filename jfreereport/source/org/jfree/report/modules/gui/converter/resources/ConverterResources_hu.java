@@ -59,6 +59,7 @@ public class ConverterResources_hu extends JFreeReportResources
         {"convertdialog.sourceIsNoFile", "A megadott forrás nem közönséges fájl."},
         {"convertdialog.sourceIsNotReadable", "A forrásfájl nem olvasható."},
         {"convertdialog.sourceFile", "Forrás fájl"},
+        {"convertdialog.encoding", "Karakterkódolás"},
 
         {"convertdialog.action.selectTarget.name", "Válassz"},
         {"convertdialog.action.selectTarget.description", "Válassz cél fájlt."},

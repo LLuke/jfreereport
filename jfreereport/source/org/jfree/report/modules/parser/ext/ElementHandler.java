@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.14 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ElementHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,6 @@
  */
 
 package org.jfree.report.modules.parser.ext;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataSource;
@@ -80,9 +77,6 @@ public class ElementHandler implements ElementDefinitionHandler
   /** The element. */
   private Element element;
 
-  /** A style collection. */
-  private HashMap styleCollection;
-
   /** A template handler. */
   private TemplateHandler templateFactory;
 
@@ -104,12 +98,6 @@ public class ElementHandler implements ElementDefinitionHandler
     this.finishTag = finishTag;
     this.parser = parser;
     this.element = element;
-    styleCollection
-        = (HashMap) getParser().getHelperObject(StylesHandler.STYLES_COLLECTION);
-    if (styleCollection == null)
-    {
-      throw new IllegalStateException("No styles collection found in the configuration");
-    }
     templateCollector = (TemplateCollector)
         getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     if (templateCollector == null)
@@ -238,15 +226,5 @@ public class ElementHandler implements ElementDefinitionHandler
   public Element getElement()
   {
     return element;
-  }
-
-  /**
-   * Returns the style collection.
-   *
-   * @return The style collection.
-   */
-  public Map getStyleCollection()
-  {
-    return styleCollection;
   }
 }

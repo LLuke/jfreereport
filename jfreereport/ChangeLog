@@ -38,6 +38,13 @@ A list of changes in recent versions:
           shapes. This reduces the definition code size when creating the common
           shape use-cases.
 
+        * Support for <include> tags for both parsers. This allows to split the
+          definition into several files; (Damn Beast: Not yet: ReportWriter creates
+          slightly cleaner code by removing unnecessary class specifications.) More to do!
+
+        * BugFix: The string encoding 1251 (Windows Cyrillic) was not defined in
+          the EncodingComboBox and therefore not visible.
+
 0.8.3d: (29-Jun-2003)
         * BugFix: All table report processors had problems with reports, that
           had a PageFormat with a imagable size > 1000 points. This issue was
@@ -151,21 +158,21 @@ A list of changes in recent versions:
         * The reference document generator now also generates documentation for the
           DataSource factories.
 
-        * The XML parser now prints the location of the parse error on all exceptions.l 
+        * The XML parser now prints the location of the parse error on all exceptions.l
 
 0.8.3a : (04-Jun-2003)
         * BugFix: Serialization works again. All functions are serializable
           now.
-        
+
         * BugFix: The report writer handles subclasses correctly
-        
+
         * BugFix: The parser's extended report definition is working again.
-        
+
         * BugFix: Unclean definitions in the ReportState, Band, Element and
           DataRow classes.
-          
+
         * BugFix: The excel and PDF target work again.
-        
+
         * BugFix: Unclean definition in Group and GroupList methods removed.
           Groups can no longer be composed in an invalid way.
 
@@ -201,7 +208,7 @@ A list of changes in recent versions:
           headers, and not just the last one.
 
         * BugFix: Wordbreaking was buggy.
-        
+
         * Most of the parser code moved into JCommon. We are using JCommon version
           0.8.1; all classes of JCommon moved into the package tree under
           org.jfree.*
