@@ -1,8 +1,38 @@
 /**
- * Date: Jan 28, 2003
- * Time: 3:14:12 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.2 2003/01/29 18:37:13 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * BaseFontSupport.java
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: AbstractTableCellDataFactory.java,v 1.3 2003/02/02 23:43:52 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 28-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table;
 
@@ -20,6 +50,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * 
+ */
 public abstract class AbstractTableCellDataFactory implements TableCellDataFactory
 {
   public TableCellData createBandCell(Element e, Rectangle2D rect)

@@ -1,19 +1,48 @@
 /**
- * Date: Jan 29, 2003
- * Time: 1:49:26 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: PlainTextOutputTarget.java,v 1.7 2003/02/04 17:56:29 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------
+ * PlainTextOutputTarget.java
+ * --------------------
+ * (C)opyright 2002, by Simba Management Limited.
+ *
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   -;
+ *
+ * $Id: PlainTextOutputTarget.java,v 1.8 2003/02/07 22:40:43 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 29-Jan-2003 : Initial version
+ *
  */
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.content.DefaultContentFactory;
 import com.jrefinery.report.targets.base.content.TextContentFactoryModule;
-import com.jrefinery.report.targets.base.content.ImageContentFactoryModule;
-import com.jrefinery.report.targets.base.content.ShapeContentFactoryModule;
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
@@ -28,17 +57,50 @@ import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.io.IOException;
 
+/**
+ * An outputtarget, that generates plaintext. The text can be enriched with
+ * escape sequences for Epson- or IBM-Compatible printers.
+ * <p>
+ * This target does not support images, shapes or different fonts.
+ * The output generation is needle-printer oriented, the pageformat is translated
+ * into a text page, graphics coordinates are aligned along the character grid
+ * of the text mode.
+ * <p>
+ * It is assumed that all characters have the same width, proportional printing
+ * is not supported.
+ * <p>
+ * The output mode is defined by supplying a suitable PrinterCommandSet. Depending
+ * on the target printer, you can supply several PrinterCommandSets:
+ * <ul>
+ * <li>EpsonPrinterCommandSet
+ * <p>Suitable for all Epson ESC/P compatible printers. The content will be formated
+ * with ESC/P escape sequences.
+ * <li>IBMPrinterCommandSet
+ * <p>Suitable for all IBM Compatible needle printers. The content will be formated using
+ * IBM escape sequences.
+ * <li>PrinterCommandSet
+ * <p>Suitable for unsupported printers and for text file output. The content will be
+ * written without any printer control sequences.
+ * </ul>
+ *
+ * @see PrinterCommandSet
+ * @see IBMPrinterCommandSet
+ * @see EpsonPrinterCommandSet
+ * @see PlainTextPage
+ */
 public class PlainTextOutputTarget extends AbstractOutputTarget
 {
 
-  /** The characters per inch used for this text  (usually 10, 12, 15 ) */
+  /** The characters per inch used for this text  (usually 10, 12, 15, 17 or 20 ) */
   public static final String CPI_PROPERTY =
       "com.jrefinery.report.target.pageable.output.PlainTextOutputTarget.CPI";
+  /** The default character spacing is 10 CPI */
   public static final Integer CPI_PROPERTY_DEFAULT = new Integer(10);
 
   /** The lines per inch used for this text (usually 6 or 8) */
   public static final String LPI_PROPERTY =
       "com.jrefinery.report.target.pageable.output.PlainTextOutputTarget.LPI";
+  /** The default linespacing is 6 LPI */
   public static final Integer LPI_PROPERTY_DEFAULT = new Integer(6);
 
   /**
@@ -56,17 +118,22 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     /** The stroke. */
     private Stroke mystroke;
 
-    public PlainTextState(PlainTextOutputTarget source)
+    /**
+     * creates a new PlainTextState.
+     *
+     * @param source the source outputtarget.
+     */
+    public PlainTextState(OutputTarget source)
     {
       save(source);
     }
 
     /**
-     * Saves the state of the Graphics2D.
+     * Saves the state of the OutputTarget.
      *
-     * @param source  the Graphics2D.
+     * @param source  the OutputTarget.
      */
-    public void save(PlainTextOutputTarget source)
+    public void save(OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -74,12 +141,13 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
 
     /**
-     * Copies the state back to the specified Graphics2D.
+     * Copies the state back to the specified OutputTarget.
      *
-     * @param target  the Graphics2D.
+     * @param target  the OutputTarget.
+     * @
      */
-    public void restore(PlainTextOutputTarget target)
-      throws OutputTargetException
+    public void restore(OutputTarget target)
+        throws OutputTargetException
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
@@ -87,11 +155,23 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
   }
 
+  /**
+   * The PlainTextSizeCalculator is used to calculate the dimensions
+   * of an PlainText string.
+   */
   private static class PlainTextSizeCalculator implements SizeCalculator
   {
+    /** the current character width */
     private float characterWidth;
+    /** the current character height */
     private float characterHeight;
 
+    /**
+     * Creates a new PlainTextSizeCalculator.
+     *
+     * @param characterWidth the character width in points (1/72 inch).
+     * @param characterHeight the character height in points (1/72 inch).
+     */
     public PlainTextSizeCalculator(float characterWidth, float characterHeight)
     {
       this.characterWidth = characterWidth;
@@ -127,53 +207,85 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
   }
 
+  /** a flag indicating whether this OutputTarget is open */
   private boolean open;
+  /** the current font definition */
   private FontDefinition font;
+  /** the current paint, is not used */
   private Paint paint;
+  /** the current stroke, is not used */
   private Stroke stroke;
+  /** the current page width in CPI */
   private int currentPageWidth;
+  /** the current page height in LPI */
   private int currentPageHeight;
+  /** the character width in points */
   private float characterWidth;
+  /** the character height in points */
   private float characterHeight;
+  /** the current save state of this output target */
   private PlainTextState savedState;
+  /** the currently generated page */
   private PlainTextPage pageBuffer;
+  /** the current printer command set used to write and format the page */
   private PrinterCommandSet commandSet;
 
   /**
-   * Creates a new output target.  Both the logical page size and the physical page size will be
-   * the same.
+   * Creates a new PlainTextOutputTarget which uses the given command set to write
+   * the generated content.
    *
    * @param format  the page format.
+   * @param commandSet the printer commandset used to write the generated content.
+   * @throws NullPointerException if the printer command set is null
    */
   public PlainTextOutputTarget(PageFormat format, PrinterCommandSet commandSet)
   {
     super(format);
+    if (commandSet == null)
+      throw new NullPointerException();
+
     this.commandSet = commandSet;
   }
 
   /**
-   * Creates a new output target with the specified logical and physical page sizes.
+   * Creates a new PlainTextOutputTarget which uses the given command set to write
+   * the generated content.
    *
+   * @param commandSet the printer commandset used to write the generated content.
    * @param logical  the page format used by this target for layouting.
    * @param physical  the page format used by this target for printing.
+   * @throws NullPointerException if the printer command set is null
    */
   public PlainTextOutputTarget(PageFormat logical, PageFormat physical, PrinterCommandSet commandSet)
   {
     super(logical, physical);
+    if (commandSet == null)
+      throw new NullPointerException();
+
     this.commandSet = commandSet;
   }
 
   /**
-   * Creates a new output target.
+   * Creates a new PlainTextOutputTarget which uses the given command set to write
+   * the generated content.
    *
-   * @param logicalPage  the logical page.
+   * @param commandSet the printer commandset used to write the generated content.
+   * @param logicalPage  the page format used by this target for layouting.
+   * @throws NullPointerException if the printer command set is null
    */
   public PlainTextOutputTarget(LogicalPage logicalPage, PrinterCommandSet commandSet)
   {
     super(logicalPage);
+    if (commandSet == null)
+      throw new NullPointerException();
+
     this.commandSet = commandSet;
   }
 
+  /**
+   * Gets the printercommandset used to format the text.
+   * @return the printer command set.
+   */
   public PrinterCommandSet getCommandSet()
   {
     return commandSet;
@@ -235,12 +347,12 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     currentPageWidth = (int) (page.getPageFormat().getImageableWidth() / characterWidth);
 
     this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight, getCommandSet());
-    savedState = saveState();
+    savedState = new PlainTextState(this);
   }
 
   /**
-   * Signals that the current page is ended.  Some targets need to know when a page is finished,
-   * others can simply ignore this message.
+   * Signals that the current page is ended.  Writes the page buffer to the
+   * printer.
    *
    * @throws OutputTargetException if there is some problem with the target.
    */
@@ -268,17 +380,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Saves the state of this graphics object. Use restoreState to restore a previously saved
-   * state.
-   *
-   * @return the state container.
-   */
-  protected PlainTextState saveState()
-  {
-    return new PlainTextState(this);
-  }
-
-  /**
    * Returns the current font.
    *
    * @return the current font.
@@ -289,7 +390,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Sets the font.
+   * Sets the font. This has no influence on the generated output.
    *
    * @param font  the font.
    *
@@ -311,9 +412,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Defines the current stroke for the target.
-   * <P>
-   * The stroke is used to draw the outlines of shapes.
+   * Defines the current stroke for the target.  This has no influence on the generated output.
    *
    * @param stroke  the stroke.
    *
@@ -335,7 +434,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Sets the paint.
+   * Sets the paint.  This has no influence on the generated output.
    *
    * @param paint The paint.
    *
@@ -363,7 +462,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws a shape relative to the current position.
+   * This method is empty, as the PlainTextOutputTarget does not support
+   * shapes.
    *
    * @param shape  the shape to draw.
    */
@@ -373,7 +473,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Fills the shape relative to the current position.
+   * This method is empty, as the PlainTextOutputTarget does not support
+   * shapes.
    *
    * @param shape  the shape to draw.
    */
@@ -383,7 +484,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws a image relative to the specified coordinates.
+   * This method is empty, as the PlainTextOutputTarget does not support
+   * images.
    *
    * @param image The image to draw (as ImageReference for possible embedding of raw data).
    *
@@ -391,7 +493,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public void drawImage(ImageReference image) throws OutputTargetException
   {
-    // this is not supported, does nothing ...
   }
 
   /**
@@ -407,7 +508,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Configures the output target.
+   * Configures the output target. Valid configuration keys are CPI_PROPERTY and
+   * LPI_PROPERTY defining the font of the output.
    *
    * @param config  the configuration.
    */
@@ -434,7 +536,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
     catch (NumberFormatException nfe)
     {
-      Log.warn (new Log.SimpleMessage ("ReportConfiguration value ", key, " is no valid integer"));
+      Log.warn(new Log.SimpleMessage("ReportConfiguration value ", key, " is no valid integer"));
     }
   }
 
@@ -479,14 +581,14 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * PlainTextOutputTarget does not support ImageContent ...
-   * @return
+   * Creates a content factory. The factory does only support TextContent.
+   * 
+   * @return the created content factory.
    */
-  protected ContentFactory createContentFactory ()
+  protected ContentFactory createContentFactory()
   {
-    DefaultContentFactory contentFactory = new DefaultContentFactory ();
+    DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
-    contentFactory.addModule(new ShapeContentFactoryModule());
     return contentFactory;
   }
 

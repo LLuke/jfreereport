@@ -28,11 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.3 2003/01/24 16:39:08 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
+ * 01-Feb-2002 : Refactoring moved this class from package
+ *               com.jefinery.report.targets.pageable.output
  *
  */
 

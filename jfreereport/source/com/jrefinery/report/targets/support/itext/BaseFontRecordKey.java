@@ -28,11 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.2 2002/12/05 16:50:51 mungady Exp $
+ * $Id: BaseFontRecordKey.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
+ * 01-Feb-2002 : Refactoring moved this class from package
+ *               com.jefinery.report.targets.pageable.output
  *
  */
 
@@ -64,7 +66,7 @@ public class BaseFontRecordKey
   }
 
   /**
-   * Tests for equality.
+   * Indicates whether some other object is "equal to" this BaseFontRecordKey.
    *
    * @param o  the object to test.
    *
