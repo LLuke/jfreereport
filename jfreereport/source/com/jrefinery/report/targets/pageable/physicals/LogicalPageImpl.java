@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.3 2002/12/04 16:21:33 mungady Exp $
+ * $Id: LogicalPageImpl.java,v 1.4 2002/12/05 16:58:39 mungady Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import com.jrefinery.report.targets.pageable.operations.OperationModul;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -81,6 +82,7 @@ public class LogicalPageImpl implements LogicalPage
   /** A flag that indicates whether or not the logical page is closed. */
   private boolean closed;
 
+  private boolean addOperationComments;
   /**
    * Creates a new logical page.
    *
@@ -99,6 +101,7 @@ public class LogicalPageImpl implements LogicalPage
    */
   public LogicalPageImpl(PageFormat log, PageFormat phys)
   {
+    addOperationComments = ReportConfiguration.getGlobalConfig().isPrintOperationComment();
     closed = false;
     setPageFormat(log);
     setPhysicalPageFormat(phys);
@@ -231,14 +234,15 @@ public class LogicalPageImpl implements LogicalPage
     if (bounds.getHeight() == 0)
       return null;
     
-//    Log.debug ("LogicalPage: Band added :  BandType: " + band.getClass() + " bounds: " + bounds);
-
     PageFormat pf = getPageFormat();
     Rectangle2D logicalPageBounds = new Rectangle2D.Double(0,0, pf.getImageableWidth(), pf.getImageableHeight());
     Rectangle2D ibounds = logicalPageBounds.createIntersection(bounds);
 
     Spool operations = new Spool();
-    operations.addOperation(new PhysicalOperation.AddComment ("Begin Band: " + band.getClass() + " -> " + band.getName()));
+    if (addOperationComments)
+    {
+      operations.addOperation(new PhysicalOperation.AddComment (new Log.SimpleMessage("Begin Band: ", band.getClass(), " -> ", band.getName())));
+    }
 
     List l = band.getElements();
     for (int i = 0; i < l.size(); i++)
@@ -285,7 +289,10 @@ public class LogicalPageImpl implements LogicalPage
       throw new NullPointerException("No layout for element");
 
     Rectangle2D drawBounds = unionSubRect(bounds, elementBounds);
-    operations.addOperation(new PhysicalOperation.AddComment ("Begin Element: " + e.getClass() + " -> " + e.getName()));
+    if (addOperationComments)
+    {
+      operations.addOperation(new PhysicalOperation.AddComment ("Begin Element: " + e.getClass() + " -> " + e.getName()));
+    }
 
     Content content = mod.createContentForElement(e, drawBounds, getOutputTarget());
     // split the elements contents, then write ..

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.3 2002/12/05 16:49:44 mungady Exp $
  *
  * Changes
  * -------
@@ -242,7 +242,6 @@ public class SimplePageLayouter extends PageLayouter
           }
           if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
           {
-            Log.debug ("Repeating GroupHeader found at group " + gidx);
             print(g.getHeader(), true);
             break;
           }
@@ -654,12 +653,9 @@ public class SimplePageLayouter extends PageLayouter
     isLastPageBreak = false;
     if (state == null)
     {
-//      Log.debug ("SimpleLayouManagerState is null, first page?");
-//      Log.debug ("LogicalPage: " + getLogicalPage().isEmpty() + " && " 
-        // + getLogicalPage().isClosed());
       if (anchestor.getCurrentPage() != 1)
       {
-        throw new IllegalStateException();
+        throw new IllegalStateException("State is null, but this is not the first page");
       }
       return; // no state yet, maybe the first state?
     }

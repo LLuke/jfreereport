@@ -24,7 +24,7 @@
  * WeakReferenceList.java
  * ----------------------
  *
- * $Id: WeakReferenceList.java,v 1.8 2002/11/07 21:45:29 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.9 2002/12/02 17:44:51 taqua Exp $
  *
  * Changes
  * -------
@@ -67,16 +67,20 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /** Storage for the references. */
   private Reference[] childs;
 
-  /** The maximum number of elements. */
+  /** The current number of elements. */
   private int size;
+
+  /** The maximum number of elements. */
+  private int maxChilds;
 
   /**
    * Creates a new weak reference list. The storage of the list is limited to getMaxChildCount()
    * elements.
    */
-  public WeakReferenceList ()
+  public WeakReferenceList (int maxChildCount)
   {
-    this.childs = new Reference[getMaxChildCount () - 1];
+    this.maxChilds = maxChildCount;
+    this.childs = new Reference[maxChildCount - 1];
   }
 
   /**
@@ -84,9 +88,9 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return 25
    */
-  protected int getMaxChildCount ()
+  protected final int getMaxChildCount ()
   {
-    return 25;
+    return maxChilds;
   }
 
   /**

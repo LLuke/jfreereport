@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.10 2002/11/07 21:45:29 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.11 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -755,40 +755,4 @@ public class PageFormatFactory
                           + " H: " + pf.getImageableHeight()
                           + " W: " + pf.getImageableWidth());
   }
-
-  /**
-   * For testing, please ignore.
-   *
-   * @param args  ignored.
-   */
-  public static void main (String [] args)
-  {
-    PageFormat pf = null;
-    PageFormatFactory pff = PageFormatFactory.getInstance();
-    Paper p = pff.createPaper(500, 1000);
-    // top left bottom right
-    pff.setBorders(p, 10, 0, 0, 0);
-    logPaper(p);
-    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
-    logPageFormat(pf);
-
-    Log.debug ("-------------------------------------------------------------------------");
-    pff.setBorders(p, 0, 10, 0, 0);
-    logPaper(p);
-    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
-    logPageFormat(pf);
-
-    Log.debug ("-------------------------------------------------------------------------");
-    pff.setBorders(p, 0, 0, 10, 0);
-    logPaper(p);
-    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
-    logPageFormat(pf);
-
-    Log.debug ("-------------------------------------------------------------------------");
-    pff.setBorders(p, 0, 0, 0, 10);
-    logPaper(p);
-    pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
-    logPageFormat(pf);
-  }
-
 }

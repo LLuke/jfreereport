@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.2 2002/12/04 16:21:33 mungady Exp $
  *
  * Changes
  * -------
@@ -99,10 +99,6 @@ public class PhysicalPage
    */
   public void write(OutputTarget ot) throws OutputTargetException
   {
-//    Log.debug ("------------------------------- BEGIN ----------------------------");
-//    long time = System.currentTimeMillis();
-//    Log.debug ("Time: " + time);
-
     ot.beginPage(this);
     PhysicalOperation[] ops = new PhysicalOperation[bandOperations.size()];
     ops = (PhysicalOperation[]) bandOperations.toArray(ops);
@@ -113,8 +109,6 @@ public class PhysicalPage
     }
 
     ot.endPage();
-//    Log.debug ("------------------------------- END ----------------------------");
-//    Log.debug ("Time: " + (System.currentTimeMillis() - time));
   }
 
   public void flush()

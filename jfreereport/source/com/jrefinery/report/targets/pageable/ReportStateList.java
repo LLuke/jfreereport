@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.1 2002/12/02 17:56:52 taqua Exp $
+ * $Id: ReportStateList.java,v 1.2 2002/12/03 16:31:00 mungady Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,9 @@ package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.WeakReferenceList;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The ReportState list stores a report states for the beginning of every page.
@@ -62,7 +60,13 @@ public class ReportStateList
    * not-freeable memory used by the list, but restoring a single page will require more
    * time.
    */
-  private static final int MASTERPOSITIONS = 10;
+  private static final int MASTERPOSITIONS_MAX = 10;
+  private static final int MASTERPOSITIONS_MED = 4;
+
+  // the max index that will be stored in the primary list
+  private static final int PRIMARY_MAX = 20;
+  // the max index that will be stored in the master4 list
+  private static final int MASTER4_MAX = 120;
 
   /**
    * Internal WeakReferenceList that is capable to restore its elements. The elements in
@@ -70,9 +74,6 @@ public class ReportStateList
    */
   private static class MasterList extends WeakReferenceList
   {
-    /** The position. */
-    //private int pos;
-
     /** The master list. */
     private ReportStateList master;
 
@@ -81,8 +82,9 @@ public class ReportStateList
      *
      * @param list  the list.
      */
-    public MasterList (ReportStateList list)
+    public MasterList (ReportStateList list, int masterPositions)
     {
+      super (masterPositions);
       this.master = list;
     }
 
@@ -101,7 +103,6 @@ public class ReportStateList
         return null;
       }
       int max = getChildPos (index);
-      Log.debug ("Position " + index + "(" + max + ") was lost, restoring it.");
       try
       {
         return this.restoreState (max, master);
@@ -110,17 +111,6 @@ public class ReportStateList
       {
         return null;
       }
-    }
-
-    /**
-     * Returns the number of children in the list. This value is a reference to the constant
-     * MASTERPOSITIONS and is defaulted to 10.
-     *
-     * @return the maximum number of children in the list.
-     */
-    protected int getMaxChildCount ()
-    {
-      return MASTERPOSITIONS;
     }
 
     /**
@@ -164,9 +154,22 @@ public class ReportStateList
 
   /**
    * The list of master states. This is a list of WeakReferenceLists. These WeakReferenceLists
-   * contain their master state as first child
+   * contain their master state as first child. The weakReferenceLists have a maxSize of 10,
+   * so every 10th state will protected from being garbageCollected.
    */
-  private List masterStates;
+  private ArrayList masterStates10; // all states > 120
+  /**
+   * The list of master states. This is a list of WeakReferenceLists. These WeakReferenceLists
+   * contain their master state as first child. The weakReferenceLists have a maxSize of 4,
+   * so every 4th state will protected from being garbageCollected.
+   */
+  private ArrayList masterStates4; // all states from 20 - 120
+
+  /**
+   * The list of primary states. This is a list of ReportStates and is used to store the
+   * first 20 elements of this state list.
+   */
+  private ArrayList primaryStates; // all states from 0 - 20
 
   /** The number of elements in this list. */
   private int size;
@@ -182,11 +185,11 @@ public class ReportStateList
    *
    * @param pos  the position.
    *
-   * @return ??
+   * @return the position within the masterStateList.
    */
-  private int getMasterPos (int pos)
+  private int getMasterPos (int pos, int maxListSize)
   {
-    return (int) Math.floor (pos / MASTERPOSITIONS);
+    return (int) Math.floor (pos / maxListSize);
   }
 
   /**
@@ -209,7 +212,10 @@ public class ReportStateList
     dummyWriter = proc.getOutputTarget().createDummyWriter();
     dummyWriter.open();
 
-    masterStates = new LinkedList ();
+    primaryStates = new ArrayList ();
+    masterStates4 = new ArrayList ();
+    masterStates10 = new ArrayList ();
+
   }
 
   /**
@@ -248,20 +254,49 @@ public class ReportStateList
     {
       throw new IllegalArgumentException();
     }
-    
-    MasterList master = null;
-    if (getMasterPos (size ()) >= masterStates.size ())
+
+    // the first 20 Elements are stored directly into an ArrayList
+    if (size() < PRIMARY_MAX)
     {
-      master = new MasterList (this);
-      //master.pos = size ();
-      masterStates.add (master);
+      primaryStates.add(state);
+      this.size++;
     }
+    // the next 100 Elements are stored into a list of 4-element weakReference
+    //list. So if an Element gets lost (GCd), only 4 states need to be replayed.
+    else if (size() < MASTER4_MAX)
+    {
+      MasterList master = null;
+      int masterPos = getMasterPos (size (), MASTERPOSITIONS_MED);
+      if (masterPos >= masterStates4.size ())
+      {
+        master = new MasterList (this, MASTERPOSITIONS_MED);
+        masterStates4.add (master);
+      }
+      else
+      {
+        master = (MasterList) masterStates4.get (masterPos);
+      }
+      master.add (state);
+      this.size++;
+    }
+    // all other Elements are stored into a list of 10-element weakReference
+    //list. So if an Element gets lost (GCd), 10 states need to be replayed.
     else
     {
-      master = (MasterList) masterStates.get (getMasterPos (size ()));
+      MasterList master = null;
+      int masterPos = getMasterPos (size (), MASTERPOSITIONS_MAX);
+      if (masterPos >= masterStates10.size ())
+      {
+        master = new MasterList (this, MASTERPOSITIONS_MAX);
+        masterStates10.add (master);
+      }
+      else
+      {
+        master = (MasterList) masterStates10.get (masterPos);
+      }
+      master.add (state);
+      this.size++;
     }
-    master.add (state);
-    this.size++;
   }
 
   /**
@@ -269,7 +304,9 @@ public class ReportStateList
    */
   public void clear ()
   {
-    masterStates.clear ();
+    masterStates10.clear ();
+    masterStates4.clear ();
+    primaryStates.clear ();
     this.size = 0;
   }
 
@@ -286,7 +323,22 @@ public class ReportStateList
     {
       throw new IndexOutOfBoundsException ();
     }
-    MasterList master = (MasterList) masterStates.get (getMasterPos (index));
-    return (ReportState) master.get (index);
+    if (index < PRIMARY_MAX)
+    {
+      return (ReportState) primaryStates.get (index);
+    }
+    else if (index < MASTER4_MAX)
+    {
+      index -= PRIMARY_MAX;
+      MasterList master = (MasterList) masterStates4.get (getMasterPos (index, MASTERPOSITIONS_MED));
+      return (ReportState) master.get (index);
+    }
+    else
+    {
+      index -= MASTER4_MAX;
+      MasterList master = (MasterList) masterStates10.get (getMasterPos (index, MASTERPOSITIONS_MAX));
+      return (ReportState) master.get (index);
+    }
+
   }
 }

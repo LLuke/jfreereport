@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.1 2002/12/02 17:57:01 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.2 2002/12/05 16:50:51 mungady Exp $
  *
  * Changes
  * -------
@@ -278,6 +278,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       // Correct the encoding for truetype fonts
       if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
       {
+        // is this correct?
         encoding = "iso-8859-1";
       }
 
@@ -571,7 +572,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     // do nothing if this font is already set
     if (baseFont != null && awtFont != null && awtFont.equals(font))
     {
-      Log.debug ("The Fonts are equal");
+      Log.debug ("The Fonts are equal, request ignored.");
       return; // no need to do anything ...
     }
     this.awtFont = font;
@@ -853,7 +854,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       throw new OutputTargetException("Failed to end page", e);
     }
-    Log.debug ("PDFOutputTarget " + hashCode() + " opened");
   }
 
   /**
@@ -943,8 +943,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       throw new OutputTargetException("Opening Document failed.", e);
     }
-
-    Log.debug ("PDFOutputTarget " + hashCode() + " opened");
   }
 
 
@@ -1029,7 +1027,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void close()
   {
-    Log.debug ("Document in " + hashCode() + " closed .....................");
     this.getDocument().close();
     this.fontSupport.close();
     this.pdfDocument = null;
@@ -1325,7 +1322,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     if (getDocument() == null)
     {
-      Log.debug ("Document is null, assuming closed ...");
+      Log.debug ("Document is null, assuming that the document is closed ...");
       return false;
     }
     return getDocument().isOpen();

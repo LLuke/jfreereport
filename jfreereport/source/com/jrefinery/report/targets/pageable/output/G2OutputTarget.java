@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.1 2002/12/02 17:57:01 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.2 2002/12/02 18:55:35 taqua Exp $
  *
  * Changes
  * -------
@@ -403,8 +403,7 @@ public class G2OutputTarget extends AbstractOutputTarget
       {
         // just in case the image drawing caused trouble ..
         th.printStackTrace();
-        Log.debug("System.FreeMem: " + Runtime.getRuntime().freeMemory());
-        Log.debug("System.TotalMem: " + Runtime.getRuntime().totalMemory());
+        Log.debug (new Log.MemoryUsageMessage ("Failure at drawImage"));
       }
       g2.setTransform(transform);
       g2.setClip(s);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.2 2002/12/04 16:27:00 mungady Exp $
+ * $Id: PhysicalOperation.java,v 1.3 2002/12/05 12:05:10 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 
@@ -104,14 +105,14 @@ public abstract class PhysicalOperation
   public static class AddComment extends PhysicalOperation
   {
     /** The comment. */
-    private String comment;
+    private Object comment;
 
     /**
      * Creates a new 'add comment' operation.
      *
      * @param comment  the comment.
      */
-    public AddComment(String comment)
+    public AddComment(Object comment)
     {
       if (comment == null) 
       {
@@ -129,7 +130,7 @@ public abstract class PhysicalOperation
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
-      //Log.debug ("Physical Operation Comment: " + comment);
+      Log.debug (new Log.SimpleMessage("Physical Operation Comment: " , comment));
     }
   }
 

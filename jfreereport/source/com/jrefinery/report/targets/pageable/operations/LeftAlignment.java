@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2002/12/03 16:30:49 mungady Exp $
+ * $Id: LeftAlignment.java,v 1.3 2002/12/05 12:05:09 mungady Exp $
  *
  * Changes
  * -------
@@ -73,14 +73,12 @@ public class LeftAlignment extends HorizontalBoundsAlignment
     {
       throw new NullPointerException("Inner Bound must not be null");
     }
-    Log.debug ("AlignStart: " + inner + " Outer: " + outerBounds);
     inner = outerBounds.createIntersection(inner);
     double x = outerBounds.getX();
     double y = inner.getY();
     double w = Math.min (inner.getWidth(), outerBounds.getWidth());
     double h = Math.min (inner.getHeight(), outerBounds.getHeight());
 
-    Log.debug ("AlignComplete: " + x + ", " + y + ", " + w + ", " + h);
     return new Rectangle2D.Double(x, y, w, h);
   }
 }

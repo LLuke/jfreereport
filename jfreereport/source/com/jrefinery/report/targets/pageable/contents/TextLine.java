@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.2 2002/12/02 18:55:34 taqua Exp $
+ * $Id: TextLine.java,v 1.3 2002/12/03 16:29:23 mungady Exp $
  *
  * Changes
  * -------
@@ -238,23 +238,31 @@ public class TextLine implements Content
   }
 
   /**
-   * Calculates the StringPos: the string starts at startPos, and it is sure,
-   * that the endPos is after the pos calculated for maxWidth.
+   * Calculates the StringPos: the string starts at <code>startPos</code>, and it tested,
+   * that <code>endPos</code> is after the pos calculated for maxWidth.
+   * <p>
+   * <code>getStringWidth (content, lineStart, startPos) &lt; maxWidth<br></code>
+   * <code>getStringWidth (content, lineStart, endPos) &gt; maxWidth<br></code>
    * <p>
    * The algorithm used is similiar to the quick-search algorithm, it splits the
    * content in the middle and checks whether the needed position is left or right
    * of the middle. Then the search is repeated within the new search area ...
+   * <p>
+   * This method searches the width position in a substring of the content which
+   * starts at lineStart. It is known, that the position is between startPos and
+   * endPos, startPos is greater or equal than lineStart and endPos is lower
+   * or equal to the position of the last character of the string.
+   * <p>
    *
-   * @param lineStart  ??.
-   * @param startPos  ??.
-   * @param endPos  ??.
-   * @param maxWidth  ??.
+   * @param lineStart  the starting position of the substring that should be calculated.
+   * @param startPos  the known lower rangeboundry of the result-range.
+   * @param endPos  the known upper boundry of the result range.
+   * @param maxWidth  the maximal width in points which limit the string.
    *
-   * @return ??.
+   * @return the position, where the string width is nearest or equal to maxWidth..
    */
   private int calculateWidthPos (final int lineStart, int startPos, int endPos, double maxWidth)
   {
-    //Log.debug ("CalcLW: " + startPos + ", " + endPos);
     if (startPos == endPos)
     {
       return startPos;

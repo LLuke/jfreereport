@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModul.java,v 1.2 2002/12/02 20:43:14 taqua Exp $
+ * $Id: TextOperationModul.java,v 1.3 2002/12/05 12:05:10 mungady Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,6 @@ public class TextOperationModul extends OperationModul
       throw new NullPointerException("Value is null");
     }
     Content c = value.getContentForBounds(bounds);
-    print(c);
     // Font
     Font font = e.getStyle().getFontStyleProperty();
 
@@ -157,7 +156,6 @@ public class TextOperationModul extends OperationModul
     if (c instanceof TextLine)
     {
       String value = ((TextLine) c).getContent();
-      Log.debug ("Adding Content: " + value + " -> " + bounds.align(c.getBounds()));
       list.add (new PhysicalOperation.SetBoundsOperation (
                                  vba.applyShift (bounds.align(c.getBounds()))));
       list.add (new PhysicalOperation.PrintTextOperation(value));
@@ -183,7 +181,7 @@ public class TextOperationModul extends OperationModul
 
   public static void print (Content c)
   {
-    Log.debug ("c = " + c + ", " + c.getBounds());
+    Log.debug ("Content = " + c + ", " + c.getBounds());
     if (c == null)
     {
       Log.debug ("IsNull");

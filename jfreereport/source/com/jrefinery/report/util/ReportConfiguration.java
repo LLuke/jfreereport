@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.8 2002/12/05 16:48:12 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.9 2002/12/06 18:21:51 taqua Exp $
  *
  * Changes
  * -------
@@ -51,9 +51,14 @@ import java.util.Properties;
  */
 public class ReportConfiguration
 {
+  /** The 'disable logging' property key. */
+  public static final String PRINT_OPERATION_COMMENT = "com.jrefinery.report.PrintOperationComment";
+
+  /** The default 'disable logging' property value. */
+  public static final String PRINT_OPERATION_COMMENT_DEFAULT = "false";
 
   /** The 'disable logging' property key. */
-  public static final String WARN_INVALID_COLUMNS = "com.jrefinery.report.NoDefaultDebug";
+  public static final String WARN_INVALID_COLUMNS = "com.jrefinery.report.WarnInvalidColumns";
 
   /** The default 'disable logging' property value. */
   public static final String WARN_INVALID_COLUMNS_DEFAULT = "false";
@@ -375,5 +380,15 @@ public class ReportConfiguration
   public void setWarnInvalidColumns(boolean warnInvalidColumns)
   {
     setConfigProperty(WARN_INVALID_COLUMNS, String.valueOf(warnInvalidColumns));
+  }
+
+  public boolean isPrintOperationComment()
+  {
+    return getConfigProperty(PRINT_OPERATION_COMMENT , PRINT_OPERATION_COMMENT_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  public void setPrintOperationComment(boolean print)
+  {
+    setConfigProperty(PRINT_OPERATION_COMMENT, String.valueOf(print));
   }
 }

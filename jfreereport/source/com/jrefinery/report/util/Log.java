@@ -25,7 +25,7 @@
  * --------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: Log.java,v 1.10 2002/12/06 18:21:15 taqua Exp $
+ * $Id: Log.java,v 1.11 2002/12/06 19:28:03 taqua Exp $
  *
  * Changes
  * -------
@@ -72,16 +72,51 @@ public final class Log
   public static class SimpleMessage
   {
     private String message;
-    private Object param;
+    private Object[] param;
 
-    public SimpleMessage(String message, Object param)
+    public SimpleMessage(String message, Object param1)
     {
       this.message = message;
+      this.param = new Object[] {param1};
+    }
+
+    public SimpleMessage(String message, Object param1, Object param2)
+    {
+      this.message = message;
+      this.param = new Object[] {param1, param2};
+    }
+
+    public SimpleMessage(String message, Object param1, Object param2, Object param3)
+    {
+      this.message = message;
+      this.param = new Object[] {param1, param2, param3};
+    }
+
+    public SimpleMessage(String message, Object param1, Object param2, Object param3, Object param4)
+    {
+      this.message = message;
+      this.param = new Object[] {param1, param2, param3, param4};
+    }
+
+
+    public SimpleMessage(String message, Object[] param)
+    {
+      this.message = message;
+      this.param = param;
     }
 
     public String toString ()
     {
-      return (message + param.toString());
+      StringBuffer b = new StringBuffer();
+      b.append(message);
+      if (param != null)
+      {
+        for (int i = 0; i < param.length; i++)
+        {
+          b.append(param[i]);
+        }
+      }
+      return b.toString();
     }
   }
 

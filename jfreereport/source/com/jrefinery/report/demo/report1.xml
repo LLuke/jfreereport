@@ -81,7 +81,7 @@ Object getValue()
           </property>
         </properties>
       </expression>
-      <function name="percent" class="_com.jrefinery.report.function.ItemPercentageFunction">
+      <function name="percent" class="com.jrefinery.report.function.ItemPercentageFunction">
         <properties>
           <property name="field">Population</property>
           <property name="group">Continent Group</property>

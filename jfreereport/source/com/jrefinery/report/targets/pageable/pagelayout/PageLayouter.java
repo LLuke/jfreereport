@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.3 2002/12/04 16:20:57 mungady Exp $
+ * $Id: PageLayouter.java,v 1.4 2002/12/05 16:49:44 mungady Exp $
  *
  * Changes
  * -------
@@ -241,7 +241,6 @@ public abstract class PageLayouter extends AbstractFunction
     cEventState.nextPage();
     setFinishingPage(false);
     // log // no cloning save the orignal state
-    // Log.debug ("LayoutManagerState: " + layoutManagerState);
     layoutManagerState = saveCurrentState();
 
     getLogicalPage().close();

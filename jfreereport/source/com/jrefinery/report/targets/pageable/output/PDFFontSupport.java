@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:  $
+ * $Id: PDFFontSupport.java,v 1.2 2002/12/05 16:50:51 mungady Exp $
  *
  * Changes
  * -------
@@ -319,7 +319,6 @@ public class PDFFontSupport
   private void putToCache (PDFFontRecord record)
   {
     baseFonts.put (record.createKey(), record);
-    Log.debug (record.createKey().equals(record.createKey()) + " is equal");
   }
 
   /**
