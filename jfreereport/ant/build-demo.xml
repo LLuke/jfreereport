@@ -1,0 +1,158 @@
+<!-- An ANT build file for JFreeReport -->
+
+<!-- This file builds the reference doc modules. -->
+
+<project name="jfreereport" default="all" basedir="..">
+
+  <target name="init">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="init"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <antcall target="rebuild-core"/>
+  </target>
+
+  <target name="check-core">
+    <available file="${core-jar-file}" type="file" property="core-jar-file-present"/>
+  </target>
+
+  <target name="rebuild-core" unless="core-jar-file-present" depends="check-core">
+    <echo>
+      Rebuilding core ...
+    </echo>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  load dependent modules                                        -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="check-files">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-parser.xml"/>
+      <property name="module" value="parser-ext"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-parser.xml"/>
+      <property name="module" value="parser-simple"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-gui.xml"/>
+      <property name="module" value="gui-base"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-gui.xml"/>
+      <property name="module" value="gui-print"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-gui.xml"/>
+      <property name="module" value="gui-pdf"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-gui.xml"/>
+      <property name="module" value="gui-xls"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-gui.xml"/>
+      <property name="module" value="gui-html"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-gui.xml"/>
+      <property name="module" value="gui-csv"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-gui.xml"/>
+      <property name="module" value="gui-plaintext"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-misc.xml"/>
+      <property name="module" value="misc-beanshell"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-misc.xml"/>
+      <property name="module" value="misc-configstore-base"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-misc.xml"/>
+      <property name="module" value="misc-configstore-filesystem"/>
+    </ant>
+    <ant antfile="${antfile.dir}/build.xml" target="rebuild-module-file" inheritAll="false">
+      <property name="buildfile" value="build-misc.xml"/>
+      <property name="module" value="misc-logging-base"/>
+    </ant>
+  </target>
+
+  <target name="compile" depends="init">
+    <description>
+      Compiles the CSV table output module. check-files
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/demo/**"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${pixie-jar-file}"/>
+        <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-table-html-file}"/>
+        <pathelement location="${module-output-table-xls-file}"/>
+        <pathelement location="${module-output-table-rtf-file}"/>
+        <pathelement location="${module-output-table-csv-file}"/>
+        <pathelement location="${module-output-pageable-pdf-file}"/>
+        <pathelement location="${module-output-pageable-plaintext-file}"/>
+        <pathelement location="${module-output-xml-file}"/>
+        <pathelement location="${module-gui-html-file}"/>
+        <pathelement location="${module-gui-base-file}"/>
+        <pathelement location="${module-gui-csv-file}"/>
+        <pathelement location="${module-gui-pdf-file}"/>
+        <pathelement location="${module-gui-plaintext-file}"/>
+        <pathelement location="${module-gui-print-file}"/>
+        <pathelement location="${module-gui-xls-file}"/>
+        <pathelement location="${module-parser-base-file}"/>
+        <pathelement location="${module-parser-ext-file}"/>
+        <pathelement location="${module-parser-simple-file}"/>
+        <pathelement location="${module-misc-beanshell-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
+        <pathelement location="${module-misc-configstore-filesystem-file}"/>
+        <pathelement location="${module-misc-logging-base-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${jfreereport-demo-jar-file}"
+      basedir="build">
+      <manifest>
+        <attribute name="Main-Class" value="org.jfree.report.demo.JFreeReportDemo"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-base-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-beanshell-file} ${module-misc-configstore-base-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-output-table-rtf-file} ${jfreereport-all-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+  <target name="copy-resources">
+    <!-- include the report definition files -->
+    <copy todir="build/org/jfree/report/demo">
+      <fileset dir="source/org/jfree/report/demo">
+        <include name="**/*.xml"/>
+        <include name="**/*.wmf"/>
+        <include name="**/*.jpg"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="all" depends="init, compile"/>
+</project>
