@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,20 +20,20 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------
- * BaseFontRecord.java
- * ------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------------
+ * BaseFontFactory.java
+ * --------------------
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.6 2003/02/26 13:58:01 mungady Exp $
+ * $Id: BaseFontFactory.java,v 1.7 2003/03/18 18:28:44 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
- * 01-Feb-2002 : Refactoring moved this class from package
+ * 01-Feb-2003 : Refactoring moved this class from package
  *               com.jefinery.report.targets.pageable.output
  *
  */
@@ -53,8 +53,8 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
 
 /**
- * The BaseFontFactory is used to find and register all TrueTypeFonts for embedding them
- * in the PDF-File.
+ * The BaseFontFactory is used to find and register all TrueType fonts for embedding them
+ * in the PDF file.
  * 
  * @author Thomas Morgner
  */

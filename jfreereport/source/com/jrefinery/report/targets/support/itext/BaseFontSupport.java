@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,23 +20,29 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * --------------------
  * BaseFontSupport.java
- * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * --------------------
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.5 2003/02/25 15:42:30 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.6 2003/02/26 13:58:01 mungady Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
  * 29-Jan-2003 : moved from pageable.output to support.itext package.
  * 07-Feb-2003 : Documentation updated
+ * 
  */
+
 package com.jrefinery.report.targets.support.itext;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
@@ -44,10 +50,6 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * iText font support.
