@@ -44,7 +44,7 @@ public class WmfImageProducer implements ImageProducer
   {
     consumers = new Vector ();
     metafile = new WmfFile (inName, width, height);
-    metafile.replay ();
+//    metafile.replay ();
   }
 
   public WmfImageProducer (URL inName, int width, int height) 
@@ -52,7 +52,7 @@ public class WmfImageProducer implements ImageProducer
   {
     consumers = new Vector ();
     metafile = new WmfFile (inName, width, height);
-    metafile.replay ();
+//    metafile.replay ();
   }
 
   public WmfImageProducer (URL inName) 
@@ -60,7 +60,7 @@ public class WmfImageProducer implements ImageProducer
   {
     consumers = new Vector ();
     metafile = new WmfFile (inName);
-    metafile.replay ();
+//    metafile.replay ();
   }
 
   public void addConsumer(ImageConsumer ic)
@@ -91,7 +91,7 @@ public class WmfImageProducer implements ImageProducer
   {
     int startX = 0;
     int startY = 0;
-    BufferedImage image = metafile.getImage ();
+    BufferedImage image = metafile.replay ();
     int w = image.getWidth();
     int h = image.getHeight();
     ColorModel model = image.getColorModel ();
@@ -107,10 +107,10 @@ public class WmfImageProducer implements ImageProducer
   public static void main (String [] args)
   throws Exception
   {
-    WmfImageProducer pr = new WmfImageProducer ("./pixie/res/test.wmf", 1024,768);
+    WmfImageProducer pr = new WmfImageProducer ("./jfreereport/resource/anim0002.wmf", 1024,768);
     JFrame frame = new JFrame ();
     JPanel p = new JPanel ();
-    p.add (new JImagePanel (pr.metafile.getImage()), BorderLayout.CENTER);
+    p.add (new JImagePanel (pr.metafile.replay()), BorderLayout.CENTER);
     p.setLayout (new BorderLayout ());
     frame.setContentPane (p);
     frame.setSize (1024, 768);

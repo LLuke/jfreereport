@@ -1,13 +1,12 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.Rectangle;
-import java.awt.Point;
+
 import java.awt.Graphics2D;
-import java.awt.Paint;
+import java.awt.Rectangle;
 
 public class MfCmdRectangle extends MfCmd
 {
@@ -41,11 +40,11 @@ public class MfCmdRectangle extends MfCmd
     {
       state.prepareDraw ();
       graph.draw (rec);
-      state.postDraw ();    
+      state.postDraw ();
     }
-  
+
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdRectangle ();
@@ -55,10 +54,10 @@ public class MfCmdRectangle extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[RECTANGLE] bounds=");
-    b.append (getBounds());
-    return b.toString();
+    b.append (getBounds ());
+    return b.toString ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int bottom = record.getParam (0);
@@ -68,28 +67,28 @@ public class MfCmdRectangle extends MfCmd
     setBounds (left, top, right - left, bottom - top);
 
   }
-  
+
   public Rectangle getBounds ()
   {
     return new Rectangle (x, y, width, height);
   }
-  
+
   public Rectangle getScaledBounds ()
   {
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
   }
-  
+
   public void setBounds (int x, int y, int width, int height)
   {
     this.x = x;
     this.y = y;
-    this.width  = width;
+    this.width = width;
     this.height = height;
     scaleXChanged ();
     scaleYChanged ();
-    
+
   }
-  
+
   public int getFunction ()
   {
     return MfType.RECTANGLE;
@@ -97,14 +96,14 @@ public class MfCmdRectangle extends MfCmd
 
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
-    scaled_width = getScaledX(width);
+    scaled_x = getScaledX (x);
+    scaled_width = getScaledX (width);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
-    scaled_height = getScaledY(height);
+    scaled_y = getScaledY (y);
+    scaled_height = getScaledY (height);
   }
-  
+
 }

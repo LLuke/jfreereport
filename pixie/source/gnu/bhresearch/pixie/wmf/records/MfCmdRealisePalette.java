@@ -18,24 +18,24 @@ public class MfCmdRealisePalette extends MfCmd
   {
     // Not implemented!
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdRealisePalette ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     System.out.println ("RealizePalette is not yet implemented.");
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[REALISE_PALETTE] is not implemented");
-    return b.toString();
+    return b.toString ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.REALISE_PALETTE;
@@ -44,7 +44,7 @@ public class MfCmdRealisePalette extends MfCmd
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

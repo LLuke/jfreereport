@@ -1,16 +1,17 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
+import gnu.bhresearch.pixie.wmf.MfLogBrush;
+import gnu.bhresearch.pixie.wmf.MfLogRegion;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfLogBrush;
-import gnu.bhresearch.pixie.wmf.MfLogRegion;
-import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.image.BufferedImage;
-import java.awt.geom.Rectangle2D;
+
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Dimension;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 public class MfCmdFrameRegion extends MfCmd
 {
@@ -29,11 +30,11 @@ public class MfCmdFrameRegion extends MfCmd
   {
     MfLogBrush brush = file.getBrushObject (brushObjectNr);
     MfLogRegion regio = file.getRegionObject (regionObjectNr);
-  
+
     MfDcState state = file.getCurrentState ();
     state.setLogRegion (regio);
     state.setLogBrush (brush);
-  
+
     BufferedImage img = file.getImage ();
     Graphics2D graph = file.getGraphics2D ();
     Rectangle rec = scaleRect (regio.getBounds ());
@@ -61,17 +62,17 @@ public class MfCmdFrameRegion extends MfCmd
       state.postPaint ();
     }
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdFrameRegion ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.FRAME_REGION;
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int height = record.getParam (0);
@@ -82,19 +83,19 @@ public class MfCmdFrameRegion extends MfCmd
     setRegion (regio);
     setDimension (width, height);
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[FRAME_REGION] region=");
-    b.append (getRegion());
+    b.append (getRegion ());
     b.append (" brush=");
-    b.append (getBrush());
+    b.append (getBrush ());
     b.append (" dimension=");
-    b.append (getDimension());
-    return b.toString();
+    b.append (getDimension ());
+    return b.toString ();
   }
-  
+
   public void setDimension (int width, int height)
   {
     this.width = width;
@@ -102,45 +103,45 @@ public class MfCmdFrameRegion extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_width = getScaledX(width);
+    scaled_width = getScaledX (width);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_height = getScaledY(height);
+    scaled_height = getScaledY (height);
   }
 
   public Dimension getDimension ()
   {
     return new Dimension (width, height);
   }
-  
+
   public Dimension getScaledDimension ()
   {
     return new Dimension (scaled_width, scaled_height);
   }
-  
+
   public int getBrush ()
   {
     return brushObjectNr;
   }
-  
+
   public void setBrush (int brush)
   {
     this.brushObjectNr = brush;
   }
-  
+
   public int getRegion ()
   {
     return regionObjectNr;
   }
-  
+
   public void setRegion (int region)
   {
     regionObjectNr = region;
   }
-  
+
 }

@@ -10,40 +10,40 @@ public class MfCmdScaleWindowExt extends MfCmd
   private int yDenom;
   private int xNum;
   private int xDenom;
-  
+
   public MfCmdScaleWindowExt ()
   {
   }
 
   public void replay (WmfFile file)
   {
-  // Not yet implemented 
+    // Not yet implemented
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdScaleWindowExt ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.SCALE_WINDOW_EXT;
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[SCALE_WINDOW] scaleX=");
-    b.append (getXNum());
+    b.append (getXNum ());
     b.append ("/");
-    b.append (getXDenom());
+    b.append (getXDenom ());
     b.append (" scaley=");
-    b.append (getYNum());
+    b.append (getYNum ());
     b.append ("/");
-    b.append (getYDenom());
-    return b.toString();
+    b.append (getYDenom ());
+    return b.toString ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int yD = record.getParam (0);
@@ -53,7 +53,7 @@ public class MfCmdScaleWindowExt extends MfCmd
     setXScale (xN, xD);
     setYScale (yN, xD);
   }
-  
+
   public void setXScale (int xNum, int xDenom)
   {
     this.xNum = xNum;
@@ -65,32 +65,32 @@ public class MfCmdScaleWindowExt extends MfCmd
     this.yNum = yNum;
     this.yDenom = yDenom;
   }
-  
+
   public double getXScale ()
   {
     return (double) xNum / xDenom;
   }
-  
+
   public int getXNum ()
   {
     return xNum;
   }
-  
+
   public int getXDenom ()
   {
     return xDenom;
   }
-  
+
   public double getYScale ()
   {
     return (double) yNum / yDenom;
   }
-  
+
   public int getYNum ()
   {
     return yNum;
   }
-  
+
   public int getYDenom ()
   {
     return yDenom;
@@ -99,7 +99,7 @@ public class MfCmdScaleWindowExt extends MfCmd
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

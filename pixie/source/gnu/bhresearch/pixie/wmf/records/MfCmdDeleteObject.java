@@ -15,12 +15,12 @@ public class MfCmdDeleteObject extends MfCmd
   public MfCmdDeleteObject ()
   {
   }
-  
+
   public void replay (WmfFile file)
   {
     file.deleteObject (objectId);
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdDeleteObject ();
@@ -30,16 +30,16 @@ public class MfCmdDeleteObject extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[DELETE_OBJECT] object=");
-    b.append (getObjectId());
-    return b.toString();
+    b.append (getObjectId ());
+    return b.toString ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int id = record.getParam (0);
     setObjectId (id);
   }
-  
+
   public int getFunction ()
   {
     return MfType.DELETE_OBJECT;
@@ -58,7 +58,7 @@ public class MfCmdDeleteObject extends MfCmd
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

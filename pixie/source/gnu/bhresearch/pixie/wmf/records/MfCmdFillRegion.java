@@ -1,15 +1,16 @@
 package gnu.bhresearch.pixie.wmf.records;
 
-import gnu.bhresearch.pixie.wmf.MfRecord;
-import gnu.bhresearch.pixie.wmf.MfType;
-import gnu.bhresearch.pixie.wmf.WmfFile;
 import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfLogBrush;
 import gnu.bhresearch.pixie.wmf.MfLogRegion;
-import java.awt.image.BufferedImage;
-import java.awt.geom.Rectangle2D;
+import gnu.bhresearch.pixie.wmf.MfRecord;
+import gnu.bhresearch.pixie.wmf.MfType;
+import gnu.bhresearch.pixie.wmf.WmfFile;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 public class MfCmdFillRegion extends MfCmd
 {
@@ -24,11 +25,11 @@ public class MfCmdFillRegion extends MfCmd
   {
     MfLogBrush brush = file.getBrushObject (brushObjectNr);
     MfLogRegion regio = file.getRegionObject (regionObjectNr);
-  
+
     MfDcState state = file.getCurrentState ();
     state.setLogRegion (regio);
     state.setLogBrush (brush);
-  
+
     BufferedImage img = file.getImage ();
     Graphics2D graph = file.getGraphics2D ();
     Rectangle rec = scaleRect (regio.getBounds ());
@@ -43,12 +44,12 @@ public class MfCmdFillRegion extends MfCmd
       state.postPaint ();
     }
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdFillRegion ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int regio = record.getParam (0);
@@ -56,46 +57,46 @@ public class MfCmdFillRegion extends MfCmd
     setBrush (brush);
     setRegion (regio);
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[FILL_REGION] brush=");
-    b.append (getBrush());
+    b.append (getBrush ());
     b.append (" region=");
-    b.append (getRegion());
-    return b.toString();
+    b.append (getRegion ());
+    return b.toString ();
   }
-  
+
   public int getBrush ()
   {
     return brushObjectNr;
   }
-  
+
   public void setBrush (int brush)
   {
     this.brushObjectNr = brush;
   }
-  
+
   public int getRegion ()
   {
     return regionObjectNr;
   }
-  
+
   public void setRegion (int region)
   {
     regionObjectNr = region;
   }
-  
+
   public int getFunction ()
   {
     return MfType.FILL_REGION;
   }
-  
+
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

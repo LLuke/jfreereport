@@ -2,12 +2,10 @@ package gnu.bhresearch.pixie.command;
 
 import gnu.bhresearch.pixie.Constants;
 import gnu.bhresearch.pixie.image.PixieDataInput;
-import java.awt.Graphics;
-import java.awt.Font;
+
 import java.awt.FontMetrics;
-import java.awt.Color;
+import java.awt.Graphics;
 import java.io.IOException;
-import java.util.Vector;
 
 public class FillText extends PixieImageCommand
 {
@@ -29,53 +27,52 @@ public class FillText extends PixieImageCommand
   }
 
   public FillText (PixieDataInput in)
-  throws IOException
+          throws IOException
   {
-    in.flushVInt();
-    text = in.readUTF();
-    x = in.readVIntX();
-    y = in.readVIntY();
-    flags = in.readUnsignedVInt();
+    in.flushVInt ();
+    text = in.readUTF ();
+    x = in.readVIntX ();
+    y = in.readVIntY ();
+    flags = in.readUnsignedVInt ();
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
+    scaled_x = getScaledX (x);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
+    scaled_y = getScaledY (y);
   }
-  
+
   public void paint (Graphics graphics)
   {
     int x = this.scaled_x;
     int y = this.scaled_y;
-    
-    FontMetrics metrics = graphics.getFontMetrics();
-    int textWidth = metrics.stringWidth( text );
+
+    FontMetrics metrics = graphics.getFontMetrics ();
+    int textWidth = metrics.stringWidth (text);
     if ((flags & Constants.TEXT_CENTER) != 0)
     {
-      x -= textWidth/2;
+      x -= textWidth / 2;
     }
-    else 
-      if ((flags & Constants.TEXT_RIGHT) != 0)
+    else if ((flags & Constants.TEXT_RIGHT) != 0)
     {
       x -= textWidth;
     }
 
-    graphics.drawString( text, x, y );
+    graphics.drawString (text, x, y);
 
     if ((flags & Constants.TEXT_UNDERLINE) != 0)
     {	// Underline.
-      y += metrics.getDescent()/8+1;
-      graphics.drawLine( x, y, x+textWidth, y );
+      y += metrics.getDescent () / 8 + 1;
+      graphics.drawLine (x, y, x + textWidth, y);
     }
   }
-  
+
   public String getText ()
   {
     return text;
@@ -85,11 +82,11 @@ public class FillText extends PixieImageCommand
   {
     return x;
   }
-  
+
   public int getHeight ()
   {
     return y;
   }
-  
+
 }
 

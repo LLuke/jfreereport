@@ -8,46 +8,56 @@
 
 package gnu.bhresearch.pixie;
 
-import java.io.DataOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.File;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.Dimension;
-import java.util.Vector;
-import java.util.Stack;
-import gnu.bhresearch.quant.Debug;
+import gnu.bhresearch.pixie.command.Comment;
+import gnu.bhresearch.pixie.command.FillText;
+import gnu.bhresearch.pixie.command.FilledCurve;
+import gnu.bhresearch.pixie.command.FilledOval;
+import gnu.bhresearch.pixie.command.FilledPolygon;
+import gnu.bhresearch.pixie.command.FilledRectangle;
+import gnu.bhresearch.pixie.command.Hotspot;
+import gnu.bhresearch.pixie.command.ObjectStore;
+import gnu.bhresearch.pixie.command.PixieFrame;
+import gnu.bhresearch.pixie.command.PixieObject;
+import gnu.bhresearch.pixie.command.PixieObjectRef;
+import gnu.bhresearch.pixie.command.SetColor;
+import gnu.bhresearch.pixie.command.SetFont;
+import gnu.bhresearch.pixie.command.StrokeCurve;
+import gnu.bhresearch.pixie.command.StrokeOval;
+import gnu.bhresearch.pixie.command.StrokePolygon;
+import gnu.bhresearch.pixie.command.StrokeRectangle;
+import gnu.bhresearch.pixie.image.PixieHeader;
+import gnu.bhresearch.pixie.image.PixieImage;
 import gnu.bhresearch.quant.Assert;
 import gnu.bhresearch.quant.Range;
-import gnu.bhresearch.pixie.command.*;
-import gnu.bhresearch.pixie.image.*;
+
+import java.awt.Dimension;
+import java.io.IOException;
+import java.util.Stack;
+import java.util.Vector;
 
 /**
-	Generate a Pxi file. This class hides the details of the low level output
-	format from the main program.
+ Generate a Pxi file. This class hides the details of the low level output
+ format from the main program.
 
-	<P>The "quick" versions of commands usually do some kind of optimisation.
-	Most coordinates are stored in relative form.
-*/
+ <P>The "quick" versions of commands usually do some kind of optimisation.
+ Most coordinates are stored in relative form.
+ */
 public class PxiCommandGenerator extends PxiGenerator
 {
   private Vector frames;
-  
+
   private PixieObject currentObject;
-  
+
   private ObjectStore store;
   private PixieHeader header;
   private Stack defineObjectStack;
 
   private int logWidth;
   private int logHeight;
-  
+
   private boolean usedHotspot;
   private boolean usedObject;
-  
+
   private SetFont curFont;
   private SetFont pendingFont;
   private SetColor curColor;
@@ -57,9 +67,9 @@ public class PxiCommandGenerator extends PxiGenerator
   private int prevY; // needed for relative coordinates
   private int maxX;
   private int maxY;
-  
+
   /** Constructor. */
-  public PxiCommandGenerator() 
+  public PxiCommandGenerator ()
   {
     frames = new Vector ();
     defineObjectStack = new Stack ();
@@ -89,47 +99,47 @@ public class PxiCommandGenerator extends PxiGenerator
 //  }
 //
   /** Current nesting level of defineObject commands. */
-  private int getDefineObjectLevel()
+  private int getDefineObjectLevel ()
   {
-    return defineObjectStack.size();
+    return defineObjectStack.size ();
   }
 
   public Dimension getMaximumSize ()
   {
     return new Dimension (maxX, maxY);
   }
-  
+
   public void setMaxX (int x)
   {
     if (maxX < x)
       maxX = x;
   }
-  
+
   public void setMaxY (int y)
   {
     if (maxY < y)
       maxY = y;
   }
-  
+
   /** Size in pixels. */
-  public void setLogicalSize( int logWidth, int logHeight )
+  public void setLogicalSize (int logWidth, int logHeight)
   {
-    Assert.assert( Range.in( 0, logWidth, Constants.MAX_LOG_WIDTH ) );
-    Assert.assert( Range.in( 0, logHeight, Constants.MAX_LOG_HEIGHT ) );
+    Assert.assert (Range.in (0, logWidth, Constants.MAX_LOG_WIDTH));
+    Assert.assert (Range.in (0, logHeight, Constants.MAX_LOG_HEIGHT));
     this.logWidth = logWidth;
     this.logHeight = logHeight;
   }
 
-  /** 
-   * Version number. 
+  /**
+   * Version number.
    */
-  public void setHeaderVersion( short version )
-  throws IOException
+  public void setHeaderVersion (short version)
+          throws IOException
   {
     header.setVersion (version);
   }
 
-  private void clearRenderState()
+  private void clearRenderState ()
   {
     curFont = null;
     pendingFont = null;
@@ -139,64 +149,64 @@ public class PxiCommandGenerator extends PxiGenerator
     prevY = 0;
   }
 
-  /** 
-   * Start a new frame. 
+  /**
+   * Start a new frame.
    */
-  public void startPixieFrame( int pause )
+  public void startPixieFrame (int pause)
   {
     // Can't nest frames in other frames or objects.
-    Assert.assert( currentObject == null );
-    
+    Assert.assert (currentObject == null);
+
     // Can't reuse whole frames.
-    Assert.assert( getDefineObjectLevel() == 0 );
-    
+    Assert.assert (getDefineObjectLevel () == 0);
+
     currentObject = new PixieFrame ();
     frames.addElement (currentObject);
     defineObjectStack.push (currentObject);
     addFramePause (pause);
-    clearRenderState();
+    clearRenderState ();
   }
 
-  /** 
-   * Start a new frame. 
+  /**
+   * Start a new frame.
    */
-  public void endPixieFrame() 
+  public void endPixieFrame ()
   {
     // Ensure correct nesting.
-    Assert.assert( currentObject != null );
-    System.out.println ("End Frame: " + getDefineObjectLevel());
-    Assert.assert( getDefineObjectLevel() == 1 );
-    
+    Assert.assert (currentObject != null);
+    System.out.println ("End Frame: " + getDefineObjectLevel ());
+    Assert.assert (getDefineObjectLevel () == 1);
+
     defineObjectStack.pop ();
-    setMaxX (currentObject.getWidth());
-    setMaxY (currentObject.getHeight());
+    setMaxX (currentObject.getWidth ());
+    setMaxY (currentObject.getHeight ());
     currentObject = null;
-    
+
   }
 
-  /** 
-   * Start recording a re-usable graphics object. 
+  /**
+   * Start recording a re-usable graphics object.
    */
   public void startObjectDef ()
   {
     if (currentObject != null)
     {
-      Assert.assert( getDefineObjectLevel() > 0 );
+      Assert.assert (getDefineObjectLevel () > 0);
       defineObjectStack.push (currentObject);
     }
     currentObject = new PixieObject ();
-    clearRenderState();
+    clearRenderState ();
   }
 
-  /** 
-   * End recording a re-usable graphics object. 
+  /**
+   * End recording a re-usable graphics object.
    */
-  public void endObjectDef () 
+  public void endObjectDef ()
   {
-    Assert.assert( currentObject != null);
+    Assert.assert (currentObject != null);
 
     store.addObject (currentObject);
-    if (defineObjectStack.size() > 0)
+    if (defineObjectStack.size () > 0)
     {
       currentObject = (PixieObject) defineObjectStack.pop ();
     }
@@ -206,17 +216,17 @@ public class PxiCommandGenerator extends PxiGenerator
     }
   }
 
-  /** 
-   * Use a previously recorded graphics object. 
+  /**
+   * Use a previously recorded graphics object.
    */
   public void generateObjectRef (PixieObjectRef idObj)
   {
     currentObject.addCommand (idObj);
-    clearRenderState();
+    clearRenderState ();
   }
 
   /** Output a byte-array comment. */
-  public void generateComment ( Comment cmd)
+  public void generateComment (Comment cmd)
   {
     currentObject.addCommand (cmd);
   }
@@ -224,14 +234,14 @@ public class PxiCommandGenerator extends PxiGenerator
   public void generateSetColor (SetColor color)
   {
     if (color == null)
-       throw new NullPointerException ("Color given is null");
-  
+      throw new NullPointerException ("Color given is null");
+
     curColor = color;
     // If a color change is pending, and the new color is different
     // to the last one output, output it now.
     if (pendingColor != null)
     {
-      if (curColor.equals( pendingColor ))
+      if (curColor.equals (pendingColor))
       {
         return;
       }
@@ -239,50 +249,50 @@ public class PxiCommandGenerator extends PxiGenerator
     if (curColor.getColor () == null)
       throw new NullPointerException ();
     System.out.println ("Color changed to " + curColor.getColor ());
-    currentObject.addCommand (curColor );
+    currentObject.addCommand (curColor);
     pendingColor = curColor;
   }
 
   public void generateSetFont (SetFont font)
   {
     if (font == null)
-       throw new NullPointerException ("Font given is null");
-  
+      throw new NullPointerException ("Font given is null");
+
     curFont = font;
     // If a color change is pending, and the new color is different
     // to the last one output, output it now.
     if (pendingFont != null)
     {
-      if (curFont.equals( pendingFont ))
+      if (curFont.equals (pendingFont))
       {
         return;
       }
     }
-    currentObject.addCommand (curFont );
+    currentObject.addCommand (curFont);
     pendingFont = curFont;
   }
 
 
-  /** 
-   * Output text if not empty. 
+  /**
+   * Output text if not empty.
    */
   public void generateFillText (FillText text)
   {
-    if (text.getText().length() == 0)
+    if (text.getText ().length () == 0)
       return;
     currentObject.addCommand (text);
   }
 
-  /** 
-   * Output a hotspot. 
+  /**
+   * Output a hotspot.
    */
   public void generateHotspot (Hotspot hotspot)
   {
     currentObject.addCommand (hotspot);
   }
 
-  /** 
-   * Output a filled curve. 
+  /**
+   * Output a filled curve.
    */
   public void generateFilledCurve (FilledCurve curve)
   {
@@ -290,72 +300,72 @@ public class PxiCommandGenerator extends PxiGenerator
     currentObject.addCommand (curve);
   }
 
-  /** 
-   * Output a stroked curve. 
+  /**
+   * Output a stroked curve.
    */
   public void generateStrokeCurve (StrokeCurve curve)
   {
     currentObject.addCommand (curve);
   }
 
-  /** 
-   * Output a filled Oval. 
+  /**
+   * Output a filled Oval.
    */
   public void generateFilledOval (FilledOval oval)
   {
     currentObject.addCommand (oval);
   }
 
-  /** 
-   * Output a stroked Oval. 
+  /**
+   * Output a stroked Oval.
    */
   public void generateStrokeOval (StrokeOval oval)
   {
     currentObject.addCommand (oval);
   }
 
-  /** 
-   * Output a filled Polygon. 
+  /**
+   * Output a filled Polygon.
    */
   public void generateFilledPolygon (FilledPolygon poly)
   {
     currentObject.addCommand (poly);
   }
 
-  /** 
-   * Output a stroked Polygon. 
+  /**
+   * Output a stroked Polygon.
    */
   public void generateStrokePolygon (StrokePolygon poly)
   {
     currentObject.addCommand (poly);
   }
 
-  /** 
-   * Output a filled Rectangle. 
+  /**
+   * Output a filled Rectangle.
    */
   public void generateFilledRectangle (FilledRectangle rectangle)
   {
     currentObject.addCommand (rectangle);
   }
 
-  /** 
-   * Output a stroked Rectangle. 
+  /**
+   * Output a stroked Rectangle.
    */
   public void generateStrokeRectangle (StrokeRectangle rectangle)
   {
     currentObject.addCommand (rectangle);
   }
-  
+
   public PixieImage getImage ()
   {
     PixieImage image = new PixieImage ();
     image.setHeader (header);
     image.setObjectStore (store);
-    for (int i = 0; i < frames.size(); i++)
+    for (int i = 0; i < frames.size (); i++)
     {
       image.addFrame ((PixieFrame) frames.elementAt (i), getFramePause (i));
     }
     return image;
   }
-  
+
 }

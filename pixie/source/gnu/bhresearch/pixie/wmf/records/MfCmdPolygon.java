@@ -1,14 +1,12 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.Rectangle;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.awt.Polygon;
+
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 
 public class MfCmdPolygon extends MfCmd
 {
@@ -17,7 +15,7 @@ public class MfCmdPolygon extends MfCmd
   private int[] scaled_points_x;
   private int[] scaled_points_y;
   private int count;
-  
+
   public MfCmdPolygon ()
   {
   }
@@ -26,7 +24,7 @@ public class MfCmdPolygon extends MfCmd
   {
     Graphics2D graph = file.getGraphics2D ();
 
-    Polygon polygon = new Polygon (getScaledPointsX(), getScaledPointsY(), getPointCount());
+    Polygon polygon = new Polygon (getScaledPointsX (), getScaledPointsY (), getPointCount ());
     MfDcState state = file.getCurrentState ();
 
     if (state.getLogBrush ().isVisible ())
@@ -42,59 +40,59 @@ public class MfCmdPolygon extends MfCmd
       state.postDraw ();
     }
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdPolygon ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.POLYGON;
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[POLYGON] count=");
-    b.append (getPointCount());
-    int l = getPointCount();
-    int[] points_x = getPointsX();
-    int[] points_y = getPointsY();
-    
+    b.append (getPointCount ());
+    int l = getPointCount ();
+    int[] points_x = getPointsX ();
+    int[] points_y = getPointsY ();
+
     for (int i = 0; i < l; i++)
     {
       if (i != 0) b.append (",");
-      
+
       b.append (" (");
       b.append (points_x[i]);
       b.append (",");
       b.append (points_y[i]);
       b.append (") ");
     }
-    return b.toString();
+    return b.toString ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int count = record.getParam (0);
     int[] points_x = new int[count];
     int[] points_y = new int[count];
-    
+
     for (int i = 0; i < count; i++)
     {
-      points_x[i] = record.getParam (1 + 2*i);
-      points_y[i] = record.getParam (2 + 2*i);
+      points_x[i] = record.getParam (1 + 2 * i);
+      points_y[i] = record.getParam (2 + 2 * i);
     }
     setPointCount (count);
     setPoints (points_x, points_y);
   }
-  
+
   public void setPointCount (int count)
   {
     this.count = count;
   }
-  
+
   public void setPoints (int[] points_x, int[] points_y)
   {
     this.points_x = points_x;
@@ -102,7 +100,7 @@ public class MfCmdPolygon extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public int[] getPointsX ()
   {
     return points_x;
@@ -112,7 +110,7 @@ public class MfCmdPolygon extends MfCmd
   {
     return points_y;
   }
-  
+
   public int[] getScaledPointsX ()
   {
     return scaled_points_x;
@@ -122,12 +120,12 @@ public class MfCmdPolygon extends MfCmd
   {
     return scaled_points_y;
   }
-  
+
   public int getPointCount ()
   {
     return count;
   }
-  
+
   protected void scaleXChanged ()
   {
     scaled_points_x = applyScaleX (points_x, scaled_points_x);

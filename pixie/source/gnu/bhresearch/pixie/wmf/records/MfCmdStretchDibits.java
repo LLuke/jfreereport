@@ -2,8 +2,9 @@ package gnu.bhresearch.pixie.wmf.records;
 
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
-import java.awt.Rectangle;
 import gnu.bhresearch.pixie.wmf.WmfFile;
+
+import java.awt.Rectangle;
 
 public class MfCmdStretchDibits extends MfCmd
 {
@@ -17,7 +18,7 @@ public class MfCmdStretchDibits extends MfCmd
   private int destW;
   private int destH;
   private int usage;
- 
+
   private int scaled_srcX;
   private int scaled_srcY;
   private int scaled_srcW;
@@ -27,7 +28,7 @@ public class MfCmdStretchDibits extends MfCmd
   private int scaled_destW;
   private int scaled_destH;
 
-  
+
   public MfCmdStretchDibits ()
   {
   }
@@ -35,12 +36,12 @@ public class MfCmdStretchDibits extends MfCmd
   public void replay (WmfFile file)
   {
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdStretchDibits ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.STRETCH_DIBITS;
@@ -84,21 +85,21 @@ public class MfCmdStretchDibits extends MfCmd
     setSrcRect (xSrc, ySrc, srcH, srcW);
     setDestRect (xDest, yDest, destH, destW);
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[STRETCH_DIBITS] rop=");
-    b.append (getROP());
+    b.append (getROP ());
     b.append (" srcRect=");
-    b.append (getSrcRect());
+    b.append (getSrcRect ());
     b.append (" destRect=");
-    b.append (getDestRect());
+    b.append (getDestRect ());
     b.append (" usage=");
-    b.append (getUsage());
-    return b.toString();
+    b.append (getUsage ());
+    return b.toString ();
   }
-  
+
   public void setSrcRect (int x, int y, int w, int h)
   {
     this.srcX = x;
@@ -108,7 +109,7 @@ public class MfCmdStretchDibits extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public void setDestRect (int x, int y, int w, int h)
   {
     this.destX = x;
@@ -118,7 +119,7 @@ public class MfCmdStretchDibits extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public Rectangle getSrcRect ()
   {
     return new Rectangle (srcX, srcY, srcW, srcH);
@@ -138,7 +139,7 @@ public class MfCmdStretchDibits extends MfCmd
   {
     return new Rectangle (scaled_destX, scaled_destY, scaled_destW, scaled_destH);
   }
-  
+
   protected void scaleXChanged ()
   {
     scaled_srcX = getScaledX (srcX);

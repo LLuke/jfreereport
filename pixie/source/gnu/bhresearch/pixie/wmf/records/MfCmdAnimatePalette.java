@@ -1,14 +1,15 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.GDIColor;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
-import gnu.bhresearch.pixie.wmf.GDIColor;
 import gnu.bhresearch.pixie.wmf.WmfFile;
+
 import java.awt.Color;
 
 /**
- * The AnimatePalette function replaces entries in the specified logical palette. 
- * 
+ * The AnimatePalette function replaces entries in the specified logical palette.
+ *
  * BOOL AnimatePalette(
  *  HPALETTE hpal,           // handle to logical palette
  *  UINT iStartIndex,        // first entry in logical palette
@@ -24,42 +25,42 @@ public class MfCmdAnimatePalette extends MfCmd
   private int hPalette;
   private int cEntries;
   private Color[] colors;
-  
+
   private static final int POS_HPALETTE = 0; // ?
   private static final int POS_CENTRIES = 2; // ?
-  
+
   public MfCmdAnimatePalette ()
   {
-    
+
   }
 
   public int getEntiesCount ()
   {
     return cEntries;
   }
-  
+
   public void setEntriesCount (int cEntries)
   {
     if (cEntries < 0)
       throw new IllegalArgumentException ();
   }
-  
+
   public Color[] getEntries ()
   {
     return colors;
   }
-  
-  public void setEntries (Color [] colors)
+
+  public void setEntries (Color[] colors)
   {
     this.colors = colors;
   }
-  
+
   public void setRecord (MfRecord record)
   {
-    int hPalette = record.getParam(0);
-    int cEntries = record.getParam(1);
+    int hPalette = record.getParam (0);
+    int cEntries = record.getParam (1);
     Color[] colors = new Color[cEntries];
-    
+
     for (int i = 0; i < cEntries; i++)
     {
       int cr = record.getInt (i + 2);
@@ -69,47 +70,47 @@ public class MfCmdAnimatePalette extends MfCmd
     setEntriesCount (cEntries);
     setEntries (colors);
   }
-  
+
   public int getFunction ()
   {
     return MfType.ANIMATE_PALETTE;
   }
-  
+
   public void replay (WmfFile file)
   {
     // do nothing
     System.out.println ("Animate Palette is not implemented");
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[ANIMATE_PALETTE] hPalette=");
-    b.append (getHPalette());
+    b.append (getHPalette ());
     b.append (" entriesCount=");
-    b.append (getEntiesCount());
+    b.append (getEntiesCount ());
     return b.toString ();
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdAnimatePalette ();
   }
-  
+
   public int getHPalette ()
   {
     return hPalette;
   }
-  
+
   public void setHPalette (int hPalette)
   {
     this.hPalette = hPalette;
   }
- 
+
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

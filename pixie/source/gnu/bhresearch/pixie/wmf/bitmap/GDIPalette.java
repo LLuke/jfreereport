@@ -1,10 +1,7 @@
 package gnu.bhresearch.pixie.wmf.bitmap;
 
-import gnu.bhresearch.pixie.wmf.MfRecord;
-import gnu.bhresearch.pixie.wmf.GDIColor;
-import java.io.InputStream;
 import java.io.IOException;
-import java.awt.Color;
+import java.io.InputStream;
 
 public class GDIPalette
 {
@@ -15,15 +12,15 @@ public class GDIPalette
   {
     this.noColors = colors;
   }
-  
+
   public void setNoOfImportantColors (int colors)
   {
     if (colors > noColors)
       throw new IllegalArgumentException ("There may be not more important colors than colors defined in the palette.");
   }
-  
-  public void readPalette (InputStream in) 
-    throws IOException
+
+  public void readPalette (InputStream in)
+          throws IOException
   {
     colors = new int[noColors];
     for (int i = 0; i < noColors; i++)
@@ -31,9 +28,9 @@ public class GDIPalette
       colors[i] = readNextColor (in);
     }
   }
-  
+
   private int readNextColor (InputStream in)
-    throws IOException
+          throws IOException
   {
     int b = in.read ();
     int g = in.read ();
@@ -41,7 +38,7 @@ public class GDIPalette
     int filler = in.read ();
     return b + (g << 8) + (r << 16);
   }
-  
+
   public int lookupColor (int color)
   {
     if (noColors == 0)
@@ -52,7 +49,7 @@ public class GDIPalette
       int r = (color & 0x000000ff);
       return b + g + (r << 16);
     }
-      
+
     return colors[color];
   }
 }

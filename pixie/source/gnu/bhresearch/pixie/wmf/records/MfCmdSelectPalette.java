@@ -1,10 +1,10 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfLogPalette;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
 import gnu.bhresearch.pixie.wmf.WmfObject;
-import gnu.bhresearch.pixie.wmf.MfLogPalette;
 
 public class MfCmdSelectPalette extends MfCmd
 {
@@ -18,27 +18,30 @@ public class MfCmdSelectPalette extends MfCmd
   {
     WmfObject object = file.getObject (objectId);
     if (object == null)
-       throw new NullPointerException ();
-       
-    switch (object.getType())
+      throw new NullPointerException ();
+
+    switch (object.getType ())
     {
-      case WmfObject.OBJ_PALETTE:  file.getCurrentState().setLogPalette ((MfLogPalette) object); break;
-      default: throw new IllegalStateException ("Object is no palette");
+      case WmfObject.OBJ_PALETTE:
+        file.getCurrentState ().setLogPalette ((MfLogPalette) object);
+        break;
+      default:
+        throw new IllegalStateException ("Object is no palette");
     }
-  
+
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdSelectPalette ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int id = record.getParam (0);
     setObjectId (id);
   }
-  
+
   public int getFunction ()
   {
     return MfType.SELECT_PALETTE;
@@ -58,14 +61,14 @@ public class MfCmdSelectPalette extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[SELECT_PALETTE] object=");
-    b.append (getObjectId());
-    return b.toString();
+    b.append (getObjectId ());
+    return b.toString ();
   }
-  
+
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

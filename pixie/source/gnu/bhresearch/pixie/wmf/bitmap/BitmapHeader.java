@@ -1,15 +1,14 @@
 package gnu.bhresearch.pixie.wmf.bitmap;
 
-import java.io.InputStream;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 
 public class BitmapHeader
 {
-  public static final int BI_RGB        = 0;
-  public static final int BI_RLE8       = 1;
-  public static final int BI_RLE4       = 2;
-  public static final int BI_BITFIELDS  = 3;
-  
+  public static final int BI_RGB = 0;
+  public static final int BI_RLE8 = 1;
+  public static final int BI_RLE4 = 2;
+  public static final int BI_BITFIELDS = 3;
+
   private int BMPH_DATA_OFFSET = MfRecord.RECORD_HEADER + 0;
   private int BMPH_HEADERSIZE = MfRecord.RECORD_HEADER + 4;
   private int BMPH_WIDTH = MfRecord.RECORD_HEADER + 8;
@@ -22,7 +21,7 @@ public class BitmapHeader
   private int BMPH_VRES = MfRecord.RECORD_HEADER + 32;
   private int BMPH_NO_COLORS = MfRecord.RECORD_HEADER + 36;
   private int BMPH_NO_IMPORTANT_COLORS = MfRecord.RECORD_HEADER + 40;
-  
+
   private int dataOffset;
   private int headerSize;
   private int width;
@@ -37,31 +36,31 @@ public class BitmapHeader
   private int noImportantColors; // is <= noColors
   private boolean isTopDown;
   private GDIPalette palette;
-  
+
   public void setRecord (MfRecord record)
   {
-    dataOffset  = record.getInt (BMPH_DATA_OFFSET);
-    headerSize  = record.getInt (BMPH_HEADERSIZE);
-    width       = record.getInt (BMPH_WIDTH);
-    height      = record.getInt (BMPH_HEIGHT);
-    noPlanes    = record.getShort (BMPH_NO_PLANES);
+    dataOffset = record.getInt (BMPH_DATA_OFFSET);
+    headerSize = record.getInt (BMPH_HEADERSIZE);
+    width = record.getInt (BMPH_WIDTH);
+    height = record.getInt (BMPH_HEIGHT);
+    noPlanes = record.getShort (BMPH_NO_PLANES);
     bitPerPixel = record.getShort (BMPH_BPP);
     compression = record.getInt (BMPH_COMPRESSION);
-    dataSize    = record.getInt (BMPH_DATASIZE);
-    hres        = record.getInt (BMPH_HRES);
-    vres        = record.getInt (BMPH_VRES);
-    noColors    = record.getInt (BMPH_NO_COLORS);
+    dataSize = record.getInt (BMPH_DATASIZE);
+    hres = record.getInt (BMPH_HRES);
+    vres = record.getInt (BMPH_VRES);
+    noColors = record.getInt (BMPH_NO_COLORS);
     noImportantColors = record.getInt (BMPH_NO_IMPORTANT_COLORS);
-    
+
     if (height < 0)
     {
       isTopDown = true;
       height = -height;
     }
-    
+
     fixPalette ();
   }
-  
+
   private void fixPalette ()
   {
     if (bitPerPixel < 16)
@@ -80,42 +79,42 @@ public class BitmapHeader
   {
     return compression;
   }
-  
+
   public int getBitsPerPixel ()
   {
     return bitPerPixel;
   }
-  
+
   public int getHRes ()
   {
     return hres;
   }
-  
+
   public int getVRes ()
   {
     return vres;
   }
-  
+
   public int getWidth ()
   {
     return width;
   }
-  
+
   public int getHeight ()
   {
     return height;
   }
-  
+
   public int getNoOfColors ()
   {
     return noColors;
   }
-  
+
   public int getNoOfImportantColors ()
   {
     return noImportantColors;
   }
-  
+
   public boolean isTopDown ()
   {
     return isTopDown;

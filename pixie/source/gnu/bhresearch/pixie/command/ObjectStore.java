@@ -1,8 +1,9 @@
 package gnu.bhresearch.pixie.command;
 
 import gnu.bhresearch.pixie.image.PixieDataInput;
-import java.util.Vector;
+
 import java.io.IOException;
+import java.util.Vector;
 
 public class ObjectStore
 {
@@ -18,17 +19,17 @@ public class ObjectStore
     this ();
     loadObjects (offsets, in);
   }
-  
+
   public PixieObject getObject (int number)
   {
     return (PixieObject) objects.elementAt (number);
   }
-  
+
   public void addObject (PixieObject o)
   {
     objects.add (o);
   }
-  
+
   public void loadObjects (int[] offsets, PixieDataInput in) throws IOException
   {
     for (int i = 0; i < offsets.length; i++)

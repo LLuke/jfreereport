@@ -13,11 +13,11 @@ public class MfLogRegion implements WmfObject
   {
     return OBJ_REGION;
   }
-  
+
   public MfLogRegion ()
   {
   }
-  
+
   public void setBounds (int x, int y, int w, int h)
   {
     this.x = x;
@@ -25,9 +25,9 @@ public class MfLogRegion implements WmfObject
     this.w = w;
     this.h = h;
   }
-  
+
   public Rectangle getBounds ()
   {
-    return new Rectangle (x,y,w,h);
+    return new Rectangle (x, y, w, h);
   }
 }

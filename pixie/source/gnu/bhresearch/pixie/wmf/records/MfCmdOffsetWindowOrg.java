@@ -1,10 +1,11 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
-import java.awt.Point;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
+
+import java.awt.Point;
 
 /**
  * Moves the current Clipping Region (@see CreateRegion) to the specified
@@ -16,7 +17,7 @@ public class MfCmdOffsetWindowOrg extends MfCmd
   private int y;
   private int scaled_x;
   private int scaled_y;
-  
+
   public MfCmdOffsetWindowOrg ()
   {
   }
@@ -25,61 +26,61 @@ public class MfCmdOffsetWindowOrg extends MfCmd
   {
     MfDcState state = file.getCurrentState ();
     Point p = getScaledDestination ();
-    state.setWindowOrg (state.getWindowOrgX() + x, state.getWindowOrgY() + y);
+    state.setWindowOrg (state.getWindowOrgX () + x, state.getWindowOrgY () + y);
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdOffsetWindowOrg ();
   }
-  
+
   public Point getDestination ()
   {
-    return new Point (x,y);
+    return new Point (x, y);
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[OFFSET_WINDOWORG] destination=");
-    b.append (getDestination());
-    return b.toString();
+    b.append (getDestination ());
+    return b.toString ();
   }
-  
+
   public void setDestination (int x, int y)
   {
     this.x = x;
     this.y = y;
     scaleXChanged ();
     scaleYChanged ();
-    
+
   }
-  
+
   public int getFunction ()
   {
     return MfType.OFFSET_WINDOW_ORG;
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int y = record.getParam (0);
     int x = record.getParam (1);
-    setDestination (x,y);
+    setDestination (x, y);
   }
 
   public Point getScaledDestination ()
   {
     return new Point (scaled_x, scaled_y);
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
+    scaled_x = getScaledX (x);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
+    scaled_y = getScaledY (y);
   }
-  
+
 }

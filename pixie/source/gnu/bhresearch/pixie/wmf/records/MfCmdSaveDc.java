@@ -15,19 +15,19 @@ public class MfCmdSaveDc extends MfCmd
    */
   public void replay (WmfFile file)
   {
-    file.saveDCState();
+    file.saveDCState ();
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdSaveDc ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     // Save DC has no parameters
   }
-  
+
   public int getFunction ()
   {
     return MfType.SAVE_DC;
@@ -37,13 +37,13 @@ public class MfCmdSaveDc extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[SAVE_DC]");
-    return b.toString();
+    return b.toString ();
   }
 
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

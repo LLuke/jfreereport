@@ -1,16 +1,17 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.geom.Rectangle2D;
+
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 /**
- * top, left, right and bottom define the points of the clipping region, 
- * the resultant clipping region is the intersection of this region and the 
- * original region. 
+ * top, left, right and bottom define the points of the clipping region,
+ * the resultant clipping region is the intersection of this region and the
+ * original region.
  */
 public class MfCmdIntersectClipRect extends MfCmd
 {
@@ -34,23 +35,23 @@ public class MfCmdIntersectClipRect extends MfCmd
     Rectangle rect = state.getClipRegion ();
     Rectangle2D rec2 = rect.createIntersection (getScaledIntersectClipRect ());
     state.setClipRegion (
-      new Rectangle (
-        (int) rec2.getX (), 
-        (int) rec2.getY(), 
-        (int) rec2.getWidth(), 
-        (int) rec2.getHeight()));
+            new Rectangle (
+                    (int) rec2.getX (),
+                    (int) rec2.getY (),
+                    (int) rec2.getWidth (),
+                    (int) rec2.getHeight ()));
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdIntersectClipRect ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.INTERSECT_CLIP_RECT;
   }
-  
+
   public Rectangle getIntersectClipRect ()
   {
     return new Rectangle (x, y, width, height);
@@ -60,25 +61,25 @@ public class MfCmdIntersectClipRect extends MfCmd
   {
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[INTERSECT_CLIP_RECT] bounds=");
-    b.append (getIntersectClipRect());
-    return b.toString();
+    b.append (getIntersectClipRect ());
+    return b.toString ();
   }
-  
+
   public void setIntersectClipRect (int x, int y, int width, int height)
   {
     this.x = x;
     this.y = y;
-    this.width  = width;
+    this.width = width;
     this.height = height;
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int bottom = record.getParam (0);
@@ -90,13 +91,13 @@ public class MfCmdIntersectClipRect extends MfCmd
 
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
-    scaled_width = getScaledX(width);
+    scaled_x = getScaledX (x);
+    scaled_width = getScaledX (width);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
-    scaled_height = getScaledY(height);
+    scaled_y = getScaledY (y);
+    scaled_height = getScaledY (height);
   }
 }

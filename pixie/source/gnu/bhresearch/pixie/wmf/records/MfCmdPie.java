@@ -1,14 +1,15 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.Rectangle;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.awt.geom.Arc2D;
+
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Arc2D;
+import java.awt.image.BufferedImage;
 
 public class MfCmdPie extends MfCmd
 {
@@ -42,15 +43,15 @@ public class MfCmdPie extends MfCmd
     Graphics2D graph = file.getGraphics2D ();
     Rectangle rec = getScaledBounds ();
     Point start = getScaledStartingIntersection ();
-    Point end   = getScaledEndingIntersection ();
-  
+    Point end = getScaledEndingIntersection ();
+
     Arc2D arc = new Arc2D.Double ();
     arc.setArcType (Arc2D.PIE);
     arc.setFrame (rec.x, rec.y, rec.width, rec.height);
     arc.setAngles (start.x, start.y, end.x, end.y);
-  
+
     MfDcState state = file.getCurrentState ();
-  
+
     if (state.getLogBrush ().isVisible ())
     {
       state.preparePaint ();
@@ -64,28 +65,28 @@ public class MfCmdPie extends MfCmd
       state.postDraw ();
     }
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
-    scaled_width = getScaledX(width);
-    scaled_xstart = getScaledX(xstart);
-    scaled_xend = getScaledX(xend);
+    scaled_x = getScaledX (x);
+    scaled_width = getScaledX (width);
+    scaled_xstart = getScaledX (xstart);
+    scaled_xend = getScaledX (xend);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
-    scaled_height = getScaledY(height);
-    scaled_ystart = getScaledY(xstart);
-    scaled_yend = getScaledY(xend);
+    scaled_y = getScaledY (y);
+    scaled_height = getScaledY (height);
+    scaled_ystart = getScaledY (xstart);
+    scaled_yend = getScaledY (xend);
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdPie ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.PIE;
@@ -95,7 +96,7 @@ public class MfCmdPie extends MfCmd
   {
     return new Rectangle (x, y, width, height);
   }
-  
+
   public Rectangle getScaledBounds ()
   {
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
@@ -105,25 +106,25 @@ public class MfCmdPie extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[PIE] bounds=");
-    b.append (getBounds());
+    b.append (getBounds ());
     b.append (" startIntersection=");
-    b.append (getStartingIntersection());
+    b.append (getStartingIntersection ());
     b.append (" endingIntersection=");
-    b.append (getEndingIntersection());
-    return b.toString();
+    b.append (getEndingIntersection ());
+    return b.toString ();
   }
 
   public void setBounds (int x, int y, int width, int height)
   {
     this.x = x;
     this.y = y;
-    this.width  = width;
+    this.width = width;
     this.height = height;
     scaleXChanged ();
     scaleYChanged ();
-    
+
   }
-  
+
   public void setStartingIntersection (int x, int y)
   {
     xstart = x;
@@ -136,12 +137,12 @@ public class MfCmdPie extends MfCmd
   {
     return new Point (xstart, ystart);
   }
-  
+
   public Point getScaledStartingIntersection ()
   {
     return new Point (scaled_xstart, scaled_ystart);
   }
-  
+
   public void setEndingIntersection (int x, int y)
   {
     xend = x;
@@ -150,12 +151,12 @@ public class MfCmdPie extends MfCmd
     scaleYChanged ();
 
   }
-  
+
   public Point getEndingIntersection ()
   {
     return new Point (xend, yend);
   }
-  
+
   public Point getScaledEndingIntersection ()
   {
     return new Point (scaled_xend, scaled_yend);

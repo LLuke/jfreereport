@@ -1,10 +1,9 @@
 package gnu.bhresearch.pixie.command;
 
 import gnu.bhresearch.pixie.image.PixieDataInput;
-import gnu.bhresearch.pixie.Constants;
-import java.util.Vector;
-import java.io.IOException;
+
 import java.awt.Graphics;
+import java.io.IOException;
 
 public class PixieObjectRef extends PixieImageCommand
 {
@@ -18,11 +17,11 @@ public class PixieObjectRef extends PixieImageCommand
   private int scaled_height;
   private int objectRef;
   private PixieObject storedObject;
-  
+
   public PixieObjectRef (PixieDataInput in, ObjectStore store)
-    throws IOException
+          throws IOException
   {
-    objectRef = in.readUnsignedVInt();
+    objectRef = in.readUnsignedVInt ();
     storedObject = store.getObject (objectRef);
     x = in.readVIntX ();
     y = in.readVIntY ();
@@ -46,34 +45,34 @@ public class PixieObjectRef extends PixieImageCommand
     scaled_width = width;
     scaled_height = height;
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
-    scaled_width = getScaledX(width);
+    scaled_x = getScaledX (x);
+    scaled_width = getScaledX (width);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
-    scaled_height = getScaledY(height);
+    scaled_y = getScaledY (y);
+    scaled_height = getScaledY (height);
   }
-  
+
   public void paint (Graphics graphics)
   {
-    graphics.translate( scaled_x, scaled_y );
+    graphics.translate (scaled_x, scaled_y);
     storedObject.paint (graphics);
-    graphics.translate( -scaled_x, -scaled_y );
+    graphics.translate (-scaled_x, -scaled_y);
   }
-  
+
   public int getWidth ()
   {
     return width;
   }
-  
+
   public int getHeight ()
   {
     return height;
   }
-  
+
 }

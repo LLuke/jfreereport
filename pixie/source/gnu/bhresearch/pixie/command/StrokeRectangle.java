@@ -1,13 +1,9 @@
 package gnu.bhresearch.pixie.command;
 
-import gnu.bhresearch.pixie.Constants;
 import gnu.bhresearch.pixie.image.PixieDataInput;
+
 import java.awt.Graphics;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Color;
 import java.io.IOException;
-import java.util.Vector;
 
 public class StrokeRectangle extends PixieImageCommand
 {
@@ -21,7 +17,7 @@ public class StrokeRectangle extends PixieImageCommand
   private int scaled_height;
 
   public StrokeRectangle (PixieDataInput in)
-    throws IOException
+          throws IOException
   {
     x = in.readVIntX ();
     y = in.readVIntY ();
@@ -30,7 +26,7 @@ public class StrokeRectangle extends PixieImageCommand
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public StrokeRectangle (int x, int y, int width, int height)
   {
     this.x = x;
@@ -44,23 +40,23 @@ public class StrokeRectangle extends PixieImageCommand
 
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
-    scaled_width = getScaledX(width);
+    scaled_x = getScaledX (x);
+    scaled_width = getScaledX (width);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
-    scaled_height = getScaledY(height);
+    scaled_y = getScaledY (y);
+    scaled_height = getScaledY (height);
   }
-  
-  
+
+
   public void paint (Graphics graphics)
   {
 //    System.out.println ("Rec: " + false + " " + true);
 //    System.out.println ("Rect: " + x + " " + y + " " + width + " " + height);
 //
-    graphics.drawRect( scaled_x, scaled_y, scaled_width, scaled_height );
+    graphics.drawRect (scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
 
@@ -68,7 +64,7 @@ public class StrokeRectangle extends PixieImageCommand
   {
     return width;
   }
-  
+
   public int getHeight ()
   {
     return height;

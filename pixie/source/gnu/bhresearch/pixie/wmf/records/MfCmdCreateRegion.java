@@ -13,7 +13,7 @@ public class MfCmdCreateRegion extends MfCmd
   public MfCmdCreateRegion ()
   {
   }
-  
+
   public void setRecord (MfRecord record)
   {
     System.out.println ("Create Region is not implemented.");
@@ -24,10 +24,10 @@ public class MfCmdCreateRegion extends MfCmd
     StringBuffer b = new StringBuffer ();
     b.append ("[CREATE_REGION] ");
     b.append (" no internals known (see WINE for details)");
-    return b.toString();
+    return b.toString ();
   }
-  
-  
+
+
   public int getFunction ()
   {
     return MfType.CREATE_REGION;
@@ -36,7 +36,7 @@ public class MfCmdCreateRegion extends MfCmd
   public void replay (WmfFile file)
   {
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdCreateRegion ();
@@ -45,7 +45,7 @@ public class MfCmdCreateRegion extends MfCmd
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

@@ -1,10 +1,12 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
-import java.awt.Dimension;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
+
+import java.awt.Dimension;
+
 /**
  * Sets the size of the viewport.
  */
@@ -23,14 +25,14 @@ public class MfCmdSetViewPortExt extends MfCmd
   {
     MfDcState state = file.getCurrentState ();
     Dimension dim = getScaledDimension ();
-    state.setViewportExt (dim.width,dim.height);
+    state.setViewportExt (dim.width, dim.height);
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdSetViewPortExt ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int height = record.getParam (0);
@@ -42,37 +44,37 @@ public class MfCmdSetViewPortExt extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[SET_VIEWPORT_EXT] dimension=");
-    b.append (getDimension());
-    return b.toString();
+    b.append (getDimension ());
+    return b.toString ();
   }
-  
+
   public Dimension getDimension ()
   {
     return new Dimension (width, height);
   }
-  
+
   public Dimension getScaledDimension ()
   {
     return new Dimension (scaled_width, scaled_height);
   }
-  
+
   public void setDimension (int w, int h)
   {
     this.width = w;
     this.height = h;
     scaleXChanged ();
     scaleYChanged ();
-    
+
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_width = getScaledX(width);
+    scaled_width = getScaledX (width);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_height = getScaledY(height);
+    scaled_height = getScaledY (height);
   }
 
   public int getFunction ()

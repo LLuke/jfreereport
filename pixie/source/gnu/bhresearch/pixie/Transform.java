@@ -7,24 +7,20 @@
 
 package gnu.bhresearch.pixie;
 
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.lang.Math;
-import gnu.bhresearch.quant.Debug;
-import gnu.bhresearch.quant.Assert;
 
 /**
-	A 2D linear transform. Only scaling and translation are currently
-	supported - no rotation, and shearing isn't used.
-*/
-public class Transform 
+ A 2D linear transform. Only scaling and translation are currently
+ supported - no rotation, and shearing isn't used.
+ */
+public class Transform
 {
   private boolean isIdentity;
   private float scaleX, scaleY;
   private float offsetX, offsetY;
 
   /** Construct identity transform. */
-  public Transform()
+  public Transform ()
   {
     isIdentity = true;
     offsetX = offsetY = 0;
@@ -32,7 +28,7 @@ public class Transform
   }
 
   /** Construct a transform from offset and scale values. */
-  public Transform( float ox, float oy, float sx, float sy )
+  public Transform (float ox, float oy, float sx, float sy)
   {
     offsetX = ox;
     offsetY = oy;
@@ -42,9 +38,9 @@ public class Transform
   }
 
   /** Construct a transform which maps the src onto the dest rectangle. */
-  public Transform( Rectangle dest, Rectangle src )
+  public Transform (Rectangle dest, Rectangle src)
   {
-    if (dest.equals( src ))
+    if (dest.equals (src))
     {
       isIdentity = true;
       offsetX = offsetY = 0;
@@ -61,57 +57,57 @@ public class Transform
   }
 
   /** True if this is the identity transform. */
-  public boolean isIdentity()
+  public boolean isIdentity ()
   {
     return isIdentity;
   }
 
-  public int applyToX( int x )
-  { 
-    return Math.round( x*scaleX + offsetX ); 
+  public int applyToX (int x)
+  {
+    return Math.round (x * scaleX + offsetX);
   }
-  
-  public int applyToWidth( int w )
-  { 
-    return Math.round( w*scaleX ); 
+
+  public int applyToWidth (int w)
+  {
+    return Math.round (w * scaleX);
   }
-  
-  public int applyToY( int y )
-  { 
-    return Math.round( y*scaleY + offsetY ); 
+
+  public int applyToY (int y)
+  {
+    return Math.round (y * scaleY + offsetY);
   }
-  
-  public int applyToHeight( int h )
-  { 
-    return Math.round( h*scaleY ); 
+
+  public int applyToHeight (int h)
+  {
+    return Math.round (h * scaleY);
   }
 
   /** Transform a rectangle. */
-  public Rectangle applyTo( Rectangle in )
+  public Rectangle applyTo (Rectangle in)
   {
     if (isIdentity)
       return in;
-    
-    int ax = applyToX(in.x);
-    int ay = applyToY(in.y);
-    int aw = applyToWidth(in.width);
-    int ah = applyToHeight(in.height);
-    
-    return new Rectangle(ax, ay, aw, ah);
+
+    int ax = applyToX (in.x);
+    int ay = applyToY (in.y);
+    int aw = applyToWidth (in.width);
+    int ah = applyToHeight (in.height);
+
+    return new Rectangle (ax, ay, aw, ah);
   }
 
   /** Transform a curve. */
-  public Curve applyTo( Curve curve )
+  public Curve applyTo (Curve curve)
   {
     if (isIdentity)
       return curve;
-      
-    Curve out = new Curve(curve.getSize());
-    for (int i = 0; i < curve.getSize(); i++)
+
+    Curve out = new Curve (curve.getSize ());
+    for (int i = 0; i < curve.getSize (); i++)
     {
-      int x = Math.round( curve.getX(i)*scaleX + offsetX );
-      int y = Math.round( curve.getY(i)*scaleY + offsetY );
-      out.add(x,y,curve.isBezier(i));
+      int x = Math.round (curve.getX (i) * scaleX + offsetX);
+      int y = Math.round (curve.getY (i) * scaleY + offsetY);
+      out.add (x, y, curve.isBezier (i));
     }
     return out;
   }

@@ -6,6 +6,7 @@ import gnu.bhresearch.pixie.wmf.WmfFile;
 
 // This structure should include a bitmap. This implementation does
 // not know of any bitmaps right now, so this command is ignored.
+
 public class MfCmdSetDibitsToDevice extends MfCmd
 {
   public MfCmdSetDibitsToDevice ()
@@ -15,25 +16,25 @@ public class MfCmdSetDibitsToDevice extends MfCmd
   public void replay (WmfFile file)
   {
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdSetDibitsToDevice ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     System.out.println ("SetDibitsToDevice is not implemented.");
-    
+
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[SET_DIBITS_TO_DEVICE] <<windows specific, will not be implemented>>");
-    return b.toString();
+    return b.toString ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.SET_DIBITS_TO_DEVICE;
@@ -42,7 +43,7 @@ public class MfCmdSetDibitsToDevice extends MfCmd
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }

@@ -1,12 +1,12 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.Point;
+
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
+import java.awt.Point;
 
 
 /**
@@ -29,15 +29,15 @@ public class MfCmdMoveTo extends MfCmd
     MfDcState state = file.getCurrentState ();
 
     Point p = getScaledDestination ();
-    state.setCurPos (p.x,p.y);
-  
+    state.setCurPos (p.x, p.y);
+
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdMoveTo ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.MOVE_TO;
@@ -47,10 +47,10 @@ public class MfCmdMoveTo extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[MOVE_TO] destination=");
-    b.append (getDestination());
-    return b.toString();
+    b.append (getDestination ());
+    return b.toString ();
   }
-  
+
   public void setDestination (int x, int y)
   {
     destX = x;
@@ -58,31 +58,31 @@ public class MfCmdMoveTo extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public Point getDestination ()
   {
-    return new Point (destX,destY);
+    return new Point (destX, destY);
   }
-  
+
   public Point getScaledDestination ()
   {
     return new Point (scaled_destX, scaled_destY);
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int y = record.getParam (0);
     int x = record.getParam (1);
-    setDestination(x,y);
+    setDestination (x, y);
   }
 
   protected void scaleXChanged ()
   {
-    scaled_destX = getScaledX(destX);
+    scaled_destX = getScaledX (destX);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_destY = getScaledY(destY);
+    scaled_destY = getScaledY (destY);
   }
 }

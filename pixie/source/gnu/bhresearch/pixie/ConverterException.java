@@ -8,12 +8,12 @@
 package gnu.bhresearch.pixie;
 
 /**
-	Error reporting for Pixie converter.
-*/
-public class ConverterException extends Exception 
+ Error reporting for Pixie converter.
+ */
+public class ConverterException extends Exception
 {
-  public ConverterException( String mes ) 
-  { 
-    super(mes); 
+  public ConverterException (String mes)
+  {
+    super (mes);
   }
 }

@@ -1,28 +1,29 @@
 package gnu.bhresearch.pixie.wmf.records;
 
-import gnu.bhresearch.pixie.wmf.MfRecord;
-import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.Rectangle;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.awt.geom.Arc2D;
+import gnu.bhresearch.pixie.wmf.MfRecord;
+import gnu.bhresearch.pixie.wmf.MfType;
+import gnu.bhresearch.pixie.wmf.WmfFile;
+
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.Arc2D;
+import java.awt.image.BufferedImage;
 
 /**
- * The exact same as an arc, only the arc is closed, and may be filled 
- * with a brush. 
+ * The exact same as an arc, only the arc is closed, and may be filled
+ * with a brush.
  *
- * The points (nLeftRect, nTopRect) and (nRightRect, nBottomRect) 
- * specify the bounding rectangle. An ellipse formed by the specified 
- * bounding rectangle defines the curve of the arc. The arc extends 
- * in the current drawing direction from the point where it intersects 
- * the radial from the center of the bounding rectangle to the 
- * (nXStartArc, nYStartArc) point. The arc ends where it intersects the 
- * radial from the center of the bounding rectangle to the (nXEndArc, 
- * nYEndArc) point. If the starting point and ending point are the same, 
- * a complete ellipse is drawn. 
+ * The points (nLeftRect, nTopRect) and (nRightRect, nBottomRect)
+ * specify the bounding rectangle. An ellipse formed by the specified
+ * bounding rectangle defines the curve of the arc. The arc extends
+ * in the current drawing direction from the point where it intersects
+ * the radial from the center of the bounding rectangle to the
+ * (nXStartArc, nYStartArc) point. The arc ends where it intersects the
+ * radial from the center of the bounding rectangle to the (nXEndArc,
+ * nYEndArc) point. If the starting point and ending point are the same,
+ * a complete ellipse is drawn.
  */
 public class MfCmdChord extends MfCmd
 {
@@ -49,43 +50,43 @@ public class MfCmdChord extends MfCmd
   public MfCmdChord ()
   {
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
-    scaled_width = getScaledX(width);
-    scaled_xstart = getScaledX(xstart);
-    scaled_xend = getScaledX(xend);
+    scaled_x = getScaledX (x);
+    scaled_width = getScaledX (width);
+    scaled_xstart = getScaledX (xstart);
+    scaled_xend = getScaledX (xend);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
-    scaled_height = getScaledY(height);
-    scaled_ystart = getScaledY(xstart);
-    scaled_yend = getScaledY(xend);
+    scaled_y = getScaledY (y);
+    scaled_height = getScaledY (height);
+    scaled_ystart = getScaledY (xstart);
+    scaled_yend = getScaledY (xend);
   }
-  
+
   public int getFunction ()
   {
     return MfType.CHORD;
   }
-  
+
   public void replay (WmfFile file)
   {
     BufferedImage img = file.getImage ();
     Graphics2D graph = file.getGraphics2D ();
     Rectangle rec = getBounds ();
     Point start = getStartingIntersection ();
-    Point end   = getEndingIntersection ();
-  
+    Point end = getEndingIntersection ();
+
     Arc2D arc = new Arc2D.Double ();
     arc.setArcType (Arc2D.CHORD);
     arc.setFrame (rec.x, rec.y, rec.width, rec.height);
     arc.setAngles (start.x, start.y, end.x, end.y);
-  
+
     MfDcState state = file.getCurrentState ();
-  
+
     if (state.getLogBrush ().isVisible ())
     {
       state.preparePaint ();
@@ -98,9 +99,9 @@ public class MfCmdChord extends MfCmd
       graph.draw (arc);
       state.postDraw ();
     }
-  
+
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdChord ();
@@ -110,7 +111,7 @@ public class MfCmdChord extends MfCmd
   {
     return new Rectangle (x, y, width, height);
   }
-  
+
   public Rectangle getScaledBounds ()
   {
     return new Rectangle (scaled_x, scaled_y, scaled_width, scaled_height);
@@ -120,13 +121,13 @@ public class MfCmdChord extends MfCmd
   {
     this.x = x;
     this.y = y;
-    this.width  = width;
+    this.width = width;
     this.height = height;
     scaleXChanged ();
     scaleYChanged ();
-    
+
   }
-  
+
   public void setStartingIntersection (int x, int y)
   {
     xstart = x;
@@ -140,12 +141,12 @@ public class MfCmdChord extends MfCmd
   {
     return new Point (xstart, ystart);
   }
-  
+
   public Point getScaledStartingIntersection ()
   {
     return new Point (scaled_xstart, scaled_ystart);
   }
-  
+
   public void setEndingIntersection (int x, int y)
   {
     xend = x;
@@ -154,12 +155,12 @@ public class MfCmdChord extends MfCmd
     scaleYChanged ();
 
   }
-  
+
   public Point getEndingIntersection ()
   {
     return new Point (xend, yend);
   }
-  
+
   public Point getScaledEndingIntersection ()
   {
     return new Point (scaled_xend, scaled_yend);
@@ -184,12 +185,12 @@ public class MfCmdChord extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[CHORD] bounds=");
-    b.append (getBounds());
+    b.append (getBounds ());
     b.append (" startIntersection=");
-    b.append (getStartingIntersection());
+    b.append (getStartingIntersection ());
     b.append (" endingIntersection=");
-    b.append (getEndingIntersection());
-    return b.toString();
+    b.append (getEndingIntersection ());
+    return b.toString ();
   }
 
 }

@@ -1,7 +1,7 @@
 package gnu.bhresearch.pixie.wmf.bitmap;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public abstract class BitmapCompression
 {
@@ -9,23 +9,23 @@ public abstract class BitmapCompression
   private int width;
   private int bpp;
   private boolean topDown;
-  
+
   public void setDimension (int width, int height)
   {
     this.width = width;
     this.height = height;
   }
-  
+
   public int getHeight ()
   {
     return height;
   }
-  
+
   public int getWidth ()
   {
     return width;
   }
-  
+
   public int getBpp ()
   {
     return bpp;
@@ -40,20 +40,20 @@ public abstract class BitmapCompression
   {
     this.topDown = b;
   }
-  
+
   public boolean isTopDown ()
   {
     return topDown;
   }
 
   public abstract int[] decompress (InputStream in, GDIPalette palette)
-  throws IOException;
-  
+          throws IOException;
+
   public static int[] expandMonocrome (int b, GDIPalette pal)
   {
     int tColor = pal.lookupColor (1);
     int fColor = pal.lookupColor (0);
-    
+
     int[] retval = new int[8];
     if ((b & 0x01) == 0x01) retval[0] = tColor; else retval[0] = fColor;
     if ((b & 0x02) == 0x02) retval[1] = tColor; else retval[1] = fColor;
@@ -65,12 +65,12 @@ public abstract class BitmapCompression
     if ((b & 0x80) == 0x80) retval[7] = tColor; else retval[7] = fColor;
     return retval;
   }
-  
+
   public static int[] expand4BitTuple (int b, GDIPalette pal)
   {
     int[] retval = new int[2];
     retval[0] = pal.lookupColor ((b & 0xF0) >> 4);
-    retval[1] = pal.lookupColor  (b & 0x0F);
+    retval[1] = pal.lookupColor (b & 0x0F);
     return retval;
   }
 }

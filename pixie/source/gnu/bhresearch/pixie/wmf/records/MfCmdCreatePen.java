@@ -1,11 +1,12 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.GDIColor;
+import gnu.bhresearch.pixie.wmf.MfLogPen;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
-import gnu.bhresearch.pixie.wmf.GDIColor;
-import java.awt.Color;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfLogPen;
+
+import java.awt.Color;
 
 public class MfCmdCreatePen extends MfCmd
 {
@@ -13,22 +14,22 @@ public class MfCmdCreatePen extends MfCmd
   private Color color;
   private int width;
   private int scaled_width;
-  
+
   public MfCmdCreatePen ()
   {
   }
-  
+
   public void replay (WmfFile file)
   {
-  MfLogPen lpen = new MfLogPen ();
-  lpen.setStyle (getStyle ());
-  lpen.setColor (getColor ());
-  lpen.setWidth (getScaledWidth ());
-  
-  file.getCurrentState ().setLogPen (lpen);
-  file.storeObject (lpen);
+    MfLogPen lpen = new MfLogPen ();
+    lpen.setStyle (getStyle ());
+    lpen.setColor (getColor ());
+    lpen.setWidth (getScaledWidth ());
+
+    file.getCurrentState ().setLogPen (lpen);
+    file.storeObject (lpen);
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdCreatePen ();
@@ -38,7 +39,7 @@ public class MfCmdCreatePen extends MfCmd
   {
     return MfType.CREATE_PEN_INDIRECT;
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int style = record.getParam (0);
@@ -54,58 +55,58 @@ public class MfCmdCreatePen extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[CREATE_PEN] style=");
-    b.append (getStyle());
+    b.append (getStyle ());
     b.append (" width=");
-    b.append (getWidth());
+    b.append (getWidth ());
     b.append (" color=");
-    b.append (getColor());
-    return b.toString();
+    b.append (getColor ());
+    return b.toString ();
   }
-  
-  
+
+
   public int getStyle ()
   {
     return style;
   }
-  
+
   public void setStyle (int style)
   {
     this.style = style;
   }
-  
+
   public int getScaledWidth ()
   {
     return scaled_width;
   }
-  
+
   public int getWidth ()
   {
     return width;
   }
-  
+
   public void setWidth (int width)
   {
     this.width = width;
     scaleXChanged ();
   }
-  
+
   protected void scaleXChanged ()
   {
     scaled_width = getScaledX (width);
   }
-  
+
   public Color getColor ()
   {
     return color;
   }
-  
+
   public void setColor (Color c)
   {
     this.color = c;
   }
-  
+
   protected void scaleYChanged ()
   {
   }
- 
+
 }

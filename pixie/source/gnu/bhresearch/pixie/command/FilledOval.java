@@ -1,13 +1,9 @@
 package gnu.bhresearch.pixie.command;
 
-import gnu.bhresearch.pixie.Constants;
 import gnu.bhresearch.pixie.image.PixieDataInput;
+
 import java.awt.Graphics;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Color;
 import java.io.IOException;
-import java.util.Vector;
 
 public class FilledOval extends PixieImageCommand
 {
@@ -21,7 +17,7 @@ public class FilledOval extends PixieImageCommand
   private int scaled_height;
 
   public FilledOval (PixieDataInput in)
-  throws IOException
+          throws IOException
   {
     x = in.readVIntX ();
     y = in.readVIntY ();
@@ -30,20 +26,20 @@ public class FilledOval extends PixieImageCommand
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   protected void scaleXChanged ()
   {
-    scaled_x = getScaledX(x);
-    scaled_width = getScaledX(width);
+    scaled_x = getScaledX (x);
+    scaled_width = getScaledX (width);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_y = getScaledY(y);
-    scaled_height = getScaledY(height);
+    scaled_y = getScaledY (y);
+    scaled_height = getScaledY (height);
   }
-  
-  
+
+
   public FilledOval (int x, int y, int width, int height)
   {
     this.x = x;
@@ -56,14 +52,14 @@ public class FilledOval extends PixieImageCommand
 
   public void paint (Graphics graphics)
   {
-    graphics.fillOval( scaled_x, scaled_y, scaled_width, scaled_height );
+    graphics.fillOval (scaled_x, scaled_y, scaled_width, scaled_height);
   }
 
   public int getWidth ()
   {
     return width;
   }
-  
+
   public int getHeight ()
   {
     return height;

@@ -1,28 +1,25 @@
 package gnu.bhresearch.pixie.command;
 
-import gnu.bhresearch.pixie.Constants;
 import gnu.bhresearch.pixie.image.PixieDataInput;
-import java.awt.Graphics;
-import java.awt.Font;
-import java.awt.FontMetrics;
+
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.IOException;
-import java.util.Vector;
 
 public class SetColor extends PixieImageCommand
 {
   private Color color;
-  
+
   public SetColor (Color color)
   {
     this.color = color;
   }
-  
+
   public SetColor (PixieDataInput in)
-  throws IOException
+          throws IOException
   {
-    int value = in.readUnsignedVInt();
-    color = new Color(value);
+    int value = in.readUnsignedVInt ();
+    color = new Color (value);
   }
 
   public Color getColor ()
@@ -49,11 +46,11 @@ public class SetColor extends PixieImageCommand
   {
     return 0;
   }
-  
+
   public int getHeight ()
   {
     return 0;
   }
-  
+
 }
 

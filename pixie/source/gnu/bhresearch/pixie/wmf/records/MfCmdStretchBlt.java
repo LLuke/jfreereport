@@ -2,8 +2,9 @@ package gnu.bhresearch.pixie.wmf.records;
 
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
-import java.awt.Rectangle;
 import gnu.bhresearch.pixie.wmf.WmfFile;
+
+import java.awt.Rectangle;
 
 public class MfCmdStretchBlt extends MfCmd
 {
@@ -33,12 +34,12 @@ public class MfCmdStretchBlt extends MfCmd
   public void replay (WmfFile file)
   {
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdStretchBlt ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.STRETCH_BLT;
@@ -70,20 +71,20 @@ public class MfCmdStretchBlt extends MfCmd
     setSrcRect (xSrc, ySrc, srcH, srcW);
     setDestRect (xDest, yDest, destH, destW);
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[STRETCH_BLT] rop=");
-    b.append (getROP());
+    b.append (getROP ());
     b.append (" srcRect=");
-    b.append (getSrcRect());
+    b.append (getSrcRect ());
     b.append (" destRect=");
-    b.append (getDestRect());
-    return b.toString();
+    b.append (getDestRect ());
+    return b.toString ();
   }
-  
-  
+
+
   public void setSrcRect (int x, int y, int w, int h)
   {
     this.srcX = x;
@@ -93,7 +94,7 @@ public class MfCmdStretchBlt extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public void setDestRect (int x, int y, int w, int h)
   {
     this.destX = x;
@@ -103,7 +104,7 @@ public class MfCmdStretchBlt extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public Rectangle getSrcRect ()
   {
     return new Rectangle (srcX, srcY, srcW, srcH);
@@ -123,7 +124,7 @@ public class MfCmdStretchBlt extends MfCmd
   {
     return new Rectangle (scaled_destX, scaled_destY, scaled_destW, scaled_destH);
   }
-  
+
   protected void scaleXChanged ()
   {
     scaled_srcX = getScaledX (srcX);

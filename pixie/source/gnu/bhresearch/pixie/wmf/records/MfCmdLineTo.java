@@ -1,11 +1,12 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
-import java.awt.Point;
+
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Line2D;
 
 /**
@@ -27,12 +28,12 @@ public class MfCmdLineTo extends MfCmd
   {
     Graphics2D graph = file.getGraphics2D ();
     MfDcState state = file.getCurrentState ();
-  
+
     int cx = state.getCurPosX ();
     int cy = state.getCurPosY ();
 
     Point destP = getScaledDestination ();
-    
+
     if (state.getLogPen ().isVisible ())
     {
       state.prepareDraw ();
@@ -42,25 +43,25 @@ public class MfCmdLineTo extends MfCmd
     }
     state.setCurPos (destP.x, destP.y);
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdLineTo ();
   }
-  
+
   public int getFunction ()
   {
     return MfType.LINE_TO;
   }
-  
+
   public String toString ()
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[LINE_TO] destination=");
-    b.append (getDestination());
-    return b.toString();
+    b.append (getDestination ());
+    return b.toString ();
   }
-  
+
   public void setDestination (int x, int y)
   {
     destX = x;
@@ -68,31 +69,31 @@ public class MfCmdLineTo extends MfCmd
     scaleXChanged ();
     scaleYChanged ();
   }
-  
+
   public Point getDestination ()
   {
-    return new Point (destX,destY);
+    return new Point (destX, destY);
   }
-  
+
   public Point getScaledDestination ()
   {
     return new Point (scaled_destX, scaled_destY);
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int y = record.getParam (0);
     int x = record.getParam (1);
-    setDestination(x,y);
+    setDestination (x, y);
   }
 
   protected void scaleXChanged ()
   {
-    scaled_destX = getScaledX(destX);
+    scaled_destX = getScaledX (destX);
   }
-  
+
   protected void scaleYChanged ()
   {
-    scaled_destY = getScaledY(destY);
+    scaled_destY = getScaledY (destY);
   }
 }

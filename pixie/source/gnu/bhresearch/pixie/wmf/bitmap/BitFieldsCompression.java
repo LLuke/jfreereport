@@ -1,6 +1,5 @@
 package gnu.bhresearch.pixie.wmf.bitmap;
 
-import gnu.bhresearch.pixie.wmf.MfRecord;
 import java.io.InputStream;
 
 public class BitFieldsCompression extends BitmapCompression

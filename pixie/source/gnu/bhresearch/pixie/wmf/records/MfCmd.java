@@ -2,8 +2,9 @@ package gnu.bhresearch.pixie.wmf.records;
 
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import java.util.Hashtable;
+
 import java.awt.Rectangle;
+import java.util.Hashtable;
 
 /**
  * CHORD is not implemented.
@@ -12,14 +13,17 @@ public abstract class MfCmd
 {
 //  public abstract MfRecord getRecord ();
   public abstract void setRecord (MfRecord record);
+
   public abstract int getFunction ();
+
   public abstract MfCmd getInstance ();
+
   // to be abstract
   public abstract void replay (WmfFile metafile);
 
   private static Hashtable recordTypes;
   private static boolean isInitialized;
-  
+
   private float scaleX;
   private float scaleY;
 
@@ -28,7 +32,7 @@ public abstract class MfCmd
     scaleX = 1;
     scaleY = 1;
   }
-  
+
   public void setScale (float scaleX, float scaleY)
   {
     float oldScaleX = this.scaleX;
@@ -44,94 +48,93 @@ public abstract class MfCmd
       scaleYChanged ();
     }
   }
-  
+
   protected abstract void scaleXChanged ();
+
   protected abstract void scaleYChanged ();
-  
+
   public Rectangle scaleRect (Rectangle r)
   {
     Rectangle retval = new Rectangle ();
     retval.x = getScaledX (r.x);
     retval.y = getScaledY (r.y);
-    
+
     retval.width = getScaledWidth (r.width);
     retval.height = getScaledHeight (r.height);
     return retval;
   }
-  
-  public int getScaledWidth (int length) 
+
+  public int getScaledWidth (int length)
   {
     if (length == 0)
     {
       return 1;
     }
-    length = (int)(length * scaleX + 0.5f);
+    length = (int) (length * scaleX + 0.5f);
     return (length == 0) ? 1 : length;
   }
-  
-  public int getScaledHeight (int length) 
+
+  public int getScaledHeight (int length)
   {
     if (length == 0)
     {
       return 1;
     }
-    length = (int)(length * scaleY + 0.5f);
+    length = (int) (length * scaleY + 0.5f);
     return (length == 0) ? 1 : length;
   }
 
-  public int[] applyScaleX (int[] n, int [] dest)
+  public int[] applyScaleX (int[] n, int[] dest)
   {
     if (dest == null)
       dest = new int[n.length];
-    else  
-    if (dest.length < n.length)
+    else if (dest.length < n.length)
       dest = new int[n.length];
-        
+
     for (int i = 0; i < n.length; i++)
     {
-      dest[i] = (int)(n[i] * scaleX + 0.5f);
+      dest[i] = (int) (n[i] * scaleX + 0.5f);
     }
     return dest;
   }
 
-  public int[] applyScaleY (int[] n, int [] dest)
+  public int[] applyScaleY (int[] n, int[] dest)
   {
     if (dest == null)
       dest = new int[n.length];
-    else  
-    if (dest.length < n.length)
+    else if (dest.length < n.length)
       dest = new int[n.length];
-        
+
     for (int i = 0; i < n.length; i++)
     {
-      dest[i] = (int)(n[i] * scaleY + 0.5f);
+      dest[i] = (int) (n[i] * scaleY + 0.5f);
     }
     return dest;
   }
 
-  /** 
-   * Return integer scaled to output units. 
+  /**
+   * Return integer scaled to output units.
    */
-  public int getScaledY(int y)
+  public int getScaledY (int y)
   {
-    return (int)(y * scaleY + 0.5f);
+    return (int) (y * scaleY + 0.5f);
   }
 
-  /** 
-   * Return integer scaled to output units. 
+  /**
+   * Return integer scaled to output units.
    */
   public int getScaledX (int x)
   {
-    return (int)(x * scaleX + 0.5f);
+    return (int) (x * scaleX + 0.5f);
   }
 
   public static void registerAllKnownTypes ()
   {
     if (isInitialized)
       return;
-      
+
     registerCommand (new MfCmdAnimatePalette ());
-    registerCommand (new MfCmdArc());
+    registerCommand (new MfCmdArc ());
     registerCommand (new MfCmdBitBlt ());
     registerCommand (new MfCmdChord ());
     registerCommand (new MfCmdCreateBrush ());
@@ -199,21 +202,21 @@ public abstract class MfCmd
     registerCommand (new MfCmdTextOut ());
     isInitialized = true;
   }
-  
+
   public static void registerCommand (MfCmd command)
   {
     if (recordTypes == null)
       recordTypes = new Hashtable ();
-    
-    if (recordTypes.get (new Integer(command.getFunction())) != null)
+
+    if (recordTypes.get (new Integer (command.getFunction ())) != null)
     {
-      System.out.println (recordTypes.get (new Integer(command.getFunction())).getClass().getName ());
+      System.out.println (recordTypes.get (new Integer (command.getFunction ())).getClass ().getName ());
       throw new IllegalArgumentException ("Already registered");
     }
-      
-    recordTypes.put (new Integer(command.getFunction()), command);
+
+    recordTypes.put (new Integer (command.getFunction ()), command);
   }
-  
+
   public static MfCmd getCommand (int function)
   {
     if (recordTypes == null)
@@ -225,6 +228,6 @@ public abstract class MfCmd
       ucmd.setFunction (function);
       return ucmd;
     }
-    return cmd.getInstance();
+    return cmd.getInstance ();
   }
 }

@@ -1,9 +1,9 @@
 package gnu.bhresearch.pixie.wmf.records;
 
+import gnu.bhresearch.pixie.wmf.MfDcState;
 import gnu.bhresearch.pixie.wmf.MfRecord;
 import gnu.bhresearch.pixie.wmf.MfType;
 import gnu.bhresearch.pixie.wmf.WmfFile;
-import gnu.bhresearch.pixie.wmf.MfDcState;
 
 public class MfCmdSetStretchBltMode extends MfCmd
 {
@@ -18,18 +18,18 @@ public class MfCmdSetStretchBltMode extends MfCmd
     MfDcState state = file.getCurrentState ();
     state.setStretchBltMode (stretchmode);
   }
-  
+
   public MfCmd getInstance ()
   {
     return new MfCmdSetStretchBltMode ();
   }
-  
+
   public void setRecord (MfRecord record)
   {
     int id = record.getParam (0);
     setStretchMode (id);
   }
-  
+
   public int getFunction ()
   {
     return MfType.SET_STRETCH_BLT_MODE;
@@ -49,14 +49,14 @@ public class MfCmdSetStretchBltMode extends MfCmd
   {
     StringBuffer b = new StringBuffer ();
     b.append ("[SET_STRECH_BLT_MODE] stretchmode=");
-    b.append (getStretchMode());
-    return b.toString();
+    b.append (getStretchMode ());
+    return b.toString ();
   }
 
   protected void scaleXChanged ()
   {
   }
-  
+
   protected void scaleYChanged ()
   {
   }
