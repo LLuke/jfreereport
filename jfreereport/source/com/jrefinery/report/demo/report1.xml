@@ -55,6 +55,7 @@
         <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
         <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
         <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
+        <number-function name="Population Percent" x="360" y="0" width="76" height="8" alignment="right" format="#,##0.00" function="percent"/>
     </items>
 
     <functions>
@@ -63,7 +64,13 @@
           <property name="reportProperty">report.date</property>
         </properties>
       </function>
-      <function name="sum" class="com.jrefinery.report.function.ItemSumFunction">
+      <function name="percent" class="com.jrefinery.report.function.ItemPercentageFunction">
+        <properties>
+          <property name="field">Population</property>
+          <property name="group">Continent Group</property>
+        </properties>
+      </function>
+      <function name="sum" class="com.jrefinery.report.function.TotalGroupSumFunction">
         <properties>
           <property name="field">Population</property>
           <property name="group">Continent Group</property>

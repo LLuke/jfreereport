@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.8 2002/06/08 14:31:53 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.9 2002/06/11 22:32:57 taqua Exp $
  *
  * Changes
  * -------
@@ -54,8 +54,10 @@ import javax.swing.table.TableModel;
 import java.math.BigDecimal;
 
 /**
- * A report function that calculates the sum of one field (column) from the TableModel.  The
- * function can be used in two ways:
+ * A report function that calculates the sum of one field (column) from the TableModel.
+ * This function produces a running total, no global total. For a global sum, use the
+ * TotalGroupSumFunction function.
+ * The function can be used in two ways:
  * <ul>
  * <li>to calculate a sum for the entire report;</li>
  * <li>to calculate a sum within a particular group;</li>

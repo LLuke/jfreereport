@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.14 2002/06/09 14:46:04 taqua Exp $
+ * $Id: ReportState.java,v 1.15 2002/06/11 17:35:03 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,6 +45,7 @@
  *               each other. Added Property isPrepareRun() to signal whether the report is currently
  *               repaginated.
  * 11-May-2002 : A bug in the ReportPropertyHandling is fixed.
+ * 24-Jun-2002 : Populate Elements must not be called before Function values are calculated.
  */
 
 package com.jrefinery.report;
@@ -236,9 +237,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         if (rpc.isSpaceFor (header))
         {
           // enough space, fire the events and proceed to PostGroupHeader
-          header.populateElements (this);
           ReportEvent event = new ReportEvent (this);
           fireGroupStartedEvent (event);
+          header.populateElements (this);
           rpc.printGroupHeader (header);
           return new PostGroupHeader (this);
         }
@@ -375,9 +376,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         int currItem = getCurrentDataItem ();
         int currGroup = getCurrentGroupIndex ();
 
-        itemBand.populateElements (this);
         ReportEvent event = new ReportEvent (this);
         fireItemsAdvancedEvent (event);
+        itemBand.populateElements (this);
 
         rpc.printItemBand (itemBand);
 
@@ -435,9 +436,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       {
         // There is a header and enough space to print it. The finishGroup event is
         // fired and PostGroupFooter activated after all work is done.
-        footer.populateElements (this);
         ReportEvent event = new ReportEvent (this);
         fireGroupFinishedEvent (event);
+        footer.populateElements (this);
 
         rpc.printGroupFooter (footer);
         return new PostGroupFooter (this);
@@ -550,9 +551,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
       if (rpc.isSpaceFor (reportFooter))
       {
-        reportFooter.populateElements (this);
         ReportEvent event = new ReportEvent (this);
         fireReportFinishedEvent (event);
+        reportFooter.populateElements (this);
         rpc.printReportFooter (reportFooter);
         return new Finish (this);
       }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.6 2002/06/05 23:21:47 mungady Exp $
+ * $Id: AbstractFunction.java,v 1.7 2002/06/08 14:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.event.ReportListenerAdapter;
 
 import javax.swing.table.TableModel;
 import java.util.Properties;
+import java.util.Enumeration;
 
 /**
  * Base class for implementing new report functions.  Provides empty implementations of all the
@@ -316,7 +317,15 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
   public void setProperties (Properties p)
   {
     if (p != null)
-      this.properties.putAll (p);
+    {
+      Enumeration names = p.keys();
+      while (names.hasMoreElements())
+      {
+        String name = (String) names.nextElement();
+        String prop = (String) p.get (name);
+        setProperty(name, prop);
+      }
+    }
   }
 
   /**
