@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,16 @@ import java.io.Serializable;
 
 import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.states.ReportState;
 
 /**
  * A report function that counts groups in a report.
  * If a null-groupname is given, all groups are counted.
  * <p>
- * A group can be defined using the property "group".
+ * The group to be counted can be defined using the property "group".
+ * An optional container group can be defined using the property "parent-group".
+ * When the group start event of that group is encountered, the counter
+ * will be reset to '0'.
+ * <p>
  * If the group property is not set, all group starts get counted.
  *
  * @author David Gilbert
@@ -57,6 +60,9 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
 {
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
+
+  /** Literal text for the 'group' property. */
+  public static final String PARENTGROUP_PROPERTY = "parent-group";
 
   /** The number of groups. */
   private int count;
@@ -79,6 +85,27 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
   {
     setName(name);
     setGroup(group);
+  }
+
+  /**
+   * Returns the name of the group on which to reset the counter.
+   *
+   * @return the name of the group or null, if all groups are counted
+   */
+  public String getParentGroup()
+  {
+    return getProperty(PARENTGROUP_PROPERTY);
+  }
+
+  /**
+   * defines the name of the group on which to reset the counter.
+   * If the name is null, all groups are counted.
+   *
+   * @param group the name of the group to be counted.
+   */
+  public void setParentGroup(final String group)
+  {
+    setProperty(PARENTGROUP_PROPERTY, group);
   }
 
   /**
@@ -121,6 +148,16 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    */
   public void groupStarted(final ReportEvent event)
   {
+    final Group group = FunctionUtilities.getCurrentGroup(event);
+
+    if (getParentGroup() != null)
+    {
+      if (getParentGroup().equals(group.getName()))
+      {
+        setCount(0);
+      }
+    }
+
     if (getGroup() == null)
     {
       // count all groups...
@@ -128,8 +165,6 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
       return;
     }
 
-    final ReportState state = event.getState();
-    final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
       setCount(getCount() + 1);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -86,6 +86,16 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
     setName(name);
   }
 
+  protected int getCount()
+  {
+    return count;
+  }
+
+  protected void setCount(int count)
+  {
+    this.count = count;
+  }
+
   /**
    * Receives notification that a new report is about to start.  The item count is set to zero.
    *
@@ -93,7 +103,7 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    */
   public void reportInitialized(final ReportEvent event)
   {
-    this.count = 0;
+    setCount(0);
   }
 
   /**
@@ -136,7 +146,7 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
     final Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
-      this.count = 0;
+      setCount(0);
     }
   }
 
@@ -147,7 +157,7 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    */
   public void itemsAdvanced(final ReportEvent event)
   {
-    count++;
+    setCount(getCount() + 1);
   }
 
   /**
@@ -158,6 +168,6 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    */
   public Object getValue()
   {
-    return new Integer(count);
+    return new Integer(getCount());
   }
 }
