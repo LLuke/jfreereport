@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultTableReportServletWorker.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: DefaultTableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -46,21 +46,43 @@ import javax.swing.table.TableModel;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * A report servlet worker, which is able to load report from a given URL and
+ * to assign a provided tablemodel to the report. This servlet worker should be
+ * used to process report for the table based output targets.
+ * <p>
+ * This implementation should handle most reporting cases. If your report needs
+ * extra initializations, override <code>createReport</code>.
+ */
 public class DefaultTableReportServletWorker extends AbstractTableReportServletWorker
 {
+  /** the source url for the xml report definition. */
   private URL url;
+  /** the table model, that should be used when loading the report. */
   private TableModel model;
 
+  /**
+   * Creates a default implementation for the table report servlet worker. This
+   * implementation loads the report from the given URL and assignes the given
+   * tablemodel to the generated report definition.
+   *
+   * @param url the url of the report definition.
+   * @param model the tablemodel that should be used for the reporting.
+   */
   public DefaultTableReportServletWorker(URL url, TableModel model)
   {
-    super();
+    if (model == null) throw new NullPointerException();
+    if (url == null) throw new NullPointerException();
     this.url = url;
     this.model = model;
   }
 
   /**
-   * parses the report and returns the fully initialized report.
-   * @return
+   * Parses the report and returns the fully initialized report. A data model is
+   * already assigned to the report.
+   *
+   * @return the created report.
+   * @throws ReportInitialisationException if the report creation failed.
    */
   protected JFreeReport createReport()
       throws ReportInitialisationException
@@ -81,21 +103,21 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
    * Reads the report from the specified template file.
    *
    * @param templateURL  the template location.
-   *
    * @return a report.
+   * @throws IOException if the report could not be read from the source.
    */
   private JFreeReport parseReport(URL templateURL)
-    throws IOException
+      throws IOException
   {
     JFreeReport result = null;
     ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-        result = generator.parseReport(templateURL);
+      result = generator.parseReport(templateURL);
     }
     catch (Exception e)
     {
-      Log.debug ("Cause: ", e);
+      Log.debug("Cause: ", e);
       throw new IOException("Failed to parse the report");
     }
     return result;

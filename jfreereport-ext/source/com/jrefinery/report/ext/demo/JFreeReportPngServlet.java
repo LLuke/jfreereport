@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.3 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -55,8 +55,16 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * A Sample HttpServlet to show how JFreeReports can be used in a
- * web based environment. POST and GET are handled equal, so it does not
+ * A Sample HttpServlet to show how JFreeReports can be used to generate
+ * PNG content in a webbased environment.
+ * <p>
+ * The servlet expects a <code>page</code> parameter to be set. This parameter
+ * must be greater or equal to one and must fit the report's paginated pages.
+ * This servlet is not intended to be a stand-alone solution, it should be
+ * used in conjunction with a wrapper page, which uses &lt;IMG&gt; tags to link
+ * to this servlet.
+ * <p>
+ * POST and GET are handled equal, so it does not
  * matter whether you POST or GET the URL for this servlet.
  *
  * @author Jeevan Sunkersett
@@ -64,12 +72,13 @@ import java.net.URL;
 public class JFreeReportPngServlet extends HttpServlet
 {
   /**
-   * Maps the GET request to the POST request.
+   * Handles the GET method for the servlet. The GET method is mapped to
+   * the POST method, both commands are handled equal.
    *
-   * @param request
-   * @param response
-   * @throws ServletException
-   * @throws IOException
+   * @param request the http request object.
+   * @param response the http response object.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
    */
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
@@ -78,12 +87,14 @@ public class JFreeReportPngServlet extends HttpServlet
   }
 
   /**
+   * Handles the POST method for the request. This processes the "
+   * <p>
    * The page parameter is required, must be a valid integer.
    *
-   * @param request
-   * @param response
-   * @throws ServletException
-   * @throws IOException
+   * @param request the http request object.
+   * @param response the http response object.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
    */
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
@@ -92,9 +103,11 @@ public class JFreeReportPngServlet extends HttpServlet
     BufferedImage image = null;
     try
     {
-      URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+      URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
       if (in == null)
-        throw new NullPointerException();
+      {
+        throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
+      }
 
       AbstractPageableReportServletWorker worker =
           new DefaultPageableReportServletWorker(request.getSession(true),
@@ -130,11 +143,9 @@ public class JFreeReportPngServlet extends HttpServlet
 
       G2OutputTarget target = new G2OutputTarget(g2, pageFormat);
 
-      worker.repaginateReport(target);
-
-      if (page >= worker.getNumberOfPages() || page < 0)
+      if (page >= worker.getNumberOfPages(target) || page < 0)
       {
-        Log.debug("The page-parameter is invalid: " + page + ": " + worker.getNumberOfPages());
+        Log.debug("The page-parameter is invalid: " + page + ": " + worker.getNumberOfPages(target));
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         return;
       }
@@ -159,6 +170,12 @@ public class JFreeReportPngServlet extends HttpServlet
     }
   }
 
+  /**
+   * Create the empty image for the given page size.
+   *
+   * @param pf the page format that defines the image bounds.
+   * @return the generated image.
+   */
   private BufferedImage createImage(PageFormat pf)
   {
     double width = pf.getWidth();

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -47,18 +47,42 @@ import com.jrefinery.report.targets.pageable.ReportStateList;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * The report servlet worker provides the infrastructure needed to process the
+ * report with a Pageable output target. The worker handles the repagination and
+ * report initiatisation.
+ */
 public abstract class AbstractPageableReportServletWorker
     extends AbstractReportServletWorker
 {
+  /** the report processor that should be used to process the report. */
   private PageableReportProcessor processor;
+  /** the cached page state list, which is created during the repagination. */
   private ReportStateList pageStateList;
+  /** a flag to indicated, whether the pagination is already done. */
+  private boolean isPaginated;
 
+  /**
+   * Creates a new AbstractPageableReportServletWorker for the given session.
+   * The session may be null, if a complete report is processed instead of single
+   * pages.
+   *
+   * @param session the used session or null, if no session processing is requested.
+   */
   public AbstractPageableReportServletWorker(HttpSession session)
   {
     super(session);
   }
 
-  public void repaginateReport(OutputTarget target)
+  /**
+   * Repaginates the report.
+   *
+   * @param target the output target used for the repagination.
+   * @throws ReportInitialisationException if the report could not be initialized.
+   * @throws ReportProcessingException if the report processing failes.
+   * @throws FunctionInitializeException if the output function could not be initalized.
+   */
+  private void repaginateReport(OutputTarget target)
       throws ReportInitialisationException,
       ReportProcessingException, FunctionInitializeException
   {
@@ -85,16 +109,43 @@ public abstract class AbstractPageableReportServletWorker
       processor.setOutputTarget(target);
       pageStateList = processor.repaginate();
     }
+
+    isPaginated = true;
   }
 
-  public int getNumberOfPages ()
+  /**
+   * Returns the number of pages of the paginated report. If the pagination fails
+   * one of the various exceptions is thrown.
+   *
+   * @param target the output target that should be used to repaginate the report if necessary.
+   * @return the number of pages for the report.
+   * @throws ReportInitialisationException if the report could not be initialized.
+   * @throws ReportProcessingException if the report processing failes.
+   * @throws FunctionInitializeException if the output function could not be initalized.
+   */
+  public int getNumberOfPages (OutputTarget target)
+    throws  ReportInitialisationException, ReportProcessingException, FunctionInitializeException
   {
-    if (pageStateList == null)
-      return 0;
+    if (!isPaginated)
+    {
+      repaginateReport(target);
+    }
 
+    if (pageStateList == null)
+    {
+      return 0;
+    }
     return pageStateList.size();
   }
 
+  /**
+   * Processes a single page of the report. If the report is not yet paginated,
+   * the pagination is done before.
+   *
+   * @param page the page that should be processed.
+   * @throws ReportProcessingException  if the report processing failed.
+   * @throws IndexOutOfBoundsException if the page is invalid.
+   */
   public void processPage (int page)
     throws ReportProcessingException
   {
@@ -102,6 +153,11 @@ public abstract class AbstractPageableReportServletWorker
     {
       OutputTarget target = processor.getOutputTarget();
       target.open();
+      if (!isPaginated)
+      {
+        repaginateReport(target);
+      }
+
       ReportState state = pageStateList.get(page);
       processor.processPage(state, target);
       target.close();
@@ -112,6 +168,12 @@ public abstract class AbstractPageableReportServletWorker
     }
   }
 
+  /**
+   * Processes the complete report, this calls PageableReportProcessor.processReport()
+   * and generates the content.
+   *
+   * @throws ReportProcessingException if something went wrong during the report processing.
+   */
   public void processReport ()
       throws ReportProcessingException
   {

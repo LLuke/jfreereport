@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultPageableReportServletWorker.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: DefaultPageableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -47,22 +47,46 @@ import javax.swing.table.TableModel;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * A report servlet worker, which is able to load report from a given URL and
+ * to assign a provided tablemodel to the report. This servlet worker should be
+ * used to process report for the pageable output targets.
+ * <p>
+ * This implementation should handle most reporting cases. If your report needs
+ * extra initializations, override <code>createReport</code>.
+ */
 public class DefaultPageableReportServletWorker
     extends AbstractPageableReportServletWorker
 {
+  /** the source url for the xml report definition. */
   private URL reportDefinition;
+  /** the table model, that should be used when loading the report. */
   private TableModel data;
 
+  /**
+   * Creates a default implementation for the pageable report servlet worker. This
+   * implementation loads the report from the given URL and assignes the given
+   * tablemodel to the generated report definition.
+   *
+   * @param report the url of the report definition.
+   * @param data the tablemodel that should be used for the reporting.
+   * @param session the current session, or null, if no session handling should be used.
+   */
   public DefaultPageableReportServletWorker(HttpSession session, URL report, TableModel data)
   {
     super(session);
+    if (report == null) throw new NullPointerException();
+    if (data == null) throw new NullPointerException();
     this.reportDefinition = report;
     this.data = data;
   }
 
   /**
-   * parses the report and returns the fully initialized report.
-   * @return
+   * Parses the report and returns the fully initialized report. A data model is
+   * already assigned to the report.
+   *
+   * @return the created report.
+   * @throws ReportInitialisationException if the report creation failed.
    */
   protected JFreeReport createReport() throws ReportInitialisationException
   {

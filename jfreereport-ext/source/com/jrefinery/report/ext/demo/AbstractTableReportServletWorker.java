@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractTableReportServletWorker.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: AbstractTableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -40,25 +40,50 @@ package com.jrefinery.report.ext.demo;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.targets.table.TableProcessor;
 
+/**
+ * The report servlet worker provides the infrastructure needed to process the
+ * report with a table output target. The worker handles the output processing and
+ * provides structures to initializes the report.
+ */
 public abstract class AbstractTableReportServletWorker extends AbstractReportServletWorker
 {
+  /** the tableprocessor that is used for outputing the report. */
   private TableProcessor tableProcessor;
 
+  /**
+   * Creates a new table servlet worker. Table based report don't use sessions for
+   * the report processing.
+   */
   public AbstractTableReportServletWorker()
   {
     super(null);
   }
 
+  /**
+   * Gets the used tableprocessor.
+   *
+   * @return the table processor.
+   */
   public TableProcessor getTableProcessor()
   {
     return tableProcessor;
   }
 
+  /**
+   * Defines the table processor, that should be used in that servlet worker.
+   *
+   * @param tableProcessor the processor.
+   */
   public void setTableProcessor(TableProcessor tableProcessor)
   {
     this.tableProcessor = tableProcessor;
   }
 
+  /**
+   * Processes the report and generates the content.
+   *
+   * @throws ReportProcessingException if something went wrong during the report processing.
+   */
   public void processReport ()
     throws ReportProcessingException
   {

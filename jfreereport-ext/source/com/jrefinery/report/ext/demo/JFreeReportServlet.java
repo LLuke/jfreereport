@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.8 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,15 @@ import java.net.URL;
  */
 public class JFreeReportServlet extends HttpServlet
 {
+  /**
+   * Handles the GET method for the servlet. The GET method is mapped to
+   * the POST method, both commands are handled equal.
+   *
+   * @param request the http request object.
+   * @param response the http response object.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
+   */
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
@@ -69,9 +78,11 @@ public class JFreeReportServlet extends HttpServlet
   {
     Log.debug("in processRequest..." + getClass());
 
-    URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+    URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
     if (in == null)
-      throw new NullPointerException();
+    {
+      throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
+    }
 
     AbstractPageableReportServletWorker worker =
         new DefaultPageableReportServletWorker(null,
@@ -109,7 +120,6 @@ public class JFreeReportServlet extends HttpServlet
                                                    true);
       target.setProperty(PDFOutputTarget.TITLE, "Title");
       target.setProperty(PDFOutputTarget.AUTHOR, "Author");
-      worker.repaginateReport(target);
       worker.processReport();
     }
     catch (Exception e)

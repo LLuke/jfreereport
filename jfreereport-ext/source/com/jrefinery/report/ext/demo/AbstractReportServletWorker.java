@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractReportServletWorker.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: AbstractReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -44,16 +44,36 @@ import com.jrefinery.report.ReportProcessingException;
 import javax.servlet.http.HttpSession;
 import java.awt.print.PageFormat;
 
+/**
+ * The report servlet worker provides the infrastructure needed to process the
+ * report. The worker stores the processed data in the provided session.
+ */
 public abstract class AbstractReportServletWorker
 {
+  /** the processed report. */
   private JFreeReport report;
+  /** the current http session. */
   private HttpSession session;
 
+  /**
+   * Creates a new Report servlet worker for the given session.
+   *
+   * @param session the session.
+   */
   public AbstractReportServletWorker (HttpSession session)
   {
     this.session = session;
   }
 
+  /**
+   * Loads the report. If a session is used, it is checked, whether a report is
+   * bound to the session (using the attribute "Report"), if no report is bound
+   * to the session or no session is used at all, the report is created using
+   * <code>createReport</code>.
+   *
+   * @return the loaded or created report
+   * @throws ReportInitialisationException if loading the report was not successfull.
+   */
   public JFreeReport loadReport()
       throws ReportInitialisationException
   {
@@ -73,12 +93,20 @@ public abstract class AbstractReportServletWorker
     else
     {
       report = createReport();
+      if (report == null)
+        throw new ReportInitialisationException("Created report is null");
+
     }
     return report;
   }
 
-
-
+  /**
+   * Load or parses the report definition. The report is fully initialized.
+   * The data model has to be assigned to the report.
+   *
+   * @return the initialized report definition.
+   * @throws ReportInitialisationException
+   */
   public JFreeReport getReport()
     throws ReportInitialisationException
   {
@@ -90,29 +118,55 @@ public abstract class AbstractReportServletWorker
   }
 
   /**
-   * parses the report and returns the fully initialized report.
-   * @return
+   * Parses the report and returns the fully initialized report. A data model is
+   * already assigned to the report.
+   *
+   * @return the created report.
+   * @throws ReportInitialisationException if the report creation failed.
    */
   protected abstract JFreeReport createReport()
       throws ReportInitialisationException;
 
 
+  /**
+   * Checks, whether the session should be used to store some of the generated
+   * data.
+   *
+   * @return true, if the session should be used to store the data, false otherwise.
+   */
   protected boolean isSessionRequired()
   {
     return session != null;
   }
 
+  /**
+   * Gets the current session. The session can be null.
+   *
+   * @return the session or null, if no session is set.
+   */
   protected HttpSession getSession()
   {
     return session;
   }
 
+  /**
+   * Get the page format that should be used to process the report.
+   *
+   * @return the report's page format.
+   * @throws ReportInitialisationException if the report could not be initialized,
+   * so that no page format could be read.
+   */
   public PageFormat getReportPageFormat ()
     throws ReportInitialisationException
   {
     return getReport().getDefaultPageFormat();
   }
 
+  /**
+   * Processes the report. How this is done, is implementation specific.
+   *
+   * @throws ReportProcessingException if something went wrong during the report processing.
+   */
   public abstract void processReport()
       throws ReportProcessingException;
 

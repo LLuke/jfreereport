@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.4 2003/03/01 14:55:33 taqua Exp $
  *
  * Changes
  * -------
@@ -50,22 +50,47 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * A Sample HttpServlet to show how JFreeReports can be used to generate
+ * PDF content in a webbased environment.
+ * <p>
+ * POST and GET are handled equal, so it does not
+ * matter whether you POST or GET the URL for this servlet.
+ */
 public class JFreeReportHtmlServlet extends HttpServlet
 {
+  /**
+   * Handles the GET method for the servlet. The GET method is mapped to
+   * the POST method, both commands are handled equal.
+   *
+   * @param request the http request object.
+   * @param response the http response object.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
+   */
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
     doPost(request, response);
   }
 
+  /**
+   *
+   * @param request the http request object.
+   * @param response the http response object.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
+   */
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
     Log.debug("in processRequest..." + getClass());
 
-    URL in = getClass().getResource("/com/jrefinery/report/demo/first.xml");
+    URL in = getClass().getResource("/com/jrefinery/report/demo/swing-icons.xml");
     if (in == null)
-      throw new NullPointerException();
+    {
+      throw new ServletException("Missing Resource: /com/jrefinery/report/demo/swing-icons.xml");
+    }
 
     AbstractTableReportServletWorker worker =
         new DefaultTableReportServletWorker(in, new SwingIconsDemoTableModel());
