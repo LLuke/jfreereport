@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.26 2003/02/19 22:14:02 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.27 2003/02/21 16:31:29 taqua Exp $
  *
  * Changes
  * -------
@@ -46,13 +46,13 @@ public class JFreeReportResources_de extends JFreeReportResources
   /**
    * Unicode translation:
    *
-   * Ã¤ - \u00E4
-   * Ã„ - \u00C4
-   * Ã¶ - \u00f6
-   * Ã– - \u00d6
-   * Ã¼ - \u00dc
-   * Ãœ - \u00fc
-   * ÃŸ - \u00df
+   * &auml; - \u00E4
+   * &Auml; - \u00C4
+   * &ouml; - \u00f6
+   * &Ouml; - \u00d6
+   * &Uuml; - \u00dc
+   * &uuml; - \u00fc
+   * &szlig; - \u00df
    *
    */
   /**

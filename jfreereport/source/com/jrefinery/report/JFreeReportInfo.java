@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.9 2002/12/02 18:24:00 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.10 2002/12/06 17:18:20 mungady Exp $
  *
  * Changes:
  * --------
@@ -79,7 +79,7 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
             {
               new Contributor ("David Gilbert", "david.gilbert@object-refinery.com"),
               new Contributor ("Thomas Morgner", "-"),
-              new Contributor ("Jörg Schömer", "joerg.schoemer@nikocity.de")
+              new Contributor ("J\u00d6rg Sch\u00d6mer", "joerg.schoemer@nikocity.de")
             }
     ));
 
@@ -97,6 +97,27 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
               new Library ("BeanShell", "1.2B6", "LGPL", "http://www.beanshell.org/"),
             }
     ));
+  }
+
+  /**
+   * Print the library version and information about the library.
+   * <p>
+   * After there seems to be confusion about which version is currently used by
+   * the user, this method will print the project information to clearify this
+   * issue.
+   *
+   * @param args ignored
+   */
+  public static void main (String[] args)
+  {
+    JFreeReportInfo info = new JFreeReportInfo();
+    System.out.println(info.getName() + " " + info.getVersion());
+    System.out.println("----------------------------------------------------------------");
+    System.out.println(info.getCopyright());
+    System.out.println(info.getInfo());
+    System.out.println("----------------------------------------------------------------");
+    System.out.println("This project is licenced under the terms of the " + info.getLicenceName() + ".");
+    System.exit(0);
   }
 }
 
