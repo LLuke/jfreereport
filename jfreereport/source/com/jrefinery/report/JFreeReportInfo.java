@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.19 2003/06/27 14:25:16 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.20 2003/06/29 16:59:23 taqua Exp $
  *
  * Changes:
  * --------
@@ -92,7 +92,7 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
         new Library[]
         {
           new Library(JCommon.INFO),
-          new Library("iText", "0.99", "LGPL", "http://www.lowagie.com/iText/index.html"),
+          new Library("iText", "1.00", "LGPL", "http://www.lowagie.com/iText/index.html"),
           new Library("GNU JAXP", "1.0beta1", "GPL with library exception",
               "http://www.gnu.org/software/classpathx/jaxp/"),
           new Library("Pixie", "0.8.0", "LGPL",

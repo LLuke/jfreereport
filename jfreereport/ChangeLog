@@ -11,7 +11,23 @@ A list of changes in recent versions:
         * BugFix: The ItemPercentageFunction did not initialize its private sum
           function properly causing IndexOutOfBounds exceptions.
 
-        *  
+        * BugFix: The PlainTextOutputTarget did not handle the encodings of the
+          generated text, it did encode all texts with "Cp437".
+
+        * BugFix: The PlainTextDialog and the EncodingComboBoxModel had errors
+          which prevent them from selecting encodings correctly.
+
+        * BugFix: The StyleSheetCollection now handles stylesheets with the
+          same name correctly. 
+
+        * All OutputTargets use String properties now for their configuration.
+          The object interface was no great idea and caused confusion so it
+          was narrowed down to a String-only interface.
+
+          The Strings "true" and "false" are used to express boolean values.
+
+        * The iText library was updated to version 1.00; this version is now
+          able to handle the PNG-Alpha channel.
 
 0.8.3c: (19-Jun-2003)
         * BugFix: The Area class is not able to clip lines, any attemp results
