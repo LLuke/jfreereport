@@ -212,7 +212,7 @@ public class ReportGenerator
       throw new NullPointerException ();
     }
 
-    File contentBase = file.getParentFile ();
+    File contentBase = file.getCanonicalFile().getParentFile ();
     return parseReport (file.toURL (), contentBase.toURL ());
   }
 
