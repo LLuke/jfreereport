@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultStyleKeys.java,v 1.1 2004/08/21 18:58:20 taqua Exp $
+ * $Id: DefaultStyleKeys.java,v 1.2 2004/10/29 07:51:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.layout.style;
+
+import java.util.Locale;
 
 public class DefaultStyleKeys
 {
@@ -119,6 +121,15 @@ public class DefaultStyleKeys
   public static final StyleKey PAGEBREAK_INSIDE =
           StyleKey.getStyleKey("pagebreak-after", PageBreakRule.class);
 
-  public static final StyleKey ORPHANS = StyleKey.getStyleKey("orphans", Number.class);
-  public static final StyleKey WIDOWS = StyleKey.getStyleKey("widows", Number.class);
+  public static final StyleKey ORPHANS =
+          StyleKey.getStyleKey("orphans", Number.class);
+
+  public static final StyleKey WIDOWS =
+          StyleKey.getStyleKey("widows", Number.class);
+
+  public static final StyleKey PRESERVE_WHITESPACE =
+          StyleKey.getStyleKey("preserve-white-space", Boolean.class);
+  
+  public static final StyleKey LOCALE = 
+          StyleKey.getStyleKey("locale", Locale.class);
 }
