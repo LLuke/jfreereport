@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -25,7 +25,7 @@
  * ------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: NoCloseOutputStream.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: NoCloseOutputStream.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------

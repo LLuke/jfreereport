@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * --------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: UnmodifiableGroupList.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: UnmodifiableGroupList.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,10 @@
  *
  */
 
-package org.jfree.report;
+package org.jfree.report.states;
+
+import org.jfree.report.GroupList;
+import org.jfree.report.Group;
 
 /**
  * An unmodifiable list of groups.
@@ -61,7 +64,7 @@ public class UnmodifiableGroupList extends GroupList
    *
    * @param o  the object.
    * @return nothing, as this method always fires a UnsupportedOperation exception.
-   * @throws UnsupportedOperationException as this GroupList is not modifiable.
+   * @throws java.lang.UnsupportedOperationException as this GroupList is not modifiable.
    */
   public boolean remove(final Object o)
   {
@@ -72,7 +75,7 @@ public class UnmodifiableGroupList extends GroupList
    * Adds an object to the list.
    *
    * @param o  the object (must be an instance of the Group class).
-   * @throws UnsupportedOperationException as this GroupList is not modifiable.
+   * @throws java.lang.UnsupportedOperationException as this GroupList is not modifiable.
    */
   public void add(final Group o)
   {

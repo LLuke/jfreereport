@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * --------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutSearchKey.java,v 1.4 2003/06/29 16:59:28 taqua Exp $
+ * $Id: LayoutSearchKey.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.jfree.report.Element;
  *
  * @author Thomas Morgner.
  */
-public class LayoutSearchKey extends LayoutCacheKey
+public final class LayoutSearchKey extends LayoutCacheKey
 {
   /**
    * Returns <code>true</code> to indicate that this is a search key.

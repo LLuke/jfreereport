@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.11 2003/06/29 16:59:28 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------

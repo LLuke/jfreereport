@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: Worker.java,v 1.2 2003/08/22 20:27:21 taqua Exp $
  *
  *
  * Changes
@@ -89,10 +89,12 @@ public class Worker extends Thread
     {
       throw new IllegalStateException("This worker is not idle.");
     }
+    Log.debug ("Workload set...");
     synchronized (this)
     {
       workload = r;
-      this.notify();
+      Log.debug ("Workload assigned: Notified " + getName());
+      this.notifyAll();
     }
   }
 
@@ -100,13 +102,10 @@ public class Worker extends Thread
    * Kills the worker after he completed his work. Awakens the worker if he's
    * sleeping, so that the worker dies without delay.
    */
-  public void finish()
+  public synchronized void finish()
   {
     finish = true;
-    synchronized (this)
-    {
-      this.notify();
-    }
+    this.notifyAll();
   }
 
   /**
@@ -124,7 +123,7 @@ public class Worker extends Thread
    * this worker starts to sleep until a new workload is set for the worker
    * or the worker got the finish() request.
    */
-  public void run()
+  public synchronized void run()
   {
     while (!finish)
     {
@@ -139,20 +138,90 @@ public class Worker extends Thread
           Log.error("Worker caught exception on run: ", e);
         }
         workload = null;
-
       }
-
-      try
+//      else
+//      {
+//        Log.debug ("Nothing to do ...");
+//      }
+//
+//      Log.debug ("Sleeping ..." + this.getName());
+      synchronized (this)
       {
-        synchronized (this)
+        try
         {
+          // remove lock
           this.wait(sleeptime);
         }
+        catch (InterruptedException ie)
+        {
+          // ignored
+//          Log.debug ("Interrupted ..." + getName());
+        }
       }
-      catch (InterruptedException ie)
-      {
-        // ignored
-      }
+//      Log.debug ("Wakeup ..." + getName());
     }
   }
+
+
+//  private static class HeavyWorkLoad implements Runnable
+//  {
+//    static int task;
+//    char test;
+//
+//    public HeavyWorkLoad(char t)
+//    {
+//      test = t;
+//    }
+//
+//    public void run()
+//    {
+//      synchronized (HeavyWorkLoad.class)
+//      {
+//        try
+//        {
+//          System.out.println ("HeavyWorkLoad Start...  " + test);
+//          for (int i = 0; i < 100; i++ )
+//          {
+//            System.out.print (test);
+//            System.out.flush();
+//            Thread.sleep(100);
+//            task = i;
+//          }
+//          System.out.println ("HeavyWorkLoad Finish...");
+//        }
+//        catch (Exception e)
+//        {
+//          System.out.println ("HeavyWorkLoad Failed...");
+//        }
+//      }
+//    }
+//  }
+//
+//  public static void main(String[] args)
+//  {
+//    HeavyWorkLoad wl1 = new HeavyWorkLoad('.');
+//    HeavyWorkLoad wl2 = new HeavyWorkLoad('+');
+//    Worker worker = new Worker(10000);
+//    worker.setWorkload(wl1);
+//    wl2.run();
+//    while (worker.isAvailable() == false)
+//    {
+//      try
+//      {
+//        System.out.println ("1Waiting ...");
+//        synchronized (worker)
+//        {
+//          worker.wait(1000);
+//        }
+//      }
+//      catch (InterruptedException ie)
+//      {
+//        System.out.println ("1Int ...");
+//      }
+//    }
+//    System.out.println ("Finishing ...");
+//    worker.finish();
+//    System.out.flush();
+//  }
+
 }

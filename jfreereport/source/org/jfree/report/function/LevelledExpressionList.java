@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.18 2003/06/29 16:59:25 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import org.jfree.report.util.LevelList;
  *
  * @author Thomas Morgner
  */
-public class LevelledExpressionList implements ReportListener,
+public final class LevelledExpressionList implements ReportListener,
     Cloneable, LayoutListener, PageEventListener
 {
   /** A list of expressions and associated levels. */
@@ -73,6 +73,19 @@ public class LevelledExpressionList implements ReportListener,
   /** The levels. */
   private int[] levels;
 
+  /** The dataRow for all functions. */
+  private DataRow dataRow;
+
+  /**
+   * DefaultConstructor.
+   */
+  protected LevelledExpressionList()
+  {
+    expressionList = new LevelList();
+    errorList = new ArrayList();
+    levels = new int[0];
+  }
+
   /**
    * Creates a new list.
    *
@@ -81,11 +94,14 @@ public class LevelledExpressionList implements ReportListener,
    */
   public LevelledExpressionList(final ExpressionCollection ec, final ExpressionCollection fc)
   {
-    expressionList = new LevelList();
-    errorList = new ArrayList();
+    this();
     initializeExpressions(ec);
     initializeFunctions(fc);
+    this.levels = buildLevels();
+  }
 
+  private int[] buildLevels ()
+  {
     // copy all levels from the collections to the cache ...
     // we assume, that the collections do not change anymore!
     final ArrayList al = new ArrayList();
@@ -95,12 +111,13 @@ public class LevelledExpressionList implements ReportListener,
       final Integer level = (Integer) it.next();
       al.add(level);
     }
-    levels = new int[al.size()];
+    int[] levels = new int[al.size()];
     for (int i = 0; i < levels.length; i++)
     {
       final Integer level = (Integer) al.get(i);
       levels[i] = level.intValue();
     }
+    return levels;
   }
 
   /**
@@ -761,12 +778,30 @@ public class LevelledExpressionList implements ReportListener,
    * @throws IllegalStateException if there is a datarow already connected.
    * @throws NullPointerException if the given datarow is null.
    */
-  public void connectDataRow(final DataRow dr)
+  public void setDataRow(final DataRow dr)
   {
-    if (dr == null)
+    if (dr != null && dataRow != null)
     {
-      throw new NullPointerException();
+      // be paranoid and make sure that we dont replace the datarow
+      // by accident
+      throw new IllegalStateException
+          ("Paranoia: Update calls must be done using the updateDataRow method.");
     }
+    updateDataRow(dr);
+  }
+
+  /**
+   * Updates the datarow for all expressions. Does not perform validity
+   * checks, so use this function with care.
+   *
+   * @param dr  the datarow to be connected.
+   *
+   * @throws NullPointerException if the given datarow is null.
+   * @throws IllegalStateException if there is no datarow connected.
+   */
+  public void updateDataRow(final DataRow dr)
+  {
+    dataRow = dr;
     for (int i = 0; i < expressionList.size(); i++)
     {
       final Expression f = (Expression) expressionList.get(i);
@@ -775,23 +810,13 @@ public class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Disconnects the datarow from the expression.
+   * Returns the currently connected dataRow.
    *
-   * @param dr  the datarow to be connected.
-   *
-   * @throws NullPointerException if the given datarow is null.
+   * @return the dataRow.
    */
-  public void disconnectDataRow(final DataRow dr)
+  public DataRow getDataRow()
   {
-    if (dr == null)
-    {
-      throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
-    }
-    for (int i = 0; i < expressionList.size(); i++)
-    {
-      final Expression f = (Expression) expressionList.get(i);
-      f.setDataRow(null);
-    }
+    return dataRow;
   }
 
   /**
@@ -847,55 +872,14 @@ public class LevelledExpressionList implements ReportListener,
 
   /**
    * Creates and returns a copy of this object.  The precise meaning
-   * of "copy" may depend on the class of the object. The general
-   * intent is that, for any object <tt>x</tt>, the expression:
-   * <blockquote>
-   * <pre>
-   * x.clone() != x</pre></blockquote>
-   * will be true, and that the expression:
-   * <blockquote>
-   * <pre>
-   * x.clone().getClass() == x.getClass()</pre></blockquote>
-   * will be <tt>true</tt>, but these are not absolute requirements.
-   * While it is typically the case that:
-   * <blockquote>
-   * <pre>
-   * x.clone().equals(x)</pre></blockquote>
-   * will be <tt>true</tt>, this is not an absolute requirement.
-   * Copying an object will typically entail creating a new instance of
-   * its class, but it also may require copying of internal data
-   * structures as well.  No constructors are called.
+   * of "copy" may depend on the class of the object.
    * <p>
-   * The method <tt>clone</tt> for class <tt>Object</tt> performs a
-   * specific cloning operation. First, if the class of this object does
-   * not implement the interface <tt>Cloneable</tt>, then a
-   * <tt>CloneNotSupportedException</tt> is thrown. Note that all arrays
-   * are considered to implement the interface <tt>Cloneable</tT>.
-   * Otherwise, this method creates a new instance of the class of this
-   * object and initializes all its fields with exactly the contents of
-   * the corresponding fields of this object, as if by assignment; the
-   * contents of the fields are not themselves cloned. Thus, this method
-   * performs a "shallow copy" of this object, not a "deep copy" operation.
-   * <p>
-   * The class <tt>Object</tt> does not itself implement the interface
-   * <tt>Cloneable</tt>, so calling the <tt>clone</tt> method on an object
-   * whose class is <tt>Object</tt> will result in throwing an
-   * exception at run time. The <tt>clone</tt> method is implemented by
-   * the class <tt>Object</tt> as a convenient, general utility for
-   * subclasses that implement the interface <tt>Cloneable</tt>, possibly
-   * also overriding the <tt>clone</tt> method, in which case the
-   * overriding definition can refer to this utility definition by the
-   * call:
-   * <blockquote>
-   * <pre>
-   * super.clone()</pre></blockquote>
+   * The cloned LevelledExpressionList will no longer be connected to
+   * a datarow.
    *
    * @return     a clone of this instance.
    * @exception  CloneNotSupportedException  if the object's class does not
-   *               support the <code>Cloneable</code> interface. Subclasses
-   *               that override the <code>clone</code> method can also
-   *               throw this exception to indicate that an instance cannot
-   *               be cloned.
+   *               support the <code>Cloneable</code> interface.
    * @exception  OutOfMemoryError            if there is not enough memory.
    * @see        java.lang.Cloneable
    */
@@ -904,6 +888,7 @@ public class LevelledExpressionList implements ReportListener,
     final LevelledExpressionList ft = (LevelledExpressionList) super.clone();
     ft.expressionList = new LevelList(); // dont clone, too expensive ...
     ft.levels = levels;
+    ft.dataRow = null;
     ft.errorList = (ArrayList) errorList.clone();
 
     final int size = expressionList.size();
@@ -913,16 +898,44 @@ public class LevelledExpressionList implements ReportListener,
       if (ex instanceof Function)
       {
         final Expression exClone = (Expression) ex.clone();
+        exClone.setDataRow(null);
         ft.expressionList.add(exClone, expressionList.getLevel(i));
       }
       else
       {
-        ft.expressionList.add(ex, expressionList.getLevel(i));
+        final Expression exClone = ex.getInstance();
+        exClone.setDataRow(null);
+        ft.expressionList.add(exClone, expressionList.getLevel(i));
       }
     }
     return ft;
   }
 
+
+  public LevelledExpressionList getPreviewInstance ()
+  {
+    final LevelledExpressionList ft = new LevelledExpressionList();
+    ft.expressionList = new LevelList(); // dont clone, too expensive ...
+    ft.errorList = new ArrayList();
+
+    final int size = expressionList.size();
+    for (int i = 0; i < size; i++)
+    {
+      final Expression ex = (Expression) expressionList.get(i);
+      if (ex instanceof Function)
+      {
+        // ignore it, functions are state dependent and cannot be used
+        // to compute group changes ...
+      }
+      else
+      {
+        ft.expressionList.add(ex.getInstance(), expressionList.getLevel(i));
+      }
+    }
+    ft.levels = ft.buildLevels();
+    return ft;
+  }
+  
   /**
    * Sets the level.
    *

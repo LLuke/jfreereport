@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * -------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutCacheKey.java,v 1.5 2003/06/29 16:59:28 taqua Exp $
+ * $Id: LayoutCacheKey.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,8 @@ import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * A layout cache key.
+ * A layout cache key. Does not expect subclasses except the search key
+ * class. Dont try to subclass this class (or be doomed once again).
  *
  * @author Thomas Morgner
  */
@@ -63,6 +64,10 @@ public class LayoutCacheKey
 
   /** The absolute position. */
   private Point2D absPos;
+
+  /** The cached hashcode. */
+  private int hashCode;
+  private boolean hashcodeValid;
 
   /**
    * Default constructor.
@@ -118,6 +123,7 @@ public class LayoutCacheKey
     {
       absPos = (Point2D) absPos.clone();
     }
+    this.hashcodeValid = false;
   }
 
   /**
@@ -131,6 +137,7 @@ public class LayoutCacheKey
     {
       throw new NullPointerException();
     }
+    this.hashcodeValid = false;
     this.parentDim = parentDim;
   }
 
@@ -151,7 +158,7 @@ public class LayoutCacheKey
    *
    * @return A boolean.
    */
-  public boolean equals(final Object o)
+  public final boolean equals(final Object o)
   {
     if (this == o)
     {
@@ -163,29 +170,33 @@ public class LayoutCacheKey
     }
 
     final LayoutCacheKey layoutCacheKey = (LayoutCacheKey) o;
-/*
-    Log.debug ("--------------------");
-    if (absPos != null && layoutCacheKey.absPos != null)
+
+    if (hashCode() != o.hashCode())
     {
-      Log.debug ("AbsPos: " + absPos + "  " + layoutCacheKey.absPos);
+      return false;
     }
-    if (maxSize != null && layoutCacheKey.maxSize != null)
-    {
-      Log.debug ("maxSize: " + maxSize + "  " + layoutCacheKey.maxSize);
-    }
-    if (minSize != null && layoutCacheKey.minSize != null)
-    {
-      Log.debug ("minSize: " + minSize + "  " + layoutCacheKey.minSize);
-    }
-    if (parentDim != null && layoutCacheKey.parentDim != null)
-    {
-      Log.debug ("parentDim: " + parentDim + "  " + layoutCacheKey.parentDim);
-    }
-    if (prefSize != null && layoutCacheKey.prefSize != null)
-    {
-      Log.debug ("prefSize: " + prefSize + "  " + layoutCacheKey.prefSize);
-    }
-*/
+
+//    Log.debug ("--------------------");
+//    if (absPos != null && layoutCacheKey.absPos != null)
+//    {
+//      Log.debug ("AbsPos: " + absPos + "  " + layoutCacheKey.absPos);
+//    }
+//    if (maxSize != null && layoutCacheKey.maxSize != null)
+//    {
+//      Log.debug ("maxSize: " + maxSize + "  " + layoutCacheKey.maxSize);
+//    }
+//    if (minSize != null && layoutCacheKey.minSize != null)
+//    {
+//      Log.debug ("minSize: " + minSize + "  " + layoutCacheKey.minSize);
+//    }
+//    if (parentDim != null && layoutCacheKey.parentDim != null)
+//    {
+//      Log.debug ("parentDim: " + parentDim + "  " + layoutCacheKey.parentDim);
+//    }
+//    if (prefSize != null && layoutCacheKey.prefSize != null)
+//    {
+//      Log.debug ("prefSize: " + prefSize + "  " + layoutCacheKey.prefSize);
+//    }
     if (absPos != null ? !absPos.equals(layoutCacheKey.absPos) : layoutCacheKey.absPos != null)
     {
       return false;
@@ -217,14 +228,19 @@ public class LayoutCacheKey
    *
    * @return A hash code.
    */
-  public int hashCode()
+  public final int hashCode()
   {
-    int result;
-    result = (parentDim != null ? parentDim.hashCode() : 0);
-    result = 29 * result + (minSize != null ? minSize.hashCode() : 0);
-    result = 29 * result + (maxSize != null ? maxSize.hashCode() : 0);
-    result = 29 * result + (prefSize != null ? prefSize.hashCode() : 0);
-    result = 29 * result + (absPos != null ? absPos.hashCode() : 0);
-    return result;
+    if (hashcodeValid == false)
+    {
+      int result;
+      result = (parentDim != null ? parentDim.hashCode() : 0);
+      result = 29 * result + (minSize != null ? minSize.hashCode() : 0);
+      result = 29 * result + (maxSize != null ? maxSize.hashCode() : 0);
+      result = 29 * result + (prefSize != null ? prefSize.hashCode() : 0);
+      result = 29 * result + (absPos != null ? absPos.hashCode() : 0);
+      hashCode = result;
+      hashcodeValid = true;
+    }
+    return hashCode;
   }
 }

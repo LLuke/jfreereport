@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -25,10 +25,10 @@
  * ---------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes
  * -------
@@ -48,140 +48,63 @@ import org.jfree.report.util.ReportProperties;
  *
  * @author Thomas Morgner.
  */
-public class ReportDefinition implements Cloneable
+public interface ReportDefinition extends Cloneable
 {
-  /** An ordered list of report groups (each group defines its own header and footer). */
-  private GroupList groups;
-
-  /** The report header band (if not null, printed once at the start of the report). */
-  private ReportHeader reportHeader;
-
-  /** The report footer band (if not null, printed once at the end of the report). */
-  private ReportFooter reportFooter;
-
-  /** The page header band (if not null, printed at the start of every page). */
-  private PageHeader pageHeader;
-
-  /** The page footer band (if not null, printed at the end of every page). */
-  private PageFooter pageFooter;
-
-  /** The item band - used once for each row of data. */
-  private ItemBand itemBand;
-
-  /** Storage for arbitrary properties that a user can assign to the report. */
-  private ReportProperties properties;
-
-  /** The report configuration. */
-  private ReportConfiguration reportConfiguration;
-
-  /** The stylesheet collection of this report definition. */
-  private StyleSheetCollection styleSheetCollection;
-
-  /**
-   * Creates a report definition from a report object.
-   *
-   * @param report  the report.
-   *
-   * @throws CloneNotSupportedException if there is a problem cloning.
-   */
-  public ReportDefinition(final JFreeReport report) throws CloneNotSupportedException
-  {
-    groups = new UnmodifiableGroupList((GroupList) report.getGroups().clone());
-    properties = (ReportProperties) report.getProperties().clone();
-    reportFooter = (ReportFooter) report.getReportFooter().clone();
-    reportHeader = (ReportHeader) report.getReportHeader().clone();
-    pageFooter = (PageFooter) report.getPageFooter().clone();
-    pageHeader = (PageHeader) report.getPageHeader().clone();
-    itemBand = (ItemBand) report.getItemBand().clone();
-    reportConfiguration = report.getReportConfiguration();
-    styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
-    groups.updateStyleSheetCollection(styleSheetCollection);
-    itemBand.updateStyleSheetCollection(styleSheetCollection);
-    reportFooter.updateStyleSheetCollection(styleSheetCollection);
-    reportHeader.updateStyleSheetCollection(styleSheetCollection);
-    pageFooter.updateStyleSheetCollection(styleSheetCollection);
-    pageHeader.updateStyleSheetCollection(styleSheetCollection);
-  }
-
   /**
    * Returns the list of groups for the report.
    *
    * @return The list of groups.
    */
-  public GroupList getGroups()
-  {
-    return groups;
-  }
+  public GroupList getGroups();
 
   /**
    * Returns the report header.
    *
    * @return The report header.
    */
-  public ReportHeader getReportHeader()
-  {
-    return reportHeader;
-  }
+  public ReportHeader getReportHeader();
 
   /**
    * Returns the report footer.
    *
    * @return The report footer.
    */
-  public ReportFooter getReportFooter()
-  {
-    return reportFooter;
-  }
+  public ReportFooter getReportFooter();
 
   /**
    * Returns the page header.
    *
    * @return The page header.
    */
-  public PageHeader getPageHeader()
-  {
-    return pageHeader;
-  }
+  public PageHeader getPageHeader();
 
   /**
    * Returns the page footer.
    *
    * @return The page footer.
    */
-  public PageFooter getPageFooter()
-  {
-    return pageFooter;
-  }
+  public PageFooter getPageFooter();
 
   /**
    * Returns the item band.
    *
    * @return The item band.
    */
-  public ItemBand getItemBand()
-  {
-    return itemBand;
-  }
+  public ItemBand getItemBand();
 
   /**
    * Returns the report properties.
    *
    * @return The report properties.
    */
-  public ReportProperties getProperties()
-  {
-    return properties;
-  }
+  public ReportProperties getProperties();
 
   /**
    * Returns the report configuration.
    *
    * @return The report configuration.
    */
-  public ReportConfiguration getReportConfiguration()
-  {
-    return reportConfiguration;
-  }
+  public ReportConfiguration getReportConfiguration();
 
   /**
    * Returns the number of groups in this report.
@@ -190,10 +113,7 @@ public class ReportDefinition implements Cloneable
    *
    * @return the group count.
    */
-  public int getGroupCount()
-  {
-    return groups.size();
-  }
+  public int getGroupCount();
 
   /**
    * Returns the group at the specified index or null, if there is no such group.
@@ -202,55 +122,10 @@ public class ReportDefinition implements Cloneable
    *
    * @return the requested group.
    *
-   * @throws IllegalArgumentException if the count is negative.
-   * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
+   * @throws java.lang.IllegalArgumentException if the count is negative.
+   * @throws java.lang.IndexOutOfBoundsException if the count is greater than the number of defined groups.
    */
-  public Group getGroup(final int count)
-  {
-    if (count < 0)
-    {
-      throw new IllegalArgumentException("GroupCount must not be negative");
-    }
-
-    if (count >= groups.size())
-    {
-      throw new IndexOutOfBoundsException("No such group defined. " + count + " vs. "
-          + groups.size());
-    }
-
-    return groups.get(count);
-  }
-
-  /**
-   * Creates and returns a copy of this object.
-   *
-   * @return     a clone of this instance.
-   * @exception  CloneNotSupportedException  if the object's class does not
-   *               support the <code>Cloneable</code> interface. Subclasses
-   *               that override the <code>clone</code> method can also
-   *               throw this exception to indicate that an instance cannot
-   *               be cloned.
-   * @see Cloneable
-   */
-  public Object clone() throws CloneNotSupportedException
-  {
-    final ReportDefinition report = (ReportDefinition) super.clone();
-    report.groups = (GroupList) groups.clone();
-    report.itemBand = (ItemBand) itemBand.clone();
-    report.pageFooter = (PageFooter) pageFooter.clone();
-    report.pageHeader = (PageHeader) pageHeader.clone();
-    report.properties = (ReportProperties) properties.clone();
-    report.reportFooter = (ReportFooter) reportFooter.clone();
-    report.reportHeader = (ReportHeader) reportHeader.clone();
-    report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
-    report.groups.updateStyleSheetCollection(report.styleSheetCollection);
-    report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
-    report.reportFooter.updateStyleSheetCollection(report.styleSheetCollection);
-    report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
-    report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
-    report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
-    return report;
-  }
+  public Group getGroup(int count);
 
   /**
    * Returns the stylesheet collection of this report definition. The stylesheet
@@ -260,8 +135,5 @@ public class ReportDefinition implements Cloneable
    *
    * @return the stylesheet collection of the report, never null.
    */
-  public StyleSheetCollection getStyleSheetCollection()
-  {
-    return styleSheetCollection;
-  }
+  public StyleSheetCollection getStyleSheetCollection();
 }

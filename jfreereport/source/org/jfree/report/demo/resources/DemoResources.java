@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: DemoResources.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -94,7 +94,7 @@ public class DemoResources extends JFreeReportResources
     {"exitdialog.message", "Are you sure that you want to exit the program?"},
 
 
-    {"report.definitionnotfound", "ReportDefinition {0} not found in the classpath"},
+    {"report.definitionnotfound", "Reportdefinition {0} not found in the classpath"},
     {"report.definitionfailure.message", "Reportdefinition {0} could not be loaded."},
     {"report.definitionfailure.title", "Loader error"},
     {"report.definitionnull", "Reportdefinition was not generated"},

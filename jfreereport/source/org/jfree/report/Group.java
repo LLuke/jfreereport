@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.3 2003/07/23 13:56:31 taqua Exp $
+ * $Id: Group.java,v 1.4 2003/08/18 18:27:57 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,7 +60,6 @@ import java.util.TreeSet;
 import org.jfree.report.style.InvalidStyleSheetCollectionException;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.style.StyleSheetCollectionHelper;
-import org.jfree.util.ObjectUtils;
 
 /**
  * A report group.  Reports can contain any number of (nested) groups.
@@ -303,6 +302,20 @@ public class Group implements Serializable, Cloneable, Comparable
   }
 
   /**
+   * Returns the group fields as array.
+   *
+   * @return the fields as string array.
+   */
+  public String[] getFieldsArray ()
+  {
+    if (fieldsCached == null)
+    {
+      fieldsCached = (String[]) fields.toArray(new String[fields.size()]);
+    }
+    return fieldsCached;
+  }
+
+  /**
    * Clones this Element.
    *
    * @return a clone of this element.
@@ -318,51 +331,6 @@ public class Group implements Serializable, Cloneable, Comparable
     g.header = (GroupHeader) header.clone();
     g.styleSheetCollectionHelper = new GroupStyleSheetCollectionHelper(g);
     return g;
-  }
-
-
-  /**
-   * Returns true if this is the last item in the group, and false otherwise.
-   *
-   * @param currentDataRow  the current data row.
-   * @param nextDataRow   the next data row, or null, if this is the last datarow.
-   *
-   * @return A flag indicating whether or not the current item is the last in its group.
-   */
-  public boolean isLastItemInGroup
-    (final DataRowBackend currentDataRow, final DataRowBackend nextDataRow)
-  {
-    // return true if this is the last row in the model.
-    if (currentDataRow.isLastRow() || nextDataRow == null)
-    {
-      return true;
-    }
-    else
-    {
-      // compare item and item+1, if any field differs, then item==last in group
-      if (fieldsCached == null)
-      {
-        fieldsCached = (String[]) fields.toArray(new String[fields.size()]);
-      }
-
-      for (int i = 0; i < fieldsCached.length; i++)
-      {
-        final String field = fieldsCached[i];
-        final int column = nextDataRow.findColumn(field);
-        if (column == -1)
-        {
-          continue;
-        }
-
-        final Object item1 = currentDataRow.get(column);
-        final Object item2 = nextDataRow.get(column);
-        if (ObjectUtils.equalOrBothNull(item1, item2) == false)
-        {
-          return true;
-        }
-      }
-      return false;
-    }
   }
 
   /**

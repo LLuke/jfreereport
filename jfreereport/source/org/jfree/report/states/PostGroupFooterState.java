@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.9 2003/06/29 16:59:28 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -118,8 +118,7 @@ public final class PostGroupFooterState extends ReportState
         // we have more data to work on
         // If the group is done, print the GroupFooter of the parent
         final Group group = getReport().getGroup(getCurrentGroupIndex());
-        if (group.isLastItemInGroup(getDataRowBackend(),
-            getDataRowBackend().previewNextRow()))
+        if (isLastItemInGroup(group, getDataRowBackend(), getDataRowPreview()))
         {
           // Parent is finished, print the footer
           return new PreGroupFooterState(this);

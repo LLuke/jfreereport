@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowConnector.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: DataRowConnector.java,v 1.3 2003/08/18 18:27:57 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,19 @@
  * 18-Dec-2003 : Added toString() method
  */
 
-package org.jfree.report;
+package org.jfree.report.states;
 
 import java.util.List;
 
 import org.jfree.report.filter.DataRowConnectable;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
+import org.jfree.report.states.DataRowBackend;
+import org.jfree.report.DataRow;
+import org.jfree.report.ReportDefinition;
+import org.jfree.report.Group;
+import org.jfree.report.Band;
+import org.jfree.report.Element;
 
 /**
  * This is the connection-proxy to the various data sources contained in the elements.
@@ -99,7 +105,7 @@ public class DataRowConnector implements DataRow
    *
    * @return the column, function or expression value.
    *
-   * @throws IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException if there is no backend connected.
    */
   public Object get(final int col)
   {
@@ -116,7 +122,7 @@ public class DataRowConnector implements DataRow
    * @param col  the column, function or expression index.
    *
    * @return The column, function or expression value.
-   * @throws IllegalStateException if there is no backend connected
+   * @throws java.lang.IllegalStateException if there is no backend connected
    */
   public Object get(final String col)
   {
@@ -134,7 +140,7 @@ public class DataRowConnector implements DataRow
    *
    * @return the column, function or expression name.
    *
-   * @throws IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException if there is no backend connected.
    */
   public String getColumnName(final int col)
   {
@@ -154,7 +160,7 @@ public class DataRowConnector implements DataRow
    * @return the column position of the column, expression or function with the given name or
    * -1 if the given name does not exist in this DataRow.
    *
-   * @throws IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException if there is no backend connected.
    */
   public int findColumn(final String name)
   {
@@ -171,7 +177,7 @@ public class DataRowConnector implements DataRow
    *
    * @return the number of accessible columns in this datarow.
    *
-   * @throws IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException if there is no backend connected.
    */
   public int getColumnCount()
   {
@@ -190,18 +196,18 @@ public class DataRowConnector implements DataRow
    */
   public static void connectDataSources(final ReportDefinition report, final DataRowConnector con)
   {
-    connectDataSources(report.getPageFooter(), con);
-    connectDataSources(report.getPageHeader(), con);
-    connectDataSources(report.getReportFooter(), con);
-    connectDataSources(report.getReportHeader(), con);
-    connectDataSources(report.getItemBand(), con);
+    DataRowConnector.connectDataSources(report.getPageFooter(), con);
+    DataRowConnector.connectDataSources(report.getPageHeader(), con);
+    DataRowConnector.connectDataSources(report.getReportFooter(), con);
+    DataRowConnector.connectDataSources(report.getReportHeader(), con);
+    DataRowConnector.connectDataSources(report.getItemBand(), con);
 
     final int groupCount = report.getGroupCount();
     for (int i = 0; i < groupCount; i++)
     {
       final Group g = report.getGroup(i);
-      connectDataSources(g.getFooter(), con);
-      connectDataSources(g.getHeader(), con);
+      DataRowConnector.connectDataSources(g.getFooter(), con);
+      DataRowConnector.connectDataSources(g.getHeader(), con);
     }
   }
 
@@ -240,8 +246,7 @@ public class DataRowConnector implements DataRow
    * @param report  the report which will be disconnected from this DataRow.
    * @param con  the connector.
    */
-  public static void disconnectDataSources
-    (final ReportDefinition report, final DataRowConnector con)
+  public static void disconnectDataSources(final ReportDefinition report, final DataRowConnector con)
   {
     disconnectDataSources(report.getPageFooter(), con);
     disconnectDataSources(report.getPageHeader(), con);
@@ -321,9 +326,9 @@ public class DataRowConnector implements DataRow
   {
     if (dataRow == null)
     {
-      return getClass().getName() + "=Not Connected";
+      return "org.jfree.report.states.DataRowConnector=Not Connected";
     }
-    return getClass().getName() + "=Connected:" + dataRow.getCurrentRow();
+    return "org.jfree.report.states.DataRowConnector=Connected:" + dataRow.getCurrentRow();
 
   }
 }

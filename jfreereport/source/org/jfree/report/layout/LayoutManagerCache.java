@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.2 2003/07/14 17:37:07 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.3 2003/08/18 18:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import java.util.WeakHashMap;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.util.Log;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
@@ -69,11 +70,9 @@ public class LayoutManagerCache
     public ElementCacheCarrier ()
     {
     }
-    
+
     /**
-     * Returns the cache entries minimum size.
-     * 
-     * @return the minimum size stored at this cache entry.
+     * @return
      */
     public Dimension2D getMinSize()
     {
@@ -81,9 +80,7 @@ public class LayoutManagerCache
     }
 
     /**
-     * Returns the cache entries preferred size.
-     * 
-     * @return the preferred size stored at this cache entry.
+     * @return
      */
     public Dimension2D getPrefSize()
     {
@@ -91,9 +88,7 @@ public class LayoutManagerCache
     }
 
     /**
-     * Defines the cache entries minimum size.
-     * 
-     * @param dimension2D the minimum size stored at this cache entry.
+     * @param dimension2D
      */
     public void setMinSize(Dimension2D dimension2D)
     {
@@ -101,9 +96,7 @@ public class LayoutManagerCache
     }
 
     /**
-     * Defines the cache entries preferred size.
-     * 
-     * @param dimension2D the preferred size stored at this cache entry.
+     * @param dimension2D
      */
     public void setPrefSize(Dimension2D dimension2D)
     {
@@ -111,6 +104,12 @@ public class LayoutManagerCache
     }
 
   }
+
+  /** The put count. */
+  private static int putCount;
+
+  /** The get count. */
+  private static int getCount;
 
   /** The element cache. */
   private WeakHashMap elementCache;
@@ -137,13 +136,12 @@ public class LayoutManagerCache
     {
       return null;
     }
-    /*
-    if (ec.minSize != null)
+    Dimension2D dim = ec.getMinSize();
+    if (dim != null)
     {
       getCount++;
     }
-    */
-    return ec.getMinSize();
+    return dim;
   }
 
   /**
@@ -160,13 +158,12 @@ public class LayoutManagerCache
     {
       return null;
     }
-    /*
-    if (ec.prefSize != null)
+    Dimension2D dim = ec.getPrefSize();
+    if (dim != null)
     {
       getCount++;
     }
-    */
-    return ec.getPrefSize();
+    return dim;
   }
 
   /**
@@ -187,6 +184,7 @@ public class LayoutManagerCache
     {
       return;
     }
+    putCount++;
 
     ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
     if (ec == null)
@@ -229,6 +227,8 @@ public class LayoutManagerCache
     {
       return;
     }
+    putCount++;
+
     ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
     if (ec == null)
     {
@@ -258,15 +258,19 @@ public class LayoutManagerCache
    */
   public boolean isCachable(final Element e)
   {
-    // if the element is dynamic, then it is not cachable ...
-    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
-    {
-      return false;
-    }
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE) == false)
     {
       return false;
     }
+
+    // if the element is dynamic, then it is not cachable ...
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
+    {
+      e.getStyle().setBooleanStyleProperty
+          (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
+      return false;
+    }
+
     if (e instanceof Band)
     {
       // search for dynamic elements within the element's children ...
@@ -276,7 +280,7 @@ public class LayoutManagerCache
       {
         if (isCachable(elements[i]) == false)
         {
-          elements[i].getStyle().setBooleanStyleProperty
+          e.getStyle().setBooleanStyleProperty
               (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
           return false;
         }
@@ -291,5 +295,13 @@ public class LayoutManagerCache
   public void flush()
   {
     elementCache.clear();
+  }
+
+  /**
+   * Prints debugging information.
+   */
+  public static void printResults()
+  {
+    Log.debug("CacheResults: " + getCount + ":" + putCount + " Ratio: " + (getCount / (double) putCount));
   }
 }

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData3.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: SampleData3.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
  *
  */
 package org.jfree.report.demo;

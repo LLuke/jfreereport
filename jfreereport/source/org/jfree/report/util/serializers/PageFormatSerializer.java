@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFormatSerializer.java,v 1.6 2003/06/29 16:59:30 taqua Exp $
+ * $Id: PageFormatSerializer.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------------------------

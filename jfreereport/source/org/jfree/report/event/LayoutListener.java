@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutListener.java,v 1.4 2003/06/27 14:25:17 taqua Exp $
+ * $Id: LayoutListener.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -37,13 +37,15 @@
  */
 package org.jfree.report.event;
 
+import java.util.EventListener;
+
 /**
  * Adds layout notification support for functions. Functions get informed when
  * the layouting is complete.
  *
  * @author Thomas Morgner
  */
-public interface LayoutListener
+public interface LayoutListener extends EventListener
 {
   /**
    * Receives notification that the band layouting has completed.

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -25,22 +25,23 @@
  * -------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowPreview.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: DataRowPreview.java,v 1.3 2003/08/22 20:27:17 taqua Exp $
  *
  * Changes
  * -------
  * 06.04.2003 : Initial version
  *
  */
-package org.jfree.report;
+package org.jfree.report.states;
 
 import javax.swing.table.TableModel;
 
 import org.jfree.report.function.LevelledExpressionList;
 import org.jfree.report.util.ReportPropertiesList;
+import org.jfree.report.states.DataRowBackend;
 
 /**
  * A 'preview' data row backend. Shows how the next row would look like if there
@@ -51,7 +52,7 @@ import org.jfree.report.util.ReportPropertiesList;
  *
  * @author Thomas Morgner
  */
-public class DataRowPreview extends DataRowBackend
+public final class DataRowPreview extends DataRowBackend
 {
   /**
    * Constructs a new DataRowPreview using the given DataRowBackend as base.
@@ -61,6 +62,11 @@ public class DataRowPreview extends DataRowBackend
   public DataRowPreview(final DataRowBackend db)
   {
     super(db);
+    if (db.getFunctions() != null)
+    {
+      LevelledExpressionList le = db.getFunctions().getPreviewInstance();
+      super.setFunctions(le);
+    }
   }
 
   /**
@@ -70,18 +76,6 @@ public class DataRowPreview extends DataRowBackend
   public void update(final DataRowBackend db)
   {
     super.setCurrentRow(db.getCurrentRow() + 1);
-    
-  }
-
-  /**
-   * Returns true to indicate that this is a 'preview' version of the DataRowBackEnd.
-   *
-   * @return true, as this is a preview version of a DataRowBackend, and not all functionality
-   * may be available.
-   */
-  protected boolean isPreviewMode()
-  {
-    return true;
   }
 
   /**
@@ -89,9 +83,9 @@ public class DataRowPreview extends DataRowBackend
    * processed. This is a readonly implementation and will always throw an IllegalStateException
    *
    * @param currentRow the current row
-   * @throws IllegalStateException as this is a readonly implementation
+   * @throws java.lang.IllegalStateException as this is a readonly implementation
    */
-  public void setCurrentRow(final int currentRow)
+  public final void setCurrentRow(final int currentRow)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }
@@ -102,9 +96,9 @@ public class DataRowPreview extends DataRowBackend
    * This is a readonly implementation and will always throw an IllegalStateException
    *
    * @param functions the current function collection
-   * @throws IllegalStateException as this is a readonly implementation
+   * @throws java.lang.IllegalStateException as this is a readonly implementation
    */
-  public void setFunctions(final LevelledExpressionList functions)
+  public final void setFunctions(final LevelledExpressionList functions)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }
@@ -117,9 +111,9 @@ public class DataRowPreview extends DataRowBackend
    *
    * @param tablemodel the tablemodel used as base for the reporting.
    *
-   * @throws IllegalStateException as this is a readonly implementation
+   * @throws java.lang.IllegalStateException as this is a readonly implementation
    */
-  public void setTablemodel(final TableModel tablemodel)
+  public final void setTablemodel(final TableModel tablemodel)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }
@@ -129,7 +123,7 @@ public class DataRowPreview extends DataRowBackend
    *
    * @param properties  the report properties.
    */
-  public void setReportProperties(final ReportPropertiesList properties)
+  public final void setReportProperties(final ReportPropertiesList properties)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }
@@ -140,7 +134,7 @@ public class DataRowPreview extends DataRowBackend
    *
    * @return  The 'preview' DataRowBackend.
    */
-  public DataRowBackend previewNextRow()
+  public final DataRowBackend previewNextRow()
   {
     throw new IllegalStateException("Is already a preview version!");
   }

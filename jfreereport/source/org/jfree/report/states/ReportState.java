@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: ReportState.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,16 +59,16 @@ import java.util.List;
 
 import org.jfree.report.Band;
 import org.jfree.report.DataRow;
-import org.jfree.report.DataRowBackend;
-import org.jfree.report.DataRowConnector;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.Group;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.LevelledExpressionList;
 import org.jfree.report.util.ReportProperties;
 import org.jfree.report.util.ReportPropertiesList;
+import org.jfree.util.ObjectUtils;
 
 /**
  * Captures state information for a report while it is in the process of being displayed or
@@ -85,7 +85,7 @@ import org.jfree.report.util.ReportPropertiesList;
 public abstract class ReportState implements Cloneable
 {
   /** The report that the state belongs to. */
-  private ReportDefinition report;
+  private ReportDefinitionImpl report;
 
   /** The number of rows in the tablemodel. */
   private int numberOfRows;
@@ -105,11 +105,8 @@ public abstract class ReportState implements Cloneable
   /** The data row. */
   private DataRowBackend dataRow;
 
-  /** The data row connector. */
-  private DataRowConnector dataRowConnector;
-
-  /** The functions. */
-  private LevelledExpressionList functions;
+  /** The data row preview. */
+  private DataRowPreview dataRowPreview;
 
   /** A row number that is 'before' the first row. */
   public static final int BEFORE_FIRST_ROW = -1;
@@ -135,27 +132,19 @@ public abstract class ReportState implements Cloneable
    */
   protected ReportState(final JFreeReport reportPar) throws CloneNotSupportedException
   {
-    setReport(new ReportDefinition(reportPar));
+    setReportDefinition(new ReportDefinitionImpl(reportPar));
     numberOfRows = reportPar.getData().getRowCount();
     reportProperties = getReport().getProperties();
 
-    final DataRowConnector dc = new DataRowConnector();
-    DataRowConnector.connectDataSources(getReport(), dc);
-    setDataRowConnector(dc);
-
     final LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions(),
         reportPar.getFunctions());
-    setFunctions(functions);
-    functions.connectDataRow(dc);
-
 
     final DataRowBackend dr = new DataRowBackend();
     dr.setTablemodel(reportPar.getData());
-    dr.setFunctions(getFunctions());
+    dr.setFunctions(functions);
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
-    setDataRowBackend(dr);
-
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
+    getReportDefinition().getDataRowConnector().setDataRowBackend(dr);
+    this.dataRow = dr;
 
     // we have no clone-ancestor, so forget everyting
     setAncestorHashcode(this.hashCode());
@@ -184,14 +173,11 @@ public abstract class ReportState implements Cloneable
    */
   protected ReportState(final ReportState clone, final boolean reset)
   {
-    setReport(clone.getReport());
+    setReportDefinition(clone.getReportDefinition());
     reportProperties = clone.reportProperties;
     numberOfRows = clone.getNumberOfRows();
-
-    setFunctions(clone.getFunctions());
-    setDataRowConnector(clone.getDataRowConnector());
-
-    setDataRowBackend(clone.getDataRowBackend());
+    dataRowPreview = clone.dataRowPreview;
+    this.dataRow = clone.getDataRowBackend();
 
     if (reset)
     {
@@ -219,35 +205,27 @@ public abstract class ReportState implements Cloneable
   }
 
   /**
+   * Implements a singleton datarow preview ...
+   * @return
+   */
+  protected DataRowPreview getDataRowPreview()
+  {
+    if (dataRowPreview == null)
+    {
+      dataRowPreview = new DataRowPreview(getDataRowBackend());
+    }
+    dataRowPreview.update(getDataRowBackend());
+    return dataRowPreview;
+  }
+
+  /**
    * Returns the number of rows.
    *
    * @return The number of row.
    */
-  protected int getNumberOfRows()
+  public int getNumberOfRows()
   {
     return numberOfRows;
-  }
-
-  /**
-   * Returns the data row connector for the report state.
-   * <p>
-   * The connector is used as frontend for all datarow users
-   *
-   * @return the data row connector.
-   */
-  protected DataRowConnector getDataRowConnector()
-  {
-    return dataRowConnector;
-  }
-
-  /**
-   * Sets the data row connector.
-   *
-   * @param dataRowConnector  the data row connector.
-   */
-  private void setDataRowConnector(final DataRowConnector dataRowConnector)
-  {
-    this.dataRowConnector = dataRowConnector;
   }
 
   /**
@@ -257,7 +235,7 @@ public abstract class ReportState implements Cloneable
    */
   public DataRow getDataRow()
   {
-    return getDataRowConnector();
+    return dataRow.getDataRow();
   }
 
   /**
@@ -268,16 +246,6 @@ public abstract class ReportState implements Cloneable
   protected DataRowBackend getDataRowBackend()
   {
     return dataRow;
-  }
-
-  /**
-   * Sets the data row backend.
-   *
-   * @param dataRow  the data row backend.
-   */
-  private void setDataRowBackend(final DataRowBackend dataRow)
-  {
-    this.dataRow = dataRow;
   }
 
   /**
@@ -306,13 +274,18 @@ public abstract class ReportState implements Cloneable
    *
    * @throws NullPointerException if the given report is null
    */
-  private void setReport(final ReportDefinition report)
+  private void setReportDefinition(final ReportDefinitionImpl report)
   {
     if (report == null)
     {
       throw new NullPointerException("A ReportState without a report is not allowed");
     }
     this.report = report;
+  }
+
+  protected ReportDefinitionImpl getReportDefinition ()
+  {
+    return this.report;
   }
 
   /**
@@ -425,22 +398,11 @@ public abstract class ReportState implements Cloneable
    */
   protected final LevelledExpressionList getFunctions()
   {
-    return this.functions;
-  }
-
-  /**
-   * Sets the function collection. The functions no longer get cloned before they
-   * are assigned to this state.
-   *
-   * @param functions  the functions.
-   */
-  protected void setFunctions(final LevelledExpressionList functions)
-  {
-    if (functions == null)
+    if (dataRow.getFunctions().getDataRow() != dataRow.getDataRow())
     {
-      throw new NullPointerException("Empty function collection?");
+      throw new IllegalStateException("Paranoia: Unconnected or invalid function datarow");
     }
-    this.functions = functions;
+    return dataRow.getFunctions();
   }
 
   /**
@@ -539,19 +501,9 @@ public abstract class ReportState implements Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     final ReportState result = (ReportState) super.clone();
-    final LevelledExpressionList functions = (LevelledExpressionList) getFunctions().clone();
-    result.setFunctions(functions);
-    result.report = (ReportDefinition) report.clone();
+    result.report = (ReportDefinitionImpl) report.clone();
     result.dataRow = (DataRowBackend) dataRow.clone();
-    result.dataRow.setFunctions(functions);
-    result.dataRowConnector = new DataRowConnector();
-    // disconnect the old datarow from all clones
-    DataRowConnector.disconnectDataSources(result.report, dataRowConnector);
-    functions.disconnectDataRow(dataRowConnector);
-    // and connect connect the new datarow to them
-    DataRowConnector.connectDataSources(result.report, result.dataRowConnector);
-    functions.connectDataRow(result.dataRowConnector);
-    result.dataRowConnector.setDataRowBackend(result.getDataRowBackend());
+    result.report.getDataRowConnector().setDataRowBackend(result.dataRow);
     return result;
   }
 
@@ -582,16 +534,12 @@ public abstract class ReportState implements Cloneable
     // a state proceeds if it is an other class than the old state
     if (this.getClass().equals(oldstate.getStateClass()) == false)
     {
-      /*
-      Log.debug (new StateProceedMessage(this, oldstate,
-                                         "State did proceed: In Group: "));
-                                         */
+//      Log.debug (new StateProceedMessage(this, oldstate,
+//                                         "State did proceed: In Group: "));
       return true;
     }
-/*
-    Log.debug (new StateProceedMessage(this, oldstate,
-                                       "State did not proceed: In Group: "));
-*/
+//    Log.debug (new StateProceedMessage(this, oldstate,
+//                                       "State did not proceed: In Group: "));
     return false;
   }
 
@@ -702,8 +650,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireReportInitializedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.reportInitialized(new ReportEvent(this, ReportEvent.REPORT_INITIALIZED));
+    getFunctions().reportInitialized(new ReportEvent(this, ReportEvent.REPORT_INITIALIZED));
   }
 
   /**
@@ -711,8 +658,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireReportStartedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.reportStarted(new ReportEvent(this, ReportEvent.REPORT_STARTED));
+    getFunctions().reportStarted(new ReportEvent(this, ReportEvent.REPORT_STARTED));
   }
 
   /**
@@ -722,8 +668,7 @@ public abstract class ReportState implements Cloneable
    */
   public void firePrepareEvent(final int type)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.firePrepareEvent(new ReportEvent(this, (ReportEvent.PREPARE_EVENT | type)));
+    getFunctions().firePrepareEvent(new ReportEvent(this, (ReportEvent.PREPARE_EVENT | type)));
   }
 
   /**
@@ -731,8 +676,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireReportFinishedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.reportFinished(new ReportEvent(this, ReportEvent.REPORT_FINISHED));
+    getFunctions().reportFinished(new ReportEvent(this, ReportEvent.REPORT_FINISHED));
   }
 
   /**
@@ -740,8 +684,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireReportDoneEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.reportDone(new ReportEvent(this, ReportEvent.REPORT_DONE));
+    getFunctions().reportDone(new ReportEvent(this, ReportEvent.REPORT_DONE));
   }
 
   /**
@@ -752,8 +695,7 @@ public abstract class ReportState implements Cloneable
    */
   public void firePageStartedEvent(final int baseEvent)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.pageStarted(new ReportEvent(this, ReportEvent.PAGE_STARTED | baseEvent));
+    getFunctions().pageStarted(new ReportEvent(this, ReportEvent.PAGE_STARTED | baseEvent));
   }
 
   /**
@@ -762,8 +704,7 @@ public abstract class ReportState implements Cloneable
    */
   public void firePageFinishedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.pageFinished(new ReportEvent(this, ReportEvent.PAGE_FINISHED));
+    getFunctions().pageFinished(new ReportEvent(this, ReportEvent.PAGE_FINISHED));
   }
 
   /**
@@ -772,8 +713,7 @@ public abstract class ReportState implements Cloneable
    */
   public void firePageCanceledEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.pageCanceled(new ReportEvent(this, ReportEvent.PAGE_CANCELED));
+    getFunctions().pageCanceled(new ReportEvent(this, ReportEvent.PAGE_CANCELED));
   }
 
   /**
@@ -782,8 +722,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireGroupStartedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.groupStarted(new ReportEvent(this, ReportEvent.GROUP_STARTED));
+    getFunctions().groupStarted(new ReportEvent(this, ReportEvent.GROUP_STARTED));
   }
 
   /**
@@ -791,8 +730,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireGroupFinishedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.groupFinished(new ReportEvent(this, ReportEvent.GROUP_FINISHED));
+    getFunctions().groupFinished(new ReportEvent(this, ReportEvent.GROUP_FINISHED));
   }
 
   /**
@@ -800,8 +738,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireItemsStartedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.itemsStarted(new ReportEvent(this, ReportEvent.ITEMS_STARTED));
+    getFunctions().itemsStarted(new ReportEvent(this, ReportEvent.ITEMS_STARTED));
   }
 
   /**
@@ -809,8 +746,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireItemsFinishedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    this.functions.itemsFinished(new ReportEvent(this, ReportEvent.ITEMS_FINISHED));
+    getFunctions().itemsFinished(new ReportEvent(this, ReportEvent.ITEMS_FINISHED));
   }
 
   /**
@@ -818,8 +754,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireItemsAdvancedEvent()
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    functions.itemsAdvanced(new ReportEvent(this, ReportEvent.ITEMS_ADVANCED));
+    getFunctions().itemsAdvanced(new ReportEvent(this, ReportEvent.ITEMS_ADVANCED));
   }
 
   /**
@@ -830,8 +765,7 @@ public abstract class ReportState implements Cloneable
    */
   public void fireLayoutCompleteEvent(final Band band, final int type)
   {
-    getDataRowConnector().setDataRowBackend(getDataRowBackend());
-    functions.layoutComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
+    getFunctions().layoutComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
   }
 
   /**
@@ -895,7 +829,7 @@ public abstract class ReportState implements Cloneable
    */
   public List getErrors()
   {
-    return functions.getErrors();
+    return getFunctions().getErrors();
   }
 
   /**
@@ -905,20 +839,54 @@ public abstract class ReportState implements Cloneable
    */
   public boolean isErrorOccured()
   {
-    return functions.hasErrors();
+    return getFunctions().hasErrors();
   }
 
   /**
-   * Updates the DataRow registered with the band elements to the current
-   * DataRow. This is unclean, but needed to keep saved bands in sync.
+   * Returns true if this is the last item in the group, and false otherwise.
    *
-   * @param band the band that should be updated.
+   * @param currentDataRow  the current data row.
+   * @param nextDataRow   the next data row, or null, if this is the last datarow.
+   *
+   * @return A flag indicating whether or not the current item is the last in its group.
    */
-  public void updateDataRow(final Band band)
+  public static boolean isLastItemInGroup
+      (final Group g, final DataRowBackend currentDataRow, final DataRowBackend nextDataRow)
   {
-    // docmark: at the moment, the DataRow connector is not checked, so we can
-    // give any instance. This may change later..
-    DataRowConnector.disconnectDataSources(band, dataRowConnector);
-    DataRowConnector.connectDataSources(band, dataRowConnector);
+    // return true if this is the last row in the model.
+    if (currentDataRow.isLastRow() || nextDataRow == null)
+    {
+      return true;
+    }
+    else
+    {
+      // compare item and item+1, if any field differs, then item==last in group
+      final String[] fieldsCached = g.getFieldsArray();
+      for (int i = 0; i < fieldsCached.length; i++)
+      {
+        final String field = fieldsCached[i];
+        final int column1 = currentDataRow.findColumn(field);
+        if (column1 == -1)
+        {
+//          Log.debug ("Unable to find column in base dataset: " + field);
+          continue;
+        }
+        final int column2 = nextDataRow.findColumn(field);
+        if (column2 == -1)
+        {
+//          Log.debug ("Unable to find column in next dataset: " + field);
+          continue;
+        }
+
+        final Object item1 = currentDataRow.get(column1);
+        final Object item2 = nextDataRow.get(column2);
+//        Log.debug ("Item1: " + item1 + " vs. Item2: " + item2);
+        if (ObjectUtils.equalOrBothNull(item1, item2) == false)
+        {
+          return true;
+        }
+      }
+      return false;
+    }
   }
 }

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionCollection.java,v 1.14 2003/06/29 16:59:24 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  =======
- * $Id: ExpressionCollection.java,v 1.14 2003/06/29 16:59:24 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  >>>>>>> 1.7
  =======
- * $Id: ExpressionCollection.java,v 1.14 2003/06/29 16:59:24 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  >>>>>>> 1.8
  *
  * Changes

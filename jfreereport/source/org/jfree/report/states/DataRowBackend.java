@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes
  * -------
@@ -44,13 +44,13 @@
  * 05-Feb-2002 : Removed/Changed log statements
  */
 
-package org.jfree.report;
+package org.jfree.report.states;
 
 import java.util.HashMap;
 import javax.swing.table.TableModel;
 
+import org.jfree.report.DataRow;
 import org.jfree.report.function.Expression;
-import org.jfree.report.function.Function;
 import org.jfree.report.function.LevelledExpressionList;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
@@ -69,9 +69,6 @@ public class DataRowBackend implements Cloneable
 
   /** The item cache. */
   private HashMap colcache;
-
-  /** The preview DataRowBackend. */
-  private DataRowPreview preview;
 
   /** The functions (set by the report state). */
   private LevelledExpressionList functions;
@@ -106,12 +103,16 @@ public class DataRowBackend implements Cloneable
   /** The last row. */
   private int lastRow;
 
+  private DataRowConnector dataRowConnector;
+
   /**
    * Creates a new DataRowBackend.
    */
   public DataRowBackend()
   {
     columnlocks = EMPTY_BOOLS;
+    dataRowConnector = new DataRowConnector();
+    dataRowConnector.setDataRowBackend(this);
     colcache = new HashMap();
     warnInvalidColumns = ReportConfiguration.getGlobalConfig().isWarnInvalidColumns();
     lastRow = -1;
@@ -119,23 +120,33 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Creates a new DataRowBackend.
+   * Creates a new DataRowBackend based on the given datarow backend.
+   * Both datarow backends will share the objects, no cloning is done.
+   * Functions will not be included in the copy...
    *
    * @param db  the data row backend.
    */
   protected DataRowBackend(final DataRowBackend db)
   {
+    this.dataRowConnector = new DataRowConnector();
+    this.dataRowConnector.setDataRowBackend(this);
     this.columnlocks = EMPTY_BOOLS;
-    this.colcache = db.colcache;
+    this.colcache = new HashMap();
     this.warnInvalidColumns = db.warnInvalidColumns;
-    this.tableEndIndex = db.tableEndIndex;
     this.tablemodel = db.tablemodel;
     this.lastRow = db.lastRow;
-    this.functions = db.functions;
     this.reportProperties = db.reportProperties;
-    this.propertiesEndIndex = db.propertiesEndIndex;
-    this.functionsEndIndex = db.functionsEndIndex;
     revalidateColumnLock();
+  }
+
+  protected DataRowConnector getDataRowConnector ()
+  {
+    return dataRowConnector;
+  }
+
+  public DataRow getDataRow()
+  {
+    return getDataRowConnector();
   }
 
   /**
@@ -204,18 +215,24 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Sets the function collection used in this DataRow. As the function collection is stateful,
-   * a new instance of the function collection is set for every new ReportState.
+   * Sets the function collection used in this DataRow. This also
+   * updates the function's dataRow reference.
    *
    * @param functions the current function collection
    */
   public void setFunctions(final LevelledExpressionList functions)
   {
-    if (functions == null)
+    if (this.functions != null)
     {
-      throw new NullPointerException();
+      // remove the old dataRow
+      this.functions.setDataRow(null);
     }
     this.functions = functions;
+    if (this.functions != null)
+    {
+      // and connect the new one...
+      this.functions.setDataRow(getDataRow());
+    }
     revalidateColumnLock();
   }
 
@@ -248,9 +265,9 @@ public class DataRowBackend implements Cloneable
    *
    * @return The item value.
    *
-   * @throws IndexOutOfBoundsException if the index is negative or greater than the number of
+   * @throws java.lang.IndexOutOfBoundsException if the index is negative or greater than the number of
    *         columns in this row.
-   * @throws IllegalStateException if a deadlock is detected.
+   * @throws java.lang.IllegalStateException if a deadlock is detected.
    */
   public Object get(final int column)
   {
@@ -288,12 +305,8 @@ public class DataRowBackend implements Cloneable
       else if (col < getFunctionEndIndex())
       {
         col -= getTableEndIndex();
-
-        /** if this is a preview state, forbit the query of functions or be doomed */
-        if (isPreviewMode() && getFunctions().getExpression(col) instanceof Function)
-        {
-          throw new IllegalStateException("Cannot query a function from a preview state");
-        }
+        // the datarow preview will make sure that only expressions are
+        // contained in the function collection.
         returnValue = getFunctions().getValue(col);
       }
       else if (col < getPropertiesEndIndex())
@@ -308,7 +321,7 @@ public class DataRowBackend implements Cloneable
     }
     catch (Exception e)
     {
-      Log.error(new Log.SimpleMessage("Column ", new Integer(column),
+      Log.error(new org.jfree.util.Log.SimpleMessage("Column ", new Integer(column),
           " caused an error on get()", e));
     }
     finally
@@ -319,16 +332,6 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Returns a flag indicating whether this object is in 'preview' mode.
-   *
-   * @return The flag.
-   */
-  protected boolean isPreviewMode()
-  {
-    return false;
-  }
-
-  /**
    * Returns the value of the function, expression or column using its specific name. This method
    * returns null if the named column was not found.
    *
@@ -336,9 +339,9 @@ public class DataRowBackend implements Cloneable
    *
    * @return The item value.
    *
-   * @throws IndexOutOfBoundsException if the index is negative or greater than the number of
+   * @throws java.lang.IndexOutOfBoundsException if the index is negative or greater than the number of
    *         columns in this row.
-   * @throws IllegalStateException if a deadlock is detected.
+   * @throws java.lang.IllegalStateException if a deadlock is detected.
    */
   public Object get(final String name)
   {
@@ -391,7 +394,7 @@ public class DataRowBackend implements Cloneable
     if (warnInvalidColumns)
     {
       // print an warning for the logs.
-      Log.warn(new Log.SimpleMessage("Invalid column name specified on query: ", name));
+      Log.warn(new org.jfree.util.Log.SimpleMessage("Invalid column name specified on query: ", name));
     }
     return -1;
   }
@@ -456,41 +459,48 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Clones this DataRowBackend.
+   * Clones this DataRowBackend. Does also clone the functions contained
+   * in this datarow.
    *
    * @return the clone.
    *
-   * @throws CloneNotSupportedException should never happen.
+   * @throws java.lang.CloneNotSupportedException should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {
     final DataRowBackend db = (DataRowBackend) super.clone();
-    db.preview = null;
     db.columnlocks = new boolean[getColumnCount()];
+    db.dataRowConnector = new DataRowConnector();
+    db.dataRowConnector.setDataRowBackend(db);
+    if (functions != null)
+    {
+      db.functions = (LevelledExpressionList) functions.clone();
+      db.functions.updateDataRow(db.getDataRow());
+    }
     return db;
   }
 
-  /**
-   * Create a preview backend. Such datarows will have no access to functions (all functions
-   * will return null).
-   * <p>
-   * This method will return null, if this is the last row.
-   *
-   * @return The 'preview' data row backend.
-   */
-  public DataRowBackend previewNextRow()
-  {
-    if (isLastRow())
-    {
-      return null;
-    }
-    if (preview == null)
-    {
-      preview = new DataRowPreview(this);
-    }
-    preview.update(this);
-    return preview;
-  }
+//  /**
+//   * Create a preview backend. Such datarows will have no access to functions (all functions
+//   * will return null).
+//   * <p>
+//   * This method will return null, if this is the last row.
+//   *
+//   * @return The 'preview' data row backend.
+//   */
+//  public DataRowBackend previewNextRow()
+//  {
+//    if (isLastRow())
+//    {
+//      return null;
+//    }
+//    if (preview == null)
+//    {
+//      preview = new DataRowPreview(this);
+//    }
+//    preview.update(this);
+//    return preview;
+//  }
 
   /**
    * Calculates the end index for tableentries. TableEntries are the first entries in the row.

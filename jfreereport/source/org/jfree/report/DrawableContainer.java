@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableContainer.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: DrawableContainer.java,v 1.3 2003/08/18 18:27:57 taqua Exp $
  *
  * Changes
  * -------

@@ -34,3 +34,5 @@ a defined max width and max height (may be less than the given log page size)
 a global page header/footer for the complete log page
 several private page header/footers for every physical page
 
+Long-Term: create a RPC-Capable report preview so that reports are processed
+on the server and only the minimum of data is sent to the client ...

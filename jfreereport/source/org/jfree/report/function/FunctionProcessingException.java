@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionProcessingException.java,v 1.7 2003/06/29 16:59:24 taqua Exp $
+ * $Id: FunctionProcessingException.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------

@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageEventListener.java,v 1.3 2003/06/27 14:25:17 taqua Exp $
+ * $Id: PageEventListener.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.event;
+
+import java.util.EventListener;
 
 /**
  * The PageEventListener gets informed of PageEvents.
@@ -53,7 +55,7 @@ package org.jfree.report.event;
  *
  * @author Thomas Morgner
  */
-public interface PageEventListener
+public interface PageEventListener extends EventListener
 {
 
   /**

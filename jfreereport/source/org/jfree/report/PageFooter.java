@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageFooter.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: PageFooter.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

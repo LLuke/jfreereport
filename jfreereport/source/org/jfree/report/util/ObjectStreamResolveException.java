@@ -4,7 +4,7 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
@@ -25,7 +25,7 @@
  * ---------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: ObjectStreamResolveException.java,v 1.5 2003/06/29 16:59:30 taqua Exp $
+ * $Id: ObjectStreamResolveException.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
