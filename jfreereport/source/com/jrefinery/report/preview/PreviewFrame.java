@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.4 2002/05/16 22:09:55 jaosch Exp $
+ * $Id: PreviewFrame.java,v 1.5 2002/05/16 23:08:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,7 +42,7 @@
  * 16-May-2002 : Line delimiters adjusted
  *               close behaviour unified
  *               reset the mnemonics of the toolBar buttons
- * 
+ * 17-May-2002 : KeyListener for zooming and navigation
  */
 
 package com.jrefinery.report.preview;
@@ -50,11 +50,10 @@ package com.jrefinery.report.preview;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
@@ -65,7 +64,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ResourceBundle;
 
 import javax.swing.Action;
@@ -93,7 +91,6 @@ import com.jrefinery.report.G2OutputTarget;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.CloseAction;
 import com.jrefinery.report.action.PageSetupAction;
@@ -113,9 +110,8 @@ import com.jrefinery.ui.ExtensionFileFilter;
  */
 public class PreviewFrame
   extends JFrame
-  implements ActionListener, PropertyChangeListener, JFreeReportConstants
+  implements ActionListener, PropertyChangeListener, JFreeReportConstants, KeyListener
 {
-
   private class DefaultSaveAsAction extends SaveAsAction implements Runnable
   {
     public DefaultSaveAsAction()
@@ -279,6 +275,8 @@ public class PreviewFrame
 
     setResources(getDefaultResources());
     setReport(report);
+
+    addKeyListener(this);
 
     ResourceBundle resources = getResources();
 
@@ -486,6 +484,15 @@ public class PreviewFrame
   }
 
   /**
+   * Method lastPage moves to the last page
+   */
+  public void lastPage()
+  {
+    reportPane.setPageNumber(reportPane.getCurrentPageCount());
+    validate();
+  }
+
+  /**
    *Increases the page number.
    *
    * CHANGED FUNCTION
@@ -497,7 +504,20 @@ public class PreviewFrame
 
     if (pn < mp)
     {
-      reportPane.setPageNumber(reportPane.getPageNumber() + 1);
+      reportPane.setPageNumber(pn + 1);
+      validate();
+    }
+  }
+
+  /**
+   * Method firstPage changes to the first page if not already on the first page 
+   * 
+   */
+  public void firstPage()
+  {
+    if (reportPane.getPageNumber() != 1)
+    {
+      reportPane.setPageNumber(1);
       validate();
     }
   }
@@ -517,7 +537,10 @@ public class PreviewFrame
     }
   }
 
-  /** Increases the zoom factor for the report pane (unless it is already at maximum zoom). */
+  /** 
+   * Increases the zoom factor for the report pane (unless it is already at maximum zoom). 
+   * 
+   */
   public void increaseZoom()
   {
     if (zoomIndex < zoomFactors.length - 1)
@@ -716,12 +739,13 @@ public class PreviewFrame
     DefaultComboBoxModel model = new DefaultComboBoxModel();
     for (int i = 0; i < zoomFactors.length; i++)
     {
-      model.addElement(new Double(zoomFactors[i]));
+      model.addElement(String.valueOf((int) (zoomFactors[i] * 100)) + " %");
     }
     zoomSelect = new JComboBox(model);
     zoomSelect.setActionCommand("ZoomSelect");
     zoomSelect.setSelectedIndex(DEFAULT_ZOOM_INDEX);
     zoomSelect.addActionListener(this);
+    zoomSelect.setAlignmentX(zoomSelect.RIGHT_ALIGNMENT);
 
     JPanel zoomPane = new JPanel();
     zoomPane.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -809,9 +833,55 @@ public class PreviewFrame
    */
   protected void processWindowEvent(WindowEvent windowEvent)
   {
-    if (windowEvent.getID() == WindowEvent.WINDOW_CLOSING) {
-      closeAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, closeAction.NAME));
+    if (windowEvent.getID() == WindowEvent.WINDOW_CLOSING)
+    {
+      closeAction.actionPerformed(
+        new ActionEvent(this, ActionEvent.ACTION_PERFORMED, closeAction.NAME));
     }
     super.processWindowEvent(windowEvent);
+  }
+  /**
+   * @see KeyListener#keyPressed(KeyEvent)
+   */
+  public void keyPressed(KeyEvent ke)
+  {
+    if (ke.getKeyCode() == ke.VK_PAGE_DOWN)
+    {
+      increasePageNumber();
+    }
+    else if (ke.getKeyCode() == ke.VK_PAGE_UP)
+    {
+      decreasePageNumber();
+    }
+    else if (ke.getKeyCode() == ke.VK_HOME)
+    {
+      firstPage();
+    }
+    else if (ke.getKeyCode() == ke.VK_END)
+    {
+      lastPage();
+    }
+    else if (ke.getKeyChar() == '+')
+    {
+      increaseZoom();
+    }
+    else if (ke.getKeyChar() == '-')
+    {
+      decreaseZoom();
+    }
+  }
+
+  /**
+   * @see KeyListener#keyReleased(KeyEvent)
+   */
+  public void keyReleased(KeyEvent arg0)
+  {
+  }
+
+  /**
+   * @see KeyListener#keyTyped(KeyEvent)
+   */
+  public void keyTyped(KeyEvent arg0)
+  {
   }
 }
