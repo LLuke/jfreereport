@@ -25,12 +25,14 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: JFreeReportInfo.java,v 1.7 2002/11/07 21:45:20 taqua Exp $
  *
  * Changes:
  * --------
  * 10-May-2002 : Extracted from JFreeReport to declare this class public.
  * 16-May-2002 : added my name to the developer list ;-) (JS)
+ * 12-Nov-2002 : Minor changes required to use JCommon 0.7.1 (DG)
+ *
  */
 package com.jrefinery.report;
 
@@ -63,33 +65,33 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
     String baseResourceClass = "com.jrefinery.report.resources.JFreeReportResources";
     ResourceBundle resources = ResourceBundle.getBundle (baseResourceClass);
 
-    this.name = resources.getString ("project.name");
-    this.version = resources.getString ("project.version");
-    this.info = resources.getString ("project.info");
-    this.copyright = resources.getString ("project.copyright");
-    this.licenceText = Licences.LGPL;
+    setName(resources.getString ("project.name"));
+    setVersion(resources.getString ("project.version"));
+    setInfo(resources.getString ("project.info"));
+    setCopyright(resources.getString ("project.copyright"));
+    setLicenceText(Licences.LGPL);
 
-    this.contributors = Arrays.asList (
+    setContributors(Arrays.asList (
             new Contributor[]
             {
               new Contributor ("David Gilbert", "david.gilbert@object-refinery.com"),
               new Contributor ("Thomas Morgner", "-"),
               new Contributor ("Jörg Schömer", "joerg.schoemer@nikocity.de")
             }
-    );
+    ));
 
-    this.libraries = Arrays.asList (
+    setLibraries(Arrays.asList (
             new Library[]
             {
               new Library (JCommon.INFO),
               new Library ("JUnit", "3.7.1", "IBM Public Licence", "http://www.junit.org/"),
-              new Library ("iText", "0.94", "LGPL", "http://www.lowagie.com/iText/index.html"),
+              new Library ("iText", "0.95", "LGPL", "http://www.lowagie.com/iText/index.html"),
               new Library ("GNU JAXP", "1.0beta1", "GPL with library exception",
                       "http://www.gnu.org/software/classpathx/jaxp/"),
               new Library ("Pixie", "0.7.0", "LGPL",
                       "http://sourceforge.net/projects/jfreereport/")
             }
-    );
+    ));
   }
 }
 
