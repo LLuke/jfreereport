@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.1 2002/05/07 14:15:29 mungady Exp $
+ * $Id: AboutAction.java,v 1.2 2002/05/14 21:35:03 taqua Exp $
  *
  * Changes
  * -------
@@ -69,10 +69,10 @@ public class AboutAction extends AbstractAction implements Runnable
     Integer mnemonic = (Integer) resources.getObject ("action.about.mnemonic");
     this.putValue (Action.MNEMONIC_KEY, mnemonic);
 
-    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("About16.gif");
+    ImageIcon icon16 = (ImageIcon) resources.getObject("action.about.small-icon");
     this.putValue (Action.SMALL_ICON, icon16);
 
-    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("About24.gif");
+    ImageIcon icon24 = (ImageIcon) resources.getObject("action.about.icon");
     this.putValue ("ICON24", icon24);
 
     this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.ABOUT_COMMAND);
@@ -88,5 +88,4 @@ public class AboutAction extends AbstractAction implements Runnable
   {
     demo.displayAbout ();
   }
-
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewAction.java,v 1.1 2002/05/07 14:16:34 mungady Exp $
+ * $Id: PreviewAction.java,v 1.2 2002/05/14 21:35:03 taqua Exp $
  *
  * Changes
  * -------
@@ -56,41 +56,42 @@ public class PreviewAction extends AbstractAction implements Runnable
   /**
    * Constructs a new action.
    */
-  public PreviewAction (JFreeReportDemo demo, ResourceBundle resources)
+  public PreviewAction(JFreeReportDemo demo, ResourceBundle resources)
   {
 
     this.demo = demo;
 
-    String name = resources.getString ("action.print-preview.name");
-    this.putValue (Action.NAME, name);
+    String name = resources.getString("action.print-preview.name");
+    this.putValue(Action.NAME, name);
 
-    String description = resources.getString ("action.print-preview.description");
-    this.putValue (Action.SHORT_DESCRIPTION, description);
+    String description = resources.getString("action.print-preview.description");
+    this.putValue(Action.SHORT_DESCRIPTION, description);
 
-    Integer mnemonic = (Integer) resources.getObject ("action.print-preview.mnemonic");
-    this.putValue (Action.MNEMONIC_KEY, mnemonic);
+    Integer mnemonic =
+      (Integer) resources.getObject("action.print-preview.mnemonic");
+    this.putValue(Action.MNEMONIC_KEY, mnemonic);
 
-    KeyStroke accelerator = (KeyStroke) resources.getObject ("action.print-preview.accelerator");
-    this.putValue (Action.ACCELERATOR_KEY, accelerator);
+    KeyStroke accelerator =
+      (KeyStroke) resources.getObject("action.print-preview.accelerator");
+    this.putValue(Action.ACCELERATOR_KEY, accelerator);
 
-    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("PrintPreview16.gif");
-    this.putValue (Action.SMALL_ICON, icon16);
+    ImageIcon icon16 = (ImageIcon) resources.getObject("action.print-preview.small-icon");
+    this.putValue(Action.SMALL_ICON, icon16);
 
-    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("PrintPreview24.gif");
-    this.putValue ("ICON24", icon24);
+    ImageIcon icon24 = (ImageIcon) resources.getObject("action.print-preview.icon");
+    this.putValue("ICON24", icon24);
 
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.PRINT_PREVIEW_COMMAND);
+    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportDemo.PRINT_PREVIEW_COMMAND);
 
   }
 
-  public void actionPerformed (ActionEvent e)
+  public void actionPerformed(ActionEvent e)
   {
-    SwingUtilities.invokeLater (this);
+    SwingUtilities.invokeLater(this);
   }
 
-  public void run ()
+  public void run()
   {
-    demo.attemptPreview ();
+    demo.attemptPreview();
   }
-
 }

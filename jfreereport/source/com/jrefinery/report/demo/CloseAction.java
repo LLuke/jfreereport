@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.1 2002/05/07 14:15:29 mungady Exp $
+ * $Id: CloseAction.java,v 1.1 2002/05/14 21:35:03 taqua Exp $
  *
  * Changes
  * -------
@@ -52,32 +52,31 @@ public class CloseAction extends AbstractAction implements Runnable
   /**
    * Constructs a new action.
    */
-  public CloseAction (JFreeReportDemo demo, ResourceBundle resources)
+  public CloseAction(JFreeReportDemo demo, ResourceBundle resources)
   {
 
     this.demo = demo;
 
-    String name = resources.getString ("action.close.name");
-    this.putValue (Action.NAME, name);
+    String name = resources.getString("action.close.name");
+    this.putValue(Action.NAME, name);
 
-    String description = resources.getString ("action.close.description");
-    this.putValue (Action.SHORT_DESCRIPTION, description);
+    String description = resources.getString("action.close.description");
+    this.putValue(Action.SHORT_DESCRIPTION, description);
 
-    Integer mnemonic = (Integer) resources.getObject ("action.close.mnemonic");
-    this.putValue (Action.MNEMONIC_KEY, mnemonic);
+    Integer mnemonic = (Integer) resources.getObject("action.close.mnemonic");
+    this.putValue(Action.MNEMONIC_KEY, mnemonic);
 
-    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.EXIT_COMMAND);
+    this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportDemo.EXIT_COMMAND);
 
   }
 
-  public void actionPerformed (ActionEvent e)
+  public void actionPerformed(ActionEvent e)
   {
-    SwingUtilities.invokeLater (this);
+    SwingUtilities.invokeLater(this);
   }
 
-  public void run ()
+  public void run()
   {
-    demo.attemptExit ();
+    demo.attemptExit();
   }
-
 }
