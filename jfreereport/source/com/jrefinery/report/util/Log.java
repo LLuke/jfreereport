@@ -78,6 +78,14 @@ public final class Log
 	{
 	}
 
+  static
+  {
+    if (Boolean.getBoolean("com.jrefinery.report.NoDefaultDebug") == false)
+    {
+      SystemOutLogTarget.activate();
+    }
+  }
+
   /**
    * Adds a logtarget to this facillity. Logtargets get informed whenever a event occured.
    */

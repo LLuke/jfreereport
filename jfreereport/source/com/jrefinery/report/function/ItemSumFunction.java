@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.7 2002/06/05 23:21:47 mungady Exp $
+ * $Id: ItemSumFunction.java,v 1.8 2002/06/08 14:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -111,8 +111,8 @@ public class ItemSumFunction extends AbstractFunction
    */
   public ItemSumFunction (String name)
   {
+    this();
     setName (name);
-    this.sum = ZERO;
   }
 
   /**
