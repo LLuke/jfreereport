@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.3 2003/02/12 10:00:01 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.4 2003/02/17 16:07:17 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import com.jrefinery.report.DataRow;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.event.LayoutListener;
+import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.util.LevelList;
 import com.jrefinery.report.util.Log;
 
@@ -473,7 +474,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    *
    * @param event The event.
    */
-  public void layoutComplete(ReportEvent event)
+  public void layoutComplete(LayoutEvent event)
   {
     Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())

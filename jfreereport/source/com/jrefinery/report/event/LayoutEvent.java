@@ -28,26 +28,49 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutListener.java,v 1.1 2003/02/12 09:59:47 taqua Exp $
+ * $Id$
  *
  * Changes (from 10-May-2002)
  * --------------------------
- * 12-Feb-2003 : Initial version
+ * 25-Feb-2003 : Initial version
  */
 package com.jrefinery.report.event;
 
+import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.Band;
+
 /**
- * Adds layout notification support for functions. Functions get informed when
- * the layouting is complete. 
+ * The LayoutEvent describes the current report state and the current band, which
+ * had been laid out for printing.
  */
-public interface LayoutListener
+public class LayoutEvent extends ReportEvent
 {
+  /** the current band. */
+  private Band layoutedBand;
+
   /**
-   * Receives notification that the band layouting has completed.
-   * <P>
-   * The event carries the current report state.
+   * Creates a new LayoutEvent.
    *
-   * @param event The event.
+   * @param state the current report state.
+   * @param band the layouted band.
    */
-  public void layoutComplete (LayoutEvent event);
+  public LayoutEvent(ReportState state, Band band)
+  {
+    super(state);
+
+    if (band == null)
+      throw new NullPointerException();
+
+    this.layoutedBand = band;
+  }
+
+  /**
+   * Gets the layouted band. This band will be printed next.
+   *
+   * @return the layouted band.
+   */
+  public Band getLayoutedBand()
+  {
+    return layoutedBand;
+  }
 }

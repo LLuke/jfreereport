@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.32 2003/02/21 16:31:30 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.33 2003/02/22 18:52:30 taqua Exp $
  *
  * Changes
  * -------
@@ -714,7 +714,7 @@ public class SimplePageLayouter extends PageLayouter
                                           getLogicalPage().getOutputTarget(),
                                           width,
                                           height);
-    getCurrentEvent().getState().fireLayoutCompleteEvent();
+    getCurrentEvent().getState().fireLayoutCompleteEvent(band);
     return bounds;
   }
 

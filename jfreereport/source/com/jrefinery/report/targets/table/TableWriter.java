@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.13 2003/02/17 22:01:10 taqua Exp $
+ * $Id: TableWriter.java,v 1.14 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -226,7 +226,7 @@ public class TableWriter extends AbstractFunction
                                           getLayoutSupport(),
                                           width,
                                           height);
-    getCurrentEvent().getState().fireLayoutCompleteEvent();
+    getCurrentEvent().getState().fireLayoutCompleteEvent(band);
     return bounds;
   }
 

@@ -1,17 +1,49 @@
 /**
- * Date: Feb 12, 2003
- * Time: 10:32:57 AM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: PaintComponentFunction.java,v 1.3 2003/02/22 18:52:25 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------------
+ * ReportPropertyFunction.java
+ * ---------------------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: ReportPropertyFunction.java,v 1.16 2003/01/14 21:07:12 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 12-Feb-2003 : Initial version
+ * 25-Feb-2003 : BugFixes: Images got lost on pagebreaks ...
+ *
+ * $Id: PaintComponentFunction.java,v 1.4 2003/02/23 20:39:29 taqua Exp $
  */
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.Group;
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.event.LayoutListener;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 
 import java.awt.Component;
@@ -37,8 +69,6 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
 
   /** the created image, cached for getValue() */
   private Image image;
-  /** the last element found */
-  private Element element;
 
   /**
    * DefaultConstructor
@@ -130,86 +160,15 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
   }
 
   /**
-   * Receives notification that the report has started.
-   *
-   * @param event  the event.
-   */
-  public void reportStarted(ReportEvent event)
-  {
-    element = findElement(event.getReport().getReportHeader());
-  }
-
-  /**
-   * Receives notification that the report has finished.
-   *
-   * @param event  the event.
-   */
-  public void reportFinished(ReportEvent event)
-  {
-    element = findElement(event.getReport().getReportFooter());
-  }
-
-  /**
-   * Receives notification that a page has started.
-   *
-   * @param event  the event.
-   */
-  public void pageStarted(ReportEvent event)
-  {
-    element = findElement(event.getReport().getPageHeader());
-  }
-
-  /**
-   * Receives notification that a page has ended.
-   *
-   * @param event  the event.
-   */
-  public void pageFinished(ReportEvent event)
-  {
-    element = findElement(event.getReport().getPageFooter());
-  }
-
-  /**
-   * Receives notification that a group has started.
-   *
-   * @param event  the event.
-   */
-  public void groupStarted(ReportEvent event)
-  {
-    Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    element = findElement(g.getHeader());
-  }
-
-  /**
-   * Receives notification that a group has finished.
-   *
-   * @param event  the event.
-   */
-  public void groupFinished(ReportEvent event)
-  {
-    Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    element = findElement(g.getFooter());
-  }
-
-  /**
-   * Receives notification that a row of data is being processed.
-   *
-   * @param event  the event.
-   */
-  public void itemsAdvanced(ReportEvent event)
-  {
-    element = findElement(event.getReport().getItemBand());
-  }
-
-  /**
    * Receives notification that the band layouting has completed.
    * <P>
    * The event carries the current report state.
    *
    * @param event The event.
    */
-  public void layoutComplete(ReportEvent event)
+  public void layoutComplete(LayoutEvent event)
   {
+    // the current value in the dataRow is no AWT-Component ...
     Object o = getDataRow().get(getField());
     if ((o instanceof Component) == false)
     {
@@ -217,15 +176,23 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
       return;
     }
 
+    // this is not the band with the element in it ...
+    Element element = findElement(event.getLayoutedBand());
     if (element == null)
     {
-      image = null;
+      // don't change/delete the image if already created ...
       return;
     }
 
     float scale = getScale();
 
-    Rectangle2D bounds = BandLayoutManagerUtil.getBounds(element,null);
+    Rectangle2D bounds = BandLayoutManagerUtil.getBounds(element, null);
+    // no valid layout
+    if (bounds.getWidth() <= 0 || bounds.getHeight() <= 0)
+    {
+      return;
+    }
+
     Component comp = (Component) o;
     Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
     comp.setSize(dim);
@@ -249,7 +216,10 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public Object getValue()
   {
-    if (image == null) return null;
+    if (image == null)
+    {
+      return null;
+    }
     ImageReference ref = new ImageReference(image);
     ref.setScaleX(1f/getScale());
     ref.setScaleY(1f/getScale());

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.21 2003/02/12 10:00:01 taqua Exp $
+ * $Id: ReportState.java,v 1.22 2003/02/17 16:07:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,7 +60,9 @@ import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.Band;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
@@ -749,10 +751,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /**
    * Fires an 'layout-complete' event.
    */
-  public void fireLayoutCompleteEvent()
+  public void fireLayoutCompleteEvent(Band band)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    functions.layoutComplete(new ReportEvent(this));
+    functions.layoutComplete(new LayoutEvent(this, band));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.8 2003/02/20 21:04:59 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.9 2003/02/21 12:17:30 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package com.jrefinery.report.targets.base.bandlayout;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
