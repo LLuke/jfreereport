@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.3 2002/07/17 20:43:43 taqua Exp $
+ * $Id: First.java,v 1.4 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -262,8 +262,7 @@ public class First extends ApplicationFrame implements ActionListener
     }
     catch (Exception e)
     {
-      System.out.println (e.toString ());
-
+      ExceptionDialog.showExceptionDialog("Error on parsing", "Error while parsing " + templateURL, e);
     }
     return result;
 
@@ -291,7 +290,7 @@ public class First extends ApplicationFrame implements ActionListener
     }
     catch (IOException e)
     {
-      System.out.println (e.toString ());
+      ExceptionDialog.showExceptionDialog("Error on reading ZIP-File", "Error the reading an ZIP-Entry", e);
     }
     return result;
 

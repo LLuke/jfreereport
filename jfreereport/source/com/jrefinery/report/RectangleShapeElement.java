@@ -108,6 +108,5 @@ public class RectangleShapeElement extends ShapeElement
   {
     super.setShape (target.getCursor ().getElementBounds ());
     super.draw (target, band);
-    System.out.println ("DRAW: " + isShouldDraw() + " FILL " + isShouldFill() + " Name=" + getName());
   }
 }

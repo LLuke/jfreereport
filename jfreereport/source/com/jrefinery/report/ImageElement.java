@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.12 2002/08/08 15:28:38 taqua Exp $
+ * $Id: ImageElement.java,v 1.13 2002/08/14 21:14:04 taqua Exp $
  *
  * Changes:
  * --------
@@ -72,8 +72,6 @@ public class ImageElement extends Element
    */
   public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
-    System.out.println ("ImageReference: " + getDataSource());
-    System.out.println ("ImageReference to draw: " + getValue());
     // set the paint...
     target.setPaint (getPaint (band));
     ImageReference ref = (ImageReference) getValue ();

@@ -113,12 +113,10 @@ public abstract class AbstractExpression implements Expression
   {
     if (value == null)
     {
-      System.out.println ("Remove is null " + name);
       properties.remove (name);
     }
     else
     {
-      System.out.println ("Add is valid " + name + " - " + value);
       properties.setProperty (name, value);
     }
   }

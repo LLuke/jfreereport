@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.9 2002/07/17 20:43:43 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.10 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,9 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -142,6 +144,7 @@ public class G2OutputTarget extends AbstractOutputTarget
       throw new NullPointerException ("Graphics must not be null");
 
     this.g2 = g2;
+    g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
   }
 
   /**
@@ -296,29 +299,44 @@ public class G2OutputTarget extends AbstractOutputTarget
     Rectangle2D bounds = getCursor ().getDrawBounds ();
 
     float x = (float) bounds.getX ();
+
+    FontRenderContext frc = g2.getFontRenderContext ();
+    Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
+    float textLength = (float) textBounds.getWidth();
+    float elementLength = (float)(bounds.getX () + bounds.getWidth ());
+
+    GlyphVector gv = g2.getFont().createGlyphVector(frc, text);
+
+    Log.debug ("GV:FRC Alias: " + frc.isAntiAliased());
+    Log.debug ("GV:FRC fractional : " + frc.usesFractionalMetrics());
+    Log.debug ("GV:TextLength : " + gv.getLogicalBounds().getWidth());
+    Log.debug ("GV:ElementLength : " + gv.getVisualBounds().getWidth());
+
     FontMetrics fm = g2.getFontMetrics ();
     float baseline = (float) (bounds.getY () + bounds.getHeight () - fm.getDescent ());
+
+    Log.debug ("TextLength : " + textLength);
+    Log.debug ("ElementLength : " + elementLength);
+
     if (alignment == Element.LEFT)
     {
       // no adjustment required
     }
     else if (alignment == Element.CENTER)
     {
-      FontRenderContext frc = g2.getFontRenderContext ();
-      Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
-      x = (float) ((bounds.getX () + (bounds.getWidth () / 2)) - (textBounds.getWidth () / 2));
+      x = (float) ((elementLength / 2) - (textLength / 2));
     }
     else if (alignment == Element.RIGHT)
     {
-      FontRenderContext frc = g2.getFontRenderContext ();
-      Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
-      x = (float) ((bounds.getX () + bounds.getWidth ()) - textBounds.getWidth ());
+      x = (float) (elementLength - textLength);
     }
     int display = getFont ().canDisplayUpTo (text);
     if (display > 0 && display < text.length ())
     {
       Log.warn ("Unable to display the string completely. Can display up to " + display + " chars.");
     }
+    Log.debug ("X = " + x);
+    g2.draw(new Rectangle2D.Float(x, (float) bounds.getY(), textLength, (float) (bounds.getHeight())));
     g2.drawString (text, x, baseline);
   }
 

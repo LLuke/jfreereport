@@ -29,7 +29,6 @@ public class ImageRenderFunction extends AbstractFunction
    */
   public void pageStarted(ReportEvent event)
   {
-    System.out.println ("Page Started:" + this);
     BufferedImage image = new BufferedImage(150, 50, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = image.createGraphics();
     JButton bt = new JButton("A Button");
@@ -48,13 +47,10 @@ public class ImageRenderFunction extends AbstractFunction
     g2.drawString("You are viewing a graphics of JFreeReport On index " + event.getState().getCurrentDisplayItem(), 10, 10);
 
     functionValue = new ImageReference(image);
-    System.out.println ("FunctionValue: " + functionValue);
   }
 
   public Object getValue()
   {
-    System.out.println ("GetValue:" + this);
-    System.out.println ("GetValue: " + functionValue);
     return functionValue;
   }
 }

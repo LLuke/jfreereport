@@ -32,8 +32,6 @@ public class PropertiesIterator implements Iterator
 
   public boolean hasNext()
   {
-    System.out.println ("Has no next: " +getNextKey());
-    System.out.println ("Props: " +properties);
     return properties.containsKey(getNextKey());
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.16 2002/08/08 12:46:56 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.17 2002/08/14 21:14:09 taqua Exp $
  *
  * Changes
  * -------
@@ -347,12 +347,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * <code>true</code>
    */
   static
-  {
+  {/*
     String prop = System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT", "false");
     if (prop.equalsIgnoreCase ("true"))
     {
       getFontFactory ().registerDefaultFontPath ();
-    }
+    }*/
   }
 
   /**

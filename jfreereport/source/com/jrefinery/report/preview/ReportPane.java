@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.13 2002/06/08 16:28:59 taqua Exp $
+ * $Id: ReportPane.java,v 1.14 2002/08/22 19:19:28 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -617,7 +617,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
   {
     Exception oldError = this.error;
     this.error = error;
-    //System.out.println("Error: " + oldError.getMessage() + " + " + error.getMessage());
     firePropertyChange (ERROR_PROPERTY, oldError, error);
   }
 

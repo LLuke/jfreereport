@@ -30,7 +30,6 @@ public class JFreeReportResources extends ListResourceBundle
       for (int i = 0; i < contents.length; i++)
       {
         Object[] row = contents[i];
-        System.out.println (row[0] + " " + row[1]);
         lastKey = row[0];
         elements.put (row[0], row[1]);
       }
@@ -39,7 +38,7 @@ public class JFreeReportResources extends ListResourceBundle
     catch (Exception e)
     {
       e.printStackTrace ();
-      System.out.println (lastKey);
+      Log.debug ("LastKey read: " + lastKey);
     }
     System.exit (0);
   }

@@ -86,14 +86,4 @@ public class BSHExpression extends AbstractExpression
     }
     return expression;
   }
-
-  public static void main (String [] args) throws Exception
-  {
-    BSHExpression expr = new BSHExpression();
-
-    expr.setProperty("expression", "Object getValue () { return \"arrrggghhh :)\"; } ");
-    expr.initialize();
-
-    System.out.println (expr.getValue());
-  }
 }

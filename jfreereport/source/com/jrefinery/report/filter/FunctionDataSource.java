@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.8 2002/08/14 21:14:09 taqua Exp $
  *
  * Changes
  * -------
@@ -137,8 +137,6 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
     if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
     if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected for Function-Datasource " + getFunction());
     dataRow = row;
-
-    System.out.println ("FunctionDataSource connected: " + getFunction());
   }
 
   /**

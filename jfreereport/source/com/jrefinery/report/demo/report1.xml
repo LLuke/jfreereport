@@ -48,7 +48,7 @@
         </group>
     </groups>
 
-    <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
+    <items height="10" fontname="Serif" fontstyle="plain" fontsize="8">
         <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
         <line name="top" x1="0" y1="0" x2="0" y2="0" color="#DFDFDF" weight="0.1"/>
         <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#DFDFDF" weight="0.1"/>

@@ -177,7 +177,6 @@ public class DataRowBackend implements Cloneable
 
       if (getCurrentRow () < 0 || getCurrentRow () >= getTablemodel ().getRowCount ())
       {
-        System.out.println ("Is OutOfBounds => null");
         return null;
       }
       else
@@ -190,7 +189,6 @@ public class DataRowBackend implements Cloneable
       col -= getTableEndIndex();
       if (isPreviewMode ())
       {
-        System.out.println ("Is Preview Mode => null");
         return null;
       }
       return getFunctions ().getFunction (col).getValue ();
@@ -212,7 +210,6 @@ public class DataRowBackend implements Cloneable
     int idx = findColumn (name);
     if (idx == -1)
     {
-      System.out.println ("Is InvalidIndex (" + name + ") => null");
       return null;
     }
     return get (idx);

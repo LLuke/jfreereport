@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.21 2002/08/08 15:28:43 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.22 2002/08/22 19:19:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -70,6 +70,7 @@ import com.jrefinery.report.targets.G2OutputTarget;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.Action;
@@ -579,6 +580,11 @@ public class PreviewFrame
   {
     PrinterJob pj = PrinterJob.getPrinterJob ();
     PageFormat pf = pj.pageDialog (reportPane.getOutputTarget ().getPageFormat ());
+
+    Log.debug ("PageFormat: Imagable X: " + pf.getImageableX());
+    Log.debug ("PageFormat: Imagable Y: " + pf.getImageableY());
+    Log.debug ("PageFormat: Imagable W: " + pf.getImageableWidth());
+    Log.debug ("PageFormat: Imagable H: " + pf.getImageableHeight());
     reportPane.setPageFormat (pf);
     validate ();
     pack ();

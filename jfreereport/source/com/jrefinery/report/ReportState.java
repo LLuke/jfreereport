@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.25 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ReportState.java,v 1.26 2002/08/22 19:19:27 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -379,7 +379,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       // here after the pagebreak.
       if (rpc.isSpaceFor (itemBand))
       {
-        System.out.println ("RS::Item::advance: - " + getDataRowBackend ().getCurrentRow ());
         advanceItem ();
 
         int currItem = getCurrentDataItem ();
@@ -910,18 +909,15 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     if (getCurrentGroupIndex () != oldstate.getCurrentGroupIndex ())
     {
-      System.out.println ("Is proceeding: CurrentGroup!");
       return true;
     }
     if (getCurrentDataItem () > oldstate.getCurrentDataItem ())
     {
-      System.out.println ("Is proceeding: DataItem!" + getCurrentDataItem () + " >=" + oldstate.getCurrentDataItem ());
       return true;
     }
     if (getCurrentPage () != oldstate.getCurrentPage () && this.getClass() != oldstate.getClass())
             ///*|| (oldstate.getClass ().equals (getClass ()))*/)
     {
-      System.out.println ("Is proceeding: CurrentPage!");
       return true;
     }
     return false;
