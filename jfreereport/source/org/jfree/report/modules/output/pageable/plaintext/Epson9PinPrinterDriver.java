@@ -3,11 +3,15 @@ package org.jfree.report.modules.output.pageable.plaintext;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jfree.report.util.ReportConfiguration;
+
 public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
 {
   private static PrinterSpecificationManager printerSpecificationManager;
   private static final String SPECIFICATION_RESOURCE =
           "epson-9pin-printer-specifications.properties";
+  public static final String EPSON_9PIN_PRINTER_TYPE =
+          "org.jfree.report.modules.output.pageable.plaintext.epson.9PinPrinterType";
 
   public Epson9PinPrinterDriver (final OutputStream out, final int charsPerInch, final int linesPerInch,
                                  final String printerModel)
@@ -113,5 +117,12 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
     }
     return printerSpecificationManager;
   }
+
+  public static String getDefaultPrinter ()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+            (EPSON_9PIN_PRINTER_TYPE, "Generic 9-Pin printer");
+  }
+
 
 }

@@ -20,8 +20,10 @@ For the latest news and information about JFreeReport, please refer to:
 ---------------
 Detailed instructions for installing JFreeReport are provided in the
 jfreechart-install.pdf file.  You can download this file from the
-JFreeReport home page. 
-[This file is not yet available.]
+JFreeReport home page.
+
+[This file is not yet available. A new version will be written during
+the next months]
 
 3. CONFIGURATION
 ----------------
@@ -34,14 +36,14 @@ file.
 To edit the properties file, you may use the graphical configuration editor
 from the module "gui-config". The editor can be started by calling
 
-  java -jar jfreereport-0.8.4_6-gui-config.jar
+  java -jar jfreereport-gui-config-0.8.5.jar
 
 
 4. RUNNING THE DEMO
 -------------------
 The demo for JFreeReport can be started with
 
-  java -jar jfreereport-0.8.4_6-demo.jar
+  java -jar jfreereport-demo-0.8.5.jar
 
 
 5. OTHER LIBRARIES
@@ -61,11 +63,11 @@ all other JDKs you will need an additional package, for instance:
 
   GnuJAXP - http://www.gnu.org/software/classpathx/jaxp
 
-The RTF or PDF support requires the iText library:
+The RTF or PDF support requires the iText library (version 1.2 or higher):
 
   iText - http://www.lowagie.com/iText
 
-The Excel export requires the Apache POI library (version 2.0-pre3 or higher)
+The Excel export requires the Apache POI library (version 2.5.1 or higher)
 
   POI - http://jakarta.apache.org/poi
 

@@ -44,7 +44,7 @@ public class JStatusBar extends JComponent
 
   public void setStatus (final int type, final String text)
   {
-    Log.debug ("Setting status: " + type + ", " + text);
+//    Log.debug ("Setting status: " + type + ", " + text);
     if (type == TYPE_ERROR)
     {
       final Icon res = getResources().getIcon("statusbar.errorIcon");
@@ -85,4 +85,8 @@ public class JStatusBar extends JComponent
   }
 
 
+  public void clear ()
+  {
+    setStatus(TYPE_NONE, " ");
+  }
 }

@@ -3,13 +3,18 @@ package org.jfree.report.modules.output.pageable.plaintext;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jfree.report.util.ReportConfiguration;
+
 public class Epson24PinPrinterDriver extends AbstractEpsonPrinterDriver
 {
   private static final String SPECIFICATION_RESOURCE =
           "epson-24pin-printer-specifications.properties";
+  public static final String EPSON_24PIN_PRINTER_TYPE =
+          "org.jfree.report.modules.output.pageable.plaintext.epson.24PinPrinterType";
 
   private static final String N_360TH_LINE_SPACING = "Epson24pin.n360inch-linespacing";
   private static final String SELECT_LINE_SCORE = "Epson24pin.select-line-score";
+
   private static PrinterSpecificationManager printerSpecificationManager;
 
   public Epson24PinPrinterDriver (final OutputStream out,
@@ -170,5 +175,12 @@ public class Epson24PinPrinterDriver extends AbstractEpsonPrinterDriver
       printerSpecificationManager.load(SPECIFICATION_RESOURCE);
     }
     return printerSpecificationManager;
+  }
+
+
+  public static String getDefaultPrinter ()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+            (EPSON_24PIN_PRINTER_TYPE, "Generic 24-Pin printer");
   }
 }

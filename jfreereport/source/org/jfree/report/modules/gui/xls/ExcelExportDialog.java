@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.12 2005/02/23 21:05:03 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.13 2005/02/25 00:12:53 taqua Exp $
  *
  * Changes
  * --------
@@ -411,6 +411,8 @@ public class ExcelExportDialog extends AbstractExportDialog
    */
   public boolean performValidate ()
   {
+    getStatusBar().clear();
+
     final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
@@ -433,14 +435,12 @@ public class ExcelExportDialog extends AbstractExportDialog
                 getResources().getString("excelexportdialog.targetIsNotWritable"));
         return false;
       }
+      final String message = MessageFormat.format(getResources().getString
+              ("excelexportdialog.targetExistsWarning"),
+              new Object[]{filename});
       getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
-              getResources().getString("excelexportdialog.targetExistsWarning"));
+              getResources().getString(message));
     }
-    else
-    {
-      getStatusBar().setStatus(JStatusBar.TYPE_NONE, " ");
-    }
-
     return true;
   }
 

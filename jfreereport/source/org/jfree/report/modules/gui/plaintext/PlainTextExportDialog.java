@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.14 2005/02/23 21:05:01 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.15 2005/02/25 00:12:53 taqua Exp $
  *
  * Changes
  * --------
@@ -48,13 +48,10 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -64,7 +61,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -74,18 +70,14 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
-import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
-import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
-import org.jfree.report.modules.output.pageable.plaintext.AbstractEpsonPrinterDriver;
+import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
+import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.pageable.plaintext.Epson24PinPrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecification;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecificationManager;
-import org.jfree.report.modules.gui.xls.ExcelExportDialog;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.KeyedComboBoxModel;
@@ -98,12 +90,12 @@ import org.jfree.ui.action.ActionRadioButton;
  *
  * @author Thomas Morgner.
  */
-public class PlainTextExportDialog extends JDialog
+public class PlainTextExportDialog extends AbstractExportDialog
 {
   /**
    * Internal action class to confirm the dialog and to validate the input.
    */
-  private class ActionConfirm extends AbstractAction
+  private class ActionConfirm extends AbstractConfirmAction
   {
     /**
      * Default constructor.
@@ -112,26 +104,12 @@ public class PlainTextExportDialog extends JDialog
     {
       putValue(Action.NAME, getResources().getString("plain-text-exportdialog.confirm"));
     }
-
-    /**
-     * Receives notification that the action has occurred.
-     *
-     * @param e the action event.
-     */
-    public void actionPerformed (final ActionEvent e)
-    {
-      if (performValidate())
-      {
-        setConfirmed(true);
-        setVisible(false);
-      }
-    }
   }
 
   /**
    * Internal action class to confirm the dialog and to validate the input.
    */
-  private class ActionCancel extends AbstractAction
+  private class ActionCancel extends AbstractCancelAction
   {
     /**
      * Default constructor.
@@ -139,17 +117,6 @@ public class PlainTextExportDialog extends JDialog
     public ActionCancel ()
     {
       putValue(Action.NAME, getResources().getString("plain-text-exportdialog.cancel"));
-    }
-
-    /**
-     * Receives notification that the action has occurred.
-     *
-     * @param e the action event.
-     */
-    public void actionPerformed (final ActionEvent e)
-    {
-      setConfirmed(false);
-      setVisible(false);
     }
   }
 
@@ -175,7 +142,7 @@ public class PlainTextExportDialog extends JDialog
      */
     protected String getFileDescription ()
     {
-      return "Text Files";
+      return getResources().getString("plain-text-exportdialog.fileDescription");
     }
 
     /**
@@ -247,7 +214,14 @@ public class PlainTextExportDialog extends JDialog
      */
     public void actionPerformed (final ActionEvent e)
     {
-      updateEpsonEncoding();
+      if (rbEpson9PrinterCommandSet.isSelected())
+      {
+        updateEpson9Encoding();
+      }
+      else if (rbEpson24PrinterCommandSet.isSelected())
+      {
+        updateEpson24Encoding();
+      }
     }
   }
 
@@ -259,17 +233,23 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Epson printer output.
    */
-  public static final int TYPE_EPSON_OUTPUT = 1;
+  public static final int TYPE_EPSON9_OUTPUT = 1;
 
   /**
    * IBM printer output.
    */
   public static final int TYPE_IBM_OUTPUT = 2;
 
+  /**
+   * Epson printer output.
+   */
+  public static final int TYPE_EPSON24_OUTPUT = 3;
+
   private static final String[] PRINTER_NAMES = new String[]{
     "plain-text-exportdialog.printer.plain",
-    "plain-text-exportdialog.printer.epson",
-    "plain-text-exportdialog.printer.ibm"
+    "plain-text-exportdialog.printer.epson9",
+    "plain-text-exportdialog.printer.ibm",
+    "plain-text-exportdialog.printer.epson24",
   };
 
   /**
@@ -308,16 +288,6 @@ public class PlainTextExportDialog extends JDialog
   public static final Integer CPI_20 = new Integer(20);
 
   /**
-   * Confirmed flag.
-   */
-  private boolean confirmed;
-
-  /**
-   * Localised resources.
-   */
-  private ResourceBundle resources;
-
-  /**
    * A combo-box for selecting the encoding.
    */
   private EncodingSelector encodingSelector;
@@ -328,9 +298,14 @@ public class PlainTextExportDialog extends JDialog
   private JRadioButton rbPlainPrinterCommandSet;
 
   /**
-   * A radio button for selecting Epson printer commands.
+   * A radio button for selecting Epson 9-pin printer commands.
    */
-  private JRadioButton rbEpsonPrinterCommandSet;
+  private JRadioButton rbEpson9PrinterCommandSet;
+
+  /**
+   * A radio button for selecting Epson 24-pin printer commands.
+   */
+  private JRadioButton rbEpson24PrinterCommandSet;
 
   /**
    * A radio button for selecting IBM printer commands.
@@ -352,32 +327,11 @@ public class PlainTextExportDialog extends JDialog
    */
   private JComboBox cbCharsPerInch;
 
-  private JComboBox cbEpsonPrinterType;
+  private JComboBox cbEpson9PrinterType;
+  private JComboBox cbEpson24PrinterType;
 
-  private KeyedComboBoxModel epsonPrinters;
-
-  private class PrinterSpecificationStorage
-  {
-    private boolean ninePinPrinter;
-    private PrinterSpecification specification;
-
-    public PrinterSpecificationStorage (final PrinterSpecification specification,
-                                        final boolean ninePinPrinter)
-    {
-      this.specification = specification;
-      this.ninePinPrinter = ninePinPrinter;
-    }
-
-    public boolean isNinePinPrinter ()
-    {
-      return ninePinPrinter;
-    }
-
-    public PrinterSpecification getSpecification ()
-    {
-      return specification;
-    }
-  }
+  private KeyedComboBoxModel epson9Printers;
+  private KeyedComboBoxModel epson24Printers;
 
   /**
    * Creates a non-modal dialog without a title and without a specified Frame owner.  A
@@ -415,13 +369,18 @@ public class PlainTextExportDialog extends JDialog
    */
   private void init ()
   {
-    setModal(true);
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    setCancelAction(new ActionCancel());
+    setConfirmAction(new ActionConfirm());
     setTitle(getResources().getString("plain-text-exportdialog.dialogtitle"));
 
-    epsonPrinters = loadEpsonPrinters();
-    cbEpsonPrinterType = new JComboBox(epsonPrinters);
-    cbEpsonPrinterType.addActionListener(new SelectEpsonModelAction());
+    epson9Printers = loadEpson9Printers();
+    epson24Printers = loadEpson24Printers();
+
+    cbEpson9PrinterType = new JComboBox(epson9Printers);
+    cbEpson9PrinterType.addActionListener(new SelectEpsonModelAction());
+
+    cbEpson24PrinterType = new JComboBox(epson24Printers);
+    cbEpson24PrinterType.addActionListener(new SelectEpsonModelAction());
 
     final Integer[] lpiModel = {
       LPI_6,
@@ -440,7 +399,8 @@ public class PlainTextExportDialog extends JDialog
     cbCharsPerInch = new JComboBox(new DefaultComboBoxModel(cpiModel));
 
     rbPlainPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_PLAIN_OUTPUT));
-    rbEpsonPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_EPSON_OUTPUT));
+    rbEpson9PrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_EPSON9_OUTPUT));
+    rbEpson24PrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_EPSON24_OUTPUT));
     rbIBMPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_IBM_OUTPUT));
 
     txFilename = new JTextField();
@@ -448,28 +408,33 @@ public class PlainTextExportDialog extends JDialog
 
     final ButtonGroup bg = new ButtonGroup();
     bg.add(rbPlainPrinterCommandSet);
-    bg.add(rbEpsonPrinterCommandSet);
     bg.add(rbIBMPrinterCommandSet);
+    bg.add(rbEpson9PrinterCommandSet);
+    bg.add(rbEpson24PrinterCommandSet);
 
     final JPanel rootPane = new JPanel();
     rootPane.setLayout(new BorderLayout());
-
     rootPane.add(createButtonPanel(), BorderLayout.SOUTH);
     rootPane.add(createContentPane(), BorderLayout.CENTER);
-    setContentPane(rootPane);
+
+
+    final JPanel contentWithStatus = new JPanel();
+    contentWithStatus.setLayout(new BorderLayout());
+    contentWithStatus.add(rootPane, BorderLayout.CENTER);
+    contentWithStatus.add(getStatusBar(), BorderLayout.SOUTH);
+
+    setContentPane(contentWithStatus);
+
+    getFormValidator().registerTextField(txFilename);
+    getFormValidator().registerButton(rbEpson24PrinterCommandSet);
+    getFormValidator().registerButton(rbEpson9PrinterCommandSet);
+    getFormValidator().registerButton(rbIBMPrinterCommandSet);
+    getFormValidator().registerButton(rbPlainPrinterCommandSet);
 
     clear();
-
-    addWindowListener(new WindowAdapter()
-    {
-      public void windowClosing (final WindowEvent e)
-      {
-        new ActionCancel().actionPerformed(null);
-      }
-    });
   }
 
-  private KeyedComboBoxModel loadEpsonPrinters ()
+  private KeyedComboBoxModel loadEpson24Printers ()
   {
     final KeyedComboBoxModel epsonPrinters = new KeyedComboBoxModel();
     final PrinterSpecificationManager spec24Manager =
@@ -480,11 +445,14 @@ public class PlainTextExportDialog extends JDialog
     for (int i = 0; i < printer24Names.length; i++)
     {
       final PrinterSpecification pspec = spec24Manager.getPrinter(printer24Names[i]);
-      final PrinterSpecificationStorage storage =
-              new PrinterSpecificationStorage(pspec, false);
-      epsonPrinters.add(storage, pspec.getDisplayName() + " (24 Pin)");
+      epsonPrinters.add(pspec, pspec.getDisplayName());
     }
+    return epsonPrinters;
+  }
 
+  private KeyedComboBoxModel loadEpson9Printers ()
+  {
+    final KeyedComboBoxModel epsonPrinters = new KeyedComboBoxModel();
     final PrinterSpecificationManager spec9Manager =
             Epson9PinPrinterDriver.loadSpecificationManager();
     final String[] printer9Names =
@@ -493,9 +461,7 @@ public class PlainTextExportDialog extends JDialog
     for (int i = 0; i < printer9Names.length; i++)
     {
       final PrinterSpecification pspec = spec9Manager.getPrinter(printer9Names[i]);
-      final PrinterSpecificationStorage storage =
-              new PrinterSpecificationStorage(pspec, false);
-      epsonPrinters.add(storage, pspec.getDisplayName() + " (9 Pin)");
+      epsonPrinters.add(pspec, pspec.getDisplayName());
     }
     return epsonPrinters;
   }
@@ -549,9 +515,15 @@ public class PlainTextExportDialog extends JDialog
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.ipadx = 120;
-    gbc.gridwidth = 3;
+    gbc.gridwidth = 2;
     gbc.insets = new Insets(3, 1, 1, 1);
     contentPane.add(txFilename, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.gridx = 3;
+    gbc.gridy = 0;
+    contentPane.add(btnSelect, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -578,7 +550,7 @@ public class PlainTextExportDialog extends JDialog
     gbc.gridy = 3;
     gbc.gridwidth = 2;
     gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(rbEpsonPrinterCommandSet, gbc);
+    contentPane.add(rbEpson9PrinterCommandSet, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -587,13 +559,31 @@ public class PlainTextExportDialog extends JDialog
     gbc.gridwidth = 1;
     gbc.insets = new Insets(1, 1, 1, 1);
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    contentPane.add(cbEpsonPrinterType, gbc);
+    contentPane.add(cbEpson9PrinterType, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0;
     gbc.gridx = 1;
     gbc.gridy = 4;
+    gbc.gridwidth = 2;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    contentPane.add(rbEpson24PrinterCommandSet, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 3;
+    gbc.gridy = 4;
+    gbc.gridwidth = 1;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    contentPane.add(cbEpson24PrinterType, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 0;
+    gbc.gridx = 1;
+    gbc.gridy = 5;
     gbc.gridwidth = 3;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(encodingSelector, gbc);
@@ -602,7 +592,7 @@ public class PlainTextExportDialog extends JDialog
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 0;
     gbc.gridx = 0;
-    gbc.gridy = 5;
+    gbc.gridy = 6;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(lblFontSettings, gbc);
 
@@ -610,15 +600,23 @@ public class PlainTextExportDialog extends JDialog
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0;
     gbc.gridx = 2;
-    gbc.gridy = 5;
+    gbc.gridy = 6;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(lblCharsPerInch, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0;
-    gbc.gridx = 2;
+    gbc.gridx = 1;
     gbc.gridy = 6;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    contentPane.add(cbCharsPerInch, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 0;
+    gbc.gridx = 2;
+    gbc.gridy = 7;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(lblLinesPerInch, gbc);
 
@@ -626,23 +624,9 @@ public class PlainTextExportDialog extends JDialog
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0;
     gbc.gridx = 1;
-    gbc.gridy = 5;
-    gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(cbCharsPerInch, gbc);
-
-    gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 0;
-    gbc.gridx = 1;
-    gbc.gridy = 6;
+    gbc.gridy = 7;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(cbLinesPerInch, gbc);
-
-    gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.NORTHWEST;
-    gbc.gridx = 4;
-    gbc.gridy = 0;
-    contentPane.add(btnSelect, gbc);
 
     return contentPane;
   }
@@ -655,14 +639,14 @@ public class PlainTextExportDialog extends JDialog
   private JPanel createButtonPanel ()
   {
     // button panel
-    final JButton btnCancel = new ActionButton(new ActionCancel());
-    final JButton btnConfirm = new ActionButton(new ActionConfirm());
+    final JButton btnCancel = new ActionButton(getCancelAction());
+    final JButton btnConfirm = new ActionButton(getConfirmAction());
     final JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout());
+    buttonPanel.setLayout(new GridLayout(1,2,5,5));
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(new ActionConfirm(),
+    buttonPanel.registerKeyboardAction(getConfirmAction(),
             KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
             JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
@@ -672,18 +656,33 @@ public class PlainTextExportDialog extends JDialog
     return buttonCarrier;
   }
 
-  private void updateEpsonEncoding ()
+  private void updateEpson9Encoding ()
   {
-    final PrinterSpecificationStorage specStorage = (PrinterSpecificationStorage)
-            epsonPrinters.getSelectedKey();
-    if (specStorage == null)
+    final PrinterSpecification spec = (PrinterSpecification)
+            epson9Printers.getSelectedKey();
+    if (spec == null)
     {
       encodingSelector.setEncodings
               (PrinterSpecificationManager.getGenericPrinter());
     }
     else
     {
-      encodingSelector.setEncodings(specStorage.getSpecification());
+      encodingSelector.setEncodings(spec);
+    }
+  }
+
+  private void updateEpson24Encoding ()
+  {
+    final PrinterSpecification spec = (PrinterSpecification)
+            epson9Printers.getSelectedKey();
+    if (spec == null)
+    {
+      encodingSelector.setEncodings
+              (PrinterSpecificationManager.getGenericPrinter());
+    }
+    else
+    {
+      encodingSelector.setEncodings(spec);
     }
   }
 
@@ -695,22 +694,32 @@ public class PlainTextExportDialog extends JDialog
   public void setSelectedPrinter (final int type)
   {
     final String oldEncoding = getEncoding();
-    if (type == TYPE_EPSON_OUTPUT)
+    if (type == TYPE_EPSON9_OUTPUT)
     {
-      rbEpsonPrinterCommandSet.setSelected(true);
-      cbEpsonPrinterType.setEnabled(true);
-      updateEpsonEncoding();
+      rbEpson9PrinterCommandSet.setSelected(true);
+      cbEpson9PrinterType.setEnabled(true);
+      cbEpson24PrinterType.setEnabled(false);
+      updateEpson9Encoding();
+    }
+    else if (type == TYPE_EPSON24_OUTPUT)
+    {
+      rbEpson24PrinterCommandSet.setSelected(true);
+      cbEpson24PrinterType.setEnabled(true);
+      cbEpson9PrinterType.setEnabled(false);
+      updateEpson24Encoding();
     }
     else if (type == TYPE_IBM_OUTPUT)
     {
       rbIBMPrinterCommandSet.setSelected(true);
-      cbEpsonPrinterType.setEnabled(false);
+      cbEpson9PrinterType.setEnabled(false);
+      cbEpson24PrinterType.setEnabled(false);
       encodingSelector.setEncodings(new IBMCompatiblePrinterDriver.GenericIBMPrinterSpecification());
     }
     else if (type == TYPE_PLAIN_OUTPUT)
     {
       rbPlainPrinterCommandSet.setSelected(true);
-      cbEpsonPrinterType.setEnabled(false);
+      cbEpson9PrinterType.setEnabled(false);
+      cbEpson24PrinterType.setEnabled(false);
       encodingSelector.setEncodings(new EncodingSelector.GenericPrinterSpecification());
     }
     else
@@ -734,9 +743,13 @@ public class PlainTextExportDialog extends JDialog
     {
       return TYPE_PLAIN_OUTPUT;
     }
-    if (rbEpsonPrinterCommandSet.isSelected())
+    if (rbEpson9PrinterCommandSet.isSelected())
     {
-      return TYPE_EPSON_OUTPUT;
+      return TYPE_EPSON9_OUTPUT;
+    }
+    if (rbEpson24PrinterCommandSet.isSelected())
+    {
+      return TYPE_EPSON24_OUTPUT;
     }
     return TYPE_IBM_OUTPUT;
   }
@@ -762,39 +775,19 @@ public class PlainTextExportDialog extends JDialog
   }
 
   /**
-   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid settings
-   * and the user confirmed any resource conflicts.
-   *
-   * @return true, if the dialog has been confirmed and the excel file should be saved,
-   *         false otherwise.
-   */
-  public boolean isConfirmed ()
-  {
-    return confirmed;
-  }
-
-  /**
-   * Defines whether this dialog has been finished using the 'OK' or the 'Cancel' option.
-   *
-   * @param confirmed set to true, if OK was pressed, false otherwise
-   */
-  protected void setConfirmed (final boolean confirmed)
-  {
-    this.confirmed = confirmed;
-  }
-
-  /**
    * clears all selections, input fields and set the selected encryption level to none.
    */
   public void clear ()
   {
     txFilename.setText("");
     setSelectedPrinter(TYPE_PLAIN_OUTPUT);
-    cbEpsonPrinterType.setEnabled(false);
-    cbEpsonPrinterType.setSelectedItem(AbstractEpsonPrinterDriver.getDefaultPrinter());
+    cbEpson9PrinterType.setEnabled(false);
+    cbEpson9PrinterType.setSelectedItem(Epson9PinPrinterDriver.getDefaultPrinter());
+    cbEpson24PrinterType.setEnabled(false);
+    cbEpson24PrinterType.setSelectedItem(Epson24PinPrinterDriver.getDefaultPrinter());
     cbCharsPerInch.setSelectedItem(CPI_10);
     cbLinesPerInch.setSelectedItem(LPI_6);
-    setEncoding(System.getProperty("file.encoding", "Cp1251"));
+    setEncoding(ReportConfiguration.getPlatformDefaultEncoding());
   }
 
   /**
@@ -807,9 +800,13 @@ public class PlainTextExportDialog extends JDialog
     final Properties p = new Properties();
     p.setProperty("filename", getFilename());
     p.setProperty("encoding", getEncoding());
-    if (getSelectedPrinterModel() != null)
+    if (getSelected9PinPrinterModel() != null)
     {
-      p.setProperty("printer-model", getSelectedPrinterModel());
+      p.setProperty("epson-9pin-printer-model", getSelected9PinPrinterModel());
+    }
+    if (getSelected24PinPrinterModel() != null)
+    {
+      p.setProperty("epson-24pin-printer-model", getSelected24PinPrinterModel());
     }
 
     p.setProperty("chars-per-inch", String.valueOf(getCharsPerInch()));
@@ -832,7 +829,10 @@ public class PlainTextExportDialog extends JDialog
 
     setEncoding(p.getProperty("encoding", getEncoding()));
     setFilename(p.getProperty("filename", getFilename()));
-    setSelectedPrinterModel(p.getProperty("printer-model", getSelectedPrinterModel()));
+    setSelected9PinPrinterModel
+            (p.getProperty("epson-9pin-printer-model", getSelected9PinPrinterModel()));
+    setSelected24PinPrinterModel
+            (p.getProperty("epson-24pin-printer-model", getSelected24PinPrinterModel()));
   }
 
   /**
@@ -939,8 +939,10 @@ public class PlainTextExportDialog extends JDialog
     setEncoding(config.getConfigProperty
             (PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
                     PlainTextOutputTarget.TEXT_OUTPUT_ENCODING_DEFAULT));
-    config.getConfigProperty
-            (AbstractEpsonPrinterDriver.EPSON_PRINTER_TYPE, getSelectedPrinterModel());
+    setSelected9PinPrinterModel(config.getConfigProperty
+            (Epson9PinPrinterDriver.EPSON_9PIN_PRINTER_TYPE, getSelected9PinPrinterModel()));
+    setSelected24PinPrinterModel(config.getConfigProperty
+            (Epson24PinPrinterDriver.EPSON_24PIN_PRINTER_TYPE, getSelected24PinPrinterModel()));
 
     try
     {
@@ -978,67 +980,19 @@ public class PlainTextExportDialog extends JDialog
     config.setConfigProperty(PlainTextOutputTarget.CONFIGURATION_PREFIX +
             PlainTextOutputTarget.LINES_PER_INCH, String.valueOf(getLinesPerInch()));
     config.setConfigProperty
-            (AbstractEpsonPrinterDriver.EPSON_PRINTER_TYPE, getSelectedPrinterModel());
+          (Epson9PinPrinterDriver.EPSON_9PIN_PRINTER_TYPE, getSelected9PinPrinterModel());
+    config.setConfigProperty
+          (Epson24PinPrinterDriver.EPSON_24PIN_PRINTER_TYPE, getSelected24PinPrinterModel());
   }
 
-  /**
-   * Opens the dialog to query all necessary input from the user. This will not start the
-   * processing, as this is done elsewhere.
-   *
-   * @param report the report that should be processed.
-   * @return true, if the processing should continue, false otherwise.
-   */
-  public boolean performQueryForExport (final JFreeReport report)
+  protected String getConfigurationSuffix ()
   {
-    initFromConfiguration(report.getReportConfiguration());
-    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
-    try
-    {
-      setDialogContents(storage.loadProperties
-              (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
-                      new Properties()));
-    }
-    catch (Exception cse)
-    {
-      Log.debug("Unable to load the defaults in PlainText export dialog: " + cse.getLocalizedMessage());
-    }
-
-    setModal(true);
-    setVisible(true);
-    if (isConfirmed() == false)
-    {
-      Log.debug("Is not confirmed...");
-      return false;
-    }
-    storeToConfiguration(report.getReportConfiguration());
-    try
-    {
-      Log.debug("About to store:  " + storage);
-      storage.storeProperties
-              (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
-                      getDialogContents());
-    }
-    catch (ConfigStoreException cse)
-    {
-      Log.debug("Unable to store the defaults in PlainText export dialog.");
-    }
-
-    return true;
+    return "_plaintextexport";
   }
 
-  /**
-   * Retrieves the resources for this dialog. If the resources are not initialized, they
-   * get loaded on the first call to this method.
-   *
-   * @return this frames ResourceBundle.
-   */
-  protected ResourceBundle getResources ()
+  protected String getResourceBaseName ()
   {
-    if (resources == null)
-    {
-      resources = ResourceBundle.getBundle(PlainTextExportPlugin.BASE_RESOURCE_CLASS);
-    }
-    return resources;
+    return PlainTextExportPlugin.BASE_RESOURCE_CLASS;
   }
 
   /**
@@ -1049,13 +1003,13 @@ public class PlainTextExportDialog extends JDialog
    */
   public boolean performValidate ()
   {
+    getStatusBar().clear();
+
     final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
-      JOptionPane.showMessageDialog(this,
-              getResources().getString("plain-text-exportdialog.targetIsEmpty"),
-              getResources().getString("plain-text-exportdialog.errorTitle"),
-              JOptionPane.ERROR_MESSAGE);
+      getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+              getResources().getString("plain-text-exportdialog.targetIsEmpty"));
       return false;
     }
     final File f = new File(filename);
@@ -1063,33 +1017,40 @@ public class PlainTextExportDialog extends JDialog
     {
       if (f.isFile() == false)
       {
-        JOptionPane.showMessageDialog(this,
-                getResources().getString("plain-text-exportdialog.targetIsNoFile"),
-                getResources().getString("plain-text-exportdialog.errorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("plain-text-exportdialog.targetIsNoFile"));
         return false;
       }
       if (f.canWrite() == false)
       {
-        JOptionPane.showMessageDialog(this,
-                getResources().getString("plain-text-exportdialog.targetIsNotWritable"),
-                getResources().getString("plain-text-exportdialog.errorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("plain-text-exportdialog.targetIsNotWritable"));
         return false;
       }
-      final String key1 = "plain-text-exportdialog.targetOverwriteConfirmation";
-      final String key2 = "plain-text-exportdialog.targetOverwriteTitle";
-      if (JOptionPane.showConfirmDialog(this,
-              MessageFormat.format(getResources().getString(key1),
-                      new Object[]{getFilename()}),
-              getResources().getString(key2),
-              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-              == JOptionPane.NO_OPTION)
-      {
-        return false;
-      }
+
+      final String message = MessageFormat.format(getResources().getString
+              ("plain-text-exportdialog.targetOverwriteWarning"),
+              new Object[]{filename});
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING, message);
+
     }
 
+    return true;
+  }
+
+  protected boolean performConfirm ()
+  {
+    final String key1 = "plain-text-exportdialog.targetOverwriteConfirmation";
+    final String key2 = "plain-text-exportdialog.targetOverwriteTitle";
+    if (JOptionPane.showConfirmDialog(this,
+            MessageFormat.format(getResources().getString(key1),
+                    new Object[]{getFilename()}),
+            getResources().getString(key2),
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+            == JOptionPane.NO_OPTION)
+    {
+      return false;
+    }
     return true;
   }
 
@@ -1098,27 +1059,47 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return
    */
-  public String getSelectedPrinterModel ()
+  public String getSelected9PinPrinterModel ()
   {
-    return (String) cbEpsonPrinterType.getSelectedItem();
+    return (String) cbEpson9PrinterType.getSelectedItem();
   }
 
-  public void setSelectedPrinterModel (final String selectedPrinterModel)
+  public String getSelected24PinPrinterModel ()
   {
-    final int size = epsonPrinters.getSize();
+    return (String) cbEpson24PrinterType.getSelectedItem();
+  }
+
+  public void setSelected9PinPrinterModel (final String selectedPrinterModel)
+  {
+    final int size = epson9Printers.getSize();
     for (int i = 0; i < size; i++)
     {
-      final PrinterSpecificationStorage stor =
-              (PrinterSpecificationStorage) epsonPrinters.getKeyAt(i);
-      if (stor.getSpecification().getClass().equals(selectedPrinterModel))
+      final PrinterSpecification spec =
+              (PrinterSpecification) epson9Printers.getKeyAt(i);
+      if (spec.getDisplayName().equals(selectedPrinterModel))
       {
-        epsonPrinters.setSelectedKey(stor);
+        epson9Printers.setSelectedKey(spec);
         return;
       }
     }
-    epsonPrinters.setSelectedKey(null);
+    epson9Printers.setSelectedKey(null);
   }
 
+  public void setSelected24PinPrinterModel (final String selectedPrinterModel)
+  {
+    final int size = epson24Printers.getSize();
+    for (int i = 0; i < size; i++)
+    {
+      final PrinterSpecification spec =
+              (PrinterSpecification) epson24Printers.getKeyAt(i);
+      if (spec.getDisplayName().equals(selectedPrinterModel))
+      {
+        epson24Printers.setSelectedKey(spec);
+        return;
+      }
+    }
+    epson24Printers.setSelectedKey(null);
+  }
 
   public static void main (final String[] args)
   {

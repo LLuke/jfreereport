@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.16 2005/01/25 00:11:44 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.17 2005/02/23 21:05:32 taqua Exp $
  *
  * Changes
  * -------
@@ -279,16 +279,16 @@ public final class BaseFontFactory extends DefaultFontMapper
       encoding = "UTF-16";
     }
 
-    final String osname = System.getProperty("os.name");
-    final String jrepath = System.getProperty("java.home");
-    final String fs = System.getProperty("file.separator");
+    final String osname = safeSystemGetProperty("os.name", "<protected by system security>");
+    final String jrepath = safeSystemGetProperty("java.home", ".");
+    final String fs = safeSystemGetProperty("file.separator", File.separator);
 
     Log.debug("Running on operating system: " + osname);
     Log.debug("Character encoding used as default: " + encoding);
 
-    if (System.getProperty("mrj.version") != null)
+    if (safeSystemGetProperty("mrj.version", null) != null)
     {
-      final String userhome = System.getProperty("user.home");
+      final String userhome = safeSystemGetProperty("user.home", ".");
       Log.debug("Detected MacOS (Property 'mrj.version' is present.");
       registerFontPath(new File(userhome + "/Library/Fonts"), encoding, knownFonts, seenFiles);
       registerFontPath(new File("/Library/Fonts"), encoding, knownFonts, seenFiles);
@@ -323,6 +323,17 @@ public final class BaseFontFactory extends DefaultFontMapper
     initialized = true;
   }
 
+  private String safeSystemGetProperty (final String name, final String defaultValue)
+  {
+    try
+    {
+      return System.getProperty(name, defaultValue);
+    }
+    catch(SecurityException se)
+    {
+      return defaultValue;
+    }
+  }
   /**
    * Registers the default windows font path. Once a font was found in the old seenFiles
    * map and confirmed, that this font still exists, it gets copied into the
@@ -342,13 +353,13 @@ public final class BaseFontFactory extends DefaultFontMapper
     // directory exist and includes a font dir.
 
     String fontPath = null;
-    final String windirs = System.getProperty("java.library.path");
-    final String fs = System.getProperty("file.separator");
+    final String windirs = safeSystemGetProperty("java.library.path", null);
+    final String fs = safeSystemGetProperty("file.separator", File.separator);
 
     if (windirs != null)
     {
       final StringTokenizer strtok
-              = new StringTokenizer(windirs, System.getProperty("path.separator"));
+              = new StringTokenizer(windirs, safeSystemGetProperty("path.separator", File.pathSeparator));
       while (strtok.hasMoreTokens())
       {
         final String token = strtok.nextToken();

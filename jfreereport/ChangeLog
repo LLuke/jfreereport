@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 0.8.5:
+        * The naming schema for the jar files changed to fit the common
+          naming schema used in Maven and other OpenSource projects.
+
         * All output target generate 'output-complete' events whenever
           a root level band has been successfully printed.
 
@@ -59,6 +62,9 @@ A list of changes in recent versions:
           This resolves issues, where Excel's internal format definitions
           are incompatible with the Java definitions.
 
+        * The numeric and date data cells now use the original raw data
+          instead of parsing the formatted content string. This preserves
+          the full precision of the contained data.
 
         * Functions and Expressions now use the bean-interface for their
           configuration; the explicit use of setProperties (..) has been
@@ -204,6 +210,10 @@ A list of changes in recent versions:
           will start to use these new image loaders.
 
         * BarCode support has been added by Mimil.
+
+        * The ExportDialogs have been redesigned to behave a little bit better.
+          All the annoying popup windows have been replaced by a less annyoing
+          status bar.
 
 0.8.4-11: (13-Oct-2004)
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVWriter.java,v 1.4 2004/05/07 12:53:10 mungady Exp $
+ * $Id: CSVWriter.java,v 1.5 2005/02/23 21:05:27 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import java.util.Iterator;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.Group;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.FunctionProcessingException;
@@ -89,7 +90,7 @@ public class CSVWriter extends AbstractFunction
     {
       data = new ArrayList();
       this.quoter = quoter;
-      lineSeparator = System.getProperty("line.separator", "\n");
+      lineSeparator = ReportConfiguration.getGlobalConfig().getConfigProperty("line.separator", "\n");
     }
 
     /**

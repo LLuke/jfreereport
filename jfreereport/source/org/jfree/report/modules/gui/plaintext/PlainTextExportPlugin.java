@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.15 2005/01/25 00:06:35 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.16 2005/02/23 21:05:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -152,10 +152,22 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
       progressDialog = null;
     }
 
-    final PlainTextExportTask task = new PlainTextExportTask
-            (exportDialog.getFilename(), progressDialog,
-                    exportDialog.getSelectedPrinter(), report,
-                    exportDialog.getSelectedPrinterModel());
+    final String selectedPrinterModel;
+    if (exportDialog.getSelectedPrinter() == PlainTextExportDialog.TYPE_EPSON9_OUTPUT)
+    {
+      selectedPrinterModel = exportDialog.getSelected9PinPrinterModel();
+    }
+    else if (exportDialog.getSelectedPrinter() == PlainTextExportDialog.TYPE_EPSON24_OUTPUT)
+    {
+      selectedPrinterModel = exportDialog.getSelected24PinPrinterModel();
+    }
+    else
+    {
+      selectedPrinterModel = null;
+    }
+
+    final PlainTextExportTask task = new PlainTextExportTask(exportDialog.getFilename(),
+            progressDialog, exportDialog.getSelectedPrinter(), report, selectedPrinterModel);
     task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
     return handleExportResult(task);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.11 2005/02/23 21:04:54 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.12 2005/02/25 00:12:51 taqua Exp $
  *
  * Changes
  * --------
@@ -593,7 +593,8 @@ public class CSVExportDialog extends AbstractExportDialog
   public void clear ()
   {
     txFilename.setText("");
-    cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty("file.encoding", "Cp1251")));
+    cbEncoding.setSelectedIndex(encodingModel.indexOf
+            (ReportConfiguration.getPlatformDefaultEncoding()));
     rbExportPrintedElements.setSelected(true);
     rbSeparatorColon.setSelected(true);
     cbxStrictLayout.setSelected(false);
@@ -699,7 +700,7 @@ public class CSVExportDialog extends AbstractExportDialog
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
-      return System.getProperty("file.encoding");
+      return ReportConfiguration.getPlatformDefaultEncoding();
     }
     else
     {
@@ -782,6 +783,8 @@ public class CSVExportDialog extends AbstractExportDialog
    */
   protected boolean performValidate ()
   {
+    getStatusBar().clear();
+
     final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
@@ -805,15 +808,13 @@ public class CSVExportDialog extends AbstractExportDialog
         return false;
       }
 
+      final String message = MessageFormat.format(getResources().getString
+              ("csvexportdialog.targetExistsWarning"),
+              new Object[]{filename});
       getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
-              getResources().getString("csvexportdialog.targetExistsWarning"));
+              getResources().getString(message));
 
     }
-    else
-    {
-      getStatusBar().setStatus(JStatusBar.TYPE_NONE, " ");
-    }
-
     return true;
   }
 

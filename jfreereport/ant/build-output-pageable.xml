@@ -257,6 +257,11 @@
 
     <copy file="source/org/jfree/report/modules/output/pageable/plaintext/configuration.properties"
       tofile="build/org/jfree/report/modules/output/pageable/plaintext/configuration.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/pageable/plaintext/epson-24pin-printer-specifications.properties"
+      tofile="build/org/jfree/report/modules/output/pageable/plaintext/epson-24pin-printer-specifications.properties"/>
+    <copy file="source/org/jfree/report/modules/output/pageable/plaintext/epson-9pin-printer-specifications.properties"
+      tofile="build/org/jfree/report/modules/output/pageable/plaintext/epson-9pin-printer-specifications.properties"/>
   </target>
 
   <!--

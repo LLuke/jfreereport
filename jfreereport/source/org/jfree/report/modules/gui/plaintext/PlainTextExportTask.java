@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.12 2005/01/25 00:06:35 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.13 2005/02/23 21:05:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,6 +55,7 @@ import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextReportUtil;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
 
@@ -102,7 +103,8 @@ public class PlainTextExportTask extends ExportTask
    */
   public PlainTextExportTask
           (final String fileName, final ReportProgressDialog dialog,
-           final int exportType, final JFreeReport report, final String printer)
+           final int exportType, final JFreeReport report,
+           final String printer)
   {
     if (fileName == null)
     {
@@ -147,7 +149,12 @@ public class PlainTextExportTask extends ExportTask
           return new IBMCompatiblePrinterDriver(out,
                   charPerInch, linesPerInch);
         }
-      case PlainTextExportDialog.TYPE_EPSON_OUTPUT:
+      case PlainTextExportDialog.TYPE_EPSON9_OUTPUT:
+        {
+          return new Epson9PinPrinterDriver(out,
+                  charPerInch, linesPerInch, printer);
+        }
+      case PlainTextExportDialog.TYPE_EPSON24_OUTPUT:
         {
           return new Epson24PinPrinterDriver(out,
                   charPerInch, linesPerInch, printer);

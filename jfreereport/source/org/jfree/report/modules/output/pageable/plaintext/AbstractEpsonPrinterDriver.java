@@ -6,7 +6,6 @@ import java.io.OutputStream;
 
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.PageFormatFactory;
-import org.jfree.report.util.ReportConfiguration;
 
 public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
 {
@@ -96,8 +95,6 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   }
 
   public static final String FONT_15_CPI = "Epson.Font-15CPI-available";
-  public static final String EPSON_PRINTER_TYPE =
-          "org.jfree.report.modules.output.pageable.plaintext.epson.PrinterType";
 
   private PrinterSpecification printerSpecification;
   private FontMapper fontMapper;
@@ -515,12 +512,6 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   }
 
   protected abstract PrinterSpecificationManager getPrinterSpecificationManager ();
-
-  public static String getDefaultPrinter ()
-  {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
-            (EPSON_PRINTER_TYPE, "Generic");
-  }
 
   private PrinterSpecification lookupPrinterSpecification (final String model)
   {

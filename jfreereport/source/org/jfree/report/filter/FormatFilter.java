@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FormatFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
+ * $Id: FormatFilter.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import java.text.Format;
  *
  * @author Thomas Morgner
  */
-public class FormatFilter implements DataFilter, Serializable
+public class FormatFilter implements DataFilter, Serializable, RawDataSource
 {
   /**
    * The format used to create the string representation of the data.
@@ -216,5 +216,9 @@ public class FormatFilter implements DataFilter, Serializable
     return f;
   }
 
+  public Object getRawValue ()
+  {
+    return datasource.getValue();
+  }
 }
 

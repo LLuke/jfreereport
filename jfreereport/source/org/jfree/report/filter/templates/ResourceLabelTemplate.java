@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceLabelTemplate.java,v 1.6 2005/01/25 21:40:14 taqua Exp $
+ * $Id: ResourceLabelTemplate.java,v 1.7 2005/02/23 21:04:46 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -172,12 +172,12 @@ public class ResourceLabelTemplate extends AbstractTemplate
   }
 
 
-  public void registerReportDefinition (ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     resourceFilter.registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition (ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     resourceFilter.unregisterReportDefinition(reportDefinition);
   }

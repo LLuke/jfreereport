@@ -31,6 +31,15 @@
   <!--     pageable-graphics, pageable-base                           -->
   <!-- ************************************************************** -->
 
+  <target name="check-module-misc-configstore-base" depends="init">
+    <available file="${compile-module-misc-configstore-base-file}" property="compile-module-misc-configstore-base-present"/>
+  </target>
+
+  <target name="rebuild-module-misc-configstore-base" unless="module-module-misc-configstore-base-present" depends="check-module-misc-configstore-base">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-misc.xml" target="compile-module-misc-configstore-base"/>
+  </target>
+
   <target name="check-module-output-pageable-base" depends="init">
     <available file="${module-output-pageable-base-file}" property="module-output-pageable-base-file-present"/>
   </target>
@@ -50,7 +59,7 @@
   </target>
 
   <target name="compile-module-gui-base"
-    depends="init, rebuild-module-output-pageable-base, rebuild-module-output-pageable-graphics">
+    depends="init, rebuild-module-output-pageable-base, rebuild-module-output-pageable-graphics, rebuild-module-misc-configstore-base">
     <description>
       Compiles the GUI base module, contains the preview dialogs/frames etc.
     </description>
@@ -70,6 +79,7 @@
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-pageable-graphics-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>
     </javac>
 
@@ -79,7 +89,7 @@
     <jar jarfile="${module-gui-base-file}"
          basedir="build">
       <manifest>
-          <attribute name="Class-Path" value="${core-jar-file} ${module-output-pageable-graphics-file}"/>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-output-pageable-graphics-file} ${module-misc-configstore-base-file}"/>
       </manifest>
     </jar>
 
@@ -288,15 +298,6 @@
   <!--  CSV Export GUI module                                         -->
   <!--                                                                -->
   <!-- ************************************************************** -->
-
-  <target name="check-module-misc-configstore-base" depends="init">
-    <available file="${compile-module-misc-configstore-base-file}" property="compile-module-misc-configstore-base-present"/>
-  </target>
-
-  <target name="rebuild-module-misc-configstore-base" unless="module-module-misc-configstore-base-present" depends="check-module-misc-configstore-base">
-    <dirname property="antfile.dir" file="${ant.file}"/>
-    <ant antfile="${antfile.dir}/build-misc.xml" target="compile-module-misc-configstore-base"/>
-  </target>
 
   <target name="check-module-output-table-base" depends="init">
     <available file="${module-output-table-base-file}" property="module-output-table-base-file-present"/>

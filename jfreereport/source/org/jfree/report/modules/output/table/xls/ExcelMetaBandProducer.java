@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.6 2005/02/19 13:30:02 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.7 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,11 +38,16 @@
 
 package org.jfree.report.modules.output.table.xls;
 
-import java.text.ParseException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataSource;
+import org.jfree.report.filter.DataTarget;
+import org.jfree.report.filter.DateFormatFilter;
+import org.jfree.report.filter.NumberFormatFilter;
+import org.jfree.report.filter.RawDataSource;
 import org.jfree.report.filter.templates.DateFieldTemplate;
 import org.jfree.report.filter.templates.NumberFieldTemplate;
 import org.jfree.report.layout.DefaultLayoutSupport;
@@ -53,7 +58,6 @@ import org.jfree.report.modules.output.table.xls.metaelements.ExcelDateMetaEleme
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelNumberMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 
 public class ExcelMetaBandProducer
@@ -122,21 +126,20 @@ public class ExcelMetaBandProducer
     {
       return null;
     }
-    try
+
+    final DataSource template = e.getDataSource();
+    if (template instanceof RawDataSource)
     {
-      final DataSource template = e.getDataSource();
-      if (template instanceof DateFieldTemplate)
+      final RawDataSource rawSource = (RawDataSource) template;
+      final Object rawValue = rawSource.getRawValue();
+      if (rawValue instanceof Date)
       {
         return createDateCell(e, x, y);
       }
-      else if (template instanceof NumberFieldTemplate)
+      else if (rawValue instanceof Number)
       {
         return createNumberCell(e, x, y);
       }
-    }
-    catch (ParseException pe)
-    {
-      Log.debug("Unable to create extended format cells:", pe);
     }
 
     final StrictBounds rect = (StrictBounds)
@@ -146,11 +149,49 @@ public class ExcelMetaBandProducer
             createStyleForTextElement(e, x, y));
   }
 
-  private MetaElement createNumberCell (final Element e, final long x, final long y)
-          throws ParseException
+  private String getFormatString (final DataSource ds)
   {
-    final NumberFieldTemplate nft = (NumberFieldTemplate) e.getDataSource();
-    final Number number = nft.getDecimalFormat().parse((String) nft.getValue());
+    if (ds instanceof NumberFieldTemplate)
+    {
+      final NumberFieldTemplate nft = (NumberFieldTemplate) ds;
+      return nft.getFormat();
+    }
+    else if (ds instanceof DateFieldTemplate)
+    {
+      final DateFieldTemplate dft = (DateFieldTemplate) ds;
+      return dft.getFormat();
+    }
+    else if (ds instanceof DateFormatFilter)
+    {
+      final DateFormatFilter filter = (DateFormatFilter) ds;
+      if (filter.getDateFormat() instanceof SimpleDateFormat)
+      {
+        final SimpleDateFormat dateFormat = (SimpleDateFormat) filter.getDateFormat();
+        return dateFormat.toLocalizedPattern();
+      }
+    }
+    else if (ds instanceof NumberFormatFilter)
+    {
+      final NumberFormatFilter filter = (NumberFormatFilter) ds;
+      if (filter.getNumberFormat() instanceof DecimalFormat)
+      {
+        final DecimalFormat dateFormat = (DecimalFormat) filter.getNumberFormat();
+        return dateFormat.toLocalizedPattern();
+      }
+    }
+    if (ds instanceof DataTarget)
+    {
+      final DataTarget dt = (DataTarget) ds;
+      return getFormatString(dt.getDataSource());
+    }
+    return null;
+  }
+
+  private MetaElement createNumberCell (final Element e, final long x, final long y)
+  {
+    final RawDataSource nft = (RawDataSource) e.getDataSource();
+    final Number number = (Number) nft.getRawValue();
+
 
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
@@ -158,17 +199,15 @@ public class ExcelMetaBandProducer
             createStyleForTextElement(e, x, y);
     styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
             e.getStyle().getStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
-                    nft.getFormat()));
+                    getFormatString(nft)));
 
     return new ExcelNumberMetaElement(new RawContent(rect, number), styleSheet);
   }
 
   private MetaElement createDateCell (final Element e, final long x, final long y)
-          throws ParseException
   {
-    final DateFieldTemplate dft = (DateFieldTemplate) e.getDataSource();
-    final String value = (String) dft.getValue();
-    final Date date = dft.getDateFormat().parse(value);
+    final RawDataSource dft = (RawDataSource) e.getDataSource();
+    final Date date = (Date) dft.getRawValue();
 
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
@@ -176,7 +215,7 @@ public class ExcelMetaBandProducer
             createStyleForTextElement(e, x, y);
     styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
             e.getStyle().getStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
-                    dft.getFormat()));
+                    getFormatString(dft)));
 
     return new ExcelDateMetaElement(new RawContent(rect, date), styleSheet);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.17 2005/02/23 21:04:55 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.18 2005/02/25 00:12:52 taqua Exp $
  *
  * Changes
  * --------
@@ -43,6 +43,7 @@
 
 package org.jfree.report.modules.gui.pdf;
 
+import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -51,12 +52,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -66,7 +64,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -77,11 +74,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.plaintext.PlainTextExportDialog;
-import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
-import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
-import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
+import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
@@ -100,7 +95,7 @@ import org.jfree.ui.action.ActionButton;
  *
  * @author Thomas Morgner
  */
-public class PDFSaveDialog extends JDialog
+public class PDFSaveDialog extends AbstractExportDialog
 {
   /**
    * Useful constant.
@@ -144,7 +139,7 @@ public class PDFSaveDialog extends JDialog
   /**
    * Internal action class to confirm the dialog and to validate the input.
    */
-  private class ActionConfirm extends AbstractAction
+  private class ActionConfirm extends AbstractConfirmAction
   {
     /**
      * Default constructor.
@@ -153,26 +148,12 @@ public class PDFSaveDialog extends JDialog
     {
       putValue(Action.NAME, getResources().getString("pdfsavedialog.confirm"));
     }
-
-    /**
-     * Receives notification that the action has occurred.
-     *
-     * @param e the action event.
-     */
-    public void actionPerformed (final ActionEvent e)
-    {
-      if (performValidate())
-      {
-        setConfirmed(true);
-        setVisible(false);
-      }
-    }
   }
 
   /**
    * Internal action class to cancel the report processing.
    */
-  private class ActionCancel extends AbstractAction
+  private class ActionCancel extends AbstractCancelAction
   {
     /**
      * Default constructor.
@@ -180,17 +161,6 @@ public class PDFSaveDialog extends JDialog
     public ActionCancel ()
     {
       putValue(Action.NAME, getResources().getString("pdfsavedialog.cancel"));
-    }
-
-    /**
-     * Receives notification that the action has occurred.
-     *
-     * @param e the action event.
-     */
-    public void actionPerformed (final ActionEvent e)
-    {
-      setConfirmed(false);
-      setVisible(false);
     }
   }
 
@@ -217,16 +187,6 @@ public class PDFSaveDialog extends JDialog
       performSelectFile();
     }
   }
-
-  /**
-   * Confirm action.
-   */
-  private Action actionConfirm;
-
-  /**
-   * Cancel action.
-   */
-  private Action actionCancel;
 
   /**
    * Security selection action.
@@ -339,26 +299,6 @@ public class PDFSaveDialog extends JDialog
   private EncodingComboBoxModel encodingModel;
 
   /**
-   * Confirmed flag.
-   */
-  private boolean confirmed;
-
-  /**
-   * Confirm button.
-   */
-  private JButton btnConfirm;
-
-  /**
-   * Cancel button.
-   */
-  private JButton btnCancel;
-
-  /**
-   * Localised resources.
-   */
-  private ResourceBundle resources;
-
-  /**
    * A file chooser.
    */
   private JFileChooser fileChooser;
@@ -418,19 +358,22 @@ public class PDFSaveDialog extends JDialog
    */
   private void initConstructor ()
   {
-    setModal(true);
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    setCancelAction(new ActionCancel());
+    setConfirmAction(new ActionConfirm());
+
     setTitle(getResources().getString("pdfsavedialog.dialogtitle"));
     initialize();
     clear();
+  }
 
-    addWindowListener(new WindowAdapter()
-    {
-      public void windowClosing (final WindowEvent e)
-      {
-        getActionCancel().actionPerformed(null);
-      }
-    });
+  protected String getConfigurationSuffix ()
+  {
+    return "_pdfexport";
+  }
+
+  protected String getResourceBaseName ()
+  {
+    return PDFExportPlugin.BASE_RESOURCE_CLASS;
   }
 
   /**
@@ -452,21 +395,6 @@ public class PDFSaveDialog extends JDialog
       printingModel = new DefaultComboBoxModel(data);
     }
     return printingModel;
-  }
-
-  /**
-   * Retrieves the resources for this PreviewFrame. If the resources are not initialized,
-   * they get loaded on the first call to this method.
-   *
-   * @return this frames ResourceBundle.
-   */
-  protected ResourceBundle getResources ()
-  {
-    if (resources == null)
-    {
-      resources = ResourceBundle.getBundle(PDFExportPlugin.BASE_RESOURCE_CLASS);
-    }
-    return resources;
   }
 
   /**
@@ -495,34 +423,6 @@ public class PDFSaveDialog extends JDialog
       actionSelectFile = new ActionSelectFile();
     }
     return actionSelectFile;
-  }
-
-  /**
-   * Returns a single instance of the dialog confirm action.
-   *
-   * @return the action.
-   */
-  private Action getActionConfirm ()
-  {
-    if (actionConfirm == null)
-    {
-      actionConfirm = new ActionConfirm();
-    }
-    return actionConfirm;
-  }
-
-  /**
-   * Returns a single instance of the dialog cancel action.
-   *
-   * @return the action.
-   */
-  protected Action getActionCancel ()
-  {
-    if (actionCancel == null)
-    {
-      actionCancel = new ActionCancel();
-    }
-    return actionCancel;
   }
 
   /**
@@ -627,24 +527,25 @@ public class PDFSaveDialog extends JDialog
     gbc.gridx = 0;
     gbc.gridwidth = 3;
     gbc.gridy = 4;
-    gbc.insets = new Insets(10, 0, 0, 0);
+    gbc.insets = new Insets(15, 0, 0, 0);
     gbc.anchor = GridBagConstraints.NORTH;
     contentPane.add(createSecurityPanel(), gbc);
 
-    btnCancel = new ActionButton(getActionCancel());
-    btnConfirm = new ActionButton(getActionConfirm());
+    final JButton btnCancel = new ActionButton(getCancelAction());
+    final JButton btnConfirm = new ActionButton(getConfirmAction());
     final JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout());
+    buttonPanel.setLayout(new GridLayout(1,2,5,5));
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
     getRootPane().setDefaultButton(btnConfirm);
-    buttonPanel.registerKeyboardAction(getActionConfirm(),
+    buttonPanel.registerKeyboardAction(getConfirmAction(),
             KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
             JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
+    gbc.anchor = GridBagConstraints.EAST;
     gbc.weightx = 1;
     gbc.gridx = 0;
     gbc.gridwidth = 3;
@@ -652,7 +553,18 @@ public class PDFSaveDialog extends JDialog
     gbc.insets = new Insets(10, 0, 0, 0);
     contentPane.add(buttonPanel, gbc);
 
-    setContentPane(contentPane);
+    final JPanel contentWithStatus = new JPanel();
+    contentWithStatus.setLayout(new BorderLayout());
+    contentWithStatus.add(contentPane, BorderLayout.CENTER);
+    contentWithStatus.add(getStatusBar(), BorderLayout.SOUTH);
+
+    setContentPane(contentWithStatus);
+
+    getFormValidator().registerTextField(txFilename);
+    getFormValidator().registerTextField(txConfOwnerPassword);
+    getFormValidator().registerTextField(txConfUserPassword);
+    getFormValidator().registerTextField(txUserPassword);
+    getFormValidator().registerTextField(txOwnerPassword);
   }
 
   /**
@@ -935,7 +847,7 @@ public class PDFSaveDialog extends JDialog
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
-      return System.getProperty("file.encoding");
+      return ReportConfiguration.getPlatformDefaultEncoding();
     }
     else
     {
@@ -1246,33 +1158,11 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid settings
-   * and the user confirmed any resource conflicts.
-   *
-   * @return true, if the dialog has been confirmed and the pdf should be saved, false
-   *         otherwise.
-   */
-  public boolean isConfirmed ()
-  {
-    return confirmed;
-  }
-
-  /**
-   * Defines whether this dialog has been finished using the 'OK' or the 'Cancel' option.
-   *
-   * @param confirmed set to true, if OK was pressed, false otherwise
-   */
-  protected void setConfirmed (final boolean confirmed)
-  {
-    this.confirmed = confirmed;
-  }
-
-  /**
    * Clears all selections, input fields and set the selected encryption level to none.
    */
   public void clear ()
   {
-    txAuthor.setText(System.getProperty("user.name"));
+    txAuthor.setText(ReportConfiguration.getGlobalConfig().getConfigProperty("user.name", ""));
     txConfOwnerPassword.setText("");
     txConfUserPassword.setText("");
     txFilename.setText("");
@@ -1291,7 +1181,8 @@ public class PDFSaveDialog extends JDialog
     rbSecurityNone.setSelected(true);
     getActionSecuritySelection().actionPerformed(null);
 
-    cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty("file.encoding", "Cp1251")));
+    cbEncoding.setSelectedIndex
+            (encodingModel.indexOf(ReportConfiguration.getPlatformDefaultEncoding()));
   }
 
   /**
@@ -1382,28 +1273,13 @@ public class PDFSaveDialog extends JDialog
    */
   public boolean performValidate ()
   {
-    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT)
-            || getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
-    {
-      if (txUserPassword.getText().equals(txConfUserPassword.getText()) == false)
-      {
-        JOptionPane.showMessageDialog(this, getResources().getString("pdfsavedialog.userpasswordNoMatch"));
-        return false;
-      }
-      if (txOwnerPassword.getText().equals(txConfOwnerPassword.getText()) == false)
-      {
-        JOptionPane.showMessageDialog(this, getResources().getString("pdfsavedialog.ownerpasswordNoMatch"));
-        return false;
-      }
-    }
+    getStatusBar().clear();
 
     final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
-      JOptionPane.showMessageDialog(this,
-              getResources().getString("pdfsavedialog.targetIsEmpty"),
-              getResources().getString("pdfsavedialog.errorTitle"),
-              JOptionPane.ERROR_MESSAGE);
+      getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+              getResources().getString("pdfsavedialog.targetIsEmpty"));
       return false;
     }
     final File f = new File(filename);
@@ -1411,31 +1287,57 @@ public class PDFSaveDialog extends JDialog
     {
       if (f.isFile() == false)
       {
-        JOptionPane.showMessageDialog(this,
-                getResources().getString("pdfsavedialog.targetIsNoFile"),
-                getResources().getString("pdfsavedialog.errorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("pdfsavedialog.targetIsNoFile"));
         return false;
       }
       if (f.canWrite() == false)
       {
-        JOptionPane.showMessageDialog(this,
-                getResources().getString("pdfsavedialog.targetIsNotWritable"),
-                getResources().getString("pdfsavedialog.errorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("pdfsavedialog.targetIsNotWritable"));
         return false;
       }
-      final String key1 = "pdfsavedialog.targetOverwriteConfirmation";
-      final String key2 = "pdfsavedialog.targetOverwriteTitle";
-      if (JOptionPane.showConfirmDialog(this,
-              MessageFormat.format(getResources().getString(key1),
-                      new Object[]{getFilename()}),
-              getResources().getString(key2),
-              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-              == JOptionPane.NO_OPTION)
+
+      final String message = MessageFormat.format(getResources().getString
+              ("pdfsavedialog.targetOverwriteWarning"),
+              new Object[]{filename});
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
+              getResources().getString(message));
+    }
+
+    if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT)
+            || getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_40BIT))
+    {
+      if (txUserPassword.getText().equals(txConfUserPassword.getText()) == false)
       {
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("pdfsavedialog.userpasswordNoMatch"));
         return false;
       }
+      if (txOwnerPassword.getText().equals(txConfOwnerPassword.getText()) == false)
+      {
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("pdfsavedialog.ownerpasswordNoMatch"));
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+
+  protected boolean performConfirm ()
+  {
+    final String key1 = "pdfsavedialog.targetOverwriteConfirmation";
+    final String key2 = "pdfsavedialog.targetOverwriteTitle";
+    if (JOptionPane.showConfirmDialog(this,
+            MessageFormat.format(getResources().getString(key1),
+                    new Object[]{getFilename()}),
+            getResources().getString(key2),
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+            == JOptionPane.NO_OPTION)
+    {
+      return false;
     }
 
     if (getEncryptionValue().equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT)
@@ -1452,49 +1354,6 @@ public class PDFSaveDialog extends JDialog
           return false;
         }
       }
-    }
-    return true;
-  }
-
-  /**
-   * Opens the dialog to query all necessary input from the user. This will not start the
-   * processing, as this is done elsewhere.
-   *
-   * @param report the report that should be processed.
-   * @return true, if the processing should continue, false otherwise.
-   */
-  public boolean performQueryForExport (final JFreeReport report)
-  {
-    initFromConfiguration(report.getReportConfiguration());
-    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
-    try
-    {
-      setDialogContents(storage.loadProperties
-              (ConfigFactory.encodePath(report.getName() + "_pdfexport"),
-                      new Properties()));
-    }
-    catch (Exception cse)
-    {
-      Log.debug("Unable to load the defaults in PDF export dialog.");
-    }
-
-    setModal(true);
-    setVisible(true);
-    if (isConfirmed() == false)
-    {
-      return false;
-    }
-
-    storeToConfiguration(report.getReportConfiguration());
-    try
-    {
-      storage.storeProperties
-              (ConfigFactory.encodePath(report.getName() + "_pdfexport"),
-                      getDialogContents());
-    }
-    catch (ConfigStoreException cse)
-    {
-      Log.debug("Unable to store the defaults in PDF export dialog.");
     }
     return true;
   }
