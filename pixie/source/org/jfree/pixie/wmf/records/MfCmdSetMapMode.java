@@ -12,7 +12,7 @@ import org.jfree.pixie.wmf.records.MfCmd;
  * to transform page-space units into device-space units, and also
  * defines the orientation of the device's x and y axes.
  *
- * @see MappingConstants
+ * @see org.jfree.pixie.wmf.MappingConstants
  */
 public class MfCmdSetMapMode extends MfCmd
 {
@@ -22,9 +22,9 @@ public class MfCmdSetMapMode extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
-    org.jfree.pixie.wmf.MfDcState state = file.getCurrentState ();
+    MfDcState state = file.getCurrentState ();
     state.setMapMode (mapmode);
   }
 
@@ -33,7 +33,7 @@ public class MfCmdSetMapMode extends MfCmd
     return new MfCmdSetMapMode ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
     int id = record.getParam (0);
     setMapMode (id);
@@ -41,7 +41,7 @@ public class MfCmdSetMapMode extends MfCmd
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.SET_MAP_MODE;
+    return MfType.SET_MAP_MODE;
   }
 
   public int getMapMode ()
