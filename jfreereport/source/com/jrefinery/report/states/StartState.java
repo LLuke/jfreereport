@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ---------------
  * StartState.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ---------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: StartState.java,v 1.3 2002/12/02 17:43:50 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: StartState.java,v 1.4 2002/12/02 18:25:52 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.states;
 
 import com.jrefinery.report.JFreeReport;
@@ -40,18 +46,20 @@ import java.util.Date;
 import java.util.Iterator;
 
 /**
- * Initial state for a report. Prints the report header and proceeds to PostProcessHeader-State.
- * <p>
- * alias PreReportHeaderState<br>
- * advances to PostReportHeaderState<br>
- * before the print, a reportStarted event gets fired.
+ * The first state in the JFreeReport state transition diagram.
+ *
+ * @author David Gilbert
  */
 public class StartState extends ReportState
 {
   /**
-   * Default constructor and the only constructor to create a state without cloning another.
+   * Creates a new <code>START</code> state for a given report.
+   * <p>
+   * This is the only state constructor to create a state without cloning another.
    *
    * @param report  the report.
+   *
+   * @throws ReportInitialisationException ??.
    */
   public StartState (JFreeReport report) throws ReportInitialisationException
   {
@@ -68,6 +76,14 @@ public class StartState extends ReportState
     }
   }
 
+  /**
+   * Creates a new <code>START</code> state.
+   *
+   * @param fstate  the finish state.
+   * @param level  the level.
+   *
+   * @throws ReportProcessingException ??.
+   */
   public StartState (FinishState fstate, int level) throws ReportProcessingException
   {
     super (fstate);
@@ -76,21 +92,21 @@ public class StartState extends ReportState
   }
 
   /**
-   * Advances from the 'start' state to the 'pre-report-header' state.
+   * Advances from the '<code>START</code>' state to the '<code>PRE-GROUP-HEADER</code>' state (the 
+   * only transition that is possible from this state).
    * <p>
    * Initialises the 'report.date' property, and fires a 'report-started' event.
    *
-   * @return the next state ('pre-report-header').
+   * @return the next state (<code>PRE-GROUP-HEADER</code>').
    */
   public ReportState advance ()
   {
     setCurrentPage (1);
 
-    // A PropertyHandler should set the properties.
+    // a PropertyHandler should set the properties.
     setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
 
-    // Initialize the report before any band (and especially before the pageheader)
-    // is printed.
+    // initialise the report before any band (and especially before the pageheader) is printed.
     fireReportStartedEvent ();
     return new PreGroupHeaderState (this);
   }

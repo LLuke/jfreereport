@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,22 +20,31 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * -------------------------
  * PreReportFooterState.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: PreReportFooterState.java,v 1.3 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: PreReportFooterState.java,v 1.4 2002/12/02 17:43:50 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.states;
 
 /**
  * At least the report has been finished. There is no more data to print, so just print
- * the reportHeader and advance to the state FinishState. Before printing the header fire the
+ * the reportFooter and advance to the state FinishState. Before printing the header fire the
  * reportFinished event.
+ *
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class PreReportFooterState extends ReportState
 {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,29 +20,36 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ------------------------
  * PreGroupFooterState.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: PreGroupFooterState.java,v 1.3 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: PreGroupFooterState.java,v 1.4 2002/12/02 17:43:47 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.states;
-
-
 
 /**
  * If there is not enough space to print the footer, the footer returns itself to
  * wait for the pageBreak. After the groupFinished Event has been fired and the footer
  * is printed, the PostGroupFooterState gets active.
+ *
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class PreGroupFooterState extends ReportState
 {
   /**
-   * Creates a new 'pre-group-footer' report state.
+   * Creates a new '<code>PRE-GROUP-FOOTER</code>' report state.
    *
    * @param previous  the previous report state.
    */
@@ -52,9 +59,9 @@ public class PreGroupFooterState extends ReportState
   }
 
   /**
-   * Advances from this state to the next.
+   * Advances from this state to the '<code>POST-GROUP-FOOTER</code>' state.
    *
-   * @return the next report state.
+   * @return the next report state ('<code>POST-GROUP-FOOTER</code>').
    */
   public ReportState advance ()
   {

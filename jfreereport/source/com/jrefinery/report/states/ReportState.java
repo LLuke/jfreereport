@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ----------------
  * ReportState.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   Thomas Morger;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.7 2002/12/02 17:43:50 taqua Exp $
+ * $Id: ReportState.java,v 1.8 2002/12/02 18:25:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,18 +71,22 @@ import java.util.Iterator;
 
 /**
  * Captures state information for a report while it is in the process of being displayed or
- * printed.  In most cases, we are interested in the report state at the end of a page, so that
- * we can begin the next page in the right manner.
+ * printed.  JFreeReport uses a state transition diagram to track progress through the report
+ * generation.
+ * <p>  
+ * The report processing will usually pass through many states for each page generated.  We
+ * record the report state at the end of each page, so that we can jump directly to the start of
+ * any page without having to regenerate all the preceding pages.
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public abstract class ReportState implements JFreeReportConstants, Cloneable
 {
-
   /** The report that the state belongs to. */
   private JFreeReport report;
 
-  /** The current item. */
+  /** The current item (row in the TableModel). */
   private int currentItem;
 
   /** The page that this state applies to. */
@@ -100,6 +104,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /** The data row connector. */
   private DataRowConnector dataRowConnector;
 
+  /** The functions. */
   private LeveledExpressionList functions;
 
   /** A row number that is 'before' the first row. */
@@ -111,12 +116,17 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /** The first page. */
   public static final int FIRST_PAGE = 1;
 
-  private int anchestorHashcode;
+  /** The ancestor hash code. */
+  private int ancestorHashcode;
 
   /**
    * Constructs a ReportState for the specified report.
+   * <p>
+   * This constructor is protected, it is intended to be used by subclasses only.
    *
-   * @param reportPar The report.
+   * @param reportPar  the report.
+   *
+   * @throws ReportInitialisationException if there is a problem initialising the report.
    */
   protected ReportState (JFreeReport reportPar)
     throws ReportInitialisationException
@@ -136,7 +146,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     DataRowConnector.connectDataSources (getReport (), dc);
     setDataRowConnector(dc);
 
-    LeveledExpressionList functions = new LeveledExpressionList(getReport().getExpressions(), getReport().getFunctions());
+    LeveledExpressionList functions = new LeveledExpressionList(getReport().getExpressions(), 
+                                                                getReport().getFunctions());
     setFunctions (functions);
     functions.connectDataRow(dc);
 
@@ -149,12 +160,15 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
 
-    // we have no clone-anchestor, so forget everyting
-    setAnchestorHashcode(this.hashCode());
+    // we have no clone-ancestor, so forget everyting
+    setAncestorHashcode(this.hashCode());
 
     resetState();
   }
 
+  /**
+   * Resets the state.
+   */
   protected void resetState ()
   {
     setCurrentItem (BEFORE_FIRST_ROW);
@@ -179,8 +193,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     setDataRowBackend (clone.getDataRowBackend ());
     getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
-    // we have no clone-anchestor, so forget everyting
-    setAnchestorHashcode(this.hashCode());
+    // we have no clone-ancestor, so forget everything
+    setAncestorHashcode(this.hashCode());
   }
 
   /**
@@ -518,12 +532,14 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     // a state proceeds if it is an other class than the old state
     if (this.getClass().equals(oldstate.getClass()) == false)
     {
-      Log.debug ("State did proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
+      Log.debug ("State did proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " 
+                 + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
       return true;
     }
 
-    Log.debug ("State did not proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
-    Log.debug ("Old State: " + oldstate.getClass() );
+    Log.debug ("State did not proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " 
+               + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
+    Log.debug ("Old State: " + oldstate.getClass());
     return false;
   }
 
@@ -556,7 +572,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Activate the next group.
+   * Activates the next group by incrementing the current group index.  The outer-most group is 
+   * given an index of zero, and this increases for each subgroup that is defined.
    */
   public void enterGroup ()
   {
@@ -564,7 +581,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Deactivate the current group.
+   * Deactivates the current group by decrementing the current group index.  
    */
   public void leaveGroup ()
   {
@@ -617,7 +634,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Fires a 'group-started' event.
+   * Fires a '<code>group-started</code>' event.  The groupStarted(...) method is called for
+   * every report function.
    */
   public void fireGroupStartedEvent ()
   {
@@ -661,29 +679,55 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     functions.itemsAdvanced (new ReportEvent(this));
   }
 
+  /**
+   * Returns the current function level.
+   *
+   * @return the function level.
+   */
   public int getLevel ()
   {
     return getFunctions().getLevel();
   }
 
+  /**
+   * Returns an iterator over the function levels.
+   *
+   * @return an iterator.
+   */
   public Iterator getLevels ()
   {
     return getFunctions().getLevelsDescending();
   }
 
-  public int getAnchestorHashcode()
+  /**
+   * Returns the ancestor hash code.
+   *
+   * @return the ancestor hash code.
+   */
+  public int getAncestorHashcode()
   {
-    return anchestorHashcode;
+    return ancestorHashcode;
   }
 
-  protected void setAnchestorHashcode(int anchestorHashcode)
+  /**
+   * Sets the ancestor hash code.
+   * 
+   * @param ancestorHashcode  the ancestor hash code.
+   */
+  protected void setAncestorHashcode(int ancestorHashcode)
   {
-    this.anchestorHashcode = anchestorHashcode;
+    this.ancestorHashcode = ancestorHashcode;
   }
 
-  public boolean isAnchestor (ReportState state)
+  /**
+   * Returns true if a state is an ancestor of this state, and false otherwise.
+   *
+   * @return true or false.
+   */
+  public boolean isAncestor (ReportState state)
   {
-    Log.debug ("Me: " + getAnchestorHashcode() + " Him: " + state.getAnchestorHashcode());
-    return (state.getAnchestorHashcode() == getAnchestorHashcode());
+    Log.debug ("Me: " + getAncestorHashcode() + " Him: " + state.getAncestorHashcode());
+    return (state.getAncestorHashcode() == getAncestorHashcode());
   }
+  
 }

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * -------------------------
  * PostGroupHeaderState.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: PostGroupHeaderState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: PostGroupHeaderState.java,v 1.3 2002/12/02 17:43:45 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.states;
 
 /**
@@ -38,6 +44,8 @@ package com.jrefinery.report.states;
  * Transition: PreGroupHeaderState or PreItemHeader
  * (this thing changes the currentGroup, but the other behaviour is
  * like StartGroup)
+ *
+ * @author David Gilbert
  */
 public class PostGroupHeaderState extends ReportState
 {
@@ -63,10 +71,9 @@ public class PostGroupHeaderState extends ReportState
   }
 
   /**
-   * Advances from this state to the next.
-   * <p>
-   * If there are more groups, activate the next PreGroupHeaderState state, else activate
-   * the PreItemGroupState state.
+   * Advances from this state to the next.  If the reporting engine hasn't reached the inner-most
+   * group yet, move to the '<code>PRE-GROUP-HEADER</code>' state again, otherwise move to the 
+   * '<code>PRE-ITEM-GROUP</code>' state.
    *
    * @return the next state.
    */
@@ -74,13 +81,12 @@ public class PostGroupHeaderState extends ReportState
   {
     if (hasMoreGroups ())
     {
-      // There are more groups defined.
-      // Activate the next group and proceed to print it's header.
+      // there are more groups defined, activate the next group and proceed to print it's header
       return new PreGroupHeaderState (this);
     }
     else
     {
-      // Prepare to print Items.
+      // we have reached the inner-most group, so prepare to print some data items
       return new PreItemGroupState (this);
     }
   }

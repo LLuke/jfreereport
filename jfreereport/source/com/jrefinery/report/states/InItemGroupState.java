@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library 
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,22 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
- * ReportGenerator.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ---------------------
+ * InItemGroupState.java
+ * ---------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: InItemGroupState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: InItemGroupState.java,v 1.3 2002/12/02 17:43:44 taqua Exp $
  *
  * Changes
  * -------
- * ----------------------
- * InItemGroupState.java
- * ----------------------
+ * 05-Dec-2002 : Updated Javadocs (DG);
  *
- * ChangeLog
- * ---------
  */
+
 package com.jrefinery.report.states;
 
 import com.jrefinery.report.Group;
@@ -54,7 +54,7 @@ import com.jrefinery.report.ReportProcessingException;
 public class InItemGroupState extends ReportState
 {
   /**
-   * Creates a new 'in-item-group' state.
+   * Creates a new '<code>IN-ITEM-GROUP</code>' state.
    *
    * @param previous  the previous state.
    */

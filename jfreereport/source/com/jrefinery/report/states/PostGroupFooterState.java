@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,22 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
- * ReportGenerator.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -------------------------
+ * PostGroupFooterState.java
+ * -------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: PostGroupFooterState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: PostGroupFooterState.java,v 1.3 2002/12/02 17:43:45 taqua Exp $
  *
  * Changes
  * -------
- * ----------------------
- * PostGroupFooterState.java
- * ----------------------
+ * 05-Dec-2002 : Updated Javadocs (DG);
  *
- * ChangeLog
- * ---------
  */
+
 package com.jrefinery.report.states;
 
 import com.jrefinery.report.Group;
@@ -51,11 +51,14 @@ import com.jrefinery.report.Group;
  * or the parent group is not finished, open the next sub group by activating PreGroupHeaderState.
  * If there is a parent group and this parent is finished, close the parent by activating
  * the PreGroupFooterState state.
+ *
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class PostGroupFooterState extends ReportState
 {
   /**
-   * Creates a new 'post-group-footer' report state.
+   * Creates a new '<code>POST-GROUP-FOOTER</code>' report state.
    *
    * @param previous  the previous report state.
    */
@@ -77,7 +80,7 @@ public class PostGroupFooterState extends ReportState
   /**
    * Are there more groups active?
    *
-   * @return true if this is the last group.
+   * @return true if this is the last (outer-most) group.
    */
   private boolean isLastGroup ()
   {

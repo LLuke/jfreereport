@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,31 +20,46 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * --------------------------
  * BandDefaultStyleSheet.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * --------------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: BandDefaultStyleSheet.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Added Javadoc comments (DG);
+ *
  */
+
 package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.targets.FloatDimension;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ * A default band style sheet.
+ * 
+ * @author Thomas Morgner
+ */
 public class BandDefaultStyleSheet extends BandStyleSheet
 {
+  /** A shared default style-sheet. */
   private static BandDefaultStyleSheet defaultStyle;
 
+  /**
+   * Creates a new default style sheet.
+   */
   public BandDefaultStyleSheet()
   {
     super("GlobalBand");
-    setStyleProperty(MINIMUMSIZE, new FloatDimension(0,0));
-    setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE,Short.MAX_VALUE));
+    setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
+    setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
     setStyleProperty(PAGEBREAK_AFTER, new Boolean(false));
     setStyleProperty(PAGEBREAK_BEFORE, new Boolean(false));
@@ -52,6 +67,11 @@ public class BandDefaultStyleSheet extends BandStyleSheet
     setStyleProperty(DISPLAY_ON_LASTPAGE, new Boolean(true));
   }
 
+  /**
+   * Returns the default band style sheet.
+   *
+   * @return the style-sheet.
+   */
   public static final BandDefaultStyleSheet getBandDefaultStyle ()
   {
     if (defaultStyle == null)

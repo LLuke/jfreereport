@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,21 +20,29 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
+ * ----------------------
  * PreItemGroupState.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ----------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: PreItemGroupState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: PreItemGroupState.java,v 1.3 2002/12/02 17:43:49 taqua Exp $
  *
  * Changes
  * -------
+ * 05-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.states;
 
 /**
  * Prepare to print the items. This state fires the itemStarted-Event and advances to
  * the InItemGroupState state.
+ *
+ * @author David Gilbert
  */
 public class PreItemGroupState extends ReportState
 {
@@ -50,16 +58,18 @@ public class PreItemGroupState extends ReportState
   }
 
   /**
-   * Advances to the next state.
+   * Advances to the next state.  Normally this will be the '<code>IN-ITEM-GROUP</code>' state, 
+   * but if the report's data (TableModel) has no rows, proceed to the 
+   * '<code>POST-ITEM-GROUP</code>' state.
    *
    * @return the next state.
    */
   public ReportState advance ()
   {
-    // Inform everybody, that now items will be processed.
+    // inform everybody, that now items will be processed
     fireItemsStartedEvent ();
 
-    // if the datasource is empty, skip the inItem-Section and proceed to PostItemGroup ...
+    // if the report has no data, proceed to PostItemGroup ...
     if (getReport().getData().getRowCount() == 0)
     {
       return new PostItemGroupState(this);
