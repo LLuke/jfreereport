@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.1 2003/08/24 15:09:18 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.2 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.print.PrinterJob;
 
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.ReportInterruptedException;
 
 public class PrintExportTask extends ExportTask
 {

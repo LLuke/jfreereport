@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.3 2003/08/27 20:19:53 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.4 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,9 +42,12 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.IOException;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.util.StringUtil;
+import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
@@ -115,13 +118,13 @@ public class PlainTextExportTask extends ExportTask
   public void run()
   {
     OutputStream out = null;
+    File file = new File (fileName);
     try
     {
       out = new BufferedOutputStream(
-          new FileOutputStream(
-              new File(fileName)));
+          new FileOutputStream(file));
       final PrinterCommandSet pc = getPrinterCommandSet(out, report);
-      final PlainTextOutputTarget target = 
+      final PlainTextOutputTarget target =
         new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
       target.configure(report.getReportConfiguration());
 
@@ -135,6 +138,27 @@ public class PlainTextExportTask extends ExportTask
       target.close();
       proc.removeRepaginationListener(progressDialog);
       setReturnValue(RETURN_SUCCESS);
+    }
+    catch (ReportInterruptedException re)
+    {
+      setReturnValue(RETURN_ABORT);
+      try
+      {
+        out.close();
+        out = null;
+        if (file.delete() == false)
+        {
+          Log.warn(new Log.SimpleMessage("Unable to delete incomplete export:", file));
+        }
+      }
+      catch (SecurityException se)
+      {
+        // ignore me
+      }
+      catch (IOException ioe)
+      {
+        // ignore me...
+      }
     }
     catch (Exception re)
     {

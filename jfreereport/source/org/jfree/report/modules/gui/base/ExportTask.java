@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTask.java,v 1.1 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ExportTask.java,v 1.2 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ public abstract class ExportTask implements Runnable
 {
   public static final int RETURN_SUCCESS = 0;
   public static final int RETURN_FAILED = 1;
+  public static final int RETURN_ABORT = 2;
 
   private int returnValue;
   private boolean taskDone;

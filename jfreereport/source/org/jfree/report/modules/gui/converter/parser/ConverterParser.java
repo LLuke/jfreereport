@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConverterParser.java,v 1.1 2003/08/26 17:35:51 taqua Exp $
+ * $Id: ConverterParser.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,7 +39,6 @@
 package org.jfree.report.modules.gui.converter.parser;
 
 import java.util.Stack;
-import java.io.IOException;
 
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;

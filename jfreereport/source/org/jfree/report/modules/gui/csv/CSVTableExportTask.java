@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.1 2003/08/24 15:08:18 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.2 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,8 +43,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.io.IOException;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportInterruptedException;
+import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
@@ -73,12 +76,11 @@ public class CSVTableExportTask extends ExportTask
   public void run()
   {
     Writer out = null;
+    File file = new File (fileName);
     try
     {
-      out = new BufferedWriter(
-          new OutputStreamWriter(
-              new FileOutputStream(
-                  new File(fileName)), encoding));
+      out = new BufferedWriter
+          (new OutputStreamWriter(new FileOutputStream(file), encoding));
       final CSVTableProcessor target = new CSVTableProcessor(report);
       target.addRepaginationListener(progressDialog);
       target.setWriter(out);
@@ -86,6 +88,27 @@ public class CSVTableExportTask extends ExportTask
       out.close();
       target.removeRepaginationListener(progressDialog);
       setReturnValue(RETURN_SUCCESS);
+    }
+    catch (ReportInterruptedException re)
+    {
+      setReturnValue(RETURN_ABORT);
+      try
+      {
+        out.close();
+        out = null;
+        if (file.delete() == false)
+        {
+          Log.warn(new Log.SimpleMessage("Unable to delete incomplete export:", file));
+        }
+      }
+      catch (SecurityException se)
+      {
+        // ignore me
+      }
+      catch (IOException ioe)
+      {
+        // ignore me...
+      }
     }
     catch (Exception re)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlDirExportTask.java,v 1.1 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlDirExportTask.java,v 1.2 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportInterruptedException;
+import org.jfree.report.util.Log;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
@@ -90,6 +92,12 @@ public class HtmlDirExportTask extends ExportTask
       target.processReport();
       target.removeRepaginationListener(progressDialog);
       setReturnValue(RETURN_SUCCESS);
+    }
+    catch (ReportInterruptedException re)
+    {
+      setReturnValue(RETURN_ABORT);
+      Log.warn(new Log.SimpleMessage
+          ("Unable to delete incomplete export: File ", fileName, " DataDir: ", dataDirectory));
     }
     catch (Exception re)
     {
