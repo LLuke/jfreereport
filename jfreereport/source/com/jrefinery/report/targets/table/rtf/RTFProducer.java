@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.6 2003/02/26 16:42:30 mungady Exp $
+ * $Id: RTFProducer.java,v 1.7 2003/05/11 13:39:20 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,10 @@ import com.lowagie.text.rtf.RtfWriter;
  * forwarded into the TableProducer. The TableProducer coordinates the cell
  * creation process and collects the generated TableCellData. The raw CellData
  * objects are later transformed into a TableGridLayout.
- * 
+ *
+ * todo There is a memory leak when using iText fonts with that output target ...
+ * todo seems to be the same issue as with the PDF fonts a long time ago.
+ *  
  * @author Thomas Morgner
  */
 public class RTFProducer extends TableProducer

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.19 2003/05/11 13:39:18 taqua Exp $
+ * $Id: TextParagraph.java,v 1.20 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -215,11 +215,12 @@ public class TextParagraph extends ContentContainer
       // we can assume, that if the first character is a white space, then all
       // characters are whitespaces, as the word break iterator searches for
       // whitespace boundries ...
+      /*
       while ((lineStartPos < lineLength) && (isWhitespace(mytext.charAt(lineStartPos))))
       {
         lineStartPos++;
       }
-
+      */
       boolean forceEnd = ((returnLines.size() + 1) == maxLines);
       int nextPos = findNextBreak(mytext, lineStartPos, width, forceEnd, breakit);
 
