@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.15 2003/02/04 17:56:33 taqua Exp $
+ * $Id: Log.java,v 1.16 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -196,7 +196,7 @@ public final class Log
   private static int debuglevel = 100;
 
   /** Storage for the log targets. */
-  private static LogTarget[] logTargets;
+  private static LogTarget[] logTargets  = new LogTarget[0];;
 
   /**
    * Private to prevent creating instances.

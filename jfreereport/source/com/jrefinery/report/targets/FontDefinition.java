@@ -1,8 +1,39 @@
 /**
- * Date: Jan 24, 2003
- * Time: 4:08:26 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: FontDefinition.java,v 1.5 2003/02/02 23:43:51 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * FontDefinition.java
+ * -------------------
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: FontDefinition.java,v 1.6 2003/02/03 18:52:46 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 24-Jan-2003 : Initial Version
+ *
  */
 package com.jrefinery.report.targets;
 
@@ -11,25 +42,57 @@ import com.jrefinery.report.util.StringUtil;
 import java.awt.Font;
 import java.io.Serializable;
 
+/**
+ * The FontDefinition encapsulates all Font-Style information. The java.awt.Font
+ * class does not support extended Styles like Strikethrough or Underline or font
+ * metadata like the base encoding.
+ */
 public class FontDefinition implements Serializable, Cloneable
 {
+  /** a constant to draw a font in bold style. */
   public static boolean BOLD = true;
+  /** a constant to draw a font in italic style. */
   public static boolean ITALIC = true;
+  /** a constant to draw a font with underline style. */
   public static boolean UNDERLINE = true;
+  /** a constant to draw a font with strikethrough style. */
   public static boolean STRIKETHROUGH = true;
+  /** a constant to draw a font in plain style. */
   public static boolean PLAIN = false;
 
+  /** the preferred text encoding for this font. */
   private String fontEncoding;
+  /** The FontName of the font. This defines the Font-Family. */
   private String fontName;
+  /** the font size in point. */
   private int fontSize;
+  /** this font's bold flag. */
   private boolean isBold;
+  /** this font's italic flag. */
   private boolean isItalic;
+  /** this font's underline flag. */
   private boolean isUnderline;
+  /** this font's strikethrough flag. */
   private boolean isStrikeThrough;
+  /** the AWT-Font represented by this font definition. */
   private transient Font font;
+  /** whether to embedd the font in the target documents, if supported */
   private boolean embeddedFont;
   // color is defined elsewhere
 
+  /**
+   * Creates a font definition using the given name and size and with the given
+   * styles defined.
+   *
+   * @param fontName the font name used in this font definition.
+   * @param fontSize the font size for the defined font.
+   * @param bold true, if the font should be bold, false otherwise
+   * @param italic true, if the font should be italic, false otherwise
+   * @param underline true, if the font should be drawn with underline style, false otherwise
+   * @param strikeThrough true, if the font should be drawn with strikethrough style, false otherwise
+   * @param encoding the default text encoding that should be used with this font.
+   * @param embedded whether this font should be embedded in the target document.
+   */
   public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic, boolean underline, boolean strikeThrough, String encoding, boolean embedded)
   {
     if (fontName == null) throw new NullPointerException();
@@ -44,61 +107,133 @@ public class FontDefinition implements Serializable, Cloneable
     this.embeddedFont = embedded;
   }
 
+  /**
+   * Creates a font definition using the given name and size and with the given
+   * styles defined.
+   *
+   * @param fontName the font name used in this font definition.
+   * @param fontSize the font size for the defined font.
+   * @param bold true, if the font should be bold, false otherwise
+   * @param italic true, if the font should be italic, false otherwise
+   * @param underline true, if the font should be drawn with underline style, false otherwise
+   * @param strikeThrough true, if the font should be drawn with strikethrough style, false otherwise
+   */
   public FontDefinition(String fontName, int fontSize, boolean bold, boolean italic, boolean underline, boolean strikeThrough)
   {
     this (fontName, fontSize, bold, italic, underline, strikeThrough, null, false);
   }
 
+  /**
+   * Creates a font definition using the given name and size and with no additional
+   * style enabled.
+   *
+   * @param fontName the font name used in this font definition.
+   * @param fontSize the font size for the defined font.
+   */
   public FontDefinition(String fontName, int fontSize)
   {
     this (fontName, fontSize, false, false, false, false, null, false);
   }
 
+  /**
+   * Creates a font definition base on the given AWT font.
+   *
+   * @param font the awt font that should be used as definition source.
+   */
   public FontDefinition(Font font)
   {
     this (font.getName(), font.getSize(), font.isBold(), font.isItalic(), false, false, null, false);
   }
 
+  /**
+   * Returns the font name of this font definition. The font name is the font face name.
+   *
+   * @return the name of the font.
+   */
   public String getFontName()
   {
     return fontName;
   }
 
+  /**
+   * Returns the size of the defined font.
+   *
+   * @return the font size in points.
+   */
   public int getFontSize()
   {
     return fontSize;
   }
 
+  /**
+   * Returns whether the font should be embedded in the target document.
+   *
+   * @return true, if the font should be embedded.
+   */
   public boolean isEmbeddedFont()
   {
     return embeddedFont;
   }
 
+  /**
+   * Returns the bold style of this font definition.
+   *
+   * @return true, if the font should be drawn in bold style.
+   */
   public boolean isBold()
   {
     return isBold;
   }
 
+  /**
+   * Returns the italic style of this font definition.
+   *
+   * @return true, if the font should be drawn in italic style.
+   */
   public boolean isItalic()
   {
     return isItalic;
   }
 
+  /**
+   * Returns the underline style of this font definition.
+   *
+   * @return true, if the font should be drawn in underline style.
+   */
   public boolean isUnderline()
   {
     return isUnderline;
   }
 
+  /**
+   * Returns the strikethrough style of this font definition.
+   *
+   * @return true, if the font should be drawn in strikethrough style.
+   */
   public boolean isStrikeThrough()
   {
     return isStrikeThrough;
   }
 
+  /**
+   * Creates and returns a copy of this object.
+   *
+   * @return     a clone of this instance.
+   * @exception  OutOfMemoryError            if there is not enough memory.
+   * @throws     CloneNotSupportedException  if a error occured during cloning .
+   * @see        java.lang.Cloneable
+   */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone();
   }
 
+  /**
+   * Returns the AWT StyleInformation, only Bold and Italic are encoding in
+   * the return value.
+   *
+   * @return the AWT-compatible style information.
+   */
   private int getFontStyle ()
   {
     int fontstyle = Font.PLAIN;
@@ -113,6 +248,11 @@ public class FontDefinition implements Serializable, Cloneable
     return fontstyle;
   }
 
+  /**
+   * returns the AWT-Font defined by this FontDefinition.
+   *
+   * @return the AWT font.
+   */
   public Font getFont ()
   {
     if (font == null)
@@ -122,6 +262,14 @@ public class FontDefinition implements Serializable, Cloneable
     return font;
   }
 
+  /**
+   * Returns this fonts string encoding. If the font does not define an
+   * encoding, the given default encoding is returned.
+   *
+   * @param defaultEncoding the font encoding to be used if this font definition
+   * does not define an own encoding.
+   * @return the font encoding or the default encoding.
+   */
   public String getFontEncoding (String defaultEncoding)
   {
     if (this.fontEncoding == null)
@@ -130,7 +278,10 @@ public class FontDefinition implements Serializable, Cloneable
       return fontEncoding;
   }
 
-
+  /**
+   * Returns a string representation of this font definition.
+   * @return a string representation of this font definition.
+   */
   public String toString ()
   {
     StringBuffer buffer = new StringBuffer();
@@ -146,6 +297,15 @@ public class FontDefinition implements Serializable, Cloneable
     return buffer.toString();
   }
 
+  /**
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @param o the reference object with which to compare.
+   * @return  <code>true</code> if this object is the same as the obj
+   *          argument; <code>false</code> otherwise.
+   * @see     #hashCode()
+   * @see     java.util.Hashtable
+   */
   public boolean equals(Object o)
   {
     if (this == o) return true;
@@ -165,6 +325,14 @@ public class FontDefinition implements Serializable, Cloneable
     return true;
   }
 
+  /**
+   * Returns a hash code value for the object. This method is
+   * supported for the benefit of hashtables such as those provided by
+   * <code>java.util.Hashtable</code>.
+   *
+   * @return  a hash code value for this object.
+   * @see     java.lang.Object#equals(java.lang.Object)
+   */
   public int hashCode()
   {
     int result;

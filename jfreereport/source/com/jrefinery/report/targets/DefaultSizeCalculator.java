@@ -1,8 +1,39 @@
 /**
- * Date: Jan 29, 2003
- * Time: 3:47:42 AM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: DefaultSizeCalculator.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * DefaultSizeCalculator.java
+ * -------------------
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: DefaultSizeCalculator.java,v 1.2 2003/02/01 18:27:04 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 29-Jan-2003 : Initial version
+ *
  */
 package com.jrefinery.report.targets;
 
@@ -13,13 +44,38 @@ import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * An AWT-Based default implementation of an SizeCalculator. This implementation
+ * tries to detect the currently used FontRendererContext; some JDKs are unable
+ * to return reasonable sizes for the given text.
+ *
+ * @see DefaultSizeCalculator
+ */
 public class DefaultSizeCalculator implements SizeCalculator
 {
+  /**
+   * A helper class that is able to detect whether the implementation is considered
+   * buggy. A non-buggy implementation should show no differences between aliased-versions
+   * of Graphics2D and non-aliased versions.
+   * <p>
+   * On JDK 1.4 the font renderer changed.
+   * In previous versions, the font renderer was sensitive to fractional metrics,
+   * so that fonts were always rendered without FractionalMetrics enabled.
+   * Since 1.4, fonts are always rendered with FractionalMetrics disabled.
+   * <p>
+   * Obviously this is annoying if you try to write a layouter for all JDKs :(
+   */
   public static class BuggyFontRendererDetector
   {
+    /** a flag that indicates whether the FontRenderContext implementation is buggy. */
     private boolean isBuggyVersion;
+
+    /** a flag that checks whether aliasing is used to draw the contents on Graphics objects. */
     private boolean isAliased;
 
+    /**
+     * creates a new BuggyFontRendererDetector.
+     */
     public BuggyFontRendererDetector ()
     {
       isAliased = ReportConfiguration.getGlobalConfig().isG2TargetUseAliasing();
@@ -77,6 +133,12 @@ public class DefaultSizeCalculator implements SizeCalculator
       }
     }
 
+    /**
+     * creates a new FontRenderContext suitable to calculate a string size, independend
+     * from the AWT-bug. 
+     *
+     * @return a font render context that is valid and not affected by the bugs.
+     */
     public FontRenderContext createFontRenderContext ()
     {
       if (isAliased())
@@ -90,19 +152,35 @@ public class DefaultSizeCalculator implements SizeCalculator
       return new FontRenderContext(null, isAliased(), isBuggyVersion() == false);
     }
 
+    /**
+     * Gets the defined aliasing state for the FontRenderContext and the target Graphics2D.
+     *
+     * @return the aliasing state.
+     */
     public boolean isAliased ()
     {
       return isAliased;
     }
 
+    /**
+     * Gets the buggy state of the AWT implementation.
+     *
+     * @return
+     */
     public boolean isBuggyVersion ()
     {
       return isBuggyVersion;
     }
   }
 
+  /** the FontRenderContext bug detector instance */
   private static BuggyFontRendererDetector frcDetector;
 
+  /**
+   * Returns a singleon instance of the FontRenderContext bug detector.
+   *
+   * @return the FontRenderContext-detector
+   */
   public static BuggyFontRendererDetector getFrcDetector ()
   {
     if (frcDetector == null)
@@ -112,10 +190,7 @@ public class DefaultSizeCalculator implements SizeCalculator
     return frcDetector;
   }
 
-
-  /**
-   * The font.
-   */
+  /** The font. */
   private FontDefinition font;
 
   /**
@@ -176,10 +251,5 @@ public class DefaultSizeCalculator implements SizeCalculator
   public String toString ()
   {
     return "DefaultSizeCalculator={font=" + font + "}";
-  }
-
-  public FontDefinition getFont()
-  {
-    return font;
   }
 }

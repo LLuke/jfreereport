@@ -1,8 +1,38 @@
 /**
- * Date: Jan 7, 2003
- * Time: 5:15:08 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: XMLWriter.java,v 1.3 2003/01/21 17:11:41 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * XMLWriter.java
+ * -------------------
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: XMLWriter.java,v 1.4 2003/02/02 23:43:53 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 07-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.xml;
 
@@ -18,28 +48,54 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+/**
+ *
+ */
 public class XMLWriter extends AbstractFunction
 {
+  /** the writer used to write the generated document. */
   private Writer w;
+  /** the dependency level. */
   private int depLevel;
+  /** the XMLEntity parser used to encode the xml characters. */
   private CharacterEntityParser entityParser;
 
+  /**
+   * Creates a new XMLWriter function. The Writer gets a dependency level of
+   * -1.
+   */
   public XMLWriter()
   {
     setDependencyLevel(-1);
     entityParser = CharacterEntityParser.createXMLEntityParser();
   }
 
+  /**
+   * returns the assigned writer for the output.
+   *
+   * @return the writer.
+   */
   public Writer getWriter()
   {
     return w;
   }
 
+  /**
+   * Defines the writer for the XML-output.
+   *
+   * @param w the writer.
+   */
   public void setWriter(Writer w)
   {
     this.w = w;
   }
 
+  /**
+   * Writes the band's elements into the assigned Writer.
+   *
+   * @param b the band that should be written.
+   * @throws IOException if an IO-Error occurs.
+   */
   private void writeBand (Band b)
     throws IOException
   {
@@ -66,7 +122,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that the report has started.
+   * Writes the report header.
    *
    * @param event  the event.
    */
@@ -86,7 +142,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that the report has finished.
+   * Writes the report footer.
    *
    * @param event  the event.
    */
@@ -106,7 +162,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group has started.
+   * Writes the header of the current group.
    *
    * @param event  the event.
    */
@@ -128,7 +184,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group has finished.
+   * Writes the footer of the current group.
    *
    * @param event  the event.
    */
@@ -150,7 +206,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a row of data is being processed.
+   * Writes the itemband.
    *
    * @param event  the event.
    */
@@ -169,7 +225,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group of item bands is about to be processed.
+   * Starts the itembands section.
    * <P>
    * The next events will be itemsAdvanced events until the itemsFinished event is raised.
    *
@@ -188,7 +244,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a group of item bands has been completed.
+   * Closes the itemband section.
    * <P>
    * The itemBand is finished, the report starts to close open groups.
    *
@@ -207,9 +263,7 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return the self reference of this writer.
    *
    * @return the value of the function.
    */

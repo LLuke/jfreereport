@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculator.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: SizeCalculator.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,8 @@
 
 package com.jrefinery.report.targets;
 
-// required for Javadoc links
-
 /**
- * The interface for an object that can calculate the width of a given string, and the
+ * The interface for an class that is able to calculate the width of a given string, and the
  * height of a line of text.  The calculations rely on state information (e.g. font size,
  * graphics device, etc) maintained by the calculator.
  * <p>
