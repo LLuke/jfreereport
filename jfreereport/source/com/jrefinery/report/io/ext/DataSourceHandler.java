@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.9 2003/05/02 12:40:02 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.10 2003/06/04 21:09:06 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.io.ext;
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -97,7 +98,7 @@ public class DataSourceHandler extends CompoundObjectHandler
     ObjectDescription od = fc.getDataSourceDescription(type);
     if (od == null)
     {
-      throw new SAXException("The specified DataSource type is not defined");
+      throw new ParseException("The specified DataSource type is not defined");
     }
     return od;
   }
@@ -121,7 +122,7 @@ public class DataSourceHandler extends CompoundObjectHandler
     String typeName = attrs.getValue("type");
     if (typeName == null)
     {
-      throw new SAXException("The datasource type must be specified");
+      throw new ParseException("The datasource type must be specified", getParser().getLocator());
     }
     dataSourceHandler = new DataSourceHandler(getParser(), tagName, typeName);
     getParser().pushFactory(dataSourceHandler);

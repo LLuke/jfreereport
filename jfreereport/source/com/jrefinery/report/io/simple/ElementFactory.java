@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.22 2003/04/24 18:08:54 taqua Exp $
+ * $Id: ElementFactory.java,v 1.23 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.Log;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -191,6 +192,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(IMAGEFUNCTION_TAG))
     {
+      Log.warn ("The usage of the image-function tag is deprecated. " +
+          "Use the image-element instead.");
       startImageFunction(atts);
     }
     else if (elementName.equals(IMAGEURLFIELD_TAG))
@@ -199,6 +202,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(IMAGEURLFUNCTION_TAG))
     {
+      Log.warn ("The usage of the image-url-function tag is deprecated. " +
+          "Use the image-url-element instead.");
       startImageURLFunction(atts);
     }
     else if (elementName.equals(LINE_TAG))
@@ -211,7 +216,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(GENERAL_FIELD_TAG))
     {
-      throw new SAXException("The usage of general field is deprecated, use string field instead");
+      throw new ParseException
+          ("The usage of general field is deprecated, use string field instead", getLocator());
     }
     else if (elementName.equals(STRING_FIELD_TAG))
     {
@@ -219,6 +225,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(MULTILINE_FIELD_TAG))
     {
+      Log.warn ("The usage of the mutiline-field tag is deprecated. " +
+          "Use the string-element instead.");
       startMultilineField(atts);
     }
     else if (elementName.equals(NUMBER_FIELD_TAG))
@@ -231,14 +239,20 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(STRING_FUNCTION_TAG))
     {
+      Log.warn ("The usage of the string-function tag is deprecated. " +
+          "Use the string-element instead.");
       startStringFunction(atts);
     }
     else if (elementName.equals(NUMBER_FUNCTION_TAG))
     {
+      Log.warn ("The usage of the number-function tag is deprecated. " +
+          "Use the number-element instead.");
       startNumberFunction(atts);
     }
     else if (elementName.equals(DATE_FUNCTION_TAG))
     {
+      Log.warn ("The usage of the date-function tag is deprecated. " +
+          "Use the date-element instead.");
       startDateFunction(atts);
     }
     else if (elementName.equals(RECTANGLE_TAG))
@@ -350,7 +364,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(GENERAL_FIELD_TAG))
     {
-      throw new SAXException ("The general element is deprecated, use string-field instead.");
+      throw new ParseException
+          ("The general element is deprecated, use string-field instead.", getLocator());
     }
     else if (elementName.equals(STRING_FIELD_TAG))
     {
@@ -390,7 +405,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else
     {
-      throw new SAXException("Invalid tag: " + qName);
+      throw new ParseException("Invalid tag: " + qName, getLocator());
     }
   }
 
@@ -407,7 +422,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   {
     String elementName = getNameGenerator().generateName(atts.getValue("name"));
     String elementSource = atts.getValue("src");
-    Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
+    // Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
     try
     {
       boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);
@@ -427,7 +442,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     catch (IOException mfule)
     {
-      throw new SAXException("Unable to create/load image", mfule);
+      throw new ParseException("Unable to create/load image", mfule, getLocator());
     }
 
   }
@@ -885,7 +900,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
       resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
       if (resourceBase == null)
       {
-        throw new SAXException("Resourcebase is not defined");
+        throw new SAXException("Resourcebase is not defined for this report. " +
+            "Use the configuration key 'com.jrefinery.report.ResourceBundle' to define it." );
       }
     }
 
@@ -911,7 +927,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
       resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
       if (resourceBase == null)
       {
-        throw new SAXException("Resourcebase is not defined");
+        throw new SAXException("Resourcebase is not defined for this report. " +
+            "Use the configuration key 'com.jrefinery.report.ResourceBundle' to define it." );
       }
     }
   }
@@ -1207,7 +1224,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     textElementSourceName = atts.getValue(FIELDNAME_ATT);
     if (textElementSourceName == null)
     {
-      throw new SAXException("The fieldname-attribute is required");
+      throw new ParseException("The fieldname-attribute is required.", getLocator());
     }
   }
 
@@ -1225,7 +1242,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     textElementSourceName = atts.getValue(FUNCTIONNAME_ATT);
     if (textElementSourceName == null)
     {
-      throw new SAXException("The fieldname-attribute is required");
+      throw new ParseException("The function-attribute is required.", getLocator());
     }
   }
 

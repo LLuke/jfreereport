@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
+ * $Id: StylesHandler.java,v 1.11 2003/06/04 21:09:07 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.HashMap;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -115,7 +116,7 @@ public class StylesHandler implements ElementDefinitionHandler
       String name = attrs.getValue("name");
       if (name == null)
       {
-        throw new SAXException("Attribute 'name' is required");
+        throw new ParseException("Attribute 'name' is required", getParser().getLocator());
       }
       styleSheet = new ElementStyleSheet(name);
 

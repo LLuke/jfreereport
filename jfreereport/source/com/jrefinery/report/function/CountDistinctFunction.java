@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CountDistinctFunction.java,v 1.2 2003/05/26 13:30:58 taqua Exp $
+ * $Id: CountDistinctFunction.java,v 1.3 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -182,6 +182,14 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
     return new Integer (values.size());
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
   private void readObject(ObjectInputStream in)
      throws IOException, ClassNotFoundException
   {

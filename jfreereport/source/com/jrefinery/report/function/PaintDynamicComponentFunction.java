@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.9 2003/05/16 17:26:42 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.10 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -318,6 +318,14 @@ public class PaintDynamicComponentFunction extends AbstractFunction implements S
   }
 
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
   private void readObject(ObjectInputStream in)
      throws IOException, ClassNotFoundException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.7 2003/05/02 12:40:18 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.8 2003/06/04 21:09:10 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import com.jrefinery.report.io.InitialReportHandler;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 import org.xml.sax.SAXException;
+import org.xml.sax.Locator;
 
 /**
  * Extends the SAX-DefaultHandler with ContentBase capabilities.
@@ -60,7 +61,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
 
   /** the parser used to coordinate the ReportDefinitionHandlers. */
   private Parser parser;
-  
+
   /** the current finishtag. */
   private String finishTag;
 
@@ -69,16 +70,16 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    *
    * @param parser  the used parser to coordinate the parsing process.
    * @param finishTag  the finish tag, that should trigger the deactivation of this parser.
-   * 
+   *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
   public AbstractReportDefinitionHandler (Parser parser, String finishTag)
   {
-    if (parser == null) 
+    if (parser == null)
     {
       throw new NullPointerException();
     }
-    if (finishTag == null) 
+    if (finishTag == null)
     {
       throw new NullPointerException();
     }
@@ -151,7 +152,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
 
   /**
    * Returns the parser.
-   * 
+   *
    * @return The parser.
    */
   public Parser getParser()
@@ -161,15 +162,27 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
 
   /**
    * Processes characters (in this case, does nothing).
-   * 
+   *
    * @param ch  the character array.
    * @param start  the index of the first valid character.
    * @param length  the number of valid characters.
-   * 
+   *
    * @throws SAXException if there is a parsing problem.
    */
   public void characters(char ch[], int start, int length) throws SAXException
   {
+
+  }
+
+  /**
+   * Returns the document locator of the parser or null, if there is no
+   * locator defined.
+   *
+   * @return the document locator or null.
+   */
+  protected Locator getLocator ()
+  {
+    return getParser().getLocator();
   }
 
 }

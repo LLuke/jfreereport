@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.4 2003/05/02 12:40:18 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.5 2003/05/30 16:57:53 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
    * Creates a new writer.
    * 
    * @param reportWriter  the report writer.
+   * @param indentLevel the current indention level.
    */
   public TemplatesWriter(ReportWriter reportWriter, int indentLevel)
   {

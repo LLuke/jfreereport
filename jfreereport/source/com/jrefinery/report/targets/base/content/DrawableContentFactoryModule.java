@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.6 2003/04/09 15:50:24 mungady Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.7 2003/06/10 12:11:55 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
 
 /**
  * A factory module for drawable content.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class DrawableContentFactoryModule implements ContentFactoryModule
@@ -90,7 +90,7 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
     Point2D point = bounds.getAbsolutePosition();
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                             bounds.getPreferredSize());
-    if (iBounds.getWidth() == 0 || iBounds.getHeight() == 0)
+    if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return null;
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.12 2003/05/16 17:26:46 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.13 2003/06/10 12:11:56 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class DefaultSizeCalculator implements SizeCalculator
 
       // Another funny thing for the docs: On JDK 1.4 the font renderer changed.
       // in previous versions, the font renderer was sensitive to fractional metrics,
-      // so that fonts were always rendered without FractionalMetrics enabled.
+      // so that fonts were always rendered with FractionalMetrics enabled.
       // Since 1.4, fonts are always rendered with FractionalMetrics disabled.
 
       // On a 1.4 version, the aliasing has no influence on non-fractional metrics

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.15 2003/05/27 08:32:38 taqua Exp $
+ * $Id: StyleWriter.java,v 1.16 2003/05/30 16:57:53 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param elementStyleSheet  the element style sheet.
    * @param defaultStyleSheet  the default style sheet.
+   * @param indentLevel the current indention level.
    */
   public StyleWriter(ReportWriter reportWriter,
                      ElementStyleSheet elementStyleSheet,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.28 2003/05/11 13:39:20 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.29 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -106,8 +106,8 @@ public class HtmlProducer extends TableProducer
   private static final String[] XHTML_HEADER = {
     "<!DOCTYPE html",
     "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
-    "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"",
-    "<html xmlns=\"http://www.w3.org/1999/xhtml\" >",
+    "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">",
+    "<html xmlns=\"http://www.w3.org/1999/xhtml\">",
     "<head>"};
 
   /** the standard HTML4 document type declaration and header. */
@@ -187,7 +187,7 @@ public class HtmlProducer extends TableProducer
     }
 
     // the style sheet definition will be inserted right before the content is written ...
-    pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"");
+    pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
     pout.print(getEncoding());
     if (useXHTML)
     {
@@ -332,9 +332,11 @@ public class HtmlProducer extends TableProducer
   {
     if (name != null)
     {
-      pout.println("<hr><h3>");
+      pout.println(useXHTML ? "<hr />" : "<hr>");
+      pout.println("<h3>");
       pout.println(name);
-      pout.println("</h3><hr>");
+      pout.println("</h3>");
+      pout.println(useXHTML ? "<hr />" : "<hr>");
     }
     pout.println("<p>");
     pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");

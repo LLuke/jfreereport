@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.11 2003/05/27 08:32:37 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.12 2003/05/30 16:57:51 taqua Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * Creates a new writer.
    *
    * @param reportWriter  the report writer.
+   * @param indentLevel the current indention level.
    */
   public FunctionsWriter(ReportWriter reportWriter, int indentLevel)
   {

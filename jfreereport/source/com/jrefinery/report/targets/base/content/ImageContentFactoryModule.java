@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.6 2003/02/27 10:35:38 mungady Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.7 2003/06/10 12:11:55 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import com.jrefinery.report.util.StringUtil;
 /**
  * The ImageContentFactoryModule creates image content from the given element.
  * The content type of the used element should fit "image/*".
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageContentFactoryModule implements ContentFactoryModule
@@ -84,7 +84,7 @@ public class ImageContentFactoryModule implements ContentFactoryModule
    *
    * @return the content.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
                                          LayoutSupport ot)
   {
     ImageReference ir = (ImageReference) e.getValue();
@@ -98,11 +98,11 @@ public class ImageContentFactoryModule implements ContentFactoryModule
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                             bounds.getPreferredSize());
 
-    if (iBounds.getWidth() == 0 || iBounds.getHeight() == 0)
+    if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return null;
     }
-    
+
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
       double w = ir.getImageWidth();

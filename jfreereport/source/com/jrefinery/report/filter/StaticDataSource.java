@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.8 2002/12/12 12:26:55 mungady Exp $
+ * $Id: StaticDataSource.java,v 1.9 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes
  * -------
@@ -104,6 +104,12 @@ public class StaticDataSource implements DataSource, Serializable
     return super.clone ();
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param out the output stream where to write the object.
+   * @throws IOException if errors occur while writing the stream.
+   */
   private void writeObject(ObjectOutputStream out)
      throws IOException
   {
@@ -111,6 +117,14 @@ public class StaticDataSource implements DataSource, Serializable
     SerializerHelper.getInstance().writeObject(value, out);
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
   private void readObject(java.io.ObjectInputStream in)
      throws IOException, ClassNotFoundException
   {

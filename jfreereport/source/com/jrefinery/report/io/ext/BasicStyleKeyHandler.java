@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.10 2003/04/24 18:08:48 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.11 2003/06/04 21:09:06 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -104,7 +105,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
     key = keyfactory.getStyleKey(name);
     if (key == null)
     {
-      throw new SAXException("The defined StyleKey is invalid: " + name);
+      throw new ParseException("The defined StyleKey is invalid: " + name, parser.getLocator());
     }
     if (c == null)
     {
@@ -118,7 +119,8 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
         getParser().getHelperObject(ParserConfigHandler.OBJECT_FACTORY_TAG);
     if (classFactory == null)
     {
-      throw new SAXException("There is no class factory defined for the parser.");
+      throw new ParseException("There is no class factory defined for the parser.",
+          parser.getLocator());
     }
   }
 

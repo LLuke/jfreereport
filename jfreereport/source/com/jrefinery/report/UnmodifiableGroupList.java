@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: UnmodifiableGroupList.java,v 1.2 2003/04/09 15:45:48 mungady Exp $
+ * $Id: UnmodifiableGroupList.java,v 1.3 2003/06/01 17:39:23 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class UnmodifiableGroupList extends GroupList
    * Removes an object from the list.
    *
    * @param o  the object.
-   *
+   * @return nothing, as this method always fires a UnsupportedOperation exception.
    * @throws UnsupportedOperationException as this GroupList is not modifiable.
    */
   public boolean remove(Object o)

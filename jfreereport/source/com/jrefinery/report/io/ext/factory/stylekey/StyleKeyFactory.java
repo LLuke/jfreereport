@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactory.java,v 1.9 2003/05/02 12:40:11 taqua Exp $
+ * $Id: StyleKeyFactory.java,v 1.10 2003/06/04 21:09:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -65,7 +65,8 @@ public interface StyleKeyFactory
    * @param k  the style key.
    * @param value  the value.
    * @param c  the class.
-   * 
+   * @param cf the class factory used to create the basic object.
+   *
    * @return The object.
    */
   public Object createBasicObject(StyleKey k, String value, Class c, ClassFactory cf);

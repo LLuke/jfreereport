@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.11 2003/03/07 18:07:48 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.12 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -300,6 +300,14 @@ public class PaintComponentFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
   private void readObject(ObjectInputStream in)
      throws IOException, ClassNotFoundException
   {

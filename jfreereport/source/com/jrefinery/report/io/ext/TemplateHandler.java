@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.11 2003/05/02 12:40:08 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.io.ext;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -117,13 +118,14 @@ public class TemplateHandler implements ElementDefinitionHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
-        throw new SAXException("No such parameter '" + parameterName + "' in template. ");
+        throw new ParseException("No such parameter '" + parameterName + "' in template. ",
+            getParser().getLocator());
       }
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
@@ -134,7 +136,7 @@ public class TemplateHandler implements ElementDefinitionHandler
         }
         catch (Exception e)
         {
-          throw new SAXException("Attribute 'class' is invalid.", e);
+          throw new ParseException("Attribute 'class' is invalid.", e, getParser().getLocator());
         }
       }
 
@@ -146,13 +148,13 @@ public class TemplateHandler implements ElementDefinitionHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
-        throw new SAXException("No such parameter");
+        throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
@@ -163,7 +165,7 @@ public class TemplateHandler implements ElementDefinitionHandler
         }
         catch (Exception e)
         {
-          throw new SAXException("Attribute 'class' is invalid.", e);
+          throw new ParseException("Attribute 'class' is invalid.", e, getParser().getLocator());
         }
       }
 
@@ -206,7 +208,7 @@ public class TemplateHandler implements ElementDefinitionHandler
       Object o = basicFactory.getValue();
       if (o == null)
       {
-        throw new SAXException("Parameter value is null");
+        throw new ParseException("Parameter value is null", getParser().getLocator());
       }
       getTemplate().setParameter(parameterName, o);
       basicFactory = null;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.10 2003/04/24 18:08:48 taqua Exp $
+ * $Id: BandHandler.java,v 1.11 2003/06/04 21:09:05 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -105,7 +106,8 @@ public class BandHandler extends ElementHandler
       String type = attrs.getValue("type");
       if (type == null)
       {
-        throw new SAXException("The element's 'type' attribute is missing");
+        throw new ParseException ("The element's 'type' attribute is missing",
+            getParser().getLocator());
       }
 
       ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getHelperObject(

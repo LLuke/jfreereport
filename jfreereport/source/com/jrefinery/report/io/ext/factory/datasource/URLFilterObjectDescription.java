@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: URLFilterObjectDescription.java,v 1.3 2003/05/27 08:32:26 taqua Exp $
+ * $Id: URLFilterObjectDescription.java,v 1.4 2003/06/04 21:09:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,14 +41,15 @@ package com.jrefinery.report.io.ext.factory.datasource;
 import java.net.URL;
 
 import com.jrefinery.report.filter.URLFilter;
-import org.jfree.util.Configuration;
 import org.jfree.util.Log;
-import org.jfree.xml.factory.objects.BeanObjectDescription;
 import org.jfree.xml.Parser;
+import org.jfree.xml.factory.objects.BeanObjectDescription;
 
 /**
  * An ObjectDescription for the URLFilterClass. This class uses either
  * an given or an preconfigured base url to construct the URL.
+ *
+ * @author Thomas Morgner
  */
 public class URLFilterObjectDescription extends BeanObjectDescription
 {

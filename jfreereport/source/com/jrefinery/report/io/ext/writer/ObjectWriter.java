@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.13 2003/06/01 19:11:42 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.14 2003/06/04 21:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @param reportWriter  the report writer.
    * @param baseObject  the base object (<code>null</code> not permitted).
    * @param objectDescription  the object description (<code>null</code> not permitted).
+   * @param indentLevel the current indention level.
    */
   public ObjectWriter(ReportWriter reportWriter, Object baseObject, 
                       ObjectDescription objectDescription, int indentLevel)

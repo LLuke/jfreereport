@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.10 2003/04/24 18:08:54 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.11 2003/05/02 12:40:19 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.Log;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -266,7 +267,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     if (className == null)
     {
-      throw new SAXException ("Expression class not specified");
+      throw new ParseException ("Expression class not specified", getLocator());
     }
 
     try
@@ -278,18 +279,18 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     catch (ClassNotFoundException e)
     {
-      throw new SAXException ("Expression " + name + " class=" + className
-                            + " is not valid: ClassNotFound: " + e.getMessage ());
+      throw new ParseException ("Expression " + name + " class=" + className
+                            + " is not valid. " , e, getLocator() );
     }
     catch (IllegalAccessException e)
     {
-      throw new SAXException ("Expression " + name + " class=" + className
-                            + " is not valid: IllegalAccess: " + e.getMessage ());
+      throw new ParseException ("Expression " + name + " class=" + className
+                            + " is not valid. " , e, getLocator());
     }
     catch (InstantiationException e)
     {
-      throw new SAXException ("Expression " + name + " class=" + className
-                            + " is not valid: Instantiation: " + e.getMessage ());
+      throw new ParseException ("Expression " + name + " class=" + className
+                            + " is not valid. " , e, getLocator());
     }
   }
 
@@ -330,7 +331,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     if (className == null)
     {
-      throw new SAXException ("Function class not specified");
+      throw new ParseException ("Function class not specified", getLocator());
     }
 
     try
@@ -342,18 +343,18 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     catch (ClassNotFoundException e)
     {
-      throw new SAXException ("Function " + name + " class=" + className
-                            + " is not valid: ClassNotFound: " + e.getMessage ());
+      throw new ParseException ("Function " + name + " class=" + className
+          + " is not valid. " , e, getLocator());
     }
     catch (IllegalAccessException e)
     {
-      throw new SAXException ("Function " + name + " class=" + className
-                            + " is not valid: IllegalAccess: " + e.getMessage ());
+      throw new ParseException ("Function " + name + " class=" + className
+          + " is not valid. " , e, getLocator());
     }
     catch (InstantiationException e)
     {
-      throw new SAXException ("Function " + name + " class=" + className
-                            + " is not valid: Instantiation: " + e.getMessage ());
+      throw new ParseException ("Function " + name + " class=" + className
+          + " is not valid. " , e, getLocator());
     }
   }
 
@@ -417,7 +418,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     else
     {
-      throw new SAXException ("Expected closing function tag.");
+      throw new ParseException ("Expected closing function tag.", getLocator());
     }
   }
 
@@ -456,7 +457,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     catch (FunctionInitializeException fie)
     {
       Log.warn ("Function initialization failed", fie);
-      throw new SAXException (fie);
+      throw new ParseException (fie);
     }
   }
 
@@ -483,7 +484,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     Expression f = getCurrentExpression();
     if (f == null)
     {
-      throw new SAXException ("End properties reached without a function defined");
+      throw new ParseException ("End properties reached without a function defined", getLocator());
     }
     f.setProperties (currentProperties);
   }
@@ -499,7 +500,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     Properties currentProps = getProperties ();
     if (currentProps == null)
     {
-      throw new SAXException ("EndProperty without properties tag?");
+      throw new ParseException("EndProperty without properties tag?", getLocator());
     }
 
     currentProps.setProperty(currentProperty, entityParser.decodeEntities(currentText.toString()));

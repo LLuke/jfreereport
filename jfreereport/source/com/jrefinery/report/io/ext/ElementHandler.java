@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
+ * $Id: ElementHandler.java,v 1.10 2003/06/04 21:09:06 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -132,12 +133,13 @@ public class ElementHandler implements ElementDefinitionHandler
       String references = attrs.getValue("references");
       if (references == null)
       {
-        throw new SAXException("A parent template must be specified");
+        throw new ParseException("A parent template must be specified", getParser().getLocator());
       }
       TemplateDescription template = templateCollector.getTemplate(references);
       if (template == null)
       {
-        throw new SAXException("The template '" + references + "' is not defined");
+        throw new ParseException("The template '" + references + "' is not defined",
+            getParser().getLocator());
       }
       // Clone the defined template ... we don't change the original ..
       template = (TemplateDescription) template.getInstance();
@@ -149,7 +151,8 @@ public class ElementHandler implements ElementDefinitionHandler
       String typeName = attrs.getValue("type");
       if (typeName == null)
       {
-        throw new SAXException("The datasource type must be specified");
+        throw new ParseException("The datasource type must be specified",
+            getParser().getLocator());
       }
       dataSourceHandler = new DataSourceHandler(getParser(), tagName, typeName);
       getParser().pushFactory(dataSourceHandler);

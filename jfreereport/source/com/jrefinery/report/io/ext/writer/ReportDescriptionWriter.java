@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.9 2003/05/27 08:32:37 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.10 2003/05/30 16:57:53 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * Creates a new report description writer.
    * 
    * @param reportWriter  the report writer.
+   * @param indent the current indention level.
    */
   public ReportDescriptionWriter(ReportWriter reportWriter, int indent)
   {

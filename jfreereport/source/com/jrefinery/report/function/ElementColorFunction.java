@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.7 2003/05/14 22:26:38 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.8 2003/06/01 17:39:25 taqua Exp $
  *
  * Changes
  * -------
@@ -276,6 +276,12 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
     return null;
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param out the output stream where to write the object.
+   * @throws IOException if errors occur while writing the stream.
+   */
   private void writeObject(ObjectOutputStream out)
      throws IOException
   {
@@ -284,6 +290,14 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
     SerializerHelper.getInstance().writeObject(elementColorTrue, out);
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
   private void readObject(ObjectInputStream in)
      throws IOException, ClassNotFoundException
   {

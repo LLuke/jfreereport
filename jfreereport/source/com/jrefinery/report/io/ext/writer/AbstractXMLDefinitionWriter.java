@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.10 2003/05/30 16:57:51 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.11 2003/06/04 21:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,13 @@ import com.jrefinery.report.io.ext.TemplatesHandler;
  */
 public abstract class AbstractXMLDefinitionWriter
 {
+  /** A int constant for controling the indent function. */
+  protected static final int OPEN_TAG_INCREASE = 1;
+  /** A int constant for controling the indent function. */
+  protected static final int CLOSE_TAG_DECREASE = 2;
+  /** A int constant for controling the indent function. */
+  protected static final int INDENT_ONLY = 3;
+
   /** A constant for close. */
   public static final boolean CLOSE = true;
 
@@ -173,6 +180,7 @@ public abstract class AbstractXMLDefinitionWriter
    * Creates a new writer.
    *
    * @param reportWriter  the report writer.
+   * @param indentLevel the current indention level.
    */
   public AbstractXMLDefinitionWriter(ReportWriter reportWriter, int indentLevel)
   {
@@ -385,12 +393,12 @@ public abstract class AbstractXMLDefinitionWriter
     return (str.toString());
   }
 
-  protected static final int OPEN_TAG_INCREASE = 1;
-  protected static final int CLOSE_TAG_DECREASE = 2;
-  protected static final int INDENT_ONLY = 3;
-
   /**
-   * Indent the line. Called for proper indenting in various places
+   * Indent the line. Called for proper indenting in various places.
+   *
+   * @param writer the writer which should receive the indentention.
+   * @param increase the current indent level.
+   * @throws IOException if writing the stream failed.
    */
   protected void indent(Writer writer, int increase) throws IOException
   {
@@ -400,7 +408,9 @@ public abstract class AbstractXMLDefinitionWriter
     }
     for (int i = 0; i < indentLevel; i++)
     {
-      writer.write("    "); // 4 spaces, we could also try tab, but I do not know whether this works with our XML edit pane
+      writer.write("    "); // 4 spaces, we could also try tab,
+                            // but I do not know whether this works
+                            // with our XML edit pane
     }
     if (increase == OPEN_TAG_INCREASE)
     {
@@ -408,16 +418,27 @@ public abstract class AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Returns the current indent level.
+   *
+   * @return the current indent level.
+   */
   protected int getIndentLevel()
   {
     return indentLevel;
   }
 
+  /**
+   * Increases the indention by one level.
+   */
   protected void increaseIndent()
   {
     indentLevel++;
   }
 
+  /**
+   * Decreates the indention by one level.
+   */
   protected void decreaseIndent()
   {
     indentLevel--;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundObjectHandler.java,v 1.9 2003/04/24 18:08:48 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.10 2003/05/02 12:40:01 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.io.ext;
 
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -116,18 +117,18 @@ public class CompoundObjectHandler extends BasicObjectHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getKeyObjectDescription();
       if (od == null)
       {
-        throw new SAXException("No ObjectFactory for the key");
+        throw new ParseException("No ObjectFactory for the key", getParser().getLocator());
       }
 
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
-        throw new SAXException("No such parameter: " + parameterName);
+        throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
@@ -138,7 +139,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
         catch (Exception e)
         {
-          throw new SAXException("Attribute 'class' is invalid.", e);
+          throw new ParseException("Attribute 'class' is invalid.", e, getParser().getLocator());
         }
       }
 
@@ -150,18 +151,18 @@ public class CompoundObjectHandler extends BasicObjectHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getKeyObjectDescription();
       if (od == null)
       {
-        throw new SAXException("No ObjectFactory for the key");
+        throw new ParseException("No ObjectFactory for the key", getParser().getLocator());
       }
 
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
-        throw new SAXException("No such parameter");
+        throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
 
       String overrideClassName = attrs.getValue("class");
@@ -173,7 +174,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
         catch (Exception e)
         {
-          throw new SAXException("Attribute 'class' is invalid.", e);
+          throw new ParseException("Attribute 'class' is invalid.", e, getParser().getLocator());
         }
       }
 
@@ -223,7 +224,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         Object o = basicFactory.getValue();
         if (o == null)
         {
-          throw new SAXException("Parameter value is null");
+          throw new ParseException("Parameter value is null", getParser().getLocator());
         }
 
         getKeyObjectDescription().setParameter(parameterName, o);
@@ -235,7 +236,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       Object o = basicFactory.getValue();
       if (o == null)
       {
-        throw new SAXException("Parameter value is null");
+        throw new ParseException("Parameter value is null", getParser().getLocator());
       }
       getKeyObjectDescription().setParameter(parameterName, o);
       basicFactory = null;

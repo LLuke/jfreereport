@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.11 2003/05/02 12:40:08 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.12 2003/06/04 21:09:07 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.util.ReportConfiguration;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -346,7 +347,8 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException("Orientation value in REPORT-Tag is invalid.");
+      throw new ParseException("Orientation value in REPORT-Tag is invalid.",
+          getParser().getLocator());
     }
     if (pageformatName != null)
     {
@@ -374,7 +376,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
     }
 
-    Log.warn ("Insufficient Data to create a pageformat: Returned default.");
+    Log.info ("Insufficient Data to create a pageformat: Returned default.");
     return format;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.10 2003/05/27 08:31:57 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.11 2003/06/04 21:09:06 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import com.jrefinery.report.io.InitialReportHandler;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
@@ -113,12 +114,14 @@ public class FunctionsHandler implements ElementDefinitionHandler
       String className = attrs.getValue("class");
       if (className == null)
       {
-        throw new SAXException("The attribute 'class' is missing for expression");
+        throw new ParseException("The attribute 'class' is missing for expression",
+            getParser().getLocator());
       }
       String expName = attrs.getValue("name");
       if (expName == null)
       {
-        throw new SAXException("The attribute 'name' is missing for expression");
+        throw new ParseException("The attribute 'name' is missing for expression",
+            getParser().getLocator());
       }
       int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
@@ -131,12 +134,14 @@ public class FunctionsHandler implements ElementDefinitionHandler
       String className = attrs.getValue("class");
       if (className == null)
       {
-        throw new SAXException("The attribute 'class' is missing for function");
+        throw new ParseException("The attribute 'class' is missing for function",
+            getParser().getLocator());
       }
       String expName = attrs.getValue("name");
       if (expName == null)
       {
-        throw new SAXException("The attribute 'name' is missing for function");
+        throw new ParseException("The attribute 'name' is missing for function",
+            getParser().getLocator());
       }
       int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
@@ -155,7 +160,8 @@ public class FunctionsHandler implements ElementDefinitionHandler
       propertyName = attrs.getValue("name");
       if (propertyName == null)
       {
-        throw new SAXException("The attribute 'name' is missing for the property-ref");
+        throw new ParseException("The attribute 'name' is missing for the property-ref",
+            getParser().getLocator());
       }
       ObjectDescription od = loadObjectDescription(className);
       if (isBasicObject(od))
@@ -205,7 +211,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
     }
     catch (Exception e)
     {
-      throw new SAXException("Unable to load the given class.");
+      throw new ParseException("Unable to load the given class.", e, getParser().getLocator());
     }
   }
 
@@ -233,18 +239,18 @@ public class FunctionsHandler implements ElementDefinitionHandler
     }
     catch (ClassNotFoundException e)
     {
-      throw new SAXException ("Expression " + expName + " class=" + className
-                            + " is not valid: ClassNotFound: " + e.getMessage ());
+      throw new ParseException ("Expression " + expName + " class=" + className
+                            + " is not valid. " , e, getParser().getLocator());
     }
     catch (IllegalAccessException e)
     {
-      throw new SAXException ("Expression " + expName + " class=" + className
-                            + " is not valid: IllegalAccess: " + e.getMessage ());
+      throw new ParseException ("Expression " + expName + " class=" + className
+                            + " is not valid. " , e, getParser().getLocator());
     }
     catch (InstantiationException e)
     {
-      throw new SAXException ("Expression " + expName + " class=" + className
-                            + " is not valid: Instantiation: " + e.getMessage ());
+      throw new ParseException ("Expression " + expName + " class=" + className
+                            + " is not valid. " , e, getParser().getLocator());
     }
   }
 
@@ -280,7 +286,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
       catch (FunctionInitializeException fe)
       {
         expressionHandler = null;
-        throw new SAXException("Unable to initialize function." , fe);
+        throw new ParseException("Unable to initialize function." , fe, getParser().getLocator());
       }
     }
     else if (tagName.equals(FUNCTION_TAG))
@@ -293,7 +299,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
       catch (FunctionInitializeException fe)
       {
         expressionHandler = null;
-        throw new SAXException("Unable to initialize function." , fe);
+        throw new ParseException("Unable to initialize function." , fe, getParser().getLocator());
       }
     }
     else if (tagName.equals(PROPERTY_REF_TAG))

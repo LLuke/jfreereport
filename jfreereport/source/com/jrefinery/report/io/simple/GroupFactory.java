@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.13 2003/05/11 13:39:17 taqua Exp $
+ * $Id: GroupFactory.java,v 1.14 2003/06/10 12:11:55 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -405,11 +406,11 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   {
     if (currentGroup == null && this.currentGroup == null)
     {
-      throw new SAXException("Band end before band start?");
+      throw new ParseException("Band end before band start?", getLocator());
     }
     if (currentGroup != null && this.currentGroup != null)
     {
-      throw new SAXException("Unable to stack a band into an other band");
+      throw new ParseException("Unable to stack a band into an other band", getLocator());
     }
 
     this.currentGroup = currentGroup;

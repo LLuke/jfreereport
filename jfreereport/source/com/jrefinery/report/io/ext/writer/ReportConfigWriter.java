@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.7 2003/05/02 12:40:15 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.8 2003/05/30 16:57:51 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    * A report configuration writer.
    * 
    * @param reportWriter  the report writer.
+   * @param indentLevel the current indention level.
    */
   public ReportConfigWriter(ReportWriter reportWriter, int indentLevel)
   {

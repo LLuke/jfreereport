@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.35 2003/06/01 20:33:38 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.36 2003/06/10 12:11:55 taqua Exp $
  *
  * Changes
  * -------
@@ -555,6 +555,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       if (absPos.getX() > parentDim.getWidth() || absPos.getY() > parentDim.getHeight())
       {
         // dont display, as this element is larger than the container ...
+        // Log.debug ("Element Out of Bounds: " + e);
         BandLayoutManagerUtil.setBounds(e, new Rectangle2D.Float(0,0,0,0));
         continue;
       }
@@ -562,7 +563,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       Dimension2D uncorrectedSize = getPreferredSize(e, parentDim);
       //Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + uncorrectedSize);
       absDim = correctDimension(uncorrectedSize, parentDim, absDim);
-      //Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + size);
+      // Log.debug ("CBounds: Element: " + e.getName() + " Bounds: " + absDim);
 
       // here apply the maximum bounds ...
       Rectangle2D bounds = new Rectangle2D.Float(

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.11 2003/05/27 08:31:56 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.12 2003/06/04 21:09:06 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.io.ext;
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
@@ -115,7 +116,8 @@ public class BasicObjectHandler implements ElementDefinitionHandler
     }
     if (objectDescription == null)
     {
-      throw new SAXException("No object definition for class " + targetObject);
+      throw new ParseException("No object definition for class " + targetObject,
+          getParser().getLocator());
     }
   }
 

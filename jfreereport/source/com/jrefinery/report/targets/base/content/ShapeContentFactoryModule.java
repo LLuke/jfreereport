@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.9 2003/04/09 15:50:25 mungady Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.10 2003/06/10 12:11:55 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
 
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                             bounds.getPreferredSize());
-    if (iBounds.getWidth() == 0 || iBounds.getHeight() == 0)
+    if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
       return null;
 
     Shape s = ShapeTransform.transformShape(value,

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.10 2003/05/02 12:40:20 taqua Exp $
+ * $Id: ReportFactory.java,v 1.11 2003/06/04 21:09:10 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -338,7 +339,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
     }
     else
     {
-      throw new SAXException("Orientation value in REPORT-Tag is invalid.");
+      throw new ParseException("Orientation value in REPORT-Tag is invalid.", getLocator());
     }
     if (pageformatName != null)
     {
@@ -366,7 +367,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
     }
 
-    Log.warn ("Insufficient Data to create a pageformat: Returned default.");
+    Log.info ("Insufficient Data to create a pageformat: Returned default.");
     return format;
   }
 

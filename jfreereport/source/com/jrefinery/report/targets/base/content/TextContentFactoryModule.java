@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.9 2003/05/02 12:40:31 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.10 2003/06/10 12:11:56 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.ui.FloatDimension;
 /**
  * The TextContentFactoryModule creates plain text content from the given element.
  * The content type of the used element should be "text/plain".
- * 
+ *
  * @author Thomas Morgner
  */
 public class TextContentFactoryModule implements ContentFactoryModule
@@ -85,10 +85,10 @@ public class TextContentFactoryModule implements ContentFactoryModule
    * @param ot  the output target.
    *
    * @return the content.
-   * 
+   *
    * @throws ContentCreationException if there is a problem creating the content.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
                                          LayoutSupport ot)
     throws ContentCreationException
   {
@@ -101,7 +101,7 @@ public class TextContentFactoryModule implements ContentFactoryModule
     {
       return null;
     }
-    
+
     Point2D point = bounds.getAbsolutePosition();
 
     // TextElement has a defined width (Max(MinSize, PrefSize).
@@ -117,7 +117,7 @@ public class TextContentFactoryModule implements ContentFactoryModule
     }
     Dimension2D dim = new FloatDimension((float) width, (float) height);
 
-    if (dim.getWidth() == 0 || dim.getHeight() == 0)
+    if (dim.getWidth() == 0 && dim.getHeight() == 0)
     {
       return null;
     }
@@ -131,7 +131,7 @@ public class TextContentFactoryModule implements ContentFactoryModule
     Float lh = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try
     {
-      TextContent tc = new TextContent(text, lh.floatValue(), tBounds, 
+      TextContent tc = new TextContent(text, lh.floatValue(), tBounds,
                                        ot.createTextSizeCalculator(f));
       return tc;
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.27 2003/06/04 21:09:10 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.28 2003/06/10 12:11:56 taqua Exp $
  *
  * Changes
  * -------
@@ -773,6 +773,12 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     styleChangeSupport.fireStyleRemoved(key);
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param out the output stream where to write the object.
+   * @throws IOException if errors occur while writing the stream.
+   */
   private void writeObject(ObjectOutputStream out)
        throws IOException
   {
@@ -789,6 +795,14 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     }
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
   private void readObject(ObjectInputStream in)
        throws IOException, ClassNotFoundException
   {
@@ -805,6 +819,14 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     }
   }
 
+  /**
+   * Tests, whether this ElementStyleSheet is equal to another stylesheet.
+   * ElementStyleSheets are equal, if both stylesheets have the same name.
+   * The contents or parents are not checked.
+   *
+   * @param o the other object to check.
+   * @return true, if both objects are equal, false otherwise.
+   */
   public boolean equals(Object o)
   {
     if (this == o) return true;
@@ -817,6 +839,13 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     return true;
   }
 
+  /**
+   * Returns a hash code value for the object. This method is
+   * supported for the benefit of hashtables such as those provided by
+   * <code>java.util.Hashtable</code>.
+   *
+   * @return the hashCode for this style sheet.
+   */
   public int hashCode()
   {
     return name.hashCode();

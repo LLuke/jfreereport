@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.7 2003/05/30 16:57:53 taqua Exp $
+ * $Id: StylesWriter.java,v 1.8 2003/06/04 21:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -69,6 +69,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    * Creates a new styles writer.
    *
    * @param reportWriter  the report writer.
+   * @param indentLevel the current indention level.
    */
   public StylesWriter(ReportWriter reportWriter, int indentLevel)
   {

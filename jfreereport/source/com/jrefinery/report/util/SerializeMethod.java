@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SerializeMethod.java,v 1.1 2003/05/30 18:47:48 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 30.05.2003 : Initial version
+ * 30-May-2003 : Initial version
  *  
  */
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.10 2003/06/01 19:11:42 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.11 2003/06/04 21:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ public class DataSourceWriter extends ObjectWriter
    * @param reportWriter  the report writer.
    * @param baseObject  the base object.
    * @param objectDescription the object description.
+   * @param indent the current indention level.
    */
   public DataSourceWriter(ReportWriter reportWriter, DataSource baseObject,
                           ObjectDescription objectDescription, int indent)

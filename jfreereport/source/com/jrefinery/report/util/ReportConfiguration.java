@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.45 2003/05/14 22:26:40 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.46 2003/06/01 17:39:27 taqua Exp $
  *
  * Changes
  * -------
@@ -1162,6 +1162,12 @@ public class ReportConfiguration implements Configuration, Serializable
     setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param out the output stream where to write the object.
+   * @throws IOException if errors occur while writing the stream.
+   */
   private void writeObject(ObjectOutputStream out)
      throws IOException
   {
@@ -1177,6 +1183,14 @@ public class ReportConfiguration implements Configuration, Serializable
     }
   }
 
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
   private void readObject(ObjectInputStream in)
      throws IOException, ClassNotFoundException
   {

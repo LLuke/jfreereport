@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.14 2003/04/24 18:08:49 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.15 2003/06/04 21:09:07 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.HashMap;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -128,7 +129,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
       String name = attrs.getValue("name");
       if (name == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
       String className = attrs.getValue("class");
       Class c = null;
@@ -151,7 +152,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
       String name = attrs.getValue("name");
       if (name == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
       String className = attrs.getValue("class");
       Class c = null;
@@ -175,9 +176,14 @@ public class StyleSheetHandler implements ElementDefinitionHandler
         ElementStyleSheet exSheet = (ElementStyleSheet) styleCollection.get(extend);
         if (exSheet == null)
         {
-          throw new SAXException("Invalid parent styleSheet, StyleSheet not defined: " + extend);
+          throw new ParseException("Invalid parent styleSheet, StyleSheet not defined: " + extend,
+              getParser().getLocator());
         }
         sheet.addParent(exSheet);
+      }
+      else
+      {
+        new ParseException("Extends tag without attribute 'name'", getParser().getLocator());
       }
     }
     else

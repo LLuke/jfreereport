@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.12 2003/05/27 08:31:57 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.13 2003/06/04 21:09:06 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.io.ext;
 
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
@@ -90,7 +91,8 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
     }
     if (keyObjectDescription == null)
     {
-      throw new SAXException("No object definition for class " + getStyleKey().getValueType());
+      throw new ParseException("No object definition for class " + getStyleKey().getValueType(),
+          getParser().getLocator());
     }
   }
 
@@ -119,13 +121,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
       ObjectDescription od = getKeyObjectDescription();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
-        throw new SAXException("No such parameter");
+        throw new ParseException("No such parameter: " + parameterName, getParser().getLocator());
       }
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
@@ -136,7 +138,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
         catch (Exception e)
         {
-          throw new SAXException("Attribute 'class' is invalid.", e);
+          throw new ParseException("Attribute 'class' is invalid.", e, getParser().getLocator());
         }
       }
 
@@ -148,14 +150,14 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       parameterName = attrs.getValue("name");
       if (parameterName == null)
       {
-        throw new SAXException ("Attribute 'name' is missing.");
+        throw new ParseException ("Attribute 'name' is missing.", getParser().getLocator());
       }
 
       ObjectDescription od = getKeyObjectDescription();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
       {
-        throw new SAXException("No such parameter");
+        throw new ParseException("No such parameter", getParser().getLocator());
       }
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
@@ -166,7 +168,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
         catch (Exception e)
         {
-          throw new SAXException("Attribute 'class' is invalid.", e);
+          throw new ParseException("Attribute 'class' is invalid.", e, getParser().getLocator());
         }
       }
 
@@ -210,7 +212,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       Object o = basicFactory.getValue();
       if (o == null)
       {
-        throw new SAXException("Parameter value is null");
+        throw new ParseException("Parameter value is null", getParser().getLocator());
       }
       getKeyObjectDescription().setParameter(parameterName, o);
       basicFactory = null;

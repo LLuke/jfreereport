@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.11 2003/06/04 21:09:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -111,19 +112,22 @@ public class TemplatesHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(TEMPLATE_TAG) == false)
     {
-      throw new SAXException("Expected tag '" + TEMPLATE_TAG + "'");
+      throw new ParseException("Expected tag '" + TEMPLATE_TAG + "'",
+          getParser().getLocator());
     }
 
     String templateName = attrs.getValue("name");
     if (templateName == null)
     {
-      throw new SAXException("The 'name' attribute is required for template definitions");
+      throw new ParseException("The 'name' attribute is required for template definitions",
+          getParser().getLocator());
     }
     String references = attrs.getValue("references");
     TemplateDescription template = templateCollector.getTemplate(references);
     if (template == null)
     {
-      throw new SAXException("The template '" + references + "' is not defined");
+      throw new ParseException("The template '" + references + "' is not defined",
+          getParser().getLocator());
     }
 
     // Clone the defined template ... we don't change the original ..
@@ -165,8 +169,8 @@ public class TemplatesHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException("Wrong tag, expected one of " + finishTag + ","
-                             + TEMPLATE_TAG);
+      throw new ParseException("Wrong tag, expected one of " + finishTag + ","
+                             + TEMPLATE_TAG, getParser().getLocator());
     }
   }
 

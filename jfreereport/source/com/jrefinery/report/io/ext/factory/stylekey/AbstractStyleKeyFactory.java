@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.12 2003/05/27 08:32:37 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.13 2003/06/04 21:09:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -94,6 +94,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    * @param k  the style key.
    * @param value  the value.
    * @param c  the class.
+   * @param fc the class factory used to create the basic object.
    * 
    * @return The object.
    */

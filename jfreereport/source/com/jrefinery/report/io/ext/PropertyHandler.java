@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.10 2003/05/02 12:40:06 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.Properties;
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -110,7 +111,8 @@ public class PropertyHandler implements ElementDefinitionHandler
     name = attrs.getValue(NAME_ATTR);
     if (name == null)
     {
-      throw new SAXException("Attribute 'name' is missing for tag 'property'.");
+      throw new ParseException("Attribute 'name' is missing for tag 'property'.",
+          getParser().getLocator());
     }
     buffer = new StringBuffer();
   }
@@ -154,7 +156,8 @@ public class PropertyHandler implements ElementDefinitionHandler
     }
     else
     {
-      throw new SAXException("Expected 'property' tag or '" + finishTag + "'. " + tagName);
+      throw new ParseException("Expected 'property' tag or '" + finishTag + "'. " + tagName,
+          getParser().getLocator());
     }
   }
 
