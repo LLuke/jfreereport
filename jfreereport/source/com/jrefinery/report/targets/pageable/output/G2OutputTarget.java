@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.28 2003/03/08 17:20:52 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.29 2003/03/08 20:28:46 taqua Exp $
  *
  * Changes
  * -------
@@ -595,9 +595,7 @@ public class G2OutputTarget extends AbstractOutputTarget
     // they are not influenced by the drawables position on the page
 
     Rectangle2D clipBounds = drawable.getClippingBounds();
-    Log.debug ("Drawable OpBounds on   : " + getOperationBounds());
-    Log.debug ("Drawable ClipBounds on : " + clipBounds);
-    
+
     Graphics2D target = (Graphics2D) g2.create();
     target.translate(-clipBounds.getX(), -clipBounds.getY());
     target.clip(new Rectangle2D.Float( 0, 0,
@@ -609,7 +607,5 @@ public class G2OutputTarget extends AbstractOutputTarget
                                                    (float) drawableSize.getWidth(),
                                                    (float) drawableSize.getHeight());
     drawable.getDrawable().draw(target, drawBounds);
-
-    Log.debug ("Done Draw Drawable on : " + drawable.getClippingBounds());
   }
 }

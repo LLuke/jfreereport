@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 3:29:37 PM
  *
- * $Id: DrawableOperationModule.java,v 1.1 2003/03/07 17:05:12 taqua Exp $
+ * $Id: DrawableOperationModule.java,v 1.2 2003/03/09 17:17:03 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.operations;
 
@@ -35,7 +35,6 @@ public class DrawableOperationModule extends OperationModule
   {
     DrawableContent content = (DrawableContent) value.getContentForBounds(bounds);
 
-    Log.debug ("Creating Drawable Ops: " + bounds);
     ArrayList array = new ArrayList ();
     array.add (new PhysicalOperation.SetBoundsOperation (bounds));
     array.add (new PhysicalOperation.ProcessDrawableOperation(content.getContent()));

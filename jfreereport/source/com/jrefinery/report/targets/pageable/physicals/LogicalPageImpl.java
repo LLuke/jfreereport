@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.28 2003/03/07 16:56:04 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.29 2003/03/09 17:17:03 taqua Exp $
  *
  * Changes
  * -------
@@ -421,7 +421,7 @@ public class LogicalPageImpl implements LogicalPage
   {
     if (e.isVisible() == false)
     {
-      Log.debug ("The Element " + e + " is not visible");
+      // Log.debug ("The Element " + e + " is not visible");
       return;
     }
     ContentFactory factory = outputTarget.getContentFactory();
@@ -437,7 +437,6 @@ public class LogicalPageImpl implements LogicalPage
     {
       throw new NullPointerException("No layout for element");
     }
-    Log.debug ("Element Bounds: " + bounds + " -> " + elementBounds);
     Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
     if (addOperationComments)
     {
@@ -453,7 +452,7 @@ public class LogicalPageImpl implements LogicalPage
       Content content = factory.createContentForElement(e, eli, getOutputTarget());
       if (content == null)
       {
-        Log.debug ("Content is null, no content created?");
+        // Log.debug ("Content is null, no content created?");
         return;
       }
       // split the elements contents, then write ..

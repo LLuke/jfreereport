@@ -2,7 +2,7 @@
  * Date: Mar 5, 2003
  * Time: 6:38:16 PM
  *
- * $Id: DrawableContentFactoryModule.java,v 1.3 2003/03/08 20:28:46 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.4 2003/03/09 17:16:39 taqua Exp $
  */
 package com.jrefinery.report.targets.base.content;
 
@@ -60,7 +60,6 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
     Rectangle2D drawableBounds = new Rectangle2D.Float(0, 0,
                                                        (float) iBounds.getWidth(),
                                                        (float) iBounds.getHeight());
-    Log.debug ("Created Container for: " + drawableBounds);
     DrawableContainer con = new DrawableContainer(drawable.getDrawable(), iBounds, drawableBounds);
     return new DrawableContent(con, point);
   }

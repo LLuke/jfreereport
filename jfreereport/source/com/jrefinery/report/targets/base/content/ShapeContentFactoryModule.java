@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.5 2003/03/08 16:08:07 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.6 2003/03/08 17:20:52 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import com.jrefinery.report.targets.ShapeTransform;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
 
 /**
@@ -100,7 +99,6 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
                          e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
                          e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
                          iBounds);
-    Log.debug ("CreateContentForElement: " + s + " -> " + s.getBounds2D());
     return new ShapeContent (s);
   }
 }

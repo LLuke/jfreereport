@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.11 2003/02/27 10:35:39 mungady Exp $
+ * $Id: PhysicalOperation.java,v 1.12 2003/03/07 16:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -434,7 +434,6 @@ public abstract class PhysicalOperation
      */
     public ProcessDrawableOperation(DrawableContainer drawableContainer)
     {
-      Log.debug ("Draw Created: " + drawableContainer);
       if (drawableContainer == null)
       {
         throw new NullPointerException();
@@ -451,7 +450,6 @@ public abstract class PhysicalOperation
      */
     public void performOperation(OutputTarget ot) throws OutputTargetException
     {
-      Log.debug ("Will Draw: " + ot);
       ot.drawDrawable(drawableContainer);
     }
   }

@@ -41,7 +41,7 @@
         </path>
 
         <property name="jfreereport.name" value="jfreereport" />
-        <property name="jfreereport.version" value="0.8.1_01" />
+        <property name="jfreereport.version" value="0.8.1_02" />
     </target>
 
     <!-- Compile the JFreeReport classes -->
