@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.11 2003/08/26 17:35:51 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.12 2003/09/13 15:14:41 taqua Exp $
  *
  * Changes
  * -------
@@ -185,7 +185,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
 
   /** The pdf specification version that should be created. */
-  public static final String PDF_VERSION ="Version";
+  public static final String PDF_VERSION = "Version";
 
   /** The global key name for the pdf specification version that should be created. */
   public static final String PDFTARGET_PDF_VERSION =
@@ -638,7 +638,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
-  private char getVersion (String version)
+  private char getVersion(String version)
   {
     if (version == null)
     {
@@ -646,13 +646,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
     if (version.length() < 3)
     {
-      Log.warn ("PDF version specification is invalid.");
+      Log.warn("PDF version specification is invalid.");
       return '4';
     }
     char retval = version.charAt(2);
     if (retval < '2' || retval > '5')
     {
-      Log.warn ("PDF version specification is invalid.");
+      Log.warn("PDF version specification is invalid.");
       return '4';
     }
     return retval;
@@ -1274,15 +1274,37 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
 
+    // todo: Whats going on here?
+//    final Rectangle2D operationBounds = getOperationBounds();
+//    final Rectangle2D clipBounds = drawable.getClippingBounds();
+//
+//    final Graphics2D target =
+//        writer.getDirectContent().createGraphics
+//        ((float) clipBounds.getWidth(), (float) clipBounds.getHeight());
+//    target.translate
+//        (operationBounds.getX() + clipBounds.getX(),
+//         operationBounds.getY() + clipBounds.getY());
+//    target.clip(new Rectangle2D.Float(0, 0,
+//        (float) clipBounds.getWidth(),
+//        (float) clipBounds.getHeight()));
+//
+//    final Dimension2D drawableSize = drawable.getDrawableSize();
+//    final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
+//        (float) drawableSize.getWidth(),
+//        (float) drawableSize.getHeight());
+//    drawable.getDrawable().draw(target, drawBounds);
+//    target.dispose();
+
+    final Rectangle2D bounds = getInternalOperationBounds();
+    final float x = (float) (bounds.getX());
+    final float y = (float) (bounds.getY());
+
     final Rectangle2D clipBounds = drawable.getClippingBounds();
 
-    final Graphics2D target =
-        writer.getDirectContent().createGraphics
-        ((float) clipBounds.getWidth(), (float) clipBounds.getHeight());
-    target.translate(-clipBounds.getX(), -clipBounds.getY());
-    target.clip(new Rectangle2D.Float(0, 0,
-        (float) clipBounds.getWidth(),
-        (float) clipBounds.getHeight()));
+    final Graphics2D target = writer.getDirectContent().createGraphics(
+        (float) clipBounds.getWidth() + x, (getPageHeight() - y));
+
+    target.translate(x, 0);
 
     final Dimension2D drawableSize = drawable.getDrawableSize();
     final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,

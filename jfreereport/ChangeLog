@@ -3,6 +3,30 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.4-2:
+        * BugFix: Exceptions in the repagination did not close the progress
+          monitor. 
+
+0.8.4-1:
+        * BugFix: InternalFrame was not closed properly and caused NullPointers
+          in Swing.
+
+        * BugFix: PaintComponentFunctions did draw on a black image. It is now
+          transparent instead.
+
+        * BugFix: Band.remove caused exceptions when the band was connected
+          with the report.
+
+        * BugFix: Printing values in the GroupFooter caused invalid values to
+          be printed, if an PageBreak occured between initializing and printing
+          the band.
+
+        * Added Accessor methods for common style properties as suggested
+          by 'joecole'. Band and Elements have now various getter/setter
+          methods to make the style definition easier.
+
+        * InternalFrameDemo shows how to use the PreviewInternalFrame properly.
+
 0.8.4:
         * Table targets use some kind of repagination to prepare the layouting.
           This makes it possible to compute the columns and styles before they

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalLayout.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: VerticalLayout.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,8 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 
+import org.jfree.report.util.Log;
+
 /**
  * A simple layout manager, which aligns all components in a vertical
  * flow layout.
@@ -53,11 +55,23 @@ import java.awt.Rectangle;
  */
 public class VerticalLayout implements LayoutManager
 {
+
+  private boolean useSizeFromParent;
+
   /**
    * DefaultConstructor.
    */
   public VerticalLayout()
   {
+    this (true);
+  }
+
+  /**
+   * DefaultConstructor.
+   */
+  public VerticalLayout(boolean useParent)
+  {
+    this.useSizeFromParent = useParent;
   }
 
   /**
@@ -106,6 +120,8 @@ public class VerticalLayout implements LayoutManager
           width = pref.width;
         }
       }
+      Log.debug ("PreferredSize in VLayout: " + new Dimension(width + ins.left + ins.right,
+          height + ins.top + ins.bottom));
       return new Dimension(width + ins.left + ins.right,
           height + ins.top + ins.bottom);
     }
@@ -144,6 +160,11 @@ public class VerticalLayout implements LayoutManager
     }
   }
 
+  public boolean isUseSizeFromParent()
+  {
+    return useSizeFromParent;
+  }
+
   /**
    * Lays out the container in the specified panel.
    * @param parent the component which needs to be laid out
@@ -154,12 +175,21 @@ public class VerticalLayout implements LayoutManager
     {
       Insets ins = parent.getInsets();
       int insHorizontal = ins.left + ins.right;
-      Rectangle bounds = parent.getBounds();
+
+      int width;
+      if (isUseSizeFromParent())
+      {
+        Rectangle bounds = parent.getBounds();
+        width = bounds.width - insHorizontal;
+      }
+      else
+      {
+        width = preferredLayoutSize(parent).width - insHorizontal;
+      }
       Component[] comps = parent.getComponents();
 
-      final int width = bounds.width - insHorizontal;
       //final int x = bounds.x + ins.left;
-      int y = bounds.y + ins.top;
+      int y = /*bounds.y + */ ins.top;
 
       for (int i = 0; i < comps.length; i++)
       {

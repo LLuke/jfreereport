@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.5 2003/09/09 15:52:53 taqua Exp $
+ * $Id: TableWriter.java,v 1.6 2003/09/13 15:14:42 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,13 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.Group;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
+import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
+import org.jfree.report.function.Expression;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.LayoutSupport;
@@ -65,7 +69,8 @@ import org.jfree.report.style.BandStyleSheet;
  *
  * @author Thomas Morgner
  */
-public strictfp class TableWriter extends AbstractFunction implements PageEventListener
+public strictfp class TableWriter extends AbstractFunction
+    implements PageEventListener, SimplePageLayoutWorker
 {
   /** A constant defining the tablewriters default function level. */
   public static final int OUTPUT_LEVEL = -1;
@@ -95,14 +100,7 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   /** A flag indicating whether the writer is currently handling the end of an page. */
   private boolean inEndPage;
 
-  /** A flag indicating whether the current page is empty. */
-  private boolean isPageEmpty;
-
-  /** A flag that indicates that the current pagebreak will be the last one. */
-  private boolean isLastPageBreak;
-
-  /** The current state for repeating group headers. */
-  private int currentEffectiveGroupIndex;
+  private SimplePageLayoutDelegate delegate;
 
   /**
    * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth
@@ -111,7 +109,115 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   public TableWriter()
   {
     setDependencyLevel(OUTPUT_LEVEL);
-    currentEffectiveGroupIndex = -1;
+    delegate = new SimplePageLayoutDelegate();
+    delegate.setWorker(this);
+  }
+
+  /**
+   * Clones the function.
+   * <P>
+   * Be aware, this does not create a deep copy. If you have complex
+   * strucures contained in objects, you have to override this function.
+   *
+   * @return a clone of this function.
+   *
+   * @throws CloneNotSupportedException this should never happen.
+   */
+  public Object clone() throws CloneNotSupportedException
+  {
+    TableWriter clone = (TableWriter) super.clone();
+    clone.delegate = (SimplePageLayoutDelegate) delegate.clone();
+    clone.delegate.setWorker(clone);
+    return clone;
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    TableWriter tw = (TableWriter) super.getInstance();
+    tw.delegate = new SimplePageLayoutDelegate();
+    tw.delegate.setWorker(tw);
+    return tw;
+  }
+
+  public boolean isPageEmpty()
+  {
+    return getProducer().isLayoutContainsContent();
+  }
+
+  public float getMaximumBandHeight()
+  {
+    return Float.MAX_VALUE;
+  }
+
+  public void setMaximumBandHeight(float maxBandHeight)
+  {
+  }
+
+  public float getReservedSpace()
+  {
+    return 0;
+  }
+
+  public void setReservedSpace(float reserved)
+  {
+  }
+
+  public float getCursorPosition()
+  {
+    return getCursor().getY();
+  }
+
+  /**
+   * Reinitialize the cursor of the layout worker. Called when
+   * a new page is started.
+   */
+  public void resetCursor()
+  {
+    setCursor(new TableWriterCursor());
+  }
+
+  public boolean isPageEnded()
+  {
+    return false;
+  }
+
+  public boolean printBottom(Band band) throws ReportProcessingException
+  {
+    return print (band, false, false);
+  }
+
+  public boolean print(Band band, boolean spoolBand, boolean handlePagebreakBefore)
+      throws ReportProcessingException
+  {
+    if (!isInEndPage() && (isPageEmpty() == false)
+        && band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+    {
+      endPage();
+      startPage();
+    }
+
+    final float y = getCursor().getY();
+    // don't save the state if the current page is currently being finished
+    // or restarted; PageHeader and PageFooter are printed out of order and
+    // do not influence the reporting state
+
+    final Rectangle2D bounds = doLayout(band);
+    bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
+    doPrint(bounds, band);
+
+    if (!isInEndPage() && (isPageEmpty() == false)
+        && band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
+    {
+      endPage();
+      startPage();
+    }
+    return true;
   }
 
   /**
@@ -239,10 +345,9 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   private void doPrint(final Rectangle2D bounds, final Band band)
   {
     // now print the band ...
-    final boolean printed = producer.processBand(bounds, band);
+    producer.processBand(bounds, band);
     getCursor().advance((float) bounds.getHeight());
     // something was printed ...
-    isPageEmpty = (printed == false);
     producer.commit();
   }
 
@@ -282,38 +387,6 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
     cEventState.firePageStartedEvent(currentEvent.getType());
     setCurrentEvent(currentEvent);
     inEndPage = false;
-    isPageEmpty = true;
-  }
-
-  /**
-   * Performs the band layout and prints the band.
-   *
-   * @param b  the band.
-   */
-  protected void print(final Band b)
-  {
-    if (!isInEndPage() && (isPageEmpty == false)
-        && b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
-    {
-      endPage();
-      startPage();
-    }
-
-    final float y = getCursor().getY();
-    // don't save the state if the current page is currently being finished
-    // or restarted; PageHeader and PageFooter are printed out of order and
-    // do not influence the reporting state
-
-    final Rectangle2D bounds = doLayout(b);
-    bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
-    doPrint(bounds, b);
-
-    if (!isInEndPage() && (isPageEmpty == false)
-        && b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
-    {
-      endPage();
-      startPage();
-    }
   }
 
   /**
@@ -351,9 +424,8 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
     setCurrentEvent(event);
 
     producer.open();
-    currentEffectiveGroupIndex = -1;
     startPage();
-    print(event.getReport().getReportHeader());
+    delegate.reportStarted(event);
   }
 
   /**
@@ -363,10 +435,8 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
    */
   public void reportFinished(final ReportEvent event)
   {
-    isLastPageBreak = true;
     setCurrentEvent(event);
-    currentEffectiveGroupIndex -= 1;
-    print(event.getReport().getReportFooter());
+    delegate.reportFinished(event);
     endPage();
     producer.close();
   }
@@ -380,7 +450,6 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   {
     setCurrentEvent(event);
     // a new page has started, so reset the cursor ...
-    setCursor(new TableWriterCursor());
 
     String sheetName = null;
     if (getSheetNameFunction() != null)
@@ -388,38 +457,8 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
       sheetName = String.valueOf(getDataRow().get(getSheetNameFunction()));
     }
     producer.beginPage(sheetName);
-
-    final Band b = event.getReport().getPageHeader();
-    if (event.getState().getCurrentPage() == 1)
-    {
-      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-      {
-        print(b);
-      }
-    }
-    else if (isLastPageBreak)
-    {
-      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-      {
-        print(b);
-      }
-    }
-    else
-    {
-      print(b);
-    }
-
-    /**
-     * Repeating group header are printed on the top of every page, in reverse order.
-     */
-    for (int gidx = 0; gidx < currentEffectiveGroupIndex; gidx++)
-    {
-      final Group g = event.getReport().getGroup(gidx);
-      if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
-      {
-        print(g.getHeader());
-      }
-    }
+    delegate.pageStarted(event);
+    clearCurrentGroupEvent();
   }
 
   /**
@@ -430,27 +469,9 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   public void pageFinished(final ReportEvent event)
   {
     setCurrentEvent(event);
-    final Band b = event.getReport().getPageFooter();
-    if (event.getState().getCurrentPage() == 1)
-    {
-      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-      {
-        print(b);
-      }
-    }
-    else if (isLastPageBreak)
-    {
-      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-      {
-        print(b);
-      }
-    }
-    else
-    {
-      print(b);
-    }
-
+    delegate.pageFinished(event);
     producer.endPage();
+    clearCurrentGroupEvent();
   }
 
   /**
@@ -461,11 +482,8 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   public void groupStarted(final ReportEvent event)
   {
     setCurrentEvent(event);
-    currentEffectiveGroupIndex += 1;
-    final int gidx = event.getState().getCurrentGroupIndex();
-    final Group g = event.getReport().getGroup(gidx);
-    final Band b = g.getHeader();
-    print(b);
+    delegate.groupStarted(event);
+    clearCurrentGroupEvent ();
   }
 
   /**
@@ -476,11 +494,13 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   public void groupFinished(final ReportEvent event)
   {
     setCurrentEvent(event);
-    currentEffectiveGroupIndex -= 1;
-    final int gidx = event.getState().getCurrentGroupIndex();
-    final Group g = event.getReport().getGroup(gidx);
-    final Band b = g.getFooter();
-    print(b);
+    delegate.groupFinished(event);
+    clearCurrentGroupEvent ();
+  }
+
+  private void clearCurrentGroupEvent()
+  {
+    currentEvent = null;
   }
 
   /**
@@ -491,7 +511,8 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   public void itemsAdvanced(final ReportEvent event)
   {
     setCurrentEvent(event);
-    print(event.getReport().getItemBand());
+    delegate.itemsAdvanced(event);
+    clearCurrentGroupEvent();
   }
 
   /**
@@ -504,7 +525,8 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   public void itemsStarted(final ReportEvent event)
   {
     setCurrentEvent(event);
-    currentEffectiveGroupIndex += 1;
+    delegate.itemsStarted(event);
+    clearCurrentGroupEvent();
   }
 
   /**
@@ -518,7 +540,8 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   {
     // this event does nothing
     setCurrentEvent(event);
-    currentEffectiveGroupIndex -= 1;
+    delegate.itemsFinished(event);
+    clearCurrentGroupEvent();
   }
 
   /**
@@ -587,7 +610,7 @@ public strictfp class TableWriter extends AbstractFunction implements PageEventL
   {
     if (getMaxWidth() == 0)
     {
-      throw new IllegalStateException("TableWriter function was not initialized properly");
+      throw new IllegalStateException("Assert: TableWriter function was not initialized properly");
     }
   }
 }

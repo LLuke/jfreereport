@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.8 2003/09/11 22:17:10 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.9 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,8 @@ import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.Spool;
+import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
+import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.DataRowConnector;
 import org.jfree.report.states.ReportDefinitionImpl;
 import org.jfree.report.states.ReportState;
@@ -89,7 +91,8 @@ import org.jfree.report.style.BandStyleSheet;
  *
  * @author Thomas Morgner
  */
-public strictfp class SimplePageLayouter extends PageLayouter implements PrepareEventListener
+public strictfp class SimplePageLayouter extends PageLayouter
+    implements PrepareEventListener, SimplePageLayoutWorker
 {
   /**
    * Represents the current state of the page layouter.
@@ -131,20 +134,17 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     }
   }
 
-  /** small carrier class to transport the maximum page number for this report. */
-  private static class PageCarrier
-  {
-    /** stores the last page number of the report processing. */
-    private int maxPages;
-  }
-
-  /** the page carrier for this pagelayouter contains the number of the last page. */
-  private PageCarrier pageCarrier;
-
-  /** A useful constant. */
+  /**
+   * A flag value indicating that the current page should be finished,
+   * regardless of the current state or fill level.
+   */
   private static final boolean ENDPAGE_FORCED = true;
 
-  /** A useful constant. */
+  /**
+   * A flag value indicating, that the current page should be finished,
+   * if it contains printed content. Spooled content is not considered
+   * to be printed.
+   */
   private static final boolean ENDPAGE_REQUESTED = false;
 
   /** A flag that indicates that the current pagebreak will be the last one. */
@@ -162,11 +162,10 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
   /** The current state. */
   private SimpleLayoutManagerState state;
 
+  private SimplePageLayoutDelegate delegate;
+
   /** The spool. */
   private Spool spooledBand;
-
-  /** The current state for repeating group headers. */
-  private int currentEffectiveGroupIndex;
 
   /**
    * Creates a new page layouter.
@@ -174,41 +173,67 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
   public SimplePageLayouter()
   {
     setName("Layout");
-    currentEffectiveGroupIndex = -1;
-    pageCarrier = new PageCarrier();
+    delegate = new SimplePageLayoutDelegate();
+    delegate.setWorker(this);
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
-   *
-   * @return a copy of this function.
+   * Reinitialize the cursor of the layout worker. Called when
+   * a new page is started.
    */
-  public Expression getInstance()
+  public void resetCursor()
   {
-    final SimplePageLayouter pl = (SimplePageLayouter) super.getInstance();
-    pl.pageCarrier = new PageCarrier();
-    return pl;
+    setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
   }
 
-  /**
-   * Returns the highest pagenumber found during the repagination process.
-   *
-   * @return the highest page number.
-   */
-  public int getMaxPage()
+  public float getCursorPosition()
   {
-    return pageCarrier.maxPages;
+    if (getCursor() == null)
+    {
+      throw new IllegalStateException("Cursor is not initialized.");
+    }
+    return getCursor().getY();
   }
 
-  /**
-   * Defines the highest pagenumber found during the repagination process.
-   *
-   * @param maxPage the highest page number.
-   */
-  protected void setMaxPage(final int maxPage)
+  public void setReservedSpace(float reserved)
   {
-    pageCarrier.maxPages = maxPage;
+    if (getCursor() == null)
+    {
+      throw new IllegalStateException("Cursor is not initialized.");
+    }
+    getCursor().setReservedSpace(reserved);
+  }
+
+  public float getReservedSpace()
+  {
+    if (getCursor() == null)
+    {
+      throw new IllegalStateException("Cursor is not initialized.");
+    }
+    return getCursor().getReservedSpace();
+  }
+
+  public void setMaximumBandHeight(float maxBandHeight)
+  {
+    if (getCursor() == null)
+    {
+      throw new IllegalStateException("Cursor is not initialized.");
+    }
+    getCursor().setPageTop(getCursor().getY());
+  }
+
+  public float getMaximumBandHeight()
+  {
+    if (getCursor() == null)
+    {
+      throw new IllegalStateException("Cursor is not initialized.");
+    }
+    return getCursor().getPageTop();
+  }
+
+  public boolean isPageEmpty()
+  {
+    return getLogicalPage().isEmpty();
   }
 
   /**
@@ -227,14 +252,9 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
       throw new IllegalStateException();
     }
     setCurrentEvent(event);
-    if (getCurrentEvent() == null)
-    {
-      throw new NullPointerException("getCurrentEvent() returned null");
-    }
     try
     {
-      currentEffectiveGroupIndex = -1;
-      printBand(getReport().getReportHeader());
+      delegate.reportStarted(event);
     }
     catch (FunctionProcessingException fe)
     {
@@ -259,12 +279,9 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
    */
   public void itemsFinished(final ReportEvent event)
   {
-    // activating this state after the page has ended is invalid.
-    if (isPageEnded())
-    {
-      throw new IllegalStateException();
-    }
-    currentEffectiveGroupIndex -= 1;
+    setCurrentEvent(event);
+    delegate.itemsFinished(event);
+    clearCurrentEvent();
   }
 
   /**
@@ -278,7 +295,7 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
     {
-      throw new IllegalStateException();
+      throw new IllegalStateException("AssertationFailed: Page ended.");
     }
     try
     {
@@ -308,12 +325,9 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
    */
   public void itemsStarted(final ReportEvent event)
   {
-    // activating this state after the page has ended is invalid.
-    if (isPageEnded())
-    {
-      throw new IllegalStateException();
-    }
-    currentEffectiveGroupIndex += 1;
+    setCurrentEvent(event);
+    delegate.itemsStarted(event);
+    clearCurrentEvent();
   }
 
   /**
@@ -345,57 +359,7 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     setCurrentEvent(event);
     try
     {
-      // a new page has started, so reset the cursor ...
-      setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
-
-      final Band b = getReport().getPageHeader();
-      if (event.getState().getCurrentPage() == 1)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-        {
-          print(b, true);
-        }
-      }
-      else if (event.getState().getCurrentPage() == getMaxPage())
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-        {
-          print(b, true);
-        }
-      }
-      else if (isLastPageBreak)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-        {
-          print(b, true);
-        }
-      }
-      else
-      {
-        print(b, true);
-      }
-
-      /**
-       * Repeating group header are only printed while ItemElements are
-       * processed.
-       */
-      // was currentEffectiveGroupIndex - 1
-      for (int gidx = 0; gidx < currentEffectiveGroupIndex; gidx++)
-      {
-        final Group g = getReport().getGroup(gidx);
-        if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
-        {
-          print(g.getHeader(), true);
-        }
-      }
-
-      // mark the current position to calculate the maxBand-Height
-      getCursor().setPageTop(getCursor().getY());
-
-      if (getLogicalPage().isEmpty() == false)
-      {
-        throw new IllegalStateException("Not empty after pagestart");
-      }
+      delegate.pageStarted(event);
     }
     catch (FunctionProcessingException fe)
     {
@@ -427,27 +391,7 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     setCurrentEvent(event);
     try
     {
-
-      getCursor().setReservedSpace(0);
-      final Band b = getReport().getPageFooter();
-      if (event.getState().getCurrentPage() == 1)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-        {
-          printBottom(b);
-        }
-      }
-      else if (isLastPageBreak)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-        {
-          printBottom(b);
-        }
-      }
-      else
-      {
-        printBottom(b);
-      }
+      delegate.pageFinished(event);
     }
     catch (FunctionProcessingException fe)
     {
@@ -477,24 +421,11 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     {
       throw new IllegalStateException();
     }
+
+    setCurrentEvent(event);
     try
     {
-      setCurrentEvent(event);
-      currentEffectiveGroupIndex -= 1;
-
-      final Object prepareRun =
-          event.getState().getProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY,
-              Boolean.FALSE);
-      if (prepareRun.equals(Boolean.TRUE))
-      {
-        setMaxPage(event.getState().getCurrentPage());
-      }
-
-      // force that this last pagebreak ...
-      isLastPageBreak = true;
-
-      final Band b = getReport().getReportFooter();
-      printBand(b);
+      delegate.reportFinished(event);
     }
     catch (FunctionProcessingException fe)
     {
@@ -524,15 +455,10 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     {
       throw new IllegalStateException();
     }
+    setCurrentEvent(event);
     try
     {
-      setCurrentEvent(event);
-      currentEffectiveGroupIndex += 1;
-
-      final int gidx = event.getState().getCurrentGroupIndex();
-      final Group g = getReport().getGroup(gidx);
-      final Band b = g.getHeader();
-      printBand(b);
+      delegate.groupStarted(event);
     }
     catch (FunctionProcessingException fe)
     {
@@ -560,17 +486,12 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
     {
-      throw new IllegalStateException();
+      throw new IllegalStateException("AssertationFailed: Page is closed.");
     }
+    setCurrentEvent(event);
     try
     {
-      setCurrentEvent(event);
-      currentEffectiveGroupIndex -= 1;
-
-      final int gidx = event.getState().getCurrentGroupIndex();
-      final Group g = getReport().getGroup(gidx);
-      final Band b = g.getFooter();
-      printBand(b);
+      delegate.groupFinished(event);
     }
     catch (FunctionProcessingException fe)
     {
@@ -601,11 +522,10 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
       throw new IllegalStateException();
     }
 
+    setCurrentEvent(event);
     try
     {
-      setCurrentEvent(event);
-
-      printBand(getReport().getItemBand());
+      delegate.itemsAdvanced(event);
     }
     catch (FunctionProcessingException fe)
     {
@@ -625,50 +545,43 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
    * Prints a band.
    *
    * @param b  the band.
-   *
-   * @throws ReportProcessingException if the printing or spooling of the band failed.
-   * @return true, if the band was printed, false if the printing was delayed to the next page
-   */
-  private boolean printBand(final Band b) throws ReportProcessingException
-  {
-    if (isPageEnded())
-    {
-      createSaveState(b);
-      setStartNewPage(true);
-      return false;
-    }
-    if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
-    {
-      createSaveState(b);
-
-      if (endPage(ENDPAGE_REQUESTED) == false)
-      {
-        // no pagebreak was done, the band was printed to an already empty page
-        return print(b, false);
-      }
-      // a pagebreak was requested, printing is delayed
-      setStartNewPage(true);
-      return false;
-    }
-    else
-    {
-      return print(b, false);
-    }
-  }
-
-  /**
-   * Prints a band.
-   *
-   * @param b  the band.
    * @param spool  a flag that controls whether or not to spool.
    * @return true, if the band was printed, and false if the printing is delayed
    * until a new page gets started.
    *
    * @throws ReportProcessingException if the printing failed
    */
-  private boolean print(final Band b, final boolean spool)
+  public boolean print(final Band b, final boolean spool, final boolean handlePagebreak)
       throws ReportProcessingException
   {
+    // create a safe state, if the page ended. This does not print the
+    // band. we just return.
+    if (isPageEnded())
+    {
+      createSaveState(b);
+      setStartNewPage(true);
+      return false;
+    }
+
+    if (handlePagebreak &&
+        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+    {
+      // don't save the state if the current page is currently being finished
+      // or restarted; PageHeader and PageFooter are printed out of order and
+      // do not influence the reporting state
+
+      // out-of-order prints do not accept pagebreaks, so we can be sure that
+      // this is no pageheader or page footer or a band from there.
+      createSaveState(b);
+
+      if (endPage(ENDPAGE_REQUESTED) == true)
+      {
+        // a pagebreak was requested and granted, printing is delayed
+        setStartNewPage(true);
+        return false;
+      }
+    }
+
     final float y = getCursor().getY();
     // don't save the state if the current page is currently being finished
     // or restarted; PageHeader and PageFooter are printed out of order and
@@ -689,7 +602,7 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
    *
    * @throws ReportProcessingException if the printing failed
    */
-  private boolean printBottom(final Band b)
+  public boolean printBottom(final Band b)
       throws ReportProcessingException
   {
     // don't save the state if the current page is currently beeing finished
@@ -1003,7 +916,7 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
         // yes, I hate this code too...
         DataRowConnector.disconnectDataSources(band, impl.getDataRowConnector());
         DataRowConnector.connectDataSources(band, impl.getDataRowConnector());
-        print(band, false);
+        print(band, BAND_SPOOLED, PAGEBREAK_BEFORE_IGNORED);
       }
       catch (CloneNotSupportedException cne)
       {
@@ -1102,6 +1015,8 @@ public strictfp class SimplePageLayouter extends PageLayouter implements Prepare
     {
       sl.spooledBand = (Spool) spooledBand.clone();
     }
+    sl.delegate = (SimplePageLayoutDelegate) delegate.clone();
+    sl.delegate.setWorker(sl);
     return sl;
   }
 

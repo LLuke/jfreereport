@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.19 2003/09/24 13:43:37 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.20 2003/09/24 16:41:04 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -739,6 +740,69 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
+   * Builds the export plugins and fills the plug in collections.
+   *
+   * @param report the report for which to build the plugins
+   */
+  private void buildExportPlugins (JFreeReport report)
+  {
+    final ExportPluginFactory factory = ExportPluginFactory.getInstance();
+    exportPlugIns = factory.createExportPlugIns
+      (proxy, report.getReportConfiguration(), exportWorker);
+    pluginActions = new HashMap(exportPlugIns.size());
+    final Iterator it = exportPlugIns.iterator();
+    while (it.hasNext())
+    {
+      final ExportPlugin ep = (ExportPlugin) it.next();
+      final ExportAction ea = new ExportAction(ep);
+      ea.setReport(report);
+      pluginActions.put(ep, ea);
+    }
+  }
+
+  /**
+   * Returns the list of export plugins available to the report.
+   *
+   * @return the list of export plugins.
+   */
+  protected List getExportPlugins ()
+  {
+    return exportPlugIns;
+  }
+
+  /**
+   * Returns the map of export plugins available to the report.
+   * Using a plugin as key you can query the assigned action for that
+   * plugin.
+   *
+   * @return the list of export plugins.
+   */
+  protected HashMap getExportActions ()
+  {
+    return pluginActions;
+  }
+
+  /**
+   * Returns the export worker used for exporting.
+   *
+   * @return the worker.
+   */
+  protected Worker getExportWorker ()
+  {
+    return exportWorker;
+  }
+
+  /**
+   * Returns the pagination worker used when paginating the report.
+   *
+   * @return the worker.
+   */
+  protected Worker getRepaginationWorker ()
+  {
+    return paginationWorker;
+  }
+
+  /**
    * Initialises the preview dialog.
    *
    * @param report  the report.
@@ -755,19 +819,7 @@ public class PreviewProxyBase extends JComponent
         report.getReportConfiguration().getConfigProperty
         (LARGE_ICONS_ENABLED_PROPERTY, "true").equals("true");
     setLargeIconsEnabled(largeIconsProperty);
-
-    final ExportPluginFactory factory = ExportPluginFactory.getInstance();
-    exportPlugIns = factory.createExportPlugIns
-      (proxy, report.getReportConfiguration(), exportWorker);
-    pluginActions = new HashMap(exportPlugIns.size());
-    final Iterator it = exportPlugIns.iterator();
-    while (it.hasNext())
-    {
-      final ExportPlugin ep = (ExportPlugin) it.next();
-      final ExportAction ea = new ExportAction(ep);
-      ea.setReport(report);
-      pluginActions.put(ep, ea);
-    }
+    buildExportPlugins(report);
 
     // handle a JDK bug: windows are not garbage collected if dispose is not called manually.
     // DisposedState is undone when show() or pack() is called, so this does no harm.
@@ -1327,15 +1379,27 @@ public class PreviewProxyBase extends JComponent
    */
   protected JMenuBar createMenuBar()
   {
-    final ResourceBundle resources = getResources();
     // create the menus
     final JMenuBar menuBar = new JMenuBar();
     // first the file menu
 
+    // finally, glue together the menu and return it
+
+    menuBar.add(createFileMenu());
+    menuBar.add(createNavigationMenu());
+    menuBar.add(createZoomMenu());
+    menuBar.add(createHelpMenu());
+
+    return menuBar;
+  }
+
+  protected JMenu createFileMenu ()
+  {
+    final ResourceBundle resources = getResources();
     final JMenu fileMenu = new JMenu(resources.getString("menu.file.name"));
     Character mnemonic = (Character) resources.getObject("menu.file.mnemonic");
     fileMenu.setMnemonic(mnemonic.charValue());
-
+    
     final Iterator it = exportPlugIns.iterator();
     final boolean addedItem = it.hasNext();
     while (it.hasNext())
@@ -1353,49 +1417,58 @@ public class PreviewProxyBase extends JComponent
       fileMenu.addSeparator();
     }
 
-    fileMenu.add(createMenuItem(closeAction));
+    fileMenu.add(createMenuItem(getCloseAction()));
+    return fileMenu;
+  }
 
+  protected JMenu createNavigationMenu ()
+  {
+    final ResourceBundle resources = getResources();
     // the navigation menu ...
     final JMenu navMenu = new JMenu(resources.getString("menu.navigation.name"));
-    mnemonic = (Character) resources.getObject("menu.navigation.mnemonic");
+    Character mnemonic = (Character) resources.getObject("menu.navigation.mnemonic");
     navMenu.setMnemonic(mnemonic.charValue());
 
-    navMenu.add(createMenuItem(gotoAction));
+    navMenu.add(createMenuItem(getGotoAction()));
     navMenu.addSeparator();
-    navMenu.add(createMenuItem(firstPageAction));
-    navMenu.add(createMenuItem(previousPageAction));
-    navMenu.add(createMenuItem(nextPageAction));
-    navMenu.add(createMenuItem(lastPageAction));
+    navMenu.add(createMenuItem(getFirstPageAction()));
+    navMenu.add(createMenuItem(getPreviousPageAction()));
+    navMenu.add(createMenuItem(getNextPageAction()));
+    navMenu.add(createMenuItem(getLastPageAction()));
+    return navMenu;
+  }
 
+  protected JMenu createZoomMenu ()
+  {
+    final ResourceBundle resources = getResources();
     // the navigation menu ...
     final JMenu zoomMenu = new JMenu(resources.getString("menu.zoom.name"));
-    mnemonic = (Character) resources.getObject("menu.zoom.mnemonic");
+    Character mnemonic = (Character) resources.getObject("menu.zoom.mnemonic");
     zoomMenu.setMnemonic(mnemonic.charValue());
 
-    zoomMenu.add(createMenuItem(zoomInAction));
-    zoomMenu.add(createMenuItem(zoomOutAction));
+    zoomMenu.add(createMenuItem(getZoomInAction()));
+    zoomMenu.add(createMenuItem(getZoomOutAction()));
     zoomMenu.add(new JSeparator());
+
+    ActionConcentrator ac = getZoomActionConcentrator();
     for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
       final Action action = new ZoomSetAction(i);
-      zoomActionConcentrator.addAction(action);
+      ac.addAction(action);
       zoomMenu.add(createMenuItem(action));
     }
+    return zoomMenu;
+  }
 
+  protected JMenu createHelpMenu ()
+  {
+    final ResourceBundle resources = getResources();
     // then the help menu
     final JMenu helpMenu = new JMenu(resources.getString("menu.help.name"));
-    mnemonic = (Character) resources.getObject("menu.help.mnemonic");
+    Character mnemonic = (Character) resources.getObject("menu.help.mnemonic");
     helpMenu.setMnemonic(mnemonic.charValue());
-    helpMenu.add(createMenuItem(aboutAction));
-
-    // finally, glue together the menu and return it
-
-    menuBar.add(fileMenu);
-    menuBar.add(navMenu);
-    menuBar.add(zoomMenu);
-    menuBar.add(helpMenu);
-
-    return menuBar;
+    helpMenu.add(createMenuItem(getAboutAction()));
+    return helpMenu;
   }
 
   /**
@@ -1985,10 +2058,14 @@ public class PreviewProxyBase extends JComponent
           }
           catch (ReportInterruptedException re)
           {
+            progressDialog.setVisible(false);
+            reportPane.removeRepaginationListener(progressDialog);
             Log.info ("Repagination aborted.");
           }
           catch (Exception e)
           {
+            progressDialog.setVisible(false);
+            reportPane.removeRepaginationListener(progressDialog);
             Log.warn("Failed to repaginate", e);
             reportPane.setError(e);
           }

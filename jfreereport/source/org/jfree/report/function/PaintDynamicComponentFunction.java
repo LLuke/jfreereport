@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import org.jfree.report.ImageReference;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 
@@ -232,9 +233,9 @@ public class PaintDynamicComponentFunction extends AbstractFunction
       peerSupply.setSize(dim);
       peerSupply.validate();
 
-      final BufferedImage bi = new BufferedImage((int) (scale * dim.width),
-          (int) (scale * dim.height),
-          BufferedImage.TYPE_INT_ARGB);
+      final BufferedImage bi =
+          ImageUtils.createTransparentImage
+          ((int) scale * dim.width, (int) scale * dim.height);
       final Graphics2D graph = bi.createGraphics();
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
