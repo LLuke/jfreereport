@@ -28,32 +28,60 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ImageURLElementTemplateDescription.java,v 1.4 2003/03/07 16:56:00 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.templates;
 
+import java.net.URL;
+
 import com.jrefinery.report.filter.templates.ImageURLElementTemplate;
+import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * An image URL element template description.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ImageURLElementTemplateDescription extends AbstractTemplateDescription
 {
   /**
    * Creates a new template description.
-   * 
+   *
    * @param name  the name.
    */
   public ImageURLElementTemplateDescription(String name)
   {
     super(name, ImageURLElementTemplate.class, true);
+  }
+
+  /**
+   * Creates an object based on this description.
+   *
+   * @return The object.
+   */
+  public Object createObject()
+  {
+    ImageURLElementTemplate t = (ImageURLElementTemplate) super.createObject();
+    if (t.getBaseURL() == null)
+    {
+      String baseURL = getConfig().getConfigProperty(Configuration.CONTENT_BASE_KEY);
+      try
+      {
+        URL bURL = new URL(baseURL);
+        t.setBaseURL(bURL);
+      }
+      catch (Exception e)
+      {
+        Log.warn("BaseURL is invalid: ", e);
+      }
+    }
+    return t;
   }
 }

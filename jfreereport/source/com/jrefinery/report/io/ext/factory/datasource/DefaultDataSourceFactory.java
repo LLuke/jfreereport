@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.9 2003/04/24 18:08:50 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.10 2003/05/02 12:40:09 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -102,7 +102,7 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
                         new BeanObjectDescription(SimpleDateFormatParser.class));
     registerDataSources("StaticDataSource", new BeanObjectDescription(StaticDataSource.class));
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
-    registerDataSources("URLFilter", new BeanObjectDescription(URLFilter.class));
+    registerDataSources("URLFilter", new URLFilterObjectDescription(URLFilter.class));
     registerDataSources("ResourceFileFilter", new BeanObjectDescription(ResourceFileFilter.class));
     registerDataSources("DrawableFilter", new BeanObjectDescription(DrawableFilter.class));
     registerDataSources("ShapeFilter", new BeanObjectDescription(ShapeFilter.class));

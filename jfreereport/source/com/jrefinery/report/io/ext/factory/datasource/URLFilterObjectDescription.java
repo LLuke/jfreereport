@@ -20,46 +20,45 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------------------------
- * ImageURLFieldTemplateDescription.java
- * -------------------------------------
+ * ------------------------------
+ * URLFilterObjectDescription.java
+ * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldTemplateDescription.java,v 1.4 2003/03/07 16:56:00 taqua Exp $
+ * $Id$
  *
- * Changes (from 19-Feb-2003)
+ * Changes 
  * -------------------------
- * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *
+ * 16.05.2003 : Initial version
+ *  
  */
 
-package com.jrefinery.report.io.ext.factory.templates;
+package com.jrefinery.report.io.ext.factory.datasource;
 
 import java.net.URL;
 
-import com.jrefinery.report.filter.templates.ImageURLFieldTemplate;
-import com.jrefinery.report.filter.templates.ImageURLElementTemplate;
+import com.jrefinery.report.filter.URLFilter;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
+import org.jfree.xml.factory.objects.BeanObjectDescription;
 
-/**
- * An image URL field template description.
- *
- * @author Thomas Morgner
- */
-public class ImageURLFieldTemplateDescription extends AbstractTemplateDescription
+public class URLFilterObjectDescription extends BeanObjectDescription
 {
   /**
-   * Creates a new template description.
+   * Creates a new object description.
    *
-   * @param name  the name.
+   * @param className  the class.
    */
-  public ImageURLFieldTemplateDescription(String name)
+  public URLFilterObjectDescription(Class className)
   {
-    super(name, ImageURLFieldTemplate.class, true);
+    super(className);
+    if (URLFilter.class.isInstance(className) == false)
+    {
+      throw new IllegalArgumentException("Given class is no instance of URLFilter.");
+    }
   }
 
   /**
@@ -69,7 +68,7 @@ public class ImageURLFieldTemplateDescription extends AbstractTemplateDescriptio
    */
   public Object createObject()
   {
-    ImageURLFieldTemplate t = (ImageURLFieldTemplate) super.createObject();
+    URLFilter t = (URLFilter) super.createObject();
     if (t.getBaseURL() == null)
     {
       String baseURL = getConfig().getConfigProperty(Configuration.CONTENT_BASE_KEY);
