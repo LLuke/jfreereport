@@ -25,12 +25,15 @@
  * --------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: Log.java,v 1.7 2002/11/07 21:45:29 taqua Exp $
+ * $Id: Log.java,v 1.8 2002/11/27 12:20:34 taqua Exp $
  *
  * Changes
  * -------
  * 11-May-2002 : Created a simple logging schema.
+ * 12-Nov-2002 : Removed redundant import (DG).
+ *
  */
+
 package com.jrefinery.report.util;
 
 import java.util.ArrayList;

@@ -25,17 +25,16 @@
  * -------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ResultSetTableModelFactory.java,v 1.10 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
  * 25-Apr-2002 : Initial version
  * 09-Jun-2002 : Documentation and changed the return value to be a CloseableTableModel
  * 02-Oct-2002 : <Robert Fuller> Bugs fixed for DefaultTableModel creation.
+ * 12-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG)
  */
 package com.jrefinery.report.util;
-
-import com.jrefinery.report.JFreeReport;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
@@ -87,7 +86,9 @@ public class ResultSetTableModelFactory
       throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
-    String prop = ReportConfiguration.getGlobalConfig().getConfigProperty(ReportConfiguration.RESULTSET_FACTORY_MODE, "");
+    String prop = ReportConfiguration
+        .getGlobalConfig().getConfigProperty(ReportConfiguration.RESULTSET_FACTORY_MODE, "");
+
     if (prop.equalsIgnoreCase("simple"))
     {
       return generateDefaultTableModel(rs);
@@ -164,14 +165,13 @@ public class ResultSetTableModelFactory
       rows.add(column.toArray());
     }
 
-    Object[] _rows = rows.toArray();
-    Object[][] rowMap = new Object[_rows.length][];
-    for (int i = 0; i < _rows.length; i++)
+    Object[] tempRows = rows.toArray();
+    Object[][] rowMap = new Object[tempRows.length][];
+    for (int i = 0; i < tempRows.length; i++)
     {
-      rowMap[i] = (Object[]) _rows[i];
+      rowMap[i] = (Object[]) tempRows[i];
     }
-    CloseableDefaultTableModel model
-        = new CloseableDefaultTableModel(rowMap, header.toArray());
+    CloseableDefaultTableModel model = new CloseableDefaultTableModel(rowMap, header.toArray());
     return model;
   }
 

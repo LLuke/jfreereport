@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ReportProperties.java,v 1.11 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,10 @@ import java.util.TreeSet;
 
 /**
  * The report properties is a hashtable with string keys. ReportProperties are bound to
- * a report as an general purpose storage. ReportProperties bound to an JFreeReport-object
+ * a report as a general purpose storage. ReportProperties bound to a JFreeReport object
  * are visible to all generated report-state chains. A ReportState will inherit all
- * ReportProperties bound to the JFreeReport-object when the ReportState.StartState object is created.
- * Properties bound to the report definition after the report state is created are not
+ * ReportProperties bound to the JFreeReport-object when the ReportState.StartState object is
+ * created.  Properties bound to the report definition after the report state is created are not
  * visible to the ReportState and its children.
  * <p>
  * ReportProperties bound to a ReportState are not visible to the report definition (the
@@ -83,6 +83,8 @@ public class ReportProperties implements Serializable, Cloneable
 {
   /** Storage for the properties. */
   private Hashtable properties;
+
+  /** Marked properties? */
   private TreeSet markedProperties;
 
   /**
@@ -107,11 +109,11 @@ public class ReportProperties implements Serializable, Cloneable
 
   /**
    * Adds a property to this properties collection. If a property with the given name
-   * exist, the property will be replaced with the new value. If the
-   * value is null, the property will be removed.
+   * exist, the property will be replaced with the new value. If the value is null, the
+   * property will be removed.
    *
-   * @param key The key as string.
-   * @param value The value.
+   * @param key  the property key.
+   * @param value  the property value.
    */
   public void put(String key, Object value)
   {
@@ -128,7 +130,7 @@ public class ReportProperties implements Serializable, Cloneable
   /**
    * Retrieves the value stored for a key in this properties collection.
    *
-   * @param key The key as string.
+   * @param key  the property key.
    *
    * @return the stored value or null, if the key does not exist in this collection.
    */
@@ -141,7 +143,7 @@ public class ReportProperties implements Serializable, Cloneable
    * Retrieves the value stored for a key in this properties collection, and returning
    * the default value if the key was not stored in this properties collection.
    *
-   * @param key The key as string.
+   * @param key  the property key.
    * @param def the defaultvalue to be returned when the key is not stored in this properties
    * collection.
    *
@@ -202,6 +204,12 @@ public class ReportProperties implements Serializable, Cloneable
     return p;
   }
 
+  /**
+   * Marks a property.
+   *
+   * @param property  the property key.
+   * @param marked  boolean.
+   */
   public void setMarked(String property, boolean marked)
   {
     if (marked)
@@ -214,8 +222,16 @@ public class ReportProperties implements Serializable, Cloneable
     }
   }
 
+  /**
+   * Returns true if the specified property is marked, and false otherwise.
+   *
+   * @param property  the property key.
+   *
+   * @return boolean.
+   */
   public boolean isMarked(String property)
   {
     return markedProperties.contains(property);
   }
+
 }

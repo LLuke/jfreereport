@@ -25,34 +25,69 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: NullOutputStream.java,v 1.2 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
+ * 12-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG).
+ *
  */
+
 package com.jrefinery.report.util;
 
 import java.io.OutputStream;
 import java.io.IOException;
 
+/**
+ * A null output stream.
+ *
+ * @author TM
+ */
 public class NullOutputStream extends OutputStream
 {
+  /**
+   * Default constructor.
+   */
   public NullOutputStream ()
   {
   }
 
+  /**
+   * Writes to the stream (in this case, does nothing).
+   *
+   * @param i  the value.
+   *
+   * @throws IOException if there is an I/O problem.
+   */
   public void write(int i) throws IOException
   {
     // no i wont do anything here ...
   }
 
+  /**
+   * Writes to the stream (in this case, does nothing).
+   *
+   * @param bytes  the bytes.
+   *
+   * @throws IOException if there is an I/O problem.
+   */
   public void write(byte[] bytes) throws IOException
   {
     // no i wont do anything here ...
   }
 
+  /**
+   * Writes to the stream (in this case, does nothing).
+   *
+   * @param bytes  the bytes.
+   * @param i  ??.
+   * @param i1  ??.
+   *
+   * @throws IOException if there is an I/O problem.
+   */
   public void write(byte[] bytes, int i, int i1) throws IOException
   {
     // no i wont do anything here ...
   }
+
 }

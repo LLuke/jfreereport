@@ -20,18 +20,24 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * ---------------
  * StringUtil.java
- * ----------------------------------
+ * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: StringUtil.java,v 1.2 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
  */
+
 package com.jrefinery.report.util;
 
+/**
+ * String utility functions.
+ *
+ * @author TM
+ */
 public class StringUtil
 {
   /**
@@ -57,6 +63,5 @@ public class StringUtil
     }
     return base.regionMatches(true, base.length() - end.length(), end, 0, end.length());
   }
-
 
 }

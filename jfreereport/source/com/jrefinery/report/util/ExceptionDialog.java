@@ -24,7 +24,7 @@
  * ExceptionDialog.java
  * --------------------
  *
- * $Id$
+ * $Id: ExceptionDialog.java,v 1.10 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -338,7 +338,9 @@ public class ExceptionDialog extends JDialog
     {
       defaultDialog = new ExceptionDialog ();
     }
-    if (e != null) Log.error("UserError" , e);
+    if (e != null) {
+      Log.error("UserError" , e);
+    }
     defaultDialog.setTitle (title);
     defaultDialog.setMessage (message);
     defaultDialog.setException (e);

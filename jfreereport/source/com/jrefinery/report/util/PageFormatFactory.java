@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PageFormatFactory.java,v 1.10 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
@@ -248,7 +248,7 @@ public class PageFormatFactory
   public static final int[] DL = { 312, 624 };
 
   /** A standard paper size. */
-  public static final int[] DOUBLEPOSTCARD = { 567, 419 };  // should be 419.5, but I ignore that ..
+  public static final int[] DOUBLEPOSTCARD = { 567, 419 };  // should be 419.5, but I ignore that..
 
   /** A standard paper size. */
   public static final int[] DOUBLEPOSTCARD_ROTATED = { 419, 567 };
@@ -610,13 +610,14 @@ public class PageFormatFactory
   {
     double w = paper.getWidth() - (right + left);
     double h = paper.getHeight() - (bottom + top);
-    Log.debug ("SetBorders: Top: " + top + " Left " + left + " Bottom; " + bottom + " Right " + right + " Width " + w + " Height " + h);
+    Log.debug ("SetBorders: Top: " + top + " Left " + left
+                   + " Bottom; " + bottom + " Right " + right + " Width " + w + " Height " + h);
     paper.setImageableArea(left, top, w, h);
   }
 
   /**
-   * Defines the imageable area of the given paper by adjusting the border around the imagable area.
-   * The bordersizes are given in inches.
+   * Defines the imageable area of the given paper by adjusting the border around the imagable
+   * area. The bordersizes are given in inches.
    *
    * @param paper the paper that should be modified
    * @param top the bordersize of the top-border
@@ -723,23 +724,47 @@ public class PageFormatFactory
     }
   }
 
+  /**
+   * Logs the page format.
+   *
+   * @param pf  the page format.
+   */
   public static void logPageFormat (PageFormat pf)
   {
     Log.debug ("PageFormat: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
-    Log.debug ("PageFormat: Image: X " + pf.getImageableX() + " Y " + pf.getImageableY() + " W: " + pf.getImageableWidth() + " H: " + pf.getImageableHeight());
-    Log.debug ("PageFormat: Margins: X " + pf.getImageableX() + " Y " + pf.getImageableY() + " X2: " + (pf.getImageableWidth() + pf.getImageableX()) + " Y2: " + (pf.getImageableHeight() + pf.getImageableY()));
+    Log.debug ("PageFormat: Image: X " + pf.getImageableX()
+                               + " Y " + pf.getImageableY()
+                               + " W: " + pf.getImageableWidth()
+                               + " H: " + pf.getImageableHeight());
+    Log.debug ("PageFormat: Margins: X " + pf.getImageableX()
+                                 + " Y " + pf.getImageableY()
+                                 + " X2: " + (pf.getImageableWidth() + pf.getImageableX())
+                                 + " Y2: " + (pf.getImageableHeight() + pf.getImageableY()));
   }
 
+  /**
+   * Logs the paper size.
+   *
+   * @param pf  the paper size.
+   */
   public static void logPaper (Paper pf)
   {
     Log.debug ("Paper: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
-    Log.debug ("Paper: Image: X " + pf.getImageableX() + " Y " + pf.getImageableY() + " H: " + pf.getImageableHeight() + " W: " + pf.getImageableWidth());
+    Log.debug ("Paper: Image: X " + pf.getImageableX()
+                          + " Y " + pf.getImageableY()
+                          + " H: " + pf.getImageableHeight()
+                          + " W: " + pf.getImageableWidth());
   }
 
+  /**
+   * For testing, please ignore.
+   *
+   * @param args  ignored.
+   */
   public static void main (String [] args)
   {
     PageFormat pf = null;
-    PageFormatFactory pff =PageFormatFactory.getInstance();
+    PageFormatFactory pff = PageFormatFactory.getInstance();
     Paper p = pff.createPaper(500, 1000);
     // top left bottom right
     pff.setBorders(p, 10, 0, 0, 0);
@@ -765,4 +790,5 @@ public class PageFormatFactory
     pf = pff.createPageFormat(p, PageFormat.LANDSCAPE);
     logPageFormat(pf);
   }
+
 }
