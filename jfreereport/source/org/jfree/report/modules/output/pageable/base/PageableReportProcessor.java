@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.16 2004/05/07 12:53:08 mungady Exp $
+ * $Id: PageableReportProcessor.java,v 1.17 2005/01/25 00:10:11 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,8 @@ public class PageableReportProcessor
    * A compile time constant that defines how many events should be generated
    * during the report processing.
    */
-  private static final int MAX_EVENTS_PER_RUN = 400;
+  private static final int MAX_EVENTS_PER_RUN = 200;
+  private static final int MIN_ROWS_PER_EVENT = 200;
 
   /** The level where the page function is executed. */
   private static final int PRINT_FUNCTION_LEVEL = -1;
@@ -463,10 +464,8 @@ public class PageableReportProcessor
 
     while (!state.isFinish())
     {
-      // fire an event for every generated page. It does not really matter
-      // if that policy is not very informative, it is sufficient ...
       repaginationState.reuse(PRINT_FUNCTION_LEVEL,
-          state.getCurrentPage(), state.getCurrentDataItem(), maxRows, true);
+          state.getCurrentPage(), state.getCurrentDataItem(), maxRows, false);
       fireStateUpdate(repaginationState);
 
       final ReportState oldstate = state;
@@ -516,7 +515,7 @@ public class PageableReportProcessor
 
     int lastRow = -1;
     int eventCount = 0;
-    final int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
+    final int eventTrigger = Math.min (maxRows / MAX_EVENTS_PER_RUN, MIN_ROWS_PER_EVENT);
     final RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
     // Function processing does not use the PageLayouter, so we don't need
     // the expensive cloning ...

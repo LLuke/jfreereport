@@ -10,6 +10,11 @@ public class GIFImageFactoryModule implements ImageFactoryModule
 {
   private static final byte GIF_ID[] = {'G', 'I', 'F', '8'};
 
+  private static final String[] MIMETYPES = {
+      "image/gif",
+      "image/x-xbitmap",
+      "image/gi_"
+  };
   public GIFImageFactoryModule ()
   {
   }
@@ -31,10 +36,24 @@ public class GIFImageFactoryModule implements ImageFactoryModule
     return (StringUtil.endsWithIgnoreCase(name, ".gif"));
   }
 
-  public Image createImage (final byte[] imageData)
+  public Image createImage (final byte[] imageData,
+                            final String fileName,
+                            final String mimeType)
           throws IOException
   {
     return Toolkit.getDefaultToolkit().createImage(imageData);
+  }
+
+  public boolean canHandleResourceByMimeType (final String name)
+  {
+    for (int i = 0; i < MIMETYPES.length; i++)
+    {
+      if (name.equals(MIMETYPES[i]))
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   public int getHeaderFingerprintSize ()

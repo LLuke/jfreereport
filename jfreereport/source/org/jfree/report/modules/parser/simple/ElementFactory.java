@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.15.4.6 2004/12/30 14:46:14 taqua Exp $
+ * $Id: ElementFactory.java,v 1.17 2005/01/25 00:21:56 taqua Exp $
  *
  * Changes
  * -------
@@ -355,18 +355,18 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         (ElementStyleSheet.MINIMUMSIZE, minSize);
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
-    FontFactory.applyFontInformation(band.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(band.getStyle(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      band.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+      band.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
           ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      band.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+      band.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 

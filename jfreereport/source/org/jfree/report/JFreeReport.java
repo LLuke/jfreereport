@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.15 2005/01/24 23:57:46 taqua Exp $
+ * $Id: JFreeReport.java,v 1.16 2005/01/25 21:39:54 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -109,8 +109,81 @@ import org.jfree.report.util.ReportProperties;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class JFreeReport implements Cloneable, Serializable
+public class JFreeReport implements Cloneable, Serializable, ReportDefinition
 {
+  private static class EmptyDataRow implements DataRow
+  {
+    public EmptyDataRow ()
+    {
+    }
+
+    /**
+     * Returns the column position of the column, expression or function with the given name
+     * or -1 if the given name does not exist in this DataRow.
+     *
+     * @param name the item name.
+     * @return the item index.
+     */
+    public int findColumn (final String name)
+    {
+      return -1;
+    }
+
+    /**
+     * Returns the value of the function, expression or column in the tablemodel using the
+     * column number. For functions and expressions, the <code>getValue()</code> method is
+     * called and for columns from the tablemodel the tablemodel method
+     * <code>getValueAt(row, column)</code> gets called.
+     *
+     * @param col the item index.
+     * @return the value.
+     */
+    public Object get (final int col)
+    {
+      return null;
+    }
+
+    /**
+     * Returns the value of the function, expression or column using its specific name. The
+     * given name is translated into a valid column number and the the column is queried.
+     * For functions and expressions, the <code>getValue()</code> method is called and for
+     * columns from the tablemodel the tablemodel method <code>getValueAt(row,
+     * column)</code> gets called.
+     *
+     * @param col the item index.
+     * @return the value.
+     *
+     * @throws IllegalStateException if the datarow detected a deadlock.
+     */
+    public Object get (final String col) throws IllegalStateException
+    {
+      return null;
+    }
+
+    /**
+     * Returns the number of columns, expressions and functions and marked ReportProperties
+     * in the report.
+     *
+     * @return the item count.
+     */
+    public int getColumnCount ()
+    {
+      return 0;
+    }
+
+    /**
+     * Returns the name of the column, expression or function. For columns from the
+     * tablemodel, the tablemodels <code>getColumnName</code> method is called. For
+     * functions, expressions and report properties the assigned name is returned.
+     *
+     * @param col the item index.
+     * @return the name.
+     */
+    public String getColumnName (final int col)
+    {
+      return null;
+    }
+  }
 
   /** Key for the 'report name' property. */
   public static final String NAME_PROPERTY = "report.name";
@@ -192,26 +265,25 @@ public class JFreeReport implements Cloneable, Serializable
     this.reportBuilderHints = new ReportBuilderHints();
 
     this.groups = new GroupList();
-    checkGroups();
-    this.groups.registerStyleSheetCollection(this.styleSheetCollection);
-
     this.reportHeader = new ReportHeader();
-    this.reportHeader.registerStyleSheetCollection(this.styleSheetCollection);
     this.reportFooter = new ReportFooter();
-    this.reportFooter.registerStyleSheetCollection(this.styleSheetCollection);
     this.pageHeader = new PageHeader();
-    this.pageHeader.registerStyleSheetCollection(this.styleSheetCollection);
     this.pageFooter = new PageFooter();
-    this.pageFooter.registerStyleSheetCollection(this.styleSheetCollection);
     this.itemBand = new ItemBand();
-    this.itemBand.registerStyleSheetCollection(this.styleSheetCollection);
     this.watermark = new Watermark();
-    this.watermark.registerStyleSheetCollection(this.styleSheetCollection);
 
     this.data = new DefaultTableModel();
     this.expressions = new ExpressionCollection();
     this.resourceBundleFactory = new DefaultResourceBundleFactory();
     setPageDefinition(null);
+
+    this.groups.setReportDefinition(this);
+    this.reportHeader.setReportDefinition(this);
+    this.reportFooter.setReportDefinition(this);
+    this.pageHeader.setReportDefinition(this);
+    this.pageFooter.setReportDefinition(this);
+    this.itemBand.setReportDefinition(this);
+    this.watermark.setReportDefinition(this);
   }
 
   /**
@@ -320,10 +392,9 @@ public class JFreeReport implements Cloneable, Serializable
     {
       throw new NullPointerException("JFreeReport.setReportHeader(...) : null not permitted.");
     }
-
-    this.reportHeader.unregisterStyleSheetCollection(getStyleSheetCollection());
+    this.reportHeader.setReportDefinition(null);
     this.reportHeader = header;
-    this.reportHeader.registerStyleSheetCollection(getStyleSheetCollection());
+    this.reportHeader.setReportDefinition(this);
   }
 
   /**
@@ -347,10 +418,9 @@ public class JFreeReport implements Cloneable, Serializable
     {
       throw new NullPointerException("JFreeReport.setReportFooter(...) : null not permitted.");
     }
-
-    this.reportFooter.unregisterStyleSheetCollection(getStyleSheetCollection());
+    this.reportFooter.setReportDefinition(null);
     this.reportFooter = footer;
-    this.reportFooter.registerStyleSheetCollection(getStyleSheetCollection());
+    this.reportFooter.setReportDefinition(this);
   }
 
   /**
@@ -374,10 +444,9 @@ public class JFreeReport implements Cloneable, Serializable
     {
       throw new NullPointerException("JFreeReport.setPageHeader(...) : null not permitted.");
     }
-
-    this.pageHeader.unregisterStyleSheetCollection(getStyleSheetCollection());
-    this.pageHeader = header;
-    this.pageHeader.registerStyleSheetCollection(getStyleSheetCollection());
+    this.pageHeader.setReportDefinition(null);
+    this.pageHeader = header ;
+    this.pageHeader.setReportDefinition(this);
   }
 
   /**
@@ -401,10 +470,9 @@ public class JFreeReport implements Cloneable, Serializable
     {
       throw new NullPointerException("JFreeReport.setPageFooter(...) : null not permitted.");
     }
-
-    this.pageFooter.unregisterStyleSheetCollection(getStyleSheetCollection());
+    this.pageFooter.setReportDefinition(null);
     this.pageFooter = footer;
-    this.pageFooter.registerStyleSheetCollection(getStyleSheetCollection());
+    this.pageFooter.setReportDefinition(this);
   }
 
   /**
@@ -428,10 +496,9 @@ public class JFreeReport implements Cloneable, Serializable
     {
       throw new NullPointerException("JFreeReport.setWatermark(...) : null not permitted.");
     }
-
-    this.watermark.unregisterStyleSheetCollection(getStyleSheetCollection());
+    this.watermark.setReportDefinition(null);
     this.watermark = band;
-    this.watermark.registerStyleSheetCollection(getStyleSheetCollection());
+    this.watermark.setReportDefinition(this);
   }
 
   /**
@@ -455,10 +522,9 @@ public class JFreeReport implements Cloneable, Serializable
     {
       throw new NullPointerException("JFreeReport.setItemBand(...) : null not permitted.");
     }
-
-    this.itemBand.unregisterStyleSheetCollection(getStyleSheetCollection());
+    this.itemBand.setReportDefinition(null);
     this.itemBand = band;
-    this.itemBand.registerStyleSheetCollection(getStyleSheetCollection());
+    this.itemBand.setReportDefinition(this);
   }
 
   /**
@@ -502,21 +568,6 @@ public class JFreeReport implements Cloneable, Serializable
     {
       addGroup((Group) it.next());
     }
-    checkGroups();
-  }
-
-  /**
-   * Verifies the group list and adds the default group to the list if necessary.
-   */
-  protected void checkGroups()
-  {
-    // if this was an empty group, fix it by adding an default group
-    if (groups.size() == 0)
-    {
-      final Group defaultGroup = new Group();
-      defaultGroup.setName("default");
-      addGroup(defaultGroup);
-    }
   }
 
   /**
@@ -526,7 +577,7 @@ public class JFreeReport implements Cloneable, Serializable
    */
   public GroupList getGroups()
   {
-    return (GroupList) this.groups.clone();
+    return this.groups;
   }
 
   /**
@@ -689,14 +740,15 @@ public class JFreeReport implements Cloneable, Serializable
     report.reportHeader = (ReportHeader) reportHeader.clone();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
-    report.groups.updateStyleSheetCollection(report.styleSheetCollection);
-    report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
-    report.watermark.updateStyleSheetCollection(report.styleSheetCollection);
-    report.reportFooter.updateStyleSheetCollection(report.styleSheetCollection);
-    report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
-    report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
-    report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
     report.reportBuilderHints = new ReportBuilderHints();
+
+    report.groups.setReportDefinition(report);
+    report.reportHeader.setReportDefinition(report);
+    report.reportFooter.setReportDefinition(report);
+    report.pageHeader.setReportDefinition(report);
+    report.pageFooter.setReportDefinition(report);
+    report.itemBand.setReportDefinition(report);
+    report.watermark.setReportDefinition(report);
     return report;
   }
 
@@ -794,5 +846,10 @@ public class JFreeReport implements Cloneable, Serializable
   public ResourceBundle getResourceBundle (final String key)
   {
     return resourceBundleFactory.getResourceBundle(key);
+  }
+
+  public DataRow getDataRow ()
+  {
+    return new EmptyDataRow();
   }
 }

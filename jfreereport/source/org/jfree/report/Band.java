@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.11 2003/11/07 18:33:47 taqua Exp $
+ * $Id: Band.java,v 1.12 2003/12/21 20:51:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -75,10 +75,9 @@ import java.util.List;
 import org.jfree.report.layout.BandLayoutManager;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.BandDefaultStyleSheet;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.style.InvalidStyleSheetCollectionException;
-import org.jfree.report.style.StyleSheetCollection;
+import org.jfree.report.style.ElementDefaultStyleSheet;
 
 /**
  * A report band is a collection which can contain other Report-Elements.
@@ -119,9 +118,6 @@ public class Band extends Element implements Serializable, Cloneable
   /** Cached elements. */
   private transient Element[] allElementsCached;
 
-  /** The default style-sheet for the elements contained in the band. */
-  private ElementStyleSheet bandDefaults;
-
   /** The prefix for anonymous bands, bands without an userdefined name. */
   public static final String ANONYMOUS_BAND_PREFIX = "anonymousBand@";
 
@@ -130,18 +126,16 @@ public class Band extends Element implements Serializable, Cloneable
    */
   public Band()
   {
-    getStyle().addDefaultParent(BandDefaultStyleSheet.getBandDefaultStyle());
-
+    setName(ANONYMOUS_BAND_PREFIX + super.hashCode());
     final BandLayoutManager layout = new StaticLayoutManager();
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layout);
 
-    setName(ANONYMOUS_BAND_PREFIX + super.hashCode());
     allElements = new ArrayList();
+  }
 
-    // band style sheets are not accessed by names. Names are important
-    // for the xml-parser when stacking the stylesheets together.
-    bandDefaults = new BandStyleSheet("band-default");
-    bandDefaults.setAllowCaching(true);
+  protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
+  {
+    return BandDefaultStyleSheet.getBandDefaultStyle();
   }
 
   /**
@@ -181,17 +175,6 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the default style sheet for all children of this band. This style sheet
-   * is used to define a set of base (or default) properties for all elements.
-   *
-   * @return the default style sheet.
-   */
-  public ElementStyleSheet getBandDefaults()
-  {
-    return bandDefaults;
-  }
-
-  /**
    * Adds a report element to the band.
    *
    * @param element  the element (<code>null</code> not permitted).
@@ -199,7 +182,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
    *                              values.
    */
-  public synchronized void addElement(final Element element)
+  public void addElement(final Element element)
   {
     addElement(allElements.size(), element);
   }
@@ -214,7 +197,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws IllegalArgumentException if the position is invalid, either negative or
    * greater than the number of elements in this band.
    */
-  public synchronized void addElement(final int position, final Element element)
+  public void addElement(final int position, final Element element)
   {
     if (position < 0)
     {
@@ -261,14 +244,8 @@ public class Band extends Element implements Serializable, Cloneable
     allElementsCached = null;
 
     // then add the parents, or the band's parent will be unregistered ..
-    element.getStyle().addDefaultParent(getBandDefaults());
     element.setParent(this);
 
-    // first register the element with the collection ...
-    if (getStyleSheetCollection() != null)
-    {
-      element.registerStyleSheetCollection(getStyleSheetCollection());
-    }
     invalidateLayout();
   }
 
@@ -280,7 +257,7 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws NullPointerException if the collection given is <code>null</code> or
    * the collection contains <code>null</code> elements.
    */
-  public synchronized void addElements(final Collection elements)
+  public void addElements(final Collection elements)
   {
     if (elements == null)
     {
@@ -347,11 +324,6 @@ public class Band extends Element implements Serializable, Cloneable
       return;
     }
 
-    if (getStyleSheetCollection() != null)
-    {
-      e.unregisterStyleSheetCollection(getStyleSheetCollection());
-    }
-    e.getStyle().removeDefaultParent(getBandDefaults());
     e.setParent(null);
     allElements.remove(e);
     allElementsCached = null;
@@ -383,7 +355,7 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @return the elements.
    */
-  public synchronized Element[] getElementArray()
+  public Element[] getElementArray()
   {
     if (allElementsCached == null)
     {
@@ -441,14 +413,10 @@ public class Band extends Element implements Serializable, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     final Band b = (Band) super.clone();
-    b.bandDefaults = bandDefaults.getCopy();
+
     final int elementSize = allElements.size();
     b.allElements = new ArrayList(elementSize);
     b.allElementsCached = new Element[elementSize];
-    b.setParent(null);
-
-    final ElementStyleSheet myBandDefaults = bandDefaults;
-    final ElementStyleSheet cloneBandDefaults = b.bandDefaults;
 
     if (allElementsCached != null)
     {
@@ -458,8 +426,6 @@ public class Band extends Element implements Serializable, Cloneable
         b.allElements.add(eC);
         b.allElementsCached[i] = eC;
         eC.setParent(b);
-        eC.getStyle().removeDefaultParent(myBandDefaults);
-        eC.getStyle().addDefaultParent(cloneBandDefaults);
       }
     }
     else
@@ -471,8 +437,6 @@ public class Band extends Element implements Serializable, Cloneable
         b.allElements.add(eC);
         b.allElementsCached[i] = eC;
         eC.setParent(b);
-        eC.getStyle().removeDefaultParent(myBandDefaults);
-        eC.getStyle().addDefaultParent(cloneBandDefaults);
       }
     }
     return b;
@@ -504,73 +468,6 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Handles the unregistration of the stylesheet collection.
-   */
-  protected void handleUnregisterStyleSheetCollection()
-  {
-    final Element[] elements = getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      elements[i].unregisterStyleSheetCollection(getStyleSheetCollection());
-    }
-    getBandDefaults().unregisterStyleSheetCollection(getStyleSheetCollection());
-    super.handleUnregisterStyleSheetCollection();
-  }
-
-  /**
-   * Handles the registration of the stylesheet collection.
-   */
-  protected void handleRegisterStyleSheetCollection()
-  {
-    final Element[] elements = getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      elements[i].registerStyleSheetCollection(getStyleSheetCollection());
-    }
-    getBandDefaults().registerStyleSheetCollection(getStyleSheetCollection());
-    super.handleRegisterStyleSheetCollection();
-  }
-
-  /**
-   * Updates the stylesheet collection for this element and all substylesheets.
-   * This method must be called after the element was cloned, to make sure that
-   * all stylesheets are registered properly.
-   * <p>
-   * If you don't call this function after cloning prepare to be doomed.
-   * This method will replace all inherited stylesheets with clones from the stylesheet
-   * collection.
-   *
-   * @param sc the stylesheet collection that contains the updated information and
-   * that should be assigned with that element.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws InvalidStyleSheetCollectionException
-   * if there is an other stylesheet collection already registered with that element.
-   */
-  public void updateStyleSheetCollection(final StyleSheetCollection sc)
-      throws InvalidStyleSheetCollectionException
-  {
-    if (sc == null)
-    {
-      throw new NullPointerException("StyleSheetCollection is null.");
-    }
-    if (getStyleSheetCollection() != null)
-    {
-      throw new NullPointerException("There is a stylesheet collection already registered.");
-    }
-
-    final Element[] elements = getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      elements[i].updateStyleSheetCollection(sc);
-    }
-
-    sc.updateStyleSheet(getBandDefaults());
-    super.updateStyleSheetCollection(sc);
-
-    registerStyleSheetCollection(sc);
-  }
-
-  /**
    * Returns, whether the page layout manager should perform a pagebreak
    * before this page is printed. This will have no effect on empty pages
    * or if the band is no root-level band.
@@ -581,7 +478,7 @@ public class Band extends Element implements Serializable, Cloneable
   public boolean isPagebreakBeforePrint()
   {
     return getStyle().getBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_BEFORE);
+        (BandStyleKeys.PAGEBREAK_BEFORE);
   }
 
   /**
@@ -595,7 +492,7 @@ public class Band extends Element implements Serializable, Cloneable
   public void setPagebreakBeforePrint(final boolean pagebreakBeforePrint)
   {
     getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_BEFORE, pagebreakBeforePrint);
+        (BandStyleKeys.PAGEBREAK_BEFORE, pagebreakBeforePrint);
   }
 
   /**
@@ -609,7 +506,7 @@ public class Band extends Element implements Serializable, Cloneable
   public boolean isPagebreakAfterPrint()
   {
     return getStyle().getBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_AFTER);
+        (BandStyleKeys.PAGEBREAK_AFTER);
   }
 
   /**
@@ -623,6 +520,16 @@ public class Band extends Element implements Serializable, Cloneable
   public void setPagebreakAfterPrint(final boolean pagebreakAfterPrint)
   {
     getStyle().setBooleanStyleProperty
-        (BandStyleSheet.PAGEBREAK_AFTER, pagebreakAfterPrint);
+        (BandStyleKeys.PAGEBREAK_AFTER, pagebreakAfterPrint);
+  }
+
+  protected void setReportDefinition (final ReportDefinition reportDefinition)
+  {
+    super.setReportDefinition(reportDefinition);
+    final Element[] elements = getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].setReportDefinition(reportDefinition);
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.7 2004/05/07 08:02:49 mungady Exp $
+ * $Id: TextContentFactoryModule.java,v 1.8 2005/01/24 23:58:18 taqua Exp $
  *
  * Changes
  * -------
@@ -93,11 +93,12 @@ public class TextContentFactoryModule implements ContentFactoryModule
                                          final LayoutSupport ot)
       throws ContentCreationException
   {
-    final String text = (String) e.getValue();
-    if (text == null)
+    final Object value = e.getValue();
+    if (value == null)
     {
       return EmptyContent.getDefaultEmptyContent();
     }
+    final String text = String.valueOf(value);
     if (text.length() == 0)
     {
       return EmptyContent.getDefaultEmptyContent();

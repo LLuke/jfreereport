@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.19 2005/01/25 00:10:51 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.20 2005/01/25 21:40:32 taqua Exp $
  *
  * Changes
  * -------
@@ -71,6 +71,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.Anchor;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
@@ -80,9 +81,12 @@ import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.URLImageContainer;
+import org.jfree.report.content.Content;
 import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.ImageContent;
+import org.jfree.report.content.AnchorContent;
 import org.jfree.report.layout.SizeCalculator;
+import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
@@ -1329,5 +1333,20 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
         (PDFTARGET_EMBED_FONTS, String.valueOf(embed));
   }
 
-
+  protected void printAnchorContent (final MetaElement element,
+                                     final Content content)
+          throws OutputTargetException
+  {
+    try
+    {
+      final AnchorContent ac = (AnchorContent) content;
+      final Anchor anchor = new Anchor();
+      anchor.setName(ac.getAnchor().getName());
+      writer.add(anchor);
+    }
+    catch (DocumentException e)
+    {
+      throw new OutputTargetException("Failed to add anchor", e);
+    }
+  }
 }

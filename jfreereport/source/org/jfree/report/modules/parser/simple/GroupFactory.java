@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.9.4.1 2004/04/04 19:03:30 taqua Exp $
+ * $Id: GroupFactory.java,v 1.11 2005/01/25 00:22:10 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import org.jfree.report.GroupFooter;
 import org.jfree.report.GroupHeader;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.ui.FloatDimension;
@@ -196,7 +196,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     {
       final float fixedPosValue = ParserUtil.parseFloat
               (fixedPos, "FixedPosition is invalid!");
-      groupHeader.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+      groupHeader.getStyle().setStyleProperty(BandStyleKeys.FIXED_POSITION,
               new Float (fixedPosValue));
     }
 
@@ -209,7 +209,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     {
       final boolean pageBreak = ParserUtil.parseBoolean(pagebreakBeforeAttr, false);
       groupHeader.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.PAGEBREAK_BEFORE, pageBreak);
+          (BandStyleKeys.PAGEBREAK_BEFORE, pageBreak);
     }
 
     final String pagebreakAfterAttr = atts.getValue("pagebreak-after-print");
@@ -217,7 +217,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     {
       final boolean pageBreakAfter = ParserUtil.parseBoolean(pagebreakAfterAttr, false);
       groupHeader.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.PAGEBREAK_AFTER, pageBreakAfter);
+          (BandStyleKeys.PAGEBREAK_AFTER, pageBreakAfter);
     }
 
     final String repeatAttr = atts.getValue(REPEAT_HEADER);
@@ -225,22 +225,22 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     {
       final boolean repeat = ParserUtil.parseBoolean(repeatAttr, false);
       groupHeader.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.REPEAT_HEADER, repeat);
+          (BandStyleKeys.REPEAT_HEADER, repeat);
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(atts);
-    FontFactory.applyFontInformation(groupHeader.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(groupHeader.getStyle(), fi);
 
     final String valign = atts.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+      groupHeader.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
           ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = atts.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+      groupHeader.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
@@ -272,7 +272,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     {
       final float fixedPosValue = ParserUtil.parseFloat
               (fixedPos, "FixedPosition is invalid!");
-      groupFooter.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+      groupFooter.getStyle().setStyleProperty(BandStyleKeys.FIXED_POSITION,
               new Float (fixedPosValue));
     }
 
@@ -285,7 +285,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     {
       final boolean pageBreak = ParserUtil.parseBoolean(pagebreakBeforeAttr, false);
       groupFooter.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.PAGEBREAK_BEFORE, pageBreak);
+          (BandStyleKeys.PAGEBREAK_BEFORE, pageBreak);
     }
 
     final String pagebreakAfterAttr = atts.getValue("pagebreak-after-print");
@@ -293,24 +293,24 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     {
       final boolean pageBreakAfter = ParserUtil.parseBoolean(pagebreakAfterAttr, false);
       groupFooter.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.PAGEBREAK_AFTER, pageBreakAfter);
+          (BandStyleKeys.PAGEBREAK_AFTER, pageBreakAfter);
     }
 
     // create the group footer...
 
     final FontFactory.FontInformation fi = FontFactory.createFont(atts);
-    FontFactory.applyFontInformation(groupFooter.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(groupFooter.getStyle(), fi);
 
     final String valign = atts.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+      groupFooter.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
           ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = atts.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+      groupFooter.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
     getParser().pushFactory(new ElementFactory(getReportParser(), GROUP_FOOTER_TAG, groupFooter));

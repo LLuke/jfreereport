@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.5.2.1.2.2 2004/10/13 18:42:23 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.9 2005/01/25 00:20:34 taqua Exp $
  *
  * Changes
  * -------
@@ -170,35 +170,13 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       stylePath.addName(ElementHandler.STYLE_TAG);
       writeComment(writer, stylePath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, ElementHandler.STYLE_TAG);
-      ElementStyleSheet parentSheet = null;
-      if (parent != null)
-      {
-        parentSheet = parent.getBandDefaults();
-      }
 
       final StyleWriter styleWriter =
           new StyleWriter(getReportWriter(), band.getStyle(),
-              parentSheet, getIndentLevel(), stylePath);
+              parent.getStyle(), getIndentLevel(), stylePath);
       styleWriter.write(writer);
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, ElementHandler.STYLE_TAG);
-    }
-
-    final ElementStyleSheet bandDefaults = band.getBandDefaults();
-    if (isStyleSheetEmpty(bandDefaults) == false)
-    {
-      final CommentHintPath defaultStylePath = newPath.getInstance();
-      defaultStylePath.addName(BandHandler.DEFAULT_STYLE_TAG);
-      writeComment(writer, defaultStylePath, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-
-      final StyleWriter defaultStyleWriter =
-          new StyleWriter(getReportWriter(), band.getBandDefaults(),
-              null, getIndentLevel(), defaultStylePath);
-      defaultStyleWriter.write(writer);
-
-      writeComment(writer, defaultStylePath, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
     }
 
     writeDataSourceForElement(band, writer, newPath);
@@ -229,7 +207,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    */
   private boolean isStyleSheetEmpty(final ElementStyleSheet es)
   {
-    if (es.getParents().isEmpty() &&
+    if (es.getParents().length == 0 &&
         es.getDefinedPropertyNames().hasNext() == false)
     {
       return true;
@@ -279,7 +257,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
       final StyleWriter styleWriter =
           new StyleWriter(getReportWriter(), element.getStyle(),
-              parent.getBandDefaults(), getIndentLevel(), stylePath);
+              parent.getStyle(), getIndentLevel(), stylePath);
       styleWriter.write(writer);
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, ElementHandler.STYLE_TAG);

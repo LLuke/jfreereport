@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.4 2004/05/07 08:03:40 mungady Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import org.jfree.report.content.DrawableContentFactoryModule;
 import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
+import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.style.FontDefinition;
 
 /**
@@ -87,6 +88,7 @@ public class DefaultLayoutSupport implements LayoutSupport
     contentFactory.addModule(new ImageContentFactoryModule());
     contentFactory.addModule(new ShapeContentFactoryModule());
     contentFactory.addModule(new DrawableContentFactoryModule());
+    contentFactory.addModule(new AnchorContentFactoryModule());
   }
 
   /**

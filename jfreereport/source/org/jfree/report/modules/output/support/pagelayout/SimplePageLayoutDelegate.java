@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.11 2005/01/25 00:12:15 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.12 2005/01/28 19:26:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,7 +48,7 @@ import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
 import org.jfree.report.function.FunctionProcessingException;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 
 /**
  * The simple page layout delegate encasulates all required tasks to perform
@@ -231,19 +231,19 @@ public class SimplePageLayoutDelegate implements
   private boolean isPageHeaderPrinting (final Band b, final ReportEvent event)
   {
     if ((event.getState().getCurrentPage() == 1) &&
-        (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == false))
+        (b.getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE) == false))
     {
       return false;
     }
 
     if ((event.getState().getCurrentPage() == getMaxPage()) &&
-        (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == false))
+        (b.getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE) == false))
     {
       return false;
     }
 
     if  (isLastPagebreak() &&
-        (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == false))
+        (b.getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE) == false))
     {
       return false;
     }
@@ -311,7 +311,7 @@ public class SimplePageLayoutDelegate implements
       for (int gidx = 0; gidx < groupsPrinted; gidx++)
       {
         final Group g = report.getGroup(gidx);
-        if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
+        if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER))
         {
           worker.print(g.getHeader(), SimplePageLayoutWorker.BAND_SPOOLED, 
             SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
@@ -354,14 +354,14 @@ public class SimplePageLayoutDelegate implements
       final Band b = event.getReport().getPageFooter();
       if (event.getState().getCurrentPage() == 1)
       {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
+        if (b.getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE) == true)
         {
           worker.printBottom(b);
         }
       }
       else if (isLastPagebreak())
       {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
+        if (b.getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE) == true)
         {
           worker.printBottom(b);
         }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.3 2005/01/25 00:16:30 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -168,7 +168,7 @@ public class ExcelContentCreator extends TableContentCreator
 //      Log.debug ("CellWidth: [" + i + "] " + cellWidth);
       sheet.setColumnWidth((short) i, (short) (cellWidth * XFACTOR));
     }
-
+    
     final int height = go.getRowCount();
     final int layoutOffset = getLayoutOffset();
     for (int y = layoutOffset; y < height + layoutOffset; y++)

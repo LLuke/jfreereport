@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.4.4.2 2004/10/11 21:00:34 taqua Exp $
+ * $Id: GroupHeader.java,v 1.5 2005/01/24 23:57:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,7 +43,7 @@
 
 package org.jfree.report;
 
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 
 
 /**
@@ -51,7 +51,7 @@ import org.jfree.report.style.BandStyleSheet;
  *
  * @author David Gilbert
  */
-public class GroupHeader extends Band
+public class GroupHeader extends Band implements RootLevelBand
 {
   /**
    * Constructs a group header band, containing no elements.
@@ -67,7 +67,7 @@ public class GroupHeader extends Band
    */
   public boolean isRepeat()
   {
-    return getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER);
+    return getStyle().getBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER);
   }
 
   /**
@@ -77,6 +77,11 @@ public class GroupHeader extends Band
    */
   public void setRepeat(final boolean repeat)
   {
-    getStyle().setBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER, repeat);
+    getStyle().setBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER, repeat);
+  }
+
+  public void setReportDefinition (final ReportDefinition reportDefinition)
+  {
+    super.setReportDefinition(reportDefinition);
   }
 }

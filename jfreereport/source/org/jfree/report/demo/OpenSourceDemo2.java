@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo2.java,v 1.7.2.1.2.1 2004/04/06 13:56:13 taqua Exp $
+ * $Id: OpenSourceDemo2.java,v 1.10 2005/01/24 23:58:35 taqua Exp $
  *
  * Changes
  * -------
@@ -194,7 +194,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
    */
   public static void configureItemBand(final ItemBand band)
   {
-    final ElementStyleSheet ess = band.getBandDefaults();
+    final ElementStyleSheet ess = band.getStyle();
     ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));
 
     TextFieldElementFactory factory = new TextFieldElementFactory();
@@ -246,7 +246,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
   {
     footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new Dimension(0, 20));
 
-    final ElementStyleSheet ess = footer.getBandDefaults();
+    final ElementStyleSheet ess = footer.getStyle();
     ess.setFontDefinitionProperty(new FontDefinition("SansSerif", 9));
 
     final NumberFieldElementFactory factory = new NumberFieldElementFactory();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.14 2005/01/25 21:40:15 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.15 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -905,13 +905,15 @@ public final class LevelledExpressionList implements ReportListener,
         {
           prepareEventListeners.add(globalPosition);
         }
-        final LevelStorage storage = new LevelStorage(currentLevel,
-                expressions.toArray(), activeExpressions.toArray(),
-                functions.toArray(), pageEventListeners.toArray(),
-                prepareEventListeners.toArray(), prepareLayoutEventListeners.toArray(),
-                layoutListeners.toArray());
-        levelData[i] = storage;
       }
+      
+      final LevelStorage storage = new LevelStorage(currentLevel,
+              expressions.toArray(), activeExpressions.toArray(),
+              functions.toArray(), pageEventListeners.toArray(),
+              prepareEventListeners.toArray(), prepareLayoutEventListeners.toArray(),
+              layoutListeners.toArray());
+      levelData[i] = storage;
+
       expressions.clear();
       activeExpressions.clear();
       functions.clear();
@@ -1026,7 +1028,8 @@ public final class LevelledExpressionList implements ReportListener,
     final Integer[] levelIntegers = new Integer[levelData.length];
     for (int i = 0; i < levelData.length; i++)
     {
-      levelIntegers[i] = new Integer(levelData[i].levelNumber);
+      final LevelStorage levelStorage = levelData[i];
+      levelIntegers[i] = new Integer(levelStorage.levelNumber);
     }
     return Collections.unmodifiableList(Arrays.asList(levelIntegers)).iterator();
   }

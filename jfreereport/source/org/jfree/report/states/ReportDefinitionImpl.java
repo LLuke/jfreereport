@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.10 2005/01/25 00:22:34 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.11 2005/01/25 21:40:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,24 +40,18 @@ package org.jfree.report.states;
 
 import java.util.ResourceBundle;
 
-import org.jfree.report.Band;
 import org.jfree.report.DataRow;
-import org.jfree.report.Element;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.ItemBand;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
-import org.jfree.report.Watermark;
 import org.jfree.report.ResourceBundleFactory;
-import org.jfree.report.filter.DataSource;
-import org.jfree.report.filter.DataTarget;
-import org.jfree.report.filter.ReportConnectable;
+import org.jfree.report.Watermark;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
@@ -130,138 +124,16 @@ public class ReportDefinitionImpl implements ReportDefinition
     reportConfiguration = report.getReportConfiguration();
     pageDefinition = (PageDefinition) report.getPageDefinition().clone();
     styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
-    groups.updateStyleSheetCollection(styleSheetCollection);
-    itemBand.updateStyleSheetCollection(styleSheetCollection);
-    reportFooter.updateStyleSheetCollection(styleSheetCollection);
-    reportHeader.updateStyleSheetCollection(styleSheetCollection);
-    pageFooter.updateStyleSheetCollection(styleSheetCollection);
-    pageHeader.updateStyleSheetCollection(styleSheetCollection);
-    watermark.updateStyleSheetCollection(styleSheetCollection);
     resourceBundleFactory = report.getResourceBundleFactory();
     dataRowConnector = new DataRowConnector();
-    connect();
-  }
 
-  /**
-   * Creates a report definition from a report object.
-   *
-   * @param report  the report.
-   *
-   * @throws CloneNotSupportedException if there is a problem cloning.
-   */
-  public ReportDefinitionImpl(final JFreeReport report) throws CloneNotSupportedException
-  {
-    groups = new UnmodifiableGroupList((GroupList) report.getGroups().clone());
-    properties = (ReportProperties) report.getProperties().clone();
-    reportFooter = (ReportFooter) report.getReportFooter().clone();
-    reportHeader = (ReportHeader) report.getReportHeader().clone();
-    pageFooter = (PageFooter) report.getPageFooter().clone();
-    pageHeader = (PageHeader) report.getPageHeader().clone();
-    itemBand = (ItemBand) report.getItemBand().clone();
-    watermark = (Watermark) report.getWatermark().clone();
-    reportConfiguration = report.getReportConfiguration();
-    pageDefinition = (PageDefinition) report.getPageDefinition().clone();
-    styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
-    groups.updateStyleSheetCollection(styleSheetCollection);
-    itemBand.updateStyleSheetCollection(styleSheetCollection);
-    reportFooter.updateStyleSheetCollection(styleSheetCollection);
-    reportHeader.updateStyleSheetCollection(styleSheetCollection);
-    pageFooter.updateStyleSheetCollection(styleSheetCollection);
-    pageHeader.updateStyleSheetCollection(styleSheetCollection);
-    watermark.updateStyleSheetCollection(styleSheetCollection);
-    resourceBundleFactory = report.getResourceBundleFactory();
-    dataRowConnector = new DataRowConnector();
-    connect();
-  }
-
-  protected void connect ()
-  {
-    connectBand(reportHeader);
-    connectBand(reportFooter);
-    connectBand(pageHeader);
-    connectBand(pageFooter);
-    connectBand(itemBand);
-    connectBand(watermark);
-
-    for (int i = 0; i < groups.size(); i++)
-    {
-      final Group g = groups.get(i);
-      connectBand(g.getHeader());
-      connectBand(g.getFooter());
-    }
-
-  }
-
-  protected void connectBand (final Band b)
-  {
-    final Element[] elements = b.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      connectDataSource(elements[i].getDataSource());
-      if (elements[i] instanceof Band)
-      {
-        connectBand((Band) elements[i]);
-      }
-    }
-  }
-
-  protected void connectDataSource (final DataSource ds)
-  {
-    if (ds instanceof ReportConnectable)
-    {
-      final ReportConnectable rc = (ReportConnectable) ds;
-      rc.registerReportDefinition(this);
-    }
-    if (ds instanceof DataTarget)
-    {
-      final DataTarget dt = (DataTarget) ds;
-      connectDataSource(dt.getDataSource());
-    }
-  }
-
-  protected void disconnect ()
-  {
-    disconnectBand(reportHeader);
-    disconnectBand(reportFooter);
-    disconnectBand(pageHeader);
-    disconnectBand(pageFooter);
-    disconnectBand(itemBand);
-    disconnectBand(watermark);
-
-    for (int i = 0; i < groups.size(); i++)
-    {
-      final Group g = groups.get(i);
-      disconnectBand(g.getHeader());
-      disconnectBand(g.getFooter());
-    }
-
-  }
-
-  protected void disconnectBand (final Band b)
-  {
-    final Element[] elements = b.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      disconnectDataSource(elements[i].getDataSource());
-      if (elements[i] instanceof Band)
-      {
-        disconnectBand((Band) elements[i]);
-      }
-    }
-  }
-
-  protected void disconnectDataSource (final DataSource ds)
-  {
-    if (ds instanceof ReportConnectable)
-    {
-      final ReportConnectable rc = (ReportConnectable) ds;
-      rc.unregisterReportDefinition(this);
-    }
-    if (ds instanceof DataTarget)
-    {
-      final DataTarget dt = (DataTarget) ds;
-      connectDataSource(dt.getDataSource());
-    }
+    this.groups.setReportDefinition(this);
+    this.reportHeader.setReportDefinition(this);
+    this.reportFooter.setReportDefinition(this);
+    this.pageHeader.setReportDefinition(this);
+    this.pageFooter.setReportDefinition(this);
+    this.itemBand.setReportDefinition(this);
+    this.watermark.setReportDefinition(this);
   }
 
   /**
@@ -407,15 +279,16 @@ public class ReportDefinitionImpl implements ReportDefinition
     // pagedefinition is not! cloned ...
     report.pageDefinition = pageDefinition;
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
-    report.groups.updateStyleSheetCollection(report.styleSheetCollection);
-    report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
-    report.reportFooter.updateStyleSheetCollection(report.styleSheetCollection);
-    report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
-    report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
-    report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
-    report.watermark.updateStyleSheetCollection(report.styleSheetCollection);
     report.dataRowConnector = new DataRowConnector();
-    report.connect();
+
+
+    report.groups.setReportDefinition(report);
+    report.reportHeader.setReportDefinition(report);
+    report.reportFooter.setReportDefinition(report);
+    report.pageHeader.setReportDefinition(report);
+    report.pageFooter.setReportDefinition(report);
+    report.itemBand.setReportDefinition(report);
+    report.watermark.setReportDefinition(report);
     return report;
   }
 

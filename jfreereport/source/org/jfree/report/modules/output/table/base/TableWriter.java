@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.14 2005/01/25 00:12:47 taqua Exp $
+ * $Id: TableWriter.java,v 1.15 2005/01/28 19:26:58 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.util.Log;
 
 /**
@@ -289,7 +289,7 @@ public strictfp class TableWriter
           throws ReportProcessingException
   {
     if (!isInEndPage() && handlePagebreakBefore
-        && band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+        && band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE) == true)
     {
       if (isPageEmpty() == false)
       {
@@ -319,7 +319,7 @@ public strictfp class TableWriter
     }
 
     if (!isInEndPage() &&
-        band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
+        band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER) == true)
     {
       if (isPageEmpty() == false)
       {

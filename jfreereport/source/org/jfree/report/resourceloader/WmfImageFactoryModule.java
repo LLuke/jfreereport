@@ -11,6 +11,17 @@ import org.jfree.ui.Drawable;
 public class WmfImageFactoryModule implements ImageFactoryModule,
                                               DrawableFactoryModule
 {
+  private static final String[] MIMETYPES =
+          {
+            "application/x-msmetafile",
+            "application/wmf",
+            "application/x-wmf",
+            "image/wmf",
+            "image/x-wmf",
+            "image/x-win-metafile",
+            "zz-application/zz-winassoc-wmf"
+          };
+
   public WmfImageFactoryModule ()
   {
   }
@@ -18,6 +29,18 @@ public class WmfImageFactoryModule implements ImageFactoryModule,
   public boolean canHandleResourceByContent (final byte[] content)
   {
     return (content[0] == 0xD7 && content[1] == 0xCD);
+  }
+
+  public boolean canHandleResourceByMimeType (final String name)
+  {
+    for (int i = 0; i < MIMETYPES.length; i++)
+    {
+      if (name.equals(MIMETYPES[i]))
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean canHandleResourceByName (final String name)
@@ -30,14 +53,19 @@ public class WmfImageFactoryModule implements ImageFactoryModule,
     return 2;
   }
 
-  public Image createImage (final byte[] imageData) throws IOException
+  public Image createImage (final byte[] imageData,
+                            final String fileName,
+                            final String mimeType)
+          throws IOException
   {
     final WmfFile wmfFile =
             new WmfFile(new ByteArrayInputStream(imageData), -1, -1);
     return wmfFile.replay();
   }
 
-  public Drawable createDrawable (final byte[] imageData)
+  public Drawable createDrawable (final byte[] imageData,
+                                  final String fileName,
+                                  final String mimeType)
           throws IOException
   {
     final WmfFile wmfFile =

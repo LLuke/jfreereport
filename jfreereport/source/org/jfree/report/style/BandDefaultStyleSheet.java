@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.3 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------
@@ -48,12 +48,10 @@ import org.jfree.ui.FloatDimension;
  *
  * @author Thomas Morgner
  */
-public class BandDefaultStyleSheet extends BandStyleSheet
+public class BandDefaultStyleSheet extends ElementDefaultStyleSheet
 {
   /** A shared default style-sheet. */
   private static BandDefaultStyleSheet defaultStyle;
-  /** a flag indicating the read-only state of this style sheet. */
-  private boolean locked;
 
   /**
    * Creates a new default style sheet.
@@ -61,35 +59,15 @@ public class BandDefaultStyleSheet extends BandStyleSheet
   protected BandDefaultStyleSheet()
   {
     super("GlobalBand");
+    setLocked(false);
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
-    setStyleProperty(PAGEBREAK_AFTER, Boolean.FALSE);
-    setStyleProperty(PAGEBREAK_BEFORE, Boolean.FALSE);
-    setStyleProperty(DISPLAY_ON_FIRSTPAGE, Boolean.TRUE);
-    setStyleProperty(DISPLAY_ON_LASTPAGE, Boolean.TRUE);
+    setStyleProperty(BandStyleKeys.PAGEBREAK_AFTER, Boolean.FALSE);
+    setStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE, Boolean.FALSE);
+    setStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE, Boolean.TRUE);
+    setStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE, Boolean.TRUE);
     setLocked(true);
-  }
-
-  /**
-   * Gets the locked state of this stylesheet. After the first initialization the
-   * stylesheet gets locked, so that it could not be changed anymore.
-   *
-   * @return true, if this stylesheet is readonly.
-   */
-  protected boolean isLocked()
-  {
-    return locked;
-  }
-
-  /**
-   * Defines the locked-state for this stylesheet.
-   *
-   * @param locked true, if the stylesheet is locked and read-only, false otherwise.
-   */
-  protected void setLocked(final boolean locked)
-  {
-    this.locked = locked;
   }
 
   /**
@@ -104,67 +82,5 @@ public class BandDefaultStyleSheet extends BandStyleSheet
       defaultStyle = new BandDefaultStyleSheet();
     }
     return defaultStyle;
-  }
-
-  /**
-   * Sets a style property (or removes the style if the value is <code>null</code>).
-   *
-   * @param key  the style key (<code>null</code> not permitted).
-   * @param value  the value.
-   * @throws NullPointerException if the given key is null.
-   * @throws ClassCastException if the value cannot be assigned with the given key.
-   * @throws UnsupportedOperationException as this style sheet is read only.
-   */
-  public void setStyleProperty(final StyleKey key, final Object value)
-  {
-    if (isLocked())
-    {
-      throw new UnsupportedOperationException("This stylesheet is readonly");
-    }
-    else
-    {
-      super.setStyleProperty(key, value);
-    }
-  }
-
-  /**
-   * Clones the style-sheet. The assigned parent style sheets are not cloned.
-   * The stylesheets are not assigned to the contained stylesheet collection,
-   * you have to reassign them manually ...
-   *
-   * @return the clone.
-   */
-  public ElementStyleSheet getCopy()
-  {
-    return this;
-  }
-
-  /**
-   * This method does nothing.
-   *
-   * @param styleSheetCollection the stylesheet collection that should be registered.
-   */
-  public final void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-  {
-  }
-
-  /**
-   * This method does nothing.
-   *
-   * @param styleSheetCollection the stylesheet collection that should be registered.
-   */
-  public final void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-  {
-  }
-
-  /**
-   * Returns true, if this stylesheet is one of the global default stylesheets.
-   * Global default stylesheets are unmodifiable and shared among all element stylesheets.
-   *
-   * @return always true.
-   */
-  public boolean isGlobalDefault()
-  {
-    return true;
   }
 }

@@ -10,8 +10,26 @@ public class PNGImageFactoryModule implements ImageFactoryModule
 {
   public static final int[] PNGID = {137, 80, 78, 71, 13, 10, 26, 10};
 
+  private static final String[] MIMETYPES =
+          {
+            "image/png",
+            "application/png",
+            "application/x-png"
+          };
   public PNGImageFactoryModule ()
   {
+  }
+
+  public boolean canHandleResourceByMimeType (final String name)
+  {
+    for (int i = 0; i < MIMETYPES.length; i++)
+    {
+      if (name.equals(MIMETYPES[i]))
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean canHandleResourceByContent (final byte[] content)
@@ -31,7 +49,9 @@ public class PNGImageFactoryModule implements ImageFactoryModule
     return (StringUtil.endsWithIgnoreCase(name, ".png"));
   }
 
-  public Image createImage (final byte[] imageData)
+  public Image createImage (final byte[] imageData,
+                            final String fileName,
+                            final String mimeType)
           throws IOException
   {
     return Toolkit.getDefaultToolkit().createImage(imageData);

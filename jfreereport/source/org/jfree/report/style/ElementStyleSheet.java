@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.15 2005/01/25 00:22:39 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.16 2005/01/25 21:40:36 taqua Exp $
  *
  * Changes
  * -------
@@ -52,238 +52,245 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.SerializerHelper;
 
 /**
- * An element style-sheet contains zero, one or many attributes that affect the appearance of
- * report elements.  For each attribute, there is a predefined key that can be used to access
- * that attribute in the style sheet.
- * <p>
+ * An element style-sheet contains zero, one or many attributes that affect the appearance
+ * of report elements.  For each attribute, there is a predefined key that can be used to
+ * access that attribute in the style sheet.
+ * <p/>
  * Every report element has an associated style-sheet.
- * <p>
- * A style-sheet maintains a list of parent style-sheets.  If an attribute is not defined in a
- * style-sheet, the code refers to the parent style-sheets to see if the attribute is defined
- * there.
- * <p>
+ * <p/>
+ * A style-sheet maintains a list of parent style-sheets.  If an attribute is not defined
+ * in a style-sheet, the code refers to the parent style-sheets to see if the attribute is
+ * defined there.
+ * <p/>
  * All StyleSheet entries are checked against the StyleKeyDefinition for validity.
+ * <p>
+ * As usual, this implementation is not synchronized, we need the performance during
+ * the reporting.
  *
  * @author Thomas Morgner
  */
-public class ElementStyleSheet implements Serializable, StyleChangeListener, Cloneable
+public abstract class ElementStyleSheet implements Serializable, StyleChangeListener, Cloneable
 {
   /**
-   * Internal helper class to handle the style sheet collection properly.
-   */
-  private static class ElementStyleSheetCollectionHelper
-      extends StyleSheetCollectionHelper
-  {
-    /** The ElementStyleSheet for which we handle the stylesheet collection. */
-    private ElementStyleSheet es;
-
-    /**
-     * Creates a new helper for the given ElementStyleSheet.
-     *
-     * @param es the ElementStyleSheet whose stylesheet collection should be managed.
-     */
-    public ElementStyleSheetCollectionHelper(final ElementStyleSheet es)
-    {
-      if (es == null)
-      {
-        throw new NullPointerException("ElementStyleSheet must not be null.");
-      }
-      this.es = es;
-    }
-
-    /**
-     * Handles the stylesheet collection registration for the ElementStyleSheet and
-     * all parent and default parent stylesheets.
-     */
-    protected void handleRegisterStyleSheetCollection()
-    {
-      this.getStyleSheetCollection().addStyleSheet(es);
-    }
-
-    /**
-     * Handles the stylesheet collection unregistration for the ElementStyleSheet and
-     * all parent and default parent stylesheets.
-     */
-    protected void handleUnregisterStyleSheetCollection()
-    {
-      this.getStyleSheetCollection().remove(es);
-    }
-  }
-
-  /**
-   * A marker to indicate that none of the parent stylesheets defines this
-   * value.
+   * A marker to indicate that none of the parent stylesheets defines this value.
    */
   private static class UndefinedValue
   {
     /**
      * DefaultConstructor.
      */
-    public UndefinedValue()
+    public UndefinedValue ()
     {
     }
   }
 
-  /** A singleton marker for the cache. */
+  /**
+   * A singleton marker for the cache.
+   */
   private static final UndefinedValue UNDEFINED_VALUE = new UndefinedValue();
 
-  /** A key for the 'minimum size' of an element. */
-  public static final StyleKey MINIMUMSIZE = StyleKey.getStyleKey("min-size", Dimension2D.class);
-
-  /** A key for the 'maximum size' of an element. */
-  public static final StyleKey MAXIMUMSIZE = StyleKey.getStyleKey("max-size", Dimension2D.class);
-
-  /** A key for the 'preferred size' of an element. */
-  public static final StyleKey PREFERREDSIZE = StyleKey.getStyleKey("preferred-size",
-      Dimension2D.class);
-
-  /** A key for the 'bounds' of an element. */
-  public static final StyleKey BOUNDS = StyleKey.getStyleKey("bounds", Rectangle2D.class, true);
-
-  /** A key for an element's 'visible' flag. */
-  public static final StyleKey VISIBLE = StyleKey.getStyleKey("visible", Boolean.class);
+  /**
+   * A key for the 'minimum size' of an element.
+   */
+  public static final StyleKey MINIMUMSIZE =
+          StyleKey.getStyleKey("min-size", Dimension2D.class, false, false);
 
   /**
-   * A key for the 'paint' used to color an element. For historical reasons,
-   * this key requires a color value.
+   * A key for the 'maximum size' of an element.
+   */
+  public static final StyleKey MAXIMUMSIZE =
+          StyleKey.getStyleKey("max-size", Dimension2D.class, false, false);
+
+  /**
+   * A key for the 'preferred size' of an element.
+   */
+  public static final StyleKey PREFERREDSIZE =
+          StyleKey.getStyleKey("preferred-size", Dimension2D.class, false, false);
+
+  /**
+   * A key for the 'bounds' of an element.
+   */
+  public static final StyleKey BOUNDS =
+          StyleKey.getStyleKey("bounds", Rectangle2D.class, true, false);
+
+  /**
+   * A key for an element's 'visible' flag.
+   */
+  public static final StyleKey VISIBLE =
+          StyleKey.getStyleKey("visible", Boolean.class);
+
+  /**
+   * A key for the 'paint' used to color an element. For historical reasons, this key
+   * requires a color value.
    */
   public static final StyleKey PAINT = StyleKey.getStyleKey("paint", Color.class);
 
   /**
-   * A key for the 'ext-paint' used to fill or draw an element. If the specified paint
-   * is not supported by the output target, the color given with the 'paint' key is used
+   * A key for the 'ext-paint' used to fill or draw an element. If the specified paint is
+   * not supported by the output target, the color given with the 'paint' key is used
    * instead.
    */
   public static final StyleKey EXTPAINT = StyleKey.getStyleKey("ext-paint", Paint.class);
 
-  /** A key for the 'stroke' used to draw an element. */
+  /**
+   * A key for the 'stroke' used to draw an element.
+   */
   public static final StyleKey STROKE = StyleKey.getStyleKey("stroke", Stroke.class);
 
-  /** A key for the 'font name' used to draw element text. */
+  /**
+   * A key for the 'font name' used to draw element text.
+   */
   public static final StyleKey FONT = StyleKey.getStyleKey("font", String.class);
 
-  /** A key for the 'font size' used to draw element text. */
+  /**
+   * A key for the 'font size' used to draw element text.
+   */
   public static final StyleKey FONTSIZE = StyleKey.getStyleKey("font-size", Integer.class);
 
-  /** A key for the 'font size' used to draw element text. */
+  /**
+   * A key for the 'font size' used to draw element text.
+   */
   public static final StyleKey LINEHEIGHT = StyleKey.getStyleKey("line-height", Float.class);
 
-  /** A key for an element's 'bold' flag. */
+  /**
+   * A key for an element's 'bold' flag.
+   */
   public static final StyleKey BOLD = StyleKey.getStyleKey("font-bold", Boolean.class);
 
-  /** A key for an element's 'italic' flag. */
+  /**
+   * A key for an element's 'italic' flag.
+   */
   public static final StyleKey ITALIC = StyleKey.getStyleKey("font-italic", Boolean.class);
 
-  /** A key for an element's 'underlined' flag. */
+  /**
+   * A key for an element's 'underlined' flag.
+   */
   public static final StyleKey UNDERLINED = StyleKey.getStyleKey("font-underline",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for an element's 'strikethrough' flag. */
+  /**
+   * A key for an element's 'strikethrough' flag.
+   */
   public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strikethrough",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for an element's 'embedd' flag. */
+  /**
+   * A key for an element's 'embedd' flag.
+   */
   public static final StyleKey EMBEDDED_FONT = StyleKey.getStyleKey("font-embedded", Boolean.class);
 
-  /** A key for an element's 'embedd' flag. */
+  /**
+   * A key for an element's 'embedd' flag.
+   */
   public static final StyleKey FONTENCODING = StyleKey.getStyleKey("font-encoding", String.class);
 
-  /** A key for the horizontal alignment of an element. */
+  /**
+   * A key for the horizontal alignment of an element.
+   */
   public static final StyleKey ALIGNMENT = StyleKey.getStyleKey("alignment",
-      ElementAlignment.class);
+          ElementAlignment.class);
 
-  /** A key for the vertical alignment of an element. */
+  /**
+   * A key for the vertical alignment of an element.
+   */
   public static final StyleKey VALIGNMENT = StyleKey.getStyleKey("valignment",
-      ElementAlignment.class);
+          ElementAlignment.class);
 
-  /** A key for an element's 'scale' flag. */
+  /**
+   * A key for an element's 'scale' flag.
+   */
   public static final StyleKey SCALE = StyleKey.getStyleKey("scale", Boolean.class);
 
-  /** A key for an element's 'keep aspect ratio' flag. */
+  /**
+   * A key for an element's 'keep aspect ratio' flag.
+   */
   public static final StyleKey KEEP_ASPECT_RATIO = StyleKey.getStyleKey("keepAspectRatio",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for the dynamic height flag for an element. */
+  /**
+   * A key for the dynamic height flag for an element.
+   */
   public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
-      Boolean.class);
+          Boolean.class);
 
   /**
    * The Layout Cacheable stylekey. Set this stylekey to false, to define that the element
    * is not cachable. This key defaults to true.
    */
   public static final StyleKey ELEMENT_LAYOUT_CACHEABLE = StyleKey.getStyleKey("layout-cacheable",
-      Boolean.class);
+          Boolean.class);
 
-  /** The string that is used to end a text if not all text fits into the element. */
+  /**
+   * The string that is used to end a text if not all text fits into the element.
+   */
   public static final StyleKey RESERVED_LITERAL = StyleKey.getStyleKey
-      ("reserved-literal", String.class);
+          ("reserved-literal", String.class);
 
   /**
    * The Layout Cacheable stylekey. Set this stylekey to false, to define that the element
    * is not cachable. This key defaults to true.
    */
   public static final StyleKey TRIM_TEXT_CONTENT = StyleKey.getStyleKey("trim-text-content",
-      Boolean.class);
+          Boolean.class);
 
-  /** The instance id of this ElementStyleSheet. This id is shared among all clones. */
+  /**
+   * The instance id of this ElementStyleSheet. This id is shared among all clones.
+   */
   private InstanceID id;
 
-  /** The style-sheet name. */
+  /**
+   * The style-sheet name.
+   */
   private String name;
 
-  /** The style-sheet properties. */
-  private transient HashMap properties;
-
-  /** Storage for the parent style sheets (if any). */
+  /**
+   * Storage for the parent style sheets (if any).
+   */
   private ArrayList parents;
 
-  /** Storage for readonly style sheets. */
-  private ArrayList defaultSheets;
+  /**
+   * Storage for readonly style sheets.
+   */
+  private ElementDefaultStyleSheet defaultStyleSheet;
+  private ElementStyleSheet cascadeStyleSheet;
 
-  /** Parent style sheet cache. */
-  private transient ElementStyleSheet[] parentsCached;
+  /**
+   * Parent style sheet cache.
+   */
+  private transient StyleSheetCarrier[] parentsCached;
 
-  /** Default style sheet cache. */
-  private transient ElementStyleSheet[] defaultCached;
+  private transient StyleKey[] propertyKeys;
+  private transient Object[] properties;
+  private transient Object[] cachedProperties;
 
-  /** Style cache. */
-  private transient HashMap styleCache;
-
-  /** Style change support. */
+  /**
+   * Style change support.
+   */
   private transient StyleChangeSupport styleChangeSupport;
 
-  /** A flag that controls whether or not caching is allowed. */
+  /**
+   * A flag that controls whether or not caching is allowed.
+   */
   private boolean allowCaching;
-
-  /** An unmodifiable list, chaching the return value from getParents(). */
-  private transient List parentsListCached;
-  /** An unmodifiable list, chaching the return value from getDefaultParents(). */
-  private transient List defaultParentsListCached;
-  /** The cached font definition instance from this stylessheet. */
+  /**
+   * The cached font definition instance from this stylessheet.
+   */
   private transient FontDefinition fontDefinition;
 
   /**
-   * The stylesheet collection helper implementation that manages the
-   * stylesheet collection for this ElementStyleSheet.
-   */
-  private transient ElementStyleSheetCollectionHelper collectionHelper;
-
-  /**
-   * Creates a new element style-sheet with the given name.  The style-sheet initially contains
-   * no attributes, and has no parent style-sheets.
+   * Creates a new element style-sheet with the given name.  The style-sheet initially
+   * contains no attributes, and has no parent style-sheets.
    *
-   * @param name  the name (<code>null</code> not permitted).
+   * @param name       the name (<code>null</code> not permitted).
    */
-  public ElementStyleSheet(final String name)
+  protected ElementStyleSheet (final String name)
   {
     if (name == null)
     {
@@ -291,11 +298,8 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     this.id = new InstanceID();
     this.name = name;
-    this.properties = new HashMap(40);
     this.parents = new ArrayList(5);
-    this.defaultSheets = new ArrayList(5);
     this.styleChangeSupport = new StyleChangeSupport(this);
-    this.collectionHelper = new ElementStyleSheetCollectionHelper(this);
   }
 
   /**
@@ -303,28 +307,43 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return A boolean.
    */
-  public boolean isAllowCaching()
+  public final boolean isAllowCaching ()
   {
     return allowCaching;
   }
 
   /**
    * Returns true, if the given key is locally defined, false otherwise.
+   *
    * @param key the key to test
    * @return true, if the key is local, false otherwise.
    */
-  public boolean isLocalKey(final StyleKey key)
+  public boolean isLocalKey (final StyleKey key)
   {
-    return properties.containsKey(key);
+    if (properties == null)
+    {
+      return false;
+    }
+    final int identifier = key.getIdentifier();
+    if (properties.length <= identifier)
+    {
+      return false;
+    }
+    return properties[identifier] != null;
   }
+
   /**
    * Sets the flag that controls whether or not caching is allowed.
    *
-   * @param allowCaching  the flag value.
+   * @param allowCaching the flag value.
    */
-  public void setAllowCaching(final boolean allowCaching)
+  public void setAllowCaching (final boolean allowCaching)
   {
     this.allowCaching = allowCaching;
+    if (this.allowCaching == false)
+    {
+      this.cachedProperties = null;
+    }
   }
 
   /**
@@ -332,47 +351,32 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return the name (never <code>null</code>).
    */
-  public String getName()
+  public String getName ()
   {
     return name;
   }
 
   /**
-   * Adds a parent style-sheet. This method adds the parent to the beginning of the
-   * list, and guarantees, that this parent is queried first.
+   * Adds a parent style-sheet. This method adds the parent to the beginning of the list,
+   * and guarantees, that this parent is queried first.
    *
-   * @param parent  the parent (<code>null</code> not permitted).
+   * @param parent the parent (<code>null</code> not permitted).
    */
-  public synchronized void addParent(final ElementStyleSheet parent)
+  public void addParent (final ElementStyleSheet parent)
   {
     addParent(0, parent);
   }
 
   /**
-   * Adds a parent style-sheet. This method adds the parent to the beginning of the
-   * list, and guarantees, that this parent is queried first.
-   * <p>
-   * The default parents operations are reserved for the system internal stylesheet
-   * operations. If you want to add own stylesheets, use the addParent methods.
-   *
-   * @param parent  the parent (<code>null</code> not permitted).
-   */
-  public synchronized void addDefaultParent(final ElementStyleSheet parent)
-  {
-    addDefaultParent(0, parent);
-  }
-
-  /**
-   * Adds a parent style-sheet. Parents on a lower position are queried before any
-   * parent with an higher position in the list.
+   * Adds a parent style-sheet. Parents on a lower position are queried before any parent
+   * with an higher position in the list.
    *
    * @param position the position where to insert the parent style sheet
-   * @param parent  the parent (<code>null</code> not permitted).
-   *
+   * @param parent   the parent (<code>null</code> not permitted).
    * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
-   *         numberOfParents)
+   *                                   numberOfParents)
    */
-  public synchronized void addParent(final int position, final ElementStyleSheet parent)
+  public void addParent (final int position, final ElementStyleSheet parent)
   {
     if (parent == null)
     {
@@ -380,17 +384,9 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     if (parent.isSubStyleSheet(this) == false)
     {
-      parents.add(position, parent);
+      final StyleSheetCarrier carrier = createCarrier(parent);
+      parents.add(position, carrier);
       parentsCached = null;
-      parentsListCached = null;
-      if (parent.isGlobalDefault() == false)
-      {
-        parent.addListener(this);
-      }
-      if (getStyleSheetCollection() != null)
-      {
-        parent.registerStyleSheetCollection(getStyleSheetCollection());
-      }
     }
     else
     {
@@ -398,78 +394,27 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
   }
 
-  /**
-   * Adds a parent style-sheet. Parents on a lower position are queried before any
-   * parent with an higher position in the list.
-   * <p>
-   * The default parents operations are reserved for the system internal stylesheet
-   * operations. If you want to add own stylesheets, use the addParent methods.
-   * <p>
-   * Only default style sheets should be added with this method.
-   *
-   * @param position the position where to insert the parent style sheet
-   * @param parent  the parent (<code>null</code> not permitted).
-   *
-   * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
-   *         numberOfParents)
-   */
-  public synchronized void addDefaultParent(final int position, final ElementStyleSheet parent)
-  {
-    if (parent == null)
-    {
-      throw new NullPointerException("ElementStyleSheet.addParent(...): parent is null.");
-    }
-    if (parent.isSubStyleSheet(this) == false)
-    {
-      defaultSheets.add(position, parent);
-      defaultCached = null;
-      defaultParentsListCached = null;
-      if (getStyleSheetCollection() != null)
-      {
-        parent.registerStyleSheetCollection(getStyleSheetCollection());
-      }
-      if (parent.isGlobalDefault() == false)
-      {
-        parent.addListener(this);
-      }
-    }
-    else
-    {
-      throw new IllegalArgumentException("Cannot add parent as child.");
-    }
-  }
+  protected abstract StyleSheetCarrier createCarrier (ElementStyleSheet styleSheet);
+
 
   /**
-   * Checks, whether the given element stylesheet is already added as child into
-   * the stylesheet tree.
+   * Checks, whether the given element stylesheet is already added as child into the
+   * stylesheet tree.
    *
    * @param parent the element that should be tested.
-   * @return true, if the element is a child of this element style sheet,
-   * false otherwise.
+   * @return true, if the element is a child of this element style sheet, false
+   *         otherwise.
    */
-  public boolean isSubStyleSheet(final ElementStyleSheet parent)
+  protected boolean isSubStyleSheet (final ElementStyleSheet parent)
   {
     for (int i = 0; i < parents.size(); i++)
     {
-      final ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      final StyleSheetCarrier ca = (StyleSheetCarrier) parents.get(i);
+      final ElementStyleSheet es = ca.getStyleSheet();
       if (es == parent)
       {
         return true;
       }
-
-      if (es.isSubStyleSheet(parent) == true)
-      {
-        return true;
-      }
-    }
-    for (int i = 0; i < defaultSheets.size(); i++)
-    {
-      final ElementStyleSheet es = (ElementStyleSheet) defaultSheets.get(i);
-      if (es == parent)
-      {
-        return true;
-      }
-
       if (es.isSubStyleSheet(parent) == true)
       {
         return true;
@@ -481,135 +426,141 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Removes a parent style-sheet.
    *
-   * @param parent  the style-sheet to remove (<code>null</code> not permitted).
+   * @param parent the style-sheet to remove (<code>null</code> not permitted).
    */
-  public synchronized void removeParent(final ElementStyleSheet parent)
+  public void removeParent (final ElementStyleSheet parent)
   {
     if (parent == null)
     {
       throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
-    if (parents.contains(parent) == false)
+    final Iterator it = parents.iterator();
+    while (it.hasNext())
     {
-      // do nothing if this is none of the parents ...
-      return;
-    }
-    parents.remove(parent);
-    if (parent.isGlobalDefault() == false)
-    {
-      parent.removeListener(this);
+      final StyleSheetCarrier carrier = (StyleSheetCarrier) it.next();
+      if (carrier.isSame(parent))
+      {
+        it.remove();
+        carrier.invalidate();
+      }
     }
     parentsCached = null;
-    parentsListCached = null;
-    if (getStyleSheetCollection() != null)
-    {
-      parent.unregisterStyleSheetCollection(getStyleSheetCollection());
-    }
-  }
-
-  /**
-   * Removes a parent style-sheet.
-   *
-   * @param parent  the style-sheet to remove (<code>null</code> not permitted).
-   */
-  public synchronized void removeDefaultParent(final ElementStyleSheet parent)
-  {
-    if (parent == null)
-    {
-      throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
-    }
-    defaultSheets.remove(parent);
-    if (parent.isGlobalDefault() == false)
-    {
-      parent.removeListener(this);
-    }
-    defaultCached = null;
-    defaultParentsListCached = null;
   }
 
   /**
    * Returns a list of the parent style-sheets.
-   * <p>
+   * <p/>
    * The list is unmodifiable.
    *
    * @return the list.
    */
-  public List getParents()
+  public ElementStyleSheet[] getParents ()
   {
-    if (parentsListCached == null)
+    if (parentsCached == null)
     {
-      parentsListCached = Collections.unmodifiableList(parents);
+      this.parentsToCache();
     }
-    return parentsListCached;
+    final ElementStyleSheet[] styleSheets =
+            new ElementStyleSheet[parentsCached.length];
+    for (int i = 0; i < styleSheets.length; i++)
+    {
+      styleSheets[i] = parentsCached[i].getStyleSheet();
+    }
+    return styleSheets;
   }
 
   /**
-   * Returns a list of the default style-sheets.
-   * <p>
-   * The list is unmodifiable.
+   * Returns the global default (if defined).
    *
    * @return the list.
    */
-  public List getDefaultParents()
+  public ElementDefaultStyleSheet getGlobalDefaultStyleSheet ()
   {
-    if (defaultParentsListCached == null)
+    return defaultStyleSheet;
+  }
+
+  public void setDefaultStyleSheet (final ElementDefaultStyleSheet defaultStyleSheet)
+  {
+    this.defaultStyleSheet = defaultStyleSheet;
+  }
+
+  public ElementStyleSheet getCascadeStyleSheet ()
+  {
+    return cascadeStyleSheet;
+  }
+
+  public void setCascadeStyleSheet (final ElementStyleSheet cascadeStyleSheet)
+  {
+    if (this.cascadeStyleSheet != null)
     {
-      defaultParentsListCached = Collections.unmodifiableList(defaultSheets);
+      cascadeStyleSheet.removeListener(this);
     }
-    return defaultParentsListCached;
+    this.cascadeStyleSheet = cascadeStyleSheet;
+    if (this.cascadeStyleSheet != null)
+    {
+      cascadeStyleSheet.addListener(this);
+    }
   }
 
   /**
-   * Returns the value of a style.  If the style is not found in this style-sheet, the code looks
-   * in the parent style-sheets.  If the style is not found in any of the parent style-sheets, then
-   * <code>null</code> is returned.
+   * Returns the value of a style.  If the style is not found in this style-sheet, the
+   * code looks in the parent style-sheets.  If the style is not found in any of the
+   * parent style-sheets, then <code>null</code> is returned.
    *
-   * @param key  the style key.
-   *
+   * @param key the style key.
    * @return the value.
    */
-  public Object getStyleProperty(final StyleKey key)
+  public Object getStyleProperty (final StyleKey key)
   {
     return getStyleProperty(key, null);
   }
 
   /**
-   * Returns the value of a style.  If the style is not found in this style-sheet, the code looks
-   * in the parent style-sheets.  If the style is not found in any of the parent style-sheets, then
-   * the default value (possibly <code>null</code>) is returned.
+   * Returns the value of a style.  If the style is not found in this style-sheet, the
+   * code looks in the parent style-sheets.  If the style is not found in any of the
+   * parent style-sheets, then the default value (possibly <code>null</code>) is
+   * returned.
    *
-   * @param key  the style key.
-   * @param defaultValue  the default value (<code>null</code> permitted).
-   *
+   * @param key          the style key.
+   * @param defaultValue the default value (<code>null</code> permitted).
    * @return the value.
    */
-  public Object getStyleProperty(final StyleKey key, final Object defaultValue)
+  public Object getStyleProperty (final StyleKey key, final Object defaultValue)
   {
-    Object value = properties.get(key);
-    if (value != null)
+    final int identifier = key.getIdentifier();
+    if (properties != null)
     {
-      return value;
+      if (properties.length > identifier)
+      {
+        final Object value = properties[identifier];
+        if (value != null)
+        {
+          return value;
+        }
+      }
     }
 
-    if (styleCache != null)
+    if (cachedProperties != null)
     {
-      value = styleCache.get(key);
-      if (value != null)
+      if (cachedProperties.length > identifier)
       {
-        if (value == UNDEFINED_VALUE)
+        final Object value = cachedProperties[identifier];
+        if (value != null)
         {
-          return defaultValue;
+          if (value == UNDEFINED_VALUE)
+          {
+            return defaultValue;
+          }
+          return value;
         }
-        return value;
       }
     }
 
     parentsToCache();
-
     for (int i = 0; i < parentsCached.length; i++)
     {
-      final ElementStyleSheet st = parentsCached[i];
-      value = st.getStyleProperty(key, null);
+      final ElementStyleSheet st = parentsCached[i].getStyleSheet();
+      final Object value = st.getStyleProperty(key, null);
       if (value == null)
       {
         continue;
@@ -618,19 +569,26 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       return value;
     }
 
-    defaultToCache();
-
-    for (int i = 0; i < defaultCached.length; i++)
+    if (cascadeStyleSheet != null && key.isInheritable())
     {
-      final ElementStyleSheet st = defaultCached[i];
-      value = st.getStyleProperty(key, null);
-      if (value == null)
+      final Object value = cascadeStyleSheet.getStyleProperty(key, null);
+      if (value != null)
       {
-        continue;
+        putInCache(key, value);
+        return value;
       }
-      putInCache(key, value);
-      return value;
     }
+
+    if (defaultStyleSheet != null)
+    {
+      final Object value = defaultStyleSheet.getStyleProperty(key, null);
+      if (value != null)
+      {
+        putInCache(key, value);
+        return value;
+      }
+    }
+
     putInCache(key, UNDEFINED_VALUE);
     return defaultValue;
   }
@@ -638,30 +596,40 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Puts an object into the cache (if caching is enabled).
    *
-   * @param key the stylekey for that object
+   * @param key   the stylekey for that object
    * @param value the object.
    */
-  private void putInCache(final StyleKey key, final Object value)
+  private void putInCache (final StyleKey key, final Object value)
   {
-    if (isAllowCaching())
+    if (allowCaching)
     {
-      if (styleCache == null)
+      final int identifier = key.getIdentifier();
+      if (cachedProperties != null)
       {
-        styleCache = new HashMap();
+        if (cachedProperties.length <= identifier)
+        {
+          final Object[] newCache = new Object[StyleKey.getDefinedStyleKeyCount()];
+          System.arraycopy(cachedProperties, 0, newCache, 0, cachedProperties.length);
+          cachedProperties = newCache;
+        }
       }
-      styleCache.put(key, value);
+      else
+      {
+        cachedProperties = new Object[StyleKey.getDefinedStyleKeyCount()];
+      }
+      cachedProperties[identifier] = value;
     }
   }
 
   /**
    * Sets a boolean style property.
    *
-   * @param key  the style key (<code>null</code> not permitted).
-   * @param value  the value.
+   * @param key   the style key (<code>null</code> not permitted).
+   * @param value the value.
    * @throws NullPointerException if the given key is null.
-   * @throws ClassCastException if the value cannot be assigned with the given key.
+   * @throws ClassCastException   if the value cannot be assigned with the given key.
    */
-  public void setBooleanStyleProperty(final StyleKey key, final boolean value)
+  public void setBooleanStyleProperty (final StyleKey key, final boolean value)
   {
     if (value)
     {
@@ -676,12 +644,12 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Sets a style property (or removes the style if the value is <code>null</code>).
    *
-   * @param key  the style key (<code>null</code> not permitted).
-   * @param value  the value.
+   * @param key   the style key (<code>null</code> not permitted).
+   * @param value the value.
    * @throws NullPointerException if the given key is null.
-   * @throws ClassCastException if the value cannot be assigned with the given key.
+   * @throws ClassCastException   if the value cannot be assigned with the given key.
    */
-  public void setStyleProperty(final StyleKey key, final Object value)
+  public void setStyleProperty (final StyleKey key, final Object value)
   {
     if (key == null)
     {
@@ -691,9 +659,24 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       fontDefinition = null;
     }
+    final int identifier = key.getIdentifier();
     if (value == null)
     {
-      properties.remove(key);
+      if (properties != null)
+      {
+        if (properties.length > identifier)
+        {
+          properties[identifier] = null;
+        }
+      }
+
+      if (propertyKeys != null)
+      {
+        if (propertyKeys.length > identifier)
+        {
+          propertyKeys[identifier] = null;
+        }
+      }
       styleChangeSupport.fireStyleRemoved(key);
     }
     else
@@ -701,53 +684,81 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       if (key.getValueType().isAssignableFrom(value.getClass()) == false)
       {
         throw new ClassCastException("Value for key " + key.getName()
-            + " is not assignable: " + value.getClass()
-            + " is not assignable from " + key.getValueType());
+                + " is not assignable: " + value.getClass()
+                + " is not assignable from " + key.getValueType());
       }
-      properties.put(key, value);
+      if (properties != null)
+      {
+        if (properties.length <= identifier)
+        {
+          final Object[] newProps = new Object[StyleKey.getDefinedStyleKeyCount()];
+          System.arraycopy(properties, 0, newProps, 0, properties.length);
+          properties = newProps;
+        }
+      }
+      else
+      {
+        properties = new Object[StyleKey.getDefinedStyleKeyCount()];
+      }
+
+      if (propertyKeys != null)
+      {
+        if (propertyKeys.length <= identifier)
+        {
+          final StyleKey[] newProps = new StyleKey[StyleKey.getDefinedStyleKeyCount()];
+          System.arraycopy(propertyKeys, 0, newProps, 0, propertyKeys.length);
+          propertyKeys = newProps;
+        }
+      }
+      else
+      {
+        propertyKeys = new StyleKey[StyleKey.getDefinedStyleKeyCount()];
+      }
+
+      properties[identifier] = value;
+      propertyKeys[identifier] = key;
       styleChangeSupport.fireStyleChanged(key, value);
     }
   }
 
 
   /**
-   * Creates and returns a copy of this object. This method calls getCopy().
+   * Creates and returns a copy of this object. After the cloning, the new StyleSheet is
+   * no longer registered with its parents.
    *
-   * @return     a clone of this instance.
+   * @return a clone of this instance.
+   *
    * @see Cloneable
    */
-  public Object clone()
+  public Object clone () throws CloneNotSupportedException
   {
     try
     {
       final ElementStyleSheet sc = (ElementStyleSheet) super.clone();
-      sc.properties = (HashMap) properties.clone();
-      if (styleCache != null)
+      if (properties != null)
       {
-        sc.styleCache = new HashMap(styleCache);
+        sc.properties = (Object[]) properties.clone();
+      }
+      if (propertyKeys != null)
+      {
+        sc.propertyKeys = (StyleKey[]) propertyKeys.clone();
       }
       sc.styleChangeSupport = new StyleChangeSupport(sc);
-      sc.collectionHelper = new ElementStyleSheetCollectionHelper(sc);
-
-      // Clone all parents ...
+      if (cachedProperties != null)
+      {
+        sc.cachedProperties = (Object[]) cachedProperties.clone();
+      }
       parentsToCache();
-      sc.parents = new ArrayList();// parents.clone();
-      for (int i = parentsCached.length - 1; i >= 0; i--)
+      sc.parents = new ArrayList(parentsCached.length);// parents.clone();
+      sc.parentsCached = new StyleSheetCarrier[parentsCached.length];
+      for (int i = 0; i < parentsCached.length; i++)
       {
-        sc.addParent(parentsCached[i]);
+        final StyleSheetCarrier carrier = (StyleSheetCarrier) parentsCached[i].clone();
+        sc.parentsCached[i] = carrier;
+        sc.parents.add(carrier);
       }
-
-      // Clone all default parents ...
-      defaultToCache();
-      sc.defaultSheets = new ArrayList();// defaultSheets.clone();
-      for (int i = defaultCached.length - 1; i >= 0; i--)
-      {
-        sc.addDefaultParent(defaultCached[i]);
-      }
-
-      sc.parentsCached = parentsCached;
-      sc.defaultCached = defaultCached;
-
+      sc.cascadeStyleSheet = null;
+      sc.defaultStyleSheet = defaultStyleSheet;
       return sc;
     }
     catch (CloneNotSupportedException cne)
@@ -756,51 +767,43 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
   }
 
+  protected StyleSheetCarrier[] getParentReferences()
+  {
+    parentsToCache();
+    return parentsCached;
+  }
+
   /**
-   * Clones the style-sheet. The assigned parent style sheets are not cloned.
-   * The stylesheets are not assigned to the contained stylesheet collection,
-   * you have to reassign them manually ...
+   * Clones the style-sheet. The assigned parent style sheets are not cloned. The
+   * stylesheets are not assigned to the contained stylesheet collection, you have to
+   * reassign them manually ...
    *
    * @return the clone.
    */
-  public ElementStyleSheet getCopy()
+  public ElementStyleSheet getCopy () throws CloneNotSupportedException
   {
     return (ElementStyleSheet) clone();
   }
 
   /**
-   * Creates the cached object array for the default element style sheets.
-   */
-  private void defaultToCache()
-  {
-    if (defaultCached == null)
-    {
-      defaultCached = (ElementStyleSheet[])
-          defaultSheets.toArray(new ElementStyleSheet[defaultSheets.size()]);
-    }
-  }
-
-  /**
    * Creates the cached object array for the parent element style sheets.
-   *
    */
-  private void parentsToCache()
+  private void parentsToCache ()
   {
     if (parentsCached == null)
     {
-      parentsCached = (ElementStyleSheet[])
-          parents.toArray(new ElementStyleSheet[parents.size()]);
+      parentsCached = (StyleSheetCarrier[])
+              parents.toArray(new StyleSheetCarrier[parents.size()]);
     }
   }
 
   /**
    * Returns a boolean style (defaults to false if the style is not found).
    *
-   * @param key  the style key.
-   *
+   * @param key the style key.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean getBooleanStyleProperty(final StyleKey key)
+  public boolean getBooleanStyleProperty (final StyleKey key)
   {
     return getBooleanStyleProperty(key, false);
   }
@@ -808,12 +811,11 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Returns a boolean style.
    *
-   * @param key  the style key.
-   * @param defaultValue  the default value.
-   *
+   * @param key          the style key.
+   * @param defaultValue the default value.
    * @return true or false.
    */
-  public boolean getBooleanStyleProperty(final StyleKey key, final boolean defaultValue)
+  public boolean getBooleanStyleProperty (final StyleKey key, final boolean defaultValue)
   {
     final Boolean b = (Boolean) getStyleProperty(key, null);
     if (b == null)
@@ -826,21 +828,20 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Returns an integer style.
    *
-   * @param key  the style key.
-   * @param def  the default value.
-   *
+   * @param key the style key.
+   * @param def the default value.
    * @return the style value.
    */
-  public int getIntStyleProperty(final StyleKey key, final int def)
+  public int getIntStyleProperty (final StyleKey key, final int def)
   {
     final Integer i = (Integer) getStyleProperty(key, new Integer(def));
     return i.intValue();
   }
 
   /**
-   * Checks, whether the given key is one of the keys used to define the 
-   * font definition from this stylesheet.
-   * 
+   * Checks, whether the given key is one of the keys used to define the font definition
+   * from this stylesheet.
+   *
    * @param key the key that should be checked.
    * @return true, if the key is a font definition key, false otherwise.
    */
@@ -880,12 +881,13 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
     return false;
   }
+
   /**
    * Returns the font for this style-sheet.
    *
    * @return the font.
    */
-  public FontDefinition getFontDefinitionProperty()
+  public FontDefinition getFontDefinitionProperty ()
   {
     if (fontDefinition == null)
     {
@@ -899,8 +901,8 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       final String encoding = (String) getStyleProperty(FONTENCODING);
 
       final FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike,
-          encoding, embed);
-      if (isAllowCaching())
+              encoding, embed);
+      if (allowCaching)
       {
         fontDefinition = retval;
       }
@@ -915,9 +917,9 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Sets the font for this style-sheet.
    *
-   * @param font  the font (<code>null</code> not permitted).
+   * @param font the font (<code>null</code> not permitted).
    */
-  public void setFontDefinitionProperty(final FontDefinition font)
+  public void setFontDefinitionProperty (final FontDefinition font)
   {
     if (font == null)
     {
@@ -938,17 +940,28 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    *
    * @return an enumeration of all localy defined style property keys.
    */
-  public Iterator getDefinedPropertyNames()
+  public Iterator getDefinedPropertyNames ()
   {
-    return properties.keySet().iterator();
+    final ArrayList al = new ArrayList();
+    if (propertyKeys != null)
+    {
+      for (int i = 0;  i< propertyKeys.length; i++)
+      {
+        if (propertyKeys[i] != null)
+        {
+          al.add(propertyKeys[i]);
+        }
+      }
+    }
+    return Collections.unmodifiableList(al).iterator();
   }
 
   /**
    * Adds a {@link StyleChangeListener}.
    *
-   * @param l  the listener.
+   * @param l the listener.
    */
-  public void addListener(final StyleChangeListener l)
+  protected void addListener (final StyleChangeListener l)
   {
     styleChangeSupport.addListener(l);
   }
@@ -956,25 +969,31 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /**
    * Removes a {@link StyleChangeListener}.
    *
-   * @param l  the listener.
+   * @param l the listener.
    */
-  public void removeListener(final StyleChangeListener l)
+  protected void removeListener (final StyleChangeListener l)
   {
     styleChangeSupport.removeListener(l);
   }
 
   /**
-   * Forwards a change event notification to all registered {@link StyleChangeListener} objects.
+   * Forwards a change event notification to all registered {@link StyleChangeListener}
+   * objects.
    *
-   * @param source  the source of the change.
-   * @param key  the style key.
+   * @param source the source of the change.
+   * @param key    the style key.
    * @param value  the new value.
    */
-  public void styleChanged(final ElementStyleSheet source, final StyleKey key, final Object value)
+  public void styleChanged (final ElementStyleSheet source, final StyleKey key,
+                            final Object value)
   {
-    if (styleCache != null)
+    if (cachedProperties != null)
     {
-      styleCache.remove(key);
+      final int identifier = key.getIdentifier();
+      if (cachedProperties.length > identifier)
+      {
+        cachedProperties[identifier] = value;
+      }
       if (isFontDefinitionProperty(key))
       {
         fontDefinition = null;
@@ -984,16 +1003,21 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   }
 
   /**
-   * Forwards a change event notification to all registered {@link StyleChangeListener} objects.
+   * Forwards a change event notification to all registered {@link StyleChangeListener}
+   * objects.
    *
-   * @param source  the source of the change.
-   * @param key  the style key.
+   * @param source the source of the change.
+   * @param key    the style key.
    */
-  public void styleRemoved(final ElementStyleSheet source, final StyleKey key)
+  public void styleRemoved (final ElementStyleSheet source, final StyleKey key)
   {
-    if (styleCache != null)
+    if (cachedProperties != null)
     {
-      styleCache.remove(key);
+      final int identifier = key.getIdentifier();
+      if (cachedProperties.length > identifier)
+      {
+        cachedProperties[identifier] = null;
+      }
       if (isFontDefinitionProperty(key))
       {
         fontDefinition = null;
@@ -1008,19 +1032,25 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @param out the output stream where to write the object.
    * @throws IOException if errors occur while writing the stream.
    */
-  private void writeObject(final ObjectOutputStream out)
-      throws IOException
+  private void writeObject (final ObjectOutputStream out)
+          throws IOException
   {
     out.defaultWriteObject();
-    final int size = properties.size();
-    out.writeInt(size);
-    final Iterator it = properties.keySet().iterator();
-    while (it.hasNext())
+
+    out.writeObject(propertyKeys);
+    if (properties == null)
     {
-      final Object key = it.next();
-      out.writeObject(key);
-      final Object value = properties.get(key);
-      SerializerHelper.getInstance().writeObject(value, out);
+      out.writeInt(0);
+    }
+    else
+    {
+      final int size = properties.length;
+      out.writeInt(size);
+      for (int i = 0; i < size; i++)
+      {
+        final Object value = properties[i];
+        SerializerHelper.getInstance().writeObject(value, out);
+      }
     }
   }
 
@@ -1028,88 +1058,65 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * Helper method for serialization.
    *
    * @param in the input stream from where to read the serialized object.
-   * @throws IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
+   * @throws IOException            when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object could
+   *                                not be found.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     styleChangeSupport = new StyleChangeSupport(this);
 
     in.defaultReadObject();
+    final StyleKey[] keys = (StyleKey[]) in.readObject();
     final int size = in.readInt();
-    properties = new HashMap(size);
+    final Object[] values = new Object[size];
     for (int i = 0; i < size; i++)
     {
-      final Object key = in.readObject();
       final Object value = SerializerHelper.getInstance().readObject(in);
-      properties.put(key, value);
+      values[i] = value;
+    }
+    if (keys == null)
+    {
+      return;
+    }
+    properties = new Object[StyleKey.getDefinedStyleKeyCount()];
+    propertyKeys = new StyleKey[StyleKey.getDefinedStyleKeyCount()];
+    final int maxLen = Math.min
+            (Math.min (properties.length, keys.length),
+             Math.min (propertyKeys.length, values.length));
+    for (int i = 0; i < maxLen; i++)
+    {
+      final StyleKey key = keys[i];
+      if (key != null)
+      {
+        final int identifier = key.getIdentifier();
+        final Object value = values[i];
+        properties[identifier] = value;
+        propertyKeys[identifier] = key;
+      }
     }
   }
 
   /**
-   * Returns the stylesheet collection of this element stylesheet, or null,
-   * if this stylessheet is not assigned with an collection.
-   *
-   * @return the collection or null.
-   */
-  public StyleSheetCollection getStyleSheetCollection()
-  {
-    return collectionHelper.getStyleSheetCollection();
-  }
-
-  /**
-   * Registers the given StyleSheet collection with this ElementStyleSheet.
-   * If there is already another stylesheet collection registered, this method
-   * will throw an <code>InvalidStyleSheetCollectionException</code>.
-   *
-   * @param styleSheetCollection the stylesheet collection that should be registered.
-   * @throws InvalidStyleSheetCollectionException if there is already an other
-   * stylesheet registered.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   */
-  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-      throws InvalidStyleSheetCollectionException
-  {
-    collectionHelper.registerStyleSheetCollection(styleSheetCollection);
-  }
-
-  /**
-   * Unregisters the given stylesheet collection from this ElementStyleSheet. If this stylesheet
-   * collection is not registered with this ElementStyleSheet, this method will throw an
-   * <code>InvalidStyleSheetCollectionException</code>
-   *
-   * @param styleSheetCollection the stylesheet collection that should be unregistered.
-   * @throws InvalidStyleSheetCollectionException  if there is already an other stylesheet
-   * registered.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   */
-  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-      throws InvalidStyleSheetCollectionException
-  {
-    collectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
-  }
-
-  /**
-   * Returns the ID of the stylesheet. The ID does identify an element stylesheet an
-   * all all cloned instances of that stylesheet.
+   * Returns the ID of the stylesheet. The ID does identify an element stylesheet an all
+   * all cloned instances of that stylesheet.
    *
    * @return the ID of this stylesheet.
    */
-  public InstanceID getId()
+  public InstanceID getId ()
   {
     return id;
   }
 
   /**
-   * Returns true, if this stylesheet is one of the global default stylesheets.
-   * Global default stylesheets are unmodifiable and shared among all element stylesheets.
+   * Returns true, if this stylesheet is one of the global default stylesheets. Global
+   * default stylesheets are unmodifiable and shared among all element stylesheets.
    *
-   * @return true, if this is one of the unmodifiable global default stylesheets,
-   * false otherwise.
+   * @return true, if this is one of the unmodifiable global default stylesheets, false
+   *         otherwise.
    */
-  public boolean isGlobalDefault()
+  public boolean isGlobalDefault ()
   {
     return false;
   }

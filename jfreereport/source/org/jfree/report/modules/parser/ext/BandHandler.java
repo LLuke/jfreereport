@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.8.4.2 2004/10/13 18:42:23 taqua Exp $
+ * $Id: BandHandler.java,v 1.11 2005/01/25 00:18:27 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollec
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.CommentHandler;
 import org.jfree.xml.ParseException;
+import org.jfree.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -137,7 +138,8 @@ public class BandHandler extends ElementHandler
       final CommentHintPath path = createCommentPath(tagName);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
 
-      final ElementStyleSheet styleSheet = getBand().getBandDefaults();
+      Log.warn("Extended parser: Tag " + DEFAULT_STYLE_TAG + " is deprecated.");
+      final ElementStyleSheet styleSheet = getBand().getStyle();
       final StyleSheetHandler styleSheetFactory =
           new StyleSheetHandler(getReportParser(), tagName, styleSheet, path);
       getParser().pushFactory(styleSheetFactory);

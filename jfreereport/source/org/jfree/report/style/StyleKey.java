@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKey.java,v 1.7 2004/05/07 08:14:24 mungady Exp $
+ * $Id: StyleKey.java,v 1.8 2005/01/25 21:40:37 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import java.util.Hashtable;
  * Note that this class also defines a static Hashtable in which all defined keys are
  * stored.
  *
- * @see BandStyleSheet
+ * @see BandStyleKeys
  * @see ElementStyleSheet
  *
  * @author Thomas Morgner
@@ -65,11 +65,14 @@ public final class StyleKey implements Serializable, Cloneable
   /** The class of the value. */
   private Class valueType;
 
-  /** The cached hashcode for the stylekey. */
-  private int hashCode;
+  /** A unique int-key for the stylekey. */
+  private int identifier;
 
   /** Whether this stylekey is transient. */
   private boolean trans;
+
+  /** Whether this stylekey is inheritable. */
+  private boolean inheritable;
 
   /**
    * Creates a new style key.
@@ -77,11 +80,15 @@ public final class StyleKey implements Serializable, Cloneable
    * @param name  the name (never null).
    * @param valueType  the class of the value for this key (never null).
    */
-  private StyleKey(final String name, final Class valueType, final boolean trans)
+  private StyleKey(final String name,
+                   final Class valueType,
+                   final boolean trans,
+                   final boolean inheritable)
   {
     setName(name);
     setValueType(valueType);
-    setTransient(trans);
+    this.trans = trans;
+    this.inheritable = inheritable;
   }
 
   /**
@@ -106,7 +113,7 @@ public final class StyleKey implements Serializable, Cloneable
       throw new NullPointerException("StyleKey.setName(...): null not permitted.");
     }
     this.name = name;
-    this.hashCode = name.hashCode();
+    this.identifier = definedKeys.size();
   }
 
   /**
@@ -145,7 +152,7 @@ public final class StyleKey implements Serializable, Cloneable
    */
   public static StyleKey getStyleKey(final String name, final Class valueType)
   {
-    return getStyleKey(name, valueType, false);
+    return getStyleKey(name, valueType, false, true);
   }
 
   /**
@@ -158,7 +165,10 @@ public final class StyleKey implements Serializable, Cloneable
    *
    * @return the style key.
    */
-  public static StyleKey getStyleKey(final String name, final Class valueType, final boolean trans)
+  public static synchronized StyleKey getStyleKey(final String name,
+                                     final Class valueType, 
+                                     final boolean trans,
+                                     final boolean inheritable)
   {
     if (definedKeys == null)
     {
@@ -167,7 +177,7 @@ public final class StyleKey implements Serializable, Cloneable
     StyleKey key = (StyleKey) definedKeys.get(name);
     if (key == null)
     {
-      key = new StyleKey(name, valueType, trans);
+      key = new StyleKey(name, valueType, trans, inheritable);
       definedKeys.put(name, key);
     }
     return key;
@@ -234,7 +244,7 @@ public final class StyleKey implements Serializable, Cloneable
    */
   public int hashCode()
   {
-    return hashCode;
+    return identifier;
   }
 
   /**
@@ -247,22 +257,20 @@ public final class StyleKey implements Serializable, Cloneable
    */
   protected Object readResolve() throws ObjectStreamException
   {
-    final StyleKey key = getStyleKey(name);
-    if (key != null)
+    synchronized(StyleKey.class)
     {
-      return key;
+      final StyleKey key = getStyleKey(name);
+      if (key != null)
+      {
+        return key;
+      }
+      return getStyleKey(name, valueType, trans, inheritable);
     }
-    return getStyleKey(name, valueType);
   }
 
   public boolean isTransient()
   {
     return trans;
-  }
-
-  private void setTransient(final boolean trans)
-  {
-    this.trans = trans;
   }
 
   /**
@@ -285,5 +293,20 @@ public final class StyleKey implements Serializable, Cloneable
           throws CloneNotSupportedException
   {
     return super.clone();
+  }
+
+  public boolean isInheritable ()
+  {
+    return inheritable;
+  }
+
+  public int getIdentifier ()
+  {
+    return identifier;
+  }
+
+  public static int getDefinedStyleKeyCount ()
+  {
+    return definedKeys.size();
   }
 }

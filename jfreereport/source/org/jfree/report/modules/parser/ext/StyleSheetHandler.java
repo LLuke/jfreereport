@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.9.4.4 2004/12/13 19:27:13 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.12 2005/01/25 00:19:14 taqua Exp $
  *
  * Changes
  * -------
@@ -161,7 +161,7 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
       Class c = null;
       try
       {
-        ObjectUtilities.getClassLoader(getClass()).loadClass(className);
+        c = ObjectUtilities.getClassLoader(getClass()).loadClass(className);
       }
       catch (Exception e)
       {
@@ -181,7 +181,7 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
       final String extend = attrs.getValue("name");
       if (extend != null)
       {
-        final ElementStyleSheet exSheet = styleCollection.getFirst(extend);
+        final ElementStyleSheet exSheet = styleCollection.getStyleSheet(extend);
         if (exSheet == null)
         {
           throw new ParseException("Invalid parent styleSheet, StyleSheet not defined: " + extend,

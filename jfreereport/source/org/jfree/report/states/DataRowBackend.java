@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.5 2005/01/25 00:22:24 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.6 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -373,7 +373,7 @@ public class DataRowBackend implements Cloneable
    */
   public int getColumnCount()
   {
-    return getPropertiesEndIndex();
+    return propertiesEndIndex;
   }
 
   /**

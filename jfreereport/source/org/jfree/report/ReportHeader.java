@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportHeader.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ReportHeader.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,12 +57,17 @@ package org.jfree.report;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class ReportHeader extends Band
+public class ReportHeader extends Band implements RootLevelBand
 {
   /**
    * Constructs a report header, initially containing no elements.
    */
   public ReportHeader()
   {
+  }
+
+  public void setReportDefinition (final ReportDefinition reportDefinition)
+  {
+    super.setReportDefinition(reportDefinition);
   }
 }

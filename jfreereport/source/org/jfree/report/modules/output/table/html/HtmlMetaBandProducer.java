@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.3 2005/01/25 00:13:26 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.4 2005/01/25 21:40:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -119,5 +119,10 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     final ImageContent ic = new ImageContent(imgref, rect.getBounds2D());
     return new HtmlImageMetaElement
             (ic, createStyleForDrawableElement(e, x, y), useXHTML);
+  }
+
+  protected MetaElement createAnchorCell (Element e, float x, float y)
+  {
+    return super.createAnchorCell(e, x, y);
   }
 }

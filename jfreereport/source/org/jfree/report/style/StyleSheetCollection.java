@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.5 2003/11/01 19:52:29 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.6 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -39,588 +39,232 @@
 package org.jfree.report.style;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
 
-import org.jfree.report.util.HashNMap;
 import org.jfree.report.util.InstanceID;
 
-
 /**
- * The StyleSheet collection is assigned to all Elements, all StyleSheets and
- * to the JFreeReport and the ReportDefinition objects. This collection is used
- * to coordinate the deep cloning of the stylesheets of an report. As bonus
- * functionality it allows simplified access to the stylesheets.
+ * The stylesheet collection manages all global stylesheets. It does not
+ * contain the element stylesheets.
+ * <p>
+ * The stylesheet collection does not accept foreign stylesheets.
  *
  * @author Thomas Morgner
  */
 public class StyleSheetCollection implements Cloneable, Serializable
 {
-  /**
-   * A style collection entry. This class holds the stylesheet and an reference
-   * count to the contained stylesheet. A stylesheet can only be removed if
-   * the reference count is 0.
-   */
-  private static class StyleCollectionEntry implements Serializable
+  protected static class ManagedStyleSheetCarrier implements StyleSheetCarrier
   {
-    /** The reference count of the stylesheet. */
-    private int referenceCount;
-    /** The stylesheet. */
-    private ElementStyleSheet styleSheet;
+    private InstanceID styleSheetID;
+    private ManagedStyleSheet styleSheet;
+    private ManagedStyleSheet self;
 
-    /**
-     * Creates a new StyleCollectionEntry for the stylesheet with an reference
-     * count of 0.
-     *
-     * @param styleSheet The ElementStyleSheet that should be stored in that entry.
-     */
-    public StyleCollectionEntry(final ElementStyleSheet styleSheet)
+    public ManagedStyleSheetCarrier (final ManagedStyleSheet parent,
+                                     final ManagedStyleSheet self)
     {
-      this(0, styleSheet);
+      this.styleSheetID = parent.getId();
+      this.styleSheet = parent;
+      this.self = self;
+      self.addListener(styleSheet);
     }
 
-    /**
-     * Creates a new StyleCollectionEntry for the stylesheet and with the given
-     * reference count.
-     *
-     * @param styleSheet The ElementStyleSheet that should be stored in that entry.
-     * @param referenceCount the initial reference count.
-     * @throws IllegalArgumentException if the reference count is negative.
-     * @throws NullPointerException if the given stylesheet is null.
-     */
-    public StyleCollectionEntry(final int referenceCount, final ElementStyleSheet styleSheet)
+    public ElementStyleSheet getStyleSheet ()
     {
-      if (referenceCount < 0)
+      if (styleSheet != null)
       {
-        throw new IllegalArgumentException("Initial reference count may not be negative.");
+        return styleSheet;
       }
+      // just after the cloning ...
+      final StyleSheetCollection col = self.getStyleSheetCollection();
+      styleSheet = (ManagedStyleSheet) col.getStyleSheetByID(styleSheetID);
       if (styleSheet == null)
       {
-        throw new NullPointerException("StyleSheet for the entry must not be null.");
+        // should not happen in a sane environment ..
+        throw new IllegalStateException
+                ("Stylesheet was not valid after restore operation.");
       }
-      this.referenceCount = referenceCount;
-      this.styleSheet = styleSheet;
-    }
-
-    /**
-     * Returns the reference count.
-     *
-     * @return the reference count.
-     */
-    public int getReferenceCount()
-    {
-      return referenceCount;
-    }
-
-    /**
-     * Defines the new reference count for this stylesheet.
-     *
-     * @param referenceCount the reference count.
-     * @throws IllegalArgumentException if the reference count is negative.
-     */
-    public void setReferenceCount(final int referenceCount)
-    {
-      if (referenceCount < 0)
-      {
-        throw new IllegalArgumentException("Initial reference count may not be negative.");
-      }
-      this.referenceCount = referenceCount;
-    }
-
-    /**
-     * Returns the stylesheet stored in that entry.
-     *
-     * @return the stylesheet.
-     */
-    public ElementStyleSheet getStyleSheet()
-    {
       return styleSheet;
+    }
+
+    public void invalidate ()
+    {
+      self.removeListener(getStyleSheet());
+    }
+
+    public boolean isSame (final ElementStyleSheet style)
+    {
+      return style.getId().equals(styleSheetID);
+    }
+
+    public Object clone ()
+            throws CloneNotSupportedException
+    {
+      final ManagedStyleSheetCarrier o =
+              (ManagedStyleSheetCarrier) super.clone();
+      o.styleSheet = null;
+      return o;
+    }
+  }
+
+  protected static class ManagedStyleSheet extends ElementStyleSheet
+  {
+    private StyleSheetCollection styleSheetCollection;
+
+    /**
+     *
+     * @param name
+     * @param collection the stylesheet collection that created this stylesheet, or null, if
+     *                   it is a foreign or private stylesheet.
+     */
+    public ManagedStyleSheet (final String name, final StyleSheetCollection collection)
+    {
+      super(name);
+      if (collection == null)
+      {
+        throw new NullPointerException();
+      }
+      this.styleSheetCollection = collection;
+    }
+
+    /**
+     * Adds a parent style-sheet. This method adds the parent to the beginning of the list,
+     * and guarantees, that this parent is queried first.
+     *
+     * @param parent the parent (<code>null</code> not permitted).
+     */
+    public void addParent (final ManagedStyleSheet parent)
+    {
+      super.addParent(0, parent);
+    }
+
+    /**
+     * Adds a parent style-sheet. Parents on a lower position are queried before any parent
+     * with an higher position in the list.
+     *
+     * @param position the position where to insert the parent style sheet
+     * @param parent   the parent (<code>null</code> not permitted).
+     * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
+     *                                   numberOfParents)
+     */
+    public void addParent (final int position,
+                                        final ManagedStyleSheet parent)
+    {
+      super.addParent(position, parent);
+    }
+
+    /**
+     * Creates and returns a copy of this object. After the cloning, the new StyleSheet is
+     * no longer registered with its parents.
+     *
+     * @return a clone of this instance.
+     *
+     * @see Cloneable
+     */
+    public Object clone () throws CloneNotSupportedException
+    {
+      final ManagedStyleSheet ms = (ManagedStyleSheet) super.clone();
+      ms.styleSheetCollection = null;
+
+      final StyleSheetCarrier[] sheets = ms.getParentReferences();
+      for (int i = 0; i < sheets.length; i++)
+      {
+        final ManagedStyleSheetCarrier msc = (ManagedStyleSheetCarrier) sheets[i];
+        msc.self = ms;
+      }
+      return ms;
+    }
+
+    protected StyleSheetCarrier createCarrier (final ElementStyleSheet styleSheet)
+    {
+      if (styleSheet instanceof ManagedStyleSheet == false)
+      {
+        throw new IllegalArgumentException
+                ("Only stylesheets that are managed by this stylesheet collection can be added");
+      }
+      final ManagedStyleSheet ms = (ManagedStyleSheet) styleSheet;
+      // yes, only this object, no clone, not logical the same, we mean PHYSICAL IDENTITY
+      if (ms.getStyleSheetCollection() != getStyleSheetCollection())
+      {
+        throw new IllegalArgumentException
+                ("Only stylesheets that are managed by this stylesheet collection can be added");
+      }
+      return new ManagedStyleSheetCarrier(ms, this);
+    }
+
+    public ManagedStyleSheet createManagedCopy (final StyleSheetCollection collection)
+      throws CloneNotSupportedException
+    {
+      final ManagedStyleSheet es = (ManagedStyleSheet) getCopy();
+      es.setStyleSheetCollection(collection);
+      return es;
+    }
+
+    public StyleSheetCollection getStyleSheetCollection ()
+    {
+      return styleSheetCollection;
+    }
+
+    protected void setStyleSheetCollection (final StyleSheetCollection styleSheetCollection)
+    {
+      this.styleSheetCollection = styleSheetCollection;
     }
   }
 
   /** The stylesheet storage. */
-  private HashNMap styleSheets;
+  private HashMap styleSheets;
+  private HashMap styleSheetsByID;
 
   /**
    * DefaultConstructor.
    */
   public StyleSheetCollection()
   {
-    styleSheets = new HashNMap();
+    styleSheets = new HashMap();
+    styleSheetsByID = new HashMap();
   }
 
   /**
-   * Adds the given stylesheet to this collection. This throw an
-   * IllegalArgumentException if the stylesheet is already added to another
-   * stylesheet collection.
    *
-   * @param es the element stylesheet
    * @throws NullPointerException if the given stylesheet is null.
    */
-  public void addStyleSheet(final ElementStyleSheet es)
+  public ElementStyleSheet createStyleSheet(final String name)
   {
-    addStyleSheet(es, true);
+    if (styleSheets.containsKey(name))
+    {
+      return (ElementStyleSheet) styleSheets.get(name);
+    }
+    final ElementStyleSheet value = new ManagedStyleSheet(name, this);
+    styleSheets.put (name, value);
+    styleSheetsByID.put (value.getId(), value);
+    return value;
   }
 
-  /**
-   * Adds the given stylesheet to this collection. This throw an
-   * IllegalArgumentException if the stylesheet is already added to another
-   * stylesheet collection.
-   *
-   * @param es the element stylesheet that should be added.
-   * @param updateRefs true, if the reference counts should be recomputed,
-   * false otherwise.
-   * @throws IllegalStateException if the stylesheet is already added, but has
-   * a different stylesheet collection assigned.
-   * @throws NullPointerException if the given element stylesheet is null.
-   */
-  protected void addStyleSheet(final ElementStyleSheet es, final boolean updateRefs)
+  public ElementStyleSheet getStyleSheet (final String name)
   {
-    if (es == null)
-    {
-      throw new NullPointerException("Element stylesheet to be added must not be null.");
-    }
-    if (contains(es) == false)
-    {
-      styleSheets.add(es.getName(), new StyleCollectionEntry(es));
-      es.registerStyleSheetCollection(this);
-
-      addParents(es);
-      if (updateRefs)
-      {
-        updateReferences();
-      }
-    }
-    // /** assert: stylesheet collection set ...
-    else
-    {
-      if (es.isGlobalDefault() == false)
-      {
-        if (es.getStyleSheetCollection() != this)
-        {
-          throw new IllegalStateException("Invalid StyleSheet detected!" + es.getClass());
-        }
-      }
-    }
-    //  */
+    return (ElementStyleSheet) styleSheets.get (name);
   }
 
-  /**
-   * Tests, whether the stylesheet is contained in that collection.
-   *
-   * @param es the stylesheet that is searched.
-   * @return true, if the stylesheet is contained in that collection, false otherwise.
-   */
-  private boolean contains(final ElementStyleSheet es)
+  public ElementStyleSheet getStyleSheetByID (final InstanceID name)
   {
-    if (styleSheets.containsKey(es.getName()))
-    {
-      final Iterator it = styleSheets.getAll(es.getName());
-      while (it.hasNext())
-      {
-        final StyleCollectionEntry se = (StyleCollectionEntry) it.next();
-        final ElementStyleSheet ces = se.getStyleSheet();
-        if (ces.getId() == es.getId())
-        {
-          return true;
-        }
-      }
-    }
-    return false;
+    return (ElementStyleSheet) styleSheetsByID.get (name);
   }
 
-  /**
-   * Returns all stylesheets for a given name or null, if there is no such stylesheet
-   * registered.
-   *
-   * @param name the name of the stylesheet.
-   * @return the found stylesheets as object array or null.
-   */
-  public ElementStyleSheet[] getAll(final String name)
+  public Object clone () throws CloneNotSupportedException
   {
-    final StyleCollectionEntry[] data = (StyleCollectionEntry[])
-        styleSheets.toArray(name, new StyleCollectionEntry[styleSheets.getValueCount(name)]);
-    if (data.length == 0)
+    final StyleSheetCollection sc = (StyleSheetCollection) super.clone();
+    sc.styleSheets = (HashMap) styleSheets.clone();
+    sc.styleSheetsByID = (HashMap) styleSheetsByID.clone();
+
+    final ManagedStyleSheet[] styles = (ManagedStyleSheet[]) styleSheets.values().toArray(new ManagedStyleSheet[styleSheets.size()]);
+    final ManagedStyleSheet[] styleClones = (ManagedStyleSheet[]) styles.clone();
+    // create the clones ...
+    for (int i = 0; i < styles.length; i++)
     {
-      return null;
+      final ManagedStyleSheet clone = styles[i].createManagedCopy(sc);
+      sc.styleSheets.put (clone.getName(), clone);
+      sc.styleSheetsByID.put (clone.getId(), clone);
+      styleClones[i] = clone;
     }
-    final ElementStyleSheet[] retval = new ElementStyleSheet[data.length];
-    for (int i = 0; i < data.length; i++)
-    {
-      final StyleCollectionEntry se = data[i];
-      retval[i] = se.getStyleSheet();
-    }
-    return retval;
+    return sc;
   }
-
-  /**
-   * Returns the first element stylesheet with that name.
-   *
-   * @param name the name of the searched stylesheet.
-   * @return the stylesheet or null, if there is no such stylesheet.
-   */
-  public ElementStyleSheet getFirst(final String name)
-  {
-    final StyleCollectionEntry se = (StyleCollectionEntry) styleSheets.getFirst(name);
-    if (se == null)
-    {
-      return null;
-    }
-    return se.getStyleSheet();
-  }
-
-  /**
-   * Clones this stylesheet collection and all stylesheets contained in that
-   * collection. The stylesheets of this collection get cloned and reassigned
-   * after the cloning.
-   *
-   * @return the cloned collection.
-   * @throws CloneNotSupportedException if cloning failed.
-   */
-  public Object clone() throws CloneNotSupportedException
-  {
-    final StyleSheetCollection col = (StyleSheetCollection) super.clone();
-    col.styleSheets = new HashNMap();
-    // clone all contained stylesheets ...
-    Iterator it = styleSheets.keySet().iterator();
-    StyleCollectionEntry[] allElements = new StyleCollectionEntry[0];
-    while (it.hasNext())
-    {
-      final Object key = it.next();
-      final int len = styleSheets.getValueCount(key);
-      allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
-      for (int i = 0; i < len; i++)
-      {
-        final StyleCollectionEntry se = allElements[i];
-        final ElementStyleSheet es = se.getStyleSheet();
-        final ElementStyleSheet esCopy = es.getCopy();
-        col.styleSheets.add(esCopy.getName(),
-            new StyleCollectionEntry(se.getReferenceCount(), esCopy));
-      }
-    }
-
-    // next reconnect the stylesheets
-    // the default parents dont need to be updated, as they are shared among all
-    // stylesheets ...
-    it = col.styleSheets.keySet().iterator();
-    while (it.hasNext())
-    {
-      final Object key = it.next();
-      final int len = col.styleSheets.getValueCount(key);
-      allElements = (StyleCollectionEntry[]) col.styleSheets.toArray(key, allElements);
-      for (int ai = 0; ai < len; ai++)
-      {
-        final StyleCollectionEntry se = allElements[ai];
-        final ElementStyleSheet es = se.getStyleSheet();
-
-        final List parents = es.getParents();
-        // reversed add order .. last parent must be added first ..
-        final ElementStyleSheet[] parentArray =
-            (ElementStyleSheet[]) parents.toArray(new ElementStyleSheet[parents.size()]);
-        for (int i = parentArray.length - 1; i >= 0; i--)
-        {
-          final String name = parentArray[i].getName();
-          final InstanceID id = parentArray[i].getId();
-          es.removeParent(parentArray[i]);
-          final StyleCollectionEntry seParent = col.findStyleSheet(name, id);
-          if (seParent == null)
-          {
-            throw new IllegalStateException
-                ("A parent of an stylesheet was not found in this collection.");
-          }
-          es.addParent(seParent.getStyleSheet());
-        }
-      }
-    }
-    // until now, all cloned stylesheets are unregistered ...
-    // restore the registration now ...
-    it = col.styleSheets.keySet().iterator();
-    while (it.hasNext())
-    {
-      final Object key = it.next();
-      final int len = col.styleSheets.getValueCount(key);
-      allElements = (StyleCollectionEntry[]) col.styleSheets.toArray(key, allElements);
-      for (int i = 0; i < len; i++)
-      {
-        final StyleCollectionEntry se = allElements[i];
-        final ElementStyleSheet es = se.getStyleSheet();
-        es.registerStyleSheetCollection(col);
-      }
-    }
-
-    return col;
-  }
-
-  /**
-   * Searches for a stylesheet with the same name and id. This method returns
-   * null, if no such stylesheet exists.
-   *
-   * @param name the name of the stylesheet.
-   * @param id the instance id of the stylesheet
-   * @return the found stylesheet entry or null if not found.
-   */
-  private StyleCollectionEntry findStyleSheet(final String name, final InstanceID id)
-  {
-    final int len = styleSheets.getValueCount(name);
-    if (len == 0)
-    {
-      return null;
-    }
-
-    final StyleCollectionEntry[] data = (StyleCollectionEntry[])
-        styleSheets.toArray(name, new StyleCollectionEntry[len]);
-
-    for (int i = 0; i < data.length; i++)
-    {
-      final StyleCollectionEntry es = data[i];
-      if (es.getStyleSheet().getId() == id)
-      {
-        return es;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Updates a stylesheet reference from this collection. This is usually done after
-   * a clone() operation to update the parents of the given element stylesheet.
-   * <p>
-   * This operation will remove all parents of the stylesheet and repace them with
-   * stylesheets from this collection with the same name and Id.
-   *
-   * @param es the elements stylesheet that should be replaced.
-   */
-  public void updateStyleSheet(final ElementStyleSheet es)
-  {
-    if (es.getStyleSheetCollection() != null)
-    {
-      throw new IllegalArgumentException
-          ("This stylesheet instance is already registered with an collection.");
-    }
-    if (contains(es) == false)
-    {
-      throw new IllegalArgumentException
-        ("This stylesheet is not in the collection." + es.getName());
-    }
-    else
-    {
-      final StyleCollectionEntry entry = findStyleSheet(es.getName(), es.getId());
-      styleSheets.remove(es.getName(), entry);
-      styleSheets.add(es.getName(), new StyleCollectionEntry(entry.getReferenceCount(), es));
-
-      final List parents = es.getParents();
-      // reversed add order .. last parent must be added first ..
-      final ElementStyleSheet[] parentArray =
-          (ElementStyleSheet[]) parents.toArray(new ElementStyleSheet[parents.size()]);
-      for (int i = parentArray.length - 1; i >= 0; i--)
-      {
-        final String name = parentArray[i].getName();
-        final InstanceID id = parentArray[i].getId();
-        es.removeParent(parentArray[i]);
-        final StyleCollectionEntry seParent = findStyleSheet(name, id);
-        if (seParent == null)
-        {
-          throw new IllegalStateException
-              ("A parent of an stylesheet was not found in this collection.");
-        }
-        es.addParent(seParent.getStyleSheet());
-      }
-      es.registerStyleSheetCollection(this);
-    }
-  }
-
-  /**
-   * Adds all parents of the given stylesheet recursivly to this collection.
-   *
-   * @param es the element style sheet whose parents should be added.
-   */
-  protected void addParents(final ElementStyleSheet es)
-  {
-    final List parents = es.getParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      final ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
-      addStyleSheet(esp, false);
-    }
-    final List defaultParents = es.getDefaultParents();
-    for (int i = 0; i < defaultParents.size(); i++)
-    {
-      final ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
-      addStyleSheet(esp, false);
-    }
-  }
-
-  /**
-   * Updates the reference count of all stylesheets.
-   * This method is expensive and is (like the whole class) a candidate for
-   * an performance redesign ...
-   */
-  protected void updateReferences()
-  {
-    Iterator keyIterator = styleSheets.keys();
-    StyleCollectionEntry[] allElements = new StyleCollectionEntry[0];
-    while (keyIterator.hasNext())
-    {
-      // reset the reference count ...
-      final Object key = keyIterator.next();
-      final int len = styleSheets.getValueCount(key);
-      allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
-      for (int i = 0; i < len; i++)
-      {
-        final StyleCollectionEntry se = allElements[i];
-        se.setReferenceCount(0);
-      }
-    }
-
-    keyIterator = styleSheets.keys();
-    while (keyIterator.hasNext())
-    {
-      // compute the reference count ...
-      final Object key = keyIterator.next();
-      final int len = styleSheets.getValueCount(key);
-      allElements = (StyleCollectionEntry[]) styleSheets.toArray(key, allElements);
-      for (int ai = 0; ai < len; ai++)
-      {
-        final StyleCollectionEntry se = allElements[ai];
-        final ElementStyleSheet es = se.getStyleSheet();
-
-        final List parents = es.getParents();
-        for (int i = 0; i < parents.size(); i++)
-        {
-          final ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
-          final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
-          if (sep == null)
-          {
-            throw new NullPointerException("StyleSheet '" + esp.getName() + "' is not known.");
-          }
-          sep.setReferenceCount(sep.getReferenceCount() + 1);
-        }
-        final List defaultParents = es.getDefaultParents();
-        for (int i = 0; i < defaultParents.size(); i++)
-        {
-          final ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
-          final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
-          if (sep == null)
-          {
-            throw new NullPointerException("StyleSheet '" + esp.getName() + "' is not known.");
-          }
-          /*
-          if (esp.getName().equals("band-default"))
-          {
-            Log.debug ("Update: " + esp.getName() + " -> " + sep.getReferenceCount());
-          }
-          */
-          sep.setReferenceCount(sep.getReferenceCount() + 1);
-        }
-      }
-    }
-    // Styles with an RefCount of 0 can be removed if requested...
-  }
-
-  /**
-   * Returns true, if removing the stylesheet was successfull, false
-   * if the stylesheet is still referenced and will not be removed.
-   *
-   * @param es the element stylesheet that should be removed.
-   * @return true, if the stylesheet was removed, false otherwise.
-   */
-  public boolean remove(final ElementStyleSheet es)
-  {
-    return remove(es, true);
-  }
-
-  /**
-   * Returns true, if the stylesheet if removing was successfull, false
-   * if the stylesheet is still referenced and won't be removed.
-   *
-   * @param update true, if the reference counts should be updated, false otherwise.
-   * @param es the element stylesheet that should be removed.
-   * @return true, if the stylesheet was removed, false otherwise.
-   */
-  protected boolean remove(final ElementStyleSheet es, final boolean update)
-  {
-    if (contains(es) == false)
-    {
-      return true;
-    }
-    else
-    {
-      final StyleCollectionEntry se = findStyleSheet(es.getName(), es.getId());
-      if (se.getReferenceCount() != 0)
-      {
-        return false;
-      }
-
-      // finally remove the stylesheet itself ...
-      if (styleSheets.remove(es.getName(), se) == false)
-      {
-        return false;
-      }
-      else
-      {
-        // Log.debug ("Successfully removed: " + es.getName());
-        es.unregisterStyleSheetCollection(this);
-      }
-
-      // check whether we can remove the parents ...
-      final List parents = es.getParents();
-      for (int i = 0; i < parents.size(); i++)
-      {
-        final ElementStyleSheet esp = (ElementStyleSheet) parents.get(i);
-        final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
-        sep.setReferenceCount(sep.getReferenceCount() - 1);
-        remove(esp, false);
-      }
-      final List defaultParents = es.getDefaultParents();
-      for (int i = 0; i < defaultParents.size(); i++)
-      {
-        final ElementStyleSheet esp = (ElementStyleSheet) defaultParents.get(i);
-        final StyleCollectionEntry sep = findStyleSheet(esp.getName(), esp.getId());
-        sep.setReferenceCount(sep.getReferenceCount() - 1);
-        remove(esp, false);
-      }
-      if (update)
-      {
-        updateReferences();
-      }
-      return true;
-    }
-
-  }
-
-  /**
-   * Returns the names of all registered stylesheets as iterator. There can
-   * be more than one stylesheet be registered with a certain name.
-   *
-   * @return the names of all stylesheets.
-   */
-  public Iterator keys()
-  {
-    final Set keySet = styleSheets.keySet();
-    return Collections.unmodifiableSet(keySet).iterator();
-  }
-
-  /**
-   * Prints debug messages.
-   */
-  /*
-  public void debug()
-  {
-    Log.debug ("DEBUG----------------------------------------------");
-    Iterator it = keys();
-    while (it.hasNext())
-    {
-      String name = (String) it.next();
-      Iterator ses = styleSheets.getAll (name);
-      while (ses.hasNext())
-      {
-        StyleCollectionEntry se = (StyleCollectionEntry) ses.next();
-        Log.debug ("ES: " + name + " RefC: " + se.getReferenceCount());
-      }
-    }
-
-  }
-  */
 }

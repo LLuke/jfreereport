@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.net.URLConnection;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.ByteArrayOutputStream;
@@ -58,30 +59,42 @@ public class ImageFactory
           throws IOException
   {
     final InputStream in = url.openStream();
-    final Image image = createImage(in);
+    final URLConnection uc = url.openConnection();
+    final Image image = createImage(uc.getInputStream(),
+            url.getFile(), uc.getContentType());
     in.close();
     return image;
   }
 
-  public Image createImage (final InputStream in) throws IOException
+  public Image createImage (final InputStream in,
+                            final String fileName,
+                            final String mimeType)
+          throws IOException
   {
     final ByteArrayOutputStream bout = new ByteArrayOutputStream(32*1024);
     IOUtils.getInstance().copyStreams(in, bout, 16*1024);
-    return createImage(bout.toByteArray());
+    return createImage(bout.toByteArray(), fileName, mimeType);
   }
 
-  public synchronized Image createImage (final byte[] data) throws IOException
+  public synchronized Image createImage (final byte[] data,
+                                         final String fileName,
+                                         final String mimeType)
+          throws IOException
   {
+    // first pass: Search by content
+    // this is the safest method to identify the image data
+    // as names might be invalid and mimetypes might be forged ..
     for (int i = 0; i < factoryModules.size(); i++)
     {
       try
       {
         final ImageFactoryModule module = (ImageFactoryModule) factoryModules.get(i);
-        if (data.length >= module.getHeaderFingerprintSize())
+        if (module.getHeaderFingerprintSize() > 0 &&
+            data.length >= module.getHeaderFingerprintSize())
         {
           if (module.canHandleResourceByContent(data))
           {
-            return module.createImage(data);
+            return module.createImage(data, fileName, mimeType);
           }
         }
       }
@@ -89,6 +102,52 @@ public class ImageFactory
       {
         // first try failed ..
         Log.info ("Failed to load image: Trying harder ..", ioe);
+      }
+    }
+
+    // second pass: Search by mime type
+    // this is the second safest method to identify the image data
+    // as names might be invalid and mimetypes might be forged ..
+    if (mimeType != null && "".equals(mimeType) == false)
+    {
+      for (int i = 0; i < factoryModules.size(); i++)
+      {
+        try
+        {
+          final ImageFactoryModule module = (ImageFactoryModule) factoryModules.get(i);
+          if (module.canHandleResourceByMimeType(mimeType))
+          {
+            return module.createImage(data, fileName, mimeType);
+          }
+        }
+        catch(IOException ioe)
+        {
+          // first try failed ..
+          Log.info ("Failed to load image: Trying harder ..", ioe);
+        }
+      }
+    }
+
+    // third pass: Search by mime type
+    // this is the final method to identify the image data
+    // as names might be invalid and mimetypes might be forged ..
+    if (mimeType != null && "".equals(mimeType) == false)
+    {
+      for (int i = 0; i < factoryModules.size(); i++)
+      {
+        try
+        {
+          final ImageFactoryModule module = (ImageFactoryModule) factoryModules.get(i);
+          if (module.canHandleResourceByName(fileName))
+          {
+            return module.createImage(data, fileName, mimeType);
+          }
+        }
+        catch(IOException ioe)
+        {
+          // first try failed ..
+          Log.info ("Failed to load image: Trying harder ..", ioe);
+        }
       }
     }
 

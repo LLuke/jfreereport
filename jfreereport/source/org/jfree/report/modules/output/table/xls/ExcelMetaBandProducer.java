@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.3 2005/01/25 00:16:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -118,11 +118,10 @@ public class ExcelMetaBandProducer
                                         final float x, final float y)
   {
     final Object o = e.getValue();
-    if (o instanceof String == false)
+    if (o == null)
     {
       return null;
     }
-
     try
     {
       final DataSource template = e.getDataSource();
@@ -143,7 +142,7 @@ public class ExcelMetaBandProducer
     final Rectangle2D rect = (Rectangle2D)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
-    return new ExcelMetaElement(new RawContent(rect, o),
+    return new ExcelMetaElement(new RawContent(rect, String.valueOf(o)),
             createStyleForTextElement(e, x, y));
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.11.2.1.2.3 2004/12/13 19:27:05 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.15 2005/01/25 00:12:36 taqua Exp $
  *
  * Changes
  * -------
@@ -42,11 +42,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import org.jfree.report.Anchor;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.util.Log;
 import org.jfree.util.ShapeUtilities;
 
 /**
@@ -61,6 +62,8 @@ import org.jfree.util.ShapeUtilities;
 public strictfp class TableCellBackground
     extends MetaElement implements Cloneable
 {
+  private ArrayList anchors;
+
   /** The top border's size. */
   private float borderSizeTop;
 
@@ -94,6 +97,7 @@ public strictfp class TableCellBackground
   {
     super(elementContent, style);
     this.color = color;
+    this.anchors = new ArrayList();
   }
  
   /**
@@ -263,7 +267,6 @@ public strictfp class TableCellBackground
     if (ShapeUtilities.contains(bounds, cellBounds) == false &&
         ShapeUtilities.contains(cellBounds, bounds) == false)
     {
-      Log.debug("Unrelated!");
       return this;
     }
 
@@ -281,7 +284,10 @@ public strictfp class TableCellBackground
     // merge the borders
     final TableCellBackground merged = createMergedInstance();
     merged.color = color;
-
+    if (cellBounds.contains(backgroundBounds.getX(), backgroundBounds.getY()))
+    {
+      merged.anchors.add(background.anchors);
+    }
     final double bgx1 = bounds.getX();
     final double bgx2 = bounds.getX() + bounds.getWidth();
     final double bgy1 = bounds.getY();
@@ -298,7 +304,6 @@ public strictfp class TableCellBackground
       if (bgy1 == y1)
       {
         // top border from top border ..
-        Log.debug ("Top <- top");
         if (merged.getColorTop() == null || merged.getBorderSizeTop() == 0)
         {
           merged.setBorderTop(background.getColorTop(), background.getBorderSizeTop());
@@ -307,7 +312,6 @@ public strictfp class TableCellBackground
       else if (bgy1 == y2)
       {
         // top border from bottom border ..
-        Log.debug ("Top <- Bottom");
         if (merged.getColorTop() == null || merged.getBorderSizeTop() == 0)
         {
           merged.setBorderTop(background.getColorBottom(), background.getBorderSizeBottom());
@@ -319,7 +323,6 @@ public strictfp class TableCellBackground
     {
       if (bgy2 == y1)
       {
-        Log.debug ("Bottom <- top");
         if (merged.getColorBottom() == null || merged.getBorderSizeBottom() == 0)
         {
           merged.setBorderBottom(background.getColorTop(), background.getBorderSizeTop());
@@ -328,7 +331,6 @@ public strictfp class TableCellBackground
       else if (bgy2 == y2 )
       {
         // bottom border ..
-        Log.debug ("Bottom <- Bottom");
         if (merged.getColorBottom() == null || merged.getBorderSizeBottom() == 0)
         {
           merged.setBorderBottom(background.getColorBottom(), background.getBorderSizeBottom());
@@ -341,7 +343,6 @@ public strictfp class TableCellBackground
       if (bgx1 == x1)
       {
         // left border ..
-        Log.debug ("Left <- Left");
         if (merged.getColorLeft() == null || merged.getBorderSizeLeft() == 0)
         {
           merged.setBorderLeft(background.getColorLeft(), background.getBorderSizeLeft());
@@ -350,7 +351,6 @@ public strictfp class TableCellBackground
       else if (bgx1 == x2)
       {
         // left border ..
-        Log.debug ("Left <- Right");
         if (merged.getColorLeft() == null || merged.getBorderSizeLeft() == 0)
         {
           merged.setBorderLeft(background.getColorRight(), background.getBorderSizeRight());
@@ -363,7 +363,6 @@ public strictfp class TableCellBackground
       if (bgx2 == x1)
       {
         // right border ..
-        Log.debug ("Right <- Left");
         if (merged.getColorRight() == null || merged.getBorderSizeRight() == 0)
         {
           merged.setBorderRight(background.getColorLeft(), background.getBorderSizeLeft());
@@ -372,7 +371,6 @@ public strictfp class TableCellBackground
       else if (bgx2 == x2)
       {
         // right border ..
-        Log.debug ("Right <- Right");
         if (merged.getColorRight() == null || merged.getBorderSizeRight() == 0)
         {
           merged.setBorderRight(background.getColorRight(), background.getBorderSizeRight());
@@ -557,6 +555,22 @@ public strictfp class TableCellBackground
   public Object clone ()
           throws CloneNotSupportedException
   {
-    return super.clone();
+    final TableCellBackground tb = (TableCellBackground) super.clone();
+    tb.anchors = (ArrayList) anchors.clone();
+    return tb;
+  }
+
+  public Anchor[] getAnchors ()
+  {
+    return (Anchor[]) anchors.toArray(new Anchor[anchors.size()]);
+  }
+
+  public void addAnchor (final Anchor anchor)
+  {
+    if (anchor == null)
+    {
+      throw new NullPointerException();
+    }
+    anchors.add(anchor);
   }
 }

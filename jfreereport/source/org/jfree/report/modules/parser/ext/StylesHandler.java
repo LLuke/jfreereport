@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.8.4.2 2004/10/13 18:42:23 taqua Exp $
+ * $Id: StylesHandler.java,v 1.11 2005/01/25 00:19:15 taqua Exp $
  *
  * Changes
  * -------
@@ -107,7 +107,7 @@ public class StylesHandler extends AbstractExtReportParserHandler
       {
         throw new ParseException("Attribute 'name' is required", getParser().getLocator());
       }
-      styleSheet = new ElementStyleSheet(name);
+      styleSheet =styleCollection.createStyleSheet(name);
 
       final CommentHintPath path = createPath(styleSheet);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
@@ -147,7 +147,6 @@ public class StylesHandler extends AbstractExtReportParserHandler
     if (tagName.equals(STYLE_TAG))
     {
       addComment(createPath(styleSheet), CommentHandler.CLOSE_TAG_COMMENT);
-      styleCollection.addStyleSheet(styleSheet);
     }
     else if (tagName.equals(getFinishTag()))
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.3.2.1.2.1 2004/04/04 19:03:29 taqua Exp $
+ * $Id: ShapeElement.java,v 1.5 2005/01/24 23:57:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -84,6 +84,7 @@ public class ShapeElement extends Element
      */
     public ShapeElementDefaultStyleSheet()
     {
+      super("GlobalShapeElementDefault");
       // unlock the write protection
       setLocked(false);
       setStyleProperty(ElementStyleSheet.STROKE, DEFAULT_STROKE);
@@ -102,7 +103,7 @@ public class ShapeElement extends Element
    *
    * @return a default style sheet that can be shared among shape elements.
    */
-  public static ElementDefaultStyleSheet getDefaultStyle()
+  public synchronized static ElementDefaultStyleSheet getDefaultStyle()
   {
     if (defaultShapeStyle == null)
     {
@@ -116,7 +117,11 @@ public class ShapeElement extends Element
    */
   public ShapeElement()
   {
-    getStyle().addDefaultParent(getDefaultStyle());
+  }
+
+  protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
+  {
+    return getDefaultStyle();
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupFooter.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: GroupFooter.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,7 +46,7 @@ package org.jfree.report;
  *
  * @author David Gilbert
  */
-public class GroupFooter extends Band
+public class GroupFooter extends Band implements RootLevelBand
 {
   /**
    * Constructs a group footer band, containing no elements.
@@ -54,4 +54,10 @@ public class GroupFooter extends Band
   public GroupFooter()
   {
   }
+
+  public void setReportDefinition (final ReportDefinition reportDefinition)
+  {
+    super.setReportDefinition(reportDefinition);
+  }
+
 }

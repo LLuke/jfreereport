@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.7.2.1.2.3 2004/10/13 18:42:23 taqua Exp $
+ * $Id: BandFactory.java,v 1.13 2005/01/25 00:21:54 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
@@ -214,7 +214,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
     {
       final float fixedPosValue = ParserUtil.parseFloat
               (fixedPos, "FixedPosition is invalid!");
-      reportHeader.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+      reportHeader.getStyle().setStyleProperty(BandStyleKeys.FIXED_POSITION,
               new Float (fixedPosValue));
     }
 
@@ -228,22 +228,22 @@ public class BandFactory extends AbstractReportDefinitionHandler
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
 
       reportHeader.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.PAGEBREAK_AFTER, ownPage);
+          (BandStyleKeys.PAGEBREAK_AFTER, ownPage);
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
-    FontFactory.applyFontInformation(reportHeader.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(reportHeader.getStyle(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      reportHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+      reportHeader.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
           ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      reportHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+      reportHeader.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
@@ -279,7 +279,7 @@ public class BandFactory extends AbstractReportDefinitionHandler
     {
       final float fixedPosValue = ParserUtil.parseFloat
               (fixedPos, "FixedPosition is invalid!");
-      reportFooter.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+      reportFooter.getStyle().setStyleProperty(BandStyleKeys.FIXED_POSITION,
               new Float (fixedPosValue));
     }
 
@@ -293,24 +293,24 @@ public class BandFactory extends AbstractReportDefinitionHandler
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
 
       reportFooter.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.PAGEBREAK_BEFORE, ownPage);
+          (BandStyleKeys.PAGEBREAK_BEFORE, ownPage);
     }
 
 
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
-    FontFactory.applyFontInformation(reportFooter.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(reportFooter.getStyle(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      reportFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+      reportFooter.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
           ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      reportFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+      reportFooter.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
@@ -356,18 +356,18 @@ public class BandFactory extends AbstractReportDefinitionHandler
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
-    FontFactory.applyFontInformation(pageHeader.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(pageHeader.getStyle(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      pageHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+      pageHeader.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
           ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      pageHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+      pageHeader.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
@@ -413,18 +413,18 @@ public class BandFactory extends AbstractReportDefinitionHandler
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
-    FontFactory.applyFontInformation(pageFooter.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(pageFooter.getStyle(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      pageFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
+      pageFooter.getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
           ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      pageFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
+      pageFooter.getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
@@ -456,18 +456,18 @@ public class BandFactory extends AbstractReportDefinitionHandler
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
-    FontFactory.applyFontInformation(watermark.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(watermark.getStyle(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      watermark.getBandDefaults().setStyleProperty
+      watermark.getStyle().setStyleProperty
           (ElementStyleSheet.VALIGNMENT, ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      watermark.getBandDefaults().setStyleProperty
+      watermark.getStyle().setStyleProperty
           (ElementStyleSheet.ALIGNMENT, ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
     getParser().pushFactory(new ElementFactory(getReportParser(), WATERMARK_TAG, watermark));
@@ -501,23 +501,23 @@ public class BandFactory extends AbstractReportDefinitionHandler
     {
       final float fixedPosValue = ParserUtil.parseFloat
               (fixedPos, "FixedPosition is invalid!");
-      items.getStyle().setStyleProperty(BandStyleSheet.FIXED_POSITION,
+      items.getStyle().setStyleProperty(BandStyleKeys.FIXED_POSITION,
               new Float (fixedPosValue));
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
-    FontFactory.applyFontInformation(items.getBandDefaults(), fi);
+    FontFactory.applyFontInformation(items.getStyle(), fi);
 
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
-      items.getBandDefaults().setStyleProperty
+      items.getStyle().setStyleProperty
           (ElementStyleSheet.VALIGNMENT, ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
-      items.getBandDefaults().setStyleProperty
+      items.getStyle().setStyleProperty
           (ElementStyleSheet.ALIGNMENT, ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
     getParser().pushFactory(new ElementFactory(getReportParser(), ITEMS_TAG, items));

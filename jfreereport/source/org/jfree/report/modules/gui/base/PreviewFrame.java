@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.9 2003/11/15 20:51:14 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.12 2005/01/25 00:01:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -137,10 +137,17 @@ public class PreviewFrame extends JFrame implements PreviewProxy
    */
   private void init(final JFreeReport report) throws ReportProcessingException
   {
-    base = new PreviewProxyBase(this);
+    base = createPreviewProxyBase();
     base.setReport(report);
     setContentPane(base);
   }
+
+  protected PreviewProxyBase createPreviewProxyBase ()
+  {
+    return new PreviewProxyBase(this);
+  }
+
+
 
   /**
    * Returns the default close action.

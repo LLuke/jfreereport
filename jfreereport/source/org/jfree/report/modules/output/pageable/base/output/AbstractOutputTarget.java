@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.10 2005/01/25 00:10:14 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.11 2005/01/25 21:40:19 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,7 @@ import org.jfree.report.content.ShapeContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
+import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -237,6 +238,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     contentFactory.addModule(new ImageContentFactoryModule());
     contentFactory.addModule(new ShapeContentFactoryModule());
     contentFactory.addModule(new DrawableContentFactoryModule());
+    contentFactory.addModule(new AnchorContentFactoryModule());
     return contentFactory;
   }
 
@@ -355,6 +357,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
     else if (element.getContent().getContentType().equals(ContentType.CONTAINER))
     {
       printContainerContent(element, content);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.ANCHOR))
+    {
+      printAnchorContent(element, content);
     }
     else
     {
@@ -488,6 +494,13 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   protected void printContainerContent
           (final MetaElement element, final Content content)
+          throws OutputTargetException
+  {
+  }
+
+  protected void printAnchorContent
+          (final MetaElement element, final Content content)
+          throws OutputTargetException
   {
   }
 

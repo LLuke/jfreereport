@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.12 2003/11/01 19:52:26 taqua Exp $
+ * $Id: Element.java,v 1.13 2003/11/07 18:33:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -65,11 +65,10 @@ import java.io.Serializable;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
 import org.jfree.report.filter.EmptyDataSource;
+import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.style.InvalidStyleSheetCollectionException;
-import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.report.style.StyleSheetCollectionHelper;
+import org.jfree.report.style.StyleSheetCarrier;
 import org.jfree.report.util.InstanceID;
 
 /**
@@ -84,50 +83,67 @@ import org.jfree.report.util.InstanceID;
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
-  /** The internal constant to mark anonymous element names. */
-  public static final String ANONYMOUS_ELEMENT_PREFIX = "anonymousElement@";
-
-  /**
-   * Internal helper class to handle the style sheet collection properly.
-   */
-  private static class ElementStyleSheetCollectionHelper extends StyleSheetCollectionHelper
+  protected static class InternalElementStyleSheet extends ElementStyleSheet
   {
-    /** The Element for which we handle the style sheet collection. */
     private Element element;
+    private Band parent;
+
+    public InternalElementStyleSheet (final Element element)
+    {
+      super(element.getName());
+      this.parent = element.getParent();
+      this.element = element;
+      setDefaultStyleSheet(element.createGlobalDefaultStyle());
+      setAllowCaching(true);
+    }
+
+    public Element getElement ()
+    {
+      return element;
+    }
 
     /**
-     * Creates a new ElementStyleSheetCollectionHelper for the given element.
+     * Creates and returns a copy of this object. After the cloning, the new StyleSheet is
+     * no longer registered with its parents.
      *
-     * @param e the element.
-     * @throws NullPointerException if the given element is null.
+     * @return a clone of this instance.
+     *
+     * @see Cloneable
      */
-    public ElementStyleSheetCollectionHelper(final Element e)
+    public Object clone () throws CloneNotSupportedException
     {
-      if (e == null)
+      final InternalElementStyleSheet es = (InternalElementStyleSheet) super.clone();
+      es.parent = null;
+      es.element = null;
+      return es;
+    }
+
+    public void parentChanged ()
+    {
+      if (parent != null)
       {
-        throw new NullPointerException();
+        setCascadeStyleSheet(null);
       }
-      this.element = e;
+      this.parent = element.getParent();
+      if (parent != null)
+      {
+        setCascadeStyleSheet(parent.getStyle());
+      }
     }
 
-    /**
-     * Handles the stylesheet collection registration.
-     * Forwards the call to the element.
-     */
-    protected void handleRegisterStyleSheetCollection()
+    protected StyleSheetCarrier createCarrier (final ElementStyleSheet styleSheet)
     {
-      element.handleRegisterStyleSheetCollection();
-    }
-
-    /**
-     * Handles the stylesheet collection removal.
-     * Forwards the call to the element.
-     */
-    protected void handleUnregisterStyleSheetCollection()
-    {
-      element.handleUnregisterStyleSheetCollection();
+      return null;
     }
   }
+
+  protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
+  {
+    return ElementDefaultStyleSheet.getDefaultStyle();
+  }
+
+  /** The internal constant to mark anonymous element names. */
+  public static final String ANONYMOUS_ELEMENT_PREFIX = "anonymousElement@";
 
   /** A null datasource. */
   private static final DataSource NULL_DATASOURCE = new EmptyDataSource();
@@ -139,20 +155,15 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   private String name;
 
   /** The stylesheet defines global appearance for elements. */
-  private ElementStyleSheet style;
-
-  /**
-   * The stylesheet collection helper is used to manage the StyleSheetCollection of
-   * this element. The use of the stylesheet collection is evil voodo, so we dont
-   * handle it in the element ...
-   */
-  private ElementStyleSheetCollectionHelper styleSheetCollectionHelper;
+  private InternalElementStyleSheet style;
 
   /** the parent for the element (the band where the element is contained in). */
   private Band parent;
 
-  /** the tree lock to synchronize the element. */
+  /** the tree lock to identify the element. */
   private final InstanceID treeLock;
+
+  private ReportDefinition reportDefinition;
 
   /**
    * Constructs an element.
@@ -165,13 +176,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   protected Element()
   {
+    setName(ANONYMOUS_ELEMENT_PREFIX + System.identityHashCode(this));
     treeLock = new InstanceID();
-    setName(ANONYMOUS_ELEMENT_PREFIX + super.hashCode());
     datasource = NULL_DATASOURCE;
-    style = new ElementStyleSheet(getName());
-    style.setAllowCaching(true);
-    style.addDefaultParent(ElementDefaultStyleSheet.getDefaultStyle());
-    styleSheetCollectionHelper = new ElementStyleSheetCollectionHelper(this);
+    style = new InternalElementStyleSheet(this);
   }
 
   /**
@@ -193,6 +201,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   protected final void setParent(final Band parent)
   {
     this.parent = parent;
+    this.style.parentChanged();
   }
 
   /**
@@ -283,20 +292,22 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
   /**
    * Clones this Element, the datasource and the private stylesheet of this element.
-   * If this element was previously assigned with an stylesheet collection, then the
-   * clone is no longer assiged with that collection. You will have to register the
-   * element manually again.
+   * The clone does no longer have a parent, as the old parent would not recognize
+   * that new object.
    *
    * @return a clone of this element.
-   *
    * @throws CloneNotSupportedException should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {
     final Element e = (Element) super.clone();
-    e.style = style.getCopy();
+    // stylesheet clone disconnects the parent stylessheets ..
+    e.style = (InternalElementStyleSheet) style.getCopy();
+    // dataSource clone disconnects the reportDefinition ..
     e.datasource = (DataSource) datasource.clone();
-    e.styleSheetCollectionHelper = new ElementStyleSheetCollectionHelper(e);
+    e.parent = null;
+    e.style.element = e;
+    e.reportDefinition = null;
     return e;
   }
 
@@ -326,108 +337,6 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @return the content-type as string.
    */
   public abstract String getContentType();
-
-  /**
-   * Returns the stylesheet collection which is assigned with this element and
-   * all stylesheets of this element.
-   *
-   * @return the element stylesheet collection or null, if no collection is assigned.
-   */
-  public StyleSheetCollection getStyleSheetCollection()
-  {
-    return styleSheetCollectionHelper.getStyleSheetCollection();
-  }
-
-  /**
-   * Registers the given StyleSheet collection with this element. If there is already
-   * another stylesheet collection registered, this method will throw an
-   * <code>InvalidStyleSheetCollectionException</code>.
-   *
-   * @param styleSheetCollection the stylesheet collection that should be registered.
-   * @throws InvalidStyleSheetCollectionException if there is already an other
-   * stylesheet registered.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   */
-  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-      throws InvalidStyleSheetCollectionException
-  {
-    styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
-  }
-
-  /**
-   * Unregisters the given stylesheet collection from this element. If this stylesheet
-   * collection is not registered with this element, this method will throw an
-   * <code>InvalidStyleSheetCollectionException</code>
-   *
-   * @param styleSheetCollection the stylesheet collection that should be unregistered.
-   * @throws InvalidStyleSheetCollectionException  if there is already an other stylesheet
-   * registered.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   */
-  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-      throws InvalidStyleSheetCollectionException
-  {
-    styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
-  }
-
-  /**
-   * Handles the unregistration of the stylesheet collection.
-   */
-  protected void handleUnregisterStyleSheetCollection()
-  {
-    getStyle().unregisterStyleSheetCollection(getStyleSheetCollection());
-  }
-
-  /**
-   * Handles the registration of the stylesheet collection.
-   */
-  protected void handleRegisterStyleSheetCollection()
-  {
-    getStyle().registerStyleSheetCollection(getStyleSheetCollection());
-
-    /**
-     * This is an assertation implementation ... leave it alive to be
-     * sure that everything works as expected ...
-     */
-    if (getStyle().getStyleSheetCollection() != getStyleSheetCollection())
-    {
-      throw new IllegalStateException("HandleRegisterStyleSheetCollection failed: " +
-          getStyle().getName() + " for element " + getName());
-    }
-  }
-
-  /**
-   * Updates the stylesheet collection for this element and all substylesheets.
-   * This method must be called after the element was cloned, to make sure that
-   * all stylesheets are registered properly.
-   * <p>
-   * If you don't call this function after cloning prepare to be doomed.
-   * This method will replace all inherited stylesheets with clones from the stylesheet
-   * collection.
-   *
-   * @param sc the stylesheet collection that contains the updated information and
-   * that should be assigned with that element.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws InvalidStyleSheetCollectionException if there is an other stylesheet
-   * collection already registered with that element.
-   */
-  public void updateStyleSheetCollection(final StyleSheetCollection sc)
-      throws InvalidStyleSheetCollectionException
-  {
-    if (sc == null)
-    {
-      throw new NullPointerException("StyleSheetCollection is null.");
-    }
-    if (getStyleSheetCollection() != null)
-    {
-      throw new InvalidStyleSheetCollectionException
-          ("There is a stylesheet collection already registered.");
-    }
-
-    sc.updateStyleSheet(getStyle());
-
-    registerStyleSheetCollection(sc);
-  }
 
   /**
    * Returns the tree lock object for the element tree.
@@ -574,4 +483,51 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     getStyle().setStyleProperty (ElementStyleSheet.PREFERREDSIZE,
         preferredSize);
   }
+
+  protected void setReportDefinition (final ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != null)
+    {
+      disconnectDataSource(getDataSource());
+    }
+    this.reportDefinition = reportDefinition;
+    if (this.reportDefinition != null)
+    {
+      connectDataSource(getDataSource());
+    }
+  }
+
+  public ReportDefinition getReportDefinition ()
+  {
+    return reportDefinition;
+  }
+
+  protected final void connectDataSource (final DataSource ds)
+  {
+    if (ds instanceof ReportConnectable)
+    {
+      final ReportConnectable rc = (ReportConnectable) ds;
+      rc.registerReportDefinition(reportDefinition);
+    }
+    if (ds instanceof DataTarget)
+    {
+      final DataTarget dt = (DataTarget) ds;
+      connectDataSource(dt.getDataSource());
+    }
+  }
+
+  protected final void disconnectDataSource (final DataSource ds)
+  {
+    if (ds instanceof ReportConnectable)
+    {
+      final ReportConnectable rc = (ReportConnectable) ds;
+      rc.unregisterReportDefinition(reportDefinition);
+    }
+    if (ds instanceof DataTarget)
+    {
+      final DataTarget dt = (DataTarget) ds;
+      disconnectDataSource(dt.getDataSource());
+    }
+  }
+
 }

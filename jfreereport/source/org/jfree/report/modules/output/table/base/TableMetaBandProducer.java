@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:06 taqua Exp $
+ * $Id: TableMetaBandProducer.java,v 1.3 2005/01/25 00:12:45 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,12 +50,15 @@ import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.TextElement;
+import org.jfree.report.AnchorElement;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.ContentType;
 import org.jfree.report.content.EmptyContent;
 import org.jfree.report.content.ShapeContent;
+import org.jfree.report.content.AnchorContent;
+import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.meta.MetaElement;
@@ -85,7 +88,7 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
       // bands with a height of 0 are ignored ...
       return null;
     }
-    final ElementStyleSheet style = new ElementStyleSheet("metaband");
+    final ElementStyleSheet style = new MetaElementStyleSheet("metaband");
     style.setStyleProperty(ElementStyleSheet.BOUNDS, rect);
     return new TableBandArea(EmptyContent.getDefaultEmptyContent(), style, null);
   }
@@ -244,7 +247,32 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     {
       return createTextCell (e, x, y);
     }
+    else if (e.getContentType().equals(AnchorElement.CONTENT_TYPE))
+    {
+      return createAnchorCell (e, x, y);
+    }
     return null;
+  }
+
+  protected MetaElement createAnchorCell (final Element element,
+                                          final float x, final float y)
+  {
+    final ElementStyleSheet backgroundStyle =
+            createStyleForElement(element, x, y);
+    final Rectangle2D bounds = (Rectangle2D)
+            backgroundStyle.getStyleProperty (ElementStyleSheet.BOUNDS);
+    final Content ac =
+            AnchorContentFactoryModule.createAnchor(element.getValue(),
+                    (float)(x + bounds.getX()), (float)(y + bounds.getY()));
+    if (ac instanceof AnchorContent == false)
+    {
+      return null;
+    }
+    final AnchorContent anchorContent = (AnchorContent) ac;
+    final TableCellBackground tcb =
+            new TableCellBackground(ac, backgroundStyle, null);
+    tcb.addAnchor (anchorContent.getAnchor());
+    return tcb;
   }
 
   protected abstract MetaElement createTextCell (Element e, float x, float y)

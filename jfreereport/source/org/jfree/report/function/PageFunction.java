@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.7 2005/01/25 00:00:15 taqua Exp $
+ * $Id: PageFunction.java,v 1.8 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -99,6 +99,7 @@ public class PageFunction extends AbstractFunction
    */
   public PageFunction(final String name)
   {
+    this.startPage = 1;
     setName(name);
   }
 

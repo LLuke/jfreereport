@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.8.4.1 2004/12/30 14:46:10 taqua Exp $
+ * $Id: SampleReport1.java,v 1.11 2005/01/24 23:58:41 taqua Exp $
  *
  * Changes:
  * --------
@@ -87,7 +87,7 @@ public class SampleReport1
   {
     final PageHeader header = new PageHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
-    header.getBandDefaults().setFontDefinitionProperty(new FontDefinition("Serif", 10));
+    header.getStyle().setFontDefinitionProperty(new FontDefinition("Serif", 10));
     header.setDisplayOnFirstPage(true);
     header.setDisplayOnLastPage(false);
 
@@ -127,7 +127,7 @@ public class SampleReport1
     final PageFooter pageFooter = new PageFooter();
     pageFooter.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 30));
-    pageFooter.getBandDefaults().setFontDefinitionProperty(new FontDefinition("Dialog", 10));
+    pageFooter.getStyle().setFontDefinitionProperty(new FontDefinition("Dialog", 10));
 
     pageFooter.addElement(StaticShapeElementFactory.createRectangleShapeElement
         (null, Color.black, null, new Rectangle2D.Float(0, 0, -100, -100), true, false));
@@ -154,7 +154,7 @@ public class SampleReport1
     final ReportFooter footer = new ReportFooter();
     footer.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
-    footer.getBandDefaults().setFontDefinitionProperty
+    footer.getStyle().setFontDefinitionProperty
         (new FontDefinition("Serif", 16, true, false, false, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
@@ -178,7 +178,7 @@ public class SampleReport1
     final ReportHeader header = new ReportHeader();
     header.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
-    header.getBandDefaults().setFontDefinitionProperty
+    header.getStyle().setFontDefinitionProperty
         (new FontDefinition("Serif", 20, true, false, false, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
@@ -203,7 +203,7 @@ public class SampleReport1
     final ItemBand items = new ItemBand();
     items.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 10));
-    items.getBandDefaults().setFontDefinitionProperty
+    items.getStyle().setFontDefinitionProperty
         (new FontDefinition("Monospaced", 10));
 
 
@@ -340,7 +340,7 @@ public class SampleReport1
 
     header.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
-    header.getBandDefaults().setFontDefinitionProperty
+    header.getStyle().setFontDefinitionProperty
         (new FontDefinition("Monospaced", 9, true, false, false, false));
 
     LabelElementFactory factory = new LabelElementFactory();
@@ -369,7 +369,7 @@ public class SampleReport1
     final GroupFooter footer = new GroupFooter();
     footer.getStyle().setStyleProperty
         (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
-    footer.getBandDefaults().setFontDefinitionProperty
+    footer.getStyle().setFontDefinitionProperty
         (new FontDefinition("Monospaced", 9, true, false, false, false));
 
     factory = new LabelElementFactory();

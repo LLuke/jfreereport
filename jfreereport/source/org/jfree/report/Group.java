@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
+ * $Id: Group.java,v 1.7 2004/03/16 15:09:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,10 +57,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.jfree.report.style.InvalidStyleSheetCollectionException;
-import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.report.style.StyleSheetCollectionHelper;
-
 /**
  * A report group.  Reports can contain any number of (nested) groups.
  * The order of the fields is important. If the group does not contain
@@ -81,45 +77,6 @@ import org.jfree.report.style.StyleSheetCollectionHelper;
  */
 public class Group implements Serializable, Cloneable, Comparable
 {
-  /**
-   * Internal helper class to handle the style sheet collection properly.
-   */
-  private static class GroupStyleSheetCollectionHelper extends StyleSheetCollectionHelper
-  {
-    /** The group for which we handle the stylesheet collection. */
-    private final Group group;
-
-    /**
-     * Creates a new helper for the given group.
-     *
-     * @param group the group whose stylesheet collection should be managed.
-     */
-    public GroupStyleSheetCollectionHelper(final Group group)
-    {
-      this.group = group;
-    }
-
-    /**
-     * Handles the stylesheet collection registration for the group and
-     * all group bands.
-     */
-    protected void handleRegisterStyleSheetCollection()
-    {
-      group.getFooter().registerStyleSheetCollection(this.getStyleSheetCollection());
-      group.getHeader().registerStyleSheetCollection(this.getStyleSheetCollection());
-    }
-
-    /**
-     * Handles the stylesheet collection unregistration for the group and
-     * all group bands.
-     */
-    protected void handleUnregisterStyleSheetCollection()
-    {
-      group.getFooter().unregisterStyleSheetCollection(this.getStyleSheetCollection());
-      group.getHeader().unregisterStyleSheetCollection(this.getStyleSheetCollection());
-    }
-  }
-
   /** The name of the group. */
   private String name;
 
@@ -135,11 +92,10 @@ public class Group implements Serializable, Cloneable, Comparable
   /** The group footer (optional). */
   private GroupFooter footer;
 
-  /** The helper implementation that manages the stylesheet collection. */
-  private GroupStyleSheetCollectionHelper styleSheetCollectionHelper;
-
   /** The internal constant to mark anonymous group names. */
   public static final String ANONYMOUS_GROUP_PREFIX = "anonymousGroup@";
+
+  private ReportDefinition reportDefinition;
 
   /**
    * Constructs a group with no fields, and an empty header and footer.
@@ -148,7 +104,6 @@ public class Group implements Serializable, Cloneable, Comparable
   {
     name = ANONYMOUS_GROUP_PREFIX + super.hashCode();
     fields = new TreeSet();
-    this.styleSheetCollectionHelper = new GroupStyleSheetCollectionHelper(this);
     this.footer = new GroupFooter();
     this.header = new GroupHeader();
   }
@@ -205,15 +160,9 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("Header must not be null");
     }
-    if (getStyleSheetCollection() != null)
-    {
-      this.header.unregisterStyleSheetCollection(getStyleSheetCollection());
-    }
+    this.header.setReportDefinition(null);
     this.header = header;
-    if (getStyleSheetCollection() != null)
-    {
-      this.header.registerStyleSheetCollection(getStyleSheetCollection());
-    }
+    this.header.setReportDefinition(reportDefinition);
   }
 
   /**
@@ -238,15 +187,9 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("The footer must not be null");
     }
-    if (getStyleSheetCollection() != null)
-    {
-      this.footer.unregisterStyleSheetCollection(getStyleSheetCollection());
-    }
+    this.footer.setReportDefinition(null);
     this.footer = footer;
-    if (getStyleSheetCollection() != null)
-    {
-      this.footer.registerStyleSheetCollection(getStyleSheetCollection());
-    }
+    this.footer.setReportDefinition(reportDefinition);
   }
 
   /**
@@ -334,7 +277,6 @@ public class Group implements Serializable, Cloneable, Comparable
     g.fieldsCached = fieldsCached;
     g.footer = (GroupFooter) footer.clone();
     g.header = (GroupHeader) header.clone();
-    g.styleSheetCollectionHelper = new GroupStyleSheetCollectionHelper(g);
     return g;
   }
 
@@ -389,6 +331,32 @@ public class Group implements Serializable, Cloneable, Comparable
          " new field.");
   }
 
+  public boolean equals (final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof Group))
+    {
+      return false;
+    }
+
+    final Group group = (Group) o;
+
+    if (!fields.equals(group.fields))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode ()
+  {
+    return fields.hashCode();
+  }
+
   /**
    * Returns a string representation of the group (useful for debugging).
    *
@@ -409,68 +377,17 @@ public class Group implements Serializable, Cloneable, Comparable
     return b.toString();
   }
 
-  /**
-   * Returns the stylesheet collection which is assigned with this group and
-   * all stylesheets of this group.
-   *
-   * @return the stylesheet collection or null, if no collection is assigned.
-   */
-  public StyleSheetCollection getStyleSheetCollection()
+
+  public void setReportDefinition (final ReportDefinition reportDefinition)
   {
-    return styleSheetCollectionHelper.getStyleSheetCollection();
+    this.reportDefinition = reportDefinition;
+    this.header.setReportDefinition(reportDefinition);
+    this.footer.setReportDefinition(reportDefinition);
   }
 
-  /**
-   * Registers the given StyleSheet collection with this group. If there is already
-   * another stylesheet collection registered, this method will throw an
-   * <code>InvalidStyleSheetCollectionException</code>.
-   *
-   * @param styleSheetCollection the stylesheet collection that should be registered.
-   * @throws InvalidStyleSheetCollectionException
-   * if there is already an other stylesheet registered.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   */
-  public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-      throws InvalidStyleSheetCollectionException
+  public ReportDefinition getReportDefinition()
   {
-    styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
+    return reportDefinition;
   }
 
-  /**
-   * Unregisters the given stylesheet collection from this group. If this stylesheet
-   * collection is not registered with this group, this method will throw an
-   * <code>InvalidStyleSheetCollectionException</code>
-   *
-   * @param styleSheetCollection the stylesheet collection that should be unregistered.
-   * @throws InvalidStyleSheetCollectionException
-   * if there is an other stylesheet collection already registered with that element.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   */
-  public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-      throws InvalidStyleSheetCollectionException
-  {
-    styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
-  }
-
-  /**
-   * Updates the stylesheet collection for this group and all bands of the group.
-   * This method must be called after the group was cloned, to make sure that
-   * all stylesheets are registered properly.
-   * <p>
-   * If you don't call this function after cloning prepare to be doomed.
-   * This method will replace all inherited stylesheets with clones from the stylesheet
-   * collection.
-   *
-   * @param sc the stylesheet collection that contains the updated information and
-   * that should be assigned with that element.
-   * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws InvalidStyleSheetCollectionException
-   * if there is an other stylesheet collection already registered with that element.
-   */
-  public void updateStyleSheetCollection(final StyleSheetCollection sc)
-      throws InvalidStyleSheetCollectionException
-  {
-    footer.updateStyleSheetCollection(sc);
-    header.updateStyleSheetCollection(sc);
-  }
 }

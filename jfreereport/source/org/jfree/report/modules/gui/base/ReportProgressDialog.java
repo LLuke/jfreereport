@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.8 2005/01/25 00:01:35 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.9 2005/01/25 21:40:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -79,8 +79,11 @@ public class ReportProgressDialog extends JDialog
     private int maxRow;
     private int currentRow;
 
-    public ScreenUpdateRunnable (final int currentRow, final int maxRow,
-                                 final int page, final int pass, final boolean prepare)
+    public ScreenUpdateRunnable (final int currentRow,
+                                 final int maxRow,
+                                 final int page,
+                                 final int pass,
+                                 final boolean prepare)
     {
       this.currentRow = currentRow;
       this.maxRow = maxRow;

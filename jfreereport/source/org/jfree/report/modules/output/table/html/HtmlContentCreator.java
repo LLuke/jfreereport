@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.1.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.2 2005/01/25 01:25:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,6 +48,7 @@ import java.util.TreeMap;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.Anchor;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -58,6 +59,7 @@ import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlMetaElement;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
+import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.util.ReportConfiguration;
 
 public class HtmlContentCreator extends TableContentCreator
@@ -435,13 +437,13 @@ public class HtmlContentCreator extends TableContentCreator
 
     final String internalStyleName = layout.getBackgroundStyleAt(y, x);
     HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
+    final TableCellBackground background = layout.getElementAt(y, x);
 
     // first, check, whether we have a style ..
     // if not, then create one for the current background
     // (which can be null, if there is no background defined).
     if (style == null)
     {
-      final TableCellBackground background = layout.getElementAt(y, x);
       style = new HtmlTableCellStyle(background);
     }
     // now check, whether an equal style is already stored.
@@ -469,6 +471,23 @@ public class HtmlContentCreator extends TableContentCreator
       pout.print("pt;");
       pout.print(style.getCSSString(HtmlStyle.INLINE));
       pout.println("\">");
+    }
+    if (background != null)
+    {
+      final Anchor[] anchors = background.getAnchors();
+      for (int i = 0; i < anchors.length; i++)
+      {
+        pout.print("<a name=\"");
+        HtmlEncoderUtil.printText(pout, anchors[i].getName(), isUseXHTML());
+        if (isUseXHTML())
+        {
+          pout.println("\" />");
+        }
+        else
+        {
+          pout.println("\" >");
+        }
+      }
     }
   }
 

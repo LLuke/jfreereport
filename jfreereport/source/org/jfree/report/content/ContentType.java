@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentType.java,v 1.3.4.1 2004/12/13 19:26:20 taqua Exp $
+ * $Id: ContentType.java,v 1.6 2005/01/24 23:58:10 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,9 @@ package org.jfree.report.content;
  */
 public final class ContentType
 {
+  /** Anchor content type. */
+  public static final ContentType ANCHOR = new ContentType("Anchor");
+
   /** Text content type. */
   public static final ContentType TEXT = new ContentType("Text");
 
@@ -63,7 +66,7 @@ public final class ContentType
   /** Image content type. */
   public static final ContentType IMAGE = new ContentType("Image");
 
-  /** drawable content type. */
+  /** Drawable content type. */
   public static final ContentType DRAWABLE = new ContentType("Drawable");
 
   /** Container content type. */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.5 2004/05/07 14:29:53 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,7 +39,7 @@
 package org.jfree.report.modules.parser.ext.factory.stylekey;
 
 import org.jfree.report.ShapeElement;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
 
@@ -60,7 +60,7 @@ public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory
   public DefaultStyleKeyFactory()
   {
     loadFromClass(ElementStyleSheet.class);
-    loadFromClass(BandStyleSheet.class);
+    loadFromClass(BandStyleKeys.class);
     loadFromClass(ShapeElement.class);
 
     try

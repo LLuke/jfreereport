@@ -2,7 +2,6 @@ package org.jfree.report.resourceloader;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.InputStream;
 import java.io.IOException;
 
 import org.jfree.report.util.StringUtil;
@@ -10,9 +9,33 @@ import org.jfree.report.util.StringUtil;
 public class JPEGImageFactoryModule implements ImageFactoryModule
 {
   private static final byte JFIF_ID[] = {0x4A, 0x46, 0x49, 0x46, 0x00};
+  private static final String[] MIMETYPES = 
+          {
+            "image/jpeg",
+            "image/jpg",
+            "image/jp_",
+            "application/jpg",
+            "application/x-jpg",
+            "image/pjpeg",
+            "image/pipeg",
+            "image/vnd.swiftview-jpeg",
+            "image/x-xbitmap"
+          };
 
   public JPEGImageFactoryModule ()
   {
+  }
+
+  public boolean canHandleResourceByMimeType (final String name)
+  {
+    for (int i = 0; i < MIMETYPES.length; i++)
+    {
+      if (name.equals(MIMETYPES[i]))
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean canHandleResourceByContent (final byte[] content)
@@ -42,7 +65,9 @@ public class JPEGImageFactoryModule implements ImageFactoryModule
     return 11;
   }
 
-  public Image createImage (final byte[] imageData)
+  public Image createImage (final byte[] imageData,
+                            final String fileName,
+                            final String mimeType)
           throws IOException
   {
     return Toolkit.getDefaultToolkit().createImage(imageData);

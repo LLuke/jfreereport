@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.4 2004/05/07 14:29:20 mungady Exp $
+ * $Id: MetaBandProducer.java,v 1.5 2005/01/25 00:09:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,6 +52,7 @@ import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.EmptyContent;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.StyleSheetCarrier;
 import org.jfree.report.util.ElementLayoutInformation;
 
 /**
@@ -62,6 +63,20 @@ import org.jfree.report.util.ElementLayoutInformation;
  */
 public class MetaBandProducer
 {
+  protected static class MetaElementStyleSheet extends ElementStyleSheet
+  {
+    public MetaElementStyleSheet (final String name)
+    {
+      super(name);
+    }
+
+    protected StyleSheetCarrier createCarrier (final ElementStyleSheet styleSheet)
+    {
+      throw new UnsupportedOperationException
+              ("At this point, we do not support inheritance anymore.");
+    }
+  }
+
   private LayoutSupport support;
 
   public MetaBandProducer(final LayoutSupport support)
@@ -142,13 +157,13 @@ public class MetaBandProducer
    * which cannot be displayed by the particular output target.
    *
    * @param e
-   * @param ax
-   * @param ay
+   * @param parentx
+   * @param parenty
    * @return
    * @throws ContentCreationException
    */
   protected MetaElement createElement
-          (final Element e, final float ax, final float ay)
+          (final Element e, final float parentx, final float parenty)
       throws ContentCreationException
   {
     if (support.getContentFactory().canHandleContent(e.getContentType()) == false)
@@ -160,7 +175,7 @@ public class MetaBandProducer
       return null;
     }
 
-    final ElementStyleSheet styleSheet = createStyleForElement(e, ax, ay);
+    final ElementStyleSheet styleSheet = createStyleForElement(e, parentx, parenty);
     final Rectangle2D bounds = (Rectangle2D)
             styleSheet.getStyleProperty(ElementStyleSheet.BOUNDS);
     final ElementLayoutInformation eli = new ElementLayoutInformation(bounds);
@@ -175,7 +190,8 @@ public class MetaBandProducer
           (final Element e, final float x, final float y)
   {
     final ElementStyleSheet elementStyle = e.getStyle();
-    final ElementStyleSheet style = new ElementStyleSheet("meta-" + e.getName());
+    final ElementStyleSheet style =
+            new MetaElementStyleSheet("meta-" + e.getName());
     style.setStyleProperty (ElementStyleSheet.BOUNDS,
         createElementBounds(elementStyle, x, y));
     style.setStyleProperty (ElementStyleSheet.VALIGNMENT,
@@ -269,7 +285,8 @@ public class MetaBandProducer
           (final Band band, final float x, final float y)
   {
     final ElementStyleSheet bandStyle = band.getStyle();
-    final ElementStyleSheet style = new ElementStyleSheet("meta-band");
+    final ElementStyleSheet style =
+            new MetaElementStyleSheet("meta-band");
     style.setStyleProperty
         (ElementStyleSheet.BOUNDS, createElementBounds(bandStyle, x, y));
     return style;

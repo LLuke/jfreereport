@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.21 2005/01/25 21:40:19 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.22 2005/01/28 19:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 
 /**
  * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport,
@@ -261,12 +261,12 @@ public strictfp class SimplePageLayouter extends PageLayouter
 
   /**
    * Checks, whether the current page is empty.
-   * todo reimplement it with the new metabands
+   *
    * @return true, if the current page is empty, false otherwise.
    */
   public boolean isPageEmpty()
   {
-    return false;//getLogicalPage().isEmpty();
+    return isGeneratedPageEmpty();
   }
 
   /**
@@ -599,7 +599,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     }
 
     final Float f = (Float)
-            b.getStyle().getStyleProperty(BandStyleSheet.FIXED_POSITION);
+            b.getStyle().getStyleProperty(BandStyleKeys.FIXED_POSITION);
     final float position;
     if (f == null)
     {
@@ -615,7 +615,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     }
 
     if ((handlePagebreak &&
-        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true) ||
+        b.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE) == true) ||
         ((position != -1) && (position < getCursorPosition())))
     {
       // don't save the state if the current page is currently being finished
@@ -747,13 +747,6 @@ public strictfp class SimplePageLayouter extends PageLayouter
         // handle a automatic pagebreak in case there is not enough space here ...
         else if ((watermark == false) && (isPageEnded() == false) && (isSpaceFor(height) == false))
         {
-//          // todo ... how about spooling the band?
-//          if (position != -1)
-//  	      {
-//  	         throw new ReportProcessingException("Band does not fit into given position!");
-//  	      }
-//          createSaveState(band);
-//          endPage(ENDPAGE_FORCED);
           setAutomaticPagebreak(true);
           return false;
         }
@@ -777,7 +770,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
             addRootMetaBand(metaBand);
           }
           cursor.advance(height);
-          if (band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
+          if (band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER) == true)
           {
             createSaveState(null);
             endPage(ENDPAGE_REQUESTED);
@@ -928,12 +921,12 @@ public strictfp class SimplePageLayouter extends PageLayouter
       final ReportDefinition impl = reportstate.getReport();
       final Band band = getBandForID(impl, state.getBandID());
       pagebreakAfter = band.getStyle().getBooleanStyleProperty
-              (BandStyleSheet.PAGEBREAK_AFTER);
+              (BandStyleKeys.PAGEBREAK_AFTER);
       band.getStyle().setBooleanStyleProperty
-              (BandStyleSheet.PAGEBREAK_AFTER, false);
+              (BandStyleKeys.PAGEBREAK_AFTER, false);
       print(band, pagebreakAfter, PAGEBREAK_BEFORE_IGNORED);
       band.getStyle().setBooleanStyleProperty
-              (BandStyleSheet.PAGEBREAK_AFTER, pagebreakAfter);
+              (BandStyleKeys.PAGEBREAK_AFTER, pagebreakAfter);
     }
     clearSaveState();
     setRestartingPage(false);
@@ -1131,7 +1124,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @param event
    */
-  public void pageRolledBack (ReportEvent event)
+  public void pageRolledBack (final ReportEvent event)
   {
     // we do nothing here ..
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.3 2003/09/12 17:47:03 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.4 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------
@@ -68,9 +68,9 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
   /**
    * Creates a new style sheet.
    */
-  protected ElementDefaultStyleSheet()
+  protected ElementDefaultStyleSheet(final String name)
   {
-    super("GlobalElement");
+    super(name);
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
@@ -114,7 +114,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
   {
     if (defaultStyle == null)
     {
-      defaultStyle = new ElementDefaultStyleSheet();
+      defaultStyle = new ElementDefaultStyleSheet("GlobalElement");
     }
     return defaultStyle;
   }
@@ -153,24 +153,6 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
   }
 
   /**
-   * This method does nothing.
-   *
-   * @param styleSheetCollection the stylesheet collection that should be registered.
-   */
-  public final void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-  {
-  }
-
-  /**
-   * This method does nothing.
-   *
-   * @param styleSheetCollection the stylesheet collection that should be registered.
-   */
-  public final void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
-  {
-  }
-
-  /**
    * Returns true, if this stylesheet is one of the global default stylesheets.
    * Global default stylesheets are unmodifiable and shared among all element stylesheets.
    *
@@ -181,4 +163,9 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     return true;
   }
 
+  protected StyleSheetCarrier createCarrier (final ElementStyleSheet styleSheet)
+  {
+    throw new UnsupportedOperationException
+            ("Cannot add other stylesheets as parent to the global default stylesheet");
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.4.4.1 2004/01/30 14:25:37 taqua Exp $
+ * $Id: StylesWriter.java,v 1.7 2005/01/25 00:20:35 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.parser.extwriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
@@ -156,15 +155,6 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    */
   private void collectStylesFromBand(final Band band)
   {
-    final ElementStyleSheet bandDefaults = band.getBandDefaults();
-
-    final List parents = bandDefaults.getParents();
-    for (int i = 0; i < parents.size(); i++)
-    {
-      final ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
-      addCollectableStyleSheet(es);
-    }
-
     collectStylesFromElement(band);
 
     final Element[] elements = band.getElementArray();
@@ -191,10 +181,10 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   {
     final ElementStyleSheet elementSheet = element.getStyle();
 
-    final List parents = elementSheet.getParents();
-    for (int i = 0; i < parents.size(); i++)
+    final ElementStyleSheet[] parents = elementSheet.getParents();
+    for (int i = 0; i < parents.length; i++)
     {
-      final ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      final ElementStyleSheet es = parents[i];
       addCollectableStyleSheet(es);
     }
   }
@@ -212,10 +202,10 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       return;
     }
 
-    final List parents = es.getParents();
-    for (int i = 0; i < parents.size(); i++)
+    final ElementStyleSheet[] parents = es.getParents();
+    for (int i = 0; i < parents.length; i++)
     {
-      final ElementStyleSheet parentsheet = (ElementStyleSheet) parents.get(i);
+      final ElementStyleSheet parentsheet = parents[i];
       addCollectableStyleSheet(parentsheet);
     }
 

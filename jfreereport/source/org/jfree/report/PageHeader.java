@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageHeader.java,v 1.5 2003/11/01 19:52:26 taqua Exp $
+ * $Id: PageHeader.java,v 1.6 2003/11/07 18:33:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,7 +41,7 @@
  */
 package org.jfree.report;
 
-import org.jfree.report.style.BandStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
 
 /**
  * A report band used to print information at the top of every page in the report.  There is an
@@ -50,7 +50,7 @@ import org.jfree.report.style.BandStyleSheet;
  *
  * @author David Gilbert
  */
-public class PageHeader extends Band
+public class PageHeader extends Band implements RootLevelBand
 {
   /**
    * Constructs a page header.
@@ -82,7 +82,7 @@ public class PageHeader extends Band
    */
   public boolean isDisplayOnFirstPage()
   {
-    return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE);
+    return getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE);
   }
 
   /**
@@ -92,7 +92,7 @@ public class PageHeader extends Band
    */
   public void setDisplayOnFirstPage(final boolean b)
   {
-    getStyle().setBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE, b);
+    getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE, b);
   }
 
   /**
@@ -102,7 +102,7 @@ public class PageHeader extends Band
    */
   public boolean isDisplayOnLastPage()
   {
-    return getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE);
+    return getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE);
   }
 
   /**
@@ -112,6 +112,11 @@ public class PageHeader extends Band
    */
   public void setDisplayOnLastPage(final boolean b)
   {
-    getStyle().setBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, b);
+    getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE, b);
+  }
+
+  public void setReportDefinition (final ReportDefinition reportDefinition)
+  {
+    super.setReportDefinition(reportDefinition);
   }
 }

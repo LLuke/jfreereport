@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaPage.java,v 1.4 2004/05/07 14:29:20 mungady Exp $
+ * $Id: MetaPage.java,v 1.5 2005/01/25 00:09:54 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -37,8 +37,6 @@
  */
 
 package org.jfree.report.modules.output.meta;
-
-
 
 public class MetaPage
 {
@@ -56,11 +54,10 @@ public class MetaPage
   {
     for (int i = 0; i < elements.length; i++)
     {
-
       if (elements[i] instanceof MetaBand)
       {
         final MetaBand b = (MetaBand) elements[i];
-        if (b.isSpooled() == false)
+        if (b.isSpooled() == false && b.getElementCount() > 0)
         {
           return false;
         }

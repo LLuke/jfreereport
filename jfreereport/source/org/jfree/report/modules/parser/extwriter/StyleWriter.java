@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.6.4.3 2004/12/13 19:27:14 taqua Exp $
+ * $Id: StyleWriter.java,v 1.10 2005/01/25 00:20:34 taqua Exp $
  *
  * Changes
  * -------
@@ -113,11 +113,11 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
-    final List parents = elementStyleSheet.getParents();
+    final ElementStyleSheet[] parents = elementStyleSheet.getParents();
     // write the parents of the stylesheet ...
-    for (int p = 0; p < parents.size(); p++)
+    for (int p = 0; p < parents.length; p++)
     {
-      final ElementStyleSheet parent = (ElementStyleSheet) parents.get(p);
+      final ElementStyleSheet parent = parents[p];
       if (isDefaultStyleSheet(parent) == false)
       {
         final CommentHintPath extendsPath = commentPath.getInstance();
