@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.6 2004/03/16 15:09:23 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.7 2004/05/07 08:03:40 mungady Exp $
  *
  * Changes
  * -------
@@ -293,11 +293,13 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
     {
       return 0;
     }
+
     final FontRenderContext frc = getFrcDetector().createFontRenderContext();
     final Rectangle2D textBounds2 = font.getFont().getStringBounds(text, lineStartPos, endPos, frc);
     final float x2 = (float) textBounds2.getWidth();
     return x2;
   }
+
 
   /**
    * Converts this object to a string.

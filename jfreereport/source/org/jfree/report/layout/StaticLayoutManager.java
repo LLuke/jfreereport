@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.13.4.4 2004/12/13 21:42:06 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.15 2005/01/25 00:01:03 taqua Exp $
  *
  * Changes
  * -------
@@ -86,16 +86,12 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
   /** A cache. */
   private final LayoutManagerCache cache;
 
-  /** A cache key. */
-  private final LayoutSearchKey cacheKey;
-
   /**
    * Creates a new layout manager.
    */
   public StaticLayoutManager()
   {
     cache = new LayoutManagerCache();
-    cacheKey = new LayoutSearchKey();
   }
 
   /**
@@ -115,8 +111,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     final boolean isCacheable = cache.isCachable(e);
     if (isCacheable)
     {
-      cacheKey.setSearchConstraint(e, containerBounds);
-      final Dimension2D cretval = cache.getMinSize(cacheKey);
+      final Dimension2D cretval = cache.getMinSize(e.getTreeLock());
       if (cretval != null)
       {
         return cretval;
@@ -183,7 +178,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
     if (isCacheable)
     {
-      cache.setMinSize(cacheKey, e, retval);
+      cache.setMinSize( e, retval);
     }
     return retval;
   }
@@ -205,8 +200,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     final boolean isCachable = cache.isCachable(e);
     if (isCachable)
     {
-      cacheKey.setSearchConstraint(e, containerBounds);
-      final Dimension2D cretval = cache.getMinSize(cacheKey);
+      final Dimension2D cretval = cache.getMinSize(e.getTreeLock());
       if (cretval != null)
       {
         // Log.debug ("+" + cretval);
@@ -282,7 +276,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
 
     if (isCachable)
     {
-      cache.setPrefSize(cacheKey, e, retval);
+      cache.setPrefSize(e, retval);
     }
     //Log.debug ("+" + retval);
     return retval;
@@ -335,7 +329,6 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       final Element[] elements = b.getElementArray();
 
       Dimension2D tmpResult = null;
-      Point2D absPos = null;
       // calculate absolute width
       for (int i = 0; i < elements.length; i++)
       {
@@ -349,7 +342,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
         final boolean staticHeight = isElementStaticHeight(e);
         if (staticWidth || staticHeight)
         {
-          absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
+          final Point2D absPos = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
 
           // check whether the element would be visible .. if not visible, then
           // dont do anything ...
@@ -387,7 +380,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       base.setHeight(align(height, support.getVerticalAlignmentBorder()));
 
       Dimension2D absDim = null;
-      absPos = null;
+      Point2D absPos = null;
       // calculate relative widths
       for (int i = 0; i < elements.length; i++)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.8 2003/09/11 22:17:09 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.9 2004/05/07 08:03:40 mungady Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.InstanceID;
 
 /**
  * A cache for a band layout manager. This caches element bounds, not
@@ -138,7 +139,7 @@ public class LayoutManagerCache
    *
    * @return The minimum size.
    */
-  public Dimension2D getMinSize(final LayoutCacheKey e)
+  public Dimension2D getMinSize(final Object e)
   {
     final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
@@ -160,7 +161,7 @@ public class LayoutManagerCache
    *
    * @return The preferred size.
    */
-  public Dimension2D getPrefSize(final LayoutCacheKey e)
+  public Dimension2D getPrefSize(final Object e)
   {
     final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
@@ -178,11 +179,10 @@ public class LayoutManagerCache
   /**
    * Sets the minimum size of ???.
    *
-   * @param key  the key.
    * @param element  the element.
    * @param d  the minimum size.
    */
-  public void setMinSize(final LayoutCacheKey key, final Element element, final Dimension2D d)
+  public void setMinSize(final Element element, final Dimension2D d)
   {
     if (element == null)
     {
@@ -195,37 +195,27 @@ public class LayoutManagerCache
     }
     putCount++;
 
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
+    ElementCacheCarrier ec = (ElementCacheCarrier)
+            elementCache.get(element.getTreeLock());
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
       ec.setMinSize(d);
-      if (key.isSearchKey())
-      {
-        elementCache.put(new LayoutCacheKey(element, key.getParentDim()), ec);
-      }
-      else
-      {
-        elementCache.put(key, ec);
-      }
+      elementCache.put(element.getTreeLock(), ec);
     }
     else
     {
-      if (isCachable(element) == true)
-      {
-        ec.setMinSize(d);
-      }
+      ec.setMinSize(d);
     }
   }
 
   /**
    * Sets the preferred size of ???.
    *
-   * @param key  the key.
    * @param element  the element.
    * @param d  the minimum size.
    */
-  public void setPrefSize(final LayoutCacheKey key, final Element element, final Dimension2D d)
+  public void setPrefSize(final Element element, final Dimension2D d)
   {
     if (element == null)
     {
@@ -238,19 +228,12 @@ public class LayoutManagerCache
     }
     putCount++;
 
-    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
+    ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(element.getTreeLock());
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
       ec.setPrefSize(d);
-      if (key.isSearchKey())
-      {
-        elementCache.put(new LayoutCacheKey(element, key.getParentDim()), ec);
-      }
-      else
-      {
-        elementCache.put(key, ec);
-      }
+      elementCache.put(element.getTreeLock(), ec);
     }
     else
     {
