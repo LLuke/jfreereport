@@ -1,18 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 <body bgcolor="white">
-Classes for reading XML-based report definitions. The parser is able to ues all features
-of JFreeReport 0.7.2 and most features or 0.7.3.
+Classes for reading XML-based report definitions.
 <p>
-The DTD for the reportdefinition files can be found at
-<a href="http://jfreereport.sourceforge.net/report.dtd">http://jfreereport.sourceforge.net/report.dtd</a>
-or in the distribution package.
+At the moment two report definition formats are supported,
+the simple profile is a simplified model of the report definition.
+Although it does not support all advanced features, its simple
+structure helps to understand the basic report process and makes
+it possible to easily write report definitions.
 <p>
-This parser uses deprecated element classes. These classes will get not extension
-for new features and as soon as the discrepancy beween implemented and possible features
-gets too huge, this parser will be discontinued and a new implementation will be started.
-<p>
-After this point no new features are added to the old parser, and the parser will remain active
-for the sake of compatibility.
+The second parser uses a more complex model, which describes the
+report is a very detailed way. Due to the low level orientation of
+the report definition format, writing report definition is more
+complicated and requires detailed knowledge of the object structures
+used in JFreeReport. Its more generalized structure allows to define
+every aspect of the report definition and makes it possible to use
+all implemented features of JFreeReport.   
 </body>
 </html>
