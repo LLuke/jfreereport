@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.10 2002/05/26 16:56:31 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.11 2002/05/26 20:05:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -830,7 +830,6 @@ public class PreviewFrame
 
     toolbar.add(createButton(saveAsAction));
     toolbar.add(createButton(printAction));
-    toolbar.add(createButton(previousPageAction));
     toolbar.add(createButton(previousPageAction));
     toolbar.add(createButton(nextPageAction));
     toolbar.addSeparator();
