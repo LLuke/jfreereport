@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.1.1.1 2002/04/25 17:02:14 taqua Exp $
+ * $Id: Element.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,12 +36,14 @@
  * 05-Mar-2002 : Integration of Thomas Morgner's code, plus PDF report generation via iText (DG);
  * 10-May-2002 : Removed complex-Constructor to support automatic generation of elements using
  *               generic parsers.
+ * 16-May-2002 : Line delimiters adjusted
+ *               paint now protected member
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
 import java.awt.Color;
+import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -57,15 +59,16 @@ public abstract class Element implements ElementConstants
   private Rectangle2D area;
 
   /** The paint used to draw the element. */
-  private Paint paint;
+  protected Paint m_paint;
 
   /**
    * Constructs an element.
    */
-  protected Element ()
+
+  protected Element()
   {
-    setPaint (Color.black);
-    setBounds (new Rectangle2D.Float ());
+    setPaint(Color.black);
+    setBounds(new Rectangle2D.Float());
   }
 
   /**
@@ -75,10 +78,10 @@ public abstract class Element implements ElementConstants
    * @param name the name of this element
    * @throws NullPointerException if the name is empty
    */
-  public void setName (String name)
+  public void setName(String name)
   {
     if (name == null)
-      throw new NullPointerException ("The name must be valid");
+      throw new NullPointerException("The name must be valid");
     this.name = name;
   }
 
@@ -89,10 +92,10 @@ public abstract class Element implements ElementConstants
    * @param bounds the bounds of this element
    * @throws NullPointerException
    */
-  public void setBounds (Rectangle2D bounds)
+  public void setBounds(Rectangle2D bounds)
   {
     if (bounds == null)
-      throw new NullPointerException ("Bounds must be valid");
+      throw new NullPointerException("Bounds must be valid");
 
     this.area = bounds;
 
@@ -103,38 +106,38 @@ public abstract class Element implements ElementConstants
    *
    * @return The name.
    */
-  public String getName ()
+  public String getName()
   {
     return this.name;
   }
 
   /**
-   * Returns the paint used to draw this element.
+   * Returns the m_paint used to draw this element.
    *
-   * @return The paint.
+   * @return The m_paint.
    */
-  public Paint getPaint ()
+  public Paint getPaint()
   {
-    return this.paint;
+    return m_paint;
   }
 
   /**
-   * Sets the paint for this element. The paint must not be null.
+   * Sets the m_paint for this element. The m_paint must not be null.
    *
-   * @param p the paint for this element
-   * @throws NullPointerException if the paint is null
+   * @param p the m_paint for this element
+   * @throws NullPointerException if the m_paint is null
    */
-  public void setPaint (Paint p)
+  public void setPaint(Paint p)
   {
-    this.paint = p;
+    m_paint = p;
   }
 
   /**
    * Queries the bounds of this element using a new Rectangle2D object.
    */
-  public Rectangle2D getBounds ()
+  public Rectangle2D getBounds()
   {
-    return getBounds (null);
+    return getBounds(null);
   }
 
   /**
@@ -143,11 +146,11 @@ public abstract class Element implements ElementConstants
    *
    * @param carrier the rectangle2D object to carry the bounds of this element.
    */
-  public Rectangle2D getBounds (Rectangle2D carrier)
+  public Rectangle2D getBounds(Rectangle2D carrier)
   {
     if (carrier == null)
-      carrier = new Rectangle2D.Float ();
-    carrier.setRect (area);
+      carrier = new Rectangle2D.Float();
+    carrier.setRect(area);
     return carrier;
   }
 
@@ -159,6 +162,10 @@ public abstract class Element implements ElementConstants
    * @param bandX The x-coordinate for the element within its band.
    * @param bandY The y-coordinate for the element within its band.
    */
-  public abstract void draw (OutputTarget target, Band band, float bandX, float bandY);
+  public abstract void draw(
+    OutputTarget target,
+    Band band,
+    float bandX,
+    float bandY);
 
 }
