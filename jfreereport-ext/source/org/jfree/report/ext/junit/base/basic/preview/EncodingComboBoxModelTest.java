@@ -28,11 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.4 2003/09/09 10:27:57 taqua Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.5 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes 
  * -------------------------
  * 29.06.2003 : Initial version
+ * 31.03.2005 : Java 1.5 compatibility
  *  
  */
 
@@ -165,10 +166,10 @@ public class EncodingComboBoxModelTest extends TestCase
         final BufferedInputStream bin = new BufferedInputStream(in);
         encDef.load(bin);
         bin.close();
-        final Enumeration enum = defaultEncodings.keys();
-        while (enum.hasMoreElements())
+        final Enumeration enumeration = defaultEncodings.keys();
+        while (enumeration.hasMoreElements())
         {
-          final String enc = (String) enum.nextElement();
+          final String enc = (String) enumeration.nextElement();
           // if not set to "true"
           String defined = encDef.getProperty(enc);
           if (defined == null)

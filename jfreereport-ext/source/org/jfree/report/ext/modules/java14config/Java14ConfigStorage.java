@@ -28,11 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14ConfigStorage.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
+ * $Id: Java14ConfigStorage.java,v 1.4 2003/09/12 22:05:08 taqua Exp $
  *
  * Changes 
  * -------------------------
  * 23-Jul-2003 : Initial version
+ * 31-Mar-2005 : Java 1.5 compatibility
  *  
  */
 
@@ -87,12 +88,12 @@ public class Java14ConfigStorage implements ConfigStorage
 
     try
     {
-      Enumeration enum = properties.keys();
+      Enumeration enumeration = properties.keys();
       Preferences pref = base.node(configPath);
       pref.clear();
-      while (enum.hasMoreElements())
+      while (enumeration.hasMoreElements())
       {
-        String key = (String) enum.nextElement();
+        String key = (String) enumeration.nextElement();
         String value = properties.getProperty(key);
         if (value != null)
         {
