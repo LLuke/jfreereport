@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id$
+ * $Id: JFreeReportResources_de.java,v 1.16 2002/11/07 21:45:28 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -132,6 +132,9 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"pdfsavedialog.ownerpassword", "Hauptkennwort"},
             {"pdfsavedialog.ownerpasswordconfirm", "Wiederholen"},
             {"pdfsavedialog.ownerpasswordNoMatch", "Die Hauptkennworte stimmen nicht überein."},
+
+            {"pdfsavedialog.ownerpasswordEmpty", "Das Benutzerpasswort ist leer. Benutzer sind " +
+              "möglicherweise in der Lage die Sicherheitsbeschränkungen zu umgehen. Trotzdem fortfahren?" },
 
             {"pdfsavedialog.errorTitle", "Fehler"},
             {"pdfsavedialog.targetIsEmpty",

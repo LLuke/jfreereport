@@ -24,7 +24,7 @@
  * JFreeReportResources.java
  * -------------------------
  *
- * $Id$
+ * $Id: JFreeReportResources.java,v 1.25 2002/11/07 21:45:28 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -252,6 +252,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.ownerpassword", "Owner Password"},
             {"pdfsavedialog.ownerpasswordconfirm", "Confirm"},
             {"pdfsavedialog.ownerpasswordNoMatch", "The owner-passwords do not match."},
+            {"pdfsavedialog.ownerpasswordEmpty", "The owner-password is empty. Users may be " +
+              "able to change security constraints. Continue anyway?" },
 
             {"pdfsavedialog.errorTitle", "Error"},
             {"pdfsavedialog.targetIsEmpty", "Please specify a filename for the pdf file."},
