@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.9 2003/09/15 18:26:35 taqua Exp $
+ * $Id: Element.java,v 1.10 2003/09/24 13:43:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,6 +59,7 @@
 
 package org.jfree.report;
 
+import java.awt.geom.Dimension2D;
 import java.io.Serializable;
 
 import org.jfree.report.filter.DataSource;
@@ -430,7 +431,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
   /**
    * Returns the tree lock object for the element tree.
-   *  
+   *
    * @return the treelock object.
    */
   public final Object getTreeLock ()
@@ -467,5 +468,41 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   {
     getStyle().setBooleanStyleProperty
         (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, layoutCacheable);
+  }
+
+  public Dimension2D getMinimumSize()
+  {
+    return (Dimension2D) getStyle().getStyleProperty
+        (ElementStyleSheet.MINIMUMSIZE);
+  }
+
+  public void setMinimumSize(Dimension2D minimumSize)
+  {
+    getStyle().setStyleProperty (ElementStyleSheet.MINIMUMSIZE,
+        minimumSize);
+  }
+
+  public Dimension2D getMaximumSize()
+  {
+    return (Dimension2D) getStyle().getStyleProperty
+        (ElementStyleSheet.MAXIMUMSIZE);
+  }
+
+  public void setMaximumSize(Dimension2D maximumSize)
+  {
+    getStyle().setStyleProperty (ElementStyleSheet.MAXIMUMSIZE,
+        maximumSize);
+  }
+
+  public Dimension2D getPreferredSize()
+  {
+    return (Dimension2D) getStyle().getStyleProperty
+        (ElementStyleSheet.PREFERREDSIZE);
+  }
+
+  public void setPreferredSize(Dimension2D preferredSize)
+  {
+    getStyle().setStyleProperty (ElementStyleSheet.PREFERREDSIZE,
+        preferredSize);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextElementFactory.java,v 1.5 2003/08/24 15:13:22 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,6 +43,7 @@ import java.awt.Color;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.StyleKey;
 
 /**
  * The text element factory is the abstract base class for all
@@ -77,6 +78,8 @@ public abstract class TextElementFactory extends ElementFactory
   private ElementAlignment verticalAlignment;
   /** Defines the horizontal alignment of the content. */
   private ElementAlignment horizontalAlignment;
+  /** The reserved literal. */
+  private String reservedLiteral;
 
   /**
    * Default Constructor.
@@ -338,6 +341,16 @@ public abstract class TextElementFactory extends ElementFactory
     this.horizontalAlignment = horizontalAlignment;
   }
 
+  public String getReservedLiteral()
+  {
+    return reservedLiteral;
+  }
+
+  public void setReservedLiteral(String reservedLiteral)
+  {
+    this.reservedLiteral = reservedLiteral;
+  }
+
   /**
    * Applies the defined element style to the given stylesheet. This is a
    * helper function to reduce the code size of the implementors.
@@ -363,5 +376,6 @@ public abstract class TextElementFactory extends ElementFactory
     style.setStyleProperty(ElementStyleSheet.STRIKETHROUGH, getStrikethrough());
     style.setStyleProperty(ElementStyleSheet.UNDERLINED, getUnderline());
     style.setStyleProperty(ElementStyleSheet.VALIGNMENT, getVerticalAlignment());
+    style.setStyleProperty(ElementStyleSheet.RESERVED_LITERAL, getReservedLiteral());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.5 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.6 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,7 @@ import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.ImageUtils;
 
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.
@@ -218,9 +219,14 @@ public class PaintComponentFunction extends AbstractFunction
       peerSupply.setSize(dim);
       peerSupply.validate();
 
+      /*
       final BufferedImage bi = new BufferedImage((int) (scale * dim.width),
           (int) (scale * dim.height),
           BufferedImage.TYPE_INT_ARGB);
+          */
+      final BufferedImage bi =
+          ImageUtils.createTransparentImage
+          ((int) scale * dim.width, (int) scale * dim.height);
       final Graphics2D graph = bi.createGraphics();
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
