@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ReportListener.java,v 1.6 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ReportListener.java,v 1.7 2003/02/12 09:59:47 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -67,6 +67,14 @@ public interface ReportListener extends EventListener
    * @param event The event.
    */
   public void reportFinished (ReportEvent event);
+
+  /**
+   * Receives notification that report generation has completed, the report footer was printed,
+   * no more output is done. This is a helper event to shut down the output service.
+   *
+   * @param event The event.
+   */
+  public void reportDone (ReportEvent event);
 
   /**
    * Receives notification that a new page is being started.

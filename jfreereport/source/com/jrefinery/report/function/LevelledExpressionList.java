@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.2 2003/01/14 21:07:02 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.3 2003/02/12 10:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -493,6 +493,42 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           try
           {
             f.layoutComplete(event);
+          }
+          catch (Exception ex)
+          {
+            Log.error ("Function made a boo!", ex);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Receives notification that report generation has completed, the report footer was printed,
+   * no more output is done. This is a helper event to shut down the output service.
+   *
+   * @param event The event.
+   */
+  public void reportDone(ReportEvent event)
+  {
+    Iterator it = expressionList.getLevelsDescending();
+    while (it.hasNext())
+    {
+      Integer level = (Integer) it.next();
+      if (level.intValue() < getLevel())
+      {
+        break;
+      }
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      while (itLevel.hasNext())
+      {
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.reportDone(event);
           }
           catch (Exception ex)
           {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.25 2003/01/03 16:12:00 mungady Exp $
+ * $Id: AbstractFunction.java,v 1.26 2003/01/14 21:06:03 taqua Exp $
  *
  * Changes
  * -------
@@ -396,5 +396,16 @@ public abstract class AbstractFunction implements Function
     {
       return null;
     }
+  }
+
+  /**
+   * Receives notification that report generation has completed, the report footer was printed,
+   * no more output is done. This is a helper event to shut down the output service.
+   *
+   * @param event The event.
+   */
+  public void reportDone(ReportEvent event)
+  {
+    // does nothing...
   }
 }

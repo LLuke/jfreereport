@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.13 2003/01/29 18:37:12 taqua Exp $
+ * $Id: PageLayouter.java,v 1.14 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -138,6 +138,11 @@ public abstract class PageLayouter extends AbstractFunction
    */
   private boolean restartingPage;
 
+  /** A flag indicating whether some content was created */
+  private boolean generatedPageEmpty;
+
+  private boolean pageRestartDone;
+
   /**
    * Creates a new page layouter. The function depency level is set to -1 (highest
    * priority).
@@ -146,6 +151,26 @@ public abstract class PageLayouter extends AbstractFunction
   {
     setDependencyLevel(-1);
     cloneCarrier = new CloneCarrier();
+  }
+
+  public boolean isPageRestartDone()
+  {
+    return pageRestartDone;
+  }
+
+  public void setPageRestartDone(boolean pageRestartDone)
+  {
+    this.pageRestartDone = pageRestartDone;
+  }
+
+  public boolean isGeneratedPageEmpty()
+  {
+    return generatedPageEmpty;
+  }
+
+  public void setGeneratedPageEmpty(boolean generatedPageEmpty)
+  {
+    this.generatedPageEmpty = generatedPageEmpty;
   }
 
   /**
@@ -316,6 +341,7 @@ public abstract class PageLayouter extends AbstractFunction
     // log // no cloning save the orignal state
     layoutManagerState = saveCurrentState();
 
+    setGeneratedPageEmpty(getLogicalPage().isEmpty());
     getLogicalPage().close();
   }
 
@@ -323,11 +349,13 @@ public abstract class PageLayouter extends AbstractFunction
    * Restarts the current page. The logical page is opened again and the
    * PageStartedEvent is fired. While this method is executed, the RestartingPage
    * flag is set to true.
-   *
-   * @param state  the report state (null not permitted).
    */
-  protected void startPage (ReportState state)
+  protected void startPage ()
   {
+    if (isPageRestartDone() == true)
+      throw new IllegalStateException("Page already started");
+
+    ReportState state = getCurrentEvent().getState();
     if (state == null)
     {
       throw new NullPointerException("PageLayouter.startPage(...): state is null.");
@@ -336,6 +364,7 @@ public abstract class PageLayouter extends AbstractFunction
     setRestartingPage(true);
     state.firePageStartedEvent();
     setRestartingPage(false);
+    setPageRestartDone(true);
   }
 
   /**
@@ -349,7 +378,7 @@ public abstract class PageLayouter extends AbstractFunction
     return getLogicalPage().isOpen() == false;
   }
 
-  public abstract boolean isStartNewPage();
+  public abstract boolean isNewPageStarted();
 
   /**
    * Save the current state into the LayoutManagerState object. The concrete
@@ -379,9 +408,9 @@ public abstract class PageLayouter extends AbstractFunction
    * @param state  the report state.
    *
    * @throws ReportProcessingException if there is a problem processing the report.
-   */
   public abstract void restoreSaveState (ReportState state)
       throws ReportProcessingException;
+   */
 
 
   /**
@@ -430,6 +459,8 @@ public abstract class PageLayouter extends AbstractFunction
     this.depLevel = deplevel;
   }
 
+
+
   /**
    * Returns a clone of the PageLayouter.
    * <P>
@@ -444,4 +475,35 @@ public abstract class PageLayouter extends AbstractFunction
   {
     return super.clone();
   }
+
+  /**
+   * Restores the state.
+   *
+   * @param anchestor  the ancestor state.
+   *
+   * @throws ReportProcessingException if the printing failed or a pagebreak is
+   * requested while the page is restored.
+   * @throws IllegalStateException if there is no SavedState but this is not the
+   * first page.
+   */
+  public void restoreSaveState(ReportState anchestor)
+      throws ReportProcessingException
+  {
+    Object state = getLayoutManagerState();
+    // reset the report finished flag...
+    //setStartNewPage(false);
+    setGeneratedPageEmpty(true);
+    setPageRestartDone(false);
+    
+    if (state == null)
+    {
+      if (anchestor.getCurrentPage() != 1)
+      {
+        throw new IllegalStateException("State is null, but this is not the first page");
+      }
+    }
+    // open the logical page ...
+    getLogicalPage().open();
+  }
+
 }

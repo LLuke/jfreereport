@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.22 2003/02/12 17:36:09 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.23 2003/02/16 19:02:39 taqua Exp $
  *
  * Changes
  * -------
@@ -45,13 +45,13 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportInterruptedException;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
-import com.jrefinery.report.util.Log;
 
 import java.awt.print.PageFormat;
 import java.util.Iterator;
@@ -291,11 +291,6 @@ public class PageableReportProcessor
         // dataRow.
         while (!state.isFinish())
         {
-          if (level == -1)
-          {
-            pageStates.add(state);
-            Log.debug ("State: " + state);
-          }
           ReportState oldstate = state;
           state = processPage(state, dummyOutput);
           if (!state.isFinish())
@@ -305,6 +300,21 @@ public class PageableReportProcessor
             if (!state.isProceeding(oldstate))
             {
               throw new ReportProcessingException("State did not proceed, bailing out!");
+            }
+          }
+
+          // if layout level has reached, and some content was generated, then add the page
+          if (level == -1)
+          {
+            System.out.println ("State: " + state);
+            System.out.println ("Old: " + oldstate);
+            if (isEmptyPageGenerated(state) == false)
+            {
+              pageStates.add(oldstate);
+            }
+            else
+            {
+              Log.debug ("Ignored State: " + oldstate + " -> Will produce empty page");
             }
           }
         }
@@ -339,7 +349,6 @@ public class PageableReportProcessor
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
       // finally return the saved page states.
-      Log.debug ("PageSize: " + pageStates.size());
       return pageStates;
     }
     catch (OutputTargetException ote)
@@ -415,7 +424,10 @@ public class PageableReportProcessor
       // just decorations, as far as the report state is concerned.  The state only changes in
       // the following code...
 
-      // this loop advances the report state until the next end-of-page is reached.
+      // this loop advances the report state until the next page gets started or
+      // the end of the reporting is reached.
+      // note: Dont test the end of the page, this gives no hint whether there will
+      // be a next page ...
       while ((lm.isPageEnded() == false) && (state.isFinish() == false))
       {
         PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
@@ -429,5 +441,18 @@ public class PageableReportProcessor
       }
     }
     return state;
+  }
+
+  /**
+   * Checks the state of the logical page, to see whether some content has been
+   * printed on the page.
+   *
+   * @param state the state which should be checked
+   * @return true, if the page is empty, false otherwise.
+   */
+  public boolean isEmptyPageGenerated (ReportState state)
+  {
+    PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
+    return org.isGeneratedPageEmpty();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.26 2003/02/12 17:36:09 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.27 2003/02/16 23:23:45 taqua Exp $
  *
  * Changes
  * -------
@@ -215,7 +215,8 @@ public class SimplePageLayouter extends PageLayouter
     setCurrentEvent(event);
     try
     {
-      startPage(event.getState());
+      restartPage();
+
       printBand(getReport().getReportHeader());
     }
     catch (FunctionProcessingException fe)
@@ -241,6 +242,46 @@ public class SimplePageLayouter extends PageLayouter
     if (isPageEnded())
       throw new IllegalStateException();
 
+    try
+    {
+      setCurrentEvent(event);
+      restartPage();
+    }
+    catch (Exception e)
+    {
+      throw new FunctionProcessingException("ItemsFinished", e);
+    }
+
+    isInItemGroup = false;
+  }
+
+  /**
+   * Receives notification that report generation has completed, the report footer was printed,
+   * no more output is done. This is a helper event to shut down the output service.
+   *
+   * @param event The event.
+   */
+  public void reportDone(ReportEvent event)
+  {
+    // activating this state after the page has ended is invalid.
+    if (isPageEnded())
+      throw new IllegalStateException();
+
+    try
+    {
+      setCurrentEvent(event);
+
+      restartPage();
+
+      createSaveState(null);
+
+      endPage(ENDPAGE_FORCED);
+    }
+    catch (Exception e)
+    {
+      throw new FunctionProcessingException("ReportDone", e);
+    }
+
     isInItemGroup = false;
   }
 
@@ -256,6 +297,16 @@ public class SimplePageLayouter extends PageLayouter
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
       throw new IllegalStateException();
+
+    try
+    {
+      setCurrentEvent(event);
+      restartPage();
+    }
+    catch (Exception e)
+    {
+      throw new FunctionProcessingException("ItemsFinished", e);
+    }
 
     isInItemGroup = true;
   }
@@ -381,6 +432,7 @@ public class SimplePageLayouter extends PageLayouter
     setCurrentEvent(event);
     try
     {
+
       getCursor().setReservedSpace(0);
       Band b = getReport().getPageFooter();
       if (event.getState().getCurrentPage() == 1)
@@ -429,6 +481,8 @@ public class SimplePageLayouter extends PageLayouter
     {
       setCurrentEvent(event);
 
+      restartPage();
+
       Object prepareRun =
           event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
       if (prepareRun.equals(Boolean.TRUE))
@@ -440,14 +494,16 @@ public class SimplePageLayouter extends PageLayouter
       isLastPageBreak = true;
 
       Band b = getReport().getReportFooter();
-
+      printBand(b);
       // if the band was printed on that page without PAGEBREAK_BEFORE
       // the final pagebreak is forced later ..
+      /* docmark
       if (printBand(b) && isPageEnded() == false)
       {
         createSaveState(null);
         endPage(ENDPAGE_FORCED);
       }
+      */
     }
     catch (FunctionProcessingException fe)
     {
@@ -475,6 +531,9 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
+
+      restartPage();
+
       int gidx = event.getState().getCurrentGroupIndex();
       Group g = getReport().getGroup(gidx);
       Band b = g.getHeader();
@@ -506,6 +565,9 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
+
+      restartPage();
+
       int gidx = event.getState().getCurrentGroupIndex();
       Group g = getReport().getGroup(gidx);
       Band b = g.getFooter();
@@ -533,11 +595,16 @@ public class SimplePageLayouter extends PageLayouter
   {
     // activating this state after the page has ended is invalid.
     if (isPageEnded())
+    {
       throw new IllegalStateException();
+    }
 
     try
     {
       setCurrentEvent(event);
+
+      restartPage();
+
       printBand(getReport().getItemBand());
     }
     catch (FunctionProcessingException fe)
@@ -832,31 +899,22 @@ public class SimplePageLayouter extends PageLayouter
   public void restoreSaveState(ReportState anchestor)
       throws ReportProcessingException
   {
-    SimpleLayoutManagerState state = (SimpleLayoutManagerState) getLayoutManagerState();
-    // reset the report finished flag...
-    setStartNewPage(false);
+    super.restoreSaveState(anchestor);
     isLastPageBreak = false;
+  }
+
+  public void restartPage () throws ReportProcessingException
+  {
+    if (isPageRestartDone())
+      return;
+
+    startPage();
+
     if (state == null)
     {
-      if (anchestor.getCurrentPage() != 1)
-      {
-        throw new IllegalStateException("State is null, but this is not the first page");
-      }
-
-      // open the logical page ...
-      getLogicalPage().open();
-      return; // no state yet, maybe the first state?
+      // no state saved, break  ...
+      return;
     }
-/*
-    Log.debug (new Log.SimpleMessage("State: " ,
-                                     new Integer(anchestor.getCurrentPage()) ,
-                                     new Log.SimpleMessage (" " ,
-                                                            new Integer(anchestor.getCurrentDataItem()),
-                                                            " " ,
-                                                            anchestor.getDataRow())));
-*/
-    getLogicalPage().open();
-    startPage(anchestor);
 
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
@@ -915,7 +973,7 @@ public class SimplePageLayouter extends PageLayouter
     }
   }
 
-  public boolean isStartNewPage()
+  public boolean isNewPageStarted()
   {
     return startNewPage;
   }
@@ -924,7 +982,6 @@ public class SimplePageLayouter extends PageLayouter
   {
     this.startNewPage = startNewPage;
   }
-
   /**
    * Clones the layouter.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.17 2002/12/20 09:17:54 mungady Exp $
+ * $Id: AbstractExpression.java,v 1.18 2003/01/14 21:05:58 taqua Exp $
  *
  * Changes
  * -------
@@ -315,4 +315,6 @@ public abstract class AbstractExpression implements Expression
       return null;
     }
   }
+
+
 }

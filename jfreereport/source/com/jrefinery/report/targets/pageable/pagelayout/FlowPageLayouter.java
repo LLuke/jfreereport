@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.4 2003/01/08 19:33:23 taqua Exp $
+ * $Id: FlowPageLayouter.java,v 1.5 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -172,7 +172,7 @@ public class FlowPageLayouter extends PageLayouter
     super.initialize();
   }
 
-  public boolean isStartNewPage()
+  public boolean isNewPageStarted()
   {
     return false;
   }

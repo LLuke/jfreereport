@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.9 2003/02/16 19:02:38 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.10 2003/02/16 23:23:43 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
@@ -269,7 +268,7 @@ public class StaticLayoutManager implements BandLayoutManager
     }
     catch (Exception ex)
     {
-      Log.warn ("Error while calculating the content bounds: ", ex);
+//      Log.warn ("Error while calculating the content bounds: ", ex);
       return new FloatDimension(Math.max (minSize.getWidth(), bounds.getWidth()),
                                 Math.max (minSize.getHeight(), bounds.getHeight()));
     }
@@ -436,7 +435,7 @@ public class StaticLayoutManager implements BandLayoutManager
     double height = Math.max(0, minSize.getHeight());
     double width = Math.max(0, minSize.getWidth());
 
-    Log.debug ("MinimumLayoutSize: " + b.getName() + " > " + minSize);
+  //  Log.debug ("MinimumLayoutSize: " + b.getName() + " > " + minSize);
 
     // now take the maximum limit defined for that band into account.
     Dimension2D maxSize
@@ -543,7 +542,7 @@ public class StaticLayoutManager implements BandLayoutManager
     {
       throw new NullPointerException("Need the parent's bound set");
     }
-    Log.warn("ParentBounds: " + parentBounds + " > " + b.getName());
+ //   Log.warn("ParentBounds: " + parentBounds + " > " + b.getName());
 
     Dimension2D parentDim = new FloatDimension(parentBounds.getWidth(), parentBounds.getHeight());
     Point2D parentPoint = new Point2D.Double (parentBounds.getX(), parentBounds.getY());
@@ -564,8 +563,8 @@ public class StaticLayoutManager implements BandLayoutManager
                                                   align(size.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
                                                   align(size.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
       BandLayoutManagerUtil.setBounds(e, bounds);
-      Log.debug ("Bounds Defined: " + e.getName() + " > " + bounds);
-      Log.debug ("       Points : " + e.getName() + " > " + absPos + " -> "+ parentPoint);
+//      Log.debug ("Bounds Defined: " + e.getName() + " > " + bounds);
+//      Log.debug ("       Points : " + e.getName() + " > " + absPos + " -> "+ parentPoint);
       if (e instanceof Band)
       {
         Band band = (Band) e;
