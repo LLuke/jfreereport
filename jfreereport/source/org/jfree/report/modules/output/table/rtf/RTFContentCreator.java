@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.5 2005/03/04 12:08:19 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.6 2005/03/04 13:25:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -124,13 +124,13 @@ public class RTFContentCreator extends TableContentCreator
       {
         for (int x = 0; x < width; x++)
         {
-          final TableCellBackground background = layout.getElementAt(y, x);
           final MetaElement element = (MetaElement) go.getObject(y, x);
 
           if (element == null)
           {
             final Cell cell = new Cell();
             cell.setBorderWidth(0);
+            final TableCellBackground background = layout.getElementAt(y, x);
             if (background != null)
             {
               // iText cell width is a string, why?
@@ -147,6 +147,15 @@ public class RTFContentCreator extends TableContentCreator
           {
             // this is a spanned cell - ignore it completly
             continue;
+          }
+          final TableCellBackground background;
+          if (rectangle.getColumnSpan() == 1 && rectangle.getRowSpan() == 1)
+          {
+            background = layout.getElementAt(y, x);
+          }
+          else
+          {
+            background = layout.getRegionBackground(rectangle);
           }
 
           final RTFMetaElement cellData = (RTFMetaElement) element;

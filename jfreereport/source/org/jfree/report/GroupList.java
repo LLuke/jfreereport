@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.9 2005/02/23 21:04:29 taqua Exp $
+ * $Id: GroupList.java,v 1.10 2005/03/16 21:06:37 taqua Exp $
  *
  * Changes:
  * --------
@@ -85,7 +85,9 @@ public class GroupList implements Cloneable, Serializable
    * The report definition to which this group list is assigned to.
    */
   private ReportDefinition reportDefinition;
-  private static final String DEFAULT_GROUP_NAME = "default";
+
+  /** The name of the automaticly created default group. */
+  public static final String DEFAULT_GROUP_NAME = "default";
 
   /**
    * Constructs a new group list, with only a default group inside.

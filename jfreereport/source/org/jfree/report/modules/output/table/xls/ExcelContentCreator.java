@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.7 2005/03/24 22:24:56 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.8 2005/03/25 13:23:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -78,6 +78,8 @@ public class ExcelContentCreator extends TableContentCreator
   private boolean open;
   private HSSFWorkbook workbook;
   private HSSFSheet sheet;
+  private boolean newTable;
+
   /**
    * This is a weird thing: According to
    * http://support.microsoft.com/?kbid=214123
@@ -105,6 +107,7 @@ public class ExcelContentCreator extends TableContentCreator
   protected void handleBeginTable (final ReportDefinition reportDefinition)
           throws ReportProcessingException
   {
+    newTable = true;
     String sheetName = null;
     if (getSheetNameFunction() != null)
     {
@@ -183,22 +186,25 @@ public class ExcelContentCreator extends TableContentCreator
     final SheetLayout layout = getCurrentLayout();
 
     final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
-    for (short i = 0; i < width; i++)
+    if (newTable)
     {
-      final double cellWidth = StrictGeomUtility.toExternalValue
-              (layout.getCellWidth(i, i + 1));
-      final double poiCellWidth = (cellWidth * SCALE_FACTOR);
-      sheet.setColumnWidth(i, (short) poiCellWidth);
-
+      for (short i = 0; i < width; i++)
+      {
+        final double cellWidth = StrictGeomUtility.toExternalValue
+                (layout.getCellWidth(i, i + 1));
+        final double poiCellWidth = (cellWidth * SCALE_FACTOR);
+        sheet.setColumnWidth(i, (short) poiCellWidth);
+      }
+      newTable = false;
     }
 
     final int height = go.getRowCount();
     final int layoutOffset = getLayoutOffset();
     for (int y = layoutOffset; y < height + layoutOffset; y++)
     {
-      final HSSFRow row = sheet.createRow((short) y);
+      final HSSFRow row = getRowAt((short) y);
       final double lastRowHeight = StrictGeomUtility.toExternalValue
-              (layout.getRowHeight(y));
+              (layout.getRowHeight(y - layoutOffset));
       // we use 1/72 as unit, Excel uses 1/20 so we have to convert
       row.setHeight((short) (lastRowHeight * HEIGHT_SCALE_FACTOR));
 
@@ -206,15 +212,15 @@ public class ExcelContentCreator extends TableContentCreator
       {
         final MetaElement element =
                 (MetaElement) go.getObject(y - layoutOffset, x);
-        final TableCellBackground background = layout.getElementAt(y, x);
 
         if (element == null)
         {
           // only background stuff ...
           // just apply the background, if any ...
+          final TableCellBackground background = layout.getElementAt(y, x);
           if (background != null)
           {
-            final HSSFCell cell = row.createCell((short) x);
+            final HSSFCell cell = getCellAt((short) x, y);
             final HSSFCellStyle style =
                     cellStyleProducer.createCellStyle(null, background);
             cell.setCellStyle(style);
@@ -230,8 +236,7 @@ public class ExcelContentCreator extends TableContentCreator
           continue;
         }
 
-        exportCell(row, element, background, rectangle,
-                (short) x, y);
+        exportCell(element, rectangle, (short) x, y);
       }
     }
     return true;
@@ -241,30 +246,43 @@ public class ExcelContentCreator extends TableContentCreator
   /**
    * Exports the cell. The cell is generated and the stored cell style applied.
    *
-   * @param row       the HSSFRow, where the generated cell gets added.
    * @param x         the column
    * @param y         the row number
    * @param element   the content
-   * @param bg        the background style.
    * @param rectangle the rectangle within the global grid
    */
-  private void exportCell (final HSSFRow row,
-                           final MetaElement element,
-                           final TableCellBackground bg,
+  private void exportCell (final MetaElement element,
                            final TableRectangle rectangle,
                            final short x, final int y)
   {
+    final HSSFCell cell = getCellAt(x, y);
     if (rectangle.getColumnSpan() > 1 || rectangle.getRowSpan() > 1)
     {
       sheet.addMergedRegion(new Region(y, x,
               (y + rectangle.getRowSpan() - 1),
               (short) (x + rectangle.getColumnSpan() - 1)));
-    }
-    final HSSFCell cell = row.createCell(x);
-    final HSSFCellStyle style =
-            cellStyleProducer.createCellStyle(element, bg);
 
-    cell.setCellStyle(style);
+      final int rectX = rectangle.getX1();
+      final int rectY = rectangle.getY1();
+      for (int row = 0; row < rectangle.getRowSpan(); row += 1)
+      {
+        for (int col = 0; col < rectangle.getColumnSpan(); col += 1)
+        {
+          final TableCellBackground bg = getCurrentLayout().getElementAt(rectY + row, rectX + col);
+          final HSSFCellStyle style = cellStyleProducer.createCellStyle(element, bg);
+          final HSSFCell regionCell = getCellAt((short)(x + col), y + row);
+          regionCell.setCellStyle(style);
+        }
+      }
+    }
+    else
+    {
+      final TableCellBackground bg = getCurrentLayout().getRegionBackground(rectangle);
+      final HSSFCellStyle style =
+              cellStyleProducer.createCellStyle(element, bg);
+      cell.setCellStyle(style);
+    }
+
 
     if (element instanceof ExcelMetaElement)
     {
@@ -274,4 +292,24 @@ public class ExcelContentCreator extends TableContentCreator
     }
   }
 
+  private HSSFCell getCellAt (final short x, final int y)
+  {
+    final HSSFRow row = getRowAt(y);
+    final HSSFCell cell = row.getCell(x);
+    if (cell != null)
+    {
+      return cell;
+    }
+    return row.createCell(x);
+  }
+
+  private HSSFRow getRowAt (final int y)
+  {
+    final HSSFRow row = sheet.getRow(y);
+    if (row != null)
+    {
+      return row;
+    }
+    return sheet.createRow(y);
+  }
 }

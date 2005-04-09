@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.3 2005/01/25 00:12:44 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.4 2005/02/22 20:18:54 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -195,17 +195,21 @@ public abstract class TableContentCreator extends AbstractTableCreator
    */
   protected void processElement (final MetaElement e)
   {
-    if (e instanceof TableCellBackground)
-    {
-      // we don't handle backgrounds, this was already done by the sheetlayout
-      // during the first pass
-      return;
-    }
     if (currentLayout == null)
     {
       throw new IllegalStateException("No current layout");
     }
     final TableRectangle rect = currentLayout.getTableBounds(e, getLookupRectangle());
+
+    if (e instanceof TableCellBackground)
+    {
+      // make sure, that even if a band does not contain content
+      // the background is properly exported..
+      final int x2 = rect.getX2();
+      final int y2 = rect.getY2() - layoutOffset;
+      backend.ensureCapacity(x2, y2);
+      return;
+    }
 
     if (isCellSpaceOccupied(rect) == false)
     {

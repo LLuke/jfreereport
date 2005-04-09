@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GenericObjectTable.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
+ * $Id: GenericObjectTable.java,v 1.3 2005/01/25 00:12:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,7 @@ package org.jfree.report.modules.output.table.base;
 
 import org.jfree.util.ObjectTable;
 
-public class GenericObjectTable
-        extends ObjectTable
+public class GenericObjectTable extends ObjectTable
 {
   public GenericObjectTable ()
   {

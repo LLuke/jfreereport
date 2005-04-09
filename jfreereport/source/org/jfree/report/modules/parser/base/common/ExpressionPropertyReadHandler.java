@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ExpressionPropertyReadHandler.java,v 1.3 2005/03/03 23:00:20 taqua Exp $
  *
  * Changes
  * -------
@@ -59,12 +59,15 @@ public class ExpressionPropertyReadHandler extends PropertyStringReadHandler
   private BeanUtility beanUtility;
   private CharacterEntityParser entityParser;
   private String propertyName;
+  private String expressionName;
 
   public ExpressionPropertyReadHandler (final BeanUtility expression,
+                                        final String expressionName,
                                         final CharacterEntityParser entityParser,
                                         final CommentHintPath expressionHintPath)
   {
     super(expressionHintPath);
+    this.expressionName = expressionName;
     this.beanUtility = expression;
     this.entityParser = entityParser;
   }
@@ -112,7 +115,7 @@ public class ExpressionPropertyReadHandler extends PropertyStringReadHandler
     catch (BeanException e)
     {
       throw new ParseException("Unable to assign property '" + propertyName
-              + "' to expression.", e);
+              + "' to expression '" + expressionName + "'", e);
     }
   }
 

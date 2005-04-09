@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.5 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.6 2005/03/24 22:24:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -129,10 +129,9 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     final TableRectangle rect = getTableBounds(element, rectangle);
     for (int y = rect.getY1(); y < rect.getY2(); y++)
     {
+      final int row = mapRow(y);
       for (int x = rect.getX1(); x < rect.getX2(); x++)
       {
-
-        final int row = mapRow(y);
         final int column = mapColumn(x);
         if (contentStyleTable.getObject(row, column) == null)
         {
@@ -165,12 +164,15 @@ public strictfp class HtmlSheetLayout extends SheetLayout
    */
   public void pageCompleted ()
   {
-    super.pageCompleted();
+    removeAuxilaryBounds();
+
     final Long[] yCuts = getYCuts();
     if (yCuts.length == 0)
     {
+      clearObjectIdTable();
       return;
     }
+
     // Process all rows; this stores the row height ...
     long beginRow = yCuts[0].longValue();
     for (int i = 1; i < yCuts.length; i++)
@@ -185,22 +187,43 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     // Spanned elements are only stored in their upper left corner, as all
     // other cells will be skipped anyway ..
     final HashSet completedElements = new HashSet();
+    TableRectangle rect = null;
     for (int layoutRow = 0; layoutRow < getRowCount(); layoutRow++)
     {
       for (int layoutCol = 0; layoutCol < getColumnCount(); layoutCol++)
       {
-        final TableCellBackground element = getElementAt(layoutRow, layoutCol);
-        if (completedElements.contains(element))
+        final TableCellBackground bg;
+        final CellReference reference = getContentAt(layoutRow, layoutCol);
+        if (reference != null)
+        {
+          // it's a spanning cell - we have to do a bit more than usual ..
+          rect = getTableBounds(reference.getBounds(), rect);
+          if (rect.getColumnSpan() == 1 && rect.getRowSpan() == 1)
+          {
+            bg = getElementAt(layoutRow, layoutCol);
+          }
+          else
+          {
+            bg = getRegionBackground(rect);
+          }
+        }
+        else
+        {
+          bg = getElementAt(layoutRow, layoutCol);
+        }
+
+        if (bg == null || completedElements.contains(bg))
         {
           // we already had that one ...
           continue;
         }
-        final HtmlTableCellStyle style = new HtmlTableCellStyle(element);
+        final HtmlTableCellStyle style = new HtmlTableCellStyle(bg);
         final String styleName = styleCollection.addCellStyle(style);
         backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
-        completedElements.add(element);
+        completedElements.add(bg);
       }
     }
+    clearObjectIdTable();
   }
 
   /**

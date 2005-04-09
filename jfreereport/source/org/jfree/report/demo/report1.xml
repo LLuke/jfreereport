@@ -21,10 +21,8 @@
       This does not affect the report itself, just the dialog's behaviour.
       -->
     <!--
-        <property name="org.jfree.report.modules.gui.base.PreferredWidth">640</property>
-        <property name="org.jfree.report.modules.gui.base.PreferredHeight">480</property>
-        <property name="org.jfree.report.modules.gui.base.MaximumWidth">800</property>
-        <property name="org.jfree.report.modules.gui.base.MaximumHeight">600</property>
+    <property name="org.jfree.report.modules.gui.base.PreferredWidth">640</property>
+    <property name="org.jfree.report.modules.gui.base.PreferredHeight">480</property>
     -->
   </configuration>
 

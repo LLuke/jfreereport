@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.13 2005/03/30 17:26:01 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.14 2005/03/30 17:38:44 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -62,6 +62,7 @@ import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class HtmlContentCreator extends TableContentCreator
@@ -207,11 +208,11 @@ public class HtmlContentCreator extends TableContentCreator
     pout.println("\">");
     pout.print("<colgroup span=\"");
     pout.print(noc);
-    pout.print("\">");
-    for (int i = 1; i < noc; i++)
+    pout.println("\">");
+    for (int i = 0; i < noc; i++)
     {
       final int width = (int)
-               StrictGeomUtility.toExternalValue(layout.getCellWidth(i-1, i));
+               StrictGeomUtility.toExternalValue(layout.getCellWidth(i, i + 1));
       pout.print("<col style=\"");
       pout.print("width:");
       pout.print(width);
@@ -379,12 +380,11 @@ public class HtmlContentCreator extends TableContentCreator
   {
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     final GenericObjectTable go = getBackend();
-
     final int height = go.getRowCount();
     final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
 
     final int layoutOffset = getLayoutOffset();
-    for (int y = layoutOffset; y < height + layoutOffset; y++)
+    for (int y = layoutOffset; y < layoutOffset + height; y++)
     {
       // start a new row ...
       // first we check, whether this style is already collected.
@@ -505,7 +505,7 @@ public class HtmlContentCreator extends TableContentCreator
 
     final String internalStyleName = layout.getBackgroundStyleAt(y, x);
     HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
-    final TableCellBackground background = layout.getElementAt(y, x);
+    final TableCellBackground background = layout.getRegionBackground(rectangle);
 
     // first, check, whether we have a style ..
     // if not, then create one for the current background
@@ -541,23 +541,7 @@ public class HtmlContentCreator extends TableContentCreator
       pout.print(style.getCSSString(HtmlStyle.INLINE));
       pout.println("\">");
     }
-    if (background != null)
-    {
-      final Anchor[] anchors = background.getAnchors();
-      for (int i = 0; i < anchors.length; i++)
-      {
-        pout.print("<a name=\"");
-        HtmlEncoderUtil.printText(pout, anchors[i].getName(), isUseXHTML());
-        if (isUseXHTML())
-        {
-          pout.println("\" />");
-        }
-        else
-        {
-          pout.println("\" >");
-        }
-      }
-    }
+    printAnchors(background);
   }
 
   /**
@@ -592,6 +576,10 @@ public class HtmlContentCreator extends TableContentCreator
    */
   private void printEmptyCell (final int x, final int y)
   {
+    if (y == 11)
+    {
+      Log.debug ("");
+    }
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     final TableCellBackground background = layout.getElementAt(y, x);
 
@@ -627,21 +615,41 @@ public class HtmlContentCreator extends TableContentCreator
       pout.print("<td style=\"");
       pout.print(style.getCSSString(HtmlStyle.INLINE));
     }
+    pout.println("\">");
+
+    printAnchors(background);
     if (emptyCellsUseCSS == false)
     {
-      pout.println("\">&nbsp;</td>");
+      pout.println("&nbsp;</td>");
     }
     else
     {
+      pout.println("</td>");
+    }
+  }
+
+  private boolean printAnchors (final TableCellBackground bg)
+  {
+    if (bg == null)
+    {
+      return false;
+    }
+
+    final Anchor[] anchors = bg.getAnchors();
+    for (int i = 0; i < anchors.length; i++)
+    {
+      pout.print("<a name=\"");
+      HtmlEncoderUtil.printText(pout, anchors[i].getName(), isUseXHTML());
       if (isUseXHTML())
       {
         pout.println("\" />");
       }
       else
       {
-        pout.println("\"></td>");
+        pout.println("\" >");
       }
     }
+    return anchors.length != 0;
   }
 
   protected PrintWriter getPrintWriter ()

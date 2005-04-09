@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.21 2005/03/24 22:24:56 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.22 2005/03/25 13:23:24 taqua Exp $
  *
  * Changes
  * -------
@@ -343,7 +343,7 @@ public strictfp class TableCellBackground
       }
       else
       {
-        color = null;
+        color = getColor();
       }
     }
     else if (thisIsALine == false)
@@ -438,7 +438,13 @@ public strictfp class TableCellBackground
     }
   }
 
-  private void updateBorderPositions (final StrictBounds bounds)
+  /**
+   * Updates the border positions (the effective bounds of this cell) after
+   * a layout-split-operation.
+   *
+   * @param bounds the new bounds.
+   */
+  public void updateBorderPositions (final StrictBounds bounds)
   {
     this.cellBounds.setRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
   }
@@ -600,7 +606,7 @@ public strictfp class TableCellBackground
           throws CloneNotSupportedException
   {
     final TableCellBackground tb = (TableCellBackground) super.clone();
-    this.cellBounds = (StrictBounds) cellBounds.clone();
+    tb.cellBounds = (StrictBounds) cellBounds.clone();
     if (anchors != null)
     {
       tb.anchors = (ArrayList) anchors.clone();

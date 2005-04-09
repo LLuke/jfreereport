@@ -58,7 +58,6 @@
       <include name="org/jfree/report/modules/misc/beanshell/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${libdir}/${beanshell-jar-file}"/>
         <pathelement location="${core-jar-file}"/>
       </classpath>
@@ -120,6 +119,9 @@
     <!-- make the jar -->
     <jar jarfile="${module-misc-survey-file}"
          basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file}"/>
+      </manifest>
     </jar>
 
     <!-- delete the temp directory -->
@@ -156,7 +158,6 @@
       <include name="org/jfree/report/modules/misc/tablemodel/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
       </classpath>
     </javac>
@@ -207,7 +208,6 @@
       <include name="org/jfree/report/modules/misc/configstore/base/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
       </classpath>
     </javac>
@@ -255,7 +255,6 @@
       <include name="org/jfree/report/modules/misc/configstore/filesystem/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>

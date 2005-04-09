@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.15 2005/03/16 21:06:47 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.16 2005/03/24 22:24:54 taqua Exp $
  *
  * Changes
  * -------
@@ -75,21 +75,6 @@ import org.jfree.util.Log;
 public class PaintComponentFunction extends AbstractFunction
         implements LayoutListener, Serializable
 {
-  /**
-   * Literal text for the 'field' property.
-   */
-  public static final String FIELD_PROPERTY = "field";
-
-  /**
-   * Literal text for the 'field' property.
-   */
-  public static final String ELEMENT_PROPERTY = "element";
-
-  /**
-   * Literal text for the 'scale' property.
-   */
-  public static final String SCALE_PROPERTY = "scale";
-
   /**
    * the created image, cached for getValue().
    */
@@ -241,7 +226,6 @@ public class PaintComponentFunction extends AbstractFunction
       comp.paint(graph);
       graph.dispose();
       image = bi;
-      Log.debug ("Image : " + image.getWidth(null) + ", " + image.getHeight(null)); 
       peerSupply.remove(comp);
     }
   }

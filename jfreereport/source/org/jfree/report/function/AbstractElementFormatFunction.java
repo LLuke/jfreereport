@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractElementFormatFunction.java,v 1.3 2005/03/03 23:00:00 taqua Exp $
+ * $Id: AbstractElementFormatFunction.java,v 1.4 2005/03/16 21:34:44 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction
    */
   public void itemsAdvanced (final ReportEvent event)
   {
-    if (FunctionUtilities.isLayoutLevel(event))
+    if (FunctionUtilities.isLayoutLevel(event) == false)
     {
       // dont do anything if there is no printing done ...
       return;
@@ -102,7 +102,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction
    */
   public void reportFinished (final ReportEvent event)
   {
-    if (FunctionUtilities.isLayoutLevel(event))
+    if (FunctionUtilities.isLayoutLevel(event) == false)
     {
       // dont do anything if there is no printing done ...
       return;
@@ -118,7 +118,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction
    */
   public void reportStarted (final ReportEvent event)
   {
-    if (FunctionUtilities.isLayoutLevel(event))
+    if (FunctionUtilities.isLayoutLevel(event) == false)
     {
       // dont do anything if there is no printing done ...
       return;
@@ -134,7 +134,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction
    */
   public void groupStarted (final ReportEvent event)
   {
-    if (FunctionUtilities.isLayoutLevel(event))
+    if (FunctionUtilities.isLayoutLevel(event) == false)
     {
       // dont do anything if there is no printing done ...
       return;
@@ -150,7 +150,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction
    */
   public void groupFinished (final ReportEvent event)
   {
-    if (FunctionUtilities.isLayoutLevel(event))
+    if (FunctionUtilities.isLayoutLevel(event) == false)
     {
       // dont do anything if there is no printing done ...
       return;
@@ -177,7 +177,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction
    */
   public void pageFinished (final ReportEvent event)
   {
-    if (FunctionUtilities.isLayoutLevel(event))
+    if (FunctionUtilities.isLayoutLevel(event) == false)
     {
       // dont do anything if there is no printing done ...
       return;
@@ -193,12 +193,12 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction
    */
   public void pageStarted (final ReportEvent event)
   {
-    if (FunctionUtilities.isLayoutLevel(event))
+    if (FunctionUtilities.isLayoutLevel(event) == false)
     {
       // dont do anything if there is no printing done ...
       return;
     }
-    final Band b = event.getReport().getPageFooter();
+    final Band b = event.getReport().getPageHeader();
     processRootBand(b);
   }
 

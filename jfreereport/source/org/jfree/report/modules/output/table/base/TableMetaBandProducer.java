@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableMetaBandProducer.java,v 1.7 2005/03/21 14:58:35 taqua Exp $
+ * $Id: TableMetaBandProducer.java,v 1.8 2005/03/24 22:24:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -220,6 +220,10 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
       {
         bg = new TableCellBackground(shapeContent, backgroundStyle, color);
       }
+    }
+    if (bg != null)
+    {
+      bg.setName(element.getName());
     }
     return bg;
   }

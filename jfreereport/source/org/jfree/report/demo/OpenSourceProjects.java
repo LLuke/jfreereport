@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceProjects.java,v 1.5 2005/01/24 23:58:36 taqua Exp $
+ * $Id: OpenSourceProjects.java,v 1.6 2005/02/23 21:04:38 taqua Exp $
  *
  * Changes
  * -------
@@ -251,14 +251,14 @@ public class OpenSourceProjects extends AbstractTableModel
             + "high/low/open/close charts, candlestick plots, moving averages, scatter plots, "
             + "Gantt charts, thermometers, dials, combination charts and more.";
     this.licence[c] = "LGPL";
-    this.url[c] = "http://www.object-refinery.com/jfreechart";
+    this.url[c] = "http://www.jfree.org/jfreechart";
 
     c += 1;
     this.category[c] = "Class Libraries";
     this.name[c] = "JFreeReport";
     this.description[c] = "A free Java report library.";
     this.licence[c] = "LGPL";
-    this.url[c] = "http://www.object-refinery.com/jfreereport";
+    this.url[c] = "http://www.jfree.org/jfreereport";
 
     c += 1;
     this.category[c] = "Class Libraries";
@@ -289,7 +289,7 @@ public class OpenSourceProjects extends AbstractTableModel
     this.name[c] = "JGraph";
     this.description[c] = "For presenting and manipulating graphs.";
     this.licence[c] = "LGPL";
-    this.url[c] = "http://jgraph.sourceforge.net";
+    this.url[c] = "http://www.jgraph.com";
 
     c += 1;
     this.category[c] = "Text Editors";
@@ -326,7 +326,7 @@ public class OpenSourceProjects extends AbstractTableModel
     this.description[c] = "A powerful, open-source, all-Java framework for creating leading "
             + "edge web applications in Java.";
     this.licence[c] = "GPL";
-    this.url[c] = "http://tapestry.sourceforge.net";
+    this.url[c] = "http://jakarta.apache.org/tapestry";
 
   }
 
