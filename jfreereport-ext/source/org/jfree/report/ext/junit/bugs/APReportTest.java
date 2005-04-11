@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: APReportTest.java,v 1.1 2005/03/24 23:14:10 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 
 public class APReportTest
 {
-  private static final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/ap.xml";
+  private static final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/ki.xml";
 
   public APReportTest()
   {

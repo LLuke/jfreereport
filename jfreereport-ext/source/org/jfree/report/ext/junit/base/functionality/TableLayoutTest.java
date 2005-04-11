@@ -13,6 +13,7 @@ import org.jfree.report.modules.output.table.base.SheetLayoutCollection;
 import org.jfree.report.modules.output.table.base.TableContentCreator;
 import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
+import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.html.HtmlMetaBandProducer;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
@@ -56,6 +57,16 @@ public class TableLayoutTest extends TestCase
 
       Log.debug ("Validated number of columns .. OK");
 
+      // first two rows are reserved for the PageHeader ..
+      final TableCellBackground bgTop = layout.getElementAt(2, 2);
+      final TableCellBackground bgTop2 = layout.getElementAt(2, 3);
+      assertNotNull(bgTop);
+      assertNotNull(bgTop2);
+
+      final TableCellBackground bgBlack = layout.getElementAt(11, 2);
+      final TableCellBackground bgGray = layout.getElementAt(11, 0);
+      assertNotNull(bgGray);
+      assertNotNull(bgBlack);
       open = false;
     }
 
@@ -69,11 +80,6 @@ public class TableLayoutTest extends TestCase
      */
     protected void processElement (final MetaElement e)
     {
-      Log.debug ("Element: " + e.getName());
-      if ("RH-02".equals(e.getName()))
-      {
-        Log.debug ("HERE");
-      }
       super.processElement(e);
     }
 
@@ -111,7 +117,7 @@ public class TableLayoutTest extends TestCase
 
     protected MetaBandProducer createMetaBandProducer ()
     {
-      return new HtmlMetaBandProducer(true);
+      return new HtmlMetaBandProducer(true, true);
     }
 
     /**
@@ -132,7 +138,7 @@ public class TableLayoutTest extends TestCase
   }
 
 
-  public JFreeReport getReport() throws Exception
+  private JFreeReport getReport() throws Exception
   {
     final URL url = getClass().getResource("resources/table-layout.xml");
     assertNotNull(url);

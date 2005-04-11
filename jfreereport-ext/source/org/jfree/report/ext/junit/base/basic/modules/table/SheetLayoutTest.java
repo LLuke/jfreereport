@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: SheetLayoutTest.java,v 1.1 2005/03/24 23:11:01 taqua Exp $
  *
  * Changes
  * -------
@@ -600,5 +600,172 @@ public class SheetLayoutTest extends TestCase
     assertLeftLine(Color.black, sheetLayout.getElementAt(3, 0));
     assertLeftLine(Color.red, sheetLayout.getElementAt(3, 1));
     assertLeftLine(Color.blue, sheetLayout.getElementAt(3, 2));
-    Log.debug ("Done");  }
+    Log.debug ("Done");
+  }
+
+  public void testInnerRectangle ()
+          throws ContentCreationException
+  {
+    final Band band = new Band();
+    band.setMinimumSize(new FloatDimension(500, 300));
+
+    band.addElement(StaticShapeElementFactory.createRectangleShapeElement
+            ("rect-full", Color.black, null, new Rectangle2D.Float(0,0,500,300), false, true));
+    band.addElement(StaticShapeElementFactory.createRectangleShapeElement
+            ("rect-inner", Color.blue, null, new Rectangle2D.Float(100,100,300, 100), false, true));
+    band.addElement(StaticShapeElementFactory.createRectangleShapeElement
+            ("border-inner", Color.green, null, new Rectangle2D.Float(100,100,300, 100), true, false));
+
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 360000);
+    assertEquals(500000, bounds.getWidth());
+    assertEquals(300000, bounds.getHeight());
+
+    bounds.setRect(0, 0, bounds.getWidth(), bounds.getHeight());
+  //  final long y1 = bounds.getHeight();
+
+    final TestMetaBandProducer producer = new TestMetaBandProducer();
+    final MetaBand mband = producer.createBand(band, false);
+
+    final SheetLayout sheetLayout = new SheetLayout(true);
+    sheetLayout.add(mband);
+    sheetLayout.add(mband.getElementAt(0));
+    sheetLayout.add(mband.getElementAt(1));
+    sheetLayout.add(mband.getElementAt(2));
+
+    // One column inside ..
+    assertEquals("ColumnCount", 3, sheetLayout.getColumnCount());
+    // two columns for the first band and two for the second one ..
+    // the 1st bottom and 2nd top line are shared ..
+    assertEquals("RowCount", 3, sheetLayout.getRowCount());
+
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(0,0));
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(0,1));
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(0,2));
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(1,0));
+    assertBackgroundLazy(Color.blue,  sheetLayout.getElementAt(1,1));
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(1,2));
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(2,0));
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(2,1));
+    assertBackgroundLazy(Color.black, sheetLayout.getElementAt(2,2));
+
+    assertLeftLineLazy(Color.green,  sheetLayout.getElementAt(1,1));
+    assertTopLineLazy(Color.green,  sheetLayout.getElementAt(1,1));
+  }
+
+  public void testCreateBorderBackground ()
+          throws ContentCreationException
+  {
+    final Band band = new Band();
+    band.setMinimumSize(new FloatDimension(500, 200));
+
+    band.addElement(StaticShapeElementFactory.createRectangleShapeElement
+            ("rect-top", Color.black, null, new Rectangle2D.Float(0,0,-100, -100), true, false));
+    band.addElement(LabelElementFactory.createLabelElement
+            ("label", new Rectangle2D.Float(100, 100, 400, 100),
+                    Color.green, null, null, "Test"));
+
+    final TestMetaBandProducer producer = new TestMetaBandProducer();
+
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    assertEquals(500000, bounds.getWidth());
+    assertEquals(200000, bounds.getHeight());
+
+    bounds.setRect(0, 0, bounds.getWidth(), bounds.getHeight());
+    final long y1 = bounds.getHeight();
+
+    final MetaBand mband = producer.createBand(band, false);
+
+    final SheetLayout sheetLayout = new SheetLayout(true);
+    sheetLayout.add(mband);
+    sheetLayout.add(mband.getElementAt(0));
+    sheetLayout.add(mband.getElementAt(1));
+
+    assertBorder(Color.black, true, true, false, false, sheetLayout.getElementAt(0,0));
+    assertBorder(Color.black, true, false, false, true, sheetLayout.getElementAt(0,1));
+    assertBorder(Color.black, false, true, true, false, sheetLayout.getElementAt(1,0));
+    assertBorder(Color.black, false, false, true, true, sheetLayout.getElementAt(1,1));
+
+    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    bounds2.setRect(0, y1, bounds.getWidth(), bounds.getHeight());
+    final MetaBand mband2 = producer.createBand(band, false);
+
+    sheetLayout.add(mband2);
+    assertBorder(Color.black, true, true, false, false, sheetLayout.getElementAt(0,0));
+    assertBorder(Color.black, true, false, false, true, sheetLayout.getElementAt(0,1));
+    assertBorder(Color.black, false, true, true, false, sheetLayout.getElementAt(1,0));
+    assertBorder(Color.black, false, false, true, true, sheetLayout.getElementAt(1,1));
+    assertBorder(null, false, false, false, false, sheetLayout.getElementAt(2,0));
+    assertBorder(null, false, false, false, false, sheetLayout.getElementAt(2,1));
+    sheetLayout.add(mband2.getElementAt(0));
+    assertBorder(Color.black, true, true, true, false, sheetLayout.getElementAt(2,0));
+    assertBorder(Color.black, true, false, true, true, sheetLayout.getElementAt(2,1));
+    sheetLayout.add(mband2.getElementAt(1));
+
+    // One column inside ..
+    assertEquals("ColumnCount", 2, sheetLayout.getColumnCount());
+    // two columns for the first band and two for the second one ..
+    // the 1st bottom and 2nd top line are shared ..
+    assertEquals("RowCount", 4, sheetLayout.getRowCount());
+
+    assertBorder(Color.black, true, true, false, false, sheetLayout.getElementAt(0,0));
+    assertBorder(Color.black, true, false, false, true, sheetLayout.getElementAt(0,1));
+    assertBorder(Color.black, false, true, true, false, sheetLayout.getElementAt(1,0));
+    assertBorder(Color.black, false, false, true, true, sheetLayout.getElementAt(1,1));
+    assertBorder(Color.black, true, true, false, false, sheetLayout.getElementAt(2,0));
+    assertBorder(Color.black, true, false, false, true, sheetLayout.getElementAt(2,1));
+    assertBorder(Color.black, false, true, true, false, sheetLayout.getElementAt(3,0));
+    assertBorder(Color.black, false, false, true, true, sheetLayout.getElementAt(3,1));
+  }
+
+  private void assertBorder (final Color c,
+                             final boolean top, final boolean left,
+                             final boolean bottom, final boolean right,
+                             final TableCellBackground background)
+  {
+    if (background == null)
+    {
+      assertFalse("No border defined", top || left || bottom || right);
+      assertNull("Color defined", c);
+      return;
+    }
+
+    assertNull(background.getColor());
+    if (top)
+    {
+      assertEquals(c, background.getColorTop());
+      assertTrue(background.getBorderSizeTop() != 0);
+    }
+    else
+    {
+      assertNull(background.getColorTop());
+    }
+    if (bottom)
+    {
+      assertEquals(c, background.getColorBottom());
+      assertTrue( background.getBorderSizeBottom() != 0);
+    }
+    else
+    {
+      assertNull(background.getColorBottom());
+    }
+    if (left)
+    {
+      assertEquals(c, background.getColorLeft());
+      assertTrue(background.getBorderSizeLeft() != 0);
+    }
+    else
+    {
+      assertNull(background.getColorLeft());
+    }
+    if (right)
+    {
+      assertEquals(c, background.getColorRight());
+      assertTrue(background.getBorderSizeRight() != 0);
+    }
+    else
+    {
+      assertNull(background.getColorRight());
+    }
+
+  }
 }
