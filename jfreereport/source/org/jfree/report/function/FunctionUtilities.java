@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.12 2005/02/19 15:41:22 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.13 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,10 @@ public final class FunctionUtilities
     for (int i = 0; i < elements.length; i++)
     {
       final Element e = elements[i];
+      if (e.getName().equals(element))
+      {
+        return e;
+      }
       if (e instanceof Band)
       {
         final Element retval = findElement((Band) e, element);
@@ -84,10 +88,6 @@ public final class FunctionUtilities
         {
           return retval;
         }
-      }
-      else if (e.getName().equals(element))
-      {
-        return e;
       }
     }
     return null;
@@ -119,13 +119,13 @@ public final class FunctionUtilities
     for (int i = 0; i < elements.length; i++)
     {
       final Element e = elements[i];
+      if (e.getName().equals(element))
+      {
+        collector.add(e);
+      }
       if (e instanceof Band)
       {
         performFindElement((Band) e, element, collector);
-      }
-      else if (e.getName().equals(element))
-      {
-        collector.add(e);
       }
     }
   }

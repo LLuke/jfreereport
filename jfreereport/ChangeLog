@@ -34,7 +34,9 @@ A list of changes in recent versions:
           HtmlContentCreator now also adds border and background definitions to
           the table row element style.
 
-        * All tables now have a ColGroup and  
+        * All tables now have a ColGroup tag to define the table's column widths.
+          This way even large tables get rendered correctly even if not all data
+          is received.    
 
 0.8.5-3: (25-Mar-2005)
         * [BUG] The GUI-ExportTasks now create missing directories, if
