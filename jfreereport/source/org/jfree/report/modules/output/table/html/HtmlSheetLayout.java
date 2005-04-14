@@ -182,6 +182,11 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     for (int layoutRow = 0; layoutRow < getRowCount(); layoutRow++)
     {
       Color rowColor = null;
+      Color borderTop = null;
+      Color borderBottom = null;
+      float borderTopSize = 0;
+      float borderBottomSize = 0;
+
       for (int layoutCol = 0; layoutCol < getColumnCount(); layoutCol++)
       {
         final TableCellBackground bg;
@@ -214,6 +219,10 @@ public strictfp class HtmlSheetLayout extends SheetLayout
         if (layoutCol == 0)
         {
           rowColor = bgColor;
+          borderTopSize = bg.getBorderSizeTop();
+          borderTop = bg.getColorTop();
+          borderBottom = bg.getColorBottom();
+          borderBottomSize = bg.getBorderSizeBottom();
         }
         else
         {
@@ -221,6 +230,16 @@ public strictfp class HtmlSheetLayout extends SheetLayout
           {
             // no common color ... therefore reset ..
             rowColor = null;
+          }
+          if (ObjectUtilities.equal(borderTop, bg.getColorTop()) == false)
+          {
+            borderTop = null;
+            borderTopSize = 0;
+          }
+          if (ObjectUtilities.equal(borderBottom, bg.getColorBottom()) == false)
+          {
+            borderBottom = null;
+            borderBottomSize = 0;
           }
         }
 
@@ -238,8 +257,10 @@ public strictfp class HtmlSheetLayout extends SheetLayout
 
       final int height = (int) Math.ceil
               (StrictGeomUtility.toExternalValue(getRowHeight(layoutRow)));
-      styleCollection.addRowStyle(new HtmlTableRowStyle(height, rowColor));
-
+      final HtmlTableRowStyle style = new HtmlTableRowStyle(height, rowColor);
+      style.setBorderTop(borderTop, borderTopSize);
+      style.setBorderBottom(borderBottom, borderBottomSize);
+      styleCollection.addRowStyle(style);
     }
     clearObjectIdTable();
   }
