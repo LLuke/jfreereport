@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.15 2005/04/09 17:43:13 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.16 2005/04/14 16:37:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -553,10 +553,17 @@ public class HtmlContentCreator extends TableContentCreator
     final int lastRowHeight = (int)
             StrictGeomUtility.toExternalValue (layout.getRowHeight(y));
     final TableRectangle rect = new TableRectangle(0, tableWidth, y, y+1);
-    final TableCellBackground regionStyle =
-            layout.getRegionBackground(rect);
-    final HtmlTableRowStyle rowStyle =
-            new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor());
+    final TableCellBackground regionStyle = layout.getRegionBackground(rect);
+    final HtmlTableRowStyle rowStyle;
+    if (regionStyle == null)
+    {
+      rowStyle = new HtmlTableRowStyle(lastRowHeight, null); 
+    }
+    else
+    {
+      rowStyle = new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor());
+    }
+
 
     final String trStyleClass = styleCollection.getPublicName(rowStyle);
     if (trStyleClass != null && (isCreateBodyFragment() == false))

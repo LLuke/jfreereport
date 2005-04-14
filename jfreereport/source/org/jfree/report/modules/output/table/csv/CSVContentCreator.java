@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVContentCreator.java,v 1.2 2005/01/25 01:25:47 taqua Exp $
+ * $Id: CSVContentCreator.java,v 1.3 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -120,7 +120,7 @@ public class CSVContentCreator extends TableContentCreator
     {
       for (int x = 0; x < width; x++)
       {
-        final MetaElement element = (MetaElement) go.getObject(y, x);
+        final MetaElement element = (MetaElement) go.getObject(y - layoutOffset, x);
         if (element == null)
         {
           writer.print(quoter.getSeparator());

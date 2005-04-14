@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.8 2005/03/25 13:23:24 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.9 2005/04/09 17:43:14 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -71,7 +71,7 @@ public class ExcelContentCreator extends TableContentCreator
    * rendering is different in the Java and Windows World.
    * It is (Windows uses 96dpi displays, we use 72dpi).
    */
-  private static final double HEIGHT_SCALE_FACTOR = 20d * 92d / 72d;
+  private static final double HEIGHT_SCALE_FACTOR = 20d * 96d / 72d;
 
   private HSSFCellStyleProducer cellStyleProducer;
   private OutputStream outputStream;

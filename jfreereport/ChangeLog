@@ -15,6 +15,9 @@ A list of changes in recent versions:
         * [BUG] Excel-CellStyles are now applied to all cells of a region.
           (Bug #1172423)
 
+        * [BUG] CSVContentCreator used an invalid offset and therefore did not
+          generate valid content.
+
         * [BUG] The demo-jar classpath did not include the misc-survey module.
 
         * The org.jfree.report.modules.output.table.html.EmptyCellsUseCSS
@@ -26,6 +29,12 @@ A list of changes in recent versions:
           constant defines the name of the automaticly created default group.
           That group is created to prevent an empty GroupList, if other groups
           exist for the report, the default group might not exist.
+
+        * To help Mozilla/Firefox render generated HTML pages correctly, the
+          HtmlContentCreator now also adds border and background definitions to
+          the table row element style.
+
+        * All tables now have a ColGroup and  
 
 0.8.5-3: (25-Mar-2005)
         * [BUG] The GUI-ExportTasks now create missing directories, if
