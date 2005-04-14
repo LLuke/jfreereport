@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableRowStyle.java,v 1.3 2005/01/25 00:13:44 taqua Exp $
+ * $Id: HtmlTableRowStyle.java,v 1.4 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,20 +38,34 @@
 
 package org.jfree.report.modules.output.table.html;
 
+import java.awt.Color;
+
+import org.jfree.util.ObjectUtilities;
 
 public class HtmlTableRowStyle implements HtmlStyle
 {
   private int height;
+  private Color background;
 
-  public HtmlTableRowStyle (final int height)
+  public HtmlTableRowStyle (final int height, final Color background)
   {
     this.height = height;
+    this.background = background;
+  }
+
+  public Color getBackground ()
+  {
+    return background;
   }
 
   public String getCSSString (final boolean compact)
   {
     final StyleBuilder styleBuilder = new StyleBuilder(compact);
     styleBuilder.append("height", String.valueOf(height), "pt");
+    if (background != null)
+    {
+      styleBuilder.append("background-color", HtmlStyleCollection.getColorString(background));
+    }
     return styleBuilder.toString();
   }
 
@@ -72,12 +86,20 @@ public class HtmlTableRowStyle implements HtmlStyle
     {
       return false;
     }
-
+    if (ObjectUtilities.equal(background, htmlTableRowStyle.background) == false)
+    {
+      return false;
+    }
     return true;
   }
 
   public int hashCode ()
   {
-    return height;
+    int hashCode = height;
+    if (background != null)
+    {
+      hashCode = 23 * hashCode + background.hashCode();
+    }
+    return hashCode;
   }
 }

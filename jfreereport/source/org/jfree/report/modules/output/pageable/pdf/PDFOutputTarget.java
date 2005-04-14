@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.31 2005/03/24 22:24:55 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.32 2005/03/30 17:25:27 taqua Exp $
  *
  * Changes
  * -------
@@ -638,6 +638,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
       writer = PdfWriter.getInstance(getDocument(), out);
       writer.setLinearPageMode();
+
 
       final char version = getVersion(getProperty(PDF_VERSION, PDF_VERSION_DEFAULT));
       writer.setPdfVersion(version);

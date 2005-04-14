@@ -31,15 +31,21 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: RootLevelBand.java,v 1.4 2005/03/03 22:59:19 taqua Exp $
  *
  * Changes
  * -------
- *
+ * 10-Apr-2005: Initially documented.
  *
  */
 package org.jfree.report;
 
+/**
+ * A RootLevelBand is directly connected with a report definition or a
+ * group. RootLevelBands are used as entry points for the content creation.
+ *
+ * @author Thomas Morgner
+ */
 public interface RootLevelBand
 {
   /**

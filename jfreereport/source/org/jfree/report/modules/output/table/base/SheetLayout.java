@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.7 2005/03/25 13:23:24 taqua Exp $
+ * $Id: SheetLayout.java,v 1.8 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -1274,5 +1274,16 @@ public class SheetLayout
     {
       return yCuts.length - 1;
     }
+  }
+
+  public long getYPosition (final int row)
+  {
+    final Long[] yCuts = getYCuts();
+    if (row >= yCuts.length)
+    {
+      throw new IndexOutOfBoundsException
+              ("Row " + row + " is invalid. Max valud row is " + yCuts.length);
+    }
+    return yCuts[row].longValue();
   }
 }

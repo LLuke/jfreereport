@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.8 2005/02/22 20:17:57 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.9 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,13 +48,30 @@ import java.util.Arrays;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.SerializerHelper;
 
+/**
+ * A simple page definition defines a logical page, for which all
+ * physical pages have the same size.
+ * <p>
+ * The page area is a rectangle.
+ */
 public class SimplePageDefinition implements PageDefinition
 {
+  /** The page format */
   private transient PageFormat format;
+  /** The page positions of the physical pages. */
   private transient Rectangle2D[] pagePositions;
+  /** The number of columns in the page grid. */
   private int pageCountHorizontal;
+  /** The number of rows in the page grid. */
   private int pageCountVertical;
 
+  /**
+   * Creates a new SimplePageDefinition object.
+   *
+   * @param format the pageformat used as base.
+   * @param x the number of physical pages in a row.
+   * @param y the number of physical pages in a column.
+   */
   public SimplePageDefinition (final PageFormat format,
                                final int x, final int y)
   {
@@ -92,16 +109,33 @@ public class SimplePageDefinition implements PageDefinition
     }
   }
 
+  /**
+   * Creates a 1x1 page defintion. The physical page size is equal to the
+   * logical page size.
+   *
+   * @param format the pageformat.
+   */
   public SimplePageDefinition (final PageFormat format)
   {
     this(format, 1, 1);
   }
 
+  /**
+   * Returns the number of physical pages in this page definition.
+   *
+   * @return the number of pages.
+   */
   public int getPageCount ()
   {
     return pageCountHorizontal * pageCountVertical;
   }
 
+  /**
+   * Returns the physical page format for the given position.
+   *
+   * @param pos the position in the page grid.
+   * @return a clone of the pageformat at the specified positon.
+   */
   public PageFormat getPageFormat (final int pos)
   {
     if (pos < 0 || pos > getPageCount())
@@ -111,6 +145,13 @@ public class SimplePageDefinition implements PageDefinition
     return (PageFormat) format.clone();
   }
 
+  /**
+   * Returns the printable area within the logical page area covered
+   * by the physical page at the given position.
+   *
+   * @param pos the positon.
+   * @return the printable area for the page.
+   */
   public Rectangle2D getPagePosition (final int pos)
   {
     if (pos < 0 || pos > getPageCount())
@@ -120,6 +161,11 @@ public class SimplePageDefinition implements PageDefinition
     return pagePositions[pos].getBounds2D();
   }
 
+  /**
+   * Returns all page position known to this page definition.
+   *
+   * @return the page positions.
+   */
   public Rectangle2D[] getPagePositions ()
   {
     final Rectangle2D[] rects =
@@ -131,18 +177,28 @@ public class SimplePageDefinition implements PageDefinition
     return rects;
   }
 
+  /**
+   * Returns the total height of the logical page.
+   *
+   * @return the height of the page.
+   */
   public float getHeight ()
   {
     return (float) (format.getImageableHeight() * pageCountVertical);
   }
 
+  /**
+   * Returns the total width of the logical page.
+   *
+   * @return the width of the page.
+   */
   public float getWidth ()
   {
     return (float) (format.getImageableWidth() * pageCountHorizontal);
   }
 
   /**
-   * deserizalize the report and restore the pageformat.
+   * Deserizalize the report and restore the pageformat.
    *
    * @param out the objectoutput stream
    * @throws java.io.IOException if errors occur
@@ -161,7 +217,7 @@ public class SimplePageDefinition implements PageDefinition
   }
 
   /**
-   * resolve the pageformat, as PageFormat is not serializable.
+   * Resolve the pageformat, as PageFormat is not serializable.
    *
    * @param in the input stream.
    * @throws java.io.IOException    if there is an IO problem.
@@ -181,6 +237,12 @@ public class SimplePageDefinition implements PageDefinition
     }
   }
 
+  /**
+   * Creates a copy of this page definition.
+   *
+   * @return a clone of this page definition object.
+   * @throws CloneNotSupportedException
+   */
   public Object clone ()
           throws CloneNotSupportedException
   {
@@ -189,6 +251,12 @@ public class SimplePageDefinition implements PageDefinition
     return pdef;
   }
 
+  /**
+   * Checks, whether this page definition object is equal to the given object.
+   *
+   * @param o the other object.
+   * @return true, if that object is the same as this object, false otherwise.
+   */
   public boolean equals (final Object o)
   {
     if (this == o)
@@ -222,6 +290,11 @@ public class SimplePageDefinition implements PageDefinition
     return true;
   }
 
+  /**
+   * Computes a hashcode for this page definition.
+   *
+   * @return the hashcode.
+   */
   public int hashCode ()
   {
     int result;

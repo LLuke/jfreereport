@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.9 2005/02/23 21:05:37 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.10 2005/03/18 13:49:39 taqua Exp $
  *
  * Changes
  * -------
@@ -161,21 +161,21 @@ public final class ParserEntityResolver implements EntityResolver
       }
 
       final URL location = getDTDLocation(publicId);
-      if (location == null)
+      if (location != null)
       {
-        final String message = getDeprecatedDTDMessage(publicId);
-        if (message != null)
-        {
-          Log.info(message);
-        }
-        else
-        {
-          Log.info("A public ID was given for the document, " +
-                  "but it was unknown or invalid.");
-        }
-        return null;
+        return new InputSource(location.openStream());
       }
-      return new InputSource(location.openStream());
+      final String message = getDeprecatedDTDMessage(publicId);
+      if (message != null)
+      {
+        Log.info(message);
+      }
+      else
+      {
+        Log.info("A public ID was given for the document, " +
+                "but it was unknown or invalid.");
+      }
+      return null;
     }
     catch (IOException ioe)
     {

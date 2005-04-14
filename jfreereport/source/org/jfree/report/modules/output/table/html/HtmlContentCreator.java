@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.14 2005/03/30 17:38:44 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.15 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,8 +61,8 @@ import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class HtmlContentCreator extends TableContentCreator
@@ -389,9 +389,7 @@ public class HtmlContentCreator extends TableContentCreator
       // start a new row ...
       // first we check, whether this style is already collected.
       // if so, then we reuse that collected style
-      final int lastRowHeight = (int) StrictGeomUtility.toExternalValue
-              (layout.getRowHeight(y));
-      printRowStart(lastRowHeight);
+      printRowStart(y, width);
 
       for (int x = 0; x < width; x++)
       {
@@ -547,11 +545,18 @@ public class HtmlContentCreator extends TableContentCreator
   /**
    * Prints a table row definition for the given height.
    *
-   * @param lastRowHeight the height.
+   * @param y the current row.
    */
-  private void printRowStart (final int lastRowHeight)
+  private void printRowStart (final int y, final int tableWidth)
   {
-    final HtmlTableRowStyle rowStyle = new HtmlTableRowStyle(lastRowHeight);
+    final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
+    final int lastRowHeight = (int)
+            StrictGeomUtility.toExternalValue (layout.getRowHeight(y));
+    final TableRectangle rect = new TableRectangle(0, tableWidth, y, y+1);
+    final TableCellBackground regionStyle =
+            layout.getRegionBackground(rect);
+    final HtmlTableRowStyle rowStyle =
+            new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor());
 
     final String trStyleClass = styleCollection.getPublicName(rowStyle);
     if (trStyleClass != null && (isCreateBodyFragment() == false))

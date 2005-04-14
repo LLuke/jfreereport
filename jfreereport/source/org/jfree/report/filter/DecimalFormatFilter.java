@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DecimalFormatFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
+ * $Id: DecimalFormatFilter.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -43,6 +43,8 @@ package org.jfree.report.filter;
 
 import java.text.DecimalFormat;
 import java.text.Format;
+
+import org.jfree.report.ReportDefinition;
 
 /**
  * A filter that formats the numeric value from a data source to a string representation
@@ -150,4 +152,30 @@ public class DecimalFormatFilter extends NumberFormatFilter
     getDecimalFormat().applyLocalizedPattern(format);
   }
 
+
+  public void registerReportDefinition (ReportDefinition reportDefinition)
+  {
+    // todo implement me
+
+  }
+
+  public void unregisterReportDefinition (ReportDefinition reportDefinition)
+  {
+    // todo implement me
+
+  }
+
+  /**
+   * Returns the formatted string. The value is read using the data source given and
+   * formated using the formatter of this object. The formating is guaranteed to completly
+   * form the object to an string or to return the defined NullValue.
+   * <p/>
+   * If format, datasource or object are null, the NullValue is returned.
+   *
+   * @return The formatted value.
+   */
+  public Object getValue ()
+  {
+    return super.getValue();
+  }
 }

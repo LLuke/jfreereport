@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFormatFilter.java,v 1.3 2005/02/19 20:10:25 taqua Exp $
+ * $Id: MessageFormatFilter.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -93,6 +93,7 @@ public class MessageFormatFilter
     {
       return null;
     }
+    messageFormatSupport.setLocale(reportDefinition.getResourceBundleFactory().getLocale());
     return messageFormatSupport.performFormat(reportDefinition.getDataRow());
   }
 

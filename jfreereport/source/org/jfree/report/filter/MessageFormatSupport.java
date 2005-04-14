@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: MessageFormatSupport.java,v 1.3 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.report.filter;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.util.PropertyLookupParser;
@@ -124,10 +125,13 @@ public class MessageFormatSupport implements Serializable
     return format.format(parameters);
   }
 
-  public static void main (final String[] args)
+  public Locale getLocale ()
   {
-    final MessageFormatSupport supper = new MessageFormatSupport();
-    supper.setFormatString("Invoice for your order from {$(report.date), date,EEE, MMM d, yyyy}");
+    return format.getLocale();
+  }
 
+  public void setLocale (final Locale locale)
+  {
+    format.setLocale(locale);
   }
 }

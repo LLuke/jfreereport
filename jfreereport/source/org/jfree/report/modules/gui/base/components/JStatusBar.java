@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: JStatusBar.java,v 1.4 2005/03/03 23:00:00 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.modules.gui.base.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -65,6 +66,11 @@ public class JStatusBar extends JComponent
 
   public JStatusBar ()
   {
+    this(Locale.getDefault());
+  }
+
+  public JStatusBar (final Locale locale)
+  {
     setLayout(new BorderLayout());
     setBorder(BorderFactory.createMatteBorder
             (1, 0, 0, 0, UIManager.getDefaults().getColor("controlShadow")));
@@ -74,6 +80,7 @@ public class JStatusBar extends JComponent
 
     otherComponents = new JPanel();
     add(otherComponents, BorderLayout.EAST);
+    resources = new ResourceBundleSupport(locale, PreviewBaseModule.RESOURCES_BASE_NAME);
   }
 
   public JComponent getOtherComponents ()
@@ -116,10 +123,6 @@ public class JStatusBar extends JComponent
    */
   protected ResourceBundleSupport getResources ()
   {
-    if (resources == null)
-    {
-      resources = new ResourceBundleSupport(PreviewBaseModule.RESOURCES_BASE_NAME);
-    }
     return resources;
   }
 

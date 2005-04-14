@@ -36,23 +36,24 @@
     the rules in that Guide.</para>
 
     <section>
-      <title>Project Directory Structure And File Names</title>
+      <title>Project Directory Structure and File Names</title>
 
       <para>All projects should share a common structure. All files for a
       project <emphasis>must</emphasis> reside below a single directory, which
       <emphasis>must</emphasis> be named after the project. All Java source
-      files must be contained in a directory called "source", which must be
-      located directly under the project's root directory. Jar-Files, the
-      project might depend on, must be located inside a directory called
-      "lib", which also must be located directly under the project's root
-      directory.</para>
+      files must be contained in a directory called
+      "<filename>source</filename>", which must be located directly under the
+      project's root directory. Jar-Files the project might depend on must be
+      located inside a directory called "<filename>lib</filename>", which also
+      must be located directly under the project's root directory.</para>
 
       <para>All projects must provide ANT-build scripts, which create the
       release distribution files. The build scripts must be self contained and
-      must not have any private dependencies outside the project's directory.
-      All external dependencies on the build script must be documented and
-      must not include non-open source packages. Every user of the project
-      must be able to rebuild the complete project.</para>
+      <emphasis>should</emphasis> not have any private dependencies outside
+      the project's directory. All external dependencies on the build script
+      <emphasis>must</emphasis> be documented and <emphasis>must
+      not</emphasis> include non-open source components. Every user of the
+      project must be able to fully rebuild the complete project.</para>
 
       <para>Every project should provide at least a
       <filename>ChangeLog</filename> file, which documents the development
@@ -69,9 +70,9 @@
       <title>Java File Structure</title>
 
       <para>Each Java source file must contain a single public class or
-      interface. Every package level class should be a public class, which is
+      interface. Every package level class must be a public class, which is
       defined in it's own Java source file. Package protected or private outer
-      classes must not be used, every use of these classes should be replaces
+      classes must not be used, every use of these classes should be replaced
       by the use of either public outer classes or inner classes.</para>
 
       <para>Java source files must have the following ordering:<itemizedlist>
@@ -130,7 +131,7 @@
  * Original Author: &lt;name and email of the initial author of the class&gt;
  * Contributor(s): &lt;list of all contributors&gt;
  *
- * $Id: chapter1-styleguide.xml,v 1.4 2005/03/10 19:03:19 taqua Exp $
+ * $Id: chapter1-styleguide.xml,v 1.5 2005/03/18 13:49:37 taqua Exp $
  *
  * Changes (from &lt;date of the first appearance in the project&gt;)
  * -------------------------
@@ -168,10 +169,11 @@
             </listitem>
           </itemizedlist></para>
 
-        <para>Package imports (*-imports) must not be used. This method of
-        importing all classes of a certain package is dangerous, as it might
-        cause naming conflicts between two classes with the same name but from
-        different packages. Additionally, it is no longer obvious, which
+        <para>Package imports (<emphasis>*</emphasis>-imports) must not be
+        used. This method of importing all classes of a certain package is
+        dangerous, as it might cause naming conflicts between two classes with
+        the same name, which were imported from different packages.
+        Additionally, it is no longer obvious to the human reader, which
         classes get used by a certain Java source file, thus making it harder
         to track dependencies.</para>
 
@@ -181,6 +183,13 @@
         names in the file system of the user and developers cannot be
         guaranteed for non-ASCII names. Therefore the safest bet is, to avoid
         such things altogether.</para>
+
+        <para>Package names in Java are case-sensitive, a package named "com"
+        is not the same as a package named "COM". Windows, for example does
+        not have a case-sensitive filesystem, therefore the package
+        directories for "COM" and "com" will be mapped to the same filesystem
+        entry and thus making it hard to work with these packages in the same
+        project.</para>
 
         <para>If the IDE used for development supports it, the import
         statements should be sorted alphabetically in each block. Import
@@ -205,7 +214,7 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
       </section>
 
       <section>
-        <title>Public Class or Interface declaration</title>
+        <title>Public Class or Interface Declaration</title>
 
         <para>Every Java source file must contain only one public outer scope
         class or interface declaration.</para>
@@ -214,7 +223,7 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
         JavaDoc class comment describing the purpose of the class. The
         documentation comment should contain examples on how to use that
         class, where ever it seem applicable. The JavaDoc @author tag is
-        mandatory.</para>
+        mandatory. Multiple @author tags are allowed.</para>
 
         <para>The class documentation must be followed by a valid <code>public
         class</code> or <code>interface</code> declaration.</para>
@@ -231,21 +240,48 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
               variables).</para>
 
               <para>Only immutable classes should be used as constant values.
-              As only the reference to the object is declared to be final,
-              object contents can always be modified, no matter whether an
-              object h..</para>
-
-              <para>
-                Explain what immutable classes are.
               </para>
+
+              <para>The final keyword protects the local variable from any
+              changes. As Java always stores references when dealing with
+              objects only the reference is now write-protected. That means,
+              you cannot change the object's reference (i.e. let the variable
+              point to a different object), but nothing prevents you from
+              changing the internals of the referenced object (assumed that
+              the object's implementation allows it). Array contents are
+              always mutable - there is no way to make the contents of an
+              array immutable.</para>
+
+              <para>Classes are considered immutable, if there exists no
+              operation that changes the public behaviour of the class. An
+              immutable class always returns the same results on calls to its
+              public or protected methods whenever these methods are called
+              with the same parameters. Immutable classes do not change their
+              behaviour.</para>
+
+              <para>See also: <itemizedlist>
+                  <listitem>
+                    <para><ulink
+                    url="http://java.sun.com/docs/books/jls/second_edition/html/typesValues.doc.html#10931">Java
+                    Language Specification: The final keyword</ulink></para>
+                  </listitem>
+
+                  <listitem>
+                    <para><ulink
+                    url="http://www.javapractices.com/Topic29.cjp">Immutable
+                    Objects</ulink></para>
+                  </listitem>
+                </itemizedlist></para>
             </listitem>
 
             <listitem>
               <para>Inner classes.</para>
 
               <para>Inner classes should always be used in favor of anonymous
-              inner classes. If possible, such classes should be static, as
-              this greatly reduces the chance of creating memory leaks when
+              inner classes. </para>
+
+              <para>If possible, such classes should be static, as this
+              greatly reduces the chances of creating memory leaks when
               passing these objects around. (All non-static inner classes hold
               an invisible reference to their outer class instance, and
               therefore the garbage collector cannot free the outer class
@@ -277,9 +313,10 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
             <listitem>
               <para>Constructors</para>
 
-              <para>Every class must declare at least one constructor. The
-              default constructor should always be the first in the list of
-              constructors, even if it is private.</para>
+              <para>Every class must declare at least one constructor. If
+              there are more than one constructor, the default constructor
+              should always be the first in the list of constructors, even if
+              it is private.</para>
 
               <para>If the class is an utility class and does only contain
               static methods, then a private default constructor should be
@@ -312,8 +349,20 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
       forbidden. This way, all files look consistent, no matter whether the
       tab size is 2 or 8.</para>
 
+      <para>References: <itemizedlist>
+          <listitem>
+            <para><ulink
+            url="http://xarg.net/writing/tabs">http://xarg.net/writing/tabs</ulink></para>
+          </listitem>
+
+          <listitem>
+            <para><ulink url="http://www.jwz.org/doc/tabs-vs-spaces.html">Tabs
+            versus Spaces: An Eternal Holy War</ulink></para>
+          </listitem>
+        </itemizedlist></para>
+
       <section>
-        <title>Forced line breaks</title>
+        <title>Forced Line Breaks</title>
 
         <para>On some constructs of the Java language, we require mandatory
         line breaks.</para>
@@ -331,9 +380,9 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
       </section>
 
       <section>
-        <title>Line wrapping</title>
+        <title>Line Wrapping</title>
 
-        <para>When an overly long expression does not fit on a single line,
+        <para>If an overly long expression does not fit on a single line,
         break it according to these general principles:<itemizedlist>
             <listitem>
               <para>Break after a comma</para>
@@ -359,14 +408,14 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
             </listitem>
           </itemizedlist></para>
 
-        <para>When ever possible, line breaks within expressions should be
+        <para>Whenever possible, line breaks within expressions should be
         avoided. If the expression is used in an assignment and the right
         value of the assignment would fit on the next line, the line break
         should be inserted after the assignment operator.</para>
 
-        <para>But after all, the best way to handle these cases, is to avoid
-        them altogether. Overly long lines of code make your source code hard
-        to read and can be usually split into several separate statements.
+        <para>But after all the best way to handle such cases is to avoid them
+        altogether. Overly long lines of code make your source code hard to
+        read and can be usually split into several separate statements.
         Introduce local variables to split your code or to compute complex
         parameters. This will greatly increase the readability of the source
         code.</para>
@@ -413,7 +462,8 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
         corresponding opening brace.</para>
 
         <para>All code blocks must be held in curly braces, even if it is just
-        a single line of an if, for or while statement.</para>
+        a single line of an <code>if</code>, <code>for</code> or
+        <code>while</code> statement.</para>
 
         <para>A curly brace must always be the only non-whitespace character
         on the line.</para>
@@ -430,7 +480,7 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
       <section>
         <title>Example</title>
 
-        <para>Here is some properly aligned example code that shows, how to
+        <para>Here is some properly aligned example code that shows how to
         apply the above rules:<programlisting>
 public class Foo
 {
@@ -541,20 +591,21 @@ public class Foo
       decisions leading to that implementation.</para>
 
       <section>
-        <title>JavaDoc comments</title>
+        <title>JavaDoc Comments</title>
 
         <para>We require valid and complete JavaDoc comments for every class,
         method and member variable of the source code.</para>
 
         <para>All classes must have at least a short documentary comment
-        describing the purpose of the class. An @author tag is required for
-        every top level class. For inner classes, the it is assumed, that the
-        author of the top level class also wrote the inner class.</para>
+        describing the purpose of the class. An <code>@author</code> tag is
+        required for every top level class. For inner classes, the it is
+        assumed, that the author of the top level class also wrote the inner
+        class.</para>
 
         <para>When applicable, the documentation should contain a textual
         description on how and where to use that class and how this class fits
         into the big picture. Example code is always a good addition to
-        clarify the comments.</para>
+        illustrate the comments.</para>
 
         <para>Methods must at least document their parameters, exceptions and
         return values using the corresponding JavaDoc tags. For every object
@@ -575,16 +626,16 @@ public class Foo
       </section>
 
       <section>
-        <title>Implementation comments</title>
+        <title>Implementation Comments</title>
 
         <para>Implementation comments should always be added to the code where
         ever it increases the readability of the code.</para>
 
         <para>However, if you find yourself documenting methods, which are
-        hard to read, you should consider to rewrite such tricky or unclear
-        code by using meaningful variable names. In general you should strive
-        for self-documenting code by using well-known patterns are simple
-        structures.</para>
+        hard to read or understand, you should consider to rewrite such tricky
+        or unclear code by using meaningful (or so-called 'speaking') variable
+        names. In general you should strive for self-documenting code by using
+        well-known patterns and simple structures.</para>
       </section>
     </section>
 
@@ -637,11 +688,12 @@ public class Foo
         variable, which in return leads to better and easily understandable
         code.</para>
 
-        <para>Non-static Member variables should not be initialized in their
+        <para>Non-static member variables should not be initialized in their
         declaring statement. If the initial value of a variable differs from
-        the default value for that variable (false for boolean variables, zero
-        for numeric variables and null for object references), the variable
-        should be initialized in the constructor(s).</para>
+        the default value for that variable (<code>false</code> for boolean
+        variables, zero for numeric variables and <code>null</code> for object
+        references), the variable should be initialized in the
+        constructor(s).</para>
       </section>
     </section>
 
@@ -697,9 +749,9 @@ public class Foo
         name of the method should be speaking, so that the name itself gives a
         correct indication on what the method will do. Examples for a method
         that computes a layout would be '<code>compute</code>',
-        '<code>computeLayout</code> or <code>computeReportLayout.</code> Which
-        of these names would be the best depends on the context where it was
-        declared.</para>
+        '<code>computeLayout</code> or '<code>computeReportLayout'.</code>
+        Which of these names would be the best depends on the context where it
+        was declared and where it is going to be used.</para>
 
         <para>Method names should be mixed case with the first letter
         lowercase, with the first letter of each internal word capitalized.
@@ -758,7 +810,9 @@ public class Foo
         <title>Constants</title>
 
         <para>The names of variables declared class constants should be all
-        uppercase with words separated by underscores ("_").</para>
+        uppercase with words separated by underscores ("_").
+        REPORT_DATE_PROPERTY would be an example for a valid name for a
+        constant variable.</para>
       </section>
     </section>
 
@@ -774,7 +828,7 @@ public class Foo
       the failure to obey to the rule itself is considered a bug.</para>
 
       <section>
-        <title>Always define a constructor</title>
+        <title>Always Define a Constructor</title>
 
         <para>Every class should have an explicit constructor definition. If
         the class is an utility class and defined only static methods and
@@ -788,7 +842,7 @@ public class Foo
       </section>
 
       <section>
-        <title>Providing access to class or instance variables</title>
+        <title>Providing Access to Class or Instance Variables</title>
 
         <para>Class or instance variables must never be accessible directly.
         If you need to read or modify the variables, define suitable accessor
@@ -831,7 +885,7 @@ anObject.classMethod();    //AVOID!</programlisting></para>
       </section>
 
       <section>
-        <title>Avoid declaring Constant Pools in Interfaces</title>
+        <title>Avoid Declaring Constant Pools in Interfaces</title>
 
         <para>Sometimes, it is necessary to define a set of common constants
         to be used in several, otherwise unrelated classes.</para>
@@ -877,7 +931,7 @@ d = a + r;</programlisting></para>
       </section>
 
       <section>
-        <title>Always check parameter values</title>
+        <title>Always Check Parameter Values</title>
 
         <para>When ever a public or protected method accepts parameters, these
         parameters should be checked for validity.</para>
@@ -916,7 +970,7 @@ d = a + r;</programlisting></para>
       </section>
 
       <section>
-        <title>Avoid overly long or complex methods</title>
+        <title>Avoid Overly Long or Complex Methods</title>
 
         <para>A method should not be longer than 150 lines of code.</para>
 
@@ -959,7 +1013,7 @@ d = a + r;</programlisting></para>
       </section>
 
       <section>
-        <title>Prefer simple structures</title>
+        <title>Prefer Simple Structures</title>
 
         <para>"Complex structures contain complex bugs. Simple structures
         contain simple bugs."</para>
@@ -986,7 +1040,7 @@ d = a + r;</programlisting></para>
       </section>
 
       <section>
-        <title>Error handling</title>
+        <title>Error Handling</title>
 
         <para>Java, as most other modern languages, uses the Exception-model
         as preferred way to handle unexpected error conditions. Once
@@ -1010,18 +1064,20 @@ d = a + r;</programlisting></para>
 
         <para>As a thumb rule: If the error is expected and no invalid state
         is caused by it, use return values. If the error is unexpected or
-        would cause an invalid program state if it would be ignored, then
-        throw an exception.</para>
+        would cause an invalid program state if ignored, then throw an
+        exception.</para>
       </section>
     </section>
   </section>
 
   <section>
-    <title>Design decisions</title>
+    <title>Design Decisions</title>
 
     <para>This sections covers general JFreeReport specific design decisions.
     It does not document features and should serve as guide to the philosophy
     behind the JFreeReport code base.</para>
+
+    <para>To be filled ..</para>
 
     <section>
       <title></title>

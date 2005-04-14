@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.7 2005/02/23 19:31:41 taqua Exp $
+ * $Id: ShapeElement.java,v 1.8 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -127,6 +127,11 @@ public class ShapeElement extends Element
   {
   }
 
+  /**
+   * Returns the ShapeElement specific global stylesheet.
+   *
+   * @return the global stylesheet.
+   */
   protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
   {
     return getDefaultStyle();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ResourceBundleFactory.java,v 1.3 2005/03/03 22:59:19 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,35 @@
 package org.jfree.report;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * A resource bundle factory defines the locale for a report and is used to create
+ * resourcebundles.
+ *
+ * @author Thomas Morgner
+ */
 public interface ResourceBundleFactory extends Serializable
 {
+  /**
+   * Creates a resource bundle for the given key. How that key is interpreted depends on
+   * the used concrete implementation of this interface.
+   *
+   * @param key the key that identifies the resource bundle
+   * @return the created resource bundle
+   *
+   * @throws java.util.MissingResourceException
+   *          if no resource bundle for the specified base name can be found
+   */
   public ResourceBundle getResourceBundle (String key);
+
+  /**
+   * Returns the locale that will be used to create the resource bundle.
+   * This locale is also used to initialize the java.text.Format instances
+   * used by the report. 
+   *
+   * @return the locale.
+   */
+  public Locale getLocale ();
 }

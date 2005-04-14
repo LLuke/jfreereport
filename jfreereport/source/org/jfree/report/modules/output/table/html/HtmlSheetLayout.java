@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.6 2005/03/24 22:24:56 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.7 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.Color;
 import java.util.HashSet;
 
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -51,7 +52,7 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The Html Sheet layout collects the CSS-information for the generated cells of a single
@@ -173,16 +174,6 @@ public strictfp class HtmlSheetLayout extends SheetLayout
       return;
     }
 
-    // Process all rows; this stores the row height ...
-    long beginRow = yCuts[0].longValue();
-    for (int i = 1; i < yCuts.length; i++)
-    {
-      final long end = yCuts[i].longValue();
-      final int height = (int) StrictGeomUtility.toExternalValue((end - beginRow));
-      styleCollection.addRowStyle(new HtmlTableRowStyle(height));
-      beginRow = end;
-    }
-
     // Process all elements; duplicate entries will not be processed twice
     // Spanned elements are only stored in their upper left corner, as all
     // other cells will be skipped anyway ..
@@ -190,6 +181,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     TableRectangle rect = null;
     for (int layoutRow = 0; layoutRow < getRowCount(); layoutRow++)
     {
+      Color rowColor = null;
       for (int layoutCol = 0; layoutCol < getColumnCount(); layoutCol++)
       {
         final TableCellBackground bg;
@@ -212,16 +204,42 @@ public strictfp class HtmlSheetLayout extends SheetLayout
           bg = getElementAt(layoutRow, layoutCol);
         }
 
-        if (bg == null || completedElements.contains(bg))
+        if (bg == null)
+        {
+          // there is no background
+          continue;
+        }
+
+        final Color bgColor = bg.getColor();
+        if (layoutCol == 0)
+        {
+          rowColor = bgColor;
+        }
+        else
+        {
+          if (ObjectUtilities.equal(bgColor, rowColor) == false)
+          {
+            // no common color ... therefore reset ..
+            rowColor = null;
+          }
+        }
+
+        if (completedElements.contains(bg))
         {
           // we already had that one ...
           continue;
         }
+
         final HtmlTableCellStyle style = new HtmlTableCellStyle(bg);
         final String styleName = styleCollection.addCellStyle(style);
         backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
         completedElements.add(bg);
       }
+
+      final int height = (int) Math.ceil
+              (StrictGeomUtility.toExternalValue(getRowHeight(layoutRow)));
+      styleCollection.addRowStyle(new HtmlTableRowStyle(height, rowColor));
+
     }
     clearObjectIdTable();
   }

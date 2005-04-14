@@ -2,14 +2,30 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.5-3: (25-Mar-2005)
+
+0.8.5-4: (??-Apr-2005)
+        * The location of the ReportControler can now be defined from
+          within the ReportControler.
+
+        * [BUG] The TableLayouter does no longer use heuristics to compute
+          the layout. Now every layouted cell has its own TableCellBackground
+          instance - this makes computing more accurate but also more resource
+          intensive.
+
+        * [BUG] Excel-CellStyles are now applied to all cells of a region.
+          (Bug #1172423)
+
+        * [BUG] The demo-jar classpath did not include the misc-survey module.
+
         * The org.jfree.report.modules.output.table.html.EmptyCellsUseCSS
           configuration property controls how empty cells are handled. By
           default no CSS is used (as the InternetExplorer gets confused by
           standards). This is a follow up to Bug #1165992.
 
-        * The location of the ReportControler can now be defined from
-          within the ReportControler.
+        * The DEFAULT_GROUP_NAME constant of GroupList is now public. This
+          constant defines the name of the automaticly created default group.
+          That group is created to prevent an empty GroupList, if other groups
+          exist for the report, the default group might not exist.
 
 0.8.5-3: (25-Mar-2005)
         * [BUG] The GUI-ExportTasks now create missing directories, if
