@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.8 2005/04/09 17:43:13 taqua Exp $
+ * $Id: SheetLayout.java,v 1.9 2005/04/14 16:37:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -227,7 +227,6 @@ public class SheetLayout
    */
   public SheetLayout (final boolean strict)
   {
-    Log.debug ("Layout is strict");
     xBounds = new TreeMap();
     yBounds = new TreeMap();
     this.strict = strict;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.6 2005/01/30 23:37:24 taqua Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.7 2005/02/23 21:05:40 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,7 +41,6 @@ package org.jfree.report.modules.parser.ext.factory.stylekey;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.Log;
 
 /**
  * A default implementation of the {@link StyleKeyFactory} interface. This implementation
@@ -62,17 +61,6 @@ public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory
     loadFromClass(ElementStyleSheet.class);
     loadFromClass(BandStyleKeys.class);
     loadFromClass(ShapeElement.class);
-
-    try
-    {
-      loadFromClass(Thread.currentThread().getContextClassLoader().
-              loadClass("org.jfree.report.modules.output.table.xls.ExcelProcessor"));
-    }
-    catch (Exception e)
-    {
-      Log.debug("Loading excel stylekeys failed. Keys " +
-              "from that module will not be available.");
-    }
 /*
     addKey(ElementStyleSheet.ALIGNMENT);
     addKey(ElementStyleSheet.BOLD);

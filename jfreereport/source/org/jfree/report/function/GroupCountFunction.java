@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.7 2005/01/25 00:00:10 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.8 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -164,11 +164,6 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
     {
       setCount(getCount() + 1);
     }
-    else
-    {
-      Log.debug("Missmatch " + group.getName());
-    }
-
   }
 
   /**

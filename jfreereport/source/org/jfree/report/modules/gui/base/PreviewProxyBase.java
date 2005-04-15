@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.40 2005/03/25 16:37:54 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.41 2005/03/29 18:32:00 taqua Exp $
  *
  * Changes
  * -------
@@ -729,7 +729,7 @@ public class PreviewProxyBase extends JComponent
       final ReportProgressBar progressBar = getProgressBar();
       try
       {
-        final long startTime = System.currentTimeMillis();
+//        final long startTime = System.currentTimeMillis();
 
         // it will cause trouble if not called from within the
         // event handler thread
@@ -758,10 +758,10 @@ public class PreviewProxyBase extends JComponent
           SwingUtilities.invokeLater(showPane);
         }
 
-        // it will cause trouble if not called from within the
-        // event handler thread
-        Log.debug("Pagination done: " +
-                ((System.currentTimeMillis() - startTime) / 1000) + " seconds.");
+//        // it will cause trouble if not called from within the
+//        // event handler thread
+//        Log.debug("Pagination done: " +
+//                ((System.currentTimeMillis() - startTime) / 1000) + " seconds.");
       }
       catch (ReportInterruptedException re)
       {

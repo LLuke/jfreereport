@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.21 2005/03/03 17:07:58 taqua Exp $
+ * $Id: TableWriter.java,v 1.22 2005/03/30 17:25:44 taqua Exp $
  *
  * Changes
  * -------
@@ -298,10 +298,10 @@ public strictfp class TableWriter
         endPage();
         startPage();
       }
-      else
-      {
-        Log.debug("Page is empty; so no break");
-      }
+//      else
+//      {
+//        Log.debug("Page is empty; so no break");
+//      }
     }
 
     final long y = getCursor().getY();
@@ -328,10 +328,10 @@ public strictfp class TableWriter
         endPage();
         startPage();
       }
-      else
-      {
-        Log.debug("Empty Page, ignore!");
-      }
+//      else
+//      {
+//        Log.debug("Empty Page, ignore!");
+//      }
     }
     return true;
   }

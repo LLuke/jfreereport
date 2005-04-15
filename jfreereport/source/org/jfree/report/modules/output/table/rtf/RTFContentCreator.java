@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.6 2005/03/04 13:25:15 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.7 2005/04/09 17:43:14 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -286,7 +286,7 @@ public class RTFContentCreator extends TableContentCreator
     }
     catch (Exception e)
     {
-      Log.debug("Unable to add creation date.", e);
+      Log.debug("Unable to add creation date. It will have to work without it.", e);
     }
 
     document.open();

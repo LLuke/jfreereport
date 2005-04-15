@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.17 2005/02/23 21:05:29 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.18 2005/03/03 14:42:35 taqua Exp $
  *
  * Changes
  * -------
@@ -302,11 +302,6 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       {
         // if so, then print
         printBand(b, pageBounds.createIntersection(bounds));
-      }
-      else
-      {
-        // else ignore
-        Log.debug("Ignoring: PageBounds:" + pageBounds + " vs . BandBounds: " + bounds);
       }
     }
     endPage();

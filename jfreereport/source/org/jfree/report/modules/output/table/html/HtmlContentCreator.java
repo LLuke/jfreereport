@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.16 2005/04/14 16:37:35 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.17 2005/04/14 17:37:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -588,10 +588,6 @@ public class HtmlContentCreator extends TableContentCreator
    */
   private void printEmptyCell (final int x, final int y)
   {
-    if (y == 11)
-    {
-      Log.debug ("");
-    }
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     final TableCellBackground background = layout.getElementAt(y, x);
 

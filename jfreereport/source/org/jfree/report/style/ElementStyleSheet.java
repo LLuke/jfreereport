@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.20 2005/02/19 13:30:05 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.21 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -99,24 +99,30 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
 
   /**
    * A key for the 'minimum size' of an element.
+   * This style property is not inherited from the parent band.
    */
   public static final StyleKey MINIMUMSIZE =
           StyleKey.getStyleKey("min-size", Dimension2D.class, false, false);
 
   /**
    * A key for the 'maximum size' of an element.
+   * This style property is not inherited from the parent band.
    */
   public static final StyleKey MAXIMUMSIZE =
           StyleKey.getStyleKey("max-size", Dimension2D.class, false, false);
 
   /**
    * A key for the 'preferred size' of an element.
+   * This style property is not inherited from the parent band.
    */
   public static final StyleKey PREFERREDSIZE =
           StyleKey.getStyleKey("preferred-size", Dimension2D.class, false, false);
 
   /**
    * A key for the 'bounds' of an element.
+   * This style property is not inherited from the parent band.
+   * This style property is an internal state property and is therefore
+   * not written to the XML.
    */
   public static final StyleKey BOUNDS =
           StyleKey.getStyleKey("bounds", StrictBounds.class, true, false);
@@ -244,6 +250,13 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
   public static final StyleKey HREF_TARGET = StyleKey.getStyleKey("href-target",
           String.class);
 
+  /**
+   * An internal flag style indicating whether the current HRef is inherited from
+   * a child.
+   *
+   * This style property is an internal state property and is therefore
+   * not written to the XML.
+   */ 
   public static final StyleKey HREF_INHERITED = StyleKey.getStyleKey("href-inherited",
           Boolean.class, true, false);
 

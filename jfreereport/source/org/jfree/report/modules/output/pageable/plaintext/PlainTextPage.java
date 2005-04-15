@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextPage.java,v 1.9 2005/01/25 00:11:20 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.10 2005/02/23 21:05:31 taqua Exp $
  *
  * Changes
  * -------
@@ -108,7 +108,7 @@ public class PlainTextPage
     final int currentPageWidth = PlainTextOutputTarget.correctedDivisionFloor
             ((float) (pageFormat.getImageableWidth()), characterWidthInPoint);
 
-    Log.debug("Created page with " + currentPageWidth + ", " + currentPageHeight);
+    // Log.debug("Created page with " + currentPageWidth + ", " + currentPageHeight);
     pageBuffer = new PlaintextDataChunk[currentPageWidth][currentPageHeight];
     width = currentPageWidth;
     height = currentPageHeight;

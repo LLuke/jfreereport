@@ -3,7 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
-0.8.5-4: (??-Apr-2005)
+0.8.5-4: (15-Apr-2005)
         * The location of the ReportControler can now be defined from
           within the ReportControler.
 
@@ -19,6 +19,10 @@ A list of changes in recent versions:
           generate valid content.
 
         * [BUG] The demo-jar classpath did not include the misc-survey module.
+
+        * [BUG] FunctionUtilties.findElement(..) and
+          FunctionUtilities.findAllElements (..) did not check the names of bands
+          and therefore did never return band references.
 
         * The org.jfree.report.modules.output.table.html.EmptyCellsUseCSS
           configuration property controls how empty cells are handled. By
@@ -36,7 +40,7 @@ A list of changes in recent versions:
 
         * All tables now have a ColGroup tag to define the table's column widths.
           This way even large tables get rendered correctly even if not all data
-          is received.    
+          is received.
 
 0.8.5-3: (25-Mar-2005)
         * [BUG] The GUI-ExportTasks now create missing directories, if

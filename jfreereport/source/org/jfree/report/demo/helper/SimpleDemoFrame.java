@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: SimpleDemoFrame.java,v 1.4 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -138,12 +138,11 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    Log.debug("Attempt Preview");
     try
     {
       final JFreeReport report = createReport();
       report.setData(getData());
-      Log.debug("Got the report");
+
       final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
