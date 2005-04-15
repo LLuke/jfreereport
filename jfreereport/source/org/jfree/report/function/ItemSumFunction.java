@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.7 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.8 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -184,6 +184,10 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   public void itemsAdvanced (final ReportEvent event)
   {
     final Object fieldValue = getDataRow().get(getField());
+    if (fieldValue == null)
+    {
+      return;
+    }
     if (fieldValue instanceof Number == false)
     {
       Log.error("ItemSumFunction.advanceItems(): problem adding number.");

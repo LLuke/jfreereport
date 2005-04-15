@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.9 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.10 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -132,7 +132,7 @@ public class ItemColumnQuotientExpression extends AbstractExpression
 
     if (divisor == 0.0)
     {
-      return "n/a";
+      return new Double (Double.NaN);
     }
     return new Double(dividend / divisor);
   }

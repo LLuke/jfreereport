@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParser.java,v 1.9 2005/02/19 13:30:03 taqua Exp $
+ * $Id: IncludeParser.java,v 1.10 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -131,5 +131,21 @@ public class IncludeParser extends ReportParser
   public String getConfigProperty (final String key, final String defaultValue)
   {
     return super.getConfigProperty(key, backend.getConfigProperty(key, defaultValue));
+  }
+
+  /**
+   * Returns an object from the registry.
+   *
+   * @param key the key.
+   * @return The object.
+   */
+  public Object getHelperObject (final String key)
+  {
+    final Object o = super.getHelperObject(key);
+    if (o != null)
+    {
+      return o;
+    }
+    return backend.getHelperObject(key);
   }
 }

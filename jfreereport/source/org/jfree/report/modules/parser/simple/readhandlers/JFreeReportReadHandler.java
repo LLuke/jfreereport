@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportReadHandler.java,v 1.5 2005/03/03 23:00:23 taqua Exp $
+ * $Id: JFreeReportReadHandler.java,v 1.6 2005/03/16 21:06:49 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.IncludeParser;
 import org.jfree.report.modules.parser.base.common.ConfigurationReadHandler;
 import org.jfree.report.modules.parser.base.common.FunctionsReadHandler;
 import org.jfree.report.modules.parser.base.common.IncludeReadHandler;
@@ -57,8 +58,10 @@ import org.jfree.report.util.PageFormatFactory;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
+import org.jfree.xml.Parser;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.xml.parser.RootXmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -175,9 +178,8 @@ public class JFreeReportReadHandler extends AbstractPropertyXmlReadHandler
       report = (JFreeReport) maybeReport;
     }
 
-    final boolean include =
-            ObjectUtilities.equal("true", getRootHandler().getHelperObject("include-parsing"));
-    if (include == false)
+    final ReportParser parser = (ReportParser) getRootHandler();
+    if (parser.isIncluded() == false)
     {
       final String name = attrs.getValue(NAME_ATT);
       if (name != null)

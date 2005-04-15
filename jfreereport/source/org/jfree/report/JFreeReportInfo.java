@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.23 2005/03/18 13:49:37 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.24 2005/03/24 22:24:53 taqua Exp $
  *
  * Changes:
  * --------
@@ -65,7 +65,7 @@ public class JFreeReportInfo extends ProjectInfo
   public JFreeReportInfo ()
   {
     setName("JFreeReport");
-    setVersion("0.8.5-3");
+    setVersion("0.8.5-4");
     setInfo("http://www.jfree.org/jfreereport/index.html");
     setCopyright
             ("(C)opyright 2000-2005, by Thomas Morgner, Object Refinery Limited and Contributors");

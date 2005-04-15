@@ -24,6 +24,9 @@ A list of changes in recent versions:
           FunctionUtilities.findAllElements (..) did not check the names of bands
           and therefore did never return band references.
 
+        * [BUG] Some bugs were fixed in the include-functionality of the
+          JFreeReport XML-parsers.
+
         * The org.jfree.report.modules.output.table.html.EmptyCellsUseCSS
           configuration property controls how empty cells are handled. By
           default no CSS is used (as the InternetExplorer gets confused by
@@ -41,6 +44,10 @@ A list of changes in recent versions:
         * All tables now have a ColGroup tag to define the table's column widths.
           This way even large tables get rendered correctly even if not all data
           is received.
+
+        * A new demo shows how to join several reports into a single report. A
+          new JoiningTableModel has been added to simplify the task of creating
+          a suitable tablemodel for that report.
 
 0.8.5-3: (25-Mar-2005)
         * [BUG] The GUI-ExportTasks now create missing directories, if

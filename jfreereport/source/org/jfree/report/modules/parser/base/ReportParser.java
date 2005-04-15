@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.20 2005/02/19 13:30:03 taqua Exp $
+ * $Id: ReportParser.java,v 1.21 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -119,13 +119,17 @@ public class ReportParser extends RootXmlReadHandler
     return builderHints;
   }
 
-  protected void setParserHints (ReportBuilderHints hints)
+  protected void setParserHints (final ReportBuilderHints hints)
   {
     if (hints == null)
     {
-      throw new NullPointerException();
+      // use a local hint set .. it will be discarded later ..
+      this.builderHints = new ReportBuilderHints();
     }
-    this.builderHints = hints;
+    else
+    {
+      this.builderHints = hints;
+    }
   }
 
   /**

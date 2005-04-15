@@ -29,7 +29,7 @@
  * Contributor(s): Thomas Morgner, David Gilbert (for Simba Management Limited)
  * for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.4 2005/02/04 19:22:54 taqua Exp $
+ * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.5 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -281,7 +281,7 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction
     final BigDecimal divisor = groupDivisor.getResult();
     if (divisor.intValue() == 0)
     {
-      return "n/a";
+      return new Double(Double.NaN);
     }
     return new Double(dividend.doubleValue() / divisor.doubleValue() * 100);
   }

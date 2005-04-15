@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ReportDefinitionReadHandler.java,v 1.5 2005/03/03 23:00:21 taqua Exp $
  *
  * Changes
  * -------
@@ -93,9 +93,8 @@ public class ReportDefinitionReadHandler extends AbstractPropertyXmlReadHandler
       report = (JFreeReport) maybeReport;
     }
 
-    final boolean include =
-            ObjectUtilities.equal("true", getRootHandler().getHelperObject("include-parsing"));
-    if (include == false)
+    final ReportParser parser = (ReportParser) getRootHandler();
+    if (parser.isIncluded() == false)
     {
       final String value = attrs.getValue("name");
       if (value != null)

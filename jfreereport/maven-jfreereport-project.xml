@@ -6,7 +6,7 @@
   <id>jfreereport</id>
   <name>JFreeReport</name>
   <groupId>jfree</groupId>
-  <currentVersion>0.8.5-3</currentVersion>
+  <currentVersion>0.8.5-4</currentVersion>
   <organization>
     <name>JFree.org</name>
     <url>http://www.jfree.org/</url>
@@ -67,15 +67,15 @@
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jcommon</artifactId>
-      <version>1.0.0-pre2</version>
+      <version>1.0.0-pre3</version>
       <url>http://www.jfree.org/jcommon/</url>
     </dependency>
 
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jcommon-xml</artifactId>
-      <version>1.0.0-pre2</version>
-      <jar>jcommon-1.0.0-pre2-xml.jar</jar>
+      <version>1.0.0-pre3</version>
+      <jar>jcommon-1.0.0-pre3-xml.jar</jar>
       <url>http://www.jfree.org/jcommon/</url>
     </dependency>
 
