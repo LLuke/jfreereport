@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.2 2005/01/25 01:13:33 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.3 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -91,7 +91,7 @@ public class DemoFrontend extends AbstractDemoFrame
       catch (Exception e)
       {
         // failed to execute ...
-
+        Log.error ("There was an error while trying to start the requested demo", e);
       }
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleExpression.java,v 1.3 2005/02/04 19:22:55 taqua Exp $
+ * $Id: SurveyScaleExpression.java,v 1.4 2005/02/23 21:05:25 taqua Exp $
  *
  * Changes
  * -------
@@ -295,9 +295,16 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
     return (String) this.fieldList.get(idx);
   }
 
-  public void setField (final int idx, final String object)
+  public void setField (final int index, final String field)
   {
-    this.fieldList.set(idx, object);
+    if (fieldList.size() == index)
+    {
+      fieldList.add(field);
+    }
+    else
+    {
+      fieldList.set(index, field);
+    }
   }
 
   public boolean isOverrideShapeFilled ()
