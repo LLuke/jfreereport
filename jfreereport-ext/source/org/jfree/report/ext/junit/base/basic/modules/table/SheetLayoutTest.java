@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SheetLayoutTest.java,v 1.1 2005/03/24 23:11:01 taqua Exp $
+ * $Id: SheetLayoutTest.java,v 1.2 2005/04/11 13:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -165,10 +165,7 @@ public class SheetLayoutTest extends TestCase
     sheetLayout.add(mband2.getElementAt(2)); // pos == 300
     sheetLayout.add(mband2.getElementAt(3)); // pos == 400
 
-    // One column inside ..
-    assertEquals("ColumnCount", 3, sheetLayout.getColumnCount());
-    // two columns for the first band and two for the second one ..
-    // the 1st botton and 2nd top line are shared ..
+    assertEquals("ColumnCount", 2, sheetLayout.getColumnCount());
     assertEquals("RowCount", 4, sheetLayout.getRowCount());
 
     assertLeftLine(Color.black, sheetLayout.getElementAt(0, 0));
@@ -258,7 +255,7 @@ public class SheetLayoutTest extends TestCase
     assertEquals("ColumnCount", 1, sheetLayout.getColumnCount());
     // two columns for the first band and two for the second one ..
     // the 1st botton and 2nd top line are shared ..
-    assertEquals("RowCount", 5, sheetLayout.getRowCount());
+    assertEquals("RowCount", 4, sheetLayout.getRowCount());
 
     assertTopLine(Color.black, sheetLayout.getElementAt(0, 0));
     assertTopLine(Color.red, sheetLayout.getElementAt(1, 0));
@@ -414,8 +411,8 @@ public class SheetLayoutTest extends TestCase
     sheetLayout.add(mband2.getElementAt(7));
     sheetLayout.add(mband2.getElementAt(8));
 
-    assertEquals("ColumnCount", 3, sheetLayout.getColumnCount());
-    assertEquals("RowCount", 5, sheetLayout.getRowCount());
+    assertEquals("ColumnCount", 2, sheetLayout.getColumnCount());
+    assertEquals("RowCount", 4, sheetLayout.getRowCount());
 
     // BACKGROUNDS:_______________________________________________
     // first column
@@ -572,7 +569,7 @@ public class SheetLayoutTest extends TestCase
 
 
     // One column inside ..
-    assertEquals("ColumnCount", 3, sheetLayout.getColumnCount());
+    assertEquals("ColumnCount", 2, sheetLayout.getColumnCount());
     // two columns for the first band and two for the second one ..
     // the 1st botton and 2nd top line are shared ..
     assertEquals("RowCount", 4, sheetLayout.getRowCount());

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 <report name="Layered Value" orientation="landscape" pageformat="A4" leftmargin="50" rightmargin="50">
 
   <!-- REPORT HEADER -->

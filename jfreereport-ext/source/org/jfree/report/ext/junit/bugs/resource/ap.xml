@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 <report
   name="AP Letter"
   pageformat="LETTER"
@@ -25,7 +27,7 @@
         fontname="Serif"
         fontstyle="plain"
         fontsize="11"
-        pagebreak="true">
+        pagebreak-before-print="true">
         <label name="label1"
           fontname="Serif"
           x="158"
