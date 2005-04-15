@@ -27,6 +27,12 @@ A list of changes in recent versions:
         * [BUG] Some bugs were fixed in the include-functionality of the
           JFreeReport XML-parsers.
 
+        * [BUG] Fixed some bugs in the SurveyScaleDemo (missing resources) and
+          SurveyScaleExpression (adding 'field' property failed).
+
+        * [BUG] DemoFrontend did not give error messages, when the start of the
+          demo failed.
+
         * The org.jfree.report.modules.output.table.html.EmptyCellsUseCSS
           configuration property controls how empty cells are handled. By
           default no CSS is used (as the InternetExplorer gets confused by
