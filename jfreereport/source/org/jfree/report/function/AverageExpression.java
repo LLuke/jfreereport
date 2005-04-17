@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: AverageExpression.java,v 1.2 2005/01/25 01:14:05 taqua Exp $
+ * $Id: AverageExpression.java,v 1.3 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -72,14 +72,14 @@ public class AverageExpression extends AbstractExpression implements Serializabl
   public Object getValue ()
   {
     final Number[] values = collectValues();
-    final BigDecimal total = new BigDecimal(0.0);
+    BigDecimal total = new BigDecimal(0.0);
     int count = 0;
     for (int i = 0; i < values.length; i++)
     {
       final Number n = values[i];
       if (n != null)
       {
-        total.add(new BigDecimal(n.toString()));
+        total = total.add(new BigDecimal(n.toString()));
         count++;
       }
     }

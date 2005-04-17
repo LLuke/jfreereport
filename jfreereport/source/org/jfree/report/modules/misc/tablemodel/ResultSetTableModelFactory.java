@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.10 2005/01/25 00:09:26 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.11 2005/02/23 21:05:25 taqua Exp $
  *
  * Changes
  * -------
@@ -166,7 +166,7 @@ public final class ResultSetTableModelFactory
   /**
    * A DefaultTableModel that implements the CloseableTableModel interface.
    */
-  private final class CloseableDefaultTableModel extends DefaultTableModel
+  private static final class CloseableDefaultTableModel extends DefaultTableModel
           implements CloseableTableModel
   {
     /**

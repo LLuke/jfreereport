@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: BeanUtility.java,v 1.4 2005/03/03 23:00:26 taqua Exp $
  *
  * Changes
  * -------
@@ -255,7 +255,7 @@ public final class BeanUtility
     setProperty(ps, o);
   }
 
-  private class PropertySpecification
+  private static class PropertySpecification
   {
     private String raw;
     private String name;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.21 2005/02/23 21:05:28 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.22 2005/03/03 14:42:35 taqua Exp $
  *
  * Changes
  * -------
@@ -232,7 +232,7 @@ public class PageableReportProcessor
    *
    * @return the output target.
    */
-  public OutputTarget getOutputTarget ()
+  public synchronized OutputTarget getOutputTarget ()
   {
     return outputTarget;
   }
@@ -303,7 +303,7 @@ public class PageableReportProcessor
    * @throws org.jfree.report.EmptyReportException
    *          if the repagination returned no pages.
    */
-  public void processReport ()
+  public synchronized void processReport ()
           throws ReportProcessingException, EmptyReportException
   {
     if (isPaginated() == false)
@@ -720,7 +720,7 @@ public class PageableReportProcessor
     }
   }
 
-  public int getPageCount ()
+  public synchronized int getPageCount ()
   {
     if (isPaginated() == false)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.10 2005/01/25 00:04:38 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.11 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -233,6 +233,7 @@ public class ModuleNodeFactory
         if (System.getProperties().containsKey(key))
         {
           Log.debug("Ignored key from the system properties: " + key);
+          return;
         }
         else
         {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.8 2005/02/19 13:29:52 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.9 2005/02/23 21:04:36 taqua Exp $
  *
  * Changes
  * -------
@@ -105,7 +105,7 @@ public class DefaultContentFactory implements ContentFactory
    * @throws ContentCreationException if there is a problem with the OutputTarget or this
    *                                  factory is not able to handle this content type.
    */
-  public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
+  public synchronized Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
                                           final LayoutSupport ot)
           throws ContentCreationException
   {
@@ -146,7 +146,7 @@ public class DefaultContentFactory implements ContentFactory
    * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent (final String contentType)
+  public synchronized boolean canHandleContent (final String contentType)
   {
     for (int i = 0; i < size; i++)
     {

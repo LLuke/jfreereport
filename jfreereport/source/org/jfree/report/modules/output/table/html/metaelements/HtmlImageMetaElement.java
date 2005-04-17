@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.9 2005/03/29 18:32:01 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.10 2005/03/30 17:26:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -110,7 +110,7 @@ public class HtmlImageMetaElement extends HtmlMetaElement
         {
           pout.print("\" alt=\"");
           pout.print(HtmlCharacterEntities.getEntityParser().
-                  encodeEntities(referenceData.toString()));
+                  encodeEntities(referenceData));
           pout.print("\"");
         }
         if (isUsesXHTML())

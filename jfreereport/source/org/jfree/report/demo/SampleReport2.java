@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.9 2005/02/23 21:04:39 taqua Exp $
+ * $Id: SampleReport2.java,v 1.10 2005/03/30 17:23:01 taqua Exp $
  *
  * Changes:
  * --------
@@ -41,6 +41,8 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
@@ -70,12 +72,12 @@ public class SampleReport2
   /**
    * An expression that returns a very complex component.
    */
-  private class ComplexComponentExpression extends AbstractExpression
+  private static class ComplexComponentExpression extends AbstractExpression
   {
     /**
      * A component.
      */
-    private Component pif;
+    private transient Component pif;
 
     /**
      * Creates an expression.
@@ -93,8 +95,6 @@ public class SampleReport2
         // remove the old content pane from the dialog, so that it has no
         // parent ...
         dlg.setContentPane(new JPanel());
-
-        pif = new JButton("Test");
       }
       catch (Exception e)
       {
@@ -122,6 +122,14 @@ public class SampleReport2
     public Object getValue ()
     {
       return pif;
+    }
+
+    private void readObject (final ObjectInputStream in)
+            throws IOException, ClassNotFoundException
+    {
+      final PDFSaveDialog dlg = new PDFSaveDialog();
+      pif = dlg.getContentPane();
+      pif.setVisible(true);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.3 2005/02/23 21:04:37 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.4 2005/04/15 19:52:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -60,7 +60,7 @@ import org.jfree.ui.action.ActionMenuItem;
 
 public class DemoFrontend extends AbstractDemoFrame
 {
-  private class RunDemoAction
+  private static class RunDemoAction
           extends AbstractAction
   {
     private Class target;

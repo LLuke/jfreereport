@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IBMCompatiblePrinterDriver.java,v 1.4 2005/03/03 23:00:01 taqua Exp $
+ * $Id: IBMCompatiblePrinterDriver.java,v 1.5 2005/03/04 12:08:17 taqua Exp $
  *
  * Changes
  * -------
@@ -181,7 +181,7 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
     }
   }
 
-  private class DriverState
+  private static class DriverState
   {
     private boolean bold;
     private boolean underline;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.21 2005/03/03 21:50:39 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.22 2005/03/24 22:24:54 taqua Exp $
  *
  * Changes
  * -------
@@ -264,7 +264,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       {
         final StrictDimension sDim =
                 StrictGeomUtility.createDimension(d.getWidth(), d.getHeight());
-        retval = correctDimension(sDim, containerBounds, null, support);
+        retval = correctDimension(sDim, containerBounds, retval, support);
       }
       else
       {
@@ -273,7 +273,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
                 e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
         final StrictDimension sDim =
                 StrictGeomUtility.createDimension(minDim.getWidth(), minDim.getHeight());
-        retval = correctDimension(sDim, containerBounds, null, support);
+        retval = correctDimension(sDim, containerBounds, retval, support);
       }
     }
 

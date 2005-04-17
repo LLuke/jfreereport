@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LevelList.java,v 1.11 2005/01/25 21:40:37 taqua Exp $
+ * $Id: LevelList.java,v 1.12 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -472,7 +472,7 @@ public class LevelList implements Cloneable
   /**
    * Clears the list.
    */
-  public void clear ()
+  public synchronized void clear ()
   {
     elements.clear();
     levels.clear();

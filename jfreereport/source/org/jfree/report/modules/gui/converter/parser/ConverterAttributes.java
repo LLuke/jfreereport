@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConverterAttributes.java,v 1.4 2004/05/07 14:29:46 mungady Exp $
+ * $Id: ConverterAttributes.java,v 1.5 2005/02/23 21:04:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -254,7 +254,7 @@ public class ConverterAttributes implements Attributes
    */
   public String getType (final String uri, final String localName)
   {
-    return getType(uri, localName);
+    return base.getType(uri, localName);
   }
 
   /**
@@ -269,6 +269,6 @@ public class ConverterAttributes implements Attributes
    */
   public String getType (final String qName)
   {
-    return getType(qName);
+    return base.getType(qName);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SubSetTableModel.java,v 1.5 2004/05/07 14:29:51 mungady Exp $
+ * $Id: SubSetTableModel.java,v 1.6 2005/02/23 21:05:26 taqua Exp $
  *
  * Changes
  * -------
@@ -245,7 +245,7 @@ public class SubSetTableModel implements TableModel
    */
   public Class getColumnClass (final int columnIndex)
   {
-    return getColumnClass(columnIndex);
+    return model.getColumnClass(columnIndex);
   }
 
   /**

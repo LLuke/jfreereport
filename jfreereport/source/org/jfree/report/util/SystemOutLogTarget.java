@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.9 2004/05/07 08:14:23 mungady Exp $
+ * $Id: SystemOutLogTarget.java,v 1.10 2005/02/23 21:06:06 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package org.jfree.report.util;
 
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 import org.jfree.util.LogTarget;
 
@@ -56,7 +58,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   /**
    * The printstream we use ..
    */
-  private PrintStream printStream;
+  private transient PrintStream printStream;
 
   /**
    * The default constructor. Initializes this target with the system.out stream.
@@ -101,7 +103,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     printStream.println(message);
     if (level < 3)
     {
-      System.out.flush();
+      printStream.flush();
     }
   }
 
@@ -127,7 +129,13 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     e.printStackTrace(printStream);
     if (level < 3)
     {
-      System.out.flush();
+      printStream.flush();
     }
+  }
+
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
+  {
+    printStream = System.out;
   }
 }

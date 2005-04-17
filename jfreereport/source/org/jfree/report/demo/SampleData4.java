@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData4.java,v 1.4 2005/01/24 23:58:41 taqua Exp $
+ * $Id: SampleData4.java,v 1.5 2005/02/23 21:04:39 taqua Exp $
  *
  */
 package org.jfree.report.demo;
@@ -47,8 +47,12 @@ public class SampleData4 extends AbstractTableModel
   /**
    * Comparator for sorting fonts.
    */
-  private class FontComparator implements Comparator
+  private static class FontComparator implements Comparator
   {
+    public FontComparator ()
+    {
+    }
+
     /**
      * Compares two fonts.
      *

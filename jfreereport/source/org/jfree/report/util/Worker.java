@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.14 2005/01/25 00:23:11 taqua Exp $
+ * $Id: Worker.java,v 1.15 2005/02/23 21:06:06 taqua Exp $
  *
  *
  * Changes
@@ -45,8 +45,10 @@ package org.jfree.report.util;
  *
  * @author Thomas Morgner
  */
-public class Worker extends Thread
+public final class Worker extends Thread
 {
+  // Todo: this class is totally messed up. Needs work !
+  
   /**
    * the worker's task.
    */
@@ -55,7 +57,7 @@ public class Worker extends Thread
   /**
    * a flag whether the worker should exit after the processing.
    */
-  private volatile boolean finish = false;
+  private volatile boolean finish;
 
   /**
    * the time in milliseconds beween 2 checks for exit or work requests.

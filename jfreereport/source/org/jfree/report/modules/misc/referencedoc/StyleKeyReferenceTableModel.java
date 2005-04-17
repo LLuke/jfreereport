@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKeyReferenceTableModel.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
+ * $Id: StyleKeyReferenceTableModel.java,v 1.6 2005/02/23 21:05:23 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -57,7 +57,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
   /**
    * Represents a row in the table model.
    */
-  private class StylekeyDescriptionRow
+  private static class StylekeyDescriptionRow
   {
     /**
      * The factory.

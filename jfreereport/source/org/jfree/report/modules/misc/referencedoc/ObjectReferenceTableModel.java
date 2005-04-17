@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.6 2005/02/23 21:05:23 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -58,7 +58,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   /**
    * Used to represent each row in the table model.
    */
-  private class ObjectDescriptionRow
+  private static class ObjectDescriptionRow
   {
     /**
      * The class factory.

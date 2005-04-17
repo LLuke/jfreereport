@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.14 2005/02/19 13:30:00 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.15 2005/02/23 21:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -70,7 +70,7 @@ public class SimplePageLayoutDelegate implements
   /**
    * small carrier class to transport the maximum page number for this report.
    */
-  private static final class PageCarrier
+  private static final class PageCarrier implements Serializable
   {
     /**
      * stores the last page number of the report processing.

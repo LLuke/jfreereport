@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.12 2005/03/16 21:06:39 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.13 2005/03/18 13:49:37 taqua Exp $
  *
  * Changes
  * -------
@@ -112,8 +112,8 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
-      scaleX = (double) iBounds.getWidth() / (double) w;
-      scaleY = (double) iBounds.getHeight() / (double) h;
+      scaleX = ((double) iBounds.getWidth()) / (double) w;
+      scaleY = ((double) iBounds.getHeight()) / (double) h;
       if (scaleX != 1 || scaleY != 1)
       {
         if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
