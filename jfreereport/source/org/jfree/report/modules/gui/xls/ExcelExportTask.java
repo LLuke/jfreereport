@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelExportTask.java,v 1.10 2005/02/23 21:05:03 taqua Exp $
+ * $Id: ExcelExportTask.java,v 1.11 2005/03/24 22:24:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,11 +105,14 @@ public class ExcelExportTask extends ExportTask
     try
     {
       final File directory = file.getParentFile();
-      if (directory.exists() == false)
+      if (directory != null)
       {
-        if (directory.mkdirs() == false)
+        if (directory.exists() == false)
         {
-          Log.warn("Can't create directories. Hoping and praying now..");
+          if (directory.mkdirs() == false)
+          {
+            Log.warn("Can't create directories. Hoping and praying now..");
+          }
         }
       }
       out = new BufferedOutputStream(new FileOutputStream(file));

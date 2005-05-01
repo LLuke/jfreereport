@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStreamExportTask.java,v 1.11 2005/02/23 21:04:55 taqua Exp $
+ * $Id: HtmlStreamExportTask.java,v 1.12 2005/03/24 22:24:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,15 +102,18 @@ public class HtmlStreamExportTask extends ExportTask
   protected void performExport ()
   {
     OutputStream out = null;
-    final File file = new File(fileName);
+    final File file = new File(fileName).getAbsoluteFile();
     try
     {
       final File directory = file.getParentFile();
-      if (directory.exists() == false)
+      if (directory != null)
       {
-        if (directory.mkdirs() == false)
+        if (directory.exists() == false)
         {
-          Log.warn("Can't create directories. Hoping and praying now..");
+          if (directory.mkdirs() == false)
+          {
+            Log.warn("Can't create directories. Hoping and praying now..");
+          }
         }
       }
       out = new BufferedOutputStream(new FileOutputStream(file));
@@ -125,8 +128,17 @@ public class HtmlStreamExportTask extends ExportTask
       // we can safely reference local files. It is up to the user to
       // define the report properly to not scatter the image files over the
       // whole local filesystem.
-      target.setFilesystem
-              (new StreamHtmlFilesystem(out, true, file.getParentFile().toURL()));
+      final File parentFile = file.getParentFile();
+      if (parentFile != null)
+      {
+        target.setFilesystem
+              (new StreamHtmlFilesystem(out, true, parentFile.toURL()));
+      }
+      else
+      {
+        target.setFilesystem
+              (new StreamHtmlFilesystem(out, true, file.toURL()));
+      }
       target.processReport();
       out.close();
       out = null;

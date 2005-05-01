@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.10 2005/02/05 18:35:19 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.11 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.xls.util.ExcelColorSupport;
 import org.jfree.report.modules.output.table.xls.util.ExcelFontFactory;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.util.Log;
 
 /**
  * The cellstyle producer converts the JFreeReport content into excel cell styles. This
@@ -140,12 +141,15 @@ public class HSSFCellStyleProducer
    */
   private HashMap styleCache;
 
+  private boolean warningDone;
+  private boolean hardLimit;
+
   /**
    * The class does the dirty work of creating the HSSF-objects.
    *
    * @param workbook the workbook for which the styles should be created.
    */
-  public HSSFCellStyleProducer (final HSSFWorkbook workbook)
+  public HSSFCellStyleProducer (final HSSFWorkbook workbook, final boolean hardLimit)
   {
     if (workbook == null)
     {
@@ -155,6 +159,7 @@ public class HSSFCellStyleProducer
     this.workbook = workbook;
     this.fontFactory = new ExcelFontFactory(workbook);
     this.dataFormat = workbook.createDataFormat();
+    this.hardLimit = hardLimit;
   }
 
   /**
@@ -213,11 +218,24 @@ public class HSSFCellStyleProducer
     }
     // check, whether that style is already created
     final HSSFCellStyleKey styleKey = new HSSFCellStyleKey(bg, style);
-    if (styleCache.containsKey(style))
+    if (styleCache.containsKey(styleKey))
     {
       return (HSSFCellStyle) styleCache.get(styleKey);
     }
 
+    if (styleCache.size() > 4000)
+    {
+      if (warningDone == false)
+      {
+        Log.warn ("HSSFCellStyleProducer has reached the limit of 4000 created styles.");
+        warningDone = true;
+      }
+      if (hardLimit)
+      {
+        Log.warn ("HSSFCellStyleProducer will not create more styles. New cells will not have any style.");
+        return null;
+      }
+    }
     final HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
     hssfCellStyle.setWrapText(true);
     hssfCellStyle.setFillForegroundColor(WHITE_INDEX);

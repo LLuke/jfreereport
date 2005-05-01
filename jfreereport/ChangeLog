@@ -2,6 +2,14 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.5-5: (1-May-2005)
+        * [BUG] The Excel cell style provider created too many styles due
+          to an invalid key used for checking whether a style already exists.
+
+        * [BUG] Dicovered and fixed some bugs using the 'FindBugs' tool.
+
+        * [BUG] Fixed an error condition, where an non-absolute path could cause
+          a NullPointer if the parent directory could not be resolved.
 
 0.8.5-4: (15-Apr-2005)
         * The location of the ReportControler can now be defined from

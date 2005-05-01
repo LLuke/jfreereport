@@ -41,11 +41,11 @@
     ===============================
     = Report footer height:      48
     -->
-  <reportfooter>
+  <reportfooter layout-cachable="false" >
     <rectangle x="0" y="0" width="100%" height="48" color="#efefef" fill="true" draw="false"/>
   </reportfooter>
 
-  <pagefooter>
+  <pagefooter layout-cachable="false">
     <band x="0" y="0" height="72" name="fake-report-footer">
       <rectangle x="0" y="0" width="100%" height="72" color="#7f7fff" fill="false" draw="true"/>
       <label x="0" y="0" width="80%" height="12">Number of items displayed: </label>

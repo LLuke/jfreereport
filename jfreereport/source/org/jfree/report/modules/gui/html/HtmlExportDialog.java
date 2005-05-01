@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.16 2005/03/10 19:05:29 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.17 2005/03/24 22:24:54 taqua Exp $
  *
  * Changes
  * -------
@@ -907,12 +907,7 @@ public class HtmlExportDialog extends AbstractExportDialog
     else if (rbExportToDirectory.isSelected())
     {
 
-      File dataDir = new File(getDataFilename());
-      if (dataDir.isAbsolute() == false)
-      {
-        dataDir = new File(f.getParentFile(), dataDir.getPath());
-      }
-
+      final File dataDir = new File(getDataFilename()).getAbsoluteFile();
       if (dataDir.exists())
       {
         // dataDirectory does exist ... if no directory : fail
@@ -931,7 +926,7 @@ public class HtmlExportDialog extends AbstractExportDialog
   protected boolean performConfirm ()
   {
     final String filename = getFilename();
-    final File f = new File(filename);
+    final File f = new File(filename).getAbsoluteFile();
     if (f.exists())
     {
       final String key1 = "htmlexportdialog.targetOverwriteConfirmation";

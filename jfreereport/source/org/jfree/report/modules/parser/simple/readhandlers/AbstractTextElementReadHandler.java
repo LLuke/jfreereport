@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AbstractTextElementReadHandler.java,v 1.5 2005/03/03 23:00:23 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
    * A constant defining the name of the trim-text-content attribute.
    */
   public static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
+  public static final String WRAP_TEXT = "excel-wrap-text";
 
   public AbstractTextElementReadHandler ()
   {
@@ -89,6 +90,7 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
     factory.setVerticalAlignment(parseTextVerticalAlignment(atts.getValue(VALIGNMENT_ATT)));
     factory.setBold(parseBoolean(atts.getValue(FS_BOLD)));
     factory.setEmbedFont(parseBoolean(atts.getValue(FS_EMBEDDED)));
+    factory.setWrapText(parseBoolean(atts.getValue(WRAP_TEXT)));
     factory.setEncoding(atts.getValue(FS_ENCODING));
     factory.setFontName(atts.getValue(FONT_NAME_ATT));
     factory.setFontSize(parseInteger(atts.getValue(FONT_SIZE_ATT)));

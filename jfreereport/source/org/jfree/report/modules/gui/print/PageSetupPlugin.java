@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.12 2005/02/23 21:05:02 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.13 2005/03/03 21:50:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,7 +80,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
       if (ReportPane.PRINTING_PROPERTY.equals(evt.getPropertyName()) ||
               ReportPane.PAGINATING_PROPERTY.equals(evt.getPropertyName()))
       {
-        ReportPane reportPane = getReportPane();
+        final ReportPane reportPane = getReportPane();
         setEnabled((reportPane.isPrinting() == false) &&
                 (reportPane.isPaginating() == false));
       }
@@ -142,7 +142,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
   {
     final PrinterJob pj = PrinterJob.getPrinterJob();
     final PageFormat original = report.getPageDefinition().getPageFormat(0);
-    final PageFormat pf = pj.pageDialog(original);
+    final PageFormat pf = pj.validatePage(pj.pageDialog(original));
     if (PageFormatFactory.isEqual(pf, original))
     {
       return false;

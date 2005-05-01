@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.16 2005/03/04 12:08:17 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.17 2005/03/24 22:24:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,14 +49,14 @@ import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.plaintext.AbstractEpsonPrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.Epson24PinPrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextReportUtil;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
-import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
-import org.jfree.report.modules.output.pageable.plaintext.AbstractEpsonPrinterDriver;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
 
@@ -121,16 +121,18 @@ public class PlainTextExportTask extends ExportTask
     this.exportType = exportType;
     this.printer = printer;
 
-    charPerInch = StringUtil.parseFloat(report.getReportConfiguration().getConfigProperty
+    charPerInch = StringUtil.parseFloat(report.getReportConfiguration()
+            .getConfigProperty
             (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH), 10f);
-    linesPerInch = StringUtil.parseFloat(report.getReportConfiguration().getConfigProperty
+    linesPerInch = StringUtil.parseFloat(report.getReportConfiguration()
+            .getConfigProperty
             (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH), 6f);
   }
 
   /**
    * Returns the printer command set for the given report and export type.
    *
-   * @param out    the output stream.
+   * @param out the output stream.
    * @return The printer command set.
    */
   protected PrinterDriver getPrinterCommandSet (final OutputStream out)
@@ -167,10 +169,9 @@ public class PlainTextExportTask extends ExportTask
   }
 
   /**
-   * Epson targets need special care, sadly the old printers used their own
-   * code page schema, which is totally incompatible with the modern ones.
-   * All epson printers that were manufactured before 1991/1992 suffer form this
-   * weakness.
+   * Epson targets need special care, sadly the old printers used their own code page
+   * schema, which is totally incompatible with the modern ones. All epson printers that
+   * were manufactured before 1991/1992 suffer form this weakness.
    *
    * @param driver the driver, which should be configured.
    */
@@ -187,15 +188,18 @@ public class PlainTextExportTask extends ExportTask
   protected void performExport ()
   {
     OutputStream out = null;
-    final File file = new File(fileName);
+    final File file = new File(fileName).getAbsoluteFile();
     try
     {
       final File directory = file.getParentFile();
-      if (directory.exists() == false)
+      if (directory != null)
       {
-        if (directory.mkdirs() == false)
+        if (directory.exists() == false)
         {
-          Log.warn("Can't create directories. Hoping and praying now..");
+          if (directory.mkdirs() == false)
+          {
+            Log.warn("Can't create directories. Hoping and praying now..");
+          }
         }
       }
       out = new BufferedOutputStream(new FileOutputStream(file));

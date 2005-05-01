@@ -108,7 +108,7 @@
   font-embedded  (%boolean;)        #IMPLIED
   font-encoding  CDATA              #IMPLIED
   line-height    CDATA              #IMPLIED
-
+  excel-wrap-text        (%boolean;)        #IMPLIED
   alignment              (%alignmentEnum;)  #IMPLIED
   vertical-alignment     (%valignmentEnum;) #IMPLIED"
 >

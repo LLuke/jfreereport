@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFExportTask.java,v 1.1 2005/03/04 13:17:22 taqua Exp $
+ * $Id: RTFExportTask.java,v 1.2 2005/03/24 22:24:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,11 +105,14 @@ public class RTFExportTask extends ExportTask
     try
     {
       final File directory = file.getParentFile();
-      if (directory.exists() == false)
+      if (directory != null)
       {
-        if (directory.mkdirs() == false)
+        if (directory.exists() == false)
         {
-          Log.warn("Can't create directories. Hoping and praying now..");
+          if (directory.mkdirs() == false)
+          {
+            Log.warn("Can't create directories. Hoping and praying now..");
+          }
         }
       }
       out = new BufferedOutputStream(new FileOutputStream(file));

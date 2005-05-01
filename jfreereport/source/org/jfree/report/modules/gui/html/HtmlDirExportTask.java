@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlDirExportTask.java,v 1.12 2005/03/24 22:24:54 taqua Exp $
+ * $Id: HtmlDirExportTask.java,v 1.13 2005/03/30 17:25:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -109,12 +109,9 @@ public class HtmlDirExportTask extends ExportTask
   {
     try
     {
-      final File targetFile = new File(fileName);
-      File targetDataFile = new File(targetFile.getParentFile(), dataDirectory);
-      if (targetDataFile.isAbsolute() == false)
-      {
-        targetDataFile = new File(targetFile.getParentFile(), targetDataFile.getPath());
-      }
+      final File targetFile = new File(fileName).getAbsoluteFile();
+      final File targetDataFile = new File
+              (targetFile.getParentFile(), dataDirectory).getAbsoluteFile();
       if (targetDataFile.mkdirs() == false)
       {
         if (targetDataFile.exists() == false || targetDataFile.isDirectory() == false)
@@ -123,11 +120,14 @@ public class HtmlDirExportTask extends ExportTask
         }
       }
       final File directory = targetFile.getParentFile();
-      if (directory.mkdirs() == false)
+      if (directory != null)
       {
-        if (directory.exists() == false || directory.isDirectory() == false)
+        if (directory.mkdirs() == false)
         {
-          throw new IOException("Unable to create the missing directories for " + directory);
+          if (directory.exists() == false || directory.isDirectory() == false)
+          {
+            throw new IOException("Unable to create the missing directories for " + directory);
+          }
         }
       }
 

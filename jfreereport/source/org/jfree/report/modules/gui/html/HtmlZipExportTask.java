@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlZipExportTask.java,v 1.10 2005/02/23 21:04:55 taqua Exp $
+ * $Id: HtmlZipExportTask.java,v 1.11 2005/03/24 22:24:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -112,15 +112,18 @@ public class HtmlZipExportTask extends ExportTask
   protected void performExport ()
   {
     OutputStream out = null;
-    final File file = new File(fileName);
+    final File file = new File(fileName).getAbsoluteFile();
     try
     {
       final File directory = file.getParentFile();
-      if (directory.exists() == false)
+      if (directory != null)
       {
-        if (directory.mkdirs() == false)
+        if (directory.exists() == false)
         {
-          Log.warn("Can't create directories. Hoping and praying now..");
+          if (directory.mkdirs() == false)
+          {
+            Log.warn("Can't create directories. Hoping and praying now..");
+          }
         }
       }
       out = new BufferedOutputStream(new FileOutputStream(file));

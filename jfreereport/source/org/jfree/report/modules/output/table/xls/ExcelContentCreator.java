@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.9 2005/04/09 17:43:14 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.10 2005/04/14 17:37:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -161,7 +161,10 @@ public class ExcelContentCreator extends TableContentCreator
   {
     open = true;
     workbook = new HSSFWorkbook();
-    cellStyleProducer = new HSSFCellStyleProducer(workbook);
+    final boolean hardLimit = "true".equals
+            (reportDefinition.getReportConfiguration().getConfigProperty
+            ("org.jfree.report.modules.output.table.xls.HardStyleCountLimit"));
+    cellStyleProducer = new HSSFCellStyleProducer(workbook, hardLimit);
   }
 
   /**
@@ -223,7 +226,10 @@ public class ExcelContentCreator extends TableContentCreator
             final HSSFCell cell = getCellAt((short) x, y);
             final HSSFCellStyle style =
                     cellStyleProducer.createCellStyle(null, background);
-            cell.setCellStyle(style);
+            if (style != null)
+            {
+              cell.setCellStyle(style);
+            }
           }
           continue;
         }
@@ -269,9 +275,12 @@ public class ExcelContentCreator extends TableContentCreator
         for (int col = 0; col < rectangle.getColumnSpan(); col += 1)
         {
           final TableCellBackground bg = getCurrentLayout().getElementAt(rectY + row, rectX + col);
-          final HSSFCellStyle style = cellStyleProducer.createCellStyle(element, bg);
           final HSSFCell regionCell = getCellAt((short)(x + col), y + row);
-          regionCell.setCellStyle(style);
+          final HSSFCellStyle style = cellStyleProducer.createCellStyle(element, bg);
+          if (style != null)
+          {
+            regionCell.setCellStyle(style);
+          }
         }
       }
     }
@@ -280,7 +289,10 @@ public class ExcelContentCreator extends TableContentCreator
       final TableCellBackground bg = getCurrentLayout().getRegionBackground(rectangle);
       final HSSFCellStyle style =
               cellStyleProducer.createCellStyle(element, bg);
-      cell.setCellStyle(style);
+      if (style != null)
+      {
+        cell.setCellStyle(style);
+      }
     }
 
 

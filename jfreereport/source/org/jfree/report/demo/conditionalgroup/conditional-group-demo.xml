@@ -16,7 +16,7 @@
       <fields>
         <field>type</field>
       </fields>
-      <groupheader>
+      <groupheader layout-cachable="false" >
         <!-- Triggered visible if the income group is displayed .. -->
         <band name="income-band" x="0" y="0" width="100%"
           fontname="SansSerif" fsbold="true" fontsize="14">
@@ -30,7 +30,7 @@
         </band>
       </groupheader>
 
-      <groupfooter>
+      <groupfooter layout-cachable="false" >
         <!-- Triggered visible if the income group is displayed .. -->
         <band name="income-band" x="0" y="0" width="100%"
           fontname="SansSerif" fsbold="true" fontsize="14">
@@ -77,7 +77,7 @@
 
   </groups>
 
-  <items>
+  <items layout-cachable="false" >
     <!-- Triggered visible if this is an normal group .. -->
     <band name="FirstLevel" x="0" y="0" width="100%">
       <string-field x="0" y="0" width="200" height="12" fieldname="level-one-account"/>

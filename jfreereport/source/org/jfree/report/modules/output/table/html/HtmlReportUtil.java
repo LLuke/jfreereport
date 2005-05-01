@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlReportUtil.java,v 1.3 2005/01/25 00:13:40 taqua Exp $
+ * $Id: HtmlReportUtil.java,v 1.4 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,7 +73,7 @@ public final class HtmlReportUtil
   public static void createStreamHTML (final JFreeReport report, final String filename)
           throws IOException, ReportProcessingException
   {
-    final File file = new File(filename);
+    final File file = new File(filename).getAbsoluteFile();
     final HtmlProcessor pr = new HtmlProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(file));
     pr.setFilesystem(new StreamHtmlFilesystem(fout, true, file.getParentFile().toURL()));

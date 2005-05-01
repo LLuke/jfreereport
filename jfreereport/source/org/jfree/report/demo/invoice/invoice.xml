@@ -71,7 +71,7 @@ John W. Doe, Salesman</label>
     </group>
   </groups>
 
-  <items>
+  <items layout-cachable="false" >
     <string-field x="0" y="0" width="50" height="12" alignment="left" fieldname="article.number"/>
     <string-field x="70" y="0" width="230" height="12" alignment="left" fieldname="article.name"/>
     <number-field x="300" y="0" width="50" height="12" alignment="left" format="#,##0" fieldname="article.count"/>

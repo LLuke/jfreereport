@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.15 2005/03/04 12:08:18 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.16 2005/03/30 17:25:59 taqua Exp $
  *
  * Changes
  * -------
@@ -130,7 +130,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   public DirectoryHtmlFilesystem (final File file)
           throws IOException
   {
-    this(file, file.getParentFile());
+    this(file, file.getAbsoluteFile().getParentFile());
   }
 
   /**
@@ -160,7 +160,11 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     }
     if (dataDirectory == null)
     {
-      this.dataDirectory = file.getParentFile();
+      this.dataDirectory = file.getCanonicalFile().getParentFile();
+      if (this.dataDirectory == null)
+      {
+        throw new IOException("Unable to resolve the data directory. Cannot proceed.");
+      }
     }
     else
     {

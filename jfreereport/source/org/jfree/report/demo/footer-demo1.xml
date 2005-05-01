@@ -21,6 +21,8 @@
     <string-field x="270" y="0" width="40" height="8" alignment="left" fieldname="Color"/>
     <number-field x="310" y="0" width="66" height="8" alignment="right" format="#,##0" fieldname="Integer"/>
     <number-field x="376" y="0" width="76" height="8" alignment="right" format="#,##0.00" fieldname="Double"/>
+
+    <band name="PlaceholderBand" y="10" width="100%" height="10" x="0"/>
   </items>
 
   <!--
@@ -29,12 +31,12 @@
     effects will happen. Even with that, that trick is nothing more than a cheap hack
     and no guarantees can be given. A safe implementation is scheduled for version 0.8.5.
     -->
-  <reportfooter>
+  <reportfooter layout-cachable="false" >
     <rectangle x="0" y="0" width="100%" height="100" color="#efefef" fill="true" draw="false"/>
     <label x="0" y="0" width="100%" height="24">(hidden band)</label>
   </reportfooter>
 
-  <pagefooter>
+  <pagefooter onlastpage="false"  layout-cachable="false" >
     <rectangle x="0" y="0" width="100%" height="100" color="#7f7fff" fill="false" draw="true"/>
     <label x="0" y="0" width="80%" height="12">Number of items displayed: </label>
     <number-field x="80%" y="0" width="20%" height="12" fieldname="itemcount"/>
@@ -57,5 +59,13 @@ The blue-bordered area is the page footer, which gets misused as a report footer
       </properties>
     </function>
 
+    <function class="org.jfree.report.function.ElementVisibilitySwitchFunction" name="switch">
+      <properties>
+        <property name="element">PlaceholderBand</property>
+        <property name="count">5</property>
+        <property name="initialState">true</property>
+      </properties>
+    </function>
   </functions>
+
 </report>
