@@ -3,6 +3,7 @@ package org.jfree.report.util;
 import java.io.Serializable;
 
 import org.jfree.report.util.beans.ConverterRegistry;
+import org.jfree.report.util.beans.BeanException;
 
 public abstract class PropertyLookupParser implements Serializable
 {
@@ -169,13 +170,20 @@ public abstract class PropertyLookupParser implements Serializable
     {
       final String name = tokenizer.nextToken();
       final Object base = performInitialLookup(name);
-      if (tokenizer.hasMoreTokens())
+      try
       {
-        return continueLookupVariable(tokenizer, base);
+        if (tokenizer.hasMoreTokens())
+        {
+          return continueLookupVariable(tokenizer, base);
+        }
+        else
+        {
+          return ConverterRegistry.toAttributeValue(base);
+        }
       }
-      else
+      catch (BeanException e)
       {
-        return ConverterRegistry.toAttributeValue(base);
+        return entity;
       }
     }
     return entity;
@@ -183,6 +191,7 @@ public abstract class PropertyLookupParser implements Serializable
 
   private static String continueLookupVariable (final CSVTokenizer tokenizer,
                                                 final Object parent)
+          throws BeanException
   {
     if (tokenizer.hasMoreTokens())
     {

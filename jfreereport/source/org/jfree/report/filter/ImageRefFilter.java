@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageRefFilter.java,v 1.6 2005/02/23 21:04:45 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.7 2005/03/16 21:06:47 taqua Exp $
  *
  * Changes
  * -------
@@ -118,7 +118,7 @@ public class ImageRefFilter implements DataFilter, Serializable
     }
     catch (IOException e)
     {
-      Log.warn ("Unable to fully load a given image.");
+      Log.warn ("Unable to fully load a given image.", e);
       return null;
     }
   }

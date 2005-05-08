@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: GenericValueConverter.java,v 1.2 2005/03/03 23:00:27 taqua Exp $
  *
  * Changes
  * -------
@@ -92,9 +92,9 @@ public class GenericValueConverter implements ValueConverter
    * @param o the attribute ({@link Integer} expected).
    * @return A string representing the {@link Integer} value.
    */
-  public String toAttributeValue (final Object o)
+  public String toAttributeValue (final Object o) throws BeanException
   {
-    if (propertyDescriptor.getPropertyType().isInstance(o) == false)
+    if (BeanUtility.getPropertyType(propertyDescriptor).isInstance(o) == false)
     {
       throw new ClassCastException("Give me a real type.");
     }

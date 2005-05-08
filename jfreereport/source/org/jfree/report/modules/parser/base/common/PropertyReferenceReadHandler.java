@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: PropertyReferenceReadHandler.java,v 1.3 2005/03/03 23:00:20 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
 import org.jfree.report.util.beans.ConverterRegistry;
 import org.jfree.report.util.beans.StringValueConverter;
 import org.jfree.report.util.beans.ValueConverter;
+import org.jfree.report.util.beans.BeanException;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.parser.XmlReaderException;
@@ -112,7 +113,14 @@ public class PropertyReferenceReadHandler extends PropertyStringReadHandler
           throws SAXException, XmlReaderException
   {
     super.doneParsing();
-    value = valueType.toPropertyValue(getResult());
+    try
+    {
+      value = valueType.toPropertyValue(getResult());
+    }
+    catch (BeanException e)
+    {
+      throw new SAXException("Failed to parse property value.");
+    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVContentCreator.java,v 1.3 2005/02/23 21:05:34 taqua Exp $
+ * $Id: CSVContentCreator.java,v 1.4 2005/04/14 17:37:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,7 +44,7 @@ import java.io.Writer;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentType;
-import org.jfree.report.modules.output.csv.CSVQuoter;
+import org.jfree.report.util.CSVQuoter;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
 import org.jfree.report.modules.output.table.base.RawContent;
@@ -94,7 +94,11 @@ public class CSVContentCreator extends TableContentCreator
             (CSVTableProcessor.CONFIGURATION_PREFIX + "." + CSVTableProcessor.SEPARATOR_KEY,
                     CSVTableProcessor.SEPARATOR_DEFAULT);
 
-    this.quoter = new CSVQuoter(separator);
+    if (separator.length() == 0)
+    {
+      throw new IllegalArgumentException("CSV separate cannot be an empty string.");
+    }
+    this.quoter = new CSVQuoter(separator.charAt(0));
   }
 
   protected void handleClose ()

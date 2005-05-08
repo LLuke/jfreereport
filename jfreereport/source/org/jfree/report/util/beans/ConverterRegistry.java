@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ConverterRegistry.java,v 1.4 2005/03/03 23:00:27 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,12 @@ public final class ConverterRegistry
     }
     if (c.isArray())
     {
-      return (ValueConverter) registeredClasses.get(c.getComponentType());
+      final Class componentType = c.getComponentType();
+      final ValueConverter componentConverter = getValueConverter(componentType);
+      if (componentConverter != null)
+      {
+        return new ArrayValueConverter(componentType, componentConverter);
+      }
     }
     return null;
   }
@@ -106,7 +111,7 @@ public final class ConverterRegistry
    * @param o the object.
    * @return the attribute value.
    */
-  public static String toAttributeValue (final Object o)
+  public static String toAttributeValue (final Object o) throws BeanException
   {
     if (o == null)
     {
@@ -127,7 +132,7 @@ public final class ConverterRegistry
    * @param s the string.
    * @return a property value.
    */
-  public static Object toPropertyValue (final String s, final Class c)
+  public static Object toPropertyValue (final String s, final Class c) throws BeanException
   {
     if (s == null)
     {

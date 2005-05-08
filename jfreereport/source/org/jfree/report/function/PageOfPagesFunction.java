@@ -27,7 +27,7 @@
  *
  * Original Author:  J&ouml;rg Schaible;
  *
- * $Id: PageOfPagesFunction.java,v 1.1 2005/01/28 19:34:10 taqua Exp $
+ * $Id: PageOfPagesFunction.java,v 1.2 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,7 +50,6 @@ import org.jfree.report.event.ReportEvent;
  */
 public class PageOfPagesFunction extends PageFunction
 {
-
   private PageTotalFunction pageTotalFunction;
   private String format;
 
@@ -73,10 +72,8 @@ public class PageOfPagesFunction extends PageFunction
    */
   public PageOfPagesFunction (final String name)
   {
-    super(name);
-    pageTotalFunction = new PageTotalFunction();
-    pageTotalFunction.setName("__internally_used_only");
-    this.format = "{0} / {1}";
+    this();
+    setName(name);
   }
 
   /**
