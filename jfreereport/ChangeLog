@@ -139,7 +139,7 @@ A list of changes in recent versions:
           text inside.
 
 0.8.5-2: (18-Mar-2005)
-        * [BUG] FontPath caching did not validate the cache integrety. This way,
+        * [BUG] FontPath caching did not validate the cache integrity. This way,
           some fonts might be left unregistered.
 
         * [BUG] The image content class did not refuse bounds with a
@@ -306,7 +306,7 @@ A list of changes in recent versions:
           to be used officially)
 
         * Horizontal lines no longer use the x1==x2; y1==y2 form of definition.
-          They now use the relative coordinates like all other elements
+          Now lines use the relative coordinates like all other elements
           (width="100%") Special factory methods have been added to the
           StaticShapeElementFactory so that vertical and horizontal lines can
           be generated more easily.

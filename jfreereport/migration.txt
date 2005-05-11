@@ -3,6 +3,100 @@ releases. It contains hints on how to upgrade to a new version and how
 to cope with the possible changes of the report behaviour.
 
 ---------------------------------------------------------------------------
+Changes from 0.8.4-* to 0.8.5-4
+
+* Functions and expressions are no longer handled specially during the
+  report definition phase. The "addFunction" method of JFreeReport has
+  been removed and "addExpression" should be used instead.
+
+* The old Property-configuration of the Functions and Expressions API
+  has been replaced by an reflection-driven JavaBeans API. Expression
+  properties are defined by creating suitable getter/setter methods for
+  the property following the JavaBeans specification.
+
+* The "DefaultPageFormat" of the JFreeReport object is no longer there.
+  A PageDefinition object should be given instead. So, instead of writing
+  "report.setDefaultPageFormat(fmt)" one would now write "
+  "report.setPageDefinition (new SimplePageDefinition (fmt))". Reports
+  defined by XML are not affected.
+
+  From now on the only valid source for querying the page format is the
+  report definition itself. The PageFormats constructor parameters in the
+  OutputTarget implementations have been removed with no replacement.
+
+* ResourceBundles are no longer bound to the report using the report
+  properties. A resource bundle factory is used to query the resource
+  bundles used during the report processing.
+
+* Horizontal Lines should no longer be defined using the x1==x2 && y1==y2
+  syntax (ie: Line2D.Float (0, 10, 0, 10)). Now lines use the relative
+  coordinates like all other elements (width="100%") Special factory
+  methods have been added to the StaticShapeElementFactory so that
+  vertical and horizontal lines can be generated more easily.
+
+* The LayoutManager's caching is more aggressive now. As a result elements,
+  which have their contents modified by an function must set their
+  'layout-cachable' flag to false. If an function triggers the visibility
+  of an element, the element's parent band must define the non-cachable flag.
+
+  Without this hint the layout manager will happily use the cached (and
+  possibly invalid) bounds for the element and it's parents. Elements
+  which are marked as dynamic are automaticly recognized as non-cachable.
+
+* The style inheritance changed in version 0.8.5. The explicit 'default-style'
+  of the Band class has been removed. Bands inherit their primary style to
+  all its direct and indirect childs.
+
+  Global stylesheets must now be created using
+  "JFreeReport.getStyleSheetCollection().createStyleSheet(..)". Stylesheets
+  cannot be exchanged with other reports, all global stylesheets of a certain
+  report must be created using the same StyleSheetCollection instance.
+
+* The Public and System Identifiers for the XML definitions changed in
+  JFreeReport 0.8.5.
+
+  For the extended report definition use
+
+  <!DOCTYPE report-definition
+    PUBLIC "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5"
+           "http://jfreereport.sourceforge.net/extreport-085.dtd">
+
+  and for the simple report definition use
+
+  <!DOCTYPE report
+    PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+           "http://jfreereport.sourceforge.net/report-085.dtd">
+
+* For the extended report definitions the <default-style> tag has been removed
+  and the contents of this stylesheet should be merged with the primary style
+  definition of the element.
+
+  The <default-pageformat> tag has been removed. The page format should now be
+  defined using
+
+    <report-config>
+      <page-definition>
+        <page orientation="portrait" pageformat="LETTER" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
+      </page-definition>
+      ..
+    </report-config>
+
+* For the simple report definitions, the 'ownpage' attribute of the ReportHeader
+  and footer tags have been deprecated and should be replaced by 'pagebreak-after'
+  attributes.
+
+  The 'pagebreak' attribute of the GroupHeader and GroupFooter should also be
+  replaced by 'pagebreak-before' or 'pagebreak-after' attributes.
+
+* Using 'Boot.start()' to initialize JFreeReport has been deprecated in favor
+  of the 'JFreeReportBoot' implementation. This class uses the modularization
+  framework from JCommon instead of using a completly static implementation.
+
+* Some of the internal classes, like AbstractActionButton, WaitingImageObserver
+  or the module management have been moved into JCommon.
+
+
+
 Changes from 0.8.4_4 to 0.8.4_5
 
 The PreviewBase does now handle all actions using an action map
