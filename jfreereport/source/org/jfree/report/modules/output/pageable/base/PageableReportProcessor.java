@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.22 2005/03/03 14:42:35 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.23 2005/04/17 21:09:00 taqua Exp $
  *
  * Changes
  * -------
@@ -306,12 +306,18 @@ public class PageableReportProcessor
   public synchronized void processReport ()
           throws ReportProcessingException, EmptyReportException
   {
+    final OutputTarget outputTarget = getOutputTarget();
+    if (outputTarget == null)
+    {
+      throw new NullPointerException("No output target given.");
+    }
+
     if (isPaginated() == false)
     {
       repaginate();
     }
 
-    if (getOutputTarget().isOpen() == false)
+    if (outputTarget.isOpen() == false)
     {
       throw new ReportProcessingException("Given output target is not open.");
     }
@@ -364,6 +370,12 @@ public class PageableReportProcessor
   private ReportStateList performRepaginate ()
           throws ReportProcessingException
   {
+    final OutputTarget outputTarget = getOutputTarget();
+    if (outputTarget == null)
+    {
+      throw new NullPointerException("No output target given.");
+    }
+
     try
     {
       // every report processing starts with an StartState.
@@ -373,7 +385,7 @@ public class PageableReportProcessor
       ReportStateList pageStates = null;
 
       // make sure the output target is configured
-      getOutputTarget().configure(getReport().getReportConfiguration());
+      outputTarget.configure(getReport().getReportConfiguration());
 
       // the report processing can be splitted into 2 separate processes.
       // The first is the ReportPreparation; all function values are resolved and

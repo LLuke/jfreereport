@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.12 2005/02/23 21:04:44 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.13 2005/03/24 22:24:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -142,8 +142,11 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   {
     // scale the line, is horizontal,the line is on pos 0,0 within the element
     final Rectangle2D bounds = new Rectangle2D.Float(0, (float) y1, -100, 0);
-    return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
+    final ShapeElement element =
+            createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
             true, false, true);
+    element.setDynamicContent(false);
+    return element;
   }
 
   /**
@@ -163,8 +166,10 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   {
     // scale the line, is vertical,the line is on pos 0,0 within the element
     final Rectangle2D bounds = new Rectangle2D.Float((float) x, 0, 0, -100);
-    return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 0, 100),
+    final ShapeElement element = createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 0, 100),
             true, false, true);
+    element.setDynamicContent(false);
+    return element;
   }
 
   /**
