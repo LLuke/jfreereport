@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.1 2005/05/18 00:26:31 mimil Exp $
+ * $Id: Barcode39.java,v 1.2 2005/05/18 20:00:25 mimil Exp $
  *
  * Changes (from YYYY-MM-DD)
  * -------------------------
