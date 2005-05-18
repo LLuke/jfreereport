@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubBandParsingTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
+ * $Id: SubBandParsingTest.java,v 1.3 2005/02/22 20:28:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,7 @@ import org.jfree.report.Band;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.util.ObjectUtilities;
 
 public class SubBandParsingTest extends TestCase
 {
@@ -59,7 +60,8 @@ public class SubBandParsingTest extends TestCase
 
   public void testParsing () throws Exception
   {
-    final URL url = getClass().getResource("resources/subband.xml");
+    final URL url = ObjectUtilities.getResourceRelative
+            ("resources/subband.xml", SubBandParsingTest.class);
     assertNotNull(url);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
 
@@ -79,7 +81,8 @@ public class SubBandParsingTest extends TestCase
 
   public static void main (final String[] args) throws Exception
   {
-    final URL url = new SubBandParsingTest().getClass().getResource("resources/subband.xml");
+    final URL url = ObjectUtilities.getResource
+            ("resources/subband.xml", SubBandParsingTest.class);
     assertNotNull(url);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
     final PreviewDialog dialog = new PreviewDialog(report);

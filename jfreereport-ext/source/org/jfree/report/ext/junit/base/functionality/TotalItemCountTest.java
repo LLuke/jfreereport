@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountTest.java,v 1.1 2003/11/07 20:39:57 taqua Exp $
+ * $Id: TotalItemCountTest.java,v 1.2 2003/12/21 23:49:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.function.TotalItemCountFunction;
 import org.jfree.report.function.FunctionUtilities;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class TotalItemCountTest extends TestCase
 {
@@ -149,7 +150,8 @@ public class TotalItemCountTest extends TestCase
 
   public void testGroupItemCount()
   {
-    final URL url = this.getClass().getResource(REPORT2.getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+            (REPORT2.getReportDefinition(), TotalItemCountTest.class);
     assertNotNull(url);
     JFreeReport report = null;
     try

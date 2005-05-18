@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: APReportTest.java,v 1.1 2005/03/24 23:14:10 taqua Exp $
+ * $Id: APReportTest.java,v 1.2 2005/04/11 13:35:32 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.net.URL;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.util.ObjectUtilities;
 
 public class APReportTest
 {
@@ -57,7 +58,7 @@ public class APReportTest
 
   public static void main(final String[] args) throws Exception
   {
-    final URL in = APReportTest.class.getResource(URLNAME);
+    final URL in = ObjectUtilities.getResource(URLNAME,APReportTest.class);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(in);
     TestSystem.showPreview(report);
     System.exit(0);

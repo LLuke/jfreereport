@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.4 2005/01/31 17:16:21 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.5 2005/03/04 16:58:16 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.util.Log;
 import org.jfree.util.WaitingImageObserver;
+import org.jfree.util.ObjectUtilities;
 
 public class ImageElementTest
 {
@@ -80,7 +81,8 @@ public class ImageElementTest
       throws Exception
   {
     // add an image as a report property...
-    final URL imageURL = new String().getClass().getResource("/org/jfree/report/demo/gorilla.jpg");
+    final URL imageURL = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/gorilla.jpg", ImageElementTest.class);
     final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     final Object[][] data = {{createImage(image), createImage(image), createImage(image)}};

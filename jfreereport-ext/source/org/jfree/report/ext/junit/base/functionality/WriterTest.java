@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.5 2005/02/19 16:15:47 taqua Exp $
+ * $Id: WriterTest.java,v 1.6 2005/02/19 20:12:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,7 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 import org.xml.sax.InputSource;
 
 public class WriterTest extends TestCase
@@ -65,8 +66,8 @@ public class WriterTest extends TestCase
     final ReportConverter rc = new ReportConverter();
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      final URL url = this.getClass().getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = ObjectUtilities.getResource
+        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), WriterTest.class);
       assertNotNull(url);
       final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       try
@@ -89,8 +90,8 @@ public class WriterTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      final URL url = this.getClass().getResource
-          (FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = ObjectUtilities.getResource
+          (FunctionalityTestLib.REPORTS[i].getReportDefinition(), WriterTest.class);
       assertNotNull(url);
       final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       JFreeReport report = null;

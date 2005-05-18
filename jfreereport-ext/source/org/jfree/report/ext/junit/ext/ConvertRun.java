@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConvertRun.java,v 1.1 2003/09/12 17:51:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,6 +48,7 @@ import java.net.URL;
 
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class ConvertRun
 {
@@ -56,7 +57,7 @@ public class ConvertRun
   public static void main(String[] args) throws IOException
   {
     final ReportConverter rc = new ReportConverter();
-    final URL url = ConvertRun.class.getResource(REPORTNAME);
+    final URL url = ObjectUtilities.getResourceRelative(REPORTNAME, ConvertRun.class);
     final File file =  new File("/tmp/test.xml");
     final FileOutputStream bo = new FileOutputStream(file);
     try

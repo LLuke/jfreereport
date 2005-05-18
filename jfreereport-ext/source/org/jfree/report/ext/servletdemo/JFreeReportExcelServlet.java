@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportExcelServlet.java,v 1.2 2003/08/20 19:24:58 taqua Exp $
+ * $Id: JFreeReportExcelServlet.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used to generate
@@ -90,7 +91,8 @@ public class JFreeReportExcelServlet extends HttpServlet
   {
     Log.debug("in processRequest..." + getClass());
 
-    final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
+    final URL in = ObjectUtilities.getResourceRelative
+            ("/org/jfree/report/demo/swing-icons.xml", JFreeReportExcelServlet.class);
     if (in == null)
     {
       throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

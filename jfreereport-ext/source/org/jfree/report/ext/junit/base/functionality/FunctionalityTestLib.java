@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.7 2005/01/31 17:16:36 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.8 2005/02/19 16:15:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -75,6 +75,7 @@ import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.NullOutputStream;
+import org.jfree.util.ObjectUtilities;
 
 public class FunctionalityTestLib
 {
@@ -264,7 +265,8 @@ public class FunctionalityTestLib
 
   public static JFreeReport createReport (final ReportTest reportDefinition)
   {
-    final URL url = reportDefinition.getClass().getResource(reportDefinition.getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+            (reportDefinition.getReportDefinition(), FunctionalityTestLib.class);
     if (url == null)
     {
       throw new IllegalStateException("URL is null.");

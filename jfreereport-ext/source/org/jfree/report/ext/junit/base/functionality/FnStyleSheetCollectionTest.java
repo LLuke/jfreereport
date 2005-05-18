@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FnStyleSheetCollectionTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
+ * $Id: FnStyleSheetCollectionTest.java,v 1.5 2005/01/31 17:16:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class FnStyleSheetCollectionTest extends TestCase
 {
@@ -61,7 +62,8 @@ public class FnStyleSheetCollectionTest extends TestCase
 
   public void testCollectStyleSheets ()
   {
-    final URL url = this.getClass().getResource(TEST_REPORT.getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+            (TEST_REPORT.getReportDefinition(), FnStyleSheetCollectionTest.class);
     assertNotNull(url);
     JFreeReport report = null;
     try
@@ -87,7 +89,8 @@ public class FnStyleSheetCollectionTest extends TestCase
 
   public void testCollectStyleSheetsClone ()
   {
-    final URL url = this.getClass().getResource(TEST_REPORT.getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+            (TEST_REPORT.getReportDefinition(), FnStyleSheetCollectionTest.class);
     assertNotNull(url);
     JFreeReport report = null;
     try

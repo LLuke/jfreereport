@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParseTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: ParseTest.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,7 @@ import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class ParseTest extends TestCase
 {
@@ -61,8 +62,8 @@ public class ParseTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      final URL url = this.getClass().getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = ObjectUtilities.getResource
+        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
       assertNotNull(url);
       try
       {
@@ -80,8 +81,8 @@ public class ParseTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      final URL url = this.getClass().getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = ObjectUtilities.getResource
+        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
       assertNotNull(url);
       try
       {
@@ -100,8 +101,8 @@ public class ParseTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      final URL url = this.getClass().getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = ObjectUtilities.getResource
+        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
       assertNotNull(url);
 
       final JFreeReport report = ReportGenerator.getInstance().parseReport(url);

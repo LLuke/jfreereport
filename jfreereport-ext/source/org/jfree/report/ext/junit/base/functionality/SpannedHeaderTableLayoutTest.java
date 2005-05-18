@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: SpannedHeaderTableLayoutTest.java,v 1.1 2005/04/11 14:32:48 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.html.HtmlMetaBandProducer;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class SpannedHeaderTableLayoutTest extends TestCase
 {
@@ -168,7 +169,8 @@ public class SpannedHeaderTableLayoutTest extends TestCase
 
   public JFreeReport getReport() throws Exception
   {
-    final URL url = getClass().getResource("resources/spanned-header.xml");
+    final URL url = ObjectUtilities.getResourceRelative
+            ("resources/spanned-header.xml", SpannedHeaderTableLayoutTest.class);
     assertNotNull(url);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
     return report;

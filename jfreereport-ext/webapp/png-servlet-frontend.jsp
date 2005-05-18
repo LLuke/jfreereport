@@ -4,11 +4,13 @@
                  org.jfree.report.demo.SwingIconsDemoTableModel,
                  org.jfree.report.modules.output.pageable.graphics.G2OutputTarget,
                  org.jfree.report.JFreeReport,
-                 org.jfree.report.ext.servletdemo.DemoModelProvider"%>
+                 org.jfree.report.ext.servletdemo.DemoModelProvider,
+                 org.jfree.util.ObjectUtilities"%>
 
 <%
   // initalize the report if not already done ...
-  URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
+  URL in = ObjectUtilities.getResourceRelative
+          ("/org/jfree/report/demo/swing-icons.xml", JFreeReport.class);
   if (in == null)
   {
     throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

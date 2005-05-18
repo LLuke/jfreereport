@@ -17,6 +17,7 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.html.HtmlMetaBandProducer;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class TableLayoutTest extends TestCase
 {
@@ -140,7 +141,8 @@ public class TableLayoutTest extends TestCase
 
   private JFreeReport getReport() throws Exception
   {
-    final URL url = getClass().getResource("resources/table-layout.xml");
+    final URL url = ObjectUtilities.getResource
+            ("resources/table-layout.xml", TableLayoutTest.class);
     assertNotNull(url);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
     return report;

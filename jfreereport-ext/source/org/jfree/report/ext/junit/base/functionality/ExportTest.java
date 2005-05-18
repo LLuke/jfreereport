@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.4 2003/10/11 21:34:10 taqua Exp $
+ * $Id: ExportTest.java,v 1.5 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,6 +44,7 @@ import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class ExportTest extends TestCase
 {
@@ -58,8 +59,8 @@ public class ExportTest extends TestCase
     {
       for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
       {
-        final URL url = this.getClass().getResource
-          (FunctionalityTestLib.REPORTS[i].getReportDefinition());
+        final URL url = ObjectUtilities.getResource
+          (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ExportTest.class);
         assertNotNull(url);
         Log.debug("Processing: " + url);
         final JFreeReport report = ReportGenerator.getInstance().parseReport(url);

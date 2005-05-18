@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.2 2003/09/09 10:27:59 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.3 2005/03/04 16:58:17 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used to generate
@@ -95,7 +96,8 @@ public class JFreeReportHtmlServlet extends HttpServlet
   {
     Log.debug("in processRequest..." + getClass());
 
-    final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
+    final URL in = ObjectUtilities.getResourceRelative
+            ("/org/jfree/report/demo/swing-icons.xml", JFreeReportHtmlServlet.class);
     if (in == null)
     {
       throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: JFreeReportHtmlFragmentGenerator.java,v 1.1 2005/03/10 21:26:03 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used to generate
@@ -75,7 +76,8 @@ public class JFreeReportHtmlFragmentGenerator
     {
       Log.debug("in processRequest..." + getClass());
 
-      final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
+      final URL in = ObjectUtilities.getResourceRelative
+              ("/org/jfree/report/demo/swing-icons.xml", JFreeReportHtmlFragmentGenerator.class);
       if (in == null)
       {
         throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

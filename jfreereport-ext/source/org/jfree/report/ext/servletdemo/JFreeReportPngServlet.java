@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.5 2005/01/31 17:16:53 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.6 2005/03/04 17:20:10 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import com.keypoint.PngEncoder;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A Sample HttpServlet to show how JFreeReports can be used to generate
@@ -115,7 +116,8 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
     final BufferedImage image;
     try
     {
-      final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
+      final URL in = ObjectUtilities.getResourceRelative
+              ("/org/jfree/report/demo/swing-icons.xml", JFreeReportPngServlet.class);
       if (in == null)
       {
         throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

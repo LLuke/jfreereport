@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.4 2003/12/21 23:49:22 taqua Exp $
+ * $Id: TotalGroupCountTest.java,v 1.5 2005/02/22 20:28:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,7 @@ import org.jfree.report.function.TotalGroupCountFunction;
 import org.jfree.report.demo.SampleData1;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class TotalGroupCountTest extends TestCase
 {
@@ -126,7 +127,8 @@ public class TotalGroupCountTest extends TestCase
 
   public void testGroupCount()
   {
-    final URL url = this.getClass().getResource(REPORT2.getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+            (REPORT2.getReportDefinition(), TotalGroupCountTest.class);
     assertNotNull(url);
     JFreeReport report = null;
     try

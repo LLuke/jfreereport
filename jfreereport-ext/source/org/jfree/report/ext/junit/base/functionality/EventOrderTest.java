@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.6 2005/01/31 17:16:36 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.7 2005/02/22 20:28:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,6 +53,7 @@ import org.jfree.report.function.EventMonitorFunction;
 import org.jfree.report.function.PageFunction;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class EventOrderTest extends TestCase
 {
@@ -404,8 +405,8 @@ public class EventOrderTest extends TestCase
   public void testPageCount() throws Exception
   {
     JFreeReport report = null;
-    final URL url = this.getClass().getResource
-      (FunctionalityTestLib.REPORTS[2].getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+      (FunctionalityTestLib.REPORTS[2].getReportDefinition(), EventOrderTest.class);
     assertNotNull(url);
     report = ReportGenerator.getInstance().parseReport(url);
     report.setData(FunctionalityTestLib.REPORTS[2].getReportTableModel());

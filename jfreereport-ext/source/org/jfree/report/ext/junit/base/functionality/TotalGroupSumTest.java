@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumTest.java,v 1.5 2003/12/21 23:49:22 taqua Exp $
+ * $Id: TotalGroupSumTest.java,v 1.6 2005/02/23 21:37:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.function.TotalGroupSumFunction;
 import org.jfree.report.function.FunctionUtilities;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class TotalGroupSumTest extends TestCase
 {
@@ -153,7 +154,8 @@ public class TotalGroupSumTest extends TestCase
 
   public void testGroupSumTest()
   {
-    final URL url = this.getClass().getResource(REPORT2.getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+            (REPORT2.getReportDefinition(), TotalGroupSumTest.class);
     assertNotNull(url);
     JFreeReport report = null;
     try

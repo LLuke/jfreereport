@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.5 2003/11/01 19:57:02 taqua Exp $
+ * $Id: TestSystem.java,v 1.6 2005/01/31 17:16:23 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ObjectUtilities;
 
 public final class TestSystem
 {
@@ -55,7 +56,7 @@ public final class TestSystem
 
   public static JFreeReport loadReport(final String urlname, final TableModel data)
   {
-    final URL in = new String().getClass().getResource(urlname);
+    final URL in = ObjectUtilities.getResource(urlname, TestSystem.class);
     if (in == null)
     {
       Log.error("xml file not found.");

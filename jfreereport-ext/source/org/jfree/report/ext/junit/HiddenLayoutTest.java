@@ -2,7 +2,7 @@
  * Date: Feb 20, 2003
  * Time: 9:00:04 PM
  *
- * $Id: HiddenLayoutTest.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
+ * $Id: HiddenLayoutTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
  */
 package org.jfree.report.ext.junit;
 
@@ -16,6 +16,7 @@ import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class HiddenLayoutTest
 {
@@ -25,7 +26,8 @@ public class HiddenLayoutTest
   protected JFreeReport previewReport2()
   {
     JFreeReport report = null;
-    final URL in = getClass().getResource("/org/jfree/report/demo/report3.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/report3.xml", HiddenLayoutTest.class);
     report = parseReport(in);
     report.setData(new SampleData2());
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.5 2005/01/31 17:16:37 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.6 2005/03/04 16:58:17 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -63,6 +63,7 @@ import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.report.util.Log;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
+import org.jfree.util.ObjectUtilities;
 
 public class PlainTextExportTest extends TestCase
 {
@@ -100,7 +101,8 @@ public class PlainTextExportTest extends TestCase
   public void testExport ()
     throws Exception
   {
-    final URL url = this.getClass().getResource(TEST_REPORT.getReportDefinition());
+    final URL url = ObjectUtilities.getResource
+            (TEST_REPORT.getReportDefinition(), PlainTextExportTest.class);
     assertNotNull(url);
     JFreeReport report = null;
     try

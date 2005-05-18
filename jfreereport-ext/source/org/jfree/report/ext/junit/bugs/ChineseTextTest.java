@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ChineseTextTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
+ * $Id: ChineseTextTest.java,v 1.5 2005/01/31 17:16:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class ChineseTextTest
 {
@@ -139,8 +140,8 @@ public class ChineseTextTest
     */
 
     final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/chinese-text.xml";
-    final URL in = new Integer(0).getClass().getResource(URLNAME);
-    JFreeReport report = ReportGenerator.getInstance().parseReport(in);
+    final URL in = ObjectUtilities.getResource(URLNAME, ChineseTextTest.class);
+    final JFreeReport report = ReportGenerator.getInstance().parseReport(in);
     Log.debug ("" + report.getReportHeader().getElementCount());
     Element[] e = report.getReportHeader().getElementArray();
     for (int i = 0; i < e.length; i++)

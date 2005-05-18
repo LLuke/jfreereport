@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicJFreeChartDemo.java,v 1.3 2005/02/19 20:12:23 taqua Exp $
+ * $Id: BasicJFreeChartDemo.java,v 1.4 2005/03/10 21:25:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,6 +61,7 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.Rotation;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
@@ -255,7 +256,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
   {
     try
     {
-      final URL url = getClass().getResource(resourceName);
+      final URL url = ObjectUtilities.getResourceRelative(resourceName, BasicJFreeChartDemo.class);
       final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
 
       // create a dataset...

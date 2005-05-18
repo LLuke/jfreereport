@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.5 2003/11/01 19:57:03 taqua Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.6 2005/03/30 22:47:05 mimil Exp $
  *
  * Changes 
  * -------------------------
@@ -50,6 +50,7 @@ import junit.framework.TestCase;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.ObjectUtilities;
 
 public class EncodingComboBoxModelTest extends TestCase
 {
@@ -152,7 +153,8 @@ public class EncodingComboBoxModelTest extends TestCase
     final String encFile = ReportConfiguration.getGlobalConfig().getConfigProperty
         (EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE, 
          EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE_DEFAULT);
-    final InputStream in = this.getClass().getResourceAsStream(encFile);
+    final InputStream in = ObjectUtilities.getResourceAsStream
+            (encFile, EncodingComboBoxModelTest.class);
     if (in == null)
     {
       fail ("The specified encodings definition file was not found: " + encFile);
