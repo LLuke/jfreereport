@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.12 2005/02/23 21:05:57 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.13 2005/03/18 13:49:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
 import org.jfree.report.modules.parser.simple.readhandlers.JFreeReportReadHandler;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Handles the initalisation of the simple parser module. This contains support for the
@@ -87,8 +88,10 @@ public class SimpleParserModuleInit implements ModuleInitializer
   {
     final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
-    final URL urlReportDTD = res.getClass().getResource
-            ("/org/jfree/report/modules/parser/simple/resources/report-085.dtd");
+    final URL urlReportDTD = ObjectUtilities.getResource
+            ("/org/jfree/report/modules/parser/simple/resources/report-085.dtd",
+                    SimpleParserModuleInit.class);
+
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);
 
     res.setDeprecatedDTDMessage(PUBLIC_ID_SIMPLE_084,

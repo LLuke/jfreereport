@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.13 2005/02/23 21:04:49 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.14 2005/03/25 16:37:54 taqua Exp $
  *
  * Changes
  * --------
@@ -53,6 +53,7 @@ import javax.swing.event.ListDataListener;
 import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A model for the 'encoding' combo box. This combobox model presents a selection for all
@@ -742,7 +743,8 @@ public class EncodingComboBoxModel implements ComboBoxModel
     else if (availEncs.equals(AVAILABLE_ENCODINGS_FILE))
     {
       final String encFile = getEncodingsDefinitionFile();
-      final InputStream in = ecb.getClass().getResourceAsStream(encFile);
+      final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+              (encFile, EncodingComboBoxModel.class);
       if (in == null)
       {
         Log.warn(new Log.SimpleMessage

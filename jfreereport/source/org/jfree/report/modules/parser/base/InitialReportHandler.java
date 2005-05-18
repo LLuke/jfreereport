@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.9 2005/02/04 19:07:13 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.10 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -136,8 +137,7 @@ public class InitialReportHandler implements XmlReadHandler
   {
     try
     {
-      final Class handler = Class.forName(className);
-      return (XmlReadHandler) handler.newInstance();
+      return (XmlReadHandler) ObjectUtilities.loadAndInstantiate(className, InitialReportHandler.class);
     }
     catch (Exception e)
     {

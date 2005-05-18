@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.10 2005/03/03 22:59:58 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.11 2005/03/16 21:06:39 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.util.WaitingImageObserver;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
@@ -146,7 +147,8 @@ public class OpenSourceDemo extends AbstractDemoFrame
 
   protected JFreeReport parseReport ()
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/OpenSourceDemo.xml", OpenSourceDemo.class);
 
     if (in == null)
     {
@@ -167,7 +169,8 @@ public class OpenSourceDemo extends AbstractDemoFrame
       //config.setEnableExportHTML(false);
 
       // add an image as a report property...
-      final URL imageURL = getClass().getResource("/org/jfree/report/demo/gorilla.jpg");
+      final URL imageURL = ObjectUtilities.getResource
+              ("/org/jfree/report/demo/gorilla.jpg", OpenSourceDemo.class);
       final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
       final WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.4 2005/04/15 19:52:26 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.5 2005/04/17 21:08:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -57,6 +57,7 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.util.ObjectUtilities;
 
 public class DemoFrontend extends AbstractDemoFrame
 {
@@ -160,7 +161,8 @@ public class DemoFrontend extends AbstractDemoFrame
 
   private RunDemoAction[] createDemoActions ()
   {
-    final InputStream in = getClass().getResourceAsStream("demos.properties");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("demos.properties", DemoFrontend.class);
     if (in == null)
     {
       Log.warn("Missing resource: demos.properties");
@@ -175,6 +177,7 @@ public class DemoFrontend extends AbstractDemoFrame
       final ArrayList list = new ArrayList();
 
       final int size = Integer.parseInt(p.getProperty("size"));
+      final ClassLoader cl = ObjectUtilities.getClassLoader(DemoFrontend.class);
       for (int i = 0; i < size; i++)
       {
         final String name = p.getProperty("demo." + i + ".name");
@@ -184,7 +187,7 @@ public class DemoFrontend extends AbstractDemoFrame
         {
           continue;
         }
-        final Class c = Class.forName(className);
+        final Class c = cl.loadClass(className);
         list.add(new RunDemoAction(name, c, description));
       }
 

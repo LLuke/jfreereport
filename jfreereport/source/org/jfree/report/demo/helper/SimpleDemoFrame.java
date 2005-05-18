@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleDemoFrame.java,v 1.4 2005/03/03 22:59:59 taqua Exp $
+ * $Id: SimpleDemoFrame.java,v 1.5 2005/04/15 16:10:41 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,7 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.xml.ElementDefinitionException;
+import org.jfree.util.ObjectUtilities;
 
 public abstract class SimpleDemoFrame extends AbstractDemoFrame
 {
@@ -191,7 +192,7 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
   protected JFreeReport loadReport (final String resourceName)
           throws IOException, ElementDefinitionException
   {
-    final URL in = getClass().getResource(resourceName);
+    final URL in = ObjectUtilities.getResource(resourceName, SimpleDemoFrame.class);
     if (in == null)
     {
       throw new FileNotFoundException(resourceName);

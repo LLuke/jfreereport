@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTableFactory.java,v 1.8 2005/01/25 00:05:27 taqua Exp $
+ * $Id: TranslationTableFactory.java,v 1.9 2005/02/23 21:04:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import java.util.Properties;
 
 import org.jfree.report.util.CSVTokenizer;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The translation table factory is responsible for building the contexts and reading the
@@ -202,7 +203,8 @@ public final class TranslationTableFactory
    */
   private void loadTranslationSpecs ()
   {
-    final InputStream in = this.getClass().getResourceAsStream("translations.properties");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("translations.properties", TranslationTableFactory.class);
     if (in == null)
     {
       Log.warn("Unable to locate the resource 'translations.properties'");
@@ -223,7 +225,8 @@ public final class TranslationTableFactory
    */
   private void loadContextMap ()
   {
-    final InputStream in = this.getClass().getResourceAsStream("contextmap.properties");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("contextmap.properties", TranslationTableFactory.class);
     if (in == null)
     {
       Log.warn("Unable to locate the resource 'contextmap.properties'");

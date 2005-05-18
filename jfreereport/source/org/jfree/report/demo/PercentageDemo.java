@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.6 2005/01/24 23:58:36 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.7 2005/02/23 21:04:38 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,7 @@ import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A simple report where column 3 displays (column 1 / column 2) as a percentage.
@@ -146,7 +147,8 @@ public class PercentageDemo extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/PercentageDemo.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/PercentageDemo.xml", PercentageDemo.class);
 
     if (in == null)
     {

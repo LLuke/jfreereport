@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.9 2005/02/04 19:22:54 taqua Exp $
+ * $Id: BSHExpression.java,v 1.10 2005/02/23 21:05:03 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -52,6 +52,7 @@ import bsh.Interpreter;
 import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.function.Expression;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * An expression that uses the BeanShell scripting framework to perform a scripted
@@ -125,7 +126,8 @@ public class BSHExpression extends AbstractExpression implements Serializable
     final Interpreter interpreter = new Interpreter();
     try
     {
-      final InputStream in = getClass().getResourceAsStream("BSHExpressionHeader.txt");
+      final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+              ("BSHExpressionHeader.txt", BSHExpression.class);
       // read the header, creates a skeleton
       final Reader r = new InputStreamReader(new BufferedInputStream(in));
       interpreter.eval(r);

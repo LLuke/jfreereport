@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.7 2005/02/23 21:04:29 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.8 2005/03/16 21:06:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,6 +49,7 @@ import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.resourceloader.JPEGImageFactoryModule;
 import org.jfree.report.resourceloader.PNGImageFactoryModule;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 
 /**
@@ -72,8 +73,8 @@ public class JFreeReportCoreModule extends AbstractModule
   public JFreeReportCoreModule ()
           throws ModuleInitializeException
   {
-    final InputStream in = getClass().getResourceAsStream
-            ("coremodule.properties");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("coremodule.properties", JFreeReportCoreModule.class);
     if (in == null)
     {
       throw new ModuleInitializeException

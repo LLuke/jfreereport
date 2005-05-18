@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLogModule.java,v 1.5 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DefaultLogModule.java,v 1.6 2005/03/09 21:13:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,7 @@ import org.jfree.base.modules.SubSystem;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.SystemOutLogTarget;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The module definition for the System.out-Logging. This is the default log
@@ -65,8 +66,8 @@ public class DefaultLogModule extends AbstractModule
   public DefaultLogModule ()
           throws ModuleInitializeException
   {
-    final InputStream in = getClass().getResourceAsStream
-            ("logmodule.properties");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("logmodule.properties", DefaultLogModule.class);
     if (in == null)
     {
       throw new ModuleInitializeException

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalFrameDemo.java,v 1.8 2005/02/23 21:04:37 taqua Exp $
+ * $Id: InternalFrameDemo.java,v 1.9 2005/03/03 22:59:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,6 +66,7 @@ import org.jfree.report.modules.gui.base.PreviewInternalFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.util.WaitingImageObserver;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
@@ -170,7 +171,8 @@ public class InternalFrameDemo extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/OpenSourceDemo.xml", InternalFrameDemo.class);
 
     if (in == null)
     {
@@ -187,7 +189,8 @@ public class InternalFrameDemo extends AbstractDemoFrame
       report.setData(this.data);
 
       // add an image as a report property...
-      final URL imageURL = getClass().getResource("/org/jfree/report/demo/gorilla.jpg");
+      final URL imageURL = ObjectUtilities.getResource
+              ("/org/jfree/report/demo/gorilla.jpg", InternalFrameDemo.class);
       final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
       final WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();

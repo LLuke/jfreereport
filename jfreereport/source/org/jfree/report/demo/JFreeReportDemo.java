@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.9 2005/01/24 23:58:21 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.10 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -84,6 +84,7 @@ import org.jfree.ui.about.AboutFrame;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The main frame in the report demonstration application. This demo has huge reports
@@ -473,7 +474,7 @@ public class JFreeReportDemo extends AbstractDemoFrame
    */
   public void preview (final String urlname, final TableModel data)
   {
-    final URL in = getClass().getResource(urlname);
+    final URL in = ObjectUtilities.getResourceRelative(urlname, JFreeReport.class);
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,

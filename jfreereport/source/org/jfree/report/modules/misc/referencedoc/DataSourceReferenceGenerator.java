@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceGenerator.java,v 1.6 2005/01/25 00:09:05 taqua Exp $
+ * $Id: DataSourceReferenceGenerator.java,v 1.7 2005/02/23 21:05:22 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -47,6 +47,7 @@ import org.jfree.report.modules.output.table.html.HtmlReportUtil;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * An application that generates a report that provides style key reference information.
@@ -89,7 +90,8 @@ public final class DataSourceReferenceGenerator
   public static void main (final String[] args)
   {
     final ReportGenerator gen = ReportGenerator.getInstance();
-    final URL reportURL = DataSourceReferenceGenerator.class.getResource(REFERENCE_REPORT);
+    final URL reportURL = ObjectUtilities.getResourceRelative
+            (REFERENCE_REPORT, DataSourceReferenceGenerator.class);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");

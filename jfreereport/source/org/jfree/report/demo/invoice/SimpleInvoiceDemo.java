@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleInvoiceDemo.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
+ * $Id: SimpleInvoiceDemo.java,v 1.3 2005/02/23 21:04:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -63,6 +63,7 @@ import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.util.ObjectUtilities;
 
 public class SimpleInvoiceDemo extends AbstractDemoFrame
 {
@@ -154,7 +155,8 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/invoice/invoice.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/invoice/invoice.xml", SimpleInvoiceDemo.class);
 
     if (in == null)
     {

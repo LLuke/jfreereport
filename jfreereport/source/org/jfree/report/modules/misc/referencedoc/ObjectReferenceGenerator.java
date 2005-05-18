@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.7 2005/01/25 00:09:05 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.8 2005/02/23 21:05:23 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -49,6 +49,7 @@ import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceF
 import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * An application that creates a report documenting the object references.
@@ -94,7 +95,8 @@ public final class ObjectReferenceGenerator
   {
 
     final ReportGenerator gen = ReportGenerator.getInstance();
-    final URL reportURL = ObjectReferenceGenerator.class.getResource(REFERENCE_REPORT);
+    final URL reportURL = ObjectUtilities.getResourceRelative
+            (REFERENCE_REPORT, ObjectReferenceGenerator.class);
     if (reportURL == null)
     {
       System.err.println("The report was not found in the classpath");

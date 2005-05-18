@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.14 2005/03/03 17:07:54 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.15 2005/03/10 19:08:41 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,7 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ParseException;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without
@@ -84,7 +85,8 @@ public class StraightToEverything
   public StraightToEverything (final String filename)
           throws ParseException
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/OpenSourceDemo.xml", StraightToEverything.class);
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);

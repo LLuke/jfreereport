@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: TypeMapper.java,v 1.3 2005/03/03 23:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,12 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 
+import org.jfree.util.ObjectUtilities;
+import org.jfree.report.demo.DemoFrontend;
+
 /**
  * @author $Author: taqua $
- * @version $Id: TypeMapper.java,v 1.2 2005/01/25 01:25:39 taqua Exp $
+ * @version $Id: TypeMapper.java,v 1.3 2005/03/03 23:00:01 taqua Exp $
  */
 public class TypeMapper
 {
@@ -139,6 +142,7 @@ public class TypeMapper
       return null;
     }
 
+    final ClassLoader cl = ObjectUtilities.getClassLoader(DemoFrontend.class);
     for (int i = 0; i < types.length; i++)
     {
       try
@@ -146,7 +150,7 @@ public class TypeMapper
         try
         {
           final String tn = rsmd.getColumnClassName(i + 1);
-          types[i] = Class.forName(tn);
+          types[i] = cl.loadClass(tn);
         }
         catch (Exception oops)
         {

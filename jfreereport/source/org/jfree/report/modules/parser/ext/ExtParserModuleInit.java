@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.12 2005/02/23 21:05:38 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.13 2005/03/18 13:49:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
 import org.jfree.report.modules.parser.ext.readhandlers.ReportDefinitionReadHandler;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Performs the module initialization for the extended parser.
@@ -78,7 +79,9 @@ public class ExtParserModuleInit implements ModuleInitializer
   {
     final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
-    final URL urlExtReportDTD = res.getClass().getResource("/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd");
+    final URL urlExtReportDTD = ObjectUtilities.getResource
+            ("/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd",
+                    ExtParserModuleInit.class);
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
     res.setDeprecatedDTDMessage(PUBLIC_ID_EXTENDED_084,
             "The given public identifier for the XML document is deprecated. " +

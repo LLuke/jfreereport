@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PrinterSpecificationManager.java,v 1.5 2005/03/03 23:00:01 taqua Exp $
+ * $Id: PrinterSpecificationManager.java,v 1.6 2005/03/04 12:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.HashMap;
 
 import org.jfree.util.DefaultConfiguration;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class PrinterSpecificationManager
         extends AbstractPrinterSpecificationLoader
@@ -127,7 +128,8 @@ public class PrinterSpecificationManager
 
   public void load (final String resourceName)
   {
-    final InputStream in = getClass().getResourceAsStream(resourceName);
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            (resourceName, PrinterSpecificationManager.class);
     if (in == null)
     {
       Log.error("Printer definition is missing: " + resourceName);

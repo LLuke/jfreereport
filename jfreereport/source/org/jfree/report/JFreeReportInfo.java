@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.24 2005/03/24 22:24:53 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.25 2005/04/15 18:46:58 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,6 +45,7 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.base.Library;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.Licences;
@@ -104,7 +105,8 @@ public class JFreeReportInfo extends ProjectInfo
   {
     try
     {
-      return (Library) Class.forName("org.jfree.pixie.PixieInfo").newInstance();
+      return (Library) ObjectUtilities.loadAndInstantiate
+              ("org.jfree.pixie.PixieInfo", JFreeReportInfo.class);
     }
     catch (Exception e)
     {

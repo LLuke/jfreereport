@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.7 2004/05/07 08:14:23 mungady Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.8 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A report configuration that reads its values from the jfreereport.properties file.
@@ -57,7 +59,8 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
    */
   public void load (final String fileName)
   {
-    final InputStream in = this.getClass().getResourceAsStream(fileName);
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            (fileName, PropertyFileReportConfiguration.class);
     if (in != null)
     {
       load(in);

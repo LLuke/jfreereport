@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.7 2005/02/23 21:04:39 taqua Exp $
+ * $Id: StraightToXML.java,v 1.8 2005/03/10 19:08:43 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import org.jfree.report.modules.output.xml.XMLProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.xml.ParseException;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A demonstration that shows how to generate a report and save it to XML without
@@ -69,7 +70,8 @@ public class StraightToXML
   public StraightToXML (final String filename)
           throws ParseException
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/OpenSourceDemo.xml", StraightToXML.class);
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);

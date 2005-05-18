@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.6 2005/01/25 00:20:33 taqua Exp $
+ * $Id: ReportConverter.java,v 1.7 2005/02/23 21:05:56 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,7 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A utility class for converting XML report definitions from the old format to the new
@@ -124,7 +125,7 @@ public class ReportConverter
   public URL findReport (final String name)
           throws IOException
   {
-    final URL in = getClass().getResource(name);
+    final URL in = ObjectUtilities.getResource(name, ReportConverter.class);
     if (in != null)
     {
       return in;

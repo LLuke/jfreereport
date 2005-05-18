@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVReaderDemo.java,v 1.3 2005/02/23 21:04:37 taqua Exp $
+ * $Id: CSVReaderDemo.java,v 1.4 2005/03/03 21:50:38 taqua Exp $
  *
  * $Log: CSVReaderDemo.java,v $
+ * Revision 1.4  2005/03/03 21:50:38  taqua
+ * Resolved some warnings for Eclipse configured with paranoid compile settings.
+ *
  * Revision 1.3  2005/02/23 21:04:37  taqua
  * More build process fixes - ready for JDK 1.2.2 now
  *
@@ -85,6 +88,7 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Demo that show how to use <code>CSVTableModelProducer</code> to generate
@@ -163,7 +167,8 @@ public class CSVReaderDemo extends AbstractDemoFrame
   protected void attemptFileApiPreview ()
           throws IOException
   {
-    this.data = new CSVTableModelProducer(getClass().getResource("/org/jfree/report/ext/input/file.csv")
+    this.data = new CSVTableModelProducer(ObjectUtilities.getResource
+            ("/org/jfree/report/ext/input/file.csv", CSVReaderDemo.class)
             .openStream()).getTableModel();
     this.attemptPreview();
   }

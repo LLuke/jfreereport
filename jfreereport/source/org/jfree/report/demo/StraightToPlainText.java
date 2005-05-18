@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.11 2005/01/25 21:40:09 taqua Exp $
+ * $Id: StraightToPlainText.java,v 1.1 2005/04/15 18:59:51 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.WaitingImageObserver;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;
 
 /**
@@ -71,7 +72,8 @@ public class StraightToPlainText
   public StraightToPlainText (final String filename)
           throws ParseException
   {
-    final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
+    final URL in = ObjectUtilities.getResource
+            ("/org/jfree/report/demo/OpenSourceDemo.xml", StraightToPlainText.class);
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);
@@ -93,7 +95,8 @@ public class StraightToPlainText
     try
     {
       final JFreeReport report = generator.parseReport(templateURL);
-      final URL imageURL = getClass().getResource("/org/jfree/report/demo/gorilla.jpg");
+      final URL imageURL = ObjectUtilities.getResource
+              ("/org/jfree/report/demo/gorilla.jpg", StraightToPlainText.class);
       final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
       final WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();

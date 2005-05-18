@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.13 2005/02/23 21:04:51 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.14 2005/03/03 18:08:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -90,6 +90,7 @@ import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.util.ResourceBundleSupport;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The ConfigEditor can be used to edit the global jfreereport.properties files. These
@@ -347,7 +348,8 @@ public class ConfigEditor extends JFrame
   private JComponent createEntryTree ()
           throws ConfigTreeModelException
   {
-    final InputStream in = getClass().getResourceAsStream("config-description.xml");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("config-description.xml", ConfigEditor.class);
     if (in == null)
     {
       throw new IllegalStateException("Missing resource 'config-description.xml'");

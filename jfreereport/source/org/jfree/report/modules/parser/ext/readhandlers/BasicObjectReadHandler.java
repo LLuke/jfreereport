@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: BasicObjectReadHandler.java,v 1.5 2005/03/03 23:00:20 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.jfree.xml.parser.coretypes.StringReadHandler;
+import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -132,7 +133,8 @@ public class BasicObjectReadHandler extends AbstractPropertyXmlReadHandler
     {
       try
       {
-        final Class clazz = Class.forName(attrClass);
+        final ClassLoader loader = ObjectUtilities.getClassLoader(BasicObjectReadHandler.class);
+        final Class clazz = loader.loadClass(attrClass);
         objectDescription = ObjectFactoryUtility.findDescription(classFactory, clazz);
       }
       catch (ClassNotFoundException e)
