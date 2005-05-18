@@ -29,9 +29,9 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.1 2005/05/18 00:25:13 mimil Exp $
+ * $Id: Barcode1D.java,v 1.2 2005/05/18 19:59:16 mimil Exp $
  *
- * Changes (from 2005-04-28)
+ * Changes (from 2005-04-28) (CP)
  * -------------------------
  *
  */
@@ -45,6 +45,8 @@ import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.layout.DefaultSizeCalculator;
@@ -124,6 +126,14 @@ public abstract class Barcode1D implements ExtendedDrawable
    * If values not configured have to be automaticaly computed.
    */
   private boolean autoCompute = false;
+  /**
+   * If the symbol table has be filled.
+   */
+  private boolean encoded = false;
+  /**
+   * Table holding symbols to be drawn.
+   */
+  private List codeTable;
 
 
   protected Barcode1D (final String code)
@@ -135,6 +145,7 @@ public abstract class Barcode1D implements ExtendedDrawable
     this.code = code;
     font = new FontDefinition("SansSerif", 10);
     margins = new Insets(10, 10, 10, 10);
+    codeTable = new ArrayList();
   }
 
   /**
@@ -582,7 +593,6 @@ public abstract class Barcode1D implements ExtendedDrawable
    *
    * @return The bars bounds initialized on <code>x=0</code> and <code>y=0</code>.
    */
-  //todo: use autoCompute
   abstract public Rectangle2D getBarBounds ();
 
   /**
@@ -685,6 +695,11 @@ public abstract class Barcode1D implements ExtendedDrawable
    */
   public void draw (Graphics2D g2, Rectangle2D area)
   {
+    if (!isEncoded())
+    {
+      encode();
+    }
+
     final Rectangle2D codeBounds = getCodeBounds();
     final Rectangle2D barBounds = getBarBounds();
     final Rectangle2D barcodeBounds = getBarcodeBounds(codeBounds, barBounds);
@@ -732,6 +747,11 @@ public abstract class Barcode1D implements ExtendedDrawable
    */
   public Dimension getPreferredSize ()
   {
+    if (!isEncoded())
+    {
+      encode();
+    }
+
     final Rectangle2D codeBounds = getCodeBounds();
     final Rectangle2D barBounds = getBarBounds();
     final Rectangle2D barcodeBounds = getBarcodeBounds(codeBounds, barBounds);
@@ -740,5 +760,59 @@ public abstract class Barcode1D implements ExtendedDrawable
             (int) barcodeBounds.getHeight() + margins.top + margins.bottom);
   }
 
+  /**
+   * Encodes the characters code in the symbols code.
+   */
+  abstract public void encode ();
 
+  /**
+   * Tells if the string code has been encoded to symbols.
+   *
+   * @return Boolean.
+   */
+  public boolean isEncoded ()
+  {
+    return encoded;
+  }
+
+  /**
+   * Sets if the string code has been encoded to symbols.
+   *
+   * @param encoded Boolean.
+   */
+  public void setEncoded (boolean encoded)
+  {
+    this.encoded = encoded;
+  }
+
+  /**
+   * Returns the symbols table.
+   *
+   * @return The symbols table.
+   */
+  public List getCodeTable ()
+  {
+    return codeTable;
+  }
+
+  /**
+   * Sets the symbols table.
+   *
+   * @param codeTable The symbols table.
+   */
+  public void setCodeTable (List codeTable)
+  {
+    this.codeTable = codeTable;
+  }
+
+  /**
+   * Returns true, if this drawable will preserve an aspect ratio during the drawing.
+   *
+   * @return true, if an aspect ratio is preserved, false otherwise.
+   */
+  //todo: me
+  public boolean isPreserveAspectRatio ()
+  {
+    return false;
+  }
 }

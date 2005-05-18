@@ -29,9 +29,9 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.2 2005/05/18 20:00:25 mimil Exp $
+ * $Id: Barcode39.java,v 1.3 2005/05/18 20:10:49 mimil Exp $
  *
- * Changes (from YYYY-MM-DD)
+ * Changes (from 2005-05-17) (CP)
  * -------------------------
  *
  */
@@ -40,18 +40,26 @@ package org.jfree.report.dev.barcode.base;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.report.dev.barcode.Barcode1D;
 
+/**
+ * Encodes a string into code39 specifications
+ * <p/>
+ * Symbols allowed: 0-9 A-Z $ % * + - . / space <br> Start character: yes, in the symbols
+ * table (*) <br> Stop character: yes, in the symbols table (*) <br> Check character:
+ * available
+ * <p/>
+ * Also know as: - USD3 - 3of9 - HIBC - LOGMARS
+ *
+ * @author Mimil
+ */
+//todo: check if * is allowed as input
 public class Barcode39 extends Barcode1D
 {
 
-  /**
-   * Table holding symbols to be drawn.
-   */
-  private List codeTable;
+
   /**
    * Characters allowed.
    */
@@ -128,7 +136,6 @@ public class Barcode39 extends Barcode1D
   {
     super(code);
     isValidInput(code);
-    codeTable = new ArrayList();
   }
 
   /**
@@ -136,7 +143,8 @@ public class Barcode39 extends Barcode1D
    */
   public void encode ()
   {
-    String code = getCode();
+    final String code = getCode();
+    final List codeTable = getCodeTable();
 
     //always have start and stop characters
     if (!isStartStopPresent(code))
@@ -150,11 +158,19 @@ public class Barcode39 extends Barcode1D
       codeTable.add(bytes);
     }
 
+    if (isAppendedChecksum())
+    {
+      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(checksum))];
+      codeTable.add(bytes);
+    }
+
     //always have start and stop characters
     if (!isStartStopPresent(code))
     {
       codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
     }
+
+    setEncoded(true);
   }
 
   /**
@@ -178,7 +194,7 @@ public class Barcode39 extends Barcode1D
     for (int i = 0; i < code.length(); i++)
     {
       int character = CHARTABLE.indexOf(code.charAt(i));
-      if (character == -1)
+      if (character == -1)  //not found
       {
         return false;
       }
@@ -271,7 +287,12 @@ public class Barcode39 extends Barcode1D
    */
   public Rectangle2D getBarBounds ()
   {
-    int nbChars = codeTable.size();
+    if (!isEncoded())
+    {
+      encode();
+    }
+
+    int nbChars = getCodeTable().size();
     float width = nbChars * (3 * getNarrowToWide() + 6) * getBarWidth() + (nbChars - 1) * getBarWidth();
 
     return new Rectangle2D.Double(0, 0, width, getBarHeight());
@@ -284,39 +305,47 @@ public class Barcode39 extends Barcode1D
    */
   public void drawBars (Graphics2D g2)
   {
+    if (!isEncoded())
+    {
+      encode();
+    }
+
+    int currentX = 0;
+
+    for (int i = 0; i < getCodeTable().size(); i++)
+    {
+      final byte[] bytes = (byte[]) getCodeTable().get(i);
+
+      for (int j = 0; j < bytes.length; j++)
+      {
+        if (j % 2 == 0)  // bar
+        {
+          if (bytes[j] == 0) //narrow
+          {
+            g2.drawLine(currentX, 0, currentX += getBarWidth(), (int) getBarHeight());
+          }
+          else  //wide
+          {
+            g2.drawLine(currentX, 0, currentX += getBarWidth() * getNarrowToWide(), (int) getBarHeight());
+          }
+        }
+        else  // space
+        {
+          if (j % 2 == 0)  //narrow
+          {
+            currentX += getBarWidth();
+          }
+          else  //wide
+          {
+            currentX += getBarWidth() * getNarrowToWide();
+          }
+        }
+
+        currentX += getBarWidth();  //the inter character gap
+      }
+    }
   }
 
-
-  /**
-   * Returns true, if this drawable will preserve an aspect ratio during the drawing.
-   *
-   * @return true, if an aspect ratio is preserved, false otherwise.
-   */
-  public boolean isPreserveAspectRatio ()
-  {
-    return false;
-  }
-
-
-  /**
-   * Returns the symbols table.
-   *
-   * @return The symbols table.
-   */
-  public List getCodeTable ()
-  {
-    return codeTable;
-  }
-
-  /**
-   * Sets the symbols table.
-   *
-   * @param codeTable The symbols table.
-   */
-  public void setCodeTable (List codeTable)
-  {
-    this.codeTable = codeTable;
-  }
 
   public char getChecksum ()
   {
@@ -344,21 +373,54 @@ public class Barcode39 extends Barcode1D
     this.showStartStop = showStartStop;
   }
 
+  /**
+   * Tells if the checksum have to be computed and added to the symbol.
+   *
+   * @return Boolean.
+   */
   public boolean isAppendedChecksum ()
   {
     return appendedChecksum;
   }
 
+  /**
+   * Sets if the checksum have to be computed and added to the symbol.<br> If it is set to
+   * <code>true</code>, the checksum is computed.
+   *
+   * @param appendedChecksum Boolean.
+   */
   public void setAppendedChecksum (boolean appendedChecksum)
   {
     this.appendedChecksum = appendedChecksum;
+    if (appendedChecksum == true)
+    {
+      final String code = getCode();
+
+      int index = CHARTABLE.indexOf('*') * 2;
+      for (int i = 0; i < code.length(); i++)
+      {
+        index += CHARTABLE.indexOf(code.charAt(i));
+      }
+
+      checksum = CHARTABLE.charAt(index % 43);
+    }
   }
 
+  /**
+   * Tells if the checksum have to be displayed in the code.
+   *
+   * @return Boolean
+   */
   public boolean isShowChecksum ()
   {
     return showChecksum;
   }
 
+  /**
+   * Sets if the checksum have to be displayed in the code.
+   *
+   * @param showChecksum
+   */
   public void setShowChecksum (boolean showChecksum)
   {
     this.showChecksum = showChecksum;
