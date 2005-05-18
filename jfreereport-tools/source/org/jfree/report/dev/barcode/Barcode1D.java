@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: Barcode1D.java,v 1.1 2005/05/18 00:25:13 mimil Exp $
  *
  * Changes (from 2005-04-28)
  * -------------------------
@@ -39,16 +39,18 @@
 package org.jfree.report.dev.barcode;
 
 import java.awt.Color;
-import java.awt.Stroke;
-import java.awt.Insets;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.style.FontDefinition;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.layout.DefaultSizeCalculator;
-import org.jfree.ui.ExtendedDrawable;
+import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.Align;
+import org.jfree.ui.ExtendedDrawable;
 
 public abstract class Barcode1D implements ExtendedDrawable
 {
@@ -132,6 +134,7 @@ public abstract class Barcode1D implements ExtendedDrawable
     }
     this.code = code;
     font = new FontDefinition("SansSerif", 10);
+    margins = new Insets(10, 10, 10, 10);
   }
 
   /**
@@ -491,7 +494,8 @@ public abstract class Barcode1D implements ExtendedDrawable
   /**
    * Computes drawing parameters of this barcode according to the standards.
    */
-  public void computeAutoValues() {
+  public void computeAutoValues ()
+  {
     //the X-dimention
   }
 
@@ -536,12 +540,24 @@ public abstract class Barcode1D implements ExtendedDrawable
   }
 
   /**
-   * Returns the code that sould be displayed, it can differ from the base code passed as
+   * Returns the code that should be displayed, it can differ from the base code passed as
    * argument to the constructor.
    *
    * @return The code to display.
+   *
+   * @throws IllegalStateException If there is a conflict for displaying the code.
    */
   public String getDisplayedCode ()
+  {
+    return code;
+  }
+
+  /**
+   * Returns the base input code.
+   *
+   * @return The code.
+   */
+  public String getCode ()
   {
     return code;
   }
@@ -570,13 +586,34 @@ public abstract class Barcode1D implements ExtendedDrawable
   abstract public Rectangle2D getBarBounds ();
 
   /**
-   * Computes the bounds of the barcode (bars and displayed code).<br>
-   * Coordinates of either <code>codeBounds</code> and <code>barBounds</code> are computed
-   * and modified.
+   * Draws the bars symbols. The graphics target is already clipped.
+   *
+   * @param g2 The graphics target.
+   */
+  abstract public void drawBars (Graphics2D g2);
+
+  /**
+   * Draws the code. The graphics target is already clipped.
+   *
+   * @param g2 The graphics target.
+   */
+  public void drawCode (Graphics2D g2)
+  {
+    final String displayedCode = getDisplayedCode();
+    if (displayedCode != null)
+    {
+      g2.drawString(displayedCode, 0, 0);
+    }
+  }
+
+  /**
+   * Computes the bounds of the barcode (bars and displayed code).<br> Coordinates of
+   * either <code>codeBounds</code> and <code>barBounds</code> are computed and modified.
    *
    * @param codeBounds The code bounds.
    * @param barBounds  The bars bounds.
    * @return The barcode bounds initialized on <code>x=0</code> and <code>y=0</code>.
+   *
    * @throws IllegalStateException If alignments alignments fields are not correct.
    */
   public Rectangle2D getBarcodeBounds (final Rectangle2D codeBounds,
@@ -646,8 +683,62 @@ public abstract class Barcode1D implements ExtendedDrawable
    * @param area the area inside which the object should be drawn.
    * @see org.jfree.ui.Drawable
    */
-  //todo: use autoCompute
-  abstract public void draw (Graphics2D g2, Rectangle2D area);
+  public void draw (Graphics2D g2, Rectangle2D area)
+  {
+    final Rectangle2D codeBounds = getCodeBounds();
+    final Rectangle2D barBounds = getBarBounds();
+    final Rectangle2D barcodeBounds = getBarcodeBounds(codeBounds, barBounds);
+
+    //setting the background
+    g2.setBackground(getBackgroundColor());
+
+    //drawing the stroke
+    final Shape strokedShape = getStroke().createStrokedShape(area);
+    g2.setColor(strokeColor);
+    g2.setStroke(stroke);
+    g2.draw(strokedShape);
+    g2.setStroke(null);
+
+    //removing the margings
+    final Rectangle2D rect = new Rectangle2D.Double(barcodeBounds.getX() + margins.left,
+            barcodeBounds.getY() + margins.top,
+            barcodeBounds.getWidth(),
+            barcodeBounds.getHeight());
+    g2.setClip(rect);
+
+    //drawing the code
+    g2.setColor(fontColor);
+    g2.setClip(codeBounds);
+    drawCode(g2);
+    //restore
+    g2.setClip(rect);
+
+    //drawing the bars
+    g2.setColor(barColor);
+    g2.setClip(barBounds);
+    drawBars(g2);
+    //restore
+    g2.setClip(rect);
+
+  }
+
+  /**
+   * Returns the preferred size of the barcode. If the drawable is aspect ratio aware,
+   * these bounds should be used to compute the preferred aspect ratio for this drawable.
+   *
+   * @return the preferred size.
+   *
+   * @see ExtendedDrawable
+   */
+  public Dimension getPreferredSize ()
+  {
+    final Rectangle2D codeBounds = getCodeBounds();
+    final Rectangle2D barBounds = getBarBounds();
+    final Rectangle2D barcodeBounds = getBarcodeBounds(codeBounds, barBounds);
+
+    return new Dimension((int) barcodeBounds.getWidth() + margins.left + margins.right,
+            (int) barcodeBounds.getHeight() + margins.top + margins.bottom);
+  }
 
 
 }

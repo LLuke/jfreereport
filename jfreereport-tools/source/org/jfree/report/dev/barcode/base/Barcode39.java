@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: Barcode39.java,v 1.1 2005/05/18 00:26:31 mimil Exp $
  *
  * Changes (from YYYY-MM-DD)
  * -------------------------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.dev.barcode.base;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +67,7 @@ public class Barcode39 extends Barcode1D
   /**
    * If the checksum have to be computed.
    */
-  private boolean appendChecksum = false;
+  private boolean appendedChecksum = false;
   /**
    * If the checksum character have to be shown.
    */
@@ -127,7 +127,34 @@ public class Barcode39 extends Barcode1D
   public Barcode39 (final String code)
   {
     super(code);
+    isValidInput(code);
     codeTable = new ArrayList();
+  }
+
+  /**
+   * Encodes the characters code in the symbols code.
+   */
+  public void encode ()
+  {
+    String code = getCode();
+
+    //always have start and stop characters
+    if (!isStartStopPresent(code))
+    {
+      codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
+    }
+
+    for (int i = 0; i < code.length(); i++)
+    {
+      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(i))];
+      codeTable.add(bytes);
+    }
+
+    //always have start and stop characters
+    if (!isStartStopPresent(code))
+    {
+      codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
+    }
   }
 
   /**
@@ -136,9 +163,16 @@ public class Barcode39 extends Barcode1D
    *
    * @param code The input code to check.
    * @return Boolean
+   *
+   * @throws NullPointerException If <code>code</code> is null.
    */
   public static boolean isValidInput (final String code)
   {
+    if (code == null)
+    {
+      throw new NullPointerException("Unable to verify a null code");
+    }
+
     //NB: there is no length checks in code 39.
 
     for (int i = 0; i < code.length(); i++)
@@ -158,9 +192,16 @@ public class Barcode39 extends Barcode1D
    *
    * @param code The input code to check.
    * @return Boolean.
+   *
+   * @throws NullPointerException If <code>code</code> is null.
    */
   public static boolean isStartStopPresent (final String code)
   {
+    if (code == null)
+    {
+      throw new NullPointerException("Unable to verify a null code");
+    }
+
     if (code.charAt(0) == '*' || code.charAt(code.length()) == '*')
     {
       return true;
@@ -173,56 +214,78 @@ public class Barcode39 extends Barcode1D
 
 
   /**
-   * Returns the code that sould be displayed, it can differ from the base code passed as
+   * Returns the code that should be displayed, it can differ from the base code passed as
    * argument to the constructor.
    *
-   * @return The code to display.
+   * @return The code to display or null if the code should not be displayed.
+   *
+   * @throws IllegalStateException If there is a conflict for displaying the code.
    */
   public String getDisplayedCode ()
   {
     final String oldCode = super.getDisplayedCode();
+    final StringBuffer buffer = new StringBuffer();
 
     if (isShowCode())
     {
 
-    }
-    return null;
+      if (isShowStartStop() && !isStartStopPresent(oldCode))
+      {
+        buffer.append("*");
+        buffer.append(oldCode);
+        if (isShowChecksum())
+        {
+          if (isAppendedChecksum())
+          {
+            buffer.append(getChecksum());
+          }
+          else
+          {
+            throw new IllegalStateException("Showing the checksum is requested but it has not been ask to be computed.");
+          }
+        }
+        buffer.append("*");
+      }
+      else if (!isShowStartStop() && isStartStopPresent(oldCode))
+      {
+        buffer.append(oldCode.substring(1, oldCode.length() - 1));
+        if (isShowChecksum())
+        {
+          buffer.append(getChecksum());
+        }
+      }
 
+      return buffer.toString();
+    }
+
+    return null;
   }
 
   /**
-   * Computes the bars bounds.
+   * Computes the bars bounds.<p>
+   * <p/>
+   * A symbol is composed of 3 wide bars and 6 narrow bars.<br> Each symbol is separated
+   * by a narrow bar.
    *
    * @return The bars bounds initialized on <code>x=0</code> and <code>y=0</code>.
    */
-  //todo: use autoCompute
   public Rectangle2D getBarBounds ()
   {
-    return null;
+    int nbChars = codeTable.size();
+    float width = nbChars * (3 * getNarrowToWide() + 6) * getBarWidth() + (nbChars - 1) * getBarWidth();
+
+    return new Rectangle2D.Double(0, 0, width, getBarHeight());
   }
 
   /**
-   * Draws the barcode.
+   * Draws the bars symbols. The graphics target is already clipped.
    *
-   * @param g2   the graphics device.
-   * @param area the area inside which the object should be drawn.
-   * @see org.jfree.ui.Drawable
+   * @param g2 The graphics target.
    */
-  //todo: use autoCompute
-  public void draw (Graphics2D g2, Rectangle2D area)
+  public void drawBars (Graphics2D g2)
   {
   }
 
-  /**
-   * Returns the preferred size of the drawable. If the drawable is aspect ratio aware,
-   * these bounds should be used to compute the preferred aspect ratio for this drawable.
-   *
-   * @return the preferred size.
-   */
-  public Rectangle2D getPreferredSize ()
-  {
-    return null;
-  }
 
   /**
    * Returns true, if this drawable will preserve an aspect ratio during the drawing.
@@ -235,11 +298,21 @@ public class Barcode39 extends Barcode1D
   }
 
 
+  /**
+   * Returns the symbols table.
+   *
+   * @return The symbols table.
+   */
   public List getCodeTable ()
   {
     return codeTable;
   }
 
+  /**
+   * Sets the symbols table.
+   *
+   * @param codeTable The symbols table.
+   */
   public void setCodeTable (List codeTable)
   {
     this.codeTable = codeTable;
@@ -250,13 +323,9 @@ public class Barcode39 extends Barcode1D
     return checksum;
   }
 
-  public void setChecksum (char checksum)
-  {
-    this.checksum = checksum;
-  }
 
   /**
-   * Tells if the start and stop character have to be displayed.
+   * Tells if the start and stop characters have to be displayed.
    *
    * @return Boolean.
    */
@@ -265,19 +334,24 @@ public class Barcode39 extends Barcode1D
     return showStartStop;
   }
 
+  /**
+   * Sets if the start and stop characters have to be displayed.
+   *
+   * @param showStartStop Boolean.
+   */
   public void setShowStartStop (boolean showStartStop)
   {
     this.showStartStop = showStartStop;
   }
 
-  public boolean isAppendChecksum ()
+  public boolean isAppendedChecksum ()
   {
-    return appendChecksum;
+    return appendedChecksum;
   }
 
-  public void setAppendChecksum (boolean appendChecksum)
+  public void setAppendedChecksum (boolean appendedChecksum)
   {
-    this.appendChecksum = appendChecksum;
+    this.appendedChecksum = appendedChecksum;
   }
 
   public boolean isShowChecksum ()
