@@ -17,7 +17,7 @@
         -->
         <band name="lunch" fsbold="true" fontsize="12" layout-cachable="false" fontname="SansSerif">
           <label x="0" y="0" width="200" height="15">Preferred Lunch Meals</label>
-          <label x="200" y="0" width="100%" height="15">Notes</label>
+          <label x="200" y="0" width="100%" height="15">Rating</label>
           <line x1="0" y1="15" x2="100%" y2="15" color="black" width="1" />
         </band>
       </groupheader>

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: PeopleReportDemo.java,v 1.1 2005/05/06 15:03:09 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,10 @@
 package org.jfree.report.demo.onetomany;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.text.MessageFormat;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -64,11 +66,25 @@ import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
 
 public class PeopleReportDemo extends AbstractDemoFrame
 {
+
+  private class PreviewAPIAction extends AbstractActionDowngrade
+  {
+    public PreviewAPIAction ()
+    {
+      putValue(Action.NAME, "Preview Report defined by API");
+    }
+
+    public void actionPerformed (final ActionEvent event)
+    {
+      attemptAPIPreview();
+    }
+  }
 
   /**
    * The data for the report.
@@ -102,6 +118,7 @@ public class PeopleReportDemo extends AbstractDemoFrame
     final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
+    fileMenu.add(new ActionMenuItem(new PreviewAPIAction()));
     fileMenu.addSeparator();
     fileMenu.add(exitItem);
     mb.add(fileMenu);
@@ -159,6 +176,29 @@ public class PeopleReportDemo extends AbstractDemoFrame
     {
       showExceptionDialog("report.definitionfailure", ex);
       return null;
+    }
+  }
+
+  /**
+   * Displays a print preview screen for the sample report.
+   */
+  protected void attemptAPIPreview ()
+  {
+    final PeopleReportByAPI reportCreator = new PeopleReportByAPI();
+    final JFreeReport report = reportCreator.getReport();
+    report.setData(this.data);
+    try
+    {
+      final PreviewFrame frame = new PreviewFrame(report);
+      frame.getBase().setToolbarFloatable(true);
+      frame.pack();
+      RefineryUtilities.positionFrameRandomly(frame);
+      frame.setVisible(true);
+      frame.requestFocus();
+    }
+    catch (ReportProcessingException rpe)
+    {
+      showExceptionDialog("report.previewfailure", rpe);
     }
   }
 
