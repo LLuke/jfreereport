@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.2 2005/05/18 19:59:16 mimil Exp $
+ * $Id: Barcode1D.java,v 1.3 2005/05/18 23:19:00 mimil Exp $
  *
  * Changes (from 2005-04-28) (CP)
  * -------------------------
@@ -803,6 +803,15 @@ public abstract class Barcode1D implements ExtendedDrawable
   public void setCodeTable (List codeTable)
   {
     this.codeTable = codeTable;
+  }
+
+  public void setCode (String code)
+  {
+    if (code == null)
+    {
+      throw new NullPointerException("Input code cannot be null");
+    }
+    this.code = code;
   }
 
   /**

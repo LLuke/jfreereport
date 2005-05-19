@@ -29,9 +29,9 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: BarcodeException.java,v 1.1 2005/05/19 00:21:06 mimil Exp $
  *
- * Changes (from YYYY-MM-DD)
+ * Changes (from 2005-05-17) (PC)
  * -------------------------
  *
  */
