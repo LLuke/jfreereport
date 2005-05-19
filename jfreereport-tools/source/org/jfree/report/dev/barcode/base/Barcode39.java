@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.3 2005/05/18 20:10:49 mimil Exp $
+ * $Id: Barcode39.java,v 1.4 2005/05/18 23:19:40 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -43,6 +43,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import org.jfree.report.dev.barcode.Barcode1D;
+import org.jfree.report.dev.barcode.BarcodeException;
 
 /**
  * Encodes a string into code39 specifications
@@ -135,7 +136,10 @@ public class Barcode39 extends Barcode1D
   public Barcode39 (final String code)
   {
     super(code);
-    isValidInput(code);
+    if (!isValidCode39Input(code))
+    {
+      throw new BarcodeException("The code is not valide according to the code39 specification.");
+    }
   }
 
   /**
@@ -182,7 +186,7 @@ public class Barcode39 extends Barcode1D
    *
    * @throws NullPointerException If <code>code</code> is null.
    */
-  public static boolean isValidInput (final String code)
+  public static boolean isValidCode39Input (final String code)
   {
     if (code == null)
     {
