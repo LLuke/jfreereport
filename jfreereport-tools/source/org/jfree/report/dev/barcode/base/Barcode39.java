@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.5 2005/05/19 00:22:24 mimil Exp $
+ * $Id: Barcode39.java,v 1.6 2005/05/19 00:24:08 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -48,7 +48,7 @@ import org.jfree.report.dev.barcode.BarcodeException;
 /**
  * Encodes a string into code39 specifications
  * <p/>
- * Symbols allowed: 0-9 A-Z $ % * + - . / space <br> Start character: yes, in the symbols
+ * Symbols allowed: 0-9 A-Z $ % + - . / space <br> Start character: yes, in the symbols
  * table (*) <br> Stop character: yes, in the symbols table (*) <br> Check character:
  * available
  * <p/>
@@ -56,7 +56,6 @@ import org.jfree.report.dev.barcode.BarcodeException;
  *
  * @author Mimil
  */
-//todo: check if * is allowed as input
 public class Barcode39 extends Barcode1D
 {
 
@@ -151,10 +150,7 @@ public class Barcode39 extends Barcode1D
     final List codeTable = getCodeTable();
 
     //always have start and stop characters
-    if (!isStartStopPresent(code))
-    {
-      codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
-    }
+    codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
 
     for (int i = 0; i < code.length(); i++)
     {
@@ -164,15 +160,12 @@ public class Barcode39 extends Barcode1D
 
     if (isAppendedChecksum())
     {
-      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(checksum))];
+      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(getChecksum()))];
       codeTable.add(bytes);
     }
 
     //always have start and stop characters
-    if (!isStartStopPresent(code))
-    {
-      codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
-    }
+    codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
 
     setEncoded(true);
   }
@@ -202,36 +195,13 @@ public class Barcode39 extends Barcode1D
       {
         return false;
       }
+      if (character == CHARTABLE.indexOf('*')) // '*' is not allowed as input
+      {
+        return false;
+      }
     }
     return true;
   }
-
-  /**
-   * Tells if the input code passed as argument starts and stops with the <code>*</code>
-   * character.
-   *
-   * @param code The input code to check.
-   * @return Boolean.
-   *
-   * @throws NullPointerException If <code>code</code> is null.
-   */
-  public static boolean isStartStopPresent (final String code)
-  {
-    if (code == null)
-    {
-      throw new NullPointerException("Unable to verify a null code");
-    }
-
-    if (code.charAt(0) == '*' || code.charAt(code.length()) == '*')
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
 
   /**
    * Returns the code that should be displayed, it can differ from the base code passed as
@@ -249,30 +219,25 @@ public class Barcode39 extends Barcode1D
     if (isShowCode())
     {
 
-      if (isShowStartStop() && !isStartStopPresent(oldCode))
+      if (isShowStartStop())
       {
-        buffer.append("*");
-        buffer.append(oldCode);
-        if (isShowChecksum())
-        {
-          if (isAppendedChecksum())
-          {
-            buffer.append(getChecksum());
-          }
-          else
-          {
-            throw new IllegalStateException("Showing the checksum is requested but it has not been ask to be computed.");
-          }
-        }
         buffer.append("*");
       }
-      else if (!isShowStartStop() && isStartStopPresent(oldCode))
+      buffer.append(oldCode);
+      if (isShowChecksum())
       {
-        buffer.append(oldCode.substring(1, oldCode.length() - 1));
-        if (isShowChecksum())
+        if (isAppendedChecksum())
         {
           buffer.append(getChecksum());
         }
+        else
+        {
+          throw new IllegalStateException("Showing the checksum is requested but it has not been ask to be computed.");
+        }
+      }
+      if (isShowStartStop())
+      {
+        buffer.append("*");
       }
 
       return buffer.toString();
@@ -282,10 +247,8 @@ public class Barcode39 extends Barcode1D
   }
 
   /**
-   * Computes the bars bounds.<p>
-   * <p/>
-   * A symbol is composed of 3 wide bars and 6 narrow bars.<br> Each symbol is separated
-   * by a narrow bar.
+   * Computes the bars bounds.<p> A symbol is composed of 3 wide bars and 6 narrow
+   * bars.<br> Each symbol is separated by a narrow bar.
    *
    * @return The bars bounds initialized on <code>x=0</code> and <code>y=0</code>.
    */
@@ -314,7 +277,7 @@ public class Barcode39 extends Barcode1D
       encode();
     }
 
-    int currentX = 0;
+    double currentX = 0;
 
     for (int i = 0; i < getCodeTable().size(); i++)
     {
@@ -326,11 +289,11 @@ public class Barcode39 extends Barcode1D
         {
           if (bytes[j] == 0) //narrow
           {
-            g2.drawLine(currentX, 0, currentX += getBarWidth(), (int) getBarHeight());
+            g2.fill(new Rectangle2D.Double(currentX, 0, currentX += getBarWidth(), getBarHeight()));
           }
           else  //wide
           {
-            g2.drawLine(currentX, 0, currentX += getBarWidth() * getNarrowToWide(), (int) getBarHeight());
+            g2.fill(new Rectangle2D.Double(currentX, 0, currentX += getBarWidth() * getNarrowToWide(), getBarHeight()));
           }
         }
         else  // space
@@ -351,6 +314,11 @@ public class Barcode39 extends Barcode1D
   }
 
 
+  /**
+   * Returns the checksum.
+   *
+   * @return The checksum character.
+   */
   public char getChecksum ()
   {
     return checksum;
