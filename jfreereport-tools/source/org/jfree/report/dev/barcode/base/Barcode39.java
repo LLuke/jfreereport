@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.6 2005/05/19 00:24:08 mimil Exp $
+ * $Id: Barcode39.java,v 1.7 2005/05/19 21:59:32 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -368,7 +368,7 @@ public class Barcode39 extends Barcode1D
     {
       final String code = getCode();
 
-      int index = CHARTABLE.indexOf('*') * 2;
+      int index = 0;
       for (int i = 0; i < code.length(); i++)
       {
         index += CHARTABLE.indexOf(code.charAt(i));
