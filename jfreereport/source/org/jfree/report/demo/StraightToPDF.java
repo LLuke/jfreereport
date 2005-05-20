@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.15 2005/03/10 19:08:43 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.16 2005/05/18 18:38:27 taqua Exp $
  *
  * Changes
  * -------
@@ -76,8 +76,8 @@ public class StraightToPDF
           throws ParseException
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/OpenSourceDemo.xml", StraightToPDF.class);
-//    final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
+            ("org/jfree/report/demo/OpenSourceDemo.xml", StraightToPDF.class);
+//    final URL in = getClass().getResource("org/jfree/report/demo/swing-icons.xml");
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
 //    final TableModel data = new SwingIconsDemoTableModel();
@@ -103,7 +103,7 @@ public class StraightToPDF
     {
       final JFreeReport report = generator.parseReport(templateURL);
       final URL imageURL = ObjectUtilities.getResource
-              ("/org/jfree/report/demo/gorilla.jpg", StraightToPDF.class);
+              ("org/jfree/report/demo/gorilla.jpg", StraightToPDF.class);
       final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
       final WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();

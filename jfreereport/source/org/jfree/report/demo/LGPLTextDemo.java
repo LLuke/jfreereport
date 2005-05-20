@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.6 2005/01/24 23:58:32 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.7 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class LGPLTextDemo extends SimpleDemoFrame
   protected JFreeReport createReport ()
           throws ElementDefinitionException, IOException
   {
-    return loadReport("/org/jfree/report/demo/lgpl.xml");
+    return loadReport("org/jfree/report/demo/lgpl.xml");
   }
 
   protected TableModel getData ()

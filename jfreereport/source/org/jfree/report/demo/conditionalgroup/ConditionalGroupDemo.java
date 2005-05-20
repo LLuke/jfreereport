@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConditionalGroupDemo.java,v 1.3 2005/02/23 21:04:42 taqua Exp $
+ * $Id: ConditionalGroupDemo.java,v 1.4 2005/05/18 18:38:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -139,7 +139,7 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
   protected void attemptPreview ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/conditionalgroup/conditional-group-demo.xml",
+            ("org/jfree/report/demo/conditionalgroup/conditional-group-demo.xml",
                     ConditionalGroupDemo.class);
 
     if (in == null)

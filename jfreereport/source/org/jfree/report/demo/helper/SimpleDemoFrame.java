@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleDemoFrame.java,v 1.5 2005/04/15 16:10:41 taqua Exp $
+ * $Id: SimpleDemoFrame.java,v 1.6 2005/05/18 18:38:28 taqua Exp $
  *
  * Changes
  * -------
@@ -192,7 +192,8 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
   protected JFreeReport loadReport (final String resourceName)
           throws IOException, ElementDefinitionException
   {
-    final URL in = ObjectUtilities.getResource(resourceName, SimpleDemoFrame.class);
+    final URL in = ObjectUtilities.getResource
+            (resourceName, SimpleDemoFrame.class);
     if (in == null)
     {
       throw new FileNotFoundException(resourceName);

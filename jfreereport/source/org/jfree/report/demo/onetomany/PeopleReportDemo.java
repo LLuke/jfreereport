@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PeopleReportDemo.java,v 1.2 2005/05/18 15:36:25 taqua Exp $
+ * $Id: PeopleReportDemo.java,v 1.3 2005/05/18 18:38:28 taqua Exp $
  *
  * Changes
  * -------
@@ -158,7 +158,7 @@ public class PeopleReportDemo extends AbstractDemoFrame
   protected JFreeReport parseReport ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/onetomany/joined-report.xml", PeopleReportDemo.class);
+            ("org/jfree/report/demo/onetomany/joined-report.xml", PeopleReportDemo.class);
 
     if (in == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.8 2005/03/10 19:08:43 taqua Exp $
+ * $Id: StraightToXML.java,v 1.9 2005/05/18 18:38:27 taqua Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,7 @@ public class StraightToXML
           throws ParseException
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/OpenSourceDemo.xml", StraightToXML.class);
+            ("org/jfree/report/demo/OpenSourceDemo.xml", StraightToXML.class);
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);

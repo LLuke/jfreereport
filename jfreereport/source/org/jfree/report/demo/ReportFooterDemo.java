@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ReportFooterDemo.java,v 1.3 2005/03/03 22:59:58 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ public class ReportFooterDemo extends SimpleDemoFrame
   protected JFreeReport createReport ()
           throws ElementDefinitionException, IOException
   {
-    return loadReport("/org/jfree/report/demo/footer-demo1.xml");
+    return loadReport("org/jfree/report/demo/footer-demo1.xml");
   }
 
   protected TableModel getData ()

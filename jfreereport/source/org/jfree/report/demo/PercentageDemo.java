@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.7 2005/02/23 21:04:38 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.8 2005/05/18 18:38:26 taqua Exp $
  *
  * Changes
  * -------
@@ -148,7 +148,7 @@ public class PercentageDemo extends AbstractDemoFrame
   protected void attemptPreview ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/PercentageDemo.xml", PercentageDemo.class);
+            ("org/jfree/report/demo/PercentageDemo.xml", PercentageDemo.class);
 
     if (in == null)
     {

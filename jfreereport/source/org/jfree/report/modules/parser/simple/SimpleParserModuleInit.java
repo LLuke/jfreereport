@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.13 2005/03/18 13:49:40 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.14 2005/05/18 18:38:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -89,7 +89,7 @@ public class SimpleParserModuleInit implements ModuleInitializer
     final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
     final URL urlReportDTD = ObjectUtilities.getResource
-            ("/org/jfree/report/modules/parser/simple/resources/report-085.dtd",
+            ("org/jfree/report/modules/parser/simple/resources/report-085.dtd",
                     SimpleParserModuleInit.class);
 
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);

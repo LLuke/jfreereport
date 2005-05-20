@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPlainText.java,v 1.1 2005/04/15 18:59:51 taqua Exp $
+ * $Id: StraightToPlainText.java,v 1.2 2005/05/18 18:38:27 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class StraightToPlainText
           throws ParseException
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/OpenSourceDemo.xml", StraightToPlainText.class);
+            ("org/jfree/report/demo/OpenSourceDemo.xml", StraightToPlainText.class);
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);
@@ -96,7 +96,7 @@ public class StraightToPlainText
     {
       final JFreeReport report = generator.parseReport(templateURL);
       final URL imageURL = ObjectUtilities.getResource
-              ("/org/jfree/report/demo/gorilla.jpg", StraightToPlainText.class);
+              ("org/jfree/report/demo/gorilla.jpg", StraightToPlainText.class);
       final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
       final WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();

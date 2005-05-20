@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.15 2005/03/10 19:08:41 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.16 2005/05/18 18:38:26 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class StraightToEverything
           throws ParseException
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/OpenSourceDemo.xml", StraightToEverything.class);
+            ("org/jfree/report/demo/OpenSourceDemo.xml", StraightToEverything.class);
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);

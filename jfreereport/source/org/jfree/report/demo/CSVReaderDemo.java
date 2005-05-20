@@ -27,9 +27,13 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVReaderDemo.java,v 1.4 2005/03/03 21:50:38 taqua Exp $
+ * $Id: CSVReaderDemo.java,v 1.5 2005/05/18 18:38:26 taqua Exp $
  *
  * $Log: CSVReaderDemo.java,v $
+ * Revision 1.5  2005/05/18 18:38:26  taqua
+ * Changed the classloader handling. Now the used classloader is configurable
+ * using JCommon.
+ *
  * Revision 1.4  2005/03/03 21:50:38  taqua
  * Resolved some warnings for Eclipse configured with paranoid compile settings.
  *
@@ -168,7 +172,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
           throws IOException
   {
     this.data = new CSVTableModelProducer(ObjectUtilities.getResource
-            ("/org/jfree/report/ext/input/file.csv", CSVReaderDemo.class)
+            ("org/jfree/report/ext/input/file.csv", CSVReaderDemo.class)
             .openStream()).getTableModel();
     this.attemptPreview();
   }

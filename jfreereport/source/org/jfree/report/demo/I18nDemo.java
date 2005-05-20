@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: I18nDemo.java,v 1.3 2005/02/23 21:04:37 taqua Exp $
+ * $Id: I18nDemo.java,v 1.4 2005/05/18 18:38:26 taqua Exp $
  *
  * Changes
  * -------
@@ -148,7 +148,7 @@ public class I18nDemo extends AbstractDemoFrame
   protected void attemptPreview ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/i18n.xml", I18nDemo.class);
+            ("org/jfree/report/demo/i18n.xml", I18nDemo.class);
 
     if (in == null)
     {

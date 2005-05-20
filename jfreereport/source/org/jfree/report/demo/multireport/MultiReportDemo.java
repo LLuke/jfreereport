@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MultiReportDemo.java,v 1.1 2005/04/15 18:46:58 taqua Exp $
+ * $Id: MultiReportDemo.java,v 1.2 2005/05/18 18:38:28 taqua Exp $
  *
  * Changes
  * -------
@@ -142,7 +142,7 @@ public class MultiReportDemo extends AbstractDemoFrame
   protected JFreeReport parseReport ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/multireport/joined-report.xml", MultiReportDemo.class);
+            ("org/jfree/report/demo/multireport/joined-report.xml", MultiReportDemo.class);
 
     if (in == null)
     {

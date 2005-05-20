@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPropertyDemo.java,v 1.5 2005/02/23 21:04:38 taqua Exp $
+ * $Id: ReportPropertyDemo.java,v 1.6 2005/05/18 18:38:26 taqua Exp $
  *
  * Changes
  * -------
@@ -138,7 +138,7 @@ public class ReportPropertyDemo extends AbstractDemoFrame
   protected void attemptPreview ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/ReportPropertyDemo.xml", ReportPropertyDemo.class);
+            ("org/jfree/report/demo/ReportPropertyDemo.xml", ReportPropertyDemo.class);
 
     if (in == null)
     {

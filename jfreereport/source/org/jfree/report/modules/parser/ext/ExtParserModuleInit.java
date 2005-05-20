@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.13 2005/03/18 13:49:39 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.14 2005/05/18 18:38:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,7 +80,7 @@ public class ExtParserModuleInit implements ModuleInitializer
     final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
     final URL urlExtReportDTD = ObjectUtilities.getResource
-            ("/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd",
+            ("org/jfree/report/modules/parser/ext/resources/extreport-085.dtd",
                     ExtParserModuleInit.class);
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
     res.setDeprecatedDTDMessage(PUBLIC_ID_EXTENDED_084,

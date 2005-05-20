@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.8 2005/03/25 16:37:53 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.9 2005/05/18 18:38:27 taqua Exp $
  *
  * Changes
  * -------
@@ -285,7 +285,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
    */
   private URL findDataFile ()
   {
-    final URL url = ObjectUtilities.getResource("/jlfgr-1_0.jar", SwingIconsDemo.class);
+    final URL url = ObjectUtilities.getResource("jlfgr-1_0.jar", SwingIconsDemo.class);
     if (url != null)
     {
       return url;
@@ -341,7 +341,8 @@ public class SwingIconsDemo extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    final URL in = ObjectUtilities.getResource("/org/jfree/report/demo/swing-icons.xml", SwingIconsDemo.class);
+    final URL in = ObjectUtilities.getResource
+            ("org/jfree/report/demo/swing-icons.xml", SwingIconsDemo.class);
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,

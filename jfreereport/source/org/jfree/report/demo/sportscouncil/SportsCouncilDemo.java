@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SportsCouncilDemo.java,v 1.4 2005/03/03 22:59:59 taqua Exp $
+ * $Id: SportsCouncilDemo.java,v 1.5 2005/05/18 18:38:29 taqua Exp $
  *
  * Changes
  * -------
@@ -156,7 +156,7 @@ public class SportsCouncilDemo extends AbstractDemoFrame
   protected void attemptPreview ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/sportscouncil/council.xml", SportsCouncilDemo.class);
+            ("org/jfree/report/demo/sportscouncil/council.xml", SportsCouncilDemo.class);
 
     if (in == null)
     {

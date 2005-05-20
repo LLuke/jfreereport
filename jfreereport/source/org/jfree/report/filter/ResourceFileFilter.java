@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.6 2005/01/25 21:40:13 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.7 2005/02/23 21:04:45 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -95,10 +95,6 @@ public class ResourceFileFilter
     {
       return null;
     }
-    if (resourceIdentifier == null)
-    {
-      return null;
-    }
     if (reportDefinition == null)
     {
       return null;
@@ -112,7 +108,18 @@ public class ResourceFileFilter
 
     try
     {
-      final ResourceBundle bundle = reportDefinition.getResourceBundle(resourceIdentifier);
+      final String resourceId;
+      if (resourceIdentifier != null)
+      {
+        resourceId = resourceIdentifier;
+      }
+      else
+      {
+        resourceId = reportDefinition.getReportConfiguration().getConfigProperty
+                ("org.jfree.report.ResourceBundle");
+      }
+
+      final ResourceBundle bundle = reportDefinition.getResourceBundle(resourceId);
       if (bundle != null)
       {
         return bundle.getObject(svalue);

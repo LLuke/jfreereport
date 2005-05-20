@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.14 2005/03/25 16:37:54 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.15 2005/05/18 18:38:29 taqua Exp $
  *
  * Changes
  * --------
@@ -102,7 +102,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * &quot;/org/jfree/report/jfreereport-encodings.properties&quot;.
    */
   public static final String ENCODINGS_DEFINITION_FILE_DEFAULT
-          = "/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties";
+          = "org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties";
 
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePatientFormDemo.java,v 1.3 2005/02/23 21:04:42 taqua Exp $
+ * $Id: SimplePatientFormDemo.java,v 1.4 2005/05/18 18:38:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -183,7 +183,7 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
   protected void attemptPreview ()
   {
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/form/patient.xml", SimplePatientFormDemo.class);
+            ("org/jfree/report/demo/form/patient.xml", SimplePatientFormDemo.class);
 
     if (in == null)
     {

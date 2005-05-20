@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ResourceLabelReadHandler.java,v 1.4 2005/03/03 23:00:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,28 +40,27 @@
  */
 package org.jfree.report.modules.parser.simple.readhandlers;
 
-import org.jfree.report.elementfactory.ResourceFieldElementFactory;
 import org.jfree.report.elementfactory.ResourceLabelElementFactory;
-import org.jfree.report.elementfactory.TextFieldElementFactory;
+import org.jfree.report.elementfactory.TextElementFactory;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
 
-public class ResourceLabelReadHandler extends StringFieldReadHandler
+public class ResourceLabelReadHandler extends AbstractTextElementReadHandler
 {
   private PropertyStringReadHandler stringReadHandler;
+  private ResourceLabelElementFactory elementFactory;
 
   public ResourceLabelReadHandler ()
   {
-    this(new ResourceFieldElementFactory());
+    elementFactory = new ResourceLabelElementFactory();
+    stringReadHandler = new PropertyStringReadHandler(null);
   }
 
-  protected ResourceLabelReadHandler (
-          final TextFieldElementFactory textFieldElementFactory)
+  protected TextElementFactory getTextElementFactory ()
   {
-    super(textFieldElementFactory);
-    stringReadHandler = new PropertyStringReadHandler(null);
+    return elementFactory;
   }
 
   /**
@@ -74,10 +73,10 @@ public class ResourceLabelReadHandler extends StringFieldReadHandler
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);
-    final ResourceFieldElementFactory elementFactory = (ResourceFieldElementFactory) getElementFactory();
     elementFactory.setResourceBase(atts.getValue("resource-base"));
     getRootHandler().delegate(stringReadHandler, getTagName(), atts);
   }
+
 
 
   /**
@@ -90,7 +89,6 @@ public class ResourceLabelReadHandler extends StringFieldReadHandler
   protected void doneParsing ()
           throws SAXException, XmlReaderException
   {
-    final ResourceLabelElementFactory elementFactory = (ResourceLabelElementFactory) getElementFactory();
     elementFactory.setResourceKey(stringReadHandler.getResult());
     super.doneParsing();
   }
