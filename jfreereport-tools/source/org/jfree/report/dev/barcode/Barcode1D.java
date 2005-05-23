@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.4 2005/05/19 00:21:06 mimil Exp $
+ * $Id: Barcode1D.java,v 1.5 2005/05/19 22:00:43 mimil Exp $
  *
  * Changes (from 2005-04-28) (CP)
  * -------------------------
@@ -113,11 +113,11 @@ public abstract class Barcode1D implements ExtendedDrawable
   /**
    * The height of bars.
    */
-  private float barHeight;
+  private float barHeight = 60;
   /**
    * The width of a narrow bar.
    */
-  private float barWidth;
+  private float barWidth = 2;
   /**
    * The ratio between wide and narrow bars.
    */
@@ -613,6 +613,11 @@ public abstract class Barcode1D implements ExtendedDrawable
     if (displayedCode != null)
     {
       g2.drawString(displayedCode, 0, 0);
+      System.err.println("drawing code: " + displayedCode);
+    }
+    else
+    {
+      System.err.println("no code to display.");
     }
   }
 
@@ -706,17 +711,24 @@ public abstract class Barcode1D implements ExtendedDrawable
 
     //setting the background
     g2.setBackground(getBackgroundColor());
+    g2.setColor(backgroundColor);
+    g2.fill(area);
 
     //drawing the stroke
-    final Shape strokedShape = getStroke().createStrokedShape(area);
-    g2.setColor(strokeColor);
-    g2.setStroke(stroke);
-    g2.draw(strokedShape);
-    g2.setStroke(null);
+    if (stroke != null)
+    {
+      final Shape strokedShape = stroke.createStrokedShape(area);
+      g2.setColor(strokeColor);
+      g2.setStroke(stroke);
+      g2.draw(strokedShape);
+      g2.setStroke(null);
+    }
+
+    final Shape oldclip = g2.getClip();
 
     //removing the margings
-    final Rectangle2D rect = new Rectangle2D.Double(barcodeBounds.getX() + margins.left,
-            barcodeBounds.getY() + margins.top,
+    final Rectangle2D rect = new Rectangle2D.Double(margins.left,
+            margins.top,
             barcodeBounds.getWidth(),
             barcodeBounds.getHeight());
     g2.setClip(rect);
@@ -724,16 +736,17 @@ public abstract class Barcode1D implements ExtendedDrawable
     //drawing the code
     g2.setColor(fontColor);
     g2.setClip(codeBounds);
+    g2.setFont(font.getFont());
     drawCode(g2);
     //restore
-    g2.setClip(rect);
+    g2.setClip(oldclip);
 
     //drawing the bars
     g2.setColor(barColor);
     g2.setClip(barBounds);
-    drawBars(g2);
+    //drawBars(g2);
     //restore
-    g2.setClip(rect);
+    g2.setClip(oldclip);
 
   }
 
@@ -754,10 +767,18 @@ public abstract class Barcode1D implements ExtendedDrawable
 
     final Rectangle2D codeBounds = getCodeBounds();
     final Rectangle2D barBounds = getBarBounds();
+
+    System.err.println("codeBounds: " + codeBounds);
+    System.err.println("barBounds: " + barBounds);
+
     final Rectangle2D barcodeBounds = getBarcodeBounds(codeBounds, barBounds);
 
-    return new Dimension((int) barcodeBounds.getWidth() + margins.left + margins.right,
-            (int) barcodeBounds.getHeight() + margins.top + margins.bottom);
+    System.err.println("barcodeBounds: " + barcodeBounds);
+    System.err.println("codeBounds after: " + codeBounds);
+    System.err.println("barBounds after: " + barBounds);
+
+    return new Dimension((int) (barcodeBounds.getWidth() + margins.left + margins.right),
+            (int) (barcodeBounds.getHeight() + margins.top + margins.bottom));
   }
 
   /**
