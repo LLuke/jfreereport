@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.10 2005/02/23 21:04:47 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.11 2005/03/24 22:24:53 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import org.jfree.report.Element;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 
 /**
  * The ItemHideFunction hides equal values in a group. Only the first changed value is
@@ -225,7 +226,7 @@ public class ItemHideFunction extends AbstractFunction
     // first element in group is always visible
     // after a page start, reset the function ...
     visible = true;
-    firstInGroup = false;
+    firstInGroup = true;
     lastObject = fieldValue;
     final Element e = event.getReport().getItemBand().getElement(getElement());
     if (e != null)
