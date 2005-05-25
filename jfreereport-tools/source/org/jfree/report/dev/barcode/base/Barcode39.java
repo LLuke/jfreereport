@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.7 2005/05/19 21:59:32 mimil Exp $
+ * $Id: Barcode39.java,v 1.8 2005/05/19 23:06:34 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -293,23 +293,24 @@ public class Barcode39 extends Barcode1D
           }
           else  //wide
           {
-            g2.fill(new Rectangle2D.Double(currentX, 0, currentX += getBarWidth() * getNarrowToWide(), getBarHeight()));
+            g2.fill(new Rectangle2D.Double(currentX, 0, currentX += (getBarWidth() * getNarrowToWide()), getBarHeight()));
           }
         }
         else  // space
         {
-          if (j % 2 == 0)  //narrow
+          if (bytes[j] == 0)  //narrow
           {
             currentX += getBarWidth();
           }
           else  //wide
           {
-            currentX += getBarWidth() * getNarrowToWide();
+            currentX += (getBarWidth() * getNarrowToWide());
           }
         }
 
-        currentX += getBarWidth();  //the inter character gap
       }
+
+      currentX += getBarWidth();  //the inter character gap
     }
   }
 

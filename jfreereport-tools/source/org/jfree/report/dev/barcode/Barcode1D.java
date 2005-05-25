@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.6 2005/05/23 23:06:53 mimil Exp $
+ * $Id: Barcode1D.java,v 1.7 2005/05/25 19:52:51 mimil Exp $
  *
  * Changes (from 2005-04-28) (CP)
  * -------------------------
@@ -755,7 +755,7 @@ public abstract class Barcode1D implements ExtendedDrawable
     //drawing the bars
     g2.setColor(barColor);
     g2.setClip(barBounds);
-    drawBars(g2);
+    //drawBars(g2);
     //restore
     g2.setClip(oldclip);
 

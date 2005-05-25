@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: BarcodeTester.java,v 1.1 2005/05/23 23:08:53 mimil Exp $
  *
  * Changes (from 2005-05-23)
  * -------------------------
@@ -38,6 +38,7 @@
 
 package org.jfree.report.dev.barcode;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -61,6 +62,7 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.dev.barcode.base.Barcode39;
 import org.jfree.report.dev.barcode.base.Barcode39Ext;
 import org.jfree.report.dev.barcode.base.Barcode93;
+import org.jfree.report.style.FontDefinition;
 
 public class BarcodeTester extends JFrame
 {
@@ -100,6 +102,8 @@ public class BarcodeTester extends JFrame
             final Constructor constructor = barcodeClass.getConstructor(new Class[]{String.class});
 
             Barcode1D barcode1D = (Barcode1D) constructor.newInstance(new Object[]{str});
+            barcode1D.setStroke(new BasicStroke(5));
+            barcode1D.setFont(new FontDefinition("SansSerif", 20));
 
             final BarcodePanel comp = new BarcodePanel(barcode1D);
             getContentPane().add(comp, BorderLayout.CENTER);
