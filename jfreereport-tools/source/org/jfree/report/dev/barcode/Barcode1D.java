@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.5 2005/05/19 22:00:43 mimil Exp $
+ * $Id: Barcode1D.java,v 1.6 2005/05/23 23:06:53 mimil Exp $
  *
  * Changes (from 2005-04-28) (CP)
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.dev.barcode;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Shape;
@@ -93,7 +94,7 @@ public abstract class Barcode1D implements ExtendedDrawable
   /**
    * Position of the code on the bars.
    */
-  private double codeAlignmentWeight = 1.;
+  private double codeAlignmentWeight = WEIGHT_ALIGNMENT_NOT_EMBEDDED;
   /**
    * Stroke around the whole barcode.
    */
@@ -612,7 +613,12 @@ public abstract class Barcode1D implements ExtendedDrawable
     final String displayedCode = getDisplayedCode();
     if (displayedCode != null)
     {
-      g2.drawString(displayedCode, 0, 0);
+      final FontMetrics fm = g2.getFontMetrics();
+      final float baseline = fm.getAscent();
+      final float cFact = getFont().getFont().getSize2D() / fm.getHeight();
+
+      final float correctedBaseline = baseline * cFact;
+      g2.drawString(displayedCode, 0, correctedBaseline);
       System.err.println("drawing code: " + displayedCode);
     }
     else
@@ -717,11 +723,16 @@ public abstract class Barcode1D implements ExtendedDrawable
     //drawing the stroke
     if (stroke != null)
     {
+      final Stroke oldStroke = g2.getStroke();
       final Shape strokedShape = stroke.createStrokedShape(area);
+      final double x = strokedShape.getBounds2D().getWidth() - area.getWidth();
+      final double y = strokedShape.getBounds2D().getHeight() - area.getHeight();
+      //todo: how could I know that it is a perfect rectangle (coordinates/2)
+      final Rectangle2D re = new Rectangle2D.Double(x / 2., x / 2., area.getWidth() + x / 2, area.getHeight() + y / 2);
       g2.setColor(strokeColor);
       g2.setStroke(stroke);
-      g2.draw(strokedShape);
-      g2.setStroke(null);
+      g2.draw(re);
+      g2.setStroke(oldStroke);
     }
 
     final Shape oldclip = g2.getClip();
@@ -744,7 +755,7 @@ public abstract class Barcode1D implements ExtendedDrawable
     //drawing the bars
     g2.setColor(barColor);
     g2.setClip(barBounds);
-    //drawBars(g2);
+    drawBars(g2);
     //restore
     g2.setClip(oldclip);
 
