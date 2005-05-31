@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumTest.java,v 1.6 2005/02/23 21:37:56 taqua Exp $
+ * $Id: TotalGroupSumTest.java,v 1.7 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -140,7 +140,7 @@ public class TotalGroupSumTest extends TestCase
   }
 
   private static final FunctionalityTestLib.ReportTest REPORT2 =
-      new FunctionalityTestLib.ReportTest("/org/jfree/report/demo/report1.xml",
+      new FunctionalityTestLib.ReportTest("org/jfree/report/demo/report1.xml",
           new SampleData1());
 
   public TotalGroupSumTest()

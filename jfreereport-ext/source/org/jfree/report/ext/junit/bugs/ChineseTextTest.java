@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ChineseTextTest.java,v 1.5 2005/01/31 17:16:37 taqua Exp $
+ * $Id: ChineseTextTest.java,v 1.6 2005/05/18 18:50:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -139,7 +139,7 @@ public class ChineseTextTest
     PDFReportUtil.createPDF(report, "/tmp/chinese-text.pdf");
     */
 
-    final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/chinese-text.xml";
+    final String URLNAME = "org/jfree/report/ext/junit/bugs/resource/chinese-text.xml";
     final URL in = ObjectUtilities.getResource(URLNAME, ChineseTextTest.class);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(in);
     Log.debug ("" + report.getReportHeader().getElementCount());

@@ -141,7 +141,7 @@ public class TableLayoutTest extends TestCase
 
   private JFreeReport getReport() throws Exception
   {
-    final URL url = ObjectUtilities.getResource
+    final URL url = ObjectUtilities.getResourceRelative
             ("resources/table-layout.xml", TableLayoutTest.class);
     assertNotNull(url);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(url);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.8 2005/02/19 16:15:47 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.9 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -80,30 +80,30 @@ import org.jfree.util.ObjectUtilities;
 public class FunctionalityTestLib
 {
   public final static ReportTest[] REPORTS = {
-    new ReportTest ("/org/jfree/report/demo/report1.xml", new SampleData1()),
-    new ReportTest ("/org/jfree/report/demo/report1a.xml", new SampleData1()),
-    new ReportTest ("/org/jfree/report/demo/report2.xml", new SampleData2()),
-    new ReportTest ("/org/jfree/report/demo/report2a.xml", new SampleData2()),
-    new ReportTest ("/org/jfree/report/demo/report2b.xml", new SampleData2()),
-    new ReportTest ("/org/jfree/report/demo/report2c.xml", new SampleData2()),
-    new ReportTest ("/org/jfree/report/demo/report2d.xml", new SampleData2()),
-    new ReportTest ("/org/jfree/report/demo/report3.xml", new SampleData3()),
-    new ReportTest ("/org/jfree/report/demo/report4.xml", new SampleData4()),
-    new ReportTest ("/org/jfree/report/demo/report5.xml", new DefaultTableModel()),
-    new ReportTest ("/org/jfree/report/demo/lgpl.xml", new DefaultTableModel()),
-    new ReportTest ("/org/jfree/report/demo/OpenSourceDemo.xml", new OpenSourceProjects()),
-    new ReportTest ("/org/jfree/report/demo/PercentageDemo.xml", PercentageDemo.createData()),
-    new ReportTest ("/org/jfree/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
-    new ReportTest ("/org/jfree/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
-    new ReportTest ("/org/jfree/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
+    new ReportTest ("org/jfree/report/demo/report1.xml", new SampleData1()),
+    new ReportTest ("org/jfree/report/demo/report1a.xml", new SampleData1()),
+    new ReportTest ("org/jfree/report/demo/report2.xml", new SampleData2()),
+    new ReportTest ("org/jfree/report/demo/report2a.xml", new SampleData2()),
+    new ReportTest ("org/jfree/report/demo/report2b.xml", new SampleData2()),
+    new ReportTest ("org/jfree/report/demo/report2c.xml", new SampleData2()),
+    new ReportTest ("org/jfree/report/demo/report2d.xml", new SampleData2()),
+    new ReportTest ("org/jfree/report/demo/report3.xml", new SampleData3()),
+    new ReportTest ("org/jfree/report/demo/report4.xml", new SampleData4()),
+    new ReportTest ("org/jfree/report/demo/report5.xml", new DefaultTableModel()),
+    new ReportTest ("org/jfree/report/demo/lgpl.xml", new DefaultTableModel()),
+    new ReportTest ("org/jfree/report/demo/OpenSourceDemo.xml", new OpenSourceProjects()),
+    new ReportTest ("org/jfree/report/demo/PercentageDemo.xml", PercentageDemo.createData()),
+    new ReportTest ("org/jfree/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
+    new ReportTest ("org/jfree/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
+    new ReportTest ("org/jfree/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
     new ReportTest
-      ("/org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml",
+      ("org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml",
       ObjectReferenceGenerator.createData()),
     new ReportTest
-      ("/org/jfree/report/modules/misc/referencedoc/StyleKeyReferenceReport.xml",
+      ("org/jfree/report/modules/misc/referencedoc/StyleKeyReferenceReport.xml",
       StyleKeyReferenceGenerator.createData()),
     new ReportTest
-      ("/org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml",
+      ("org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml",
       DataSourceReferenceGenerator.createData())
   };
 

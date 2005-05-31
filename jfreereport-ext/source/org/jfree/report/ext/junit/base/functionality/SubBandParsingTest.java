@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubBandParsingTest.java,v 1.3 2005/02/22 20:28:10 taqua Exp $
+ * $Id: SubBandParsingTest.java,v 1.4 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -81,7 +81,7 @@ public class SubBandParsingTest extends TestCase
 
   public static void main (final String[] args) throws Exception
   {
-    final URL url = ObjectUtilities.getResource
+    final URL url = ObjectUtilities.getResourceRelative
             ("resources/subband.xml", SubBandParsingTest.class);
     assertNotNull(url);
     final JFreeReport report = ReportGenerator.getInstance().parseReport(url);

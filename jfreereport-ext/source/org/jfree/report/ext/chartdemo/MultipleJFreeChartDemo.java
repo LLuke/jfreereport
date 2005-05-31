@@ -4,9 +4,9 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,36 +20,45 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------------
- * BasicJFreeChartDemo.java
- * ------------------------------
- * (C)opyright 2003, by Thomas Morgner and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * MultipleJFreeChartDemo.java
+ * ------------
+ * (C) Copyright 2002-2005, by Object Refinery Limited.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   -;
  *
- * $Id: BasicJFreeChartDemo.java,v 1.5 2005/05/18 18:50:26 taqua Exp $
+ * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
  *
  * Changes
- * -------------------------
- * 05.11.2003 : Initial version
+ * -------
+ *
  *
  */
 
 package org.jfree.report.ext.chartdemo;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.net.URL;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.Action;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
@@ -60,12 +69,10 @@ import org.jfree.ui.FloatDimension;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
-import org.jfree.util.Rotation;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
+import org.jfree.util.Rotation;
 
-public class BasicJFreeChartDemo extends AbstractDemoFrame
+public class MultipleJFreeChartDemo extends AbstractDemoFrame
 {
   protected class PreviewAPIReportAction extends AbstractActionDowngrade
   {
@@ -109,24 +116,33 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
   private static final String EXT_DEMO_DEF = "basic-chart-ext.xml";
   private static final String SIMPLE_DEMO_DEF = "basic-chart-simple.xml";
 
+  private TableModel data;
+
+
   /**
    * Creates a new demo.
    */
-  public BasicJFreeChartDemo()
+  public MultipleJFreeChartDemo()
   {
-    setTitle("JFreeChart demo");
+    setTitle("JFreeChart demo (Multiple charts)");
 
-    // create a dataset...
-    final PieDataset dataset = createSampleDataset();
+    data = createTableModel();
 
-    // create the chart...
-    final JFreeChart chart = createChart(dataset);
+    final JTabbedPane chartPanes = new JTabbedPane();
+    for (int i = 0; i < 12; i++)
+    {
+      // create the chart...
+      final JFreeChart chart = (JFreeChart) data.getValueAt(i, 0);
 
-    // add the chart to a panel...
-    final ChartPanel chartPanel = new ChartPanel(chart);
-    chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-    setContentPane(chartPanel);
-
+      // add the chart to a panel...
+      final ChartPanel chartPanel = new ChartPanel(chart);
+      //chartPanel.setPreferredSize(new Dimension(500, 270));
+      chartPanes.add(chartPanel, chart.getTitle().getText());
+    }
+    final JPanel contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout());
+    contentPane.add(chartPanes);
+    setContentPane(contentPane);
     buildMenu();
   }
 
@@ -154,13 +170,13 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
    */
   private PieDataset createSampleDataset()
   {
-
     final DefaultPieDataset result = new DefaultPieDataset();
-    result.setValue("Java", new Double(43.2));
-    result.setValue("Visual Basic", new Double(10.0));
-    result.setValue("C/C++", new Double(17.5));
-    result.setValue("PHP", new Double(32.5));
-    result.setValue("Perl", new Double(0.0));
+    // cheating: java has a higher chance to be the best language :)
+    result.setValue("Java", new Integer((int) (Math.random() * 200)));
+    result.setValue("Visual Basic", new Integer((int) (Math.random() * 50)));
+    result.setValue("C/C++", new Integer((int) (Math.random() * 100)));
+    result.setValue("PHP", new Integer((int) (Math.random() * 50)));
+    result.setValue("Perl", new Integer((int) (Math.random() * 100)));
     return result;
 
   }
@@ -168,23 +184,20 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
   /**
    * Creates a sample chart.
    *
-   * @param dataset  the dataset.
-   *
    * @return A chart.
    */
-  private JFreeChart createChart(final PieDataset dataset)
+  private JFreeChart createChart(final int year)
   {
 
     final JFreeChart chart = ChartFactory.createPieChart3D(
-        "Pie Chart 3D Demo 1", // chart title
-        dataset, // data
+        "Programming Language of the Year " + year, // chart title
+        createSampleDataset(), // data
         true, // include legend
         true,
         false
     );
 
     // set the background color for the chart...
-    chart.setBackgroundPaint(Color.yellow);
     final PiePlot3D plot = (PiePlot3D) chart.getPlot();
     plot.setStartAngle(270);
     plot.setDirection(Rotation.CLOCKWISE);
@@ -203,7 +216,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
   public static void main(final String[] args)
   {
 
-    final BasicJFreeChartDemo demo = new BasicJFreeChartDemo();
+    final MultipleJFreeChartDemo demo = new MultipleJFreeChartDemo();
     demo.pack();
     RefineryUtilities.centerFrameOnScreen(demo);
     demo.setVisible(true);
@@ -226,12 +239,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
     factory.setFieldname("Chart");
     report.getItemBand().addElement(factory.createElement());
 
-    // create a dataset...
-    final PieDataset dataset = createSampleDataset();
-    // create the chart...
-    final JFreeChart chart = createChart(dataset);
-    report.setProperty("Chart", chart);
-    report.setPropertyMarked("Chart", true);
+    report.setData(data);
 
     try
     {
@@ -248,6 +256,20 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
     }
   }
 
+  private TableModel createTableModel ()
+  {
+    final Object[][] data = new Object[12][];
+    for (int i = 0; i < 12; i++)
+    {
+      data[i] = new Object[]{ createChart(i + 1995)};
+    }
+
+    final String[] colNames = {
+      "Chart"
+    };
+    final DefaultTableModel model = new DefaultTableModel(data, colNames);
+    return model;
+  }
   /**
    * Handler method called by the preview action. This method should perform all
    * operations to preview the report.
@@ -256,14 +278,10 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
   {
     try
     {
-      final URL url = ObjectUtilities.getResourceRelative(resourceName, BasicJFreeChartDemo.class);
+      final URL url = ObjectUtilities.getResourceRelative(resourceName, MultipleJFreeChartDemo.class);
       final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+      report.setData(data);
 
-      // create a dataset...
-      final PieDataset dataset = createSampleDataset();
-      // create the chart...
-      final JFreeChart chart = createChart(dataset);
-      report.setProperty("Chart", chart);
       // marking was done by declaring the property-ref
 
       final PreviewDialog dialog = new PreviewDialog(report);

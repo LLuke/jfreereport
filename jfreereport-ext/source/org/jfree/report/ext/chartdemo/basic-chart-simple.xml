@@ -4,14 +4,14 @@
 
 <report name="ReportProperty Demo" pageformat="A4">
 
-  <!-- REPORT HEADER -->
-  <!-- This band appears once at the beginning of the report. -->
-  <reportheader>
+  <!-- ITEM BAND -->
+  <!-- This band appears for all rows in the tablemodel. -->
+  <items>
 
     <drawable-field x="0" y="0" width="450" height="250"
       fieldname="Chart"/>
 
-  </reportheader>
+  </items>
 
   <functions>
     <!-- This will mark the property to be included in the datarow -->

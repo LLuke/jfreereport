@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.5 2005/03/04 16:58:16 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.6 2005/05/18 18:50:28 taqua Exp $
  *
  * Changes
  * -------
@@ -82,14 +82,14 @@ public class ImageElementTest
   {
     // add an image as a report property...
     final URL imageURL = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/gorilla.jpg", ImageElementTest.class);
+            ("org/jfree/report/demo/gorilla.jpg", ImageElementTest.class);
     final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     final Object[][] data = {{createImage(image), createImage(image), createImage(image)}};
     final Object[] names = {"Foto1", "Foto2", "Foto3"};
     final DefaultTableModel mod = new DefaultTableModel(data, names);
 
-    final JFreeReport report = TestSystem.loadReport("/org/jfree/report/ext/junit/image-element.xml", mod);
+    final JFreeReport report = TestSystem.loadReport("org/jfree/report/ext/junit/image-element.xml", mod);
     if (report == null)
     {
       System.exit(1);

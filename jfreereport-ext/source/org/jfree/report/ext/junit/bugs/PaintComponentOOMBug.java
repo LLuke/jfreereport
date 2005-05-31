@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaintComponentOOMBug.java,v 1.1 2005/04/11 14:35:11 taqua Exp $
+ * $Id: PaintComponentOOMBug.java,v 1.2 2005/04/15 20:21:02 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.report.modules.output.table.csv.CSVReportUtil;
 
 public class PaintComponentOOMBug
 {
-  private static final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/spanned-header.xml";
+  private static final String URLNAME = "org/jfree/report/ext/junit/bugs/resource/spanned-header.xml";
 //  private static final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/csv-not-working.xml";
 
   public PaintComponentOOMBug ()

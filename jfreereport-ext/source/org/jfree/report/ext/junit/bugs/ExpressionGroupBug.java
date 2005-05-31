@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionGroupBug.java,v 1.2 2003/09/12 22:05:07 taqua Exp $
+ * $Id: ExpressionGroupBug.java,v 1.3 2003/11/01 19:54:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -185,7 +185,7 @@ public class ExpressionGroupBug extends TestCase
     final TableModel mdataModel = new ExpressionGroupBugDataSet();
     ExpressionGroupBug bug = new ExpressionGroupBug();
     JFreeReport report = TestSystem.loadReport
-        ("/org/jfree/report/ext/junit/bugs/resource/ExpressionGroupBug.xml", mdataModel);
+        ("org/jfree/report/ext/junit/bugs/resource/ExpressionGroupBug.xml", mdataModel);
     if (report == null)
     {
       Log.error ("Failed after parse.");

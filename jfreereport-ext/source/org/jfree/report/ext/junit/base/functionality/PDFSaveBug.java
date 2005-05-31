@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveBug.java,v 1.1 2003/11/01 19:58:06 taqua Exp $
+ * $Id: PDFSaveBug.java,v 1.2 2005/01/31 17:16:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,7 +61,7 @@ public class PDFSaveBug extends TestCase
 {
   private static final FunctionalityTestLib.ReportTest REPORT =
       new FunctionalityTestLib.ReportTest 
-        ("/org/jfree/report/demo/security.xml", new SampleData1());
+        ("org/jfree/report/demo/security.xml", new SampleData1());
 
   public PDFSaveBug ()
   {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: APReportTest.java,v 1.2 2005/04/11 13:35:32 taqua Exp $
+ * $Id: APReportTest.java,v 1.3 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.util.ObjectUtilities;
 
 public class APReportTest
 {
-  private static final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/ki.xml";
+  private static final String URLNAME = "org/jfree/report/ext/junit/bugs/resource/ki.xml";
 
   public APReportTest()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FnStyleSheetCollectionTest.java,v 1.5 2005/01/31 17:16:36 taqua Exp $
+ * $Id: FnStyleSheetCollectionTest.java,v 1.6 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -57,7 +57,7 @@ public class FnStyleSheetCollectionTest extends TestCase
 {
   private static final FunctionalityTestLib.ReportTest TEST_REPORT =
       new FunctionalityTestLib.ReportTest
-          ("/org/jfree/report/demo/cards/usercards.xml",
+          ("org/jfree/report/demo/cards/usercards.xml",
               CardDemo.createSimpleDemoModel());
 
   public void testCollectStyleSheets ()

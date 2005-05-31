@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.6 2005/03/04 16:58:17 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.7 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -68,7 +68,7 @@ import org.jfree.util.ObjectUtilities;
 public class PlainTextExportTest extends TestCase
 {
   private static final FunctionalityTestLib.ReportTest TEST_REPORT =
-      new FunctionalityTestLib.ReportTest ("/org/jfree/report/demo/report1.xml",
+      new FunctionalityTestLib.ReportTest ("org/jfree/report/demo/report1.xml",
           new SampleData1());
 
   public PlainTextExportTest()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.5 2005/02/22 20:28:10 taqua Exp $
+ * $Id: TotalGroupCountTest.java,v 1.6 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -113,7 +113,7 @@ public class TotalGroupCountTest extends TestCase
   }
 
   private static final FunctionalityTestLib.ReportTest REPORT2 =
-      new FunctionalityTestLib.ReportTest("/org/jfree/report/demo/report1.xml",
+      new FunctionalityTestLib.ReportTest("org/jfree/report/demo/report1.xml",
           new SampleData1());
 
   public TotalGroupCountTest()

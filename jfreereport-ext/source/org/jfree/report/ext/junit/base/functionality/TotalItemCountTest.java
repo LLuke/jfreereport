@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountTest.java,v 1.2 2003/12/21 23:49:22 taqua Exp $
+ * $Id: TotalItemCountTest.java,v 1.3 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -136,7 +136,7 @@ public class TotalItemCountTest extends TestCase
   }
 
   private static final FunctionalityTestLib.ReportTest REPORT2 =
-      new FunctionalityTestLib.ReportTest("/org/jfree/report/demo/report1.xml",
+      new FunctionalityTestLib.ReportTest("org/jfree/report/demo/report1.xml",
           new SampleData1());
 
   public TotalItemCountTest()

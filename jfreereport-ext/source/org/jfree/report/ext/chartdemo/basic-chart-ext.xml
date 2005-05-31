@@ -23,7 +23,7 @@
     </report-config>
 
     <report-description>
-        <report-header>
+        <itemband>
             <element type="drawable/generic">
                 <style>
                     <compound-key name="absolute_pos">
@@ -39,7 +39,7 @@
                     <basic-object name="field">Chart</basic-object>
                 </template>
             </element>
-        </report-header>
+        </itemband>
     </report-description>
 
     <functions>
