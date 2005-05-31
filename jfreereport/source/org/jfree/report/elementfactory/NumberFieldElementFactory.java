@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.10 2005/02/23 21:04:44 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.11 2005/03/29 18:31:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,9 +48,7 @@ import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.DataRowDataSource;
-import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.NumberFormatFilter;
-import org.jfree.report.filter.templates.NumberFieldTemplate;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
@@ -155,28 +153,12 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
    */
   public Element createElement ()
   {
-    final DataSource dataSource;
-    if (getFormat() instanceof DecimalFormat)
+    final NumberFormatFilter dataSource = new NumberFormatFilter();
+    if (format != null)
     {
-      final NumberFieldTemplate template = new NumberFieldTemplate();
-      template.setDecimalFormat((DecimalFormat) getFormat());
-      if (getNullString() != null)
-      {
-        template.setNullValue(getNullString());
-      }
-      template.setField(getFieldname());
-      dataSource = template;
+      dataSource.setFormatter(format);
     }
-    else
-    {
-      final NumberFormatFilter filter = new NumberFormatFilter();
-      if (format != null)
-      {
-        filter.setFormatter(format);
-      }
-      filter.setDataSource(new DataRowDataSource(getFieldname()));
-      dataSource = filter;
-    }
+    dataSource.setDataSource(new DataRowDataSource(getFieldname()));
 
     final TextElement element = new TextElement();
     applyElementName(element);
