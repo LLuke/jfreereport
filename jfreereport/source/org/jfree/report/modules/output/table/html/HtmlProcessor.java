@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.14 2005/03/29 18:32:01 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.15 2005/03/30 17:26:01 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,10 @@ public class HtmlProcessor extends TableProcessor
   public static final String BODY_FRAGMENT = "BodyFragment";
 
   public static final String EMPTY_CELLS_USE_CSS = "EmptyCellsUseCSS";
-  private static final String USE_DEVICE_INDEPENDENT_IMAGESIZES = "UseDeviceIndependentImageSize";
+
+  public static final String TABLE_ROW_BORDER_DEFINITION = "TableRowBorderDefinition";
+
+  public static final String USE_DEVICE_INDEPENDENT_IMAGESIZES = "UseDeviceIndependentImageSize";
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the standard file

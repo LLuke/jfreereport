@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.17 2005/04/14 17:37:09 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.18 2005/04/15 16:10:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,7 +61,6 @@ import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
@@ -95,6 +94,7 @@ public class HtmlContentCreator extends TableContentCreator
   private boolean emptyCellsUseCSS;
   private PrintWriter pout;
   private HtmlStyleCollection styleCollection;
+  private boolean tableRowBorderDefinition;
 
   public HtmlContentCreator
           (final HtmlFilesystem filesystem, final boolean useXHTML,
@@ -250,6 +250,9 @@ public class HtmlContentCreator extends TableContentCreator
     emptyCellsUseCSS = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.EMPTY_CELLS_USE_CSS, "false").equals("true");
+    tableRowBorderDefinition = config.getConfigProperty
+            (HtmlProcessor.CONFIGURATION_PREFIX + "." +
+            HtmlProcessor.TABLE_ROW_BORDER_DEFINITION, "false").equals("true");
     final String encoding = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
@@ -557,11 +560,13 @@ public class HtmlContentCreator extends TableContentCreator
     final HtmlTableRowStyle rowStyle;
     if (regionStyle == null)
     {
-      rowStyle = new HtmlTableRowStyle(lastRowHeight, null); 
+      rowStyle = new HtmlTableRowStyle(lastRowHeight, null, tableRowBorderDefinition);
     }
     else
     {
-      rowStyle = new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor());
+      rowStyle = new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor(), tableRowBorderDefinition);
+      rowStyle.setBorderTop(regionStyle.getColorTop(), regionStyle.getBorderSizeTop());
+      rowStyle.setBorderBottom(regionStyle.getColorBottom(), regionStyle.getBorderSizeBottom());
     }
 
 

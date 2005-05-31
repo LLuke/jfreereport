@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.7 2005/04/09 17:43:13 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.9 2005/04/14 16:48:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -71,8 +71,11 @@ public strictfp class HtmlSheetLayout extends SheetLayout
    */
   private GenericObjectTable backgroundStyleTable;
   private GenericObjectTable contentStyleTable;
+  private boolean tableRowBorderDefinition;
 
-  public HtmlSheetLayout (final boolean strict, final HtmlStyleCollection collection)
+  public HtmlSheetLayout (final boolean strict,
+                          final HtmlStyleCollection collection,
+                          final boolean tableRowBorderDefinition)
   {
     super(strict);
     if (collection == null)
@@ -83,6 +86,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     rectangle = new TableRectangle();
     contentStyleTable = new GenericObjectTable();
     backgroundStyleTable = new GenericObjectTable();
+    this.tableRowBorderDefinition = tableRowBorderDefinition;
   }
 
 
@@ -257,12 +261,24 @@ public strictfp class HtmlSheetLayout extends SheetLayout
 
       final int height = (int) Math.ceil
               (StrictGeomUtility.toExternalValue(getRowHeight(layoutRow)));
-      final HtmlTableRowStyle style = new HtmlTableRowStyle(height, rowColor);
+      final HtmlTableRowStyle style = new HtmlTableRowStyle
+              (height, rowColor, tableRowBorderDefinition);
       style.setBorderTop(borderTop, borderTopSize);
       style.setBorderBottom(borderBottom, borderBottomSize);
       styleCollection.addRowStyle(style);
     }
     clearObjectIdTable();
+  }
+
+  /**
+   * Returns true, if the table row contains border definitions. This is a
+   * workaround for a 'renderer weakness' of the mozilla browser family.
+   *
+   * @return true, if table rows might contain border definitions, false otherwise.
+   */
+  public boolean isTableRowBorderDefinition ()
+  {
+    return tableRowBorderDefinition;
   }
 
   /**

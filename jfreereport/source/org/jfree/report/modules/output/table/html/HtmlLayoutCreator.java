@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlLayoutCreator.java,v 1.3 2005/01/25 00:13:24 taqua Exp $
+ * $Id: HtmlLayoutCreator.java,v 1.4 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.table.html;
 
 import org.jfree.report.modules.output.table.base.DefaultLayoutCreator;
 import org.jfree.report.modules.output.table.base.SheetLayout;
+import org.jfree.report.ReportDefinition;
 
 /**
  * The HtmlLayoutCreator collects the StyleSheet information and builds the table grid for
@@ -54,6 +55,7 @@ public class HtmlLayoutCreator extends DefaultLayoutCreator
    * The style collection to build the global stylesheet.
    */
   private HtmlStyleCollection styleCollection;
+  private boolean tableRowBorderDefinition;
 
   /**
    * Creates a new layout creator for the html output.
@@ -67,6 +69,21 @@ public class HtmlLayoutCreator extends DefaultLayoutCreator
   }
 
   /**
+   * Begins a table. A table is considered a closed entity, it usually represents a sheet
+   * or a single page. Table headers and table properties can be defined using the given
+   * report definition.
+   *
+   * @param report the report definiton.
+   */
+  public void beginTable (final ReportDefinition report)
+  {
+    tableRowBorderDefinition = report.getReportConfiguration().getConfigProperty
+            (HtmlProcessor.CONFIGURATION_PREFIX + "." +
+            HtmlProcessor.TABLE_ROW_BORDER_DEFINITION, "false").equals("true");
+    super.beginTable(report);
+  }
+
+  /**
    * Creates a new sheet layout instance to collect the grid bounds and the style
    * information for a single table.
    *
@@ -75,7 +92,7 @@ public class HtmlLayoutCreator extends DefaultLayoutCreator
    */
   protected SheetLayout createSheetLayout (final boolean strict)
   {
-    return new HtmlSheetLayout(strict, getStyleCollection());
+    return new HtmlSheetLayout(strict, getStyleCollection(), tableRowBorderDefinition);
   }
 
   /**

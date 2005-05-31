@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableRowStyle.java,v 1.5 2005/04/14 16:37:36 taqua Exp $
+ * $Id: HtmlTableRowStyle.java,v 1.6 2005/04/14 16:48:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,11 +48,15 @@ public class HtmlTableRowStyle implements HtmlStyle
   private Color colorBottom;
   private float borderSizeTop;
   private float borderSizeBottom;
+  private boolean tableRowBorderDefinition;
 
-  public HtmlTableRowStyle (final int height, final Color background)
+  public HtmlTableRowStyle (final int height, 
+                            final Color background,
+                            final boolean tableRowBorderDefinition)
   {
     this.height = height;
     this.background = background;
+    this.tableRowBorderDefinition = tableRowBorderDefinition;
   }
 
   public Color getBackground ()
@@ -68,20 +72,22 @@ public class HtmlTableRowStyle implements HtmlStyle
     {
       styleBuilder.append("background-color", HtmlStyleCollection.getColorString(background));
     }
-    if (colorTop != null)
+    if (tableRowBorderDefinition)
     {
-      styleBuilder.append("border-top", String.valueOf(borderSizeTop), "pt");
-      styleBuilder.append("border-top-style", "solid");
-      styleBuilder.append("border-top-color", HtmlStyleCollection.getColorString(getColorTop()));
-    }
+      if (colorTop != null)
+      {
+        styleBuilder.append("border-top", String.valueOf(borderSizeTop), "pt");
+        styleBuilder.append("border-top-style", "solid");
+        styleBuilder.append("border-top-color", HtmlStyleCollection.getColorString(getColorTop()));
+      }
 
-    if (getColorBottom() != null)
-    {
-      styleBuilder.append("border-bottom", String.valueOf(getBorderSizeBottom()), "pt");
-      styleBuilder.append("border-bottom-style", "solid");
-      styleBuilder.append("border-bottom-color", HtmlStyleCollection.getColorString(getColorBottom()));
+      if (getColorBottom() != null)
+      {
+        styleBuilder.append("border-bottom", String.valueOf(getBorderSizeBottom()), "pt");
+        styleBuilder.append("border-bottom-style", "solid");
+        styleBuilder.append("border-bottom-color", HtmlStyleCollection.getColorString(getColorBottom()));
+      }
     }
-
     return styleBuilder.toString();
   }
 
@@ -135,13 +141,16 @@ public class HtmlTableRowStyle implements HtmlStyle
 
     final HtmlTableRowStyle htmlTableRowStyle = (HtmlTableRowStyle) o;
 
-    if (borderSizeBottom != htmlTableRowStyle.borderSizeBottom)
+    if (tableRowBorderDefinition)
     {
-      return false;
-    }
-    if (borderSizeTop != htmlTableRowStyle.borderSizeTop)
-    {
-      return false;
+      if (borderSizeBottom != htmlTableRowStyle.borderSizeBottom)
+      {
+        return false;
+      }
+      if (borderSizeTop != htmlTableRowStyle.borderSizeTop)
+      {
+        return false;
+      }
     }
     if (height != htmlTableRowStyle.height)
     {
@@ -151,15 +160,17 @@ public class HtmlTableRowStyle implements HtmlStyle
     {
       return false;
     }
-    if (colorBottom != null ? !colorBottom.equals(htmlTableRowStyle.colorBottom) : htmlTableRowStyle.colorBottom != null)
+    if (tableRowBorderDefinition)
     {
-      return false;
+      if (colorBottom != null ? !colorBottom.equals(htmlTableRowStyle.colorBottom) : htmlTableRowStyle.colorBottom != null)
+      {
+        return false;
+      }
+      if (colorTop != null ? !colorTop.equals(htmlTableRowStyle.colorTop) : htmlTableRowStyle.colorTop != null)
+      {
+        return false;
+      }
     }
-    if (colorTop != null ? !colorTop.equals(htmlTableRowStyle.colorTop) : htmlTableRowStyle.colorTop != null)
-    {
-      return false;
-    }
-
     return true;
   }
 
