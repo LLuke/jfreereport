@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.26 2005/05/18 18:37:30 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.27 2005/05/19 00:51:45 mimil Exp $
  *
  * Changes:
  * --------
@@ -47,6 +47,7 @@ import java.util.Arrays;
 import org.jfree.JCommon;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.base.Library;
+import org.jfree.base.BootableProjectInfo;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.ProjectInfo;
@@ -66,7 +67,7 @@ public class JFreeReportInfo extends ProjectInfo
   public JFreeReportInfo ()
   {
     setName("JFreeReport");
-    setVersion("0.8.5-4");
+    setVersion("0.8.5-5");
     setInfo("http://www.jfree.org/jfreereport/index.html");
     setCopyright
             ("(C)opyright 2000-2005, by Thomas Morgner, Object Refinery Limited and Contributors");
@@ -92,20 +93,22 @@ public class JFreeReportInfo extends ProjectInfo
       new Contributor("Thomas Dilts", "-"),
     }));
 
-    this.addLibrary(JCommon.INFO);
+    addLibrary(JCommon.INFO);
+    addDependency(JCommon.INFO);
 
-    final Library pixieLibraryInfo = tryLoadPixieInfo();
+    final BootableProjectInfo pixieLibraryInfo = tryLoadPixieInfo();
     if (pixieLibraryInfo != null)
     {
       addLibrary(pixieLibraryInfo);
+      addDependency(pixieLibraryInfo);
     }
   }
 
-  private static Library tryLoadPixieInfo ()
+  private static BootableProjectInfo tryLoadPixieInfo ()
   {
     try
     {
-      return (Library) ObjectUtilities.loadAndInstantiate
+      return (BootableProjectInfo) ObjectUtilities.loadAndInstantiate
               ("org.jfree.pixie.PixieInfo", JFreeReportInfo.class);
     }
     catch (Exception e)
