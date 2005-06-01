@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.8 2005/05/19 23:06:34 mimil Exp $
+ * $Id: Barcode39.java,v 1.9 2005/05/25 19:53:05 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -277,40 +277,34 @@ public class Barcode39 extends Barcode1D
       encode();
     }
 
-    double currentX = 0;
-
     for (int i = 0; i < getCodeTable().size(); i++)
     {
       final byte[] bytes = (byte[]) getCodeTable().get(i);
 
       for (int j = 0; j < bytes.length; j++)
       {
-        if (j % 2 == 0)  // bar
+        if (bytes[j] == 0) //narrow
         {
-          if (bytes[j] == 0) //narrow
+          if (j % 2 == 0)  // bar
           {
-            g2.fill(new Rectangle2D.Double(currentX, 0, currentX += getBarWidth(), getBarHeight()));
+            g2.fill(new Rectangle2D.Double(0, 0, getBarWidth(), getBarHeight()));
           }
-          else  //wide
-          {
-            g2.fill(new Rectangle2D.Double(currentX, 0, currentX += (getBarWidth() * getNarrowToWide()), getBarHeight()));
-          }
+          g2.translate(getBarWidth(), 0);
         }
-        else  // space
+        else  //wide
         {
-          if (bytes[j] == 0)  //narrow
+          if (j % 2 == 0)  // bar
           {
-            currentX += getBarWidth();
+            g2.fill(new Rectangle2D.Double(0, 0, getBarWidth() * getNarrowToWide(), getBarHeight()));
           }
-          else  //wide
-          {
-            currentX += (getBarWidth() * getNarrowToWide());
-          }
+          g2.translate(getBarWidth() * getNarrowToWide(), 0);
         }
-
       }
 
-      currentX += getBarWidth();  //the inter character gap
+      if (i < getCodeTable().size() - 1)
+      {
+        g2.translate(getBarWidth(), 0);        //the inter character gap
+      }
     }
   }
 
