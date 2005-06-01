@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.7 2005/05/25 19:52:51 mimil Exp $
+ * $Id: Barcode1D.java,v 1.8 2005/05/25 19:56:30 mimil Exp $
  *
  * Changes (from 2005-04-28) (CP)
  * -------------------------
@@ -38,6 +38,7 @@
 
 package org.jfree.report.dev.barcode;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -45,6 +46,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -235,7 +237,7 @@ public abstract class Barcode1D implements ExtendedDrawable
     if (codeAlignment == ElementAlignment.CENTER || codeAlignment == ElementAlignment.LEFT
             || codeAlignment == ElementAlignment.RIGHT)
     {
-      this.verticalCodeAlignment = codeAlignment;
+      this.horizontalCodeAlignment = codeAlignment;
     }
     else
     {
@@ -579,8 +581,13 @@ public abstract class Barcode1D implements ExtendedDrawable
    *
    * @return The code bounds initialized on <code>x=0</code> and <code>y=0</code>.
    */
-  public Rectangle2D getCodeBounds ()
+  protected Rectangle2D getCodeBounds ()
   {
+    if (!isShowCode())
+    {
+      return new Rectangle2D.Double();
+    }
+
     final DefaultSizeCalculator calculator = new DefaultSizeCalculator(getFont());
     float width = calculator.getStringWidth(getDisplayedCode(), 0, getDisplayedCode()
             .length());
@@ -594,21 +601,21 @@ public abstract class Barcode1D implements ExtendedDrawable
    *
    * @return The bars bounds initialized on <code>x=0</code> and <code>y=0</code>.
    */
-  abstract public Rectangle2D getBarBounds ();
+  abstract protected Rectangle2D getBarBounds ();
 
   /**
    * Draws the bars symbols. The graphics target is already clipped.
    *
    * @param g2 The graphics target.
    */
-  abstract public void drawBars (Graphics2D g2);
+  abstract protected void drawBars (Graphics2D g2);
 
   /**
    * Draws the code. The graphics target is already clipped.
    *
    * @param g2 The graphics target.
    */
-  public void drawCode (Graphics2D g2)
+  protected void drawCode (Graphics2D g2)
   {
     final String displayedCode = getDisplayedCode();
     if (displayedCode != null)
@@ -619,11 +626,6 @@ public abstract class Barcode1D implements ExtendedDrawable
 
       final float correctedBaseline = baseline * cFact;
       g2.drawString(displayedCode, 0, correctedBaseline);
-      System.err.println("drawing code: " + displayedCode);
-    }
-    else
-    {
-      System.err.println("no code to display.");
     }
   }
 
@@ -642,18 +644,24 @@ public abstract class Barcode1D implements ExtendedDrawable
   {
     double width = Math.max(codeBounds.getWidth(), barBounds.getWidth());
     double height = 0;
+    double gap = 0;
+
+    if (isShowCode())
+    {
+      gap = barToCodeGap;
+    }
 
     if (codeAlignmentWeight == WEIGHT_ALIGNMENT_EMBEDDED)
     {
-      height = Math.max(codeBounds.getHeight(), barBounds.getHeight()) + barToCodeGap;
+      height = Math.max(codeBounds.getHeight(), barBounds.getHeight()) + gap;
     }
     else if (codeAlignmentWeight == WEIGHT_ALIGNMENT_HALF_EMBEDDED)
     {
-      height = codeBounds.getHeight() / 2 + barBounds.getHeight() + barToCodeGap;
+      height = codeBounds.getHeight() / 2 + barBounds.getHeight() + gap;
     }
     else if (codeAlignmentWeight == WEIGHT_ALIGNMENT_NOT_EMBEDDED)
     {
-      height = codeBounds.getHeight() + barBounds.getHeight() + barToCodeGap;
+      height = codeBounds.getHeight() + barBounds.getHeight() + gap;
     }
 
 
@@ -717,48 +725,43 @@ public abstract class Barcode1D implements ExtendedDrawable
 
     //setting the background
     g2.setBackground(getBackgroundColor());
-    g2.setColor(backgroundColor);
+    g2.setColor(getBackgroundColor());
     g2.fill(area);
+    g2.setClip(area);
 
     //drawing the stroke
-    if (stroke != null)
+    if (getStroke() != null)
     {
-      final Stroke oldStroke = g2.getStroke();
-      final Shape strokedShape = stroke.createStrokedShape(area);
-      final double x = strokedShape.getBounds2D().getWidth() - area.getWidth();
-      final double y = strokedShape.getBounds2D().getHeight() - area.getHeight();
-      //todo: how could I know that it is a perfect rectangle (coordinates/2)
-      final Rectangle2D re = new Rectangle2D.Double(x / 2., x / 2., area.getWidth() + x / 2, area.getHeight() + y / 2);
-      g2.setColor(strokeColor);
-      g2.setStroke(stroke);
-      g2.draw(re);
-      g2.setStroke(oldStroke);
+      final Shape strokedShape = getStroke().createStrokedShape(area);
+
+      g2.setColor(getStrokeColor());
+      g2.setStroke(getStroke());
+      g2.draw(strokedShape);
+      g2.setStroke(new BasicStroke(0));
+
     }
 
-    final Shape oldclip = g2.getClip();
-
     //removing the margings
-    final Rectangle2D rect = new Rectangle2D.Double(margins.left,
-            margins.top,
-            barcodeBounds.getWidth(),
-            barcodeBounds.getHeight());
-    g2.setClip(rect);
+    g2.translate(getMargins().left, getMargins().top);
+
+    //never draw out of the computed area
+    g2.setClip(barcodeBounds);
+
+    final AffineTransform transform = g2.getTransform();
 
     //drawing the code
-    g2.setColor(fontColor);
-    g2.setClip(codeBounds);
-    g2.setFont(font.getFont());
+    g2.setColor(getFontColor());
+    g2.translate(codeBounds.getX(), codeBounds.getY());
+    //g2.setClip(codeBounds);
+    g2.setFont(getFont().getFont());
     drawCode(g2);
     //restore
-    g2.setClip(oldclip);
+    g2.setTransform(transform);
 
     //drawing the bars
-    g2.setColor(barColor);
-    g2.setClip(barBounds);
-    //drawBars(g2);
-    //restore
-    g2.setClip(oldclip);
-
+    g2.setColor(getBarColor());
+    g2.translate(barBounds.getX(), barBounds.getY());
+    drawBars(g2);
   }
 
   /**
@@ -779,17 +782,11 @@ public abstract class Barcode1D implements ExtendedDrawable
     final Rectangle2D codeBounds = getCodeBounds();
     final Rectangle2D barBounds = getBarBounds();
 
-    System.err.println("codeBounds: " + codeBounds);
-    System.err.println("barBounds: " + barBounds);
-
     final Rectangle2D barcodeBounds = getBarcodeBounds(codeBounds, barBounds);
 
-    System.err.println("barcodeBounds: " + barcodeBounds);
-    System.err.println("codeBounds after: " + codeBounds);
-    System.err.println("barBounds after: " + barBounds);
-
-    return new Dimension((int) (barcodeBounds.getWidth() + margins.left + margins.right),
-            (int) (barcodeBounds.getHeight() + margins.top + margins.bottom));
+    return new Dimension((int) (barcodeBounds.getWidth() + getMargins().left + getMargins()
+            .right),
+            (int) (barcodeBounds.getHeight() + getMargins().top + getMargins().bottom));
   }
 
   /**
@@ -802,7 +799,7 @@ public abstract class Barcode1D implements ExtendedDrawable
    *
    * @return Boolean.
    */
-  public boolean isEncoded ()
+  protected boolean isEncoded ()
   {
     return encoded;
   }
@@ -812,7 +809,7 @@ public abstract class Barcode1D implements ExtendedDrawable
    *
    * @param encoded Boolean.
    */
-  public void setEncoded (boolean encoded)
+  protected void setEncoded (boolean encoded)
   {
     this.encoded = encoded;
   }
