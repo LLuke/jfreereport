@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 0.8.5-5: (1-May-2005)
+        * [BUG] The ItemHideFunction did not reset the visible state to visible
+          after a pagebreak.
+
         * [BUG] The include parser did not setup the EntityResolver correctly.
           This caused trouble when working without an internet connection.
 
@@ -13,6 +16,28 @@ A list of changes in recent versions:
 
         * [BUG] Fixed an error condition, where an non-absolute path could cause
           a NullPointer if the parent directory could not be resolved.
+
+        * [BUG] The XML-Parser's support for indexed function properties has
+          been fixed.
+
+        * The classloader handling is now configurable via JCommon. By default
+          the ThreadContext-classloader is used now.
+
+        * The one-to-many demo got an API-only counterpart. Noone is forced to
+          use the XML definition.
+
+        * There were some ugly bugs in the I18N report support. The I18N demo
+          is now working as expected.
+
+        * Excel reports with more than 4000 different styles to no longer break
+          the file format. JFreeReport will not create more than 4000 styles in
+          a single report (all extra styles are discarded and the cells left
+          unstyled).
+
+        * The HTML export now allows border definition in the <tr> elements.
+          This is a workaround for bugs in the Mozilla table renderer. The
+          setting is configurable using the report configuration with the
+          key 'org.jfree.report.modules.output.table.html.TableRowBorderDefinition'.
 
 0.8.5-4: (15-Apr-2005)
         * The location of the ReportControler can now be defined from
