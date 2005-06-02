@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.18 2005/04/15 16:10:43 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.19 2005/05/31 20:37:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -141,8 +141,9 @@ public class HtmlContentCreator extends TableContentCreator
    * @return the global stylesheet as html reference.
    *
    * @throws IOException if an error occured.
+   * @param report
    */
-  private HtmlReference buildGlobalStyleSheet ()
+  private HtmlReference buildGlobalStyleSheet (final ReportDefinition report)
           throws IOException
   {
     //
@@ -154,6 +155,12 @@ public class HtmlContentCreator extends TableContentCreator
     final Iterator styles = stylesSorted.entrySet().iterator();
     while (styles.hasNext())
     {
+      final String styleHeader = report.getReportConfiguration().getConfigProperty
+              ("org.jfree.report.modules.output.table.html.StyleSheetHeader");
+      if (styleHeader != null)
+      {
+        csswriter.println(styleHeader);
+      }
       final Map.Entry entry = (Map.Entry) styles.next();
       final HtmlStyle style = (HtmlStyle) entry.getValue();
       final String name = (String) entry.getKey();
@@ -198,13 +205,25 @@ public class HtmlContentCreator extends TableContentCreator
     }
 
     style += "table-layout: fixed;";
+    if (tableRowBorderDefinition)
+    {
+      style += "border-collapse: collapse;";
+    }
     if (emptyCellsUseCSS)
     {
       style += "empty-cells: show";
     }
 
+    final String styleClass = reportDefinition.getReportConfiguration().getConfigProperty
+            ("org.jfree.report.modules.output.table.html.StyleClass");
+
     pout.print("<table cellspacing=\"0\" cellpadding=\"0\" style=\"");
     pout.print(style);
+    if (styleClass != null)
+    {
+      pout.println("\" ");
+      pout.print(styleClass);
+    }
     pout.println("\">");
     pout.print("<colgroup span=\"");
     pout.print(noc);
@@ -311,7 +330,7 @@ public class HtmlContentCreator extends TableContentCreator
         }
         pout.println("</title>");
 
-        final HtmlReference cssRef = buildGlobalStyleSheet();
+        final HtmlReference cssRef = buildGlobalStyleSheet(report);
         // write the generated stylesheet ...
         // is a href type ...
         if (cssRef.isExternal())

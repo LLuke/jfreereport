@@ -2,7 +2,7 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.5-5: (1-May-2005)
+0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible
           after a pagebreak.
 
