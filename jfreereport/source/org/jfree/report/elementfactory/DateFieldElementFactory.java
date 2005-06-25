@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.11 2005/03/29 18:31:59 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.12 2005/05/31 19:26:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,6 +49,8 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DateFormatFilter;
+import org.jfree.report.filter.DataSource;
+import org.jfree.report.filter.templates.DateFieldTemplate;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
@@ -69,6 +71,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
    */
   private DateFormat format;
 
+  /** The cell format for the excel export. */
   private String excelCellFormat;
 
   /**
@@ -78,11 +81,22 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   {
   }
 
+  /**
+   * Returns the excel export cell format.
+   *
+   * @return the excel cell format.
+   */
   public String getExcelCellFormat ()
   {
     return excelCellFormat;
   }
 
+  /**
+   * Defines a special cell format that should be used when exporting the report
+   * into Excel workbooks.
+   *
+   * @param excelCellFormat the excel cell format
+   */
   public void setExcelCellFormat (final String excelCellFormat)
   {
     this.excelCellFormat = excelCellFormat;
@@ -155,15 +169,39 @@ public class DateFieldElementFactory extends TextFieldElementFactory
    */
   public Element createElement ()
   {
-    final DateFormatFilter dataSource = new DateFormatFilter();
-    if (format != null)
+    if (getFieldname() == null)
     {
-      dataSource.setFormatter(format);
+      throw new IllegalStateException("Fieldname is not set.");
     }
-    dataSource.setDataSource(new DataRowDataSource(getFieldname()));
+    
+    final DataSource ds;
+    if (format instanceof SimpleDateFormat)
+    {
+      final DateFieldTemplate template = new DateFieldTemplate();
+      template.setDateFormat((SimpleDateFormat) format);
+      if (getNullString() != null)
+      {
+        template.setNullValue(getNullString());
+      }
+      ds = template;
+    }
+    else
+    {
+      final DateFormatFilter dataSource = new DateFormatFilter();
+      if (format != null)
+      {
+        dataSource.setFormatter(format);
+      }
+      dataSource.setDataSource(new DataRowDataSource(getFieldname()));
+      if (getNullString() != null)
+      {
+        dataSource.setNullValue(getNullString());
+      }
+      ds = dataSource;
+    }
 
     final TextElement element = new TextElement();
-    element.setDataSource(dataSource);
+    element.setDataSource(ds);
     applyElementName(element);
     applyStyle(element.getStyle());
     element.getStyle().setStyleProperty

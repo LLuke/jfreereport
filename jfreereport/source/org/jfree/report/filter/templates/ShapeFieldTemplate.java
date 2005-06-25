@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFieldTemplate.java,v 1.6 2005/01/24 23:59:49 taqua Exp $
+ * $Id: ShapeFieldTemplate.java,v 1.7 2005/02/23 21:04:46 taqua Exp $
  *
  * Changes
  * -------
@@ -117,12 +117,12 @@ public class ShapeFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition (ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition (ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.8 2005/05/18 18:38:26 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.9 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------
@@ -78,6 +78,7 @@ public class PercentageDemo extends AbstractDemoFrame
    * The data for the report.
    */
   private TableModel data;
+  private PreviewFrame frame;
 
   /**
    * Constructs the demo application.
@@ -172,12 +173,21 @@ public class PercentageDemo extends AbstractDemoFrame
 
     try
     {
-      final PreviewFrame frame = new PreviewFrame(report);
-      frame.getBase().setToolbarFloatable(true);
-      frame.pack();
-      RefineryUtilities.positionFrameRandomly(frame);
-      frame.setVisible(true);
-      frame.requestFocus();
+      if (frame == null)
+      {
+        frame = new PreviewFrame(report);
+        frame.getBase().setToolbarFloatable(true);
+        frame.pack();
+        RefineryUtilities.positionFrameRandomly(frame);
+        frame.setVisible(true);
+        frame.requestFocus();
+      }
+      else
+      {
+        frame.getBase().setReport(report);
+        frame.setVisible(true);
+        frame.requestFocus();
+      }
     }
     catch (ReportProcessingException pre)
     {

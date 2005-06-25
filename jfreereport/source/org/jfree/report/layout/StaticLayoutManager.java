@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.22 2005/03/24 22:24:54 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.23 2005/04/17 21:08:59 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ import org.jfree.report.util.geom.StrictPoint;
  *
  * @author Thomas Morgner
  */
-public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
+public class StaticLayoutManager extends AbstractBandLayoutManager
 {
   /**
    * A key for the absolute position of an element.
@@ -822,7 +822,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * @param parentDim the dimensions for the parent of the element
    * @return the created layout information.
    */
-  protected strictfp ElementLayoutInformation
+  protected ElementLayoutInformation
           createLayoutInfoForDynamics (final Element e, 
                                        final StrictDimension parentDim,
                                        final LayoutSupport support)

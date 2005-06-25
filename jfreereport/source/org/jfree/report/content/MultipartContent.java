@@ -28,16 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MultipartContent.java,v 1.2 2004/05/07 08:02:49 mungady Exp $
+ * $Id: MultipartContent.java,v 1.3 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 27.03.2004 : Initial version
+ * 27-Mar-2004 : Initial version
  *  
  */
 
 package org.jfree.report.content;
 
+/**
+ * The MultipartContent is used to mark content that consists of several subcontent
+ * elements.
+ *
+ * @author Thomas Morgner
+ */
 public interface MultipartContent extends Content
 {
   /**
@@ -53,6 +59,9 @@ public interface MultipartContent extends Content
    *
    * @param part the sub-content index (zero-based).
    * @return the subcontent (possibly null).
+   *
+   * @throws IndexOutOfBoundsException if the part number is creater than the content part
+   *                                   count.
    */
   public Content getContentPart (int part);
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.18 2005/02/23 21:04:47 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.19 2005/03/03 14:42:34 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import org.jfree.report.util.geom.StrictPoint;
  *
  * @author Thomas Morgner.
  */
-public abstract strictfp class AbstractBandLayoutManager implements BandLayoutManager
+public abstract class AbstractBandLayoutManager implements BandLayoutManager
 {
   public static final long RELATIVE_CORRECTION_FACTOR =
           StrictGeomUtility.toInternalValue(100);
@@ -226,7 +226,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param support   the layout support used to compute sizes.
    * @return the new elements dimension.
    */
-  protected strictfp StrictDimension getElementContentBounds
+  protected StrictDimension getElementContentBounds
           (final StrictDimension bounds, final Element e,
            final StrictDimension conBounds, final LayoutSupport support)
   {
@@ -277,7 +277,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param parentDim the dimensions for the parent of the element
    * @return the created layout information.
    */
-  protected strictfp ElementLayoutInformation createLayoutInfoForDynamics
+  protected ElementLayoutInformation createLayoutInfoForDynamics
           (final Element e, 
            final StrictDimension parentDim,
            final LayoutSupport support)
@@ -321,7 +321,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param containerBounds the bounds of the container.
    * @return layout information.
    */
-  protected strictfp ElementLayoutInformation
+  protected ElementLayoutInformation
           createLayoutInformationForMinimumSize 
           (final Element e, final StrictDimension containerBounds,
            final LayoutSupport support)
@@ -354,7 +354,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param containerDims the dimensions of the container.
    * @return layout information.
    */
-  protected strictfp ElementLayoutInformation
+  protected ElementLayoutInformation
           createLayoutInformationForPreferredSize 
           (final Element e, final StrictDimension containerDims,
            final LayoutSupport support)
@@ -486,7 +486,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param retval the return value.
    * @return the corrected dimension.
    */
-  protected static strictfp StrictDimension correctDimension
+  protected static StrictDimension correctDimension
           (final StrictDimension dim, final StrictDimension base,
            final StrictDimension retval, final LayoutSupport support)
   {
@@ -522,7 +522,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param base the base value (the containers value), should never be negative.
    * @return the corrected value if necessary or the dim value unchanged.
    */
-  protected static strictfp long correctRelativeValue (final long dim, final long base)
+  protected static long correctRelativeValue (final long dim, final long base)
   {
     if (dim < 0)
     {
@@ -540,7 +540,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param retval the return value.
    * @return the corrected point.
    */
-  protected static strictfp StrictPoint correctPoint
+  protected static StrictPoint correctPoint
           (final StrictPoint dim, final StrictDimension base,
            final StrictPoint retval, final LayoutSupport support)
   {
@@ -577,7 +577,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param boundary the boundary.
    * @return The aligned value.
    */
-  public static strictfp long alignDown (final long value, final long boundary)
+  public static long alignDown (final long value, final long boundary)
   {
     if (boundary == 0)
     {
@@ -588,8 +588,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
       return 0;
     }
 
-    final long flooredVal = (long) Math.floor((float)value / (float)boundary);
-    return flooredVal * boundary;
+    return (value / boundary) * boundary;
   }
 
 
@@ -601,7 +600,7 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
    * @param boundary the boundary.
    * @return The aligned value.
    */
-  public static strictfp long alignUp (final long value, final long boundary)
+  public static long alignUp (final long value, final long boundary)
   {
     if (boundary == 0)
     {
@@ -620,8 +619,9 @@ public abstract strictfp class AbstractBandLayoutManager implements BandLayoutMa
 
     // Did I ever mention that this whole code is a cheap hack and should have
     // been removed long ago?
-    final long flooredVal = (long) Math.floor((float)value / (float)boundary);
-    return flooredVal * boundary;
+//    final long flooredVal = (long) Math.floor((float)value / (float)boundary);
+//    return flooredVal * boundary;
+    return (value / boundary) * boundary;
   }
 
 }

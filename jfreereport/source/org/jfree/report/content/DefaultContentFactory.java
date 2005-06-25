@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.9 2005/02/23 21:04:36 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.10 2005/04/17 21:08:02 taqua Exp $
  *
  * Changes
  * -------
@@ -41,17 +41,16 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 
 /**
- * The DefaultContentFactory provides a default implementation for output targets, which
- * support all known content types.
- * <p/>
- * The implementation provides support for <code>text</code>, <code>image</code> and
- * <code>shape</code> content.
+ * The DefaultContentFactory provides a default implementation for output targets. The
+ * factory must be configured to support all required content types.
  *
  * @author Thomas Morgner
  */
 public class DefaultContentFactory implements ContentFactory
 {
+  /** The factories registered modules. */
   private ContentFactoryModule[] modules;
+  /** The number of modules in this factory. */
   private int size;
 
   /**
@@ -81,6 +80,12 @@ public class DefaultContentFactory implements ContentFactory
     size += 1;
   }
 
+  /**
+   * Makes sure, that there is enough space to store at least <code>size</code> elements
+   * in this list.
+   *
+   * @param size the new list capacity.
+   */
   private void ensureCapacity (final int size)
   {
     if (modules.length <= size)
@@ -105,8 +110,8 @@ public class DefaultContentFactory implements ContentFactory
    * @throws ContentCreationException if there is a problem with the OutputTarget or this
    *                                  factory is not able to handle this content type.
    */
-  public synchronized Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
-                                          final LayoutSupport ot)
+  public synchronized Content createContentForElement
+          (final Element e, final ElementLayoutInformation bounds, final LayoutSupport ot)
           throws ContentCreationException
   {
     if (bounds == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceFieldElementFactory.java,v 1.10 2005/02/19 13:29:54 taqua Exp $
+ * $Id: ResourceFieldElementFactory.java,v 1.11 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,10 +107,7 @@ public class ResourceFieldElementFactory extends TextFieldElementFactory
     final ResourceFieldTemplate template = new ResourceFieldTemplate();
     template.setResourceIdentifier(getResourceBase());
     template.setField(getFieldname());
-    if (getNullString() != null)
-    {
-      template.setNullValue(getNullString());
-    }
+    template.setNullValue(getNullString());
 
     final TextElement element = new TextElement();
     applyElementName(element);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.13 2005/02/23 21:04:39 taqua Exp $
+ * $Id: SampleReport1.java,v 1.14 2005/03/18 13:49:37 taqua Exp $
  *
  * Changes:
  * --------
@@ -57,6 +57,7 @@ import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
+import org.jfree.report.SimplePageDefinition;
 import org.jfree.report.elementfactory.DateFieldElementFactory;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.NumberFieldElementFactory;

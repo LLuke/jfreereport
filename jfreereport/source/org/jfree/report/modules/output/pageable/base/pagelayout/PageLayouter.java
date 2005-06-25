@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.17 2005/02/19 13:29:58 taqua Exp $
+ * $Id: PageLayouter.java,v 1.18 2005/02/23 21:05:29 taqua Exp $
  *
  * Changes
  * -------
@@ -146,6 +146,11 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    * A flag indicating whether the process of restarting the page is completed.
    */
   private boolean pageRestartDone;
+
+  /**
+   * A flag marking the current pagebreak as an automaticly generated pagebreak.
+   */
+  private boolean autoPageBreak;
 
   private ArrayList bands;
 
@@ -454,20 +459,6 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   }
 
   /**
-   * Restores the layoutmanager state by using this state as new base for
-   * processing. This state must be a clone of the last report state for
-   * the previous page or the original last report state - or the processing
-   * will print stupid things.
-   *
-   * @param state  the report state.
-   *
-   * @throws ReportProcessingException if there is a problem processing the report.
-   public abstract void restoreSaveState (ReportState state)
-   throws ReportProcessingException;
-   */
-
-
-  /**
    * Clear the beginTransaction. This should be called after the beginTransaction has been
    * restored.
    */
@@ -591,8 +582,13 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     return p;
   }
 
-  private boolean autoPageBreak;
-
+  /**
+   * Marks the current pagebreak as an automaticly generated pagebreak. Such a break
+   * occured when there was not enough space on the page left to print the current
+   * band. The last event has to be undone ...
+   *
+   * @param b the flag
+   */
   protected void setAutomaticPagebreak (final boolean b)
   {
     autoPageBreak = b;

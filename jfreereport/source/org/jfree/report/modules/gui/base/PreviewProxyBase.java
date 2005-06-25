@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.41 2005/03/29 18:32:00 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.42 2005/04/15 16:10:42 taqua Exp $
  *
  * Changes
  * -------
@@ -968,9 +968,6 @@ public class PreviewProxyBase extends JComponent
       }
     });
 
-    this.exportWorkerPool = new WorkerPool
-            (5, "preview-dialog-export-worker");
-
     createDefaultActions();
 
     reportPaneHolder = new JPanel(new CenterLayout());
@@ -1007,7 +1004,7 @@ public class PreviewProxyBase extends JComponent
   {
     final ExportPluginFactory factory = ExportPluginFactory.getInstance();
     exportPlugIns = factory.createExportPlugIns
-            (proxy, report.getReportConfiguration(), exportWorkerPool);
+            (proxy, report.getReportConfiguration(), getExportWorkerPool());
     pluginActions = new HashMap(exportPlugIns.size());
     final Iterator it = exportPlugIns.iterator();
     while (it.hasNext())
@@ -1045,8 +1042,12 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the worker.
    */
-  protected WorkerPool getExportWorkerPool ()
+  protected synchronized WorkerPool getExportWorkerPool ()
   {
+    if (exportWorkerPool == null)
+    {
+      exportWorkerPool = new WorkerPool(5, "export-worker-");
+    }
     return exportWorkerPool;
   }
 
@@ -1055,13 +1056,14 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the worker.
    */
-  protected Worker getRepaginationWorker ()
+  protected synchronized Worker getRepaginationWorker ()
   {
     if (repaginationWorker == null)
     {
       repaginationWorker = new Worker();
       repaginationWorker.setPriority(Thread.MIN_PRIORITY);
       repaginationWorker.setName("Repagination-Worker");
+      closed = false;
     }
     return repaginationWorker;
   }
@@ -2091,30 +2093,34 @@ public class PreviewProxyBase extends JComponent
   /**
    * Performs a minor dispose operation and interrupts the repagination worker.
    */
-  protected final void freeResources ()
+  protected synchronized final void freeResources ()
   {
     try
     {
-      // make sure that the pagination worker does no longer waste our time.
-      // this won't kill the export worker ...
-      repaginationWorker.interrupt();
-      synchronized (repaginationWorker)
+      if (repaginationWorker != null)
       {
-        while (repaginationWorker.isAvailable() == false)
+        // make sure that the pagination worker does no longer waste our time.
+        // this won't kill the export worker ...
+        repaginationWorker.interrupt();
+        synchronized (repaginationWorker)
         {
-          // wait until the worker is done with his current job
-          //Log.debug ("Worker is unavailable ... ");
-          try
+          while (repaginationWorker.isAvailable() == false)
           {
-            repaginationWorker.wait();
+            // wait until the worker is done with his current job
+            //Log.debug ("Worker is unavailable ... ");
+            try
+            {
+              repaginationWorker.wait();
+            }
+            catch (InterruptedException ie)
+            {
+              // ignored
+            }
           }
-          catch (InterruptedException ie)
-          {
-            // ignored
-          }
+          // now we can be sure, that the beast is killed and wont
+          // cause trouble later.
         }
-        // now we can be sure, that the beast is killed and wont
-        // cause trouble later.
+        repaginationWorker = null;
       }
     }
     catch (SecurityException se)
@@ -2146,12 +2152,23 @@ public class PreviewProxyBase extends JComponent
    * Shuts down the preview component. Once the component is closed, it cannot be
    * reactivated anymore. Calling this method will abort all worker threads, will close
    * the progress dialog and dispose all components.
+   * <p>
+   * Once this method has been called, this component will be useless as all
+   * worker threads have been killed.
    */
-  public void close ()
+  public synchronized void close ()
   {
     closed = true;
-    exportWorkerPool.finishAll();
-    repaginationWorker.finish();
+    if (exportWorkerPool != null)
+    {
+      exportWorkerPool.finishAll();
+      exportWorkerPool = null;
+    }
+    if (repaginationWorker != null)
+    {
+      repaginationWorker.finish();
+      repaginationWorker = null;
+    }
     if (progressDialog.isVisible())
     {
       progressDialog.setVisible(false);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextElementFactory.java,v 1.13 2005/02/05 18:35:17 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.14 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,6 +107,9 @@ public abstract class TextElementFactory extends ElementFactory
    * A flag defining whether to remove leading and trailing whitespaces from text lines.
    */
   private Boolean trimTextContent;
+  /**
+   * A flag defining, whether the text should be autmaticly wrapped in Excel.
+   */
   private Boolean wrapText;
 
   /**
@@ -414,11 +417,21 @@ public abstract class TextElementFactory extends ElementFactory
     this.trimTextContent = trimTextContent;
   }
 
+  /**
+   * Returns, whether the text should be wrapped in Excel-cells.
+   *
+   * @return the wrap text flag.
+   */
   public Boolean getWrapText ()
   {
     return wrapText;
   }
 
+  /**
+   * Defines, whether the text should be wrapped in excel cells.
+   *
+   * @param wrapText the wrap text flag.
+   */
   public void setWrapText (final Boolean wrapText)
   {
     this.wrapText = wrapText;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFieldElementFactory.java,v 1.7 2005/02/19 13:29:54 taqua Exp $
+ * $Id: ShapeFieldElementFactory.java,v 1.8 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.filter.DataRowDataSource;
+import org.jfree.report.filter.templates.ShapeFieldTemplate;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -106,7 +106,9 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
     applyStyle(e.getStyle());
     applyElementName(e);
 
-    e.setDataSource(new DataRowDataSource(getFieldname()));
+    final ShapeFieldTemplate template = new ShapeFieldTemplate();
+    template.setField(getFieldname());
+    e.setDataSource(template);
     return e;
   }
 

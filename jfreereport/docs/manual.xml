@@ -83,14 +83,55 @@
       <section>
         <title>Technical Requirements</title>
 
-        <para></para>
+        <para>JFreeReport uses the Java2D API and therefore needs at least JDK
+        1.2.2. Some optional modules provide support for features found in
+        newer versions of Java, for instance the Logging or extended printing
+        of JDK 1.4.</para>
+
+        <para>At the time of this writing, JFreeReport cannot be used with one
+        of the opensource implementations of the JDK. It will not run with
+        Kaffe, GCJ or any other JVM using the ClassPath library. </para>
+
+        <para>Depending on the contents and complexity of the generated
+        reports, JFreeReport might need more than the default 64MB heap size.
+        The library itself is 100% pure Java and does not rely on native
+        libraries. JFreeReport is able to run in headless mode on servers.
+        </para>
+
+        <itemizedlist>
+          <listitem>
+            <para>JDK: 1.2.2 or higher</para>
+          </listitem>
+
+          <listitem>
+            <para>Memory: 64 MB heap memory inside the JVM</para>
+          </listitem>
+        </itemizedlist>
       </section>
     </section>
 
     <section id="overview.license" label="License Questions">
       <title>License</title>
 
-      <para></para>
+      <para>JFreeReport is distributed under the terms of the GNU Lesser
+      General Public Licence (LGPL).</para>
+
+      <para>The LGPL allows the licencee to use, modify and redistribute the
+      source without having to pay a licence fee. The LGPL requires that all
+      modifications to the library itself must also be licenced under the
+      terms of the LGPL. Products, which include JFreeReport, must contain a
+      copy of the licence text and must make the source code of the
+      distributed version of JFreeReport, available to the user. This source
+      code must contain all modifications made to the original version. The
+      programm itself must allow the user to replace the LGPLed code with
+      modified versions. The simplest way to comply to the LGPL is to ship the
+      sourcecode of JFreeReport with your programm.</para>
+
+      <para>Simply using JFreeReport does not cause *your* programm to be free
+      software.</para>
+
+      <para>The complete text of the GNU Lesser General Public Licence can be
+      found in the Appendix. </para>
     </section>
 
     <section id="overview.bugs" label="Bugs! - And How to report them">
@@ -115,14 +156,15 @@
       http://sourceforge.net/projects/jfreereport/</ulink>) or in the
       JFreeReport forum (<ulink
       url="http://www.jfree.org/phpBB2/viewforum.php?f=8">
-      http://www.jfree.org/phpBB2/viewforum.php?f=8</ulink>.</para>
+      http://www.jfree.org/phpBB2/viewforum.php?f=8</ulink>).</para>
     </section>
 
     <section id="overview.contents" label="Contents of this manual">
       <title>Contents of this manual</title>
 
-      <para>The manual tries to give a complete overview about the basics of
-      the art of report generation and the JFreeReport library.</para>
+      <para>The manual should give a complete overview about the basics of the
+      art of report generation and how to solve that task with the JFreeReport
+      library.</para>
 
       <para>The next chapter will start with a short introduction to general
       report processing techniques and the used algorithms. If you are already

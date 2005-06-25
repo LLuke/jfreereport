@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: IntList.java,v 1.3 2005/03/03 23:00:26 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.util;
 
 public class IntList
 {
+  private static final int[] EMPTY_ARRAY = new int[0];
   private int[] data;
   private int size;
   private int increment;
@@ -90,6 +91,11 @@ public class IntList
 
   public int[] toArray ()
   {
+    if (size == 0)
+    {
+      return EMPTY_ARRAY;
+    }
+
     final int[] retval = new int[size];
     System.arraycopy(data, 0, retval, 0, size);
     return retval;

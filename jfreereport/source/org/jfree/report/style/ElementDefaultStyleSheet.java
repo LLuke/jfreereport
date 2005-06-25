@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.6 2005/02/19 13:30:05 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.7 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,9 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     super(name);
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
-    setStyleProperty(BOUNDS, new StrictBounds());
+    final StrictBounds value = new StrictBounds();
+    value.setLocked(true);
+    setStyleProperty(BOUNDS, value);
     setStyleProperty(PAINT, DEFAULT_PAINT);
     setStyleProperty(STROKE, DEFAULT_STROKE);
     setFontDefinitionProperty(DEFAULT_FONT_DEFINITION);

@@ -31,11 +31,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AnchorContent.java,v 1.3 2005/03/03 22:59:58 taqua Exp $
  *
  * Changes
  * -------
- *
+ * 25-Jul-2005: Added JavaDoc comments.
  *
  */
 package org.jfree.report.content;
@@ -44,13 +44,36 @@ import org.jfree.report.Anchor;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictPoint;
 
+/**
+ * The Anchor content encapsulates possible link targets. Anchors are bound to
+ * a certain point on the document and can be referenced using HREF's.
+ *
+ * @author Thomas Morgner
+ * @see Anchor
+ */
 public class AnchorContent implements Content
 {
+  /** The encapsulated anchor. */
   private Anchor ancor;
+  /** The anchors position. */
   private StrictPoint point;
 
+  /**
+   * Creates a new Anchor content for the given anchor and position.
+   *
+   * @param ancor the anchor
+   * @param point the position of the anchor within the page/document.
+   */
   public AnchorContent (final Anchor ancor, final StrictPoint point)
   {
+    if (ancor == null)
+    {
+      throw new NullPointerException("Anchor must not be null.");
+    }
+    if (point == null)
+    {
+      throw new NullPointerException("Position must not be null");
+    }
     this.ancor = ancor;
     this.point = (StrictPoint) point.clone();
   }
@@ -63,7 +86,7 @@ public class AnchorContent implements Content
    */
   public StrictBounds getBounds ()
   {
-    return new StrictBounds(point.getX(), point.getY(), 0, 0);
+    return new StrictBounds(point.getX(), point.getY(), 1, 1);
   }
 
   /**
@@ -106,6 +129,11 @@ public class AnchorContent implements Content
     return getBounds();
   }
 
+  /**
+   * Returns the anchor contained in this content.
+   *
+   * @return the anchor.
+   */
   public Anchor getAnchor ()
   {
     return ancor;

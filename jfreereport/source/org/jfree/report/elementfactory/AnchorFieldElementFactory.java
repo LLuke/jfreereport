@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AnchorFieldElementFactory.java,v 1.3 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -44,19 +44,40 @@ import org.jfree.report.AnchorElement;
 import org.jfree.report.Element;
 import org.jfree.report.filter.templates.AnchorFieldTemplate;
 
+/**
+ * The AnchorFieldElementFactory can be used to construct Anchor fields. Anchor fields
+ * generate Anchor-Objects from content found in a DataRow-column or function.
+ *
+ * @author Thomas Morgner
+ */
 public class AnchorFieldElementFactory extends ElementFactory
 {
+  /** The fieldname. */
   private String fieldname;
 
+  /**
+   * Creates a new Factory.
+   */
   public AnchorFieldElementFactory ()
   {
   }
 
+  /**
+   * Returns the element's field name.
+   *
+   * @return the fieldname
+   */
   public String getFieldname ()
   {
     return fieldname;
   }
 
+  /**
+   * Defines the field name. The field name should be the name of a 'marked' report
+   * property, a function or expression name or the name of a table model column.
+   *
+   * @param field the field name.
+   */
   public void setFieldname (final String field)
   {
     this.fieldname = field;
@@ -69,8 +90,15 @@ public class AnchorFieldElementFactory extends ElementFactory
    */
   public Element createElement ()
   {
+    if (getFieldname() == null)
+    {
+      throw new IllegalStateException("Fieldname is not set.");
+    }
+    
     final AnchorElement element = new AnchorElement();
     final AnchorFieldTemplate anchorFieldTemplate = new AnchorFieldTemplate();
+    anchorFieldTemplate.setField(getFieldname());
+
     applyElementName(element);
     applyStyle(element.getStyle());
     element.setDataSource(anchorFieldTemplate);

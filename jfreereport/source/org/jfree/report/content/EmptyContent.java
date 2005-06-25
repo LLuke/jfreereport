@@ -28,22 +28,32 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyContent.java,v 1.5 2005/02/19 13:29:52 taqua Exp $
+ * $Id: EmptyContent.java,v 1.6 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 14.02.2004 : Initial version
- *  
+ * 14-Feb-2004 : Initial version
+ * 26-Jun-2005 : Added JavaDoc
  */
 
 package org.jfree.report.content;
 
 import org.jfree.report.util.geom.StrictBounds;
 
+/**
+ * The empty content is a place holder for all cases, where no other content
+ * should be displayed.
+ */
 public class EmptyContent implements Content
 {
+  /** The singleton instance for all empty contents. */
   private static EmptyContent singleton;
 
+  /**
+   * Returns the singleton instance of the empty content.
+   *
+   * @return the singleton instance.
+   */
   public static EmptyContent getDefaultEmptyContent ()
   {
     if (singleton == null)
@@ -53,7 +63,10 @@ public class EmptyContent implements Content
     return singleton;
   }
 
-  public EmptyContent ()
+  /**
+   * Private constructor prevents object creation. 
+   */
+  private EmptyContent ()
   {
   }
 
@@ -68,14 +81,11 @@ public class EmptyContent implements Content
   }
 
   /**
-   * Returns the content for the given bounds. The extracted content is the content that
-   * would be displayed in the specific bounds if the content would be printed with
-   * clipping enabled at the given boundary.
-   * <p/>
-   * This method returns <code>null</code> if there is no content in these bounds.
+   * Returns the content for the given bounds. As this is Empty content, the content
+   * returns itself, no matter what bounds are given.
    *
    * @param bounds the bounds.
-   * @return the content (possibly <code>null</code>).
+   * @return the content
    */
   public Content getContentForBounds (final StrictBounds bounds)
   {
@@ -83,21 +93,21 @@ public class EmptyContent implements Content
   }
 
   /**
-   * Returns a sub-content item.
+   * Returns a sub-content item. This content has no subcontent, therefore an
+   * IndexOutOfBoundsException is thrown.
    *
    * @param part the sub-content index (zero-based).
    * @return the subcontent (possibly null).
    */
   public Content getContentPart (final int part)
   {
-    return this;
+    throw new IndexOutOfBoundsException("EmptyContent has no subcontent.");
   }
 
   /**
-   * Returns the number of sub-content items for this item. <P> Only subclasses of {@link
-   * org.jfree.report.content.ContentContainer} will return non-zero results.
+   * Returns the number of sub-content items for this item.
    *
-   * @return the number of sub-content items.
+   * @return zero.
    */
   public int getContentPartCount ()
   {

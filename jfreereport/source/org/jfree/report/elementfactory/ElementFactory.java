@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementFactory.java,v 1.11 2005/02/05 18:35:17 taqua Exp $
+ * $Id: ElementFactory.java,v 1.12 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -87,6 +87,8 @@ public abstract class ElementFactory
    * The elements visible flag.
    */
   private Boolean visible;
+
+  /** The URL for an hyperlink that contains this element as content. */
   private String hRefTarget;
 
   /**
@@ -96,11 +98,21 @@ public abstract class ElementFactory
   {
   }
 
+  /**
+   * Returns the link target for this element.
+   *
+   * @return the link target.
+   */
   public String getHRefTarget ()
   {
     return hRefTarget;
   }
 
+  /**
+   * Defines the link target for the element.
+   *
+   * @param hRefTarget the link target.
+   */
   public void setHRefTarget (final String hRefTarget)
   {
     this.hRefTarget = hRefTarget;
@@ -216,7 +228,7 @@ public abstract class ElementFactory
   }
 
   /**
-   * Defines whether the element's height should be adjusted automaticly. This feature is
+   * Returns whether the element's height should be adjusted automaticly. This feature is
    * expensive and be used with care. Set the value to null, to declare that the dynamic
    * feature is undefined.
    *
@@ -228,7 +240,9 @@ public abstract class ElementFactory
   }
 
   /**
-   * Defines the state of the element's dynamic content height feature.
+   * Defines whether the element's height should be adjusted automaticly. This feature is
+   * expensive and be used with care. Set the value to null, to declare that the dynamic
+   * feature is undefined.
    *
    * @param dynamicHeight the new value of the elements dynamic height feature.
    */
@@ -237,21 +251,50 @@ public abstract class ElementFactory
     this.dynamicHeight = dynamicHeight;
   }
 
+  /**
+   * Returns, whether the layout for the element is cachable. If you intend to modify the
+   * element's properties from within a function, you should mark the element as
+   * non-cachable, or the layout may look funny.
+   * <p>
+   * Dynamic elements are never cachable.
+   *
+   * @return the layout-cachable flag.
+   */
   public Boolean getLayoutCachable ()
   {
     return layoutCachable;
   }
 
+  /**
+   * Returns, whether the layout for the element is cachable. If you intend to modify the
+   * element's properties from within a function, you should mark the element as
+   * non-cachable, or the layout may look funny. Set this value to <code>null</code>
+   * if this value should be inherited from the parent.
+   * <p>
+   * Dynamic elements are never cachable.
+   *
+   * @param layoutCachable the layout-cachable flag.
+   */
   public void setLayoutCachable (final Boolean layoutCachable)
   {
     this.layoutCachable = layoutCachable;
   }
 
+  /**
+   * Returns, whether the element will be visible.
+   *
+   * @return the visibility of the element.
+   */
   public Boolean getVisible ()
   {
     return visible;
   }
 
+  /**
+   * Defines, whether the element will be visible.
+   *
+   * @param visible the visibility flag of the element.
+   */
   public void setVisible (final Boolean visible)
   {
     this.visible = visible;

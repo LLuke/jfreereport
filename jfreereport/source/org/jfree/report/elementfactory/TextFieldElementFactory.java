@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextFieldElementFactory.java,v 1.7 2005/02/19 13:29:55 taqua Exp $
+ * $Id: TextFieldElementFactory.java,v 1.8 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,7 +63,7 @@ public class TextFieldElementFactory extends TextElementFactory
    */
   private String fieldname;
   /**
-   * The nullstring of the text element if the translation was not found.
+   * The nullstring of the text element if the value in the datasource was null.
    */
   private String nullString;
 

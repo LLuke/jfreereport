@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LevelList.java,v 1.12 2005/02/23 21:06:05 taqua Exp $
+ * $Id: LevelList.java,v 1.13 2005/04/17 21:09:01 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
+import java.lang.reflect.Array;
 
 /**
  * A list that associates a level (instance of <code>Integer</code>) with each element in
@@ -55,6 +56,8 @@ import java.util.TreeSet;
  */
 public class LevelList implements Cloneable
 {
+  private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+  private static final Integer[] EMPTY_INTEGER_ARRAY = new Integer[0];
   /**
    * Constant for level zero.
    */
@@ -124,7 +127,7 @@ public class LevelList implements Cloneable
     /**
      * The level list.
      */
-    private ArrayList datalist;
+    private Object[] data;
 
     /**
      * Creates an iterator that provides access to all the elements in a list at the
@@ -143,7 +146,7 @@ public class LevelList implements Cloneable
       final Object[] rawElements = list.getRawElements();
       final Integer[] rawLevels = list.getRawLevels();
 
-      datalist = new ArrayList(rawElements.length);
+      final ArrayList datalist = new ArrayList(rawElements.length);
       for (int i = 0; i < rawElements.length; i++)
       {
         final Object iNext = rawElements[i];
@@ -153,6 +156,7 @@ public class LevelList implements Cloneable
           datalist.add(iNext);
         }
       }
+      data = datalist.toArray();
     }
 
     /**
@@ -162,18 +166,31 @@ public class LevelList implements Cloneable
      */
     protected Object[] getData ()
     {
-      return datalist.toArray();
+      return (Object[]) data.clone();
     }
 
     /**
-     * Returns the data for this level as object array.
+     * Returns the data for this level as object array. Behaves like ArrayList.toArray(..)
      *
      * @param target object array that should receive the contents
      * @return the data for this level as object array.
      */
-    protected Object[] getData (final Object[] target)
+    protected Object[] getData (Object[] target)
     {
-      return datalist.toArray(target);
+      if (target == null)
+      {
+        target = new Object[data.length];
+      }
+      else if (target.length < data.length)
+      {
+        target = (Object[]) Array.newInstance(target.getClass().getComponentType(), data.length);
+      }
+      System.arraycopy(data, 0, target, 0, data.length);
+      if (target.length > data.length)
+      {
+        target[data.length] = null;
+      }
+      return target;
     }
 
     /**
@@ -183,7 +200,7 @@ public class LevelList implements Cloneable
      */
     protected int size ()
     {
-      return datalist.size();
+      return data.length;
     }
   }
 
@@ -241,10 +258,14 @@ public class LevelList implements Cloneable
 
   public synchronized Integer[] getLevelsDescendingArray ()
   {
+    if (levels.size() == 0)
+    {
+      return EMPTY_INTEGER_ARRAY;
+    }
     if (iteratorSetDesc == null)
     {
-      iteratorSetDesc = new TreeSet(new DescendingComparator());
       final Integer[] ilevels = (Integer[]) levels.toArray(new Integer[levels.size()]);
+      iteratorSetDesc = new TreeSet(new DescendingComparator());
       for (int i = 0; i < ilevels.length; i++)
       {
         if (iteratorSetDesc.contains(ilevels[i]) == false)
@@ -488,6 +509,10 @@ public class LevelList implements Cloneable
    */
   protected Object[] getRawElements ()
   {
+    if (elements.size() == 0)
+    {
+      return EMPTY_OBJECT_ARRAY;
+    }
     return elements.toArray(new Object[elements.size()]);
   }
 
@@ -498,6 +523,10 @@ public class LevelList implements Cloneable
    */
   protected Integer[] getRawLevels ()
   {
+    if (levels.size() == 0)
+    {
+      return EMPTY_INTEGER_ARRAY;
+    }
     return (Integer[]) levels.toArray(new Integer[levels.size()]);
   }
 }

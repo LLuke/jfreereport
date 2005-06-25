@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.9 2005/02/19 13:29:52 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.10 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,11 @@ import org.jfree.ui.Drawable;
  *
  * @author Thomas Morgner.
  */
-public strictfp class DrawableContentFactoryModule implements ContentFactoryModule
+public class DrawableContentFactoryModule implements ContentFactoryModule
 {
+  /**
+   * DefaultConstructor,
+   */
   public DrawableContentFactoryModule ()
   {
   }

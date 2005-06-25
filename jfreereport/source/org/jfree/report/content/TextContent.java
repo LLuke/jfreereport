@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContent.java,v 1.12 2005/02/19 13:29:52 taqua Exp $
+ * $Id: TextContent.java,v 1.13 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -53,8 +53,9 @@ import org.jfree.report.util.geom.StrictBounds;
  * @author Thomas Morgner
  * @see TextParagraph
  */
-public strictfp class TextContent extends ContentContainer
+public class TextContent extends ContentContainer
 {
+  /** A configuration key to enable some additional checks. */
   public static final String DEBUG_TEXTCONTENT_KEY =
           "org.jfree.report.content.DebugTextContent";
 

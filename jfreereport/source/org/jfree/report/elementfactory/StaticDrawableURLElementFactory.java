@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StaticDrawableURLElementFactory.java,v 1.3 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,21 @@ import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
 import org.jfree.report.filter.templates.DrawableURLElementTemplate;
 
+/**
+ * A factory to create an drawable element that loads its drawable from an static URL. The
+ * content string may contain a relative URL if an valid base URL is given.
+ *
+ * @author Thomas Morgner
+ */
 public class StaticDrawableURLElementFactory extends ElementFactory
 {
+  /**
+   * The content URL (may be a relative URL).
+   */
   private String content;
-
+  /**
+   * The base URL for relative content URLs.
+   */
   private URL baseURL;
 
   public StaticDrawableURLElementFactory ()
@@ -57,9 +68,10 @@ public class StaticDrawableURLElementFactory extends ElementFactory
   }
 
   /**
-   * Returns the field name from where to read the content of the element.
+   * Returns the content part of the URL. This string may contain a relative URL, if the
+   * base URL is defined.
    *
-   * @return the field name.
+   * @return the content part of the URL.
    */
   public String getContent ()
   {
@@ -67,21 +79,32 @@ public class StaticDrawableURLElementFactory extends ElementFactory
   }
 
   /**
-   * Defines the field name from where to read the content of the element. The field name
-   * is the name of a datarow column.
+   * Defines the content part of the URL. This string may contain a relative URL, if the
+   * base URL is defined.
    *
-   * @param content the field name.
+   * @param content the content part of the URL.
    */
   public void setContent (final String content)
   {
     this.content = content;
   }
 
+  /**
+   * Returns the BaseURL. The base URL is used to build the complete URL if the content
+   * url is relative.
+   *
+   * @return the base URL.
+   */
   public URL getBaseURL ()
   {
     return baseURL;
   }
 
+  /**
+   * Defines the base URL.
+   *
+   * @param baseURL the base URL.
+   */
   public void setBaseURL (final URL baseURL)
   {
     this.baseURL = baseURL;

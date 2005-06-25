@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.13 2005/03/16 21:06:39 taqua Exp $
+ * $Id: ImageContent.java,v 1.14 2005/03/18 13:49:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,12 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
- * Image content.
+ * The Image content is a wrapper around a java.awt.Image object. The content defines
+ * a viewport (a clipping area) over the contained image.
  *
  * @author Thomas Morgner.
  */
-public strictfp class ImageContent implements Content
+public class ImageContent implements Content
 {
   /**
    * The image reference.
@@ -124,28 +125,6 @@ public strictfp class ImageContent implements Content
   }
 
   /**
-   * This class does not store sub-content items, so this method always returns zero.
-   *
-   * @return always zero, image content does never contains multiple parts.
-   */
-  public int getContentPartCount ()
-  {
-    return 0;
-  }
-
-  /**
-   * This class does not store sub-content items, so this method always returns
-   * <code>null</code>.
-   *
-   * @param part ignored.
-   * @return <code>null</code>.
-   */
-  public Content getContentPart (final int part)
-  {
-    return null;
-  }
-
-  /**
    * Returns the content bounds.
    *
    * @return the content bounds.
@@ -165,28 +144,47 @@ public strictfp class ImageContent implements Content
   {
     if (StrictBounds.intersects(bounds, this.bounds) == false)
     {
-      return new EmptyContent();
+      return EmptyContent.getDefaultEmptyContent();
     }
 
     final StrictBounds myBounds = bounds.createIntersection(this.bounds);
-    return new ImageContent(reference, myBounds,
-            new StrictBounds
-                    (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
-                            mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
-                            mapHorizontalPointToImage(myBounds.getWidth()),
-                            mapVerticalPointToImage(myBounds.getHeight())));
+    final StrictBounds imageArea = new StrictBounds
+                        (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
+                         mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
+                         mapHorizontalPointToImage(myBounds.getWidth()),
+                         mapVerticalPointToImage(myBounds.getHeight()));
+    return new ImageContent(reference, myBounds, imageArea);
   }
 
+  /**
+   * Maps the given horizontal coordinate into the unscaled image.
+   *
+   * @param px the horizontal coordinate
+   * @return the scaled coordinate.
+   */
   private long mapHorizontalPointToImage (final long px)
   {
     return (px * imageArea.getWidth() / bounds.getWidth());
   }
 
+  /**
+   * Maps the given vertical coordinate into the unscaled image.
+   *
+   * @param px the vertical coordinate
+   * @return the scaled coordinate.
+   */
   private long mapVerticalPointToImage (final long px)
   {
     return (px * imageArea.getHeight() / bounds.getHeight());
   }
 
+  /**
+   * Returns the image area for this image content. The image area is a view on the
+   * unscaled image contained in the content. This is used to split the image
+   * content into subcontents if necessary.
+   *
+   * @return the image area.
+   */
   public StrictBounds getImageArea ()
   {
     return (StrictBounds) imageArea.clone();
@@ -211,23 +209,4 @@ public strictfp class ImageContent implements Content
   {
     return getBounds();
   }
-//
-//  public static void main (final String[] args)
-//  {
-//    BaseBoot.getInstance().start();
-//
-//    final Image img = new BufferedImage
-//            (400, 400, BufferedImage.TYPE_3BYTE_BGR);
-//    final Rectangle2D.Float rec = new Rectangle2D.Float(0, 0, 100, 100);
-//    final ImageContent ic = new ImageContent
-//            (new DefaultImageReference(img), rec);
-//
-//    final Rectangle2D.Float rec2 = new Rectangle2D.Float(50, 50, 50, 50);
-//    final ImageContent ic2 = (ImageContent) ic.getContentForBounds(rec2);
-//    Log.debug (ic2.imageArea);
-//
-//    final Rectangle2D.Float rec3 = new Rectangle2D.Float(75, 75, 25, 25);
-//    final ImageContent ic3 = (ImageContent) ic2.getContentForBounds(rec3);
-//    Log.debug (ic3.imageArea);
-//  }
 }

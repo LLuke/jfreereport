@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.6 2005/02/23 21:05:28 taqua Exp $
+ * $Id: PageProcess.java,v 1.7 2005/04/17 21:09:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -176,10 +176,15 @@ public class PageProcess
         // the end of the reporting is reached.
         // note: Dont test the end of the page, this gives no hint whether there will
         // be a next page ...
-        while ((lm.isPageEnded() == false) && (state.isFinish() == false))
+        boolean autoPageBreak = false;
+        ReportState.PageBreakSaveState oldState = null;
+
+        while ((lm.isPageEnded() == false) &&
+               (state.isFinish() == false) && autoPageBreak == false)
+
         {
           final PageLayouter org = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
-          final ReportState.PageBreakSaveState oldState = state.createPageProgressCopy();
+          oldState = state.createPageProgressCopy();
           lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
           state = state.advance();
           if (failOnError)
@@ -205,18 +210,25 @@ public class PageProcess
             throw new IllegalStateException("Lost the layout manager");
           }
           // we detected an break ... undo the last event ..
-          if (lm.isAutomaticPagebreak())
-          {
-            state = oldState.restorePageProgressCopy();
-            // due to the cloning involved in the restore process, we have a new instance
-            lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
-            lm.finishPageAfterRestore(state);
-            break;
-          }
-
+          autoPageBreak = lm.isAutomaticPagebreak();
           checkInterrupted();
         }
+
+        if (autoPageBreak)
+        {
+          // perform a rollback
+          state = oldState.restorePageProgressCopy();
+          // due to the cloning involved in the restore process, we have a new instance
+          lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
+          lm.finishPageAfterRestore(state);
+        }
+//        else
+//        {
+//          // perform a commit ...
+//
+//        }
       }
+
 
       metaPage = lm.getMetaPage();
     }

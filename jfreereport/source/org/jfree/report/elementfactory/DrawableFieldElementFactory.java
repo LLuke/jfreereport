@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldElementFactory.java,v 1.10 2004/05/07 08:24:41 mungady Exp $
+ * $Id: DrawableFieldElementFactory.java,v 1.11 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,12 +44,15 @@ import org.jfree.report.filter.templates.DrawableFieldTemplate;
 
 /**
  * The drawable field element factory can be used to create elements that display
- * org.jfree.ui.Drawable elements.
+ * <code>Drawable</code> elements.
+ * <p/>
+ * A drawable field expects the named datasource to contain Drawable objects. 
  * <p/>
  * Once the desired properties are set, the factory can be reused to create similiar
  * elements.
  *
  * @author Thomas Morgner
+ * @see org.jfree.ui.Drawable
  */
 public class DrawableFieldElementFactory extends ElementFactory
 {

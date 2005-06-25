@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.8 2005/02/19 13:29:52 taqua Exp $
+ * $Id: ContentContainer.java,v 1.9 2005/02/23 21:04:36 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,13 @@ import org.jfree.report.util.geom.StrictBounds;
  */
 public class ContentContainer implements MultipartContent
 {
-  /**
-   * Storage for the content items.
-   */
+  /** Storage for the content items. */
   private Content[] content;
+
+  /** The number of elements in the container. */
   private int size;
 
-  /**
-   * The content bounds.
-   */
+  /** The content bounds. */
   private final StrictBounds bounds;
 
   /**
@@ -185,7 +183,7 @@ public class ContentContainer implements MultipartContent
     }
     if (cc == null)
     {
-      return new EmptyContent();
+      return EmptyContent.getDefaultEmptyContent();
     }
     return cc;
   }

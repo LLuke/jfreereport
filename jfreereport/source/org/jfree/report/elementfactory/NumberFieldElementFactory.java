@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.11 2005/03/29 18:31:59 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.12 2005/05/31 19:26:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,6 +49,8 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.NumberFormatFilter;
+import org.jfree.report.filter.DataSource;
+import org.jfree.report.filter.templates.NumberFieldTemplate;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
@@ -68,6 +70,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
    * The number format instance used to format numeric values in the text element.
    */
   private NumberFormat format;
+  /** The cell format for the excel export. */
   private String excelCellFormat;
 
   /**
@@ -77,11 +80,22 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   {
   }
 
+  /**
+   * Returns the excel export cell format.
+   *
+   * @return the excel cell format.
+   */
   public String getExcelCellFormat ()
   {
     return excelCellFormat;
   }
 
+  /**
+   * Defines a special cell format that should be used when exporting the report
+   * into Excel workbooks.
+   *
+   * @param excelCellFormat the excel cell format
+   */
   public void setExcelCellFormat (final String excelCellFormat)
   {
     this.excelCellFormat = excelCellFormat;
@@ -153,16 +167,41 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
    */
   public Element createElement ()
   {
-    final NumberFormatFilter dataSource = new NumberFormatFilter();
-    if (format != null)
+    if (getFieldname() == null)
     {
-      dataSource.setFormatter(format);
+      throw new IllegalStateException("Fieldname is not set.");
     }
-    dataSource.setDataSource(new DataRowDataSource(getFieldname()));
+    
+    final DataSource ds;
+    if (format instanceof DecimalFormat)
+    {
+      final NumberFieldTemplate template = new NumberFieldTemplate();
+      template.setDecimalFormat((DecimalFormat) format);
+      if (getNullString() != null)
+      {
+        template.setNullValue(getNullString());
+      }
+      ds = template;
+    }
+    else
+    {
+      final NumberFormatFilter dataSource = new NumberFormatFilter();
+      if (format != null)
+      {
+        dataSource.setFormatter(format);
+      }
+      dataSource.setDataSource(new DataRowDataSource(getFieldname()));
+      if (getNullString() != null)
+      {
+        dataSource.setNullValue(getNullString());
+      }
+      ds = dataSource;
+    }
 
     final TextElement element = new TextElement();
     applyElementName(element);
-    element.setDataSource(dataSource);
+    element.setDataSource(ds);
+
     applyStyle(element.getStyle());
     element.getStyle().setStyleProperty
             (ElementStyleSheet.EXCEL_DATA_FORMAT_STRING, getExcelCellFormat());

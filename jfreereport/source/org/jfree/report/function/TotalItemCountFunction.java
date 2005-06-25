@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.11 2005/01/25 00:00:38 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.12 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -171,19 +171,21 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
   public void groupStarted (final ReportEvent event)
   {
     // enter defined group ...?
-    if (FunctionUtilities.isDefinedGroup(getGroup(), event))
+    if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
-      if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
-      {
-        groupResult = new ItemCountStorage();
-        results.add(groupResult);
-      }
-      else
-      {
-        // Activate the current group, which was filled in the prepare run.
-        currentIndex += 1;
-        groupResult = (ItemCountStorage) results.get(currentIndex);
-      }
+      return;
+    }
+
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+    {
+      groupResult = new ItemCountStorage();
+      results.add(groupResult);
+    }
+    else
+    {
+      // Activate the current group, which was filled in the prepare run.
+      currentIndex += 1;
+      groupResult = (ItemCountStorage) results.get(currentIndex);
     }
   }
 

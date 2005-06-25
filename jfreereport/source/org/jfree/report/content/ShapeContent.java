@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContent.java,v 1.7 2005/02/19 13:29:52 taqua Exp $
+ * $Id: ShapeContent.java,v 1.8 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.report.util.geom.StrictBounds;
  *
  * @author Thomas Morgner.
  */
-public strictfp class ShapeContent implements Content
+public class ShapeContent implements Content
 {
   /**
    * The shape.

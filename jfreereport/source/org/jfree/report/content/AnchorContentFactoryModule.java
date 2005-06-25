@@ -31,12 +31,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AnchorContentFactoryModule.java,v 1.3 2005/03/03 22:59:58 taqua Exp $
  *
  * Changes
  * -------
- *
- *
+ * 25-Jul-2005: Added JavaDoc comments.
  */
 package org.jfree.report.content;
 
@@ -47,8 +46,20 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictPoint;
 
+/**
+ * The anchor content factory-module is responsible for creating the AnchorContent from
+ * an element containing Anchors. The factory module expects either an Anchor element in
+ * the given element or converts the content of the element into a String and uses this
+ * string as Anchor value.
+ *
+ * @author Thomas Morgner
+ * @see Anchor
+ */
 public class AnchorContentFactoryModule implements ContentFactoryModule
 {
+  /**
+   * Creates a new FactoryModule.
+   */
   public AnchorContentFactoryModule ()
   {
   }
@@ -85,6 +96,15 @@ public class AnchorContentFactoryModule implements ContentFactoryModule
     return createAnchor(o, absPos);
   }
 
+  /**
+   * Creates an anchor content wrapper for the given object. If the object is an instance
+   * of Anchor, the content is generated directly, else the object's string representation
+   * is used to construct a new Anchor object.
+   *
+   * @param o the anchor or an arbitary object that should be converted into an Anchor.
+   * @param position the position of the anchor
+   * @return the created content
+   */
   public static Content createAnchor (final Object o, final StrictPoint position)
   {
     if (o instanceof Anchor)

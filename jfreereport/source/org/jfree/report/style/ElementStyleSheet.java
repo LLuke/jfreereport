@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.21 2005/02/23 21:06:05 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.22 2005/04/15 16:10:45 taqua Exp $
  *
  * Changes
  * -------
@@ -755,6 +755,8 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
 
       properties[identifier] = value;
       propertyKeys[identifier] = key;
+      //cachedProperties[identifier] = null;
+      //putInCache(key, null);
       styleChangeSupport.fireStyleChanged(key, value);
     }
   }

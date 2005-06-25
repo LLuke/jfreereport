@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.17 2005/02/23 21:04:47 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.18 2005/03/03 21:50:38 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,8 @@ public final class LevelledExpressionList implements ReportListener,
                                                      Cloneable, LayoutListener,
                                                      PageEventListener
 {
+  private static final Expression[] EMPTY_EXPRESSIONSARRAY = new Expression[0];
+
   private static final class LevelStorage
   {
     private int levelNumber;
@@ -148,7 +150,7 @@ public final class LevelledExpressionList implements ReportListener,
     {
       return prepareEventListeners;
     }
-}
+  }
 
   /**
    * error list stores the errors that occur during the event dispatching.
@@ -775,7 +777,7 @@ public final class LevelledExpressionList implements ReportListener,
         final LayoutListener e = (LayoutListener) flatData[functions[l]];
         try
         {
-          e.layoutComplete(event);
+          e.outputComplete(event);
         }
         catch (Exception ex)
         {
@@ -912,22 +914,24 @@ public final class LevelledExpressionList implements ReportListener,
     this.size = 0;
     final Integer[] levels = expressionList.getLevelsDescendingArray();
     this.levelData = new LevelStorage[levels.length];
-    this.flatData = new Expression[expressionList.size()];
+    final int expressionsCount = expressionList.size();
+    this.flatData = new Expression[expressionsCount];
 
-    final IntList expressions = new IntList(20);
-    final IntList activeExpressions = new IntList(20);
-    final IntList functions = new IntList(20);
-    final IntList layoutListeners = new IntList(20);
-    final IntList pageEventListeners = new IntList(20);
-    final IntList prepareEventListeners = new IntList(20);
-    final IntList prepareLayoutEventListeners = new IntList(20);
+    final int capacity = Math.min(20, expressionsCount);
+    final IntList expressions = new IntList(capacity);
+    final IntList activeExpressions = new IntList(capacity);
+    final IntList functions = new IntList(capacity);
+    final IntList layoutListeners = new IntList(capacity);
+    final IntList pageEventListeners = new IntList(capacity);
+    final IntList prepareEventListeners = new IntList(capacity);
+    final IntList prepareLayoutEventListeners = new IntList(capacity);
 
     for (int i = 0; i < levels.length; i++)
     {
       final int currentLevel = levels[i].intValue();
       final Expression[] data = (Expression[])
-              expressionList.getElementArrayForLevel(currentLevel,
-                      new Expression[expressionList.getElementCountForLevel(currentLevel)]);
+              expressionList.getElementArrayForLevel
+              (currentLevel, EMPTY_EXPRESSIONSARRAY);
       System.arraycopy(data, 0, this.flatData, this.size, data.length);
       for (int x = 0; x < data.length; x++)
       {

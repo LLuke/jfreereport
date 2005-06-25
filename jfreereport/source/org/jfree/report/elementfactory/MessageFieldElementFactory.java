@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFieldElementFactory.java,v 1.4 2005/02/19 20:10:25 taqua Exp $
+ * $Id: MessageFieldElementFactory.java,v 1.5 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -67,6 +67,9 @@ public class MessageFieldElementFactory extends TextElementFactory
    * The message format instance used to format the text element.
    */
   private String formatString;
+  /**
+   * The nullstring of the text element if the value in the datasource was null.
+   */
   private String nullString;
 
   /**
@@ -98,11 +101,23 @@ public class MessageFieldElementFactory extends TextElementFactory
     this.formatString = formatString;
   }
 
+  /**
+   * Returns the null string for the text element. The null string is used when no content
+   * is found for that element.
+   *
+   * @return the null string.
+   */
   public String getNullString ()
   {
     return nullString;
   }
 
+  /**
+   * Defines the null string for the text element. The null string is used when no content
+   * is found for that element. The nullstring itself can be null.
+   *
+   * @param nullString the null string.
+   */
   public void setNullString (final String nullString)
   {
     this.nullString = nullString;

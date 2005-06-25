@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.18 2005/03/01 10:09:41 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.19 2005/03/18 13:49:39 taqua Exp $
  *
  * Changes
  * -------
@@ -53,10 +53,10 @@ import com.lowagie.text.pdf.DefaultFontMapper;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
-import org.jfree.report.util.HashNMap;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.util.HashNMap;
 
 /**
  * The BaseFontFactory is used to find and register all TrueType fonts for embedding them

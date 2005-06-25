@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.11 2005/03/24 22:24:55 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.12 2005/03/30 17:25:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -111,8 +111,8 @@ public class MetaBandProducer
       return null;
     }
 
-    final ArrayList metaElements = new ArrayList();
     final Element[] elements = band.getElementArray();
+    final ArrayList metaElements = new ArrayList(elements.length);
     final StrictBounds bounds = (StrictBounds)
             band.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final long x = bounds.getX() + parentX;
@@ -163,6 +163,7 @@ public class MetaBandProducer
             elements, spool);
     return mband;
   }
+
   /**
    * Creates a metaelement from the given report element. After that creation, the
    * metaelement will be independent from the original element.

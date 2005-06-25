@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.15 2005/02/23 21:06:04 taqua Exp $
+ * $Id: ReportState.java,v 1.16 2005/03/03 21:50:46 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -173,17 +173,6 @@ public abstract class ReportState implements Cloneable
   }
 
   /**
-   * Resets the state, so that the datarow points to the first row.
-   */
-  protected void resetState ()
-  {
-    setCurrentItem(BEFORE_FIRST_ROW);
-    setCurrentPage(BEFORE_FIRST_PAGE);
-    setCurrentGroupIndex(BEFORE_FIRST_GROUP);
-    getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
-  }
-
-  /**
    * Constructs a ReportState from an existing ReportState and optionally resets the
    * state.
    *
@@ -219,6 +208,17 @@ public abstract class ReportState implements Cloneable
   protected ReportState (final ReportState clone)
   {
     this(clone, false);
+  }
+
+  /**
+   * Resets the state, so that the datarow points to the first row.
+   */
+  protected void resetState ()
+  {
+    setCurrentItem(BEFORE_FIRST_ROW);
+    setCurrentPage(BEFORE_FIRST_PAGE);
+    setCurrentGroupIndex(BEFORE_FIRST_GROUP);
+    getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
   }
 
   /**
@@ -513,7 +513,7 @@ public abstract class ReportState implements Cloneable
     return progress;
   }
 
-  public static class PageBreakSaveState
+  public static final class PageBreakSaveState
   {
     private DataRowBackend backend;
     private ReportState state;
@@ -526,13 +526,11 @@ public abstract class ReportState implements Cloneable
     }
 
     public ReportState restorePageProgressCopy ()
-            throws CloneNotSupportedException
     {
       final ReportState result = state;
       result.handleRestore(backend);
       return result;
     }
-
   }
 
   protected final void handleRestore (final DataRowBackend backend)
@@ -556,7 +554,8 @@ public abstract class ReportState implements Cloneable
   }
 
   /**
-   * Clones the report state.
+   * Clones the report state. A report state is cloned to preserve the
+   * state for a later restart of the report processing at this point.
    *
    * @return a clone.
    *
@@ -900,5 +899,4 @@ public abstract class ReportState implements Cloneable
   }
 
   public abstract int getEventCode ();
-
 }

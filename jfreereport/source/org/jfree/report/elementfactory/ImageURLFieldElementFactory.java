@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageURLFieldElementFactory.java,v 1.10 2005/02/19 13:29:54 taqua Exp $
+ * $Id: ImageURLFieldElementFactory.java,v 1.11 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -60,6 +60,7 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
    */
   private String fieldname;
 
+  /** The base URL is used to resolve relative URLs. */
   private URL baseURL;
 
   /**
@@ -90,11 +91,23 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
     this.fieldname = fieldname;
   }
 
+  /**
+   * Returns the base url. The BaseURL is used to resolve relative URLs found in the
+   * datasource.
+   *
+   * @return the base url.
+   */
   public URL getBaseURL ()
   {
     return baseURL;
   }
 
+  /**
+   * Defines a BaseURL for the new element. The BaseURL is used to resolve relative URLs found in the
+   * datasource.
+   *
+   * @param baseURL the base URL.
+   */
   public void setBaseURL (final URL baseURL)
   {
     this.baseURL = baseURL;

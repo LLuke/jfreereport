@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutListener.java,v 1.4 2005/01/24 23:59:36 taqua Exp $
+ * $Id: LayoutListener.java,v 1.5 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -55,5 +55,11 @@ public interface LayoutListener extends EventListener
    */
   public void layoutComplete (LayoutEvent event);
 
+  /**
+   * Receives notification that the band has been completly printed. <P> The event carries
+   * the current report state.
+   *
+   * @param event the event.
+   */
   public void outputComplete (LayoutEvent event);
 }

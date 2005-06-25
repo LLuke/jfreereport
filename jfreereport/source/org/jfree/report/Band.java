@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.16 2005/03/03 14:42:26 taqua Exp $
+ * $Id: Band.java,v 1.17 2005/03/09 21:12:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -94,6 +94,8 @@ import org.jfree.report.style.ElementDefaultStyleSheet;
  */
 public class Band extends Element implements Serializable, Cloneable
 {
+  private static Element[] EMPTY_ARRAY = new Element[0];
+
   /**
    * the defined content type for the band. The content type is used when selecting the
    * correct display-method for an element.
@@ -144,8 +146,8 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the global stylesheet for all bands. This stylesheet provides
-   * the predefined default values for some of the stylekeys.
+   * Returns the global stylesheet for all bands. This stylesheet provides the predefined
+   * default values for some of the stylekeys.
    *
    * @return the global default stylesheet.
    */
@@ -289,13 +291,15 @@ public class Band extends Element implements Serializable, Cloneable
       throw new NullPointerException("Band.getElement(...): name is null.");
     }
 
-    final Iterator it = allElements.iterator();
-    while (it.hasNext())
+    final Element[] elements = getElementArray();
+    final int elementsSize = elements.length;
+    for (int i = 0; i < elementsSize; i++)
     {
-      final Element e = (Element) it.next();
-      if (e.getName() != null)
+      final Element e = elements[i];
+      final String elementName = e.getName();
+      if (elementName != null)
       {
-        if (e.getName().equals(name))
+        if (elementName.equals(name))
         {
           return e;
         }
@@ -331,6 +335,7 @@ public class Band extends Element implements Serializable, Cloneable
    * Returns all child-elements of this band as immutable list.
    *
    * @return an immutable list of all registered elements for this band.
+   *
    * @deprecated use <code>getElementArray()</code> instead.
    */
   public List getElements ()
@@ -349,9 +354,9 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns an array of the elements in the band. If the band is empty, an empty array
-   * is returned.
-   * <p>
+   * Returns an array of the elements in the band. If the band is empty, an empty array is
+   * returned.
+   * <p/>
    * For performance reasons, a shared cached instance is returned. Do not modify the
    * returned array or live with the consquences.
    *
@@ -361,9 +366,16 @@ public class Band extends Element implements Serializable, Cloneable
   {
     if (allElementsCached == null)
     {
-      Element[] elements = new Element[allElements.size()];
-      elements = (Element[]) allElements.toArray(elements);
-      allElementsCached = elements;
+      if (allElements.size() == 0)
+      {
+        allElementsCached = EMPTY_ARRAY;
+      }
+      else
+      {
+        Element[] elements = new Element[allElements.size()];
+        elements = (Element[]) allElements.toArray(elements);
+        allElementsCached = elements;
+      }
     }
     return allElementsCached;
   }
@@ -380,9 +392,16 @@ public class Band extends Element implements Serializable, Cloneable
   {
     if (allElementsCached == null)
     {
-      Element[] elements = new Element[allElements.size()];
-      elements = (Element[]) allElements.toArray(elements);
-      allElementsCached = elements;
+      if (allElements.size() == 0)
+      {
+        allElementsCached = EMPTY_ARRAY;
+      }
+      else
+      {
+        Element[] elements = new Element[allElements.size()];
+        elements = (Element[]) allElements.toArray(elements);
+        allElementsCached = elements;
+      }
     }
     return allElementsCached[index];
   }

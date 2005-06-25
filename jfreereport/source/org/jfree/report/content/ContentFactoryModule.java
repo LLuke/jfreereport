@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentFactoryModule.java,v 1.4 2005/02/19 13:29:52 taqua Exp $
+ * $Id: ContentFactoryModule.java,v 1.5 2005/02/23 21:04:36 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public interface ContentFactoryModule
    * @param e      the element.
    * @param bounds the bounds.
    * @param ot     the output target.
-   * @return the content.
+   * @return the content, never null.
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: DrawableURLFieldElementFactory.java,v 1.3 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -46,15 +46,23 @@ import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
 import org.jfree.report.filter.templates.DrawableURLFieldTemplate;
 
+/**
+ * The DrawableURLField can be used to load drawables from an URL specified in
+ * the named column of the datarow.
+ *
+ * @author Thomas Morgner
+ */
 public class DrawableURLFieldElementFactory extends ElementFactory
 {
-  /**
-   * The fieldname of the datarow from where to read the content.
-   */
+  /** The fieldname of the datarow from where to read the content. */
   private String fieldname;
 
+  /** The base URL is used to resolve relative URLs. */
   private URL baseURL;
 
+  /**
+   * Creates a new Factory.
+   */
   public DrawableURLFieldElementFactory ()
   {
   }
@@ -80,11 +88,23 @@ public class DrawableURLFieldElementFactory extends ElementFactory
     this.fieldname = fieldname;
   }
 
+  /**
+   * Returns the base url. The BaseURL is used to resolve relative URLs found in the
+   * datasource.
+   *
+   * @return the base url.
+   */
   public URL getBaseURL ()
   {
     return baseURL;
   }
 
+  /**
+   * Defines a BaseURL for the new element. The BaseURL is used to resolve relative URLs found in the
+   * datasource.
+   *
+   * @param baseURL the base URL.
+   */
   public void setBaseURL (final URL baseURL)
   {
     this.baseURL = baseURL;
@@ -96,7 +116,7 @@ public class DrawableURLFieldElementFactory extends ElementFactory
    * @return the generated elements
    *
    * @throws IllegalStateException if the field name is not set.
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * @see ElementFactory#createElement()
    */
   public Element createElement ()
   {

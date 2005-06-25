@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.5 2005/01/25 00:22:44 taqua Exp $
+ * $Id: HashNMap.java,v 1.6 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.util.Set;
  * stored elements.
  *
  * @author Thomas Morgner
+ * @deprecated moved to package org.jfree.util in JCommon
  */
 public class HashNMap implements Serializable, Cloneable
 {

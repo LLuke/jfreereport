@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextParagraph.java,v 1.13 2005/02/19 13:29:52 taqua Exp $
+ * $Id: TextParagraph.java,v 1.14 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -50,12 +50,10 @@ import org.jfree.report.util.geom.StrictGeomUtility;
 /**
  * A paragraph of an given text content. A paragraph consists of one or more {@link
  * TextLine}s.
- * <p/>
- * Todo: Can the content size be cached?
  *
  * @author Thomas Morgner.
  */
-public strictfp class TextParagraph extends ContentContainer
+public class TextParagraph extends ContentContainer
 {
   /**
    * The reserved size.

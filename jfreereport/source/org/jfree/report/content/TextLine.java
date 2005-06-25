@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextLine.java,v 1.11 2005/02/19 13:29:52 taqua Exp $
+ * $Id: TextLine.java,v 1.12 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.report.util.geom.StrictGeomUtility;
  *
  * @author Thomas Morgner
  */
-public strictfp class TextLine implements Content
+public class TextLine implements Content
 {
   /**
    * The size calculator.

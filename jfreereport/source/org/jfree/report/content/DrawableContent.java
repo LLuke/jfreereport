@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContent.java,v 1.9 2005/02/19 13:29:52 taqua Exp $
+ * $Id: DrawableContent.java,v 1.10 2005/02/23 21:04:36 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import org.jfree.ui.Drawable;
  *
  * @author Thomas Morgner
  */
-public strictfp class DrawableContent implements Content
+public class DrawableContent implements Content
 {
   /**
    * The drawable content. The content will be drawn using the drawable bounds, but only
@@ -54,9 +54,8 @@ public strictfp class DrawableContent implements Content
    */
   private Drawable drawable;
 
-
   /**
-   * The bounds.
+   * The content bounds.
    */
   private final StrictBounds bounds;
 
@@ -92,6 +91,14 @@ public strictfp class DrawableContent implements Content
     {
       throw new NullPointerException("ImageContainer must not be null for ImageContent.");
     }
+    if (bounds == null)
+    {
+      throw new NullPointerException("Bounds must not be null");
+    }
+    if (imageArea == null)
+    {
+      throw new NullPointerException("ImageArea must not be null.");
+    }
     this.drawable = ref;
     this.bounds = bounds;
     this.imageArea = imageArea;
@@ -100,8 +107,7 @@ public strictfp class DrawableContent implements Content
 
 
   /**
-   * Returns the content type (the types include <code>TEXT</code>, <code>IMAGE</code>,
-   * <code>SHAPE</code> and <code>CONTAINER</code>).
+   * Returns the content type ContentType.DRAWABLE.
    *
    * @return the content type.
    */
@@ -130,28 +136,47 @@ public strictfp class DrawableContent implements Content
   {
     if (StrictBounds.intersects(bounds, this.bounds) == false)
     {
-      return new EmptyContent();
+      return EmptyContent.getDefaultEmptyContent();
     }
 
     final StrictBounds myBounds = bounds.createIntersection(this.bounds);
-    return new DrawableContent(drawable, myBounds,
-            new StrictBounds
-                    (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
-                            mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
-                            mapHorizontalPointToImage(myBounds.getWidth()),
-                            mapVerticalPointToImage(myBounds.getHeight())));
+    final StrictBounds imageArea = new StrictBounds
+                        (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
+                         mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
+                         mapHorizontalPointToImage(myBounds.getWidth()),
+                         mapVerticalPointToImage(myBounds.getHeight()));
+    return new DrawableContent(drawable, myBounds, imageArea);
   }
 
+  /**
+   * Maps the given horizontal coordinate into the unscaled image.
+   *
+   * @param px the horizontal coordinate
+   * @return the scaled coordinate.
+   */
   private long mapHorizontalPointToImage (final long px)
   {
     return (px * imageArea.getWidth() / bounds.getWidth());
   }
 
+  /**
+   * Maps the given vertical coordinate into the unscaled image.
+   *
+   * @param px the vertical coordinate
+   * @return the scaled coordinate.
+   */
   private long mapVerticalPointToImage (final long px)
   {
     return (px * imageArea.getHeight() / bounds.getHeight());
   }
 
+  /**
+   * Returns the image area for this drawable content. The image area is a view on the
+   * unscaled drawable contained in the content. This is used to split the drawable
+   * content into subcontents if necessary.
+   *
+   * @return the image area.
+   */
   public StrictBounds getImageArea ()
   {
     return (StrictBounds) imageArea.clone();

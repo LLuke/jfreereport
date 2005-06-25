@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.5 2005/01/25 21:40:12 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.6 2005/02/23 21:04:45 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -80,7 +80,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
    */
   public ImageLoadFilter ()
   {
-    this(10);
+    this(0);
   }
 
   /**

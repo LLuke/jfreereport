@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.10 2005/02/19 13:29:52 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.11 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import org.jfree.ui.FloatDimension;
  */
 public final strictfp class ShapeTransform
 {
-  // some constants
+  // some constants for the cohenen-algorithmus
   /**
    * Flag for point lying left of clipping area.
    */
@@ -84,6 +84,8 @@ public final strictfp class ShapeTransform
    */
   public final static int ABOVE = 0x40;
 
+  /** A simple way to handle rounding errors. */
+  private final static double DELTA = 0.000001;
   /**
    * Mask for points which are inside.
    */
@@ -100,6 +102,15 @@ public final strictfp class ShapeTransform
   {
   }
 
+  /**
+   * Resizes a line. Instead of creating a GeneralPath (as AffineTransform's scale
+   * would do) we modify the line itself.
+   *
+   * @param line the line that should be scaled
+   * @param width the new width of the line bounds
+   * @param height the new height of the line bounds
+   * @return the scale Line2D object.
+   */
   public static Line2D resizeLine (final Line2D line,
                                    final double width,
                                    final double height)
@@ -117,14 +128,6 @@ public final strictfp class ShapeTransform
     return newLine;
   }
 
-//  public static void main (final String[] args)
-//  {
-//    BaseBoot.getInstance().start();
-//    final Line2D l1 = new Line2D.Double( 10, 20, -10, -20);
-//    final Line2D message = resizeLine(l1, 10, 20);
-//    Log.debug(message.getP1() + " " + message.getP2());
-//  }
-//
   /**
    * Normalize the line; the point with the lowest X is the primary point, if both points
    * have the same X, that point with the lowest Y value wins.
@@ -182,6 +185,15 @@ public final strictfp class ShapeTransform
             new FloatDimension(width, height));
   }
 
+  /**
+   * Resizes a rectangle. This works for real rectangles and produces funny results
+   * for RoundRects etc ..
+   *
+   * @param rectangularShape the rectangle
+   * @param width the new width of the rectangle
+   * @param height the new height of the rectangle.
+   * @return the resized rectangle.
+   */
   public static Shape resizeRect (final RectangularShape rectangularShape,
                                   final double width,
                                   final double height)
@@ -251,8 +263,14 @@ public final strictfp class ShapeTransform
     return s;
   }
 
-  private final static double DELTA = 0.000001;
-
+  /**
+   * Clips the given shape to the given bounds. If the shape is a Line2D, manual
+   * clipping is performed, as the built in Area does not handle lines.
+   *
+   * @param s the shape to be clipped
+   * @param bounds the bounds to which the shape should be clipped
+   * @return the clipped shape.
+   */
   public static Shape performCliping (final Shape s, final Rectangle2D bounds)
   {
     if (s instanceof Line2D)
@@ -286,6 +304,15 @@ public final strictfp class ShapeTransform
 
   }
 
+  /**
+   * Scales a given shape. The shape is first normalized, then scaled and finally brought
+   * back into its original position.
+   *
+   * @param shape the shape to be scaled
+   * @param scaleX the horizontal scaling factor
+   * @param scaleY the vertical scaling factor
+   * @return the scaled shape
+   */
   private static Shape performDefaultTransformation (final Shape shape,
                                                      final double scaleX,
                                                      final double scaleY)
@@ -308,6 +335,15 @@ public final strictfp class ShapeTransform
     return af.createTransformedShape(s);
   }
 
+  /**
+   * Translates a given shape. Special care is taken to preserve the shape's original
+   * class, if the shape is a rectangle or a line.
+   *
+   * @param s the shape
+   * @param x the x coordinate where the shape is translated to
+   * @param y the y coordinate where the shape is translated to
+   * @return the translated shape
+   */
   public static Shape translateShape (final Shape s, final double x, final double y)
   {
     if (s instanceof RectangularShape)

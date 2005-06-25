@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StaticDrawableElementFactory.java,v 1.3 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,19 @@ import org.jfree.report.Element;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.ui.Drawable;
 
+/**
+ * Creates an element that displays a predefined (static) drawable object.
+ *
+ * @author Thomas Morgner
+ */
 public class StaticDrawableElementFactory extends ElementFactory
 {
+  /** The drawable that should be displayed. */
   private Drawable content;
 
+  /**
+   * DefaultConstructor.
+   */
   public StaticDrawableElementFactory ()
   {
   }
