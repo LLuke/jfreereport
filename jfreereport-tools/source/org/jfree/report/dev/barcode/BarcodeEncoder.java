@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * BarcodeException.java
+ * BarcodeEncoder.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
@@ -29,39 +29,53 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: BarcodeException.java,v 1.2 2005/05/19 00:24:08 mimil Exp $
+ * $Id: $
  *
- * Changes (from 2005-05-17) (PC)
+ * Changes (from 2005-07-05)
  * -------------------------
  *
  */
 
 package org.jfree.report.dev.barcode;
 
-public class BarcodeException extends RuntimeException
+//todo: use a state design pattern, or simply pass the barcode as argument to have its states by accessing
+//todo: its methodes
+
+/**
+ *
+ */
+public interface BarcodeEncoder
 {
+  /**
+   * Tells if the character is valid in this symbology.
+   *
+   * @param character The character to check.
+   * @return Boolean.
+   */
+  public boolean isValid (char character);
 
-  public BarcodeException ()
-  {
-  }
+  /**
+   * Encodes the character in a symbol where <code>byte[]</code> is a symbol and the array
+   * is a list of symbols because a character can be translated in more than one symbol.
+   *
+   * @param character The valid character.
+   * @return The symbols.
+   */
+  public byte[][] encode (char character);
 
-  public BarcodeException (String message)
-  {
-    super(message);
-  }
+  /**
+   * Returns the weight of this character. It is usualy needed for checksum computations.
+   *
+   * @param character The valid character.
+   * @return Its weight.
+   */
+  public int weight (char character);
 
-  public BarcodeException (Throwable cause)
-  {
-    super(cause);
-  }
-
-  public BarcodeException (String message, Throwable cause)
-  {
-    super(message, cause);
-  }
-
-  public BarcodeException (final String barcodeType, final char illegalCharacter)
-  {
-    super("The charAt '" + illegalCharacter + "' is illegal in the " + barcodeType + " specification.");
-  }
+  /**
+   * Returns the character at a specified index from the characters table.
+   *
+   * @param index The character index.
+   * @return The character.
+   */
+  public char charAt (int index);
 }

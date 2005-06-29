@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: Barcode93.java,v 1.1 2005/05/21 21:32:12 mimil Exp $
  *
  * Changes (from 2005-05-19)
  * -------------------------
@@ -43,7 +43,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import org.jfree.report.dev.barcode.Barcode1D;
-import org.jfree.report.dev.barcode.BarcodeException;
 
 /**
  * Encodes a string into code93 specifications
@@ -58,22 +57,6 @@ import org.jfree.report.dev.barcode.BarcodeException;
  */
 public class Barcode93 extends Barcode1D
 {
-  /**
-   * special character '$'
-   */
-  public static final char SPECIAL_CHAR1 = 0x80;
-  /**
-   * special character '%'
-   */
-  public static final char SPECIAL_CHAR2 = 0x81;
-  /**
-   * special character '/'
-   */
-  public static final char SPECIAL_CHAR3 = 0x82;
-  /**
-   * special character '+'
-   */
-  public static final char SPECIAL_CHAR4 = 0x83;
 
 
   /**
@@ -97,75 +80,13 @@ public class Barcode93 extends Barcode1D
    */
   private boolean showStartStop = false;
 
-  /**
-   * Allowed characters
-   */
-  public static final String CHARTABLE =
-          "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%" +
-          SPECIAL_CHAR1 + "" + SPECIAL_CHAR2 + "" + SPECIAL_CHAR3 + "" + SPECIAL_CHAR4 + "*";
-
   private boolean showChecksums = false;
-  /**
-   * Allowed symbols
-   */
-  public static final byte TABLE[][] = {
-    {1, 0, 0, 0, 1, 0, 1, 0, 0},
-    {1, 0, 1, 0, 0, 1, 0, 0, 0},
-    {1, 0, 1, 0, 0, 0, 1, 0, 0},
-    {1, 0, 1, 0, 0, 0, 0, 1, 0},
-    {1, 0, 0, 1, 0, 1, 0, 0, 0},
-    {1, 0, 0, 1, 0, 0, 1, 0, 0},
-    {1, 0, 0, 1, 0, 0, 0, 1, 0},
-    {1, 0, 1, 0, 1, 0, 0, 0, 0},
-    {1, 0, 0, 0, 1, 0, 0, 1, 0},
-    {1, 0, 0, 0, 0, 1, 0, 1, 0},
-    {1, 1, 0, 1, 0, 1, 0, 0, 0},
-    {1, 1, 0, 1, 0, 0, 1, 0, 0},
-    {1, 1, 0, 1, 0, 0, 0, 1, 0},
-    {1, 1, 0, 0, 1, 0, 1, 0, 0},
-    {1, 1, 0, 0, 1, 0, 0, 1, 0},
-    {1, 1, 0, 0, 0, 1, 0, 1, 0},
-    {1, 0, 1, 1, 0, 1, 0, 0, 0},
-    {1, 0, 1, 1, 0, 0, 1, 0, 0},
-    {1, 0, 1, 1, 0, 0, 0, 1, 0},
-    {1, 0, 0, 1, 1, 0, 1, 0, 0},
-    {1, 0, 0, 0, 1, 1, 0, 1, 0},
-    {1, 0, 1, 0, 1, 1, 0, 0, 0},
-    {1, 0, 1, 0, 0, 1, 1, 0, 0},
-    {1, 0, 1, 0, 0, 0, 1, 1, 0},
-    {1, 0, 0, 1, 0, 1, 1, 0, 0},
-    {1, 0, 0, 0, 1, 0, 1, 1, 0},
-    {1, 1, 0, 1, 1, 0, 1, 0, 0},
-    {1, 1, 0, 1, 1, 0, 0, 1, 0},
-    {1, 1, 0, 1, 0, 1, 1, 0, 0},
-    {1, 1, 0, 1, 0, 0, 1, 1, 0},
-    {1, 1, 0, 0, 1, 0, 1, 1, 0},
-    {1, 1, 0, 0, 1, 1, 0, 1, 0},
-    {1, 0, 1, 1, 0, 1, 1, 0, 0},
-    {1, 0, 1, 1, 0, 0, 1, 1, 0},
-    {1, 0, 0, 1, 1, 0, 1, 1, 0},
-    {1, 0, 0, 1, 1, 1, 0, 1, 0},
-    {1, 0, 0, 1, 0, 1, 1, 1, 0},
-    {1, 1, 1, 0, 1, 0, 1, 0, 0},
-    {1, 1, 1, 0, 1, 0, 0, 1, 0},
-    {1, 1, 1, 0, 0, 1, 0, 1, 0},
-    {1, 0, 1, 1, 0, 1, 1, 1, 0},
-    {1, 0, 1, 1, 1, 0, 1, 1, 0},
-    {1, 1, 0, 1, 0, 1, 1, 1, 0},
-    {1, 0, 0, 1, 0, 0, 1, 1, 0},
-    {1, 1, 1, 0, 1, 1, 0, 1, 0},
-    {1, 1, 1, 0, 1, 0, 1, 1, 0},
-    {1, 0, 0, 1, 1, 0, 0, 1, 0},
-    {1, 0, 1, 0, 1, 1, 1, 1, 0}
-  };
 
-  public Barcode93 (final String code)
+
+  public Barcode93 ()
   {
-    super(code);
-    if (!isValidCode93Input(code))
-    {
-      throw new BarcodeException("The code is not valide according to the code39 specification.");
-    }
+    super();
+    setEncoder(new Barcode93Encoder());
   }
 
   /**
@@ -218,7 +139,7 @@ public class Barcode93 extends Barcode1D
       final int length = code.length();
       for (int i = 0; i < length; i++)
       {
-        int index = CHARTABLE.indexOf(code.charAt(length - i)); //from thr right to the left
+        int index = getEncoder().weight(code.charAt(length - i)); //from the right to the left
         check += index * ((i + 1) % 20);  //the weight starts at 1.
       }
 
@@ -261,13 +182,13 @@ public class Barcode93 extends Barcode1D
       final int length = code.length();
       for (int i = 0; i < length; i++)
       {
-        int index = CHARTABLE.indexOf(code.charAt(length - i));  //from thr right to the left
+        int index = getEncoder().weight(code.charAt(length - i));  //from thr right to the left
 
         //the weight starts at 1 and don't forget that the checksumC is the right most character now
         check += index * ((i + 1 + 1) % 15);
       }
 
-      check += CHARTABLE.indexOf(code.charAt(getChecksumC()));
+      check += getEncoder().weight(code.charAt(getChecksumC()));
 
       checksumK = (char) (check % 47);
     }
@@ -322,7 +243,7 @@ public class Barcode93 extends Barcode1D
    *
    * @throws NullPointerException If <code>code</code> is null.
    */
-  public static boolean isValidCode93Input (final String code)
+  public boolean isValidInput (final String code)
   {
     if (code == null)
     {
@@ -331,13 +252,12 @@ public class Barcode93 extends Barcode1D
 
     for (int i = 0; i < code.length(); i++)
     {
-      final int index = CHARTABLE.indexOf(code.charAt(i));
-      if (index == -1)
+      boolean b = getEncoder().isValid(code.charAt(i));
+      if (!b)
       {
         return false;
       }
     }
-
     return true;
   }
 
@@ -445,28 +365,37 @@ public class Barcode93 extends Barcode1D
     final List codeTable = getCodeTable();
 
     //always have start and stop characters
-    codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
+    codeTable.add(getEncoder().encode('*')[0]);
 
     for (int i = 0; i < code.length(); i++)
     {
-      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(i))];
-      codeTable.add(bytes);
+      final byte[][] bytes = getEncoder().encode(code.charAt(i));
+      for (int j = 0; j < bytes.length; j++)
+      {
+        codeTable.add(bytes[j]);
+      }
     }
 
     if (isAppendedChecksumC())
     {
-      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(getChecksumC()))];
-      codeTable.add(bytes);
+      final byte[][] bytes = getEncoder().encode(code.charAt(getChecksumC()));
+      for (int j = 0; j < bytes.length; j++)
+      {
+        codeTable.add(bytes[j]);
+      }
     }
 
     if (isAppendedChecksumK())
     {
-      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(getChecksumK()))];
-      codeTable.add(bytes);
+      final byte[][] bytes = getEncoder().encode(code.charAt(getChecksumK()));
+      for (int j = 0; j < bytes.length; j++)
+      {
+        codeTable.add(bytes[j]);
+      }
     }
 
     //always have start and stop characters
-    codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
+    codeTable.add(getEncoder().encode('*')[0]);
 
     setEncoded(true);
   }

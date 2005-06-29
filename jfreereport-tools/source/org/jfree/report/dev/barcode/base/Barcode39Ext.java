@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: Barcode39Ext.java,v 1.1 2005/05/19 00:24:08 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -38,82 +38,26 @@
 
 package org.jfree.report.dev.barcode.base;
 
-import org.jfree.report.dev.barcode.BarcodeException;
 
 /**
  * Encodes a string into code39 extended specifications
  * <p/>
  * Symbols allowed: 0-9 A-Z a-z $ % * + - . / space non-printables (ASCII128)<br> Start
- * character: yes, in the symbols table (*)<br> Stop character: yes, in the symbols table
- * (*)<br> Check character: available
+ * charAt: yes, in the symbols table (*)<br> Stop charAt: yes, in the symbols table
+ * (*)<br> Check charAt: available
  *
  * @author Mimil
  */
 public class Barcode39Ext extends Barcode39
 {
 
-  /**
-   * New characters allowed
-   */
-  protected static final String[] EXTENDEDTABLE = {
-    "%U",
-    "$A", "$B", "$C", "$D", "$E", "$F", "$G", "$H", "$I", "$J", "$K", "$L", "$M", "$N", "$O", "$P", "$Q", "$R", "$S", "$T", "$U", "$V", "$W", "$X", "$Y", "$Z",
-    "%A", "%B", "%C", "%D", "%E",
-    " ",
-    "/A", "/B", "/C", "/D", "/E", "/F", "/G", "/H", "/I", "/J", "/K", "/L", "-", ".", "/O",
-    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-    "/Z",
-    "%F", "%G", "%H", "%I", "%J", "%V",
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-    "%K", "%L", "%M", "%N", "%O", "%W",
-    "+A", "+B", "+C", "+D", "+E", "+F", "+G", "+H", "+I", "+J", "+K", "+L", "+M", "+N", "+O", "+P", "+Q", "+R", "+S", "+T", "+U", "+V", "+W", "+X", "+Y", "+Z",
-    "%P", "%Q", "%R", "%S", "%T"
 
-  };
-
-  public Barcode39Ext (final String code)
+  public Barcode39Ext ()
   {
-    super(transform(code));
+    super();
+    setEncoder(new Barcode39ExtEncoder());
   }
 
-  /**
-   * Transforms <code>code</code> into code39 readable characters
-   *
-   * @param code The old code
-   * @return The new code
-   *
-   * @throws NullPointerException If the input code is null.
-   * @throws BarcodeException     If the code contains illegal characters.
-   */
-  public static String transform (final String code)
-  {
-    if (code == null)
-    {
-      throw new NullPointerException("The input code to convert cannot be null.");
-    }
-
-    if (!isValideCode39ExtendedInput(code))
-    {
-      throw new BarcodeException("The code is not valid according to the code39 extended specification.");
-    }
-
-    final StringBuffer buf = new StringBuffer();
-    int i = 0;
-
-    try
-    {
-      for (i = 0; i < code.length(); i++)
-      {
-        buf.append(EXTENDEDTABLE[code.charAt(i)]);
-      }
-    }
-    catch (Exception exp)
-    {
-      throw new IllegalArgumentException("The character '" + code.charAt(i) + "' is illegal in code 39 extended.");
-    }
-
-    return buf.toString();
-  }
 
   /**
    * Tells if the input code passed as argument is a valid code for the code 39 extended
@@ -124,7 +68,7 @@ public class Barcode39Ext extends Barcode39
    *
    * @throws NullPointerException If <code>code</code> is null.
    */
-  public static boolean isValideCode39ExtendedInput (final String code)
+  public boolean isValideInput (final String code)
   {
     if (code == null)
     {
@@ -133,13 +77,9 @@ public class Barcode39Ext extends Barcode39
 
     for (int i = 0; i < code.length(); i++)
     {
-      final char c = code.charAt(i);
-      if (c < 0)
-      {
-        return false;
-      }
+      boolean b = getEncoder().isValid(code.charAt(i));
 
-      if (c > 127)
+      if (!b)
       {
         return false;
       }

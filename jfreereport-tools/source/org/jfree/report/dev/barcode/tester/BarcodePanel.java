@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: BarcodePanel.java,v 1.1 2005/06/01 21:28:55 mimil Exp $
  *
  * Changes (from 2005-05-23)
  * -------------------------
@@ -49,6 +49,14 @@ import org.jfree.report.dev.barcode.Barcode1D;
 public class BarcodePanel extends JPanel
 {
   private Barcode1D barcode1D;
+
+  /**
+   * Creates a new <code>JPanel</code> with a double buffer and a flow layout.
+   */
+  public BarcodePanel ()
+  {
+    super(null);
+  }
 
   /**
    * Create a new buffered JPanel with the specified layout manager
@@ -72,6 +80,10 @@ public class BarcodePanel extends JPanel
    */
   public Dimension getPreferredSize ()
   {
+    if (barcode1D == null)
+    {
+      return super.getPreferredSize();
+    }
     return barcode1D.getPreferredSize();
   }
 
@@ -100,11 +112,24 @@ public class BarcodePanel extends JPanel
   protected void paintComponent (Graphics g)
   {
     super.paintComponent(g);
-    final Graphics2D graphics = (Graphics2D) g.create();
+    if (barcode1D != null)
+    {
+      final Graphics2D graphics = (Graphics2D) g.create();
 
-    barcode1D.draw(graphics, new Rectangle2D.Double(0, 0, getPreferredSize().width, getPreferredSize()
-            .height));
+      barcode1D.draw(graphics, new Rectangle2D.Double(0, 0, getPreferredSize().width, getPreferredSize()
+              .height));
 
-    graphics.dispose();
+      graphics.dispose();
+    }
+  }
+
+  public Barcode1D getBarcode1D ()
+  {
+    return barcode1D;
+  }
+
+  public void setBarcode1D (Barcode1D barcode1D)
+  {
+    this.barcode1D = barcode1D;
   }
 }

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.9 2005/05/25 19:53:05 mimil Exp $
+ * $Id: Barcode39.java,v 1.10 2005/06/01 21:32:47 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -61,10 +61,6 @@ public class Barcode39 extends Barcode1D
 
 
   /**
-   * Characters allowed.
-   */
-  protected static final String CHARTABLE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*";
-  /**
    * Checksum character.
    */
   private char checksum;
@@ -81,64 +77,11 @@ public class Barcode39 extends Barcode1D
    */
   private boolean showChecksum = false;
 
-  /**
-   * Symbols allowed
-   */
-  protected static final byte TABLE[][] = {
-    {0, 0, 0, 1, 1, 0, 1, 0, 0},
-    {1, 0, 0, 1, 0, 0, 0, 0, 1},
-    {0, 0, 1, 1, 0, 0, 0, 0, 1},
-    {1, 0, 1, 1, 0, 0, 0, 0, 0},
-    {0, 0, 0, 1, 1, 0, 0, 0, 1},
-    {1, 0, 0, 1, 1, 0, 0, 0, 0},
-    {0, 0, 1, 1, 1, 0, 0, 0, 0},
-    {0, 0, 0, 1, 0, 0, 1, 0, 1},
-    {1, 0, 0, 1, 0, 0, 1, 0, 0},
-    {0, 0, 1, 1, 0, 0, 1, 0, 0},
-    {1, 0, 0, 0, 0, 1, 0, 0, 1},
-    {0, 0, 1, 0, 0, 1, 0, 0, 1},
-    {1, 0, 1, 0, 0, 1, 0, 0, 0},
-    {0, 0, 0, 0, 1, 1, 0, 0, 1},
-    {1, 0, 0, 0, 1, 1, 0, 0, 0},
-    {0, 0, 1, 0, 1, 1, 0, 0, 0},
-    {0, 0, 0, 0, 0, 1, 1, 0, 1},
-    {1, 0, 0, 0, 0, 1, 1, 0, 0},
-    {0, 0, 1, 0, 0, 1, 1, 0, 0},
-    {0, 0, 0, 0, 1, 1, 1, 0, 0},
-    {1, 0, 0, 0, 0, 0, 0, 1, 1},
-    {0, 0, 1, 0, 0, 0, 0, 1, 1},
-    {1, 0, 1, 0, 0, 0, 0, 1, 0},
-    {0, 0, 0, 0, 1, 0, 0, 1, 1},
-    {1, 0, 0, 0, 1, 0, 0, 1, 0},
-    {0, 0, 1, 0, 1, 0, 0, 1, 0},
-    {0, 0, 0, 0, 0, 0, 1, 1, 1},
-    {1, 0, 0, 0, 0, 0, 1, 1, 0},
-    {0, 0, 1, 0, 0, 0, 1, 1, 0},
-    {0, 0, 0, 0, 1, 0, 1, 1, 0},
-    {1, 1, 0, 0, 0, 0, 0, 0, 1},
-    {0, 1, 1, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 0, 0, 0, 0, 0, 0},
-    {0, 1, 0, 0, 1, 0, 0, 0, 1},
-    {1, 1, 0, 0, 1, 0, 0, 0, 0},
-    {0, 1, 1, 0, 1, 0, 0, 0, 0},
-    {0, 1, 0, 0, 0, 0, 1, 0, 1},
-    {1, 1, 0, 0, 0, 0, 1, 0, 0},
-    {0, 1, 1, 0, 0, 0, 1, 0, 0},
-    {0, 1, 0, 1, 0, 1, 0, 0, 0},
-    {0, 1, 0, 1, 0, 0, 0, 1, 0},
-    {0, 1, 0, 0, 0, 1, 0, 1, 0},
-    {0, 0, 0, 1, 0, 1, 0, 1, 0},
-    {0, 1, 0, 0, 1, 0, 1, 0, 0}
-  };
 
-
-  public Barcode39 (final String code)
+  public Barcode39 ()
   {
-    super(code);
-    if (!isValidCode39Input(code))
-    {
-      throw new BarcodeException("The code is not valide according to the code39 specification.");
-    }
+    super();
+    setEncoder(new Barcode39Encoder());
   }
 
   /**
@@ -150,22 +93,36 @@ public class Barcode39 extends Barcode1D
     final List codeTable = getCodeTable();
 
     //always have start and stop characters
-    codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
+    codeTable.add(getEncoder().encode('*')[0]);
 
     for (int i = 0; i < code.length(); i++)
     {
-      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(i))];
-      codeTable.add(bytes);
+      final byte[][] bytes = getEncoder().encode(code.charAt(i));
+      for (int j = 0; j < bytes.length; j++)
+      {
+        codeTable.add(bytes[j]);
+      }
     }
 
     if (isAppendedChecksum())
     {
-      final byte[] bytes = TABLE[CHARTABLE.indexOf(code.charAt(getChecksum()))];
-      codeTable.add(bytes);
+      if (getEncoder().isValid(getChecksum()))
+      {
+        final byte[][] bytes = getEncoder().encode(getChecksum());
+        for (int j = 0; j < bytes.length; j++)
+        {
+          codeTable.add(bytes[j]);
+        }
+      }
+      else
+      {
+        throw new BarcodeException("The checksum is invalid because it does not belong to" +
+                "the symbology of this barcode.");
+      }
     }
 
     //always have start and stop characters
-    codeTable.add(TABLE[CHARTABLE.indexOf('*')]);
+    codeTable.add(getEncoder().encode('*')[0]);
 
     setEncoded(true);
   }
@@ -179,23 +136,18 @@ public class Barcode39 extends Barcode1D
    *
    * @throws NullPointerException If <code>code</code> is null.
    */
-  public static boolean isValidCode39Input (final String code)
+  public boolean isValidInput (final String code)
   {
     if (code == null)
     {
       throw new NullPointerException("Unable to verify a null code");
     }
 
-    //NB: there is no length checks in code 39.
-
+    //NB: there is no length check in code 39.
     for (int i = 0; i < code.length(); i++)
     {
-      int character = CHARTABLE.indexOf(code.charAt(i));
-      if (character == -1)  //not found
-      {
-        return false;
-      }
-      if (character == CHARTABLE.indexOf('*')) // '*' is not allowed as input
+      boolean b = getEncoder().isValid(code.charAt(i));
+      if (!b)
       {
         return false;
       }
@@ -366,10 +318,10 @@ public class Barcode39 extends Barcode1D
       int index = 0;
       for (int i = 0; i < code.length(); i++)
       {
-        index += CHARTABLE.indexOf(code.charAt(i));
+        index += getEncoder().weight(code.charAt(i));
       }
 
-      checksum = CHARTABLE.charAt(index % 43);
+      checksum = getEncoder().charAt(index % 43);
     }
   }
 

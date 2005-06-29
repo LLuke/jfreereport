@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.8 2005/05/25 19:56:30 mimil Exp $
+ * $Id: Barcode1D.java,v 1.9 2005/06/01 21:31:19 mimil Exp $
  *
  * Changes (from 2005-04-28) (CP)
  * -------------------------
@@ -57,14 +57,30 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.Align;
 import org.jfree.ui.ExtendedDrawable;
 
+/**
+ * This class gives all the basic methods used in barcode 1D drawing.
+ */
 public abstract class Barcode1D implements ExtendedDrawable
 {
+  /**
+   * Tells the code to be printed outside the bars area.
+   */
   public static final double WEIGHT_ALIGNMENT_NOT_EMBEDDED = 1.;
+  /**
+   * Tells the code to be printed half on the bars area.
+   */
   public static final double WEIGHT_ALIGNMENT_HALF_EMBEDDED = 0.5;
+  /**
+   * Tells the code to be printed inside the bars area.
+   */
   public static final double WEIGHT_ALIGNMENT_EMBEDDED = 0.;
 
   /**
-   * The base code.
+   * The encoder used to transform charcters in symbols.
+   */
+  private BarcodeEncoder encoder;
+  /**
+   * The base input code.
    */
   private String code;
   /**
@@ -72,7 +88,7 @@ public abstract class Barcode1D implements ExtendedDrawable
    */
   private boolean showCode = true;
   /**
-   * The font to use for the code.
+   * The font to use to print the code code.
    */
   private FontDefinition font;
   /**
@@ -84,14 +100,16 @@ public abstract class Barcode1D implements ExtendedDrawable
    */
   private Color barColor = Color.BLACK;
   /**
-   * The background color of the code and the badcode.
+   * The background color of the code and the barcode.
    */
   private Color backgroundColor = Color.WHITE;
   /**
    * The vertical alignment of the code on the bars.
    */
   private ElementAlignment verticalCodeAlignment = ElementAlignment.BOTTOM;
-
+  /**
+   * The honrizontal alignment of the of the code on the bars.
+   */
   private ElementAlignment horizontalCodeAlignment = ElementAlignment.CENTER;
   /**
    * Position of the code on the bars.
@@ -139,13 +157,8 @@ public abstract class Barcode1D implements ExtendedDrawable
   private List codeTable;
 
 
-  protected Barcode1D (final String code)
+  protected Barcode1D ()
   {
-    if (code == null)
-    {
-      throw new NullPointerException("The code of a barcode cannot be null.");
-    }
-    this.code = code;
     font = new FontDefinition("SansSerif", 10);
     margins = new Insets(10, 10, 10, 10);
     codeTable = new ArrayList();
@@ -576,6 +589,21 @@ public abstract class Barcode1D implements ExtendedDrawable
     return code;
   }
 
+  public void setCode (String code)
+  {
+    if (code == null)
+    {
+      throw new NullPointerException("The code of a barcode cannot be null.");
+    }
+
+    if (!isValidInput(code))
+    {
+      throw new BarcodeException("The code is not valide according to the specifications of this barcode.");
+    }
+
+    this.code = code;
+  }
+
   /**
    * Computes the displayed code bounds.
    *
@@ -844,4 +872,24 @@ public abstract class Barcode1D implements ExtendedDrawable
   {
     return false;
   }
+
+  public BarcodeEncoder getEncoder ()
+  {
+    return encoder;
+  }
+
+  public void setEncoder (BarcodeEncoder encoder)
+  {
+    this.encoder = encoder;
+  }
+
+  /**
+   * Tells if the input code passed as argument is a valid code in the specification.
+   *
+   * @param code The input code to check.
+   * @return Boolean
+   *
+   * @throws NullPointerException If <code>code</code> is null.
+   */
+  public abstract boolean isValidInput (final String code);
 }
