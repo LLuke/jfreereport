@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractEpsonPrinterDriver.java,v 1.6 2005/03/03 23:00:01 taqua Exp $
+ * $Id: AbstractEpsonPrinterDriver.java,v 1.7 2005/03/04 12:08:17 taqua Exp $
  *
  * Changes
  * -------
@@ -488,7 +488,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     //
     // All printers support that command.
     getOut().write(0x1b); // ESC
-    getOut().write(0x67); // C
+    getOut().write(0x43); // C
     getOut().write(paperSizeInLines);
   }
 
