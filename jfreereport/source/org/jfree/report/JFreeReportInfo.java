@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.27 2005/05/19 00:51:45 mimil Exp $
+ * $Id: JFreeReportInfo.java,v 1.28 2005/05/31 18:31:25 taqua Exp $
  *
  * Changes:
  * --------
@@ -82,7 +82,7 @@ public class JFreeReportInfo extends ProjectInfo
       new Contributor("Patrice Rolland", "-"),
       new Contributor("Cedric Pronzato", "mimil@users.sourceforge.get"),
       new Contributor("Maciej Wegorkiewicz", "-"),
-      new Contributor("Michael Tennes", "-"),
+      new Contributor("Michael Tennes", "michael@tennes.com"),
       new Contributor("Dmitri Colebatch", "dimc@users.sourceforge.net"),
       new Contributor("J\u00d6rg Schaible", "joehni@users.sourceforge.net"),
       new Contributor("Marc Casas", "-"),
