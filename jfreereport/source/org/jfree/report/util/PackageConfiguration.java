@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PackageConfiguration.java,v 1.5 2004/05/07 08:14:23 mungady Exp $
+ * $Id: PackageConfiguration.java,v 1.6 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,8 @@ package org.jfree.report.util;
  * The PackageConfiguration handles the module level configuration.
  *
  * @author Thomas Morgner
+ * @deprecated This class is no longer used. Package level configuration has been moved
+ * to JCommon.
  */
 public class PackageConfiguration extends PropertyFileReportConfiguration
 {

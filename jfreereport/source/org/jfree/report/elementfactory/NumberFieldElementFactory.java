@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.12 2005/05/31 19:26:44 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.13 2005/06/25 17:51:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -177,6 +177,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
     {
       final NumberFieldTemplate template = new NumberFieldTemplate();
       template.setDecimalFormat((DecimalFormat) format);
+      template.setField(getFieldname());
       if (getNullString() != null)
       {
         template.setNullValue(getNullString());

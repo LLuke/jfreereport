@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.12 2005/05/31 19:26:44 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.13 2005/06/25 17:51:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -179,6 +179,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
     {
       final DateFieldTemplate template = new DateFieldTemplate();
       template.setDateFormat((SimpleDateFormat) format);
+      template.setField(getFieldname());
       if (getNullString() != null)
       {
         template.setNullValue(getNullString());

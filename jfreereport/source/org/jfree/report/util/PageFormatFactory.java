@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: PageFormatFactory.java,v 1.7 2004/05/07 08:14:23 mungady Exp $
+ * $Id: PageFormatFactory.java,v 1.8 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -51,10 +51,19 @@ import java.lang.reflect.Field;
  * <a href="http://partners.adobe.com/asn/developer/pdfs/tn/5003.PPD_Spec_v4.3.pdf"
  * >Postscript Specifications</a>
  * <p/>
- * Usage for creating an printjob on A4 paper with 2.5 cm border: <code> Paper paper =
- * PageFormatFactory.createPaper (PageFormatFactory.A4); PageFormatFactory.setBordersMm
- * (paper, 25, 25, 25, 25); PageFormat format = PageFormatFactory.createPageFormat (paper,
- * PageFormat.PORTRAIT); </code>
+ * Usage for creating an printjob on A4 paper with 2.5 cm border:
+ * <pre>
+ * Paper paper = PageFormatFactory.createPaper (PageFormatFactory.A4);
+ * PageFormatFactory.setBordersMm (paper, 25, 25, 25, 25);
+ * PageFormat format = PageFormatFactory.createPageFormat (paper, PageFormat.PORTRAIT);
+ * </code>
+ * <p/>
+ * Defining a pageformat can be an ugly task and full of dependencies. The call to
+ * PageFormatFactory.setBorders(...) will setup the paper's border and always assumes
+ * that the paper is laid out in Portrait.
+ * <p/>
+ * Changing the PageFormat's orientation does not change the PageFormat's paper object,
+ * but it changes the way, how the paper object is interpreted.
  *
  * @author Thomas Morgner
  */

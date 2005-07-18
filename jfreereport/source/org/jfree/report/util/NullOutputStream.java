@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: NullOutputStream.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
+ * $Id: NullOutputStream.java,v 1.4 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * A null output stream.
+ * A null output stream. All data written to this stream is ignored.
  *
  * @author Thomas Morgner
  */

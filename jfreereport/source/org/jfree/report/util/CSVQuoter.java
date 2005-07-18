@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSVQuoter.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: CSVQuoter.java,v 1.1 2005/05/18 18:49:40 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,13 @@ public class CSVQuoter
    * The separator used in the CSV file.
    */
   private char separator;
+  /**
+   * The quoting character or a single quote.
+   */
   private char quate;
+  /**
+   * The double quote. This is a string containing the quate two times.
+   */
   private String doubleQuate;
 
   /**
@@ -75,6 +81,12 @@ public class CSVQuoter
     this(separator,  '"');
   }
 
+  /**
+   * Creates a new CSVQuoter with the given separator and quoting character.
+   *
+   * @param separator the separator
+   * @param quate the quoting character
+   */
   public CSVQuoter (final char separator, final char quate)
   {
     this.separator = separator;
@@ -203,6 +215,11 @@ public class CSVQuoter
     return separator;
   }
 
+  /**
+   * Returns the quoting character.
+   *
+   * @return the quote character.
+   */
   public char getQuate ()
   {
     return quate;

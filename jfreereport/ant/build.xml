@@ -108,6 +108,7 @@ module-file=$${module-${module}-file}</echo>
     <!-- copy across runtime jar files -->
     <copy todir="distribution">
       <fileset dir=".">
+        <include name="${jfreereport.name}-${jfreereport.version}.jar"/>
         <include name="${jfreereport.name}-*-${jfreereport.version}.jar"/>
       </fileset>
     </copy>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LevelList.java,v 1.13 2005/04/17 21:09:01 taqua Exp $
+ * $Id: LevelList.java,v 1.14 2005/06/25 17:52:03 taqua Exp $
  *
  * Changes
  * -------
@@ -56,8 +56,11 @@ import java.lang.reflect.Array;
  */
 public class LevelList implements Cloneable
 {
+  /** A static object array of size zero. */
   private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+  /** A static object array of size zero. */
   private static final Integer[] EMPTY_INTEGER_ARRAY = new Integer[0];
+
   /**
    * Constant for level zero.
    */
@@ -256,6 +259,11 @@ public class LevelList implements Cloneable
     return iteratorSetAsc.iterator();
   }
 
+  /**
+   * Returns the levels of the elements in the list in descending order.
+   *
+   * @return the levels in descending order.
+   */
   public synchronized Integer[] getLevelsDescendingArray ()
   {
     if (levels.size() == 0)

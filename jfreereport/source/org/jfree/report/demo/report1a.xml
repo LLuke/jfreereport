@@ -12,6 +12,7 @@
     <datasource-factory class="org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory"/>
   </parser-config>
 
+
   <report-config>
     <page-definition>
       <page orientation="portrait" pageformat="LETTER" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>

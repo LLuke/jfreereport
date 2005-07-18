@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticImageElementFactory.java,v 1.9 2005/01/24 23:59:15 taqua Exp $
+ * $Id: StaticImageElementFactory.java,v 1.10 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,9 +39,14 @@
 
 package org.jfree.report.elementfactory;
 
+import java.awt.Image;
+import java.io.IOException;
+
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.ImageElement;
+import org.jfree.report.LocalImageContainer;
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.filter.StaticDataSource;
 
 /**
@@ -55,7 +60,7 @@ public class StaticImageElementFactory extends ImageElementFactory
   /**
    * The image reference is the static content of the new element.
    */
-  private ImageContainer imageReference;
+  private ImageContainer imageContainer;
 
   /**
    * Default Constructor.
@@ -64,24 +69,50 @@ public class StaticImageElementFactory extends ImageElementFactory
   {
   }
 
+  public Image getImage ()
+  {
+    if (imageContainer == null)
+    {
+      return null;
+    }
+    if (imageContainer instanceof LocalImageContainer)
+    {
+      final LocalImageContainer lc = (LocalImageContainer) imageContainer;
+      return lc.getImage();
+    }
+    return null;
+  }
+
+  public void setImage (final Image image)
+          throws IOException
+  {
+    this.imageContainer = new DefaultImageReference (image);
+  }
+
   /**
    * Returns the image reference instance of the element.
    *
    * @return the image reference containing the image data.
    */
-  public ImageContainer getImage ()
+  public ImageContainer getImageContainer ()
   {
-    return imageReference;
+    return imageContainer;
   }
 
   /**
    * Defines the image reference instance of the element.
    *
    * @param imageReference the image reference containing the image data.
+   * @deprecated use setImageContainer instead
    */
   public void setImageReference (final ImageContainer imageReference)
   {
-    this.imageReference = imageReference;
+    this.imageContainer = imageReference;
+  }
+
+  public void setImageContainer (final ImageContainer imageReference)
+  {
+    this.imageContainer = imageReference;
   }
 
   /**
@@ -99,7 +130,7 @@ public class StaticImageElementFactory extends ImageElementFactory
       throw new IllegalStateException("Content is not set.");
     }
 
-    final StaticDataSource datasource = new StaticDataSource(getImage());
+    final StaticDataSource datasource = new StaticDataSource(getImageContainer());
     final ImageElement element = new ImageElement();
     applyElementName(element);
     applyStyle(element.getStyle());

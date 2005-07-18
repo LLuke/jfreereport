@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IntList.java,v 1.3 2005/03/03 23:00:26 taqua Exp $
+ * $Id: IntList.java,v 1.4 2005/06/25 17:52:03 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,15 @@
  */
 package org.jfree.report.util;
 
+/**
+ * A Array-List for integer objects. Ints can be added to the list and will be
+ * stored in an int-array.
+ * <p>
+ * Using this list for storing ints is much faster than creating java.lang.Integer
+ * objects and storing them in an ArrayList.
+ *
+ * @author Thomas Morgner
+ */
 public class IntList
 {
   private static final int[] EMPTY_ARRAY = new int[0];

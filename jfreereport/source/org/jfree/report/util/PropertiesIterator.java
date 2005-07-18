@@ -24,7 +24,7 @@
  * PropertiesIterator.java
  * -----------------------
  *
- * $Id: PropertiesIterator.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
+ * $Id: PropertiesIterator.java,v 1.4 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,11 @@ import java.util.Properties;
 /**
  * The properties iterator iterates over a set of enumerated properties. The properties
  * are named by an optional prefix plus a number, which is counted up on each iteration:
- * <ul> <li>prefix_0 <li>prefix_1 <li>prefix_2 <li>... </ul> The iterator iterates over
- * all subsequent numbered proprties until the number-sequence is finished.
+ * <p/>
+ * <ul><li>prefix_0 </li><li>prefix_1 </li><li>prefix_2 </li><li>... </li></ul>
+ * <p/>
+ * The iterator iterates over all subsequent numbered proprties until the number-sequence
+ * is finished.
  *
  * @author Thomas Morgner
  */

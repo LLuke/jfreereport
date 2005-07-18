@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageComparator.java,v 1.7 2005/02/23 21:06:05 taqua Exp $
+ * $Id: ImageComparator.java,v 1.8 2005/03/03 23:00:25 taqua Exp $
  *
  * Changes
  * -------
@@ -48,25 +48,17 @@ import java.util.Arrays;
  * The ImageComparator tries to compare a byte[] for equality by creating 2 hashes for the
  * bytearray and comparing thoose hashes. If no digest algorithms are available, then the
  * complete byte[] is used for comparison.
+ * <p>
+ * Using the digest method trades computing time for space. 
  *
  * @author Thomas Morgner
  */
 public class ImageComparator
 {
   /**
-   * Dummy Class to create a common root for all compare results.
-   */
-  private abstract static class ImageCompareData
-  {
-    protected ImageCompareData ()
-    {
-    }
-  }
-
-  /**
    * A ImageCompareData that uses the complete image data for comparison.
    */
-  private static final class CompleteImageCompareData extends ImageCompareData
+  private static final class CompleteImageCompareData
   {
     /**
      * The image content.
@@ -124,7 +116,7 @@ public class ImageComparator
   /**
    * An ImageComparator which uses precomputed Message-Digests to compare the image.
    */
-  private static final class DigestImageCompareData extends ImageCompareData
+  private static final class DigestImageCompareData
   {
     /**
      * An MD5 digest.

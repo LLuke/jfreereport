@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.8 2005/02/23 21:06:05 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.9 2005/05/18 18:38:31 taqua Exp $
  *
  * Changes
  * -------
@@ -44,12 +44,20 @@ import java.util.Properties;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * A report configuration that reads its values from the jfreereport.properties file.
+ * A report configuration that reads its values from a property file. This class is used
+ * to load the contents of the <code>jfreereport.properties</code> file.
  *
  * @author Thomas Morgner
  */
 public class PropertyFileReportConfiguration extends ReportConfiguration
 {
+  /**
+   * Default constructor.
+   */
+  public PropertyFileReportConfiguration ()
+  {
+  }
+
   /**
    * Loads the properties stored in the given file. This method does nothing if the file
    * does not exist or is unreadable. Appends the contents of the loaded properties to the
@@ -99,12 +107,5 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
       Log.warn("Unable to read configuration", ioe);
     }
 
-  }
-
-  /**
-   * Default constructor.
-   */
-  public PropertyFileReportConfiguration ()
-  {
   }
 }

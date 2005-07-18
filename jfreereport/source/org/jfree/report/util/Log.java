@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Log.java,v 1.11 2004/05/07 08:14:23 mungady Exp $
+ * $Id: Log.java,v 1.12 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,10 @@ import org.jfree.util.LogTarget;
 /**
  * A simple logging facility. Create a class implementing the {@link
  * org.jfree.util.LogTarget} interface to use this feature.
+ * <p>
+ * This class is used to add extended configuration to the logging facility of
+ * JCommon. It is mostly historic and in a sane environment this class would have
+ * been fully merged with JCommon. 
  *
  * @author Thomas Morgner
  */
