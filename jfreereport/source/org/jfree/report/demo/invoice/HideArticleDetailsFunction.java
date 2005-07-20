@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HideArticleDetailsFunction.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
+ * $Id: HideArticleDetailsFunction.java,v 1.3 2005/02/23 21:04:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,12 +46,35 @@ import org.jfree.report.util.Log;
 
 public class HideArticleDetailsFunction extends AbstractFunction
 {
+  private String element;
+  private String column;
+
   /**
    * Creates an unnamed function. Make sure the name of the function is set using {@link
    * #setName} before the function is added to the report's function collection.
    */
   public HideArticleDetailsFunction ()
   {
+  }
+
+  public String getColumn ()
+  {
+    return column;
+  }
+
+  public void setColumn (final String column)
+  {
+    this.column = column;
+  }
+
+  public String getElement ()
+  {
+    return element;
+  }
+
+  public void setElement (final String element)
+  {
+    this.element = element;
   }
 
   /**
@@ -61,16 +84,21 @@ public class HideArticleDetailsFunction extends AbstractFunction
    */
   public void itemsAdvanced (final ReportEvent event)
   {
-    final Element e = FunctionUtilities.findElement
-            (event.getReport().getItemBand(), "details");
+    final Element[] e = FunctionUtilities.findAllElements
+            (event.getReport().getItemBand(), getElement());
     if (e == null)
     {
       Log.warn("HideArticleDetailsFunction: No 'detail' element found in the itemband.");
       return;
     }
 
-    // now hide the element if there are no details ...
-    e.setVisible(event.getDataRow().get("article.details") != null);
+    for (int i = 0; i < e.length; i++)
+    {
+      final Element element = e[i];
+
+      // now hide the element if there are no details ...
+      element.setVisible(event.getDataRow().get(getColumn()) != null);
+    }
   }
 
   /**

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
+<report name="Joined Invoice" pageformat="A4" topmargin="72" leftmargin="70" bottommargin="70" rightmargin="70">
+
+  <configuration>
+    <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">Identity-H</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.EmbedFonts">true</property>
+  </configuration>
+
+  <groups>
+    <group name="Tables">
+      <fields>
+        TablePrefix
+      </fields>
+      <groupheader pagebreak-before-print="true" >
+      </groupheader>
+    </group>
+  </groups>
+
+  <include src="invoice.xml"/>
+  <include src="advertising.xml"/>
+</report>

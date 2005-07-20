@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InvoiceTableModel.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
+ * $Id: InvoiceTableModel.java,v 1.3 2005/02/23 21:04:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,9 @@ package org.jfree.report.demo.invoice;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;
+
+import org.jfree.report.demo.invoice.model.Invoice;
+import org.jfree.report.demo.invoice.model.Article;
 
 public class InvoiceTableModel extends AbstractTableModel
 {
@@ -66,6 +69,7 @@ public class InvoiceTableModel extends AbstractTableModel
 
   private transient Invoice[] invoicePerRow;
   private transient Article[] articlesPerRow;
+  private transient int[] articleCountPerRow;
 
   private ArrayList invoices;
   private int totalSize;
@@ -105,6 +109,7 @@ public class InvoiceTableModel extends AbstractTableModel
     this.totalSize = size;
     this.invoicePerRow = null;
     this.articlesPerRow = null;
+    this.articleCountPerRow = null;
   }
 
   /**
@@ -167,7 +172,7 @@ public class InvoiceTableModel extends AbstractTableModel
     // ensure that we have enough space ...
     this.invoicePerRow = new Invoice[totalSize];
     this.articlesPerRow = new Article[totalSize];
-
+    this.articleCountPerRow = new int[totalSize];
 
     int currentRow = 0;
     final int invoiceSize = invoices.size();
@@ -179,6 +184,7 @@ public class InvoiceTableModel extends AbstractTableModel
       {
         invoicePerRow[currentRow] = inv;
         articlesPerRow[currentRow] = inv.getArticle(ac);
+        articleCountPerRow[currentRow] = inv.getArticleCount(ac);
         currentRow += 1;
       }
     }
@@ -230,8 +236,8 @@ public class InvoiceTableModel extends AbstractTableModel
       case 13:
         return new Float(art.getPrice());
       case 14:
-        return new Integer(inv.getArticleCount());
+        return new Integer(articleCountPerRow[rowIndex]);
     }
-    throw new IndexOutOfBoundsException("ColumnIndex");
+    throw new IndexOutOfBoundsException("ColumnIndex is invalid: " + columnIndex);
   }
 }

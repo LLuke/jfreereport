@@ -36,7 +36,9 @@
           x="0" y="120" width="200" height="12" alignment="left"/>
 
         <string-field name="invoice.subjectExpression" fieldname="invoice.subjectExpression"
-          x="0" y="224" width="100%" height="12" alignment="right" fontstyle="plain"/>
+          x="0" y="224" width="75%" height="12" alignment="left" fontstyle="bold"/>
+        <date-field x="75%" y="224" width="25%" height="12" fieldname="report.date"
+          alignment="right"  format="yyyy-MM-dd" />
 
         <string-field name="customer.salutationExpression" fieldname="customer.salutationExpression"
           x="0" y="290" width="450" height="12" alignment="left" fontstyle="plain" fontsize="11"/>
@@ -44,14 +46,6 @@
         <label name="Received" x="0" y="314" width="450" height="12" alignment="left"
           >We received your order and will deliver the following articles to your postal address:</label>
 
-        <!-- The table header for the invoice ... -->
-        <label name="article.number" x="0" y="340" width="80" height="12" alignment="left">Product code</label>
-        <label name="article.name" x="100" y="340" width="200" height="12" alignment="left">Product</label>
-        <label name="article.count" x="300" y="340" width="50" height="12" alignment="left">Count</label>
-        <label name="article.price" x="350" y="340" width="50" height="12" alignment="left">Price</label>
-        <label name="article.total" x="400" y="340" width="50" height="12" alignment="left">Total</label>
-
-        <line name="line.end" x1="0" y1="353" x2="0" y2="353" weight="0.5"/>
       </groupheader>
 
       <groupfooter fontname="SansSerif" fontstyle="plain" fontsize="11">
@@ -69,7 +63,27 @@ Yours sincerely,
 John W. Doe, Salesman</label>
       </groupfooter>
     </group>
+
+    <group name="Invoice-Articles" >
+      <fields>
+        <field>invoice</field>
+        <field>dummy-field</field>
+      </fields>
+
+      <groupheader height="30" repeat="true"  fontname="SansSerif" fontstyle="bold" fontsize="12" >
+        <!-- The table header for the invoice ... -->
+        <label name="article.number" x="0" y="10" width="80" height="12" alignment="left">ID</label>
+        <label name="article.name" x="100" y="10" width="200" height="12" alignment="left">Product</label>
+        <label name="article.count" x="300" y="10" width="50" height="12" alignment="left">Count</label>
+        <label name="article.price" x="350" y="10" width="50" height="12" alignment="left">Price</label>
+        <label name="article.total" x="400" y="10" width="50" height="12" alignment="left">Total</label>
+        <line name="line.end" x1="0" y1="25" x2="0" y2="25" weight="0.5"/>
+      </groupheader>
+    </group>
+
   </groups>
+
+
 
   <items layout-cachable="false" >
     <string-field x="0" y="0" width="50" height="12" alignment="left" fieldname="article.number"/>
@@ -146,7 +160,15 @@ John W. Doe, Salesman</label>
         </property>
       </properties>
     </expression>
-    <function name="hideDetailElement"
-      class="org.jfree.report.demo.invoice.HideArticleDetailsFunction"/>
+    <function name="hideDetailElement" class="org.jfree.report.demo.invoice.HideArticleDetailsFunction">
+      <properties>
+        <property name="element">details</property>
+        <property name="column">article.details</property>
+      </properties>
+    </function>
+
+
+    <!-- Surpress warnings -->
+    <property-ref name="dummy-field"/>
   </functions>
 </report>

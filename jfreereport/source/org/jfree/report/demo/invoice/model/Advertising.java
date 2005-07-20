@@ -4,9 +4,9 @@
  * ========================================
  *
  * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2004, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,58 +20,58 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------------
- * Invoice.java
- * ------------------------------
- * (C)opyright 2004, by Thomas Morgner and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * Advertising.java
+ * ------------
+ * (C) Copyright 2002-2005, by Object Refinery Limited.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   -;
  *
- * $Id: Invoice.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
+ * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
  *
- * Changes 
- * -------------------------
- * 26.03.2004 : Initial version
- *  
+ * Changes
+ * -------
+ *
+ *
  */
-
-package org.jfree.report.demo.invoice;
+package org.jfree.report.demo.invoice.model;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Invoice
+import org.jfree.report.demo.invoice.model.Customer;
+import org.jfree.report.demo.invoice.model.Article;
+
+public class Advertising
 {
-  private ArrayList articles;
-  private ArrayList articleCounts;
-
   private Customer customer;
-  private Date date;
-  private String invoiceNumber;
+  private ArrayList articles;
+  private ArrayList articleReducedPrices;
 
-  public Invoice (final Customer customer, final Date date,
-                  final String invoiceNumber)
+  private Date date;
+  private String adNumber;
+
+  public Advertising (final Customer customer, final Date date,
+                    final String adNumber)
   {
     this.customer = customer;
     this.date = date;
-    this.invoiceNumber = invoiceNumber;
+    this.adNumber = adNumber;
     this.articles = new ArrayList();
-    this.articleCounts = new ArrayList();
+    this.articleReducedPrices = new ArrayList();
   }
 
-  public synchronized void addArticle (final Article article)
+  public synchronized void addArticle (final Article article, final double reduced)
   {
     final int index = articles.indexOf(article);
     if (index == -1)
     {
       articles.add(article);
-      articleCounts.add(new Integer(1));
-    }
-    else
-    {
-      final Integer oldCount = (Integer) articleCounts.get(index);
-      articleCounts.set(index, new Integer(oldCount.intValue() + 1));
+      articleReducedPrices.add(new Double (reduced));
     }
   }
 
@@ -80,16 +80,8 @@ public class Invoice
     final int index = articles.indexOf(article);
     if (index != -1)
     {
-      final Integer oldCount = (Integer) articleCounts.get(index);
-      if (oldCount.intValue() == 1)
-      {
-        articleCounts.remove(index);
-        articles.remove(index);
-      }
-      else
-      {
-        articleCounts.set(index, new Integer(oldCount.intValue() - 1));
-      }
+      articleReducedPrices.remove(index);
+      articles.remove(index);
     }
   }
 
@@ -98,10 +90,10 @@ public class Invoice
     return (Article) articles.get(index);
   }
 
-  public int getArticleCount (final int index)
+  public double getArticleReducedPrice (final int index)
   {
-    final Integer i = (Integer) articleCounts.get(index);
-    return i.intValue();
+    final Double i = (Double) articleReducedPrices.get(index);
+    return i.doubleValue();
   }
 
   public int getArticleCount ()
@@ -119,8 +111,8 @@ public class Invoice
     return date;
   }
 
-  public String getInvoiceNumber ()
+  public String getAdNumber ()
   {
-    return invoiceNumber;
+    return adNumber;
   }
 }

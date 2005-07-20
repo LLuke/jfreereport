@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Article.java,v 1.2 2005/01/25 01:13:59 taqua Exp $
+ * $Id: Article.java,v 1.3 2005/02/23 21:04:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -36,7 +36,7 @@
  *  
  */
 
-package org.jfree.report.demo.invoice;
+package org.jfree.report.demo.invoice.model;
 
 public class Article
 {
