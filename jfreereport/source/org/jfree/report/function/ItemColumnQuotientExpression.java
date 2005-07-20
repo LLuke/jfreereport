@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.10 2005/02/23 21:04:47 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.11 2005/04/15 18:46:58 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,7 @@ import org.jfree.report.util.Log;
  * A report function that calculates the quotient of two fields (columns) from the current
  * row.
  * <p/>
- * This function expects its input values to be either java.lang.Number instances or
- * Strings that can be parsed to java.lang.Number instances using a
- * java.text.DecimalFormat.
+ * This function expects its input values to be java.lang.Number instances.
  * <p/>
  * The function undestands two parameters. The <code>dividend</code> parameter is required
  * and denotes the name of an ItemBand-field which is used as dividend. The

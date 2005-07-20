@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.7 2005/01/24 23:59:05 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.8 2005/02/23 21:04:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -265,5 +265,4 @@ public abstract class AbstractDemoFrame extends JFrame
                     new Object[]{e.getLocalizedMessage()}),
             e);
   }
-
 }

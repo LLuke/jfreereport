@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupport.java,v 1.3 2005/03/03 22:59:59 taqua Exp $
+ * $Id: MessageFormatSupport.java,v 1.4 2005/04/14 16:37:33 taqua Exp $
  *
  * Changes
  * -------
@@ -47,16 +47,19 @@ import java.util.Locale;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.util.PropertyLookupParser;
+import org.jfree.report.util.CSVTokenizer;
 
 public class MessageFormatSupport implements Serializable
 {
-  private static class MessageCompiler extends PropertyLookupParser
+  protected static class MessageCompiler extends PropertyLookupParser
   {
     private ArrayList fields;
+    private ArrayList completeFormatString;
 
     public MessageCompiler ()
     {
       this.fields = new ArrayList();
+      this.completeFormatString = new ArrayList();
       setMarkerChar('$');
       setOpeningBraceChar('(');
       setClosingBraceChar(')');
@@ -69,13 +72,31 @@ public class MessageFormatSupport implements Serializable
 
     protected Object performInitialLookup (final String name)
     {
-      final int index = fields.indexOf(name);
+      final CSVTokenizer tokenizer = new CSVTokenizer(name, ",", "\"");
+      if (tokenizer.hasMoreTokens() == false)
+      {
+        return null;
+      }
+      final String varName = tokenizer.nextToken();
+      final int index = fields.indexOf(varName);
       if (index != -1)
       {
-        return String.valueOf(index);
+        return completeFormatString.get(index);
       }
-      fields.add(name);
-      return String.valueOf(fields.size() - 1);
+
+      final StringBuffer b = new StringBuffer();
+      b.append("{");
+      b.append(String.valueOf(fields.size()));
+      while (tokenizer.hasMoreTokens())
+      {
+        b.append(",");
+        b.append(tokenizer.nextToken());
+      }
+      b.append("}");
+      final String formatString = b.toString();
+      completeFormatString.add(formatString);
+      fields.add(varName);
+      return formatString;
     }
 
     public String[] getFields ()

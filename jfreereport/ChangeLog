@@ -4,7 +4,13 @@
 A list of changes in recent versions:
         * [BUG] Changed the API of StaticImageElementFactory to fix some unclean
           method names. Also added a convinience property of type 'java.awt.Image'
-          to the class.  
+          to the class.
+
+        * [BUG] NumberFieldElementFactory and DateFieldElementFactory did not set
+          the Null-String correctly. This affects the 'simple-xml' parser as well
+          as the API report definition method. This fixes BugReport #1215492.
+
+        * More JavaDoc.
 
 0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible
