@@ -27,7 +27,7 @@
  *
  * Original Author:  J&ouml;rg Schaible;
  *
- * $Id: PageOfPagesFunction.java,v 1.2 2005/02/04 19:22:54 taqua Exp $
+ * $Id: PageOfPagesFunction.java,v 1.3 2005/05/08 15:41:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,7 @@
 package org.jfree.report.function;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.event.ReportEvent;
@@ -52,6 +53,7 @@ public class PageOfPagesFunction extends PageFunction
 {
   private PageTotalFunction pageTotalFunction;
   private String format;
+  private transient Locale locale;
 
   /**
    * Constructs an unnamed function. <P> This constructor is intended for use by the SAX
@@ -59,7 +61,6 @@ public class PageOfPagesFunction extends PageFunction
    */
   public PageOfPagesFunction ()
   {
-    super();
     pageTotalFunction = new PageTotalFunction();
     pageTotalFunction.setName("__internally_used_only");
     this.format = "{0} / {1}";
@@ -109,30 +110,35 @@ public class PageOfPagesFunction extends PageFunction
   {
     super.reportInitialized(event);
     pageTotalFunction.reportInitialized(event);
+    locale = event.getReport().getResourceBundleFactory().getLocale();
   }
 
   public void pageStarted (final ReportEvent event)
   {
     super.pageStarted(event);
     pageTotalFunction.pageStarted(event);
+    locale = event.getReport().getResourceBundleFactory().getLocale();
   }
 
   public void pageCanceled (final ReportEvent event)
   {
     super.pageCanceled(event);
     pageTotalFunction.pageCanceled(event);
+    locale = event.getReport().getResourceBundleFactory().getLocale();
   }
 
   public void pageFinished (final ReportEvent event)
   {
     super.pageFinished(event);
     pageTotalFunction.pageFinished(event);
+    locale = event.getReport().getResourceBundleFactory().getLocale();
   }
 
   public void groupStarted (final ReportEvent event)
   {
     super.groupStarted(event);
     pageTotalFunction.groupStarted(event);
+    locale = event.getReport().getResourceBundleFactory().getLocale();
   }
 
   /**
@@ -145,7 +151,12 @@ public class PageOfPagesFunction extends PageFunction
   {
     final Object page = super.getValue();
     final Object pages = pageTotalFunction.getValue();
-    return MessageFormat.format(getFormat(), new Object[]{page, pages});
+    if (locale == null)
+    {
+      locale = Locale.getDefault();
+    }
+    final MessageFormat compiledFormat = new MessageFormat(getFormat(), locale);
+    return compiledFormat.format(new Object[]{page, pages});
   }
 
   public void setGroup (final String group)

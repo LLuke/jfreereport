@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: I18nDemo.java,v 1.4 2005/05/18 18:38:26 taqua Exp $
+ * $Id: I18nDemo.java,v 1.5 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
+import org.jfree.report.demo.helper.LocaleSelectionReportControler;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
@@ -173,6 +174,9 @@ public class I18nDemo extends AbstractDemoFrame
     try
     {
       final PreviewFrame frame = new PreviewFrame(report);
+      final LocaleSelectionReportControler reportControler = new LocaleSelectionReportControler();
+      reportControler.setSelectedLocale(report.getResourceBundleFactory().getLocale());
+      frame.getBase().setReportControler(reportControler);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
       RefineryUtilities.positionFrameRandomly(frame);
@@ -219,11 +223,12 @@ public class I18nDemo extends AbstractDemoFrame
     data.addColumn("Data");
     data.addColumn("A");
     data.addColumn("B");
-    data.addRow(new Object[]{"data.firstElement", new Double(43.0), new Double(127.5)});
-    data.addRow(new Object[]{"data.secondElement", new Double(57.0), new Double(108.5)});
-    data.addRow(new Object[]{"data.thirdElement", new Double(35.0), new Double(164.8)});
-    data.addRow(new Object[]{"data.fourthElement", new Double(86.0), new Double(164.0)});
-    data.addRow(new Object[]{"data.lastElement", new Double(12.0), new Double(103.2)});
+    data.addColumn("C");
+    data.addRow(new Object[]{"data.firstElement", new Double(43.0), new Double(127.5), new Double(10001.999)});
+    data.addRow(new Object[]{"data.secondElement", new Double(57.0), new Double(108.5), new Double(-10001.999)});
+    data.addRow(new Object[]{"data.thirdElement", new Double(35.0), new Double(164.8), new Double(-999.9999)});
+    data.addRow(new Object[]{"data.fourthElement", new Double(86.0), new Double(164.0), new Double(999.9999)});
+    data.addRow(new Object[]{"data.lastElement", new Double(12.0), new Double(103.2), new Double(0.999)});
     return data;
   }
 

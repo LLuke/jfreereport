@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DecimalFormatFilter.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
+ * $Id: DecimalFormatFilter.java,v 1.5 2005/04/14 16:37:33 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -43,6 +43,8 @@ package org.jfree.report.filter;
 
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.jfree.report.ReportDefinition;
 
@@ -62,6 +64,10 @@ import org.jfree.report.ReportDefinition;
  */
 public class DecimalFormatFilter extends NumberFormatFilter
 {
+  private ReportDefinition reportDefinition;
+  private Locale lastLocale;
+  private boolean keepState;
+
   /**
    * DefaultConstructor, this object is initialized using a DecimalFormat with the default
    * pattern for this locale.
@@ -153,16 +159,26 @@ public class DecimalFormatFilter extends NumberFormatFilter
   }
 
 
-  public void registerReportDefinition (ReportDefinition reportDefinition)
+  /**
+   * Defines, whether the filter should keep its state, if a locale
+   * change is detected. This will effectivly disable the locale update.
+   *
+   * @return true, if the locale should not update the DateSymbols, false otherwise.
+   */
+  public boolean isKeepState ()
   {
-    // todo implement me
-
+    return keepState;
   }
 
-  public void unregisterReportDefinition (ReportDefinition reportDefinition)
+  /**
+   * Defines, whether the filter should keep its state, if a locale
+   * change is detected. This will effectivly disable the locale update.
+   *
+   * @param keepState set to true, if the locale should not update the DateSymbols, false otherwise.
+   */
+  public void setKeepState (final boolean keepState)
   {
-    // todo implement me
-
+    this.keepState = keepState;
   }
 
   /**
@@ -176,6 +192,37 @@ public class DecimalFormatFilter extends NumberFormatFilter
    */
   public Object getValue ()
   {
+    if (keepState == false && reportDefinition != null)
+    {
+      final Locale locale = reportDefinition.getResourceBundleFactory().getLocale();
+      if (locale != lastLocale)
+      {
+        lastLocale = locale;
+        getDecimalFormat().setDecimalFormatSymbols(new DecimalFormatSymbols(locale));
+      }
+    }
     return super.getValue();
+  }
+
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != null)
+    {
+      throw new IllegalStateException("Already connected.");
+    }
+    if (reportDefinition == null)
+    {
+      throw new NullPointerException("The given report definition is null");
+    }
+    this.reportDefinition = reportDefinition;
+  }
+
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != reportDefinition)
+    {
+      throw new IllegalStateException("This report definition is not registered.");
+    }
+    this.reportDefinition = null;
   }
 }

@@ -33,14 +33,17 @@
 
     <resource-field x="0" y="7" width="25%" height="10" alignment="left" fieldname="Data"/>
 
-    <number-field x="25%" y="2" width="25%" height="10" alignment="center"
+    <number-field x="25%" y="2" width="15%" height="10" alignment="center"
       fieldname="A" format="0.0"/>
 
-    <number-field x="50%" y="2" width="25%" height="10" alignment="center"
+    <number-field x="40%" y="2" width="15%" height="10" alignment="center"
       fieldname="B" format="0.0"/>
 
-    <number-field x="75%" y="2" width="25%" height="10" alignment="center"
+    <number-field x="55%" y="2" width="15%" height="10" alignment="center"
       fieldname="Percentage" format="0.000%"/>
+
+    <message-field x="70%" y="2" width="30%" height="10" alignment="left"
+      >$(C,choice,-10000#{0,number,'0.###E0'}|-10000&lt;{0,number,'0.####'}|10000#{0,number,'0.###E0'})</message-field>
 
   </items>
 
