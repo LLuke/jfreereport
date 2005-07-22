@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: CombinedAdvertisingDemo.java,v 1.1 2005/07/20 18:42:13 taqua Exp $
  *
  * Changes
  * -------
@@ -153,10 +153,10 @@ public class CombinedAdvertisingDemo extends AbstractDemoFrame
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     final JTable table = new JTable(this.data);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    final Enumeration enum = table.getColumnModel().getColumns();
-    while (enum.hasMoreElements())
+    final Enumeration enumeration = table.getColumnModel().getColumns();
+    while (enumeration.hasMoreElements())
     {
-      final TableColumn tc = (TableColumn) enum.nextElement();
+      final TableColumn tc = (TableColumn) enumeration.nextElement();
       tc.setMinWidth(50);
     }
 
