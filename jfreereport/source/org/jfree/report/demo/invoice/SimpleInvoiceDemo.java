@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleInvoiceDemo.java,v 1.6 2005/07/20 18:42:13 taqua Exp $
+ * $Id: SimpleInvoiceDemo.java,v 1.7 2005/07/28 10:32:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -175,10 +175,10 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     final JTable table = new JTable(this.data);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    final Enumeration enum = table.getColumnModel().getColumns();
-    while (enum.hasMoreElements())
+    final Enumeration enumeration = table.getColumnModel().getColumns();
+    while (enumeration.hasMoreElements())
     {
-      final TableColumn tc = (TableColumn) enum.nextElement();
+      final TableColumn tc = (TableColumn) enumeration.nextElement();
       tc.setMinWidth(50);
     }
 
