@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: SimpleAdvertisingDemo.java,v 1.1 2005/07/20 18:44:26 taqua Exp $
  *
  * Changes
  * -------
@@ -56,16 +56,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.report.demo.invoice.model.Customer;
-import org.jfree.report.demo.invoice.model.Article;
 import org.jfree.report.demo.invoice.model.Advertising;
+import org.jfree.report.demo.invoice.model.Article;
+import org.jfree.report.demo.invoice.model.Customer;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
@@ -73,6 +73,7 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.ElementDefinitionException;
 
 public class SimpleAdvertisingDemo extends AbstractDemoFrame
 {
@@ -82,6 +83,19 @@ public class SimpleAdvertisingDemo extends AbstractDemoFrame
   {
     setTitle("Simple Invoice Demo");
 
+    data = initData();
+
+    Log.debug(data.getColumnCount() + " - " + data.getRowCount());
+
+    // as the tablemodel does not fire any change events, we have to initialize it first
+    // evil lazy me .. should change that ...
+    setJMenuBar(createMenuBar());
+    setContentPane(createContent());
+
+  }
+
+  private AdvertisingTableModel initData ()
+  {
     final Customer customer =
             new Customer("Will", "Snowman", "Mr.", "12 Federal Plaza",
                     "12346", "AnOtherTown", "Lilliput");
@@ -99,15 +113,9 @@ public class SimpleAdvertisingDemo extends AbstractDemoFrame
     ad.addArticle(memory, 99.99f);
     ad.addArticle(operatingSystem, 199.99);
 
-    data = new AdvertisingTableModel();
+    final AdvertisingTableModel data = new AdvertisingTableModel();
     data.addAdvertising(ad);
-    Log.debug(data.getColumnCount() + " - " + data.getRowCount());
-
-    // as the tablemodel does not fire any change events, we have to initialize it first
-    // evil lazy me .. should change that ...
-    setJMenuBar(createMenuBar());
-    setContentPane(createContent());
-
+    return data;
   }
 
   /**
@@ -192,22 +200,15 @@ public class SimpleAdvertisingDemo extends AbstractDemoFrame
               MessageFormat.format(getResources().getString("report.definitionnotfound"),
                       new Object[]{in}),
               getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
-    }
-
-    final JFreeReport report;
-    try
-    {
-      report = parseReport(in);
-      report.setData(this.data);
-    }
-    catch (Exception ex)
-    {
-      showExceptionDialog("report.definitionfailure", ex);
       return;
     }
 
     try
     {
+      final ReportGenerator generator = ReportGenerator.getInstance();
+      final JFreeReport report = generator.parseReport(in);
+      report.setData(this.data);
+
       final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
@@ -218,6 +219,14 @@ public class SimpleAdvertisingDemo extends AbstractDemoFrame
     catch (ReportProcessingException rpe)
     {
       showExceptionDialog("report.previewfailure", rpe);
+    }
+    catch (IOException e)
+    {
+      showExceptionDialog("report.definitionfailure", e);
+    }
+    catch (ElementDefinitionException e)
+    {
+      showExceptionDialog("report.definitionfailure", e);
     }
   }
 

@@ -11,7 +11,7 @@
   <groups>
     <group name="Tables">
       <fields>
-        TablePrefix
+        <field>TablePrefix</field>
       </fields>
       <groupheader pagebreak-before-print="true" >
       </groupheader>

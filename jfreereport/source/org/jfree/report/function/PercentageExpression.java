@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: PercentageExpression.java,v 1.1 2005/07/22 16:42:26 taqua Exp $
  *
  * Changes
  * -------
@@ -122,7 +122,7 @@ public class PercentageExpression extends AbstractExpression
     final double value;
     if (useDifference)
     {
-      final double delta = divisor - dividend;
+      final double delta = Math.abs(dividend - divisor);
       value = delta / divisor;
     }
     else

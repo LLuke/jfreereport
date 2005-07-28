@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParserFrontend.java,v 1.9 2005/02/05 18:35:20 taqua Exp $
+ * $Id: IncludeParserFrontend.java,v 1.10 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -62,6 +62,7 @@ public class IncludeParserFrontend extends ParserFrontend
   public IncludeParserFrontend (final RootXmlReadHandler parser)
   {
     super(new IncludeParser(parser));
+    setEntityResolver(ParserEntityResolver.getDefaultResolver());
   }
 
   /**

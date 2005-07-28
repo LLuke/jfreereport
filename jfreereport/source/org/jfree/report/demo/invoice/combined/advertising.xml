@@ -106,8 +106,8 @@ John W. Doe, Salesman</label>
     </function>
     <expression name="saved" class="org.jfree.report.function.PercentageExpression">
       <properties>
-        <property name="base">ad.article.price</property>
-        <property name="subject">ad.article.reducedPrice</property>
+        <property name="dividend">ad.article.price</property>
+        <property name="divisor">ad.article.reducedPrice</property>
         <property name="useDifference">true</property>
       </properties>
     </expression>

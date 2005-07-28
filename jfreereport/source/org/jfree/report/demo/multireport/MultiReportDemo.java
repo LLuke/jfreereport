@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MultiReportDemo.java,v 1.2 2005/05/18 18:38:28 taqua Exp $
+ * $Id: MultiReportDemo.java,v 1.3 2005/05/20 16:06:43 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.report.demo.multireport;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 import javax.swing.BorderFactory;
@@ -57,18 +58,27 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.misc.tablemodel.JoiningTableModel;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.ElementDefinitionException;
 
+/**
+ * The MultiReportDemo combines data from multiple table models
+ * into one single report.
+ * <p>
+ * For a detailed explaination of the demo have a look at the
+ * file <a href="multireport.html">file</a>'.
+ *
+ * @author Thomas Morgner
+ */
 public class MultiReportDemo extends AbstractDemoFrame
 {
 
@@ -139,7 +149,13 @@ public class MultiReportDemo extends AbstractDemoFrame
 
   }
 
+  /**
+   * Parses the report.
+   *
+   * @return the report.
+   */
   protected JFreeReport parseReport ()
+          throws IOException, ElementDefinitionException
   {
     final URL in = ObjectUtilities.getResource
             ("org/jfree/report/demo/multireport/joined-report.xml", MultiReportDemo.class);
@@ -152,17 +168,11 @@ public class MultiReportDemo extends AbstractDemoFrame
               getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return null;
     }
-    try
-    {
-      final JFreeReport report = parseReport(in);
-      report.setData(this.data);
-      return report;
-    }
-    catch (Exception ex)
-    {
-      showExceptionDialog("report.definitionfailure", ex);
-      return null;
-    }
+
+    final ReportGenerator generator = ReportGenerator.getInstance();
+    final JFreeReport report = generator.parseReport(in);
+    report.setData(this.data);
+    return report;
   }
 
   /**
@@ -170,13 +180,9 @@ public class MultiReportDemo extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    final JFreeReport report = parseReport();
-    if (report == null)
-    {
-      return;
-    }
     try
     {
+      final JFreeReport report = parseReport();
       final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
@@ -188,29 +194,14 @@ public class MultiReportDemo extends AbstractDemoFrame
     {
       showExceptionDialog("report.previewfailure", rpe);
     }
-  }
-
-  /**
-   * Reads the report from the specified template file.
-   *
-   * @param templateURL the template location.
-   * @return a report.
-   */
-  private JFreeReport parseReport (final URL templateURL)
-  {
-
-    JFreeReport result = null;
-    final ReportGenerator generator = ReportGenerator.getInstance();
-    try
+    catch (IOException e)
     {
-      result = generator.parseReport(templateURL);
+      showExceptionDialog("report.definitionfailure", e);
     }
-    catch (Exception e)
+    catch (ElementDefinitionException e)
     {
-      Log.error("Failed to parse the report definition", e);
+      showExceptionDialog("report.definitionfailure", e);
     }
-    return result;
-
   }
 
   private TableModel createFruitTableModel ()

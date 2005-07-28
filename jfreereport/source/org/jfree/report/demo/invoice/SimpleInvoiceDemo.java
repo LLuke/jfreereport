@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleInvoiceDemo.java,v 1.5 2005/05/20 16:06:43 taqua Exp $
+ * $Id: SimpleInvoiceDemo.java,v 1.6 2005/07/20 18:42:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.GregorianCalendar;
+import java.util.Enumeration;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -55,6 +56,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JSplitPane;
+import javax.swing.table.TableColumn;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
@@ -70,6 +72,7 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.ElementDefinitionException;
 
 public class SimpleInvoiceDemo extends AbstractDemoFrame
 {
@@ -79,6 +82,19 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
   {
     setTitle("Simple Invoice Demo");
 
+    data = initData();
+
+    Log.debug(data.getColumnCount() + " - " + data.getRowCount());
+
+    // as the tablemodel does not fire any change events, we have to initialize it first
+    // evil lazy me .. should change that ...
+    setJMenuBar(createMenuBar());
+    setContentPane(createContent());
+
+  }
+
+  private InvoiceTableModel initData ()
+  {
     final Customer customer =
             new Customer("Will", "Snowman", "Mr.", "12 Federal Plaza",
                     "12346", "AnOtherTown", "Lilliput");
@@ -97,15 +113,9 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
     invoice.addArticle(memory);
     invoice.addArticle(operatingSystem);
 
-    data = new InvoiceTableModel();
+    final InvoiceTableModel data = new InvoiceTableModel();
     data.addInvoice(invoice);
-    Log.debug(data.getColumnCount() + " - " + data.getRowCount());
-
-    // as the tablemodel does not fire any change events, we have to initialize it first
-    // evil lazy me .. should change that ...
-    setJMenuBar(createMenuBar());
-    setContentPane(createContent());
-
+    return data;
   }
 
   /**
@@ -138,7 +148,6 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-
     final JEditorPane editorPane = new JEditorPane();
     editorPane.setEditable(false);
     editorPane.setPreferredSize(new Dimension (400, 200));
@@ -162,13 +171,25 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
     }
 
     final JScrollPane scroll = new JScrollPane(editorPane,
-            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     final JTable table = new JTable(this.data);
-    final JScrollPane scrollPane = new JScrollPane(table);
+    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    final Enumeration enum = table.getColumnModel().getColumns();
+    while (enum.hasMoreElements())
+    {
+      final TableColumn tc = (TableColumn) enum.nextElement();
+      tc.setMinWidth(50);
+    }
+
+    final JScrollPane scrollPane = new JScrollPane
+            (table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
     final JButton previewButton = new ActionButton(getPreviewAction());
 
-    final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    final JSplitPane splitPane =
+            new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     splitPane.setTopComponent(scroll);
     splitPane.setBottomComponent(scrollPane);
     content.add(splitPane, BorderLayout.CENTER);
@@ -191,22 +212,15 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
               MessageFormat.format(getResources().getString("report.definitionnotfound"),
                       new Object[]{in}),
               getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
-    }
-
-    final JFreeReport report;
-    try
-    {
-      report = parseReport(in);
-      report.setData(this.data);
-    }
-    catch (Exception ex)
-    {
-      showExceptionDialog("report.definitionfailure", ex);
       return;
     }
 
     try
     {
+      final ReportGenerator generator = ReportGenerator.getInstance();
+      final JFreeReport report = generator.parseReport(in);
+      report.setData(this.data);
+
       final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
@@ -218,29 +232,14 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
     {
       showExceptionDialog("report.previewfailure", rpe);
     }
-  }
-
-  /**
-   * Reads the report from the specified template file.
-   *
-   * @param templateURL the template location.
-   * @return a report.
-   */
-  private JFreeReport parseReport (final URL templateURL)
-  {
-
-    JFreeReport result = null;
-    final ReportGenerator generator = ReportGenerator.getInstance();
-    try
+    catch (IOException e)
     {
-      result = generator.parseReport(templateURL);
+      showExceptionDialog("report.definitionfailure", e);
     }
-    catch (Exception e)
+    catch (ElementDefinitionException e)
     {
-      Log.error("Failed to parse the report definition", e);
+      showExceptionDialog("report.definitionfailure", e);
     }
-    return result;
-
   }
 
   /**

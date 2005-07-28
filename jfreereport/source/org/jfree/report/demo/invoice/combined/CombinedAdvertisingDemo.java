@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CombinedAdvertisingDemo.java,v 1.1 2005/07/20 18:42:13 taqua Exp $
+ * $Id: CombinedAdvertisingDemo.java,v 1.2 2005/07/22 13:23:00 mtennes Exp $
  *
  * Changes
  * -------
@@ -81,6 +81,7 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.ElementDefinitionException;
 
 public class CombinedAdvertisingDemo extends AbstractDemoFrame
 {
@@ -166,9 +167,11 @@ public class CombinedAdvertisingDemo extends AbstractDemoFrame
 
     final JButton previewButton = new ActionButton(getPreviewAction());
 
-    final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    final JSplitPane splitPane =
+            new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     splitPane.setTopComponent(scroll);
     splitPane.setBottomComponent(scrollPane);
+    splitPane.setDividerLocation(300);
     content.add(splitPane, BorderLayout.CENTER);
     content.add(previewButton, BorderLayout.SOUTH);
     return content;
@@ -192,20 +195,12 @@ public class CombinedAdvertisingDemo extends AbstractDemoFrame
               getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
-    final JFreeReport report;
     try
     {
-      report = parseReport(in);
+      final ReportGenerator generator = ReportGenerator.getInstance();
+      final JFreeReport report = generator.parseReport(in);
       report.setData(this.data);
-    }
-    catch (Exception ex)
-    {
-      showExceptionDialog("report.definitionfailure", ex);
-      return;
-    }
 
-    try
-    {
       final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
@@ -217,30 +212,14 @@ public class CombinedAdvertisingDemo extends AbstractDemoFrame
     {
       showExceptionDialog("report.previewfailure", rpe);
     }
-  }
-
-
-  /**
-   * Reads the report from the specified template file.
-   *
-   * @param templateURL the template location.
-   * @return a report.
-   */
-  private JFreeReport parseReport (final URL templateURL)
-  {
-
-    JFreeReport result = null;
-    final ReportGenerator generator = ReportGenerator.getInstance();
-    try
+    catch (IOException e)
     {
-      result = generator.parseReport(templateURL);
+      showExceptionDialog("report.definitionfailure", e);
     }
-    catch (Exception e)
+    catch (ElementDefinitionException e)
     {
-      Log.error("Failed to parse the report definition", e);
+      showExceptionDialog("report.definitionfailure", e);
     }
-    return result;
-
   }
   
   private TableModel initData ()
