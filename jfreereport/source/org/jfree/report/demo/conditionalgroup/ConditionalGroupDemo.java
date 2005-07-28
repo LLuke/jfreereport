@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConditionalGroupDemo.java,v 1.4 2005/05/18 18:38:27 taqua Exp $
+ * $Id: ConditionalGroupDemo.java,v 1.5 2005/05/20 16:06:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -113,7 +113,7 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-    final String d = "This demo creates a report with an conditional nested group.";
+    final String d = "This demo creates a report with a conditional nested group.";
     final JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
