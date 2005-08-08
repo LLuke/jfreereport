@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogModule.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
+ * $Id: Log4JLogModule.java,v 1.4 2005/01/31 17:16:40 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.ext.modules.log4jlog;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
@@ -65,7 +65,7 @@ public class Log4JLogModule extends AbstractModule
    *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize(SubSystem subsys) throws ModuleInitializeException
+  public void initialize(final SubSystem subsys) throws ModuleInitializeException
   {
     if (ReportConfiguration.getGlobalConfig().isDisableLogging())
     {
@@ -75,8 +75,8 @@ public class Log4JLogModule extends AbstractModule
         (ReportConfiguration.LOGTARGET, "").equals
         (Log4JLogTarget.class.getName()))
     {
-      Log.getJFreeReportLog().addTarget(new Log4JLogTarget());
-      Log.getJFreeReportLog().init();
+      Log.getInstance().addTarget(new Log4JLogTarget());
+      //Log.getJFreeReportLog().init();
       Log.info ("Log4J log target started ... previous log messages could have been ignored.");
     }
   }

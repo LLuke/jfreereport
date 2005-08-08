@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import org.jfree.report.ext.modules.barcode.Barcode;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 //todo: use derivation! now i can
 

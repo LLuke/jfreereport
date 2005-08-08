@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.9 2005/05/18 18:50:29 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.10 2005/05/31 18:28:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -73,7 +73,7 @@ import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 import org.jfree.report.modules.output.table.rtf.RTFProcessor;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.NullOutputStream;
 import org.jfree.util.ObjectUtilities;
 

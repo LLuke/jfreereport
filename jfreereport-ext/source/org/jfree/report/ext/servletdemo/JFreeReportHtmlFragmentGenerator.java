@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportHtmlFragmentGenerator.java,v 1.1 2005/03/10 21:26:03 taqua Exp $
+ * $Id: JFreeReportHtmlFragmentGenerator.java,v 1.2 2005/05/18 18:50:30 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**

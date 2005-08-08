@@ -3,11 +3,11 @@ package org.jfree.report.ext.junit.base.basic.modules.parser;
 import junit.framework.TestCase;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.util.PropertyLookupParser;
+import org.jfree.report.util.beans.BeanPropertyLookupParser;
 
 public class PropertyAttributesTest extends TestCase
 {
-  private class StringLookupParser extends PropertyLookupParser
+  private class StringLookupParser extends BeanPropertyLookupParser
   {
     private RootXmlReadHandler rootXmlHandler;
 

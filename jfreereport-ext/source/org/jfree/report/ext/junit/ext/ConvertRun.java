@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConvertRun.java,v 1.1 2003/09/12 17:51:06 taqua Exp $
+ * $Id: ConvertRun.java,v 1.2 2005/05/18 18:50:30 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,7 +47,7 @@ import java.io.Writer;
 import java.net.URL;
 
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 public class ConvertRun

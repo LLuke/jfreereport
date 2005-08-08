@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 3:57:54 PM
  *
- * $Id: TestDrawable.java,v 1.4 2003/07/03 16:06:17 taqua Exp $
+ * $Id: TestDrawable.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
  */
 package org.jfree.report.ext.junit;
 
@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.Drawable;
 
 public class TestDrawable implements Drawable

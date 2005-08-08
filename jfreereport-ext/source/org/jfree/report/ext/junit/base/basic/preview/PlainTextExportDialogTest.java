@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialogTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: PlainTextExportDialogTest.java,v 1.4 2005/03/04 16:58:16 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.ext.junit.base.basic.preview;
 
 import junit.framework.TestCase;
 import org.jfree.report.modules.gui.plaintext.PlainTextExportDialog;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 public class PlainTextExportDialogTest extends TestCase
 {

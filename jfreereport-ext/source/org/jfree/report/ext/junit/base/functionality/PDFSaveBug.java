@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveBug.java,v 1.2 2005/01/31 17:16:37 taqua Exp $
+ * $Id: PDFSaveBug.java,v 1.3 2005/05/31 18:28:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,7 +51,7 @@ import org.jfree.report.demo.SampleData1;
 import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * Checks, whether the given report is encrypted.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogModule.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
+ * $Id: Java14LogModule.java,v 1.4 2005/01/31 17:16:39 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report.ext.modules.java14log;
 
-import org.jfree.report.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Log;
 
 /**
  * The module definition for the Java1.4 log target support module.
@@ -70,7 +70,7 @@ public class Java14LogModule extends AbstractModule
    * @throws org.jfree.base.modules.ModuleInitializeException
    *          if an error ocurred while initializing the module.
    */
-  public void initialize (SubSystem subSystem)
+  public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
     if (ReportConfiguration.getGlobalConfig().isDisableLogging())
@@ -81,8 +81,8 @@ public class Java14LogModule extends AbstractModule
         (ReportConfiguration.LOGTARGET, "").equals
         (Java14LogTarget.class.getName()))
     {
-      Log.getJFreeReportLog().addTarget(new Java14LogTarget());
-      Log.getJFreeReportLog().init();
+      Log.getInstance().addTarget(new Java14LogTarget());
+      //Log.getJFreeReportLog().init();
       Log.info ("Java 1.4 log target started ... previous log messages could have been ignored.");
     }
   }

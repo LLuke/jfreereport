@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ChineseTextTest.java,v 1.6 2005/05/18 18:50:30 taqua Exp $
+ * $Id: ChineseTextTest.java,v 1.7 2005/05/31 18:28:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,7 +50,7 @@ import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 public class ChineseTextTest

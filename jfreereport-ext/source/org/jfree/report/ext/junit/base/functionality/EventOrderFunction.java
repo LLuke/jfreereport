@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderFunction.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
+ * $Id: EventOrderFunction.java,v 1.5 2005/01/31 17:16:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,7 +41,7 @@ package org.jfree.report.ext.junit.base.functionality;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 public class EventOrderFunction extends AbstractFunction implements PageEventListener
 {

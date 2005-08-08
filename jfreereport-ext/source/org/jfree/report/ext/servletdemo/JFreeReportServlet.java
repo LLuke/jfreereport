@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.4 2005/01/31 17:16:53 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.5 2005/05/18 18:50:30 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**

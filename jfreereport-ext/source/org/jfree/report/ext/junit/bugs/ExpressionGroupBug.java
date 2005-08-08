@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionGroupBug.java,v 1.3 2003/11/01 19:54:23 taqua Exp $
+ * $Id: ExpressionGroupBug.java,v 1.4 2005/05/31 18:28:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,7 @@ import javax.swing.table.TableModel;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ext.junit.TestSystem;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 public class ExpressionGroupBug extends TestCase
 {

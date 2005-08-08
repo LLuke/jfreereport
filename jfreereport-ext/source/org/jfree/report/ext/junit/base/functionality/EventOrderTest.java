@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.7 2005/02/22 20:28:08 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.8 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,7 +52,7 @@ import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.EventMonitorFunction;
 import org.jfree.report.function.PageFunction;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 public class EventOrderTest extends TestCase

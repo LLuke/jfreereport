@@ -16,7 +16,7 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.Drawable;
 
 /**

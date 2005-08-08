@@ -3,7 +3,7 @@ package org.jfree.report.ext.modules.barcode.base;
 import java.util.ArrayList;
 
 import org.jfree.report.ext.modules.barcode.BarcodeIllegalLengthException;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * Encodes a string into UPCE specifications

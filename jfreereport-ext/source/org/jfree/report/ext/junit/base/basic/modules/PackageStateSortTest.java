@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageStateSortTest.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
+ * $Id: PackageStateSortTest.java,v 1.2 2005/01/31 17:16:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,7 +47,7 @@ import org.jfree.base.modules.PackageState;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.misc.configstore.filesystem.FileConfigStoreModule;
 import org.jfree.report.modules.output.support.itext.BaseFontModule;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 public class PackageStateSortTest extends TestCase
 {

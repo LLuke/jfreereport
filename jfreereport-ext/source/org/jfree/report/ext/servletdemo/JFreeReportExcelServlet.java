@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportExcelServlet.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
+ * $Id: JFreeReportExcelServlet.java,v 1.4 2005/05/18 18:50:30 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**

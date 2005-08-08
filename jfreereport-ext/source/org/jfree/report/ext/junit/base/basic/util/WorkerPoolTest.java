@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WorkerPoolTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
+ * $Id: WorkerPoolTest.java,v 1.3 2005/01/31 17:16:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,7 +41,7 @@ package org.jfree.report.ext.junit.base.basic.util;
 import junit.framework.TestCase;
 import org.jfree.report.util.WorkerHandle;
 import org.jfree.report.util.WorkerPool;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.JFreeReportBoot;
 
 public class WorkerPoolTest extends TestCase

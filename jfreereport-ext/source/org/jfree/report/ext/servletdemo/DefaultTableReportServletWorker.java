@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultTableReportServletWorker.java,v 1.3 2003/08/20 19:24:58 taqua Exp $
+ * $Id: DefaultTableReportServletWorker.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.net.URL;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInitialisationException;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A report servlet worker, which is able to load report from a given URL and

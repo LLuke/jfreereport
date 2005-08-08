@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NetDump.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: NetDump.java,v 1.4 2003/09/12 22:04:51 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URL;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * The NetDump utility can be used to trace simple HTTP-Calls.

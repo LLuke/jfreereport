@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.6 2005/02/19 20:12:24 taqua Exp $
+ * $Id: WriterTest.java,v 1.7 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,7 @@ import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 import org.xml.sax.InputSource;
 

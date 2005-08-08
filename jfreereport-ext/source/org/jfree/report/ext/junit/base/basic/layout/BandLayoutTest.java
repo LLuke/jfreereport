@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.7 2005/01/31 17:16:32 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.8 2005/02/19 16:15:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,7 +53,7 @@ import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.xml.ParserUtil;

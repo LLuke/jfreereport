@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.6 2005/03/04 17:20:10 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.7 2005/05/18 18:50:30 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.keypoint.PngEncoder;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**

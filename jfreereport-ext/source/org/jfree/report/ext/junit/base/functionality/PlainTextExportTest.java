@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.7 2005/05/18 18:50:29 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.8 2005/05/31 18:28:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -60,7 +60,7 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFacto
 import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
 import org.jfree.util.ObjectUtilities;

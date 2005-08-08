@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.6 2005/03/30 22:47:05 mimil Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.7 2005/05/18 18:50:28 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,7 +48,7 @@ import javax.swing.JComboBox;
 
 import junit.framework.TestCase;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 
