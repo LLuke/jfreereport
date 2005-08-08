@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: PropertyAttributes.java,v 1.3 2005/03/03 23:00:19 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,11 @@
  */
 package org.jfree.report.modules.parser.base;
 
-import org.jfree.report.util.PropertyLookupParser;
+import org.jfree.report.util.beans.BeanPropertyLookupParser;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.xml.sax.Attributes;
 
-public class PropertyAttributes extends PropertyLookupParser implements Attributes
+public class PropertyAttributes extends BeanPropertyLookupParser implements Attributes
 {
   private Attributes backend;
   private RootXmlReadHandler rootXmlReadHandler;

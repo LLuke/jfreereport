@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModule.java,v 1.7 2005/01/25 00:22:15 taqua Exp $
+ * $Id: SimpleParserModule.java,v 1.8 2005/02/23 21:05:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -64,9 +64,10 @@ public class SimpleParserModule extends AbstractModule
   /**
    * Initializes the module.
    *
+   * @param subSystem the subsystem which this module belongs to.
    * @throws ModuleInitializeException if initialisation fails.
    */
-  public void initialize (SubSystem subSystem)
+  public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
     performExternalInitialize(SimpleParserModuleInit.class.getName());

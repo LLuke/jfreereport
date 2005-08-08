@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.21 2005/03/10 19:05:32 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.22 2005/03/25 16:37:54 taqua Exp $
  *
  * Changes
  * --------
@@ -79,7 +79,7 @@ import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.FilesystemFilter;

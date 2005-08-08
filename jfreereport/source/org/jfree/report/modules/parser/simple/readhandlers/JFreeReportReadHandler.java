@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportReadHandler.java,v 1.6 2005/03/16 21:06:49 taqua Exp $
+ * $Id: JFreeReportReadHandler.java,v 1.7 2005/04/15 18:46:59 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import org.jfree.report.modules.parser.base.IncludeParser;
 import org.jfree.report.modules.parser.base.common.ConfigurationReadHandler;
 import org.jfree.report.modules.parser.base.common.FunctionsReadHandler;
 import org.jfree.report.modules.parser.base.common.IncludeReadHandler;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;

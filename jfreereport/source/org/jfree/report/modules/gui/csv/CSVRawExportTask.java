@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVRawExportTask.java,v 1.11 2005/03/24 22:24:54 taqua Exp $
+ * $Id: CSVRawExportTask.java,v 1.12 2005/05/01 15:07:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.output.csv.CSVProcessor;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * An export task implementation that writes an report into a CSV file, and uses the raw

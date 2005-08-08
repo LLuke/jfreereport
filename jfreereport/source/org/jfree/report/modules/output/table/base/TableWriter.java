@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.22 2005/03/30 17:25:44 taqua Exp $
+ * $Id: TableWriter.java,v 1.23 2005/04/15 16:10:43 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelega
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**

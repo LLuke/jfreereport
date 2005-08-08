@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.9 2005/05/18 18:38:27 taqua Exp $
+ * $Id: StraightToXML.java,v 1.10 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import javax.swing.table.TableModel;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.output.xml.XMLProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.xml.ParseException;
 import org.jfree.util.ObjectUtilities;
 

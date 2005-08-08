@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.16 2005/05/18 18:38:26 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.17 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 import org.jfree.report.modules.output.table.rtf.RTFProcessor;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ParseException;
 import org.jfree.util.ObjectUtilities;

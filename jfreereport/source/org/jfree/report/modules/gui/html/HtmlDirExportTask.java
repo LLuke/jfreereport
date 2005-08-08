@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlDirExportTask.java,v 1.13 2005/03/30 17:25:24 taqua Exp $
+ * $Id: HtmlDirExportTask.java,v 1.14 2005/05/01 15:07:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,7 @@ import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * An export task implementation that exports the report into a HTML directory structure.

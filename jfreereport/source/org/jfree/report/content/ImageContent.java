@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.14 2005/03/18 13:49:37 taqua Exp $
+ * $Id: ImageContent.java,v 1.15 2005/06/25 17:51:57 taqua Exp $
  *
  * Changes
  * -------
@@ -83,6 +83,7 @@ public class ImageContent implements Content
    *
    * @param ref    the image reference.
    * @param bounds the content bounds.
+   * @param imageArea the displayed area of the image.
    */
   protected ImageContent (final ImageContainer ref,
                           final StrictBounds bounds,

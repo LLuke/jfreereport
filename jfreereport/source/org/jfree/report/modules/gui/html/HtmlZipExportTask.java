@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlZipExportTask.java,v 1.11 2005/03/24 22:24:54 taqua Exp $
+ * $Id: HtmlZipExportTask.java,v 1.12 2005/05/01 15:07:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,7 +50,7 @@ import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * An export task implementation that exports the report into a ZIPped Html directory

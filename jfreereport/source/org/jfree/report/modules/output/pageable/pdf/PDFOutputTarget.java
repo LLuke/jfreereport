@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.32 2005/03/30 17:25:27 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.33 2005/04/14 16:37:33 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,7 @@ import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.modules.output.support.itext.ITextImageCache;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;

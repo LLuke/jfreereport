@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTableFactory.java,v 1.9 2005/02/23 21:04:54 taqua Exp $
+ * $Id: TranslationTableFactory.java,v 1.10 2005/05/18 18:38:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,7 +44,7 @@ import java.util.Hashtable;
 import java.util.Properties;
 
 import org.jfree.report.util.CSVTokenizer;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**

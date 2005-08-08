@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticImageElementFactory.java,v 1.10 2005/02/23 21:04:44 taqua Exp $
+ * $Id: StaticImageElementFactory.java,v 1.11 2005/07/18 18:09:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,6 +69,11 @@ public class StaticImageElementFactory extends ImageElementFactory
   {
   }
 
+  /**
+   * Returns the image assigned to this element.
+   *
+   * @return the element's image.
+   */
   public Image getImage ()
   {
     if (imageContainer == null)
@@ -83,6 +88,12 @@ public class StaticImageElementFactory extends ImageElementFactory
     return null;
   }
 
+  /**
+   * Defines the image for this image element factory.
+   *
+   * @param image the image.
+   * @throws IOException if the given image could not be completly loaded.
+   */
   public void setImage (final Image image)
           throws IOException
   {
@@ -110,6 +121,11 @@ public class StaticImageElementFactory extends ImageElementFactory
     this.imageContainer = imageReference;
   }
 
+  /**
+   * Assigns the image container for this image element.
+   *
+   * @param imageReference the image container for this element.
+   */
   public void setImageContainer (final ImageContainer imageReference)
   {
     this.imageContainer = imageReference;

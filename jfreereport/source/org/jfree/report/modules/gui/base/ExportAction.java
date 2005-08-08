@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
+ * $Id: ExportAction.java,v 1.7 2005/03/03 21:50:40 taqua Exp $
  *
  * Changes
  * --------
@@ -45,7 +45,7 @@ import javax.swing.Action;
 import javax.swing.SwingUtilities;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.action.ActionDowngrade;
 
 /**

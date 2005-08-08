@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.28 2005/05/31 18:31:25 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.29 2005/07/15 19:06:06 mtennes Exp $
  *
  * Changes:
  * --------
@@ -45,12 +45,11 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
-import org.jfree.util.ObjectUtilities;
-import org.jfree.base.Library;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.ProjectInfo;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Details about the JFreeReport project.
@@ -104,6 +103,12 @@ public class JFreeReportInfo extends ProjectInfo
     }
   }
 
+  /**
+   * Tries to load the Pixie boot classes. If the loading fails,
+   * this method returns null.
+   *
+   * @return the Pixie boot info, if Pixie is available.
+   */
   private static BootableProjectInfo tryLoadPixieInfo ()
   {
     try
@@ -117,6 +122,11 @@ public class JFreeReportInfo extends ProjectInfo
     }
   }
 
+  /**
+   * Checks, whether the Pixie-library is available and in a working condition.
+   *
+   * @return true, if Pixie is available, false otherwise.
+   */
   public static boolean isPixieAvailable ()
   {
     return tryLoadPixieInfo() != null;

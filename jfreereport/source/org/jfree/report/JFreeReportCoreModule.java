@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.8 2005/03/16 21:06:38 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.9 2005/05/18 18:37:30 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,7 +48,7 @@ import org.jfree.report.resourceloader.GIFImageFactoryModule;
 import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.resourceloader.JPEGImageFactoryModule;
 import org.jfree.report.resourceloader.PNGImageFactoryModule;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 

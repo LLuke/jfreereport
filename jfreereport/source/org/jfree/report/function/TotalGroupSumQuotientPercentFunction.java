@@ -29,7 +29,7 @@
  * Contributor(s): Thomas Morgner, David Gilbert (for Simba Management Limited)
  * for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.5 2005/02/23 21:04:47 taqua Exp $
+ * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.6 2005/04/15 18:46:58 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 
 /**

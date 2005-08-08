@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.9 2005/02/19 20:10:26 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.10 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.WeakHashMap;
 
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**

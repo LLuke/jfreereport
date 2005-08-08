@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HideArticleDetailsFunction.java,v 1.3 2005/02/23 21:04:43 taqua Exp $
+ * $Id: HideArticleDetailsFunction.java,v 1.4 2005/07/20 18:42:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,7 +42,7 @@ import org.jfree.report.Element;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.FunctionUtilities;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 public class HideArticleDetailsFunction extends AbstractFunction
 {

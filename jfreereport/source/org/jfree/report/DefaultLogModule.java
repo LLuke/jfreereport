@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLogModule.java,v 1.6 2005/03/09 21:13:00 taqua Exp $
+ * $Id: DefaultLogModule.java,v 1.7 2005/05/18 18:37:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,7 +43,7 @@ import java.io.InputStream;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.SystemOutLogTarget;
 import org.jfree.util.ObjectUtilities;
@@ -97,8 +97,7 @@ public class DefaultLogModule extends AbstractModule
     if (ReportConfiguration.getGlobalConfig().getLogTarget().equals
             (SystemOutLogTarget.class.getName()))
     {
-      Log.getJFreeReportLog().addTarget(new SystemOutLogTarget());
-      Log.getJFreeReportLog().init();
+      Log.getInstance().addTarget(new SystemOutLogTarget());
       Log.info("System.out log target started ... previous log messages could have been ignored.");
     }
   }

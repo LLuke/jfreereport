@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: DrawableLoadFilter.java,v 1.1 2005/01/25 22:55:36 taqua Exp $
+ * $Id: DrawableLoadFilter.java,v 1.2 2005/02/23 21:04:45 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -42,7 +42,7 @@ import java.net.URL;
 
 import org.jfree.report.resourceloader.DrawableFactory;
 import org.jfree.report.util.KeyedQueue;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * The DrawableLoadFilter is used to load drawable image files (like WMF's) during the

@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.6 2005/01/25 00:09:28 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.7 2005/02/23 21:05:26 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
 import org.jfree.report.util.CloseableTableModel;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A tableModel which is backed up by a java.sql.ResultSet. Use this to directly feed your

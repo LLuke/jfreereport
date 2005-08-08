@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CombinedAdvertisingDemo.java,v 1.2 2005/07/22 13:23:00 mtennes Exp $
+ * $Id: CombinedAdvertisingDemo.java,v 1.3 2005/07/28 10:33:27 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ import org.jfree.report.demo.invoice.model.Invoice;
 import org.jfree.report.modules.misc.tablemodel.JoiningTableModel;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;

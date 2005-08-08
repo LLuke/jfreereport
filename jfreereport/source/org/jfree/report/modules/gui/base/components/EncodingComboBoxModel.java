@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.15 2005/05/18 18:38:29 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.16 2005/05/20 16:06:44 taqua Exp $
  *
  * Changes
  * --------
@@ -51,7 +51,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.jfree.report.util.EncodingSupport;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 

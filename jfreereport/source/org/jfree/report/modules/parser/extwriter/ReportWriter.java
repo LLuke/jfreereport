@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.9 2005/02/19 13:30:04 taqua Exp $
+ * $Id: ReportWriter.java,v 1.10 2005/02/23 21:05:56 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;

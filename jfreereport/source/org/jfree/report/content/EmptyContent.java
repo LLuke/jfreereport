@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyContent.java,v 1.6 2005/02/23 21:04:37 taqua Exp $
+ * $Id: EmptyContent.java,v 1.7 2005/06/25 17:51:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,6 +43,8 @@ import org.jfree.report.util.geom.StrictBounds;
 /**
  * The empty content is a place holder for all cases, where no other content
  * should be displayed.
+ *
+ * @author Thomas Morgner
  */
 public class EmptyContent implements Content
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.9 2005/04/14 16:37:35 taqua Exp $
+ * $Id: SheetLayout.java,v 1.10 2005/04/15 16:10:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.awt.Color;
 
 import org.jfree.report.modules.output.meta.MetaElement;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.content.EmptyContent;

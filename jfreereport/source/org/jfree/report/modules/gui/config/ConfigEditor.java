@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.14 2005/03/03 18:08:40 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.15 2005/05/18 18:38:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -83,7 +83,7 @@ import org.jfree.report.modules.gui.config.model.ConfigTreeModel;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModelException;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModuleNode;
 import org.jfree.report.util.LineBreakIterator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.FilesystemFilter;

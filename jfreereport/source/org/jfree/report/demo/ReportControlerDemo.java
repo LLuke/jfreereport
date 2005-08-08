@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ReportControlerDemo.java,v 1.1 2005/03/25 16:39:24 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.modules.gui.base.DefaultReportControler;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.gui.base.PreviewProxyBase;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
 import org.jfree.ui.action.ActionButton;

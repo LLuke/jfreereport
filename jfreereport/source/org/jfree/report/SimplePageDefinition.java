@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.9 2005/02/23 21:04:29 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.10 2005/04/14 16:37:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,10 +53,12 @@ import org.jfree.report.util.SerializerHelper;
  * physical pages have the same size.
  * <p>
  * The page area is a rectangle.
+ *
+ * @author Thomas Morgner
  */
 public class SimplePageDefinition implements PageDefinition
 {
-  /** The page format */
+  /** The page format. */
   private transient PageFormat format;
   /** The page positions of the physical pages. */
   private transient Rectangle2D[] pagePositions;

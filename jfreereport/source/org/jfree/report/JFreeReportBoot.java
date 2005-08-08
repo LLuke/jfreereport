@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.3 2005/03/16 21:06:38 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.4 2005/03/21 14:58:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,7 @@ import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.base.modules.PackageManager;
 import org.jfree.report.util.CSVTokenizer;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.Configuration;
 

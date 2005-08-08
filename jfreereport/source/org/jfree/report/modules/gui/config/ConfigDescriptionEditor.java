@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.13 2005/02/23 21:04:51 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.14 2005/03/03 18:08:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,7 +84,7 @@ import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionModel;
 import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.TextConfigDescriptionEntry;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.17 2005/03/24 22:24:54 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.18 2005/05/01 15:07:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,7 +57,7 @@ import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextReportUtil;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.StringUtil;
 
 /**

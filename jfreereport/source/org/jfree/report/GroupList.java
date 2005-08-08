@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.10 2005/03/16 21:06:37 taqua Exp $
+ * $Id: GroupList.java,v 1.11 2005/04/09 17:43:12 taqua Exp $
  *
  * Changes:
  * --------
@@ -243,6 +243,8 @@ public class GroupList implements Cloneable, Serializable
    * Clones the group list and all contained groups.
    *
    * @return a clone of this list.
+   * @throws CloneNotSupportedException if cloning the element failed.
+   * @see Cloneable
    */
   public Object clone ()
           throws CloneNotSupportedException

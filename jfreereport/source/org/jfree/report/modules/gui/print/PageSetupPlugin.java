@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.13 2005/03/03 21:50:43 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.14 2005/05/01 15:07:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,7 +51,7 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.PreviewProxyBase;
 import org.jfree.report.modules.gui.base.ReportPane;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ResourceBundleSupport;

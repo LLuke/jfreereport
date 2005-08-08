@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.8 2004/05/07 14:29:53 mungady Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.9 2005/02/23 21:05:40 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -44,7 +44,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jfree.report.style.StyleKey;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 

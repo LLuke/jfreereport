@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: URLFilter.java,v 1.4 2004/05/07 08:24:42 mungady Exp $
+ * $Id: URLFilter.java,v 1.5 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * The URLFilter forms URLs from Strings ,Files and URLs. If an URL is relative, the

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageDefinition.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
+ * $Id: PageDefinition.java,v 1.5 2005/03/16 21:06:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -119,7 +119,7 @@ public interface PageDefinition extends Cloneable, Serializable
   public PageFormat getPageFormat (int pos);
 
   /**
-   * Creates a copy of the page definition,
+   * Creates a copy of the page definition.
    *
    * @return a copy of the page definition.
    * @throws CloneNotSupportedException if cloning failed for some reason.

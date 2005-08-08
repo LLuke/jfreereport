@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExportTask.java,v 1.9 2004/05/07 14:29:21 mungady Exp $
+ * $Id: ExportTask.java,v 1.10 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.modules.gui.base;
 
 import java.util.ArrayList;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * The export task provides a basic facility to execute an export task in an asynchronous

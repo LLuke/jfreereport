@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.20 2005/02/23 21:04:48 taqua Exp $
+ * $Id: ReportPane.java,v 1.21 2005/03/03 18:08:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -73,7 +73,7 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageProcess;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A panel used to display one page of a report. Works in tandem with a ReportPreviewFrame

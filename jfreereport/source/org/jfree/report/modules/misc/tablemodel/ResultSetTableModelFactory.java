@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.11 2005/02/23 21:05:25 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.12 2005/04/17 21:09:00 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import org.jfree.report.util.CloseableTableModel;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**

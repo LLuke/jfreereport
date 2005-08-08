@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.22 2005/03/10 19:05:47 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.23 2005/03/18 13:49:38 taqua Exp $
  *
  * Changes
  * -------
@@ -74,12 +74,13 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.WaitingImageObserver;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
+import org.jfree.base.log.MemoryUsageMessage;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows
@@ -512,7 +513,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     catch (Throwable th)
     {
       // just in case the image drawing caused trouble ..
-      Log.warn(new Log.MemoryUsageMessage("Failure at drawImage"));
+      Log.warn(new MemoryUsageMessage("Failure at drawImage"));
       Log.warn(th);
     }
     g2.setTransform(transform);

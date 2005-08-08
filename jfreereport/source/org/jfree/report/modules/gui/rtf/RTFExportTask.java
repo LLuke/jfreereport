@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFExportTask.java,v 1.2 2005/03/24 22:24:54 taqua Exp $
+ * $Id: RTFExportTask.java,v 1.3 2005/05/01 15:07:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,7 @@ import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.rtf.RTFProcessor;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * An export task implementation, which writes a given report into an Excel file.

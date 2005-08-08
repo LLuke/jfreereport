@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InternalFrameDemo.java,v 1.10 2005/05/18 18:38:26 taqua Exp $
+ * $Id: InternalFrameDemo.java,v 1.11 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -64,7 +64,7 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewInternalFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.WaitingImageObserver;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;

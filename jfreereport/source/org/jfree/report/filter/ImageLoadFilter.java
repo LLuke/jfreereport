@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.6 2005/02/23 21:04:45 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.7 2005/06/25 17:51:59 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -42,7 +42,7 @@ import java.net.URL;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.util.KeyedQueue;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * The image load filter is used to load images during the report generation process. This

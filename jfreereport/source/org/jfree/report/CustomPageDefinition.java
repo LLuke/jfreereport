@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CustomPageDefinition.java,v 1.6 2005/03/09 21:13:00 taqua Exp $
+ * $Id: CustomPageDefinition.java,v 1.7 2005/03/16 21:06:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -134,8 +134,8 @@ public class CustomPageDefinition implements PageDefinition
    * logical page does not include any page margins, the printable area for a page starts
    * at (0,0).
    *
-   * @param pos
-   * @return
+   * @param pos the index of the page.
+   * @return the position of the page (within the global page).
    */
   public Rectangle2D getPagePosition (final int pos)
   {

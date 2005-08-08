@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LocalImageContainer.java,v 1.3 2005/01/24 23:57:48 taqua Exp $
+ * $Id: LocalImageContainer.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,10 +40,28 @@ package org.jfree.report;
 
 import java.awt.Image;
 
+/**
+ * The LocalImageContainer makes the image available as 'java.awt.Image' instance.
+ * This way, the image can be included in the local content creation process.
+ *
+ * @author Thomas Morgner
+ */
 public interface LocalImageContainer extends ImageContainer
 {
+  /**
+   * Returns the image instance for this image container.
+   * This method might return <code>null</code>, if the image is
+   * not available.
+   *
+   * @return the image data.
+   */
   public Image getImage ();
 
+  /**
+   * Returns the name of this image reference. The name returned should be unique.
+   *
+   * @return the name.
+   */
   public String getName ();
 
   /**

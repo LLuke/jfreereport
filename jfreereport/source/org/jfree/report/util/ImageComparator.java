@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageComparator.java,v 1.8 2005/03/03 23:00:25 taqua Exp $
+ * $Id: ImageComparator.java,v 1.9 2005/07/18 18:09:19 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,9 @@ package org.jfree.report.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+import org.jfree.util.*;
+import org.jfree.util.Log;
 
 /**
  * The ImageComparator tries to compare a byte[] for equality by creating 2 hashes for the
@@ -210,7 +213,7 @@ public class ImageComparator
     }
     catch (NoSuchAlgorithmException nse)
     {
-      Log.info("No MD5 algorithm available");
+      org.jfree.util.Log.info("No MD5 algorithm available");
     }
     try
     {

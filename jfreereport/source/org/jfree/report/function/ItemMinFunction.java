@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.7 2005/02/19 13:29:55 taqua Exp $
+ * $Id: ItemMinFunction.java,v 1.8 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import java.io.Serializable;
 
 import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A report function that calculates the minimum value of one field (column) from the

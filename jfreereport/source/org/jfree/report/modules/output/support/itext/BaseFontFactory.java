@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.19 2005/03/18 13:49:39 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.20 2005/06/25 17:52:02 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import com.lowagie.text.pdf.DefaultFontMapper;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.util.HashNMap;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.23 2005/04/17 21:09:00 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.24 2005/05/11 21:45:23 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A report processor for Pageable OutputTargets. The processor coordinates and

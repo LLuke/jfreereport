@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.7 2005/01/30 23:37:25 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.8 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import javax.swing.table.TableModel;
 import org.jfree.report.DataRow;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.LevelledExpressionList;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportPropertiesList;
 

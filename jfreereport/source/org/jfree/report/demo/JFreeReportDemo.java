@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.10 2005/02/23 21:04:37 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.11 2005/05/18 18:38:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,7 +77,7 @@ import org.jfree.report.demo.helper.AboutAction;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.FloatingButtonEnabler;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.about.AboutFrame;
@@ -102,6 +102,10 @@ public class JFreeReportDemo extends AbstractDemoFrame
    */
   protected abstract static class DemoHandler
   {
+    protected DemoHandler ()
+    {
+    }
+
     /**
      * Launches a preview of the report demo.
      *

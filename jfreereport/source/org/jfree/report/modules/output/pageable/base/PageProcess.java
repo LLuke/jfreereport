@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.7 2005/04/17 21:09:00 taqua Exp $
+ * $Id: PageProcess.java,v 1.8 2005/06/25 17:52:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,7 +47,7 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.states.ReportState;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 public class PageProcess
 {

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelColorSupport.java,v 1.3 2005/01/25 00:17:02 taqua Exp $
+ * $Id: ExcelColorSupport.java,v 1.4 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.apache.poi.hssf.util.HSSFColor;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * POI Excel utility methods.

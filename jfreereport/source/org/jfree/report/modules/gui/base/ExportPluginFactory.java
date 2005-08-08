@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.16 2004/05/07 14:29:21 mungady Exp $
+ * $Id: ExportPluginFactory.java,v 1.17 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * --------
@@ -40,7 +40,7 @@ package org.jfree.report.modules.gui.base;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WorkerPool;
 

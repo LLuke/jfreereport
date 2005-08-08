@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageRefFilter.java,v 1.7 2005/03/16 21:06:47 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.8 2005/05/08 15:40:52 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.io.IOException;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.ImageContainer;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A filter that converts an Image to an ImageReference. The DataSource is expected to

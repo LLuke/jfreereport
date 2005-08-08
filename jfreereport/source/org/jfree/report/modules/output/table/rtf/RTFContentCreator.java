@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.7 2005/04/09 17:43:14 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.8 2005/04/15 16:10:44 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,7 +61,7 @@ import org.jfree.report.modules.output.table.base.TableContentCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.rtf.metaelements.RTFMetaElement;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.NoCloseOutputStream;
 
 public class RTFContentCreator extends TableContentCreator

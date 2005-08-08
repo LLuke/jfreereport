@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FontDefinitionObjectDescription.java,v 1.4 2004/05/07 14:29:08 mungady Exp $
+ * $Id: FontDefinitionObjectDescription.java,v 1.5 2005/02/23 21:05:40 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,7 +39,7 @@
 package org.jfree.report.modules.parser.ext.factory.objects;
 
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.xml.factory.objects.AbstractObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.10 2005/01/25 21:39:54 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.11 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------
@@ -145,11 +145,37 @@ public interface ReportDefinition extends Cloneable
    */
   public StyleSheetCollection getStyleSheetCollection ();
 
+  /**
+   * Returns the datarow assigned to this report definition. For report instances
+   * not yet started, this returns a dummy instance.
+   *
+   * @return the datarow assigned to the report, never null.
+   */
   public DataRow getDataRow ();
 
+  /**
+   * Returns the page definition assigned to the report definition. The page
+   * definition defines the report area and how the report is subdivided by
+   * the child pages.
+   *
+   * @return the page definition.
+   */
   public PageDefinition getPageDefinition ();
 
+  /**
+   * Returns a resource bundle assigned with the given identifier. This
+   * is a convienience method and therefore equal with
+   * <code>getResourceBundleFactory().getResourceBundle(..)</code>.
+   *
+   * @param identifier the resource bundle identifier
+   * @return the resource bundle or null, if no resource bundle could
+   * be loaded.
+   */
   public ResourceBundle getResourceBundle (String identifier);
 
+  /**
+   * Returns the ResourceBundleFactory assigned to this report definition.
+   * @return the resourcebundlefactory.
+   */
   public ResourceBundleFactory getResourceBundleFactory ();
 }

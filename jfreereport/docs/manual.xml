@@ -22,10 +22,25 @@
     </copyright>
   </bookinfo>
 
-  <toc></toc>
-
   <chapter id="overview" label="Introduction to JFreeReport">
     <title>Overview</title>
+
+    <section>
+      <title>About this Document</title>
+
+      <section>
+        <title>Who should read this Document</title>
+
+        <para>This document is aimed for application developers, who want to
+        use JFreeReport in their own programms. It does not try to be a manual
+        that could be handed out to End-Users.</para>
+
+        <para>Ideally the reader should have knowledge of the Java programming
+        language and some basic knowledge about how to write XML documents.
+        Although general reporting knowledge is no requirement, it surely
+        helps to understand the concepts used in JFreeReport.</para>
+      </section>
+    </section>
 
     <section id="overview.introduction" label="Introduction to JFreeReport">
       <title>Introduction to JFreeReport</title>
@@ -36,14 +51,14 @@
         <para>JFreeReport is a free java report library aimed at developers,
         who seek an easy to integrate reporting and printing solution.</para>
 
-        <para>The JFreeReport is basicly a template engine. The report
-        definition describes, how the data should be processed, layouted and
-        finally printed. Report definitions can be written in XML or can be
-        composed using the Java API. With the help of JFreeReport, developers
-        can concentrate on the data instead of having to worry about the
-        printing and dcoument creation details. All output targets fully
-        support Unicode, so JFreeReport is also well suited for printing
-        japanese or chinese content.</para>
+        <para>The JFreeReport is basicly a data oriented template engine. The
+        report definition describes, how the given data should be processed,
+        layouted and finally be printed. Report definitions can either be
+        written in XML or can be composed using the Java API. With the help of
+        JFreeReport, developers can concentrate on the data instead of having
+        to worry about the printing and document creation details. All output
+        targets fully support Unicode, so JFreeReport is also well suited for
+        printing internationalized, i.e. japanese or chinese content.</para>
 
         <para>A single carefully crafted report definition allows to print or
         export the same data into PDF documents, Excel workbooks, HTML pages,
@@ -52,51 +67,53 @@
         <para>The report configuration interface allows a very high level of
         customization and easy deployment. Almost every aspect of JFreeReport
         is configurable. The hierachical structure of the configuration allows
-        the administrator to define global maschine settings, while the
-        developer is able to provide usefull default settings on the user
-        level.</para>
+        the administrator of the deployment system to define a global system
+        specific configuration, while the developer is able to provide usefull
+        defaults up to the user level on a per report basis.</para>
 
         <para>Using JFreeReport, the developer has almost full control over
-        the reporting process. The functions and expressions interface allows
-        fine grained control over the report generation process. Elements can
-        be formated and all data can be generated on the fly during the report
+        the reporting process. The functions and expressions API allows fine
+        grained control over the report generation process. Elements can be
+        formated and all data can be generated on the fly during the report
         processing, if needed. JFreeReport does not generate any temporary
-        files, while retaining a low memory footprint.</para>
+        files while retaining a low memory footprint.</para>
       </section>
 
       <section>
         <title>What is it not</title>
 
-        <para>JFreeReport is no stand-alone utility. The library provides no
-        code to read or prepare data and does not automaticly generate report
-        definitions on the fly. Report definitions must be created before
-        JFreeReport can use them to generate the reports. The data given for
-        reporting must fit the report definition, it should be sorted
-        according to the group definitions in the report description.</para>
+        <para>JFreeReport is no stand-alone utility. JFreeReport is a
+        component library and provides no code to read or prepare data and
+        does not generate report definitions on the fly. Report definitions
+        must be created before JFreeReport can be used to generate reports.
+        The data given for reporting must fit the report definition and it
+        should be sorted according to the group definitions in the report
+        description.</para>
 
-        <para>As with every reporting tool, groupings are linear. This means,
-        a group might have no more than one direct subgroup. This behaviour is
-        similiar to the SQL group by statement and is required by our
-        reporting algorithm.</para>
+        <para>JFreeReport is still in its active development phase, therefore
+        not all features have been implemented yet.</para>
       </section>
 
       <section>
         <title>Technical Requirements</title>
 
         <para>JFreeReport uses the Java2D API and therefore needs at least JDK
-        1.2.2. Some optional modules provide support for features found in
-        newer versions of Java, for instance the Logging or extended printing
-        of JDK 1.4.</para>
+        1.2.2. It will not work with older versions of the Java Development
+        Kit. Some optional modules provide support for features found in newer
+        versions of Java, for instance the logging framework or extended
+        printing of JDK 1.4.</para>
 
         <para>At the time of this writing, JFreeReport cannot be used with one
-        of the opensource implementations of the JDK. It will not run with
-        Kaffe, GCJ or any other JVM using the ClassPath library. </para>
+        of the opensource implementations of the JDK. The 'ClassPath' library
+        does not fully implement the AWT and Graphics2D support needed for
+        running JFreeReport. Therefore it will not run with Kaffe, GCJ or any
+        other JVM using the ClassPath library.</para>
 
         <para>Depending on the contents and complexity of the generated
         reports, JFreeReport might need more than the default 64MB heap size.
         The library itself is 100% pure Java and does not rely on native
-        libraries. JFreeReport is able to run in headless mode on servers.
-        </para>
+        libraries. JFreeReport is able to run in headless mode on
+        servers.</para>
 
         <itemizedlist>
           <listitem>
@@ -104,7 +121,7 @@
           </listitem>
 
           <listitem>
-            <para>Memory: 64 MB heap memory inside the JVM</para>
+            <para>Memory: at least 64 MB heap memory inside the JVM</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -127,32 +144,33 @@
       modified versions. The simplest way to comply to the LGPL is to ship the
       sourcecode of JFreeReport with your programm.</para>
 
-      <para>Simply using JFreeReport does not cause *your* programm to be free
+      <para>Just using JFreeReport does not cause *your* programm to be free
       software.</para>
 
       <para>The complete text of the GNU Lesser General Public Licence can be
-      found in the Appendix. </para>
+      found in the Appendix.</para>
     </section>
 
     <section id="overview.bugs" label="Bugs! - And How to report them">
       <title>Bugs! ... and How to report them</title>
 
-      <para>As JFreeReport is still in active development, it is a sad truth,
+      <para>As JFreeReport is still in active development, it is a sad truth
       that bugs cannot be fully avoided. JFreeReport contains - and certainly
       will contain - many bugs, which will be fixed as soon as they are
       discovered.</para>
 
       <para>In case you discovered a bug or stumble across an strange odity -
       be it unexpected behaviour of JFreeReport, a weird API definition or
-      documentation, or a clear bug indicaion like false results or exceptions
-      and crashes - then don't hesitate to report to us about it.</para>
+      missing or invalid documentation, or a clear bug indication like false
+      results or exceptions and crashes - please don't hesitate to report to
+      us about it.</para>
 
-      <para>To help us to replicate the bug, please include at least your
-      environment (JDK and Operating System version, used JFreeReport version)
-      and in case of exceptions the complete stacktrace of these exceptions.
-      If you could also include a small example of the bug, you can consider
-      that bug almost fixed. Bug reports should be posted on Sourceforge
-      (<ulink url="http://sourceforge.net/projects/jfreereport/">
+      <para>To help us to replicate the bug, please include details about your
+      environment (JDK and Operating System version, the used JFreeReport
+      version) and in case of exceptions the complete stacktrace of these
+      exceptions. If you could also include a small example of the bug, you
+      can consider that bug almost fixed. Bug reports should be posted on
+      Sourceforge (<ulink url="http://sourceforge.net/projects/jfreereport/">
       http://sourceforge.net/projects/jfreereport/</ulink>) or in the
       JFreeReport forum (<ulink
       url="http://www.jfree.org/phpBB2/viewforum.php?f=8">
@@ -161,6 +179,8 @@
 
     <section id="overview.contents" label="Contents of this manual">
       <title>Contents of this manual</title>
+
+      <para>Note: The order of the chapters will change</para>
 
       <para>The manual should give a complete overview about the basics of the
       art of report generation and how to solve that task with the JFreeReport
@@ -200,12 +220,6 @@
     </section>
   </chapter>
 
-  <chapter id="basics" label="Basics of reporting">
-    <title>Basics of reporting</title>
-
-    <para>To be filled</para>
-  </chapter>
-
   <chapter id="install" label="Installing JFreeReport">
     <title>Installing JFreeReport</title>
 
@@ -222,6 +236,1027 @@
     <title>The user-interface</title>
 
     <para>To be filled</para>
+  </chapter>
+
+  <chapter id="basics" label="Basics of reporting">
+    <title>A General Introduction to Reporting</title>
+
+    <section>
+      <title>Structural Elements</title>
+
+      <para>The tradition of reporting started with the mainframe computers of
+      the seventies. Programming languages like Cobol (1960) and RPG (report
+      programm generator, 1965) introduced the basic principles used for
+      computer based reporting today.</para>
+
+      <para>Reports consist of several bands. Bands are layout container and
+      act as template definitions for the actual content. Each band contains
+      data fields and static text. The fields on the band are placeholders for
+      the data to be printed. When printing bands, the field placeholders get
+      replaced by the actual data. The report processor selects the bands to
+      be printed, fills in the data and finally generates the content.</para>
+
+      <para>There are several types of bands for the various special purposes
+      encountered during a reporting run.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Pageheader and pagefooter bands are printed on top and bottom
+          of each page and contain document and page specific information,
+          like the document title, the author or the current and total page
+          numbers.</para>
+
+          <para>Page header and footer are special bands, as they do not
+          depend directly on the report data. When and whether they will be
+          printed depends purely on the defined report layout and the already
+          generated content.</para>
+        </listitem>
+
+        <listitem>
+          <para>The report header contains all the global items one would
+          expect on a front page, like the title of the report.</para>
+        </listitem>
+
+        <listitem>
+          <para>The group header is printed on every start of a group -
+          traditionally it contains column headings and introductionary
+          information on the next set of rows.</para>
+        </listitem>
+
+        <listitem>
+          <para>The item band is used to print the bulk data, the record
+          contents.</para>
+        </listitem>
+
+        <listitem>
+          <para>The group footer traditionally contains summary information,
+          like computed sums, item counts etc.</para>
+        </listitem>
+
+        <listitem>
+          <para>The report is finished once the report footer has been
+          printed.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Report groups</title>
+
+      <para>Reports used in the real-world-business are more than simple list
+      of rows and columns. To gain information from the presented data, the
+      report data is sorted and condensed into separate sections, which
+      corespond to the logical structure of the report. Therefore report
+      engines introduced the concept of groups to support the structuring of
+      report data.</para>
+
+      <para>With groups, a set of rows, the report data set, is subdivided
+      into an ordered collection of smaller subsets of rows. All rows of a
+      group instance share a common attribute. In the domain of relational
+      databases, the attribute is defined by the name of one or more columns.
+      Within the group instance, all those columns have the same value. That
+      set of attributes, which identifies a group, is called the group
+      key.</para>
+
+      <para>Groups in the reporting usually can be mapped to 'is-part-of'
+      relations in the real world. Employees could be grouped by the
+      department, where they work in, or by the first letter of their last
+      name.</para>
+
+      <section>
+        <title>The Control-Break-Algorithm</title>
+
+        <para>Reporting can be a very resource intenstive process. Data has to
+        be queried from databases and other sources, the data must be
+        processed, sorted and intermediate results must be computed and
+        finally the report output must be generated. Even with today's
+        powerfull computers, performance is a key to customer satisfaction. To
+        fullfill these performance requirements, it is unacceptable to waste
+        time building a global view on the report data unless absolutly
+        necessary.</para>
+
+        <para>For performance reasons, group memberships are computed at
+        runtime with an algorithm called the 'control-break algorithm'.
+        Understanding this algorithm is the key to successful reporting, as
+        this algorithm heavily influences how the report engine behaves and
+        how groups are built up. The control-break-algorithm does not build a
+        global view over all group instances. To detect the end or start of a
+        group, it compares the current row with the previously read row of
+        data. If the data of one of the group's key columns is different, the
+        current group must be finished. If the report processing has not
+        reached the last row, a new group instance is opened immediatly. This
+        new group will remain active until either the end of the report data
+        has been reached or the group key values changed.</para>
+
+        <para><emphasis>Definition:</emphasis></para>
+
+        <para>A <firstterm>group</firstterm> is a contigiuous set of rows,
+        where all rows of the group share the same group key.</para>
+
+        <para>A <firstterm>group instance</firstterm> is identified by a
+        <firstterm>group key</firstterm>. The key consists of one or more
+        attributes, where all entites in that group have the same values
+        stored in the specified attributes. When using databases, entity sets
+        are usually represented by tables and attributes are represented by
+        the table's columns.</para>
+
+        <para>A <firstterm>sub group</firstterm> is a group, which has a key
+        that contains all attributes of its parent and has at least one more
+        attribute. Therefore, a sub group contains a subset of it's parent's
+        rows.</para>
+
+        <para>A group with a group key without attributes defined is called
+        the <firstterm>default group</firstterm>. This group has a single
+        instance which always spans the complete report data set.</para>
+
+        <para>The single level Control-Break-Algorithm as pseudo code:</para>
+
+        <programlisting>OPEN data-set.
+READ record.
+
+PRINT report-header.
+
+WHILE NOT END-OF-FILE 
+DO
+   VAR groupKey := GET-CURRENT-GROUP-KEY.
+   PRINT group-header.
+
+   WHILE (NOT END-OF-FILE AND
+          groupKey IS-EQUAL-TO GET-CURRENT-GROUP-KEY)
+   DO
+      PRINT item-band.
+      READ
+   DONE.
+
+   PRINT group-footer.
+
+DONE
+
+PRINT report-footer.
+CLOSE data-set.</programlisting>
+
+        <para>and in Java (the complete code for this listing can be found is
+        in CVS):</para>
+
+        <programlisting>  public static void main (final String[] args)
+  {
+    final Object[][] data = initData();
+
+    // cursor at the first row ...
+    // in this example modifying the 'position' is equal to a 'read' operation 
+    int position = 0;
+
+    printReportHeader(data, position);
+    while (isEndOfFile (data, position) == false)
+    {
+      // initialize the group key with the data from the first row
+      // remember the current group key
+      // if the group key changes, we have to do a control break ...
+      final Object groupKey = data[position][CONTINENT_COL];
+      printGroupHeader(data, position);
+
+      while ((isEndOfFile (data, position) == false) &amp;&amp;
+             (data[position][CONTINENT_COL].equals(groupKey)))
+      {
+        // store the last value of the group key (so that we can detect changes)
+
+        // print the items ...
+        printItems (data, position);
+
+        // now 'read' the next row of data ...
+        position += 1;
+      }
+      printGroupFooter(data, position - 1);
+    }
+
+    printReportFooter(data, position - 1);
+  }</programlisting>
+
+        <para>From this algorithm, we can derive some basic principles about
+        groups as they are used in JFreeReport.</para>
+
+        <para><orderedlist>
+            <listitem>
+              <para>Data used in group keys must be sorted according to the
+              group hierarchy definition. </para>
+
+              <para>As only neighbouring rows are compared against each other,
+              this algorithm will consider rows to be part of the currrent
+              group if and only if all rows of a particular group key instance
+              are kept together as direct neigbours in the report
+              dataset.</para>
+            </listitem>
+
+            <listitem>
+              <para>A group with no attributes defined will have a single
+              instance, which spans the complete report data set.</para>
+            </listitem>
+
+            <listitem>
+              <para>As long as there is data available, a new group instance
+              will be opened immediatly after the previous instance has been
+              closed down. It is not possible to print the item band without
+              having an open group.</para>
+            </listitem>
+
+            <listitem>
+              <para>The order of the attribute specification within a group
+              definition is not important. For the algorithm it is important,
+              that one attribute value have changed, it is not important,
+              which one changed.</para>
+            </listitem>
+          </orderedlist></para>
+
+        <para>By considering the group data to be a new data set, we can stack
+        multiple control-break runs into each other. These multi-level control
+        breaks add some new behavioural constraints to the engine.</para>
+
+        <orderedlist>
+          <listitem>
+            <para>A sub group can only be opened, after its parent group has
+            been opened.</para>
+
+            <para>Subgroup processing starts as soon as the group header of
+            the parent group has been printed. Immediatly after the processing
+            finishes, the parent group's footer gets printed. The processing
+            flow cannot reach the subgroup without passing through the parent
+            group.</para>
+          </listitem>
+
+          <listitem>
+            <para>A sub group must cease control as soon as one the parent's
+            group attributes changes. </para>
+
+            <para>A control break in one of the parent groups will close all
+            subgroups. As soon as the parent group generated a new group
+            instance, new instances of the sub groups will be opened as
+            well.</para>
+
+            <para>Therefore sub groups must be aware of the group attributes
+            of it's parents.</para>
+          </listitem>
+
+          <listitem>
+            <para>Adding an attribute, which has a constant value, to the
+            group definition will not alter the number or order of the
+            generated group instances.</para>
+          </listitem>
+
+          <listitem>
+            <para>A group can only have one directly attached sub
+            group.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+
+      <section>
+        <title>Working with groups: Examples</title>
+
+        <para>The effects of the control break algorithm are best unterstood
+        when looking at an example. Lets take the following table as
+        datasource.</para>
+
+        <para><table>
+            <title>Initial data set</title>
+
+            <tgroup cols="4">
+              <thead>
+                <row>
+                  <entry>Location</entry>
+
+                  <entry>Department</entry>
+
+                  <entry>Employee</entry>
+
+                  <entry>Salary</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>John Doe</entry>
+
+                  <entry>100.000</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>Jane Doe</entry>
+
+                  <entry>100.000</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Arthur Dent</entry>
+
+                  <entry>125.000</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Adam Johnson</entry>
+
+                  <entry>125.000</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Eve Lynn</entry>
+
+                  <entry>145.000</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Management</entry>
+
+                  <entry>J.D. Salinger</entry>
+
+                  <entry>500.000</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>When grouping the table by the 'department' column, we'll
+        get the following three group instances.</para>
+
+        <para><table>
+            <title>Data set grouped by 'Department'</title>
+
+            <tgroup cols="5">
+              <colspec colname="location" />
+
+              <colspec colname="department" />
+
+              <colspec colname="employee" />
+
+              <colspec colname="salary" />
+
+              <colspec colname="notes" />
+
+              <thead>
+                <row>
+                  <entry>Location</entry>
+
+                  <entry>Department</entry>
+
+                  <entry>Employee</entry>
+
+                  <entry>Salary</entry>
+
+                  <entry>Notes</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>John Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>Jane Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Arthur Dent</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Adam Johnson</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Eve Lynn</entry>
+
+                  <entry>145.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Management</entry>
+
+                  <entry>J.D. Salinger</entry>
+
+                  <entry>500.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>Within each group instance, the value of the 'department'
+        column is the same for all rows of that group. We get a group instance
+        for each department type. Note, that the department data is
+        sorted.</para>
+
+        <para>Now, lets use the 'location' column as group key. We'll receive
+        two group instances now, 'Denver' and 'New York'.</para>
+
+        <para><table>
+            <title>Data set grouped by 'Location'</title>
+
+            <tgroup cols="5">
+              <colspec colname="location" />
+
+              <colspec colname="department" />
+
+              <colspec colname="employee" />
+
+              <colspec colname="salary" />
+
+              <colspec colname="notes" />
+
+              <thead>
+                <row>
+                  <entry>Location</entry>
+
+                  <entry>Department</entry>
+
+                  <entry>Employee</entry>
+
+                  <entry>Salary</entry>
+
+                  <entry>Notes</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>John Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>Jane Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Arthur Dent</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Adam Johnson</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Eve Lynn</entry>
+
+                  <entry>145.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Management</entry>
+
+                  <entry>J.D. Salinger</entry>
+
+                  <entry>500.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>Of course, we can combine groups to create multi-level
+        reports. The control break algorithm allows only one group definition
+        per level. That means, we cannot have a report that has top level
+        groupings for 'location' and 'department' at the same time. But we are
+        able to subdivide groups in an ordered way.</para>
+
+        <para>For example, we can first group by the 'location' and in a
+        second step group all locations by it's department. The first level
+        grouping will produce the following layout:<table>
+            <title>Data set grouped by 'Location' and subgrouped by
+            'department'</title>
+
+            <tgroup cols="5">
+              <colspec colname="location" />
+
+              <colspec colname="department" />
+
+              <colspec colname="employee" />
+
+              <colspec colname="salary" />
+
+              <colspec colname="notes" />
+
+              <thead>
+                <row>
+                  <entry>Location</entry>
+
+                  <entry>Department</entry>
+
+                  <entry>Employee</entry>
+
+                  <entry>Salary</entry>
+
+                  <entry>Notes</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>John Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>Jane Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Arthur Dent</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Adam Johnson</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Eve Lynn</entry>
+
+                  <entry>145.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Management</entry>
+
+                  <entry>J.D. Salinger</entry>
+
+                  <entry>500.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+
+        <para>The order of the groups is important. There's a difference,
+        whether one first groups by the location and then by the department
+        column or first by department and then location. As you can see, a
+        subgroup is always part of the parent group. When a subgroup's headers
+        are printed, the parent group's headers are already fully processed.
+        For footers, we can see, that the footer of the subgroup is always
+        printed before the parent group's footer gets on the paper.</para>
+
+        <para>Now we switch the group order, the department group is the top
+        level group, followed by the 'location' subgroup.</para>
+
+        <para><table>
+            <title>Data set grouped by 'department' and subgrouped by
+            'location'</title>
+
+            <tgroup cols="5">
+              <colspec colname="location" />
+
+              <colspec colname="department" />
+
+              <colspec colname="employee" />
+
+              <colspec colname="salary" />
+
+              <colspec colname="notes" />
+
+              <thead>
+                <row>
+                  <entry>Location</entry>
+
+                  <entry>Department</entry>
+
+                  <entry>Employee</entry>
+
+                  <entry>Salary</entry>
+
+                  <entry>Notes</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>John Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Sales</entry>
+
+                  <entry>Jane Doe</entry>
+
+                  <entry>100.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry>Denver</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Arthur Dent</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Adam Johnson</entry>
+
+                  <entry>125.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Marketing</entry>
+
+                  <entry>Eve Lynn</entry>
+
+                  <entry>145.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'department group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group start for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry>New York</entry>
+
+                  <entry>Management</entry>
+
+                  <entry>J.D. Salinger</entry>
+
+                  <entry>500.000</entry>
+
+                  <entry></entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'location group'</entry>
+                </row>
+
+                <row>
+                  <entry nameend="salary" namest="location"></entry>
+
+                  <entry>group end for 'department group'</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>As we can see, whenever the department changes, the location
+        group was closed down and reopened once the department group generated
+        a new instance.</para>
+      </section>
+    </section>
   </chapter>
 
   <chapter id="anatomy" label="Anatomy of an report: JFreeReport elements">

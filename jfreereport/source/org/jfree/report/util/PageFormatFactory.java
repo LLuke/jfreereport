@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: PageFormatFactory.java,v 1.8 2005/02/23 21:06:05 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.9 2005/07/18 18:09:20 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,9 @@ package org.jfree.report.util;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.lang.reflect.Field;
+
+import org.jfree.util.*;
+import org.jfree.util.Log;
 
 /**
  * The PageFormatFactory is used to create PageFormats on a higher level. The Factory
@@ -1074,7 +1077,7 @@ public final class PageFormatFactory
    */
   public static void logPageFormat (final PageFormat pf)
   {
-    Log.debug("PageFormat: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
+    org.jfree.util.Log.debug("PageFormat: Width: " + pf.getWidth() + " Height: " + pf.getHeight());
     Log.debug("PageFormat: Image: X " + pf.getImageableX()
             + " Y " + pf.getImageableY()
             + " W: " + pf.getImageableWidth()

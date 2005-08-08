@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.18 2005/02/23 21:05:29 taqua Exp $
+ * $Id: PageLayouter.java,v 1.19 2005/06/25 17:52:02 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.states.ReportState;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * The baseclass for all PageLayouter. A page layouter is the layoutmanager of an logical

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleAdvertisingDemo.java,v 1.1 2005/07/20 18:44:26 taqua Exp $
+ * $Id: SimpleAdvertisingDemo.java,v 1.2 2005/07/28 10:32:50 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ import org.jfree.report.demo.invoice.model.Article;
 import org.jfree.report.demo.invoice.model.Customer;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;

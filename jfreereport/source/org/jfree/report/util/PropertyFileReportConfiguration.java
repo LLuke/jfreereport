@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.9 2005/05/18 18:38:31 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.10 2005/07/18 18:09:20 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.jfree.util.ObjectUtilities;
+import org.jfree.util.*;
+import org.jfree.util.Log;
 
 /**
  * A report configuration that reads its values from a property file. This class is used
@@ -75,7 +76,7 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
     }
     else
     {
-      Log.debug("Report configuration file not found: " + fileName);
+      org.jfree.util.Log.debug("Report configuration file not found: " + fileName);
     }
 
   }

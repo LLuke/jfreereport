@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.11 2005/02/23 21:04:52 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.12 2005/04/17 21:08:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,7 @@ import org.jfree.base.modules.PackageManager;
 import org.jfree.report.DefaultLogModule;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.JFreeReportCoreModule;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.xml.sax.SAXException;
 

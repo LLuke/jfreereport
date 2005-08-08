@@ -67,7 +67,7 @@ import org.jfree.report.demo.invoice.model.Customer;
 import org.jfree.report.demo.invoice.model.Article;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionMenuItem;
@@ -175,10 +175,10 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     final JTable table = new JTable(this.data);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    final Enumeration enumeration = table.getColumnModel().getColumns();
-    while (enumeration.hasMoreElements())
+    final Enumeration cols = table.getColumnModel().getColumns();
+    while (cols.hasMoreElements())
     {
-      final TableColumn tc = (TableColumn) enumeration.nextElement();
+      final TableColumn tc = (TableColumn) cols.nextElement();
       tc.setMinWidth(50);
     }
 

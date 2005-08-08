@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.15 2005/02/23 21:06:06 taqua Exp $
+ * $Id: Worker.java,v 1.16 2005/04/17 21:09:01 taqua Exp $
  *
  *
  * Changes
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.util;
+
+import org.jfree.util.*;
 
 
 /**
@@ -158,7 +160,7 @@ public final class Worker extends Thread
         }
         catch (Exception e)
         {
-          Log.error("Worker caught exception on run: ", e);
+          org.jfree.util.Log.error("Worker caught exception on run: ", e);
         }
         workload = null;
         if (workerPool != null)

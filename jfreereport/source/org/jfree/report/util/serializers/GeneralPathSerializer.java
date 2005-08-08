@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: GeneralPathSerializer.java,v 1.4 2005/03/03 23:00:29 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,16 @@ import java.io.ObjectOutputStream;
 
 import org.jfree.report.util.SerializeMethod;
 
+/**
+ * A serialize method that handles java.awt.geom.GeneralPath objects.
+ *
+ * @author Thomas Morgner
+ */
 public class GeneralPathSerializer implements SerializeMethod
 {
+  /**
+   * Default constructor.
+   */
   public GeneralPathSerializer ()
   {
   }

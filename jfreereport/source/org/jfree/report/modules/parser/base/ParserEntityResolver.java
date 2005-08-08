@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.10 2005/03/18 13:49:39 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.11 2005/04/14 16:37:36 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Hashtable;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

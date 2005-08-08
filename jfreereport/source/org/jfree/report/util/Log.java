@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Log.java,v 1.12 2005/02/23 21:06:05 taqua Exp $
+ * $Id: Log.java,v 1.13 2005/07/18 18:09:19 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import org.jfree.util.LogTarget;
  * been fully merged with JCommon. 
  *
  * @author Thomas Morgner
+ * @deprecated use JCommon logging instead.
  */
 public final class Log extends org.jfree.util.Log
 {
@@ -176,7 +177,7 @@ public final class Log extends org.jfree.util.Log
   static
   {
     JFREEREPORTLOG = new Log();
-    org.jfree.util.Log.defineLog(JFREEREPORTLOG);
+    Log.defineLog(JFREEREPORTLOG);
     JFREEREPORTLOG.addTarget(Log.DEFAULT_LOG_TARGET);
     try
     {
@@ -200,7 +201,7 @@ public final class Log extends org.jfree.util.Log
    *
    * @return the log object.
    */
-  public static Log getJFreeReportLog ()
+  public static org.jfree.util.Log getJFreeReportLog ()
   {
     return JFREEREPORTLOG;
   }

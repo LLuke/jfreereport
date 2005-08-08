@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.10 2005/03/30 17:23:01 taqua Exp $
+ * $Id: SampleReport2.java,v 1.11 2005/04/17 21:08:59 taqua Exp $
  *
  * Changes:
  * --------
@@ -59,7 +59,7 @@ import org.jfree.report.function.PaintComponentFunction;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.modules.gui.pdf.PDFSaveDialog;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.FloatDimension;
 
 /**

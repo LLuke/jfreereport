@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupport.java,v 1.4 2005/04/14 16:37:33 taqua Exp $
+ * $Id: MessageFormatSupport.java,v 1.5 2005/07/20 18:47:30 taqua Exp $
  *
  * Changes
  * -------
@@ -65,12 +65,7 @@ public class MessageFormatSupport implements Serializable
       setClosingBraceChar(')');
     }
 
-    protected String lookupVariable (final String entity)
-    {
-      return (String) performInitialLookup(entity);
-    }
-
-    protected Object performInitialLookup (final String name)
+    protected String lookupVariable (final String name)
     {
       final CSVTokenizer tokenizer = new CSVTokenizer(name, ",", "\"");
       if (tokenizer.hasMoreTokens() == false)
@@ -81,7 +76,7 @@ public class MessageFormatSupport implements Serializable
       final int index = fields.indexOf(varName);
       if (index != -1)
       {
-        return completeFormatString.get(index);
+        return (String) completeFormatString.get(index);
       }
 
       final StringBuffer b = new StringBuffer();

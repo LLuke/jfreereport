@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StaticDrawableURLElementFactory.java,v 1.3 2005/03/03 22:59:59 taqua Exp $
+ * $Id: StaticDrawableURLElementFactory.java,v 1.4 2005/06/25 17:51:59 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,9 @@ public class StaticDrawableURLElementFactory extends ElementFactory
    */
   private URL baseURL;
 
+  /**
+   * DefaultConstructor.
+   */
   public StaticDrawableURLElementFactory ()
   {
   }

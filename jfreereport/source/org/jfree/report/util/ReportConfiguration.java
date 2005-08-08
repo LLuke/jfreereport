@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.16 2005/01/28 19:27:00 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.17 2005/02/23 21:06:06 taqua Exp $
  *
  * Changes
  * -------
@@ -62,8 +62,6 @@ import org.jfree.util.Configuration;
  * You can also specify the local configuration for a report via the XML report template
  * file.
  * <p/>
- * todo document the initialization order ...
- * <p/>
  * The report configuration can be modified using the configuration editor in the
  * gui-config module.
  *
@@ -71,20 +69,39 @@ import org.jfree.util.Configuration;
  */
 public class ReportConfiguration extends HierarchicalConfiguration
 {
+  /**
+   * A wrappper around the user supplied global configuration.
+   */
   private static class UserConfigWrapper extends HierarchicalConfiguration
           implements Configuration
   {
+    /** The wrapped configuration. */
     private Configuration wrappedConfiguration;
 
+    /**
+     * Default constructor.
+     */
     public UserConfigWrapper ()
     {
     }
 
+    /**
+     * Sets a new configuration. This configuration will be inserted into the
+     * report configuration hierarchy. Set this property to null to disable
+     * the user defined configuration.
+     *
+     * @param wrappedConfiguration the wrapped configuration.
+     */
     public void setWrappedConfiguration (final Configuration wrappedConfiguration)
     {
       this.wrappedConfiguration = wrappedConfiguration;
     }
 
+    /**
+     * Returns the user supplied global configuration, if exists.
+     *
+     * @return the user configuration.
+     */
     public Configuration getWrappedConfiguration ()
     {
       return wrappedConfiguration;
@@ -111,6 +128,17 @@ public class ReportConfiguration extends HierarchicalConfiguration
       return getParentConfig().getConfigProperty(key);
     }
 
+    /**
+     * Returns the configuration property with the specified key
+     * (or the specified default value if there is no such property).
+     * <p/>
+     * If the property is not defined in this configuration, the code
+     * will lookup the property in the parent configuration.
+     *
+     * @param key          the property key.
+     * @param defaultValue the default value.
+     * @return the property value.
+     */
     public String getConfigProperty (final String key, final String defaultValue)
     {
       if (wrappedConfiguration == null)
@@ -126,6 +154,12 @@ public class ReportConfiguration extends HierarchicalConfiguration
       return getParentConfig().getConfigProperty(key, defaultValue);
     }
 
+    /**
+     * Sets a configuration property.
+     *
+     * @param key   the property key.
+     * @param value the property value.
+     */
     public void setConfigProperty (final String key, final String value)
     {
       if (wrappedConfiguration instanceof ModifiableConfiguration)
@@ -136,6 +170,13 @@ public class ReportConfiguration extends HierarchicalConfiguration
       }
     }
 
+    /**
+     * Returns all defined configuration properties for the report. The enumeration
+     * contains all keys of the changed properties, properties set from files or
+     * the system properties are not included.
+     *
+     * @return all defined configuration properties for the report.
+     */
     public Enumeration getConfigProperties ()
     {
       if (wrappedConfiguration instanceof ModifiableConfiguration)
@@ -270,6 +311,7 @@ public class ReportConfiguration extends HierarchicalConfiguration
    */
   private static transient ReportConfiguration globalConfig;
 
+  /** The user supplied configuration. */
   private static transient UserConfigWrapper userConfig = new UserConfigWrapper();
 
   /**
@@ -302,7 +344,7 @@ public class ReportConfiguration extends HierarchicalConfiguration
 
   /**
    * Sets the log level, which is read from the global report configuration at the point
-   * that the classloader loads the {@link Log} class.
+   * that the classloader loads the {@link org.jfree.util.Log} class.
    * <p/>
    * Valid log levels are:
    * <p/>
@@ -311,7 +353,7 @@ public class ReportConfiguration extends HierarchicalConfiguration
    * <li><code>"Debug"</code> - debug messages;</li> </ul>
    * <p/>
    * Notes: <ul> <li>the setting is not case sensitive.</li> <li>changing the log level
-   * after the {@link Log} class has been loaded will have no effect.</li> <li>to turn of
+   * after the {@link org.jfree.util.Log} class has been loaded will have no effect.</li> <li>to turn of
    * logging altogether, use the {@link #setDisableLogging} method.</li> </ul>
    *
    * @param level the new log level.
@@ -549,11 +591,21 @@ public class ReportConfiguration extends HierarchicalConfiguration
     }
   }
 
+  /**
+   * Returns the user supplied global configuration.
+   *
+   * @return the user configuration, if any.
+   */
   public static Configuration getUserConfig ()
   {
     return userConfig.getWrappedConfiguration();
   }
 
+  /**
+   * Defines the global user configuration.
+   *
+   * @param config the user configuration.
+   */
   public static void setUserConfig (final Configuration config)
   {
     userConfig.setWrappedConfiguration(config);

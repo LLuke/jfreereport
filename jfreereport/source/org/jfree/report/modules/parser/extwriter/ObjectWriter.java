@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.10 2005/02/23 21:05:56 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.CommentHandler;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContent.java,v 1.10 2005/02/23 21:04:36 taqua Exp $
+ * $Id: DrawableContent.java,v 1.11 2005/06/25 17:51:57 taqua Exp $
  *
  * Changes
  * -------
@@ -82,6 +82,7 @@ public class DrawableContent implements Content
    *
    * @param ref    the image reference.
    * @param bounds the content bounds.
+   * @param imageArea the displayed area of the image.
    */
   protected DrawableContent (final Drawable ref,
                              final StrictBounds bounds,

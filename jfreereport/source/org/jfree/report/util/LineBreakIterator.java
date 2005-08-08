@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.4 2005/01/25 00:22:55 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.5 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -229,8 +229,6 @@ public class LineBreakIterator implements Iterator
         // search the end of the current linebreak sequence ..
       }
     }
-    //System.out.println ("text: " + new String (text));
-    //System.out.println ("pos: " + pos + " lastFound: " + lastFound);
     return new String(text, lastFound, pos - lastFound);
   }
 
@@ -249,5 +247,6 @@ public class LineBreakIterator implements Iterator
    */
   public void remove ()
   {
+    throw new UnsupportedOperationException();
   }
 }

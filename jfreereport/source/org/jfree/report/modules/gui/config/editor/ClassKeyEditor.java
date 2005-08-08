@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassKeyEditor.java,v 1.6 2005/01/25 00:04:26 taqua Exp $
+ * $Id: ClassKeyEditor.java,v 1.7 2005/02/23 21:04:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,7 +39,7 @@
 package org.jfree.report.modules.gui.config.editor;
 
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 

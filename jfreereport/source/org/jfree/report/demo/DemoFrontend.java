@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.5 2005/04/17 21:08:59 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.6 2005/05/18 18:38:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;

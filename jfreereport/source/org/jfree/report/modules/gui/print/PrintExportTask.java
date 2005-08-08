@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.11 2005/01/25 00:06:55 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.12 2005/02/23 21:05:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,7 +43,7 @@ import java.awt.print.PrinterJob;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportPane;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * An export task implementation that prints a report using the AWT printing API.

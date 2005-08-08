@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: PropertyStringReadHandler.java,v 1.3 2005/03/03 23:00:19 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@
  */
 package org.jfree.report.modules.parser.base;
 
-import org.jfree.report.util.PropertyLookupParser;
+import org.jfree.report.util.beans.BeanPropertyLookupParser;
 import org.xml.sax.SAXException;
 
 public class PropertyStringReadHandler extends AbstractPropertyXmlReadHandler
 {
-  private class StringLookupParser extends PropertyLookupParser
+  private class StringLookupParser extends BeanPropertyLookupParser
   {
     public StringLookupParser ()
     {

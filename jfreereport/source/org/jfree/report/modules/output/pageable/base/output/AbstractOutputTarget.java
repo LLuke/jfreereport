@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.18 2005/03/03 14:42:35 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.19 2005/04/15 16:10:42 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,7 @@ import org.jfree.report.modules.output.pageable.base.operations.HorizontalBounds
 import org.jfree.report.modules.output.pageable.base.operations.VerticalBoundsAlignment;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.12 2005/03/24 22:24:54 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.13 2005/05/01 15:07:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,7 +50,7 @@ import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * An export task implementation that writes an report into a CSV file, and uses the table

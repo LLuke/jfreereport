@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.8 2005/01/24 23:58:18 taqua Exp $
+ * $Id: HelloWorld.java,v 1.9 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
 

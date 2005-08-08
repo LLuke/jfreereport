@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.8 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.9 2005/02/19 15:41:22 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -44,7 +44,7 @@ import java.io.Serializable;
 import org.jfree.report.Element;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A function that alternates between true and false for each item within a group. The

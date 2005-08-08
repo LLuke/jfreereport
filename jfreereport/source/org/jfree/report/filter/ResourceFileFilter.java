@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.7 2005/02/23 21:04:45 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.8 2005/05/20 16:06:44 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -38,7 +38,7 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import org.jfree.report.ReportDefinition;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * Lookup a key from a datasource using a ResourceBundle.

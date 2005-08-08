@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ITextImageCache.java,v 1.3 2005/03/03 23:00:02 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.report.ImageContainer;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.URLImageContainer;
 import org.jfree.report.util.KeyedQueue;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.util.WaitingImageObserver;
 
 public class ITextImageCache

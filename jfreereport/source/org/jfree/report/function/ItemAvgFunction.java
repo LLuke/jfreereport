@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.6 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.math.BigDecimal;
 
 import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A report function that calculates the average of one field (column) from the

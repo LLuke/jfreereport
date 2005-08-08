@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExceptionDialog.java,v 1.6 2005/01/25 00:03:34 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.7 2005/02/23 21:04:50 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.FloatingButtonEnabler;
 import org.jfree.ui.action.ActionButton;
 

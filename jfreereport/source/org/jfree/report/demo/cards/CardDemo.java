@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CardDemo.java,v 1.3 2004/05/07 12:43:25 mungady Exp $
+ * $Id: CardDemo.java,v 1.4 2005/02/23 21:04:41 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import javax.swing.UIManager;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.demo.JFreeReportDemo;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.RefineryUtilities;
 
 /**

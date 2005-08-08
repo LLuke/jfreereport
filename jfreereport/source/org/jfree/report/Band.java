@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.17 2005/03/09 21:12:59 taqua Exp $
+ * $Id: Band.java,v 1.18 2005/06/25 17:51:55 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -94,6 +94,7 @@ import org.jfree.report.style.ElementDefaultStyleSheet;
  */
 public class Band extends Element implements Serializable, Cloneable
 {
+  /** An empty array to prevent object creation. */
   private static Element[] EMPTY_ARRAY = new Element[0];
 
   /**

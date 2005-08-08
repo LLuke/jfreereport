@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TriggerNestedGroupFunction.java,v 1.2 2005/01/25 01:13:41 taqua Exp $
+ * $Id: TriggerNestedGroupFunction.java,v 1.3 2005/02/23 21:04:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,7 @@ import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.FunctionUtilities;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 public class TriggerNestedGroupFunction extends AbstractFunction
 {

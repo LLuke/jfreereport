@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: SimpleReportRootReadHandler.java,v 1.3 2005/03/03 23:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,11 @@ import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.util.ObjectFactory;
 import org.jfree.xml.util.SimpleObjectFactory;
 
+/**
+ * A root handler for the Simple XML definition format.
+ *
+ * @author Thomas Morgner
+ */
 public class SimpleReportRootReadHandler extends RootXmlReadHandler
 {
   /**

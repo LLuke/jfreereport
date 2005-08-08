@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.5 2005/01/25 00:17:21 taqua Exp $
+ * $Id: XMLWriter.java,v 1.6 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * The XMLWriter is the content creation function used to create the XML content. This

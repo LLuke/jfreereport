@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: LocaleSelectionReportControler.java,v 1.1 2005/07/22 16:39:54 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import org.jfree.report.DefaultResourceBundleFactory;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.DefaultReportControler;
 import org.jfree.report.modules.gui.base.PreviewProxyBase;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.ui.KeyedComboBoxModel;
 import org.jfree.ui.action.ActionButton;
 

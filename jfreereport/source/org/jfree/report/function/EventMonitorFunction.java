@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.6 2005/01/28 19:26:49 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.io.Serializable;
 
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 
 /**
  * A function that logs each event that it receives.  This function can be used for

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.10 2005/04/14 17:37:09 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.11 2005/05/01 15:07:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -59,7 +59,7 @@ import org.jfree.report.modules.output.table.base.TableContentCreator;
 import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
 import org.jfree.report.modules.output.table.xls.util.ExcelPrintSetupFactory;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class ExcelContentCreator extends TableContentCreator
