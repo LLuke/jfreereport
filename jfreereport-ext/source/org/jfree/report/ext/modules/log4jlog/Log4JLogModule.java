@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogModule.java,v 1.4 2005/01/31 17:16:40 taqua Exp $
+ * $Id: Log4JLogModule.java,v 1.5 2005/08/08 15:56:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -76,7 +76,6 @@ public class Log4JLogModule extends AbstractModule
         (Log4JLogTarget.class.getName()))
     {
       Log.getInstance().addTarget(new Log4JLogTarget());
-      //Log.getJFreeReportLog().init();
       Log.info ("Log4J log target started ... previous log messages could have been ignored.");
     }
   }

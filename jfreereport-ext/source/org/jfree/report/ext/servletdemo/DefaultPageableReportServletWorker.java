@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultPageableReportServletWorker.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
+ * $Id: DefaultPageableReportServletWorker.java,v 1.5 2005/08/08 15:56:02 taqua Exp $
  *
  * Changes
  * -------
@@ -120,17 +120,15 @@ public class DefaultPageableReportServletWorker
   private JFreeReport parseReport(final URL templateURL)
     throws IOException
   {
-    JFreeReport result = null;
-    final ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-        result = generator.parseReport(templateURL);
+      final ReportGenerator generator = ReportGenerator.getInstance();
+      return generator.parseReport(templateURL);
     }
     catch (Exception e)
     {
       Log.debug ("Cause: ", e);
       throw new IOException("Failed to parse the report");
     }
-    return result;
   }
 }

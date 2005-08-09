@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.4 2005/01/31 17:16:41 taqua Exp $
  *
  * Changes
  * -------
@@ -116,7 +116,7 @@ public abstract class AbstractPageableReportServletWorker
     if (isSessionRequired())
     {
       // todo: Store the report processor in the session?
-      final HttpSession session = getSession();
+      //final HttpSession session = getSession();
       processor = new PageableReportProcessor(getReport());
       // set a dummy target for the repagination
       processor.setOutputTarget(getOutputTarget());

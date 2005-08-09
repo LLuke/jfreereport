@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportExcelServlet.java,v 1.4 2005/05/18 18:50:30 taqua Exp $
+ * $Id: JFreeReportExcelServlet.java,v 1.5 2005/08/08 15:56:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.ext.servletdemo;
 import java.io.IOException;
 import java.net.URL;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +61,10 @@ import org.jfree.util.ObjectUtilities;
  */
 public class JFreeReportExcelServlet extends HttpServlet
 {
+  public JFreeReportExcelServlet ()
+  {
+  }
+
   /**
    * Handles the GET method for the servlet. The GET method is mapped to
    * the POST method, both commands are handled equal.
@@ -108,11 +113,13 @@ public class JFreeReportExcelServlet extends HttpServlet
     response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.xls" + "\"");
     response.setHeader("Content-Type", "application/vnd.ms-excel");
 
+    final ServletOutputStream outputStream = response.getOutputStream();
+
     try
     {
       // this throws an exception if the report could not be parsed
       final ExcelProcessor processor = new ExcelProcessor(worker.getReport());
-      processor.setOutputStream(response.getOutputStream());
+      processor.setOutputStream(outputStream);
       worker.setTableProcessor(processor);
     }
     catch (Exception e)
@@ -134,6 +141,7 @@ public class JFreeReportExcelServlet extends HttpServlet
     {
       Log.debug("Failed to create the report", e);
     }
+    outputStream.flush();
   }
 
 }

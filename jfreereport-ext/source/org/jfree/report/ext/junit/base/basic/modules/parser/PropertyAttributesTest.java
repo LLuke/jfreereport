@@ -1,13 +1,13 @@
 package org.jfree.report.ext.junit.base.basic.modules.parser;
 
 import junit.framework.TestCase;
-import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.util.beans.BeanPropertyLookupParser;
+import org.jfree.report.util.PropertyLookupParser;
+import org.jfree.xml.parser.RootXmlReadHandler;
 
 public class PropertyAttributesTest extends TestCase
 {
-  private class StringLookupParser extends BeanPropertyLookupParser
+  private class StringLookupParser extends PropertyLookupParser
   {
     private RootXmlReadHandler rootXmlHandler;
 
@@ -16,9 +16,15 @@ public class PropertyAttributesTest extends TestCase
       this.rootXmlHandler = rootXmlHandler;
     }
 
-    protected Object performInitialLookup (final String name)
+    /**
+     * Looks up the property with the given name.
+     *
+     * @param property the name of the property to look up.
+     * @return the translated value.
+     */
+    protected String lookupVariable (final String property)
     {
-      return rootXmlHandler.getHelperObject(name);
+      return String.valueOf(rootXmlHandler.getHelperObject(property));
     }
   }
 

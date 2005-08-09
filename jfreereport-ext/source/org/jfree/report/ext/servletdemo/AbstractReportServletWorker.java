@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractReportServletWorker.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
+ * $Id: AbstractReportServletWorker.java,v 1.5 2005/01/31 17:16:53 taqua Exp $
  *
  * Changes
  * -------
@@ -79,31 +79,31 @@ public abstract class AbstractReportServletWorker
   public JFreeReport loadReport()
       throws ReportInitialisationException
   {
-    JFreeReport report = null;
     if (isSessionRequired())
     {
-      report = (JFreeReport) session.getAttribute(getPropertyPrefix() + "Report");
-      if (report == null)
+      JFreeReport report = (JFreeReport) session.getAttribute(getPropertyPrefix() + "Report");
+      if (report != null)
       {
-        report = createReport();
-        if (report == null)
-        {
-          throw new ReportInitialisationException("Created report is null");
-        }
-
-        session.setAttribute(getPropertyPrefix() + "Report", report);
+        return report;
       }
-    }
-    else
-    {
       report = createReport();
       if (report == null)
       {
         throw new ReportInitialisationException("Created report is null");
       }
 
+      session.setAttribute(getPropertyPrefix() + "Report", report);
+      return report;
     }
-    return report;
+    else
+    {
+      final JFreeReport report = createReport();
+      if (report == null)
+      {
+        throw new ReportInitialisationException("Created report is null");
+      }
+      return report;
+    }
   }
 
   /**

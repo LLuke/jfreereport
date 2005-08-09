@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.5 2005/05/18 18:50:30 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.6 2005/08/08 15:56:02 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.ext.servletdemo;
 import java.io.IOException;
 import java.net.URL;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -130,11 +131,11 @@ public class JFreeReportServlet extends HttpServlet
 
     try
     {
-      final PDFOutputTarget target = new PDFOutputTarget(response.getOutputStream());
-      target.setProperty(PDFOutputTarget.TITLE, "Title");
-      target.setProperty(PDFOutputTarget.AUTHOR, "Author");
+      final ServletOutputStream out = response.getOutputStream();
+      final PDFOutputTarget target = new PDFOutputTarget(out);
       worker.setOutputTarget(target);
       worker.processReport();
+      out.flush();
     }
     catch (Exception e)
     {
