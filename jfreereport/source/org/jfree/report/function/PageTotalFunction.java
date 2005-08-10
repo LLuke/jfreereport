@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.6 2005/01/25 00:00:18 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -151,7 +151,7 @@ public class PageTotalFunction extends PageFunction
       }
       else
       {
-        this.setPage(getPage() + 1);
+        this.setPage(getPage() + getPageIncrement());
       }
       groupPages.put(new Integer(event.getState().getCurrentDisplayItem()), this.pageStorage);
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.23 2005/03/18 13:49:38 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.24 2005/08/08 15:36:33 taqua Exp $
  *
  * Changes
  * -------
@@ -314,17 +314,17 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   protected void beginPage (final PageDefinition page, final int index)
   {
-    final Rectangle2D pageBounds = page.getPagePosition(index);
     currentPageFormat = page.getPageFormat(index);
     final Rectangle2D bounds = new Rectangle2D.Double
-            ((currentPageFormat.getImageableX()),
-                    (currentPageFormat.getImageableY()),
-                    currentPageFormat.getImageableWidth() + 1d,
-                    currentPageFormat.getImageableHeight() + 1d);
+            (currentPageFormat.getImageableX(),
+             currentPageFormat.getImageableY(),
+             currentPageFormat.getImageableWidth() + 1d,
+             currentPageFormat.getImageableHeight() + 1d);
 
     g2.clip(bounds);
-    g2.transform(AffineTransform.getTranslateInstance(currentPageFormat.getImageableX() - (pageBounds.getX()),
-            currentPageFormat.getImageableY() - (pageBounds.getY())));
+    final double ty = currentPageFormat.getImageableY();
+    final double tx = currentPageFormat.getImageableX();
+    g2.transform(AffineTransform.getTranslateInstance(tx, ty));
 
     savedState = saveState();
   }

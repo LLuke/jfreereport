@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.10 2005/02/04 19:22:54 taqua Exp $
+ * $Id: PageFunction.java,v 1.11 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -85,6 +85,7 @@ public class PageFunction extends AbstractFunction
   private String group;
   private int startPage;
   private boolean ignorePageCancelEvents;
+  private int pageIncrement;
 
   /**
    * Constructs an unnamed function. <P> This constructor is intended for use by the SAX
@@ -93,6 +94,7 @@ public class PageFunction extends AbstractFunction
   public PageFunction ()
   {
     this.startPage = 1;
+    this.pageIncrement = 1;
   }
 
   /**
@@ -102,7 +104,7 @@ public class PageFunction extends AbstractFunction
    */
   public PageFunction (final String name)
   {
-    this.startPage = 1;
+    this();
     setName(name);
   }
 
@@ -114,6 +116,16 @@ public class PageFunction extends AbstractFunction
   protected void setGroupStarted (final boolean groupStarted)
   {
     isGroupStarted = groupStarted;
+  }
+
+  public int getPageIncrement ()
+  {
+    return pageIncrement;
+  }
+
+  public void setPageIncrement (final int pageIncrement)
+  {
+    this.pageIncrement = pageIncrement;
   }
 
   /**
@@ -131,7 +143,7 @@ public class PageFunction extends AbstractFunction
     }
     else
     {
-      setPage(getPage() + 1);
+      setPage(getPage() + getPageIncrement());
     }
   }
 
@@ -147,7 +159,7 @@ public class PageFunction extends AbstractFunction
       return;
     }
 
-    this.setPage(getPage() - 1);
+    this.setPage(getPage() - getPageIncrement());
   }
 
   /**

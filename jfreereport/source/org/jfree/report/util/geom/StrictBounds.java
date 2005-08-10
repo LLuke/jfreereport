@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StrictBounds.java,v 1.4 2005/03/03 23:00:27 taqua Exp $
+ * $Id: StrictBounds.java,v 1.5 2005/03/24 22:24:57 taqua Exp $
  *
  * Changes
  * -------
@@ -42,18 +42,42 @@ package org.jfree.report.util.geom;
 
 import java.io.Serializable;
 
+/**
+ * The StrictBounds class is a replacement for the Rectangle2D classes.
+ * This class uses integer mathematics instead of floating point values
+ * to achive a higher degree of stability.
+ *
+ * @author Thomas Morgner
+ */
 public class StrictBounds implements Serializable, Cloneable
 {
+  /** The x-coordinate of the upper left corner. */
   private long x;
+  /** The y-coordinate of the upper left corner. */
   private long y;
+  /** The width of this rectangle. */
   private long width;
+  /** The height of this rectangle. */
   private long height;
+  /** A flag indicating whether attempts to change this rectangle should trigger Exceptions. */
   private boolean locked;
 
+  /**
+   * DefaultConstructor.
+   */
   public StrictBounds ()
   {
   }
 
+  /**
+   * Creates a StrictBounds object with the given coordinates, width
+   * and height.
+   *
+   * @param x the x-coordinate
+   * @param y the y-coordinate
+   * @param width the width of the rectangle
+   * @param height the height of the rectangle
+   */
   public StrictBounds (final long x, final long y,
                        final long width, final long height)
   {
@@ -63,11 +87,21 @@ public class StrictBounds implements Serializable, Cloneable
     this.height = height;
   }
 
+  /**
+   * Checks, whether this bounds object is locked.
+   *
+   * @return true, if the bounds are locked and therefore immutable, false otherwise.
+   */
   public boolean isLocked ()
   {
     return locked;
   }
 
+  /**
+   * Defines, whether this bounds object should be locked and therefore immutable.
+   *
+   * @param locked true, if the bounds should be locked, false otherwise.
+   */
   public void setLocked (final boolean locked)
   {
     this.locked = locked;
@@ -163,6 +197,14 @@ public class StrictBounds implements Serializable, Cloneable
     }
   }
 
+  /**
+   * Checks, whether this rectangle contains the given point.
+   *
+   * @param x the x-coordinate of the point.
+   * @param y the y-coordinate of the point.
+   * @return true, if the point is inside or directly on the border of this
+   * rectangle, false otherwise.
+   */
   public boolean contains (final long x, final long y)
   {
     if (x < this.x)

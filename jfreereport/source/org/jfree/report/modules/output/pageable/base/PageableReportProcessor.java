@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.24 2005/05/11 21:45:23 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.25 2005/08/08 15:36:32 taqua Exp $
  *
  * Changes
  * -------
@@ -687,6 +687,7 @@ public class PageableReportProcessor
       // to the caller to ensure the correct state.
       throw new IllegalStateException("Report processor is not paginated.");
     }
+    // todo
     final int pageCount = getReport().getPageDefinition().getPageCount();
     return stateList.get(page / pageCount);
   }
@@ -721,10 +722,7 @@ public class PageableReportProcessor
     final OutputTarget output = getOutputTarget();
     try
     {
-      for (int i = 0; i < physPage.getPageCount(); i++)
-      {
-        output.printPage(mp, physPage, i);
-      }
+      output.printPage(mp, physPage, page);
     }
     catch (OutputTargetException e)
     {

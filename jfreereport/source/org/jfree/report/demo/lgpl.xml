@@ -8,7 +8,7 @@
     first page, but will not start a pagebreak within the band to complete the printing.
     Until 0.9 is released, this needs to be fixed.
   -->
-  <reportheader height="24" fontname="SansSerif" fontstyle="bold" fontsize="10" pagebreak-after="false">
+  <reportheader height="24" fontname="SansSerif" fontstyle="bold" fontsize="10" pagebreak-after-print="false">
     <label x="0" y="0" width="100%" height="0" alignment="left" dynamic="true">
       <![CDATA[
             GNU LESSER GENERAL PUBLIC LICENSE

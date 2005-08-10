@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.10 2005/02/23 21:06:06 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.11 2005/04/17 21:09:01 taqua Exp $
  *
  * Changes
  * -------
@@ -133,6 +133,13 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     }
   }
 
+  /**
+   * Handler for serialization.
+   *
+   * @param in the object input stream
+   * @throws IOException if an IO-Error occured
+   * @throws ClassNotFoundException if a required class could not be located.
+   */
   private void readObject (final ObjectInputStream in)
           throws IOException, ClassNotFoundException
   {

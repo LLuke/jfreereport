@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportReadHandler.java,v 1.7 2005/04/15 18:46:59 taqua Exp $
+ * $Id: JFreeReportReadHandler.java,v 1.8 2005/08/08 15:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -49,19 +49,15 @@ import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.IncludeParser;
 import org.jfree.report.modules.parser.base.common.ConfigurationReadHandler;
 import org.jfree.report.modules.parser.base.common.FunctionsReadHandler;
 import org.jfree.report.modules.parser.base.common.IncludeReadHandler;
-import org.jfree.util.Log;
 import org.jfree.report.util.PageFormatFactory;
-import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.Parser;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.xml.parser.RootXmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -100,6 +96,16 @@ public class JFreeReportReadHandler extends AbstractPropertyXmlReadHandler
    * Literal text for an XML attribute.
    */
   public static final String PAGEFORMAT_ATT = "pageformat";
+
+  /**
+   * Literal text for an XML attribute.
+   */
+  public static final String PAGESPAN_ATT = "pagespan";
+
+  /**
+   * Literal text for an XML attribute.
+   */
+  public static final String UNIT_ATT = "unit";
 
   /**
    * Literal text for an XML attribute.
@@ -222,8 +228,10 @@ public class JFreeReportReadHandler extends AbstractPropertyXmlReadHandler
           throw new IllegalStateException("Unexpected paper orientation.");
       }
 
+      final int pageSpan = ParserUtil.parseInt(attrs.getValue(PAGESPAN_ATT), 1);
+
       format.setPaper(p);
-      report.setPageDefinition(new SimplePageDefinition(format));
+      report.setPageDefinition(new SimplePageDefinition(format, pageSpan, 1));
     }
     getRootHandler().setHelperObject(REPORT_KEY, report);
     this.report = report;
