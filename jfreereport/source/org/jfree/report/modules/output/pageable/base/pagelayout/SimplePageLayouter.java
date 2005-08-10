@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.25 2005/02/23 21:05:29 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.26 2005/03/03 14:42:35 taqua Exp $
  *
  * Changes
  * -------
@@ -341,7 +341,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     try
     {
       setCurrentEvent(event);
-      restartPage();
+      restartPage(event.getState());
       createSaveState(null);
       saveCurrentState();
 
@@ -897,17 +897,19 @@ public strictfp class SimplePageLayouter extends PageLayouter
    * restored.
    *
    * @throws ReportProcessingException if restarting the page failed.
+   * @param reportState
    */
-  public void restartPage ()
+  public void restartPage (final ReportState reportState)
           throws ReportProcessingException
   {
     if (isPageRestartDone() || isRestartingPage() || isFinishingPage())
     {
+//      throw new IllegalStateException ("SimplePageLayouter: restartPage() is already running ..");
       return;
     }
-    startPage();
+    startPage(reportState);
 
-    if (state == null)
+    if (this.state == null)
     {
       // no state saved, break  ...
       return;
@@ -916,18 +918,20 @@ public strictfp class SimplePageLayouter extends PageLayouter
     setRestartingPage(true);
     boolean pagebreakAfter = false;
     // if there was a pagebreak_after_print, there is no band to print for now
-    if (state.getBandID() != null)
+    if (this.state.getBandID() != null)
     {
-      final ReportState reportstate = getCurrentEvent().getState();
-      final ReportDefinition impl = reportstate.getReport();
-      final Band band = getBandForID(impl, state.getBandID());
+      final ReportDefinition impl = reportState.getReport();
+      final Band band = getBandForID(impl, this.state.getBandID());
       pagebreakAfter = band.getStyle().getBooleanStyleProperty
               (BandStyleKeys.PAGEBREAK_AFTER);
       band.getStyle().setBooleanStyleProperty
               (BandStyleKeys.PAGEBREAK_AFTER, false);
+
+      setCurrentEvent(new ReportEvent (reportState, reportState.getEventCode()));
       print(band, pagebreakAfter, PAGEBREAK_BEFORE_IGNORED);
       band.getStyle().setBooleanStyleProperty
               (BandStyleKeys.PAGEBREAK_AFTER, pagebreakAfter);
+      clearCurrentEvent();
     }
     clearSaveState();
     setRestartingPage(false);
@@ -1089,19 +1093,20 @@ public strictfp class SimplePageLayouter extends PageLayouter
    */
   public void prepareEvent (final ReportEvent event)
   {
-    setCurrentEvent(event);
-    try
-    {
-      restartPage();
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("prepareEvent", e);
-    }
-    finally
-    {
-      clearCurrentEvent();
-    }
+    // docmark
+//    setCurrentEvent(event);
+//    try
+//    {
+//      restartPage();
+//    }
+//    catch (Exception e)
+//    {
+//      throw new FunctionProcessingException("prepareEvent", e);
+//    }
+//    finally
+//    {
+//      clearCurrentEvent();
+//    }
   }
 
   public boolean isWatermarkSupported ()

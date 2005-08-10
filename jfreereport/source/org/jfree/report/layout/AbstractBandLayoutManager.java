@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.20 2005/06/25 17:52:00 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.21 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,11 @@ import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
-import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.util.geom.StrictPoint;
+import org.jfree.util.Log;
 
 /**
  * An abstract band layout manager.
@@ -68,151 +68,6 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
   protected AbstractBandLayoutManager ()
   {
   }
-//
-//  /**
-//   * Returns the minimum size for an element.
-//   *
-//   * @param e               the element.
-//   * @param containerBounds the bounds of the elements parents.
-//   * @param retval          a dimension object that should be filled, or null, if a new
-//   *                        object should be created
-//   * @param support         the layout support used to compute sizes.
-//   * @return the minimum size.
-//   */
-//  protected strictfp StrictDimension computeMinimumSize
-//          (final Element e, final StrictDimension containerBounds,
-//           StrictDimension retval, final LayoutSupport support)
-//  {
-//    if (containerBounds.getWidth() < 0 || containerBounds.getHeight() < 0)
-//    {
-//      throw new IllegalArgumentException("Container bounds must be positive");
-//    }
-//
-//    // if this is a band, then try to calculate the min-size
-//    if (e instanceof Band)
-//    {
-//      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
-//      retval = lm.minimumLayoutSize((Band) e, containerBounds, support);
-//    }
-//    else
-//    {
-//      // return the minimum size. The minimum size is always defined.
-//      final Dimension2D dim = (Dimension2D)
-//              e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
-//      final StrictDimension sDim =
-//              StrictGeomUtility.createDimension(dim.getWidth(), dim.getHeight());
-//      retval = correctDimension(sDim, containerBounds, retval, support);
-//    }
-//
-//    final Dimension2D maxSizeElement = (Dimension2D)
-//            e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
-//
-//    final StrictDimension maxSize =
-//            correctDimension(StrictGeomUtility.createDimension
-//            (maxSizeElement.getWidth(), maxSizeElement.getHeight()),
-//                    containerBounds, null, support);
-//
-//    maxSize.setSize(Math.min(containerBounds.getWidth(), maxSize.getWidth()),
-//            Math.min(containerBounds.getHeight(), maxSize.getHeight()));
-//
-//    // docmark: minimum size also checks the dynamic height.
-//    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
-//    {
-//      retval = getElementContentBounds(retval, e, containerBounds, support);
-//    }
-//
-//    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
-//            Math.min(retval.getHeight(), maxSize.getHeight()));
-//
-//    //Log.debug ("-- calculate MinimumSize: " + retval);
-//    // layouting has failed, if negative values are returned ... !
-//    if (retval.getWidth() < 0 || retval.getHeight() < 0)
-//    {
-//      throw new IllegalStateException
-//              ("Layouting failed, computeMinimumSize returned negative values.");
-//    }
-//    return retval;
-//  }
-//
-//  /**
-//   * Calculates the preferred size of an element.
-//   *
-//   * @param e               the element.
-//   * @param containerBounds the bounds of the element's container.
-//   * @param retval          a dimension object that should be filled, or null, if a new
-//   *                        object should be created
-//   * @param support         the layout support used to compute sizes.
-//   * @return the preferred size of the element.
-//   */
-//  protected strictfp StrictDimension computePreferredSize
-//          (final Element e, final StrictDimension containerBounds,
-//           StrictDimension retval, final LayoutSupport support)
-//  {
-//    if (containerBounds.getWidth() < 0 || containerBounds.getHeight() < 0)
-//    {
-//      throw new IllegalArgumentException("Container bounds must be positive");
-//    }
-//    //Log.debug (">> calculate PreferredSize: " + e);
-//    //Log.debug (">> calculate PreferredSize: " + containerBounds);
-//
-//    // if e is a band, then try to calculate the preferred size
-//    if (e instanceof Band)
-//    {
-//      final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
-//      retval = lm.preferredLayoutSize((Band) e, containerBounds, support);
-//    }
-//    else
-//    {
-//      // if prefsize is defined, return it. The preferred size is optional,
-//      // so it may be required to also query the minimum size.
-//      final Dimension2D d = (Dimension2D)
-//              e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
-//      if (d != null)
-//      {
-//        final StrictDimension sDim =
-//                StrictGeomUtility.createDimension(d.getWidth(), d.getHeight());
-//        retval = correctDimension(sDim, containerBounds, retval, support);
-//      }
-//      else
-//      {
-//        // return the absolute dimension as fallback
-//        final Dimension2D minDim = (Dimension2D)
-//                e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
-//        final StrictDimension sDim =
-//                StrictGeomUtility.createDimension(minDim.getWidth(), minDim.getHeight());
-//        retval = correctDimension(sDim, containerBounds, retval, support);
-//      }
-//    }
-//
-//    // now apply the maximum bounds to the retval.
-//    // the maximum bounds are defined by the element and the elements container.
-//    final Dimension2D maxDim = (Dimension2D)
-//            e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
-//    final StrictDimension sMaxDim =
-//            StrictGeomUtility.createDimension(maxDim.getWidth(), maxDim.getHeight());
-//    final StrictDimension maxSize =
-//            correctDimension(sMaxDim, containerBounds, null, support);
-//
-//    maxSize.setSize(Math.min(containerBounds.getWidth(), maxSize.getWidth()),
-//            Math.min(containerBounds.getHeight(), maxSize.getHeight()));
-//
-//    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
-//    {
-//      retval = getElementContentBounds(retval, e, containerBounds, support);
-//    }
-//
-//    retval.setSize(Math.min(retval.getWidth(), maxSize.getWidth()),
-//            Math.min(retval.getHeight(), maxSize.getHeight()));
-//
-//    //Log.debug ("-- calculate PreferredSize: " + retval);
-//    // layouting has failed, if negative values are returned ... !
-//    if (retval.getWidth() < 0 || retval.getHeight() < 0)
-//    {
-//      throw new IllegalStateException("Layouting failed, computePreferredSize returns negative values.");
-//    }
-//
-//    return retval;
-//  }
 
   /**
    * Calculates the size of an element by creating the content for this element and then
@@ -413,6 +268,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // maxSize defines the bounds of the parent and the maximum size we defined.
     // whatever is smaller gets used ...
     maxSize.setSize(maxW, maxH);
+
     // minSize is our defined Size (we use at least regardless whether there is
     // some more content ...
     minSize.setSize(width, height);

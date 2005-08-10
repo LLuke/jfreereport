@@ -25,6 +25,7 @@
   2004-04-04: Added support for fixed position of bands ..
   ..
   2005-02-16: Rewrote the DTD to match JFreeReport 0.8.5
+  2005-08-09: Added the layout attribute for bands.
 
   Use this as Document type definition:
 
@@ -67,10 +68,12 @@
  All Fontstyles default to plain and all boolean styles to false. If no font is
  set either in Band nor in element, a compiled in default font is used.
 
+ The X- and Y-Position is required, if the Static-LayoutManager is used.
+ That LayoutManager is the default layoutmanager.
 -->
 <!ENTITY % position
-"x           CDATA          #REQUIRED
- y           CDATA          #REQUIRED
+"x           CDATA          #IMPLIED
+ y           CDATA          #IMPLIED
  width       CDATA          #REQUIRED
  height      CDATA          #REQUIRED"
 >
@@ -248,16 +251,18 @@ later with "${property}" in any attribute value or CDATA section.
 <!ATTLIST reportheader
 height                 CDATA           #IMPLIED
 fixed-position         CDATA           #IMPLIED
-pagebreak-after-print     (%boolean;)   #IMPLIED
+pagebreak-after-print     (%boolean;)  #IMPLIED
+layout                 CDATA           #IMPLIED
 %basicform;
 %fontdef;
 >
 
 <!ELEMENT reportfooter ( %itemelements; )>
 <!ATTLIST reportfooter
-fixed-position          CDATA          #IMPLIED
-pagebreak-before-print    (%boolean;)   #IMPLIED
-height                  CDATA          #IMPLIED
+fixed-position         CDATA          #IMPLIED
+pagebreak-before-print   (%boolean;)  #IMPLIED
+height                 CDATA          #IMPLIED
+layout                 CDATA          #IMPLIED
 %basicform;
 %fontdef;
 >
@@ -280,6 +285,7 @@ height                  CDATA          #IMPLIED
 onfirstpage    (%boolean;)   #IMPLIED
 onlastpage     (%boolean;)   #IMPLIED
 height         CDATA         #IMPLIED
+layout         CDATA         #IMPLIED
 %basicform;
 %fontdef;
 >
@@ -307,6 +313,7 @@ height         CDATA         #IMPLIED
 onfirstpage    (%boolean;)   #IMPLIED
 onlastpage     (%boolean;)   #IMPLIED
 height         CDATA         #IMPLIED
+layout         CDATA         #IMPLIED
 %basicform;
 %fontdef;
 >
@@ -349,6 +356,7 @@ pagebreak-before-print    (%boolean;)   #IMPLIED
 repeat                    (%boolean;)   #IMPLIED
 height                    CDATA         #IMPLIED
 fixed-position            CDATA         #IMPLIED
+layout                    CDATA         #IMPLIED
 %basicform;
 %fontdef;
 >
@@ -370,6 +378,7 @@ pagebreak-after-print     (%boolean;)   #IMPLIED
 pagebreak-before-print    (%boolean;)   #IMPLIED
 height                    CDATA         #IMPLIED
 fixed-position            CDATA         #IMPLIED
+layout                    CDATA         #IMPLIED
 %basicform;
 %fontdef;
 >
@@ -405,6 +414,7 @@ fixed-position            CDATA         #IMPLIED
 <!ELEMENT watermark   ( %itemelements; )>
 <!ATTLIST watermark
 height         CDATA          #IMPLIED
+layout         CDATA          #IMPLIED
 %basicform;
 %fontdef;
 >
@@ -416,6 +426,7 @@ pagebreak-after-print     (%boolean;)   #IMPLIED
 pagebreak-before-print    (%boolean;)   #IMPLIED
 fixed-position            CDATA         #IMPLIED
 height                    CDATA         #IMPLIED
+layout                    CDATA         #IMPLIED
 %basicform;
 %fontdef;
 >
@@ -435,6 +446,7 @@ x              CDATA          #IMPLIED
 y              CDATA          #IMPLIED
 width          CDATA          #IMPLIED
 height         CDATA          #IMPLIED
+layout         CDATA          #IMPLIED
 %basicform;
 %fontdef;
 >

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.23 2005/04/17 21:08:59 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.24 2005/06/25 17:52:00 taqua Exp $
  *
  * Changes
  * -------
@@ -550,7 +550,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
             createLayoutInformationForMinimumSize(b, containerBounds, support);
     final StrictDimension maxSize = eli.getMaximumSize();
     final StrictDimension minSize = eli.getMinimumSize();
-
+    
     // we use the max width, as the width is bound to the outside container,
     // either an other band or the page; the width is required to compute dynamic
     // elements or elements with an 100% width ...

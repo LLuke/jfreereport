@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AbstractElementReadHandler.java,v 1.6 2005/03/03 23:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -165,7 +165,11 @@ public abstract class AbstractElementReadHandler
   {
     final ElementFactory factory = getElementFactory();
     factory.setName(atts.getValue(NAME_ATT));
-    factory.setAbsolutePosition(getElementPosition(atts));
+    final Point2D elementPosition = getElementPosition(atts);
+    if (elementPosition != null)
+    {
+      factory.setAbsolutePosition(elementPosition);
+    }
     factory.setMinimumSize(getElementDimension(atts));
 
     final String dynamicValue = atts.getValue(DYNAMIC_ATT);
@@ -204,10 +208,32 @@ public abstract class AbstractElementReadHandler
   protected final Point2D getElementPosition (final PropertyAttributes atts)
           throws SAXException
   {
-    final float x = ParserUtil.parseRelativeFloat(atts.getValue("x"),
-            "Element x not specified");
-    final float y = ParserUtil.parseRelativeFloat(atts.getValue("y"),
-            "Element y not specified");
+    final String xValue = atts.getValue("x");
+    final String yValue = atts.getValue("y");
+    if (xValue == null && yValue == null)
+    {
+      return null;
+    }
+    final float x;
+    if (xValue != null)
+    {
+      x = ParserUtil.parseRelativeFloat(xValue,
+              "Element x not specified");
+    }
+    else
+    {
+      x = 0;
+    }
+    final float y;
+    if (yValue != null)
+    {
+      y = ParserUtil.parseRelativeFloat(yValue,
+              "Element y not specified");
+    }
+    else
+    {
+      y = 0;
+    }
     return new Point2D.Float(x, y);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandLayoutManager.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.8 2005/03/03 14:42:34 taqua Exp $
  *
  * Changes
  * -------
@@ -56,8 +56,8 @@ public interface BandLayoutManager
    * The LayoutManager styleKey. All bands must define their LayoutManager by using this
    * key when using the PageableReportProcessor.
    */
-  public static final StyleKey LAYOUTMANAGER = StyleKey.getStyleKey("layoutmanager",
-          BandLayoutManager.class);
+  public static final StyleKey LAYOUTMANAGER =
+          StyleKey.getStyleKey("layoutmanager", BandLayoutManager.class, false, false);
 
   /**
    * Calculates the preferred layout size for a band.

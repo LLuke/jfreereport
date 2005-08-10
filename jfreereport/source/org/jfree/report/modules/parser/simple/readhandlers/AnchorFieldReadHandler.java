@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AnchorFieldReadHandler.java,v 1.5 2005/03/03 23:00:23 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.report.modules.parser.simple.readhandlers;
+
+import java.awt.geom.Point2D;
 
 import org.jfree.report.elementfactory.AnchorFieldElementFactory;
 import org.jfree.report.elementfactory.ElementFactory;
@@ -72,7 +74,12 @@ public class AnchorFieldReadHandler extends AbstractElementReadHandler
     }
     elementFactory.setFieldname(fieldName);
     elementFactory.setName(atts.getValue(NAME_ATT));
-    elementFactory.setAbsolutePosition(getElementPosition(atts));
+
+    final Point2D elementPosition = getElementPosition(atts);
+    if (elementPosition != null)
+    {
+      elementFactory.setAbsolutePosition(elementPosition);
+    }
   }
 
   protected ElementFactory getElementFactory ()

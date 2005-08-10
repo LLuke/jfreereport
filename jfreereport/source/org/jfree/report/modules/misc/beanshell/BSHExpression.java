@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.11 2005/05/18 18:38:29 taqua Exp $
+ * $Id: BSHExpression.java,v 1.12 2005/08/08 15:36:32 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -49,6 +49,7 @@ import java.io.Reader;
 import java.io.Serializable;
 
 import bsh.Interpreter;
+import bsh.EvalError;
 import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.function.Expression;
 import org.jfree.util.Log;
@@ -121,33 +122,39 @@ public class BSHExpression extends AbstractExpression implements Serializable
   {
   }
 
-  private Interpreter createInterpreter ()
+  protected Interpreter createInterpreter ()
   {
-    final Interpreter interpreter = new Interpreter();
     try
     {
-      final InputStream in = ObjectUtilities.getResourceRelativeAsStream
-              ("BSHExpressionHeader.txt", BSHExpression.class);
-      // read the header, creates a skeleton
-      final Reader r = new InputStreamReader(new BufferedInputStream(in));
-      interpreter.eval(r);
-      r.close();
-
-      // now add the userdefined expression
-      // the expression is given in form of a function with the signature of:
-      //
-      // Object getValue ()
-      //
-      if (getExpression() != null)
-      {
-        interpreter.eval(expression);
-      }
+      final Interpreter interpreter = new Interpreter();
+      initializeInterpreter(interpreter);
       return interpreter;
     }
     catch (Exception e)
     {
       Log.error("Unable to initialize the expression", e);
       return null;
+    }
+  }
+
+  protected void initializeInterpreter (final Interpreter interpreter)
+          throws EvalError, IOException
+  {
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("BSHExpressionHeader.txt", BSHExpression.class);
+    // read the header, creates a skeleton
+    final Reader r = new InputStreamReader(new BufferedInputStream(in));
+    interpreter.eval(r);
+    r.close();
+
+    // now add the userdefined expression
+    // the expression is given in form of a function with the signature of:
+    //
+    // Object getValue ()
+    //
+    if (getExpression() != null)
+    {
+      interpreter.eval(expression);
     }
   }
 

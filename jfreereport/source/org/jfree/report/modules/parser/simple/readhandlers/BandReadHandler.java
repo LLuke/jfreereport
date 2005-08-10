@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: BandReadHandler.java,v 1.5 2005/03/03 23:00:23 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.layout.BandLayoutManager;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
@@ -58,6 +59,7 @@ import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -155,6 +157,7 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
   public static final String VALIGNMENT_ATT = "vertical-alignment";
 
 
+  private static final String LAYOUT_ATT = "layout";
   private static final String NAME_ATT = "name";
   private static final String COLOR_ATT = "color";
   public static final String RESERVED_LITERAL_ATT = "reserved-literal";
@@ -207,6 +210,7 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     handleTrimTextContent(attr);
     handleVisible(attr);
     handleLayoutCachable(attr);
+    handleLayout(attr);
   }
 
   private void handleVisible (final Attributes attr)
@@ -238,6 +242,22 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     {
       getBand().getStyle().setStyleProperty
               (ElementStyleSheet.RESERVED_LITERAL, reservedLiteral);
+    }
+  }
+
+  private void handleLayout (final Attributes attr)
+          throws SAXException
+  {
+    final String layoutManagerName = attr.getValue(LAYOUT_ATT);
+    if (layoutManagerName != null)
+    {
+      final Object o = ObjectUtilities.loadAndInstantiate(layoutManagerName, BandReadHandler.class);
+      if (o instanceof BandLayoutManager == false)
+      {
+        throw new SAXException("Expected layout manager as attribute value");
+      }
+      getBand().getStyle().setStyleProperty
+              (BandLayoutManager.LAYOUTMANAGER, o);
     }
   }
 

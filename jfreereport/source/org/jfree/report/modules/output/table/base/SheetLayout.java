@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.10 2005/04/15 16:10:43 taqua Exp $
+ * $Id: SheetLayout.java,v 1.11 2005/08/08 15:36:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -408,7 +408,7 @@ public class SheetLayout
       if (background == null)
       {
         // this is definitly unexpected ..
-        Log.warn ("Possible inconsistency: " + rect);
+        Log.warn ("Possible inconsistency: No background defined at " + rect);
         return false;
       }
       if (left)
@@ -455,7 +455,7 @@ public class SheetLayout
       if (background == null)
       {
         // this is definitly unexpected ..
-        Log.warn ("Possible inconsistency: " + rect);
+        Log.warn ("Possible inconsistency: No background defined at " + rect);
         return false;
       }
       if (top)

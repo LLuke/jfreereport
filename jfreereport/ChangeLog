@@ -10,7 +10,20 @@ A list of changes in recent versions:
           the Null-String correctly. This affects the 'simple-xml' parser as well
           as the API report definition method. This fixes BugReport #1215492.
 
-        * More JavaDoc.
+        * BSHExpression's createInterpreter is now protected to allow subclasses
+          to modify the created instance.
+
+        * Changed the PageEvent order. PageEvents are now fired before any other
+          events are fired (but after the reportInitialized event). On pagebreaks
+          the page header and the repeated group headers will contain the same
+          computed values as the last page footer.
+
+        * More work at the JavaDoc and DocBook texts.
+
+        * Added the StackedLayoutManager, which behaves like a Swing-Box-Layout.
+          Use this within a band to allow dynamic elements to push other elements
+          below the used space of the dynamic element. See the StackedLayoutDemo
+          for an example.     
 
 0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible

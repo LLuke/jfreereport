@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.19 2005/06/25 17:52:02 taqua Exp $
+ * $Id: PageLayouter.java,v 1.20 2005/08/08 15:36:33 taqua Exp $
  *
  * Changes
  * -------
@@ -394,28 +394,34 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   }
 
   /**
+   * Handles the restarting of the page. Fires the pageStarted event and prints the
+   * pageheader. Restarting the page is done once after the PageLayouterState was
+   * restored.
+   *
+   * @throws ReportProcessingException if restarting the page failed.
+   * @param state
+   */
+  public abstract void restartPage (ReportState state) throws ReportProcessingException;
+
+  /**
    * Restarts the current page. The logical page is opened again and the PageStartedEvent
    * is fired. While this method is executed, the RestartingPage flag is set to true.
    */
-  protected void startPage ()
+  protected void startPage (final ReportState reportState)
   {
     if (isPageRestartDone() == true)
     {
       throw new IllegalStateException("Page already started");
     }
-    final ReportEvent event = getCurrentEvent();
-    if (event == null)
+    if (reportState == null)
     {
       throw new NullPointerException("PageLayouter.startPage(...): state is null.");
     }
-    // remove the old event binding ....
-    clearCurrentEvent();
 
     setRestartingPage(true);
-    event.getState().firePageStartedEvent(event.getType());
+    reportState.firePageStartedEvent(reportState.getEventCode());
 
     // restore the saved original event ...
-    setCurrentEvent(event);
     setRestartingPage(false);
     setPageRestartDone(true);
   }
@@ -599,6 +605,14 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     return autoPageBreak;
   }
 
+  /**
+   * This ugly hack is called after we detected a Pagebreak-before in
+   * the next event. We simply rollback the event chain and therefore
+   * convert the pagebreak-before into a pagebreak-after.
+   *
+   * @param state the old report state.
+   * @throws ReportProcessingException
+   */
   public void finishPageAfterRestore (final ReportState state)
           throws ReportProcessingException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKey.java,v 1.9 2005/01/30 23:37:26 taqua Exp $
+ * $Id: StyleKey.java,v 1.10 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,8 @@ public final class StyleKey implements Serializable, Cloneable
   private int identifier;
 
   /**
-   * Whether this stylekey is transient.
+   * Whether this stylekey is transient. Transient keys will not be written when
+   * serializing a report.
    */
   private boolean trans;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.8 2005/06/25 17:52:01 taqua Exp $
+ * $Id: PageProcess.java,v 1.9 2005/08/08 15:36:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,6 +47,7 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.states.ReportState;
+import org.jfree.report.states.StartState;
 import org.jfree.util.Log;
 
 public class PageProcess
@@ -152,6 +153,12 @@ public class PageProcess
       lm.setLogicalPage(new AlignedLogicalPage(outputTarget, pageDefinition));
       lm.restoreSaveState(state);
 
+      // check, whether this is a StartState instance. If so, advance it, so
+      // that the reportInitialized() event is always fired before any other event.
+      // (even the page events!)
+      // the reportInitialized event does never generate any output.
+      state = ensureReportInitialized(state);
+      lm.restartPage(state);
       // docmark: page spanning bands will affect this badly designed code.
       // this code will definitly be affected by the Band-intenal-pagebreak code
       // to this is non-fatal. the next redesign is planed here :)
@@ -246,6 +253,16 @@ public class PageProcess
     }
     lastRecentlyUsedState =
     new WeakReference(new CacheInformation(currPage, state));
+    return state;
+  }
+
+  private ReportState ensureReportInitialized (final ReportState state)
+          throws ReportProcessingException
+  {
+    if (state instanceof StartState)
+    {
+      return state.advance();
+    }
     return state;
   }
 

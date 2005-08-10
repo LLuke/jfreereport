@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.23 2005/04/15 16:10:43 taqua Exp $
+ * $Id: TableWriter.java,v 1.24 2005/08/08 15:36:34 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
-import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
@@ -56,7 +55,6 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelega
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
-import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
@@ -538,6 +536,8 @@ public strictfp class TableWriter
     this.depLevel = deplevel;
   }
 
+
+
   /**
    * Receives notification that the report has started.
    *
@@ -545,18 +545,9 @@ public strictfp class TableWriter
    */
   public void reportStarted (final ReportEvent event)
   {
-    try
-    {
-      setCurrentEvent(event);
-      tableCreator.open(event.getReport());
-      startPage();
-      delegate.reportStarted(event);
-      clearCurrentEvent();
-    }
-    catch (ReportProcessingException e)
-    {
-      throw new FunctionProcessingException("TableWriter", e);
-    }
+    setCurrentEvent(event);
+    delegate.reportStarted(event);
+    clearCurrentEvent();
   }
 
   /**
@@ -761,6 +752,17 @@ public strictfp class TableWriter
     if (getMaxWidth() == 0)
     {
       throw new IllegalStateException("Assert: TableWriter function was not initialized properly");
+    }
+    try
+    {
+      setCurrentEvent(event);
+      tableCreator.open(event.getReport());
+      startPage();
+      clearCurrentEvent();
+    }
+    catch (ReportProcessingException e)
+    {
+      throw new FunctionProcessingException("TableWriter", e);
     }
   }
 

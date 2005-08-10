@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.16 2005/05/20 16:06:44 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.17 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * --------
@@ -743,7 +743,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     else if (availEncs.equals(AVAILABLE_ENCODINGS_FILE))
     {
       final String encFile = getEncodingsDefinitionFile();
-      final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+      final InputStream in = ObjectUtilities.getResourceAsStream
               (encFile, EncodingComboBoxModel.class);
       if (in == null)
       {
