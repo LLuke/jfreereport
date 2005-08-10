@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.5 2005/02/19 16:15:47 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.6 2005/03/24 23:09:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -211,6 +211,34 @@ public class StaticLayoutManagerTest extends TestCase
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
     assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
     assertEquals(100 * STRICT_FACTOR, bounds.getHeight());
+  }
+
+  public void testBandInBand ()
+  {
+    final Band subBand = new Band();
+    subBand.setMinimumSize(new FloatDimension(-50, 40));
+    subBand.setMaximumSize(new FloatDimension(-50, 32768));
+
+    final Band band = new Band ();
+    band.setMinimumSize(new FloatDimension(-50, 40));
+    band.setMaximumSize(new FloatDimension(-50, 32768));
+    band.addElement(subBand);
+
+    final Band rootBand = new Band ();
+    rootBand.addElement(band);
+
+    final StrictBounds bounds =
+            BandLayoutManagerUtil.doLayout(rootBand, new DefaultLayoutSupport(),
+            500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
+    final StrictBounds bandBounds = (StrictBounds)
+            band.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    assertEquals(250 * STRICT_FACTOR, bandBounds.getWidth());
+    assertEquals(40 * STRICT_FACTOR, bandBounds.getHeight());
+
+    final StrictBounds subBandBounds = (StrictBounds)
+            subBand.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    assertEquals(125 * STRICT_FACTOR, subBandBounds.getWidth());
+    assertEquals(40 * STRICT_FACTOR, subBandBounds.getHeight());
   }
 
 }

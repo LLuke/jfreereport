@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.6 2005/08/08 15:56:02 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.7 2005/08/09 15:44:02 taqua Exp $
  *
  * Changes
  * -------
@@ -135,7 +135,7 @@ public class JFreeReportServlet extends HttpServlet
       final PDFOutputTarget target = new PDFOutputTarget(out);
       worker.setOutputTarget(target);
       worker.processReport();
-      out.flush();
+      //out.flush();
     }
     catch (Exception e)
     {

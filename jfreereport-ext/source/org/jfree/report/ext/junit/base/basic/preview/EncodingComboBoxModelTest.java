@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.7 2005/05/18 18:50:28 taqua Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.8 2005/08/08 15:56:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -109,7 +109,7 @@ public class EncodingComboBoxModelTest extends TestCase
 
   public void testSelectItemFileAvailable ()
   {
-    String org = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String org = ReportConfiguration.getGlobalConfig().getConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS);
     ReportConfiguration.getGlobalConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_FILE);
