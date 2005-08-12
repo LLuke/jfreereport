@@ -198,7 +198,7 @@ class      CDATA   #REQUIRED
  and the default page format for the report.
 
  -->
-<!ELEMENT report-config (page-definition?, configuration?)>
+<!ELEMENT report-config ((simple-page-definition|page-definition)?, configuration?)>
 
 <!--
 
@@ -212,6 +212,11 @@ class      CDATA   #REQUIRED
   All values are defined in points (1/72 inch).
  -->
 <!ELEMENT page-definition (page, page*)>
+<!ELEMENT simple-page-definition (page)>
+<!ATTLIST simple-page-definition
+width          CDATA            #IMPLIED
+height         CDATA            #IMPLIED
+>
 
 <!ELEMENT page EMPTY>
 <!ATTLIST page

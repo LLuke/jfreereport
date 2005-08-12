@@ -14,9 +14,9 @@
 
 
   <report-config>
-    <page-definition>
+    <simple-page-definition>
       <page orientation="portrait" pageformat="LETTER" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
-    </page-definition>
+    </simple-page-definition>
     <configuration>
       <property name="org.jfree.report.modules.output.pageable.pdf.Author">Darkwing Duck</property>
       <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">iso-8859-15</property>

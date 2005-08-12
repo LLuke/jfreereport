@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ReportConfigReadHandler.java,v 1.4 2005/03/03 23:00:21 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,10 @@ public class ReportConfigReadHandler extends AbstractPropertyXmlReadHandler
     if (tagName.equals("page-definition"))
     {
       return new PageDefinitionReadHandler();
+    }
+    else if (tagName.equals("simple-page-definition"))
+    {
+      return new SimplePageDefinitionReadHandler();
     }
     else if (tagName.equals("configuration"))
     {
