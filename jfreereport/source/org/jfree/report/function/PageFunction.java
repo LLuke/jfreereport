@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.11 2005/02/23 21:04:47 taqua Exp $
+ * $Id: PageFunction.java,v 1.12 2005/08/10 18:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -253,7 +253,7 @@ public class PageFunction extends AbstractFunction
    */
   public void reportInitialized (final ReportEvent event)
   {
-    this.setPage(getStartPage() - 1);
+    this.setPage(getStartPage() - getPageIncrement());
     setIgnoreNextGroup(true);
     setWaitForFooterPrinted(false);
   }

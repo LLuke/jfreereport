@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextLine.java,v 1.12 2005/02/23 21:04:37 taqua Exp $
+ * $Id: TextLine.java,v 1.13 2005/06/25 17:51:57 taqua Exp $
  *
  * Changes
  * -------
@@ -318,5 +318,18 @@ public class TextLine implements Content
     b.append("\", bounds=");
     b.append(getBounds());
     return (b.toString());
+  }
+
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y)
+  {
+    bounds.setRect
+            (bounds.getX() + x, bounds.getY() + y,
+             bounds.getWidth(), bounds.getHeight());
   }
 }

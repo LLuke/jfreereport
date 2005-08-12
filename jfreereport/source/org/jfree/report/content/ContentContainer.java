@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.9 2005/02/23 21:04:36 taqua Exp $
+ * $Id: ContentContainer.java,v 1.10 2005/06/25 17:51:57 taqua Exp $
  *
  * Changes
  * -------
@@ -234,5 +234,23 @@ public class ContentContainer implements MultipartContent
     }
     container.append("}\n");
     return container.toString();
+  }
+
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y)
+  {
+    bounds.setRect
+            (bounds.getX() + x, bounds.getY() + y,
+             bounds.getWidth(), bounds.getHeight());
+    for (int i = 0; i < size; i++)
+    {
+      final Content cc = content[i];
+      cc.translate(x,y);
+    }
   }
 }

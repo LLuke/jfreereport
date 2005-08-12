@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Content.java,v 1.6 2005/02/19 13:29:52 taqua Exp $
+ * $Id: Content.java,v 1.7 2005/02/23 21:04:30 taqua Exp $
  *
  * Changes
  * -------
@@ -82,4 +82,12 @@ public interface Content
    */
   public Content getContentForBounds (StrictBounds bounds);
 
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   * This changes the bounds of the content and all child contents. 
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y);
 }

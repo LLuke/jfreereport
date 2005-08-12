@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContent.java,v 1.14 2005/06/25 17:51:57 taqua Exp $
+ * $Id: TextContent.java,v 1.15 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ import java.util.List;
 
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.util.LineBreakIterator;
-import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.util.Log;
 
 /**
  * A container for text content. The content will be split into paragraphs.

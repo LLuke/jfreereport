@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignmentTools.java,v 1.4 2005/02/19 13:29:58 taqua Exp $
+ * $Id: AlignmentTools.java,v 1.5 2005/02/23 21:05:28 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -106,6 +106,7 @@ public final class AlignmentTools
    */
   public static StrictBounds computeAlignmentBounds (final MetaElement e)
   {
+    // handle text elements as well
     final Content content = e.getContent();
     final StrictBounds bounds = e.getBounds();
     final ElementAlignment va

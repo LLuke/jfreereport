@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IBMCompatiblePrinterDriver.java,v 1.5 2005/03/04 12:08:17 taqua Exp $
+ * $Id: IBMCompatiblePrinterDriver.java,v 1.6 2005/04/17 21:09:01 taqua Exp $
  *
  * Changes
  * -------
@@ -393,7 +393,7 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
   public void printEmptyChunk (final int count)
           throws IOException
   {
-    sendFontStyle(false, false ,false);
+    sendFontStyle(driverState.isBold(), driverState.isItalic(), false);
     for (int i = 0; i < count; i++)
     {
       out.write(PrinterDriver.SPACE);

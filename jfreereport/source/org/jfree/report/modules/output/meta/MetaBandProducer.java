@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.12 2005/03/30 17:25:26 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.13 2005/06/25 17:52:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -192,15 +192,22 @@ public class MetaBandProducer
     }
 
     final ElementStyleSheet styleSheet = createStyleForElement(e, parentx, parenty);
+    final Content content = createContent(e, styleSheet);
+    final MetaElement element = new MetaElement
+            (content, styleSheet);
+    element.setName(e.getName());
+    return element;
+  }
+
+  protected Content createContent (final Element e, final ElementStyleSheet styleSheet)
+          throws ContentCreationException
+  {
     final StrictBounds bounds = (StrictBounds)
             styleSheet.getStyleProperty(ElementStyleSheet.BOUNDS);
     final ElementLayoutInformation eli = new ElementLayoutInformation(bounds);
     final Content content =
             support.getContentFactory().createContentForElement(e, eli, support);
-    final MetaElement element = new MetaElement
-            (content, styleSheet);
-    element.setName(e.getName());
-    return element;
+    return content;
   }
 
   private ElementStyleSheet createCommonStyleForElement

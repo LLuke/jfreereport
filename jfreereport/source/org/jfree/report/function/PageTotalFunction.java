@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.8 2005/08/10 18:04:45 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -126,7 +126,7 @@ public class PageTotalFunction extends PageFunction
     // report started is no longer the first event. PageStarted is called first!
     if (pageStorage == null)
     {
-      pageStorage = new PageStorage(getStartPage() - 1);
+      pageStorage = new PageStorage(getStartPage() - getPageIncrement());
     }
     setIgnoreNextGroup(true);
     setWaitForFooterPrinted(false);

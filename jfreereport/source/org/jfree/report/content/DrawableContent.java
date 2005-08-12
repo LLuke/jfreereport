@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContent.java,v 1.11 2005/06/25 17:51:57 taqua Exp $
+ * $Id: DrawableContent.java,v 1.12 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -202,4 +202,22 @@ public class DrawableContent implements Content
   {
     return drawable;
   }
+
+
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y)
+  {
+    bounds.setRect
+            (bounds.getX() + x, bounds.getY() + y,
+             bounds.getWidth(), bounds.getHeight());
+    imageArea.setRect
+            (imageArea.getX() + x, imageArea.getY() + y,
+             imageArea.getWidth(), imageArea.getHeight());
+  }
+
 }

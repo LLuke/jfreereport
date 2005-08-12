@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContent.java,v 1.8 2005/02/23 21:04:37 taqua Exp $
+ * $Id: ShapeContent.java,v 1.9 2005/06/25 17:51:57 taqua Exp $
  *
  * Changes
  * -------
@@ -135,5 +135,18 @@ public class ShapeContent implements Content
     return new ShapeContent(getShape(), newBounds);
   }
 
+
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y)
+  {
+    bounds.setRect
+            (bounds.getX() + x, bounds.getY() + y,
+             bounds.getWidth(), bounds.getHeight());
+  }
 }
 

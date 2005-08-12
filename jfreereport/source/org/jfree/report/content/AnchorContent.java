@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AnchorContent.java,v 1.3 2005/03/03 22:59:58 taqua Exp $
+ * $Id: AnchorContent.java,v 1.4 2005/06/25 17:51:57 taqua Exp $
  *
  * Changes
  * -------
@@ -137,5 +137,16 @@ public class AnchorContent implements Content
   public Anchor getAnchor ()
   {
     return ancor;
+  }
+
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y)
+  {
+    this.point.setLocation(x + this.point.getX(), y + this.point.getY());
   }
 }

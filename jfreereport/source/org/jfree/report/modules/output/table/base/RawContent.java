@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RawContent.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
+ * $Id: RawContent.java,v 1.5 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.table.base;
 
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentType;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.util.geom.StrictBounds;
 
 public class RawContent implements Content
@@ -140,4 +141,20 @@ public class RawContent implements Content
             ", bounds=" + bounds +
             "}";
   }
+
+
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y)
+  {
+    bounds.setRect
+            (bounds.getX() + x, bounds.getY() + y,
+             bounds.getWidth(), bounds.getHeight());
+
+  }
+
 }

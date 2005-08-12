@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractEpsonPrinterDriver.java,v 1.7 2005/03/04 12:08:17 taqua Exp $
+ * $Id: AbstractEpsonPrinterDriver.java,v 1.8 2005/07/07 18:39:47 mtennes Exp $
  *
  * Changes
  * -------
@@ -338,7 +338,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   public void printEmptyChunk (final int count)
           throws IOException
   {
-    sendFontStyle(false, false ,false ,false);
+    sendFontStyle(getDriverState().isBold(), getDriverState().isItalic(), false ,false);
     for (int i = 0; i < count; i++)
     {
       out.write(PrinterDriver.SPACE);

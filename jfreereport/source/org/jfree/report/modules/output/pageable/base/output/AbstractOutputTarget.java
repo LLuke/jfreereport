@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.19 2005/04/15 16:10:42 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.20 2005/08/08 15:36:33 taqua Exp $
  *
  * Changes
  * -------
@@ -57,10 +57,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.jfree.report.ElementAlignment;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.layout.LayoutManagerCache;
 import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentFactory;
@@ -77,19 +75,17 @@ import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.ShapeTransform;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
+import org.jfree.report.layout.LayoutManagerCache;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
-import org.jfree.report.modules.output.pageable.base.operations.AlignmentTools;
-import org.jfree.report.modules.output.pageable.base.operations.HorizontalBoundsAlignment;
-import org.jfree.report.modules.output.pageable.base.operations.VerticalBoundsAlignment;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 /**
  * The abstract OutputTarget implements base code for all pageable OutputTargets. This
@@ -358,30 +354,16 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       return;
     }
 
-    final ElementAlignment va
-            = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
-    if (va != null)
-    {
-      final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
-      // calculate the horizontal shift ... is applied later
-      final StrictBounds cBounds = content.getMinimumContentSize();
-      final StrictBounds alignedBounds = vba.align((StrictBounds) cBounds.clone());
-      final long vbaShift = (alignedBounds.getY() - cBounds.getY());
-      printContent(element, content, vbaShift);
-    }
-    else
-    {
-      printContent(element, content, 0);
-    }
+    printContent(element, content);
   }
 
   protected void printContent
-          (final MetaElement element, final Content content, final long vbaShift)
+          (final MetaElement element, final Content content)
           throws OutputTargetException
   {
     if (content.getContentType().equals(ContentType.TEXT))
     {
-      printTextContent(element, content, vbaShift);
+      printTextContent(element, content);
     }
     else if (element.getContent().getContentType().equals(ContentType.SHAPE))
     {
@@ -414,7 +396,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       final MultipartContent mc = (MultipartContent) content;
       for (int i = 0; i < mc.getContentPartCount(); i++)
       {
-        printContent(element, mc.getContentPart(i), vbaShift);
+        printContent(element, mc.getContentPart(i));
       }
 
     }
@@ -425,8 +407,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   protected void printTextContent
-          (final MetaElement element, final Content content,
-           final long vbaShift)
+          (final MetaElement element, final Content content)
           throws OutputTargetException
   {
     if (element == null)
@@ -460,14 +441,8 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     final Stroke stroke = (Stroke) element.getProperty(ElementStyleSheet.STROKE);
     updateStroke(stroke);
 
-    final ElementAlignment ha
-            = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
-
-    final HorizontalBoundsAlignment hba =
-            AlignmentTools.getHorizontalLayout(ha, element.getBounds());
-
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
-    printTextLine((TextLine) content, hba, vbaShift, hrefTarget);
+    printTextLine((TextLine) content, hrefTarget);
   }
 
   protected void printShapeContent (final MetaElement element, final Content content)
@@ -487,8 +462,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       return;
     }
 
-    final StrictBounds operationBounds = AlignmentTools.computeAlignmentBounds(element);
-    setInternalOperationBounds(operationBounds);
+    setInternalOperationBounds(content.getBounds());
 
     final Stroke stroke = (Stroke) element.getProperty(ElementStyleSheet.STROKE);
     updateStroke(stroke);
@@ -534,7 +508,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       return;
     }
     final ImageContent ic = (ImageContent) content;
-    setInternalOperationBounds(AlignmentTools.computeAlignmentBounds(element));
+    setInternalOperationBounds(content.getBounds());
 
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
     if (hrefTarget != null)
@@ -626,20 +600,13 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
    * list of PhysicalOperations. This method is called recursivly for all contentparts.
    *
    * @param c        the content.
-   * @param hba      the bounds.
-   * @param vbaShift the vertical bounds alignment shifting.
    */
   protected void printTextLine (final TextLine c,
-                                final HorizontalBoundsAlignment hba,
-                                final long vbaShift,
                                 final String hrefTarget)
   {
     final String value = c.getContent();
-    final StrictBounds abounds = hba.align(c.getBounds());
-    abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
-            abounds.getWidth(), abounds.getHeight());
-    setInternalOperationBounds(abounds);
-
+    setInternalOperationBounds(c.getBounds());
+    // docmark: At this point: Do no translate ..
     if (hrefTarget != null)
     {
       printHRefForCurrentContent(hrefTarget);

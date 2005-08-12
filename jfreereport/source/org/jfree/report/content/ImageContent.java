@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.15 2005/06/25 17:51:57 taqua Exp $
+ * $Id: ImageContent.java,v 1.16 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -209,5 +209,22 @@ public class ImageContent implements Content
   public StrictBounds getMinimumContentSize ()
   {
     return getBounds();
+  }
+
+  /**
+   * Hack-Attack: Used for alignment of the content.
+   *
+   * @param x the x translation.
+   * @param y the y translation.
+   */
+  public void translate (final long x, final long y)
+  {
+    bounds.setRect
+            (bounds.getX() + x, bounds.getY() + y,
+             bounds.getWidth(), bounds.getHeight());
+    imageArea.setRect
+            (imageArea.getX() + x, imageArea.getY() + y,
+             imageArea.getWidth(), imageArea.getHeight());
+
   }
 }

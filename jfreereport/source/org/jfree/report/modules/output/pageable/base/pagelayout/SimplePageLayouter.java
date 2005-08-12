@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.26 2005/03/03 14:42:35 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.27 2005/08/10 14:22:19 taqua Exp $
  *
  * Changes
  * -------
@@ -58,8 +58,8 @@ import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.AbstractBandLayoutManager;
 import org.jfree.report.modules.output.meta.MetaBand;
-import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.operations.AligningMetaBandProducer;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
@@ -733,8 +733,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
         event.getState().fireOutputCompleteEvent(band, event.getType());
         setCurrentEvent(event);
 
-        final MetaBandProducer producer = new MetaBandProducer(getLogicalPage()
-                .getLayoutSupport());
+        final AligningMetaBandProducer producer = new AligningMetaBandProducer
+                (getLogicalPage().getLayoutSupport());
         final MetaBand rootBand = producer.createBand(band, spool);
         if (rootBand != null)
         {
@@ -763,8 +763,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
         event.getState().fireOutputCompleteEvent(band, event.getType());
         setCurrentEvent(event);
 
-        final MetaBandProducer producer = new MetaBandProducer(getLogicalPage()
-                .getLayoutSupport());
+        final AligningMetaBandProducer producer = new AligningMetaBandProducer
+                (getLogicalPage().getLayoutSupport());
         final MetaBand metaBand = producer.createBand(band, spool);
         if (metaBand != null)
         {
