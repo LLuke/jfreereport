@@ -22,13 +22,13 @@ public class BeanInfoDoclet extends Doclet
   {
   }
 
-  public static boolean start(RootDoc root)
+  public static boolean start(final RootDoc root)
   {
-    TemplateParserFrontend tpf = new TemplateParserFrontend();
-    ClassDoc[] classes = root.classes();
+    final TemplateParserFrontend tpf = new TemplateParserFrontend();
+    final ClassDoc[] classes = root.classes();
     for (int i = 0; i < classes.length; i++)
     {
-      ClassDoc cd = classes[i];
+      final ClassDoc cd = classes[i];
 
       // no inner classes ...
       if (cd.containingClass() != null)
@@ -41,20 +41,20 @@ public class BeanInfoDoclet extends Doclet
         continue;
       }
 
-      BeanClassDocletHandler handler = new BeanClassDocletHandler();
+      final BeanClassDocletHandler handler = new BeanClassDocletHandler();
       handler.setClassDoc(cd);
 
       // let's go
       //buildEventSetDescriptors(generatorBeanInfo, cd);
 
       // write content ...
-      PrintWriter writer = new PrintWriter(System.out);
+      final PrintWriter writer = new PrintWriter(System.out);
       try
       {
-        Context context = new Context();
+        final Context context = new Context();
         context.put(null, handler.getBeanInfo());
         context.put("beaninfo", handler.getBeanInfo());
-        Template template = tpf.performParsing();
+        final Template template = tpf.performParsing();
         template.print(writer, context);
       }
       catch (Exception e)
@@ -67,13 +67,13 @@ public class BeanInfoDoclet extends Doclet
   }
 
 
-  public static String buildFirstSentence (Tag[] tags)
+  public static String buildFirstSentence (final Tag[] tags)
   {
     if (tags.length == 0)
     {
       return null;
     }
-    StringBuffer b = new StringBuffer();
+    final StringBuffer b = new StringBuffer();
     for (int i = 0; i < tags.length; i++)
     {
       b.append(tags[i].toString());
@@ -82,20 +82,20 @@ public class BeanInfoDoclet extends Doclet
     return b.toString();
   }
 
-  public static void fillFeatureDescriptor(FeatureDescriptor fd,
-                                     Doc docElement)
+  public static void fillFeatureDescriptor(final FeatureDescriptor fd,
+                                     final Doc docElement)
   {
-    String name = getTagContent(docElement, "name", null);
+    final String name = getTagContent(docElement, "name", null);
     if (name != null)
     {
       fd.setName(name);
     }
-    String displayName = getTagContent(docElement, "displayname", null);
+    final String displayName = getTagContent(docElement, "displayname", null);
     if (displayName != null)
     {
       fd.setDisplayName(displayName);
     }
-    String shortDescr = getTagContent(docElement, "shortDescription", null);
+    final String shortDescr = getTagContent(docElement, "shortDescription", null);
     if (shortDescr != null)
     {
       fd.setShortDescription(shortDescr);
@@ -112,19 +112,19 @@ public class BeanInfoDoclet extends Doclet
    * @param defaultValue
    * @return
    */
-  public static String getTagContent(Doc docElement, String tagName, String defaultValue)
+  public static String getTagContent(final Doc docElement, final String tagName, final String defaultValue)
   {
-    Tag[] tags = docElement.tags(tagName);
+    final Tag[] tags = docElement.tags(tagName);
 
     for (int i = 0; i < tags.length; i++)
     {
-      String txt = tags[i].text();
+      final String txt = tags[i].text();
       if (txt == null)
       {
         System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
         continue;
       }
-      String trimmedText = txt.trim();
+      final String trimmedText = txt.trim();
       if (trimmedText.length() == 0)
       {
         System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
@@ -136,19 +136,19 @@ public class BeanInfoDoclet extends Doclet
     return defaultValue;
   }
 
-  public static boolean getBooleanTagContent(Doc docElement, String tagName, boolean defaultValue)
+  public static boolean getBooleanTagContent(final Doc docElement, final String tagName, final boolean defaultValue)
   {
-    Tag[] tags = docElement.tags(tagName);
+    final Tag[] tags = docElement.tags(tagName);
 
     for (int i = 0; i < tags.length; i++)
     {
-      String txt = tags[i].text();
+      final String txt = tags[i].text();
       if (txt == null)
       {
         System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
         continue;
       }
-      String trimmedText = txt.trim();
+      final String trimmedText = txt.trim();
       if (trimmedText.length() == 0)
       {
         System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
@@ -167,7 +167,7 @@ public class BeanInfoDoclet extends Doclet
     return defaultValue;
   }
 
-  public static String getName(String fqName)
+  public static String getName(final String fqName)
   {
     String name = fqName;
     while (name.indexOf('.') >= 0)
@@ -177,11 +177,11 @@ public class BeanInfoDoclet extends Doclet
     return name;
   }
 
-  public static String[] parseTag(Tag t)
+  public static String[] parseTag(final Tag t)
   {
-    StringTokenizer strtok = new StringTokenizer(t.text());
-    int size = strtok.countTokens();
-    String[] tokens = new String[size];
+    final StringTokenizer strtok = new StringTokenizer(t.text());
+    final int size = strtok.countTokens();
+    final String[] tokens = new String[size];
     for (int i = 0; i < size; i++)
     {
       tokens[i] = strtok.nextToken();

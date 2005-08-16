@@ -28,8 +28,19 @@
     <dirname property="antfile.dir" file="${ant.file}"/>
     <property file="${antfile.dir}/build.properties"/>
 
-    <available classname="java.util.Timer" property="java-1.3.present"/>
+    <available file="${jfreereport-dir}/ant/build.properties" property="jfreereport-base-present"/>
+    <fail unless="jfreereport-base-present">
+      JFreeReport was not found at the specified location (${jfreereport-dir}).
+    </fail>
 
+    <property file="${jfreereport-dir}/ant/build.properties"/>
+
+    <echo>JFreeReport base package version ${jfreereport.version} found.</echo>
+
+    <property file="${antfile.dir}/targets.properties"/>
+
+
+    <available classname="java.util.Timer" property="java-1.3.present"/>
     <available classname="java.nio.Buffer" property="java-1.4.present"/>
 
     <echo>
@@ -46,7 +57,7 @@
   <!--                                                                -->
   <!-- ************************************************************** -->
 
-  <target name="compile" depends="init">
+  <target name="compile-beandoclet" depends="init">
 
     <echo>Building BeanInfo Doclet</echo>
 
@@ -58,13 +69,55 @@
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}"
       debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/dev/**/*.java"/>
+      <include name="org/jfree/report/dev/beans/**/*.java"/>
+      <include name="org/jfree/report/dev/TestBean.java"/>
       <classpath>
-        <pathelement location="${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${libdir}/${jcommon-xml-jar-file}"/>
-        <pathelement location="${libdir}/${common-logging-jar-file}"/>
-        <pathelement location="${libdir}/${common-collections-jar-file}"/>
-        <pathelement location="${libdir}/${common-beanutils-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
+        <pathelement location="${tools.libdir}/${common-logging-jar-file}"/>
+        <pathelement location="${tools.libdir}/${common-collections-jar-file}"/>
+        <pathelement location="${tools.libdir}/${common-beanutils-jar-file}"/>
+        <pathelement location="${java-tools-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <copy todir="build">
+      <fileset dir="source">
+        <include name="**/*.xml"/>
+      </fileset>
+    </copy>
+
+    <!-- make the jar -->
+    <jar jarfile="${jfreereport-beandoclet-jar-file}" basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Locales classes                                            -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-locales" depends="init">
+
+    <echo>Building Locales Tools (Doclet and Editor)</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}"
+      debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/dev/locales/**/*.java"/>
+      <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${java-tools-jar-file}"/>
       </classpath>
     </javac>
@@ -73,13 +126,54 @@
     <copy todir="build">
       <fileset dir="source">
         <include name="**/*.xml"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.dbf"/>
+        <include name="**/*.csv"/>
       </fileset>
     </copy>
 
     <!-- make the jar -->
-    <jar jarfile="${jfreereport-tools-jar-file}" basedir="build">
+    <jar jarfile="${jfreereport-locales-jar-file}" basedir="build">
+      <manifest>
+        <attribute name="Main-Class" value="org.jfree.report.dev.locales.LocalesEditor"/>
+        <attribute name="ClassPath" value="${manifest-lib-prefix}${jcommon-xml-jar-file} ${manifest-lib-prefix}${jcommon-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <delete dir="build"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Locales classes                                            -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-printerspecs" depends="init">
+
+    <echo>Building PrinterSpecs Editor</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}"
+      debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/dev/printerspecs/**/*.java"/>
+      <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
+        <pathelement location="${java-tools-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <!-- make the jar -->
+    <jar jarfile="${jfreereport-printerspecs-jar-file}" basedir="build">
+      <manifest>
+        <attribute name="Main-Class" value="org.jfree.report.dev.printerspecs.PrinterEncodingEditor"/>
+        <attribute name="ClassPath" value="${manifest-lib-prefix}${jcommon-xml-jar-file} ${manifest-lib-prefix}${jcommon-jar-file}"/>
+      </manifest>
     </jar>
 
     <!-- delete the temp directory -->
@@ -94,11 +188,12 @@
       windowtitle="JFreeReport Extension Class Library"
       overview="source/overview.html">
       <classpath>
-        <pathelement location="${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${libdir}/${jcommon-xml-jar-file}"/>
-        <pathelement location="${libdir}/${common-logging-jar-file}"/>
-        <pathelement location="${libdir}/${common-collections-jar-file}"/>
-        <pathelement location="${libdir}/${common-beanutils-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
+        <pathelement location="${tools.libdir}/${common-logging-jar-file}"/>
+        <pathelement location="${tools.libdir}/${common-collections-jar-file}"/>
+        <pathelement location="${tools.libdir}/${common-beanutils-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
         <pathelement location="${java-tools-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
@@ -107,15 +202,106 @@
     </javadoc>
   </target>
 
-  <target name="generateinfo" depends="init, compile">
+
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+      tofile="distribution/README.txt" failonerror="false"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="distribution/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${jfreereport-beandoclet-jar-file}"
+      tofile="distribution/${jfreereport-beandoclet-jar-file}"/>
+    <copy file="${jfreereport-locales-jar-file}"
+      tofile="distribution/${jfreereport-locales-jar-file}"/>
+    <copy file="${jfreereport-printerspecs-jar-file}"
+      tofile="distribution/${jfreereport-printerspecs-jar-file}"/>
+
+    <copy todir="distribution/ant">
+      <fileset dir="ant"/>
+    </copy>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
+    </copy>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+      tofile="distribution/ant/build.xml" failonerror="false"/>
+
+    <copy file="ant/build.properties"
+      tofile="distribution/ant/build.properties"/>
+
+  </target>
+
+  <!-- Make .zip distribution for JCommon -->
+  <target name="zip" depends="compile">
+
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+
+    <antcall target="fill-dist-dir"/>
+
+    <!-- convert end-of-line characters in text files -->
+    <fixcrlf srcdir="distribution/source"
+      eol="crlf" eof="remove"/>
+
+    <!-- make the zip file -->
+    <zip zipfile="${jfreereport.name}-tools-${jfreereport.version}.zip">
+      <zipfileset dir="distribution"
+        prefix="${jfreereport.name}-tools-${jfreereport.version}"/>
+    </zip>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for JCommon -->
+  <target name="targz" depends="compile">
+
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+
+    <antcall target="fill-dist-dir"/>
+
+    <!-- convert end-of-line characters in text files -->
+    <fixcrlf srcdir="distribution/source"
+      eol="lf" eof="remove"/>
+
+    <!-- make the tar.gz file -->
+    <tar tarfile="${jfreereport.name}-tools-${jfreereport.version}.tar">
+      <tarfileset dir="distribution"
+        prefix="${jfreereport.name}-tools-${jfreereport.version}"/>
+    </tar>
+    <gzip zipfile="${jfreereport.name}-tools-${jfreereport.version}.tar.gz"
+      src="${jfreereport.name}-tools-${jfreereport.version}.tar"/>
+    <delete file="${jfreereport.name}-tools-${jfreereport.version}.tar"/>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+
+  </target>
+
+  <target name="generateinfo" depends="init, compile-beandoclet">
     <path id="doclet.classpath">
-      <pathelement location="${libdir}/${gnujaxp-jar-file}"/>
+      <pathelement location="${jfreereport-dir}/${libdir}/${gnujaxp-jar-file}"/>
+      <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+      <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
+      <pathelement location="${tools.libdir}/${common-logging-jar-file}"/>
+      <pathelement location="${tools.libdir}/${common-collections-jar-file}"/>
+      <pathelement location="${tools.libdir}/${common-beanutils-jar-file}"/>
       <pathelement location="${jfreereport-tools-jar-file}"/>
-      <pathelement location="${libdir}/${jcommon-jar-file}"/>
-      <pathelement location="${libdir}/${jcommon-xml-jar-file}"/>
-      <pathelement location="${libdir}/${common-logging-jar-file}"/>
-      <pathelement location="${libdir}/${common-collections-jar-file}"/>
-      <pathelement location="${libdir}/${common-beanutils-jar-file}"/>
       <pathelement location="${java-tools-jar-file}"/>
     </path>
     <javadoc
@@ -128,16 +314,18 @@
 
   </target>
 
-  <target name="convert-locales" depends="init, compile">
+  <!--
+  This target converts the locales of JFreeReport 0.8.4 (Class files)
+  into the properties format of JFreeReport 0.8.5
+  -->
+
+  <target name="convert-locales" depends="init, compile-locales">
     <path id="doclet.classpath">
       <pathelement location="${libdir}/${gnujaxp-jar-file}"/>
-      <pathelement location="${jfreereport-tools-jar-file}"/>
       <pathelement location="${libdir}/${jcommon-jar-file}"/>
       <pathelement location="${libdir}/${jcommon-xml-jar-file}"/>
-      <pathelement location="${libdir}/${common-logging-jar-file}"/>
-      <pathelement location="${libdir}/${common-collections-jar-file}"/>
-      <pathelement location="${libdir}/${common-beanutils-jar-file}"/>
       <pathelement location="${java-tools-jar-file}"/>
+      <pathelement location="${jfreereport-tools-jar-file}"/>
       <pathelement location="/home/src/jfreereport/version-0.8.4/jfreereport/jfreereport-0.8.4_11-all.jar"/>
       <pathelement location="/home/src/jfreereport/version-0.8.4/jfreereport/jfreereport-0.8.4_11-demo.jar"/>
     </path>
@@ -153,6 +341,7 @@
 
   </target>
 
-  <target name="all" depends="init, compile, javadoc"/>
+  <target name="compile" depends="init, compile-beandoclet, compile-printerspecs, compile-locales"/>
+  <target name="all" depends="init, compile, javadoc, targz, zip"/>
 </project>
 

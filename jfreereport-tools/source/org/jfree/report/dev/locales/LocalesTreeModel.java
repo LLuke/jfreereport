@@ -68,13 +68,13 @@ public class LocalesTreeModel extends DefaultTreeModel
       {
         this.resourceName = name.substring(0, langSeparator);
         this.rootResource = new File
-                (rootResource.getParentFile(), this.resourceName + ".properties");
+                (rootResource.getAbsoluteFile().getParentFile(), this.resourceName + ".properties");
       }
       if (this.rootResource.isFile() == false || this.rootResource.canRead() == false)
       {
         throw new IllegalArgumentException("The file is no ordinary file or not readable:" + rootResource);
       }
-      this.resourceLocation = this.rootResource.getParentFile();
+      this.resourceLocation = this.rootResource.getAbsoluteFile().getParentFile();
       this.displayName = displayName;
       addAllAvailable();
     }
@@ -262,7 +262,8 @@ public class LocalesTreeModel extends DefaultTreeModel
 
   public synchronized boolean addResource (final File resource, final String displayName)
   {
-    if (findResourceLocation(resource.getParentFile()) == null)
+    final File parentFile = resource.getAbsoluteFile().getParentFile();
+    if (findResourceLocation(parentFile) == null)
     {
       rootNode.add(new ResourceLocationNodeImpl(resource, displayName));
       nodeStructureChanged(rootNode);

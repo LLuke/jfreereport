@@ -13,6 +13,7 @@ import org.jfree.report.modules.output.pageable.plaintext.PrinterEncoding;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecification;
 import org.jfree.report.modules.output.pageable.plaintext.DefaultPrinterSpecification;
 import org.jfree.util.DefaultConfiguration;
+import org.jfree.util.ObjectUtilities;
 
 public class EditablePrinterSpecificationLoader
         extends AbstractPrinterSpecificationLoader
@@ -115,9 +116,10 @@ public class EditablePrinterSpecificationLoader
   public void loadEpson9PinSpecs (final PrinterEncodingTableModel tableModel)
           throws IOException
   {
-    final InputStream in = getClass().getResourceAsStream
-            ("/org/jfree/report/modules/output/pageable/" +
-             "plaintext/epson-9pin-printer-specifications.properties");
+    final InputStream in = ObjectUtilities.getResourceAsStream
+            ("org/jfree/report/modules/output/pageable/" +
+             "plaintext/epson-9pin-printer-specifications.properties",
+                    EditablePrinterSpecificationLoader.class);
     load(tableModel, in);
     in.close();
   }
@@ -125,9 +127,10 @@ public class EditablePrinterSpecificationLoader
   public void loadEpson24PinSpecs (final PrinterEncodingTableModel tableModel)
           throws IOException
   {
-    final InputStream in = getClass().getResourceAsStream
-            ("/org/jfree/report/modules/output/pageable/" +
-             "plaintext/epson-24pin-printer-specifications.properties");
+    final InputStream in = ObjectUtilities.getResourceAsStream
+            ("org/jfree/report/modules/output/pageable/" +
+             "plaintext/epson-24pin-printer-specifications.properties",
+                    EditablePrinterSpecificationLoader.class);
     load(tableModel, in);
     in.close();
   }

@@ -5,6 +5,7 @@ import java.net.URL;
 
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.ParserFrontend;
+import org.jfree.util.ObjectUtilities;
 
 public class TemplateParserFrontend extends ParserFrontend
 {
@@ -20,7 +21,7 @@ public class TemplateParserFrontend extends ParserFrontend
   public Template performParsing ()
       throws IOException, ElementDefinitionException
   {
-    URL url = getClass().getResource(TEMPLATE_NAME);
+    final URL url = ObjectUtilities.getResourceRelative(TEMPLATE_NAME, TemplateParserFrontend.class);
     return (Template) parse(url, url);
   }
 }

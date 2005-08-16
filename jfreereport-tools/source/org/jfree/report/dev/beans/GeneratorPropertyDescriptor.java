@@ -20,7 +20,7 @@ public class GeneratorPropertyDescriptor extends FeatureDescriptor
     return propertyEditor;
   }
 
-  public void setPropertyEditor(String propertyEditor)
+  public void setPropertyEditor(final String propertyEditor)
   {
     this.propertyEditor = propertyEditor;
   }
@@ -30,7 +30,7 @@ public class GeneratorPropertyDescriptor extends FeatureDescriptor
     return propertyType;
   }
 
-  public void setPropertyType(String propertyType)
+  public void setPropertyType(final String propertyType)
   {
     this.propertyType = propertyType;
   }
@@ -40,7 +40,7 @@ public class GeneratorPropertyDescriptor extends FeatureDescriptor
     return readMethod;
   }
 
-  public void setReadMethod(String readMethod)
+  public void setReadMethod(final String readMethod)
   {
     this.readMethod = readMethod;
   }
@@ -50,7 +50,7 @@ public class GeneratorPropertyDescriptor extends FeatureDescriptor
     return writeMethod;
   }
 
-  public void setWriteMethod(String writeMethod)
+  public void setWriteMethod(final String writeMethod)
   {
     this.writeMethod = writeMethod;
   }
@@ -60,7 +60,7 @@ public class GeneratorPropertyDescriptor extends FeatureDescriptor
     return bound;
   }
 
-  public void setBound(boolean bound)
+  public void setBound(final boolean bound)
   {
     this.bound = bound;
   }
@@ -70,7 +70,7 @@ public class GeneratorPropertyDescriptor extends FeatureDescriptor
     return constrained;
   }
 
-  public void setConstrained(boolean constrained)
+  public void setConstrained(final boolean constrained)
   {
     this.constrained = constrained;
   }

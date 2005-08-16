@@ -52,7 +52,7 @@ public class LocalesEditor extends JFrame
     public LoadLocalesConfigurationAction ()
     {
       super(LocalesEditor.this);
-      putValue(NAME, "Load ..");
+      putValue(Action.NAME, "Load ..");
     }
 
     /**
@@ -96,7 +96,7 @@ public class LocalesEditor extends JFrame
         selectedFile = newSelectedFile;
 
         final Iterator it = p.entrySet().iterator();
-        final File parentFile = newSelectedFile.getParentFile();
+        final File parentFile = newSelectedFile.getCanonicalFile().getParentFile();
         while (it.hasNext())
         {
           final Map.Entry me = (Map.Entry) it.next();
@@ -129,7 +129,7 @@ public class LocalesEditor extends JFrame
     public SaveLocalesConfigurationAction ()
     {
       super(LocalesEditor.this);
-      putValue(NAME, "Save ..");
+      putValue(Action.NAME, "Save ..");
     }
 
     /**
@@ -149,7 +149,12 @@ public class LocalesEditor extends JFrame
         final Properties p = new Properties();
         final int c = treeModel.getResourceLocationCount();
 
-        final File parentFile = newSelectedFile.getParentFile();
+        final File parentFile = newSelectedFile.getCanonicalFile().getParentFile();
+        if (parentFile == null)
+        {
+          Log.warn("Unable to find a parent file. I'm confused and abort the operation ..");
+          return;
+        }
         final URL targetURL = parentFile.toURL();
 
         for (int i = 0; i < c; i++)
@@ -177,6 +182,7 @@ public class LocalesEditor extends JFrame
       }
       catch (IOException e1)
       {
+        Log.warn("While saving an error occured.", e1);
         return;
       }
 
@@ -216,7 +222,7 @@ public class LocalesEditor extends JFrame
     public AddResourceLocationAction ()
     {
       super(LocalesEditor.this);
-      putValue(NAME, "Add new resource location ..");
+      putValue(Action.NAME, "Add new resource location ..");
     }
 
     /**

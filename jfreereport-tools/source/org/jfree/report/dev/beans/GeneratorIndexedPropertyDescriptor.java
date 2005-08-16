@@ -14,7 +14,7 @@ public class GeneratorIndexedPropertyDescriptor extends GeneratorPropertyDescrip
     return indexedReadMethod;
   }
 
-  public void setIndexedReadMethod(String indexedReadMethod)
+  public void setIndexedReadMethod(final String indexedReadMethod)
   {
     this.indexedReadMethod = indexedReadMethod;
   }
@@ -24,7 +24,7 @@ public class GeneratorIndexedPropertyDescriptor extends GeneratorPropertyDescrip
     return indexedWriteMethod;
   }
 
-  public void setIndexedWriteMethod(String indexedWriteMethod)
+  public void setIndexedWriteMethod(final String indexedWriteMethod)
   {
     this.indexedWriteMethod = indexedWriteMethod;
   }

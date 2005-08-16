@@ -29,7 +29,7 @@ public class GeneratorBeanInfo
     return defaultEventIndex;
   }
 
-  public void setDefaultEventIndex(int defaultEventIndex)
+  public void setDefaultEventIndex(final int defaultEventIndex)
   {
     this.defaultEventIndex = defaultEventIndex;
   }
@@ -39,7 +39,7 @@ public class GeneratorBeanInfo
     return defaultPropertyIndex;
   }
 
-  public void setDefaultPropertyIndex(int defaultPropertyIndex)
+  public void setDefaultPropertyIndex(final int defaultPropertyIndex)
   {
     this.defaultPropertyIndex = defaultPropertyIndex;
   }
@@ -49,7 +49,7 @@ public class GeneratorBeanInfo
     return smallMonochromeIcon;
   }
 
-  public void setSmallMonochromeIcon(String smallMonochromeIcon)
+  public void setSmallMonochromeIcon(final String smallMonochromeIcon)
   {
     this.smallMonochromeIcon = smallMonochromeIcon;
   }
@@ -59,7 +59,7 @@ public class GeneratorBeanInfo
     return smallColorIcon;
   }
 
-  public void setSmallColorIcon(String smallColorIcon)
+  public void setSmallColorIcon(final String smallColorIcon)
   {
     this.smallColorIcon = smallColorIcon;
   }
@@ -69,7 +69,7 @@ public class GeneratorBeanInfo
     return largeMonochromeIcon;
   }
 
-  public void setLargeMonochromeIcon(String largeMonochromeIcon)
+  public void setLargeMonochromeIcon(final String largeMonochromeIcon)
   {
     this.largeMonochromeIcon = largeMonochromeIcon;
   }
@@ -79,7 +79,7 @@ public class GeneratorBeanInfo
     return largeColorIcon;
   }
 
-  public void setLargeColorIcon(String largeColorIcon)
+  public void setLargeColorIcon(final String largeColorIcon)
   {
     this.largeColorIcon = largeColorIcon;
   }
@@ -89,7 +89,7 @@ public class GeneratorBeanInfo
     return beanDescriptor;
   }
 
-  public void setBeanDescriptor(GeneratorBeanDescriptor beanDescriptor)
+  public void setBeanDescriptor(final GeneratorBeanDescriptor beanDescriptor)
   {
     this.beanDescriptor = beanDescriptor;
   }
@@ -99,7 +99,7 @@ public class GeneratorBeanInfo
     return additionalBeanInfo;
   }
 
-  public void setAdditionalBeanInfo(BeanInfo[] additionalBeanInfo)
+  public void setAdditionalBeanInfo(final BeanInfo[] additionalBeanInfo)
   {
     this.additionalBeanInfo = additionalBeanInfo;
   }
@@ -109,7 +109,7 @@ public class GeneratorBeanInfo
     return eventSetDescriptors;
   }
 
-  public void setEventSetDescriptors(GeneratorEventSetDescriptor[] eventSetDescriptors)
+  public void setEventSetDescriptors(final GeneratorEventSetDescriptor[] eventSetDescriptors)
   {
     this.eventSetDescriptors = eventSetDescriptors;
   }
@@ -124,7 +124,7 @@ public class GeneratorBeanInfo
     return methodDescriptors;
   }
 
-  public void setMethodDescriptors(MethodDescriptor[] methodDescriptors)
+  public void setMethodDescriptors(final MethodDescriptor[] methodDescriptors)
   {
     this.methodDescriptors = methodDescriptors;
   }
@@ -134,7 +134,7 @@ public class GeneratorBeanInfo
     return propertyDescriptors;
   }
 
-  public void setPropertyDescriptors(GeneratorPropertyDescriptor[] propertyDescriptors)
+  public void setPropertyDescriptors(final GeneratorPropertyDescriptor[] propertyDescriptors)
   {
     this.propertyDescriptors = propertyDescriptors;
   }
@@ -144,7 +144,7 @@ public class GeneratorBeanInfo
     return this.propertyDescriptors.length;
   }
 
-  public String getIcon(int iconKind)
+  public String getIcon(final int iconKind)
   {
     if (iconKind == BeanInfo.ICON_MONO_16x16)
     {
@@ -170,7 +170,7 @@ public class GeneratorBeanInfo
     return filename;
   }
 
-  public void setFilename(String filename)
+  public void setFilename(final String filename)
   {
     this.filename = filename;
   }

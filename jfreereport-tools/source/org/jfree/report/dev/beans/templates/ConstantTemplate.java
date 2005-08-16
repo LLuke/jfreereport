@@ -6,12 +6,12 @@ public class ConstantTemplate implements Template
 {
   private String text;
 
-  public ConstantTemplate(String text)
+  public ConstantTemplate(final String text)
   {
     this.text = text;
   }
 
-  public void print(PrintWriter writer, Context context)
+  public void print(final PrintWriter writer, final Context context)
   {
     writer.print(text);
   }

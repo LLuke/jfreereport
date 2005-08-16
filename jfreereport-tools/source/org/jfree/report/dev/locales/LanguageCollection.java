@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class LanguageCollection
 {
@@ -19,7 +20,8 @@ public class LanguageCollection
 
   public void load () throws IOException
   {
-    final InputStream in = getClass().getResourceAsStream("iso639-2-language-code.csv");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("iso639-2-language-code.csv", LanguageCollection.class);
     if (in == null)
     {
       Log.debug ("Unable to find required resource");

@@ -18,7 +18,7 @@ public class GeneratorEventSetDescriptor extends FeatureDescriptor
     return addMethod;
   }
 
-  public void setAddMethod(String addMethod)
+  public void setAddMethod(final String addMethod)
   {
     this.addMethod = addMethod;
   }
@@ -28,7 +28,7 @@ public class GeneratorEventSetDescriptor extends FeatureDescriptor
     return removeMethod;
   }
 
-  public void setRemoveMethod(String removeMethod)
+  public void setRemoveMethod(final String removeMethod)
   {
     this.removeMethod = removeMethod;
   }
@@ -38,7 +38,7 @@ public class GeneratorEventSetDescriptor extends FeatureDescriptor
     return listenerMethods;
   }
 
-  public void setListenerMethods(String[] listenerMethods)
+  public void setListenerMethods(final String[] listenerMethods)
   {
     this.listenerMethods = listenerMethods;
   }
@@ -48,7 +48,7 @@ public class GeneratorEventSetDescriptor extends FeatureDescriptor
     return listenerType;
   }
 
-  public void setListenerType(String listenerType)
+  public void setListenerType(final String listenerType)
   {
     this.listenerType = listenerType;
   }

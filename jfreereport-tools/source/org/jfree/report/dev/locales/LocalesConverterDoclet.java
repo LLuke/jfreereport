@@ -264,7 +264,7 @@ public class LocalesConverterDoclet extends Doclet
         return null;
       }
       return (ListResourceBundle)
-                      Class.forName(baseName).newInstance();
+              ObjectUtilities.loadAndInstantiate(baseName, LocalesConverterDoclet.class);
     }
     catch (Exception e)
     {

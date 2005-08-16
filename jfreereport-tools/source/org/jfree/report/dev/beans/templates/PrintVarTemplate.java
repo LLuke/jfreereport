@@ -12,14 +12,14 @@ public class PrintVarTemplate implements Template
   private String bean;
   private boolean quoted;
 
-  public PrintVarTemplate(String bean, String var, boolean quoted)
+  public PrintVarTemplate(final String bean, final String var, final boolean quoted)
   {
     this.var = var;
     this.bean = bean;
     this.quoted = quoted;
   }
 
-  public void print(PrintWriter writer, Context context) throws TemplateException
+  public void print(final PrintWriter writer, final Context context) throws TemplateException
   {
     try
     {
@@ -31,7 +31,7 @@ public class PrintVarTemplate implements Template
     }
   }
 
-  private String getVariableValue (Context context) throws ParseException
+  private String getVariableValue (final Context context) throws ParseException
   {
     try
     {
@@ -40,7 +40,7 @@ public class PrintVarTemplate implements Template
         return ConvertUtils.convert(context.get(bean));
       }
       
-      String value = BeanUtils.getProperty(context.get(bean), var);
+      final String value = BeanUtils.getProperty(context.get(bean), var);
       if (quoted)
       {
         return getQuotedJava(value);
@@ -53,7 +53,7 @@ public class PrintVarTemplate implements Template
     }
   }
 
-  public String getQuotedJava (String text)
+  public String getQuotedJava (final String text)
   {
     if (text == null)
     {
@@ -61,12 +61,12 @@ public class PrintVarTemplate implements Template
     }
     else
     {
-      StringBuffer b = new StringBuffer();
-      char[] textChars = text.toCharArray();
+      final StringBuffer b = new StringBuffer();
+      final char[] textChars = text.toCharArray();
       b.append('\"');
       for (int i = 0; i< textChars.length; i++)
       {
-        char textChar = textChars[i];
+        final char textChar = textChars[i];
         if (textChar == '\"' ||
             textChar == '\n' ||
             textChar == '\r' ||

@@ -15,15 +15,15 @@ public class BeanClassDocletHandler
     beanInfo = new GeneratorBeanInfo();
   }
 
-  public void setClassDoc(ClassDoc cd)
+  public void setClassDoc(final ClassDoc cd)
   {
     beanClassDoc = cd;
     beanInfo.setBeanDescriptor(createBeanDescriptor());
-    EventSetHandler eventSetHandler = new EventSetHandler(cd);
+    final EventSetHandler eventSetHandler = new EventSetHandler(cd);
     beanInfo.setEventSetDescriptors(eventSetHandler.getEventSetDescriptors());
     beanInfo.setDefaultEventIndex(eventSetHandler.getDefaultIndex());
 
-    PropertiesHandler propertiesHandler = new PropertiesHandler(cd);
+    final PropertiesHandler propertiesHandler = new PropertiesHandler(cd);
     beanInfo.setPropertyDescriptors(propertiesHandler.getPropertyDescriptors());
   }
 
@@ -34,17 +34,17 @@ public class BeanClassDocletHandler
 
   private GeneratorBeanDescriptor createBeanDescriptor()
   {
-    GeneratorBeanDescriptor bd = new GeneratorBeanDescriptor();
+    final GeneratorBeanDescriptor bd = new GeneratorBeanDescriptor();
     bd.setBeanClass(BeanInfoDoclet.getName(beanClassDoc.name()));
     if (beanClassDoc.containingPackage() != null)
     {
       bd.setPackageName(beanClassDoc.containingPackage().name());
     }
 
-    String shortDesc = BeanInfoDoclet.buildFirstSentence(beanClassDoc.firstSentenceTags());
+    final String shortDesc = BeanInfoDoclet.buildFirstSentence(beanClassDoc.firstSentenceTags());
     bd.setShortDescription(shortDesc);
 
-    String customizerClass =
+    final String customizerClass =
         BeanInfoDoclet.getTagContent(beanClassDoc, "customizer", null);
     if (customizerClass != null)
     {

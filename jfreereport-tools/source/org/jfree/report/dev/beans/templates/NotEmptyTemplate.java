@@ -10,15 +10,15 @@ public class NotEmptyTemplate extends CompoundTemplate
   private String var;
   private String bean;
 
-  public NotEmptyTemplate(String bean, String var)
+  public NotEmptyTemplate(final String bean, final String var)
   {
     this.bean = bean;
     this.var = var;
   }
 
-  public void print(PrintWriter writer, Context context) throws TemplateException
+  public void print(final PrintWriter writer, final Context context) throws TemplateException
   {
-    Object value = getObjectValue(context);
+    final Object value = getObjectValue(context);
     if (value == null)
     {
       return;
@@ -32,11 +32,11 @@ public class NotEmptyTemplate extends CompoundTemplate
     super.print(writer, context);
   }
 
-  private Object getObjectValue (Context context) throws TemplateException
+  private Object getObjectValue (final Context context) throws TemplateException
   {
     try
     {
-      Object value = PropertyUtils.getProperty(context.get(bean), var);
+      final Object value = PropertyUtils.getProperty(context.get(bean), var);
       return value;
     }
     catch (Exception e)

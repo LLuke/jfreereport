@@ -10,16 +10,16 @@ public class EqualsTemplate extends CompoundTemplate
   private String bean;
   private String value;
 
-  public EqualsTemplate(String bean, String var, String value)
+  public EqualsTemplate(final String bean, final String var, final String value)
   {
     this.bean = bean;
     this.var = var;
     this.value = value;
   }
 
-  public void print(PrintWriter writer, Context context) throws TemplateException
+  public void print(final PrintWriter writer, final Context context) throws TemplateException
   {
-    String value = getStringValue(context);
+    final String value = getStringValue(context);
     if (value == null)
     {
       return;
@@ -32,11 +32,11 @@ public class EqualsTemplate extends CompoundTemplate
     super.print(writer, context);
   }
 
-  private String getStringValue (Context context) throws TemplateException
+  private String getStringValue (final Context context) throws TemplateException
   {
     try
     {
-      String value = BeanUtils.getProperty(context.get(bean), var);
+      final String value = BeanUtils.getProperty(context.get(bean), var);
       return value;
     }
     catch (Exception e)

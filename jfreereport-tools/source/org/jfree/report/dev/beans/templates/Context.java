@@ -14,19 +14,19 @@ public class Context
 
   public Context create()
   {
-    Context ctx = new Context();
+    final Context ctx = new Context();
     ctx.parent = this;
     return ctx;
   }
 
-  public void put (String name, Object value)
+  public void put (final String name, final Object value)
   {
     backend.put (name, value);
   }
 
-  public Object get (String name)
+  public Object get (final String name)
   {
-    Object retval = backend.get(name);
+    final Object retval = backend.get(name);
     if (retval == null && parent != null)
     {
       return parent.get(name);

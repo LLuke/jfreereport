@@ -35,7 +35,7 @@ public class EventSetHandler
   private HashMap shortDescriptions;
   private HashMap displayNames;
 
-  public EventSetHandler (ClassDoc cd)
+  public EventSetHandler (final ClassDoc cd)
   {
     defaultIndex = -1;
     defaultEvent = null;
@@ -53,25 +53,25 @@ public class EventSetHandler
 
     extractMethods(cd);
 
-    ArrayList eventDescriptors = new ArrayList();
-    Iterator it = properties.iterator();
+    final ArrayList eventDescriptors = new ArrayList();
+    final Iterator it = properties.iterator();
 
     while (it.hasNext())
     {
-      String eventName = (String) it.next();
-      MethodDoc addMethod = (MethodDoc) addMethods.get(eventName);
-      MethodDoc removeMethod = (MethodDoc) removeMethods.get(eventName);
+      final String eventName = (String) it.next();
+      final MethodDoc addMethod = (MethodDoc) addMethods.get(eventName);
+      final MethodDoc removeMethod = (MethodDoc) removeMethods.get(eventName);
       if (addMethod == null || removeMethod == null)
       {
         System.err.println ("No add/remove method for event " + eventName +
             " add: " + addMethod + "; remove: " + removeMethod);
         continue;
       }
-      Parameter listenerParam = addMethod.parameters()[0];
-      ClassDoc listener = listenerParam.type().asClassDoc();
-      String[] listenerMethods = getEventMethods(listener);
+      final Parameter listenerParam = addMethod.parameters()[0];
+      final ClassDoc listener = listenerParam.type().asClassDoc();
+      final String[] listenerMethods = getEventMethods(listener);
 
-      GeneratorEventSetDescriptor gesd = new GeneratorEventSetDescriptor();
+      final GeneratorEventSetDescriptor gesd = new GeneratorEventSetDescriptor();
       gesd.setAddMethod(addMethod.name());
       gesd.setRemoveMethod(removeMethod.name());
       gesd.setName(eventName);
@@ -98,12 +98,12 @@ public class EventSetHandler
         eventDescriptors.toArray(new GeneratorEventSetDescriptor[eventDescriptors.size()]);
   }
 
-  private void parseClassDefinitionEvents(ClassDoc cd)
+  private void parseClassDefinitionEvents(final ClassDoc cd)
   {
-    Tag[] eventTags = cd.tags("defaultevent");
+    final Tag[] eventTags = cd.tags("defaultevent");
     for (int i = 0; i < eventTags.length; i++)
     {
-      String[] tagContent = BeanInfoDoclet.parseTag(eventTags[i]);
+      final String[] tagContent = BeanInfoDoclet.parseTag(eventTags[i]);
       if (tagContent.length > 0)
       {
         defaultEvent = tagContent[0];
@@ -121,22 +121,22 @@ public class EventSetHandler
     return eventSetDescriptors;
   }
 
-  private void extractMethods(ClassDoc cd)
+  private void extractMethods(final ClassDoc cd)
   {
-    MethodDoc[] methodDocs = cd.methods();
+    final MethodDoc[] methodDocs = cd.methods();
     // search for event methods (add*, remove*, get*)
     for (int i = 0; i < methodDocs.length; i++)
     {
-      MethodDoc methodDoc = methodDocs[i];
+      final MethodDoc methodDoc = methodDocs[i];
       if (isEventSetMethod(methodDoc) == false)
       {
         continue;
       }
 
-      String name = methodDoc.name();
+      final String name = methodDoc.name();
       if (name.startsWith(ADD_PREFIX))
       {
-        String eventName = Introspector.decapitalize
+        final String eventName = Introspector.decapitalize
             (name.substring(ADD_PREFIX.length(), name.length() - LISTENER_SUFFIX.length()));
         addMethods.put (eventName, methodDoc);
         properties.add(eventName);
@@ -144,7 +144,7 @@ public class EventSetHandler
       }
       else if (name.startsWith(REMOVE_PREFIX))
       {
-        String eventName = Introspector.decapitalize
+        final String eventName = Introspector.decapitalize
             (name.substring(REMOVE_PREFIX.length(), name.length() - LISTENER_SUFFIX.length()));
         removeMethods.put (eventName, methodDoc);
         properties.add(eventName);
@@ -163,23 +163,23 @@ public class EventSetHandler
     // search for event methods (add*, remove*, get*)
     for (int i = 0; i < methodDocs.length; i++)
     {
-      MethodDoc methodDoc = methodDocs[i];
+      final MethodDoc methodDoc = methodDocs[i];
       if (isEventSetMethod(methodDoc) == false)
       {
         continue;
       }
 
-      Tag[] tags = methodDoc.tags("event");
+      final Tag[] tags = methodDoc.tags("event");
       for (int ti = 0; ti < tags.length; ti++)
       {
-        String[] parsedTags = BeanInfoDoclet.parseTag(tags[ti]);
+        final String[] parsedTags = BeanInfoDoclet.parseTag(tags[ti]);
         if (parsedTags.length != 2 && parsedTags.length != 3)
         {
           System.err.println(tags[ti].position() + ": Invalid number of arguments for tag @event");
           continue;
         }
-        String type = parsedTags[0];
-        String eventName = parsedTags[1];
+        final String type = parsedTags[0];
+        final String eventName = parsedTags[1];
         if (parsedTags.length == 3 && parsedTags[2].equals("default"))
         {
           if (defaultEvent != null)
@@ -215,7 +215,7 @@ public class EventSetHandler
 
   }
 
-  private void updateFlags (MethodDoc methodDoc, String eventName)
+  private void updateFlags (final MethodDoc methodDoc, final String eventName)
   {
     if (methodDoc.tags("expert").length != 0)
     {
@@ -244,18 +244,18 @@ public class EventSetHandler
 
 
 
-  private static String[] getEventMethods (ClassDoc listener)
+  private static String[] getEventMethods (final ClassDoc listener)
   {
-    MethodDoc[] methods = listener.methods();
-    ArrayList listenerMethods = new ArrayList();
+    final MethodDoc[] methods = listener.methods();
+    final ArrayList listenerMethods = new ArrayList();
     for (int i = 0; i < methods.length; i++)
     {
-      Parameter[] params = methods[i].parameters();
+      final Parameter[] params = methods[i].parameters();
       if (params.length != 1)
       {
         continue;
       }
-      ClassDoc classDoc = params[0].type().asClassDoc();
+      final ClassDoc classDoc = params[0].type().asClassDoc();
       if (classDoc == null)
       {
         continue;
@@ -268,14 +268,14 @@ public class EventSetHandler
     return (String[]) listenerMethods.toArray(new String[listenerMethods.size()]);
   }
 
-  private static boolean isEventSetMethod(MethodDoc method)
+  private static boolean isEventSetMethod(final MethodDoc method)
   {
-    Parameter[] parameters = method.parameters();
+    final Parameter[] parameters = method.parameters();
     if (parameters.length != 1)
     {
       return false;
     }
-    ClassDoc param = parameters[0].type().asClassDoc();
+    final ClassDoc param = parameters[0].type().asClassDoc();
     if (param == null)
     {
       return false;

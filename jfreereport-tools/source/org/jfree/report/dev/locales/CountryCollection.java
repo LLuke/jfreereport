@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.TreeMap;
 
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class CountryCollection
 {
@@ -19,7 +20,8 @@ public class CountryCollection
 
   public void load () throws IOException
   {
-    final InputStream in = getClass().getResourceAsStream("iso3166-country-codes.csv");
+    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
+            ("iso3166-country-codes.csv", CountryCollection.class);
     if (in == null)
     {
       Log.debug ("Unable to find required resource");

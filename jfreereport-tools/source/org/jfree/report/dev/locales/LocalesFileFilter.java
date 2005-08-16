@@ -20,7 +20,7 @@ public class LocalesFileFilter implements FilenameFilter
    * @return <code>true</code> if and only if the name should be included in the file
    *         list; <code>false</code> otherwise.
    */
-  public boolean accept (File dir, String name)
+  public boolean accept (final File dir, final String name)
   {
     if (name.startsWith(prefix) == false)
     {

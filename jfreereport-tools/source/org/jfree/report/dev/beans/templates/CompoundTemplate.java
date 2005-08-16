@@ -12,16 +12,16 @@ public class CompoundTemplate implements Template
     templates = new ArrayList();
   }
 
-  public void addTemplate (Template t)
+  public void addTemplate (final Template t)
   {
     templates.add (t);
   }
 
-  public void print(PrintWriter writer, Context context) throws TemplateException
+  public void print(final PrintWriter writer, final Context context) throws TemplateException
   {
     for (int i = 0; i < templates.size(); i++)
     {
-      Template t = (Template) templates.get(i);
+      final Template t = (Template) templates.get(i);
       t.print(writer, context);
     }
   }

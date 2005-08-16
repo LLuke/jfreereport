@@ -37,7 +37,7 @@ public class PropertiesHandler
   private static final int INDEXED_SETTER = 3;
   private GeneratorPropertyDescriptor[] propertyDescriptors;
 
-  public PropertiesHandler(ClassDoc classDoc)
+  public PropertiesHandler(final ClassDoc classDoc)
   {
     this.classDoc = classDoc;
     readMethods = new HashMap();
@@ -56,21 +56,21 @@ public class PropertiesHandler
 
     extractMethods();
 
-    ArrayList propertyDescriptors = new ArrayList();
-    Iterator it = properties.iterator();
+    final ArrayList propertyDescriptors = new ArrayList();
+    final Iterator it = properties.iterator();
 
     while (it.hasNext())
     {
-      String propertyName = (String) it.next();
-      MethodDoc readMethod = (MethodDoc) readMethods.get(propertyName);
-      MethodDoc writeMethod = (MethodDoc) writeMethods.get(propertyName);
-      MethodDoc idxReadMethod = (MethodDoc) indexReadMethods.get(propertyName);
-      MethodDoc idxWriteMethod = (MethodDoc) indexWriteMethods.get(propertyName);
+      final String propertyName = (String) it.next();
+      final MethodDoc readMethod = (MethodDoc) readMethods.get(propertyName);
+      final MethodDoc writeMethod = (MethodDoc) writeMethods.get(propertyName);
+      final MethodDoc idxReadMethod = (MethodDoc) indexReadMethods.get(propertyName);
+      final MethodDoc idxWriteMethod = (MethodDoc) indexWriteMethods.get(propertyName);
 
-      GeneratorPropertyDescriptor gpsd;
+      final GeneratorPropertyDescriptor gpsd;
       if (idxReadMethod != null || idxWriteMethod != null)
       {
-        GeneratorIndexedPropertyDescriptor gipsd = new GeneratorIndexedPropertyDescriptor();
+        final GeneratorIndexedPropertyDescriptor gipsd = new GeneratorIndexedPropertyDescriptor();
         if (idxReadMethod != null)
         {
           gipsd.setIndexedReadMethod(idxReadMethod.name());
@@ -116,11 +116,11 @@ public class PropertiesHandler
 
   private void extractMethods()
   {
-    MethodDoc[] methodDocs = classDoc.methods();
+    final MethodDoc[] methodDocs = classDoc.methods();
     // search for event methods (add*, remove*, get*)
     for (int i = 0; i < methodDocs.length; i++)
     {
-      MethodDoc methodDoc = methodDocs[i];
+      final MethodDoc methodDoc = methodDocs[i];
       final int accessorType = getAccessorType(methodDoc);
       if (accessorType == -1)
       {
@@ -128,7 +128,7 @@ public class PropertiesHandler
         continue;
       }
       System.out.println ("PropertyAccessor: " + methodDoc);
-      String propertyName = getPropertyName(methodDoc);
+      final String propertyName = getPropertyName(methodDoc);
       properties.add(propertyName);
       switch(accessorType)
       {
@@ -158,7 +158,7 @@ public class PropertiesHandler
     }
   }
 
-  private void updateFlags (MethodDoc methodDoc, String propertyName)
+  private void updateFlags (final MethodDoc methodDoc, final String propertyName)
   {
     if (methodDoc.tags("expert").length != 0)
     {
@@ -193,7 +193,7 @@ public class PropertiesHandler
     }
   }
 
-  private static int getAccessorType(MethodDoc method)
+  private static int getAccessorType(final MethodDoc method)
   {
     if (method.isPublic() == false || method.isStatic())
     {
@@ -202,10 +202,10 @@ public class PropertiesHandler
 
     boolean readMethod = false;
     boolean writeMethod = false;
-    Tag[] tags = method.tags("property");
+    final Tag[] tags = method.tags("property");
     for (int i = 0; i < tags.length; i++)
     {
-      String[] tagContent = BeanInfoDoclet.parseTag(tags[i]);
+      final String[] tagContent = BeanInfoDoclet.parseTag(tags[i]);
       if (tagContent.length == 2)
       {
         if (tagContent[0].equals("read"))
@@ -219,7 +219,7 @@ public class PropertiesHandler
       }
     }
 
-    Parameter[] parameters = method.parameters();
+    final Parameter[] parameters = method.parameters();
     if (readMethod ||
         method.name().startsWith("get") ||
         method.name().startsWith("is"))
@@ -267,12 +267,12 @@ public class PropertiesHandler
     return -1;
   }
 
-  private String getPropertyName(MethodDoc md)
+  private String getPropertyName(final MethodDoc md)
   {
-    Tag[] tags = md.tags("property");
+    final Tag[] tags = md.tags("property");
     for (int i = 0; i < tags.length; i++)
     {
-      String[] tagContent = BeanInfoDoclet.parseTag(tags[i]);
+      final String[] tagContent = BeanInfoDoclet.parseTag(tags[i]);
       if (tagContent.length == 2)
       {
         if (tagContent[0].equals("read"))

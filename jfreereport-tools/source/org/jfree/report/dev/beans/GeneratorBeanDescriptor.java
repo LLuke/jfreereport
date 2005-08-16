@@ -28,7 +28,7 @@ public class GeneratorBeanDescriptor extends FeatureDescriptor
     return customizerClass;
   }
 
-  public void setCustomizerClass(String customizerClass)
+  public void setCustomizerClass(final String customizerClass)
   {
     this.customizerClass = customizerClass;
   }
@@ -38,7 +38,7 @@ public class GeneratorBeanDescriptor extends FeatureDescriptor
     return beanClass;
   }
 
-  public void setBeanClass(String beanClass)
+  public void setBeanClass(final String beanClass)
   {
     this.beanClass = beanClass;
   }
@@ -48,7 +48,7 @@ public class GeneratorBeanDescriptor extends FeatureDescriptor
     return packageName;
   }
 
-  public void setPackageName(String packageName)
+  public void setPackageName(final String packageName)
   {
     this.packageName = packageName;
   }
@@ -58,7 +58,7 @@ public class GeneratorBeanDescriptor extends FeatureDescriptor
     return stopClass;
   }
 
-  public void setStopClass(String stopClass)
+  public void setStopClass(final String stopClass)
   {
     this.stopClass = stopClass;
   }

@@ -13,16 +13,16 @@ public class ForEachTemplate extends CompoundTemplate
   private String bean;
   private String asVar;
 
-  public ForEachTemplate(String bean, String var, String asVar)
+  public ForEachTemplate(final String bean, final String var, final String asVar)
   {
     this.bean = bean;
     this.var = var;
     this.asVar = asVar;
   }
 
-  public void print(PrintWriter writer, Context context) throws TemplateException
+  public void print(final PrintWriter writer, final Context context) throws TemplateException
   {
-    Object value = getObjectValue(context);
+    final Object value = getObjectValue(context);
     if (value == null)
     {
       return;
@@ -36,7 +36,7 @@ public class ForEachTemplate extends CompoundTemplate
       }
       for (int i = 0; i < length; i++)
       {
-        Context ctx = context.create();
+        final Context ctx = context.create();
         final Object arrVal = Array.get(value, i);
         ctx.put(asVar, arrVal);
         super.print(writer, ctx);
@@ -44,12 +44,12 @@ public class ForEachTemplate extends CompoundTemplate
     }
     else if (value instanceof Collection)
     {
-      Collection c = (Collection) value;
-      Iterator it = c.iterator();
+      final Collection c = (Collection) value;
+      final Iterator it = c.iterator();
       while (it.hasNext())
       {
-        Object o = it.next();
-        Context ctx = context.create();
+        final Object o = it.next();
+        final Context ctx = context.create();
         ctx.put(asVar, o);
         super.print(writer, ctx);
       }
@@ -57,11 +57,11 @@ public class ForEachTemplate extends CompoundTemplate
 
   }
 
-  private Object getObjectValue (Context context) throws TemplateException
+  private Object getObjectValue (final Context context) throws TemplateException
   {
     try
     {
-      Object value = PropertyUtils.getProperty(context.get(bean), var);
+      final Object value = PropertyUtils.getProperty(context.get(bean), var);
       return value;
     }
     catch (Exception e)
