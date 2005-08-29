@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MultiReportDemo.java,v 1.3 2005/05/20 16:06:43 taqua Exp $
+ * $Id: MultiReportDemo.java,v 1.4 2005/07/28 10:33:27 taqua Exp $
  *
  * Changes
  * -------
@@ -40,35 +40,19 @@
  */
 package org.jfree.report.demo.multireport;
 
-import java.awt.BorderLayout;
-import java.io.IOException;
 import java.net.URL;
-import java.text.MessageFormat;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.JComponent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.report.modules.gui.base.PreviewFrame;
+import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
+import org.jfree.report.demo.helper.ReportDefinitionException;
+import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.report.modules.misc.tablemodel.JoiningTableModel;
-import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.action.ActionButton;
-import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.xml.ElementDefinitionException;
 
 /**
  * The MultiReportDemo combines data from multiple table models
@@ -79,129 +63,45 @@ import org.jfree.xml.ElementDefinitionException;
  *
  * @author Thomas Morgner
  */
-public class MultiReportDemo extends AbstractDemoFrame
+public class MultiReportDemo extends AbstractXmlDemoHandler
 {
-
   /**
    * The data for the report.
    */
   private final TableModel data;
 
-  /**
-   * Constructs the demo application.
-   *
-   * @param title the frame title.
-   */
-  public MultiReportDemo (final String title)
+  public MultiReportDemo()
   {
-    setTitle(title);
     this.data = createJoinedTableModel();
-    setJMenuBar(createMenuBar());
-    setContentPane(createContent());
   }
 
-  /**
-   * Creates a menu bar.
-   *
-   * @return the menu bar.
-   */
-  public JMenuBar createMenuBar ()
+  public String getDemoName()
   {
-    final JMenuBar mb = new JMenuBar();
-    final JMenu fileMenu = createJMenu("menu.file");
-
-    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
-
-    fileMenu.add(previewItem);
-    fileMenu.addSeparator();
-    fileMenu.add(exitItem);
-    mb.add(fileMenu);
-    return mb;
+    return "Multi-Report Demo";
   }
 
-  /**
-   * Creates the content for the application frame.
-   *
-   * @return a panel containing the basic user interface.
-   */
-  public JPanel createContent ()
+  public JFreeReport createReport() throws ReportDefinitionException
   {
-    final JPanel content = new JPanel(new BorderLayout());
-    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-
-    final String d = "This demo shows how to join two tablemodels in one report.";
-    final JTextArea textArea = new JTextArea(d);
-    textArea.setLineWrap(true);
-    textArea.setWrapStyleWord(true);
-    textArea.setEditable(false);
-    final JScrollPane scroll = new JScrollPane(textArea);
-    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    final JTable table = new JTable(this.data);
-    final JScrollPane scrollPane = new JScrollPane(table);
-
-    final JButton previewButton = new ActionButton(getPreviewAction());
-
-    content.add(scroll, BorderLayout.NORTH);
-    content.add(scrollPane);
-    content.add(previewButton, BorderLayout.SOUTH);
-    return content;
-
-  }
-
-  /**
-   * Parses the report.
-   *
-   * @return the report.
-   */
-  protected JFreeReport parseReport ()
-          throws IOException, ElementDefinitionException
-  {
-    final URL in = ObjectUtilities.getResource
-            ("org/jfree/report/demo/multireport/joined-report.xml", MultiReportDemo.class);
-
-    if (in == null)
-    {
-      JOptionPane.showMessageDialog(this,
-              MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                      new Object[]{in}),
-              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
-      return null;
-    }
-
-    final ReportGenerator generator = ReportGenerator.getInstance();
-    final JFreeReport report = generator.parseReport(in);
+    final JFreeReport report = parseReport();
     report.setData(this.data);
     return report;
   }
 
-  /**
-   * Displays a print preview screen for the sample report.
-   */
-  protected void attemptPreview ()
+  public URL getDemoDescriptionSource()
   {
-    try
-    {
-      final JFreeReport report = parseReport();
-      final PreviewFrame frame = new PreviewFrame(report);
-      frame.getBase().setToolbarFloatable(true);
-      frame.pack();
-      RefineryUtilities.positionFrameRandomly(frame);
-      frame.setVisible(true);
-      frame.requestFocus();
-    }
-    catch (ReportProcessingException rpe)
-    {
-      showExceptionDialog("report.previewfailure", rpe);
-    }
-    catch (IOException e)
-    {
-      showExceptionDialog("report.definitionfailure", e);
-    }
-    catch (ElementDefinitionException e)
-    {
-      showExceptionDialog("report.definitionfailure", e);
-    }
+    return ObjectUtilities.getResourceRelative
+            ("multireport.html", MultiReportDemo.class);
+  }
+
+  public JComponent getPresentationComponent()
+  {
+    return createDefaultTable(data);
+  }
+
+  public URL getReportDefinitionSource()
+  {
+    return ObjectUtilities.getResourceRelative
+            ("joined-report.xml", MultiReportDemo.class);
   }
 
   private TableModel createFruitTableModel ()
@@ -241,7 +141,10 @@ public class MultiReportDemo extends AbstractDemoFrame
   public static void main (final String[] args)
   {
     JFreeReportBoot.getInstance().start();
-    final MultiReportDemo frame = new MultiReportDemo("Multiple Reports Demo");
+
+    final MultiReportDemo demoHandler = new MultiReportDemo();
+    final SimpleDemoFrame frame = new SimpleDemoFrame(demoHandler);
+    frame.init();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

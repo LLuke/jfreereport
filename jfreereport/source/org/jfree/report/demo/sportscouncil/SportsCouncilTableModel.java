@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: SportsCouncilTableModel.java,v 1.4 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -192,37 +192,68 @@ public class SportsCouncilTableModel extends AbstractTableModel
 
   public static SportsCouncilTableModel createDefaultModel ()
   {
-    final CouncilRecord councilRecord = new CouncilRecord
-            ("1", "Unseen University",
-                    "http://www.unseen-university.edu", "council@unseen-university.edu",
+    final CouncilRecord uuCouncilRecord = new CouncilRecord
+            ("1", "Unseen University Sports Council",
+                    "http://www.unseen-university.edu", "sportscouncil@unseen-university.edu",
                     "Alberto Malich Plaza 1", "", "Ankh-Mopork", "AM", "88888",
                     "(01 33) 5 85 38 56 36", "123", "(01 33) 5 85 38 99 99", 400, 35, 79, 111);
-    final Organization org = new Organization(councilRecord);
-    org.addLeader(new LeaderRecord
+    final Organization uuOrg = new Organization(uuCouncilRecord);
+    uuOrg.addLeader(new LeaderRecord
             ("1", "Mustrum", "Ridcully", "Archchancellor", "(01 33) 5 85 38 00 08",
                     "big.boss@unseen-university.edu"));
-    org.addLeader(new LeaderRecord
+    uuOrg.addLeader(new LeaderRecord
             ("1", "Dr.", "Dinwiddie", "Bursar", "(01 33) 5 85 38 53 21",
                     "bursar@unseen-university.edu"));
-    org.addLeader(new LeaderRecord
+    uuOrg.addLeader(new LeaderRecord
             ("1", "Windle", "Poons", "Wizzard", "(01 33) 5 85 38 12 36",
                     "poons@unseen-university.edu"));
 
     final SubOrganizationRecord sailors =
             new SubOrganizationRecord("1", "Sailing Club",
                     "sailing@unseen-university.edu", 24, 28);
-    org.addSubOrganization(sailors);
+    uuOrg.addSubOrganization(sailors);
     final SubOrganizationRecord daemonRiders =
             new SubOrganizationRecord("1", "Dungeon Dimension Explorers Club",
                     "dungeons@unseen-university.edu", 44, 15);
-    org.addSubOrganization(daemonRiders);
+    uuOrg.addSubOrganization(daemonRiders);
     final SubOrganizationRecord dragonBreeders =
             new SubOrganizationRecord("1", "Dragon Breeders Club",
                     "dragons@unseen-university.edu", 9, 29);
-    org.addSubOrganization(dragonBreeders);
+    uuOrg.addSubOrganization(dragonBreeders);
+
+    // Assasins guild record ..
+    final CouncilRecord agCouncilRecord = new CouncilRecord
+            ("1", "Assasins Guild Council",
+                    "http://www.assassins-guild.com", "info@assassins-guild.edu",
+                    "Grand Plaza 2a", "", "Ankh-Mopork", "AM", "88213",
+                    "(01 33) 6 66 55 53 36", "0", "(01 33) 6 66 66 53 39", 200, 15, 49, 31);
+    final Organization org = new Organization(agCouncilRecord);
+    org.addLeader(new LeaderRecord
+            ("1", "Dr. MD", "Downey", "President", "(01 33) 6 66 55 53 37",
+                    "big.boss@assassins-guild.edu"));
+    org.addLeader(new LeaderRecord
+            ("1", "Zlorf", "Flannelfoot", "Vice-President", "(01 33) 6 66 55 53 32",
+                    "flannelfoot@assassins-guild.edu"));
+    org.addLeader(new LeaderRecord
+            ("1", "Jonathan", "Teatime", "Assassin", "(01 33) 6 66 55 53 34",
+                    "teatime@assassins-guild.edu"));
+
+    final SubOrganizationRecord fenching =
+            new SubOrganizationRecord("1", "Fencing Club",
+                    "fencing@assassins-guild.edu", 23, 22);
+    org.addSubOrganization(fenching);
+    final SubOrganizationRecord camouflage =
+            new SubOrganizationRecord("1", "Mask Chamber",
+                    "camouflage@assassins-guild.edu", 21, 23);
+    org.addSubOrganization(camouflage);
+    final SubOrganizationRecord rangeWeapons =
+            new SubOrganizationRecord("1", "Archer's Society",
+                    "bowmen@assassins-guild.edu", 13, 22);
+    org.addSubOrganization(rangeWeapons);
 
     final SportsCouncilTableModel tableModel = new SportsCouncilTableModel();
     tableModel.copyInto(org);
+    tableModel.copyInto(uuOrg);
     return tableModel;
   }
 }

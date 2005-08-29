@@ -13,7 +13,7 @@
     <rectangle x="0" y="0" width="100%" height="100%" draw="true" fill="true" color="#DAFAC5"/>
 
     <rectangle x="5" y="0" width="50" height="11" draw="true" fill="false"/>
-    <label x="5" y="0" width="50" height="11">Numero</label>
+    <label x="5" y="0" width="50" height="11">Number</label>
 
     <rectangle x="5" y="11" width="50" height="25" draw="true" fill="false"/>
     <label x="5" y="11" width="50" height="25">Data Present</label>

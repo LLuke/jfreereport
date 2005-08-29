@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.6 2005/05/18 18:38:26 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.7 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,202 +38,72 @@
 
 package org.jfree.report.demo;
 
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Properties;
-import javax.swing.AbstractAction;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.util.Log;
+import org.jfree.report.demo.bookstore.BookstoreDemo;
+import org.jfree.report.demo.cards.CardDemo;
+import org.jfree.report.demo.conditionalgroup.ConditionalGroupDemo;
+import org.jfree.report.demo.csv.CSVReaderDemo;
+import org.jfree.report.demo.fonts.FontDemo;
+import org.jfree.report.demo.form.SimplePatientFormDemo;
+import org.jfree.report.demo.functions.FunctionsDemo;
+import org.jfree.report.demo.functions.PercentageDemo;
+import org.jfree.report.demo.groups.GroupsDemo;
+import org.jfree.report.demo.helper.CompoundDemoFrame;
+import org.jfree.report.demo.helper.DefaultDemoSelector;
+import org.jfree.report.demo.helper.DemoSelector;
+import org.jfree.report.demo.huge.VeryLargeReportDemo;
+import org.jfree.report.demo.internationalisation.I18nDemo;
+import org.jfree.report.demo.invoice.InvoiceDemo;
+import org.jfree.report.demo.largetext.LGPLTextDemo;
+import org.jfree.report.demo.layouts.LayoutDemo;
+import org.jfree.report.demo.multireport.MultiReportDemo;
+import org.jfree.report.demo.onetomany.PeopleReportDemo;
+import org.jfree.report.demo.opensource.OpenSourceDemo;
+import org.jfree.report.demo.sportscouncil.SportsCouncilDemo;
+import org.jfree.report.demo.surveyscale.SurveyScaleDemo;
+import org.jfree.report.demo.swingicons.SwingIconsDemo;
+import org.jfree.report.demo.world.WorldDemo;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.action.ActionButton;
-import org.jfree.ui.action.ActionMenuItem;
-import org.jfree.util.ObjectUtilities;
 
-public class DemoFrontend extends AbstractDemoFrame
+public class DemoFrontend extends CompoundDemoFrame
 {
-  private static class RunDemoAction
-          extends AbstractAction
+  public DemoFrontend(final DemoSelector demoSelector)
   {
-    private Class target;
-    private String description;
-
-    public RunDemoAction (final String name, final Class target,
-                          final String description)
-    {
-      putValue(NAME, name);
-      putValue(SHORT_DESCRIPTION, description);
-      this.target = target;
-      this.description = description;
-    }
-
-    public String getDescription ()
-    {
-      return description;
-    }
-
-    public void actionPerformed (final ActionEvent event)
-    {
-      try
-      {
-        final String[] args = new String[0];
-        final Method m = target.getMethod("main", new Class[]{args.getClass()});
-        m.invoke(null, new Object[]{args});
-      }
-      catch (Exception e)
-      {
-        // failed to execute ...
-        Log.error ("There was an error while trying to start the requested demo", e);
-      }
-    }
-  }
-
-  private RunDemoAction[] demos;
-
-  public DemoFrontend ()
-  {
-    demos = createDemoActions();
-    setTitle("Demo Selector");
-    setJMenuBar(createMenuBar());
-    setContentPane(createContentPane());
-    ReportConfiguration.getGlobalConfig().setConfigProperty
-            ("org.jfree.report.demo.Embedded", "true");
-  }
-
-  private JPanel createContentPane ()
-  {
-    final int cols = 2;
-    final int rows = (int) Math.ceil(demos.length / (double) cols);
-
-    final JPanel panel = new JPanel();
-    panel.setLayout(new GridLayout(rows, cols));
-
-    for (int i = 0; i < demos.length; i++)
-    {
-//      final GridBagConstraints gbc = new GridBagConstraints();
-//      gbc.gridx = 0;
-//      gbc.gridy = i;
-//      gbc.fill = GridBagConstraints.HORIZONTAL;
-//      gbc.insets = new Insets (2, 2, 2, 2);
-      panel.add(new ActionButton(demos[i]));
-
-//      gbc = new GridBagConstraints();
-//      gbc.gridx = 1;
-//      gbc.gridy = i;
-//      gbc.fill = GridBagConstraints.HORIZONTAL;
-//      gbc.insets = new Insets (2, 2, 2, 2);
-//      panel.add (new JLabel (demos[i].getDescription()), gbc);
-    }
-    return panel;
-  }
-
-  /**
-   * Creates a menu bar.
-   *
-   * @return the menu bar.
-   */
-  public JMenuBar createMenuBar ()
-  {
-    final JMenuBar mb = new JMenuBar();
-    final JMenu fileMenu = createJMenu("menu.file");
-
-    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
-
-    for (int i = 0; i < demos.length; i++)
-    {
-      fileMenu.add(new ActionMenuItem(demos[i]));
-    }
-    fileMenu.addSeparator();
-    fileMenu.add(exitItem);
-    mb.add(fileMenu);
-    return mb;
-  }
-
-
-  private RunDemoAction[] createDemoActions ()
-  {
-    final InputStream in = ObjectUtilities.getResourceRelativeAsStream
-            ("demos.properties", DemoFrontend.class);
-    if (in == null)
-    {
-      Log.warn("Missing resource: demos.properties");
-      return null;
-    }
-    try
-    {
-      final Properties p = new Properties();
-      p.load(in);
-      in.close();
-
-      final ArrayList list = new ArrayList();
-
-      final int size = Integer.parseInt(p.getProperty("size"));
-      final ClassLoader cl = ObjectUtilities.getClassLoader(DemoFrontend.class);
-      for (int i = 0; i < size; i++)
-      {
-        final String name = p.getProperty("demo." + i + ".name");
-        final String className = p.getProperty("demo." + i + ".class");
-        final String description = p.getProperty("demo." + i + ".description", "-");
-        if (name == null || className == null)
-        {
-          continue;
-        }
-        final Class c = cl.loadClass(className);
-        list.add(new RunDemoAction(name, c, description));
-      }
-
-      final RunDemoAction[] retval = (RunDemoAction[])
-              list.toArray(new RunDemoAction[list.size()]);
-      return retval;
-    }
-    catch (Exception e)
-    {
-      Log.warn("Unable to parse demo list: demos.properties", e);
-      return null;
-    }
-  }
-
-  /**
-   * Exits the application, but only if the user agrees.
-   *
-   * @return false if the user decides not to exit the application.
-   */
-  protected boolean attemptExit ()
-  {
-    final boolean close =
-            JOptionPane.showConfirmDialog(this,
-                    getResources().getString("exitdialog.message"),
-                    getResources().getString("exitdialog.title"),
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-    if (close)
-    {
-      System.exit(0);
-    }
-
-    return close;
-  }
-
-  /**
-   * Handler method called by the preview action. This method should perform all
-   * operations to preview the report.
-   */
-  protected void attemptPreview ()
-  {
+    super(demoSelector);
+    setIgnoreEmbeddedConfig(true);
+    ReportConfiguration.getGlobalConfig().setConfigProperty(EMBEDDED_KEY, "true");
+    init();
   }
 
   public static void main (final String[] args)
   {
-    final DemoFrontend frontend = new DemoFrontend();
+    final DefaultDemoSelector rootSelector = new DefaultDemoSelector
+            ("All JFreeReport Demos");
+    rootSelector.addChild(CardDemo.createDemoInfo());
+    rootSelector.addChild(InvoiceDemo.createDemoInfo());
+    rootSelector.addChild(PeopleReportDemo.createDemoInfo());
+    rootSelector.addChild(SurveyScaleDemo.createDemoInfo());
+    rootSelector.addChild(WorldDemo.createDemoInfo());
+    rootSelector.addChild(OpenSourceDemo.createDemoInfo());
+    rootSelector.addChild(FunctionsDemo.createDemoInfo());
+    rootSelector.addChild(LayoutDemo.createDemoInfo());
+    // report footer
+    rootSelector.addDemo(new ConditionalGroupDemo());
+    rootSelector.addDemo(new CSVReaderDemo());
+    rootSelector.addDemo(new SimplePatientFormDemo());
+    rootSelector.addDemo(new MultiReportDemo());
+    rootSelector.addDemo(new SportsCouncilDemo());
+    rootSelector.addDemo(new SwingIconsDemo());
+    rootSelector.addDemo(new HelloWorld());
+    rootSelector.addDemo(new LGPLTextDemo());
+    rootSelector.addDemo(new I18nDemo());
+    rootSelector.addDemo(new PercentageDemo());
+    rootSelector.addDemo(new GroupsDemo());
+    rootSelector.addDemo(new FontDemo());
+    rootSelector.addDemo(new VeryLargeReportDemo());
+    rootSelector.addDemo(new BookstoreDemo());
+
+    final DemoFrontend frontend = new DemoFrontend(rootSelector);
     frontend.pack();
     RefineryUtilities.centerFrameOnScreen(frontend);
     frontend.setVisible(true);

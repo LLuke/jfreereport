@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleDemoFrame.java,v 1.7 2005/05/20 16:06:43 taqua Exp $
+ * $Id: SimpleDemoFrame.java,v 1.8 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,95 +41,79 @@
 package org.jfree.report.demo.helper;
 
 import java.awt.BorderLayout;
-import java.io.FileNotFoundException;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URL;
-import java.text.MessageFormat;
 import javax.swing.BorderFactory;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.table.TableModel;
+import javax.swing.JSplitPane;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.modules.gui.base.PreviewFrame;
-import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.util.Log;
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.ActionButton;
-import org.jfree.ui.action.ActionMenuItem;
-import org.jfree.xml.ElementDefinitionException;
-import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 
-public abstract class SimpleDemoFrame extends AbstractDemoFrame
+public class SimpleDemoFrame extends AbstractDemoFrame
 {
-  public SimpleDemoFrame ()
+  private InternalDemoHandler demoHandler;
+
+  public SimpleDemoFrame (final InternalDemoHandler demoHandler)
   {
+    this.demoHandler = demoHandler;
   }
 
-  protected void init ()
+  protected InternalDemoHandler getDemoHandler()
   {
-    setTitle(getResources().getString(getResourcePrefix() + ".Title"));
+    return demoHandler;
+  }
+
+  public void init ()
+  {
+    final InternalDemoHandler demoHandler = getDemoHandler();
+    setTitle(demoHandler.getDemoName());
     setJMenuBar(createMenuBar());
-    setContentPane(createContent());
+    setContentPane(createDefaultContentPane());
   }
 
-  protected abstract String getResourcePrefix ();
-
-  protected abstract TableModel getData ();
-
-  /**
-   * Creates a menu bar.
-   *
-   * @return the menu bar.
-   */
-  protected JMenuBar createMenuBar ()
+  protected JComponent createDefaultContentPane ()
   {
-    final JMenuBar mb = new JMenuBar();
-    final JMenu fileMenu = createJMenu("menu.file");
-
-    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
-
-    fileMenu.add(previewItem);
-    fileMenu.addSeparator();
-    fileMenu.add(exitItem);
-    mb.add(fileMenu);
-    return mb;
-  }
-
-  /**
-   * Creates the content for the application frame.
-   *
-   * @return a panel containing the basic user interface.
-   */
-  public JPanel createContent ()
-  {
-    final String d = getResources().getString(getResourcePrefix() + ".Description");
-    final JTextArea textArea = new JTextArea(d);
-    textArea.setLineWrap(true);
-    textArea.setWrapStyleWord(true);
-    textArea.setEditable(false);
-
-    final JScrollPane scroll = new JScrollPane(textArea);
-    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-    final JScrollPane scrollPane = new JScrollPane(new JTable(getData()));
-    final JPanel innerContent = new JPanel();
-    innerContent.setLayout(new BorderLayout());
-    innerContent.add(scroll, BorderLayout.NORTH);
-    innerContent.add(scrollPane, BorderLayout.CENTER);
-
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    content.add(innerContent);
-    content.add(new ActionButton(getPreviewAction()), BorderLayout.SOUTH);
+
+    final InternalDemoHandler demoHandler = getDemoHandler();
+    final JEditorPane editorPane = new JEditorPane();
+    final URL url = demoHandler.getDemoDescriptionSource();
+    editorPane.setEditable(false);
+    editorPane.setPreferredSize(new Dimension (400, 200));
+    if (url != null)
+    {
+      try
+      {
+        editorPane.setPage(url);
+      }
+      catch (IOException e)
+      {
+        Log.error("Failed to load demo description", e);
+        editorPane.setText("Unable to load the demo description. Error: " + e.getMessage());
+      }
+    }
+    else
+    {
+      editorPane.setText("Unable to load the demo description. No such resource.");
+    }
+
+    final JScrollPane scroll = new JScrollPane(editorPane,
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+    final JButton previewButton = new ActionButton(getPreviewAction());
+
+    final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    splitPane.setTopComponent(scroll);
+    splitPane.setBottomComponent(demoHandler.getPresentationComponent());
+    content.add(splitPane, BorderLayout.CENTER);
+    content.add(previewButton, BorderLayout.SOUTH);
     return content;
   }
 
@@ -139,69 +123,8 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    try
-    {
-      final JFreeReport report = createReport();
-      report.setData(getData());
-
-      final PreviewFrame frame = new PreviewFrame(report);
-      frame.getBase().setToolbarFloatable(true);
-      frame.pack();
-      RefineryUtilities.positionFrameRandomly(frame);
-      frame.setVisible(true);
-      frame.requestFocus();
-    }
-    catch (ElementDefinitionException e)
-    {
-      Log.error("Unable to parse the report; report definition contained errors.", e);
-      showExceptionDialog("report.definitionfailure", e);
-    }
-    catch (FileNotFoundException e)
-    {
-      Log.error("The report definition file was not found.");
-      JOptionPane.showMessageDialog(this,
-              MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                      new Object[]{e.getMessage()}),
-              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
-    }
-    catch (IOException e)
-    {
-      Log.error("Unable to parse the report; IO failure while reading the report.", e);
-      showExceptionDialog("report.definitionfailure", e);
-    }
-    catch (ReportProcessingException rpe)
-    {
-      Log.error("Unable to procress the report");
-      showExceptionDialog("report.previewfailure", rpe);
-    }
+    final InternalDemoHandler demoHandler = getDemoHandler();
+    final PreviewHandler previewHandler = demoHandler.getPreviewHandler();
+    previewHandler.attemptPreview();
   }
-
-  protected abstract JFreeReport createReport ()
-          throws ElementDefinitionException, IOException;
-
-
-  /**
-   * Reads the report from the specified template file.
-   *
-   * @param resourceName the template location.
-   * @return a report.
-   *
-   * @throws IOException                if an error occured while readin the stream
-   * @throws ElementDefinitionException if the XML contained syntax errors.
-   */
-  protected JFreeReport loadReport (final String resourceName)
-          throws IOException, ElementDefinitionException
-  {
-    final URL in = ObjectUtilities.getResource
-            (resourceName, SimpleDemoFrame.class);
-    if (in == null)
-    {
-      throw new FileNotFoundException(resourceName);
-    }
-
-    final ReportGenerator generator = ReportGenerator.getInstance();
-    final JFreeReport report = generator.parseReport(in);
-    return report;
-  }
-
 }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,25 +20,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
- * in the United States and other countries.]
+ * -------------------
+ * SwingIconsDemo.java
+ * -------------------
+ * (C)opyright 2002, 2003, by Simba Management Limited and Contributors.
  *
- * ------------
- * SportsCouncilDemo.java
- * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: SportsCouncilDemo.java,v 1.7 2005/08/08 15:36:29 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.10 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------
- *
+ * 15-Jul-2002 : Version 1 (DG);
+ * 20-Nov-2002 : Corrected possible read error if the icon is not read completely from the zip file;
+ * 27-Feb-2003 : Renamed First.java --> SwingIconsDemo.java (DG);
  *
  */
-package org.jfree.report.demo.sportscouncil;
+
+package org.jfree.report.demo.swingicons;
 
 import java.net.URL;
 import javax.swing.JComponent;
@@ -51,42 +51,55 @@ import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
 
-public class SportsCouncilDemo extends AbstractXmlDemoHandler
+/**
+ * A demonstration application. <P> This demo is written up in the JFreeReport PDF
+ * Documentation.  Please notify David Gilbert (david.gilbert@object-refinery.com) if you
+ * need to make changes to this file. <P> To run this demo, you need to have the Java Look
+ * and Feel Icons jar file on your classpath.
+ *
+ * @author David Gilbert
+ */
+public class SwingIconsDemo extends AbstractXmlDemoHandler
 {
-  private SportsCouncilTableModel data;
+  private SwingIconsDemoPanel demoPanel;
 
-  public SportsCouncilDemo()
+  /**
+   * Constructs the demo application.
+   *
+   * @param title the frame title.
+   */
+  public SwingIconsDemo ()
   {
-    data = SportsCouncilTableModel.createDefaultModel();
+    demoPanel = new SwingIconsDemoPanel();
   }
 
-  public URL getReportDefinitionSource()
+  public JComponent getPresentationComponent()
   {
-    return ObjectUtilities.getResourceRelative
-            ("council.xml", SportsCouncilDemo.class);
+    return demoPanel;
   }
 
   public String getDemoName()
   {
-    return "Sports-Council Demo";
-  }
-
-  public JFreeReport createReport() throws ReportDefinitionException
-  {
-    final JFreeReport report = parseReport();
-    report.setData(data);
-    return report;
+    return "Swing Icons Report";
   }
 
   public URL getDemoDescriptionSource()
   {
     return ObjectUtilities.getResourceRelative
-            ("sportscouncil.html", SportsCouncilDemo.class);
+            ("swing-icons.html", SwingIconsDemo.class);
   }
 
-  public JComponent getPresentationComponent()
+  public URL getReportDefinitionSource()
   {
-    return createDefaultTable(data);
+    return ObjectUtilities.getResourceRelative
+            ("swing-icons.xml", SwingIconsDemo.class);
+  }
+
+  public JFreeReport createReport() throws ReportDefinitionException
+  {
+    JFreeReport report = parseReport();
+    report.setData(demoPanel.getData());
+    return report;
   }
 
   /**
@@ -99,11 +112,12 @@ public class SportsCouncilDemo extends AbstractXmlDemoHandler
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
-    final SportsCouncilDemo handler = new SportsCouncilDemo();
+    final SwingIconsDemo handler = new SwingIconsDemo();
     final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
     frame.init();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
   }
+
 }

@@ -24,54 +24,88 @@
  * in the United States and other countries.]
  *
  * ------------
- * PeopleReportDemo.java
+ * ReportFooter2Demo.java
  * ------------
  * (C) Copyright 2002-2005, by Object Refinery Limited.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PeopleReportDemo.java,v 1.5 2005/08/08 15:36:29 taqua Exp $
+ * $Id: ReportFooter2Demo.java,v 1.4 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.report.demo.onetomany;
+package org.jfree.report.demo.reportfooter;
 
+import java.net.URL;
+import javax.swing.JComponent;
+import javax.swing.table.TableModel;
+
+import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.demo.helper.CompoundDemoFrame;
-import org.jfree.report.demo.helper.DemoSelector;
-import org.jfree.report.demo.helper.DefaultDemoSelector;
+import org.jfree.report.demo.groups.ColorAndLetterTableModel;
+import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
+import org.jfree.report.demo.helper.ReportDefinitionException;
+import org.jfree.report.demo.helper.SimpleDemoFrame;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
 
-public class PeopleReportDemo extends CompoundDemoFrame
+public class ReportFooter2Demo extends AbstractXmlDemoHandler
 {
-  public PeopleReportDemo(final DemoSelector demoSelector)
+  private TableModel data;
+
+  public ReportFooter2Demo ()
   {
-    super(demoSelector);
-    init();
+    data = new ColorAndLetterTableModel();
   }
 
-  public static DemoSelector createDemoInfo ()
+  public JFreeReport createReport ()
+          throws ReportDefinitionException
   {
-    final DefaultDemoSelector demoSelector =
-            new DefaultDemoSelector("One-To-Many-Elements Reports");
-    demoSelector.addDemo(new PeopleReportXmlDemoHandler());
-    demoSelector.addDemo(new PeopleReportAPIDemoHandler());
-    return demoSelector;
+    final JFreeReport report = parseReport();
+    report.setData(data);
+    return report;
   }
 
+  public String getDemoName()
+  {
+    return "Report Footer Demo 2";
+  }
+
+  public URL getDemoDescriptionSource()
+  {
+    return null;
+  }
+
+  public JComponent getPresentationComponent()
+  {
+    return createDefaultTable(data);
+  }
+
+  public URL getReportDefinitionSource()
+  {
+    return ObjectUtilities.getResourceRelative("footer-demo1.xml", ReportFooterDemo.class);
+  }
+
+
+  /**
+   * Entry point for running the demo application...
+   *
+   * @param args ignored.
+   */
   public static void main (final String[] args)
   {
+    // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
-
-    final PeopleReportDemo frame = new PeopleReportDemo(createDemoInfo());
+    final ReportFooter2Demo handler = new ReportFooter2Demo();
+    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+    frame.init();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
-
   }
 }

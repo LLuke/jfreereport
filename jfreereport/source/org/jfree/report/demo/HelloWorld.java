@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.9 2005/02/23 21:04:37 taqua Exp $
+ * $Id: HelloWorld.java,v 1.10 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
 package org.jfree.report.demo;
 
 import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -49,11 +47,13 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.demo.helper.DefaultCloseHandler;
+import org.jfree.report.demo.helper.DemoHandler;
+import org.jfree.report.demo.helper.PreviewHandler;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
+import org.jfree.util.Log;
 
 /**
  * A very simple JFreeReport demo.  The purpose of this demo is to illustrate the basic
@@ -65,33 +65,20 @@ import org.jfree.ui.FloatDimension;
  *
  * @author David Gilbert
  */
-public class HelloWorld
+public class HelloWorld implements DemoHandler
 {
   /**
-   * Window close handler.
+   * A helper class to make this demo accessible from the DemoFrontend.
    */
-  protected static class CloseHandler extends WindowAdapter
+  private class HelloWorldPreviewHandler implements PreviewHandler
   {
-    public CloseHandler ()
+    public HelloWorldPreviewHandler()
     {
     }
 
-    /**
-     * Handles the window closing event.
-     *
-     * @param event the window event.
-     */
-    public void windowClosing (final WindowEvent event)
+    public void attemptPreview()
     {
-      if (ReportConfiguration.getGlobalConfig().getConfigProperty
-              ("org.jfree.report.demo.Embedded", "false").equals("false"))
-      {
-        System.exit(0);
-      }
-      else
-      {
-        event.getWindow().setVisible(false);
-      }
+      executeReport();
     }
   }
 
@@ -100,14 +87,17 @@ public class HelloWorld
    */
   public HelloWorld ()
   {
+  }
 
+  protected void executeReport ()
+  {
     final TableModel data = createData();
     final JFreeReport report = createReportDefinition();
     report.setData(data);
     try
     {
       final PreviewDialog preview = new PreviewDialog(report);
-      preview.addWindowListener(new CloseHandler());
+      preview.addWindowListener(new DefaultCloseHandler());
       preview.pack();
       preview.setVisible(true);
     }
@@ -115,7 +105,6 @@ public class HelloWorld
     {
       Log.error("Failed to generate report ", e);
     }
-
   }
 
   /**
@@ -176,10 +165,22 @@ public class HelloWorld
    *
    * @return
    */
-  public String getDescription ()
+  protected String getDescription ()
   {
     return "A Very Simple Report";
   }
+
+
+  public String getDemoName()
+  {
+    return "Hello World Demo (External)";
+  }
+
+  public PreviewHandler getPreviewHandler()
+  {
+    return new HelloWorldPreviewHandler();
+  }
+
 
   /**
    * The starting point for the "Hello World" demo application.
@@ -192,7 +193,7 @@ public class HelloWorld
     JFreeReportBoot.getInstance().start();
 
     //final HelloWorld app =
-    new HelloWorld();
+    new HelloWorld().executeReport();
   }
 
 }

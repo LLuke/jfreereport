@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,28 +20,27 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
- * in the United States and other countries.]
+ * -------------------
+ * LGPLTextDemo.java
+ * -------------------
+ * (C)opyright 2002, by Simba Management Limited.
  *
- * ------------
- * SportsCouncilDemo.java
- * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
- *
- * Original Author:  Thomas Morgner;
+ * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SportsCouncilDemo.java,v 1.7 2005/08/08 15:36:29 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.8 2005/05/20 16:06:20 taqua Exp $
  *
  * Changes
  * -------
- *
+ * 29-Nov-2002 : Version 1 (DG);
  *
  */
-package org.jfree.report.demo.sportscouncil;
+
+package org.jfree.report.demo.largetext;
 
 import java.net.URL;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
@@ -51,42 +50,45 @@ import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
 
-public class SportsCouncilDemo extends AbstractXmlDemoHandler
+/**
+ * A simple JFreeReport demonstration.  The generated report contains the complete text of
+ * the LGPL.
+ *
+ * @author Thomas Morgner
+ */
+public class LGPLTextDemo extends AbstractXmlDemoHandler
 {
-  private SportsCouncilTableModel data;
 
-  public SportsCouncilDemo()
+  /**
+   * Constructs the demo application.
+   */
+  public LGPLTextDemo ()
   {
-    data = SportsCouncilTableModel.createDefaultModel();
   }
 
-  public URL getReportDefinitionSource()
+  public JFreeReport createReport () throws ReportDefinitionException
   {
-    return ObjectUtilities.getResourceRelative
-            ("council.xml", SportsCouncilDemo.class);
+    return parseReport();
   }
 
   public String getDemoName()
   {
-    return "Sports-Council Demo";
-  }
-
-  public JFreeReport createReport() throws ReportDefinitionException
-  {
-    final JFreeReport report = parseReport();
-    report.setData(data);
-    return report;
+    return "Large Text Demo";
   }
 
   public URL getDemoDescriptionSource()
   {
-    return ObjectUtilities.getResourceRelative
-            ("sportscouncil.html", SportsCouncilDemo.class);
+    return ObjectUtilities.getResourceRelative("lgpl.html", LGPLTextDemo.class);
   }
 
   public JComponent getPresentationComponent()
   {
-    return createDefaultTable(data);
+    return new JPanel();
+  }
+
+  public URL getReportDefinitionSource()
+  {
+    return ObjectUtilities.getResourceRelative("lgpl.xml", LGPLTextDemo.class);
   }
 
   /**
@@ -99,11 +101,11 @@ public class SportsCouncilDemo extends AbstractXmlDemoHandler
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
-    final SportsCouncilDemo handler = new SportsCouncilDemo();
+    final LGPLTextDemo handler = new LGPLTextDemo();
     final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
-    frame.init();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
   }
+
 }

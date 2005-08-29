@@ -24,21 +24,22 @@
  * in the United States and other countries.]
  *
  * ------------
- * SportsCouncilDemo.java
+ * StackedLayoutXMLDemoHandler.java
  * ------------
  * (C) Copyright 2002-2005, by Object Refinery Limited.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SportsCouncilDemo.java,v 1.7 2005/08/08 15:36:29 taqua Exp $
+ * $Id: StackedLayoutXMLDemoHandler.java,v 1.1 2005/08/10 14:23:40 taqua Exp $
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.report.demo.sportscouncil;
+
+package org.jfree.report.demo.layouts;
 
 import java.net.URL;
 import javax.swing.JComponent;
@@ -46,64 +47,77 @@ import javax.swing.JComponent;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
+import org.jfree.report.demo.helper.PreviewHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.ui.RefineryUtilities;
 
-public class SportsCouncilDemo extends AbstractXmlDemoHandler
+/**
+ * A simple report that shows the user input as report property value.
+ *
+ * @author Thomas Morgner
+ */
+public class StackedLayoutXMLDemoHandler extends AbstractXmlDemoHandler
 {
-  private SportsCouncilTableModel data;
+  private DemoTextInputPanel panel;
+  private PropertyUpdatePreviewHandler previewHandler;
 
-  public SportsCouncilDemo()
+  /**
+   * Constructs the demo application.
+   *
+   * @param title the frame title.
+   */
+  public StackedLayoutXMLDemoHandler ()
   {
-    data = SportsCouncilTableModel.createDefaultModel();
-  }
-
-  public URL getReportDefinitionSource()
-  {
-    return ObjectUtilities.getResourceRelative
-            ("council.xml", SportsCouncilDemo.class);
+    panel = new DemoTextInputPanel();
+    previewHandler = new PropertyUpdatePreviewHandler(this);
   }
 
   public String getDemoName()
   {
-    return "Sports-Council Demo";
+    return "Stacked Layout Manager Demo (XML)";
   }
 
   public JFreeReport createReport() throws ReportDefinitionException
   {
-    final JFreeReport report = parseReport();
-    report.setData(data);
+    JFreeReport report = parseReport();
+    report.setProperty("Message1", panel.getMessageOne());
+    report.setProperty("Message2", panel.getMessageTwo());
     return report;
   }
 
   public URL getDemoDescriptionSource()
   {
-    return ObjectUtilities.getResourceRelative
-            ("sportscouncil.html", SportsCouncilDemo.class);
+    return ObjectUtilities.getResourceRelative("stacked-layout.html", StackedLayoutXMLDemoHandler.class);
   }
 
   public JComponent getPresentationComponent()
   {
-    return createDefaultTable(data);
+    return panel;
   }
 
-  /**
-   * Entry point for running the demo application...
-   *
-   * @param args ignored.
-   */
+  public URL getReportDefinitionSource()
+  {
+    return ObjectUtilities.getResourceRelative("stacked-layout.xml", StackedLayoutXMLDemoHandler.class);
+  }
+
+  public PreviewHandler getPreviewHandler()
+  {
+    return previewHandler;
+  }
+
+
   public static void main (final String[] args)
   {
-    // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
-    final SportsCouncilDemo handler = new SportsCouncilDemo();
-    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+    final StackedLayoutXMLDemoHandler demoHandler = new StackedLayoutXMLDemoHandler();
+    final SimpleDemoFrame frame = new SimpleDemoFrame(demoHandler);
     frame.init();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
+
   }
 }

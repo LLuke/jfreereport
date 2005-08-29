@@ -196,6 +196,18 @@
       </properties>
     </expression>
 
-    <function class="org.jfree.report.demo.sportscouncil.TriggerGroupBandFunction" name="triggerBand"/>
+    <function class="org.jfree.report.function.HideElementByNameFunction" name="LeaderVisibility">
+      <properties>
+        <property name="element">leader</property>
+        <property name="field">recordID</property>
+      </properties>
+    </function>
+
+    <function class="org.jfree.report.function.HideElementByNameFunction" name="OrgVisibility">
+      <properties>
+        <property name="element">org</property>
+        <property name="field">recordID</property>
+      </properties>
+    </function>
   </functions>
 </report>

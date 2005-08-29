@@ -24,24 +24,25 @@
  * in the United States and other countries.]
  *
  * ------------
- * SportsCouncilDemo.java
+ * MultiPageCountryDataDemoHandler.java
  * ------------
  * (C) Copyright 2002-2005, by Object Refinery Limited.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SportsCouncilDemo.java,v 1.7 2005/08/08 15:36:29 taqua Exp $
+ * $Id: MultiPageCountryDataDemoHandler.java,v 1.1 2005/08/12 12:10:59 taqua Exp $
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.report.demo.sportscouncil;
+package org.jfree.report.demo.world;
 
 import java.net.URL;
 import javax.swing.JComponent;
+import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
@@ -51,24 +52,27 @@ import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
 
-public class SportsCouncilDemo extends AbstractXmlDemoHandler
+public class MultiPageCountryDataDemoHandler extends AbstractXmlDemoHandler
 {
-  private SportsCouncilTableModel data;
+  /**
+   * The data for the report.
+   */
+  private final TableModel data;
 
-  public SportsCouncilDemo()
+  /**
+   * Constructs the demo application.
+   *
+   * @param title the frame title.
+   */
+  public MultiPageCountryDataDemoHandler ()
   {
-    data = SportsCouncilTableModel.createDefaultModel();
+    this.data = new CountryDataTableModel();
   }
 
-  public URL getReportDefinitionSource()
-  {
-    return ObjectUtilities.getResourceRelative
-            ("council.xml", SportsCouncilDemo.class);
-  }
 
   public String getDemoName()
   {
-    return "Sports-Council Demo";
+    return "Page Spanning Country Report Demo";
   }
 
   public JFreeReport createReport() throws ReportDefinitionException
@@ -80,14 +84,19 @@ public class SportsCouncilDemo extends AbstractXmlDemoHandler
 
   public URL getDemoDescriptionSource()
   {
-    return ObjectUtilities.getResourceRelative
-            ("sportscouncil.html", SportsCouncilDemo.class);
+    return ObjectUtilities.getResourceRelative("multipage-country-report.html", CountryReportSecurityXMLDemoHandler.class);
   }
 
   public JComponent getPresentationComponent()
   {
     return createDefaultTable(data);
   }
+
+  public URL getReportDefinitionSource()
+  {
+    return ObjectUtilities.getResourceRelative("multipage-country-report.xml", CountryReportSecurityXMLDemoHandler.class);
+  }
+
 
   /**
    * Entry point for running the demo application...
@@ -99,7 +108,7 @@ public class SportsCouncilDemo extends AbstractXmlDemoHandler
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
-    final SportsCouncilDemo handler = new SportsCouncilDemo();
+    final CountryReportSecurityXMLDemoHandler handler = new CountryReportSecurityXMLDemoHandler();
     final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
     frame.init();
     frame.pack();
