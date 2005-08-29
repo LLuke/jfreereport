@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CardDemo.java,v 1.4 2005/02/23 21:04:41 taqua Exp $
+ * $Id: CardDemo.java,v 1.5 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -36,14 +36,9 @@
  */
 package org.jfree.report.demo.cards;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.swing.UIManager;
-import javax.swing.table.TableModel;
-
-import org.jfree.report.demo.JFreeReportDemo;
-import org.jfree.util.Log;
+import org.jfree.report.demo.helper.CompoundDemoFrame;
+import org.jfree.report.demo.helper.DefaultDemoSelector;
+import org.jfree.report.demo.helper.DemoSelector;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -51,69 +46,15 @@ import org.jfree.ui.RefineryUtilities;
  *
  * @author Thomas Morgner.
  */
-public class CardDemo extends JFreeReportDemo
+public class CardDemo extends CompoundDemoFrame
 {
   /**
    * Default constructor.
    */
-  public CardDemo ()
+  public CardDemo (final DemoSelector selector)
   {
-  }
-
-  /**
-   * Creates a <code>TableModel</code> containing data for the demo. <!-- used in JUnit
-   * tests -->
-   *
-   * @return A <code>TableModel</code>.
-   */
-  public static TableModel createSimpleDemoModel ()
-  {
-    final CardTableModel model = new CardTableModel();
-    model.addCard(new AdminCard("Jared", "Diamond", "NR123123", "login", "secret", new Date()));
-    model.addCard(new FreeCard("NR123123", new Date()));
-    model.addCard(new PrepaidCard("First Name", "Last Name", "NR123123"));
-    model.addCard(new AccountCard("John", "Doe", "NR123123", "login", "secret"));
-    model.addCard(new UserCard("Richard", "Helm", "NR123123", "login", "secret", new Date()));
-    return new WrappingTableModel(model, "C1_", "C2_");
-  }
-
-  /**
-   * Creates a <code>TableModel</code> containing data for the demo.
-   *
-   * @return A <code>TableModel</code>.
-   */
-  private TableModel createEmptyStartDemoModel ()
-  {
-    final CardTableModel model = new CardTableModel();
-    model.addCard(new NoPrintCard());
-    model.addCard(new NoPrintCard());
-    model.addCard(new NoPrintCard());
-    model.addCard(new AdminCard("Jared", "Diamond", "NR123123", "login", "secret", new Date()));
-    model.addCard(new FreeCard("NR123123", new Date()));
-    model.addCard(new PrepaidCard("First Name", "Last Name", "NR123123"));
-    model.addCard(new AccountCard("John", "Doe", "NR123123", "login", "secret"));
-    model.addCard(new UserCard("Richard", "Helm", "NR123123", "login", "secret", new Date()));
-    return new WrappingTableModel(model, "C1_", "C2_");
-  }
-
-  /**
-   * Creates a list of the available demos.
-   *
-   * @return A list.
-   */
-  protected List createAvailableDemos ()
-  {
-    final ArrayList demos = new ArrayList();
-
-    demos.add(new DemoDefinition("Simple Card printing",
-            createSimpleDemoModel(),
-            new URLDemoHandler("/org/jfree/report/demo/cards/usercards.xml")));
-
-    demos.add(new DemoDefinition("First 3 cards empty",
-            createEmptyStartDemoModel(),
-            new URLDemoHandler("/org/jfree/report/demo/cards/usercards.xml")));
-
-    return demos;
+    super(selector);
+    init();
   }
 
   /**
@@ -123,26 +64,18 @@ public class CardDemo extends JFreeReportDemo
    */
   public static void main (final String[] args)
   {
-    try
-    {
-      try
-      {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      }
-      catch (Exception e)
-      {
-        Log.info("Look and feel problem.");
-      }
+    final DefaultDemoSelector selector = createDemoInfo();
 
-      final CardDemo frame = new CardDemo();
-      frame.pack();
-      frame.setBounds(100, 100, 700, 400);
-      RefineryUtilities.centerFrameOnScreen(frame);
-      frame.setVisible(true);
-    }
-    catch (Throwable th)
-    {
-      th.printStackTrace();
-    }
+    final CardDemo frame = new CardDemo(selector);
+    frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
+  }
+
+  public static DefaultDemoSelector createDemoInfo() {
+    final DefaultDemoSelector selector = new DefaultDemoSelector("Card demos");
+    selector.addDemo(new SimpleCardDemoHandler());
+    selector.addDemo(new LeadingEmptyCardsDemoHandler());
+    return selector;
   }
 }
