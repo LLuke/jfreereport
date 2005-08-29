@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.11 2005/08/12 12:09:38 taqua Exp $
+ * $Id: ContentContainer.java,v 1.12 2005/08/29 17:56:46 taqua Exp $
  *
  * Changes
  * -------
@@ -160,7 +160,7 @@ public class ContentContainer implements MultipartContent
     for (int i = 0; i < getContentPartCount(); i++)
     {
       final Content contentPart = getContentPart(i);
-      if (StrictBounds.intersects(contentPart.getBounds(), bounds) == false)
+      if (!StrictBounds.intersects(contentPart.getBounds(), bounds))
       {
         continue;
       }
@@ -188,27 +188,34 @@ public class ContentContainer implements MultipartContent
     return cc;
   }
 
-  /**
-   * Returns the minimum content size for the container.
-   *
-   * @return the minimum size or null, if this container has no content.
-   */
-  public StrictBounds getMinimumContentSize ()
-  {
-    final StrictBounds retval = new StrictBounds();
-    for (int i = 0; i < getContentPartCount(); i++)
+    /**
+     * Returns the minimum content size for the container.
+     *
+     * @return the minimum size or null, if this container has no content.
+     */
+    public StrictBounds getMinimumContentSize ()
     {
-      final Content contentPart = getContentPart(i);
-      final StrictBounds minCBounds = contentPart.getMinimumContentSize();
-
-      if (minCBounds == null)
+      StrictBounds retval = null;
+      for (int i = 0; i < getContentPartCount(); i++)
       {
-        continue;
+        final Content contentPart = getContentPart(i);
+        final StrictBounds minCBounds = contentPart.getMinimumContentSize();
+
+        if (minCBounds == null)
+        {
+          continue;
+        }
+        if (retval != null) {
+            retval.add(minCBounds);
+        } else {
+            retval = minCBounds;
+        }
       }
-      retval.add(minCBounds);
+        if (retval == null) {
+            retval = new StrictBounds();
+        }
+      return retval;
     }
-    return retval;
-  }
 
   /**
    * Returns a string describing this object.
