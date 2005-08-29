@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePatientFormDemo.java,v 1.5 2005/05/20 16:06:43 taqua Exp $
+ * $Id: SimplePatientFormDemo.java,v 1.6 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,34 +38,19 @@
 
 package org.jfree.report.demo.form;
 
-import java.awt.BorderLayout;
 import java.net.URL;
-import java.text.MessageFormat;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.JComponent;
 
 import org.jfree.date.DateUtilities;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.report.modules.gui.base.PreviewFrame;
-import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.util.Log;
-import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.action.ActionButton;
-import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
+import org.jfree.report.demo.helper.ReportDefinitionException;
+import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.ui.RefineryUtilities;
 
-public class SimplePatientFormDemo extends AbstractDemoFrame
+public class SimplePatientFormDemo extends AbstractXmlDemoHandler
 {
   private PatientTableModel data;
 
@@ -120,128 +105,37 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
     data.addPatient(johnDoe);
     data.addPatient(kane);
 
-    setTitle("Simple Patient Form Demo");
-    // as the tablemodel does not fire any change events, we have to initialize it first
-    // evil lazy me .. should change that ...
-    setJMenuBar(createMenuBar());
-    setContentPane(createContent());
-
   }
 
-  /**
-   * Creates a menu bar.
-   *
-   * @return the menu bar.
-   */
-  public JMenuBar createMenuBar ()
+  public String getDemoName()
   {
-    final JMenuBar mb = new JMenuBar();
-    final JMenu fileMenu = createJMenu("menu.file");
-
-    final JMenuItem previewItem = new ActionMenuItem(getPreviewAction());
-    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
-
-    fileMenu.add(previewItem);
-    fileMenu.addSeparator();
-    fileMenu.add(exitItem);
-    mb.add(fileMenu);
-    return mb;
+    return "Patient Form Demo";
   }
 
-  /**
-   * Creates the content for the application frame.
-   *
-   * @return a panel containing the basic user interface.
-   */
-  public JPanel createContent ()
+  public URL getDemoDescriptionSource()
   {
-    final JPanel content = new JPanel(new BorderLayout());
-    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-
-    final String d = "This demo creates a form based report for patient data in an hospital.";
-    final JTextArea textArea = new JTextArea(d);
-    textArea.setLineWrap(true);
-    textArea.setWrapStyleWord(true);
-    textArea.setEditable(false);
-    final JScrollPane scroll = new JScrollPane(textArea);
-    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    final JTable table = new JTable(this.data);
-    final JScrollPane scrollPane = new JScrollPane(table);
-
-    final JButton previewButton = new ActionButton(getPreviewAction());
-
-    content.add(scroll, BorderLayout.NORTH);
-    content.add(scrollPane);
-    content.add(previewButton, BorderLayout.SOUTH);
-    return content;
-
+    return ObjectUtilities.getResourceRelative
+            ("form.html", SimplePatientFormDemo.class);
   }
 
-  /**
-   * Displays a print preview screen for the sample report.
-   */
-  protected void attemptPreview ()
+  public JComponent getPresentationComponent()
   {
-    final URL in = ObjectUtilities.getResource
-            ("org/jfree/report/demo/form/patient.xml", SimplePatientFormDemo.class);
-
-    if (in == null)
-    {
-      JOptionPane.showMessageDialog(this,
-              MessageFormat.format(getResources().getString("report.definitionnotfound"),
-                      new Object[]{in}),
-              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
-    }
-
-    final JFreeReport report;
-    try
-    {
-      report = parseReport(in);
-      report.setData(this.data);
-    }
-    catch (Exception ex)
-    {
-      showExceptionDialog("report.definitionfailure", ex);
-      return;
-    }
-
-    try
-    {
-      final PreviewFrame frame = new PreviewFrame(report);
-      frame.getBase().setToolbarFloatable(true);
-      frame.pack();
-      RefineryUtilities.positionFrameRandomly(frame);
-      frame.setVisible(true);
-      frame.requestFocus();
-    }
-    catch (ReportProcessingException rpe)
-    {
-      showExceptionDialog("report.previewfailure", rpe);
-    }
+    return createDefaultTable(this.data);
   }
 
-  /**
-   * Reads the report from the specified template file.
-   *
-   * @param templateURL the template location.
-   * @return a report.
-   */
-  private JFreeReport parseReport (final URL templateURL)
+  public URL getReportDefinitionSource()
   {
-
-    JFreeReport result = null;
-    final ReportGenerator generator = ReportGenerator.getInstance();
-    try
-    {
-      result = generator.parseReport(templateURL);
-    }
-    catch (Exception e)
-    {
-      Log.error("Failed to parse the report definition", e);
-    }
-    return result;
-
+    return ObjectUtilities.getResourceRelative
+            ("patient.xml", SimplePatientFormDemo.class);
   }
+
+  public JFreeReport createReport() throws ReportDefinitionException
+  {
+    JFreeReport report = parseReport();
+    report.setData(data);
+    return report;
+  }
+
 
   /**
    * Entry point for running the demo application...
@@ -253,7 +147,9 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
-    final SimplePatientFormDemo frame = new SimplePatientFormDemo();
+    final SimplePatientFormDemo handler = new SimplePatientFormDemo();
+    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+    frame.init();
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

@@ -71,7 +71,7 @@
 
   <groups>
     <group name="Patient-Group">
-      <groupheader height="330" fontsize="9" vertical-alignment="bottom">
+      <groupheader height="330" fontsize="9" vertical-alignment="bottom" pagebreak-before-print="true">
         <label x="10" y="10" width="100" height="20" fsbold="true" fontname="SansSerif" fontsize="14" alignment="left">Patient:</label>
         <label x="10" y="30" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Name</label>
         <string-field x="120" y="30" width="200" height="16" fontname="MonoSpaced" fieldname="patient.name"/>
