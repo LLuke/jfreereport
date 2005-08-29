@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.22 2005/03/03 14:42:33 taqua Exp $
+ * $Id: JFreeReport.java,v 1.23 2005/03/16 21:06:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -799,6 +799,8 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     report.reportHeader = (ReportHeader) reportHeader.clone();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
+    // we replace the reportbuilder-hints with an empty set here
+    // as only the original report definition will be hinted.
     report.reportBuilderHints = new ReportBuilderHints();
 
     report.groups.setReportDefinition(report);
@@ -816,7 +818,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    *
    * @return the information.
    */
-  public synchronized static final JFreeReportInfo getInfo ()
+  public synchronized static JFreeReportInfo getInfo ()
   {
     if (JFreeReport.info == null)
     {

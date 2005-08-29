@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleLegendItem.java,v 1.2 2005/01/25 01:25:37 taqua Exp $
+ * $Id: SurveyScaleLegendItem.java,v 1.3 2005/02/04 19:22:55 taqua Exp $
  *
  * Changes
  * -------
@@ -125,7 +125,8 @@ public class SurveyScaleLegendItem implements Drawable
     final Rectangle2D b = this.shape.getBounds2D();
     double x = area.getMinX() + b.getWidth() / 2.0 + 1.0;
     final double y = area.getCenterY();
-    final Shape s = SurveyScale.translateShape(this.shape, x, y);
+    final Shape s = getShape();
+    g2.translate(x,y);
     g2.setPaint(Color.black);
     if (this.draw)
     {
@@ -136,6 +137,7 @@ public class SurveyScaleLegendItem implements Drawable
     {
       g2.fill(s);
     }
+    g2.translate(-x, -y);
     x += b.getWidth() / 2.0 + 3.0;
     g2.setFont(this.font);
     TextUtilities.drawAlignedString

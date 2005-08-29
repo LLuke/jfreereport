@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractElementReadHandler.java,v 1.6 2005/03/03 23:00:22 taqua Exp $
+ * $Id: AbstractElementReadHandler.java,v 1.7 2005/08/10 14:22:22 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,13 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
 import org.jfree.report.Element;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.elementfactory.ElementFactory;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
@@ -145,8 +148,10 @@ public abstract class AbstractElementReadHandler
   private static final String LAYOUT_CACHABLE_ATT = "layout-cachable";
   private static final String VISIBLE_ATT = "visible";
   private static final String HREF_ATT = "href";
+  public static final String STYLE_CLASS_ATT = "styleClass";
 
   private Element element;
+  private String styleClass;
 
   public AbstractElementReadHandler ()
   {
@@ -165,6 +170,7 @@ public abstract class AbstractElementReadHandler
   {
     final ElementFactory factory = getElementFactory();
     factory.setName(atts.getValue(NAME_ATT));
+    styleClass = atts.getValue(STYLE_CLASS_ATT);
     final Point2D elementPosition = getElementPosition(atts);
     if (elementPosition != null)
     {
@@ -175,19 +181,22 @@ public abstract class AbstractElementReadHandler
     final String dynamicValue = atts.getValue(DYNAMIC_ATT);
     if (dynamicValue != null)
     {
-      factory.setDynamicHeight(new Boolean(ParserUtil.parseBoolean(dynamicValue, false)));
+      final boolean dynamic = ParserUtil.parseBoolean(dynamicValue,false);
+      factory.setDynamicHeight(dynamic ? Boolean.TRUE : Boolean.FALSE);
     }
 
     final String layoutCachableValue = atts.getValue(LAYOUT_CACHABLE_ATT);
     if (layoutCachableValue != null)
     {
-      factory.setLayoutCachable(new Boolean(ParserUtil.parseBoolean(layoutCachableValue, true)));
+      final boolean value = ParserUtil.parseBoolean(layoutCachableValue, true);
+      factory.setLayoutCachable((value) ? Boolean.TRUE : Boolean.FALSE);
     }
 
     final String visibleValue = atts.getValue(VISIBLE_ATT);
     if (visibleValue != null)
     {
-      factory.setVisible(new Boolean(ParserUtil.parseBoolean(visibleValue, true)));
+      final boolean value = ParserUtil.parseBoolean(visibleValue, true);
+      factory.setVisible((value) ? Boolean.TRUE : Boolean.FALSE);
     }
 
     final String href = atts.getValue(HREF_ATT);
@@ -266,6 +275,14 @@ public abstract class AbstractElementReadHandler
           throws SAXException, XmlReaderException
   {
     element = getElementFactory().createElement();
+    if (styleClass != null)
+    {
+      final JFreeReport report = (JFreeReport) getRootHandler().getHelperObject
+              (ReportParser.HELPER_OBJ_REPORT_NAME);
+      final ElementStyleSheet styleSheet =
+              report.getStyleSheetCollection().getStyleSheet(styleClass);
+      element.getStyle().addParent(styleSheet);
+    }
     super.doneParsing();
   }
 

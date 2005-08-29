@@ -113,6 +113,8 @@ module-file=$${module-${module}-file}</echo>
       </fileset>
     </copy>
 
+    <copy file="maven-jfreereport-project.xml" tofile="distribution/maven-jfreereport-project.xml"/>
+	
   </target>
 
   <target name="remove-dist-dir">

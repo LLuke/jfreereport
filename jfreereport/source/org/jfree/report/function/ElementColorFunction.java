@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.10 2005/02/19 15:41:22 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.11 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -157,16 +157,7 @@ public class ElementColorFunction
       return;
     }
 
-    final boolean value;
-    final Object o = getDataRow().get(getField());
-    if (o == null)
-    {
-      value = false;
-    }
-    else
-    {
-      value = o.equals(Boolean.TRUE);
-    }
+    final boolean value = isValueTrue();
     final Color color;
     if (value)
     {
@@ -181,6 +172,21 @@ public class ElementColorFunction
     {
       elements[i].getStyle().setStyleProperty(ElementStyleSheet.PAINT, color);
     }
+  }
+
+  protected boolean isValueTrue()
+  {
+    final boolean value;
+    final Object o = getDataRow().get(getField());
+    if (o == null)
+    {
+      value = false;
+    }
+    else
+    {
+      value = o.equals(Boolean.TRUE);
+    }
+    return value;
   }
 
 

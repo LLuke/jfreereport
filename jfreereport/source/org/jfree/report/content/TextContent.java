@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContent.java,v 1.15 2005/08/08 15:36:27 taqua Exp $
+ * $Id: TextContent.java,v 1.16 2005/08/12 12:09:38 taqua Exp $
  *
  * Changes
  * -------
@@ -88,10 +88,10 @@ public class TextContent extends ContentContainer
     final long y = bounds.getY();
     final long w = bounds.getWidth();
     final long h = bounds.getHeight();
-    long usedHeight = 0;
 
     if (w != 0)
     {
+      long usedHeight = 0;
       final List paragraphs = splitContent(value);
       for (int i = 0; i < paragraphs.size(); i++)
       {

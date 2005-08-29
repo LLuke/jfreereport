@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleExpression.java,v 1.4 2005/02/23 21:05:25 taqua Exp $
+ * $Id: SurveyScaleExpression.java,v 1.5 2005/04/15 19:53:46 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.awt.Shape;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.jfree.report.DrawableElement;
 import org.jfree.report.function.AbstractExpression;
@@ -74,7 +73,7 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
   /**
    * An ordered list containing the fieldnames used in the expression.
    */
-  private List fieldList;
+  private ArrayList fieldList;
 
   /**
    * The name of the field containing the lower bound of the highlighted range.
@@ -122,15 +121,17 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
    *
    * @param lowest  the lowest value on the response scale.
    * @param highest the highest value on the response scale.
-   * @param range1  the name of the field containing the lower bound of the highlighted
+   * @param lowerBoundsField  the name of the field containing the lower bound of the highlighted
    *                range (<code>null</code> permitted).
-   * @param range2  the name of the field containing the upper bound of the highlighted
+   * @param upperBoundsField  the name of the field containing the upper bound of the highlighted
    *                range (<code>null</code> permitted).
    * @param shape   a shape that will be used to override the shape displayed for the
    *                first series (<code>null</code> permitted).
    */
-  public SurveyScaleExpression (final int lowest, final int highest,
-                                final String range1, final String range2,
+  public SurveyScaleExpression (final int lowest,
+                                final int highest,
+                                final String lowerBoundsField,
+                                final String upperBoundsField,
                                 final Shape shape)
   {
     this.lowest = lowest;
@@ -138,8 +139,8 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
     this.fieldList = new ArrayList();
     this.overrideShape = shape;
     this.overrideShapeFilled = false;
-    this.rangeLowerBoundField = range1;
-    this.rangeUpperBoundField = range2;
+    this.rangeLowerBoundField = lowerBoundsField;
+    this.rangeUpperBoundField = upperBoundsField;
     this.rangePaint = Color.lightGray;
   }
 
@@ -275,7 +276,7 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
           throws CloneNotSupportedException
   {
     final SurveyScaleExpression fva = (SurveyScaleExpression) super.clone();
-    fva.fieldList = new ArrayList(this.fieldList);
+    fva.fieldList = (ArrayList) this.fieldList.clone();
     return fva;
   }
 

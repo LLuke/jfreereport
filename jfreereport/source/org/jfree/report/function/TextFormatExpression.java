@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.4 2005/01/25 00:00:18 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.5 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ import java.util.Arrays;
  * <properties>
  * <property name="pattern">Invoice for your order from {0, date, EEE, MMM d,
  * yyyy}</property>
- * <property name="0">printdate</property>
+ * <property name="fields[0]">printdate</property>
  * </properties>
  * </expression>
  * </pre>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.10 2005/06/25 17:51:57 taqua Exp $
+ * $Id: ContentContainer.java,v 1.11 2005/08/12 12:09:38 taqua Exp $
  *
  * Changes
  * -------
@@ -195,7 +195,7 @@ public class ContentContainer implements MultipartContent
    */
   public StrictBounds getMinimumContentSize ()
   {
-    StrictBounds retval = null;
+    final StrictBounds retval = new StrictBounds();
     for (int i = 0; i < getContentPartCount(); i++)
     {
       final Content contentPart = getContentPart(i);
@@ -205,14 +205,7 @@ public class ContentContainer implements MultipartContent
       {
         continue;
       }
-      if (retval != null)
-      {
-        retval.add(minCBounds);
-      }
-      else
-      {
-        retval = minCBounds;
-      }
+      retval.add(minCBounds);
     }
     return retval;
   }

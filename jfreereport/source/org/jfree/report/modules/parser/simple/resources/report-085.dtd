@@ -92,6 +92,7 @@
   -->
 <!ENTITY % basicform
 " color                CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
   name                 CDATA         #IMPLIED
   dynamic              (%boolean;)   #IMPLIED
   trim-text-content    (%boolean;)   #IMPLIED
@@ -541,6 +542,7 @@ excel-format		     CDATA         #IMPLIED
 <!ATTLIST imageref
 %position;
 name                 CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
 src                  CDATA         #REQUIRED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
@@ -560,6 +562,7 @@ href                 CDATA         #IMPLIED
 %position;
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
@@ -579,6 +582,7 @@ href                 CDATA         #IMPLIED
 %position;
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
@@ -626,6 +630,7 @@ width                CDATA         #IMPLIED
 height               CDATA         #IMPLIED
 color                CDATA         #IMPLIED
 name                 CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
 weight               CDATA         #IMPLIED
 >
 
@@ -635,28 +640,28 @@ weight               CDATA         #IMPLIED
 <!ELEMENT drawable-field   EMPTY>
 <!ATTLIST drawable-field
 %position;
-height               CDATA         #REQUIRED
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
 >
 
 <!ELEMENT drawable-url-field   EMPTY>
 <!ATTLIST drawable-url-field
 %position;
-height               CDATA         #REQUIRED
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
 >
 
 <!ELEMENT drawableref   EMPTY>
 <!ATTLIST drawableref
 %position;
-height               CDATA         #REQUIRED
 href                 CDATA         #IMPLIED
 src                  CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
+  styleClass           CDATA         #IMPLIED
 >
 
 
@@ -692,6 +697,7 @@ nullstring           CDATA        #IMPLIED
 x                    CDATA        #REQUIRED
 y                    CDATA        #REQUIRED
 name                 CDATA        #IMPLIED
+  styleClass           CDATA         #IMPLIED
 fieldname            CDATA        #REQUIRED
 >
 

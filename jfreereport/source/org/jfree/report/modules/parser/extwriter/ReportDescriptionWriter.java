@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.13 2005/02/22 20:19:54 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.14 2005/02/23 21:05:56 taqua Exp $
  *
  * Changes
  * -------
@@ -220,7 +220,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
                              final Band parent, final CommentHintPath path)
           throws IOException, ReportWriterException
   {
-    if (parent.getElements().indexOf(element) == -1)
+    if (element.getParent() != parent)
     {
       throw new IllegalArgumentException("The given Element is no child of the band");
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.3 2005/02/04 19:22:55 taqua Exp $
+ * $Id: SurveyScale.java,v 1.4 2005/02/23 21:05:25 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -59,112 +58,81 @@ import org.jfree.util.ShapeList;
 import org.jfree.util.ShapeUtilities;
 
 /**
- * Draws a survey scale.  By implementing the {@link Drawable} interface, instances can be
- * displayed within a report using the {@link org.jfree.report.DrawableElement} class.
+ * Draws a survey scale.  By implementing the {@link Drawable} interface,
+ * instances can be displayed within a report using the {@link
+ * org.jfree.report.DrawableElement} class.
  *
  * @author David Gilbert
  */
 public class SurveyScale implements Drawable
 {
-  /**
-   * The lowest response value on the scale.
-   */
+  /** The lowest response value on the scale. */
   private int lowest;
 
-  /**
-   * The highest response value on the scale.
-   */
+  /** The highest response value on the scale. */
   private int highest;
 
-  /**
-   * The lower margin.
-   */
+  /** The lower margin. */
   private double lowerMargin = 0.10;
 
-  /**
-   * The upper margin.
-   */
+  /** The upper margin. */
   private double upperMargin = 0.10;
 
-  /**
-   * The shapes to display.
-   */
+  /** The shapes to display. */
   private ShapeList shapes;
 
-  /**
-   * The fill paint.
-   */
+  /** The fill paint. */
   private Paint fillPaint;
 
-  /**
-   * The outline stroke for the shapes.
-   */
+  /** The outline stroke for the shapes. */
   private Stroke outlineStroke;
 
-  /**
-   * A list of flags that control whether or not the shapes are filled.
-   */
+  /** A list of flags that control whether or not the shapes are filled. */
   private BooleanList fillShapes;
 
-  /**
-   * The values to display.
-   */
+  /** The values to display. */
   private Number[] values;
 
-  /**
-   * The lower bound of the highlighted range.
-   */
+  /** The lower bound of the highlighted range. */
   private Number rangeLowerBound;
 
-  /**
-   * The upper bound of the highlighted range.
-   */
+  /** The upper bound of the highlighted range. */
   private Number rangeUpperBound;
 
-  /**
-   * Draw a border?
-   */
+  /** Draw a border? */
   private boolean drawBorder = false;
 
-  /**
-   * Draw the tick marks?
-   */
+  /** Draw the tick marks? */
   private boolean drawTickMarks;
 
-  /**
-   * The tick mark paint.
-   */
+  /** The tick mark paint. */
   private Paint tickMarkPaint;
 
-  /**
-   * Draw the scale values.
-   */
+  /** Draw the scale values. */
   private boolean drawScaleValues = false;
 
-  /**
-   * The font used to display the scale values.
-   */
+  /** The font used to display the scale values. */
   private Font scaleValueFont;
 
-  /**
-   * The paint used to draw the scale values.
-   */
+  /** The paint used to draw the scale values. */
   private Paint scaleValuePaint;
 
-  /**
-   * The range paint.
-   */
+  /** The range paint. */
   private Paint rangePaint;
 
   /**
-   * The default shape, if no shape is defined in the shapeList for the given value.
+   * The default shape, if no shape is defined in the shapeList for the given
+   * value.
    */
   private Shape defaultShape;
 
-  /**
-   * Creates a new default instance.
-   */
-  public SurveyScale ()
+  private int range;
+  private double lowerBound;
+  private double upperBound;
+  private Paint borderPaint;
+
+  /** Creates a new default instance. */
+  public SurveyScale()
   {
     this(1, 5, null);
   }
@@ -176,8 +144,8 @@ public class SurveyScale implements Drawable
    * @param highest the highest response value on the scale.
    * @param values  the values to display.
    */
-  public SurveyScale (final int lowest, final int highest,
-                      final Number[] values)
+  public SurveyScale(final int lowest, final int highest,
+                     final Number[] values)
   {
 
     this.lowest = lowest;
@@ -187,7 +155,7 @@ public class SurveyScale implements Drawable
     this.drawTickMarks = true;
     this.tickMarkPaint = Color.gray;
 
-    this.scaleValueFont = new Font("Serif", Font.PLAIN + Font.ITALIC, 10);
+    this.scaleValueFont = new Font("Serif", Font.ITALIC, 10);
     this.scaleValuePaint = Color.black;
     this.defaultShape = new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
 
@@ -201,16 +169,79 @@ public class SurveyScale implements Drawable
     //this.fillShapes.setBoolean(5, Boolean.TRUE);
     this.fillPaint = Color.black;
     this.outlineStroke = new BasicStroke(0.5f);
+    recompute();
+  }
 
+  public int getLowest()
+  {
+    return lowest;
+  }
+
+  public void setLowest(final int lowest)
+  {
+    this.lowest = lowest;
+    recompute();
+  }
+
+  public int getHighest()
+  {
+    return highest;
+  }
+
+  public void setHighest(final int highest)
+  {
+    this.highest = highest;
+    recompute();
   }
 
   /**
-   * Creates the shape list used when drawing the scale. The list returned must contain
-   * exactly 6 elements.
+   * This method is called whenever lowest or highest has changed. It will
+   * recompute the range and upper and lower bounds.
+   */
+  protected void recompute()
+  {
+    this.range = Math.max(0, this.highest - this.lowest);
+    this.lowerBound = this.lowest - (range * this.lowerMargin);
+    this.upperBound = this.highest + (range * this.upperMargin);
+  }
+
+  protected int getRange()
+  {
+    return range;
+  }
+
+  protected void setRange(final int range)
+  {
+    this.range = range;
+  }
+
+  protected double getLowerBound()
+  {
+    return lowerBound;
+  }
+
+  protected void setLowerBound(final double lowerBound)
+  {
+    this.lowerBound = lowerBound;
+  }
+
+  protected double getUpperBound()
+  {
+    return upperBound;
+  }
+
+  protected void setUpperBound(final double upperBound)
+  {
+    this.upperBound = upperBound;
+  }
+
+  /**
+   * Creates the shape list used when drawing the scale. The list returned must
+   * contain exactly 6 elements.
    *
    * @return
    */
-  protected ShapeList createShapeList ()
+  protected ShapeList createShapeList()
   {
     final ShapeList shapes = new ShapeList();
     //this.shapes.setShape(0, createDiagonalCross(3.0f, 0.5f));
@@ -225,12 +256,12 @@ public class SurveyScale implements Drawable
   }
 
   /**
-   * Returns the lower bound of the highlighted range.  A <code>null</code> value
-   * indicates that no range is set for highlighting.
+   * Returns the lower bound of the highlighted range.  A <code>null</code>
+   * value indicates that no range is set for highlighting.
    *
    * @return The lower bound (possibly <code>null</code>).
    */
-  public Number getRangeLowerBound ()
+  public Number getRangeLowerBound()
   {
     return this.rangeLowerBound;
   }
@@ -240,18 +271,18 @@ public class SurveyScale implements Drawable
    *
    * @param bound the lower bound (<code>null</code> permitted).
    */
-  public void setRangeLowerBound (final Number bound)
+  public void setRangeLowerBound(final Number bound)
   {
     this.rangeLowerBound = bound;
   }
 
   /**
-   * Returns the upper bound of the highlighted range.  A <code>null</code> value
-   * indicates that no range is set for highlighting.
+   * Returns the upper bound of the highlighted range.  A <code>null</code>
+   * value indicates that no range is set for highlighting.
    *
    * @return The upper bound (possibly <code>null</code>).
    */
-  public Number getRangeUpperBound ()
+  public Number getRangeUpperBound()
   {
     return this.rangeUpperBound;
   }
@@ -261,27 +292,29 @@ public class SurveyScale implements Drawable
    *
    * @param bound the upper bound (<code>null</code> permitted).
    */
-  public void setRangeUpperBound (final Number bound)
+  public void setRangeUpperBound(final Number bound)
   {
     this.rangeUpperBound = bound;
   }
 
   /**
-   * Returns a flag that controls whether or not a border is drawn around the scale.
+   * Returns a flag that controls whether or not a border is drawn around the
+   * scale.
    *
    * @return A boolean.
    */
-  public boolean getDrawBorder ()
+  public boolean isDrawBorder()
   {
     return this.drawBorder;
   }
 
   /**
-   * Sets a flag that controls whether or not a border is drawn around the scale.
+   * Sets a flag that controls whether or not a border is drawn around the
+   * scale.
    *
    * @param flag the flag.
    */
-  public void setDrawBorder (final boolean flag)
+  public void setDrawBorder(final boolean flag)
   {
     this.drawBorder = flag;
   }
@@ -291,7 +324,7 @@ public class SurveyScale implements Drawable
    *
    * @return A boolean.
    */
-  public boolean getDrawTickMarks ()
+  public boolean isDrawTickMarks()
   {
     return this.drawTickMarks;
   }
@@ -301,7 +334,7 @@ public class SurveyScale implements Drawable
    *
    * @param flag a boolean.
    */
-  public void setDrawTickMarks (final boolean flag)
+  public void setDrawTickMarks(final boolean flag)
   {
     this.drawTickMarks = flag;
   }
@@ -311,7 +344,7 @@ public class SurveyScale implements Drawable
    *
    * @return a boolean.
    */
-  public boolean getDrawScaleValues ()
+  public boolean isDrawScaleValues()
   {
     return this.drawScaleValues;
   }
@@ -321,7 +354,7 @@ public class SurveyScale implements Drawable
    *
    * @param flag the flag.
    */
-  public void setDrawScaleValues (final boolean flag)
+  public void setDrawScaleValues(final boolean flag)
   {
     this.drawScaleValues = flag;
   }
@@ -331,7 +364,7 @@ public class SurveyScale implements Drawable
    *
    * @return A font (never <code>null</code>).
    */
-  public Font getScaleValueFont ()
+  public Font getScaleValueFont()
   {
     return this.scaleValueFont;
   }
@@ -341,7 +374,7 @@ public class SurveyScale implements Drawable
    *
    * @param font the font (<code>null</code> not permitted).
    */
-  public void setScaleValueFont (final Font font)
+  public void setScaleValueFont(final Font font)
   {
     if (font == null)
     {
@@ -355,7 +388,7 @@ public class SurveyScale implements Drawable
    *
    * @return A paint (never <code>null</code>).
    */
-  public Paint getScaleValuePaint ()
+  public Paint getScaleValuePaint()
   {
     return this.scaleValuePaint;
   }
@@ -365,12 +398,13 @@ public class SurveyScale implements Drawable
    *
    * @param paint the paint (<code>null</code> not permitted).
    */
-  public void setScaleValuePaint (final Paint paint)
+  public void setScaleValuePaint(final Paint paint)
   {
     if (paint == null)
     {
       throw new IllegalArgumentException("Null 'paint' argument.");
     }
+    this.scaleValuePaint = paint;
   }
 
   /**
@@ -379,7 +413,7 @@ public class SurveyScale implements Drawable
    * @param index the value index (zero-based).
    * @return The shape.
    */
-  public Shape getShape (final int index)
+  public Shape getShape(final int index)
   {
     return this.shapes.getShape(index);
   }
@@ -390,19 +424,19 @@ public class SurveyScale implements Drawable
    * @param index the value index (zero-based).
    * @param shape the shape (<code>null</code> not permitted).
    */
-  public void setShape (final int index, final Shape shape)
+  public void setShape(final int index, final Shape shape)
   {
     this.shapes.setShape(index, shape);
   }
 
   /**
-   * Returns a flag that controls whether the shape for a particular value should be
-   * filled.
+   * Returns a flag that controls whether the shape for a particular value
+   * should be filled.
    *
    * @param index the value index (zero-based).
    * @return A boolean.
    */
-  public boolean isShapeFilled (final int index)
+  public boolean isShapeFilled(final int index)
   {
     boolean result = false;
     final Boolean b = this.fillShapes.getBoolean(index);
@@ -414,13 +448,13 @@ public class SurveyScale implements Drawable
   }
 
   /**
-   * Sets the flag that controls whether the shape for a particular value should be
-   * filled.
+   * Sets the flag that controls whether the shape for a particular value should
+   * be filled.
    *
    * @param index the value index (zero-based).
    * @param fill  the flag.
    */
-  public void setShapeFilled (final int index, final boolean fill)
+  public void setShapeFilled(final int index, final boolean fill)
   {
     this.fillShapes.setBoolean(index, BooleanUtilities.valueOf(fill));
   }
@@ -430,7 +464,7 @@ public class SurveyScale implements Drawable
    *
    * @return A {@link Paint} object (never <code>null</code>).
    */
-  public Paint getRangePaint ()
+  public Paint getRangePaint()
   {
     return this.rangePaint;
   }
@@ -440,7 +474,7 @@ public class SurveyScale implements Drawable
    *
    * @param paint the paint (<code>null</code> not permitted).
    */
-  public void setRangePaint (final Paint paint)
+  public void setRangePaint(final Paint paint)
   {
     if (paint == null)
     {
@@ -449,13 +483,27 @@ public class SurveyScale implements Drawable
     this.rangePaint = paint;
   }
 
+  public Paint getBorderPaint()
+  {
+    return borderPaint;
+  }
+
+  public void setBorderPaint(final Paint borderPaint)
+  {
+    if (borderPaint == null)
+    {
+      throw new IllegalArgumentException("Null 'paint' argument.");
+    }
+    this.borderPaint = borderPaint;
+  }
+
   /**
-   * Returns the default shape, which is used, if a shape for a certain value is not
-   * defined.
+   * Returns the default shape, which is used, if a shape for a certain value is
+   * not defined.
    *
    * @return the default shape, never null.
    */
-  public Shape getDefaultShape ()
+  public Shape getDefaultShape()
   {
     return defaultShape;
   }
@@ -466,7 +514,7 @@ public class SurveyScale implements Drawable
    * @param defaultShape the default shape
    * @throws NullPointerException if the given shape is null.
    */
-  public void setDefaultShape (final Shape defaultShape)
+  public void setDefaultShape(final Shape defaultShape)
   {
     if (defaultShape == null)
     {
@@ -475,99 +523,210 @@ public class SurveyScale implements Drawable
     this.defaultShape = defaultShape;
   }
 
+  public Paint getTickMarkPaint()
+  {
+    return tickMarkPaint;
+  }
+
+  public void setTickMarkPaint(final Paint tickMarkPaint)
+  {
+    if (tickMarkPaint == null)
+    {
+      throw new NullPointerException();
+    }
+    this.tickMarkPaint = tickMarkPaint;
+  }
+
+  public Number[] getValues()
+  {
+    return (Number[]) values.clone();
+  }
+
+  public Paint getFillPaint()
+  {
+    return fillPaint;
+  }
+
+  public void setFillPaint(final Paint fillPaint)
+  {
+    if (fillPaint == null)
+    {
+      throw new NullPointerException();
+    }
+    this.fillPaint = fillPaint;
+  }
+
+  public Stroke getOutlineStroke()
+  {
+    return outlineStroke;
+  }
+
+  public void setOutlineStroke(final Stroke outlineStroke)
+  {
+    if (outlineStroke == null)
+    {
+      throw new NullPointerException();
+    }
+    this.outlineStroke = outlineStroke;
+  }
+
+  public double getUpperMargin()
+  {
+    return upperMargin;
+  }
+
+  public void setUpperMargin(final double upperMargin)
+  {
+    this.upperMargin = upperMargin;
+  }
+
+  public double getLowerMargin()
+  {
+    return lowerMargin;
+  }
+
+  public void setLowerMargin(final double lowerMargin)
+  {
+    this.lowerMargin = lowerMargin;
+  }
+
   /**
    * Draws the survey scale.
    *
    * @param g2   the graphics device.
    * @param area the area.
    */
-  public void draw (final Graphics2D g2, final Rectangle2D area)
+  public void draw(final Graphics2D g2, final Rectangle2D area)
   {
 
-    final double range = this.highest - this.lowest;
-    final double lowerBound = this.lowest - (range * this.lowerMargin);
-    final double upperBound = this.highest + (range * this.upperMargin);
-
-    if (this.drawBorder)
+    if (isDrawBorder())
     {
-      g2.setStroke(new BasicStroke(0.5f));
-      g2.setPaint(Color.black);
-      g2.draw(area);
+      drawBorder(g2, area);
     }
 
-    if (this.rangeLowerBound != null && this.rangeUpperBound != null)
-    {
-      final double x0 = valueToJava2D(this.rangeLowerBound.doubleValue(), area, lowerBound, upperBound);
-      final double x1 = valueToJava2D(this.rangeUpperBound.doubleValue(), area, lowerBound, upperBound);
-      final Rectangle2D rangeArea = new Rectangle2D.Double(x0, area.getY(), (x1 - x0), area.getHeight());
-      g2.setPaint(this.rangePaint);
-      g2.fill(rangeArea);
-    }
+    drawRangeArea(area, g2);
 
     // draw tick marks...
-    if (this.drawTickMarks)
+    if (isDrawTickMarks())
     {
-      g2.setPaint(this.tickMarkPaint);
-      g2.setStroke(new BasicStroke(0.1f));
-      for (int i = this.lowest; i < this.highest; i++)
-      {
-        for (int j = 0; j < 10; j++)
-        {
-          final double xx = valueToJava2D(i + j / 10.0, area, lowerBound, upperBound);
-          final Line2D mark = new Line2D.Double(xx, area.getCenterY() - 2.0, xx, area.getCenterY() + 2.0);
-          g2.draw(mark);
-        }
-      }
-      final double xx = valueToJava2D(this.highest, area, lowerBound, upperBound);
-      final Line2D mark = new Line2D.Double(xx, area.getCenterY() - 2.0, xx, area.getCenterY() + 2.0);
-      g2.draw(mark);
+      drawTickMarks(g2, area);
     }
-
 
     // draw scale values...
-    if (this.drawScaleValues)
+    if (isDrawScaleValues())
     {
-      g2.setPaint(this.scaleValuePaint);
-      g2.setFont(this.scaleValueFont);
-      for (int i = this.lowest; i <= this.highest; i++)
-      {
-        final double x = valueToJava2D(i, area, lowerBound, upperBound);
-        final double y = area.getCenterY();
-        TextUtilities.drawAlignedString(String.valueOf(i), g2, (float) x, (float) y, TextAnchor.CENTER);
-      }
+      drawScaleValues(g2, area);
     }
 
+    drawValues(g2, area);
+  }
+
+  protected void drawValues(final Graphics2D g2,
+                            final Rectangle2D area)
+  {
+
     // draw data values...
-    if (this.values != null)
+    final Number[] values = getValues();
+    if (values == null)
     {
-      g2.setPaint(this.fillPaint);
-      for (int i = 0; i < this.values.length; i++)
+      return;
+    }
+
+    final double y = area.getCenterY();
+
+    final Stroke outlineStroke = getOutlineStroke();
+    final Shape defaultShape = getDefaultShape();
+
+    g2.setPaint(getFillPaint());
+    for (int i = 0; i < values.length; i++)
+    {
+      final Number n = values[i];
+      if (n == null)
       {
-        final Number n = this.values[i];
-        if (n != null)
-        {
-          final double v = n.doubleValue();
-          final double x = valueToJava2D(v, area, lowerBound, upperBound);
-          final double y = area.getCenterY();
-          Shape valueShape = this.shapes.getShape(i);
-          if (valueShape == null)
-          {
-            valueShape = defaultShape;
-          }
-          final Shape s = translateShape(valueShape, x, y);
-          final Boolean b = this.fillShapes.getBoolean(i);
-          if (Boolean.TRUE.equals(b))
-          {
-            g2.fill(s);
-          }
-          else
-          {
-            g2.setStroke(this.outlineStroke);
-            g2.draw(s);
-          }
-        }
+        continue;
+      }
+
+      final double v = n.doubleValue();
+      final double x = valueToJava2D(v, area);
+      Shape valueShape = getShape(i);
+      if (valueShape == null)
+      {
+        valueShape = defaultShape;
+      }
+      if (isShapeFilled(i))
+      {
+        g2.translate(x, y);
+        g2.fill(valueShape);
+        g2.translate(-x, -y);
+      }
+      else
+      {
+        g2.setStroke(outlineStroke);
+        g2.translate(x, y);
+        g2.draw(valueShape);
+        g2.translate(-x, -y);
       }
     }
+  }
+
+  protected void drawScaleValues(final Graphics2D g2, final Rectangle2D area)
+  {
+    g2.setPaint(getScaleValuePaint());
+    g2.setFont(getScaleValueFont());
+
+    final int highest = getHighest();
+    for (int i = getLowest(); i <= highest; i++)
+    {
+      final double x = valueToJava2D(i, area);
+      final double y = area.getCenterY();
+      TextUtilities.drawAlignedString(String.valueOf(i), g2, (float) x,
+              (float) y, TextAnchor.CENTER);
+    }
+  }
+
+  protected void drawTickMarks(final Graphics2D g2, final Rectangle2D area)
+  {
+    g2.setPaint(getTickMarkPaint());
+    g2.setStroke(new BasicStroke(0.1f));
+
+    final int highest = getHighest();
+    for (int i = getLowest(); i <= highest; i++)
+    {
+      for (int j = 0; j < 10; j++)
+      {
+        final double xx = valueToJava2D(i + j / 10.0, area);
+        final Line2D mark = new Line2D.Double(xx, area.getCenterY() - 2.0, xx,
+                area.getCenterY() + 2.0);
+        g2.draw(mark);
+      }
+    }
+    final double xx = valueToJava2D(highest, area);
+    final Line2D mark = new Line2D.Double(xx, area.getCenterY() - 2.0, xx,
+            area.getCenterY() + 2.0);
+    g2.draw(mark);
+  }
+
+  protected void drawRangeArea(final Rectangle2D area, final Graphics2D g2)
+  {
+    final Number rangeUpperBound = getRangeUpperBound();
+    final Number rangeLowerBound = getRangeLowerBound();
+    if (rangeLowerBound == null || rangeUpperBound == null)
+    {
+      return;
+    }
+    final double x0 = valueToJava2D(rangeLowerBound.doubleValue(), area);
+    final double x1 = valueToJava2D(rangeUpperBound.doubleValue(), area);
+    final Rectangle2D rangeArea = new Rectangle2D.Double(x0, area.getY(),
+            (x1 - x0), area.getHeight());
+    g2.setPaint(getRangePaint());
+    g2.fill(rangeArea);
+  }
+
+  protected void drawBorder(final Graphics2D g2, final Rectangle2D area)
+  {
+    g2.setStroke(getOutlineStroke());
+    g2.setPaint(getBorderPaint());
+    g2.draw(area);
   }
 
   /**
@@ -579,35 +738,15 @@ public class SurveyScale implements Drawable
    * @param upperBound the upper bound.
    * @return The Java2D coordinate.
    */
-  private double valueToJava2D (final double value,
-                                final Rectangle2D area,
-                                final double lowerBound,
-                                final double upperBound)
+  private double valueToJava2D(final double value,
+                               final Rectangle2D area)
   {
 
+    final double upperBound = getUpperBound();
+    final double lowerBound = getLowerBound();
     return area.getMinX()
-            + ((value - lowerBound) / (upperBound - lowerBound) * area.getWidth());
+            + ((value - lowerBound) / (upperBound - lowerBound) * area
+            .getWidth());
 
   }
-
-  /**
-   * Returns a translated shape.
-   *
-   * @param shape  the shape (<code>null</code> not permitted).
-   * @param transX the x translation.
-   * @param transY the y translation.
-   * @return the translated shape.
-   */
-  public static Shape translateShape (final Shape shape,
-                                      final double transX, final double transY)
-  {
-    if (shape == null)
-    {
-      throw new IllegalArgumentException("Null 'shape' argument.");
-    }
-    final AffineTransform transform = AffineTransform.getTranslateInstance(transX, transY);
-    return transform.createTransformedShape(shape);
-  }
-
-
 }
