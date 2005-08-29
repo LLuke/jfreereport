@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.9 2005/02/23 21:04:43 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.10 2005/03/16 21:06:47 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -33,7 +33,7 @@
  * 22-Aug-2002 : Removed System.out statements
  * 28-Aug-2002 : Documentation
  */
-package org.jfree.report.demo.helper;
+package org.jfree.report.demo.functions;
 
 import java.awt.Color;
 import java.awt.Font;

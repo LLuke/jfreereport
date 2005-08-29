@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.9 2005/07/20 18:47:29 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.10 2005/08/29 17:43:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,6 +57,7 @@ import javax.swing.table.TableModel;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.helper.actions.AboutAction;
 import org.jfree.report.demo.helper.actions.CloseAction;
+import org.jfree.report.demo.helper.actions.PreviewAction;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.util.ReportConfiguration;

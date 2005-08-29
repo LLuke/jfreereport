@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.6 2005/02/23 21:04:42 taqua Exp $
+ * $Id: AboutAction.java,v 1.7 2005/03/04 13:52:06 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,7 @@
  * 29-Aug-2002 : Downport to JDK 1.2.2
  */
 
-package org.jfree.report.demo.helper;
+package org.jfree.report.demo.helper.actions;
 
 import javax.swing.Action;
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.5 2004/05/07 12:43:43 mungady Exp $
+ * $Id: ImageCellRenderer.java,v 1.6 2005/02/23 21:04:43 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
  *
  */
 
-package org.jfree.report.demo.helper;
+package org.jfree.report.demo.swingicons;
 
 import java.awt.Component;
 import java.awt.Image;

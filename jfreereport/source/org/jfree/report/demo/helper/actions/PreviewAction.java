@@ -20,53 +20,54 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
- * CloseAction.java
- * ----------------
- * (C)opyright 2002, by Simba Management Limited.
+ * ------------------
+ * PreviewAction.java
+ * ------------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: CloseAction.java,v 1.8 2005/02/23 21:04:43 taqua Exp $
+ * $Id: PreviewAction.java,v 1.7 2005/03/25 16:37:53 taqua Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
- * 05-Jun-2002 : Documentation
- * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 05-Jun-2002 : Documentation.
  * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
+ *
  */
 
-package org.jfree.report.demo.helper;
+package org.jfree.report.demo.helper.actions;
 
 import javax.swing.Action;
 
-import org.jfree.report.util.ImageUtils;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * An action for closing the demo programms frame.
+ * The preview action invokes the parsing and processing of the currently selected sample
+ * report. The actual work is done in the JFreeReportDemos method attemptPreview ()
  *
  * @author David Gilbert
  */
-public abstract class CloseAction extends AbstractActionDowngrade
+public abstract class PreviewAction extends AbstractActionDowngrade
 {
-
   /**
-   * Constructs a new action.
+   * Constructs a new preview action.
    *
    * @param resources localised resources.
    */
-  protected CloseAction (final ResourceBundleSupport resources)
+  public PreviewAction (final ResourceBundleSupport resources)
   {
-    this.putValue(Action.NAME, resources.getString("action.close.name"));
-    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.close.description"));
+    this.putValue(Action.NAME, resources.getString("action.print-preview.name"));
+    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.print-preview.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-            resources.getMnemonic("action.close.mnemonic"));
-    this.putValue(Action.SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
-    this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
+            resources.getMnemonic("action.print-preview.mnemonic"));
+    this.putValue(ActionDowngrade.ACCELERATOR_KEY,
+            resources.getKeyStroke("action.print-preview.accelerator"));
+    this.putValue(Action.SMALL_ICON, resources.getIcon("action.print-preview.small-icon", false));
+    this.putValue("ICON24", resources.getIcon("action.print-preview.icon", false));
   }
 }

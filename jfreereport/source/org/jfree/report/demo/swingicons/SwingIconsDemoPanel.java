@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.10 2005/05/20 16:06:20 taqua Exp $
+ * $Id: SwingIconsDemoPanel.java,v 1.1 2005/08/29 17:42:57 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import org.jfree.io.FileUtilities;
-import org.jfree.report.demo.helper.ImageCellRenderer;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.util.ImageUtils;
