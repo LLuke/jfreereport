@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.19 2005/03/03 14:42:36 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.20 2005/03/03 21:50:45 taqua Exp $
  *
  * Changes
  * -------
@@ -292,7 +292,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
     characterHeightInPoint = (72f / driver.getLinesPerInch());
     characterWidthInPoint = (72f / driver.getCharactersPerInch());
     internalCharacterHeight = StrictGeomUtility.toInternalValue(characterHeightInPoint);
-    internalCharacterWidth = StrictGeomUtility.toInternalValue(characterHeightInPoint);
+    internalCharacterWidth = StrictGeomUtility.toInternalValue(characterWidthInPoint);
   }
 
   /**
