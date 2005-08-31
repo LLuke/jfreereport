@@ -19,7 +19,7 @@
       Due to a bug in the static layout manager (Not fixable right now),
       subbands should always start at (0,0) and span the complete width
       -->
-    <band layout="org.jfree.report.layout.StackedLayoutManager" >
+    <band layout="org.jfree.report.layout.StackedLayoutManager" layout-cachable="false">
       <string-field fontstyle="bold" fontsize="18"
         width="100%" height="18"
         alignment="left" fieldname="Message1" dynamic="true"/>

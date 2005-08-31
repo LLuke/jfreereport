@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AligningMetaBandProducer.java,v 1.1 2005/08/12 12:11:00 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.MultipartContent;
+import org.jfree.report.content.EmptyContent;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.style.ElementStyleSheet;
@@ -53,13 +54,13 @@ import org.jfree.report.util.geom.StrictBounds;
 
 public class AligningMetaBandProducer extends MetaBandProducer
 {
-  public AligningMetaBandProducer (final LayoutSupport support)
+  public AligningMetaBandProducer(final LayoutSupport support)
   {
     super(support);
   }
 
-  protected Content createContent (final Element e,
-                                   final ElementStyleSheet styleSheet)
+  protected Content createContent(final Element e,
+                                  final ElementStyleSheet styleSheet)
           throws ContentCreationException
   {
     final StrictBounds bounds = (StrictBounds)
@@ -71,16 +72,17 @@ public class AligningMetaBandProducer extends MetaBandProducer
     final LayoutSupport support = getLayoutSupport();
     final ElementLayoutInformation eli = new ElementLayoutInformation(bounds);
     final Content content =
-             support.getContentFactory().createContentForElement(e, eli, support);
+            support.getContentFactory().createContentForElement(e, eli,
+                    support);
     return alignContent(content, bounds, hAlign, vAlign);
   }
 
   /**
-   * The content is already positioned on the page (but top/left aligned).
-   * Now, move the content to the location as defined by the ElementAlignment.
-   * <p>
-   * HackAttack: This method does not adjust the width and height of the element;
-   * we have to trust the code.
+   * The content is already positioned on the page (but top/left aligned). Now,
+   * move the content to the location as defined by the ElementAlignment.
+   * <p/>
+   * HackAttack: This method does not adjust the width and height of the
+   * element; we have to trust the code.
    *
    * @param content
    * @param bounds
@@ -88,26 +90,38 @@ public class AligningMetaBandProducer extends MetaBandProducer
    * @param vAlign
    * @return
    */
-  protected Content alignContent (final Content content,
-                                  final StrictBounds bounds,
-                                  final ElementAlignment hAlign,
-                                  final ElementAlignment vAlign)
+  protected Content alignContent(final Content content,
+                                 final StrictBounds bounds,
+                                 final ElementAlignment hAlign,
+                                 final ElementAlignment vAlign)
   {
-    final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(vAlign, bounds);
+    final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(vAlign,
+            bounds);
     final StrictBounds minimumContentSize = content.getMinimumContentSize();
-    final StrictBounds cb = vba.align((StrictBounds) minimumContentSize.clone());
+    if (minimumContentSize == null)
+    {
+      return EmptyContent.getDefaultEmptyContent();
+    }
+    final StrictBounds cb = vba.align(
+            (StrictBounds) minimumContentSize.clone());
     final long verticalShift = cb.getY() - minimumContentSize.getY();
     content.translate(0, verticalShift);
     return alignHorizontalContent(content, bounds, hAlign);
   }
-  
-  protected Content alignHorizontalContent (final Content content,
-                                            final StrictBounds bounds,
-                                            final ElementAlignment hAlign)
+
+  protected Content alignHorizontalContent(final Content content,
+                                           final StrictBounds bounds,
+                                           final ElementAlignment hAlign)
   {
-    final HorizontalBoundsAlignment hba = AlignmentTools.getHorizontalLayout(hAlign, bounds);
+    final HorizontalBoundsAlignment hba = AlignmentTools.getHorizontalLayout(
+            hAlign, bounds);
     final StrictBounds minimumContentSize = content.getMinimumContentSize();
-    final StrictBounds cb = hba.align((StrictBounds) minimumContentSize.clone());
+    if (minimumContentSize == null)
+    {
+      return EmptyContent.getDefaultEmptyContent();
+    }
+    final StrictBounds cb = hba.align(
+            (StrictBounds) minimumContentSize.clone());
     final long horizontalShift = cb.getX() - minimumContentSize.getX();
     content.translate(horizontalShift, 0);
     if (content instanceof MultipartContent)

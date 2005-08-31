@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.12 2005/08/29 17:56:46 taqua Exp $
+ * $Id: ContentContainer.java,v 1.13 2005/08/29 21:00:07 mtennes Exp $
  *
  * Changes
  * -------
@@ -188,34 +188,34 @@ public class ContentContainer implements MultipartContent
     return cc;
   }
 
-    /**
-     * Returns the minimum content size for the container.
-     *
-     * @return the minimum size or null, if this container has no content.
-     */
-    public StrictBounds getMinimumContentSize ()
+  /**
+   * Returns the minimum content size for the container.
+   *
+   * @return the minimum size or null, if this container has no content.
+   */
+  public StrictBounds getMinimumContentSize ()
+  {
+    StrictBounds retval = null;
+    for (int i = 0; i < getContentPartCount(); i++)
     {
-      StrictBounds retval = null;
-      for (int i = 0; i < getContentPartCount(); i++)
-      {
-        final Content contentPart = getContentPart(i);
-        final StrictBounds minCBounds = contentPart.getMinimumContentSize();
+      final Content contentPart = getContentPart(i);
+      final StrictBounds minCBounds = contentPart.getMinimumContentSize();
 
-        if (minCBounds == null)
-        {
-          continue;
-        }
-        if (retval != null) {
-            retval.add(minCBounds);
-        } else {
-            retval = minCBounds;
-        }
+      if (minCBounds == null)
+      {
+        continue;
       }
-        if (retval == null) {
-            retval = new StrictBounds();
-        }
-      return retval;
+      if (retval == null)
+      {
+        retval = minCBounds;
+      }
+      else
+      {
+        retval.add(minCBounds);
+      }
     }
+    return retval;
+  }
 
   /**
    * Returns a string describing this object.

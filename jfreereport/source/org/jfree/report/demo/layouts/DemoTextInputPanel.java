@@ -24,9 +24,11 @@ public class DemoTextInputPanel extends JPanel
     final JLabel messageOneLabel = new JLabel ("One:");
     final JLabel messageTwoLabel = new JLabel ("Two:");
     messageOneField = new JTextArea();
+    messageOneField.setWrapStyleWord(true);
     messageOneField.setRows(10);
     messageTwoField = new JTextArea();
     messageTwoField.setRows(10);
+    messageTwoField.setWrapStyleWord(true);
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -42,14 +44,16 @@ public class DemoTextInputPanel extends JPanel
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.weightx = 1;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weighty = 1;
+    gbc.fill = GridBagConstraints.BOTH;
     add (new JScrollPane(messageOneField), gbc);
 
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 1;
     gbc.weightx = 1;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weighty = 1;
+    gbc.fill = GridBagConstraints.BOTH;
     add (new JScrollPane(messageTwoField), gbc);
   }
 

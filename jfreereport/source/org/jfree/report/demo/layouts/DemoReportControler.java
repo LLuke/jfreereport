@@ -22,8 +22,8 @@ import org.jfree.util.Log;
  */
 public class DemoReportControler extends DefaultReportControler
 {
-  public static final String MESSAGE_ONE_FIELDNAME = "MessageOne";
-  public static final String MESSAGE_TWO_FIELDNAME = "MessageTwo";
+  public static final String MESSAGE_ONE_FIELDNAME = "Message1";
+  public static final String MESSAGE_TWO_FIELDNAME = "Message2";
 
   private class UpdateAction extends AbstractAction
   {
@@ -71,9 +71,11 @@ public class DemoReportControler extends DefaultReportControler
     final JLabel messageOneLabel = new JLabel ("One:");
     final JLabel messageTwoLabel = new JLabel ("Two:");
     messageOneField = new JTextArea();
+    messageOneField.setWrapStyleWord(true);
     messageOneField.setRows(10);
     messageTwoField = new JTextArea();
     messageTwoField.setRows(10);
+    messageTwoField.setWrapStyleWord(true);
     updateAction = new UpdateAction();
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -90,14 +92,16 @@ public class DemoReportControler extends DefaultReportControler
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.weightx = 1;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weighty = 1;
+    gbc.fill = GridBagConstraints.BOTH;
     add (new JScrollPane (messageOneField), gbc);
 
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 1;
     gbc.weightx = 1;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weighty = 1;
+    gbc.fill = GridBagConstraints.BOTH;
     add (new JScrollPane(messageTwoField), gbc);
 
     gbc = new GridBagConstraints();
@@ -132,6 +136,14 @@ public class DemoReportControler extends DefaultReportControler
     messageOneField.setEnabled(enabled);
     messageTwoField.setEnabled(enabled);
     updateAction.setEnabled(enabled);
+  }
+
+  public void setPreviewBase(final PreviewProxyBase proxyBase)
+  {
+    super.setPreviewBase(proxyBase);
+    final JFreeReport report = proxyBase.getReport();
+    messageOneField.setText((String) report.getProperty("Message1"));
+    messageTwoField.setText((String) report.getProperty("Message2"));
   }
 
 }
