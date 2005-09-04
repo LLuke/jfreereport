@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.20 2005/09/04 13:15:06 taqua Exp $
+ * $Id: TableProcessor.java,v 1.21 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,6 @@ import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
 import org.jfree.report.util.geom.StrictGeomUtility;
-import org.jfree.util.Log;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets. It
@@ -163,8 +162,8 @@ public abstract class TableProcessor
   }
 
   protected void init() {
-    tableWriter = new TableWriter(createMetaBandProducer());
-    tableWriter.setName(TABLE_WRITER);
+    this.tableWriter = new TableWriter(createMetaBandProducer());
+    this.tableWriter.setName(TABLE_WRITER);
 
     this.report.addExpression(tableWriter);
   }
@@ -227,7 +226,7 @@ public abstract class TableProcessor
    *
    * @throws ReportProcessingException if there was a problem processing the report.
    */
-  private ReportState repaginate ()
+  protected ReportState repaginate ()
           throws ReportProcessingException
   {
     // apply the configuration ...
@@ -248,15 +247,6 @@ public abstract class TableProcessor
 
       // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
       state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
-
-      // the pageformat is added to the report properties, PageFormat is not serializable,
-      // so a repaginated report is no longer serializable.
-      //
-      // The pageformat will cause trouble in later versions, when printing over
-      // multiple pages gets implemented. This property will be replaced by a more
-      // suitable alternative.
-//      final PageFormat p = report.getDefaultPageFormat();
-//      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
       // now change the writer function to be a dummy writer. We don't want any
       // output in the prepare runs.
@@ -378,10 +368,6 @@ public abstract class TableProcessor
       sretval.resetState();
       return sretval;
     }
-//    catch (FunctionInitializeException fne)
-//    {
-//      throw new ReportProcessingException("Unable to initialize the functions/expressions.", fne);
-//    }
     catch (CloneNotSupportedException cne)
     {
       throw new ReportProcessingException("Unable to initialize the report, clone error", cne);
@@ -428,8 +414,12 @@ public abstract class TableProcessor
           throws ReportProcessingException
   {
     ReportState state = repaginate();
-    Log.debug ("Repagination done.");
+    createContent(state);
+  }
 
+  protected void createContent(ReportState state)
+          throws ReportProcessingException
+  {
     final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
     w.setTableCreator(createContentCreator());
 

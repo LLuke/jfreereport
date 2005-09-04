@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.5 2005/04/09 17:43:13 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.6 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -212,8 +212,11 @@ public abstract class TableContentCreator extends AbstractTableCreator
       // the background is properly exported..
       final int x2 = rect.getX2();
       final int y2 = rect.getY2() - layoutOffset;
-      backend.ensureCapacity(x2, y2);
-      backend.setObject(y2 - 1, x2 - 1, null);
+      if (y2 > 0 && x2 > 0)
+      {
+        backend.ensureCapacity(y2, x2);
+        backend.setObject(y2 - 1, x2 - 1, null);
+      }
       return;
     }
 
@@ -221,7 +224,7 @@ public abstract class TableContentCreator extends AbstractTableCreator
     {
       final int x2 = rect.getX2();
       final int y2 = rect.getY2() - layoutOffset;
-      backend.ensureCapacity(x2, y2);
+      backend.ensureCapacity(y2, x2);
 
       for (int r = rect.getY1() - layoutOffset; r < y2; r++)
       {

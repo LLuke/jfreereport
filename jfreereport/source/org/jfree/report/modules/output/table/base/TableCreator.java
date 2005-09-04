@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCreator.java,v 1.3 2005/01/25 00:12:44 taqua Exp $
+ * $Id: TableCreator.java,v 1.4 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -118,4 +118,8 @@ public interface TableCreator
    */
   public boolean flush ()
           throws ReportProcessingException;
+
+  public boolean isIgnoreOpenState();
+  public void setIgnoreOpenState(final boolean ignoreOpenState);
+
 }

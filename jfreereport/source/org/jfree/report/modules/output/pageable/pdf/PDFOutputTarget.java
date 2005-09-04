@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.33 2005/04/14 16:37:33 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.34 2005/08/08 15:36:33 taqua Exp $
  *
  * Changes
  * -------
@@ -386,6 +386,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   public PDFOutputTarget (final OutputStream out)
   {
+    if (out == null)
+    {
+      throw new NullPointerException("OutputStream must not be null");
+    }
     this.out = out;
     this.fontSupport = new BaseFontSupport();
     this.internalPDFOperationBounds = new StrictBounds();
@@ -611,13 +615,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
     if (version.length() < 3)
     {
-      Log.warn("PDF version specification is invalid.");
+      Log.warn("PDF version specification is invalid, using default version '1.4'.");
       return '4';
     }
     final char retval = version.charAt(2);
     if (retval < '2' || retval > '5')
     {
-      Log.warn("PDF version specification is invalid.");
+      Log.warn("PDF version specification is invalid, using default version '1.4'.");
       return '4';
     }
     return retval;
@@ -839,7 +843,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     this.pdfDocument = null;
     this.writer = null;
   }
-
+  
   /**
    * Draws the band onto the specified graphics device. The Text is printed on the bottom
    * of the elements bounds.

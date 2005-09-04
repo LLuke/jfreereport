@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.11 2005/05/01 15:07:52 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.12 2005/08/08 15:36:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -206,8 +206,8 @@ public class ExcelContentCreator extends TableContentCreator
     for (int y = layoutOffset; y < height + layoutOffset; y++)
     {
       final HSSFRow row = getRowAt((short) y);
-      final double lastRowHeight = StrictGeomUtility.toExternalValue
-              (layout.getRowHeight(y - layoutOffset));
+      final double lastRowHeight =
+              StrictGeomUtility.toExternalValue(layout.getRowHeight(y));
       // we use 1/72 as unit, Excel uses 1/20 so we have to convert
       row.setHeight((short) (lastRowHeight * HEIGHT_SCALE_FACTOR));
 

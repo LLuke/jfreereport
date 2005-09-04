@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.21 2005/09/04 16:45:51 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.22 2005/09/04 17:02:21 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -406,8 +406,6 @@ public class HtmlContentCreator extends TableContentCreator
     final int height = go.getRowCount();
     final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
 
-    Log.debug("Flushing at " + getLayoutOffset());
-    Log.debug("          : " + height + " := max " + go.getRowCount() + ", " + layout.getRowCount());
     final int layoutOffset = getLayoutOffset();
     for (int y = layoutOffset; y < layoutOffset + height; y++)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractTableCreator.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
+ * $Id: AbstractTableCreator.java,v 1.5 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,7 @@ import org.jfree.report.util.geom.StrictBounds;
 public abstract class AbstractTableCreator implements TableCreator
 {
   private boolean empty;
+  private boolean ignoreOpenState;
 
   public AbstractTableCreator ()
   {
@@ -92,6 +93,16 @@ public abstract class AbstractTableCreator implements TableCreator
    */
   protected abstract boolean processBandDefinition (MetaBand e);
 
+  public boolean isIgnoreOpenState()
+  {
+    return ignoreOpenState;
+  }
+
+  public void setIgnoreOpenState(final boolean ignoreOpenState)
+  {
+    this.ignoreOpenState = ignoreOpenState;
+  }
+
   /**
    * Processes the given metaband. The MetaBandProducer has already collected all
    * necessary data to allow the content creation. Table implementors should provide their
@@ -101,7 +112,7 @@ public abstract class AbstractTableCreator implements TableCreator
    */
   public void processBand (final MetaBand band)
   {
-    if (isOpen() == false)
+    if (isIgnoreOpenState() == false && isOpen() == false)
     {
       throw new IllegalStateException("Producer already closed");
     }
