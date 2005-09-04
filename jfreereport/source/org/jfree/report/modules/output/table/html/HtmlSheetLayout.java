@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.9 2005/04/14 16:48:24 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.10 2005/05/31 20:37:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
 import java.util.HashSet;
+import java.util.HashMap;
 
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.util.geom.StrictGeomUtility;
@@ -181,7 +182,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     // Process all elements; duplicate entries will not be processed twice
     // Spanned elements are only stored in their upper left corner, as all
     // other cells will be skipped anyway ..
-    final HashSet completedElements = new HashSet();
+    final HashMap completedElements = new HashMap();
     TableRectangle rect = null;
     for (int layoutRow = 0; layoutRow < getRowCount(); layoutRow++)
     {
@@ -216,6 +217,13 @@ public strictfp class HtmlSheetLayout extends SheetLayout
         if (bg == null)
         {
           // there is no background
+          // that also means, that there is no color and no border defined,
+          // therefore reset the whole thing!
+          rowColor = null;
+          borderTop = null;
+          borderTopSize = 0;
+          borderBottom = null;
+          borderBottomSize = 0;
           continue;
         }
 
@@ -247,16 +255,18 @@ public strictfp class HtmlSheetLayout extends SheetLayout
           }
         }
 
-        if (completedElements.contains(bg))
+        final String cachedStyleName = (String) completedElements.get(bg);
+        if (cachedStyleName != null)
         {
           // we already had that one ...
+          backgroundStyleTable.setObject(layoutRow, layoutCol, cachedStyleName);
           continue;
         }
 
         final HtmlTableCellStyle style = new HtmlTableCellStyle(bg);
         final String styleName = styleCollection.addCellStyle(style);
         backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
-        completedElements.add(bg);
+        completedElements.put(bg, styleName);
       }
 
       final int height = (int) Math.ceil

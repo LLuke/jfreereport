@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.19 2005/03/03 14:42:36 taqua Exp $
+ * $Id: TableProcessor.java,v 1.20 2005/09/04 13:15:06 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets. It
@@ -427,6 +428,7 @@ public abstract class TableProcessor
           throws ReportProcessingException
   {
     ReportState state = repaginate();
+    Log.debug ("Repagination done.");
 
     final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
     w.setTableCreator(createContentCreator());

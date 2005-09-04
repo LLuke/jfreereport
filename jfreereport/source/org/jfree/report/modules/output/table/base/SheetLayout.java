@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.12 2005/08/10 14:22:21 taqua Exp $
+ * $Id: SheetLayout.java,v 1.13 2005/09/04 13:15:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 
 /**
@@ -254,7 +255,6 @@ public class SheetLayout
 
     if (bounds.getWidth() == 0 && bounds.getHeight() == 0)
     {
-      Log.debug("Skipped empty element " + element);
       return;
     }
 
@@ -346,8 +346,8 @@ public class SheetLayout
   {
     final int mappedX1 = mapColumn(rect.getX1());
     final int mappedY1 = mapRow(rect.getY1());
-    final TableCellBackground bgTopLeft = (TableCellBackground) backend
-            .getObject(mappedY1, mappedX1);
+    final TableCellBackground bgTopLeft = (TableCellBackground)
+            backend.getObject(mappedY1, mappedX1);
     if (bgTopLeft == null)
     {
       return null;
@@ -356,14 +356,7 @@ public class SheetLayout
     {
       return bgTopLeft;
     }
-    final int mappedX2 = mapColumn(rect.getX2() - 1);
-    final int mappedY2 = mapRow(rect.getY2() - 1);
-    final TableCellBackground bgBottomRight = (TableCellBackground) backend
-            .getObject(mappedY2, mappedX2);
-    if (bgBottomRight == null)
-    {
-      return null;
-    }
+
     final Long[] xCuts = getXCuts();
     final Long[] yCuts = getYCuts();
     final long x = xCuts[rect.getX1()].longValue();
@@ -381,11 +374,11 @@ public class SheetLayout
     final long width;
     if (rect.getX2() == xCuts.length)
     {
-      width = 1;
+      width = Math.max (1, xCuts[xCuts.length - 1].longValue() - x);
     }
     else
     {
-      width = xCuts[rect.getX2()].longValue() - x; // ArrayIndexException here
+      width = xCuts[rect.getX2()].longValue() - x;
     }
 
     final long height;
@@ -395,13 +388,18 @@ public class SheetLayout
     }
     else
     {
-      height = 1;
+      height = Math.max (1, yCuts[yCuts.length - 1].longValue() - y);
     }
 
+    // now we have to join all backgrounds of all cells to get the real
+    // picture. Using the top-left element only does not and will not work
     workBounds.setRect(x, y, width, height);
 
     final TableCellBackground retval =
             bgTopLeft.createSplittedInstance(workBounds);
+
+    validateBackgroundColor(rect, retval);
+
     if (isVerticalBorderValid(rect, mappedX1, true))
     {
       retval.setBorderLeft(bgTopLeft.getColorLeft(),
@@ -411,16 +409,16 @@ public class SheetLayout
     {
       retval.setBorderLeft(null, 0);
     }
-    if (isVerticalBorderValid(rect, mappedX2, false))
-    {
-      retval.setBorderRight(bgBottomRight.getColorRight(),
-              bgBottomRight.getBorderSizeRight());
-    }
-    else
-    {
-      retval.setBorderRight(null, 0);
-    }
-
+//    if (isVerticalBorderValid(rect, mappedX2, false))
+//    {
+//      retval.setBorderRight(bgBottomRight.getColorRight(),
+//              bgBottomRight.getBorderSizeRight());
+//    }
+//    else
+//    {
+//      retval.setBorderRight(null, 0);
+//    }
+//
     if (isHorizontalBorderValid(rect, mappedY1, true))
     {
       retval.setBorderTop(bgTopLeft.getColorTop(),
@@ -430,16 +428,41 @@ public class SheetLayout
     {
       retval.setBorderTop(null, 0);
     }
-    if (isHorizontalBorderValid(rect, mappedY2, false))
-    {
-      retval.setBorderBottom(bgBottomRight.getColorBottom(),
-              bgBottomRight.getBorderSizeBottom());
-    }
-    else
-    {
-      retval.setBorderBottom(null, 0);
-    }
+//    if (isHorizontalBorderValid(rect, mappedY2, false))
+//    {
+//      retval.setBorderBottom(bgBottomRight.getColorBottom(),
+//              bgBottomRight.getBorderSizeBottom());
+//    }
+//    else
+//    {
+//      retval.setBorderBottom(null, 0);
+//    }
     return retval;
+  }
+
+  private void validateBackgroundColor(final TableRectangle rect,
+                                       final TableCellBackground retval)
+  {
+    for (int ty = rect.getY1(); ty < rect.getY2(); ty++)
+    {
+      for (int tx = rect.getX1(); tx < rect.getX2(); tx++)
+      {
+        final int mappedLoopX1 = mapColumn(tx);
+        final int mappedLoopY1 = mapRow(ty);
+        final TableCellBackground bg =
+                (TableCellBackground) backend.getObject(mappedLoopY1, mappedLoopX1);
+        if (bg == null)
+        {
+          retval.setColor(null);
+          return;
+        }
+        if (ObjectUtilities.equal(retval.getColor(), bg.getColor()) == false)
+        {
+          retval.setColor(null);
+          return;
+        }
+      }
+    }
   }
 
   private boolean isVerticalBorderValid(final TableRectangle rect,
@@ -455,8 +478,8 @@ public class SheetLayout
               (TableCellBackground) backend.getObject(mappedRow, mappedX);
       if (background == null)
       {
-        // this is definitly unexpected ..
-        Log.warn("Possible inconsistency: No background defined at " + rect);
+        // As long we do not add bands as backgrounds, do not warn about missing cells
+        //Log.warn("Possible inconsistency: No background defined at " + rect);
         return false;
       }
       if (left)
@@ -502,8 +525,8 @@ public class SheetLayout
               (TableCellBackground) backend.getObject(mappedY, mappedCol);
       if (background == null)
       {
-        // this is definitly unexpected ..
-        Log.warn("Possible inconsistency: No background defined at " + rect);
+        // As long we do not add bands as backgrounds, do not warn about missing cells
+        // Log.warn("Possible inconsistency: No background defined at " + rect);
         return false;
       }
       if (top)
@@ -967,23 +990,30 @@ public class SheetLayout
 
   protected int mapColumn(final int xCutIndex)
   {
+    final Long[] xcuts = getXCuts();
     try
     {
-      final Long[] xcuts = getXCuts();
       final BoundsCut boundsCut = (BoundsCut) xBounds.get(xcuts[xCutIndex]);
       return boundsCut.getPosition();
     }
     catch (NullPointerException npe)
     {
-      throw new NullPointerException();
+      throw new IllegalStateException("There is no column at " + xcuts[xCutIndex]);
     }
   }
 
   protected int mapRow(final int yCutIndex)
   {
     final Long[] ycuts = getYCuts();
-    final BoundsCut boundsCut = (BoundsCut) yBounds.get(ycuts[yCutIndex]);
-    return boundsCut.getPosition();
+    try
+    {
+      final BoundsCut boundsCut = (BoundsCut) yBounds.get(ycuts[yCutIndex]);
+      return boundsCut.getPosition();
+    }
+    catch(NullPointerException npe)
+    {
+      throw new IllegalStateException("There is no row at " + ycuts[yCutIndex]);
+    }
   }
 
   /**
@@ -1279,7 +1309,7 @@ public class SheetLayout
     if (row >= yCuts.length)
     {
       throw new IndexOutOfBoundsException
-              ("Row " + row + " is invalid. Max valud row is " + yCuts.length);
+              ("Row " + row + " is invalid. Max valid row is " + yCuts.length);
     }
     final long bottomBorder;
     if ((row + 1) < yCuts.length)

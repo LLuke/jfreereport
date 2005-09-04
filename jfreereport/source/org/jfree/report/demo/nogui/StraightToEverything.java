@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.18 2005/08/08 15:36:27 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.1 2005/08/29 17:40:09 taqua Exp $
  *
  * Changes
  * -------
@@ -91,16 +91,16 @@ public class StraightToEverything
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);
-    createPDF(report, filename + ".pdf");
     try
     {
-      createCSV(report, filename + ".csv");
-      createDirectoryHTML(report, filename + ".html");
-      createPlainText(report, filename + ".txt");
-      createRTF(report, filename + ".rtf");
+//    createPDF(report, filename + ".pdf");
+//      createCSV(report, filename + ".csv");
+//      createDirectoryHTML(report, filename + ".html");
+//      createPlainText(report, filename + ".txt");
+//      createRTF(report, filename + ".rtf");
       createStreamHTML(report, filename + "-single-file.html");
-      createXLS(report, filename + ".xls");
-      createZIPHTML(report, filename + ".zip");
+//      createXLS(report, filename + ".xls");
+//      createZIPHTML(report, filename + ".zip");
     }
     catch (Exception e)
     {

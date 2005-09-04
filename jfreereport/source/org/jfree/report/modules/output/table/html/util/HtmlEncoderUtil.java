@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlEncoderUtil.java,v 1.4 2005/02/23 21:05:35 taqua Exp $
+ * $Id: HtmlEncoderUtil.java,v 1.5 2005/09/04 13:15:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -534,29 +534,29 @@ public final class HtmlEncoderUtil
         {
           pout.println("<br>");
         }
-
-        // for now, convert all leading white spaces (mostly tab and space
-        // characters) to non-break-spaces.
-        int whitespaceCounter = 0;
-        while ((whitespaceCounter < readLine.length()) &&
-               Character.isWhitespace(readLine.charAt(whitespaceCounter)))
-        {
-          pout.print("&nbsp;");
-          whitespaceCounter += 1;
-        }
-
-        final String printResult;
-        if (whitespaceCounter > 0)
-        {
-          printResult = readLine.substring(whitespaceCounter);
-        }
-        else
-        {
-          printResult = readLine;
-        }
-
-        pout.print(entityParser.encodeEntities(printResult));
       }
+
+      // for now, convert all leading white spaces (mostly tab and space
+      // characters) to non-break-spaces.
+      int whitespaceCounter = 0;
+      while ((whitespaceCounter < readLine.length()) &&
+             Character.isWhitespace(readLine.charAt(whitespaceCounter)))
+      {
+        pout.print("&nbsp;");
+        whitespaceCounter += 1;
+      }
+
+      final String printResult;
+      if (whitespaceCounter > 0)
+      {
+        printResult = readLine.substring(whitespaceCounter);
+      }
+      else
+      {
+        printResult = readLine;
+      }
+
+      pout.print(entityParser.encodeEntities(printResult));
     }
 
   }

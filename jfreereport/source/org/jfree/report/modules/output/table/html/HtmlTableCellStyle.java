@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.3 2005/01/25 00:13:44 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 09.03.2004 : Initial version
+ * 09-Mar-2004 : Initial version
  *  
  */
 
@@ -42,11 +42,23 @@ import java.awt.Color;
 
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 
+/**
+ * Encapsulates a background definition for a &lt;td&gt; element. For layout
+ * purposes, the font size is define to be 1pt. The div element included in
+ * the table cell will correct that to a reasonable value if needed, and the
+ * &amp;nbsp; entity (required to prevent empty cells if not using CSS) will
+ * be as small as possible.
+ * <p>
+ * Using a font-size of zero makes the cell empty and causes problems with
+ * the defined borders. 
+ *
+ * @author Thomas Morgner
+ */
 public class HtmlTableCellStyle implements HtmlStyle
 {
   private TableCellBackground background;
 
-  public HtmlTableCellStyle (final TableCellBackground background)
+  public HtmlTableCellStyle(final TableCellBackground background)
   {
     this.background = background;
   }
@@ -56,14 +68,16 @@ public class HtmlTableCellStyle implements HtmlStyle
    *
    * @return the generated stylesheet definition.
    */
-  public String getCSSString (final boolean compact)
+  public String getCSSString(final boolean compact)
   {
     if (background == null)
     {
-      return "";
+      return "font-size: 1pt";
     }
 
     final StyleBuilder b = new StyleBuilder(compact);
+    b.append("font-size", "1pt");
+
     final Color c = background.getColor();
     if (c != null)
     {
@@ -72,35 +86,43 @@ public class HtmlTableCellStyle implements HtmlStyle
 
     if (background.getColorTop() != null)
     {
-      b.append("border-top", String.valueOf(background.getBorderSizeTop()), "pt");
+      b.append("border-top", String.valueOf(background.getBorderSizeTop()),
+              "pt");
       b.append("border-top-style", "solid");
-      b.append("border-top-color", HtmlStyleCollection.getColorString(background.getColorTop()));
+      b.append("border-top-color", HtmlStyleCollection.getColorString(
+              background.getColorTop()));
     }
 
     if (background.getColorBottom() != null)
     {
-      b.append("border-bottom", String.valueOf(background.getBorderSizeBottom()), "pt");
+      b.append("border-bottom", String.valueOf(
+              background.getBorderSizeBottom()), "pt");
       b.append("border-bottom-style", "solid");
-      b.append("border-bottom-color", HtmlStyleCollection.getColorString(background.getColorBottom()));
+      b.append("border-bottom-color", HtmlStyleCollection.getColorString(
+              background.getColorBottom()));
     }
 
     if (background.getColorLeft() != null)
     {
-      b.append("border-left", String.valueOf(background.getBorderSizeLeft()), "pt");
+      b.append("border-left", String.valueOf(background.getBorderSizeLeft()),
+              "pt");
       b.append("border-left-style", "solid");
-      b.append("border-left-color", HtmlStyleCollection.getColorString(background.getColorLeft()));
+      b.append("border-left-color", HtmlStyleCollection.getColorString(
+              background.getColorLeft()));
     }
 
     if (background.getColorRight() != null)
     {
-      b.append("border-right", String.valueOf(background.getBorderSizeRight()), "pt");
+      b.append("border-right", String.valueOf(background.getBorderSizeRight()),
+              "pt");
       b.append("border-right-style", "solid");
-      b.append("border-right-color", HtmlStyleCollection.getColorString(background.getColorRight()));
+      b.append("border-right-color", HtmlStyleCollection.getColorString(
+              background.getColorRight()));
     }
     return b.toString();
   }
 
-  public boolean equals (final Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {
@@ -113,15 +135,12 @@ public class HtmlTableCellStyle implements HtmlStyle
 
     final HtmlTableCellStyle htmlTableCellStyle = (HtmlTableCellStyle) o;
 
-    if (background != null ? !background.equals(htmlTableCellStyle.background) : htmlTableCellStyle.background != null)
-    {
-      return false;
-    }
+    return !(background != null ? !background.equals(
+            htmlTableCellStyle.background) : htmlTableCellStyle.background != null);
 
-    return true;
   }
 
-  public int hashCode ()
+  public int hashCode()
   {
     return (background != null ? background.hashCode() : 0);
   }

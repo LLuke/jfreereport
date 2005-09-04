@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.19 2005/05/31 20:37:25 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.20 2005/06/02 14:36:31 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -63,6 +63,7 @@ import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 public class HtmlContentCreator extends TableContentCreator
 {
@@ -405,6 +406,8 @@ public class HtmlContentCreator extends TableContentCreator
     final int height = go.getRowCount();
     final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
 
+    Log.debug("Flushing at " + getLayoutOffset());
+    Log.debug("          : " + height + " := max " + go.getRowCount() + ", " + layout.getRowCount());
     final int layoutOffset = getLayoutOffset();
     for (int y = layoutOffset; y < layoutOffset + height; y++)
     {
@@ -524,15 +527,23 @@ public class HtmlContentCreator extends TableContentCreator
     }
 
     final String internalStyleName = layout.getBackgroundStyleAt(y, x);
-    HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
     final TableCellBackground background = layout.getRegionBackground(rectangle);
 
     // first, check, whether we have a style ..
     // if not, then create one for the current background
     // (which can be null, if there is no background defined).
-    if (style == null)
+    HtmlStyle style;
+    if (background == null)
     {
-      style = new HtmlTableCellStyle(background);
+      style = layout.getStyleCollection().getEmptyCellStyle();
+    }
+    else
+    {
+      style = layout.getStyleCollection().lookupStyle(internalStyleName);
+      if (style == null)
+      {
+        style = new HtmlTableCellStyle(background);
+      }
     }
     // now check, whether an equal style is already stored.
     // if so, then reference that style instead of printing the

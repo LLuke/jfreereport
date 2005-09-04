@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.4 2005/02/22 20:18:54 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.5 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -161,6 +161,11 @@ public abstract class TableContentCreator extends AbstractTableCreator
     return false;
   }
 
+  protected int getRowCount ()
+  {
+    return backend.getRowCount();
+  }
+
   protected abstract void handleEndTable ()
           throws ReportProcessingException;
 
@@ -208,6 +213,7 @@ public abstract class TableContentCreator extends AbstractTableCreator
       final int x2 = rect.getX2();
       final int y2 = rect.getY2() - layoutOffset;
       backend.ensureCapacity(x2, y2);
+      backend.setObject(y2 - 1, x2 - 1, null);
       return;
     }
 

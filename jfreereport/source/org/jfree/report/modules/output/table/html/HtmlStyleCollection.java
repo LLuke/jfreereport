@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.11 2005/02/23 19:32:04 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.12 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -81,6 +81,7 @@ public class HtmlStyleCollection
   private static final String CELL_STYLE_PREFIX = "td.";
   private static final String GENERIC_STYLE_PREFIX = ".";
 
+  private HtmlTableCellStyle emptyCellStyle;
 
   /**
    * Creates a new HtmlStyleCollection.
@@ -89,6 +90,8 @@ public class HtmlStyleCollection
   {
     this.table = new HashMap();
     this.reverseTable = new HashMap();
+    this.emptyCellStyle = new HtmlTableCellStyle(null);
+    addCellStyle(emptyCellStyle);
   }
 
   /**
@@ -139,11 +142,7 @@ public class HtmlStyleCollection
     final String name = lookupName(style);
 
     // if the table does not contain this style, it is not registered.
-    if (name == null)
-    {
-      return false;
-    }
-    return true;
+    return name != null;
   }
 
   /**
@@ -179,7 +178,16 @@ public class HtmlStyleCollection
    */
   public HtmlStyle lookupStyle (final String name)
   {
+    if (name == null)
+    {
+      return emptyCellStyle;
+    }
     return (HtmlStyle) reverseTable.get(name);
+  }
+
+  public HtmlTableCellStyle getEmptyCellStyle()
+  {
+    return emptyCellStyle;
   }
 
   /**
@@ -224,6 +232,7 @@ public class HtmlStyleCollection
   {
     table.clear();
     reverseTable.clear();
+    addCellStyle(emptyCellStyle);
   }
 
 

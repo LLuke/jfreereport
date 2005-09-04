@@ -3,6 +3,11 @@
                         "http://jfreereport.sourceforge.net/report-085.dtd">
 <report name="Open Source Java Projects" pageformat="A4" leftmargin="72" topmargin="72">
 
+  <configuration>
+    <property name="org.jfree.report.modules.output.table.base.StrictLayout">true</property>
+    <property name="org.jfree.report.modules.output.table.html.TableRowBorderDefinition">true</property>
+  </configuration>
+
   <!-- REPORT HEADER -->
   <!-- This band appears once at the beginning of the report.  In this example, -->
   <!-- the header contains four labels. -->
@@ -13,12 +18,12 @@
       color="#CCFFCC" weight="0"/>
 
     <rectangle x="104" y="0" width="100%" height="30"
-      color="#CCCCCC" weight="1" draw="true" fill="false"/>
+      color="black" weight="1" draw="true" fill="false"/>
 
     <rectangle x="0" y="0" width="102" height="102"
-      color="#CCCCCC" weight="0"/>
+      color="#FFCC11" weight="0"/>
 
-    <image-field x="1" y="1" width="100" height="100" fieldname="logo"/>
+    <imageref x="1" y="1" width="100" height="100" src="gorilla.jpg"/>
 
     <label fontstyle="bold" fontsize="18"
       x="104" y="7" width="100%" height="18"
@@ -34,15 +39,14 @@
       alignment="center" vertical-alignment="top"
       href="http://www.object-refinery.com/open.html"
       >http://www.object-refinery.com/open.html</label>
-    <band>
-      <line x1="0" y1="104" x2="100%" y2="104"
-        color="#CCCCCC" weight="0.5"/>
-    </band>
+
+    <line x1="0" y1="104" x2="100%" y2="104"
+      color="#CCCCCC" weight="0.5"/>
+
   </reportheader>
 
   <!-- REPORT FOOTER -->
   <!-- Displays item count and total bytes for icons listed in the report. -->
-
   <reportfooter height="30"
     fontname="SansSerif" fontstyle="bold" fontsize="12">
   </reportfooter>
@@ -103,7 +107,6 @@
   <!-- Declares the functions used in this report. -->
   <functions>
     <property-ref name="report.date"/>
-    <property-ref name="logo"/>
 
     <function name="PageNumber" class="org.jfree.report.function.PageFunction"/>
 
