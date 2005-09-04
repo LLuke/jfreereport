@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.11 2005/03/30 17:25:46 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.12 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes
  * -------
@@ -101,6 +101,7 @@ public class CSVTableProcessor extends TableProcessor
           throws ReportProcessingException
   {
     super(report);
+    init();
   }
 
   /**

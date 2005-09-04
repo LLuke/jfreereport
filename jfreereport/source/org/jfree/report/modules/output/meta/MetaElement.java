@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaElement.java,v 1.7 2005/03/03 14:42:35 taqua Exp $
+ * $Id: MetaElement.java,v 1.8 2005/03/24 22:24:55 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -63,6 +63,7 @@ public class MetaElement implements Cloneable
   private ElementStyleSheet styleProperties;
   private Content elementContent;
   private String name;
+  private StrictBounds bounds;
 
   public MetaElement (final Content elementContent, final ElementStyleSheet style)
   {
@@ -100,7 +101,17 @@ public class MetaElement implements Cloneable
 
   public final StrictBounds getBounds ()
   {
-    return (StrictBounds) styleProperties.getStyleProperty(ElementStyleSheet.BOUNDS);
+    if (bounds == null)
+    {
+      return (StrictBounds)
+              styleProperties.getStyleProperty(ElementStyleSheet.BOUNDS);
+    }
+    return bounds;
+  }
+
+  public void setBounds (final StrictBounds bounds)
+  {
+    this.bounds = bounds;
   }
 
   public final FontDefinition getFontDefinitionProperty ()
@@ -147,6 +158,10 @@ public class MetaElement implements Cloneable
   {
     // content and style is immutable...
     final MetaElement e = (MetaElement) super.clone();
+    if (bounds != null)
+    {
+      e.bounds = (StrictBounds) bounds.clone();
+    }
     return e;
   }
 

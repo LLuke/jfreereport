@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.18 2005/02/23 21:05:33 taqua Exp $
+ * $Id: TableProcessor.java,v 1.19 2005/03/03 14:42:36 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,10 @@ import org.jfree.report.util.geom.StrictGeomUtility;
  * method.
  * <p/>
  * Like all other report processors, this implementation is not synchronized.
+ * <p>
+ * When subclassing a table processor, make sure that you call the 'init' method
+ * after all properties are set. The init method will create the table writer
+ * expression (or replace the existing one if called multiple times).
  *
  * @author Thomas Morgner
  */
@@ -152,12 +156,16 @@ public abstract class TableProcessor
     {
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
+    init();
+
+    // initialize with the report default.
+  }
+
+  protected void init() {
     tableWriter = new TableWriter(createMetaBandProducer());
     tableWriter.setName(TABLE_WRITER);
 
     this.report.addExpression(tableWriter);
-
-    // initialize with the report default.
   }
 
   protected abstract MetaBandProducer createMetaBandProducer ();
@@ -228,7 +236,6 @@ public abstract class TableProcessor
     {
       final StartState startState = new StartState(getReport());
       ReportState state = startState;
-      ReportState retval = null;
 
       // the report processing can be splitted into 2 separate processes.
       // The first is the ReportPreparation; all function values are resolved and
@@ -265,6 +272,7 @@ public abstract class TableProcessor
       {
         throw new IllegalStateException("No functions defined, invalid implementation.");
       }
+      ReportState retval = null;
 
       final int eventTrigger = state.getNumberOfRows() / MAX_EVENTS_PER_RUN;
 

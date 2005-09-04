@@ -2,6 +2,9 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * [BUG] Michael Tennes fixed a show-stopping bug in the text width
+          calculation in the PlainTextOutputTarget.
+
         * [BUG] Changed the API of StaticImageElementFactory to fix some unclean
           method names. Also added a convinience property of type 'java.awt.Image'
           to the class.
@@ -23,7 +26,10 @@ A list of changes in recent versions:
         * Added the StackedLayoutManager, which behaves like a Swing-Box-Layout.
           Use this within a band to allow dynamic elements to push other elements
           below the used space of the dynamic element. See the StackedLayoutDemo
-          for an example.     
+          for an example.
+
+        * The demos have been restructured. Every demo now has a longer text
+          describing the purpose and structure of the demo.
 
 0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible

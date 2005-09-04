@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelProcessor.java,v 1.12 2005/02/05 18:35:19 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.13 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -87,6 +87,7 @@ public class ExcelProcessor extends TableProcessor
           throws ReportProcessingException
   {
     super(report);
+    init();
   }
 
   /**

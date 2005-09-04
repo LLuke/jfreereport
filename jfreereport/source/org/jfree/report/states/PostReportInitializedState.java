@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PostReportInitializedState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
+ * $Id: PostReportInitializedState.java,v 1.5 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,7 +75,6 @@ public class PostReportInitializedState extends ReportState
   public ReportState advance ()
           throws ReportProcessingException
   {
-    nextPage();
     firePrepareEvent();
 
     // initialise the report before any band (and especially before the pageheader) is printed.

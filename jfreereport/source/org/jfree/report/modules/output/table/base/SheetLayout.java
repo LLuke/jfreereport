@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.11 2005/08/08 15:36:34 taqua Exp $
+ * $Id: SheetLayout.java,v 1.12 2005/08/10 14:22:21 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,24 +38,24 @@
 
 package org.jfree.report.modules.output.table.base;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.ArrayList;
-import java.awt.Color;
 
+import org.jfree.report.content.EmptyContent;
 import org.jfree.report.modules.output.meta.MetaElement;
-import org.jfree.util.Log;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.geom.StrictBounds;
-import org.jfree.report.content.EmptyContent;
+import org.jfree.util.Log;
 
 
 /**
- * The sheet layout is used to build the background map and to collect the x- and
- * y-cell-borders.
+ * The sheet layout is used to build the background map and to collect the x-
+ * and y-cell-borders.
  */
 public class SheetLayout
 {
@@ -105,6 +105,10 @@ public class SheetLayout
    * merge would not be predictable and would depend on the order of the
    * split operations. A predictable merge implementation would be by far
    * more complex than this 'hack'.
+   *
+   * To create a consistent behaviour, rectangle-borders behave like four lines;
+   * therefore the bottom and right border of the rectangle will be mapped into
+   * top or left border cells.
    */
 
   /** An internal flag indicating that the upper or left bounds should be used. */
@@ -112,7 +116,8 @@ public class SheetLayout
   private static final boolean LOWER_BOUNDS = false;
 
   /**
-   * Encapsulates X- or Y-Cuts. An auxilary CutObject can be removed on non-strict sets.
+   * Encapsulates X- or Y-Cuts. An auxilary CutObject can be removed on
+   * non-strict sets.
    */
   private static class BoundsCut
   {
@@ -120,30 +125,32 @@ public class SheetLayout
     private int position;
     private boolean auxilary;
 
-    public BoundsCut (final long coordinate, final int position, final boolean auxilary)
+    public BoundsCut(final long coordinate,
+                     final int position,
+                     final boolean auxilary)
     {
       this.coordinate = coordinate;
       this.position = position;
       this.auxilary = auxilary;
     }
 
-    public long getCoordinate ()
+    public long getCoordinate()
     {
       return coordinate;
     }
 
-    public boolean isAuxilary ()
+    public boolean isAuxilary()
     {
       return auxilary;
     }
 
-    public int getPosition ()
+    public int getPosition()
     {
       return position;
     }
 
 
-    public String toString ()
+    public String toString()
     {
       return "org.jfree.report.modules.output.table.base.SheetLayout.BoundsCut{" +
               "auxilary=" + auxilary +
@@ -151,7 +158,7 @@ public class SheetLayout
               "}";
     }
 
-    public void makePermanent ()
+    public void makePermanent()
     {
       auxilary = false;
     }
@@ -162,41 +169,33 @@ public class SheetLayout
     private StrictBounds bounds;
     private InstanceID contentID;
 
-    public CellReference (final StrictBounds bounds)
+    public CellReference(final StrictBounds bounds)
     {
       this.contentID = new InstanceID();
       this.bounds = (StrictBounds) bounds.clone();
     }
 
-    public StrictBounds getBounds ()
+    public StrictBounds getBounds()
     {
       return bounds;
     }
 
-    public InstanceID getContentID ()
+    public InstanceID getContentID()
     {
       return contentID;
     }
   }
 
-  /**
-   * A flag, defining whether to use strict layout mode.
-   */
+  /** A flag, defining whether to use strict layout mode. */
   private final boolean strict;
 
-  /**
-   * The XBounds, all vertical cell boundaries (as CoordinateMappings).
-   */
+  /** The XBounds, all vertical cell boundaries (as CoordinateMappings). */
   private final TreeMap xBounds;
 
-  /**
-   * The YBounds, all vertical cell boundaries (as CoordinateMappings).
-   */
+  /** The YBounds, all vertical cell boundaries (as CoordinateMappings). */
   private final TreeMap yBounds;
 
-  /**
-   * Is a list of lists, contains the merged backgrounds ...
-   */
+  /** Is a list of lists, contains the merged backgrounds ... */
   private GenericObjectTable backend;
   /** Contains the references to the original data passed into this layouter. */
   private GenericObjectTable objectIdTable;
@@ -207,7 +206,8 @@ public class SheetLayout
   private boolean lastRowCutIsSignificant;
 
   /**
-   * The right border of the grid. This is needed when not being in the strict mode.
+   * The right border of the grid. This is needed when not being in the strict
+   * mode.
    */
   private long xMaxBounds;
   private long yMaxBounds;
@@ -219,13 +219,14 @@ public class SheetLayout
   private Long[] xKeysArray;
   private static final Long[] EMPTY_LONG_ARRAY = new Long[0];
   private static final Long ZERO = new Long(0);
+
   /**
-   * Creates a new TableGrid-object. If strict mode is enabled, all cell bounds are used
-   * to create the table grid, resulting in a more complex layout.
+   * Creates a new TableGrid-object. If strict mode is enabled, all cell bounds
+   * are used to create the table grid, resulting in a more complex layout.
    *
    * @param strict the strict mode for the layout.
    */
-  public SheetLayout (final boolean strict)
+  public SheetLayout(final boolean strict)
   {
     xBounds = new TreeMap();
     yBounds = new TreeMap();
@@ -239,25 +240,32 @@ public class SheetLayout
   }
 
   /**
-   * Adds the bounds of the given TableCellData to the grid. The bounds given must be the
-   * same as the bounds of the element, or the layouting might produce surprising
-   * results.
+   * Adds the bounds of the given TableCellData to the grid. The bounds given
+   * must be the same as the bounds of the element, or the layouting might
+   * produce surprising results.
    *
-   * @param element the position that should be added to the grid (might be null).
+   * @param element the position that should be added to the grid (might be
+   *                null).
    * @throws NullPointerException if the bounds are null
    */
-  public void add (final MetaElement element)
+  public void add(final MetaElement element)
   {
     final StrictBounds bounds = element.getBounds();
+
+    if (bounds.getWidth() == 0 && bounds.getHeight() == 0)
+    {
+      Log.debug("Skipped empty element " + element);
+      return;
+    }
+
+    final long elementRightX = (bounds.getWidth() + bounds.getX());
+    final long elementBottomY = (bounds.getHeight() + bounds.getY());
+    final boolean isBackground = (element instanceof TableCellBackground);
 
     // collect the bounds and add them to the xBounds and yBounds collection
     // if necessary...
     ensureXMapping(bounds.getX(), false);
     ensureYMapping(bounds.getY(), false);
-
-    final long elementRightX = (bounds.getWidth() + bounds.getX());
-    final long elementBottomY = (bounds.getHeight() + bounds.getY());
-    final boolean isBackground = (element instanceof TableCellBackground);
 
     // an end cut is auxilary, if it is not a background and the layout is not strict
     final boolean aux = (isBackground == false) && (isStrict() == false);
@@ -278,27 +286,33 @@ public class SheetLayout
 
     // now add the new element to the table ...
     // the +1 makes sure, that we include the right and bottom element borders in the set
-    final SortedMap ySet = yBounds.subMap(new Long(bounds.getY()), new Long(elementBottomY + 1));
-    final SortedMap xSet = xBounds.subMap(new Long(bounds.getX()), new Long(elementRightX + 1));
+    final SortedMap ySet = yBounds.subMap(new Long(bounds.getY()), new Long(
+            elementBottomY + 1));
+    final SortedMap xSet = xBounds.subMap(new Long(bounds.getX()), new Long(
+            elementRightX + 1));
 
-    final Map.Entry[] yKeys = (Map.Entry[]) ySet.entrySet().toArray(new Map.Entry[ySet.size()]);
-    final Map.Entry[] xKeys = (Map.Entry[]) xSet.entrySet().toArray(new Map.Entry[xSet.size()]);
+    final Map.Entry[] yKeys = (Map.Entry[]) ySet.entrySet().toArray(
+            new Map.Entry[ySet.size()]);
+    final Map.Entry[] xKeys = (Map.Entry[]) xSet.entrySet().toArray(
+            new Map.Entry[xSet.size()]);
 
     if (isBackground)
     {
       final TableCellBackground background = (TableCellBackground) element;
 
-      if (yKeys.length == 1)
+      if (yKeys.length == 1 || bounds.getHeight() == 0)
       {
-        processHorizontalLine (yKeys[0], xKeys, background);
+        processHorizontalLine(yKeys[0], xKeys, background);
       }
-      else if (xKeys.length == 1)
+      else if (xKeys.length == 1 || bounds.getWidth() == 0)
       {
         processVerticalLine(yKeys, xKeys[0], background);
       }
       else
       {
         // this does nothing for yLength == 1 && xLength == 1
+        // in that case, the whole thing did not define an area but a
+        // vertical or horizontal line.
         processAreaBackground(yKeys, xKeys, background);
       }
     }
@@ -323,16 +337,17 @@ public class SheetLayout
     }
   }
 
-  protected boolean isContent (final MetaElement element)
+  protected boolean isContent(final MetaElement element)
   {
     return element.getContent() instanceof EmptyContent == false;
   }
 
-  public TableCellBackground getRegionBackground (final TableRectangle rect)
+  public TableCellBackground getRegionBackground(final TableRectangle rect)
   {
     final int mappedX1 = mapColumn(rect.getX1());
     final int mappedY1 = mapRow(rect.getY1());
-    final TableCellBackground bgTopLeft = (TableCellBackground) backend.getObject(mappedY1, mappedX1);
+    final TableCellBackground bgTopLeft = (TableCellBackground) backend
+            .getObject(mappedY1, mappedX1);
     if (bgTopLeft == null)
     {
       return null;
@@ -343,24 +358,54 @@ public class SheetLayout
     }
     final int mappedX2 = mapColumn(rect.getX2() - 1);
     final int mappedY2 = mapRow(rect.getY2() - 1);
-    final TableCellBackground bgBottomRight = (TableCellBackground) backend.getObject(mappedY2, mappedX2);
+    final TableCellBackground bgBottomRight = (TableCellBackground) backend
+            .getObject(mappedY2, mappedX2);
     if (bgBottomRight == null)
     {
       return null;
     }
-
     final Long[] xCuts = getXCuts();
     final Long[] yCuts = getYCuts();
     final long x = xCuts[rect.getX1()].longValue();
     final long y = yCuts[rect.getY1()].longValue();
-    final long width = xCuts[rect.getX2()].longValue() - x;
-    final long height = yCuts[rect.getY2()].longValue() - y;
+
+    // Warning: This correction is necessary, as the content creators will except
+    // cells, which have content (width and height non-zero). They query the bounds
+    // for a given cell, and everywhere except on the right or bottom border
+    // everything will be fine.
+    //
+    // If the right or bottom border contains lines, these cells will have a
+    // width and/or height of zero, and therefore there will be no other right
+    // bottom border to query. We get ArrayIndexOutOfBounds exceptions, which
+    // must be prevented here.
+    final long width;
+    if (rect.getX2() == xCuts.length)
+    {
+      width = 1;
+    }
+    else
+    {
+      width = xCuts[rect.getX2()].longValue() - x; // ArrayIndexException here
+    }
+
+    final long height;
+    if (rect.getY2() == yCuts.length)
+    {
+      height = yCuts[rect.getY2()].longValue() - y;
+    }
+    else
+    {
+      height = 1;
+    }
+
     workBounds.setRect(x, y, width, height);
 
-    final TableCellBackground retval = bgTopLeft.createMergedInstance(workBounds);
+    final TableCellBackground retval =
+            bgTopLeft.createSplittedInstance(workBounds);
     if (isVerticalBorderValid(rect, mappedX1, true))
     {
-      retval.setBorderLeft(bgTopLeft.getColorLeft(), bgTopLeft.getBorderSizeLeft());
+      retval.setBorderLeft(bgTopLeft.getColorLeft(),
+              bgTopLeft.getBorderSizeLeft());
     }
     else
     {
@@ -368,7 +413,8 @@ public class SheetLayout
     }
     if (isVerticalBorderValid(rect, mappedX2, false))
     {
-      retval.setBorderRight(bgBottomRight.getColorRight(), bgBottomRight.getBorderSizeRight());
+      retval.setBorderRight(bgBottomRight.getColorRight(),
+              bgBottomRight.getBorderSizeRight());
     }
     else
     {
@@ -377,7 +423,8 @@ public class SheetLayout
 
     if (isHorizontalBorderValid(rect, mappedY1, true))
     {
-      retval.setBorderTop(bgTopLeft.getColorTop(), bgTopLeft.getBorderSizeTop());
+      retval.setBorderTop(bgTopLeft.getColorTop(),
+              bgTopLeft.getBorderSizeTop());
     }
     else
     {
@@ -385,7 +432,8 @@ public class SheetLayout
     }
     if (isHorizontalBorderValid(rect, mappedY2, false))
     {
-      retval.setBorderBottom(bgBottomRight.getColorBottom(), bgBottomRight.getBorderSizeBottom());
+      retval.setBorderBottom(bgBottomRight.getColorBottom(),
+              bgBottomRight.getBorderSizeBottom());
     }
     else
     {
@@ -394,9 +442,9 @@ public class SheetLayout
     return retval;
   }
 
-  private boolean isVerticalBorderValid (final TableRectangle rect,
-                                         final int mappedX,
-                                         final boolean left)
+  private boolean isVerticalBorderValid(final TableRectangle rect,
+                                        final int mappedX,
+                                        final boolean left)
   {
     Color color = null;
     float border = 0;
@@ -408,7 +456,7 @@ public class SheetLayout
       if (background == null)
       {
         // this is definitly unexpected ..
-        Log.warn ("Possible inconsistency: No background defined at " + rect);
+        Log.warn("Possible inconsistency: No background defined at " + rect);
         return false;
       }
       if (left)
@@ -441,9 +489,9 @@ public class SheetLayout
     return true;
   }
 
-  private boolean isHorizontalBorderValid (final TableRectangle rect,
-                                         final int mappedY,
-                                         final boolean top)
+  private boolean isHorizontalBorderValid(final TableRectangle rect,
+                                          final int mappedY,
+                                          final boolean top)
   {
     Color color = null;
     float border = 0;
@@ -455,7 +503,7 @@ public class SheetLayout
       if (background == null)
       {
         // this is definitly unexpected ..
-        Log.warn ("Possible inconsistency: No background defined at " + rect);
+        Log.warn("Possible inconsistency: No background defined at " + rect);
         return false;
       }
       if (top)
@@ -488,8 +536,8 @@ public class SheetLayout
     return true;
   }
 
-  private boolean isCellAreaOccupied (final Map.Entry[] yKeys,
-                                      final Map.Entry[] xKeys)
+  private boolean isCellAreaOccupied(final Map.Entry[] yKeys,
+                                     final Map.Entry[] xKeys)
   {
     if (xKeys.length < 2 || yKeys.length < 2)
     {
@@ -514,8 +562,9 @@ public class SheetLayout
     return false;
   }
 
-  private void processVerticalLine (final Map.Entry[] yKeys, final Map.Entry xKey,
-                                    final TableCellBackground background)
+  private void processVerticalLine(final Map.Entry[] yKeys,
+                                   final Map.Entry xKey,
+                                   final TableCellBackground background)
   {
     // again get the column index for the backend table ...
     final BoundsCut currentColumnValue = (BoundsCut) xKey.getValue();
@@ -529,20 +578,22 @@ public class SheetLayout
       // get the index of the current row in the backend-table ...
       final BoundsCut currentRowValue = (BoundsCut) yKeys[y].getValue();
       final int currentRowIndex = currentRowValue.getPosition();
-      workBounds = getCellBounds
-              (workBounds, (Long)xKey.getKey(), (Long)yKeys[y].getKey());
+      workBounds = computeCellBounds
+              (workBounds, (Long) xKey.getKey(), (Long) yKeys[y].getKey());
 
-      performMergeCellBackground(currentRowIndex, currentColumnIndex, background, workBounds);
+      performMergeCellBackground(currentRowIndex, currentColumnIndex,
+              background, workBounds);
     }
 
-    if (xKey.equals(xMaxBoundsKey))
+    if (xKey.getKey().equals(xMaxBoundsKey))
     {
       lastColumnCutIsSignificant = true;
     }
   }
 
-  private void processHorizontalLine (final Map.Entry yKey, final Map.Entry[] xKeys,
-                                      final TableCellBackground background)
+  private void processHorizontalLine(final Map.Entry yKey,
+                                     final Map.Entry[] xKeys,
+                                     final TableCellBackground background)
   {
     // don't merge twice , therefore save the state ...
 
@@ -557,25 +608,34 @@ public class SheetLayout
       // again get the column index for the backend table ...
       final BoundsCut currentColumnValue = (BoundsCut) xKeys[x].getValue();
       final int currentColumnIndex = currentColumnValue.getPosition();
-      workBounds = getCellBounds
-              (workBounds, (Long)xKeys[x].getKey(), (Long)yKey.getKey());
+      workBounds = computeCellBounds
+              (workBounds, (Long) xKeys[x].getKey(), (Long) yKey.getKey());
 
-      performMergeCellBackground(currentRowIndex, currentColumnIndex, background, workBounds);
+      performMergeCellBackground(currentRowIndex, currentColumnIndex,
+              background, workBounds);
     }
 
-    if (yKey.equals(yMaxBoundsKey))
+    if (yKey.getKey().equals(yMaxBoundsKey))
     {
       lastRowCutIsSignificant = true;
     }
   }
 
-  private void processAreaBackground (final Map.Entry[] yKeys, final Map.Entry[] xKeys,
-                                      final TableCellBackground background)
+  private void processAreaBackground(final Map.Entry[] yKeys,
+                                     final Map.Entry[] xKeys,
+                                     final TableCellBackground background)
   {
+    final boolean hasRightBorders = (background.getColorRight() != null);
+    final boolean hasBottomBorders = (background.getColorBottom() != null);
+
     // we iterate over all rows ..
     // the yCuts also contains the End-Bounds (y+height);
     // the EB's for the last element do not hold any content.
-    for (int y = 0; y < yKeys.length - 1; y++)
+    // we can skip the last row or column if there is no border there
+    final int yLength = hasBottomBorders ? yKeys.length : yKeys.length - 1;
+    final int xLength = hasRightBorders ? xKeys.length : xKeys.length - 1;
+
+    for (int y = 0; y < yLength; y++)
     {
       // get the index of the current row in the backend-table ...
       final BoundsCut currentRowValue = (BoundsCut) yKeys[y].getValue();
@@ -583,22 +643,46 @@ public class SheetLayout
 
       // for every row we iterate over all columns ...
       // but we do not touch the last column ..
-      for (int x = 0; x < xKeys.length - 1; x++)
+      for (int x = 0; x < xLength; x++)
       {
         // again get the column index for the backend table ...
         final BoundsCut currentColumnValue = (BoundsCut) xKeys[x].getValue();
         final int currentColumnIndex = currentColumnValue.getPosition();
 
-        workBounds = getCellBounds
-                (workBounds, (Long)xKeys[x].getKey(), (Long)yKeys[y].getKey());
+        workBounds = computeCellBounds
+                (workBounds, (Long) xKeys[x].getKey(),
+                        (Long) yKeys[y].getKey());
         performMergeCellBackground(currentRowIndex, currentColumnIndex,
                 background, workBounds);
       }
     }
+
+    if (hasRightBorders &&
+            (xKeys[xKeys.length - 1].getKey().equals(xMaxBoundsKey)))
+    {
+      lastColumnCutIsSignificant = true;
+    }
+    if (hasBottomBorders &&
+            (yKeys[yKeys.length - 1].getKey().equals(yMaxBoundsKey)))
+    {
+      lastRowCutIsSignificant = true;
+    }
+
   }
 
-  private StrictBounds getCellBounds (final StrictBounds input,
-                                      final Long x, final Long y)
+  /**
+   * This method computes the cell bounds for a cell on a given gid position. If
+   * the retval parameter is non-null, the computed cell bounds will be copied
+   * into the given object to avoid unnecessary object creation.
+   *
+   * @param retval the bounds, to which the computed result should be copied, or
+   *               null, if a new object should be returned.
+   * @param x      the x coordinates within the grid
+   * @param y      the y coordinates within the grid
+   * @return the computed cell bounds.
+   */
+  private StrictBounds computeCellBounds(final StrictBounds retval,
+                                         final Long x, final Long y)
   {
     final long xVal = x.longValue();
     final long yVal = y.longValue();
@@ -607,64 +691,37 @@ public class SheetLayout
 
     final long x2Val = xCuts[findXPosition(xVal + 1, UPPER_BOUNDS)].longValue();
     final long y2Val = yCuts[findYPosition(yVal + 1, UPPER_BOUNDS)].longValue();
-    if (input == null)
+    if (retval == null)
     {
       return new StrictBounds(xVal, yVal, x2Val - xVal, y2Val - yVal);
     }
-    input.setRect(xVal, yVal, x2Val - xVal, y2Val - yVal);
-    return input;
+    retval.setRect(xVal, yVal, x2Val - xVal, y2Val - yVal);
+    return retval;
   }
 
-  private void performMergeCellBackground (final int currentRowIndex,
-                                           final int currentColumnIndex,
-                                           final TableCellBackground background,
-                                           final StrictBounds bounds)
+  private void performMergeCellBackground(final int currentRowIndex,
+                                          final int currentColumnIndex,
+                                          final TableCellBackground background,
+                                          final StrictBounds bounds)
   {
     // get the old background ... we will merge this one with the new ..
     final TableCellBackground oldBackground =
-            (TableCellBackground) backend.getObject(currentRowIndex, currentColumnIndex);
+            (TableCellBackground) backend.getObject(currentRowIndex,
+                    currentColumnIndex);
+    final TableCellBackground newBackground;
     if (oldBackground == null)
     {
-      if (hasBorders(background))
-      {
-        // split the background ...
-        final TableCellBackground newBackground = background.createMergedInstance(bounds);
-        backend.setObject(currentRowIndex, currentColumnIndex, newBackground);
-      }
-      else
-      {
-        backend.setObject(currentRowIndex, currentColumnIndex, background);
-      }
+      // split the element ..
+      newBackground = background.normalize(bounds);
     }
     else
     {
-      final TableCellBackground newBackground = oldBackground.merge(background, bounds);
-      backend.setObject(currentRowIndex, currentColumnIndex, newBackground);
+      newBackground = oldBackground.merge(background, bounds);
     }
+    backend.setObject(currentRowIndex, currentColumnIndex, newBackground);
   }
 
-  private boolean hasBorders (final TableCellBackground background)
-  {
-    if (background.getColorTop() != null)
-    {
-      return true;
-    }
-    if (background.getColorBottom() != null)
-    {
-      return true;
-    }
-    if (background.getColorLeft() != null)
-    {
-      return true;
-    }
-    if (background.getColorRight() != null)
-    {
-      return true;
-    }
-    return false;
-  }
-
-  private void ensureXMapping (final long coordinate, final boolean aux)
+  private void ensureXMapping(final long coordinate, final boolean aux)
   {
     final Long key = new Long(coordinate);
     final BoundsCut cut = (BoundsCut) xBounds.get(key);
@@ -690,15 +747,18 @@ public class SheetLayout
     }
   }
 
-  protected void columnInserted (final long coordinate, final int oldColumn,
-                                 final int newColumn)
+  protected void columnInserted(final long coordinate, final int oldColumn,
+                                final int newColumn)
   {
+//    Log.debug("Inserting new column on position " + coordinate +
+//            " (Col: " + oldColumn + " -> " + newColumn);
+//
     // now copy all entries from old column to new column
     backend.copyColumn(oldColumn, newColumn);
     objectIdTable.copyColumn(oldColumn, newColumn);
 
     // handle the backgrounds ..
-    final Long coordinateKey = new Long (coordinate);
+    final Long coordinateKey = new Long(coordinate);
     StrictBounds cellBounds = null;
     final Iterator entryIterator = yBounds.entrySet().iterator();
     while (entryIterator.hasNext())
@@ -715,15 +775,16 @@ public class SheetLayout
 
       // a column has been inserted. We have to check, whether the background has
       // borders defined, which might be invalid now.
-      final StrictBounds bounds = bg.getCellBounds();
-      cellBounds = getCellBounds(cellBounds, coordinateKey, (Long) entry.getKey());
+      final StrictBounds bounds = bg.getBounds();
+      cellBounds = computeCellBounds(cellBounds, coordinateKey,
+              (Long) entry.getKey());
       final TableCellBackground newBackground =
-              bg.createMergedInstance(cellBounds);
+              bg.createSplittedInstance(cellBounds);
 
       // the bounds of the old background have to be adjusted too ..
       final long parentNewWidth = cellBounds.getX() - bounds.getX();
       bounds.setRect(bounds.getX(), bounds.getY(),
-              Math.max (0, parentNewWidth), bounds.getHeight());
+              Math.max(0, parentNewWidth), bounds.getHeight());
       if (bg.getColorRight() != null)
       {
         // the original cell was split into two new cells ...
@@ -735,7 +796,7 @@ public class SheetLayout
     }
   }
 
-  private int getPreviousColumn (final long coordinate)
+  private int getPreviousColumn(final long coordinate)
   {
     // first, find the column preceding this coordinate
     final SortedMap map = xBounds.headMap(new Long(coordinate));
@@ -745,18 +806,22 @@ public class SheetLayout
     }
     final Object lastKey = map.lastKey();
     final BoundsCut cuts = (BoundsCut) map.get(lastKey);
-    final int oldColumn = cuts.getPosition();
-    return oldColumn;
+    return cuts.getPosition();
   }
 
-  protected void rowInserted (final long coordinate, final int oldRow, final int newRow)
+  protected void rowInserted(final long coordinate,
+                             final int oldRow,
+                             final int newRow)
   {
+//    Log.debug("Inserting new row on position " + coordinate +
+//            " (Row: " + oldRow + " -> " + newRow);
+//
     // now copy all entries from old column to new column
     backend.copyRow(oldRow, newRow);
     objectIdTable.copyRow(oldRow, newRow);
 
     // handle the backgrounds ..
-    final Long coordinateKey = new Long (coordinate);
+    final Long coordinateKey = new Long(coordinate);
     StrictBounds cellBounds = null;
     final Iterator entryIterator = xBounds.entrySet().iterator();
     while (entryIterator.hasNext())
@@ -773,16 +838,16 @@ public class SheetLayout
 
       // a row has been inserted. We have to check, whether the background has
       // borders defined, which might be invalid now.
-      final StrictBounds bounds = bg.getCellBounds();
-      cellBounds = getCellBounds(cellBounds, (Long) entry.getKey(), coordinateKey);
+      final StrictBounds bounds = bg.getBounds();
+      cellBounds = computeCellBounds(cellBounds, (Long) entry.getKey(),
+              coordinateKey);
       final TableCellBackground newBackground =
-              bg.createMergedInstance(cellBounds);
-
+              bg.createSplittedInstance(cellBounds);
 
       // the bounds of the old background have to be adjusted too ..
       final long parentNewHeight = cellBounds.getY() - bounds.getY();
       bounds.setRect(bounds.getX(), bounds.getY(),
-              bounds.getWidth(), Math.max (0, parentNewHeight));
+              bounds.getWidth(), Math.max(0, parentNewHeight));
       // due to the merging it is possible, that the bottom border
       // is invalid now.
       // the Top-Border of the original background is not touched ...
@@ -794,7 +859,7 @@ public class SheetLayout
     }
   }
 
-  private int getPreviousRow (final long coordinate)
+  private int getPreviousRow(final long coordinate)
   {
     // first, find the column preceding this coordinate
     final SortedMap map = yBounds.headMap(new Long(coordinate));
@@ -804,11 +869,10 @@ public class SheetLayout
     }
     final Object lastKey = map.lastKey();
     final BoundsCut cuts = (BoundsCut) map.get(lastKey);
-    final int oldRow = cuts.getPosition();
-    return oldRow;
+    return cuts.getPosition();
   }
 
-  private void ensureYMapping (final long coordinate, final boolean aux)
+  private void ensureYMapping(final long coordinate, final boolean aux)
   {
     final Long key = new Long(coordinate);
     final BoundsCut cut = (BoundsCut) yBounds.get(key);
@@ -841,17 +905,17 @@ public class SheetLayout
    *
    * @return true, if strict mode is enabled, false otherwise.
    */
-  public boolean isStrict ()
+  public boolean isStrict()
   {
     return strict;
   }
 
-  protected GenericObjectTable getLayoutBackend ()
+  protected GenericObjectTable getLayoutBackend()
   {
     return backend;
   }
 
-  public boolean isEmpty ()
+  public boolean isEmpty()
   {
     return ((backend.getColumnCount() == 0) &&
             (backend.getRowCount() == 0) &&
@@ -860,27 +924,32 @@ public class SheetLayout
   }
 
   /**
-   * Returns the position of the given element within the table. The TableRectangle
-   * contains row and cell indices, no layout coordinates.
+   * Returns the position of the given element within the table. The
+   * TableRectangle contains row and cell indices, no layout coordinates.
    *
    * @param e    the element for which the table bounds should be found.
-   * @param rect the returned rectangle or null, if a new instance should be created
+   * @param rect the returned rectangle or null, if a new instance should be
+   *             created
    * @return the filled table rectangle.
    */
-  public TableRectangle getTableBounds (final MetaElement e, final TableRectangle rect)
+  public TableRectangle getTableBounds(final MetaElement e,
+                                       final TableRectangle rect)
   {
     return this.getTableBounds(e.getBounds(), rect);
   }
 
   /**
-   * Returns the position of the given element within the table. The TableRectangle
-   * contains row and cell indices, no layout coordinates.
+   * Returns the position of the given element within the table. The
+   * TableRectangle contains row and cell indices, no layout coordinates.
    *
-   * @param bounds the element bounds for which the table bounds should be found.
-   * @param rect the returned rectangle or null, if a new instance should be created
+   * @param bounds the element bounds for which the table bounds should be
+   *               found.
+   * @param rect   the returned rectangle or null, if a new instance should be
+   *               created
    * @return the filled table rectangle.
    */
-  public TableRectangle getTableBounds (final StrictBounds bounds, TableRectangle rect)
+  public TableRectangle getTableBounds(final StrictBounds bounds,
+                                       TableRectangle rect)
   {
     if (rect == null)
     {
@@ -888,13 +957,15 @@ public class SheetLayout
     }
     final int x1 = findXPosition(bounds.getX(), LOWER_BOUNDS);
     final int y1 = findYPosition(bounds.getY(), LOWER_BOUNDS);
-    final int x2 = findXPosition(bounds.getX() + bounds.getWidth(), UPPER_BOUNDS);
-    final int y2 = findYPosition(bounds.getY() + bounds.getHeight(), UPPER_BOUNDS);
+    final int x2 = findXPosition(bounds.getX() + bounds.getWidth(),
+            UPPER_BOUNDS);
+    final int y2 = findYPosition(bounds.getY() + bounds.getHeight(),
+            UPPER_BOUNDS);
     rect.setRect(x1, y1, x2, y2);
     return rect;
   }
 
-  protected int mapColumn (final int xCutIndex)
+  protected int mapColumn(final int xCutIndex)
   {
     try
     {
@@ -908,7 +979,7 @@ public class SheetLayout
     }
   }
 
-  protected int mapRow (final int yCutIndex)
+  protected int mapRow(final int yCutIndex)
   {
     final Long[] ycuts = getYCuts();
     final BoundsCut boundsCut = (BoundsCut) yBounds.get(ycuts[yCutIndex]);
@@ -916,17 +987,17 @@ public class SheetLayout
   }
 
   /**
-   * Tries to find the cell position of the value <code>value</code>. If the position was
-   * not found in the data array, then the position of the first element greater or equal
-   * or the value is returned.
+   * Tries to find the cell position of the value <code>value</code>. If the
+   * position was not found in the data array, then the position of the first
+   * element greater or equal or the value is returned.
    *
    * @param coordinate the value that is searched in the data array.
-   * @param upperLimit set to true, if index of the first element greater or equal to the
-   *                   given value is returned, else the first element lesser or equal the
-   *                   value is returned.
+   * @param upperLimit set to true, if index of the first element greater or
+   *                   equal to the given value is returned, else the first
+   *                   element lesser or equal the value is returned.
    * @return the position of the value in the array or the next lower position.
    */
-  private int findXPosition (final long coordinate, final boolean upperLimit)
+  private int findXPosition(final long coordinate, final boolean upperLimit)
   {
     final Long[] cuts = getXCuts();
 
@@ -956,17 +1027,17 @@ public class SheetLayout
   }
 
   /**
-   * Tries to find the cell position of the value <code>value</code>. If the position was
-   * not found in the data array, then the position of the first element greater or equal
-   * or the value is returned.
+   * Tries to find the cell position of the value <code>value</code>. If the
+   * position was not found in the data array, then the position of the first
+   * element greater or equal or the value is returned.
    *
    * @param coordinate the value that is searched in the data array.
-   * @param upperLimit set to true, if index of the first element greater or equal to the
-   *                   given value is returned, else the first element lesser or equal the
-   *                   value is returned.
+   * @param upperLimit set to true, if index of the first element greater or
+   *                   equal to the given value is returned, else the first
+   *                   element lesser or equal the value is returned.
    * @return the position of the value in the array or the next lower position.
    */
-  private int findYPosition (final long coordinate, final boolean upperLimit)
+  private int findYPosition(final long coordinate, final boolean upperLimit)
   {
     final Long[] cuts = getYCuts();
     final int pos = Arrays.binarySearch(cuts, new Long(coordinate));
@@ -993,14 +1064,15 @@ public class SheetLayout
   }
 
   /**
-   * Returns the vertical boundaries of the table cells. The array contains the start
-   * positions of the cells. If this is a strict grid, this array will also contain the
-   * cell end positions. In either case the cell end of the last cell is returned. Do not
-   * modify the array, or funny things may happen.
+   * Returns the vertical boundaries of the table cells. The array contains the
+   * start positions of the cells. If this is a strict grid, this array will
+   * also contain the cell end positions. In either case the cell end of the
+   * last cell is returned. Do not modify the array, or funny things may
+   * happen.
    *
    * @return the vertical start position of the table cells.
    */
-  protected Long[] getYCuts ()
+  protected Long[] getYCuts()
   {
     if (yKeysArray != null)
     {
@@ -1030,12 +1102,13 @@ public class SheetLayout
   }
 
   /**
-   * Returns the horizontal boundaries of the table cells. The array contains the start
-   * positions of the cells. Do not modify the array, or funny things may happen.
+   * Returns the horizontal boundaries of the table cells. The array contains
+   * the start positions of the cells. Do not modify the array, or funny things
+   * may happen.
    *
    * @return the horizontal start position of the table cells.
    */
-  protected Long[] getXCuts ()
+  protected Long[] getXCuts()
   {
     if (xKeysArray != null)
     {
@@ -1066,16 +1139,16 @@ public class SheetLayout
   }
 
   /**
-   * A Callback method to inform the sheet layout, that the current page is complete, and
-   * no more content will be added.
+   * A Callback method to inform the sheet layout, that the current page is
+   * complete, and no more content will be added.
    */
-  public void pageCompleted ()
+  public void pageCompleted()
   {
     removeAuxilaryBounds();
     clearObjectIdTable();
   }
 
-  protected void removeAuxilaryBounds ()
+  protected void removeAuxilaryBounds()
   {
     final ArrayList removedCuts = new ArrayList();
     final Iterator itX = xBounds.entrySet().iterator();
@@ -1086,7 +1159,7 @@ public class SheetLayout
       if (cut.isAuxilary())
       {
         itX.remove();
-        removedCuts.add (cut);
+        removedCuts.add(cut);
         xKeysArray = null;
       }
     }
@@ -1110,9 +1183,12 @@ public class SheetLayout
         }
         // now join ..
         final StrictBounds leftBounds = leftBg.getBounds();
-        final StrictBounds newBounds = rightBg.getBounds().createUnion(leftBounds);
-        final TableCellBackground unionBg = leftBg.createMergedInstance(newBounds);
-        unionBg.setBorderRight(rightBg.getColorRight(), rightBg.getBorderSizeRight());
+        final StrictBounds newBounds = rightBg.getBounds().createUnion(
+                leftBounds);
+        final TableCellBackground unionBg = leftBg.createSplittedInstance(
+                newBounds);
+        unionBg.setBorderRight(rightBg.getColorRight(),
+                rightBg.getBorderSizeRight());
         backend.setObject(row, previousCol, unionBg);
         backend.setObject(row, col, null);
       }
@@ -1127,7 +1203,7 @@ public class SheetLayout
       if (cut.isAuxilary())
       {
         itY.remove();
-        removedCuts.add (cut);
+        removedCuts.add(cut);
         yKeysArray = null;
       }
     }
@@ -1150,37 +1226,44 @@ public class SheetLayout
         }
         // now join ..
         final StrictBounds topBounds = topBg.getBounds();
-        final StrictBounds newBounds = bottomBg.getBounds().createUnion(topBounds);
-        final TableCellBackground unionBg = topBg.createMergedInstance(newBounds);
-        unionBg.setBorderBottom(bottomBg.getColorBottom(), bottomBg.getBorderSizeBottom());
+        final StrictBounds newBounds = bottomBg.getBounds().createUnion(
+                topBounds);
+        final TableCellBackground unionBg = topBg.createSplittedInstance(
+                newBounds);
+        unionBg.setBorderBottom(bottomBg.getColorBottom(),
+                bottomBg.getBorderSizeBottom());
         backend.setObject(previousRow, col, unionBg);
         backend.setObject(row, col, null);
       }
     }
   }
 
-  protected void clearObjectIdTable ()
+  protected void clearObjectIdTable()
   {
     objectIdTable.clear();
-    objectIdTable.ensureCapacity(backend.getRowCount(), backend.getColumnCount());
+    objectIdTable.ensureCapacity(backend.getRowCount(),
+            backend.getColumnCount());
   }
 
   /**
-   * Returns the element at grid-position (x,y). This returns the cell background for a
-   * certain cell, or null, if there is no background at that cell.
+   * Returns the element at grid-position (x,y). This returns the cell
+   * background for a certain cell, or null, if there is no background at that
+   * cell.
    *
    * @param row
    * @param column
    * @return
    */
-  public TableCellBackground getElementAt (final int row, final int column)
+  public TableCellBackground getElementAt(final int row, final int column)
   {
-    return (TableCellBackground) backend.getObject(mapRow(row), mapColumn(column));
+    return (TableCellBackground) backend.getObject(mapRow(row), mapColumn(
+            column));
   }
 
-  public CellReference getContentAt (final int row, final int column)
+  public CellReference getContentAt(final int row, final int column)
   {
-    return (CellReference) objectIdTable.getObject(mapRow(row), mapColumn(column));
+    return (CellReference) objectIdTable.getObject(mapRow(row), mapColumn(
+            column));
   }
 
   /**
@@ -1188,10 +1271,9 @@ public class SheetLayout
    *
    * @param row the row, for which the height should be computed.
    * @return the height of the row.
-   *
    * @throws IndexOutOfBoundsException if the row is invalid.
    */
-  public long getRowHeight (final int row)
+  public long getRowHeight(final int row)
   {
     final Long[] yCuts = getYCuts();
     if (row >= yCuts.length)
@@ -1219,10 +1301,9 @@ public class SheetLayout
    * @param startCell the first cell in the range
    * @param endCell   the last cell included in the cell range
    * @return the height of the row.
-   *
    * @throws IndexOutOfBoundsException if the row is invalid.
    */
-  public long getCellWidth (final int startCell, final int endCell)
+  public long getCellWidth(final int startCell, final int endCell)
   {
     final Long[] xCuts = getXCuts();
     final long rightBorder;
@@ -1238,12 +1319,13 @@ public class SheetLayout
   }
 
   /**
-   * The current number of columns. Of course, this value begins to be reliable, once the
-   * number of columns is known (that is at the end of the layouting process).
+   * The current number of columns. Of course, this value begins to be reliable,
+   * once the number of columns is known (that is at the end of the layouting
+   * process).
    *
    * @return the number columns.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     final Long[] xCuts = getXCuts();
     if (lastColumnCutIsSignificant)
@@ -1257,12 +1339,13 @@ public class SheetLayout
   }
 
   /**
-   * The current number of rows. Of course, this value begins to be reliable, once the
-   * number of rows is known (that is at the end of the layouting process).
+   * The current number of rows. Of course, this value begins to be reliable,
+   * once the number of rows is known (that is at the end of the layouting
+   * process).
    *
    * @return the number columns.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     final Long[] yCuts = getYCuts();
     if (lastRowCutIsSignificant)
@@ -1275,7 +1358,7 @@ public class SheetLayout
     }
   }
 
-  public long getYPosition (final int row)
+  public long getYPosition(final int row)
   {
     final Long[] yCuts = getYCuts();
     if (row >= yCuts.length)

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.8 2005/01/28 19:27:00 taqua Exp $
+ * $Id: StartState.java,v 1.9 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -120,6 +120,7 @@ public final class StartState extends ReportState
     setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, pf);
 
     fireReportInitializedEvent();
+    nextPage();
     return new PostReportInitializedState(this);
   }
 

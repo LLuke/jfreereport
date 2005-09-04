@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.7 2005/01/25 00:22:40 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.8 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -123,8 +123,7 @@ public class CharacterEntityParser
    */
   private String lookupCharacter (final String key)
   {
-    final String val = getEntities().getProperty(key);
-    return val;
+    return getEntities().getProperty(key);
   }
 
   /**

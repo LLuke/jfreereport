@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.15 2005/03/30 17:26:01 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.16 2005/05/31 20:37:25 taqua Exp $
  *
  * Changes
  * -------
@@ -116,6 +116,7 @@ public class HtmlProcessor extends TableProcessor
           throws ReportProcessingException
   {
     super(report);
+    init();
   }
 
   /**
@@ -131,6 +132,7 @@ public class HtmlProcessor extends TableProcessor
   {
     super(report);
     setGenerateXHTML(useXHTML);
+    init();
   }
 
   /**

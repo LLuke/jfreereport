@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFProcessor.java,v 1.10 2005/02/23 21:05:36 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.11 2005/03/04 13:25:16 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,7 @@ public class RTFProcessor extends TableProcessor
           throws ReportProcessingException
   {
     super(report);
+    init();
   }
 
   /**

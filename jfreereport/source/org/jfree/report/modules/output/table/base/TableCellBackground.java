@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.22 2005/03/25 13:23:24 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.23 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
 package org.jfree.report.modules.output.table.base;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import org.jfree.report.Anchor;
@@ -50,12 +48,12 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
- * Encapsulates all TableCellBackground informations, such as borders and background
- * color.
+ * Encapsulates all TableCellBackground informations, such as borders and
+ * background color.
  * <p/>
- * The TableCellBackground contains the format information for the table cells. Background
- * information is used to format the tablecells in the {@link TableWriter}.
- * CellBackgrounds can be shared for multiple cells.
+ * The TableCellBackground contains the format information for the table cells.
+ * Background information is used to format the tablecells in the {@link
+ * TableWriter}. CellBackgrounds can be shared for multiple cells.
  *
  * @author Thomas Morgner
  */
@@ -64,85 +62,68 @@ public strictfp class TableCellBackground
 {
   private ArrayList anchors;
 
-  /**
-   * The top border's size.
-   */
+  /** The top border's size. */
   private float borderSizeTop;
 
-  /**
-   * The bottom border's size.
-   */
+  /** The bottom border's size. */
   private float borderSizeBottom;
 
-  /**
-   * The left border's size.
-   */
+  /** The left border's size. */
   private float borderSizeLeft;
 
-  /**
-   * The right border's size.
-   */
+  /** The right border's size. */
   private float borderSizeRight;
 
-  /**
-   * The top border's color.
-   */
+  /** The top border's color. */
   private Color colorTop;
 
-  /**
-   * The left border's color.
-   */
+  /** The left border's color. */
   private Color colorLeft;
 
-  /**
-   * The bottom border's color.
-   */
+  /** The bottom border's color. */
   private Color colorBottom;
 
-  /**
-   * The right border's color.
-   */
+  /** The right border's color. */
   private Color colorRight;
+//
+//  private StrictBounds cellBounds;
 
-  private StrictBounds cellBounds;
-
-  /**
-   * The cell background color.
-   */
+  /** The cell background color. */
   private Color color;
   private static final Anchor[] EMPTY_ANCHOR_ARRAY = new Anchor[0];
 
-  public TableCellBackground (final Content elementContent,
-                              final ElementStyleSheet style,
-                              final Color color)
+  public TableCellBackground(final Content elementContent,
+                             final ElementStyleSheet style,
+                             final Color color)
   {
     super(elementContent, style);
     this.color = color;
-    this.cellBounds = new StrictBounds();
-
-    final StrictBounds bounds = getBounds();
-    updateBorderPositions(bounds);
   }
 
   /**
-   * Gets the background color for this cell, or <code>null</code> if this cell has no
-   * background.
+   * Gets the background color for this cell, or <code>null</code> if this cell
+   * has no background.
    *
    * @return the background color or <code>null</code>.
    */
-  public Color getColor ()
+  public Color getColor()
   {
     return color;
   }
 
+  protected void setColor(final Color color)
+  {
+    this.color = color;
+  }
+
   /**
-   * Defines the top border. If color is null or the size is 0, then no top border is
-   * drawn.
+   * Defines the top border. If color is null or the size is 0, then no top
+   * border is drawn.
    *
    * @param color the color of the top border.
    * @param size  the line width of the top border.
    */
-  public void setBorderTop (final Color color, final float size)
+  public void setBorderTop(final Color color, final float size)
   {
     if (size == 0)
     {
@@ -157,13 +138,13 @@ public strictfp class TableCellBackground
   }
 
   /**
-   * Defines the left border. If color is null or the size is 0, then no left border is
-   * drawn.
+   * Defines the left border. If color is null or the size is 0, then no left
+   * border is drawn.
    *
    * @param color the color of the left border.
    * @param size  the line width of the left border.
    */
-  public void setBorderLeft (final Color color, final float size)
+  public void setBorderLeft(final Color color, final float size)
   {
     if (size == 0)
     {
@@ -178,13 +159,13 @@ public strictfp class TableCellBackground
   }
 
   /**
-   * Defines the bottom border. If color is null or the size is 0, then no bottom border
-   * is drawn.
+   * Defines the bottom border. If color is null or the size is 0, then no
+   * bottom border is drawn.
    *
    * @param color the color of the bottom border.
    * @param size  the line width of the bottom border.
    */
-  public void setBorderBottom (final Color color, final float size)
+  public void setBorderBottom(final Color color, final float size)
   {
     if (size == 0)
     {
@@ -199,13 +180,13 @@ public strictfp class TableCellBackground
   }
 
   /**
-   * Defines the right border. If color is null or the size is 0, then no right border is
-   * drawn.
+   * Defines the right border. If color is null or the size is 0, then no right
+   * border is drawn.
    *
    * @param color the color of the right border.
    * @param size  the line width of the right border.
    */
-  public void setBorderRight (final Color color, final float size)
+  public void setBorderRight(final Color color, final float size)
   {
     if (size == 0)
     {
@@ -224,7 +205,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the top border.
    */
-  public float getBorderSizeTop ()
+  public float getBorderSizeTop()
   {
     return borderSizeTop;
   }
@@ -234,7 +215,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the bottom border.
    */
-  public float getBorderSizeBottom ()
+  public float getBorderSizeBottom()
   {
     return borderSizeBottom;
   }
@@ -244,7 +225,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the left border.
    */
-  public float getBorderSizeLeft ()
+  public float getBorderSizeLeft()
   {
     return borderSizeLeft;
   }
@@ -254,7 +235,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the right border.
    */
-  public float getBorderSizeRight ()
+  public float getBorderSizeRight()
   {
     return borderSizeRight;
   }
@@ -264,7 +245,7 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the top border.
    */
-  public Color getColorTop ()
+  public Color getColorTop()
   {
     return colorTop;
   }
@@ -274,7 +255,7 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the left border.
    */
-  public Color getColorLeft ()
+  public Color getColorLeft()
   {
     return colorLeft;
   }
@@ -284,7 +265,7 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the bottom border.
    */
-  public Color getColorBottom ()
+  public Color getColorBottom()
   {
     return colorBottom;
   }
@@ -294,72 +275,80 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the right border.
    */
-  public Color getColorRight ()
+  public Color getColorRight()
   {
     return colorRight;
   }
 
-  public StrictBounds getCellBounds ()
-  {
-    return cellBounds;
-  }
-
   /**
-   * Merges this background with the given background and returns the result. The given
-   * background is considered to be overlayed by this background.
+   * Merges this background with the given background and returns the result.
+   * The given background is considered to be overlayed by this background.
    * <p/>
-   * This function returns a <code>this</code> reference if the background was not
-   * merged.
+   * This function returns a <code>this</code> reference if the background was
+   * not merged.
    * <p/>
-   * Merging two unrelated backgrounds will now work.
+   * Merging always implicates normalizing. Merging is assumed to happen when
+   * new elements get added to an already existing background definition.
+   * Therefore only the given new background is normalized - the existing
+   * definition must already be normalized.
+   * <p>
+   * In this method, we assume, that the given background definition will
+   * overlay <code>this</code> background. Therefore the borders and colors
+   * of the background are considered more significant than this ones.
+   *
    *
    * @param background the other background cell
    * @return a union of the background informations.
    */
-  public TableCellBackground merge (final TableCellBackground background,
-                                    final StrictBounds cellBounds)
+  public TableCellBackground merge(final TableCellBackground background,
+                                   final StrictBounds cellBounds)
   {
-    final StrictBounds bounds = getCellBounds();
-    final StrictBounds backgroundBounds = background.getCellBounds();
+    final StrictBounds bounds = getBounds();
+    final StrictBounds backgroundBounds = background.getBounds();
 
-    final boolean thisIsALine = (bounds.getHeight() == 0 || bounds.getWidth() == 0);
-    final boolean otherIsALine = (backgroundBounds.getHeight() == 0 || backgroundBounds.getWidth() == 0);
+    final boolean thisIsALine =
+            (bounds.getHeight() == 0 || bounds.getWidth() == 0);
+    final boolean otherIsALine =
+            (backgroundBounds.getHeight() == 0 ||
+             backgroundBounds.getWidth() == 0);
+
+    // merge the borders: CellBounds are most likely totally wrong.
+    // we correct that here.
+    final TableCellBackground merged = background.normalize(cellBounds);
 
     // If the given cell does not fully overlap this cell or
     // the this cell does not fully overlap the given cell
-    // then do nothing ...
-
-    final Color color;
+    // then we preserve the other's color nothing ...
+    final Color orgColor = getColor();
     if (otherIsALine == false && thisIsALine == false)
     {
       // create the unified color for both backgrounds ..
-      if (getColor() == null)
+      if (orgColor == null)
       {
-        color = background.getColor();
+        merged.setColor(background.getColor());
       }
       else if (background.getColor() != null)
       {
-        color = addColor(getColor(), background.getColor());
+        final Color color = addColor(orgColor, background.getColor());
+        merged.setColor(color);
       }
       else
       {
-        color = getColor();
+        merged.setColor(orgColor);
+        // do nothing ..
       }
     }
     else if (thisIsALine == false)
     {
-      color = getColor();
+      merged.setColor(orgColor);
     }
     else
     {
-      color = background.getColor();
+      // do nothing ..
     }
 
-    // merge the borders: CellBounds are most likely totally wrong.
-    final TableCellBackground merged = createMergedInstance(cellBounds);
-    merged.color = color;
-
-    // anchors get updated if the top-left corner is contained in the new cell
+    // anchors get updated if the top-left corner of the to be merged cell
+    // is contained in the new cell
     if (cellBounds.contains(backgroundBounds.getX(), backgroundBounds.getY()))
     {
       if (background.anchors != null)
@@ -376,57 +365,59 @@ public strictfp class TableCellBackground
     }
 
     // copy the borders of the other background to the merged instance
-    if ((background.getColorTop() != null) &&
-       (background.getTopBorderPos() == merged.getTopBorderPos()))
+    if (merged.getColorTop() == null)
     {
-      merged.setBorderTop(background.getColorTop(), background.getBorderSizeTop());
+      // the thing does not have a border ..
+      merged.setBorderTop(getColorTop(), getBorderSizeTop());
     }
-    if ((background.getColorBottom() != null) &&
-       (background.getBottomBorderPos() == merged.getBottomBorderPos()))
+    if (merged.getColorLeft() == null)
     {
-      merged.setBorderBottom(background.getColorBottom(), background.getBorderSizeBottom());
-    }
-    if ((background.getColorLeft() != null) &&
-       (background.getLeftBorderPos() == merged.getLeftBorderPos()))
-    {
-      merged.setBorderLeft(background.getColorLeft(), background.getBorderSizeLeft());
-    }
-    if ((background.getColorRight() != null) &&
-       (background.getRightBorderPos() == merged.getRightBorderPos()))
-    {
-      merged.setBorderRight(background.getColorRight(), background.getBorderSizeRight());
+      // the thing does not have a border ..
+      merged.setBorderLeft(getColorLeft(), getBorderSizeLeft());
     }
 
     return merged;
   }
 
   /**
-   * Creates an merged instance of this background for the given bounds.
-   * This method updates the borders to fit the new bounds. If the old border
-   * position is no longer valid, the border is removed.
+   * Creates an splitted instance of this background for the given bounds. This
+   * method updates the borders to fit the new bounds. If the old border
+   * position is no longer valid, the border is removed. It does not add any
+   * new information.
    *
    * @return a copy of this background with new bounds.
    */
-  protected TableCellBackground createMergedInstance (final StrictBounds bounds)
+  public TableCellBackground createSplittedInstance(final StrictBounds bounds)
   {
     try
     {
+      final StrictBounds originalBounds = getBounds();
       final TableCellBackground bg = (TableCellBackground) clone();
-      bg.updateBorderPositions(bounds);
-      if (bg.getTopBorderPos() != getTopBorderPos())
+      bg.setBounds((StrictBounds) bounds.clone());
+
+      final long orgX2 = originalBounds.getX() + originalBounds.getWidth();
+      final long orgY2 = originalBounds.getY() + originalBounds.getHeight();
+      if ((bounds.getX() > orgX2 || bounds.getY() > orgY2) ||
+              (bounds.getX() == orgX2 && bounds.getY() == orgY2))
       {
+        // this cell is out of bounds ..
         bg.setBorderTop(null, 0);
-      }
-      if (bg.getLeftBorderPos() != getLeftBorderPos())
-      {
+        bg.setBorderBottom(null, 0);
         bg.setBorderLeft(null, 0);
-      }
-      if (bg.getRightBorderPos()!= getRightBorderPos())
-      {
         bg.setBorderRight(null, 0);
+        bg.setColor(null);
       }
-      if (bg.getBottomBorderPos() != getBottomBorderPos())
+      else
       {
+        if (bg.getTopBorderPos() != getTopBorderPos())
+        {
+          bg.setBorderTop(null, 0);
+        }
+        if (bg.getLeftBorderPos() != getLeftBorderPos())
+        {
+          bg.setBorderLeft(null, 0);
+        }
+        bg.setBorderRight(null, 0);
         bg.setBorderBottom(null, 0);
       }
       return bg;
@@ -438,39 +429,120 @@ public strictfp class TableCellBackground
     }
   }
 
-  /**
-   * Updates the border positions (the effective bounds of this cell) after
-   * a layout-split-operation.
-   *
-   * @param bounds the new bounds.
-   */
-  public void updateBorderPositions (final StrictBounds bounds)
-  {
-    this.cellBounds.setRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-  }
 
   /**
-   * Adds two colors, the result is the mixed color of the base color and the paint
-   * color.
+   * Creates an merged instance of this background for the given bounds. This
+   * method updates the borders to fit the new bounds. If the old border
+   * position is no longer valid, the border is removed.
+   *
+   * @return a copy of this background with new bounds.
+   */
+  public TableCellBackground normalize(final StrictBounds bounds)
+  {
+    try
+    {
+      final StrictBounds originalBounds = getBounds();
+      final TableCellBackground bg = (TableCellBackground) clone();
+      bg.setBounds((StrictBounds) bounds.clone());
+
+      final long orgX2 = originalBounds.getX() + originalBounds.getWidth();
+      final long orgY2 = originalBounds.getY() + originalBounds.getHeight();
+      if ((bounds.getX() > orgX2 || bounds.getY() > orgY2) ||
+              (bounds.getX() == orgX2 && bounds.getY() == orgY2))
+      {
+        // this cell is out of bounds ..
+        bg.setBorderTop(null, 0);
+        bg.setBorderBottom(null, 0);
+        bg.setBorderLeft(null, 0);
+        bg.setBorderRight(null, 0);
+        bg.setColor(null);
+      }
+      else if (bounds.getX() == orgX2)
+      {
+        // this is a right border .. make it a left border definition ..
+        bg.setBorderTop(null, 0);
+        bg.setBorderBottom(null, 0);
+        if (bg.getColorLeft() == null)
+        {
+          // only copy the right border, if there is no left border
+          bg.setBorderLeft(getColorRight(), getBorderSizeRight());
+        }
+        bg.setBorderRight(null, 0);
+        bg.setColor(null);
+      }
+      else if (bounds.getY() == orgY2)
+      {
+        // this is a bottom border element .. make it a top border definition ..
+        if (bg.getColorTop() == null)
+        {
+          bg.setBorderTop(getColorBottom(), getBorderSizeBottom());
+        }
+        bg.setBorderBottom(null, 0);
+        bg.setBorderLeft(null, 0);
+        bg.setBorderRight(null, 0);
+        bg.setColor(null);
+      }
+      else
+      {
+        if (bg.getTopBorderPos() != getTopBorderPos())
+        {
+          bg.setBorderTop(null, 0);
+        }
+        if (bg.getLeftBorderPos() != getLeftBorderPos())
+        {
+          bg.setBorderLeft(null, 0);
+        }
+        bg.setBorderRight(null, 0);
+        bg.setBorderBottom(null, 0);
+      }
+      return bg;
+    }
+    catch (CloneNotSupportedException cne)
+    {
+      // should not happen
+      throw new IllegalStateException("Clone caused an unexpected error.");
+    }
+  }
+
+//
+//  /**
+//   * Updates the border positions (the effective bounds of this cell) after
+//   * a layout-split-operation.
+//   *
+//   * @param bounds the new bounds.
+//   */
+//  public void updateBorderPositions (final StrictBounds bounds)
+//  {
+//    this.cellBounds.setRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+//  }
+
+  /**
+   * Adds two colors, the result is the mixed color of the base color and the
+   * paint color.
    *
    * @param base  the base color
    * @param paint the overlay color
    * @return the merged colors.
    */
-  private static Color addColor (final Color base, final Color paint)
+  private static Color addColor(final Color base, final Color paint)
   {
-    final BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-    final Graphics g = img.getGraphics();
+    if (paint.getAlpha() == 255)
+    {
+      return paint;
+    }
 
-    g.setColor(Color.white);
-    g.drawRect(0, 0, 1, 1);
+    final float baseAlpha = (base.getAlpha() / 255f);
+    final float paintAlpha = (paint.getAlpha() / 255f);
+    final float effectiveAlpha = 1.0f - baseAlpha * paintAlpha;
 
-    g.setColor(base);
-    g.drawRect(0, 0, 1, 1);
-    g.setColor(paint);
-    g.drawRect(0, 0, 1, 1);
-
-    return new Color(img.getRGB(0, 0), true);
+    final double deltaAlpha = 1.0 - effectiveAlpha;
+    final int red = (int)
+            (base.getRed() * deltaAlpha + paint.getRed() * effectiveAlpha);
+    final int green = (int)
+            (base.getGreen() * deltaAlpha + paint.getGreen() * effectiveAlpha);
+    final int blue = (int)
+            (base.getBlue() * deltaAlpha + paint.getBlue() * effectiveAlpha);
+    return new Color (red, green, blue, effectiveAlpha * 255);
   }
 
   /**
@@ -478,7 +550,7 @@ public strictfp class TableCellBackground
    *
    * @return the string representation of this cell background.
    */
-  public String toString ()
+  public String toString()
   {
     final StringBuffer b = new StringBuffer();
     b.append("TableCellBackground={bounds=");
@@ -506,13 +578,13 @@ public strictfp class TableCellBackground
   }
 
   /**
-   * Tests this object for equality with another object. This onyl compares
-   * the background properties - not the elements.
+   * Tests this object for equality with another object. This onyl compares the
+   * background properties - not the elements.
    *
    * @param o the other object.
    * @return A boolean.
    */
-  public boolean equals (final Object o)
+  public boolean equals(final Object o)
   {
     if (this == o)
     {
@@ -546,7 +618,8 @@ public strictfp class TableCellBackground
     {
       return false;
     }
-    if (colorBottom != null ? !colorBottom.equals(tableCellBackground.colorBottom)
+    if (colorBottom != null ? !colorBottom.equals(
+            tableCellBackground.colorBottom)
             : tableCellBackground.colorBottom != null)
     {
       return false;
@@ -574,10 +647,9 @@ public strictfp class TableCellBackground
    *
    * @return A hash code.
    */
-  public int hashCode ()
+  public int hashCode()
   {
-    int result;
-    result = Float.floatToIntBits(borderSizeTop);
+    int result = Float.floatToIntBits(borderSizeTop);
     result = 29 * result + Float.floatToIntBits(borderSizeBottom);
     result = 29 * result + Float.floatToIntBits(borderSizeLeft);
     result = 29 * result + Float.floatToIntBits(borderSizeRight);
@@ -590,23 +662,22 @@ public strictfp class TableCellBackground
   }
 
   /**
-   * Creates and returns a copy of this object.  The precise meaning of "copy" may depend
-   * on the class of the object.
+   * Creates and returns a copy of this object.  The precise meaning of "copy"
+   * may depend on the class of the object.
    *
    * @return a clone of this instance.
-   *
-   * @throws CloneNotSupportedException if the object's class does not support the
-   *                                    <code>Cloneable</code> interface. Subclasses that
-   *                                    override the <code>clone</code> method can also
-   *                                    throw this exception to indicate that an instance
-   *                                    cannot be cloned.
+   * @throws CloneNotSupportedException if the object's class does not support
+   *                                    the <code>Cloneable</code> interface.
+   *                                    Subclasses that override the
+   *                                    <code>clone</code> method can also throw
+   *                                    this exception to indicate that an
+   *                                    instance cannot be cloned.
    * @see Cloneable
    */
-  public Object clone ()
+  public Object clone()
           throws CloneNotSupportedException
   {
     final TableCellBackground tb = (TableCellBackground) super.clone();
-    tb.cellBounds = (StrictBounds) cellBounds.clone();
     if (anchors != null)
     {
       tb.anchors = (ArrayList) anchors.clone();
@@ -614,7 +685,7 @@ public strictfp class TableCellBackground
     return tb;
   }
 
-  public Anchor[] getAnchors ()
+  public Anchor[] getAnchors()
   {
     if (anchors == null)
     {
@@ -623,7 +694,7 @@ public strictfp class TableCellBackground
     return (Anchor[]) anchors.toArray(new Anchor[anchors.size()]);
   }
 
-  public void addAnchor (final Anchor anchor)
+  public void addAnchor(final Anchor anchor)
   {
     if (anchor == null)
     {
@@ -636,23 +707,27 @@ public strictfp class TableCellBackground
     anchors.add(anchor);
   }
 
-  public long getBottomBorderPos ()
+  public long getBottomBorderPos()
   {
-    return cellBounds.getY() + cellBounds.getHeight();
+    final StrictBounds bounds = getBounds();
+    return bounds.getY() + bounds.getHeight();
   }
 
-  public long getLeftBorderPos ()
+  public long getLeftBorderPos()
   {
+    final StrictBounds cellBounds = getBounds();
     return cellBounds.getX();
   }
 
-  public long getRightBorderPos ()
+  public long getRightBorderPos()
   {
+    final StrictBounds cellBounds = getBounds();
     return cellBounds.getX() + cellBounds.getWidth();
   }
 
-  public long getTopBorderPos ()
+  public long getTopBorderPos()
   {
+    final StrictBounds cellBounds = getBounds();
     return cellBounds.getY();
   }
 }
