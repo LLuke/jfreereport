@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentStyle.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
+ * $Id: HtmlContentStyle.java,v 1.5 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -201,8 +201,7 @@ public final class HtmlContentStyle implements HtmlStyle
   {
     if (hashCode == 0)
     {
-      int result;
-      result = font.hashCode();
+      int result = font.hashCode();
       result = 29 * result + fontColor.hashCode();
       result = 29 * result + verticalAlignment.hashCode();
       result = 29 * result + horizontalAlignment.hashCode();
@@ -275,8 +274,26 @@ public final class HtmlContentStyle implements HtmlStyle
     {
       builder.append("color", colorValue);
     }
+    // vertical alignment does not work with DIV elements - therefore we use the
+    // official way to align block elements:
+    //builder.append("vertical-align", translateVerticalAlignment(getVerticalAlignment()));
 
-    builder.append("vertical-align", translateVerticalAlignment(getVerticalAlignment()));
+    if (verticalAlignment == ElementAlignment.BOTTOM)
+    {
+      builder.append("margin-top", "auto");
+      builder.append("margin-bottom", "0");
+    }
+    else if (verticalAlignment == ElementAlignment.MIDDLE)
+    {
+      builder.append("margin-top", "auto");
+      builder.append("margin-bottom", "auto");
+    }
+    else
+    {
+      builder.append("margin-top", "0");
+      builder.append("margin-bottom", "auto");
+    }
+
     builder.append("text-align", translateHorizontalAlignment(getHorizontalAlignment()));
     return builder.toString();
   };
@@ -302,24 +319,4 @@ public final class HtmlContentStyle implements HtmlStyle
     return "left";
   }
 
-
-  /**
-   * Translates the JFreeReport vertical element alignment into a HTML alignment
-   * constant.
-   *
-   * @param ea the element alignment
-   * @return the translated alignment name.
-   */
-  private String translateVerticalAlignment (final ElementAlignment ea)
-  {
-    if (ea == ElementAlignment.BOTTOM)
-    {
-      return "bottom";
-    }
-    if (ea == ElementAlignment.MIDDLE)
-    {
-      return "middle";
-    }
-    return "top";
-  }
 }

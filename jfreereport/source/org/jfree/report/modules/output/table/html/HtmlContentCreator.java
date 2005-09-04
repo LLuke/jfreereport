@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.20 2005/06/02 14:36:31 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.21 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -205,7 +205,7 @@ public class HtmlContentCreator extends TableContentCreator
       style = "";
     }
 
-    style += "table-layout: fixed;";
+    // style += "table-layout: fixed;";
     if (tableRowBorderDefinition)
     {
       style += "border-collapse: collapse;";
