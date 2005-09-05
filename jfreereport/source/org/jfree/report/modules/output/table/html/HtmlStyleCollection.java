@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.12 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.13 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.jfree.util.PaintUtilities;
+import org.jfree.report.ElementAlignment;
 
 /**
  * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these cell
@@ -90,7 +91,7 @@ public class HtmlStyleCollection
   {
     this.table = new HashMap();
     this.reverseTable = new HashMap();
-    this.emptyCellStyle = new HtmlTableCellStyle(null);
+    this.emptyCellStyle = new HtmlTableCellStyle(null, ElementAlignment.TOP);
     addCellStyle(emptyCellStyle);
   }
 

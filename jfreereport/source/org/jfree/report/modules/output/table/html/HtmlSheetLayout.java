@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.10 2005/05/31 20:37:25 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.11 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,11 +39,9 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
-import java.util.HashSet;
 import java.util.HashMap;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -53,6 +51,7 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -72,6 +71,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
    */
   private GenericObjectTable backgroundStyleTable;
   private GenericObjectTable contentStyleTable;
+  private GenericObjectTable verticalAlignmentTable;
   private boolean tableRowBorderDefinition;
 
   public HtmlSheetLayout (final boolean strict,
@@ -85,8 +85,9 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     }
     styleCollection = collection;
     rectangle = new TableRectangle();
-    contentStyleTable = new GenericObjectTable();
-    backgroundStyleTable = new GenericObjectTable();
+    contentStyleTable = new GenericObjectTable(20, 5);
+    backgroundStyleTable = new GenericObjectTable(20, 5);
+    verticalAlignmentTable = new GenericObjectTable(20, 5);
     this.tableRowBorderDefinition = tableRowBorderDefinition;
   }
 
@@ -123,13 +124,13 @@ public strictfp class HtmlSheetLayout extends SheetLayout
   {
     final FontDefinition font = element.getFontDefinitionProperty();
     final Color color = (Color) element.getProperty(ElementStyleSheet.PAINT);
-    final ElementAlignment valign
-            = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
     final ElementAlignment halign
             = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
+    final ElementAlignment valign
+            = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
 
     final HtmlContentStyle style =
-            new HtmlContentStyle(font, color, valign, halign);
+            new HtmlContentStyle(font, color, halign);
     final String styleName = styleCollection.addContentStyle(style);
 
     final TableRectangle rect = getTableBounds(element, rectangle);
@@ -142,6 +143,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
         if (contentStyleTable.getObject(row, column) == null)
         {
           contentStyleTable.setObject(row, column, styleName);
+          verticalAlignmentTable.setObject(row, column, valign);
         }
       }
     }
@@ -153,6 +155,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     super.columnInserted(coordinate, oldColumn, newColumn);
     contentStyleTable.copyColumn(oldColumn, newColumn);
     backgroundStyleTable.copyColumn(oldColumn, newColumn);
+    verticalAlignmentTable.copyColumn(oldColumn, newColumn);
   }
 
   protected void rowInserted (final long coordinate, final int oldRow, final int newRow)
@@ -160,6 +163,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     super.rowInserted(coordinate, oldRow, newRow);
     contentStyleTable.copyRow(oldRow, newRow);
     backgroundStyleTable.copyRow(oldRow, newRow);
+    verticalAlignmentTable.copyRow(oldRow, newRow);
   }
 
   /**
@@ -196,6 +200,8 @@ public strictfp class HtmlSheetLayout extends SheetLayout
       {
         final TableCellBackground bg;
         final CellReference reference = getContentAt(layoutRow, layoutCol);
+        final ElementAlignment verticalAlignment =
+                getVerticalAlignmentAt(layoutRow, layoutCol);
         if (reference != null)
         {
           // it's a spanning cell - we have to do a bit more than usual ..
@@ -208,6 +214,7 @@ public strictfp class HtmlSheetLayout extends SheetLayout
           {
             bg = getRegionBackground(rect);
           }
+
         }
         else
         {
@@ -263,7 +270,8 @@ public strictfp class HtmlSheetLayout extends SheetLayout
           continue;
         }
 
-        final HtmlTableCellStyle style = new HtmlTableCellStyle(bg);
+        final HtmlTableCellStyle style =
+                new HtmlTableCellStyle(bg, verticalAlignment);
         final String styleName = styleCollection.addCellStyle(style);
         backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
         completedElements.put(bg, styleName);
@@ -278,6 +286,18 @@ public strictfp class HtmlSheetLayout extends SheetLayout
       styleCollection.addRowStyle(style);
     }
     clearObjectIdTable();
+    verticalAlignmentTable.clear();
+  }
+
+  protected ElementAlignment getVerticalAlignmentAt(final int row, final int column)
+  {
+    final ElementAlignment ea = (ElementAlignment)
+            verticalAlignmentTable.getObject(mapRow(row), mapColumn(column));
+    if (ea == null)
+    {
+      return ElementAlignment.TOP;
+    }
+    return ea;
   }
 
   /**

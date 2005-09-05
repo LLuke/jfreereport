@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.6 2005/09/04 16:45:51 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.7 2005/09/04 18:58:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -76,7 +76,7 @@ public abstract class TableContentCreator extends AbstractTableCreator
       throw new NullPointerException();
     }
     this.sheetLayoutCollection = sheetLayoutCollection;
-    this.backend = new GenericObjectTable();
+    this.backend = new GenericObjectTable(20, 5);
     this.lookupRectangle = new TableRectangle();
   }
 

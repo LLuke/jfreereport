@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.13 2005/09/04 13:15:06 taqua Exp $
+ * $Id: SheetLayout.java,v 1.14 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,7 +50,6 @@ import org.jfree.report.content.EmptyContent;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.geom.StrictBounds;
-import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 
@@ -236,8 +235,8 @@ public class SheetLayout
     this.yMaxBounds = 0;
     this.yMaxBoundsKey = ZERO;
     this.xMaxBoundsKey = ZERO;
-    this.backend = new GenericObjectTable();
-    this.objectIdTable = new GenericObjectTable();
+    this.backend = new GenericObjectTable(20, 5);
+    this.objectIdTable = new GenericObjectTable(20, 5);
   }
 
   /**
@@ -1271,8 +1270,8 @@ public class SheetLayout
   protected void clearObjectIdTable()
   {
     objectIdTable.clear();
-    objectIdTable.ensureCapacity(backend.getRowCount(),
-            backend.getColumnCount());
+    objectIdTable.ensureCapacity
+            (backend.getRowCount(), backend.getColumnCount());
   }
 
   /**

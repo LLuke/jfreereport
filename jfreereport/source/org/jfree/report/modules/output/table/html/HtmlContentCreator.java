@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.22 2005/09/04 17:02:21 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.23 2005/09/04 18:58:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.jfree.report.Anchor;
+import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.function.FunctionProcessingException;
@@ -63,7 +64,6 @@ import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictGeomUtility;
-import org.jfree.util.Log;
 
 public class HtmlContentCreator extends TableContentCreator
 {
@@ -440,7 +440,8 @@ public class HtmlContentCreator extends TableContentCreator
           // this is a spanned cell - ignore it completly
           pout.println("<!-- cell @(" + x + ", " + y + ") [" + rectangle + "] -->");
         }
-        printContentCellStart(rectangle, x, y);
+        printContentCellStart (rectangle, x, y,
+                (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT));
 
         final String internalStyleName = layout.getContentStyleAt(y, x);
         final HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
@@ -498,9 +499,12 @@ public class HtmlContentCreator extends TableContentCreator
    * @param rectangle the cell's rectangle in the table grid
    * @param x         the cell's x coordinate
    * @param y         the cell's y coordinate
+   * @param elementAlignment
    */
-  private void printContentCellStart (final TableRectangle rectangle,
-                                      final int x, final int y)
+  private void printContentCellStart(final TableRectangle rectangle,
+                                     final int x,
+                                     final int y,
+                                     final ElementAlignment elementAlignment)
   {
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     // now, finally we got a printable data cell.
@@ -540,7 +544,7 @@ public class HtmlContentCreator extends TableContentCreator
       style = layout.getStyleCollection().lookupStyle(internalStyleName);
       if (style == null)
       {
-        style = new HtmlTableCellStyle(background);
+        style = new HtmlTableCellStyle(background, elementAlignment);
       }
     }
     // now check, whether an equal style is already stored.
@@ -633,7 +637,7 @@ public class HtmlContentCreator extends TableContentCreator
     // (which can be null, if there is no background defined).
     if (style == null)
     {
-      style = new HtmlTableCellStyle(background);
+      style = new HtmlTableCellStyle(background, ElementAlignment.TOP);
     }
     // now check, whether an equal style is already stored.
     // if so, then reference that style instead of printing the

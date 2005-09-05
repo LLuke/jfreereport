@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentStyle.java,v 1.5 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlContentStyle.java,v 1.6 2005/09/04 17:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -60,11 +60,6 @@ public final class HtmlContentStyle implements HtmlStyle
   private Color fontColor;
 
   /**
-   * the vertical content alignment.
-   */
-  private ElementAlignment verticalAlignment;
-
-  /**
    * the horizontal content alignment.
    */
   private ElementAlignment horizontalAlignment;
@@ -86,7 +81,6 @@ public final class HtmlContentStyle implements HtmlStyle
    * @throws NullPointerException if any of the parameters is null.
    */
   public HtmlContentStyle (final FontDefinition font, final Color fontColor,
-                           final ElementAlignment verticalAlignment,
                            final ElementAlignment horizontalAlignment)
   {
     if (font == null)
@@ -97,10 +91,6 @@ public final class HtmlContentStyle implements HtmlStyle
     {
       throw new NullPointerException("Color is null");
     }
-    if (verticalAlignment == null)
-    {
-      throw new NullPointerException("VerticalAlignment is null");
-    }
     if (horizontalAlignment == null)
     {
       throw new NullPointerException("HorizontalAlignment is null");
@@ -108,7 +98,6 @@ public final class HtmlContentStyle implements HtmlStyle
 
     this.font = font;
     this.fontColor = fontColor;
-    this.verticalAlignment = verticalAlignment;
     this.horizontalAlignment = horizontalAlignment;
   }
 
@@ -130,16 +119,6 @@ public final class HtmlContentStyle implements HtmlStyle
   public Color getFontColor ()
   {
     return fontColor;
-  }
-
-  /**
-   * Returns the vertical element alignment for the content of the cell.
-   *
-   * @return the vertical alignment.
-   */
-  public ElementAlignment getVerticalAlignment ()
-  {
-    return verticalAlignment;
   }
 
   /**
@@ -176,10 +155,6 @@ public final class HtmlContentStyle implements HtmlStyle
     {
       return false;
     }
-    if (!verticalAlignment.equals(style.verticalAlignment))
-    {
-      return false;
-    }
     if (!font.equals(style.font))
     {
       return false;
@@ -203,7 +178,6 @@ public final class HtmlContentStyle implements HtmlStyle
     {
       int result = font.hashCode();
       result = 29 * result + fontColor.hashCode();
-      result = 29 * result + verticalAlignment.hashCode();
       result = 29 * result + horizontalAlignment.hashCode();
       hashCode = result;
     }
@@ -278,25 +252,9 @@ public final class HtmlContentStyle implements HtmlStyle
     // official way to align block elements:
     //builder.append("vertical-align", translateVerticalAlignment(getVerticalAlignment()));
 
-    if (verticalAlignment == ElementAlignment.BOTTOM)
-    {
-      builder.append("margin-top", "auto");
-      builder.append("margin-bottom", "0");
-    }
-    else if (verticalAlignment == ElementAlignment.MIDDLE)
-    {
-      builder.append("margin-top", "auto");
-      builder.append("margin-bottom", "auto");
-    }
-    else
-    {
-      builder.append("margin-top", "0");
-      builder.append("margin-bottom", "auto");
-    }
-
     builder.append("text-align", translateHorizontalAlignment(getHorizontalAlignment()));
     return builder.toString();
-  };
+  }
 
 
   /**

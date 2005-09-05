@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GenericObjectTable.java,v 1.3 2005/01/25 00:12:33 taqua Exp $
+ * $Id: GenericObjectTable.java,v 1.4 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 08.03.2004 : Initial version
+ * 08-Mar-2004 : Initial version
  *  
  */
 
@@ -40,10 +40,20 @@ package org.jfree.report.modules.output.table.base;
 
 import org.jfree.util.ObjectTable;
 
+/**
+ * A generic table storing objects in an fast array backend.
+ *
+ * @author Thomas Morgner
+ */
 public class GenericObjectTable extends ObjectTable
 {
   public GenericObjectTable ()
   {
+  }
+
+  public GenericObjectTable(final int rowIncrement, final int colIncrement)
+  {
+    super(rowIncrement, colIncrement);
   }
 
   public Object getObject (final int row, final int column)
@@ -58,18 +68,12 @@ public class GenericObjectTable extends ObjectTable
 
   public void copyColumn (final int oldColumn, final int newColumn)
   {
-    for (int i = 0; i < getRowCount(); i++)
-    {
-      setObject(i, newColumn, getObject(i, oldColumn));
-    }
+    super.copyColumn(oldColumn, newColumn);
   }
 
   public void copyRow (final int oldRow, final int newRow)
   {
-    for (int i = 0; i < getColumnCount(); i++)
-    {
-      setObject(newRow, i, getObject(oldRow, i));
-    }
+    super.copyRow(oldRow, newRow);
   }
 }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.3 2005/01/25 00:13:44 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.4 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.modules.output.table.html;
 import java.awt.Color;
 
 import org.jfree.report.modules.output.table.base.TableCellBackground;
+import org.jfree.report.ElementAlignment;
 
 /**
  * Encapsulates a background definition for a &lt;td&gt; element. For layout
@@ -57,10 +58,17 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 public class HtmlTableCellStyle implements HtmlStyle
 {
   private TableCellBackground background;
+  private ElementAlignment verticalAlignment;
 
-  public HtmlTableCellStyle(final TableCellBackground background)
+  public HtmlTableCellStyle(final TableCellBackground background,
+                            final ElementAlignment verticalAlignment)
   {
+    if (verticalAlignment == null)
+    {
+      throw new NullPointerException();
+    }
     this.background = background;
+    this.verticalAlignment = verticalAlignment;
   }
 
   /**
@@ -72,7 +80,8 @@ public class HtmlTableCellStyle implements HtmlStyle
   {
     if (background == null)
     {
-      return "font-size: 1pt";
+      return "font-size: 1pt; vertical-alignment:" +
+              translateVerticalAlignment(verticalAlignment);
     }
 
     final StyleBuilder b = new StyleBuilder(compact);
@@ -119,7 +128,30 @@ public class HtmlTableCellStyle implements HtmlStyle
       b.append("border-right-color", HtmlStyleCollection.getColorString(
               background.getColorRight()));
     }
+    b.append("vertical-alignment", translateVerticalAlignment(verticalAlignment));
+
     return b.toString();
+  }
+
+
+  /**
+   * Translates the JFreeReport horizontal element alignment into a HTML alignment
+   * constant.
+   *
+   * @param ea the element alignment
+   * @return the translated alignment name.
+   */
+  private String translateVerticalAlignment (final ElementAlignment ea)
+  {
+    if (ea == ElementAlignment.BOTTOM)
+    {
+      return "bottom";
+    }
+    if (ea == ElementAlignment.MIDDLE)
+    {
+      return "middle";
+    }
+    return "top";
   }
 
   public boolean equals(final Object o)
@@ -128,20 +160,31 @@ public class HtmlTableCellStyle implements HtmlStyle
     {
       return true;
     }
-    if (!(o instanceof HtmlTableCellStyle))
+    if (o == null || getClass() != o.getClass())
     {
       return false;
     }
 
-    final HtmlTableCellStyle htmlTableCellStyle = (HtmlTableCellStyle) o;
+    final HtmlTableCellStyle that = (HtmlTableCellStyle) o;
 
-    return !(background != null ? !background.equals(
-            htmlTableCellStyle.background) : htmlTableCellStyle.background != null);
+    if (background != null ? !background.equals(
+            that.background) : that.background != null)
+    {
+      return false;
+    }
+    if (!verticalAlignment.equals(that.verticalAlignment))
+    {
+      return false;
+    }
 
+    return true;
   }
 
   public int hashCode()
   {
-    return (background != null ? background.hashCode() : 0);
+    int result;
+    result = (background != null ? background.hashCode() : 0);
+    result = 29 * result + verticalAlignment.hashCode();
+    return result;
   }
 }
