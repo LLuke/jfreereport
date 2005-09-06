@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.10 2005/08/08 15:36:27 taqua Exp $
+ * $Id: HelloWorld.java,v 1.11 2005/08/29 17:43:59 taqua Exp $
  *
  * Changes
  * -------
@@ -189,6 +189,7 @@ public class HelloWorld implements DemoHandler
    */
   public static void main (final String[] args)
   {
+    // this also installs the log.
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.16 2005/01/25 00:06:56 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.17 2005/02/23 21:05:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,7 +107,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    * Exports a report.
    *
    * @param report the report.
-   * @return A boolean.
+   * @return true, if the export was successfull, false otherwise.
    */
   public boolean performExport (final JFreeReport report)
   {
@@ -124,10 +124,10 @@ public class PrintingPlugin extends AbstractExportPlugin
       progressDialog = null;
     }
 
+    final String jobName = report.getReportConfiguration().getConfigProperty
+            ("org.jfree.report.modules.gui.print.JobName", report.getName());
     final PrintExportTask task = new PrintExportTask
-            (getBase().getReportPane(), progressDialog,
-                    report.getReportConfiguration().getConfigProperty
-            ("org.jfree.report.modules.gui.print.JobName"));
+            (getBase().getReportPane(), progressDialog, jobName);
     task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
     return handleExportResult(task);

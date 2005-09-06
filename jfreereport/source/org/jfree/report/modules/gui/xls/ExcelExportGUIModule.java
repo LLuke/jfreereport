@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelExportGUIModule.java,v 1.8 2005/01/25 00:07:32 taqua Exp $
+ * $Id: ExcelExportGUIModule.java,v 1.9 2005/02/23 21:05:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.modules.gui.base.DefaultPluginSelector;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -87,6 +88,7 @@ public class ExcelExportGUIModule extends AbstractModule
     final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
             (ORDER_KEY, "0");
 
-    ExportPluginFactory.getInstance().registerPlugin(ExcelExportPlugin.class, order, ENABLE_KEY);
+    ExportPluginFactory.getInstance().registerPlugin(new DefaultPluginSelector
+            (ExcelExportPlugin.class, order, ENABLE_KEY));
   }
 }

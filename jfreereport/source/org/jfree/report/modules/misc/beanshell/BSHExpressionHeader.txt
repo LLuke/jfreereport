@@ -1,8 +1,8 @@
 /**
- * $Id: BSHExpressionHeader.txt,v 1.2 2005/01/25 00:08:00 taqua Exp $
+ * $Id: BSHExpressionHeader.txt,v 1.3 2005/02/04 19:22:54 taqua Exp $
  */
 import org.jfree.report.*;
-import org.jfree.report.util.Log;
+import org.jfree.util.Log;
 import java.util.Properties;
 
 /**

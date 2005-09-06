@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.7 2005/09/04 18:58:15 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.8 2005/09/05 11:43:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -215,7 +215,12 @@ public abstract class TableContentCreator extends AbstractTableCreator
       if (y2 > 0 && x2 > 0)
       {
         backend.ensureCapacity(y2, x2);
-        backend.setObject(y2 - 1, x2 - 1, null);
+        if (backend.getObject(y2 - 1, x2 - 1) == null)
+        {
+          // this enlarges the backend table so that getColumnCount() and
+          // getRowCount() return the correct value.
+          backend.setObject(y2 - 1, x2 - 1, null);
+        }
       }
       return;
     }

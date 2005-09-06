@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.12 2005/01/25 00:01:05 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.13 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -263,7 +263,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    * updates the status line of the preview component.
    *
    * @param task the result of the export operation.
-   * @return the value of result unmodified.
+   * @return true, if the export was successfull, false otherwise.
    */
   protected boolean handleExportResult (final ExportTask task)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelExportGUIModule.java,v 1.9 2005/02/23 21:05:03 taqua Exp $
+ * $Id: RTFExportGUIModule.java,v 1.1 2005/03/04 13:17:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.modules.gui.base.DefaultPluginSelector;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -87,6 +88,7 @@ public class RTFExportGUIModule extends AbstractModule
     final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
             (ORDER_KEY, "0");
 
-    ExportPluginFactory.getInstance().registerPlugin(RTFExportPlugin.class, order, ENABLE_KEY);
+    ExportPluginFactory.getInstance().registerPlugin(new DefaultPluginSelector
+            (RTFExportPlugin.class, order, ENABLE_KEY));
   }
 }

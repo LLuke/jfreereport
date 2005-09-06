@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVExportGUIModule.java,v 1.8 2005/01/25 00:05:33 taqua Exp $
+ * $Id: CSVExportGUIModule.java,v 1.9 2005/02/23 21:04:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.modules.gui.base.DefaultPluginSelector;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -88,6 +89,7 @@ public class CSVExportGUIModule extends AbstractModule
     final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
             (ORDER_KEY, "0");
 
-    ExportPluginFactory.getInstance().registerPlugin(CSVExportPlugin.class, order, ENABLE_KEY);
+    ExportPluginFactory.getInstance().registerPlugin(
+            new DefaultPluginSelector(CSVExportPlugin.class, order, ENABLE_KEY));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.16 2005/05/31 20:37:25 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.17 2005/09/04 13:15:06 taqua Exp $
  *
  * Changes
  * -------
@@ -104,6 +104,7 @@ public class HtmlProcessor extends TableProcessor
   public static final String TABLE_ROW_BORDER_DEFINITION = "TableRowBorderDefinition";
 
   public static final String USE_DEVICE_INDEPENDENT_IMAGESIZES = "UseDeviceIndependentImageSize";
+  public static final String PROPORTIONAL_COLUMN_WIDTHS = "ProportionalColumnWidths";
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the standard file

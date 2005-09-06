@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.4 2005/03/21 14:58:34 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.5 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,7 @@ package org.jfree.report;
 
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
+import org.jfree.base.log.DefaultLog;
 import org.jfree.base.modules.PackageManager;
 import org.jfree.report.util.CSVTokenizer;
 import org.jfree.util.Log;
@@ -91,6 +92,8 @@ public class JFreeReportBoot extends AbstractBoot
   {
     if (instance == null)
     {
+      // make sure that I am able to debug the package manager ..
+      DefaultLog.getDefaultLog();
       instance = new JFreeReportBoot();
     }
     return instance;

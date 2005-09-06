@@ -93,7 +93,6 @@
     <expression name="expression" class="org.jfree.report.modules.misc.beanshell.BSHExpression">
       <properties>
         <property name="expression">
-          import org.jfree.report.util.Log;
 
           // This declaration is important. The script-method getValue is called by the
           // BSHExpression to evaluate the expression. We override the default implementation

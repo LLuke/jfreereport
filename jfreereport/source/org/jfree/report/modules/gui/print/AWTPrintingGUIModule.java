@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AWTPrintingGUIModule.java,v 1.9 2005/01/25 00:06:54 taqua Exp $
+ * $Id: AWTPrintingGUIModule.java,v 1.10 2005/02/23 21:05:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.modules.gui.base.DefaultPluginSelector;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -55,12 +56,12 @@ public class AWTPrintingGUIModule extends AbstractModule
   /**
    * The printing export plugin preference key.
    */
-  private static final String PRINT_ORDER_KEY =
+  public static final String PRINT_ORDER_KEY =
           "org.jfree.report.modules.gui.print.Order";
   /**
    * The printing export plugin enable key.
    */
-  private static final String PRINT_ENABLE_KEY =
+  public static final String PRINT_ENABLE_KEY =
           "org.jfree.report.modules.gui.print.Enable";
   /**
    * The pagesetup export plugin preference key.
@@ -72,6 +73,8 @@ public class AWTPrintingGUIModule extends AbstractModule
    */
   private static final String PAGESETUP_ENABLE_KEY =
           "org.jfree.report.modules.gui.print.pagesetup.Enable";
+  public static final String PRINT_SERVICE_KEY =
+          "org.jfree.report.modules.gui.print.PrintService";
 
   /**
    * DefaultConstructor. Loads the module specification.
@@ -98,17 +101,23 @@ public class AWTPrintingGUIModule extends AbstractModule
   public void initialize (SubSystem subSystem)
           throws ModuleInitializeException
   {
-    final String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final ReportConfiguration config = ReportConfiguration.getGlobalConfig();
+    final String printOrder = config.getConfigProperty
             (PRINT_ORDER_KEY, "0");
 
-    ExportPluginFactory.getInstance().registerPlugin
-            (PrintingPlugin.class, printOrder, PRINT_ENABLE_KEY);
+    ExportPluginFactory.getInstance().registerPlugin (new PrintPluginSelector
+                    (PrintingPlugin.class, printOrder, PRINT_ENABLE_KEY, true));
 
-    final String pageSetupOrder = ReportConfiguration.getGlobalConfig()
-            .getConfigProperty
+    final String pageSetupOrder = config.getConfigProperty
             (PAGESETUP_ORDER_KEY, "0");
 
-    ExportPluginFactory.getInstance().registerPlugin
-            (PageSetupPlugin.class, pageSetupOrder, PAGESETUP_ENABLE_KEY);
+    ExportPluginFactory.getInstance().registerPlugin (new DefaultPluginSelector
+            (PageSetupPlugin.class, pageSetupOrder, PAGESETUP_ENABLE_KEY));
+
+//    if (config.getConfigProperty(PRINT_SERVICE_KEY) == null)
+//    {
+//      subSystem.getPackageManager().getPackageConfiguration().setConfigProperty
+//            (PRINT_SERVICE_KEY, PrintingPlugin.class.getName());
+//    }
   }
 }

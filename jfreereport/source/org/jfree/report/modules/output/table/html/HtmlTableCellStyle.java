@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.4 2005/09/04 16:45:51 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.5 2005/09/05 11:43:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -128,7 +128,7 @@ public class HtmlTableCellStyle implements HtmlStyle
       b.append("border-right-color", HtmlStyleCollection.getColorString(
               background.getColorRight()));
     }
-    b.append("vertical-alignment", translateVerticalAlignment(verticalAlignment));
+    b.append("vertical-align", translateVerticalAlignment(verticalAlignment));
 
     return b.toString();
   }

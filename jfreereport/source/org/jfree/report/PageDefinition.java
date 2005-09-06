@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageDefinition.java,v 1.5 2005/03/16 21:06:38 taqua Exp $
+ * $Id: PageDefinition.java,v 1.6 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -57,9 +57,10 @@ import java.io.Serializable;
  * Areas of the logical page not covered by the physical pages will not cause
  * errors, the content in these areas will be ignored and not printed.
  * <p>
- * In JFreeReport 0.8.5 support for more than one phsyical page in the page
- * definition is untested, unsupported and will not work as expected. This feature
- * needs some more work.
+ * Since JFreeReport 0.8.6, more than one physical page can be added to a page.
+ * JFreeReport does not yet handle pagespanning elements properly, therefore
+ * it is the best to stay away from horizontal pagebreaks. Elements should be
+ * aligned to the vertical page boundaries, or weird things may happen.
  * <p>
  * Page definitions must not be changed during the report processing, or funny
  * things may happen.

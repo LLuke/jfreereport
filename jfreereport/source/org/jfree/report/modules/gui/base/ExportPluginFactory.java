@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.17 2005/02/23 21:04:48 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.18 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * --------
@@ -39,10 +39,11 @@ package org.jfree.report.modules.gui.base;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
-import org.jfree.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WorkerPool;
+import org.jfree.util.Log;
 
 /**
  * An export plug-in factory. This factory is used to collect all available export plugins
@@ -52,149 +53,18 @@ import org.jfree.report.util.WorkerPool;
  */
 public final class ExportPluginFactory
 {
-  /**
-   * A class to manage the plugin module definitions.
-   *
-   * @author Thomas Morgner
-   */
-  private static class PluginDefinition implements Comparable
+  private static class ExportPluginSelectorComparator implements Comparator
   {
-    /**
-     * The class of the export plugin implementation.
-     */
-    private Class pluginClass;
-    /**
-     * The preference string (used to sort the modules in the menu).
-     */
-    private String preference;
-    /**
-     * The configuration key that controls whether a module is visible.
-     */
-    private String enableKey;
-
-    /**
-     * Creates a new plugin definition.
-     *
-     * @param pluginClass the plugin class that should be defined.
-     * @param preference  the preference of the class in the menu.
-     * @param enableKey   the report configuration key that triggers the visiblity of the
-     *                    plugin.
-     */
-    public PluginDefinition
-            (final Class pluginClass, final String preference, final String enableKey)
+    public ExportPluginSelectorComparator()
     {
-      if (pluginClass == null)
-      {
-        throw new NullPointerException("PluginClass is null.");
-      }
-      if (enableKey == null)
-      {
-        throw new NullPointerException("EnableKey is null.");
-      }
-      if (preference == null)
-      {
-        throw new NullPointerException("Preference is null.");
-      }
-      this.pluginClass = pluginClass;
-      this.enableKey = enableKey;
-      this.preference = preference;
     }
 
-    /**
-     * Checks whether this plugin definition is equal to the given object. The object will
-     * be considered equal if it is a plugin definition pointing to the same export
-     * plugin.
-     *
-     * @param o the object to compare
-     * @return true, if the object is equal, false otherwise.
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals (final Object o)
+    public int compare(Object o1, Object o2)
     {
-      if (this == o)
-      {
-        return true;
-      }
-      if (!(o instanceof PluginDefinition))
-      {
-        return false;
-      }
+      final ExportPluginSelector s1 = (ExportPluginSelector) o1;
+      final ExportPluginSelector s2 = (ExportPluginSelector) o2;
 
-      final PluginDefinition pluginDefinition = (PluginDefinition) o;
-
-      if (!pluginClass.equals(pluginDefinition.pluginClass))
-      {
-        return false;
-      }
-
-      return true;
-    }
-
-    /**
-     * Computes an hashcode for this export plugin.
-     *
-     * @return the computed hashcode.
-     *
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode ()
-    {
-      return pluginClass.hashCode();
-    }
-
-    /**
-     * Returns the export plugin class defined for this plugin definition.
-     *
-     * @return the export plugin class.
-     */
-    public Class getPluginClass ()
-    {
-      return pluginClass;
-    }
-
-    /**
-     * Returns the preference of the plugin in the menu. The preference is used to order
-     * the export plugins.
-     *
-     * @return the preference of the plugin in the menu
-     */
-    public String getPreference ()
-    {
-      return preference;
-    }
-
-    /**
-     * Returns the enable key of the report configuration which defines whether this
-     * plugin will be visible.
-     *
-     * @return the enable key.
-     */
-    public String getEnableKey ()
-    {
-      return enableKey;
-    }
-
-    /**
-     * Compares this object with the specified object for order.  Returns a negative
-     * integer, zero, or a positive integer as this object is less than, equal to, or
-     * greater than the specified object.<p>
-     *
-     * @param o the Object to be compared.
-     * @return a negative integer, zero, or a positive integer as this object is less
-     *         than, equal to, or greater than the specified object.
-     *
-     * @throws ClassCastException if the specified object's type prevents it from being
-     *                            compared to this Object.
-     */
-    public int compareTo (final Object o)
-    {
-      if (this == o)
-      {
-        return 0;
-      }
-      final PluginDefinition def = (PluginDefinition) o;
-      return getPreference().compareTo(def.getPreference());
+      return s1.getPreference().compareTo(s2.getPreference());
     }
   }
 
@@ -234,20 +104,19 @@ public final class ExportPluginFactory
    * Registers the given plugin in this factory.
    *
    * @param plugin     the implementing class of the export plugin
-   * @param preference the preference in the menu
+   * @param preference the sort order in the menu
    * @param enableKey  the enable key of the export plugin to trigger the visiblity
    */
-  public void registerPlugin (final Class plugin, final String preference,
-                              final String enableKey)
+  public void registerPlugin (final ExportPluginSelector pluginSelector)
   {
-    if (ExportPlugin.class.isAssignableFrom(plugin))
+    if (ExportPlugin.class.isAssignableFrom(pluginSelector.getPluginClass()) == false)
     {
-      final PluginDefinition def = new PluginDefinition(plugin, preference, enableKey);
-      if (exportPlugins.contains(def) == false)
-      {
-        exportPlugins.add(def);
-      }
-      Log.debug("Registered Plugin " + plugin);
+      throw new IllegalArgumentException
+              ("Only ExportPlugin implementations are allowed");
+    }
+    if (exportPlugins.contains(pluginSelector) == false)
+    {
+      exportPlugins.add(pluginSelector);
     }
   }
 
@@ -278,20 +147,6 @@ public final class ExportPluginFactory
   }
 
   /**
-   * Returns true if the plug-in is enabled for a given report configuration, and false
-   * otherwise.
-   *
-   * @param config    the report configuration.
-   * @param pluginKey the plug-in enable key.
-   * @return A boolean.
-   */
-  protected boolean isPluginEnabled (final ReportConfiguration config,
-                                     final String pluginKey)
-  {
-    return config.getConfigProperty(pluginKey, "false").equals("true");
-  }
-
-  /**
    * Creates a list containing all available export plugins.
    *
    * @param proxy  the preview proxy.
@@ -304,16 +159,16 @@ public final class ExportPluginFactory
           (final PreviewProxy proxy, final ReportConfiguration config,
            final WorkerPool worker)
   {
-    final PluginDefinition[] def = (PluginDefinition[])
-            exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
+    final ExportPluginSelector[] def = (ExportPluginSelector[])
+            exportPlugins.toArray(new ExportPluginSelector[exportPlugins.size()]);
 
-    Arrays.sort(def);
+    Arrays.sort(def, new ExportPluginSelectorComparator());
     final ArrayList retval = new ArrayList();
 
     for (int i = 0; i < def.length; i++)
     {
-      final PluginDefinition definition = def[i];
-      if (isPluginEnabled(config, definition.getEnableKey()))
+      final ExportPluginSelector definition = def[i];
+      if (definition.isPluginValid(proxy, config))
       {
         final ExportPlugin ep = createPlugIn(proxy, definition.getPluginClass());
         if (ep != null)
@@ -328,8 +183,8 @@ public final class ExportPluginFactory
       }
       else
       {
-        Log.info(new Log.SimpleMessage("Plugin ", definition.getPluginClass(),
-                ",", definition.getEnableKey(), " is not enabled."));
+        Log.info(new Log.SimpleMessage
+                ("Plugin ", definition.getPluginClass()," is not enabled."));
       }
     }
     return retval;

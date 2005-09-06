@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontModule.java,v 1.10 2005/02/19 13:30:00 taqua Exp $
+ * $Id: BaseFontModule.java,v 1.11 2005/02/23 21:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -83,10 +83,4 @@ public class BaseFontModule extends AbstractModule
       BaseFontFactory.getFontFactory().registerDefaultFontPath();
     }
   }
-
-//  public static void main (String[] args) throws Exception
-//  {
-//    System.setProperty("org.jfree.report.modules.output.support.itext.AutoInit", "onInit");
-//    Boot.start();
-//  }
 }

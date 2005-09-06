@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.23 2005/09/04 18:58:15 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.24 2005/09/05 11:43:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -96,6 +96,7 @@ public class HtmlContentCreator extends TableContentCreator
   private PrintWriter pout;
   private HtmlStyleCollection styleCollection;
   private boolean tableRowBorderDefinition;
+  private boolean proportionalColumnWidths;
 
   public HtmlContentCreator
           (final HtmlFilesystem filesystem, final boolean useXHTML,
@@ -193,7 +194,7 @@ public class HtmlContentCreator extends TableContentCreator
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     final int noc = layout.getColumnCount();
     String style;
-    if (noc > 0)
+    if ((noc > 0) && (proportionalColumnWidths == false))
     {
       final int width = (int)
                StrictGeomUtility.toExternalValue(layout.getCellWidth(0, noc));
@@ -201,8 +202,8 @@ public class HtmlContentCreator extends TableContentCreator
     }
     else
     {
-      // that should not happen if at least some content has been printed.
-      style = "";
+      // Consume the complete width for proportional column widths
+      style = "width: 100%";
     }
 
     // style += "table-layout: fixed;";
@@ -229,20 +230,32 @@ public class HtmlContentCreator extends TableContentCreator
     pout.print("<colgroup span=\"");
     pout.print(noc);
     pout.println("\">");
+    final int fullWidth = (int)
+          StrictGeomUtility.toExternalValue(layout.getCellWidth(0, noc));
+
     for (int i = 0; i < noc; i++)
     {
       final int width = (int)
                StrictGeomUtility.toExternalValue(layout.getCellWidth(i, i + 1));
       pout.print("<col style=\"");
       pout.print("width:");
-      pout.print(width);
-      if (isUseXHTML())
+      if (proportionalColumnWidths == true)
       {
-        pout.println("pt\" />");
+        pout.print(width * 100d / fullWidth);
+        pout.print("%");
       }
       else
       {
-        pout.println("pt\">");
+        pout.print(width);
+        pout.print("pt");
+      }
+      if (isUseXHTML())
+      {
+        pout.println("\" />");
+      }
+      else
+      {
+        pout.println("\">");
       }
     }
     pout.println("</colgroup>");
@@ -273,6 +286,9 @@ public class HtmlContentCreator extends TableContentCreator
     tableRowBorderDefinition = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.TABLE_ROW_BORDER_DEFINITION, "false").equals("true");
+    proportionalColumnWidths = config.getConfigProperty
+                (HtmlProcessor.CONFIGURATION_PREFIX + "." +
+                HtmlProcessor.PROPORTIONAL_COLUMN_WIDTHS, "false").equals("true");
     final String encoding = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
@@ -447,13 +463,6 @@ public class HtmlContentCreator extends TableContentCreator
         final HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
         final String cellStyleName = layout.getStyleCollection().getPublicName(style);
 
-        final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
-        if (hrefTarget != null)
-        {
-          pout.print("<a href=\"");
-          pout.print(hrefTarget);
-          pout.print("\">");
-        }
 
         if (cellStyleName != null && (isCreateBodyFragment() == false))
         {
@@ -471,6 +480,15 @@ public class HtmlContentCreator extends TableContentCreator
         {
           pout.print("<div>");
         }
+
+        final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+        if (hrefTarget != null)
+        {
+          pout.print("<a href=\"");
+          pout.print(hrefTarget);
+          pout.print("\">");
+        }
+
         if (element instanceof HtmlMetaElement)
         {
           final HtmlMetaElement htmlElement = (HtmlMetaElement) element;
@@ -480,11 +498,13 @@ public class HtmlContentCreator extends TableContentCreator
         {
           pout.println("<!-- Invalid element @(" + x + ", " + y + ") -->&nbsp;");
         }
-        pout.println("</div>");
+
         if (hrefTarget != null)
         {
           pout.println("</a>");
         }
+
+        pout.println("</div>");
         pout.println("</td>");
       }
 
