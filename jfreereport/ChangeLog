@@ -13,23 +13,60 @@ A list of changes in recent versions:
           the Null-String correctly. This affects the 'simple-xml' parser as well
           as the API report definition method. This fixes BugReport #1215492.
 
+        * [BUG] The table exports did not handle the bottom and right most borders
+          of a report correctly. These borders simply disapeared. This fixes
+          Bug #1277214 and #1270744.
+
+        * [BUG] Vertical alignment did not work in the HTML exports. This fixes
+          Bug #1276626
+
+        * [BUG] XHTML styles were not fully applied to the generated content.
+          This fixes Bug #1280328.
+
+        * [BUG] Removed the 'table-layout: fixed' style attribute, as it does
+          have a negative effect with the MSIE and all other browsers seem to
+          ignore it.
+
+        * [BUG] The HTML exports need to add no-break-spaces to empty cells,
+          if not using CSS, messed up the export. The fix alters the font size
+          to one point, and therefore minimizes the effect. Bug #1277122.
+
+        * The HTML renderer now has an option to switch to proportional column
+          widths. The resulting table will consume the complete page width.
+          (Patch #1282043)
+
+        * The HTML and ExcelExports can now be used to export multiple reports
+          in a single file using the new Appending*Processor classes.
+          (Patch #1281142 and partial fix for feature request #1204087)
+
         * BSHExpression's createInterpreter is now protected to allow subclasses
           to modify the created instance.
 
         * Changed the PageEvent order. PageEvents are now fired before any other
           events are fired (but after the reportInitialized event). On pagebreaks
           the page header and the repeated group headers will contain the same
-          computed values as the last page footer.
+          computed values as the last page footer. This fixes Bug #1263817.
 
         * More work at the JavaDoc and DocBook texts.
+
+        * It is now possible to span a report over multiple pages. For best
+          results, the elements should not cross pagebreaks. JFreeReport handles
+          that case, but the resulting output is not perfect.
 
         * Added the StackedLayoutManager, which behaves like a Swing-Box-Layout.
           Use this within a band to allow dynamic elements to push other elements
           below the used space of the dynamic element. See the StackedLayoutDemo
           for an example.
 
+        * The SimpleXML-Parser is now able to assign a global stylesheet to
+          the generated elements. The new attribute 'styleClass' must contain
+          the name of the stylesheet. If the stylesheet does not exist, it will
+          be created and can be modified after the parsing is complete.
+
         * The demos have been restructured. Every demo now has a longer text
           describing the purpose and structure of the demo.
+
+        * All deprecated classes have been removed.
 
 0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible
