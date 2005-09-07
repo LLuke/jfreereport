@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.10 2005/03/16 21:06:47 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.1 2005/08/29 17:49:07 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -40,8 +40,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 

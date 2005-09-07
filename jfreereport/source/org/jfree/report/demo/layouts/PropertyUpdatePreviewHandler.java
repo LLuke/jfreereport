@@ -1,11 +1,11 @@
 package org.jfree.report.demo.layouts;
 
-import org.jfree.report.demo.helper.PreviewHandler;
-import org.jfree.report.demo.helper.InternalDemoHandler;
-import org.jfree.report.demo.helper.ReportDefinitionException;
-import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.demo.helper.AbstractDemoFrame;
+import org.jfree.report.demo.helper.InternalDemoHandler;
+import org.jfree.report.demo.helper.PreviewHandler;
+import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.Log;

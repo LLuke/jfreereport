@@ -1,17 +1,16 @@
 package org.jfree.report.demo.groups;
 
 import java.net.URL;
-
 import javax.swing.JComponent;
 import javax.swing.table.TableModel;
 
+import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.JFreeReportBoot;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Creation-Date: 28.08.2005, 20:13:43

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InvoiceTableModel.java,v 1.3 2005/02/23 21:04:43 taqua Exp $
+ * $Id: InvoiceTableModel.java,v 1.4 2005/07/20 18:42:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,8 +42,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.report.demo.invoice.model.Invoice;
 import org.jfree.report.demo.invoice.model.Article;
+import org.jfree.report.demo.invoice.model.Invoice;
 
 public class InvoiceTableModel extends AbstractTableModel
 {

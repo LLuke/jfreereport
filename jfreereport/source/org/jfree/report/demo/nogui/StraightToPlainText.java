@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPlainText.java,v 1.4 2005/08/08 15:36:27 taqua Exp $
+ * $Id: StraightToPlainText.java,v 1.1 2005/08/29 17:40:09 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,8 @@ import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
-import org.jfree.util.WaitingImageObserver;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.WaitingImageObserver;
 import org.jfree.xml.ParseException;
 
 /**
@@ -151,8 +150,6 @@ public class StraightToPlainText
    */
   public static void main (final String[] args)
   {
-    ReportConfiguration.getGlobalConfig().setDisableLogging(true);
-
     try
     {
       //final StraightToPDF demo =

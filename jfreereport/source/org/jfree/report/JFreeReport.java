@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.23 2005/03/16 21:06:37 taqua Exp $
+ * $Id: JFreeReport.java,v 1.24 2005/08/29 17:56:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,6 +69,8 @@ import java.util.ResourceBundle;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionCollection;
 import org.jfree.report.style.StyleSheetCollection;
@@ -308,7 +310,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   /**
    * The report configuration.
    */
-  private final ReportConfiguration reportConfiguration;
+  private final ModifiableConfiguration reportConfiguration;
 
   /**
    * The stylesheet collection used for this report.
@@ -334,7 +336,8 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    */
   public JFreeReport ()
   {
-    this.reportConfiguration = new ReportConfiguration(ReportConfiguration.getGlobalConfig());
+    this.reportConfiguration = new HierarchicalConfiguration
+            (JFreeReportBoot.getInstance().getGlobalConfig());
     this.properties = new ReportProperties();
     this.styleSheetCollection = new StyleSheetCollection();
 
@@ -735,8 +738,8 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   {
     if (format == null)
     {
-      if (ReportConfiguration.getGlobalConfig().getConfigProperty
-              (ReportConfiguration.NO_PRINTER_AVAILABLE, "false").equals("true"))
+      if (JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
+              (JFreeReportCoreModule.NO_PRINTER_AVAILABLE_KEY))
       {
         format = new SimplePageDefinition(new PageFormat());
       }
@@ -859,7 +862,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    *
    * @return the report configuration.
    */
-  public ReportConfiguration getReportConfiguration ()
+  public ModifiableConfiguration getReportConfiguration ()
   {
     return reportConfiguration;
   }

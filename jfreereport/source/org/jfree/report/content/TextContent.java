@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContent.java,v 1.16 2005/08/12 12:09:38 taqua Exp $
+ * $Id: TextContent.java,v 1.17 2005/08/29 17:56:46 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@ package org.jfree.report.content;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.util.LineBreakIterator;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.util.Log;
 
@@ -103,7 +103,7 @@ public class TextContent extends ContentContainer
       }
 
       if (usedHeight == 0 &&
-              ReportConfiguration.getGlobalConfig().getConfigProperty
+              JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
               (DEBUG_TEXTCONTENT_KEY, "false").equals("true"))
       {
         Log.warn("Empty TextContent created. This might indicate an invalid font size definition.");

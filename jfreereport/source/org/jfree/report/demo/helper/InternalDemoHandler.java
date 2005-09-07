@@ -1,7 +1,6 @@
 package org.jfree.report.demo.helper;
 
 import java.net.URL;
-
 import javax.swing.JComponent;
 
 import org.jfree.report.JFreeReport;

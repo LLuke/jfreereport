@@ -1,10 +1,10 @@
 package org.jfree.report.demo.helper;
 
 import javax.swing.JComponent;
-import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.table.TableModel;
+import javax.swing.JTable;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import org.jfree.ui.NumberCellRenderer;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePatientFormDemo.java,v 1.6 2005/08/08 15:36:27 taqua Exp $
+ * $Id: SimplePatientFormDemo.java,v 1.7 2005/08/29 17:35:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,8 +47,8 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ObjectUtilities;
 
 public class SimplePatientFormDemo extends AbstractXmlDemoHandler
 {

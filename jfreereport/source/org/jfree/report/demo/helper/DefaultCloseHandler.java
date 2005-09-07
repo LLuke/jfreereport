@@ -3,7 +3,7 @@ package org.jfree.report.demo.helper;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.JFreeReportBoot;
 
 /**
  * Window close handler.
@@ -21,8 +21,8 @@ public class DefaultCloseHandler extends WindowAdapter
    */
   public void windowClosing (final WindowEvent event)
   {
-    if (ReportConfiguration.getGlobalConfig().getConfigProperty
-            ("org.jfree.report.demo.Embedded", "false").equals("false"))
+    if (JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
+            (AbstractDemoFrame.EMBEDDED_KEY, "false").equals("false"))
     {
       System.exit(0);
     }

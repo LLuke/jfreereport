@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.14 2005/02/19 13:29:52 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.15 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,7 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jfree.report.util.NullOutputStream;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The report builder hints can be used to store extra information for an JFreeReport
@@ -75,8 +74,8 @@ public class ReportBuilderHints implements Serializable
    * storage.
    */
   private static final boolean PARANOID_CHECKS =
-          ReportConfiguration.getGlobalConfig().getConfigProperty
-          ("org.jfree.report.ReportBuilderHint.ParanoidChecks", "false").equals("true");
+          JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
+                  ("org.jfree.report.ReportBuilderHint.ParanoidChecks");
 
   /**
    * The parser hint key is a compound key to combine a string key name with an arbitary

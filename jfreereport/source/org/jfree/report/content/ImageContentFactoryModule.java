@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.13 2005/03/18 13:49:37 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.14 2005/04/17 21:08:02 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.StringUtil;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
-import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.report.util.geom.StrictPoint;
 
 /**
  * The ImageContentFactoryModule creates image content from the given element. The content

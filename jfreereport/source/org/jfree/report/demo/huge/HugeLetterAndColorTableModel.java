@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HugeLetterAndColorTableModel.java,v 1.6 2005/02/23 21:04:39 taqua Exp $
+ * $Id: HugeLetterAndColorTableModel.java,v 1.1 2005/08/29 17:36:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.demo.huge;
 
-import java.util.TreeMap;
 import java.awt.Color;
+import java.util.TreeMap;
 import javax.swing.table.AbstractTableModel;
 
 /**

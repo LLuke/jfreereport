@@ -11,7 +11,6 @@ import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.opensource.OpenSourceXMLDemoHandler;
 import org.jfree.report.demo.world.CountryReportXMLDemoHandler;
 import org.jfree.report.modules.output.table.xls.AppendingExcelProcessor;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.Log;
 
 /**
@@ -50,7 +49,6 @@ public class AppendedExcelReport
    */
   public static void main (final String[] args)
   {
-    ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
     // disable PDF target autoinit must be done outside ...
     try
     {

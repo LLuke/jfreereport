@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AdvertisingTableModel.java,v 1.1 2005/07/20 18:44:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@
  */
 package org.jfree.report.demo.invoice;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.report.demo.invoice.model.Article;
 import org.jfree.report.demo.invoice.model.Advertising;
+import org.jfree.report.demo.invoice.model.Article;
 
 public class AdvertisingTableModel extends AbstractTableModel
 {

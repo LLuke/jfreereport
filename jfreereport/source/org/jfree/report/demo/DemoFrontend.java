@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.7 2005/08/08 15:36:27 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.8 2005/08/29 17:43:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.demo;
 
+import org.jfree.base.config.ModifiableConfiguration;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.bookstore.BookstoreDemo;
 import org.jfree.report.demo.cards.CardDemo;
 import org.jfree.report.demo.conditionalgroup.ConditionalGroupDemo;
@@ -62,7 +64,6 @@ import org.jfree.report.demo.sportscouncil.SportsCouncilDemo;
 import org.jfree.report.demo.surveyscale.SurveyScaleDemo;
 import org.jfree.report.demo.swingicons.SwingIconsDemo;
 import org.jfree.report.demo.world.WorldDemo;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 
 public class DemoFrontend extends CompoundDemoFrame
@@ -71,7 +72,9 @@ public class DemoFrontend extends CompoundDemoFrame
   {
     super(demoSelector);
     setIgnoreEmbeddedConfig(true);
-    ReportConfiguration.getGlobalConfig().setConfigProperty(EMBEDDED_KEY, "true");
+    final ModifiableConfiguration editableConfig =
+            JFreeReportBoot.getInstance().getEditableConfig();
+    editableConfig.setConfigProperty(EMBEDDED_KEY, "true");
     init();
   }
 

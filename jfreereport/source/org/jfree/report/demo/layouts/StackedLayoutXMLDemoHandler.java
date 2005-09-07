@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StackedLayoutXMLDemoHandler.java,v 1.1 2005/08/10 14:23:40 taqua Exp $
+ * $Id: StackedLayoutXMLDemoHandler.java,v 1.1 2005/08/29 17:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,8 @@ import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.PreviewHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A simple report that shows the user input as report property value.

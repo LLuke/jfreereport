@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LocaleSelectionReportControler.java,v 1.2 2005/08/08 15:36:27 taqua Exp $
+ * $Id: LocaleSelectionReportControler.java,v 1.1 2005/08/29 17:36:36 taqua Exp $
  *
  * Changes
  * -------
@@ -53,9 +53,9 @@ import org.jfree.report.DefaultResourceBundleFactory;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.DefaultReportControler;
 import org.jfree.report.modules.gui.base.PreviewProxyBase;
-import org.jfree.util.Log;
 import org.jfree.ui.KeyedComboBoxModel;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.util.Log;
 
 public class LocaleSelectionReportControler extends DefaultReportControler
 {

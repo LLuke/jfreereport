@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.DefaultReportControler;

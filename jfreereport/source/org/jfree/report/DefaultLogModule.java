@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLogModule.java,v 1.8 2005/08/08 15:36:26 taqua Exp $
+ * $Id: DefaultLogModule.java,v 1.9 2005/09/06 11:40:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,13 +40,12 @@ package org.jfree.report;
 
 import java.io.InputStream;
 
+import org.jfree.base.log.DefaultLog;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.base.log.DefaultLog;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.SystemOutLogTarget;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -58,6 +57,17 @@ import org.jfree.util.ObjectUtilities;
  */
 public class DefaultLogModule extends AbstractModule
 {
+  /**
+   * The 'disable logging' property key.
+   */
+  public static final String DISABLE_LOGGING_KEY
+          = "org.jfree.report.NoDefaultDebug";
+
+  /**
+   * The 'log target' property key.
+   */
+  public static final String LOGTARGET_KEY = "org.jfree.report.LogTarget";
+
   /**
    * DefaultConstructor. Loads the module specification from a file called
    * 'logmodule.properties'.
@@ -96,11 +106,11 @@ public class DefaultLogModule extends AbstractModule
       DefaultLog log = (DefaultLog) Log.getInstance();
       log.init();
     }
-    if (ReportConfiguration.getGlobalConfig().isDisableLogging())
+    if (subSystem.getExtendedConfig().getBoolProperty(DISABLE_LOGGING_KEY, false))
     {
       return;
     }
-    if (ReportConfiguration.getGlobalConfig().getLogTarget().equals
+    if (subSystem.getGlobalConfig().getConfigProperty(LOGTARGET_KEY).equals
             (SystemOutLogTarget.class.getName()))
     {
 

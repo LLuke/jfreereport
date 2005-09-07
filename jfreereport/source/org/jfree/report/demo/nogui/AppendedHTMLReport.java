@@ -3,15 +3,13 @@ package org.jfree.report.demo.nogui;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.report.modules.output.table.html.HtmlProcessor;
-import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
-import org.jfree.report.modules.output.table.html.AppendingHtmlProcessor;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.demo.opensource.OpenSourceXMLDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
+import org.jfree.report.demo.opensource.OpenSourceXMLDemoHandler;
 import org.jfree.report.demo.world.CountryReportXMLDemoHandler;
+import org.jfree.report.modules.output.table.html.AppendingHtmlProcessor;
+import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
 import org.jfree.util.Log;
 
 /**
@@ -48,7 +46,6 @@ public class AppendedHTMLReport
    */
   public static void main (final String[] args)
   {
-    ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
     // disable PDF target autoinit must be done outside ...
     try
     {

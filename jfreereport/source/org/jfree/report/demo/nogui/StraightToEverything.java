@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.2 2005/09/04 16:45:29 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.3 2005/09/04 18:58:02 taqua Exp $
  *
  * Changes
  * -------
@@ -63,9 +63,8 @@ import org.jfree.report.modules.output.table.rtf.RTFProcessor;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
-import org.jfree.xml.ParseException;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.ParseException;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without
@@ -310,8 +309,6 @@ public class StraightToEverything
    */
   public static void main (final String[] args)
   {
-    ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
-    // disable PDF target autoinit must be done outside ...
     try
     {
       final String folder;

@@ -1,7 +1,7 @@
 package org.jfree.report.demo.helper;
 
-import java.util.Enumeration;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import javax.swing.tree.TreeNode;
 
 import org.jfree.report.util.ArrayEnumeration;

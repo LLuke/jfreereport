@@ -1,11 +1,11 @@
 package org.jfree.report.demo.layouts;
 
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * Creation-Date: 28.08.2005, 21:20:11

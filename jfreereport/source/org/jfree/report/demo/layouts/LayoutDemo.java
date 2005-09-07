@@ -4,12 +4,6 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.CompoundDemoFrame;
 import org.jfree.report.demo.helper.DefaultDemoSelector;
 import org.jfree.report.demo.helper.DemoSelector;
-import org.jfree.report.demo.world.WorldDemo;
-import org.jfree.report.demo.world.CountryReportAPIDemoHandler;
-import org.jfree.report.demo.world.CountryReportXMLDemoHandler;
-import org.jfree.report.demo.world.CountryReportExtXMLDemoHandler;
-import org.jfree.report.demo.world.CountryReportSecurityXMLDemoHandler;
-import org.jfree.report.demo.world.MultiPageCountryDataDemoHandler;
 import org.jfree.ui.RefineryUtilities;
 
 /**

@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVReaderDemo.java,v 1.6 2005/05/20 16:06:20 taqua Exp $
+ * $Id: CSVUserInputPanel.java,v 1.1 2005/08/29 17:34:18 taqua Exp $
  *
- * $Log: CSVReaderDemo.java,v $
+ * $Log: CSVUserInputPanel.java,v $
+ * Revision 1.1  2005/08/29 17:34:18  taqua
+ * Demo restructuring - work in progress ...
+ *
  * Revision 1.6  2005/05/20 16:06:20  taqua
  * More on the classloader topic: Changed resource paths to global paths;
  * Fixed the i18n issues (parser, demo, resource bundle lookup)
@@ -64,38 +67,38 @@
 package org.jfree.report.demo.csv;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringWriter;
+import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
-import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
 
+import org.jfree.io.IOUtils;
 import org.jfree.report.demo.helper.DemoControler;
 import org.jfree.report.modules.gui.base.components.FormValidator;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.misc.tablemodel.CSVTableModelProducer;
-import org.jfree.ui.LengthLimitingDocument;
 import org.jfree.ui.ExtensionFileFilter;
-import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.LengthLimitingDocument;
 import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionButton;
 import org.jfree.util.ResourceBundleSupport;
-import org.jfree.io.IOUtils;
 
 /**
  * Demo that show how to use <code>CSVTableModelProducer</code> to generate

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.9 2005/05/18 18:37:30 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.10 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -64,6 +64,26 @@ import org.jfree.util.ObjectUtilities;
  */
 public class JFreeReportCoreModule extends AbstractModule
 {
+  /**
+   * The 'no-printer-available' property key.
+   */
+  public static final String NO_PRINTER_AVAILABLE_KEY
+          = "org.jfree.report.NoPrinterAvailable";
+
+  /**
+   * The G2 fontrenderer bug override configuration key.
+   */
+  public static final String FONTRENDERER_ISBUGGY_FRC_KEY
+          = "org.jfree.report.layout.fontrenderer.IsBuggyFRC";
+
+  /**
+   * The text aliasing configuration key.
+   */
+  public static final String FONTRENDERER_USEALIASING_KEY
+          = "org.jfree.report.layout.fontrenderer.UseAliasing";
+
+  public static final String STRICT_ERROR_HANDLING_KEY
+          = "org.jfree.report.StrictErrorHandling";
   /**
    * Creates a new module definition based on the 'coremodule.properties' file of this
    * package.
@@ -109,5 +129,4 @@ public class JFreeReportCoreModule extends AbstractModule
       drawableFactory.registerModule("org.jfree.report.resourceloader.WmfImageFactoryModule");
     }
   }
-
 }

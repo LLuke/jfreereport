@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.11 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.12 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package org.jfree.report;
 
 import java.util.ResourceBundle;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
 
 /**
@@ -113,7 +113,7 @@ public interface ReportDefinition extends Cloneable
    *
    * @return The report configuration.
    */
-  public ReportConfiguration getReportConfiguration ();
+  public ModifiableConfiguration getReportConfiguration ();
 
   /**
    * Returns the number of groups in this report. <P> Every report has at least one group

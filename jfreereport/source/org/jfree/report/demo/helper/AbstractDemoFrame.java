@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.10 2005/08/29 17:43:59 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.11 2005/08/29 17:46:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,12 +55,12 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.actions.AboutAction;
 import org.jfree.report.demo.helper.actions.CloseAction;
 import org.jfree.report.demo.helper.actions.PreviewAction;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.NumberCellRenderer;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.about.AboutFrame;
@@ -76,7 +76,7 @@ import org.jfree.util.ResourceBundleSupport;
  */
 public abstract class AbstractDemoFrame extends JFrame implements DemoControler
 {
-  protected static final String EMBEDDED_KEY = "org.jfree.report.demo.Embedded";
+  public static final String EMBEDDED_KEY = "org.jfree.report.demo.Embedded";
 
   /** Close action. */
   protected class DemoCloseAction extends CloseAction
@@ -258,7 +258,7 @@ public abstract class AbstractDemoFrame extends JFrame implements DemoControler
     if (close)
     {
       if (ignoreEmbeddedConfig ||
-              ReportConfiguration.getGlobalConfig().getConfigProperty
+              JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
                       (EMBEDDED_KEY, "false").equals("false"))
       {
         System.exit(0);

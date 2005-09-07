@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.11 2005/08/08 15:36:27 taqua Exp $
+ * $Id: StraightToXML.java,v 1.1 2005/08/29 17:40:09 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,8 @@ import org.jfree.report.demo.opensource.OpenSourceProjects;
 import org.jfree.report.modules.output.xml.XMLProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
-import org.jfree.xml.ParseException;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.ParseException;
 
 /**
  * A demonstration that shows how to generate a report and save it to XML without

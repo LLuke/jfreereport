@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.5 2005/08/08 15:36:27 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.6 2005/09/06 11:40:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -36,14 +36,19 @@
  */
 package org.jfree.report;
 
+import java.util.Enumeration;
+
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
+import org.jfree.base.config.ModifiableConfiguration;
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.SystemPropertyConfiguration;
+import org.jfree.base.config.PropertyFileConfiguration;
 import org.jfree.base.log.DefaultLog;
 import org.jfree.base.modules.PackageManager;
 import org.jfree.report.util.CSVTokenizer;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * An utility class to safely boot and initialize the JFreeReport library. This class
@@ -67,6 +72,126 @@ import org.jfree.util.Configuration;
 public class JFreeReportBoot extends AbstractBoot
 {
   /**
+   * A wrappper around the user supplied global configuration.
+   */
+  private static class UserConfigWrapper extends HierarchicalConfiguration
+          implements Configuration
+  {
+    /** The wrapped configuration. */
+    private Configuration wrappedConfiguration;
+
+    /**
+     * Default constructor.
+     */
+    public UserConfigWrapper ()
+    {
+    }
+
+    /**
+     * Sets a new configuration. This configuration will be inserted into the
+     * report configuration hierarchy. Set this property to null to disable
+     * the user defined configuration.
+     *
+     * @param wrappedConfiguration the wrapped configuration.
+     */
+    public void setWrappedConfiguration (final Configuration wrappedConfiguration)
+    {
+      this.wrappedConfiguration = wrappedConfiguration;
+    }
+
+    /**
+     * Returns the user supplied global configuration, if exists.
+     *
+     * @return the user configuration.
+     */
+    public Configuration getWrappedConfiguration ()
+    {
+      return wrappedConfiguration;
+    }
+
+    /**
+     * Returns the configuration property with the specified key.
+     *
+     * @param key the property key.
+     * @return the property value.
+     */
+    public String getConfigProperty (final String key)
+    {
+      if (wrappedConfiguration == null)
+      {
+        return getParentConfig().getConfigProperty(key);
+      }
+
+      final String retval = wrappedConfiguration.getConfigProperty(key);
+      if (retval != null)
+      {
+        return retval;
+      }
+      return getParentConfig().getConfigProperty(key);
+    }
+
+    /**
+     * Returns the configuration property with the specified key
+     * (or the specified default value if there is no such property).
+     * <p/>
+     * If the property is not defined in this configuration, the code
+     * will lookup the property in the parent configuration.
+     *
+     * @param key          the property key.
+     * @param defaultValue the default value.
+     * @return the property value.
+     */
+    public String getConfigProperty (final String key, final String defaultValue)
+    {
+      if (wrappedConfiguration == null)
+      {
+        return getParentConfig().getConfigProperty(key, defaultValue);
+      }
+
+      final String retval = wrappedConfiguration.getConfigProperty(key, null);
+      if (retval != null)
+      {
+        return retval;
+      }
+      return getParentConfig().getConfigProperty(key, defaultValue);
+    }
+
+    /**
+     * Sets a configuration property.
+     *
+     * @param key   the property key.
+     * @param value the property value.
+     */
+    public void setConfigProperty (final String key, final String value)
+    {
+      if (wrappedConfiguration instanceof ModifiableConfiguration)
+      {
+        final ModifiableConfiguration modConfiguration =
+                (ModifiableConfiguration) wrappedConfiguration;
+        modConfiguration.setConfigProperty(key, value);
+      }
+    }
+
+    /**
+     * Returns all defined configuration properties for the report. The enumeration
+     * contains all keys of the changed properties, properties set from files or
+     * the system properties are not included.
+     *
+     * @return all defined configuration properties for the report.
+     */
+    public Enumeration getConfigProperties ()
+    {
+      if (wrappedConfiguration instanceof ModifiableConfiguration)
+      {
+        final ModifiableConfiguration modConfiguration =
+                (ModifiableConfiguration) wrappedConfiguration;
+        return modConfiguration.getConfigProperties();
+      }
+      return super.getConfigProperties();
+    }
+  }
+
+  /**
    * The singleton instance of the Boot class.
    */
   private static JFreeReportBoot instance;
@@ -74,6 +199,8 @@ public class JFreeReportBoot extends AbstractBoot
    * The project info contains all meta data about the project.
    */
   private BootableProjectInfo projectInfo;
+
+  private static transient UserConfigWrapper configWrapper = new UserConfigWrapper();
 
   /**
    * Creates a new instance.
@@ -99,6 +226,11 @@ public class JFreeReportBoot extends AbstractBoot
     return instance;
   }
 
+  public ModifiableConfiguration getEditableConfig()
+  {
+    return (ModifiableConfiguration) getGlobalConfig();
+  }
+
   /**
    * Returns the project info.
    *
@@ -116,7 +248,24 @@ public class JFreeReportBoot extends AbstractBoot
    */
   protected Configuration loadConfiguration ()
   {
-    return ReportConfiguration.getGlobalConfig();
+    HierarchicalConfiguration globalConfig = new HierarchicalConfiguration();
+
+    final PropertyFileConfiguration rootProperty = new PropertyFileConfiguration();
+    rootProperty.load("/org/jfree/report/jfreereport.properties");
+    rootProperty.load("/org/jfree/report/ext/jfreereport-ext.properties");
+    globalConfig.insertConfiguration(rootProperty);
+    globalConfig.insertConfiguration(JFreeReportBoot.getInstance().getPackageManager()
+            .getPackageConfiguration());
+
+    final PropertyFileConfiguration baseProperty = new PropertyFileConfiguration();
+    baseProperty.load("/jfreereport.properties");
+    globalConfig.insertConfiguration(baseProperty);
+
+    globalConfig.insertConfiguration(configWrapper);
+
+    final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
+    globalConfig.insertConfiguration(systemConfig);
+    return globalConfig;
   }
 
   /**
@@ -154,7 +303,7 @@ public class JFreeReportBoot extends AbstractBoot
     try
     {
       final String bootModules =
-              ReportConfiguration.getGlobalConfig().getConfigProperty
+              getGlobalConfig().getConfigProperty
               ("org.jfree.report.boot.Modules");
       if (bootModules != null)
       {
@@ -200,4 +349,26 @@ public class JFreeReportBoot extends AbstractBoot
     final double result2 = 2.0 * d;
     return (result1 != result2 && (result1 == Double.POSITIVE_INFINITY));
   }
+
+
+  /**
+   * Returns the user supplied global configuration.
+   *
+   * @return the user configuration, if any.
+   */
+  public static Configuration getUserConfig ()
+  {
+    return configWrapper.getWrappedConfiguration();
+  }
+
+  /**
+   * Defines the global user configuration.
+   *
+   * @param config the user configuration.
+   */
+  public static void setUserConfig (final Configuration config)
+  {
+    configWrapper.setWrappedConfiguration(config);
+  }
+
 }
