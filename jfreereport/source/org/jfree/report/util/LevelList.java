@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LevelList.java,v 1.14 2005/06/25 17:52:03 taqua Exp $
+ * $Id: LevelList.java,v 1.15 2005/07/18 18:09:19 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 
 package org.jfree.report.util;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,7 +47,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
-import java.lang.reflect.Array;
 
 /**
  * A list that associates a level (instance of <code>Integer</code>) with each element in

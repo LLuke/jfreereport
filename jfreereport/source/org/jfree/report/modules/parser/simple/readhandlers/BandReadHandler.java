@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BandReadHandler.java,v 1.5 2005/03/03 23:00:23 taqua Exp $
+ * $Id: BandReadHandler.java,v 1.6 2005/08/10 14:22:22 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import java.util.ArrayList;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.layout.BandLayoutManager;
+import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
@@ -56,10 +56,10 @@ import org.jfree.report.modules.parser.base.ReportParserUtil;
 import org.jfree.report.modules.parser.simple.FontFactory;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

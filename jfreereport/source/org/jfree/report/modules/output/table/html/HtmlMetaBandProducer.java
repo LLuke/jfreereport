@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.10 2005/03/16 21:06:48 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.11 2005/03/30 17:26:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,8 +52,8 @@ import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlImageMetaElement;
-import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlMetaElement;
+import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.geom.StrictBounds;

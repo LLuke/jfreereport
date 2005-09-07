@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextKeyEditor.java,v 1.6 2004/05/07 14:29:52 mungady Exp $
+ * $Id: TextKeyEditor.java,v 1.7 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,8 +46,8 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The text key editor is used to edit a free form text.
@@ -127,7 +127,7 @@ public class TextKeyEditor extends AbstractKeyEditor
    * @param entry       the entry description supplies the meta data.
    * @param displayName the label content.
    */
-  public TextKeyEditor (final ReportConfiguration config,
+  public TextKeyEditor (final HierarchicalConfiguration config,
                         final ConfigDescriptionEntry entry,
                         final String displayName)
   {

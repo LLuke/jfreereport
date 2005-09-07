@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PropertyReferenceReadHandler.java,v 1.3 2005/03/03 23:00:20 taqua Exp $
+ * $Id: PropertyReferenceReadHandler.java,v 1.4 2005/05/08 15:41:15 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,10 @@ package org.jfree.report.modules.parser.base.common;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
+import org.jfree.report.util.beans.BeanException;
 import org.jfree.report.util.beans.ConverterRegistry;
 import org.jfree.report.util.beans.StringValueConverter;
 import org.jfree.report.util.beans.ValueConverter;
-import org.jfree.report.util.beans.BeanException;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.parser.XmlReaderException;

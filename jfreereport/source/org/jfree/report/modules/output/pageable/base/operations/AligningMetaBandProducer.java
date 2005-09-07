@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AligningMetaBandProducer.java,v 1.1 2005/08/12 12:11:00 taqua Exp $
+ * $Id: AligningMetaBandProducer.java,v 1.2 2005/08/31 20:13:52 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
-import org.jfree.report.content.MultipartContent;
 import org.jfree.report.content.EmptyContent;
+import org.jfree.report.content.MultipartContent;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.style.ElementStyleSheet;

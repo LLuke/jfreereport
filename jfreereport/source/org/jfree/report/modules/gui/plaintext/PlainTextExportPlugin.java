@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.17 2005/03/01 10:09:39 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.18 2005/03/18 13:49:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,10 +44,10 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ResourceBundleSupport;
 
@@ -219,7 +219,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public boolean isAddToToolbar ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             ("org.jfree.report.modules.gui.plaintext.AddToToolbar", "false").equals("true");
   }
 
@@ -233,7 +233,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public boolean isSeparated ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             ("org.jfree.report.modules.gui.plaintext.Separated", "false").equals("true");
   }
 

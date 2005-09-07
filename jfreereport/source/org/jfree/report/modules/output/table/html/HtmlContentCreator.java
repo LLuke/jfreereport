@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.24 2005/09/05 11:43:24 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.25 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -62,8 +62,8 @@ import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Configuration;
 
 public class HtmlContentCreator extends TableContentCreator
 {
@@ -276,7 +276,7 @@ public class HtmlContentCreator extends TableContentCreator
   public void handleOpen (final ReportDefinition report)
   {
     isOpen = true;
-    final ReportConfiguration config = report.getReportConfiguration();
+    final Configuration config = report.getReportConfiguration();
     createBodyFragment = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.BODY_FRAGMENT, "false").equals("true");

@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.4 2005/02/23 21:05:37 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.5 2005/03/24 22:24:56 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,8 @@
  */
 package org.jfree.report.modules.output.table.xls.util;
 
-import java.util.HashMap;
 import java.awt.Color;
+import java.util.HashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

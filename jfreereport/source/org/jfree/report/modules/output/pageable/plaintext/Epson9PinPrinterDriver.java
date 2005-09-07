@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: Epson9PinPrinterDriver.java,v 1.6 2005/03/03 23:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ package org.jfree.report.modules.output.pageable.plaintext;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.JFreeReportBoot;
 
 public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
 {
@@ -162,7 +162,7 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
 
   public static String getDefaultPrinter ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (EPSON_9PIN_PRINTER_TYPE, "Generic 9-Pin printer");
   }
 

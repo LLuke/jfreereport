@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EnumKeyEditor.java,v 1.7 2004/05/07 14:29:52 mungady Exp $
+ * $Id: EnumKeyEditor.java,v 1.8 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,8 +48,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The enumeration key editor is used to edit configuration keys, which accept a closed
@@ -102,7 +102,7 @@ public class EnumKeyEditor extends AbstractKeyEditor
    * @param entry       the metadata for the edited key.
    * @param displayName the text for the label.
    */
-  public EnumKeyEditor (final ReportConfiguration config,
+  public EnumKeyEditor (final HierarchicalConfiguration config,
                         final EnumConfigDescriptionEntry entry, final String displayName)
   {
     super(config, entry);

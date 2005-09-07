@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.15 2005/03/03 21:50:44 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.16 2005/03/10 19:05:37 taqua Exp $
  *
  * Changes
  * --------
@@ -52,7 +52,6 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -66,15 +65,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.util.Configuration;
 
 /**
  * A dialog that is used to prepare the printing of a report into an Excel file.
@@ -469,7 +469,7 @@ public class ExcelExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration.
    */
-  public void initFromConfiguration (final ReportConfiguration config)
+  public void initFromConfiguration (final Configuration config)
   {
     final String strict = config.getConfigProperty
             (ExcelProcessor.CONFIGURATION_PREFIX +
@@ -484,7 +484,7 @@ public class ExcelExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration (final ModifiableConfiguration config)
   {
     config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +
         TableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));

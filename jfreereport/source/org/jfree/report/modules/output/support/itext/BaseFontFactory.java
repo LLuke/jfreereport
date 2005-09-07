@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.20 2005/06/25 17:52:02 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.21 2005/08/08 15:36:34 taqua Exp $
  *
  * Changes
  * -------
@@ -50,13 +50,14 @@ import java.util.StringTokenizer;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.StringUtil;
 import org.jfree.util.HashNMap;
+import org.jfree.util.Log;
 
 /**
  * The BaseFontFactory is used to find and register all TrueType fonts for embedding them
@@ -103,7 +104,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    * The default 'PDF encoding' property value.
    */
   public static final String ITEXT_FONT_ENCODING_DEFAULT
-          = ReportConfiguration.getPlatformDefaultEncoding();
+          = EncodingSupport.getPlatformDefaultEncoding();
   /**
    * The name of the report property, which defines, whether the GarbageCollector should
    * be run after the font registration.
@@ -457,7 +458,7 @@ public final class BaseFontFactory extends DefaultFontMapper
         }
       }
     }
-    if (ReportConfiguration.getGlobalConfig().getConfigProperty
+    if (JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (GC_AFTER_REGISTER, "true").equals("true"))
     {
       // clean up after the registering ...
@@ -628,9 +629,9 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @return the BaseFont encoding property value.
    */
-  public static final String getDefaultFontEncoding ()
+  public static String getDefaultFontEncoding ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (ITEXT_FONT_ENCODING, ITEXT_FONT_ENCODING_DEFAULT);
   }
 
@@ -639,9 +640,9 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @param encoding the new encoding.
    */
-  public static final void setDefaultFontEncoding (final String encoding)
+  public static void setDefaultFontEncoding (final String encoding)
   {
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
             (ITEXT_FONT_ENCODING, encoding);
   }
 
@@ -653,7 +654,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    */
   public String getPDFTargetAutoInit ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (ITEXT_FONT_AUTOINIT, ITEXT_FONT_AUTOINIT_DEFAULT);
   }
 
@@ -673,7 +674,7 @@ public final class BaseFontFactory extends DefaultFontMapper
         throw new IllegalArgumentException("Invalid autoinit value.");
       }
     }
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
             (ITEXT_FONT_AUTOINIT, String.valueOf(autoInit));
   }
 

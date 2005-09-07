@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageReadHandler.java,v 1.4 2005/03/03 23:00:21 taqua Exp $
+ * $Id: PageReadHandler.java,v 1.5 2005/08/08 15:36:36 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
-import org.jfree.util.Log;
 import org.jfree.report.util.PageFormatFactory;
+import org.jfree.util.Log;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;

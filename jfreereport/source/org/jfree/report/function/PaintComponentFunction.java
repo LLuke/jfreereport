@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.16 2005/03/24 22:24:54 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.17 2005/04/09 17:43:13 taqua Exp $
  *
  * Changes
  * -------
@@ -55,11 +55,11 @@ import java.io.Serializable;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.Element;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.util.ImageUtils;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.util.Log;
@@ -162,7 +162,7 @@ public class PaintComponentFunction extends AbstractFunction
    */
   protected static boolean isHeadless ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             ("java.awt.headless", "false").equals("true");
   }
 

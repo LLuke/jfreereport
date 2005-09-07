@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeModel.java,v 1.7 2004/05/07 14:29:24 mungady Exp $
+ * $Id: ConfigTreeModel.java,v 1.8 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.base.config.HierarchicalConfiguration;
 
 /**
  * Provides a tree model view for an report configuration. The configuration will be
@@ -115,7 +115,7 @@ public class ConfigTreeModel implements TreeModel
    * @param config the report configuration from where to read the values.
    * @throws ConfigTreeModelException if an error occured while creating the model.
    */
-  public void init (final ReportConfiguration config)
+  public void init (final HierarchicalConfiguration config)
           throws ConfigTreeModelException
   {
     globalSection.reset();

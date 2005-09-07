@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.8 2005/05/18 18:38:31 taqua Exp $
+ * $Id: ReportConverter.java,v 1.9 2005/08/08 15:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
@@ -57,11 +59,10 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFacto
 import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
-import org.jfree.util.ObjectUtilities;
 
 /**
  * A utility class for converting XML report definitions from the old format to the new
@@ -97,7 +98,8 @@ public class ReportConverter
     {
       throw new NullPointerException("ContentBase is null");
     }
-    final ReportConfiguration config = new ReportConfiguration(report.getReportConfiguration());
+    final ModifiableConfiguration config =
+            new HierarchicalConfiguration(report.getReportConfiguration());
     config.setConfigProperty(Parser.CONTENTBASE_KEY, contentBase.toExternalForm());
 
     final ReportWriter writer = new ReportWriter(report, encoding, config);

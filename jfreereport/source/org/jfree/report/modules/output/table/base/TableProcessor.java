@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.21 2005/09/04 16:45:51 taqua Exp $
+ * $Id: TableProcessor.java,v 1.22 2005/09/04 18:58:15 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
@@ -53,6 +54,7 @@ import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.report.util.ReportConfigurationUtil;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets. It
@@ -286,9 +288,11 @@ public abstract class TableProcessor
         // dataRow.
         int lastRow = -1;
         int eventCount = 0;
-        final boolean failOnError
-                = (level == -1) && getReport().getReportConfiguration()
-                .isStrictErrorHandling();
+        final String strictError =
+                getReport().getReportConfiguration().getConfigProperty
+                        (JFreeReportCoreModule.STRICT_ERROR_HANDLING_KEY);
+        final boolean failOnError =
+                (level == -1) && "true".equals(strictError);
         while (!state.isFinish())
         {
           checkInterrupted();
@@ -432,8 +436,9 @@ public abstract class TableProcessor
     int eventCount = 0;
     final int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
 
-    final boolean failOnError =
-            getReport().getReportConfiguration().isStrictErrorHandling();
+    final boolean failOnError = ReportConfigurationUtil.isStrictErrorHandling
+            (getReport().getReportConfiguration());
+
     ReportStateProgress progress = null;
     while (!state.isFinish())
     {

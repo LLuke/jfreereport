@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: PageFormatFactory.java,v 1.9 2005/07/18 18:09:20 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.10 2005/08/08 15:36:38 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.lang.reflect.Field;
 
-import org.jfree.util.*;
 import org.jfree.util.Log;
 
 /**

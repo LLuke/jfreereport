@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.20 2005/03/03 21:50:45 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.21 2005/08/30 18:59:45 mtennes Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
@@ -53,8 +54,9 @@ import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Configuration;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with escape
@@ -113,7 +115,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    * A default value of the 'text encoding' property key.
    */
   public static final String TEXT_OUTPUT_ENCODING_DEFAULT =
-          ReportConfiguration.getPlatformDefaultEncoding();
+          EncodingSupport.getPlatformDefaultEncoding();
 
   /**
    * A state of a Graphics2D object. This does not store clipping regions or advanced
@@ -515,7 +517,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param config the configuration.
    */
-  public void configure (final ReportConfiguration config)
+  public void configure (final Configuration config)
   {
     if (encoding == null)
     {
@@ -539,11 +541,11 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    * @param config the report configuration from where to read the encoding property.
    * @return the plain text encoding property value.
    */
-  public static String getTextTargetEncoding (ReportConfiguration config)
+  public static String getTextTargetEncoding (Configuration config)
   {
     if (config == null)
     {
-      config = ReportConfiguration.getGlobalConfig();
+      config = JFreeReportBoot.getInstance().getGlobalConfig();
     }
     return config.getConfigProperty(TEXT_OUTPUT_ENCODING, TEXT_OUTPUT_ENCODING_DEFAULT);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFExportGUIModule.java,v 1.1 2005/03/04 13:17:22 taqua Exp $
+ * $Id: RTFExportGUIModule.java,v 1.2 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,9 +41,9 @@ package org.jfree.report.modules.gui.rtf;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.DefaultPluginSelector;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.modules.gui.base.ExportPluginFactory;
 
 /**
  * The module definition for the RTF export gui module.
@@ -85,7 +85,7 @@ public class RTFExportGUIModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String order = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin(new DefaultPluginSelector

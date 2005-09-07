@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassKeyEditor.java,v 1.7 2005/02/23 21:04:51 taqua Exp $
+ * $Id: ClassKeyEditor.java,v 1.8 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.modules.gui.config.editor;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -64,7 +64,7 @@ public class ClassKeyEditor extends TextKeyEditor
    * @param entry       the configuration description entry that describes the key
    * @param displayName the text for the label
    */
-  public ClassKeyEditor (final ReportConfiguration config,
+  public ClassKeyEditor (final HierarchicalConfiguration config,
                          final ClassConfigDescriptionEntry entry,
                          final String displayName)
   {

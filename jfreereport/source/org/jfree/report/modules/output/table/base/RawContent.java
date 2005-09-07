@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RawContent.java,v 1.5 2005/02/23 21:05:33 taqua Exp $
+ * $Id: RawContent.java,v 1.6 2005/08/12 12:09:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.output.table.base;
 
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentType;
-import org.jfree.report.content.ImageContent;
 import org.jfree.report.util.geom.StrictBounds;
 
 public class RawContent implements Content

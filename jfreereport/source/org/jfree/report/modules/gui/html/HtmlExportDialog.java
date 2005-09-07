@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.17 2005/03/24 22:24:54 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.18 2005/05/01 15:07:34 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,6 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -73,17 +72,20 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.io.IOUtils;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.util.Configuration;
 
 /**
  * A dialog that is used to perform the printing of a report into an HTML file.
@@ -613,12 +615,12 @@ public class HtmlExportDialog extends AbstractExportDialog
    */
   public void clear ()
   {
-    txAuthor.setText(ReportConfiguration.getGlobalConfig().getConfigProperty("user.name", ""));
+    txAuthor.setText(JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty("user.name", ""));
     txFilename.setText("");
     txDataFilename.setText("");
     txTitle.setText("");
     cbEncoding.setSelectedIndex(encodingModel.indexOf
-            (ReportConfiguration.getPlatformDefaultEncoding()));
+            (EncodingSupport.getPlatformDefaultEncoding()));
     cbxCopyExternalReferences.setSelected(false);
     cbxStrictLayout.setSelected(false);
     rbGenerateHTML4.setSelected(true);
@@ -760,7 +762,7 @@ public class HtmlExportDialog extends AbstractExportDialog
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
-      return ReportConfiguration.getPlatformDefaultEncoding();
+      return EncodingSupport.getPlatformDefaultEncoding();
     }
     else
     {
@@ -1012,7 +1014,7 @@ public class HtmlExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration.
    */
-  public void initFromConfiguration (final ReportConfiguration config)
+  public void initFromConfiguration (final Configuration config)
   {
     final String strict = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX +
@@ -1021,17 +1023,15 @@ public class HtmlExportDialog extends AbstractExportDialog
                             TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
 
-    setAuthor
-            (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-                TableProcessor.AUTHOR, getAuthor()));
+    setAuthor (config.getConfigProperty (HtmlProcessor.CONFIGURATION_PREFIX +
+            TableProcessor.AUTHOR, getAuthor()));
 
-    setHTMLTitle
-            (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+    setHTMLTitle (config.getConfigProperty (HtmlProcessor.CONFIGURATION_PREFIX +
                 TableProcessor.TITLE, getHTMLTitle()));
 
     final String encoding = config.getConfigProperty
-            (HtmlProcessor.CONFIGURATION_PREFIX +
-            HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
+            (HtmlProcessor.CONFIGURATION_PREFIX + HtmlProcessor.ENCODING,
+                    HtmlProcessor.ENCODING_DEFAULT);
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
 
@@ -1045,7 +1045,7 @@ public class HtmlExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration (final ModifiableConfiguration config)
   {
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
             HtmlProcessor.ENCODING, getEncoding());

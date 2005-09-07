@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageRefFilter.java,v 1.8 2005/05/08 15:40:52 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.9 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package org.jfree.report.filter;
 
 import java.awt.Image;
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.ImageContainer;

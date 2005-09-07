@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.10 2005/02/23 21:05:56 taqua Exp $
+ * $Id: ReportWriter.java,v 1.11 2005/08/08 15:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
@@ -53,9 +55,8 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
@@ -120,7 +121,8 @@ public class ReportWriter
    */
   public static Configuration createDefaultConfiguration (final JFreeReport report)
   {
-    final ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
+    final ModifiableConfiguration repConf =
+            new HierarchicalConfiguration(report.getReportConfiguration());
     repConf.setConfigProperty
             (Parser.CONTENTBASE_KEY,
                     (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));

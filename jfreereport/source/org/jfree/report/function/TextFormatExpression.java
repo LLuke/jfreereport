@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.5 2005/02/23 21:04:47 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.6 2005/08/29 17:56:46 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,8 @@ import java.util.Arrays;
  * </pre>
  *
  * @author Thomas Morgner
+ * @deprecated This class does not support locales, use the new MessageField or
+ * a function instead
  */
 public class TextFormatExpression extends AbstractExpression implements Serializable
 {
@@ -145,7 +147,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
           throws CloneNotSupportedException
   {
     final TextFormatExpression tex = (TextFormatExpression) super.clone();
-    tex.fields = new ArrayList(fields);
+    tex.fields = (ArrayList) fields.clone();
     return tex;
   }
 

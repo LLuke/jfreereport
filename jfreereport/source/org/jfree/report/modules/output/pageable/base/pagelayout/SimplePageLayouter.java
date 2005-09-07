@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.27 2005/08/10 14:22:19 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.28 2005/08/12 12:09:42 taqua Exp $
  *
  * Changes
  * -------
@@ -55,8 +55,8 @@ import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
-import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.AbstractBandLayoutManager;
+import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.pageable.base.operations.AligningMetaBandProducer;

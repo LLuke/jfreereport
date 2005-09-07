@@ -2,7 +2,7 @@ package org.jfree.report.modules.gui.print;
 
 import org.jfree.report.modules.gui.base.DefaultPluginSelector;
 import org.jfree.report.modules.gui.base.PreviewProxy;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 05.09.2005, 20:04:37
@@ -25,7 +25,7 @@ public class PrintPluginSelector extends DefaultPluginSelector
   }
 
   public boolean isPluginValid(final PreviewProxy proxy,
-                               final ReportConfiguration config)
+                               final Configuration config)
   {
     final String activeService = config.getConfigProperty(PRINT_SERVICE_KEY);
 

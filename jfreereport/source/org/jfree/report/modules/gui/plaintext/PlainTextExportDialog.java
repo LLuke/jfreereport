@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.19 2005/03/10 19:05:34 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.20 2005/03/18 13:49:38 taqua Exp $
  *
  * Changes
  * --------
@@ -53,7 +53,6 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -71,6 +70,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
@@ -80,12 +80,13 @@ import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDr
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecification;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecificationManager;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.KeyedComboBoxModel;
 import org.jfree.ui.action.AbstractFileSelectionAction;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionRadioButton;
+import org.jfree.util.Configuration;
 
 /**
  * A dialog that is used to export reports to plain text.
@@ -407,14 +408,14 @@ public class PlainTextExportDialog extends AbstractExportDialog
     final String epson9PrinterName = getResources().getString(PRINTER_NAMES[TYPE_EPSON9_OUTPUT]);
     final String epson24PrinterName = getResources().getString(PRINTER_NAMES[TYPE_EPSON24_OUTPUT]);
     final String ibmPrinterName = getResources().getString(PRINTER_NAMES[TYPE_IBM_OUTPUT]);
-    
-    rbPlainPrinterCommandSet = 
+
+    rbPlainPrinterCommandSet =
       new ActionRadioButton(new ActionSelectPrinter(plainPrinterName, TYPE_PLAIN_OUTPUT));
-    rbEpson9PrinterCommandSet = 
+    rbEpson9PrinterCommandSet =
       new ActionRadioButton(new ActionSelectPrinter(epson9PrinterName, TYPE_EPSON9_OUTPUT));
-    rbEpson24PrinterCommandSet = 
+    rbEpson24PrinterCommandSet =
       new ActionRadioButton(new ActionSelectPrinter(epson24PrinterName, TYPE_EPSON24_OUTPUT));
-    rbIBMPrinterCommandSet = 
+    rbIBMPrinterCommandSet =
       new ActionRadioButton(new ActionSelectPrinter(ibmPrinterName, TYPE_IBM_OUTPUT));
 
     txFilename = new JTextField();
@@ -801,7 +802,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
     cbEpson24PrinterType.setSelectedItem(Epson24PinPrinterDriver.getDefaultPrinter());
     cbCharsPerInch.setSelectedItem(CPI_10);
     cbLinesPerInch.setSelectedItem(LPI_6);
-    setEncoding(ReportConfiguration.getPlatformDefaultEncoding());
+    setEncoding(EncodingSupport.getPlatformDefaultEncoding());
   }
 
   /**
@@ -948,7 +949,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration.
    */
-  public void initFromConfiguration (final ReportConfiguration config)
+  public void initFromConfiguration (final Configuration config)
   {
     setEncoding(config.getConfigProperty
             (PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
@@ -985,7 +986,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration (final ModifiableConfiguration config)
   {
     config.setConfigProperty(PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
             getEncoding());

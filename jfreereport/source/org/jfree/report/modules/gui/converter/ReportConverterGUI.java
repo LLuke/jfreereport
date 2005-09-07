@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.15 2005/02/23 21:04:53 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.16 2005/08/08 15:36:31 taqua Exp $
  *
  * Changes
  * -------
@@ -81,11 +81,11 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFacto
 import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
-import org.jfree.util.Log;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.util.DefaultConfiguration;
+import org.jfree.util.Log;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;

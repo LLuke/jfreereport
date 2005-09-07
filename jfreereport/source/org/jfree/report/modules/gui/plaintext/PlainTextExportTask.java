@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.18 2005/05/01 15:07:35 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.19 2005/08/08 15:36:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,8 +57,8 @@ import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextReportUtil;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
-import org.jfree.util.Log;
 import org.jfree.report.util.StringUtil;
+import org.jfree.util.Log;
 
 /**
  * An export task implementation that writes the report into a plain text file.

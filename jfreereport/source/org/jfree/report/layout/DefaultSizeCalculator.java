@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.10 2005/02/23 21:04:47 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.11 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,11 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.util.WeakHashMap;
 
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.util.ExtendedConfiguration;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * An AWT-Based default implementation of an SizeCalculator. This implementation tries to
@@ -94,7 +96,10 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
      */
     protected BuggyFontRendererDetector ()
     {
-      isAliased = ReportConfiguration.getGlobalConfig().isFontRendererUseAliasing();
+      final ExtendedConfiguration extConfiguration =
+              JFreeReportBoot.getInstance().getExtendedConfig();
+      isAliased = extConfiguration.getBoolProperty
+              (JFreeReportCoreModule.FONTRENDERER_USEALIASING_KEY);
 
       // Another funny thing for the docs: On JDK 1.4 the font renderer changed.
       // in previous versions, the font renderer was sensitive to fractional metrics,
@@ -113,8 +118,8 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
       final double wNoAlias =
               font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
       isBuggyVersion = (wAlias != wNoAlias);
-      final boolean buggyOverride = ReportConfiguration.getGlobalConfig()
-              .isFontRendererBuggy();
+      final boolean buggyOverride =
+              extConfiguration.getBoolProperty(JFreeReportCoreModule.FONTRENDERER_ISBUGGY_FRC_KEY);
 
       if (VERBOSE_LOGGING)
       {

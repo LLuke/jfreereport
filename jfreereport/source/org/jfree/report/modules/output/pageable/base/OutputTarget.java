@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.5 2004/05/07 12:53:08 mungady Exp $
+ * $Id: OutputTarget.java,v 1.6 2005/02/23 21:05:28 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ package org.jfree.report.modules.output.pageable.base;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaPage;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
 
 /**
  * An interface that defines the methods that must be supported by a report output target.
@@ -131,5 +131,5 @@ public interface OutputTarget extends LayoutSupport
    *
    * @param config the configuration.
    */
-  public void configure (ReportConfiguration config);
+  public void configure (Configuration config);
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDefinitionReadHandler.java,v 1.5 2005/03/03 23:00:21 taqua Exp $
+ * $Id: ReportDefinitionReadHandler.java,v 1.6 2005/04/15 18:46:59 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,6 @@ import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollecto
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.8 2005/02/23 21:06:04 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.9 2005/08/08 15:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -50,11 +50,11 @@ import java.util.HashMap;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.LevelledExpressionList;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportPropertiesList;
+import org.jfree.util.Log;
 
 /**
  * The DataRow-Backend maintains the state of a datarow. Whenever the  report state
@@ -66,6 +66,11 @@ import org.jfree.report.util.ReportPropertiesList;
  */
 public class DataRowBackend implements Cloneable
 {
+  /**
+   * The 'warn on invalid columns' property key.
+   */
+  public static final String WARN_INVALID_COLUMNS_KEY
+          = "org.jfree.report.WarnInvalidColumns";
 
   /**
    * The item cache.
@@ -141,7 +146,9 @@ public class DataRowBackend implements Cloneable
     dataRowConnector = new DataRowConnector();
     dataRowConnector.setDataRowBackend(this);
     colcache = new HashMap();
-    warnInvalidColumns = ReportConfiguration.getGlobalConfig().isWarnInvalidColumns();
+    warnInvalidColumns =
+            JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
+                    (WARN_INVALID_COLUMNS_KEY);
     lastRow = -1;
     revalidateColumnLock();
   }

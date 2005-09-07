@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PeopleReportDefinition.java,v 1.1 2005/05/18 15:36:25 taqua Exp $
+ * $Id: PeopleReportDefinition.java,v 1.1 2005/08/29 17:44:00 taqua Exp $
  *
  * Changes
  * -------
@@ -40,20 +40,20 @@
  */
 package org.jfree.report.demo.onetomany;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.Color;
-import java.awt.BasicStroke;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.Group;
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.Group;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.elementfactory.DateFieldElementFactory;
+import org.jfree.report.elementfactory.LabelElementFactory;
+import org.jfree.report.elementfactory.StaticShapeElementFactory;
+import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.function.PageOfPagesFunction;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.elementfactory.LabelElementFactory;
-import org.jfree.report.elementfactory.TextFieldElementFactory;
-import org.jfree.report.elementfactory.StaticShapeElementFactory;
-import org.jfree.report.elementfactory.DateFieldElementFactory;
 import org.jfree.ui.FloatDimension;
 
 public class PeopleReportDefinition

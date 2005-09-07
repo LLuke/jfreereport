@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ModuleEditor.java,v 1.5 2005/01/25 00:04:33 taqua Exp $
+ * $Id: ModuleEditor.java,v 1.6 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,9 @@ package org.jfree.report.modules.gui.config.editor;
 import javax.swing.JComponent;
 
 import org.jfree.base.modules.Module;
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
 
 /**
  * The module editor is used to provide a customizable editor component for a JfreeReport
@@ -68,7 +69,7 @@ public interface ModuleEditor
    * @return the created new editor instance.
    */
   public ModuleEditor createInstance
-          (Module module, ReportConfiguration config, ConfigDescriptionEntry[] keyNames);
+          (Module module, HierarchicalConfiguration config, ConfigDescriptionEntry[] keyNames);
 
   /**
    * Checks, whether this module editor can handle the given module.

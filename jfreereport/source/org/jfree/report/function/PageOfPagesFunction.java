@@ -27,7 +27,7 @@
  *
  * Original Author:  J&ouml;rg Schaible;
  *
- * $Id: PageOfPagesFunction.java,v 1.3 2005/05/08 15:41:15 taqua Exp $
+ * $Id: PageOfPagesFunction.java,v 1.4 2005/07/22 16:39:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -155,7 +155,9 @@ public class PageOfPagesFunction extends PageFunction
     {
       locale = Locale.getDefault();
     }
-    final MessageFormat compiledFormat = new MessageFormat(getFormat(), locale);
+    final MessageFormat compiledFormat = new MessageFormat(getFormat());
+    compiledFormat.setLocale(locale);
+    compiledFormat.applyPattern(getFormat());
     return compiledFormat.format(new Object[]{page, pages});
   }
 

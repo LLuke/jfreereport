@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlLayoutCreator.java,v 1.4 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlLayoutCreator.java,v 1.5 2005/05/31 20:37:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.modules.output.table.html;
 
+import org.jfree.report.ReportDefinition;
 import org.jfree.report.modules.output.table.base.DefaultLayoutCreator;
 import org.jfree.report.modules.output.table.base.SheetLayout;
-import org.jfree.report.ReportDefinition;
 
 /**
  * The HtmlLayoutCreator collects the StyleSheet information and builds the table grid for

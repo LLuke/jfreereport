@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageComparator.java,v 1.9 2005/07/18 18:09:19 taqua Exp $
+ * $Id: ImageComparator.java,v 1.10 2005/08/08 15:36:38 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import org.jfree.util.*;
 import org.jfree.util.Log;
 
 /**

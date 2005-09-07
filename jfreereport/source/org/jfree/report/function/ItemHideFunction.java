@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.11 2005/03/24 22:24:53 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.12 2005/05/24 19:44:29 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import org.jfree.report.Element;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.util.Log;
 
 /**
  * The ItemHideFunction hides equal values in a group. Only the first changed value is

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.13 2005/03/03 14:42:34 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.14 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import java.util.HashMap;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.util.Log;
 
 /**
  * A cache for a band layout manager. This caches element bounds, not elements.

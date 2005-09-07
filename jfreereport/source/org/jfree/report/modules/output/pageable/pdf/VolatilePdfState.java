@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: VolatilePdfState.java,v 1.1 2005/03/10 19:08:45 taqua Exp $
+ * $Id: VolatilePdfState.java,v 1.2 2005/03/30 17:25:41 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.TexturePaint;
 import java.awt.Transparency;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;

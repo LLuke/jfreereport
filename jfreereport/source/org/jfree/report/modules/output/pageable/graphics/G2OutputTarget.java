@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.25 2005/08/10 18:04:45 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.26 2005/08/12 12:09:42 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@
 
 package org.jfree.report.modules.output.pageable.graphics;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -53,7 +54,6 @@ import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.BasicStroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -62,6 +62,7 @@ import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.net.URL;
 
+import org.jfree.base.log.MemoryUsageMessage;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
@@ -74,13 +75,12 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
-import org.jfree.util.WaitingImageObserver;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
-import org.jfree.base.log.MemoryUsageMessage;
+import org.jfree.util.Configuration;
+import org.jfree.util.Log;
+import org.jfree.util.WaitingImageObserver;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows
@@ -612,7 +612,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @param config the configuration.
    */
-  public void configure (final ReportConfiguration config)
+  public void configure (final Configuration config)
   {
     // nothing to do here, G2OuputTarget is not configured in any way.
   }

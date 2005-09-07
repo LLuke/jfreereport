@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.17 2005/02/23 21:05:02 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.18 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,9 +42,9 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ResourceBundleSupport;
 
@@ -201,7 +201,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public boolean isAddToToolbar ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             ("org.jfree.report.modules.gui.print.AddToToolbar", "false").equals("true");
   }
 
@@ -215,7 +215,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public boolean isSeparated ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             ("org.jfree.report.modules.gui.print.Separated", "false").equals("true");
   }
 

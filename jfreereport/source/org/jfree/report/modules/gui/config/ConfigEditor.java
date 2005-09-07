@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.15 2005/05/18 18:38:29 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.16 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -76,6 +76,7 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.config.editor.ConfigEditorPanel;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
@@ -83,14 +84,13 @@ import org.jfree.report.modules.gui.config.model.ConfigTreeModel;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModelException;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModuleNode;
 import org.jfree.report.util.LineBreakIterator;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionButton;
-import org.jfree.util.ResourceBundleSupport;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The ConfigEditor can be used to edit the global jfreereport.properties files. These
@@ -274,7 +274,7 @@ public class ConfigEditor extends JFrame
   /**
    * The currently used report configuration.
    */
-  private final ReportConfiguration currentReportConfiguration;
+  private final HierarchicalConfiguration currentReportConfiguration;
   /**
    * The file chooser used to load and save the report configuration.
    */
@@ -290,8 +290,8 @@ public class ConfigEditor extends JFrame
           throws ConfigTreeModelException
   {
     resources = new ResourceBundleSupport(RESOURCE_BUNDLE);
-    currentReportConfiguration = new ReportConfiguration
-            (ReportConfiguration.getGlobalConfig());
+    currentReportConfiguration = new HierarchicalConfiguration
+            (JFreeReportBoot.getInstance().getGlobalConfig());
     detailEditorPane = new ConfigEditorPanel();
 
     setTitle(resources.getString("config-editor.title"));

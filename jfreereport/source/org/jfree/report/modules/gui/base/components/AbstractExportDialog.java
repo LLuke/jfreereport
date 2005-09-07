@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractExportDialog.java,v 1.4 2005/03/03 23:00:00 taqua Exp $
+ * $Id: AbstractExportDialog.java,v 1.5 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * -------
@@ -51,12 +51,13 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
+import org.jfree.util.Configuration;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 
 public abstract class AbstractExportDialog extends JDialog
 {
@@ -288,9 +289,9 @@ public abstract class AbstractExportDialog extends JDialog
   }
 
   protected abstract Properties getDialogContents ();
-  protected abstract void storeToConfiguration (ReportConfiguration reportConfiguration);
+  protected abstract void storeToConfiguration (ModifiableConfiguration reportConfiguration);
   protected abstract void setDialogContents (Properties properties);
-  protected abstract void initFromConfiguration (ReportConfiguration reportConfiguration);
+  protected abstract void initFromConfiguration (Configuration reportConfiguration);
   protected abstract String getConfigurationSuffix();
 
   /**

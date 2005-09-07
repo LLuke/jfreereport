@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.22 2005/03/25 16:37:54 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.23 2005/08/08 15:36:31 taqua Exp $
  *
  * Changes
  * --------
@@ -74,16 +74,19 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * A dialog that is used to perform the printing of a report into a PDF file. It is
@@ -845,7 +848,7 @@ public class PDFSaveDialog extends AbstractExportDialog
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
-      return ReportConfiguration.getPlatformDefaultEncoding();
+      return EncodingSupport.getPlatformDefaultEncoding();
     }
     else
     {
@@ -1169,7 +1172,7 @@ public class PDFSaveDialog extends AbstractExportDialog
    */
   public void clear ()
   {
-    txAuthor.setText(ReportConfiguration.getGlobalConfig().getConfigProperty("user.name", ""));
+    txAuthor.setText(JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty("user.name", ""));
     txConfOwnerPassword.setText("");
     txConfUserPassword.setText("");
     txFilename.setText("");
@@ -1189,7 +1192,7 @@ public class PDFSaveDialog extends AbstractExportDialog
     getActionSecuritySelection().actionPerformed(null);
 
     cbEncoding.setSelectedIndex
-            (encodingModel.indexOf(ReportConfiguration.getPlatformDefaultEncoding()));
+            (encodingModel.indexOf(EncodingSupport.getPlatformDefaultEncoding()));
   }
 
   /**
@@ -1374,7 +1377,7 @@ public class PDFSaveDialog extends AbstractExportDialog
    *
    * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration (final ModifiableConfiguration config)
   {
     config.setConfigProperty
             (PDFOutputTarget.CONFIGURATION_PREFIX + PDFOutputTarget.AUTHOR,
@@ -1425,7 +1428,7 @@ public class PDFSaveDialog extends AbstractExportDialog
    *
    * @param config the report configuration.
    */
-  public void initFromConfiguration (final ReportConfiguration config)
+  public void initFromConfiguration (final Configuration config)
   {
     setAllowAssembly(parseBoolean(PDFOutputTarget.SECURITY_ALLOW_ASSEMBLY, config,
             isAllowAssembly()));
@@ -1455,7 +1458,7 @@ public class PDFSaveDialog extends AbstractExportDialog
 
     encodingModel.ensureEncodingAvailable(config.getConfigProperty
             (PDFOutputTarget.PDFTARGET_ENCODING,
-                    ReportConfiguration.getPlatformDefaultEncoding()));
+                    EncodingSupport.getPlatformDefaultEncoding()));
     setEncoding(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
             + PDFOutputTarget.ENCODING, getEncoding()));
     setPDFTitle(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX +
@@ -1470,7 +1473,7 @@ public class PDFSaveDialog extends AbstractExportDialog
    * @param orgVal the default value.
    * @return true or false.
    */
-  private boolean parseBoolean (final String key, final ReportConfiguration config,
+  private boolean parseBoolean (final String key, final Configuration config,
                                 final boolean orgVal)
   {
     final String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key,

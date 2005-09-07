@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.5 2005/09/05 11:43:24 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.6 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
 
-import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.modules.output.table.base.TableCellBackground;
 
 /**
  * Encapsulates a background definition for a &lt;td&gt; element. For layout

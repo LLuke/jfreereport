@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleAPIDemoHandler.java,v 1.4 2005/02/23 21:04:39 taqua Exp $
+ * $Id: SurveyScaleAPIDemoHandler.java,v 1.1 2005/08/29 17:42:36 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,8 @@ import org.jfree.report.elementfactory.NumberFieldElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.function.ItemCountFunction;
-import org.jfree.report.function.TextFormatExpression;
 import org.jfree.report.function.PageOfPagesFunction;
+import org.jfree.report.function.TextFormatExpression;
 import org.jfree.report.modules.misc.survey.SurveyScale;
 import org.jfree.report.modules.misc.survey.SurveyScaleExpression;
 import org.jfree.report.util.PageFormatFactory;
@@ -262,25 +262,21 @@ public final class SurveyScaleAPIDemoHandler extends AbstractDemoHandler
     final ItemCountFunction icf = new ItemCountFunction();
     icf.setName("ITEM_COUNT");
 
-    final TextFormatExpression tfe2 = new TextFormatExpression();
-    tfe2.setName("ItemNumber");
-    tfe2.setPattern("{0}.");
-    tfe2.setField(0, "ITEM_COUNT");
-
     report.addExpression(icf);
-    report.addExpression(tfe2);
 
     final TextFieldElementFactory factory2 = new TextFieldElementFactory();
     factory2.setFontName("Serif");
     factory2.setFontSize(new Integer(11));
     factory2.setBold(Boolean.FALSE);
 
-    factory2.setName("ItemNumberTextField");
-    factory2.setAbsolutePosition(new Point2D.Double(X1, 7.0));
-    factory2.setMinimumSize(new FloatDimension(25.0f, 16.0f));
-    factory2.setVerticalAlignment(ElementAlignment.TOP);
-    factory2.setFieldname("ItemNumber");
-    band.addElement(factory2.createElement());
+    final NumberFieldElementFactory nf = new NumberFieldElementFactory();
+    nf.setName("ItemNumberTextField");
+    nf.setAbsolutePosition(new Point2D.Double(X1, 7.0));
+    nf.setMinimumSize(new FloatDimension(25.0f, 16.0f));
+    nf.setVerticalAlignment(ElementAlignment.TOP);
+    nf.setFieldname("ITEM_COUNT");
+    nf.setFormatString("#0'.'");
+    band.addElement(nf.createElement());
 
     factory2.setName("ItemField");
     factory2.setAbsolutePosition(new Point2D.Double(X1 + 25.0, 7.0));

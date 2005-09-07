@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlEncoderUtil.java,v 1.5 2005/09/04 13:15:07 taqua Exp $
+ * $Id: HtmlEncoderUtil.java,v 1.6 2005/09/04 16:45:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.output.table.html.util;
 
 import java.io.PrintWriter;
 
-import org.jfree.report.util.LineBreakIterator;
 import org.jfree.report.util.CharacterEntityParser;
+import org.jfree.report.util.LineBreakIterator;
 
 /**
  * Utility methods to support HTML style encodings like the UTF and CSS

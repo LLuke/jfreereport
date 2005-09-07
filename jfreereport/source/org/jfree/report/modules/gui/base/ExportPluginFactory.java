@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.18 2005/08/08 15:36:30 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.19 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes
  * --------
@@ -41,8 +41,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WorkerPool;
+import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
 /**
@@ -156,7 +156,7 @@ public final class ExportPluginFactory
    * @return The list of export plugins.
    */
   public ArrayList createExportPlugIns
-          (final PreviewProxy proxy, final ReportConfiguration config,
+          (final PreviewProxy proxy, final Configuration config,
            final WorkerPool worker)
   {
     final ExportPluginSelector[] def = (ExportPluginSelector[])

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextPage.java,v 1.11 2005/04/15 16:10:42 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.12 2005/08/08 15:36:34 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.awt.print.Paper;
 import java.io.IOException;
 
 import org.jfree.report.style.FontDefinition;
-import org.jfree.util.Log;
 
 /**
  * The plain text page is used to buffer a complete page and to write the buffered data

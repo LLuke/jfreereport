@@ -1,7 +1,7 @@
 package org.jfree.report.modules.gui.print;
 
-import java.awt.print.PrinterJob;
 import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;

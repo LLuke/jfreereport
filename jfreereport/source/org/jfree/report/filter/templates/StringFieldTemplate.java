@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.6 2005/02/23 21:04:46 taqua Exp $
+ * $Id: StringFieldTemplate.java,v 1.7 2005/03/01 10:09:19 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -40,9 +40,9 @@ package org.jfree.report.filter.templates;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowDataSource;
+import org.jfree.report.filter.RawDataSource;
 import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.StringFilter;
-import org.jfree.report.filter.RawDataSource;
 
 /**
  * A string field template.

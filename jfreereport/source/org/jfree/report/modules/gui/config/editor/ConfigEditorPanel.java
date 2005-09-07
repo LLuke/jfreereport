@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigEditorPanel.java,v 1.7 2005/02/23 21:04:51 taqua Exp $
+ * $Id: ConfigEditorPanel.java,v 1.8 2005/03/03 21:50:40 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,9 +47,10 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import org.jfree.base.modules.Module;
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.modules.gui.config.VerticalLayout;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
 
 /**
  * The container component that is responsible for creating and managing the module editor
@@ -141,7 +142,7 @@ public class ConfigEditorPanel extends JPanel
    * @param entries a list of entries which should be edited.
    */
   public void editModule (final Module module,
-                          final ReportConfiguration config,
+                          final HierarchicalConfiguration config,
                           final ConfigDescriptionEntry[] entries)
   {
     final Object[] params = new Object[4];

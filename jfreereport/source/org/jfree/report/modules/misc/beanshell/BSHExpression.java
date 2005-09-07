@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.12 2005/08/08 15:36:32 taqua Exp $
+ * $Id: BSHExpression.java,v 1.13 2005/08/10 14:22:17 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -48,8 +48,8 @@ import java.io.ObjectInputStream;
 import java.io.Reader;
 import java.io.Serializable;
 
-import bsh.Interpreter;
 import bsh.EvalError;
+import bsh.Interpreter;
 import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.function.Expression;
 import org.jfree.util.Log;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultModuleEditor.java,v 1.8 2005/01/25 00:04:32 taqua Exp $
+ * $Id: DefaultModuleEditor.java,v 1.9 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -53,13 +53,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.modules.Module;
 import org.jfree.report.modules.gui.config.VerticalLayout;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ModuleNodeFactory;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The default module editor provides a simple default implementation to edit all
@@ -156,7 +156,7 @@ public class DefaultModuleEditor implements ModuleEditor
   /**
    * The report configuration used in this module editor.
    */
-  private ReportConfiguration config;
+  private HierarchicalConfiguration config;
   /**
    * The list of keynames used in the editor.
    */
@@ -227,11 +227,11 @@ public class DefaultModuleEditor implements ModuleEditor
    * @param keyNames the list of keynames this module editor should handle.
    * @return the created new editor instance.
    *
-   * @see ModuleEditor#createInstance(Module, ReportConfiguration,
+   * @see ModuleEditor#createInstance(Module, HierarchicalConfiguration,
           *      ConfigDescriptionEntry[])
    */
   public ModuleEditor createInstance
-          (final Module module, final ReportConfiguration config,
+          (final Module module, final HierarchicalConfiguration config,
            final ConfigDescriptionEntry[] keyNames)
   {
     final DefaultModuleEditor ed = new DefaultModuleEditor();
@@ -285,7 +285,7 @@ public class DefaultModuleEditor implements ModuleEditor
    *
    * @return the report configuration.
    */
-  protected ReportConfiguration getConfig ()
+  protected HierarchicalConfiguration getConfig ()
   {
     return config;
   }
@@ -295,7 +295,7 @@ public class DefaultModuleEditor implements ModuleEditor
    *
    * @param config the report configuration.
    */
-  protected void setConfig (final ReportConfiguration config)
+  protected void setConfig (final HierarchicalConfiguration config)
   {
     this.config = config;
   }

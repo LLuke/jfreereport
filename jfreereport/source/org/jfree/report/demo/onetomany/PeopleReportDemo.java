@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PeopleReportDemo.java,v 1.5 2005/08/08 15:36:29 taqua Exp $
+ * $Id: PeopleReportDemo.java,v 1.6 2005/08/29 17:40:27 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ package org.jfree.report.demo.onetomany;
 
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.CompoundDemoFrame;
-import org.jfree.report.demo.helper.DemoSelector;
 import org.jfree.report.demo.helper.DefaultDemoSelector;
+import org.jfree.report.demo.helper.DemoSelector;
 import org.jfree.ui.RefineryUtilities;
 
 public class PeopleReportDemo extends CompoundDemoFrame

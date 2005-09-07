@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: JoiningTableModel.java,v 1.1 2005/04/15 19:01:29 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,10 @@
 package org.jfree.report.modules.misc.tablemodel;
 
 import java.util.ArrayList;
-import javax.swing.table.TableModel;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 public class JoiningTableModel extends AbstractTableModel
 {

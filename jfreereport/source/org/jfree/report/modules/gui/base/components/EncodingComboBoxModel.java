@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.17 2005/08/08 15:36:30 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.18 2005/08/10 14:22:17 taqua Exp $
  *
  * Changes
  * --------
@@ -50,9 +50,9 @@ import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.util.EncodingSupport;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -827,7 +827,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public static String getEncodingsDefinitionFile ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (ENCODINGS_DEFINITION_FILE, ENCODINGS_DEFINITION_FILE_DEFAULT);
   }
 
@@ -841,7 +841,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public static String getAvailableEncodings ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (AVAILABLE_ENCODINGS, AVAILABLE_ENCODINGS_ALL);
   }
 

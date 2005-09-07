@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.7 2005/03/03 21:50:40 taqua Exp $
+ * $Id: ExportAction.java,v 1.8 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * --------
@@ -45,8 +45,8 @@ import javax.swing.Action;
 import javax.swing.SwingUtilities;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.util.Log;
 import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.Log;
 
 /**
  * An export action that works with any class that implements the {@link

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.25 2005/08/08 15:36:32 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.26 2005/08/10 18:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import org.jfree.report.PageDefinition;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.util.ReportConfigurationUtil;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -329,8 +330,8 @@ public class PageableReportProcessor
       throw new EmptyReportException("EmptyReport: Repaginating returned no pages");
     }
 
-    final boolean failOnError = getReport().getReportConfiguration()
-            .isStrictErrorHandling();
+    final boolean failOnError = ReportConfigurationUtil.isStrictErrorHandling
+            (getReport().getReportConfiguration());
     final RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, false);
     final int pageCount = getReport().getPageDefinition().getPageCount();
     final PageProcess pageProcess = createPageProcess();
@@ -382,7 +383,6 @@ public class PageableReportProcessor
       final StartState startState = new StartState(getReport());
       ReportState state = startState;
       final int maxRows = getReport().getData().getRowCount();
-      ReportStateList pageStates = null;
 
       // make sure the output target is configured
       outputTarget.configure(getReport().getReportConfiguration());
@@ -408,6 +408,7 @@ public class PageableReportProcessor
       {
         throw new IllegalStateException("No functions defined, invalid implementation.");
       }
+      ReportStateList pageStates = null;
 
       boolean hasNext;
       int level = ((Integer) it.next()).intValue();
@@ -479,8 +480,8 @@ public class PageableReportProcessor
           (ReportState state, final ReportStateList pageStates, final int maxRows)
           throws ReportProcessingException
   {
-    final boolean failOnError = getReport().getReportConfiguration()
-            .isStrictErrorHandling();
+    final boolean failOnError = ReportConfigurationUtil.isStrictErrorHandling
+            (getReport().getReportConfiguration());
     ReportStateProgress progress = null;
     final RepaginationState repaginationState = new RepaginationState(this, 0, 0, 0, 0, true);
 
@@ -539,8 +540,8 @@ public class PageableReportProcessor
           (ReportState state, final int level, final int maxRows)
           throws ReportProcessingException
   {
-    final boolean failOnError = getReport().getReportConfiguration()
-            .isStrictErrorHandling();
+    final boolean failOnError = ReportConfigurationUtil.isStrictErrorHandling
+            (getReport().getReportConfiguration());
     ReportStateProgress progress = null;
 
     int lastRow = -1;
@@ -648,11 +649,11 @@ public class PageableReportProcessor
 
   public PageProcess createPageProcess ()
   {
+    final boolean failOnError = ReportConfigurationUtil.isStrictErrorHandling
+            (getReport().getReportConfiguration());
     final JFreeReport report = getReport();
-    final PageProcess pageProcess = new PageProcess
-            (getOutputTarget(), report.getPageDefinition(),
-                    report.getReportConfiguration().isStrictErrorHandling());
-    return pageProcess;
+    return new PageProcess
+            (getOutputTarget(), report.getPageDefinition(), failOnError);
   }
 
   /**

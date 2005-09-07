@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractElementReadHandler.java,v 1.7 2005/08/10 14:22:22 taqua Exp $
+ * $Id: AbstractElementReadHandler.java,v 1.8 2005/08/29 17:56:47 taqua Exp $
  *
  * Changes
  * -------
@@ -45,12 +45,12 @@ import java.awt.geom.Point2D;
 
 import org.jfree.report.Element;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.elementfactory.ElementFactory;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;

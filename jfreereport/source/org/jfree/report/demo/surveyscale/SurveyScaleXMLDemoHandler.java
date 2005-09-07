@@ -1,13 +1,12 @@
 package org.jfree.report.demo.surveyscale;
 
 import java.net.URL;
-
 import javax.swing.JComponent;
 import javax.swing.table.TableModel;
 
+import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
-import org.jfree.report.JFreeReport;
 import org.jfree.util.ObjectUtilities;
 
 /**

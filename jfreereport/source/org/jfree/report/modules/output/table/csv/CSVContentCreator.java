@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVContentCreator.java,v 1.4 2005/04/14 17:37:09 taqua Exp $
+ * $Id: CSVContentCreator.java,v 1.5 2005/05/08 15:41:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,7 +44,6 @@ import java.io.Writer;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentType;
-import org.jfree.report.util.CSVQuoter;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
 import org.jfree.report.modules.output.table.base.RawContent;
@@ -52,6 +51,7 @@ import org.jfree.report.modules.output.table.base.SheetLayout;
 import org.jfree.report.modules.output.table.base.SheetLayoutCollection;
 import org.jfree.report.modules.output.table.base.TableContentCreator;
 import org.jfree.report.modules.output.table.base.TableRectangle;
+import org.jfree.report.util.CSVQuoter;
 
 public class CSVContentCreator extends TableContentCreator
 {

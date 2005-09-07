@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EditorFactory.java,v 1.6 2005/01/25 00:04:33 taqua Exp $
+ * $Id: EditorFactory.java,v 1.7 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,9 +41,9 @@ package org.jfree.report.modules.gui.config.editor;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.modules.Module;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The editor factory is used to create a module editor for an given module. Implementors
@@ -113,7 +113,7 @@ public final class EditorFactory
    *         the given module.
    */
   public ModuleEditor getModule
-          (final Module module, final ReportConfiguration config,
+          (final Module module, final HierarchicalConfiguration config,
            final ConfigDescriptionEntry[] keyNames)
   {
     if (module == null)

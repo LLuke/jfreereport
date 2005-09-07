@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.11 2005/04/17 21:09:01 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.12 2005/08/10 18:04:46 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,10 @@
 
 package org.jfree.report.util;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
-import java.io.ObjectInputStream;
-import java.io.IOException;
 
 import org.jfree.util.LogTarget;
 

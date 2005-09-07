@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupport.java,v 1.5 2005/07/20 18:47:30 taqua Exp $
+ * $Id: MessageFormatSupport.java,v 1.6 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.jfree.report.DataRow;
-import org.jfree.report.util.PropertyLookupParser;
 import org.jfree.report.util.CSVTokenizer;
+import org.jfree.report.util.PropertyLookupParser;
 
 public class MessageFormatSupport implements Serializable
 {
@@ -149,5 +149,6 @@ public class MessageFormatSupport implements Serializable
   public void setLocale (final Locale locale)
   {
     format.setLocale(locale);
+    format.applyPattern(formatString);
   }
 }

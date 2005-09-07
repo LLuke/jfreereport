@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.13 2005/01/25 00:01:16 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.14 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,6 @@ import javax.swing.UIManager;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The preview base module provides the basic preview components. This package contains
@@ -87,7 +86,7 @@ public class PreviewBaseModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    if (isTranslateSwingDialogs())
+    if (subSystem.getExtendedConfig().getBoolProperty(SWING_TRANSLATE_KEY))
     {
       final ResourceBundle bundle = ResourceBundle.getBundle(RESOURCES_BASE_NAME);
 
@@ -109,17 +108,5 @@ public class PreviewBaseModule extends AbstractModule
       }
 
     }
-  }
-
-  /**
-   * Checks, whethe to translate swing dialogs. This is a global setting and must be
-   * configured outside.
-   *
-   * @return true, if translating is enabled, false otherwise.
-   */
-  private boolean isTranslateSwingDialogs ()
-  {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
-            (SWING_TRANSLATE_KEY, "false").equals("true");
   }
 }

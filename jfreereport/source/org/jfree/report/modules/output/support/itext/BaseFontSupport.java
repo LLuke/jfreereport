@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.18 2005/03/18 13:49:39 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.19 2005/08/08 15:36:34 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,8 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.FontMapper;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.util.Log;
 import org.jfree.report.util.StringUtil;
+import org.jfree.util.Log;
 
 /**
  * iText font support.

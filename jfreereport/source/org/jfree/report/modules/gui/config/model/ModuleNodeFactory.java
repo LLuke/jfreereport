@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.12 2005/04/17 21:08:59 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.13 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,13 +47,13 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.modules.Module;
 import org.jfree.base.modules.PackageManager;
 import org.jfree.report.DefaultLogModule;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.xml.sax.SAXException;
 
 /**
@@ -186,7 +186,7 @@ public class ModuleNodeFactory
    * @param config the report configuration that contains the keys.
    * @throws ConfigTreeModelException if an error occurs.
    */
-  public void init (final ReportConfiguration config)
+  public void init (final HierarchicalConfiguration config)
           throws ConfigTreeModelException
   {
     globalNodes.clear();
@@ -209,7 +209,7 @@ public class ModuleNodeFactory
    * @param config the report configuration used to build the model
    * @throws ConfigTreeModelException if an error occurs
    */
-  private void processKey (final String key, final ReportConfiguration config)
+  private void processKey (final String key, final HierarchicalConfiguration config)
           throws ConfigTreeModelException
   {
     ConfigDescriptionEntry cde = (ConfigDescriptionEntry) configEntryLookup.get(key);

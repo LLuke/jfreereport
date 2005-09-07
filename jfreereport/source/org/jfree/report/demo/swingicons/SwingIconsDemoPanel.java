@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemoPanel.java,v 1.1 2005/08/29 17:42:57 taqua Exp $
+ * $Id: SwingIconsDemoPanel.java,v 1.2 2005/08/29 17:48:35 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package org.jfree.report.demo.swingicons;
 
 import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.12 2005/01/30 23:37:25 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.13 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.states;
 
 import java.util.ResourceBundle;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.DataRow;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
@@ -53,7 +54,6 @@ import org.jfree.report.ReportHeader;
 import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.Watermark;
 import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
 
 /**
@@ -108,7 +108,7 @@ public class ReportDefinitionImpl implements ReportDefinition
   /**
    * The report configuration.
    */
-  private final ReportConfiguration reportConfiguration;
+  private final ModifiableConfiguration reportConfiguration;
 
   /**
    * The stylesheet collection of this report definition.
@@ -231,7 +231,7 @@ public class ReportDefinitionImpl implements ReportDefinition
    *
    * @return The report configuration.
    */
-  public ReportConfiguration getReportConfiguration ()
+  public ModifiableConfiguration getReportConfiguration ()
   {
     return reportConfiguration;
   }

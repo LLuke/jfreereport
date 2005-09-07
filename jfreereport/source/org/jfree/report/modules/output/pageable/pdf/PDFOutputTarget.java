@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.34 2005/08/08 15:36:33 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.35 2005/09/04 18:58:14 taqua Exp $
  *
  * Changes
  * -------
@@ -93,11 +93,11 @@ import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.modules.output.support.itext.ITextImageCache;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
+import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class
@@ -1052,7 +1052,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param config the configuration.
    */
-  public void configure (final ReportConfiguration config)
+  public void configure (final Configuration config)
   {
     updateProperty(SECURITY_OWNERPASSWORD, config);
     updateProperty(SECURITY_USERPASSWORD, config);
@@ -1081,7 +1081,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    * @param key    the key.
    * @param config the config.
    */
-  private void updateProperty (final String key, final ReportConfiguration config)
+  private void updateProperty (final String key, final Configuration config)
   {
     final String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
     final String propertyValue = getProperty(key, configValue);
@@ -1097,7 +1097,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    * @param key    the key.
    * @param config the config.
    */
-  private void updateBooleanProperty (final String key, final ReportConfiguration config)
+  private void updateBooleanProperty (final String key, final Configuration config)
   {
     final String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
     final String propertyValue = getProperty(key, configValue);
@@ -1235,51 +1235,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     drawable.draw(g2, new Rectangle2D.Double(0, 0, drawableWidth, drawableHeight));
 
     g2.dispose();
-  }
-
-  /**
-   * Returns the PDF encoding property value.
-   *
-   * @return the PDF encoding property value.
-   */
-  public static String getDefaultPDFEncoding ()
-  {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
-            (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
-  }
-
-  /**
-   * Sets the PDF encoding property value.
-   *
-   * @param pdfTargetEncoding the new encoding.
-   */
-  public static void setDefaultPDFEncoding (final String pdfTargetEncoding)
-  {
-    ReportConfiguration.getGlobalConfig().setConfigProperty
-            (PDFTARGET_ENCODING, pdfTargetEncoding);
-  }
-
-  /**
-   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to
-   * false.
-   *
-   * @return true, if aliasing is enabled.
-   */
-  public static boolean isDefaultEmbedFonts ()
-  {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
-            (PDFTARGET_EMBED_FONTS, PDFTARGET_EMBED_FONTS_DEFAULT).equalsIgnoreCase("true");
-  }
-
-  /**
-   * set to true, if the PDFOutputTarget should embed all fonts.
-   *
-   * @param embed set to true, if the PDFOutputTarget should use embedded fonts.
-   */
-  public static void setDefaultEmbedFonts (final boolean embed)
-  {
-    ReportConfiguration.getGlobalConfig().setConfigProperty
-            (PDFTARGET_EMBED_FONTS, String.valueOf(embed));
   }
 
   protected void printAnchorContent (final MetaElement element,

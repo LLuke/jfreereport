@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStoreModuleInitializer.java,v 1.9 2005/01/25 00:08:53 taqua Exp $
+ * $Id: FileConfigStoreModuleInitializer.java,v 1.10 2005/02/23 21:05:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,8 +42,8 @@ import java.io.File;
 
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.ModuleInitializer;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The initializer is used to setup the file system storage provider and to register the
@@ -88,11 +88,11 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
           throws ModuleInitializeException
   {
     final String userBaseDirectory =
-            ReportConfiguration.getGlobalConfig().getConfigProperty
+            JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (USER_BASEDIR_CONFIG_KEY, "~/.jfreereport/user");
 
     final String systemBaseDirectory =
-            ReportConfiguration.getGlobalConfig().getConfigProperty
+            JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (SYSTEM_BASEDIR_CONFIG_KEY, "~/.jfreereport/system");
 
     final ConfigFactory factory = ConfigFactory.getInstance();

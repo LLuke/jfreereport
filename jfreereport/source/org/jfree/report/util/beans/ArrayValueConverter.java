@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ArrayValueConverter.java,v 1.1 2005/05/08 15:41:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.report.util.beans;
 
-import java.util.ArrayList;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import org.jfree.report.util.CSVTokenizer;
 

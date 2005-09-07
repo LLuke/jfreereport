@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.14 2005/03/03 18:08:40 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.15 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -79,18 +79,18 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionModel;
 import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.TextConfigDescriptionEntry;
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionRadioButton;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.util.ResourceBundleSupport;
 
@@ -188,7 +188,7 @@ public class ConfigDescriptionEditor extends JFrame
     public void actionPerformed (final ActionEvent e)
     {
       final ConfigDescriptionModel model = getModel();
-      model.importFromConfig(ReportConfiguration.getGlobalConfig());
+      model.importFromConfig(JFreeReportBoot.getInstance().getGlobalConfig());
       model.sort();
       setStatusText(getResources().getString("config-description-editor.import-complete"));
     }
@@ -641,6 +641,8 @@ public class ConfigDescriptionEditor extends JFrame
    * The currently selected detail editor type.
    */
   private int type;
+  protected static final String EDITOR_FONT_KEY = "org.jfree.report.modules.gui.config.EditorFont";
+  protected static final String EDITOR_FONT_SIZE_KEY = "org.jfree.report.modules.gui.config.EditorFontSize";
 
 
   /**
@@ -910,11 +912,11 @@ public class ConfigDescriptionEditor extends JFrame
 
     hiddenField = new JCheckBox();
     globalField = new JCheckBox();
-    final String font = ReportConfiguration.getGlobalConfig().getConfigProperty
-            ("org.jfree.report.modules.gui.config.EditorFont", "Monospaced");
+    final String font = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
+            (EDITOR_FONT_KEY, "Monospaced");
     final int fontSize = StringUtil.parseInt
-            (ReportConfiguration.getGlobalConfig().getConfigProperty
-            ("org.jfree.report.modules.gui.config.EditorFontSize"), 12);
+            (JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
+            (EDITOR_FONT_SIZE_KEY), 12);
     descriptionField = new JTextArea();
     descriptionField.setFont(new Font(font, Font.PLAIN, fontSize));
     descriptionField.setLineWrap(true);

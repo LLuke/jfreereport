@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.11 2005/02/23 21:05:56 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.12 2005/08/08 15:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.util.Log;
 import org.jfree.report.util.PageFormatFactory;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 import org.jfree.xml.CommentHandler;
 import org.jfree.xml.writer.AttributeList;
 
@@ -112,7 +112,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     writeComment(writer, DEFAULT_PAGEFORMAT_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, DEFAULT_PAGEFORMAT_TAG,
             buildPageFormatProperties(), CLOSE);
-    final ReportConfiguration config = getReport().getReportConfiguration();
+    final Configuration config = getReport().getReportConfiguration();
     final Enumeration properties = config.getConfigProperties();
     if (properties.hasMoreElements())
     {

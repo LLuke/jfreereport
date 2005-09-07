@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: CSVTableModel.java,v 1.3 2005/03/03 23:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -138,6 +138,11 @@ public class CSVTableModel extends AbstractTableModel
     {
       this.maxColumnCount = maxColumnCount;
     }
+  }
+
+  public int getMaxColumnCount()
+  {
+    return maxColumnCount;
   }
 
   /**

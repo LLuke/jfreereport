@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticImageElementFactory.java,v 1.11 2005/07/18 18:09:19 taqua Exp $
+ * $Id: StaticImageElementFactory.java,v 1.12 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,11 +42,11 @@ package org.jfree.report.elementfactory;
 import java.awt.Image;
 import java.io.IOException;
 
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.ImageElement;
 import org.jfree.report.LocalImageContainer;
-import org.jfree.report.DefaultImageReference;
 import org.jfree.report.filter.StaticDataSource;
 
 /**

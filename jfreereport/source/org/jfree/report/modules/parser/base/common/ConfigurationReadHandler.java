@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ConfigurationReadHandler.java,v 1.3 2005/03/03 23:00:20 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
@@ -56,10 +56,10 @@ import org.xml.sax.SAXException;
 
 public class ConfigurationReadHandler extends AbstractPropertyXmlReadHandler
 {
-  private ReportConfiguration configuration;
+  private ModifiableConfiguration configuration;
   private HashMap fieldHandlers;
 
-  public ConfigurationReadHandler (final ReportConfiguration configuration)
+  public ConfigurationReadHandler (final ModifiableConfiguration configuration)
   {
     this.configuration = configuration;
     this.fieldHandlers = new HashMap();

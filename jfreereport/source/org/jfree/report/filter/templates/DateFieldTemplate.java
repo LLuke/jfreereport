@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldTemplate.java,v 1.7 2005/03/01 10:09:19 taqua Exp $
+ * $Id: DateFieldTemplate.java,v 1.8 2005/06/25 17:51:59 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -39,14 +39,13 @@
 package org.jfree.report.filter.templates;
 
 import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.DataRowDataSource;
+import org.jfree.report.filter.RawDataSource;
 import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.SimpleDateFormatFilter;
 import org.jfree.report.filter.StringFilter;
-import org.jfree.report.filter.RawDataSource;
 
 /**
  * A date field template.

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: OfficeReportDefinition.java,v 1.1 2005/05/18 15:36:25 taqua Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,17 @@
  */
 package org.jfree.report.demo.onetomany;
 
-import java.awt.geom.Point2D;
 import java.awt.BasicStroke;
+import java.awt.geom.Point2D;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.Group;
 import org.jfree.report.Band;
+import org.jfree.report.Group;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.function.HideElementByNameFunction;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
 public class OfficeReportDefinition

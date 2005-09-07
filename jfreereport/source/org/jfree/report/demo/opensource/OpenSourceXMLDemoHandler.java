@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceXMLDemoHandler.java,v 1.14 2005/08/08 15:36:27 taqua Exp $
+ * $Id: OpenSourceXMLDemoHandler.java,v 1.1 2005/08/29 17:41:32 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.demo.opensource;
 
-import java.net.URL;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.net.URL;
 import javax.swing.JComponent;
 import javax.swing.table.TableModel;
 

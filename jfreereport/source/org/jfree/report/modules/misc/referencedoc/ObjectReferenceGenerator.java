@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.8 2005/02/23 21:05:23 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.9 2005/05/18 18:38:30 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -48,8 +48,8 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateClassFactory;
-import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
 
 /**
  * An application that creates a report documenting the object references.

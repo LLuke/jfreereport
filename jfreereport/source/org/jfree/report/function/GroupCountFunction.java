@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.9 2005/04/15 16:10:41 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.10 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.io.Serializable;
 
 import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.util.Log;
 
 /**
  * A report function that counts groups in a report. If a null-groupname is given, all

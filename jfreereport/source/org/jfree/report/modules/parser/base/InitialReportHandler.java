@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.10 2005/02/23 21:05:37 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.11 2005/05/18 18:38:30 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,11 @@ package org.jfree.report.modules.parser.base;
 
 import java.util.Hashtable;
 
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

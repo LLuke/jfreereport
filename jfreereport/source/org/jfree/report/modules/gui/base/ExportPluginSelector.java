@@ -1,6 +1,6 @@
 package org.jfree.report.modules.gui.base;
 
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 05.09.2005, 19:52:04
@@ -10,7 +10,7 @@ import org.jfree.report.util.ReportConfiguration;
 public interface ExportPluginSelector
 {
   public boolean isPluginValid(final PreviewProxy proxy,
-                               final ReportConfiguration config);
+                               final Configuration config);
   public Class getPluginClass ();
   public String getPreference ();
 

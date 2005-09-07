@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BasicObjectReadHandler.java,v 1.5 2005/03/03 23:00:20 taqua Exp $
+ * $Id: BasicObjectReadHandler.java,v 1.6 2005/05/18 18:38:31 taqua Exp $
  *
  * Changes
  * -------
@@ -43,13 +43,13 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.jfree.xml.parser.coretypes.StringReadHandler;
-import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

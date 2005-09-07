@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DecimalFormatFilter.java,v 1.5 2005/04/14 16:37:33 taqua Exp $
+ * $Id: DecimalFormatFilter.java,v 1.6 2005/07/22 16:39:54 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -42,8 +42,8 @@
 package org.jfree.report.filter;
 
 import java.text.DecimalFormat;
-import java.text.Format;
 import java.text.DecimalFormatSymbols;
+import java.text.Format;
 import java.util.Locale;
 
 import org.jfree.report.ReportDefinition;

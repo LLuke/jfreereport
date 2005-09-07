@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.16 2005/04/17 21:09:01 taqua Exp $
+ * $Id: Worker.java,v 1.17 2005/08/08 15:36:38 taqua Exp $
  *
  *
  * Changes
@@ -37,9 +37,6 @@
  */
 
 package org.jfree.report.util;
-
-import org.jfree.util.*;
-
 
 /**
  * A simple worker implementation. The worker executes a assigned workload and then sleeps
@@ -50,7 +47,7 @@ import org.jfree.util.*;
 public final class Worker extends Thread
 {
   // Todo: this class is totally messed up. Needs work !
-  
+
   /**
    * the worker's task.
    */

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportFooter2Demo.java,v 1.4 2005/05/20 16:06:20 taqua Exp $
+ * $Id: ReportFooter2Demo.java,v 1.1 2005/08/29 17:41:54 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,8 @@ import org.jfree.report.demo.groups.ColorAndLetterTableModel;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ObjectUtilities;
 
 public class ReportFooter2Demo extends AbstractXmlDemoHandler
 {

@@ -25,16 +25,16 @@
  * ---------------------------
  * (C)opyright 2000-2003, by Object Refinery Limited.
  *
- * $Id: SimpleDateFormatFilter.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
+ * $Id: SimpleDateFormatFilter.java,v 1.5 2005/07/22 16:39:54 taqua Exp $
  *
  * Changes
  * -------
  */
 package org.jfree.report.filter;
 
+import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.text.DateFormatSymbols;
 import java.util.Locale;
 
 import org.jfree.report.ReportDefinition;

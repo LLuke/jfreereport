@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.10 2005/02/19 13:30:03 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.11 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.FrontendDefaultHandler;
 import org.jfree.xml.ParserFrontend;
@@ -69,13 +69,13 @@ public class ReportGenerator extends ParserFrontend
   /**
    * Enable DTD validation of the parsed XML.
    */
-  public static final String PARSER_VALIDATE
+  public static final String PARSER_VALIDATE_KEY
           = "org.jfree.report.modules.parser.base.Validate";
 
   /**
    * disable DTD validation by default.
    */
-  public static final String PARSER_VALIDATE_DEFAULT = "true";
+  public static final boolean PARSER_VALIDATE_DEFAULT = true;
 
   /**
    * The report generator.
@@ -83,6 +83,7 @@ public class ReportGenerator extends ParserFrontend
   private static ReportGenerator generator;
 
   private HashMap helperObjects;
+  private boolean validateDTD;
 
   /**
    * Creates a new report generator. The generator uses the singleton pattern by default,
@@ -93,6 +94,8 @@ public class ReportGenerator extends ParserFrontend
     super(new ReportParser());
     initFromSystem();
     helperObjects = new HashMap();
+    validateDTD = JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
+            (PARSER_VALIDATE_KEY, PARSER_VALIDATE_DEFAULT);
   }
 
   /**
@@ -111,8 +114,7 @@ public class ReportGenerator extends ParserFrontend
    */
   public void setValidateDTD (final boolean validate)
   {
-    ReportConfiguration.getGlobalConfig().setConfigProperty
-            (PARSER_VALIDATE, String.valueOf(validate));
+    this.validateDTD = validate;
   }
 
   /**
@@ -123,8 +125,7 @@ public class ReportGenerator extends ParserFrontend
    */
   public boolean isValidateDTD ()
   {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
-            (PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
+    return validateDTD;
   }
 
 

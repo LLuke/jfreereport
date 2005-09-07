@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.10 2005/01/25 00:04:34 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.11 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,8 +53,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jfree.report.modules.gui.config.xml.DOMUtilities;
 import org.jfree.report.modules.gui.config.xml.DOMWriter;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.writer.AttributeList;
 import org.w3c.dom.Document;
@@ -264,7 +264,7 @@ public class ConfigDescriptionModel extends AbstractListModel
    *
    * @param config the report configuration from where to add the entries.
    */
-  public void importFromConfig (final ReportConfiguration config)
+  public void importFromConfig (final Configuration config)
   {
     final Iterator it = config.findPropertyKeys("");
     while (it.hasNext())
@@ -354,7 +354,6 @@ public class ConfigDescriptionModel extends AbstractListModel
         textEntry.setGlobal(keyGlobal);
         textEntry.setHidden(keyHidden);
         add(textEntry);
-        continue;
       }
     }
   }

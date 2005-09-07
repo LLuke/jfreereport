@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.11 2005/04/17 21:09:01 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.12 2005/08/08 15:36:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,9 +47,9 @@ import org.jfree.report.modules.output.table.html.HtmlFilesystem;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.util.Log;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 public class HtmlImageMetaElement extends HtmlMetaElement
 {

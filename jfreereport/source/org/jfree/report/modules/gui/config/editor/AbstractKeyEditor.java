@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractKeyEditor.java,v 1.8 2005/01/25 00:04:05 taqua Exp $
+ * $Id: AbstractKeyEditor.java,v 1.9 2005/02/23 21:04:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,10 +44,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.modules.gui.config.ConfigEditor;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.util.ImageUtils;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
@@ -75,7 +76,7 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
   /**
    * The report configuration that provides the values for this editor.
    */
-  private final ReportConfiguration config;
+  private final HierarchicalConfiguration config;
   /**
    * The config description entry that provides the definition for this key.
    */
@@ -99,7 +100,7 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
    * @param config the report configuration that supplies the value for the editor
    * @param entry  the entry description provides the meta data for the edited key.
    */
-  public AbstractKeyEditor (final ReportConfiguration config,
+  public AbstractKeyEditor (final HierarchicalConfiguration config,
                             final ConfigDescriptionEntry entry)
   {
     this.resources = new ResourceBundleSupport(ConfigEditor.RESOURCE_BUNDLE);
@@ -157,7 +158,7 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
    *
    * @return the report configuration instance of this editor.
    */
-  public ReportConfiguration getConfig ()
+  public Configuration getConfig ()
   {
     return config;
   }

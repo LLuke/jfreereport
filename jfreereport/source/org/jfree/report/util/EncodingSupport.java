@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EncodingSupport.java,v 1.4 2004/05/07 08:14:23 mungady Exp $
+ * $Id: EncodingSupport.java,v 1.5 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.util;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.util.Log;
 
 /**
@@ -102,6 +103,18 @@ public final class EncodingSupport
       Log.info(new Log.SimpleMessage("Encoding ", encoding, " is not supported."));
       return false;
     }
+  }
+
+
+  /**
+   * Helper method to read the platform default encoding from the VM's system properties.
+   *
+   * @return the contents of the system property "file.encoding".
+   */
+  public static String getPlatformDefaultEncoding ()
+  {
+    return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
+            ("file.encoding", "Cp1252");
   }
 
 }

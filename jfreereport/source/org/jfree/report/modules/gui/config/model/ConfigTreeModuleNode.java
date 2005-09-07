@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeModuleNode.java,v 1.7 2005/01/25 00:04:38 taqua Exp $
+ * $Id: ConfigTreeModuleNode.java,v 1.8 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,7 +41,8 @@ package org.jfree.report.modules.gui.config.model;
 import java.util.ArrayList;
 
 import org.jfree.base.modules.Module;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.util.Configuration;
 
 /**
  * The config tree module node is used to represent a module in the report configuration.
@@ -66,7 +67,7 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
   /**
    * The report configuration.
    */
-  private final ReportConfiguration configuration;
+  private final HierarchicalConfiguration configuration;
   /**
    * A list of keys from that module.
    */
@@ -78,7 +79,7 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
    * @param module the module for which to build a tree node.
    * @param config the report configuration from where to read the keys.
    */
-  public ConfigTreeModuleNode (final Module module, final ReportConfiguration config)
+  public ConfigTreeModuleNode (final Module module, final HierarchicalConfiguration config)
   {
     super(module.getName());
     this.assignedKeys = new ArrayList();
@@ -102,7 +103,7 @@ public class ConfigTreeModuleNode extends AbstractConfigTreeNode
    *
    * @return the used report configuration instance.
    */
-  public ReportConfiguration getConfiguration ()
+  public HierarchicalConfiguration getConfiguration ()
   {
     return configuration;
   }

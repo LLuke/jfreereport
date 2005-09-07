@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFProcessor.java,v 1.11 2005/03/04 13:25:16 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.12 2005/09/04 13:15:07 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.table.base.LayoutCreator;
 import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.EncodingSupport;
 
 /**
  * The ExcelProcessor coordinates the output process for generating RTF files using the
@@ -115,7 +115,7 @@ public class RTFProcessor extends TableProcessor
   {
     final String encoding = getReport().getReportConfiguration().
             getConfigProperty(getReportConfigurationPrefix() + "." + "Encoding",
-                    ReportConfiguration.getPlatformDefaultEncoding());
+                    EncodingSupport.getPlatformDefaultEncoding());
     return new RTFMetaBandProducer(encoding);
   }
 }

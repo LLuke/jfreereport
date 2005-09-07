@@ -1,6 +1,6 @@
 package org.jfree.report.modules.gui.base;
 
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 05.09.2005, 19:52:42
@@ -48,7 +48,7 @@ public class DefaultPluginSelector implements ExportPluginSelector
     return pluginClass.hashCode();
   }
 
-  public boolean isPluginValid(final PreviewProxy proxy, final ReportConfiguration config)
+  public boolean isPluginValid(final PreviewProxy proxy, final Configuration config)
   {
     return config.getConfigProperty(enableKey, "false").equals("true");
   }

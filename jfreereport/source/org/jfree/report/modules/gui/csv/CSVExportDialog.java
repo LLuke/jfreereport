@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.14 2005/03/03 21:50:41 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.15 2005/03/10 19:05:22 taqua Exp $
  *
  * Changes
  * --------
@@ -37,20 +37,19 @@
  */
 package org.jfree.report.modules.gui.csv;
 
+import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -70,18 +69,20 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jfree.base.config.ModifiableConfiguration;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.csv.CSVProcessor;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.StringUtil;
-import org.jfree.report.JFreeReport;
 import org.jfree.ui.ExtensionFileFilter;
 import org.jfree.ui.LengthLimitingDocument;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.util.Configuration;
 
 /**
  * A dialog for exporting a report to CSV format.
@@ -99,7 +100,7 @@ public class CSVExportDialog extends AbstractExportDialog
    * A default value of the 'CSV encoding' property key.
    */
   public static final String CSV_OUTPUT_ENCODING_DEFAULT =
-          ReportConfiguration.getPlatformDefaultEncoding();
+          EncodingSupport.getPlatformDefaultEncoding();
 
   /**
    * Internal action class to confirm the dialog and to validate the input.
@@ -596,7 +597,7 @@ public class CSVExportDialog extends AbstractExportDialog
   {
     txFilename.setText("");
     cbEncoding.setSelectedIndex(encodingModel.indexOf
-            (ReportConfiguration.getPlatformDefaultEncoding()));
+            (EncodingSupport.getPlatformDefaultEncoding()));
     rbExportPrintedElements.setSelected(true);
     rbSeparatorColon.setSelected(true);
     cbxStrictLayout.setSelected(false);
@@ -702,7 +703,7 @@ public class CSVExportDialog extends AbstractExportDialog
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
-      return ReportConfiguration.getPlatformDefaultEncoding();
+      return EncodingSupport.getPlatformDefaultEncoding();
     }
     else
     {
@@ -844,7 +845,7 @@ public class CSVExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration.
    */
-  public void initFromConfiguration (final ReportConfiguration config)
+  public void initFromConfiguration (final Configuration config)
   {
     setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, COMMA_SEPARATOR));
 
@@ -868,7 +869,7 @@ public class CSVExportDialog extends AbstractExportDialog
    *
    * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration (final ReportConfiguration config)
+  public void storeToConfiguration (final ModifiableConfiguration config)
   {
     config.setConfigProperty(CSVProcessor.CSV_SEPARATOR, getSeparatorString());
     config.setConfigProperty(CSVTableProcessor.CONFIGURATION_PREFIX +
@@ -928,7 +929,7 @@ public class CSVExportDialog extends AbstractExportDialog
    * @param config the report configuration from where to read the values.
    * @return the CSV encoding property value.
    */
-  public String getCSVTargetEncoding (final ReportConfiguration config)
+  public String getCSVTargetEncoding (final Configuration config)
   {
     return config.getConfigProperty(CSV_OUTPUT_ENCODING, CSV_OUTPUT_ENCODING_DEFAULT);
   }
@@ -939,7 +940,7 @@ public class CSVExportDialog extends AbstractExportDialog
    * @param config         the report configuration from where to read the values.
    * @param targetEncoding the new encoding.
    */
-  public void setCSVTargetEncoding (final ReportConfiguration config,
+  public void setCSVTargetEncoding (final ModifiableConfiguration config,
                                     final String targetEncoding)
   {
     config.setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
@@ -949,7 +950,7 @@ public class CSVExportDialog extends AbstractExportDialog
   {
     return "_csvexport";
   }
-  
+
   protected void updateRawExportSelection()
   {
     cbxColumnNamesAsFirstRow.setEnabled(rbExportData.isSelected());

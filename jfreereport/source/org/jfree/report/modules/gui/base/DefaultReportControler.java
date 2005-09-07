@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultReportControler.java,v 1.1 2005/03/25 16:39:26 taqua Exp $
+ * $Id: DefaultReportControler.java,v 1.2 2005/03/29 18:31:59 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@
  */
 package org.jfree.report.modules.gui.base;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import javax.swing.JPanel;
 
 public class DefaultReportControler extends JPanel implements ReportControler
 {

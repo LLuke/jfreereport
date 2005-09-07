@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.13 2005/06/25 17:51:59 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.14 2005/07/18 18:09:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,8 +48,8 @@ import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.DataRowDataSource;
-import org.jfree.report.filter.NumberFormatFilter;
 import org.jfree.report.filter.DataSource;
+import org.jfree.report.filter.NumberFormatFilter;
 import org.jfree.report.filter.templates.NumberFieldTemplate;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;

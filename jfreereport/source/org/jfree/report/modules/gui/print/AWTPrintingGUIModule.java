@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AWTPrintingGUIModule.java,v 1.10 2005/02/23 21:05:02 taqua Exp $
+ * $Id: AWTPrintingGUIModule.java,v 1.11 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,9 +41,10 @@ package org.jfree.report.modules.gui.print;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.DefaultPluginSelector;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.util.Configuration;
 
 /**
  * The module definition for the AWT printing export gui module. The module contains 2
@@ -101,7 +102,7 @@ public class AWTPrintingGUIModule extends AbstractModule
   public void initialize (SubSystem subSystem)
           throws ModuleInitializeException
   {
-    final ReportConfiguration config = ReportConfiguration.getGlobalConfig();
+    final Configuration config = JFreeReportBoot.getInstance().getGlobalConfig();
     final String printOrder = config.getConfigProperty
             (PRINT_ORDER_KEY, "0");
 

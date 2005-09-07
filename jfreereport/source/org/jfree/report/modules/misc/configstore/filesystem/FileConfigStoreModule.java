@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FileConfigStoreModule.java,v 1.6 2005/01/25 00:08:51 taqua Exp $
+ * $Id: FileConfigStoreModule.java,v 1.7 2005/02/23 21:05:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,7 +41,7 @@ package org.jfree.report.modules.misc.configstore.filesystem;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.JFreeReportBoot;
 
 /**
  * The module definition for the filesystem config storage module. This module provides an
@@ -76,7 +76,7 @@ public class FileConfigStoreModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    final String value = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String value = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             ("org.jfree.report.ConfigStore", "<not defined>");
     if (value.equals(FileConfigStorage.class.getName()))
     {

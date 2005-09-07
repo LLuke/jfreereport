@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.12 2005/04/17 21:09:00 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.13 2005/08/08 15:36:32 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.util.CloseableTableModel;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * Creates a <code>TableModel</code> which is backed up by a <code>ResultSet</code>. If
@@ -108,7 +108,7 @@ public final class ResultSetTableModelFactory
           throws SQLException
   {
     return createTableModel
-            (rs, ReportConfiguration.getGlobalConfig().getConfigProperty
+            (rs, JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
   }
 
@@ -135,8 +135,9 @@ public final class ResultSetTableModelFactory
           throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
-    final String prop = ReportConfiguration
-            .getGlobalConfig().getConfigProperty(RESULTSET_FACTORY_MODE, "");
+    final String prop =
+            JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
+                    (RESULTSET_FACTORY_MODE, "");
 
     if (prop.equalsIgnoreCase("simple"))
     {
@@ -222,8 +223,8 @@ public final class ResultSetTableModelFactory
   public CloseableTableModel generateDefaultTableModel (final ResultSet rs)
           throws SQLException
   {
-    return generateDefaultTableModel(rs, ReportConfiguration.getGlobalConfig()
-            .getConfigProperty
+    return generateDefaultTableModel(rs,
+            JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
   }
 

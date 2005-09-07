@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.7 2005/03/16 21:06:48 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.8 2005/03/30 17:26:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.modules.output.table.rtf;
 import com.lowagie.text.pdf.BaseFont;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.ContentFactory;
@@ -60,7 +61,6 @@ import org.jfree.report.modules.output.table.rtf.metaelements.RTFImageMetaElemen
 import org.jfree.report.modules.output.table.rtf.metaelements.RTFTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictBounds;
 
 public class RTFMetaBandProducer extends TableMetaBandProducer
@@ -135,8 +135,8 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
 
   private static boolean isImageSupportEnabled ()
   {
-    return "true".equals(ReportConfiguration.getGlobalConfig().getConfigProperty
-                ("org.jfree.report.modules.output.table.rtf.EnableImages"));
+    return JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
+                ("org.jfree.report.modules.output.table.rtf.EnableImages");
   }
 
   protected MetaElement createTextCell (final Element e,

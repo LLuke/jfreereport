@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: BeanPropertyLookupParser.java,v 1.1 2005/08/08 15:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.report.util.beans;
 
-import org.jfree.report.util.PropertyLookupParser;
 import org.jfree.report.util.CSVTokenizer;
+import org.jfree.report.util.PropertyLookupParser;
 
 public abstract class BeanPropertyLookupParser extends PropertyLookupParser
 {

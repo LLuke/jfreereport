@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DrawableFactory.java,v 1.4 2005/03/03 23:00:23 taqua Exp $
+ * $Id: DrawableFactory.java,v 1.5 2005/08/08 15:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.jfree.io.IOUtils;
-import org.jfree.util.Log;
 import org.jfree.ui.Drawable;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 public class DrawableFactory

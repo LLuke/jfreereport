@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.12 2005/02/19 13:29:56 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.13 2005/02/23 21:05:27 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
 import org.jfree.report.util.NullOutputStream;
+import org.jfree.report.util.ReportConfigurationUtil;
 
 /**
  * The <code>CSVProcessor</code> coordinates the writing process for the raw CSV output.
@@ -225,7 +226,6 @@ public class CSVProcessor
       throw new ReportProcessingException("Unable to clone the start state.", e);
     }
     ReportState state = startState;
-    ReportState retval = null;
 
     // the report processing can be splitted into 2 separate processes.
     // The first is the ReportPreparation; all function values are resolved and
@@ -251,6 +251,7 @@ public class CSVProcessor
     {
       throw new IllegalStateException("No functions defined, invalid implementation.");
     }
+    ReportState retval = null;
 
     boolean hasNext;
     int level = ((Integer) it.next()).intValue();
@@ -268,9 +269,9 @@ public class CSVProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      final boolean failOnError
-              = (level == -1) && getReport().getReportConfiguration()
-              .isStrictErrorHandling();
+      final boolean failOnError = (level == -1) &&
+              ReportConfigurationUtil.isStrictErrorHandling
+                  (getReport().getReportConfiguration());
 
       while (!state.isFinish())
       {
@@ -355,8 +356,8 @@ public class CSVProcessor
       final CSVWriter w = (CSVWriter) state.getDataRow().get(CSV_WRITER);
       w.setWriter(getWriter());
 
-      final boolean failOnError =
-              getReport().getReportConfiguration().isStrictErrorHandling();
+      final boolean failOnError = ReportConfigurationUtil.isStrictErrorHandling
+              (getReport().getReportConfiguration());
       ReportStateProgress progress = null;
       while (!state.isFinish())
       {

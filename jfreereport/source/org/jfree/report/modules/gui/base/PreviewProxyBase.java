@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.45 2005/08/29 17:56:46 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.46 2005/09/07 11:21:09 taqua Exp $
  *
  * Changes
  * -------
@@ -82,15 +82,15 @@ import javax.swing.UIManager;
 
 import org.jfree.layout.CenterLayout;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.SimplePageDefinition;
-import org.jfree.report.PageDefinition;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.WindowSizeLimiter;
 import org.jfree.report.util.ImageUtils;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.Worker;
 import org.jfree.report.util.WorkerPool;
 import org.jfree.ui.FloatingButtonEnabler;
@@ -101,9 +101,10 @@ import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.ui.action.DowngradeActionMap;
+import org.jfree.util.Configuration;
 import org.jfree.util.Log;
-import org.jfree.util.ResourceBundleSupport;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * A preview proxy. This class is the backend for all preview components.
@@ -1102,8 +1103,9 @@ public class PreviewProxyBase extends JComponent
 
   private boolean isPropertySet (final String property, final boolean defaultValue)
   {
+    final Configuration config = JFreeReportBoot.getInstance().getGlobalConfig();
     final String value =
-            ReportConfiguration.getGlobalConfig().getConfigProperty(property);
+            config.getConfigProperty(property);
     if (value == null)
     {
       return defaultValue;
@@ -1142,7 +1144,8 @@ public class PreviewProxyBase extends JComponent
 
   protected boolean isMenuActionEnabled (final String property)
   {
-    final String value = ReportConfiguration.getGlobalConfig().getConfigProperty(property);
+    final Configuration config = JFreeReportBoot.getInstance().getGlobalConfig();
+    final String value = config.getConfigProperty(property);
     if (value == null)
     {
       return true;
@@ -1160,7 +1163,8 @@ public class PreviewProxyBase extends JComponent
 
   protected boolean isToolbarActionEnabled (final String property)
   {
-    final String value = ReportConfiguration.getGlobalConfig().getConfigProperty(property);
+    final Configuration config = JFreeReportBoot.getInstance().getGlobalConfig();
+    final String value = config.getConfigProperty(property);
     if (value == null)
     {
       return true;
