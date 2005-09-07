@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.10 2005/04/14 16:37:33 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.11 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -290,6 +290,16 @@ public class SimplePageDefinition implements PageDefinition
     }
 
     return true;
+  }
+
+  public int getPageCountHorizontal()
+  {
+    return pageCountHorizontal;
+  }
+
+  public int getPageCountVertical()
+  {
+    return pageCountVertical;
   }
 
   /**

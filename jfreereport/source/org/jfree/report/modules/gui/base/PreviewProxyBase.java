@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.44 2005/08/08 15:36:30 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.45 2005/08/29 17:56:46 taqua Exp $
  *
  * Changes
  * -------
@@ -85,6 +85,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.SimplePageDefinition;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.WindowSizeLimiter;
@@ -102,6 +103,7 @@ import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.ui.action.DowngradeActionMap;
 import org.jfree.util.Log;
 import org.jfree.util.ResourceBundleSupport;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A preview proxy. This class is the backend for all preview components.
@@ -1135,8 +1137,7 @@ public class PreviewProxyBase extends JComponent
    */
   protected JToolBar createToolBar ()
   {
-    final JToolBar toolbar = new JToolBar();
-    return toolbar;
+    return  new JToolBar();
   }
 
   protected boolean isMenuActionEnabled (final String property)
@@ -1277,8 +1278,7 @@ public class PreviewProxyBase extends JComponent
   protected ReportPane createReportPane (final JFreeReport report)
           throws ReportProcessingException
   {
-    final ReportPane reportPane = new ReportPane(report);
-    return reportPane;
+    return new ReportPane(report);
   }
 
   /**
@@ -2390,7 +2390,17 @@ public class PreviewProxyBase extends JComponent
       throw new NullPointerException("The given pageformat is null.");
     }
     final JFreeReport report = getReport();
-    report.setPageDefinition(new SimplePageDefinition(pf));
+    final PageDefinition pageDefinition = report.getPageDefinition();
+    if (pageDefinition instanceof SimplePageDefinition)
+    {
+      final SimplePageDefinition spd = (SimplePageDefinition) pageDefinition;
+      report.setPageDefinition(new SimplePageDefinition
+              (pf, spd.getPageCountHorizontal(), spd.getPageCountVertical()));
+    }
+    else
+    {
+      report.setPageDefinition(new SimplePageDefinition(pf));
+    }
     setReport(report);
   }
 
@@ -2583,7 +2593,8 @@ public class PreviewProxyBase extends JComponent
       final JComponent rcp = reportControler.getControlPanel();
       if (reportControlerComponent != rcp ||
           reportControlerInner != reportControler.isInnerComponent() ||
-          reportControlerLocation != reportControler.getControlerLocation())
+          ObjectUtilities.equal(reportControlerLocation,
+                  reportControler.getControlerLocation()))
       {
         if (reportControlerComponent != null)
         {

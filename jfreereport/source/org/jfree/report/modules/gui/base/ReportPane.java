@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.21 2005/03/03 18:08:39 taqua Exp $
+ * $Id: ReportPane.java,v 1.22 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -236,6 +236,11 @@ public class ReportPane extends JComponent
       return paginateState == PAGINATE_PRINTING;
     }
 
+    public synchronized int getPaginateState()
+    {
+      return paginateState;
+    }
+
     /**
      * Sets the 'paginate' state.
      *
@@ -371,7 +376,7 @@ public class ReportPane extends JComponent
    *
    * @return true if the report has been paginated.
    */
-  protected boolean isPaginated ()
+  public boolean isPaginated ()
   {
     return (pageProcess != null);
   }
@@ -520,7 +525,7 @@ public class ReportPane extends JComponent
    *
    * @return the zoom factor.
    */
-  public float getZoomFactory ()
+  public float getZoomFactor ()
   {
     return zoomFactor;
   }
@@ -808,6 +813,7 @@ public class ReportPane extends JComponent
   {
     return paginateLock.isPaginating();
   }
+
 
   /**
    * Repaginates this report according to the OutputTarget given.
