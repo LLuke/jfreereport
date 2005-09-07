@@ -1,13 +1,14 @@
 package org.jfree.report.ext.modules.java14imageio;
 
 import org.jfree.base.modules.AbstractModule;
-import org.jfree.base.modules.SubSystem;
 import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 public class Java14ImageIOModule extends AbstractModule
 {
-  public Java14ImageIOModule ()
+  public Java14ImageIOModule () throws ModuleInitializeException
   {
+    loadModuleInfo();
   }
 
   /**
@@ -23,6 +24,6 @@ public class Java14ImageIOModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-
+    performExternalInitialize(Java14ImageIOModuleInitializer.class.getName());
   }
 }

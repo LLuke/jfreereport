@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoImageServlet.java,v 1.1 2005/03/10 21:26:03 taqua Exp $
+ * $Id: DemoImageServlet.java,v 1.2 2005/08/09 15:44:02 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.table.TableModel;
 
 import com.keypoint.PngEncoder;
-import org.jfree.report.demo.SwingIconsDemoTableModel;
+import org.jfree.report.demo.swingicons.SwingIconsDemoTableModel;
 
 public class DemoImageServlet extends HttpServlet
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandTest.java,v 1.5 2003/11/01 19:57:02 taqua Exp $
+ * $Id: BandTest.java,v 1.6 2005/01/31 17:16:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -72,7 +72,7 @@ public class BandTest extends TestCase
     assertNotNull(b.getLayout());
     assertNotNull(b.getElementArray());
     assertTrue(b.getElementCount() == 0);
-    assertNotNull(b.getElements());
+//    assertNotNull(b.getElements());
   }
 
   public void testBandMethods()

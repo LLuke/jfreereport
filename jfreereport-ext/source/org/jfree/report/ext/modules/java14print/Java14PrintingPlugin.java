@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintingPlugin.java,v 1.9 2003/11/07 16:29:45 taqua Exp $
+ * $Id: Java14PrintingPlugin.java,v 1.10 2003/12/21 23:49:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,13 +42,13 @@ import javax.print.DocFlavor;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.ServiceUI;
-import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.print.PrintingPlugin;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Log;
 
 /**
  * A replacement to use the JDK 1.4 printing API. This class does
@@ -93,7 +93,7 @@ public class Java14PrintingPlugin extends PrintingPlugin
    *
    * @param report  the report.
    *
-   * @return A boolean.
+   * @return true, if the export was successfull, false otherwise.
    */
   public boolean performExport(JFreeReport report)
   {
@@ -105,9 +105,12 @@ public class Java14PrintingPlugin extends PrintingPlugin
       setFailureDescription("Unable to find a matching print service implementation.");
       return false;
     }
-    PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-    PrintService service =  ServiceUI.printDialog
-        (null, 50, 50, services, PrintServiceLookup.lookupDefaultPrintService(),
+    PrintRequestAttributeSet attributes =
+            Java14PrintUtil.copyConfiguration(null, report);
+    attributes = Java14PrintUtil.copyAuxillaryAttributes(attributes, report);
+
+    PrintService service = ServiceUI.printDialog
+        (null, 50, 50, services, services[0],
             DocFlavor.SERVICE_FORMATTED.PAGEABLE, attributes);
     if (service == null)
     {
@@ -117,19 +120,35 @@ public class Java14PrintingPlugin extends PrintingPlugin
     else
     {
       // the user may have changed the PageFormat here ... we have to check
-      // that
-//      MediaSize msize = (MediaSize) attributes.get(MediaSize.class);
-//      MediaPrintableArea mprintArea = (MediaPrintableArea)
-//          attributes.get (MediaPrintableArea.class);
-//      OrientationRequested oReq = (OrientationRequested)
-//          attributes.get (OrientationRequested.class);
-      ReportProgressDialog progressDialog = createProgressDialog();
-      getBase().addRepaginationListener(progressDialog);
-      Java14PrintExportTask task = new Java14PrintExportTask
-          (progressDialog, service, getBase().getReportPane(), attributes);
-      task.addExportTaskListener(new DefaultExportTaskListener());
-      delegateTask(task);
-      return handleExportResult(task);
+      // that and may have to reissue the print dialog
+
+      final int compare = Java14PrintUtil.isValidConfiguration(attributes, report);
+      if (compare != Java14PrintUtil.CONFIGURATION_VALID)
+      {
+        // todo: For full support, we should build or own Print-Dialog..
+        // This would add better support for multiple pages and would
+        // support the page-ranges a lot better than now.
+        Log.warn ("Printing with JDK 1.4: We need to repaginage the report ... stay tuned.");
+        ReportProgressDialog progressDialog = createProgressDialog();
+        getBase().addRepaginationListener(progressDialog);
+        Java14RepaginateAndPrintExportTask task =
+                new Java14RepaginateAndPrintExportTask
+            (progressDialog, service, getBase(), attributes);
+        task.addExportTaskListener(new DefaultExportTaskListener());
+        delegateTask(task);
+        return handleExportResult(task);
+      }
+      else
+      {
+        Log.warn ("Printing with JDK 1.4: great, we can print without repagination.");
+        ReportProgressDialog progressDialog = createProgressDialog();
+        getBase().addRepaginationListener(progressDialog);
+        Java14PrintExportTask task = new Java14PrintExportTask
+            (progressDialog, service, getBase().getReportPane(), attributes);
+        task.addExportTaskListener(new DefaultExportTaskListener());
+        delegateTask(task);
+        return handleExportResult(task);
+      }
     }
   }
 

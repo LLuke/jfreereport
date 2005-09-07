@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumTest.java,v 1.8 2005/05/31 18:28:01 taqua Exp $
+ * $Id: TotalGroupSumTest.java,v 1.9 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,7 +44,7 @@ import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.GroupList;
 import org.jfree.report.Group;
-import org.jfree.report.demo.SampleData1;
+import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.TotalGroupSumFunction;
@@ -140,8 +140,8 @@ public class TotalGroupSumTest extends TestCase
   }
 
   private static final FunctionalityTestLib.ReportTest REPORT2 =
-      new FunctionalityTestLib.ReportTest("org/jfree/report/demo/report1.xml",
-          new SampleData1());
+      new FunctionalityTestLib.ReportTest("org/jfree/report/demo/world/country-report.xml",
+          new CountryDataTableModel());
 
   public TotalGroupSumTest()
   {

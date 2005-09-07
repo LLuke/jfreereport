@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConvertRun.java,v 1.2 2005/05/18 18:50:30 taqua Exp $
+ * $Id: ConvertRun.java,v 1.3 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,7 @@ import org.jfree.util.ObjectUtilities;
 
 public class ConvertRun
 {
-  private static final String REPORTNAME = "/org/jfree/report/demo/swing-icons.xml";
+  private static final String REPORTNAME = "org/jfree/report/demo/swingicons/swing-icons.xml";
 
   public static void main(String[] args) throws IOException
   {

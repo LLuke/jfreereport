@@ -1,7 +1,7 @@
 <%@ page import="java.net.URL,
                  org.jfree.report.ext.servletdemo.AbstractPageableReportServletWorker,
                  org.jfree.report.ext.servletdemo.DefaultPageableReportServletWorker,
-                 org.jfree.report.demo.SwingIconsDemoTableModel,
+                 org.jfree.report.demo.swingicons.SwingIconsDemoTableModel,
                  org.jfree.report.modules.output.pageable.graphics.G2OutputTarget,
                  org.jfree.report.JFreeReport,
                  org.jfree.report.ext.servletdemo.DemoModelProvider,
@@ -10,7 +10,7 @@
 <%
   // initalize the report if not already done ...
   URL in = ObjectUtilities.getResourceRelative
-          ("/org/jfree/report/demo/swing-icons.xml", JFreeReport.class);
+          ("org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReport.class);
   if (in == null)
   {
     throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

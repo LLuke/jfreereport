@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestShapeAndDrawableLayout.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: TestShapeAndDrawableLayout.java,v 1.4 2005/05/31 18:28:00 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ public class TestShapeAndDrawableLayout
   public static void main(final String[] args)
       throws Exception
   {
-    final JFreeReport report = TestSystem.loadReport("org/jfree/report/demo/shape-and-drawable.xml",
+    final JFreeReport report = TestSystem.loadReport("org/jfree/report/demo/layouts/shape-and-drawable.xml",
         new DefaultTableModel());
     if (report == null)
     {

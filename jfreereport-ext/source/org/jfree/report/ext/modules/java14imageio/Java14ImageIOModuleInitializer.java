@@ -25,6 +25,6 @@ public class Java14ImageIOModuleInitializer implements ModuleInitializer
    */
   public void performInit() throws ModuleInitializeException
   {
-    //ImageFactory.getInstance().registerModule()
+    ImageFactory.getInstance().registerModule(new Java14ImageFactoryModule());
   }
 }

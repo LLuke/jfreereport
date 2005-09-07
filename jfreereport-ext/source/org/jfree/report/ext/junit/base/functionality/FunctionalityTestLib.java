@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.10 2005/05/31 18:28:01 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.11 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,19 +44,26 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.EmptyReportException;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.OpenSourceProjects;
-import org.jfree.report.demo.PercentageDemo;
-import org.jfree.report.demo.SampleData1;
-import org.jfree.report.demo.SampleData2;
-import org.jfree.report.demo.SampleData3;
-import org.jfree.report.demo.SampleData4;
-import org.jfree.report.demo.SwingIconsDemoTableModel;
-import org.jfree.report.demo.cards.CardDemo;
+import org.jfree.report.demo.opensource.OpenSourceProjects;
+import org.jfree.report.demo.functions.PercentageDemo;
+import org.jfree.report.demo.world.CountryDataTableModel;
+import org.jfree.report.demo.groups.ColorAndLetterTableModel;
+import org.jfree.report.demo.bookstore.BookstoreTableModel;
+import org.jfree.report.demo.fonts.FontTableModel;
+import org.jfree.report.demo.swingicons.SwingIconsDemoTableModel;
+import org.jfree.report.demo.cards.CardTableModel;
+import org.jfree.report.demo.cards.AdminCard;
+import org.jfree.report.demo.cards.FreeCard;
+import org.jfree.report.demo.cards.PrepaidCard;
+import org.jfree.report.demo.cards.AccountCard;
+import org.jfree.report.demo.cards.UserCard;
+import org.jfree.report.demo.cards.WrappingTableModel;
 import org.jfree.report.modules.misc.referencedoc.DataSourceReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.ObjectReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.StyleKeyReferenceGenerator;
@@ -80,22 +87,20 @@ import org.jfree.util.ObjectUtilities;
 public class FunctionalityTestLib
 {
   public final static ReportTest[] REPORTS = {
-    new ReportTest ("org/jfree/report/demo/report1.xml", new SampleData1()),
-    new ReportTest ("org/jfree/report/demo/report1a.xml", new SampleData1()),
-    new ReportTest ("org/jfree/report/demo/report2.xml", new SampleData2()),
-    new ReportTest ("org/jfree/report/demo/report2a.xml", new SampleData2()),
-    new ReportTest ("org/jfree/report/demo/report2b.xml", new SampleData2()),
-    new ReportTest ("org/jfree/report/demo/report2c.xml", new SampleData2()),
-    new ReportTest ("org/jfree/report/demo/report2d.xml", new SampleData2()),
-    new ReportTest ("org/jfree/report/demo/report3.xml", new SampleData3()),
-    new ReportTest ("org/jfree/report/demo/report4.xml", new SampleData4()),
+    new ReportTest ("org/jfree/report/demo/world/country-report.xml", new CountryDataTableModel()),
+    new ReportTest ("org/jfree/report/demo/world/country-report-ext.xml", new CountryDataTableModel()),
+    new ReportTest ("org/jfree/report/demo/groups/data-groups.xml", new ColorAndLetterTableModel()),
+    new ReportTest ("org/jfree/report/demo/functions/paint-component.xml", new ColorAndLetterTableModel()),
+    new ReportTest ("org/jfree/report/demo/functions/item-hiding.xml", new ColorAndLetterTableModel()),
+    new ReportTest ("org/jfree/report/demo/bookstore/bookstore.xml", new BookstoreTableModel()),
+    new ReportTest ("org/jfree/report/demo/fonts/fonts.xml", new FontTableModel()),
     new ReportTest ("org/jfree/report/demo/report5.xml", new DefaultTableModel()),
-    new ReportTest ("org/jfree/report/demo/lgpl.xml", new DefaultTableModel()),
-    new ReportTest ("org/jfree/report/demo/OpenSourceDemo.xml", new OpenSourceProjects()),
-    new ReportTest ("org/jfree/report/demo/PercentageDemo.xml", PercentageDemo.createData()),
-    new ReportTest ("org/jfree/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
-    new ReportTest ("org/jfree/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
-    new ReportTest ("org/jfree/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
+    new ReportTest ("org/jfree/report/demo/largetext/lgpl.xml", new DefaultTableModel()),
+    new ReportTest ("org/jfree/report/demo/opensource/opensource.xml", new OpenSourceProjects()),
+    new ReportTest ("org/jfree/report/demo/functions/percentage.xml", PercentageDemo.createData()),
+    new ReportTest ("org/jfree/report/demo/layouts/shape-and-drawable.xml", new DefaultTableModel()),
+    new ReportTest ("org/jfree/report/demo/swingicons/swing-icons.xml", new SwingIconsDemoTableModel()),
+    new ReportTest ("org/jfree/report/demo/cards/usercards.xml", createSimpleCardDemoModel()),
     new ReportTest
       ("org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml",
       ObjectReferenceGenerator.createData()),
@@ -106,6 +111,18 @@ public class FunctionalityTestLib
       ("org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml",
       DataSourceReferenceGenerator.createData())
   };
+
+  public static TableModel createSimpleCardDemoModel ()
+  {
+    final CardTableModel model = new CardTableModel();
+    model.addCard(new AdminCard("Jared", "Diamond", "NR123123", "login", "secret", new Date()));
+    model.addCard(new FreeCard("NR123123", new Date()));
+    model.addCard(new PrepaidCard("First Name", "Last Name", "NR123123"));
+    model.addCard(new AccountCard("John", "Doe", "NR123123", "login", "secret"));
+    model.addCard(new UserCard("Richard", "Helm", "NR123123", "login", "secret", new Date()));
+    return new WrappingTableModel(model, "C1_", "C2_");
+  }
+
 
   public static boolean createPlainText(final JFreeReport report)
   {

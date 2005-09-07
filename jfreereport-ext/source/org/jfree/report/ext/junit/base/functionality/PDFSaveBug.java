@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveBug.java,v 1.3 2005/05/31 18:28:01 taqua Exp $
+ * $Id: PDFSaveBug.java,v 1.4 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.ext.junit.base.functionality;
 
-import java.awt.print.PageFormat;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -47,7 +46,7 @@ import com.lowagie.text.DocWriter;
 import com.lowagie.text.pdf.PdfReader;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.SampleData1;
+import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
@@ -61,7 +60,7 @@ public class PDFSaveBug extends TestCase
 {
   private static final FunctionalityTestLib.ReportTest REPORT =
       new FunctionalityTestLib.ReportTest 
-        ("org/jfree/report/demo/security.xml", new SampleData1());
+        ("org/jfree/report/demo/world/county-report-security.xml", new CountryDataTableModel());
 
   public PDFSaveBug ()
   {

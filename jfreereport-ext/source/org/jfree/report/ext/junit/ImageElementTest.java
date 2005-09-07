@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.7 2005/05/31 18:28:00 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.8 2005/08/08 15:55:59 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class ImageElementTest
   {
     // add an image as a report property...
     final URL imageURL = ObjectUtilities.getResource
-            ("org/jfree/report/demo/gorilla.jpg", ImageElementTest.class);
+            ("org/jfree/report/demo/opensource/gorilla.jpg", ImageElementTest.class);
     final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     final Object[][] data = {{createImage(image), createImage(image), createImage(image)}};

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.8 2005/05/31 18:28:01 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.9 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,7 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.SampleData1;
+import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
@@ -68,8 +68,8 @@ import org.jfree.util.ObjectUtilities;
 public class PlainTextExportTest extends TestCase
 {
   private static final FunctionalityTestLib.ReportTest TEST_REPORT =
-      new FunctionalityTestLib.ReportTest ("org/jfree/report/demo/report1.xml",
-          new SampleData1());
+      new FunctionalityTestLib.ReportTest ("org/jfree/report/demo/world/country-report.xml",
+          new CountryDataTableModel());
 
   public PlainTextExportTest()
   {

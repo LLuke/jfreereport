@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.6 2005/01/31 17:16:31 taqua Exp $
+ * $Id: TextContentTest.java,v 1.7 2005/02/19 16:15:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,8 +37,6 @@
  */
 
 package org.jfree.report.ext.junit.base.basic.content;
-
-import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
 import org.jfree.report.TextElement;

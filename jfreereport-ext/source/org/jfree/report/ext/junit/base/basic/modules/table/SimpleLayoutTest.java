@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleLayoutTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
+ * $Id: SimpleLayoutTest.java,v 1.3 2005/01/31 17:16:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,20 @@
 
 package org.jfree.report.ext.junit.base.basic.modules.table;
 
+import java.net.URL;
+import java.awt.Color;
+import java.awt.BasicStroke;
+import java.awt.geom.Rectangle2D;
+import javax.swing.table.DefaultTableModel;
+
 import junit.framework.TestCase;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.Band;
+import org.jfree.report.elementfactory.StaticShapeElementFactory;
+import org.jfree.report.ext.junit.base.functionality.FunctionalityTestLib;
+import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class SimpleLayoutTest extends TestCase
 {
@@ -51,7 +64,21 @@ public class SimpleLayoutTest extends TestCase
     super(s);
   }
 
-  public void testSimpleLayout ()
+  public void testSimpleLayout () throws Exception
   {
+    final FunctionalityTestLib.ReportTest test =
+            new FunctionalityTestLib.ReportTest
+                    ("org/jfree/report/demo/report5.xml", new DefaultTableModel());
+
+    final URL url = ObjectUtilities.getResource
+      (test.getReportDefinition(), SimpleLayoutTest.class);
+    assertNotNull("Failed to locate " + test.getReportDefinition(), url);
+
+    Log.debug("Processing: " + url);
+    final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+    report.setData(test.getReportTableModel());
+
+    FunctionalityTestLib.createStreamHTML(report);
   }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintModule.java,v 1.4 2003/11/01 19:57:04 taqua Exp $
+ * $Id: Java14PrintModule.java,v 1.5 2005/01/31 17:16:39 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,6 @@
 
 package org.jfree.report.ext.modules.java14print;
 
-import org.jfree.report.modules.gui.base.ExportPluginFactory;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
@@ -51,15 +49,7 @@ import org.jfree.base.modules.SubSystem;
  */
 public class Java14PrintModule extends AbstractModule
 {
-  /** The printing export plugin preference key. */ 
-  private static final String PRINT_ORDER_KEY = 
-    "org.jfree.report.ext.modules.java14print.Order";
-  
-  /** The printing export plugin enable key. */
-  private static final String PRINT_ENABLE_KEY = 
-    "org.jfree.report.ext.modules.java14print.Enable";
-
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -81,11 +71,7 @@ public class Java14PrintModule extends AbstractModule
   public void initialize (SubSystem subSystem)
           throws ModuleInitializeException
   {
-    String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
-        (PRINT_ORDER_KEY, "0");
-
-    ExportPluginFactory.getInstance().registerPlugin
-        (Java14PrintingPlugin.class, printOrder, PRINT_ENABLE_KEY);
+    performExternalInitialize(Java14PrintModuleInitializer.class.getName());
   }
 
 }

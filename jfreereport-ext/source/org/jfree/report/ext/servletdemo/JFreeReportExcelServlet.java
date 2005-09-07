@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportExcelServlet.java,v 1.5 2005/08/08 15:56:02 taqua Exp $
+ * $Id: JFreeReportExcelServlet.java,v 1.6 2005/08/09 15:44:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -97,7 +97,7 @@ public class JFreeReportExcelServlet extends HttpServlet
     Log.debug("in processRequest..." + getClass());
 
     final URL in = ObjectUtilities.getResourceRelative
-            ("/org/jfree/report/demo/swing-icons.xml", JFreeReportExcelServlet.class);
+            ("org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportExcelServlet.class);
     if (in == null)
     {
       throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

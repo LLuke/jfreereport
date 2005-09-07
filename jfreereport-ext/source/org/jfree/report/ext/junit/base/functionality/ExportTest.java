@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.6 2005/05/18 18:50:29 taqua Exp $
+ * $Id: ExportTest.java,v 1.7 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,7 +61,8 @@ public class ExportTest extends TestCase
       {
         final URL url = ObjectUtilities.getResource
           (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ExportTest.class);
-        assertNotNull(url);
+        assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
+
         Log.debug("Processing: " + url);
         final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
         report.setData(FunctionalityTestLib.REPORTS[i].getReportTableModel());

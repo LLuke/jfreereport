@@ -108,6 +108,7 @@ public class TableLayoutTest extends TestCase
             throws ReportProcessingException
     {
       super(report);
+      init();
     }
 
 
@@ -144,8 +145,7 @@ public class TableLayoutTest extends TestCase
     final URL url = ObjectUtilities.getResourceRelative
             ("resources/table-layout.xml", TableLayoutTest.class);
     assertNotNull(url);
-    final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
-    return report;
+    return ReportGenerator.getInstance().parseReport(url);
   }
 
   public void testLayout ()

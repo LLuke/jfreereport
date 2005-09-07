@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DemoModelProvider.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
+ * $Id: DemoModelProvider.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@ package org.jfree.report.ext.servletdemo;
 import java.net.URL;
 import javax.swing.table.TableModel;
 
-import org.jfree.report.demo.SwingIconsDemoTableModel;
+import org.jfree.report.demo.swingicons.SwingIconsDemoTableModel;
 
 /**
  * Implements a TableModelProvider to create and return a tablemodel

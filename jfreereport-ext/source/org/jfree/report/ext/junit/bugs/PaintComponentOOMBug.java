@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaintComponentOOMBug.java,v 1.2 2005/04/15 20:21:02 taqua Exp $
+ * $Id: PaintComponentOOMBug.java,v 1.3 2005/05/31 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -46,13 +46,15 @@ import javax.swing.table.TableModel;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.modules.output.table.csv.CSVReportUtil;
+import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
+import org.jfree.report.modules.output.table.html.HtmlReportUtil;
 
 public class PaintComponentOOMBug
 {
   private static final String URLNAME = "org/jfree/report/ext/junit/bugs/resource/spanned-header.xml";
 //  private static final String URLNAME = "/org/jfree/report/ext/junit/bugs/resource/csv-not-working.xml";
 
-  public PaintComponentOOMBug ()
+  private PaintComponentOOMBug ()
   {
   }
 
@@ -69,12 +71,12 @@ public class PaintComponentOOMBug
       colnames, colnames
     };
     final TableModel model = new DefaultTableModel(data, colnames);
-//    final JFreeReport report = new SampleReport2().createReport();
+//    final JFreeReport report = new BandInBandStackingDemoHandler().createReport();
     System.out.println (model.getRowCount());
     final JFreeReport report = TestSystem.loadReport(URLNAME, model);
 //    FunctionalityTestLib.createXLS(report);
-//    ExcelReportUtil.createXLS(report, "/tmp/export.xls");
-//    HtmlReportUtil.createStreamHTML(report, "/tmp/export.html");
+    ExcelReportUtil.createXLS(report, "/tmp/export.xls");
+    HtmlReportUtil.createStreamHTML(report, "/tmp/export.html");
 //    FunctionalityTestLib.createXLS(report);
     CSVReportUtil.createCSV(report, "/tmp/export.csv");
   }

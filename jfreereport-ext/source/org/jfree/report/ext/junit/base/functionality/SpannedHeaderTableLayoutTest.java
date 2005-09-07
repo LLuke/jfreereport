@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpannedHeaderTableLayoutTest.java,v 1.1 2005/04/11 14:32:48 taqua Exp $
+ * $Id: SpannedHeaderTableLayoutTest.java,v 1.2 2005/05/18 18:50:29 taqua Exp $
  *
  * Changes
  * -------
@@ -136,6 +136,7 @@ public class SpannedHeaderTableLayoutTest extends TestCase
             throws ReportProcessingException
     {
       super(report);
+      init();
     }
 
 

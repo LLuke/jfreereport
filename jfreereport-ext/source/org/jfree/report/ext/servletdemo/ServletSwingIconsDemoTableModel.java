@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ServletSwingIconsDemoTableModel.java,v 1.1 2005/03/10 21:26:03 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ package org.jfree.report.ext.servletdemo;
 import java.net.URL;
 
 import org.jfree.report.URLImageContainer;
-import org.jfree.report.demo.SwingIconsDemoTableModel;
+import org.jfree.report.demo.swingicons.SwingIconsDemoTableModel;
 
 public class ServletSwingIconsDemoTableModel extends SwingIconsDemoTableModel
 {

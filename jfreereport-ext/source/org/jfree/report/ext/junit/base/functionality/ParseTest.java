@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParseTest.java,v 1.5 2005/05/18 18:50:29 taqua Exp $
+ * $Id: ParseTest.java,v 1.6 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -64,7 +64,7 @@ public class ParseTest extends TestCase
     {
       final URL url = ObjectUtilities.getResource
         (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
-      assertNotNull(url);
+      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
       try
       {
         assertNotNull(ReportGenerator.getInstance().parseReport(url));
@@ -83,7 +83,7 @@ public class ParseTest extends TestCase
     {
       final URL url = ObjectUtilities.getResource
         (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
-      assertNotNull(url);
+      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
       try
       {
         final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
@@ -103,8 +103,8 @@ public class ParseTest extends TestCase
     {
       final URL url = ObjectUtilities.getResource
         (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
-      assertNotNull(url);
-
+      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
+  
       final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
 
       final ByteArrayOutputStream bo = new ByteArrayOutputStream();

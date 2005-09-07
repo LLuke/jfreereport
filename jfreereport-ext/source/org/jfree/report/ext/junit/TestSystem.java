@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.8 2005/05/31 18:28:00 taqua Exp $
+ * $Id: TestSystem.java,v 1.9 2005/08/08 15:55:59 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.demo.SampleData2;
+import org.jfree.report.demo.groups.ColorAndLetterTableModel;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
@@ -96,7 +96,7 @@ public final class TestSystem
   public static void main(final String[] args)
       throws Exception
   {
-    final SampleData2 m_dataModel = new SampleData2();
+    final ColorAndLetterTableModel m_dataModel = new ColorAndLetterTableModel();
     final JFreeReport report = TestSystem.loadReport
       ("org/jfree/report/ext/junit/pagebreak.xml", m_dataModel);
     if (report == null)

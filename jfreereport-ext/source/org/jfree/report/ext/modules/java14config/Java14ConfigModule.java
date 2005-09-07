@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14ConfigModule.java,v 1.3 2003/09/12 22:05:08 taqua Exp $
+ * $Id: Java14ConfigModule.java,v 1.4 2005/01/31 17:16:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,10 +38,11 @@
 
 package org.jfree.report.ext.modules.java14config;
 
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Log;
 
 /**
  * The module definition for the Java1.4 configuration target support module.
@@ -57,7 +58,7 @@ public class Java14ConfigModule extends AbstractModule
   private static final String JAVA14_CONFIG_STORE_INITIALIZER =
       "org.jfree.report.ext.modules.java14config.Java14ConfigModuleInitializer";
 
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -81,9 +82,12 @@ public class Java14ConfigModule extends AbstractModule
   {
     final String value = ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.ConfigStore", "<not defined>");
-    if (value.equals(JAVA14_CONFIG_STORE_CLASS))
+    if (value.equals(JAVA14_CONFIG_STORE_CLASS) == false)
     {
-      performExternalInitialize(JAVA14_CONFIG_STORE_INITIALIZER);
+      Log.debug ("Java 1.4 Config module not active.");
+      return;
     }
+    // this will result in an caught exception if JDK 1.4 is not available.
+    performExternalInitialize(JAVA14_CONFIG_STORE_INITIALIZER);
   }
 }
