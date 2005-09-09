@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractEpsonPrinterDriver.java,v 1.8 2005/07/07 18:39:47 mtennes Exp $
+ * $Id: AbstractEpsonPrinterDriver.java,v 1.9 2005/08/12 12:09:42 taqua Exp $
  *
  * Changes
  * -------
@@ -245,6 +245,8 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     {
       out.write(PrinterDriver.CARRIAGE_RETURN);
       out.write(PrinterDriver.LINE_FEED);
+    } else {
+        out.write(0x7F);
     }
   }
 
@@ -427,7 +429,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     // sendDefineUserCharacters();
   }
 
-  private void sendDefineCharacterWidth (final float charactersPerInch)
+  protected void sendDefineCharacterWidth (final float charactersPerInch)
           throws IOException
   {
     if (charactersPerInch == CPI_10)

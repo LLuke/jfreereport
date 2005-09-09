@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Epson9PinPrinterDriver.java,v 1.6 2005/03/03 23:00:01 taqua Exp $
+ * $Id: Epson9PinPrinterDriver.java,v 1.7 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,17 @@ package org.jfree.report.modules.output.pageable.plaintext;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.JFreeReportBoot;
 
 public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
 {
+    private static final byte TWELVECPI = 0x01;
+    private static final byte CONDENSED = 0x04;
+    private static final byte BOLD = 0x08;
+    private static final byte ITALICS = 0x40;
+    private static final byte UNDERLINE = (byte) 0x80;
+    private int masterselect = 0;
   private static PrinterSpecificationManager printerSpecificationManager;
   private static final String SPECIFICATION_RESOURCE =
           "epson-9pin-printer-specifications.properties";
@@ -78,14 +85,17 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
   {
     final OutputStream out = getOut();
     final DriverState driverState = getDriverState();
+      byte[] bytes = new byte[8];
+      int byteindex = 0;
 
     if (driverState.isBold())
     {
       if (bold == false)
       {
         // disable bold
-        out.write(0x1b); // ESC
-        out.write(0x46); // F
+          masterselect &= ~BOLD;
+          bytes[byteindex++] = 0x1b;
+          bytes[byteindex++] = 0x46;
       }
     }
     else
@@ -93,8 +103,9 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
       if (bold == true)
       {
         // enable bold
-        out.write(0x1b); // ESC
-        out.write(0x45); // E
+          masterselect |= BOLD;
+          bytes[byteindex++] = 0x1b;
+          bytes[byteindex++] = 0x45;
       }
     }
 
@@ -103,8 +114,9 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
       if (italic == false)
       {
         // disable italic
-        out.write(0x1b); // ESC
-        out.write(0x35); // 5
+          masterselect &= ~ITALICS;
+          bytes[byteindex++] = 0x1b;
+          bytes[byteindex++] = 0x35;
       }
     }
     else
@@ -112,8 +124,9 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
       if (italic == true)
       {
         // enable italic
-        out.write(0x1b); // ESC
-        out.write(0x34); // 4
+          masterselect |= ITALICS;
+          bytes[byteindex++] = 0x1b;
+          bytes[byteindex++] = 0x34;
       }
     }
 
@@ -123,9 +136,10 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
       if (underline == false)
       {
         // disable underline
-        out.write(0x1b); // ESC
-        out.write(0x2d); // -
-        out.write(0x00); // 0
+          masterselect &= ~UNDERLINE;
+          bytes[byteindex++] = 0x1b;
+          bytes[byteindex++] = 0x2d;
+          bytes[byteindex++] = 0x00;
       }
     }
     else
@@ -133,17 +147,82 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
       if (underline == true)
       {
         // enable underline
-        out.write(0x1b); // ESC
-        out.write(0x2d); // -
-        out.write(0x01); // 1
+          masterselect |= UNDERLINE;
+          bytes[byteindex++] = 0x1b;
+          bytes[byteindex++] = 0x2d;
+          bytes[byteindex++] = 0x01;
       }
     }
+      final boolean useMasterSelect =
+      JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
+      ("org.jfree.report.modules.output.pageable.plaintext.UseEpsonMasterSelect");
+
+      if(useMasterSelect) {
+          out.write(0x1b); // disable condensed printing
+          out.write(0x21);
+          out.write((byte) masterselect);
+      } else {
+          for (int i = 0; i < byteindex; i++) {
+              out.write(bytes[i]);
+          }
+      }
     driverState.setBold(bold);
     driverState.setItalic(italic);
     driverState.setUnderline(underline);
     driverState.setStrikethrough(false);
   }
 
+    protected void sendDefineCharacterWidth(final float charactersPerInch)
+            throws IOException {
+        byte[] bytes = new byte[4];
+        int byteindex = 0;
+        boolean useMasterSelect =
+        JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
+        ("org.jfree.report.modules.output.pageable.plaintext.UseEpsonMasterSelect");
+        if (charactersPerInch == CPI_10) {
+            masterselect &= ~TWELVECPI;
+            bytes[byteindex++] = 0x12; // disable condensed printing
+            bytes[byteindex++] = 0x1b;
+            bytes[byteindex++] = 0x50; // select 10 CPI
+        } else if (charactersPerInch == CPI_12) {
+            masterselect |= TWELVECPI;
+            bytes[byteindex++] = 0x12; // disable condensed printing
+            bytes[byteindex++] = 0x1b;
+            bytes[byteindex++] = 0x4d; // select 12 CPI
+         } else if (charactersPerInch == CPI_15) {
+            // All ESC/P2 and 24Pin ESC/P printers support that mode
+            // Additionally, the 9Pin printer models FX-2170 and DFX-5000+
+            // support that character width.
+            bytes[byteindex++] = 0x12; // disable condensed printing
+            bytes[byteindex++] = 0x1b;
+            bytes[byteindex++] = 0x67; // select 15 CPI
+            useMasterSelect = false;
+        } else if (charactersPerInch == CPI_17) {
+            masterselect |= CONDENSED;
+            masterselect &= ~TWELVECPI;
+            bytes[byteindex++] = 0x0f; // enable condensed printing
+            bytes[byteindex++] = 0x1b;
+            bytes[byteindex++] = 0x50; // select 10 CPI (-> 17.14 cpi because of condensed printing)
+        } else if (charactersPerInch == CPI_20) {
+            masterselect |= CONDENSED;
+            masterselect |= TWELVECPI;
+            bytes[byteindex++] = 0x0f; // enable condensed printing
+            bytes[byteindex++] = 0x1b;
+            bytes[byteindex++] = 0x4d; // select 12 CPI (-> 20 cpi because of condensed printing)
+        } else {
+            throw new IllegalArgumentException("The given character width is invalid");
+        }
+
+        if(useMasterSelect) {
+            getOut().write(0x1b);
+            getOut().write(0x21);
+            getOut().write((byte) masterselect);
+        } else {
+            for (int i = 0; i < byteindex; i++) {
+                getOut().write(bytes[i]);
+            }
+        }
+    }
 
   protected PrinterSpecificationManager getPrinterSpecificationManager ()
   {
@@ -165,6 +244,4 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
     return JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
             (EPSON_9PIN_PRINTER_TYPE, "Generic 9-Pin printer");
   }
-
-
 }
