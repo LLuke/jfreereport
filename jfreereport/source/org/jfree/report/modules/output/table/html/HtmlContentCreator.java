@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.25 2005/09/06 11:40:20 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.26 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -68,25 +68,21 @@ import org.jfree.util.Configuration;
 public class HtmlContentCreator extends TableContentCreator
 {
 
-  /**
-   * the standard XHTML document type declaration and header.
-   */
+  /** the standard XHTML document type declaration and header. */
   private static final String[] XHTML_HEADER = {
-    "<!DOCTYPE html",
-    "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
-    "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">",
-    "<html xmlns=\"http://www.w3.org/1999/xhtml\">",
-    "<head>"};
+          "<!DOCTYPE html",
+          "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
+          "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">",
+          "<html xmlns=\"http://www.w3.org/1999/xhtml\">",
+          "<head>"};
 
-  /**
-   * the standard HTML4 document type declaration and header.
-   */
+  /** the standard HTML4 document type declaration and header. */
   private static final String[] HTML4_HEADER = {
-    "<!DOCTYPE HTML ",
-    "     PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
-    "     \"http://www.w3.org/TR/html4/strict.dtd\">",
-    "<html>",
-    "<head>"};
+          "<!DOCTYPE HTML ",
+          "     PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
+          "     \"http://www.w3.org/TR/html4/strict.dtd\">",
+          "<html>",
+          "<head>"};
 
   private HtmlFilesystem filesystem;
   private boolean useXHTML;
@@ -126,12 +122,12 @@ public class HtmlContentCreator extends TableContentCreator
    *
    * @return true, if the report is open, false otherwise.
    */
-  public boolean isOpen ()
+  public boolean isOpen()
   {
     return isOpen;
   }
 
-  public boolean isUseXHTML ()
+  public boolean isUseXHTML()
   {
     return useXHTML;
   }
@@ -140,12 +136,11 @@ public class HtmlContentCreator extends TableContentCreator
   /**
    * Creates the global Cascading Stylesheet definition for the report.
    *
-   * @return the global stylesheet as html reference.
-   *
-   * @throws IOException if an error occured.
    * @param report
+   * @return the global stylesheet as html reference.
+   * @throws IOException if an error occured.
    */
-  private HtmlReference buildGlobalStyleSheet (final ReportDefinition report)
+  private HtmlReference buildGlobalStyleSheet(final ReportDefinition report)
           throws IOException
   {
     //
@@ -157,8 +152,9 @@ public class HtmlContentCreator extends TableContentCreator
     final Iterator styles = stylesSorted.entrySet().iterator();
     while (styles.hasNext())
     {
-      final String styleHeader = report.getReportConfiguration().getConfigProperty
-              ("org.jfree.report.modules.output.table.html.StyleSheetHeader");
+      final String styleHeader = report.getReportConfiguration()
+              .getConfigProperty
+                      ("org.jfree.report.modules.output.table.html.StyleSheetHeader");
       if (styleHeader != null)
       {
         csswriter.println(styleHeader);
@@ -175,12 +171,13 @@ public class HtmlContentCreator extends TableContentCreator
     return filesystem.createCSSReference(cssbuffer.toString());
   }
 
-  protected void handleBeginTable (final ReportDefinition reportDefinition)
+  protected void handleBeginTable(final ReportDefinition reportDefinition)
   {
     String sheetName = null;
     if (getSheetNameFunction() != null)
     {
-      sheetName = String.valueOf(reportDefinition.getDataRow().get(getSheetNameFunction()));
+      sheetName = String.valueOf(reportDefinition.getDataRow().get(
+              getSheetNameFunction()));
     }
     if (sheetName != null)
     {
@@ -197,13 +194,13 @@ public class HtmlContentCreator extends TableContentCreator
     if ((noc > 0) && (proportionalColumnWidths == false))
     {
       final int width = (int)
-               StrictGeomUtility.toExternalValue(layout.getCellWidth(0, noc));
+              StrictGeomUtility.toExternalValue(layout.getCellWidth(0, noc));
       style = "width: " + width + "pt;";
     }
     else
     {
       // Consume the complete width for proportional column widths
-      style = "width: 100%";
+      style = "width: 100%;";
     }
 
     // style += "table-layout: fixed;";
@@ -216,8 +213,9 @@ public class HtmlContentCreator extends TableContentCreator
       style += "empty-cells: show";
     }
 
-    final String styleClass = reportDefinition.getReportConfiguration().getConfigProperty
-            ("org.jfree.report.modules.output.table.html.StyleClass");
+    final String styleClass = reportDefinition.getReportConfiguration()
+            .getConfigProperty
+                    ("org.jfree.report.modules.output.table.html.StyleClass");
 
     pout.print("<table cellspacing=\"0\" cellpadding=\"0\" style=\"");
     pout.print(style);
@@ -231,18 +229,22 @@ public class HtmlContentCreator extends TableContentCreator
     pout.print(noc);
     pout.println("\">");
     final int fullWidth = (int)
-          StrictGeomUtility.toExternalValue(layout.getCellWidth(0, noc));
+            StrictGeomUtility.toExternalValue(layout.getCellWidth(0, noc));
 
     for (int i = 0; i < noc; i++)
     {
       final int width = (int)
-               StrictGeomUtility.toExternalValue(layout.getCellWidth(i, i + 1));
+              StrictGeomUtility.toExternalValue(layout.getCellWidth(i, i + 1));
       pout.print("<col style=\"");
       pout.print("width:");
       if (proportionalColumnWidths == true)
       {
-        pout.print(width * 100d / fullWidth);
-        pout.print("%");
+        final double colWidth = width * 100d / fullWidth;
+        pout.print(colWidth);
+        if (colWidth > 0)
+        {
+          pout.print("%");
+        }
       }
       else
       {
@@ -261,45 +263,47 @@ public class HtmlContentCreator extends TableContentCreator
     pout.println("</colgroup>");
   }
 
-  protected void handleEndTable ()
+  protected void handleEndTable()
   {
     pout.println("</table>");
   }
 
   /**
-   * Starts the report processing. This method is called only once per report processing.
-   * The TableCreator might use the report definition to configure itself and to perform
-   * startup operations.
+   * Starts the report processing. This method is called only once per report
+   * processing. The TableCreator might use the report definition to configure
+   * itself and to perform startup operations.
    *
    * @param report the report definition.
    */
-  public void handleOpen (final ReportDefinition report)
+  public void handleOpen(final ReportDefinition report)
   {
     isOpen = true;
     final Configuration config = report.getReportConfiguration();
     createBodyFragment = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
-            HtmlProcessor.BODY_FRAGMENT, "false").equals("true");
+                    HtmlProcessor.BODY_FRAGMENT, "false").equals("true");
     emptyCellsUseCSS = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
-            HtmlProcessor.EMPTY_CELLS_USE_CSS, "false").equals("true");
+                    HtmlProcessor.EMPTY_CELLS_USE_CSS, "false").equals("true");
     tableRowBorderDefinition = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
-            HtmlProcessor.TABLE_ROW_BORDER_DEFINITION, "false").equals("true");
+                    HtmlProcessor.TABLE_ROW_BORDER_DEFINITION, "false").equals(
+            "true");
     proportionalColumnWidths = config.getConfigProperty
-                (HtmlProcessor.CONFIGURATION_PREFIX + "." +
-                HtmlProcessor.PROPORTIONAL_COLUMN_WIDTHS, "false").equals("true");
+            (HtmlProcessor.CONFIGURATION_PREFIX + "." +
+                    HtmlProcessor.PROPORTIONAL_COLUMN_WIDTHS, "false").equals(
+            "true");
     final String encoding = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
-            HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
+                    HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
     final String title = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
-            HtmlProcessor.TITLE);
+                    HtmlProcessor.TITLE);
 
     try
     {
       this.pout = new PrintWriter(new OutputStreamWriter
-            (filesystem.getRootStream(), encoding), false);
+              (filesystem.getRootStream(), encoding), false);
       if (createBodyFragment == false)
       {
         // write the standard headers
@@ -323,9 +327,9 @@ public class HtmlContentCreator extends TableContentCreator
           }
         }
 
-
         // the style sheet definition will be inserted right before the content is written ...
-        pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
+        pout.print(
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
         pout.print(encoding);
         if (isUseXHTML())
         {
@@ -339,11 +343,13 @@ public class HtmlContentCreator extends TableContentCreator
         pout.print("<title>");
         if (title != null)
         {
-          pout.print(HtmlCharacterEntities.getEntityParser().encodeEntities(title));
+          pout.print(HtmlCharacterEntities.getEntityParser().encodeEntities(
+                  title));
         }
         else
         {
-          pout.print(report.getProperties().get(JFreeReport.NAME_PROPERTY, "<unnamed>"));
+          pout.print(report.getProperties().get(JFreeReport.NAME_PROPERTY,
+                  "<unnamed>"));
         }
         pout.println("</title>");
 
@@ -382,10 +388,8 @@ public class HtmlContentCreator extends TableContentCreator
   }
 
 
-  /**
-   * Closes the report processing.
-   */
-  public void handleClose ()
+  /** Closes the report processing. */
+  public void handleClose()
   {
     try
     {
@@ -405,17 +409,18 @@ public class HtmlContentCreator extends TableContentCreator
     isOpen = false;
   }
 
-  public boolean isCreateBodyFragment ()
+  public boolean isCreateBodyFragment()
   {
     return createBodyFragment;
   }
 
   /**
-   * Commits all bands. See the class description for details on the flushing process.
+   * Commits all bands. See the class description for details on the flushing
+   * process.
    *
    * @return true, if the content was flushed, false otherwise.
    */
-  public boolean handleFlush ()
+  public boolean handleFlush()
   {
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     final GenericObjectTable go = getBackend();
@@ -447,21 +452,26 @@ public class HtmlContentCreator extends TableContentCreator
           if (isDebugReportLayout())
           {
             // this is a spanned cell - ignore it completly
-            pout.println("<!-- Spanned cell @(" + x + ", " + y + ") ignored. -->");
+            pout.println(
+                    "<!-- Spanned cell @(" + x + ", " + y + ") ignored. -->");
           }
           continue;
         }
         if (isDebugReportLayout())
         {
           // this is a spanned cell - ignore it completly
-          pout.println("<!-- cell @(" + x + ", " + y + ") [" + rectangle + "] -->");
+          pout.println(
+                  "<!-- cell @(" + x + ", " + y + ") [" + rectangle + "] -->");
         }
-        printContentCellStart (rectangle, x, y,
-                (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT));
+        printContentCellStart(rectangle, x, y,
+                (ElementAlignment) element.getProperty(
+                        ElementStyleSheet.VALIGNMENT));
 
         final String internalStyleName = layout.getContentStyleAt(y, x);
-        final HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
-        final String cellStyleName = layout.getStyleCollection().getPublicName(style);
+        final HtmlStyle style = layout.getStyleCollection().lookupStyle(
+                internalStyleName);
+        final String cellStyleName = layout.getStyleCollection().getPublicName(
+                style);
 
 
         if (cellStyleName != null && (isCreateBodyFragment() == false))
@@ -481,7 +491,8 @@ public class HtmlContentCreator extends TableContentCreator
           pout.print("<div>");
         }
 
-        final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+        final String hrefTarget = (String) element.getProperty(
+                ElementStyleSheet.HREF_TARGET);
         if (hrefTarget != null)
         {
           pout.print("<a href=\"");
@@ -496,7 +507,8 @@ public class HtmlContentCreator extends TableContentCreator
         }
         else if (isDebugReportLayout())
         {
-          pout.println("<!-- Invalid element @(" + x + ", " + y + ") -->&nbsp;");
+          pout.println(
+                  "<!-- Invalid element @(" + x + ", " + y + ") -->&nbsp;");
         }
 
         if (hrefTarget != null)
@@ -516,9 +528,9 @@ public class HtmlContentCreator extends TableContentCreator
   /**
    * Prints the table data cell definition for a content cell.
    *
-   * @param rectangle the cell's rectangle in the table grid
-   * @param x         the cell's x coordinate
-   * @param y         the cell's y coordinate
+   * @param rectangle        the cell's rectangle in the table grid
+   * @param x                the cell's x coordinate
+   * @param y                the cell's y coordinate
    * @param elementAlignment
    */
   private void printContentCellStart(final TableRectangle rectangle,
@@ -549,7 +561,8 @@ public class HtmlContentCreator extends TableContentCreator
     }
 
     final String internalStyleName = layout.getBackgroundStyleAt(y, x);
-    final TableCellBackground background = layout.getRegionBackground(rectangle);
+    final TableCellBackground background = layout.getRegionBackground(
+            rectangle);
 
     // first, check, whether we have a style ..
     // if not, then create one for the current background
@@ -602,23 +615,27 @@ public class HtmlContentCreator extends TableContentCreator
    *
    * @param y the current row.
    */
-  private void printRowStart (final int y, final int tableWidth)
+  private void printRowStart(final int y, final int tableWidth)
   {
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     final int lastRowHeight = (int)
-            StrictGeomUtility.toExternalValue (layout.getRowHeight(y));
-    final TableRectangle rect = new TableRectangle(0, tableWidth, y, y+1);
+            StrictGeomUtility.toExternalValue(layout.getRowHeight(y));
+    final TableRectangle rect = new TableRectangle(0, tableWidth, y, y + 1);
     final TableCellBackground regionStyle = layout.getRegionBackground(rect);
     final HtmlTableRowStyle rowStyle;
     if (regionStyle == null)
     {
-      rowStyle = new HtmlTableRowStyle(lastRowHeight, null, tableRowBorderDefinition);
+      rowStyle = new HtmlTableRowStyle(lastRowHeight, null,
+              tableRowBorderDefinition);
     }
     else
     {
-      rowStyle = new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor(), tableRowBorderDefinition);
-      rowStyle.setBorderTop(regionStyle.getColorTop(), regionStyle.getBorderSizeTop());
-      rowStyle.setBorderBottom(regionStyle.getColorBottom(), regionStyle.getBorderSizeBottom());
+      rowStyle = new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor(),
+              tableRowBorderDefinition);
+      rowStyle.setBorderTop(regionStyle.getColorTop(),
+              regionStyle.getBorderSizeTop());
+      rowStyle.setBorderBottom(regionStyle.getColorBottom(),
+              regionStyle.getBorderSizeBottom());
     }
 
 
@@ -643,13 +660,14 @@ public class HtmlContentCreator extends TableContentCreator
    * @param x the cell column
    * @param y the cell row.
    */
-  private void printEmptyCell (final int x, final int y)
+  private void printEmptyCell(final int x, final int y)
   {
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     final TableCellBackground background = layout.getElementAt(y, x);
 
     final String internalStyleName = layout.getBackgroundStyleAt(y, x);
-    HtmlStyle style = layout.getStyleCollection().lookupStyle(internalStyleName);
+    HtmlStyle style = layout.getStyleCollection().lookupStyle(
+            internalStyleName);
 
     // empty cell - we still have to check for the background
     // first, check, whether we have a style ..
@@ -693,7 +711,7 @@ public class HtmlContentCreator extends TableContentCreator
     }
   }
 
-  private boolean printAnchors (final TableCellBackground bg)
+  private boolean printAnchors(final TableCellBackground bg)
   {
     if (bg == null)
     {
@@ -717,7 +735,7 @@ public class HtmlContentCreator extends TableContentCreator
     return anchors.length != 0;
   }
 
-  protected PrintWriter getPrintWriter ()
+  protected PrintWriter getPrintWriter()
   {
     return pout;
   }

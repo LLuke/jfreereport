@@ -68,6 +68,22 @@ A list of changes in recent versions:
 
         * All deprecated classes have been removed.
 
+        * The Report configuration is no longer responsible for providing a
+          global configuration. The JFreeReportBoot class holds the global
+          config, which can be retrieved using
+          'JFreeReportBoot.getInstance().getGlobalConfig()'.
+
+          Initializing the log system should be done using the properties
+          file or by querying 'JFreeReportBoot.getInstance().getEditableConfig()'
+          and updating the properties there.
+
+        * Booting JFreeReport before it can be used is now mandatory. Booting
+          is done using 'JFreeReportBoot.getInstance.start()'. Without this
+          initialization, you *will* experience trouble.
+
+        * Added a switch to use either the MasterSelect command or a series of
+          single commands to define the font properties on Epson 9-pin printers.
+
 0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible
           after a pagebreak.

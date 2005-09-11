@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.8 2005/09/05 11:43:24 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.9 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -219,6 +219,7 @@ public abstract class TableContentCreator extends AbstractTableCreator
         {
           // this enlarges the backend table so that getColumnCount() and
           // getRowCount() return the correct value.
+          // but we do no longer clear cells - that was evil. Thanks, Ilkka
           backend.setObject(y2 - 1, x2 - 1, null);
         }
       }
