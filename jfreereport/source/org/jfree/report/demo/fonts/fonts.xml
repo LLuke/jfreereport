@@ -30,11 +30,13 @@
   </groups>
 
   <items height="30" fontname="Monospaced" fontstyle="plain" fontsize="10">
-    <string-field x="0" y="0" width="40%" height="50%" alignment="left" fieldname="fontname"/>
-    <string-field name="SampleElement" x="10%" y="50%" width="90%" height="50%" alignment="left" fieldname="sample"/>
+    <string-field x="0" y="0" width="40%" height="15" alignment="left" fieldname="fontname"/>
+    <string-field name="SampleElement" x="10%" y="50%" width="90%" height="15" 
+                  alignment="left" fieldname="sample" dynamic="true"/>
   </items>
 
   <functions>
+    <property-ref name="sample">The five boxing wizards jump quickly.</property-ref>
     <!-- The fontmod function will change the font of the Element to the fontname specified in field font -->
     <function name="fontmod" class="org.jfree.report.demo.fonts.FontChangeFunction">
       <properties>

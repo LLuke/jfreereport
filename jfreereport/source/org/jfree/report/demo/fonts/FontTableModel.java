@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: FontTableModel.java,v 1.6 2005/04/17 21:08:59 taqua Exp $
+ * $Id: FontTableModel.java,v 1.1 2005/08/29 17:34:40 taqua Exp $
  *
  */
 package org.jfree.report.demo.fonts;
@@ -104,7 +104,7 @@ public class FontTableModel extends AbstractTableModel
    */
   public int getColumnCount ()
   {
-    return 3;
+    return 2;
   }
 
   /**
@@ -134,10 +134,7 @@ public class FontTableModel extends AbstractTableModel
     {
       return "fontname";
     }
-    else
-    {
-      return "sample";
-    }
+    throw new IndexOutOfBoundsException();
   }
 
   /**
@@ -157,7 +154,7 @@ public class FontTableModel extends AbstractTableModel
     {
       return fonts[row].getName();
     }
-    return "The five boxing wizards jump quickly.";
+    throw new IndexOutOfBoundsException();
   }
 
 }

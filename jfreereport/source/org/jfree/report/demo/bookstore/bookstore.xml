@@ -16,30 +16,13 @@
     else
 
  -->
-<!--
-  ChangeLog:
-   2002-May-20: Adjusted the width of 0 to be "100%". The parser does translate values of 0 to
-                the full width, but will issue at least a warning. The "Thankyouforyourorder"
-                field now uses multiple lines and uses the autolinebreak capabilities of TextElement.
-
--->
 <report name="Invoice" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
   <configuration>
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">Identity-H</property>
     <property name="org.jfree.report.modules.output.pageable.pdf.EmbedFonts">true</property>
     <property name="org.jfree.report.targets.table.TableWriter.SheetNameFunction">sheetNameExpression</property>
   </configuration>
-  <!--
-    Needs some better control when to display the page header. Group should be able to declare whether a
-    pageheader should be displayed or not
 
-    <pageheader onfirstpage="false" height="17" fontname="SansSerif" fontstyle="plain" fontsize="11">
-      <label x="0" y="0" width="450" height="12" alignment="right">Salingers Bookstore - you'll get what you deserve</label>
-      <line  x1="0" y1="15" x2="0" y2="15" weight="0.5"/>
-    </pageheader>
-    <pageheader height="40"/>
-    <pagefooter height="0"/>
-   -->
   <groups>
     <group name="Customer">
       <groupheader height="355" fontname="SansSerif" fontstyle="plain" fontsize="11" pagebreak-before-print="true">
@@ -47,7 +30,7 @@
         <label name="Line2" x="0" y="24" width="200" height="12" alignment="left">19a Hollow Road</label>
         <label name="Line3" x="0" y="48" width="200" height="12" alignment="left">9999 Boston</label>
         <!-- Silly demo of JFreeReports Image Capabilies. Uses WMF, JPG, GIF or PNG files as source -->
-        <drawableref x="200" y="48" width="100" height="90" src="butterfly.wmf" name="logo"/>
+        <drawableref name="logo" x="200" y="48" width="100" height="90" src="butterfly.wmf"/>
         <string-field name="FName" x="0" y="84" width="200" height="12" alignment="left" fieldname="name"/>
         <string-field name="FStreet" x="0" y="96" width="200" height="12" alignment="left" fieldname="street"/>
         <string-field name="FTown" x="0" y="120" width="200" height="12" alignment="left" fieldname="town"/>
@@ -99,6 +82,12 @@ John W. Who, Salesman</label>
     <number-field x="400" y="0" width="70" height="12" alignment="left" format="'$' #,##0.00" fieldname="total"/>
   </items>
   <functions>
+    <!--
+    This expression is used when exporting to table targets, like HTML or Excel.
+    The name of this expression is referenced by the configuration key
+    "org.jfree.report.targets.table.TableWriter.SheetNameFunction" in the
+    configuration section above.
+     -->
     <expression name="sheetNameExpression" class="org.jfree.report.function.TextFormatExpression">
       <properties>
         <property name="pattern">{0}, {1}</property>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CardDemo.java,v 1.5 2005/08/08 15:36:27 taqua Exp $
+ * $Id: CardDemo.java,v 1.6 2005/08/29 17:30:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,9 @@ import org.jfree.report.demo.helper.DemoSelector;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A JFreeReport demo.
+ * The card demo shows how to use JFreeReport to print multiple cards on a
+ * single page. It also offers a way to work around JFreeReport's need to print
+ * all bands over the complete page width.
  *
  * @author Thomas Morgner.
  */

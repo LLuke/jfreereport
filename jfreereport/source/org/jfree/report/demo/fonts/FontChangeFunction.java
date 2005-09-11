@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.6 2005/02/23 21:04:43 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.1 2005/08/29 17:34:40 taqua Exp $
  *
  * Changes
  * -------
@@ -36,12 +36,11 @@
 package org.jfree.report.demo.fonts;
 
 import java.awt.Font;
-import java.io.Serializable;
 
+import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.TextElement;
-import org.jfree.report.event.ReportEvent;
-import org.jfree.report.function.AbstractFunction;
+import org.jfree.report.function.AbstractElementFormatFunction;
 import org.jfree.report.style.FontDefinition;
 
 /**
@@ -57,10 +56,8 @@ import org.jfree.report.style.FontDefinition;
  *
  * @author Thomas Morgner
  */
-public class FontChangeFunction extends AbstractFunction implements Serializable
+public class FontChangeFunction extends AbstractElementFormatFunction
 {
-  private String element;
-
   /**
    * DefaultConstructor.
    */
@@ -69,25 +66,11 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
   }
 
 
-  /**
-   * Before an ItemBand is printed, the report generator will call itemsAdvanced for all
-   * functions in the function collection. This is the right place to alter the font of
-   * the element defined in the "element" property, so that every ItemBand has the font
-   * set, that is defined in the data model.
-   *
-   * @param event the report event.
-   */
-  public void itemsAdvanced (final ReportEvent event)
+  protected void processRootBand(Band b)
   {
-    // if this is a preparerun, nothing gets printed and so no font change is required.
-    if (event.getState().isPrepareRun())
-    {
-      return;
-    }
-
     // Try to get the name of the font to be set.
     // If the name is null, return without an excpetion, just do nothing.
-    final String fontname = (String) event.getDataRow().get(1);
+    final String fontname = (String) getDataRow().get(1);
     if (fontname == null)
     {
       return;
@@ -95,7 +78,7 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
 
     // Lookup the element by name. If there no element found, the getElement function
     // returns null, so we have to check this case.
-    final Element e = event.getReport().getItemBand().getElement(getElement());
+    final Element e = b.getElement(getElement());
 
     // set the font if an element was found.
     if (e != null && (e instanceof TextElement))
@@ -103,30 +86,6 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
       final TextElement tx = (TextElement) e;
       tx.getStyle().setFontDefinitionProperty(new FontDefinition(new Font(fontname, Font.PLAIN, 10)));
     }
-  }
-
-  /**
-   * Defines the name of the text element that gets its font altered. If the element does
-   * not exist or is no text element, the function will do nothing.
-   * <p/>
-   * This functions property is reachable by using the key "element" on getProperty.
-   *
-   * @param name the element name.
-   */
-  public void setElement (final String name)
-  {
-    this.element = name;
-  }
-
-  /**
-   * Returns the name of the element that should get the font set. Returns an empty
-   * string, if the property is not set.
-   *
-   * @return the element name.
-   */
-  public String getElement ()
-  {
-    return element;
   }
 
   /**
