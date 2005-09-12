@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.6 2005/09/06 11:40:19 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.7 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -289,6 +289,7 @@ public class JFreeReportBoot extends AbstractBoot
     mgr.addModule(DefaultLogModule.class.getName());
     mgr.load("org.jfree.report.modules.");
     mgr.load("org.jfree.report.ext.modules.");
+    mgr.load("org.jfree.report.userdefined.modules.");
 
     bootAdditionalModules();
     mgr.initializeModules();
