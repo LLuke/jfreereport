@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AnchorFieldTemplate.java,v 1.3 2005/03/03 23:00:00 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,10 @@ package org.jfree.report.filter.templates;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.AnchorFilter;
 import org.jfree.report.filter.DataRowDataSource;
+import org.jfree.report.filter.ReportConnectable;
 
 public class AnchorFieldTemplate extends AbstractTemplate
+  implements ReportConnectable
 {
   /**
    * The data-row data source.

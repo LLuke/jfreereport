@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.23 2005/04/09 17:43:13 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.24 2005/09/04 13:15:06 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
 package org.jfree.report.modules.output.table.base;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.jfree.report.Anchor;
 import org.jfree.report.content.Content;
@@ -57,10 +57,9 @@ import org.jfree.report.util.geom.StrictBounds;
  *
  * @author Thomas Morgner
  */
-public strictfp class TableCellBackground
-        extends MetaElement implements Cloneable
+public class TableCellBackground extends MetaElement implements Cloneable
 {
-  private ArrayList anchors;
+  private HashSet anchors;
 
   /** The top border's size. */
   private float borderSizeTop;
@@ -291,11 +290,10 @@ public strictfp class TableCellBackground
    * new elements get added to an already existing background definition.
    * Therefore only the given new background is normalized - the existing
    * definition must already be normalized.
-   * <p>
+   * <p/>
    * In this method, we assume, that the given background definition will
-   * overlay <code>this</code> background. Therefore the borders and colors
-   * of the background are considered more significant than this ones.
-   *
+   * overlay <code>this</code> background. Therefore the borders and colors of
+   * the background are considered more significant than this ones.
    *
    * @param background the other background cell
    * @return a union of the background informations.
@@ -310,7 +308,7 @@ public strictfp class TableCellBackground
             (bounds.getHeight() == 0 || bounds.getWidth() == 0);
     final boolean otherIsALine =
             (backgroundBounds.getHeight() == 0 ||
-             backgroundBounds.getWidth() == 0);
+                    backgroundBounds.getWidth() == 0);
 
     // merge the borders: CellBounds are most likely totally wrong.
     // we correct that here.
@@ -355,7 +353,7 @@ public strictfp class TableCellBackground
       {
         if (merged.anchors == null)
         {
-          merged.anchors = new ArrayList(background.anchors);
+          merged.anchors = new HashSet(background.anchors);
         }
         else
         {
@@ -382,8 +380,8 @@ public strictfp class TableCellBackground
   /**
    * Creates an splitted instance of this background for the given bounds. This
    * method updates the borders to fit the new bounds. If the old border
-   * position is no longer valid, the border is removed. It does not add any
-   * new information.
+   * position is no longer valid, the border is removed. It does not add any new
+   * information.
    *
    * @return a copy of this background with new bounds.
    */
@@ -394,6 +392,16 @@ public strictfp class TableCellBackground
       final StrictBounds originalBounds = getBounds();
       final TableCellBackground bg = (TableCellBackground) clone();
       bg.setBounds((StrictBounds) bounds.clone());
+
+      // check, whether the upper left corner of the old bounds will still
+      // be part of this background and remove the anchors if needed.
+      if (bounds.contains(originalBounds.getX(), originalBounds.getY()) == false)
+      {
+        if (bg.anchors != null)
+        {
+          bg.anchors.clear();
+        }
+      }
 
       final long orgX2 = originalBounds.getX() + originalBounds.getWidth();
       final long orgY2 = originalBounds.getY() + originalBounds.getHeight();
@@ -444,6 +452,16 @@ public strictfp class TableCellBackground
       final StrictBounds originalBounds = getBounds();
       final TableCellBackground bg = (TableCellBackground) clone();
       bg.setBounds((StrictBounds) bounds.clone());
+
+      // check, whether the upper left corner of the old bounds will still
+      // be part of this background and remove the anchors if needed.
+      if (bounds.contains(originalBounds.getX(), originalBounds.getY()) == false)
+      {
+        if (bg.anchors != null)
+        {
+          bg.anchors.clear();
+        }
+      }
 
       final long orgX2 = originalBounds.getX() + originalBounds.getWidth();
       final long orgY2 = originalBounds.getY() + originalBounds.getHeight();
@@ -504,18 +522,6 @@ public strictfp class TableCellBackground
     }
   }
 
-//
-//  /**
-//   * Updates the border positions (the effective bounds of this cell) after
-//   * a layout-split-operation.
-//   *
-//   * @param bounds the new bounds.
-//   */
-//  public void updateBorderPositions (final StrictBounds bounds)
-//  {
-//    this.cellBounds.setRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-//  }
-
   /**
    * Adds two colors, the result is the mixed color of the base color and the
    * paint color.
@@ -542,7 +548,7 @@ public strictfp class TableCellBackground
             (base.getGreen() * deltaAlpha + paint.getGreen() * effectiveAlpha);
     final int blue = (int)
             (base.getBlue() * deltaAlpha + paint.getBlue() * effectiveAlpha);
-    return new Color (red, green, blue, effectiveAlpha * 255);
+    return new Color(red, green, blue, effectiveAlpha * 255);
   }
 
   /**
@@ -680,9 +686,22 @@ public strictfp class TableCellBackground
     final TableCellBackground tb = (TableCellBackground) super.clone();
     if (anchors != null)
     {
-      tb.anchors = (ArrayList) anchors.clone();
+      tb.anchors = (HashSet) anchors.clone();
     }
     return tb;
+  }
+
+  public boolean hasAnchors()
+  {
+    if (anchors == null)
+    {
+      return false;
+    }
+    if (anchors.isEmpty())
+    {
+      return false;
+    }
+    return true;
   }
 
   public Anchor[] getAnchors()
@@ -702,7 +721,7 @@ public strictfp class TableCellBackground
     }
     if (anchors == null)
     {
-      anchors = new ArrayList();
+      anchors = new HashSet();
     }
     anchors.add(anchor);
   }

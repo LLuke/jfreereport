@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.14 2005/09/04 16:45:51 taqua Exp $
+ * $Id: SheetLayout.java,v 1.15 2005/09/05 11:43:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -243,6 +243,9 @@ public class SheetLayout
    * Adds the bounds of the given TableCellData to the grid. The bounds given
    * must be the same as the bounds of the element, or the layouting might
    * produce surprising results.
+   * <p/>
+   * This method will do nothing, if the element has a width and height of zero
+   * and does not define any anchors.
    *
    * @param element the position that should be added to the grid (might be
    *                null).
@@ -251,15 +254,36 @@ public class SheetLayout
   public void add(final MetaElement element)
   {
     final StrictBounds bounds = element.getBounds();
+    final boolean isBackground = (element instanceof TableCellBackground);
 
+    // an indicator flag whether this cell is an anchor point.
+    final boolean isAnchor;
     if (bounds.getWidth() == 0 && bounds.getHeight() == 0)
     {
-      return;
+      if (isBackground)
+      {
+        TableCellBackground bgr = (TableCellBackground) element;
+        if (bgr.hasAnchors())
+        {
+          isAnchor = true;
+        }
+        else
+        {
+          return;
+        }
+      }
+      else
+      {
+        return;
+      }
+    }
+    else
+    {
+      isAnchor = false;
     }
 
     final long elementRightX = (bounds.getWidth() + bounds.getX());
     final long elementBottomY = (bounds.getHeight() + bounds.getY());
-    final boolean isBackground = (element instanceof TableCellBackground);
 
     // collect the bounds and add them to the xBounds and yBounds collection
     // if necessary...
@@ -299,7 +323,11 @@ public class SheetLayout
     {
       final TableCellBackground background = (TableCellBackground) element;
 
-      if (yKeys.length == 1 || bounds.getHeight() == 0)
+      if (isAnchor)
+      {
+        processAnchorBackground(yKeys[0], xKeys[0], background);
+      }
+      else if (yKeys.length == 1 || bounds.getHeight() == 0)
       {
         processHorizontalLine(yKeys[0], xKeys, background);
       }
@@ -373,7 +401,7 @@ public class SheetLayout
     final long width;
     if (rect.getX2() == xCuts.length)
     {
-      width = Math.max (1, xCuts[xCuts.length - 1].longValue() - x);
+      width = Math.max(1, xCuts[xCuts.length - 1].longValue() - x);
     }
     else
     {
@@ -387,7 +415,7 @@ public class SheetLayout
     }
     else
     {
-      height = Math.max (1, yCuts[yCuts.length - 1].longValue() - y);
+      height = Math.max(1, yCuts[yCuts.length - 1].longValue() - y);
     }
 
     // now we have to join all backgrounds of all cells to get the real
@@ -408,16 +436,7 @@ public class SheetLayout
     {
       retval.setBorderLeft(null, 0);
     }
-//    if (isVerticalBorderValid(rect, mappedX2, false))
-//    {
-//      retval.setBorderRight(bgBottomRight.getColorRight(),
-//              bgBottomRight.getBorderSizeRight());
-//    }
-//    else
-//    {
-//      retval.setBorderRight(null, 0);
-//    }
-//
+
     if (isHorizontalBorderValid(rect, mappedY1, true))
     {
       retval.setBorderTop(bgTopLeft.getColorTop(),
@@ -427,15 +446,7 @@ public class SheetLayout
     {
       retval.setBorderTop(null, 0);
     }
-//    if (isHorizontalBorderValid(rect, mappedY2, false))
-//    {
-//      retval.setBorderBottom(bgBottomRight.getColorBottom(),
-//              bgBottomRight.getBorderSizeBottom());
-//    }
-//    else
-//    {
-//      retval.setBorderBottom(null, 0);
-//    }
+
     return retval;
   }
 
@@ -449,7 +460,8 @@ public class SheetLayout
         final int mappedLoopX1 = mapColumn(tx);
         final int mappedLoopY1 = mapRow(ty);
         final TableCellBackground bg =
-                (TableCellBackground) backend.getObject(mappedLoopY1, mappedLoopX1);
+                (TableCellBackground) backend.getObject(mappedLoopY1,
+                        mappedLoopX1);
         if (bg == null)
         {
           retval.setColor(null);
@@ -582,6 +594,23 @@ public class SheetLayout
       }
     }
     return false;
+  }
+
+
+  private void processAnchorBackground(final Map.Entry yKey,
+                                       final Map.Entry xKey,
+                                       final TableCellBackground background)
+  {
+    final BoundsCut currentRowValue = (BoundsCut) yKey.getValue();
+    final int currentRowIndex = currentRowValue.getPosition();
+
+    final BoundsCut currentColumnValue = (BoundsCut) xKey.getValue();
+    final int currentColumnIndex = currentColumnValue.getPosition();
+
+    workBounds = computeCellBounds
+            (workBounds, (Long) xKey.getKey(), (Long) yKey.getKey());
+    performMergeCellBackground
+            (currentRowIndex, currentColumnIndex, background, workBounds);
   }
 
   private void processVerticalLine(final Map.Entry[] yKeys,
@@ -720,6 +749,7 @@ public class SheetLayout
     retval.setRect(xVal, yVal, x2Val - xVal, y2Val - yVal);
     return retval;
   }
+
 
   private void performMergeCellBackground(final int currentRowIndex,
                                           final int currentColumnIndex,
@@ -997,7 +1027,8 @@ public class SheetLayout
     }
     catch (NullPointerException npe)
     {
-      throw new IllegalStateException("There is no column at " + xcuts[xCutIndex]);
+      throw new IllegalStateException(
+              "There is no column at " + xcuts[xCutIndex]);
     }
   }
 
@@ -1009,7 +1040,7 @@ public class SheetLayout
       final BoundsCut boundsCut = (BoundsCut) yBounds.get(ycuts[yCutIndex]);
       return boundsCut.getPosition();
     }
-    catch(NullPointerException npe)
+    catch (NullPointerException npe)
     {
       throw new IllegalStateException("There is no row at " + ycuts[yCutIndex]);
     }
@@ -1320,8 +1351,7 @@ public class SheetLayout
       bottomBorder = yMaxBounds;
     }
 
-    final long retval = bottomBorder - yCuts[row].longValue();
-    return retval;
+    return bottomBorder - yCuts[row].longValue();
   }
 
   /**

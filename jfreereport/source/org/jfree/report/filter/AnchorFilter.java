@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AnchorFilter.java,v 1.2 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ public class AnchorFilter implements DataFilter
 {
   private DataSource dataSource;
 
-  public AnchorFilter ()
+  public AnchorFilter()
   {
   }
 
@@ -54,14 +54,20 @@ public class AnchorFilter implements DataFilter
    * Clones this <code>DataSource</code>.
    *
    * @return the clone.
-   *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone ()
+  public Object clone()
           throws CloneNotSupportedException
   {
     final AnchorFilter af = (AnchorFilter) super.clone();
-    af.dataSource = null;
+    if (dataSource == null)
+    {
+      af.dataSource = null;
+    }
+    else
+    {
+      af.dataSource = (DataSource) dataSource.clone();
+    }
     return af;
   }
 
@@ -70,20 +76,20 @@ public class AnchorFilter implements DataFilter
    *
    * @return the value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     if (dataSource == null)
     {
       return null;
     }
     final Object value = dataSource.getValue();
-    if (value instanceof Anchor)
-    {
-      return value;
-    }
     if (value == null)
     {
       return null;
+    }
+    if (value instanceof Anchor)
+    {
+      return value;
     }
     return new Anchor(String.valueOf(value));
   }
@@ -93,7 +99,7 @@ public class AnchorFilter implements DataFilter
    *
    * @return The datasource.
    */
-  public DataSource getDataSource ()
+  public DataSource getDataSource()
   {
     return dataSource;
   }
@@ -103,7 +109,7 @@ public class AnchorFilter implements DataFilter
    *
    * @param ds The data source.
    */
-  public void setDataSource (final DataSource ds)
+  public void setDataSource(final DataSource ds)
   {
     this.dataSource = ds;
   }
