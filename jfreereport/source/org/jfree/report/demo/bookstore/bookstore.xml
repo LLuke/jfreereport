@@ -16,7 +16,7 @@
     else
 
  -->
-<report name="Invoice" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
+<report name="Bookstore Demo" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
   <configuration>
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">Identity-H</property>
     <property name="org.jfree.report.modules.output.pageable.pdf.EmbedFonts">true</property>

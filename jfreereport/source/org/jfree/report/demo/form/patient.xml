@@ -3,7 +3,7 @@
                         "http://jfreereport.sourceforge.net/report-085.dtd">
 
 <!-- This report only accepts A4 paper (595x842 pt) -->
-<report name="Patient treatment" orientation="portrait"
+<report name="Patient Form Demo" orientation="portrait"
   pageformat="A4" topmargin="10" leftmargin="10" bottommargin="10" rightmargin="10">
 
   <!--

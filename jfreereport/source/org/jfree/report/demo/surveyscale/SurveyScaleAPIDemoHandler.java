@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleAPIDemoHandler.java,v 1.1 2005/08/29 17:42:36 taqua Exp $
+ * $Id: SurveyScaleAPIDemoHandler.java,v 1.2 2005/09/07 14:25:09 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,6 @@ import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.function.ItemCountFunction;
 import org.jfree.report.function.PageOfPagesFunction;
-import org.jfree.report.function.TextFormatExpression;
 import org.jfree.report.modules.misc.survey.SurveyScale;
 import org.jfree.report.modules.misc.survey.SurveyScaleExpression;
 import org.jfree.report.util.PageFormatFactory;

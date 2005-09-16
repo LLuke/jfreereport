@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.17 2005/04/09 17:43:13 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.18 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
@@ -210,13 +211,8 @@ public class PaintComponentFunction extends AbstractFunction
             (strictBounds.getWidth(), strictBounds.getHeight());
     comp.setSize((int) dim.getWidth(), (int) dim.getHeight());
 
-    // supplies the peer and allows drawing ...
-    synchronized (peerSupply)
+    if (comp instanceof Window)
     {
-      peerSupply.add(comp, BorderLayout.CENTER);
-      peerSupply.setSize((int) dim.getWidth(), (int) dim.getHeight());
-      peerSupply.validate();
-
       final BufferedImage bi =
               ImageUtils.createTransparentImage
               ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
@@ -226,7 +222,27 @@ public class PaintComponentFunction extends AbstractFunction
       comp.paint(graph);
       graph.dispose();
       image = bi;
-      peerSupply.remove(comp);
+    }
+    else
+    {
+      // supplies the peer and allows drawing ...
+      synchronized (peerSupply)
+      {
+        peerSupply.add(comp, BorderLayout.CENTER);
+        peerSupply.setSize((int) dim.getWidth(), (int) dim.getHeight());
+        peerSupply.validate();
+
+        final BufferedImage bi =
+                ImageUtils.createTransparentImage
+                ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
+        final Graphics2D graph = bi.createGraphics();
+        graph.setBackground(new Color(0, 0, 0, 0));
+        graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
+        comp.paint(graph);
+        graph.dispose();
+        image = bi;
+        peerSupply.remove(comp);
+      }
     }
   }
 

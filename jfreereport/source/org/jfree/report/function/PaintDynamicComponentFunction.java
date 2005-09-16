@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.11 2005/02/23 21:04:47 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.12 2005/03/16 21:06:48 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -232,25 +233,34 @@ public class PaintDynamicComponentFunction extends AbstractFunction
 
     final Component comp = (Component) o;
 
-    // supplies the peer and allows drawing ...
-    synchronized (peerSupply)
+    if (comp instanceof Window)
     {
-      final Dimension dim = comp.getSize();
-
-      peerSupply.add(comp);
-      peerSupply.setSize(dim);
-      peerSupply.validate();
-
-      final BufferedImage bi =
-              ImageUtils.createTransparentImage
-              ((int) scale * dim.width, (int) scale * dim.height);
-      final Graphics2D graph = bi.createGraphics();
-      graph.setBackground(new Color(0, 0, 0, 0));
-      graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
-      comp.paint(graph);
-      graph.dispose();
-      return bi;
+      Window w = (Window) comp;
+      w.pack();
     }
+    else
+    {
+      peerSupply.add(comp);
+      peerSupply.pack();
+    }
+
+    // supplies the peer and allows drawing ...
+    final Dimension dim = comp.getSize();
+
+    final int width = Math.max (1, (int) scale * dim.width);
+    final int height = Math.max (1, (int) scale * dim.height);
+    Log.warn ("Creating image with: " + width + ", " + height);
+    final BufferedImage bi =
+            ImageUtils.createTransparentImage(width, height);
+    final Graphics2D graph = bi.createGraphics();
+    graph.setBackground(new Color(0, 0, 0, 0));
+    graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
+    comp.paint(graph);
+    graph.dispose();
+
+    peerSupply.removeAll();
+
+    return bi;
   }
 
   /**

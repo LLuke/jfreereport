@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.11 2005/08/08 15:36:27 taqua Exp $
+ * $Id: PaintComponentDemoHandler.java,v 1.1 2005/08/29 17:35:44 taqua Exp $
  *
  * Changes
  * -------
@@ -39,14 +39,19 @@
 package org.jfree.report.demo.functions;
 
 import java.net.URL;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JFileChooser;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
+import org.jfree.report.modules.gui.pdf.PDFSaveDialog;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
 
@@ -57,13 +62,19 @@ import org.jfree.util.ObjectUtilities;
  */
 public class PaintComponentDemoHandler extends AbstractXmlDemoHandler
 {
+  private PaintComponentTableModel tableModel;
+
   /**
    * Constructs the demo application.
-   *
-   * @param title the frame title.
    */
   public PaintComponentDemoHandler ()
   {
+    tableModel = new PaintComponentTableModel();
+    tableModel.addComponent(new JButton ("A button"));
+    tableModel.addComponent(new JLabel ("A Label"));
+    tableModel.addComponent(new JCheckBox ("A CheckBox"));
+    tableModel.addComponent(new JFileChooser ());
+    tableModel.addComponent(new JColorChooser ());
   }
 
   public String getDemoName()
@@ -73,7 +84,9 @@ public class PaintComponentDemoHandler extends AbstractXmlDemoHandler
 
   public JFreeReport createReport() throws ReportDefinitionException
   {
-    return parseReport();
+    final JFreeReport report = parseReport();
+    report.setData(tableModel);
+    return report;
   }
 
   public URL getDemoDescriptionSource()
@@ -82,9 +95,11 @@ public class PaintComponentDemoHandler extends AbstractXmlDemoHandler
             ("paint-component.html", PaintComponentDemoHandler.class);
   }
 
+
+
   public JComponent getPresentationComponent()
   {
-    return new JPanel();
+    return createDefaultTable(tableModel);
   }
 
   public URL getReportDefinitionSource()

@@ -380,16 +380,17 @@ be used to verify the correctness of an tablemodel implementation.
 
 The module has no external dependencies.
 
-4.4.5 misc-configstore-base
+4.4.4 misc-configstore-base
 
 The config store is used to store property files in a location independent
 way. This module contains base classes for the config store, and depends
 on no other modules.
 
-4.4.6 misc-configstore-filesystem
+4.4.5 misc-configstore-filesystem
 
 The filesystem config store provides a method to write the stored property
 files into a repository located in the local filesystem.
 
 This module will not work without the "misc-configstore-base".
 
+4.4.6 misc-bsh
