@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.9 2005/02/23 21:06:04 taqua Exp $
+ * $Id: StartState.java,v 1.10 2005/09/04 13:15:07 taqua Exp $
  *
  * Changes
  * -------
@@ -108,6 +108,9 @@ public final class StartState extends ReportState
 
     // a PropertyHandler should set the properties.
     setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
+    // always make the raw data available for those who need non-linear access
+    setProperty(JFreeReport.REPORT_DATASOURCE_PROPERTY,
+            getDataRowBackend().getTablemodel());
 
     // the pageformat is added to the report properties, PageFormat is not serializable,
     // so a repaginated report is no longer serializable.
@@ -146,7 +149,7 @@ public final class StartState extends ReportState
   }
 
   /**
-   * Resets the state.
+   * Resets the state. Made this method public for this state. 
    */
   public void resetState ()
   {

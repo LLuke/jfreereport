@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.24 2005/08/29 17:56:45 taqua Exp $
+ * $Id: JFreeReport.java,v 1.25 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -240,6 +240,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    * compute text sizes from within functions.
    */
   public static final String REPORT_LAYOUT_SUPPORT = "report.layout-support";
+  public static final String REPORT_DATASOURCE_PROPERTY = "report.datasource";
 
   /**
    * Information about the JFreeReport class library.
