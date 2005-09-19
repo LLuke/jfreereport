@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.24 2005/08/08 15:36:34 taqua Exp $
+ * $Id: TableWriter.java,v 1.25 2005/08/10 14:22:21 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
+import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
@@ -72,7 +73,7 @@ import org.jfree.report.util.geom.StrictBounds;
  */
 public strictfp class TableWriter
         extends AbstractFunction
-        implements PageEventListener, SimplePageLayoutWorker
+        implements PageEventListener, SimplePageLayoutWorker, PrepareEventListener
 {
   /**
    * A constant defining the tablewriters default function level.
@@ -787,5 +788,10 @@ public strictfp class TableWriter
   {
     // this method is left empty, we dont handle rollback events.
     // TableProcessors do not generate that event type ...
+  }
+
+  public void prepareEvent(ReportEvent event)
+  {
+    getLayoutSupport().getCache().flushDynamicCache();
   }
 }

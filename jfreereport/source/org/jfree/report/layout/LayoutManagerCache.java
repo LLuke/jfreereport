@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.14 2005/08/08 15:36:30 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.15 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ public class LayoutManagerCache
    */
   private static class ElementCacheCarrier
   {
+    private boolean dynamic;
     /**
      * The minimum size.
      */
@@ -72,6 +73,16 @@ public class LayoutManagerCache
      */
     public ElementCacheCarrier ()
     {
+    }
+
+    public boolean isDynamic()
+    {
+      return dynamic;
+    }
+
+    public void setDynamic(final boolean dynamic)
+    {
+      this.dynamic = dynamic;
     }
 
     /**
@@ -130,6 +141,7 @@ public class LayoutManagerCache
    * The element cache.
    */
   private final HashMap elementCache;
+  private final HashMap dynamicCache;
 
   /**
    * Default constructor.
@@ -137,6 +149,7 @@ public class LayoutManagerCache
   public LayoutManagerCache ()
   {
     elementCache = new HashMap();
+    dynamicCache = new HashMap();
   }
 
   /**
@@ -147,7 +160,7 @@ public class LayoutManagerCache
    */
   public StrictDimension getMinSize (final Object e)
   {
-    final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
+    final ElementCacheCarrier ec = lookupCacheEntry(e);
     if (ec == null)
     {
       return null;
@@ -161,6 +174,17 @@ public class LayoutManagerCache
     return null;
   }
 
+  private ElementCacheCarrier lookupCacheEntry(final Object e)
+  {
+    final ElementCacheCarrier staticCacheEntry =
+            (ElementCacheCarrier) elementCache.get(e);
+    if (staticCacheEntry != null)
+    {
+      return staticCacheEntry;
+    }
+    return (ElementCacheCarrier) dynamicCache.get(e);
+  }
+
   /**
    * Returns the preferred size of ???.
    *
@@ -169,7 +193,7 @@ public class LayoutManagerCache
    */
   public StrictDimension getPrefSize (final Object e)
   {
-    final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
+    final ElementCacheCarrier ec = lookupCacheEntry(e);
     if (ec == null)
     {
       return null;
@@ -184,7 +208,7 @@ public class LayoutManagerCache
   }
 
   /**
-   * Sets the minimum size of ???.
+   * Sets the minimum size of the element as computed by the layout manager.
    *
    * @param element the element.
    * @param d       the minimum size.
@@ -197,22 +221,43 @@ public class LayoutManagerCache
     }
     putCount++;
 
-    ElementCacheCarrier ec = (ElementCacheCarrier)
-            elementCache.get(element.getObjectID());
+    final boolean dynamic = element.isDynamicContent();
+    ElementCacheCarrier ec = lookupCacheEntry(element.getObjectID());
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
       ec.setMinSize(d.getLockedInstance());
-      elementCache.put(element.getObjectID(), ec);
+      ec.setDynamic(dynamic);
+      if (dynamic)
+      {
+        dynamicCache.put(element.getObjectID(), ec);
+      }
+      else
+      {
+        elementCache.put(element.getObjectID(), ec);
+      }
     }
     else
     {
       ec.setMinSize(d.getLockedInstance());
+      if (dynamic != ec.isDynamic())
+      {
+        if (dynamic)
+        {
+          dynamicCache.put(element.getObjectID(), ec);
+          elementCache.remove(element.getObjectID());
+        }
+        else
+        {
+          elementCache.put(element.getObjectID(), ec);
+          dynamicCache.remove(element.getObjectID());
+        }
+      }
     }
   }
 
   /**
-   * Sets the preferred size of ???.
+   * Sets the preferred size of the element as computed by the layout manager.
    *
    * @param element the element.
    * @param d       the minimum size.
@@ -226,17 +271,31 @@ public class LayoutManagerCache
 
     putCount++;
 
-    ElementCacheCarrier ec = (ElementCacheCarrier)
-            elementCache.get(element.getObjectID());
+    final boolean dynamic = element.isDynamicContent();
+    ElementCacheCarrier ec = lookupCacheEntry(element.getObjectID());
     if (ec == null)
     {
       ec = new ElementCacheCarrier();
       ec.setPrefSize(d.getLockedInstance());
+      ec.setDynamic(dynamic);
       elementCache.put(element.getObjectID(), ec);
     }
     else
     {
       ec.setPrefSize(d.getLockedInstance());
+      if (dynamic != ec.isDynamic())
+      {
+        if (dynamic)
+        {
+          dynamicCache.put(element.getObjectID(), ec);
+          elementCache.remove(element.getObjectID());
+        }
+        else
+        {
+          elementCache.put(element.getObjectID(), ec);
+          dynamicCache.remove(element.getObjectID());
+        }
+      }
     }
   }
 
@@ -254,12 +313,13 @@ public class LayoutManagerCache
     }
 
     // if the element is dynamic, then it is not cachable ...
-    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
-    {
-      e.getStyle().setBooleanStyleProperty
-              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
-      return false;
-    }
+    // docmark: Dynamic height does not mean, that the element is not cachable ..
+//    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
+//    {
+//      e.getStyle().setBooleanStyleProperty
+//              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
+//      return false;
+//    }
 
     if (e instanceof Band)
     {
@@ -287,6 +347,11 @@ public class LayoutManagerCache
     elementCache.clear();
   }
 
+  public void flushDynamicCache ()
+  {
+    dynamicCache.clear();
+  }
+  
   /**
    * Prints debugging information.
    */

@@ -43,13 +43,14 @@ module-file=$${module-${module}-file}</echo>
   <target name="javadoc" depends="init">
     <delete dir="javadoc"/>
     <mkdir dir="javadoc"/>
-    <javadoc destdir="javadoc"
+    <javadoc destdir="javadoc" maxmemory="128m"
       windowtitle="JFreeReport Class Library"
       overview="source/overview.html">
       <classpath>
         <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${libdir}/${jaxp-jar-file}" />
+        <pathelement location="${libdir}/${bsf-jar-file}" />
         <pathelement location="${libdir}/${beanshell-jar-file}" />
         <pathelement location="${libdir}/${itext-jar-file}" />
         <pathelement location="${libdir}/${pixie-jar-file}" />
@@ -180,7 +181,17 @@ module-file=$${module-${module}-file}</echo>
     <mkdir dir="distribution"/>
     <!-- copy across Licences -->
     <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
-    <copy file="maven-jfreereport-project.xml" tofile="distribution/project.xml"/>
+    <filterchain id="version.filters">
+       <replacetokens>
+         <token key="VERSION" value="${jfreereport.version}"/>
+         <token key="JCOMMON.VERSION" value="${jcommon.version}"/>
+       </replacetokens>
+    </filterchain>
+
+    <copy file="maven-jfreereport-project.xml" tofile="distribution/project.xml">
+      <filterchain refid="version.filters"/>
+    </copy>
+
     <copy file="${jfreereport-all-jar-file}" tofile="distribution/${jfreereport-all-jar-file}"/>
 
     <!-- make the jar -->

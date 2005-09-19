@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.28 2005/08/12 12:09:42 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.29 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ import org.jfree.report.util.geom.StrictGeomUtility;
  *
  * @author Thomas Morgner
  */
-public strictfp class SimplePageLayouter extends PageLayouter
+public class SimplePageLayouter extends PageLayouter
         implements PrepareEventListener, SimplePageLayoutWorker
 {
   /**
@@ -1107,6 +1107,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
 //    {
 //      clearCurrentEvent();
 //    }
+    getLogicalPage().getLayoutSupport().getCache().flushDynamicCache();
   }
 
   public boolean isWatermarkSupported ()

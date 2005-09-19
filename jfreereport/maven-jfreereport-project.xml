@@ -6,7 +6,7 @@
   <id>jfreereport</id>
   <name>JFreeReport</name>
   <groupId>jfree</groupId>
-  <currentVersion>0.8.5-5</currentVersion>
+  <currentVersion>@VERSION@</currentVersion>
   <organization>
     <name>JFree.org</name>
     <url>http://www.jfree.org/</url>
@@ -67,15 +67,14 @@
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jcommon</artifactId>
-      <version>1.0.0-pre3</version>
+      <version>@JCOMMON.VERSION@</version>
       <url>http://www.jfree.org/jcommon/</url>
     </dependency>
 
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jcommon-xml</artifactId>
-      <version>1.0.0-pre3</version>
-      <jar>jcommon-1.0.0-pre3-xml.jar</jar>
+      <version>@JCOMMON.VERSION@</version>
       <url>http://www.jfree.org/jcommon/</url>
     </dependency>
 
@@ -84,6 +83,13 @@
       <artifactId>pixie</artifactId>
       <version>0.8.4</version>
       <url>http://www.jfree.org/pixie/</url>
+    </dependency>
+
+    <dependency>
+      <groupId>bsf</groupId>
+      <artifactId>bsf</artifactId>
+      <version>2.3.0</version>
+      <url>http://jakarta.apache.org/bsf</url>
     </dependency>
 
     <dependency>
@@ -97,7 +103,6 @@
       <groupId>gnujaxp</groupId>
       <artifactId>gnujaxp</artifactId>
       <version>1.0.0</version>
-      <jar>gnujaxp.jar</jar>
       <url>http://www.gnu.org/software/classpathx/jaxp/jaxp.html</url>
     </dependency>
     

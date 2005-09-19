@@ -31,6 +31,16 @@ A list of changes in recent versions:
           if not using CSS, messed up the export. The fix alters the font size
           to one point, and therefore minimizes the effect. Bug #1277122.
 
+        * [BUG] Ilkka fixed the Anchor support in JFreeReport. The Anchor element
+          is now fully functional.
+
+        * [BUG] The XML-Parsers replaced the content for marked report properties,
+          even if the report definition document did not specify any value for
+          them. This bug prevented to mark the 'report.name' property.
+
+        * [BUG] A bug in the TotalGroupSumQuotient-function family caused the
+          functions to return invalid results.
+
         * The HTML renderer now has an option to switch to proportional column
           widths. The resulting table will consume the complete page width.
           (Patch #1282043)
@@ -88,6 +98,10 @@ A list of changes in recent versions:
           the system maintained report property 'report.datasource'. If the
           property is marked, even expressions will be able to access the
           datasource.
+
+        * The layout manager is now able to apply limited caching to dynamic
+          elements. Although still slower than static elements, this caching
+          prevents unneccessary recomputations between layouting and printing.
 
 0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible

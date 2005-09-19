@@ -25,6 +25,66 @@
 
   <!-- ************************************************************** -->
   <!--                                                                -->
+  <!--  Bean scripting framework modules                              -->
+  <!--                                                                -->
+  <!--  Depends on: Core task                                         -->
+  <!-- ************************************************************** -->
+
+  <target name="init-module-misc-bsf" depends="init" >
+    <available file="${libdir}/${bsf-jar-file}" type="file" property="bsf-jar-file-present"/>
+    <fail unless="bsf-jar-file-present">
+      The file ${libdir}/${bsf-jar-file} was not found in the lib directory.
+      This file is required to build the BSF module.
+    </fail>
+
+  </target>
+
+  <target name="compile-module-misc-bsf"
+    depends="init-module-misc-bsf">
+    <description>
+      Compiles the BSF (Bean-Scripting-Framework) module classes of JFreeReport.
+      This contains the BSFExpression. The task will fail, if the BSF
+      jar is not found.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <!-- We exclude all module implementations by default -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/modules/misc/bsf/*"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${bsf-jar-file}"/>
+        <pathelement location="${core-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <antcall target="copy-resources-misc-bsf" inheritAll="true"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-misc-bsf-file}"
+         basedir="build">
+      <manifest>
+          <attribute name="Class-Path" value="${core-jar-file} ${manifest-lib-prefix}${bsf-jar-file}"/>
+      </manifest>
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build" />
+  </target>
+
+  <target name="copy-resources-misc-bsf">
+    <copy file="source/org/jfree/report/modules/misc/bsf/module.properties"
+      tofile="build/org/jfree/report/modules/misc/bsf/module.properties"/>
+  </target>
+
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
   <!--  Bean shell modules                                            -->
   <!--                                                                -->
   <!--  Depends on: Core task                                         -->
@@ -302,10 +362,12 @@
     copy-resources-misc-configstore-filesystem,
     copy-resources-misc-tablemodel,
     copy-resources-misc-beanshell,
+    copy-resources-misc-bsf,
     copy-resources-misc-survey" />
 
   <target name="compile"
     depends="compile-module-misc-beanshell,
+    compile-module-misc-bsf,
     compile-module-misc-tablemodel,
     compile-module-misc-configstore,
     compile-module-misc-configstore-filesystem,

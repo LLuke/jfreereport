@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: CreateHyperLinksFunction.java,v 1.2 2005/03/03 23:00:00 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,13 @@ package org.jfree.report.function;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 
+/**
+ * Adds hyperlinks to all elements with the name specified in 'element'. The
+ * link target is read from a specified field. The column referenced by this
+ * field should contain URLs or Strings.
+ *
+ * @author Thomas Morgner
+ */
 public class CreateHyperLinksFunction extends AbstractElementFormatFunction
 {
   private String field;

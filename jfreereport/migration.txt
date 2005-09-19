@@ -3,6 +3,21 @@ releases. It contains hints on how to upgrade to a new version and how
 to cope with the possible changes of the report behaviour.
 
 ---------------------------------------------------------------------------
+Changes from 0.8.5 to 0.8.6
+
+* The report system does no longer boot automaticly when accessing the
+  report properties. The report engine *must* be initialized manually
+  by calling 'JFreeReportBoot.getInstance().start()' prior to using it.
+
+* The ReportConfiguration class can not be used to access the global
+  configuration anymore. The global configuration is now accessible using
+  'JFreeReportBoot.getInstance().getConfiguration()' or one of the
+  various alias methods like 'getEditableConfiguration()'.
+
+* The ItemColumnQuotientExpression has been deprecated. The same functionality
+  is now provided by the 'PercentageExpression'.
+
+  
 Changes from 0.8.4-* to 0.8.5-4
 
 * Functions and expressions are no longer handled specially during the

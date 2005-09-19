@@ -29,6 +29,7 @@
         <pathelement location="${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${libdir}/${pixie-jar-file}"/>
         <pathelement location="${libdir}/${beanshell-jar-file}"/>
+        <pathelement location="${libdir}/${bsf-jar-file}"/>
         <pathelement location="${libdir}/${jaxp-jar-file}"/>
         <pathelement location="${libdir}/${itext-jar-file}"/>
         <pathelement location="${libdir}/${jakarta-poi-jar-file}"/>
@@ -42,7 +43,7 @@
       basedir="build">
       <manifest>
         <attribute name="Class-Path"
-          value="${manifest-lib-prefix}${jcommon-jar-file} ${manifest-lib-prefix}${pixie-jar-file} ${manifest-lib-prefix}${beanshell-jar-file} ${manifest-lib-prefix}${jaxp-jar-file} ${manifest-lib-prefix}${itext-jar-file} ${manifest-lib-prefix}${jakarta-poi-jar-file}"/>
+          value="${manifest-lib-prefix}${jcommon-jar-file} ${manifest-lib-prefix}${pixie-jar-file} ${manifest-lib-prefix}${bsf-jar-file} ${manifest-lib-prefix}${beanshell-jar-file} ${manifest-lib-prefix}${jaxp-jar-file} ${manifest-lib-prefix}${itext-jar-file} ${manifest-lib-prefix}${jakarta-poi-jar-file}"/>
       </manifest>
     </jar>
 

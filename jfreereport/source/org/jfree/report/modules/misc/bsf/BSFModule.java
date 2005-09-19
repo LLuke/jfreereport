@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BeanShellModule.java,v 1.9 2005/02/23 21:05:03 taqua Exp $
+ * $Id: BSFModule.java,v 1.1 2005/09/12 18:04:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,13 +38,10 @@
 
 package org.jfree.report.modules.misc.bsf;
 
-import java.io.InputStream;
-
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.report.modules.misc.beanshell.BSHExpression;
 
 /**
  * The module definition for the bean scripting framework support module.
@@ -77,21 +74,14 @@ public class BSFModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    final InputStream in =
-            ObjectUtilities.getClassLoader(getClass()).getResourceAsStream(BSHExpression.BSHHEADERFILE);
-    if (in == null)
-    {
-      throw new ModuleInitializeException("Unable to locate BSHHeaderFile. " +
-              "This file is required to execute the BeanShellExpressions.");
-    }
     try
     {
-      ObjectUtilities.getClassLoader(getClass()).loadClass("bsh.Interpreter");
+      ObjectUtilities.getClassLoader(getClass()).loadClass("org.apache.bsf.BSFManager");
     }
     catch (Exception e)
     {
-      throw new ModuleInitializeException("Unable to load the bean shell interpreter class. " +
-              "This class is required to execute the BeanShellExpressions.");
+      throw new ModuleInitializeException("Unable to load the bean scripting framework manager class. " +
+              "This class is required to execute the BSFExpressions.");
     }
   }
 }
