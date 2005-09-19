@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ValueConverter.java,v 1.3 2005/03/03 23:00:27 taqua Exp $
+ * $Id: ValueConverter.java,v 1.4 2005/05/08 15:41:16 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package org.jfree.report.util.beans;
 /**
  * A value converter is an object that can transform an object into a string or vice
  * versa.
+ *
+ * @author Thomas Morgner
  */
 public interface ValueConverter
 {

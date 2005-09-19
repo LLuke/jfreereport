@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: BeanException.java,v 1.3 2005/03/03 23:00:26 taqua Exp $
  *
  * Changes
  * -------
@@ -42,17 +42,37 @@ package org.jfree.report.util.beans;
 
 import org.jfree.util.StackableException;
 
+/**
+ * The BeanException class signals errors when setting or reading bean
+ * properties.
+ *
+ * @author Thomas Morgner
+ */
 public class BeanException extends StackableException
 {
+  /**
+   * DefaultConstructor.
+   */
   public BeanException ()
   {
   }
 
+  /**
+   * Creates a new BeanException with the given message and parent exception.
+   *
+   * @param message the message text
+   * @param ex the parent exception
+   */
   public BeanException (final String message, final Exception ex)
   {
     super(message, ex);
   }
 
+  /**
+   * Creates a new BeanException with the given message.
+   *
+   * @param message the message.
+   */
   public BeanException (final String message)
   {
     super(message);
