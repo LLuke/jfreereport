@@ -163,6 +163,8 @@
     <copy file="source/org/jfree/report/demo/demo.properties"
       tofile="build/jfreereport.properties"/>
 
+    <copy file="resource/jlfgr-1_0.jar" tofile="build/jlfgr-1_0.jar"/>
+
   </target>
 
   <target name="all" depends="init, compile"/>

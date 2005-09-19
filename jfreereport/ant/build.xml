@@ -181,6 +181,7 @@ module-file=$${module-${module}-file}</echo>
     <mkdir dir="distribution"/>
     <!-- copy across Licences -->
     <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
+
     <filterchain id="version.filters">
        <replacetokens>
          <token key="VERSION" value="${jfreereport.version}"/>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.10 2005/08/08 15:36:27 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.1 2005/08/29 17:42:57 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
   {
     if (url == null)
     {
-      url = ObjectUtilities.getResource("jlfgr-1_0.jar", SwingIconsDemoTableModel.class);
+      url = ObjectUtilities.getResource("/jlfgr-1_0.jar", SwingIconsDemoTableModel.class);
       if (url == null)
       {
         Log.warn("Unable to find jlfgr-1_0.jar inside the classpath.\n"
