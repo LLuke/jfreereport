@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: FunctionsReadHandler.java,v 1.3 2005/03/03 23:00:20 taqua Exp $
  *
  * Changes
  * -------
@@ -123,11 +123,19 @@ public class FunctionsReadHandler extends AbstractPropertyXmlReadHandler
       final PropertyReferenceReadHandler readHandler =
               (PropertyReferenceReadHandler) propertyRefs.get(i);
       final Object object = readHandler.getObject();
+      report.setPropertyMarked(readHandler.getPropertyName(), true);
       if (object != null)
       {
+        if (object instanceof String)
+        {
+          String text = (String) object;
+          if (text.length() == 0)
+          {
+            continue;
+          }
+        }
         report.setProperty(readHandler.getPropertyName(), object);
       }
-      report.setPropertyMarked(readHandler.getPropertyName(), true);
     }
   }
 

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.10 2005/04/15 18:46:58 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.11 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,6 @@ import org.jfree.util.Log;
  * @author Thomas Morgner
  */
 public class TotalGroupSumQuotientFunction extends AbstractFunction
-        implements Serializable
 {
 
   /**
@@ -166,6 +165,21 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
     {
       dividendResults.clear();
       divisorResults.clear();
+      groupDividend = new GroupSum();
+      groupDivisor = new GroupSum();
+      if (getGroup() == null)
+      {
+        dividendResults.add(groupDividend);
+        divisorResults.add(groupDivisor);
+      }
+    }
+    else
+    {
+      if (getGroup() == null)
+      {
+        groupDividend = (GroupSum) dividendResults.get(0);
+        groupDivisor = (GroupSum) divisorResults.get(0);
+      }
     }
   }
 
@@ -189,16 +203,15 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
 
       groupDivisor = new GroupSum();
       divisorResults.add(groupDivisor);
+
+      currentIndex = divisorResults.size() - 1;
     }
     else
     {
-      if (event.getState().isPrepareRun() == false)
-      {
-        // Activate the current group, which was filled in the prepare run.
-        currentIndex += 1;
-        groupDividend = (GroupSum) dividendResults.get(currentIndex);
-        groupDivisor = (GroupSum) divisorResults.get(currentIndex);
-      }
+      // Activate the current group, which was filled in the prepare run.
+      currentIndex += 1;
+      groupDividend = (GroupSum) dividendResults.get(currentIndex);
+      groupDivisor = (GroupSum) divisorResults.get(currentIndex);
     }
   }
 
@@ -216,34 +229,39 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
     }
 
     // sum up dividend column
-    Object fieldValue = event.getDataRow().get(getDividend());
+    final Object dividendFieldValue = event.getDataRow().get(getDividend());
     // do not add when field is null
-    if (fieldValue != null)
+    if (dividendFieldValue instanceof Number == false)
     {
-      try
-      {
-        final Number n = (Number) fieldValue;
-        groupDividend.add(n);
-      }
-      catch (Exception e)
-      {
-        Log.error("ItemSumFunction.advanceItems(): problem adding dividend.");
-      }
+      return;
     }
+
     // sum up divisor column
-    fieldValue = event.getDataRow().get(getDivisor());
+    final Object divisorFieldValue = event.getDataRow().get(getDivisor());
     // do not add when field is null
-    if (fieldValue != null)
+    if (divisorFieldValue instanceof Number == false)
     {
-      try
-      {
-        final Number n = (Number) fieldValue;
-        groupDivisor.add(n);
-      }
-      catch (Exception e)
-      {
-        Log.error("ItemSumFunction.advanceItems(): problem adding divisor.");
-      }
+      return;
+    }
+
+    try
+    {
+      final Number n = (Number) dividendFieldValue;
+      groupDividend.add(n);
+    }
+    catch (Exception e)
+    {
+      Log.error("TotalGroupSumQuotientFunction.advanceItems(): problem adding dividend.");
+    }
+
+    try
+    {
+      final Number n = (Number) divisorFieldValue;
+      groupDivisor.add(n);
+    }
+    catch (Exception e)
+    {
+      Log.error("TotalGroupSumQuotientFunction.advanceItems(): problem adding divisor.");
     }
   }
 
@@ -356,6 +374,4 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
     dividendResults = new ArrayList();
     divisorResults = new ArrayList();
   }
-
-
 }

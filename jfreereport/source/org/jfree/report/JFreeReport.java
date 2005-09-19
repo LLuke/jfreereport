@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.25 2005/09/07 14:23:49 taqua Exp $
+ * $Id: JFreeReport.java,v 1.26 2005/09/16 16:11:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -241,6 +241,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    */
   public static final String REPORT_LAYOUT_SUPPORT = "report.layout-support";
   public static final String REPORT_DATASOURCE_PROPERTY = "report.datasource";
+  public static final String REPORT_LOCALIZATION_PROPERTY = "report.localization";
 
   /**
    * Information about the JFreeReport class library.

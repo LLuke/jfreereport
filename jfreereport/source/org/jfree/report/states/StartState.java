@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.10 2005/09/04 13:15:07 taqua Exp $
+ * $Id: StartState.java,v 1.11 2005/09/16 16:11:18 taqua Exp $
  *
  * Changes
  * -------
@@ -111,6 +111,8 @@ public final class StartState extends ReportState
     // always make the raw data available for those who need non-linear access
     setProperty(JFreeReport.REPORT_DATASOURCE_PROPERTY,
             getDataRowBackend().getTablemodel());
+    setProperty(JFreeReport.REPORT_LOCALIZATION_PROPERTY, 
+            getReport().getResourceBundleFactory());
 
     // the pageformat is added to the report properties, PageFormat is not serializable,
     // so a repaginated report is no longer serializable.

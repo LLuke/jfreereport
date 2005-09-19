@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.4 2005/02/23 21:05:25 taqua Exp $
+ * $Id: SurveyScale.java,v 1.5 2005/08/29 17:56:46 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,8 @@ import org.jfree.util.ShapeUtilities;
  */
 public class SurveyScale implements Drawable
 {
+  private static final Number[] EMPTY_VALUES = new Number[0];
+
   /** The lowest response value on the scale. */
   private int lowest;
 
@@ -134,7 +136,7 @@ public class SurveyScale implements Drawable
   /** Creates a new default instance. */
   public SurveyScale()
   {
-    this(1, 5, null);
+    this(1, 5, EMPTY_VALUES);
   }
 
   /**
@@ -150,7 +152,14 @@ public class SurveyScale implements Drawable
 
     this.lowest = lowest;
     this.highest = highest;
-    this.values = values;
+    if (values == null)
+    {
+      this.values = EMPTY_VALUES;
+    }
+    else
+    {
+      this.values = (Number[]) values.clone();
+    }
 
     this.drawTickMarks = true;
     this.tickMarkPaint = Color.gray;
@@ -627,7 +636,7 @@ public class SurveyScale implements Drawable
 
     // draw data values...
     final Number[] values = getValues();
-    if (values == null)
+    if (values.length == 0)
     {
       return;
     }
@@ -744,9 +753,8 @@ public class SurveyScale implements Drawable
 
     final double upperBound = getUpperBound();
     final double lowerBound = getLowerBound();
-    return area.getMinX()
-            + ((value - lowerBound) / (upperBound - lowerBound) * area
-            .getWidth());
+    return area.getMinX() + ((value - lowerBound) /
+            (upperBound - lowerBound) * area .getWidth());
 
   }
 }

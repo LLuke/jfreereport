@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.13 2005/02/23 21:04:47 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.14 2005/04/14 17:48:28 taqua Exp $
  *
  * Changes
  * -------
@@ -150,7 +150,7 @@ public final class FunctionUtilities
 
   /**
    * Returns true, if the current run level is defined for the given function and this is
-   * a prepare run.
+   * a prepare run. The prepare run is used to compute the function values.
    *
    * @param f     the function.
    * @param event the event.

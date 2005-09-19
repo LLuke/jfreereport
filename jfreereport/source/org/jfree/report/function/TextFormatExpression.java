@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.6 2005/08/29 17:56:46 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.7 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,9 @@ import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.jfree.report.JFreeReport;
+import org.jfree.report.ResourceBundleFactory;
 
 /**
  * A TextFormatExpression uses a java.text.MessageFormat to concat and format one or more
@@ -66,8 +69,6 @@ import java.util.Arrays;
  * </pre>
  *
  * @author Thomas Morgner
- * @deprecated This class does not support locales, use the new MessageField or
- * a function instead
  */
 public class TextFormatExpression extends AbstractExpression implements Serializable
 {
@@ -95,7 +96,17 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   public Object getValue ()
   {
-    return MessageFormat.format(getPattern(), getFieldValues());
+    Object localesSupport = getDataRow().get(JFreeReport.REPORT_LOCALIZATION_PROPERTY);
+    if (localesSupport instanceof ResourceBundleFactory == false)
+    {
+      return MessageFormat.format(getPattern(), getFieldValues());
+    }
+
+    final ResourceBundleFactory factory = (ResourceBundleFactory) localesSupport;
+    final MessageFormat format = new MessageFormat("");
+    format.setLocale(factory.getLocale());
+    format.applyPattern(getPattern());
+    return format.format(getFieldValues());
   }
 
   /**

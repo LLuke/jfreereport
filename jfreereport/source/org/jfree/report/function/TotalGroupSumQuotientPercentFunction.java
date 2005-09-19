@@ -29,7 +29,7 @@
  * Contributor(s): Thomas Morgner, David Gilbert (for Simba Management Limited)
  * for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.6 2005/04/15 18:46:58 taqua Exp $
+ * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.7 2005/08/08 15:36:30 taqua Exp $
  *
  * Changes
  * -------
@@ -38,16 +38,6 @@
  */
 
 package org.jfree.report.function;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-
-import org.jfree.report.event.ReportEvent;
-import org.jfree.util.Log;
-
 
 /**
  * A report function that calculates the quotient of two summed fields (columns) from the
@@ -70,292 +60,19 @@ import org.jfree.util.Log;
  *
  * @author Thomas Morgner
  */
-public class TotalGroupSumQuotientPercentFunction extends AbstractFunction
-        implements Serializable
+public class TotalGroupSumQuotientPercentFunction extends TotalGroupSumQuotientFunction
 {
-  /**
-   * Helperclass to make summing easier.
-   */
-  private static class GroupSum implements Serializable
+  public TotalGroupSumQuotientPercentFunction()
   {
-    /**
-     * The result.
-     */
-    private BigDecimal result;
+  }
 
-    /**
-     * Default constructor.
-     */
-    public GroupSum ()
+  public Object getValue()
+  {
+    Double value = (Double) super.getValue();
+    if (value.isNaN())
     {
-      result = new BigDecimal(0);
+      return value;
     }
-
-    /**
-     * Adds a number to the result.
-     *
-     * @param n the number.
-     */
-    public void add (final Number n)
-    {
-      result = result.add(new BigDecimal(n.toString()));
-    }
-
-    /**
-     * Returns the sum.
-     *
-     * @return the sum.
-     */
-    public BigDecimal getResult ()
-    {
-      return result;
-    }
+    return new Double(value.doubleValue() * 100);
   }
-
-  /**
-   * The group sums for dividend and divisor.
-   */
-  private transient GroupSum groupDividend;
-
-  /**
-   * The group divisor.
-   */
-  private transient GroupSum groupDivisor;
-
-  /**
-   * A list of results.
-   */
-  private transient ArrayList dividendResults;
-
-  /**
-   * A list of divisor results.
-   */
-  private transient ArrayList divisorResults;
-
-  /**
-   * The current index.
-   */
-  private transient int currentIndex;
-
-  private String group;
-  private String dividend;
-  private String divisor;
-
-  /**
-   * Constructs a new function. <P> Initially the function has no name...be sure to assign
-   * one before using the function.
-   */
-  public TotalGroupSumQuotientPercentFunction ()
-  {
-    groupDividend = new GroupSum();
-    groupDivisor = new GroupSum();
-    dividendResults = new ArrayList();
-    divisorResults = new ArrayList();
-  }
-
-  /**
-   * Receives notification that the report has started.
-   *
-   * @param event the event.
-   */
-  public void reportInitialized (final ReportEvent event)
-  {
-    currentIndex = -1;
-
-    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
-    {
-      dividendResults.clear();
-      divisorResults.clear();
-    }
-  }
-
-  /**
-   * Receives notification that a group has started.
-   *
-   * @param event the event.
-   */
-  public void groupStarted (final ReportEvent event)
-  {
-    if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
-    {
-// wrong group ...
-      return;
-    }
-
-    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
-    {
-      groupDividend = new GroupSum();
-      dividendResults.add(groupDividend);
-
-      groupDivisor = new GroupSum();
-      divisorResults.add(groupDivisor);
-    }
-    else
-    {
-      if (FunctionUtilities.isLayoutLevel(event))
-      {
-        // Activate the current group, which was filled in the prepare run.
-        currentIndex += 1;
-        groupDividend = (GroupSum) dividendResults.get(currentIndex);
-        groupDivisor = (GroupSum) divisorResults.get(currentIndex);
-      }
-    }
-  }
-
-
-  /**
-   * Receives notification that a row of data is being processed.
-   *
-   * @param event the event.
-   */
-  public void itemsAdvanced (final ReportEvent event)
-  {
-    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
-    {
-      return;
-    }
-
-// sum up dividend column
-    Object fieldValue = event.getDataRow().get(getDividend());
-// do not add when field is null
-    if (fieldValue != null)
-    {
-      try
-      {
-        final Number n = (Number) fieldValue;
-        groupDividend.add(n);
-      }
-      catch (Exception e)
-      {
-        Log.error("ItemSumFunction.advanceItems(): problem adding dividend.");
-      }
-    }
-// sum up divisor column
-    fieldValue = event.getDataRow().get(getDivisor());
-// do not add when field is null
-    if (fieldValue != null)
-    {
-      try
-      {
-        final Number n = (Number) fieldValue;
-        groupDivisor.add(n);
-      }
-      catch (Exception e)
-      {
-        Log.error("ItemSumFunction.advanceItems(): problem adding divisor.");
-      }
-    }
-  }
-
-  /**
-   * Returns the name of the group to be totalled.
-   *
-   * @return the group name.
-   */
-  public String getGroup ()
-  {
-    return group;
-  }
-
-  /**
-   * Defines the name of the group to be totalled. If the name is null, all groups are
-   * totalled.
-   *
-   * @param group the group name.
-   */
-  public void setGroup (final String group)
-  {
-    this.group = group;
-  }
-
-  /**
-   * Return the current function value. <P> The value depends (obviously) on the function
-   * implementation. For example, a page counting function will return the current page
-   * number.
-   *
-   * @return The value of the function.
-   */
-  public Object getValue ()
-  {
-    final BigDecimal dividend = groupDividend.getResult();
-    final BigDecimal divisor = groupDivisor.getResult();
-    if (divisor.intValue() == 0)
-    {
-      return new Double(Double.NaN);
-    }
-    return new Double(dividend.doubleValue() / divisor.doubleValue() * 100);
-  }
-
-  /**
-   * Returns the field used as dividend by the function. <P> The field name corresponds to
-   * a column name in the report's TableModel.
-   *
-   * @return The field name.
-   */
-  public String getDividend ()
-  {
-    return dividend;
-  }
-
-  /**
-   * Returns the field used as divisor by the function. <P> The field name corresponds to
-   * a column name in the report's TableModel.
-   *
-   * @return The field name.
-   */
-  public String getDivisor ()
-  {
-    return divisor;
-  }
-
-  /**
-   * Sets the field name to be used as dividend for the function. <P> The field name
-   * corresponds to a column name in the report's TableModel.
-   *
-   * @param dividend the field name (null not permitted).
-   */
-  public void setDividend (final String dividend)
-  {
-    this.dividend = dividend;
-  }
-
-  /**
-   * Sets the field name to be used as divisor for the function. <P> The field name
-   * corresponds to a column name in the report's TableModel.
-   *
-   * @param divisor the field name (null not permitted).
-   */
-  public void setDivisor (final String divisor)
-  {
-    this.divisor = divisor;
-  }
-
-  /**
-   * Return a completly separated copy of this function. The copy does no longer share any
-   * changeable objects with the original function.
-   *
-   * @return a copy of this function.
-   */
-  public Expression getInstance ()
-  {
-    final TotalGroupSumQuotientPercentFunction function =
-            (TotalGroupSumQuotientPercentFunction) super.getInstance();
-    function.groupDividend = new GroupSum();
-    function.groupDivisor = new GroupSum();
-    function.dividendResults = new ArrayList();
-    function.divisorResults = new ArrayList();
-    return function;
-  }
-
-  private void readObject (final ObjectInputStream in)
-          throws IOException, ClassNotFoundException
-  {
-    in.defaultReadObject();
-    groupDividend = new GroupSum();
-    groupDivisor = new GroupSum();
-    dividendResults = new ArrayList();
-    divisorResults = new ArrayList();
-  }
-
-
 }

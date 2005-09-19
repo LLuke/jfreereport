@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.16 2005/03/03 21:50:46 taqua Exp $
+ * $Id: ReportState.java,v 1.17 2005/06/25 17:52:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -484,8 +484,8 @@ public abstract class ReportState implements Cloneable
    */
   public boolean isPrepareRun ()
   {
-    final Boolean bool = (Boolean) getProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY,
-            Boolean.FALSE);
+    final Boolean bool = (Boolean)
+            getProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
     return bool.booleanValue();
   }
 
