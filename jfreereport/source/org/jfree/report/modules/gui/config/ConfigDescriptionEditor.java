@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.15 2005/08/08 15:36:30 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.16 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,6 +102,11 @@ import org.jfree.util.ResourceBundleSupport;
  */
 public class ConfigDescriptionEditor extends JFrame
 {
+  /** A configuration key to define the Font used in the editor. */
+  protected static final String EDITOR_FONT_KEY = "org.jfree.report.modules.gui.config.EditorFont";
+  /** A configuration key to define the Font size used in the editor. */ 
+  protected static final String EDITOR_FONT_SIZE_KEY = "org.jfree.report.modules.gui.config.EditorFontSize";
+
   /**
    * An internal constant to activate the class detail editor.
    */
@@ -641,8 +646,6 @@ public class ConfigDescriptionEditor extends JFrame
    * The currently selected detail editor type.
    */
   private int type;
-  protected static final String EDITOR_FONT_KEY = "org.jfree.report.modules.gui.config.EditorFont";
-  protected static final String EDITOR_FONT_SIZE_KEY = "org.jfree.report.modules.gui.config.EditorFontSize";
 
 
   /**

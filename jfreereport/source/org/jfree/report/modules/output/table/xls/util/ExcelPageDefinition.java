@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelPageDefinition.java,v 1.3 2005/01/25 00:17:15 taqua Exp $
+ * $Id: ExcelPageDefinition.java,v 1.4 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,8 @@ package org.jfree.report.modules.output.table.xls.util;
 /**
  * A read only page format mapping definiton to map a page format to an predefined excel
  * constant.
+ *
+ * @author Thomas Morgner
  */
 public final class ExcelPageDefinition
 {

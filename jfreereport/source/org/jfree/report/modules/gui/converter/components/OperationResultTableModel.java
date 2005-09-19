@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: OperationResultTableModel.java,v 1.8 2005/01/25 00:05:05 taqua Exp $
+ * $Id: OperationResultTableModel.java,v 1.9 2005/02/23 21:04:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -129,6 +129,16 @@ public class OperationResultTableModel extends AbstractTableModel
       System.arraycopy(data, 0, this.data, 0, data.length);
       fireTableDataChanged();
     }
+  }
+
+  /**
+   * Returns the operation result data as large huge array.
+   *
+   * @return the data stored in this tablemodel.
+   */
+  public OperationResult[] getData()
+  {
+    return (OperationResult[]) data.clone();
   }
 
   /**

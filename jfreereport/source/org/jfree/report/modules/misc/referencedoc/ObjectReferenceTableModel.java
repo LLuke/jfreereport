@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.6 2005/02/23 21:05:23 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.7 2005/04/17 21:09:00 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -143,6 +143,13 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    */
   private class ClassNameComparator implements Comparator
   {
+    /**
+     * Default-Constructor.
+     */
+    public ClassNameComparator()
+    {
+    }
+
     /**
      * Compares its two arguments for order.  Returns a negative integer, zero, or a
      * positive integer as the first argument is less than, equal to, or greater than the

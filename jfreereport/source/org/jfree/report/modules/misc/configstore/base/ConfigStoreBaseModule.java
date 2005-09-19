@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigStoreBaseModule.java,v 1.6 2005/01/25 00:08:20 taqua Exp $
+ * $Id: ConfigStoreBaseModule.java,v 1.7 2005/02/23 21:05:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -65,7 +65,7 @@ public class ConfigStoreBaseModule extends AbstractModule
    * Initalizes the module. This method is empty.
    *
    * @throws ModuleInitializeException if an error occured.
-   * @see org.jfree.report.modules.Module#initialize()
+   * @see org.jfree.base.modules.Module#initialize()
    */
   public void initialize ()
           throws ModuleInitializeException

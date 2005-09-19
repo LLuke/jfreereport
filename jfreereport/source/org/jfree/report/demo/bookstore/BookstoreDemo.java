@@ -26,7 +26,7 @@
  * (C)opyright 2000-2005, by Simba Management Limited.
  *
  *
- * $Id: BookstoreTableModel.java,v 1.1 2005/08/29 17:30:33 taqua Exp $
+ * $Id: BookstoreDemo.java,v 1.2 2005/09/11 10:29:57 taqua Exp $
  *
  */
 package org.jfree.report.demo.bookstore;
@@ -47,7 +47,7 @@ import org.jfree.util.ObjectUtilities;
  * A demo showing how to print simple invoices. Other invoice-like reports
  * can be found in the package {@link org.jfree.report.demo.invoice}.
  *
- * @author: Thomas Morgner
+ * @author Thomas Morgner
  */
 public class BookstoreDemo extends AbstractXmlDemoHandler
 {

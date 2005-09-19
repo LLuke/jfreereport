@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.9 2005/02/19 15:41:22 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.10 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -107,7 +107,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   public void pageStarted (final ReportEvent event)
   {
     pagebreak = false;
-    trigger = !getInitialTriggerValue(); // docmark
+    trigger = !getInitialState();
     togglecount = getNumberOfElements();
     count = 0;
     triggerVisibleState(event);
@@ -142,7 +142,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   public void itemsStarted (final ReportEvent event)
   {
     pagebreak = false;
-    trigger = !getInitialTriggerValue(); // docmark
+    trigger = !getInitialState();
     togglecount = getNumberOfElements();
     count = 0;
   }
@@ -158,7 +158,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   {
     if (pagebreak)
     {
-      trigger = !getInitialTriggerValue(); // docmark
+      trigger = !getInitialState();
       togglecount = getNumberOfElements();
       pagebreak = false;
     }
@@ -216,11 +216,23 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * Gets the initial value for the visible trigger, either "true" or "false".
    *
    * @return the initial value for the trigger.
+   * @deprecated use getInitialState instead.
    */
   public boolean getInitialTriggerValue ()
   {
     return initialState;
   }
+
+  /**
+   * Gets the initial value for the visible trigger, either "true" or "false".
+   *
+   * @return the initial value for the trigger.
+   */
+  public boolean getInitialState ()
+  {
+    return initialState;
+  }
+
 
   /**
    * Sets the element name. The name denotes an element within the item band. The element

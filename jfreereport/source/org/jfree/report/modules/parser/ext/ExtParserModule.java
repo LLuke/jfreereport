@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.9 2005/01/25 00:19:00 taqua Exp $
+ * $Id: ExtParserModule.java,v 1.10 2005/02/23 21:05:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -64,6 +64,7 @@ public class ExtParserModule extends AbstractModule
    * Initalizes the module. This performs the external initialization and checks that an
    * JAXP1.1 parser is available.
    *
+   * @param subSystem the subsystem for this module.
    * @throws ModuleInitializeException if an error occured.
    */
   public void initialize (SubSystem subSystem)

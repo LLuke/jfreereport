@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StrictBounds.java,v 1.5 2005/03/24 22:24:57 taqua Exp $
+ * $Id: StrictBounds.java,v 1.6 2005/08/10 18:04:46 taqua Exp $
  *
  * Changes
  * -------
@@ -185,6 +185,12 @@ public class StrictBounds implements Serializable, Cloneable
     return width == 0 || height == 0;
   }
 
+  /**
+   * Returns a copy of this bounds object. This method will never throw a
+   * 'CloneNotSupportedException'.
+   *
+   * @return the cloned instance.
+   */
   public Object clone ()
   {
     try
@@ -219,11 +225,7 @@ public class StrictBounds implements Serializable, Cloneable
     {
       return false;
     }
-    if (y > (this.y + this.height))
-    {
-      return false;
-    }
-    return true;
+    return y <= (this.y + this.height);
   }
 
 
@@ -233,7 +235,7 @@ public class StrictBounds implements Serializable, Cloneable
    *
    * @param rect1 the first rectangle.
    * @param rect2 the second rectangle.
-   * @return A boolean.
+   * @return true, if the rectangles intersect each other, false otherwise.
    */
   public static boolean intersects (final StrictBounds rect1,
                                     final StrictBounds rect2)
@@ -252,15 +254,28 @@ public class StrictBounds implements Serializable, Cloneable
             y <= y0 + rect1.getHeight());
   }
 
+  /**
+   * Adds the given bounds to this bounds instance. The resulting rectangle
+   * will fully contain both rectangles.
+   *
+   * @param bounds the rectangle that should be added.
+   */
   public void add (final StrictBounds bounds)
   {
     final long x1 = Math.min(getX(), bounds.getX());
-    final long x2 = Math.max(getX() + getWidth(), bounds.getX() + bounds.getWidth());
     final long y1 = Math.min(getY(), bounds.getY());
+    final long x2 = Math.max(getX() + getWidth(), bounds.getX() + bounds.getWidth());
     final long y2 = Math.max(getY() + getHeight(), bounds.getY() + bounds.getHeight());
     setRect(x1, y1, Math.max (0, x2 - x1), Math.max (0, y2 - y1));
   }
 
+  /**
+   * Intersects this rectangle with the given bounds. The resulting rectangle
+   * will cover the space, that is occupied by both rectangles at the same time.
+   *
+   * @param bounds the other rectangle.
+   * @return the resulting intersection.
+   */
   public StrictBounds createIntersection (final StrictBounds bounds)
   {
     final long x1 = Math.max(getX(), bounds.getX());
@@ -297,6 +312,13 @@ public class StrictBounds implements Serializable, Cloneable
 
   }
 
+  /**
+   * Checks, whether the given object is a StrictBounds instance convering the
+   * same area as these bounds.
+   *
+   * @param o the other object.
+   * @return true, if the other object is equal to this object, false otherwise.
+   */
   public boolean equals (final Object o)
   {
     if (this == o)
@@ -322,18 +344,18 @@ public class StrictBounds implements Serializable, Cloneable
     {
       return false;
     }
-    if (y != strictBounds.y)
-    {
-      return false;
-    }
+    return y == strictBounds.y;
 
-    return true;
   }
 
+  /**
+   * Computes the hashcode for this rectangle.
+   *
+   * @return the computed hashcode.
+   */
   public int hashCode ()
   {
-    int result;
-    result = (int) (x ^ (x >>> 32));
+    int result = (int) (x ^ (x >>> 32));
     result = 29 * result + (int) (y ^ (y >>> 32));
     result = 29 * result + (int) (width ^ (width >>> 32));
     result = 29 * result + (int) (height ^ (height >>> 32));
@@ -341,6 +363,11 @@ public class StrictBounds implements Serializable, Cloneable
   }
 
 
+  /**
+   * Returns a string representation of these bounds.
+   *
+   * @return the string representing this object.
+   */
   public String toString ()
   {
     return new StringBuffer().append("org.jfree.report.util.geom.StrictBounds{").append("x=")
@@ -355,6 +382,15 @@ public class StrictBounds implements Serializable, Cloneable
             .toString();
   }
 
+  /**
+   * Creates a union from this and the given rectangle. This is similiar to
+   * calling 'add'. Calling this method does not modify the original and there
+   * are no guarantees, that the resulting rectangle has a positive width or
+   * height.
+   *
+   * @param bg the other rectangle.
+   * @return the resulting union rectangle.
+   */
   public StrictBounds createUnion (final StrictBounds bg)
   {
     final long x = Math.min(getX(), bg.getX());

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.26 2005/09/16 16:11:17 taqua Exp $
+ * $Id: JFreeReport.java,v 1.27 2005/09/19 11:00:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -240,7 +240,17 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    * compute text sizes from within functions.
    */
   public static final String REPORT_LAYOUT_SUPPORT = "report.layout-support";
+
+  /**
+   * This report property holds a reference to the raw datasource. Right now,
+   * this contains the TableModel used in the report object.
+   */
   public static final String REPORT_DATASOURCE_PROPERTY = "report.datasource";
+
+  /**
+   * This report property contains the ResourceBundleFactory, allowing expressions
+   * to use the available localization information.
+   */
   public static final String REPORT_LOCALIZATION_PROPERTY = "report.localization";
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: WindowSizeLimiter.java,v 1.3 2004/05/07 14:29:24 mungady Exp $
+ * $Id: WindowSizeLimiter.java,v 1.4 2005/02/23 21:04:50 taqua Exp $
  *
  *
  * Changes
@@ -57,6 +57,14 @@ public class WindowSizeLimiter extends ComponentAdapter
    * The current source.
    */
   private Object currentSource;
+
+  /**
+   * Default-Constructor.
+   */
+  public WindowSizeLimiter()
+  {
+
+  }
 
   /**
    * Invoked when the component's size changes.

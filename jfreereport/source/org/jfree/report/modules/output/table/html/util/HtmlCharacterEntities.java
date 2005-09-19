@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlCharacterEntities.java,v 1.3 2005/01/25 00:14:12 taqua Exp $
+ * $Id: HtmlCharacterEntities.java,v 1.4 2005/02/23 21:05:35 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.util.CharacterEntityParser;
  */
 public class HtmlCharacterEntities extends Properties
 {
+  /** The singleton instance for this entity-parser implementation. */
   private static CharacterEntityParser entityParser;
 
   /**

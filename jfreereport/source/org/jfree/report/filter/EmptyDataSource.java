@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyDataSource.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
+ * $Id: EmptyDataSource.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,12 @@ package org.jfree.report.filter;
  */
 public final class EmptyDataSource implements DataSource
 {
+  /**
+   * Default-Constructor.
+   */
+  public EmptyDataSource()
+  {
+  }
 
   /**
    * Returns the value for the data source (always null in this case).

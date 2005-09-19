@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.24 2005/03/16 21:06:37 taqua Exp $
+ * $Id: Element.java,v 1.25 2005/08/08 15:36:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -283,7 +283,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       super(element.getName());
       this.parent = element.getParent();
       this.element = element;
-      setDefaultStyleSheet(element.createGlobalDefaultStyle());
+      setGlobalDefaultStyleSheet(element.createGlobalDefaultStyle());
       setAllowCaching(true);
     }
 

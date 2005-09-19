@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.17 2005/06/25 17:52:02 taqua Exp $
+ * $Id: ReportState.java,v 1.18 2005/09/19 11:00:50 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -97,7 +97,7 @@ public abstract class ReportState implements Cloneable
   /**
    * The current item (row in the TableModel).
    */
-  private int currentItem;
+  private int currentDataItem;
 
   /**
    * The page that this state applies to.
@@ -193,7 +193,7 @@ public abstract class ReportState implements Cloneable
     }
     else
     {
-      setCurrentItem(clone.getCurrentDataItem());
+      setCurrentDataItem(clone.getCurrentDataItem());
       setCurrentPage(clone.getCurrentPage());
       setCurrentGroupIndex(clone.getCurrentGroupIndex());
       getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
@@ -215,7 +215,7 @@ public abstract class ReportState implements Cloneable
    */
   protected void resetState ()
   {
-    setCurrentItem(BEFORE_FIRST_ROW);
+    setCurrentDataItem(BEFORE_FIRST_ROW);
     setCurrentPage(BEFORE_FIRST_PAGE);
     setCurrentGroupIndex(BEFORE_FIRST_GROUP);
     getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
@@ -320,7 +320,7 @@ public abstract class ReportState implements Cloneable
    */
   public int getCurrentDataItem ()
   {
-    return this.currentItem;
+    return this.currentDataItem;
   }
 
   /**
@@ -334,11 +334,11 @@ public abstract class ReportState implements Cloneable
   {
     if (isPrefetchState())
     {
-      return this.currentItem + 1;
+      return this.currentDataItem + 1;
     }
     else
     {
-      return this.currentItem;
+      return this.currentDataItem;
     }
   }
 
@@ -361,9 +361,9 @@ public abstract class ReportState implements Cloneable
    *
    * @param itemIndex The new item index.
    */
-  protected void setCurrentItem (final int itemIndex)
+  protected void setCurrentDataItem (final int itemIndex)
   {
-    this.currentItem = itemIndex;
+    this.currentDataItem = itemIndex;
   }
 
   /**

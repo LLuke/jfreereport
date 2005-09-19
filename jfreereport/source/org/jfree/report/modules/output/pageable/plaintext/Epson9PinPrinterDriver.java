@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Epson9PinPrinterDriver.java,v 1.7 2005/09/07 14:25:11 taqua Exp $
+ * $Id: Epson9PinPrinterDriver.java,v 1.8 2005/09/09 14:23:49 mtennes Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ package org.jfree.report.modules.output.pageable.plaintext;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.JFreeReportBoot;
 
 public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver

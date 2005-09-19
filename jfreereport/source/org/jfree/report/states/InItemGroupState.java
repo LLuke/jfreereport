@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.5 2005/01/28 19:26:59 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.6 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ public final class InItemGroupState extends ReportState
    */
   private void advanceItem ()
   {
-    setCurrentItem(getCurrentDataItem() + 1);
+    setCurrentDataItem(getCurrentDataItem() + 1);
     getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
   }
 

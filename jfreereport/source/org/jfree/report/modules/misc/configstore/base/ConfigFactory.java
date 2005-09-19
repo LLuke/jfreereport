@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigFactory.java,v 1.9 2005/01/25 00:08:04 taqua Exp $
+ * $Id: ConfigFactory.java,v 1.10 2005/02/23 21:05:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -160,6 +160,13 @@ public final class ConfigFactory
     return true;
   }
 
+  /**
+   * Encodes the given configuration path. All non-ascii characters get
+   * replaced by an escape sequence.
+   *
+   * @param path the path.
+   * @return the translated path.
+   */
   public static String encodePath (final String path)
   {
     final char[] data = path.toCharArray();

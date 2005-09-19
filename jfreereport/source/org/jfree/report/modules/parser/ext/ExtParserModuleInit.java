@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.14 2005/05/18 18:38:31 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.15 2005/05/20 16:06:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -59,6 +59,9 @@ public class ExtParserModuleInit implements ModuleInitializer
    */
   public static final String PUBLIC_ID_EXTENDED =
           "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5";
+  /**
+   * the Public ID for the old extensible version of JFreeReport XML definitions.
+   */
   public static final String PUBLIC_ID_EXTENDED_084 =
           "-//JFreeReport//DTD report definition//EN//extended";
 

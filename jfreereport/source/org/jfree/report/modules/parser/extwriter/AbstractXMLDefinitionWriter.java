@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.10 2005/02/19 13:30:04 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.11 2005/02/23 21:05:56 taqua Exp $
  *
  * Changes
  * -------
@@ -319,7 +319,11 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    */
   public static final String GROUPS_TAG = "groups";
 
+  /**
+   * The 'watermark' tag name.
+   */
   public static final String WATERMARK_TAG = "watermark";
+  
   /**
    * The 'style' tag name.
    */

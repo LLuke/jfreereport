@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConverterParser.java,v 1.8 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ConverterParser.java,v 1.9 2005/02/23 21:04:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,6 +66,9 @@ public class ConverterParser extends Parser
    * the context collection used to create the correct mappings.
    */
   private final Stack currentContext;
+  /**
+   * the object factory is not used by this implementation.
+   */
   private SimpleObjectFactory objectFactory;
 
   /**

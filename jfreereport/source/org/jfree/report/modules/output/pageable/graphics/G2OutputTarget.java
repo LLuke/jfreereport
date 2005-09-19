@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.26 2005/08/12 12:09:42 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.27 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -244,8 +244,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     }
   }
 
+  /** The PageFormat for the current output. */
   private PageFormat currentPageFormat;
-  // private Rectangle2D pageBounds;
 
   /**
    * Creates a new output target.
@@ -308,9 +308,10 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * A page is starting.  This target saves the current state of the Graphics2D device.
+   * A page is starting. This method saves the current state of the Graphics2D device.
    *
    * @param page the physical page.
+   * @param index the index of the current page within the page definition.
    */
   protected void beginPage (final PageDefinition page, final int index)
   {
@@ -567,8 +568,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * The Graphics2D target supports all paint types.
    *
-   * @param p
-   * @return
+   * @param p the paint, that should be checked.
+   * @return true, if the given paint is supported, false otherwise.
    */
   protected boolean isPaintSupported (final Paint p)
   {

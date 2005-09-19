@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FontDefinition.java,v 1.9 2005/02/19 16:06:45 taqua Exp $
+ * $Id: FontDefinition.java,v 1.10 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -357,12 +357,18 @@ public class FontDefinition implements Serializable, Cloneable
     final StringBuffer buffer = new StringBuffer();
     buffer.append("FontDefinition='fontname=\"");
     buffer.append(fontName);
-    buffer.append("\"; fontSize=" + fontSize);
-    buffer.append("; bold=" + isBold);
-    buffer.append("; italic=" + isItalic);
-    buffer.append("; underline=" + isUnderline);
-    buffer.append("; strike=" + isStrikeThrough);
-    buffer.append("; embedded=" + embeddedFont);
+    buffer.append("\"; fontSize=");
+    buffer.append(fontSize);
+    buffer.append("; bold=");
+    buffer.append(isBold);
+    buffer.append("; italic=");
+    buffer.append(isItalic);
+    buffer.append("; underline=");
+    buffer.append(isUnderline);
+    buffer.append("; strike=");
+    buffer.append(isStrikeThrough);
+    buffer.append("; embedded=");
+    buffer.append(embeddedFont);
     buffer.append("'");
     return buffer.toString();
   }
@@ -439,8 +445,7 @@ public class FontDefinition implements Serializable, Cloneable
   {
     if (hashCode == 0)
     {
-      int result;
-      result = (fontEncoding != null ? fontEncoding.hashCode() : 0);
+      int result = (fontEncoding != null ? fontEncoding.hashCode() : 0);
       result = 29 * result + fontName.hashCode();
       result = 29 * result + fontSize;
       result = 29 * result + (isBold ? 1 : 0);

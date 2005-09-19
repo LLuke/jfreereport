@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.17 2005/08/08 15:36:38 taqua Exp $
+ * $Id: Worker.java,v 1.18 2005/09/07 14:25:11 taqua Exp $
  *
  *
  * Changes
@@ -51,7 +51,7 @@ public final class Worker extends Thread
   /**
    * the worker's task.
    */
-  private Runnable workload = null;
+  private Runnable workload;
 
   /**
    * a flag whether the worker should exit after the processing.
@@ -106,6 +106,11 @@ public final class Worker extends Thread
       //Log.debug("Workload assigned: Notified " + getName());
       this.notifyAll();
     }
+  }
+
+  public synchronized Runnable getWorkload()
+  {
+    return workload;
   }
 
   /**

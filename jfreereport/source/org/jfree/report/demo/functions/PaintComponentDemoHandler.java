@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PaintComponentDemoHandler.java,v 1.1 2005/08/29 17:35:44 taqua Exp $
+ * $Id: PaintComponentDemoHandler.java,v 1.2 2005/09/16 10:25:02 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,6 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.report.modules.gui.pdf.PDFSaveDialog;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
 

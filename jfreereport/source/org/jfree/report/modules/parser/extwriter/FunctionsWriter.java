@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.11 2005/02/04 19:08:53 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.12 2005/02/23 21:05:56 taqua Exp $
  *
  * Changes
  * -------
@@ -120,11 +120,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     {
       return true;
     }
-    if (getReport().getExpressions().size() != 0)
-    {
-      return true;
-    }
-    return false;
+    return getReport().getExpressions().size() != 0;
   }
 
   /**
@@ -177,6 +173,16 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Writes the parameters for an expression or function.
+   *
+   * @param writer the writer.
+   * @param path the comments as read from the parser.
+   * @param propertyNames the names of the properties.
+   * @param beanUtility the bean utility containing the expression bean.
+   * @throws IOException if an IO error occurs.
+   * @throws BeanException if a bean error occured.
+   */
   private void writeExpressionParameters
           (Writer writer, final CommentHintPath path,
            final String[] propertyNames, final BeanUtility beanUtility)

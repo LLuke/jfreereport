@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.22 2005/04/15 16:10:45 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.23 2005/06/25 17:52:03 taqua Exp $
  *
  * Changes
  * -------
@@ -291,7 +291,7 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
   /**
    * Storage for readonly style sheets.
    */
-  private ElementDefaultStyleSheet defaultStyleSheet;
+  private ElementDefaultStyleSheet globalDefaultStyleSheet;
   private ElementStyleSheet cascadeStyleSheet;
 
   /**
@@ -514,12 +514,12 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
    */
   public ElementDefaultStyleSheet getGlobalDefaultStyleSheet ()
   {
-    return defaultStyleSheet;
+    return globalDefaultStyleSheet;
   }
 
-  public void setDefaultStyleSheet (final ElementDefaultStyleSheet defaultStyleSheet)
+  public void setGlobalDefaultStyleSheet (final ElementDefaultStyleSheet defaultStyleSheet)
   {
-    this.defaultStyleSheet = defaultStyleSheet;
+    this.globalDefaultStyleSheet = defaultStyleSheet;
   }
 
   public ElementStyleSheet getCascadeStyleSheet ()
@@ -617,9 +617,9 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
       }
     }
 
-    if (defaultStyleSheet != null)
+    if (globalDefaultStyleSheet != null)
     {
-      final Object value = defaultStyleSheet.getStyleProperty(key, null);
+      final Object value = globalDefaultStyleSheet.getStyleProperty(key, null);
       if (value != null)
       {
         putInCache(key, value);
@@ -799,7 +799,7 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
         sc.parents.add(carrier);
       }
       sc.cascadeStyleSheet = null;
-      sc.defaultStyleSheet = defaultStyleSheet;
+      sc.globalDefaultStyleSheet = globalDefaultStyleSheet;
       return sc;
     }
     catch (CloneNotSupportedException cne)

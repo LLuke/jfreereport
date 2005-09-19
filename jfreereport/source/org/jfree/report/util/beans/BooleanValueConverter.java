@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: BooleanValueConverter.java,v 1.3 2005/03/03 23:00:27 taqua Exp $
  *
  * Changes
  * -------
@@ -78,6 +78,6 @@ public class BooleanValueConverter implements ValueConverter
    */
   public Object toPropertyValue (final String s)
   {
-    return new Boolean(s);
+    return Boolean.valueOf(s);
   }
 }

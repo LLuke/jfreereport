@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DOMUtilities.java,v 1.5 2004/05/07 14:29:54 mungady Exp $
+ * $Id: DOMUtilities.java,v 1.6 2005/02/23 21:04:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -87,9 +87,8 @@ public final class DOMUtilities
   public static Document parseInputStream (final InputStream instream)
           throws ParserConfigurationException, SAXException, IOException
   {
-    final DocumentBuilder db;
     final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    db = dbf.newDocumentBuilder();
+    final DocumentBuilder db = dbf.newDocumentBuilder();
     return db.parse(new InputSource(instream));
   }
 
@@ -118,7 +117,9 @@ public final class DOMUtilities
       }
       else if (n.getNodeType() == Node.ENTITY_REFERENCE_NODE)
       {
-        result.append("&" + n.getNodeName() + ";");
+        result.append("&");
+        result.append(n.getNodeName());
+        result.append(";");
       }
     }
     return XML_ENTITIES.decodeEntities(result.toString());

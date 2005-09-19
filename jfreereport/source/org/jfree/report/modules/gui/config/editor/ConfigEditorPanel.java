@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigEditorPanel.java,v 1.8 2005/03/03 21:50:40 taqua Exp $
+ * $Id: ConfigEditorPanel.java,v 1.9 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,7 +50,6 @@ import org.jfree.base.modules.Module;
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.report.modules.gui.config.VerticalLayout;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
-import org.jfree.util.Configuration;
 
 /**
  * The container component that is responsible for creating and managing the module editor

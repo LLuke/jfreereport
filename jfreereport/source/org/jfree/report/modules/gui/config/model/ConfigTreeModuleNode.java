@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeModuleNode.java,v 1.8 2005/02/23 21:04:52 taqua Exp $
+ * $Id: ConfigTreeModuleNode.java,v 1.9 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,7 +42,6 @@ import java.util.ArrayList;
 
 import org.jfree.base.modules.Module;
 import org.jfree.base.config.HierarchicalConfiguration;
-import org.jfree.util.Configuration;
 
 /**
  * The config tree module node is used to represent a module in the report configuration.

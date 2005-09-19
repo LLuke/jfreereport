@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.5 2005/03/24 22:24:56 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.6 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -106,6 +106,8 @@ public class ExcelFontFactory
   /**
    * Returns the excel font stored in this wrapper.
    *
+   * @param wrapper the font wrapper that holds all font information from
+   * the repagination.
    * @return the created font.
    */
   private HSSFFont createFont (final HSSFFontWrapper wrapper)

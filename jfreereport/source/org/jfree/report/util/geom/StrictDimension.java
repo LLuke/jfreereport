@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StrictDimension.java,v 1.3 2005/03/03 23:00:28 taqua Exp $
  *
  * Changes
  * -------
@@ -128,8 +128,7 @@ public class StrictDimension implements Serializable, Cloneable
   {
     try
     {
-      final StrictDimension sdim = (StrictDimension) super.clone();
-      return sdim;
+      return (StrictDimension) super.clone();
     }
     catch (CloneNotSupportedException e)
     {

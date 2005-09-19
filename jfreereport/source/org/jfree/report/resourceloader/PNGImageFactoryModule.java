@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: PNGImageFactoryModule.java,v 1.4 2005/03/03 23:00:24 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import org.jfree.report.util.StringUtil;
 
 public class PNGImageFactoryModule implements ImageFactoryModule
 {
-  public static final int[] PNGID = {137, 80, 78, 71, 13, 10, 26, 10};
+  private static final int[] PNGID = {137, 80, 78, 71, 13, 10, 26, 10};
 
   private static final String[] MIMETYPES =
           {

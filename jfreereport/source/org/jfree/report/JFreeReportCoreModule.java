@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.10 2005/08/08 15:36:27 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.11 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -82,6 +82,10 @@ public class JFreeReportCoreModule extends AbstractModule
   public static final String FONTRENDERER_USEALIASING_KEY
           = "org.jfree.report.layout.fontrenderer.UseAliasing";
 
+  /**
+   * A configuration key that defines, whether errors will abort the report
+   * processing. This defaults to true.
+   */
   public static final String STRICT_ERROR_HANDLING_KEY
           = "org.jfree.report.StrictErrorHandling";
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.11 2005/08/08 15:36:27 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.12 2005/09/07 11:21:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -292,11 +292,23 @@ public class SimplePageDefinition implements PageDefinition
     return true;
   }
 
+  /**
+   * Returns the number of horizontal pages in this page definition. That
+   * number is always greater than zero.
+   *
+   * @return the horizontal page count.
+   */
   public int getPageCountHorizontal()
   {
     return pageCountHorizontal;
   }
 
+  /**
+   * Returns the number of vertical pages in this page definition. That
+   * number is always greater than zero.
+   *
+   * @return the vertical page count.
+   */
   public int getPageCountVertical()
   {
     return pageCountVertical;

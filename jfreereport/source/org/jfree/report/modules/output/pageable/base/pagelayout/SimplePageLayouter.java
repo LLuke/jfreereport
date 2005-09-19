@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.29 2005/09/07 14:25:11 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.30 2005/09/19 13:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -593,7 +593,7 @@ public class SimplePageLayouter extends PageLayouter
     if (isPageEnded())
     {
       createSaveState(b);
-      setStartNewPage(true);
+      setNewPageStarted(true);
       return false;
     }
 
@@ -628,7 +628,7 @@ public class SimplePageLayouter extends PageLayouter
       if (endPage(ENDPAGE_REQUESTED) == true)
       {
         // a pagebreak was requested and granted, printing is delayed
-        setStartNewPage(true);
+        setNewPageStarted(true);
         return false;
       }
     }
@@ -648,8 +648,7 @@ public class SimplePageLayouter extends PageLayouter
 
     final StrictBounds bounds = doLayout(b, true);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
-    final boolean retval = doPrint(bounds, b, spool, false, position);
-    return retval;
+    return doPrint(bounds, b, spool, false, position);
   }
 
   /**
@@ -670,11 +669,10 @@ public class SimplePageLayouter extends PageLayouter
 
     // if there is nothing printed, then ignore everything ...
     // the spooling is now slightly different ...
-    final boolean spool = true;
     final StrictBounds bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
             bounds.getWidth(), bounds.getHeight());
-    return doPrint(bounds, b, spool, false, -1);
+    return doPrint(bounds, b, true, false, -1);
   }
 
   /**
@@ -1049,7 +1047,7 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @param startNewPage true, if a new page has already been started, false otherwise.
    */
-  public void setStartNewPage (final boolean startNewPage)
+  protected void setNewPageStarted (final boolean startNewPage)
   {
     this.startNewPage = startNewPage;
   }
@@ -1093,20 +1091,6 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void prepareEvent (final ReportEvent event)
   {
-    // docmark
-//    setCurrentEvent(event);
-//    try
-//    {
-//      restartPage();
-//    }
-//    catch (Exception e)
-//    {
-//      throw new FunctionProcessingException("prepareEvent", e);
-//    }
-//    finally
-//    {
-//      clearCurrentEvent();
-//    }
     getLogicalPage().getLayoutSupport().getCache().flushDynamicCache();
   }
 
@@ -1124,8 +1108,7 @@ public class SimplePageLayouter extends PageLayouter
     final long height = StrictGeomUtility.toInternalValue(logPage.getHeight());
     final StrictBounds bounds = BandLayoutManagerUtil.doFixedLayout
             (watermark, logPage.getLayoutSupport(), width, height);
-    final boolean retval = doPrint(bounds, watermark, true, true, -1);
-    return retval;
+    return doPrint(bounds, watermark, true, true, -1);
   }
 
   public void finishPageAfterRestore (final ReportState state)

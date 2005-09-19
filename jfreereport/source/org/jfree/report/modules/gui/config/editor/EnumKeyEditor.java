@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EnumKeyEditor.java,v 1.8 2005/02/23 21:04:52 taqua Exp $
+ * $Id: EnumKeyEditor.java,v 1.9 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -64,6 +64,13 @@ public class EnumKeyEditor extends AbstractKeyEditor
    */
   private class ComboBoxSelectionHandler implements ItemListener
   {
+    /**
+     * Default-Constructor.
+     */
+    public ComboBoxSelectionHandler()
+    {
+    }
+
     /**
      * Invoked when an item has been selected or deselected. The code written for this
      * method performs the operations that need to occur when an item is selected (or

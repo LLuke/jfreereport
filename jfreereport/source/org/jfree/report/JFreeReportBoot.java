@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.7 2005/09/07 14:23:49 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.8 2005/09/12 13:18:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -200,7 +200,12 @@ public class JFreeReportBoot extends AbstractBoot
    */
   private BootableProjectInfo projectInfo;
 
-  private static transient UserConfigWrapper configWrapper = new UserConfigWrapper();
+  /**
+   * Holds a possibly empty reference to a user-supplied Configuration
+   * implementation.
+   */
+  private static transient UserConfigWrapper configWrapper =
+          new UserConfigWrapper();
 
   /**
    * Creates a new instance.
@@ -226,6 +231,15 @@ public class JFreeReportBoot extends AbstractBoot
     return instance;
   }
 
+  /**
+   * Returns the current global configuration as modifiable instance. This
+   * is exactly the same as casting the global configuration into a
+   * ModifableConfiguration instance.
+   * <p/>
+   * This is a convinience function, as all programmers are lazy.
+   *
+   * @return the global config as modifiable configuration.
+   */
   public ModifiableConfiguration getEditableConfig()
   {
     return (ModifiableConfiguration) getGlobalConfig();
