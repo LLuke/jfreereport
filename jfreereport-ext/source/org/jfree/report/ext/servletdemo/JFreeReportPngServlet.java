@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.8 2005/08/08 15:56:02 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@ package org.jfree.report.ext.servletdemo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.print.PageFormat;
 import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.net.URL;
 import javax.servlet.ServletException;

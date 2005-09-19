@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpressionTest.java,v 1.4 2005/01/31 17:16:31 taqua Exp $
+ * $Id: BSHExpressionTest.java,v 1.5 2005/02/19 16:15:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.ext.junit.base.basic.function;
 
 import junit.framework.TestCase;
 import org.jfree.report.DataRow;
-import org.jfree.report.states.DataRowConnector;
 import org.jfree.report.modules.misc.beanshell.BSHExpression;
+import org.jfree.report.states.DataRowConnector;
 
 public class BSHExpressionTest extends TestCase
 {

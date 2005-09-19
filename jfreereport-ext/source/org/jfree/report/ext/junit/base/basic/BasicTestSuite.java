@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicTestSuite.java,v 1.5 2003/10/11 21:34:10 taqua Exp $
+ * $Id: BasicTestSuite.java,v 1.6 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,13 +41,13 @@ package org.jfree.report.ext.junit.base.basic;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.jfree.report.ext.junit.base.basic.content.ContentTestSuite;
+import org.jfree.report.ext.junit.base.basic.function.FunctionTestSuite;
+import org.jfree.report.ext.junit.base.basic.io.IOTestSuite;
 import org.jfree.report.ext.junit.base.basic.layout.LayoutTestSuite;
+import org.jfree.report.ext.junit.base.basic.modules.ModuleTestSuite;
 import org.jfree.report.ext.junit.base.basic.preview.PreviewTestSuite;
 import org.jfree.report.ext.junit.base.basic.style.StyleTestSuite;
 import org.jfree.report.ext.junit.base.basic.util.UtilTestSuite;
-import org.jfree.report.ext.junit.base.basic.modules.ModuleTestSuite;
-import org.jfree.report.ext.junit.base.basic.io.IOTestSuite;
-import org.jfree.report.ext.junit.base.basic.function.FunctionTestSuite;
 
 public class BasicTestSuite extends TestSuite
 {

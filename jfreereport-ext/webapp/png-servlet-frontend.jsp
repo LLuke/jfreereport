@@ -1,10 +1,10 @@
 <%@ page import="java.net.URL,
+                 javax.servlet.ServletException,
+                 org.jfree.report.JFreeReport,
                  org.jfree.report.ext.servletdemo.AbstractPageableReportServletWorker,
                  org.jfree.report.ext.servletdemo.DefaultPageableReportServletWorker,
-                 org.jfree.report.demo.swingicons.SwingIconsDemoTableModel,
-                 org.jfree.report.modules.output.pageable.graphics.G2OutputTarget,
-                 org.jfree.report.JFreeReport,
                  org.jfree.report.ext.servletdemo.DemoModelProvider,
+                 org.jfree.report.modules.output.pageable.graphics.G2OutputTarget,
                  org.jfree.util.ObjectUtilities"%>
 
 <%

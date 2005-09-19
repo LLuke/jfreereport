@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.6 2005/03/24 23:09:10 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.7 2005/08/10 19:29:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,14 +46,14 @@ import java.awt.geom.Rectangle2D;
 import junit.framework.TestCase;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.util.geom.StrictGeomUtility;
-import org.jfree.report.util.geom.StrictBounds;
-import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.elementfactory.LabelElementFactory;
+import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.FloatDimension;
 
 public class StaticLayoutManagerTest extends TestCase

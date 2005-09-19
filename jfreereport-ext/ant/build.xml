@@ -103,6 +103,7 @@
       compile-demo,
 			compile-chart-demo,
       compile-module-ext-java14config,
+      compile-module-ext-java14imageio,
       compile-module-ext-java14log,
       compile-module-ext-java14print,
       compile-module-ext-log4jlog"></target>
@@ -332,6 +333,49 @@
 
   <!-- ************************************************************** -->
   <!--                                                                -->
+  <!--  Java 1.4 ImageIO module                                           -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+  <target name="build-module-ext-java14imageio" if="java-1.4.present">
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/ext/modules/java14imageio/*.java"/>
+      <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <!-- include the report definition files -->
+    <copy todir="build/org/jfree/report/ext/modules/java14imageio">
+      <fileset dir="source/org/jfree/report/ext/modules/java14imageio">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="compile-module-ext-java14imageio" depends="init" if="java-1.4.present">
+    <echo>Building Java 1.4 ImageIO module</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="build-module-ext-java14imageio"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${module-ext-java14imageio-file}"
+      basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
   <!--  Java 1.4 printing API module                                  -->
   <!--                                                                -->
   <!-- ************************************************************** -->
@@ -414,50 +458,6 @@
     <!-- delete the temp directory -->
     <delete dir="build"/>
   </target>
-
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  java 1.4 ImageIO module                                       -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-java14imageio" if="java-1.4.present">
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/java14imageio/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/java14imageio">
-      <fileset dir="source/org/jfree/report/ext/modules/java14imageio">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-  </target>
-
-  <target name="compile-module-ext-java14imageio" depends="init" if="java-1.4.present">
-    <echo>Building Log4J logging modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-java14imageio"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-java14imageio-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
 
 
   <!-- ************************************************************** -->
@@ -671,7 +671,9 @@
     <copy file="${jfreereport-chart-demo-jar-file}" tofile="distribution/${jfreereport-chart-demo-jar-file}"/>
     <copy file="${jfreereport-servlet-demo-jar-file}" tofile="distribution/${jfreereport-servlet-demo-jar-file}"/>
     <copy file="${jfreereport-junit-jar-file}" tofile="distribution/${jfreereport-junit-jar-file}"/>
+    <copy file="${module-ext-all-file}" tofile="distribution/${module-ext-all-file}"/>
     <copy file="${module-ext-java14config-file}" tofile="distribution/${module-ext-java14config-file}"/>
+    <copy file="${module-ext-java14imageio-file}" tofile="distribution/${module-ext-java14imageio-file}"/>
     <copy file="${module-ext-java14log-file}" tofile="distribution/${module-ext-java14log-file}"/>
     <copy file="${module-ext-java14print-file}" tofile="distribution/${module-ext-java14print-file}"/>
     <copy file="${module-ext-log4jlog-file}" tofile="distribution/${module-ext-log4jlog-file}"/>
@@ -722,7 +724,18 @@
     <mkdir dir="distribution"/>
     <!-- copy across Licences -->
     <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
-    <copy file="maven-jfreereport-ext-project.xml" tofile="distribution/project.xml"/>
+
+    <filterchain id="version.filters">
+       <replacetokens>
+         <token key="VERSION" value="${jfreereport.version}"/>
+         <token key="JCOMMON.VERSION" value="${jcommon.version}"/>
+       </replacetokens>
+    </filterchain>
+
+    <copy file="maven-jfreereport-ext-project.xml" tofile="distribution/project.xml">
+      <filterchain refid="version.filters"/>
+    </copy>
+
     <copy file="${module-ext-all-file}" tofile="distribution/${module-ext-all-file}"/>
 
     <!-- make the jar -->

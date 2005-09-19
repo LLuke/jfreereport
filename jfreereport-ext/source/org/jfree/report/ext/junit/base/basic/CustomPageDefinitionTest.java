@@ -1,11 +1,11 @@
 package org.jfree.report.ext.junit.base.basic;
 
+import java.awt.print.PageFormat;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.awt.print.PageFormat;
 
 import junit.framework.TestCase;
 import org.jfree.report.CustomPageDefinition;

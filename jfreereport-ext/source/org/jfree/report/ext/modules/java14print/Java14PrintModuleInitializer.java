@@ -8,7 +8,6 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
 import org.jfree.report.modules.gui.print.AWTPrintingGUIModule;
 import org.jfree.report.modules.gui.print.PrintPluginSelector;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 
 
@@ -38,7 +37,7 @@ public class Java14PrintModuleInitializer implements ModuleInitializer
       return;
     }
 
-    String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
+    String printOrder = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
         (AWTPrintingGUIModule.PRINT_ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin(new PrintPluginSelector

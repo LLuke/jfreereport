@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.11 2005/08/08 15:56:01 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.12 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,20 +50,20 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.EmptyReportException;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.opensource.OpenSourceProjects;
-import org.jfree.report.demo.functions.PercentageDemo;
-import org.jfree.report.demo.world.CountryDataTableModel;
-import org.jfree.report.demo.groups.ColorAndLetterTableModel;
 import org.jfree.report.demo.bookstore.BookstoreTableModel;
-import org.jfree.report.demo.fonts.FontTableModel;
-import org.jfree.report.demo.swingicons.SwingIconsDemoTableModel;
-import org.jfree.report.demo.cards.CardTableModel;
+import org.jfree.report.demo.cards.AccountCard;
 import org.jfree.report.demo.cards.AdminCard;
+import org.jfree.report.demo.cards.CardTableModel;
 import org.jfree.report.demo.cards.FreeCard;
 import org.jfree.report.demo.cards.PrepaidCard;
-import org.jfree.report.demo.cards.AccountCard;
 import org.jfree.report.demo.cards.UserCard;
 import org.jfree.report.demo.cards.WrappingTableModel;
+import org.jfree.report.demo.fonts.FontTableModel;
+import org.jfree.report.demo.functions.PercentageDemo;
+import org.jfree.report.demo.groups.ColorAndLetterTableModel;
+import org.jfree.report.demo.opensource.OpenSourceProjects;
+import org.jfree.report.demo.swingicons.SwingIconsDemoTableModel;
+import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.modules.misc.referencedoc.DataSourceReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.ObjectReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.StyleKeyReferenceGenerator;
@@ -80,8 +80,8 @@ import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 import org.jfree.report.modules.output.table.rtf.RTFProcessor;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.util.Log;
 import org.jfree.report.util.NullOutputStream;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 public class FunctionalityTestLib

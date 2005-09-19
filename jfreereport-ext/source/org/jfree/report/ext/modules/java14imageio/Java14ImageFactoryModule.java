@@ -3,7 +3,6 @@ package org.jfree.report.ext.modules.java14imageio;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 

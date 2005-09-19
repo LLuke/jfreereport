@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandTest.java,v 1.6 2005/01/31 17:16:30 taqua Exp $
+ * $Id: BandTest.java,v 1.7 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,12 +38,12 @@
 
 package org.jfree.report.ext.junit.base.basic;
 
+import java.awt.Color;
+import java.awt.geom.Point2D;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.awt.Color;
-import java.awt.geom.Point2D;
 
 import junit.framework.TestCase;
 import org.jfree.report.Band;

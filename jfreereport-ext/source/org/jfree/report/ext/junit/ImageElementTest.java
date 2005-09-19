@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.8 2005/08/08 15:55:59 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.9 2005/09/07 11:24:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.util.Log;
-import org.jfree.util.WaitingImageObserver;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.WaitingImageObserver;
 
 public class ImageElementTest
 {

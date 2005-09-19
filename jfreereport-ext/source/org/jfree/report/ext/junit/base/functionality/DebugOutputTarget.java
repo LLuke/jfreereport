@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DebugOutputTarget.java,v 1.5 2005/01/31 17:16:35 taqua Exp $
+ * $Id: DebugOutputTarget.java,v 1.6 2005/03/04 16:58:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,8 +51,8 @@ import org.jfree.report.layout.SizeCalculatorException;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Configuration;
 
 public class DebugOutputTarget extends AbstractOutputTarget
 {
@@ -278,7 +278,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @param config  the configuration.
    */
-  public void configure(final ReportConfiguration config)
+  public void configure(final Configuration config)
   {
   }
 

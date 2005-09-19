@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: BeanUtilityTest.java,v 1.1 2005/05/18 18:51:30 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,13 @@
  */
 package org.jfree.report.ext.junit.base.basic.util;
 
-import java.beans.IntrospectionException;
 import java.awt.Color;
+import java.beans.IntrospectionException;
 import java.lang.reflect.Array;
 
 import junit.framework.TestCase;
-import org.jfree.report.util.beans.BeanUtility;
 import org.jfree.report.util.beans.BeanException;
+import org.jfree.report.util.beans.BeanUtility;
 
 public class BeanUtilityTest extends TestCase
 {

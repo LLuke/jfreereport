@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaintComponentOOMBug.java,v 1.3 2005/05/31 18:28:01 taqua Exp $
+ * $Id: PaintComponentOOMBug.java,v 1.4 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import javax.swing.table.TableModel;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.modules.output.table.csv.CSVReportUtil;
-import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
 import org.jfree.report.modules.output.table.html.HtmlReportUtil;
+import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
 
 public class PaintComponentOOMBug
 {

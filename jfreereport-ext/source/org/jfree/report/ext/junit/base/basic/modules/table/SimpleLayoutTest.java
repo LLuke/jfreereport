@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleLayoutTest.java,v 1.3 2005/01/31 17:16:34 taqua Exp $
+ * $Id: SimpleLayoutTest.java,v 1.4 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,15 +39,10 @@
 package org.jfree.report.ext.junit.base.basic.modules.table;
 
 import java.net.URL;
-import java.awt.Color;
-import java.awt.BasicStroke;
-import java.awt.geom.Rectangle2D;
 import javax.swing.table.DefaultTableModel;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.Band;
-import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.ext.junit.base.functionality.FunctionalityTestLib;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintingPlugin.java,v 1.10 2003/12/21 23:49:23 taqua Exp $
+ * $Id: Java14PrintingPlugin.java,v 1.11 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,7 +47,6 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.print.PrintingPlugin;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.Log;
 
 /**
@@ -151,31 +150,4 @@ public class Java14PrintingPlugin extends PrintingPlugin
       }
     }
   }
-
-
-  /**
-   * Returns true if the action should be added to the toolbar, and false otherwise.
-   *
-   * @return true, if the plugin should be added to the toolbar, false otherwise.
-   */
-  public boolean isAddToToolbar()
-  {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.ext.modules.java14print.AddToToolbar", "false").equals("true");
-  }
-
-  /**
-   * Returns true if the action is separated, and false otherwise. A separated
-   * action starts a new action group and will be spearated from previous actions
-   * on the menu and toolbar.
-   *
-   * @return true, if the action should be separated from previous actions,
-   * false otherwise.
-   */
-  public boolean isSeparated()
-  {
-    return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.ext.modules.java14print.Separated", "false").equals("true");
-  }
-
 }

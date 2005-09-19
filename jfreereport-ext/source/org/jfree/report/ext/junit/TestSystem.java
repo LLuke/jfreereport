@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.9 2005/08/08 15:55:59 taqua Exp $
+ * $Id: TestSystem.java,v 1.10 2005/09/07 11:24:08 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.groups.ColorAndLetterTableModel;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.util.Log;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 public final class TestSystem

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.8 2005/08/08 15:56:00 taqua Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.9 2005/08/10 19:29:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,9 +47,9 @@ import java.util.Properties;
 import javax.swing.JComboBox;
 
 import junit.framework.TestCase;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 
 public class EncodingComboBoxModelTest extends TestCase
@@ -83,9 +83,9 @@ public class EncodingComboBoxModelTest extends TestCase
 
   public void testSelectItemAllAvailable ()
   {
-    String org = ReportConfiguration.getGlobalConfig().getConfigProperty
+    String org = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS);
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_ALL);
     final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
 
@@ -103,15 +103,15 @@ public class EncodingComboBoxModelTest extends TestCase
     assertEquals(element, cb.getSelectedItem());
     assertEquals(index, cb.getSelectedIndex());
 
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, org);
   }
 
   public void testSelectItemFileAvailable ()
   {
-    final String org = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String org = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS);
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_FILE);
     final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
 
@@ -129,28 +129,28 @@ public class EncodingComboBoxModelTest extends TestCase
     assertEquals(element, cb.getSelectedItem());
     assertEquals(index, cb.getSelectedIndex());
 
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, org);
   }
 
   public void testSelectItemNoneAvailable ()
   {
-    String org = ReportConfiguration.getGlobalConfig().getConfigProperty
+    String org = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS);
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_NONE);
     final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
 
     final int index = def.indexOf("Cp850");
     assertTrue(index == -1);
 
-    ReportConfiguration.getGlobalConfig().setConfigProperty
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, org);
   }
 
   public void testAllEncodingsDefined ()
   {
-    final String encFile = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String encFile = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
         (EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE, 
          EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE_DEFAULT);
     final InputStream in = ObjectUtilities.getResourceAsStream

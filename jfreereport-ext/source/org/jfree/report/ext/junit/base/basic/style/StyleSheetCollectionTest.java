@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollectionTest.java,v 1.5 2003/11/01 19:57:03 taqua Exp $
+ * $Id: StyleSheetCollectionTest.java,v 1.6 2005/01/31 17:16:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,12 +38,12 @@
 
 package org.jfree.report.ext.junit.base.basic.style;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 import junit.framework.TestCase;
-import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.StyleSheetCollection;
 
 
 public class StyleSheetCollectionTest extends TestCase

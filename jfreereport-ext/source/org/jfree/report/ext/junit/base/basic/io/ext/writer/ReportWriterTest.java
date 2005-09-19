@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
+ * $Id: ReportWriterTest.java,v 1.5 2005/02/19 16:15:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,6 +43,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import junit.framework.TestCase;
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.StaticDataSource;
@@ -56,7 +58,6 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleK
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.report.modules.parser.extwriter.DataSourceWriter;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.ClassFactory;
@@ -72,7 +73,7 @@ public class ReportWriterTest extends TestCase
   private ReportWriter createWriter()
   {
     final JFreeReport report = new JFreeReport();
-    final ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
+    final ModifiableConfiguration repConf = new HierarchicalConfiguration(report.getReportConfiguration());
     repConf.setConfigProperty
         (Parser.CONTENTBASE_KEY, "file://tmp/");
 

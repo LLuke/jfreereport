@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigurationTest.java,v 1.2 2003/07/14 17:41:33 taqua Exp $
+ * $Id: ReportConfigurationTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,11 +39,12 @@
 package org.jfree.report.ext.junit.base.basic.util;
 
 import junit.framework.TestCase;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.DefaultLogModule;
+import org.jfree.report.JFreeReportBoot;
 
 public class ReportConfigurationTest extends TestCase
 {
-  private static final String key = ReportConfiguration.LOGTARGET;;
+  private static final String key = DefaultLogModule.LOGTARGET_KEY;
 
   public ReportConfigurationTest()
   {
@@ -56,21 +57,21 @@ public class ReportConfigurationTest extends TestCase
 
   public void testBasicFunctionality ()
   {
-    final String value = ReportConfiguration.getGlobalConfig().getConfigProperty(key);
+    final String value = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty(key);
     assertNotNull(value);
 
     System.setProperty(key, value + "-sysprop");
-    final String value2 = ReportConfiguration.getGlobalConfig().getConfigProperty(key);
+    final String value2 = JFreeReportBoot.getInstance().getEditableConfig().getConfigProperty(key);
     assertNotNull(value2);
     assertNotSame(value, value2);
 
-    ReportConfiguration.getGlobalConfig().setConfigProperty(key, value + "-repconf");
-    final String value3 = ReportConfiguration.getGlobalConfig().getConfigProperty(key);
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty(key, value + "-repconf");
+    final String value3 = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty(key);
     assertNotNull(value3);
     assertNotSame(value, value3);
     assertNotSame(value2, value3);
 
-    ReportConfiguration.getGlobalConfig().setConfigProperty(key, null);
+    JFreeReportBoot.getInstance().getEditableConfig().setConfigProperty(key, null);
     System.getProperties().remove(key);
 
   }

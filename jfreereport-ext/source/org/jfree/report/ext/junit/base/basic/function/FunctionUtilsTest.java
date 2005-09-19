@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: FunctionUtilsTest.java,v 1.1 2005/04/15 20:22:33 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package org.jfree.report.ext.junit.base.basic.function;
 
 import junit.framework.TestCase;
-import org.jfree.report.ItemBand;
 import org.jfree.report.Band;
+import org.jfree.report.ItemBand;
 import org.jfree.report.function.FunctionUtilities;
 
 public class FunctionUtilsTest extends TestCase

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportFooterLostBug.java,v 1.1 2003/11/05 17:30:55 taqua Exp $
+ * $Id: ReportFooterLostBug.java,v 1.2 2005/01/31 17:16:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,6 @@ import org.jfree.report.ext.junit.base.functionality.DebugOutputTarget;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.base.ReportStateList;
 import org.jfree.report.util.PageFormatFactory;
 
 public class ReportFooterLostBug extends TestCase

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestLocalisation.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
+ * $Id: TestLocalisation.java,v 1.2 2003/09/20 13:00:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.ext.junit;
 
-import java.util.Locale;
-import java.text.DecimalFormatSymbols;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class TestLocalisation
 {

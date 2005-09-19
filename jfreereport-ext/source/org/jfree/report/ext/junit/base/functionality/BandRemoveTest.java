@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandRemoveTest.java,v 1.1 2003/10/05 21:54:45 taqua Exp $
+ * $Id: BandRemoveTest.java,v 1.2 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,13 +38,13 @@
 
 package org.jfree.report.ext.junit.base.functionality;
 
-import java.awt.geom.Point2D;
 import java.awt.Color;
+import java.awt.geom.Point2D;
 
 import junit.framework.TestCase;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.ElementAlignment;
 import org.jfree.report.Element;
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.ui.FloatDimension;
 

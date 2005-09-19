@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogModule.java,v 1.5 2005/08/08 15:56:02 taqua Exp $
+ * $Id: Java14LogModule.java,v 1.6 2005/08/09 15:43:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,12 +38,11 @@
 
 package org.jfree.report.ext.modules.java14log;
 
-import org.jfree.util.Log;
-import org.jfree.report.util.ReportConfiguration;
-
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.DefaultLogModule;
+import org.jfree.util.Log;
 
 /**
  * The module definition for the Java1.4 log target support module.
@@ -52,7 +51,7 @@ import org.jfree.base.modules.SubSystem;
  */
 public class Java14LogModule extends AbstractModule
 {
-  /** 
+  /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
    */
@@ -74,12 +73,12 @@ public class Java14LogModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    if (ReportConfiguration.getGlobalConfig().isDisableLogging())
+    if (subSystem.getExtendedConfig().getBoolProperty
+            (DefaultLogModule.DISABLE_LOGGING_KEY, false))
     {
       return;
     }
-    if (ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ReportConfiguration.LOGTARGET, "").equals
+    if (subSystem.getGlobalConfig().getConfigProperty(DefaultLogModule.LOGTARGET_KEY).equals
         (Java14LogTarget.class.getName()))
     {
       Log.getInstance().addTarget(new Java14LogTarget());

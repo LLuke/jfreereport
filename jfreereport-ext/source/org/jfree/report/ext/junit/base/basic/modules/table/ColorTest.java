@@ -1,8 +1,8 @@
 package org.jfree.report.ext.junit.base.basic.modules.table;
 
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 /**
  * Creation-Date: 02.09.2005, 13:50:30

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ReportRunner.java,v 1.1 2005/03/24 23:11:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@
 package org.jfree.report.ext.junit.ext;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
 import org.jfree.report.ext.junit.TestSystem;
 import org.jfree.report.ext.junit.base.functionality.FunctionalityTestLib;
+import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
 
 public class ReportRunner
 {

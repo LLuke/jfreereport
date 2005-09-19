@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14ConfigModule.java,v 1.4 2005/01/31 17:16:38 taqua Exp $
+ * $Id: Java14ConfigModule.java,v 1.5 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,7 +41,7 @@ package org.jfree.report.ext.modules.java14config;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.util.Log;
 
 /**
@@ -80,7 +80,7 @@ public class Java14ConfigModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    final String value = ReportConfiguration.getGlobalConfig().getConfigProperty
+    final String value = JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
         ("org.jfree.report.ConfigStore", "<not defined>");
     if (value.equals(JAVA14_CONFIG_STORE_CLASS) == false)
     {

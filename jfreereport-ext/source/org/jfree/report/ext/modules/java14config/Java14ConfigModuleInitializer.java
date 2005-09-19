@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14ConfigModuleInitializer.java,v 1.3 2003/09/12 22:05:08 taqua Exp $
+ * $Id: Java14ConfigModuleInitializer.java,v 1.4 2005/01/31 17:16:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,10 +40,10 @@ package org.jfree.report.ext.modules.java14config;
 
 import java.util.prefs.Preferences;
 
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
-import org.jfree.base.modules.ModuleInitializer;
-import org.jfree.base.modules.ModuleInitializeException;
 
 /**
  * An initializer for the Java 1.4 configuration provider.

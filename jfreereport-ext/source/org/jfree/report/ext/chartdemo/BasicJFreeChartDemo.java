@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicJFreeChartDemo.java,v 1.5 2005/05/18 18:50:26 taqua Exp $
+ * $Id: BasicJFreeChartDemo.java,v 1.6 2005/05/31 18:27:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,14 +42,16 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.net.URL;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.Action;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
@@ -60,10 +62,8 @@ import org.jfree.ui.FloatDimension;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
-import org.jfree.util.Rotation;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
+import org.jfree.util.Rotation;
 
 public class BasicJFreeChartDemo extends AbstractDemoFrame
 {

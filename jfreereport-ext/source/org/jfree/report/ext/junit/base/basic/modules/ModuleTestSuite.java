@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleTestSuite.java,v 1.5 2005/02/22 20:27:55 taqua Exp $
+ * $Id: ModuleTestSuite.java,v 1.6 2005/03/24 23:09:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,10 +40,10 @@ package org.jfree.report.ext.junit.base.basic.modules;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.jfree.report.ext.junit.base.basic.modules.table.SimpleLayoutTest;
-import org.jfree.report.ext.junit.base.basic.modules.table.SheetLayoutTest;
 import org.jfree.report.ext.junit.base.basic.modules.output.EncodingUtilitiesTest;
 import org.jfree.report.ext.junit.base.basic.modules.parser.PropertyAttributesTest;
+import org.jfree.report.ext.junit.base.basic.modules.table.SheetLayoutTest;
+import org.jfree.report.ext.junit.base.basic.modules.table.SimpleLayoutTest;
 
 public class ModuleTestSuite extends TestSuite
 {

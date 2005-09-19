@@ -6,7 +6,7 @@
   <id>jfreereport-ext</id>
   <name>JFreeReport Extensions</name>
   <groupId>jfree</groupId>
-  <currentVersion>0.8.5-2</currentVersion>
+  <currentVersion>@VERSION@</currentVersion>
   <organization>
     <name>JFree.org</name>
     <url>http://www.jfree.org/</url>
@@ -67,21 +67,14 @@
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jfreereport</artifactId>
-      <version>0.8.5</version>
+      <version>@VERSION@</version>
       <url>http://www.jfree.org/jfreereport/</url>
     </dependency>
 
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
-      <version>1.0.0-pre2</version>
-      <url>http://www.jfree.org/jfreechart/</url>
-    </dependency>
-
-    <dependency>
-      <groupId>jfree</groupId>
-      <artifactId>jfreechart</artifactId>
-      <version>1.0.0-pre2</version>
+      <version>@JFREECHART.VERSION@</version>
       <url>http://www.jfree.org/jfreechart/</url>
     </dependency>
 

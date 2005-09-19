@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingResources.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
+ * $Id: SwingResources.java,v 1.2 2003/09/12 22:04:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report.ext;
 
-import java.util.Hashtable;
-import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import javax.swing.UIManager;
 
 /**

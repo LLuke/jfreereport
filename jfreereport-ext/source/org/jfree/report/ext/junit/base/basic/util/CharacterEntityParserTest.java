@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParserTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
+ * $Id: CharacterEntityParserTest.java,v 1.5 2005/01/31 17:16:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,8 +39,8 @@
 package org.jfree.report.ext.junit.base.basic.util;
 
 import junit.framework.TestCase;
-import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
+import org.jfree.report.util.CharacterEntityParser;
 
 public class CharacterEntityParserTest extends TestCase
 {

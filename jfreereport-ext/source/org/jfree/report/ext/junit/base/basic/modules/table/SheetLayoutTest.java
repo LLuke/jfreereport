@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SheetLayoutTest.java,v 1.3 2005/04/15 20:21:02 taqua Exp $
+ * $Id: SheetLayoutTest.java,v 1.4 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.report.ext.junit.base.basic.modules.table;
 
-import java.awt.Color;
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
@@ -62,8 +62,8 @@ import org.jfree.report.modules.output.table.base.SheetLayout;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.SystemOutLogTarget;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.ui.FloatDimension;
 import org.jfree.util.Log;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.8 2005/08/08 15:56:01 taqua Exp $
+ * $Id: TotalGroupCountTest.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,13 +41,13 @@ package org.jfree.report.ext.junit.base.functionality;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.GroupList;
 import org.jfree.report.Group;
+import org.jfree.report.GroupList;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.TotalGroupCountFunction;
-import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;

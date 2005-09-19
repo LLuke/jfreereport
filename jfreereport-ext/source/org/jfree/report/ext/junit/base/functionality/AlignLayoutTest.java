@@ -1,18 +1,18 @@
 package org.jfree.report.ext.junit.base.functionality;
 
 import junit.framework.TestCase;
-import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.Band;
-import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.TextContentFactoryModule;
-import org.jfree.report.style.FontDefinition;
+import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
+import org.jfree.report.layout.LayoutManagerCache;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.layout.SizeCalculatorException;
-import org.jfree.report.layout.LayoutManagerCache;
+import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.ui.FloatDimension;
 
 public class AlignLayoutTest extends TestCase

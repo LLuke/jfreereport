@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StackedLayoutManagerTest.java,v 1.1 2005/08/10 19:30:44 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,9 @@ package org.jfree.report.ext.junit.base.basic.layout;
 
 import junit.framework.TestCase;
 import org.jfree.report.Band;
-import org.jfree.report.layout.StackedLayoutManager;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
+import org.jfree.report.layout.StackedLayoutManager;
 
 public class StackedLayoutManagerTest extends TestCase
 {

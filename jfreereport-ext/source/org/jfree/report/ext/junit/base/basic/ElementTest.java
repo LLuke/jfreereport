@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementTest.java,v 1.5 2005/01/31 17:16:30 taqua Exp $
+ * $Id: ElementTest.java,v 1.6 2005/02/19 16:15:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,8 +44,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import junit.framework.TestCase;
-import org.jfree.report.Element;
 import org.jfree.report.Band;
+import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
 
 public class ElementTest extends TestCase
