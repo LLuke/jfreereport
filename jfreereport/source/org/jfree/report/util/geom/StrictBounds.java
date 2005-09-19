@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StrictBounds.java,v 1.6 2005/08/10 18:04:46 taqua Exp $
+ * $Id: StrictBounds.java,v 1.7 2005/09/19 15:38:48 taqua Exp $
  *
  * Changes
  * -------
@@ -97,33 +97,53 @@ public class StrictBounds implements Serializable, Cloneable
     return locked;
   }
 
+
   /**
-   * Defines, whether this bounds object should be locked and therefore immutable.
+   * Returns a copy of this bounds object which cannot be modified anymore.
    *
-   * @param locked true, if the bounds should be locked, false otherwise.
+   * @return a locked copy.
    */
-  public void setLocked (final boolean locked)
+  public StrictBounds getLockedInstance ()
   {
-    this.locked = locked;
+    if (locked)
+    {
+      return this;
+    }
+
+    final StrictBounds retval = (StrictBounds) clone();
+    retval.locked = true;
+    return retval;
   }
 
   /**
-   * Sets the location and size of this <code>Rectangle2D</code> to the specified double
+   * Returns a copy of this bounds object which can be modified later.
+   *
+   * @return an unlocked copy.
+   */
+  public StrictBounds getUnlockedInstance ()
+  {
+    final StrictBounds retval = (StrictBounds) clone();
+    retval.locked = false;
+    return retval;
+  }
+
+  /**
+   * Sets the location and size of this <code>StrictBounds</code> to the specified double
    * values.
    *
    * @param x the coordinates to which to set the location of the upper left corner of
-   *          this <code>Rectangle2D</code>
+   *          this <code>StrictBounds</code>
    * @param y the coordinates to which to set the location of the upper left corner of
-   *          this <code>Rectangle2D</code>
-   * @param w the value to use to set the width of this <code>Rectangle2D</code>
-   * @param h the value to use to set the height of this <code>Rectangle2D</code>
+   *          this <code>StrictBounds</code>
+   * @param w the value to use to set the width of this <code>StrictBounds</code>
+   * @param h the value to use to set the height of this <code>StrictBounds</code>
    */
   public void setRect (final long x, final long y,
                        final long w, final long h)
   {
     if (locked)
     {
-      throw new IllegalStateException();
+      throw new IllegalStateException("This object is locked");
     }
     this.x = x;
     this.y = y;
@@ -132,7 +152,7 @@ public class StrictBounds implements Serializable, Cloneable
   }
 
   /**
-   * Returns the height of the framing rectangle in <code>double</code> precision.
+   * Returns the height of the framing rectangle in micro points.
    *
    * @return the height of the framing rectangle.
    */
@@ -142,7 +162,7 @@ public class StrictBounds implements Serializable, Cloneable
   }
 
   /**
-   * Returns the width of the framing rectangle in <code>double</code> precision.
+   * Returns the width of the framing rectangle in micro points.
    *
    * @return the width of the framing rectangle.
    */
@@ -152,8 +172,8 @@ public class StrictBounds implements Serializable, Cloneable
   }
 
   /**
-   * Returns the X coordinate of the upper left corner of the framing rectangle in
-   * <code>double</code> precision.
+   * Returns the X coordinate of the upper left corner of the framing
+   * rectangle in micro points.
    *
    * @return the x coordinate of the upper left corner of the framing rectangle.
    */
@@ -163,8 +183,8 @@ public class StrictBounds implements Serializable, Cloneable
   }
 
   /**
-   * Returns the Y coordinate of the upper left corner of the framing rectangle in
-   * <code>double</code> precision.
+   * Returns the Y coordinate of the upper left corner of the framing
+   * rectangle in micro points.
    *
    * @return the y coordinate of the upper left corner of the framing rectangle.
    */
@@ -262,6 +282,11 @@ public class StrictBounds implements Serializable, Cloneable
    */
   public void add (final StrictBounds bounds)
   {
+    if (locked)
+    {
+      throw new IllegalStateException("This object is locked");
+    }
+
     final long x1 = Math.min(getX(), bounds.getX());
     final long y1 = Math.min(getY(), bounds.getY());
     final long x2 = Math.max(getX() + getWidth(), bounds.getX() + bounds.getWidth());

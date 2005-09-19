@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StrictGeomUtility.java,v 1.3 2005/03/03 23:00:28 taqua Exp $
  *
  * Changes
  * -------
@@ -45,26 +45,61 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.ui.FloatDimension;
 
+/**
+ * This class is the heart of the alternative geometrics toolkit. It performs
+ * the neccessary conversions from and to the AWT classes to the Strict-classes.
+ *
+ * @author Thomas Morgner
+ */
 public class StrictGeomUtility
 {
-  public static final float CORRECTION_FACTOR = 1000f;
+  /**
+   * This is the correction factor used to convert points into 'Micro-Points'.
+   */
+  private static final float CORRECTION_FACTOR = 1000f;
 
+  /**
+   * Hidden, non usable constructor.
+   */
   private StrictGeomUtility ()
   {
   }
 
+  /**
+   * Creates a StrictDimension from the given AWT sizes.
+   *
+   * @param w the width in points (1/72th inch).
+   * @param h the height in points (1/72th inch).
+   * @return the created dimension object.
+   */
   public static StrictDimension createDimension (final double w, final double h)
   {
     return new StrictDimension((long) (w * CORRECTION_FACTOR),
             (long) (h * CORRECTION_FACTOR));
   }
 
+  /**
+   * Creates a StrictPoint from the given AWT coordinates.
+   *
+   * @param x the x coordinate in points (1/72th inch).
+   * @param y the y coordinate in points (1/72th inch).
+   * @return the created point object.
+   */
   public static StrictPoint createPoint (final double x, final double y)
   {
     return new StrictPoint((long) (x * CORRECTION_FACTOR),
             (long) (y * CORRECTION_FACTOR));
   }
 
+  /**
+   * Creates a StrictBounds object from the given AWT sizes.
+   *
+   * @param x the x coordinate in points (1/72th inch).
+   * @param y the y coordinate in points (1/72th inch).
+   * @param width the width in points (1/72th inch).
+   * @param height the height in points (1/72th inch).
+   * @return the created dimension object.
+   */
   public static StrictBounds createBounds (final double x, final double y,
                                            final double width, final double height)
   {
@@ -74,6 +109,13 @@ public class StrictGeomUtility
             (long) (height * CORRECTION_FACTOR));
   }
 
+  /**
+   * Creates an AWT-Dimension2D object from the given strict sizes.
+   *
+   * @param w the width in micro points.
+   * @param h the height in micro points.
+   * @return the created dimension object.
+   */
   public static Dimension2D createAWTDimension
           (final long width, final long height)
   {
@@ -81,6 +123,15 @@ public class StrictGeomUtility
             (width / CORRECTION_FACTOR, height / CORRECTION_FACTOR);
   }
 
+  /**
+   * Creates an AWT rectangle object from the given strict sizes.
+   *
+   * @param x the x coordinate in micro points.
+   * @param y the y coordinate in micro points.
+   * @param width the width in micro points.
+   * @param height the height in micro points.
+   * @return the created dimension object.
+   */
   public static Rectangle2D createAWTRectangle
           (final long x, final long y, final long width, final long height)
   {
@@ -89,11 +140,23 @@ public class StrictGeomUtility
                     width / CORRECTION_FACTOR, height / CORRECTION_FACTOR);
   }
 
+  /**
+   * Converts the given AWT value into a strict value.
+   *
+   * @param value the AWT point value.
+   * @return the internal micro point value.
+   */
   public static long toInternalValue (final double value)
   {
     return (long) (value * CORRECTION_FACTOR);
   }
 
+  /**
+   * Converts the given micro point value into an AWT value.
+   *
+   * @param value the micro point point value.
+   * @return the AWT point value.
+   */
   public static double toExternalValue (final long value)
   {
     return (value / CORRECTION_FACTOR);
