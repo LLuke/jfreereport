@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ArrayValueConverter.java,v 1.1 2005/05/08 15:41:16 taqua Exp $
+ * $Id: ArrayValueConverter.java,v 1.2 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -45,21 +45,35 @@ import java.util.ArrayList;
 
 import org.jfree.report.util.CSVTokenizer;
 
+/**
+ * An ValueConverter that handles Arrays. Conversion to arrays is done
+ * using a CSV string.
+ *
+ * @author Thomas Morgner
+ */
 public class ArrayValueConverter implements ValueConverter
 {
+  /** The converter for the array elements. */
   private ValueConverter elementConverter;
+  /** The element type. */
   private Class elementType;
 
+  /**
+   * Creates a new ArrayValueConverter for the given element type and
+   * array type.
+   * @param arrayClass the array type
+   * @param elementConverter the value converter for the array elements.
+   */
   public ArrayValueConverter (final Class arrayClass,
                               final ValueConverter elementConverter)
   {
     if (elementConverter == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("elementConverter must not be null");
     }
     if (arrayClass == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("arrayClass must not be null");
     }
     this.elementType = arrayClass;
     this.elementConverter = elementConverter;
@@ -70,6 +84,7 @@ public class ArrayValueConverter implements ValueConverter
    *
    * @param o the object.
    * @return the attribute value.
+   * @throws BeanException if there was an error during the conversion.
    */
   public String toAttributeValue (final Object o) throws BeanException
   {
@@ -91,6 +106,7 @@ public class ArrayValueConverter implements ValueConverter
    *
    * @param s the string.
    * @return a property value.
+   * @throws BeanException if there was an error during the conversion.
    */
   public Object toPropertyValue (final String s) throws BeanException
   {

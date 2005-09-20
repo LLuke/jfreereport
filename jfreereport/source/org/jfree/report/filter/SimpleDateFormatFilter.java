@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2003, by Object Refinery Limited.
  *
- * $Id: SimpleDateFormatFilter.java,v 1.5 2005/07/22 16:39:54 taqua Exp $
+ * $Id: SimpleDateFormatFilter.java,v 1.6 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -56,9 +56,12 @@ import org.jfree.report.ReportDefinition;
 public class SimpleDateFormatFilter
         extends DateFormatFilter implements ReportConnectable
 {
-  private boolean keepState;
-  private transient Locale lastLocale;
+  /** The report definition registered to this connectable. */
   private ReportDefinition reportDefinition;
+  /** The last locale used to convert numbers. */
+  private Locale lastLocale;
+  /** A flag indicating whether this filter should try to detect locales changes. */
+  private boolean keepState;
 
   /**
    * DefaultConstructor.

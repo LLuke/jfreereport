@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConverterRegistry.java,v 1.4 2005/03/03 23:00:27 taqua Exp $
+ * $Id: ConverterRegistry.java,v 1.5 2005/05/08 15:41:16 taqua Exp $
  *
  * Changes
  * -------
@@ -110,6 +110,7 @@ public final class ConverterRegistry
    *
    * @param o the object.
    * @return the attribute value.
+   * @throws BeanException if there was an error during the conversion.
    */
   public static String toAttributeValue (final Object o) throws BeanException
   {
@@ -131,6 +132,7 @@ public final class ConverterRegistry
    *
    * @param s the string.
    * @return a property value.
+   * @throws BeanException if there was an error during the conversion.
    */
   public static Object toPropertyValue (final String s, final Class c) throws BeanException
   {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ColorValueConverter.java,v 1.3 2005/03/03 23:00:27 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import java.lang.reflect.Modifier;
 /**
  * A class that handles the conversion of {@link Integer} attributes to and from their
  * {@link String} representation.
+ *
+ * @author Thomas Morgner
  */
 public class ColorValueConverter implements ValueConverter
 {

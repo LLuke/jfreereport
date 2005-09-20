@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ValueConverter.java,v 1.4 2005/05/08 15:41:16 taqua Exp $
+ * $Id: ValueConverter.java,v 1.5 2005/09/19 18:41:53 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ public interface ValueConverter
    *
    * @param o the object.
    * @return the attribute value.
+   * @throws BeanException if there was an error during the conversion.
    */
   public String toAttributeValue (Object o) throws BeanException;
 
@@ -61,6 +62,7 @@ public interface ValueConverter
    *
    * @param s the string.
    * @return a property value.
+   * @throws BeanException if there was an error during the conversion.
    */
   public Object toPropertyValue (String s) throws BeanException;
 }

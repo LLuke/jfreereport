@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BooleanValueConverter.java,v 1.3 2005/03/03 23:00:27 taqua Exp $
+ * $Id: BooleanValueConverter.java,v 1.4 2005/09/19 15:38:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package org.jfree.report.util.beans;
 /**
  * A class that handles the conversion of {@link Boolean} attributes to and from their
  * {@link String} representation.
+ *
+ * @author Thomas Morgner
  */
 public class BooleanValueConverter implements ValueConverter
 {

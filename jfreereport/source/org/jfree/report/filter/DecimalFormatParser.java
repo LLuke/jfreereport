@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DecimalFormatParser.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
+ * $Id: DecimalFormatParser.java,v 1.5 2005/07/22 16:39:54 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -65,9 +65,12 @@ import org.jfree.report.ReportDefinition;
  */
 public class DecimalFormatParser extends NumberFormatParser implements ReportConnectable
 {
-  private boolean keepState;
+  /** The report definition registered to this connectable. */
   private ReportDefinition reportDefinition;
+  /** The last locale used to convert numbers. */
   private Locale lastLocale;
+  /** A flag indicating whether this filter should try to detect locales changes. */
+  private boolean keepState;
 
   /**
    * DefaultConstructor, this object is initialized using a DecimalFormat with the default
@@ -203,6 +206,13 @@ public class DecimalFormatParser extends NumberFormatParser implements ReportCon
     return super.getValue();
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
@@ -216,6 +226,13 @@ public class DecimalFormatParser extends NumberFormatParser implements ReportCon
     this.reportDefinition = reportDefinition;
   }
 
+  /**
+   * Disconnects the connectable from the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: IntegerValueConverter.java,v 1.3 2005/03/03 23:00:27 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package org.jfree.report.util.beans;
 /**
  * A class that handles the conversion of {@link Integer} attributes to and from their
  * {@link String} representation.
+ *
+ * @author Thomas Morgner
  */
 public class IntegerValueConverter implements ValueConverter
 {

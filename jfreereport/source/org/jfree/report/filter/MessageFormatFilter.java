@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFormatFilter.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
+ * $Id: MessageFormatFilter.java,v 1.5 2005/04/14 16:37:33 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import org.jfree.report.ReportDefinition;
 public class MessageFormatFilter
         implements ReportConnectable, Serializable, DataSource
 {
+  /** The report definition registered to this connectable. */
   private transient ReportDefinition reportDefinition;
 
   private MessageFormatSupport messageFormatSupport;
@@ -68,11 +69,22 @@ public class MessageFormatFilter
     messageFormatSupport = new MessageFormatSupport();
   }
 
+  /**
+   * Defines the format string for the {@link MessageFormat} object used in this
+   * implementation.
+   *
+   * @param format the message format.
+   */
   public void setFormatString (final String format)
   {
     messageFormatSupport.setFormatString(format);
   }
 
+  /**
+   * Returns the format string used in the message format.
+   *
+   * @return the format string.
+   */
   public String getFormatString ()
   {
     return messageFormatSupport.getFormatString();
@@ -97,7 +109,13 @@ public class MessageFormatFilter
     return messageFormatSupport.performFormat(reportDefinition.getDataRow());
   }
 
-
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
@@ -111,6 +129,13 @@ public class MessageFormatFilter
     this.reportDefinition = reportDefinition;
   }
 
+  /**
+   * Disconnects the connectable from the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)

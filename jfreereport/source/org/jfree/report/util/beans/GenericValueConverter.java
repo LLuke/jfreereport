@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GenericValueConverter.java,v 1.2 2005/03/03 23:00:27 taqua Exp $
+ * $Id: GenericValueConverter.java,v 1.3 2005/05/08 15:41:16 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import java.beans.PropertyEditor;
 /**
  * A class that handles the conversion of {@link Integer} attributes to and from their
  * {@link String} representation.
+ *
+ * @author Thomas Morgner
  */
 public class GenericValueConverter implements ValueConverter
 {
@@ -91,6 +93,7 @@ public class GenericValueConverter implements ValueConverter
    *
    * @param o the attribute ({@link Integer} expected).
    * @return A string representing the {@link Integer} value.
+   * @throws BeanException if there was an error during the conversion.
    */
   public String toAttributeValue (final Object o) throws BeanException
   {

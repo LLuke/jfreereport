@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StrictGeomUtility.java,v 1.3 2005/03/03 23:00:28 taqua Exp $
+ * $Id: StrictGeomUtility.java,v 1.4 2005/09/19 18:20:28 taqua Exp $
  *
  * Changes
  * -------
@@ -112,8 +112,8 @@ public class StrictGeomUtility
   /**
    * Creates an AWT-Dimension2D object from the given strict sizes.
    *
-   * @param w the width in micro points.
-   * @param h the height in micro points.
+   * @param width the width in micro points.
+   * @param height the height in micro points.
    * @return the created dimension object.
    */
   public static Dimension2D createAWTDimension

@@ -19,7 +19,11 @@ package org.jfree.report.util;
 
 import java.util.Enumeration;
 
-/** An enumeration over an array. */
+/**
+ * An enumeration over an array.
+ *
+ * @author Thomas Morgner
+ */
 public class ArrayEnumeration implements Enumeration
 {
   private Object[] objectarray = null;

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.8 2005/05/20 16:06:44 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.9 2005/08/08 15:36:29 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -50,17 +50,14 @@ import org.jfree.util.Log;
 public class ResourceFileFilter
         implements DataFilter, Serializable, ReportConnectable
 {
-  /**
-   * the used resource bundle.
-   */
+  /** the used resource bundle. */
   private String resourceIdentifier;
 
-  /**
-   * the filtered data source.
-   */
+  /** the filtered data source. */
   private DataSource dataSource;
 
-  private ReportDefinition reportDefinition;
+  /** The report definition registered to this connectable. */
+  private transient ReportDefinition reportDefinition;
 
   /**
    * Creates a new ResourceFileFilter.
@@ -169,6 +166,13 @@ public class ResourceFileFilter
     this.dataSource = ds;
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
@@ -182,6 +186,13 @@ public class ResourceFileFilter
     this.reportDefinition = reportDefinition;
   }
 
+  /**
+   * Disconnects the connectable from the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.18 2005/09/07 14:25:11 taqua Exp $
+ * $Id: Worker.java,v 1.19 2005/09/19 15:38:48 taqua Exp $
  *
  *
  * Changes
@@ -108,6 +108,11 @@ public final class Worker extends Thread
     }
   }
 
+  /**
+   * Returns the workload object.
+   *
+   * @return the runnable executed by this worker thread.
+   */
   public synchronized Runnable getWorkload()
   {
     return workload;
@@ -170,12 +175,7 @@ public final class Worker extends Thread
           workerPool.workerAvailable(this);
         }
       }
-//      else
-//      {
-//        Log.debug ("Nothing to do ...");
-//      }
-//
-//      Log.debug ("Sleeping ..." + this.getName());
+
       synchronized (this)
       {
         try
@@ -186,74 +186,10 @@ public final class Worker extends Thread
         catch (InterruptedException ie)
         {
           // ignored
-//          Log.debug ("Interrupted ..." + getName());
         }
       }
-//      Log.debug ("Wakeup ..." + getName());
     }
   }
-
-
-//  private static class HeavyWorkLoad implements Runnable
-//  {
-//    static int task;
-//    char test;
-//
-//    public HeavyWorkLoad(char t)
-//    {
-//      test = t;
-//    }
-//
-//    public void run()
-//    {
-//      synchronized (HeavyWorkLoad.class)
-//      {
-//        try
-//        {
-//          System.out.println ("HeavyWorkLoad Start...  " + test);
-//          for (int i = 0; i < 100; i++ )
-//          {
-//            System.out.print (test);
-//            System.out.flush();
-//            Thread.sleep(100);
-//            task = i;
-//          }
-//          System.out.println ("HeavyWorkLoad Finish...");
-//        }
-//        catch (Exception e)
-//        {
-//          System.out.println ("HeavyWorkLoad Failed...");
-//        }
-//      }
-//    }
-//  }
-//
-//  public static void main(String[] args)
-//  {
-//    HeavyWorkLoad wl1 = new HeavyWorkLoad('.');
-//    HeavyWorkLoad wl2 = new HeavyWorkLoad('+');
-//    Worker worker = new Worker(10000);
-//    worker.setWorkload(wl1);
-//    wl2.run();
-//    while (worker.isAvailable() == false)
-//    {
-//      try
-//      {
-//        System.out.println ("1Waiting ...");
-//        synchronized (worker)
-//        {
-//          worker.wait(1000);
-//        }
-//      }
-//      catch (InterruptedException ie)
-//      {
-//        System.out.println ("1Int ...");
-//      }
-//    }
-//    System.out.println ("Finishing ...");
-//    worker.finish();
-//    System.out.flush();
-//  }
 
   /**
    * Checks whether this worker has received the signal to finish and die.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DecimalFormatFilter.java,v 1.6 2005/07/22 16:39:54 taqua Exp $
+ * $Id: DecimalFormatFilter.java,v 1.7 2005/09/07 14:25:10 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -64,8 +64,11 @@ import org.jfree.report.ReportDefinition;
  */
 public class DecimalFormatFilter extends NumberFormatFilter
 {
+  /** The report definition registered to this connectable. */
   private ReportDefinition reportDefinition;
+  /** The last locale used to convert numbers. */
   private Locale lastLocale;
+  /** A flag indicating whether this filter should try to detect locales changes. */
   private boolean keepState;
 
   /**
@@ -204,6 +207,13 @@ public class DecimalFormatFilter extends NumberFormatFilter
     return super.getValue();
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
@@ -217,6 +227,13 @@ public class DecimalFormatFilter extends NumberFormatFilter
     this.reportDefinition = reportDefinition;
   }
 
+  /**
+   * Disconnects the connectable from the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)

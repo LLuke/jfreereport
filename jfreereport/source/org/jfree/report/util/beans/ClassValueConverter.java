@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ClassValueConverter.java,v 1.3 2005/03/03 23:00:27 taqua Exp $
+ * $Id: ClassValueConverter.java,v 1.4 2005/05/18 18:38:32 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import org.jfree.util.ObjectUtilities;
 /**
  * A class that handles the conversion of {@link Integer} attributes to and from their
  * {@link String} representation.
+ *
+ * @author Thomas Morgner
  */
 public class ClassValueConverter implements ValueConverter
 {

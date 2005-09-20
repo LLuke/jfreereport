@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowDataSource.java,v 1.7 2005/01/25 21:40:12 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.8 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,7 @@ public class DataRowDataSource
    */
   private String dataSourceColumnName;
 
+  /** The report definition registered to this connectable. */
   private transient ReportDefinition reportDefinition;
 
   /**
@@ -158,6 +159,13 @@ public class DataRowDataSource
   }
 
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
@@ -171,6 +179,13 @@ public class DataRowDataSource
     this.reportDefinition = reportDefinition;
   }
 
+  /**
+   * Disconnects the connectable from the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)

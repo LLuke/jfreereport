@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PropertyStringReadHandler.java,v 1.3 2005/03/03 23:00:19 taqua Exp $
+ * $Id: PropertyStringReadHandler.java,v 1.4 2005/08/08 15:36:35 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,6 @@ public class PropertyStringReadHandler extends AbstractPropertyXmlReadHandler
       return getRootHandler().getHelperObject(name);
     }
   }
-
 
   private CommentHintPath hintPath;
   private StringBuffer buffer;

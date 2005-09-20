@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportConnectable.java,v 1.2 2004/05/07 08:24:42 mungady Exp $
+ * $Id: ReportConnectable.java,v 1.3 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,9 +40,26 @@ package org.jfree.report.filter;
 
 import org.jfree.report.ReportDefinition;
 
+/**
+ * A ReportConnectable is able to receive ReportDefinitions to read data from
+ * there. The ReportConnectable interface allows access to the datasource, the
+ * report definition and the locales information for the current report.
+ *
+ * @author Thomas Morgner
+ */
 public interface ReportConnectable
 {
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   */
   public void registerReportDefinition (ReportDefinition reportDefinition);
 
+  /**
+   * Disconnects this ReportConnectable from the report definition.
+   *
+   * @param reportDefinition the ReportDefinition.
+   */
   public void unregisterReportDefinition (ReportDefinition reportDefinition);
 }

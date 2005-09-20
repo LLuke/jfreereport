@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AnchorFilter.java,v 1.2 2005/03/03 22:59:59 taqua Exp $
+ * $Id: AnchorFilter.java,v 1.3 2005/09/16 16:08:04 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,20 @@ package org.jfree.report.filter;
 
 import org.jfree.report.Anchor;
 
+/**
+ * The AnchorFilter converts arbitary objects into Anchors.
+ *
+ * @see Anchor
+ * @author Thomas Morgner
+ */
 public class AnchorFilter implements DataFilter
 {
+  /** The data source from where to get the values for the anchor. */
   private DataSource dataSource;
 
+  /**
+   * DefaultConstructor.
+   */
   public AnchorFilter()
   {
   }

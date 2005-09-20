@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupport.java,v 1.6 2005/08/08 15:36:29 taqua Exp $
+ * $Id: MessageFormatSupport.java,v 1.7 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -103,6 +103,7 @@ public class MessageFormatSupport implements Serializable
   private String[] fields;
   private MessageFormat format;
   private String formatString;
+  private String compiledFormat;
 
   public MessageFormatSupport ()
   {
@@ -120,9 +121,9 @@ public class MessageFormatSupport implements Serializable
     {
       throw new NullPointerException("Format must not be null");
     }
-    final String pattern = compiler.translateAndLookup(formatString);
-    format = new MessageFormat(pattern);
+    compiledFormat = compiler.translateAndLookup(formatString);
     fields = compiler.getFields();
+    format = new MessageFormat(compiledFormat);
     this.formatString = formatString;
   }
 
@@ -146,9 +147,14 @@ public class MessageFormatSupport implements Serializable
     return format.getLocale();
   }
 
+  public String getCompiledFormat()
+  {
+    return compiledFormat;
+  }
+
   public void setLocale (final Locale locale)
   {
     format.setLocale(locale);
-    format.applyPattern(formatString);
+    format.applyPattern(compiledFormat);
   }
 }
