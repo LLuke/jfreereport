@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.12 2005/08/08 15:36:37 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.13 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import java.util.Enumeration;
 
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.util.PageFormatFactory;
+import org.jfree.report.PageDefinition;
+import org.jfree.report.SimplePageDefinition;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.xml.CommentHandler;
@@ -110,8 +112,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, REPORT_CONFIG_TAG);
 
     writeComment(writer, DEFAULT_PAGEFORMAT_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
-    writeTag(writer, DEFAULT_PAGEFORMAT_TAG,
-            buildPageFormatProperties(), CLOSE);
+    writePageDefinition (writer);
     final Configuration config = getReport().getReportConfiguration();
     final Enumeration properties = config.getConfigProperties();
     if (properties.hasMoreElements())
@@ -141,15 +142,47 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     writer.write(getLineSeparator());
   }
 
+  private void writePageDefinition(final Writer writer) throws IOException
+  {
+    final PageDefinition pageDefinition = getReport().getPageDefinition();
+    if (pageDefinition instanceof SimplePageDefinition)
+    {
+      final SimplePageDefinition spdef = (SimplePageDefinition) pageDefinition;
+      AttributeList attr = new AttributeList();
+      attr.setAttribute("width", String.valueOf(spdef.getPageCountHorizontal()));
+      attr.setAttribute("height", String.valueOf(spdef.getPageCountVertical()));
+      writeTag(writer, SIMPLE_PAGE_DEFINITION_TAG, attr, OPEN);
+
+      final AttributeList attributes = buildPageFormatProperties(spdef.getPageFormat(0));
+      writeTag(writer, PAGE_TAG, attributes, CLOSE);
+
+      writeCloseTag(writer, SIMPLE_PAGE_DEFINITION_TAG);
+    }
+    else
+    {
+      writeTag(writer, PAGE_DEFINITION_TAG);
+
+      final int max = pageDefinition.getPageCount();
+      for (int i = 0; i < max; i++)
+      {
+        final PageFormat fmt = pageDefinition.getPageFormat(i);
+
+        final AttributeList attributes = buildPageFormatProperties(fmt);
+        writeTag(writer, PAGE_TAG, attributes, CLOSE);
+      }
+
+      writeCloseTag(writer, PAGE_DEFINITION_TAG);
+    }
+  }
+
   /**
    * Compiles a collection of page format properties.
    *
    * @return The properties.
    */
-  private AttributeList buildPageFormatProperties ()
+  private AttributeList buildPageFormatProperties (final PageFormat fmt)
   {
     final AttributeList retval = new AttributeList();
-    final PageFormat fmt = getReport().getPageDefinition().getPageFormat(0);
     final int[] borders = getBorders(fmt.getPaper());
 
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)

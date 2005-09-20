@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BeanUtility.java,v 1.5 2005/04/17 21:09:01 taqua Exp $
+ * $Id: BeanUtility.java,v 1.6 2005/05/08 15:41:16 taqua Exp $
  *
  * Changes
  * -------
@@ -393,6 +393,21 @@ public final class BeanUtility
     }
 
     setPropertyAsString(name, getPropertyType(pd), txt);
+  }
+
+  public Class getPropertyType (final String name) throws BeanException
+  {
+    if (name == null)
+    {
+      throw new NullPointerException("Name must not be null");
+    }
+    final PropertySpecification ps = new PropertySpecification(name);
+    final PropertyDescriptor pd = (PropertyDescriptor) properties.get(ps.getName());
+    if (pd == null)
+    {
+      throw new BeanException("No such property:" + name);
+    }
+    return getPropertyType(pd);
   }
 
   public static Class getPropertyType (final PropertyDescriptor pd)

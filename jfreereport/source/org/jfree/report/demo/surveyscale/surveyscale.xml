@@ -99,7 +99,7 @@ Object getValue()
         </property>
       </properties>
     </expression>
-    <expression name="Survey Response" class="org.jfree.report.modules.misc.survey.SurveyScale">
+    <expression name="Survey Response" class="org.jfree.report.modules.misc.survey.SurveyScaleExpression">
       <properties>
         <property name="field[0]">Your Response</property>
         <property name="field[1]">Average Response</property>

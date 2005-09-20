@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ExpressionPropertyReadHandler.java,v 1.3 2005/03/03 23:00:20 taqua Exp $
+ * $Id: ExpressionPropertyReadHandler.java,v 1.4 2005/04/09 17:43:14 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.util.beans.BeanUtility;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.util.ObjectUtilities;
 import org.xml.sax.SAXException;
 
 public class ExpressionPropertyReadHandler extends PropertyStringReadHandler
@@ -59,6 +60,7 @@ public class ExpressionPropertyReadHandler extends PropertyStringReadHandler
   private BeanUtility beanUtility;
   private CharacterEntityParser entityParser;
   private String propertyName;
+  private String propertyType;
   private String expressionName;
 
   public ExpressionPropertyReadHandler (final BeanUtility expression,
@@ -83,6 +85,7 @@ public class ExpressionPropertyReadHandler extends PropertyStringReadHandler
           throws SAXException, XmlReaderException
   {
     super.startParsing(attrs);
+    propertyType = attrs.getValue(CLASS_ATT);
     propertyName = attrs.getValue(NAME_ATT);
     if (propertyName == null)
     {
@@ -109,10 +112,26 @@ public class ExpressionPropertyReadHandler extends PropertyStringReadHandler
     }
     try
     {
-      beanUtility.setPropertyAsString
+      if (propertyType != null)
+      {
+        ClassLoader cl = ObjectUtilities.getClassLoader
+                (ExpressionPropertyReadHandler.class);
+        Class c = cl.loadClass(propertyType);
+        beanUtility.setPropertyAsString
+              (propertyName, c, entityParser.decodeEntities(result));
+      }
+      else
+      {
+        beanUtility.setPropertyAsString
               (propertyName, entityParser.decodeEntities(result));
+      }
     }
     catch (BeanException e)
+    {
+      throw new ParseException("Unable to assign property '" + propertyName
+              + "' to expression '" + expressionName + "'", e);
+    }
+    catch (ClassNotFoundException e)
     {
       throw new ParseException("Unable to assign property '" + propertyName
               + "' to expression '" + expressionName + "'", e);

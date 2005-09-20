@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.8 2005/08/29 17:43:59 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.9 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -77,8 +77,7 @@ public class DemoFrontend extends CompoundDemoFrame
     editableConfig.setConfigProperty(EMBEDDED_KEY, "true");
     init();
   }
-
-  public static void main (final String[] args)
+  public static DemoSelector createDemoInfo ()
   {
     final DefaultDemoSelector rootSelector = new DefaultDemoSelector
             ("All JFreeReport Demos");
@@ -105,8 +104,13 @@ public class DemoFrontend extends CompoundDemoFrame
     rootSelector.addDemo(new FontDemo());
     rootSelector.addDemo(new VeryLargeReportDemo());
     rootSelector.addDemo(new BookstoreDemo());
+    return rootSelector;
+  }
 
-    final DemoFrontend frontend = new DemoFrontend(rootSelector);
+  public static void main (final String[] args)
+  {
+
+    final DemoFrontend frontend = new DemoFrontend(createDemoInfo());
     frontend.pack();
     RefineryUtilities.centerFrameOnScreen(frontend);
     frontend.setVisible(true);

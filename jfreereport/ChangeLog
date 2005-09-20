@@ -2,6 +2,9 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * [BUG] The XML Parser handler for function properties did not handle
+          specified classes correctly.
+
         * [BUG] Michael Tennes fixed a show-stopping bug in the text width
           calculation in the PlainTextOutputTarget.
 

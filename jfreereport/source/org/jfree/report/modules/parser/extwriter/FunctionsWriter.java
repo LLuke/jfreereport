@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.12 2005/02/23 21:05:56 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.13 2005/09/19 15:38:48 taqua Exp $
  *
  * Changes
  * -------
@@ -196,14 +196,21 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     for (int i = 0; i < propertyNames.length; i++)
     {
       final String key = propertyNames[i];
+      final Object property = beanUtility.getProperty(key);
+      final Class propertyType = beanUtility.getPropertyType(key);
       final String value = beanUtility.getPropertyAsString(key);
-      if (value != null)
+      if (value != null && property != null)
       {
         final CommentHintPath propertyPath = propertiesPath.getInstance();
         propertyPath.addName(key);
         writeComment(writer, propertyPath, CommentHandler.OPEN_TAG_COMMENT);
-
-        writeTag(writer, "property", "name", key, OPEN);
+        AttributeList attList = new AttributeList();
+        attList.setAttribute("name", key);
+        if (propertyType.equals(property.getClass()) == false)
+        {
+          attList.setAttribute("class", property.getClass().getName());
+        }
+        writeTag(writer, "property", attList, OPEN);
         writer.write(normalize(value));
         writeCloseTag(writer, "property");
       }

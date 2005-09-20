@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.11 2005/02/23 21:05:56 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.12 2005/09/19 15:38:48 taqua Exp $
  *
  * Changes
  * -------
@@ -365,6 +365,10 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    */
   private final ReportWriter reportWriter;
 
+  protected static final String PAGE_DEFINITION_TAG = "page-definition";
+  protected static final String SIMPLE_PAGE_DEFINITION_TAG = "simple-page-definition";
+  protected static final String PAGE_TAG = "page";
+
   /**
    * A list of safe tags.
    */
@@ -418,6 +422,9 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
 
       safeTags.add(CONFIGURATION_TAG);
       safeTags.add(DEFAULT_PAGEFORMAT_TAG);
+      safeTags.add(SIMPLE_PAGE_DEFINITION_TAG);
+      safeTags.add(PAGE_DEFINITION_TAG);
+      safeTags.add(PAGE_TAG);
       safeTags.add(OUTPUT_TARGET_TAG);
 
       safeTags.add(GROUPS_TAG);
