@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportRunner.java,v 1.1 2005/03/24 23:11:01 taqua Exp $
+ * $Id: ReportRunner.java,v 1.2 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------
@@ -40,24 +40,22 @@
  */
 package org.jfree.report.ext.junit.ext;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.ext.junit.TestSystem;
-import org.jfree.report.ext.junit.base.functionality.FunctionalityTestLib;
-import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
-
 public class ReportRunner
 {
-  public ReportRunner ()
+  private ReportRunner ()
   {
   }
 
   public static void main (final String[] args)
           throws Exception
   {
-    final FunctionalityTestLib.ReportTest test = FunctionalityTestLib.REPORTS[0];
-    final JFreeReport report =
-            TestSystem.loadReport(test.getReportDefinition(), test.getReportTableModel());
-    ExcelReportUtil.createXLS(report, "/tmp/report1-strict.xls", true);
+    // a general purpose class that is filled,modified and executed whenever a
+    // unknown bug is pending ...
+
+//    final FunctionalityTestLib.ReportTest test = FunctionalityTestLib.REPORTS[0];
+//    final JFreeReport report =
+//            TestSystem.loadReport(test.getReportDefinition(), test.getReportTableModel());
+//    ExcelReportUtil.createXLS(report, "/tmp/report1-strict.xls", true);
 //    FunctionalityTestLib.createXLS(report);
   }
 }

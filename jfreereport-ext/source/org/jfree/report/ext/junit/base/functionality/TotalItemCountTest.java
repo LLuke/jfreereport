@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountTest.java,v 1.6 2005/09/07 11:24:09 taqua Exp $
+ * $Id: TotalItemCountTest.java,v 1.7 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,20 +38,16 @@
 
 package org.jfree.report.ext.junit.base.functionality;
 
-import java.net.URL;
-
 import junit.framework.TestCase;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.world.CountryDataTableModel;
+import org.jfree.report.demo.helper.ReportDefinitionException;
+import org.jfree.report.demo.world.CountryReportSecurityXMLDemoHandler;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.FunctionUtilities;
 import org.jfree.report.function.TotalItemCountFunction;
-import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.util.Log;
-import org.jfree.util.ObjectUtilities;
 
 public class TotalItemCountTest extends TestCase
 {
@@ -135,10 +131,6 @@ public class TotalItemCountTest extends TestCase
     }
   }
 
-  private static final FunctionalityTestLib.ReportTest REPORT2 =
-      new FunctionalityTestLib.ReportTest("org/jfree/report/demo/world/country-report.xml",
-          new CountryDataTableModel());
-
   public TotalItemCountTest()
   {
   }
@@ -148,44 +140,33 @@ public class TotalItemCountTest extends TestCase
     super(s);
   }
 
-  public void testGroupItemCount()
+  public void testGroupItemCount() throws ReportDefinitionException
   {
-    final URL url = ObjectUtilities.getResource
-            (REPORT2.getReportDefinition(), TotalItemCountTest.class);
-    assertNotNull(url);
-    JFreeReport report = null;
-    try
+    CountryReportSecurityXMLDemoHandler demoHandler = new CountryReportSecurityXMLDemoHandler();
+    JFreeReport report = demoHandler.createReport();
+    report.addExpression(new TotalItemCountVerifyFunction());
+    GroupList list = report.getGroups();
+    // make sure that there is no default group ...
+    Group g = list.getGroupByName("default");
+    if (g != null)
     {
-      report = ReportGenerator.getInstance().parseReport(url);
-      report.setData(REPORT2.getReportTableModel());
-      report.addExpression(new TotalItemCountVerifyFunction());
-      GroupList list = report.getGroups();
-      // make sure that there is no default group ...
-      Group g = list.getGroupByName("default");
-      if (g != null)
-      {
-        list.remove(g);
-      }
-      report.setGroups(list);
-
-      TotalItemCountFunction f = new TotalItemCountFunction();
-      f.setName("continent-total-gc");
-      f.setGroup("Continent Group");
-      f.setDependencyLevel(1);
-      report.addExpression(f);
-
-      TotalItemCountFunction f2 = new TotalItemCountFunction();
-      f2.setName("total-gc");
-      f2.setDependencyLevel(1);
-      report.addExpression(f2);
+      list.remove(g);
     }
-    catch (Exception e)
-    {
-      Log.debug("Failed to parse " + url, e);
-      fail();
-    }
+    report.setGroups(list);
+
+    TotalItemCountFunction f = new TotalItemCountFunction();
+    f.setName("continent-total-gc");
+    f.setGroup("Continent Group");
+    f.setDependencyLevel(1);
+    report.addExpression(f);
+
+    TotalItemCountFunction f2 = new TotalItemCountFunction();
+    f2.setName("total-gc");
+    f2.setDependencyLevel(1);
+    report.addExpression(f2);
 
     assertTrue(FunctionalityTestLib.execGraphics2D(report));
+
 
   }
 }

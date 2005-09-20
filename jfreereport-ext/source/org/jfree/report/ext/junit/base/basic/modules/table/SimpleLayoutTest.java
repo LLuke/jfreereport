@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleLayoutTest.java,v 1.4 2005/09/07 11:24:09 taqua Exp $
+ * $Id: SimpleLayoutTest.java,v 1.5 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,15 +38,10 @@
 
 package org.jfree.report.ext.junit.base.basic.modules.table;
 
-import java.net.URL;
-import javax.swing.table.DefaultTableModel;
-
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.demo.RectanglesDemo;
 import org.jfree.report.ext.junit.base.functionality.FunctionalityTestLib;
-import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.util.Log;
-import org.jfree.util.ObjectUtilities;
 
 public class SimpleLayoutTest extends TestCase
 {
@@ -61,18 +56,8 @@ public class SimpleLayoutTest extends TestCase
 
   public void testSimpleLayout () throws Exception
   {
-    final FunctionalityTestLib.ReportTest test =
-            new FunctionalityTestLib.ReportTest
-                    ("org/jfree/report/demo/report5.xml", new DefaultTableModel());
-
-    final URL url = ObjectUtilities.getResource
-      (test.getReportDefinition(), SimpleLayoutTest.class);
-    assertNotNull("Failed to locate " + test.getReportDefinition(), url);
-
-    Log.debug("Processing: " + url);
-    final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
-    report.setData(test.getReportTableModel());
-
+    RectanglesDemo demo = new RectanglesDemo();
+    final JFreeReport report = demo.createReport();
     FunctionalityTestLib.createStreamHTML(report);
   }
 

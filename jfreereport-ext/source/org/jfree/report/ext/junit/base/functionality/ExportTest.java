@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.7 2005/08/08 15:56:01 taqua Exp $
+ * $Id: ExportTest.java,v 1.8 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,13 +38,10 @@
 
 package org.jfree.report.ext.junit.base.functionality;
 
-import java.net.URL;
-
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.demo.helper.InternalDemoHandler;
 import org.jfree.util.Log;
-import org.jfree.util.ObjectUtilities;
 
 public class ExportTest extends TestCase
 {
@@ -55,40 +52,30 @@ public class ExportTest extends TestCase
 
   public void testConvertReport() throws Exception
   {
-    try
+    InternalDemoHandler[] handlers = FunctionalityTestLib.getAllDemoHandlers();
+    for (int i = 0; i < handlers.length; i++)
     {
-      for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
-      {
-        final URL url = ObjectUtilities.getResource
-          (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ExportTest.class);
-        assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
+      InternalDemoHandler handler = handlers[i];
 
-        Log.debug("Processing: " + url);
-        final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
-        report.setData(FunctionalityTestLib.REPORTS[i].getReportTableModel());
+      final JFreeReport report = handler.createReport();
+      Log.debug ("Processing " + handler.getDemoName());
 
-        Log.debug("   GRAPHICS2D ..");
-        assertTrue(FunctionalityTestLib.execGraphics2D(report));
-        Log.debug("   PDF ..");
-        assertTrue(FunctionalityTestLib.createPDF(report));
-        Log.debug("   CSV ..");
-        FunctionalityTestLib.createCSV(report);
-        Log.debug("   PLAIN_TEXT ..");
-        assertTrue(FunctionalityTestLib.createPlainText(report));
-        Log.debug("   RTF ..");
-        FunctionalityTestLib.createRTF(report);
-        Log.debug("   STREAM_HTML ..");
-        FunctionalityTestLib.createStreamHTML(report);
-        Log.debug("   EXCEL ..");
-        FunctionalityTestLib.createXLS(report);
-        Log.debug("   ZIP_HTML ..");
-        FunctionalityTestLib.createZIPHTML(report);
-      }
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-      fail();
+      Log.debug("   GRAPHICS2D ..");
+      assertTrue(FunctionalityTestLib.execGraphics2D(report));
+      Log.debug("   PDF ..");
+      assertTrue(FunctionalityTestLib.createPDF(report));
+      Log.debug("   CSV ..");
+      FunctionalityTestLib.createCSV(report);
+      Log.debug("   PLAIN_TEXT ..");
+      assertTrue(FunctionalityTestLib.createPlainText(report));
+      Log.debug("   RTF ..");
+      FunctionalityTestLib.createRTF(report);
+      Log.debug("   STREAM_HTML ..");
+      FunctionalityTestLib.createStreamHTML(report);
+      Log.debug("   EXCEL ..");
+      FunctionalityTestLib.createXLS(report);
+      Log.debug("   ZIP_HTML ..");
+      FunctionalityTestLib.createZIPHTML(report);
     }
   }
 

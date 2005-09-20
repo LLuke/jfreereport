@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.10 2005/09/07 11:24:09 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.11 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,16 +42,14 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.net.URL;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.world.CountryDataTableModel;
+import org.jfree.report.demo.world.CountryReportXMLDemoHandler;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
-import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
 import org.jfree.report.modules.parser.ext.factory.objects.BandLayoutClassFactory;
@@ -61,16 +59,11 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleK
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.util.Log;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
 
 public class PlainTextExportTest extends TestCase
 {
-  private static final FunctionalityTestLib.ReportTest TEST_REPORT =
-      new FunctionalityTestLib.ReportTest ("org/jfree/report/demo/world/country-report.xml",
-          new CountryDataTableModel());
-
   public PlainTextExportTest()
   {
   }
@@ -101,20 +94,10 @@ public class PlainTextExportTest extends TestCase
   public void testExport ()
     throws Exception
   {
-    final URL url = ObjectUtilities.getResource
-            (TEST_REPORT.getReportDefinition(), PlainTextExportTest.class);
-    assertNotNull(url);
-    JFreeReport report = null;
-    try
-    {
-      report = ReportGenerator.getInstance().parseReport(url);
-      report.setData(TEST_REPORT.getReportTableModel());
-    }
-    catch (Exception e)
-    {
-      Log.debug("Failed to parse " + url, e);
-      fail();
-    }
+    final CountryReportXMLDemoHandler demoHandler =
+            new CountryReportXMLDemoHandler();
+    final JFreeReport report = demoHandler.createReport();
+    assertNotNull(report);
     final String rdefBeforeFirst = writeReport(report);
     final String utf16 = exportReport(report, "UTF-16");
     final String rdefAfterFirst = writeReport(report);

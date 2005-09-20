@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountTest.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
+ * $Id: TotalGroupCountTest.java,v 1.10 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.world.CountryDataTableModel;
+import org.jfree.report.demo.world.CountryReportXMLDemoHandler;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.TotalGroupCountFunction;
@@ -112,10 +113,6 @@ public class TotalGroupCountTest extends TestCase
     }
   }
 
-  private static final FunctionalityTestLib.ReportTest REPORT2 =
-      new FunctionalityTestLib.ReportTest("org/jfree/report/demo/world/country-report.xml",
-          new CountryDataTableModel());
-
   public TotalGroupCountTest()
   {
   }
@@ -127,14 +124,11 @@ public class TotalGroupCountTest extends TestCase
 
   public void testGroupCount()
   {
-    final URL url = ObjectUtilities.getResource
-            (REPORT2.getReportDefinition(), TotalGroupCountTest.class);
-    assertNotNull(url);
-    JFreeReport report = null;
+    final CountryReportXMLDemoHandler demoHandler =
+            new CountryReportXMLDemoHandler();
     try
     {
-      report = ReportGenerator.getInstance().parseReport(url);
-      report.setData(REPORT2.getReportTableModel());
+      final JFreeReport report = demoHandler.createReport();
       final GroupList list = report.getGroups();
       // make sure that there is no default group ...
       final Group g = list.getGroupByName("default");
@@ -155,14 +149,15 @@ public class TotalGroupCountTest extends TestCase
       f2.setName("total-gc");
       f2.setDependencyLevel(1);
       report.addExpression(f2);
+
+      assertTrue(FunctionalityTestLib.execGraphics2D(report));
     }
     catch (Exception e)
     {
-      Log.debug("Failed to parse " + url, e);
+      Log.debug("Failed to parse " + demoHandler.getReportDefinitionSource(), e);
       fail();
     }
 
-    assertTrue(FunctionalityTestLib.execGraphics2D(report));
 
   }
 }

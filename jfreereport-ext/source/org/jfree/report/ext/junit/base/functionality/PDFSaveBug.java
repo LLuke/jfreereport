@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveBug.java,v 1.4 2005/08/08 15:56:01 taqua Exp $
+ * $Id: PDFSaveBug.java,v 1.5 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,8 +46,7 @@ import com.lowagie.text.DocWriter;
 import com.lowagie.text.pdf.PdfReader;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.demo.world.CountryDataTableModel;
-import org.jfree.report.ext.junit.TestSystem;
+import org.jfree.report.demo.world.CountryReportSecurityXMLDemoHandler;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.util.Log;
@@ -58,18 +57,14 @@ import org.jfree.util.Log;
  */
 public class PDFSaveBug extends TestCase
 {
-  private static final FunctionalityTestLib.ReportTest REPORT =
-      new FunctionalityTestLib.ReportTest 
-        ("org/jfree/report/demo/world/county-report-security.xml", new CountryDataTableModel());
-
   public PDFSaveBug ()
   {
   }
 
   public void testSaveEncrypted() throws Exception
   {
-    JFreeReport report = TestSystem.loadReport
-      (REPORT.getReportDefinition(), REPORT.getReportTableModel());
+    CountryReportSecurityXMLDemoHandler demoHandler = new CountryReportSecurityXMLDemoHandler();
+    JFreeReport report = demoHandler.createReport();
     byte[] b = createPDF(report);
     PdfReader reader = new PdfReader(b, DocWriter.getISOBytes("Duck"));
     assertTrue(reader.isEncrypted());

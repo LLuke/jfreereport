@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.8 2005/08/08 15:56:01 taqua Exp $
+ * $Id: WriterTest.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,11 +46,11 @@ import java.net.URL;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
+import org.jfree.report.demo.helper.XmlDemoHandler;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.util.Log;
-import org.jfree.util.ObjectUtilities;
 import org.xml.sax.InputSource;
 
 public class WriterTest extends TestCase
@@ -64,11 +64,13 @@ public class WriterTest extends TestCase
   public void testConvertReport() throws Exception
   {
     final ReportConverter rc = new ReportConverter();
-    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
+    XmlDemoHandler[] handlers = FunctionalityTestLib.getAllXmlDemoHandlers();
+    for (int i = 0; i < handlers.length; i++)
     {
-      final URL url = ObjectUtilities.getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), WriterTest.class);
-      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
+      XmlDemoHandler handler = handlers[i];
+      final URL url = handler.getReportDefinitionSource();
+      assertNotNull("Failed to locate " + url, url);
+
       final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       try
       {
@@ -88,11 +90,13 @@ public class WriterTest extends TestCase
 
   public void testWriteReport() throws Exception
   {
-    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
+    XmlDemoHandler[] handlers = FunctionalityTestLib.getAllXmlDemoHandlers();
+    for (int i = 0; i < handlers.length; i++)
     {
-      final URL url = ObjectUtilities.getResource
-          (FunctionalityTestLib.REPORTS[i].getReportDefinition(), WriterTest.class);
-      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
+      XmlDemoHandler handler = handlers[i];
+      final URL url = handler.getReportDefinitionSource();
+      assertNotNull("Failed to locate " + url, url);
+
       final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       JFreeReport report = null;
       try

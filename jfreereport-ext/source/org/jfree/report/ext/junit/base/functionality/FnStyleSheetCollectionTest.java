@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FnStyleSheetCollectionTest.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
+ * $Id: FnStyleSheetCollectionTest.java,v 1.10 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,68 +38,40 @@
 
 package org.jfree.report.ext.junit.base.functionality;
 
-import java.net.URL;
-
 import junit.framework.TestCase;
 import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.ReportGenerator;
+import org.jfree.report.demo.cards.SimpleCardDemoHandler;
+import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.util.Log;
-import org.jfree.util.ObjectUtilities;
 
 public class FnStyleSheetCollectionTest extends TestCase
 {
-  private static final FunctionalityTestLib.ReportTest TEST_REPORT =
-      new FunctionalityTestLib.ReportTest
-          ("org/jfree/report/demo/cards/usercards.xml",
-              FunctionalityTestLib.createSimpleCardDemoModel());
-
-  public void testCollectStyleSheets ()
+  public FnStyleSheetCollectionTest()
   {
-    final URL url = ObjectUtilities.getResource
-            (TEST_REPORT.getReportDefinition(), FnStyleSheetCollectionTest.class);
-    assertNotNull(url);
-    JFreeReport report = null;
-    try
-    {
-      report = ReportGenerator.getInstance().parseReport(url);
-    }
-    catch (Exception e)
-    {
-      Log.debug("Failed to parse " + url, e);
-      fail();
-    }
+  }
 
+  public FnStyleSheetCollectionTest(String string)
+  {
+    super(string);
+  }
+
+  public void testCollectStyleSheets () throws ReportDefinitionException
+  {
+    final SimpleCardDemoHandler cardDemoHandler = new SimpleCardDemoHandler();
+    JFreeReport report = cardDemoHandler.createReport();
     assertStyleCollectionConnected(report);
-/*
-    Iterator it = report.getStyleSheetCollection().keys();
-    while (it.hasNext())
-    {
-      Log.debug (it.next());
-    }
-*/
     assertNotNull(report.getStyleSheetCollection().getStyleSheet("right-band"));
   }
 
-  public void testCollectStyleSheetsClone ()
+  public void testCollectStyleSheetsClone () throws ReportDefinitionException,
+          CloneNotSupportedException
   {
-    final URL url = ObjectUtilities.getResource
-            (TEST_REPORT.getReportDefinition(), FnStyleSheetCollectionTest.class);
-    assertNotNull(url);
-    JFreeReport report = null;
-    try
-    {
-      report = ReportGenerator.getInstance().parseReport(url);
-      report = (JFreeReport) report.clone();
-    }
-    catch (Exception e)
-    {
-      Log.debug("Failed to parse " + url, e);
-      fail();
-    }
+    final SimpleCardDemoHandler cardDemoHandler = new SimpleCardDemoHandler();
+    JFreeReport report = cardDemoHandler.createReport();
+    report = (JFreeReport) report.clone();
 
     assertStyleCollectionConnected(report);
 /*
@@ -133,6 +105,7 @@ public class FnStyleSheetCollectionTest extends TestCase
 
   private void assertStyleCollectionConnected(final Band band, final StyleSheetCollection sc)
   {
+    // todo
   }
 
   private void assertStylesConnected (final ElementStyleSheet es, final StyleSheetCollection sc)

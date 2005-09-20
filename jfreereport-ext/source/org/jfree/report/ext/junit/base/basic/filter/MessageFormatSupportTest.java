@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: MessageFormatSupportTest.java,v 1.1 2005/08/08 15:57:03 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class MessageFormatSupportTest extends TestCase
     final String example = "$(\"customer.firstName\") $(\"customer.lastName\")";
     final MessageFormatSupport support = new MessageFormatSupport();
     support.setFormatString(example);
-
+    assertEquals("CompiledFormat", "{0} {1}", support.getCompiledFormat());
   }
 
   public void testCSVTokenizer ()

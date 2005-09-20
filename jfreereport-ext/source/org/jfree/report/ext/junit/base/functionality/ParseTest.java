@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParseTest.java,v 1.6 2005/08/08 15:56:01 taqua Exp $
+ * $Id: ParseTest.java,v 1.7 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,9 +46,9 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.demo.helper.XmlDemoHandler;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
-import org.jfree.util.ObjectUtilities;
 
 public class ParseTest extends TestCase
 {
@@ -58,64 +58,39 @@ public class ParseTest extends TestCase
     super(s);
   }
 
+  /**
+   * Parses, clones and serializes the reports ..
+   * @throws Exception
+   */
   public void testParseReport() throws Exception
   {
-    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
+    XmlDemoHandler[] handlers = FunctionalityTestLib.getAllXmlDemoHandlers();
+    for (int i = 0; i < handlers.length; i++)
     {
-      final URL url = ObjectUtilities.getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
-      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
-      try
-      {
-        assertNotNull(ReportGenerator.getInstance().parseReport(url));
-      }
-      catch (Exception e)
-      {
-        Log.debug("Failed to parse " + url, e);
-        fail();
-      }
-    }
-  }
-
-  public void testParseCloneReport() throws Exception
-  {
-    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
-    {
-      final URL url = ObjectUtilities.getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
-      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
+      XmlDemoHandler handler = handlers[i];
+      final URL url = handler.getReportDefinitionSource();
+      assertNotNull("Failed to locate " + url, url);
       try
       {
         final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
+        assertNotNull(report);
         report.clone();
+
+        final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        final ObjectOutputStream out = new ObjectOutputStream(bo);
+        out.writeObject(report);
+
+        final ObjectInputStream oin = new ObjectInputStream
+          (new ByteArrayInputStream(bo.toByteArray()));
+        final JFreeReport e2 = (JFreeReport) oin.readObject();
+        assertNotNull(e2); // cannot assert equals, as this is not implemented.
+
       }
       catch (Exception e)
       {
         Log.debug("Failed to parse " + url, e);
         fail();
       }
-    }
-  }
-
-  public void testParseSerializeReport() throws Exception
-  {
-    for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
-    {
-      final URL url = ObjectUtilities.getResource
-        (FunctionalityTestLib.REPORTS[i].getReportDefinition(), ParseTest.class);
-      assertNotNull("Failed to locate " + FunctionalityTestLib.REPORTS[i].getReportDefinition(), url);
-  
-      final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
-
-      final ByteArrayOutputStream bo = new ByteArrayOutputStream();
-      final ObjectOutputStream out = new ObjectOutputStream(bo);
-      out.writeObject(report);
-
-      final ObjectInputStream oin = new ObjectInputStream
-        (new ByteArrayInputStream(bo.toByteArray()));
-      final JFreeReport e2 = (JFreeReport) oin.readObject();
-      assertNotNull(e2); // cannot assert equals, as this is not implemented.
-
     }
   }
 }

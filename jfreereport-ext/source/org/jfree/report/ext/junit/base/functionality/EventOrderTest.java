@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.8 2005/05/18 18:50:29 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.9 2005/08/08 15:56:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import javax.swing.table.DefaultTableModel;
 import junit.framework.TestCase;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.demo.groups.GroupsDemo;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
@@ -404,12 +405,8 @@ public class EventOrderTest extends TestCase
 
   public void testPageCount() throws Exception
   {
-    JFreeReport report = null;
-    final URL url = ObjectUtilities.getResource
-      (FunctionalityTestLib.REPORTS[2].getReportDefinition(), EventOrderTest.class);
-    assertNotNull(url);
-    report = ReportGenerator.getInstance().parseReport(url);
-    report.setData(FunctionalityTestLib.REPORTS[2].getReportTableModel());
+    GroupsDemo demo = new GroupsDemo();
+    JFreeReport report = demo.createReport();
     final PageFunction pf = new PageFunction("JUnit-Page");
     pf.setDependencyLevel(2);
     report.addExpression(pf);
