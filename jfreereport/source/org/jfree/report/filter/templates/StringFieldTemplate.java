@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.7 2005/03/01 10:09:19 taqua Exp $
+ * $Id: StringFieldTemplate.java,v 1.8 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -140,16 +140,31 @@ public class StringFieldTemplate extends AbstractTemplate
     return template;
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
+  /**
+   * Disconnects this ReportConnectable from the report definition.
+   *
+   * @param reportDefinition the ReportDefinition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
+  /**
+   * Returns the datarow data source used in this template.
+   *
+   * @return the datarow data source.
+   */
   protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;

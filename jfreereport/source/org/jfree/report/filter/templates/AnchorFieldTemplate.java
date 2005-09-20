@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AnchorFieldTemplate.java,v 1.3 2005/03/03 23:00:00 taqua Exp $
+ * $Id: AnchorFieldTemplate.java,v 1.4 2005/09/16 16:08:06 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,12 @@ import org.jfree.report.filter.AnchorFilter;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ReportConnectable;
 
+/**
+ * The anchor-field template provides the default field for assigning anchors
+ * to an location within the document.
+ *
+ * @author Thomas Morgner
+ */
 public class AnchorFieldTemplate extends AbstractTemplate
   implements ReportConnectable
 {
@@ -114,16 +120,31 @@ public class AnchorFieldTemplate extends AbstractTemplate
     return template;
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
+  /**
+   * Disconnects this ReportConnectable from the report definition.
+   *
+   * @param reportDefinition the ReportDefinition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
+  /**
+   * Returns the datarow data source used in this template.
+   *
+   * @return the datarow data source.
+   */
   protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;

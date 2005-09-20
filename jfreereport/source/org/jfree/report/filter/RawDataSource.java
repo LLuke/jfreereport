@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: RawDataSource.java,v 1.2 2005/03/03 22:59:59 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,27 @@
  */
 package org.jfree.report.filter;
 
+/**
+ * The raw data source allows direct access to the filtered raw data.
+ * It is mainly used in the table exports, where access to Number and
+ * Date objects is a requirement.
+ * <p/>
+ * There is no enforced requirement to implement this interface, all exports
+ * will be able to work without it. But raw datasources definitly improve the
+ * quality and value of the generated output, so it is generally a good idea
+ * to implement it.
+ *
+ * @author Thomas Morgner
+ */
 public interface RawDataSource extends DataSource
 {
+  /**
+   * Returns the unformated raw value. Whether that raw value is useable for
+   * the export is beyond the scope of this API definition, but providing
+   * access to {@link java.lang.Number} or {@link java.util.Date} objects is
+   * a good idea.
+   *
+   * @return the raw data.
+   */
   public Object getRawValue();
 }

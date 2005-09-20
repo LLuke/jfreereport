@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFExportDialog.java,v 1.2 2005/03/10 19:05:36 taqua Exp $
+ * $Id: RTFExportDialog.java,v 1.3 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * --------
@@ -493,15 +493,5 @@ public class RTFExportDialog extends AbstractExportDialog
   protected String getResourceBaseName ()
   {
     return RTFExportPlugin.BASE_RESOURCE_CLASS;
-  }
-
-
-  public static void main (final String[] args)
-  {
-    final RTFExportDialog dialog = new RTFExportDialog();
-    dialog.setModal(true);
-    dialog.pack();
-    dialog.performQueryForExport(new JFreeReport());
-    System.exit(0);
   }
 }

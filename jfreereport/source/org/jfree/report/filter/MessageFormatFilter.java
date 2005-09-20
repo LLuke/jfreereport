@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFormatFilter.java,v 1.5 2005/04/14 16:37:33 taqua Exp $
+ * $Id: MessageFormatFilter.java,v 1.6 2005/09/20 15:38:23 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,11 @@ public class MessageFormatFilter
   /** The report definition registered to this connectable. */
   private transient ReportDefinition reportDefinition;
 
+  /**
+   * The message format support translates raw message strings into useable
+   * MessageFormat parameters and read the necessary input data from the
+   * datarow. 
+   */
   private MessageFormatSupport messageFormatSupport;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFieldTemplate.java,v 1.7 2005/02/23 21:04:46 taqua Exp $
+ * $Id: ShapeFieldTemplate.java,v 1.8 2005/06/25 17:51:59 taqua Exp $
  *
  * Changes
  * -------
@@ -117,16 +117,31 @@ public class ShapeFieldTemplate extends AbstractTemplate
     return template;
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
+  /**
+   * Disconnects this ReportConnectable from the report definition.
+   *
+   * @param reportDefinition the ReportDefinition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
+  /**
+   * Returns the datarow data source used in this template.
+   *
+   * @return the datarow data source.
+   */
   protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BeanUtility.java,v 1.6 2005/05/08 15:41:16 taqua Exp $
+ * $Id: BeanUtility.java,v 1.7 2005/09/20 16:56:05 taqua Exp $
  *
  * Changes
  * -------
@@ -50,15 +50,32 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The BeanUtility class enables access to bean properties using the reflection
+ * API.
+ *
+ * @author Thomas Morgner
+ */
 public final class BeanUtility
 {
-
+  /**
+   * A property specification parses a compound property name into segments
+   * and allows access to the next property.
+   */
   private static class PropertySpecification
   {
+    /** The raw value of the property name. */
     private String raw;
+    /** The next direct property that should be accessed. */
     private String name;
+    /** The index, if the named property points to an indexed property. */
     private String index;
 
+    /**
+     * Creates a new PropertySpecification object for the given property string.
+     *
+     * @param raw the property string, posssibly with index specifications.
+     */
     public PropertySpecification (final String raw)
     {
       this.raw = raw;
@@ -66,6 +83,12 @@ public final class BeanUtility
       this.index = getIndex(raw);
     }
 
+    /**
+     * Returns the name of the property without any index information.
+     *
+     * @param property the raw name
+     * @return the normalized name.
+     */
     private String getNormalizedName (final String property)
     {
       final int idx = property.indexOf('[');
@@ -76,6 +99,12 @@ public final class BeanUtility
       return property.substring(0, idx);
     }
 
+    /**
+     * Extracts the first index from the given raw property.
+     *
+     * @param property the raw name
+     * @return the index as String.
+     */
     private String getIndex (final String property)
     {
       final int idx = property.indexOf('[');
@@ -497,7 +526,6 @@ public final class BeanUtility
 
   private int findMaximumIndex (final PropertyDescriptor id)
   {
-    final int retval = 0;
     try
     {
       final Object o = getProperty
@@ -508,6 +536,6 @@ public final class BeanUtility
     {
       // ignore, we run 'til we encounter an index out of bounds Ex.
     }
-    return retval;
+    return 0;
   }
 }

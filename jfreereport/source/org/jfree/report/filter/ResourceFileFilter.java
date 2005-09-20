@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.9 2005/08/08 15:36:29 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.10 2005/09/20 15:38:23 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -66,11 +66,23 @@ public class ResourceFileFilter
   {
   }
 
+  /**
+   * Returns the name of the used resource bundle.
+   *
+   * @return the name of the resourcebundle
+   * @see org.jfree.report.ResourceBundleFactory#getResourceBundle(String)
+   */
   public String getResourceIdentifier ()
   {
     return resourceIdentifier;
   }
 
+  /**
+   * Defines the name of the used resource bundle. If undefined, all calls to
+   * {@link ResourceFileFilter#getValue()} will result in <code>null</code> values.
+   *
+   * @param resourceIdentifier the resource bundle name
+   */
   public void setResourceIdentifier (final String resourceIdentifier)
   {
     this.resourceIdentifier = resourceIdentifier;

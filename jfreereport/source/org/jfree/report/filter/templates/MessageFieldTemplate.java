@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: MessageFieldTemplate.java,v 1.4 2005/03/03 23:00:00 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,12 @@ import org.jfree.report.filter.MessageFormatFilter;
 import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.StringFilter;
 
+/**
+ * The message field template simplifies the on-the-fly creation of strings.
+ *
+ * @author Thomas Morgner
+ * @see org.jfree.report.filter.MessageFormatSupport
+ */
 public class MessageFieldTemplate extends AbstractTemplate
         implements ReportConnectable
 {
@@ -53,6 +59,9 @@ public class MessageFieldTemplate extends AbstractTemplate
    */
   private StringFilter stringFilter;
 
+  /**
+   * The message format filter inlines data from other sources into a string.
+   */
   private MessageFormatFilter messageFormatFilter;
 
   /**
@@ -65,11 +74,25 @@ public class MessageFieldTemplate extends AbstractTemplate
     stringFilter.setDataSource(messageFormatFilter);
   }
 
+  /**
+   * Returns the format string used in the message format filter.
+   * This is a raw value which contains untranslated references to column names.
+   * It cannot be used directly in java.text.MessageFormat objects.
+   *
+   * @return the format string.
+   */
   public String getFormat ()
   {
     return messageFormatFilter.getFormatString();
   }
 
+  /**
+   * Redefines the format string for the message format. The assigned message
+   * format string must be given as raw value, where column references are given
+   * in the format $(COLNAME).
+   *
+   * @param format the new format string.
+   */
   public void setFormat (final String format)
   {
     this.messageFormatFilter.setFormatString(format);
@@ -123,11 +146,21 @@ public class MessageFieldTemplate extends AbstractTemplate
     return template;
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     messageFormatFilter.registerReportDefinition(reportDefinition);
   }
 
+  /**
+   * Disconnects this ReportConnectable from the report definition.
+   *
+   * @param reportDefinition the ReportDefinition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     messageFormatFilter.unregisterReportDefinition(reportDefinition);

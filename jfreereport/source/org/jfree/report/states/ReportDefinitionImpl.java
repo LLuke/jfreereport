@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.13 2005/02/23 21:06:04 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.14 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -98,6 +98,9 @@ public class ReportDefinitionImpl implements ReportDefinition
    */
   private ItemBand itemBand;
 
+  /**
+   * The watermark acts a global page background. 
+   */
   private Watermark watermark;
 
   /**
@@ -120,8 +123,14 @@ public class ReportDefinitionImpl implements ReportDefinition
    */
   private DataRowConnector dataRowConnector;
 
+  /**
+   * The page definition defines the output area.
+   */
   private PageDefinition pageDefinition;
 
+  /**
+   * The ResourceBundleFactory holds internationalization information.
+   */
   private ResourceBundleFactory resourceBundleFactory;
 
   /**

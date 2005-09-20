@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplate.java,v 1.8 2005/01/25 21:40:14 taqua Exp $
+ * $Id: DrawableFieldTemplate.java,v 1.9 2005/02/23 21:04:46 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -108,16 +108,31 @@ public class DrawableFieldTemplate extends AbstractTemplate
     return template;
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
+  /**
+   * Disconnects this ReportConnectable from the report definition.
+   *
+   * @param reportDefinition the ReportDefinition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
+  /**
+   * Returns the datarow data source used in this template.
+   *
+   * @return the datarow data source.
+   */
   protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;

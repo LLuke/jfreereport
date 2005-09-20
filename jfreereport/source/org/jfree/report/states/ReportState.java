@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.18 2005/09/19 11:00:50 taqua Exp $
+ * $Id: ReportState.java,v 1.19 2005/09/19 15:38:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -513,11 +513,23 @@ public abstract class ReportState implements Cloneable
     return progress;
   }
 
+  /**
+   * The pagebreak save state holds all information to revert the last step
+   * of the report processing in case of unexpected page breaks.
+   */
   public static final class PageBreakSaveState
   {
+    /** A copy of the datarow. */
     private DataRowBackend backend;
+    /** a copy of the report state. */
     private ReportState state;
 
+    /**
+     * Creates a save state for the given original state.
+     *
+     * @param state the original report state.
+     * @throws CloneNotSupportedException if an error occured while copying the state.
+     */
     public PageBreakSaveState (final ReportState state)
             throws CloneNotSupportedException
     {
@@ -525,6 +537,12 @@ public abstract class ReportState implements Cloneable
       this.state = state.createShallowCopy();
     }
 
+    /**
+     * Restore the saved state and make it fully operational again.
+     * Calling this method more than once might be dangerous and stupid.
+     *
+     * @return the restored state.
+     */
     public ReportState restorePageProgressCopy ()
     {
       final ReportState result = state;
@@ -533,6 +551,11 @@ public abstract class ReportState implements Cloneable
     }
   }
 
+  /**
+   * Restores the report state after an pagebreak has caused a rollback.
+   *
+   * @param backend the saved (and now new) data row backend.
+   */
   protected final void handleRestore (final DataRowBackend backend)
   {
     this.dataRow = backend;
@@ -540,13 +563,26 @@ public abstract class ReportState implements Cloneable
     this.dataRowPreview = null;
     
   }
-  
+
+  /**
+   * Creates a copy of this state, but not of the assigned report definition and
+   * other expensive objects.
+   *
+   * @return the cloned report state.
+   * @throws CloneNotSupportedException if an error occured.
+   */
   protected ReportState createShallowCopy ()
           throws CloneNotSupportedException
   {
     return (ReportState) super.clone();
   }
 
+  /**
+   * Creates a save state to revert unexpected pagebreaks later.
+   *
+   * @return the created copy.
+   * @throws CloneNotSupportedException in case of errors.
+   */
   public PageBreakSaveState createPageProgressCopy ()
           throws CloneNotSupportedException
   {
@@ -597,62 +633,10 @@ public abstract class ReportState implements Cloneable
     // a state proceeds if it is an other class than the old state
     if (this.getClass().equals(oldstate.getStateClass()) == false)
     {
-//      Log.debug (new StateProceedMessage(this, oldstate,
-//                                         "State did proceed: In Group: "));
       return true;
     }
-//    Log.debug (new StateProceedMessage(this, oldstate,
-//                                       "State did not proceed: In Group: "));
     return false;
   }
-
-//  /**
-//   * LogHelper. The Message is created when the toString() method is called.
-//   * If logging is disabled, no toString() gets called and no resources are wasted.
-//   */
-//  private static class StateProceedMessage
-//  {
-//    /** The current state. */
-//    private ReportState currentState;
-//
-//    /** The old state. */
-//    private ReportStateProgress oldState;
-//
-//    /** The message. */
-//    private String message;
-//
-//    /**
-//     * Creates a new message.
-//     *
-//     * @param currentState  the current state.
-//     * @param oldState  the old state.
-//     * @param message  the message.
-//     */
-//    public StateProceedMessage(final ReportState currentState, final ReportStateProgress oldState,
-//                               final String message)
-//    {
-//      this.currentState = currentState;
-//      this.oldState = oldState;
-//      this.message = message;
-//    }
-//
-//    /**
-//     * Returns a string representation of the object.
-//     *
-//     * @return the string.
-//     */
-//    public String toString()
-//    {
-//      return message + currentState.getCurrentGroupIndex() + ", DataItem: "
-//          + currentState.getCurrentDataItem() + ",Page: "
-//          + currentState.getCurrentPage() + " Class: "
-//          + currentState.getClass() + "\n"
-//          + "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
-//          + oldState.getCurrentDataItem() + ",Page: "
-//          + oldState.getCurrentPage() + " Class: "
-//          + oldState.getClass() + "\n";
-//    }
-//  }
 
   /**
    * Advances the current page by one.
@@ -893,10 +877,22 @@ public abstract class ReportState implements Cloneable
     }
   }
 
+  /**
+   * Distributes the 'OutputComplete' event to all registered listeners.
+   * (This is definitly an unclean design!)
+   *
+   * @param band the band that has been printed.
+   * @param type the orginal event type that caused this event.
+   */
   public void fireOutputCompleteEvent (final Band band, final int type)
   {
     getFunctions().outputComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
   }
 
+  /**
+   * Returns the unique event code for this report state type.
+   *
+   * @return the event code for this state type.
+   */
   public abstract int getEventCode ();
 }

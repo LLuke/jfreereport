@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageFieldTemplate.java,v 1.7 2005/01/24 23:59:48 taqua Exp $
+ * $Id: ImageFieldTemplate.java,v 1.8 2005/02/23 21:04:46 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -117,16 +117,31 @@ public class ImageFieldTemplate extends AbstractTemplate
     return template;
   }
 
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   */
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
+  /**
+   * Disconnects this ReportConnectable from the report definition.
+   *
+   * @param reportDefinition the ReportDefinition.
+   */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
+  /**
+   * Returns the datarow data source used in this template.
+   *
+   * @return the datarow data source.
+   */
   protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
