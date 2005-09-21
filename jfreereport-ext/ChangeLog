@@ -1,4 +1,9 @@
-0.8.6:
+---------------
+1.  WHAT's NEW
+---------------
+A list of changes in recent versions:
+
+0.8.6: (21-Sep-2005):
   * [BUG] The ImageIO module was not initialized properly.
 
   * The JDK 1.4 printing has been redesigned. Now the report page definition
