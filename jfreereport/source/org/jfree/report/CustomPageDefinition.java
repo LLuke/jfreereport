@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CustomPageDefinition.java,v 1.7 2005/03/16 21:06:36 taqua Exp $
+ * $Id: CustomPageDefinition.java,v 1.8 2005/08/08 15:36:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,8 +50,6 @@ import org.jfree.report.util.SerializerHelper;
 /**
  * A page definition, that consists of one or many pages. The pages are allowed to
  * overlapp or to leave areas of the page uncovered.
- * <p>
- * JFreeReport 0.8.5 does not yet support printing on multiple pages.
  *
  * @author Thomas Morgner
  * @see PageDefinition
@@ -312,8 +310,7 @@ public class CustomPageDefinition implements PageDefinition
    */
   public int hashCode ()
   {
-    int result;
-    result = pageBoundsList.hashCode();
+    int result = pageBoundsList.hashCode();
     result = 29 * result + pageFormatList.hashCode();
     result = 29 * result + width != +0.0f ? Float.floatToIntBits(width) : 0;
     result = 29 * result + height != +0.0f ? Float.floatToIntBits(height) : 0;

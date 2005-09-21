@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.7 2005/09/07 14:25:10 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.8 2005/09/19 11:00:50 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,11 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   public Object getValue ()
   {
+    if (getDataRow().findColumn(JFreeReport.REPORT_LOCALIZATION_PROPERTY) < 0)
+    {
+      return MessageFormat.format(getPattern(), getFieldValues());
+    }
+
     Object localesSupport = getDataRow().get(JFreeReport.REPORT_LOCALIZATION_PROPERTY);
     if (localesSupport instanceof ResourceBundleFactory == false)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Treatment.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
+ * $Id: PeopleReportAPIDemoHandler.java,v 1.2 2005/09/21 12:00:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -62,7 +62,7 @@ public class PeopleReportAPIDemoHandler extends AbstractDemoHandler
 
   public String getDemoName()
   {
-    return null;
+    return "One-To-Many-Elements Reports Demo (API-Version)";
   }
 
   public JFreeReport createReport() throws ReportDefinitionException
