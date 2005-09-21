@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: PageFormatFactory.java,v 1.10 2005/08/08 15:36:38 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.11 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,9 @@ import org.jfree.util.Log;
  * <p/>
  * Changing the PageFormat's orientation does not change the PageFormat's paper object,
  * but it changes the way, how the paper object is interpreted.
+ * <p/>
+ * Todo: Instead of hardcoding the available pageformats using public arrays,
+ * which is a risky business, a better factory implementation should be used. 
  *
  * @author Thomas Morgner
  */

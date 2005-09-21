@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageReadHandler.java,v 1.5 2005/08/08 15:36:36 taqua Exp $
+ * $Id: PageReadHandler.java,v 1.6 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
   /**
    * Literal text for an XML attribute.
    */
-  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
+  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverse_landscape";
 
   private float x;
   private float y;

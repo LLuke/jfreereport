@@ -43,6 +43,13 @@ using the system property "org.jfree.report.boot.Modules". This property
 expects a comma separated list of classnames, all classes must implement
 the Module interface.
 
+Userdefined modules may also be added by referencing their Module class
+under the name space "org.jfree.report.userdefined.modules". A module
+'Foobar' with the Module implementation named 'org.jfree.example.FoobarModule'
+would be picked up by the system using the configuration key
+
+  org.jfree.report.userdefined.modules.Foobar.Module=org.jfree.example.FoobarModule
+
 Modules may also be added manually by using the PackageManager.
 
 3. Deploying modules
@@ -77,7 +84,7 @@ JFreeReport. This module requires the xml-parser-base to be present.
 
 The DTD used for this parser can be found in the module package as file
 "org/jfree/report/modules/parser/ext/resources/extparser.dtd" and is
-also downloadable from "http://jfreereport.sourceforge.net/extreport.dtd".
+also downloadable from "http://jfreereport.sourceforge.net/extreport-085.dtd".
 
 4.1.3 simple-xml-parser (*-parser-simple.jar)
 
@@ -86,7 +93,7 @@ of JFreeReport. This module also required the xml-parser-base to be present.
 
 The DTD used for this parser can be found in the module package as file
 "org/jfree/report/modules/parser/simple/resources/parser.dtd" and is
-also downloadable from "http://jfreereport.sourceforge.net/report.dtd".
+also downloadable from "http://jfreereport.sourceforge.net/report-085.dtd".
 
 4.1.4 report-writer (*-parser-extwriter.jar)
 

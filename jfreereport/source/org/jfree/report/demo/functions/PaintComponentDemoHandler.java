@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * -------------------
- * PercentageDemo.java
+ * PaintComponentDemoHandler.java
  * -------------------
  * (C)opyright 2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PaintComponentDemoHandler.java,v 1.2 2005/09/16 10:25:02 taqua Exp $
+ * $Id: PaintComponentDemoHandler.java,v 1.3 2005/09/19 15:38:45 taqua Exp $
  *
  * Changes
  * -------

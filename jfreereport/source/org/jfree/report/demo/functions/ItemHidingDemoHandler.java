@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * -------------------
- * PercentageDemo.java
+ * ItemHidingDemoHandler.java
  * -------------------
  * (C)opyright 2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.11 2005/08/08 15:36:27 taqua Exp $
+ * $Id: ItemHidingDemoHandler.java,v 1.1 2005/08/29 17:35:44 taqua Exp $
  *
  * Changes
  * -------

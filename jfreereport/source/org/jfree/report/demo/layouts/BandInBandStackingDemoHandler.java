@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------
- * SampleReport3.java
+ * BandInBandStackingDemoHandler.java
  * ------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandInBandStackingDemoHandler.java,v 1.12 2005/08/08 15:36:27 taqua Exp $
+ * $Id: BandInBandStackingDemoHandler.java,v 1.1 2005/08/29 17:39:33 taqua Exp $
  *
  * Changes:
  * --------

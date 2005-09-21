@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * -------------------
- * PercentageDemo.java
+ * I18nDemo.java
  * -------------------
  * (C)opyright 2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: I18nDemo.java,v 1.7 2005/08/08 15:36:27 taqua Exp $
+ * $Id: I18nDemo.java,v 1.1 2005/08/29 17:36:36 taqua Exp $
  *
  * Changes
  * -------

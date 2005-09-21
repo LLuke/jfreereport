@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.12 2005/09/19 15:38:48 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.13 2005/09/20 16:56:05 taqua Exp $
  *
  * Changes
  * -------
@@ -262,7 +262,7 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
   /**
    * Literal text for an XML attribute.
    */
-  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
+  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverse_landscape";
 
   /**
    * A constant defining a style key factory parser hint.

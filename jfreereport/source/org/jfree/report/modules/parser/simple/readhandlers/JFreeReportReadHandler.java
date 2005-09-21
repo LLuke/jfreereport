@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportReadHandler.java,v 1.8 2005/08/08 15:36:37 taqua Exp $
+ * $Id: JFreeReportReadHandler.java,v 1.9 2005/08/10 18:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -155,7 +155,7 @@ public class JFreeReportReadHandler extends AbstractPropertyXmlReadHandler
   /**
    * Literal text for an XML attribute.
    */
-  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
+  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverse_landscape";
 
   private JFreeReport report;
 

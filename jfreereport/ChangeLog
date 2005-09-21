@@ -1,7 +1,9 @@
 ---------------
-5.  WHAT's NEW
+1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+
+0.8.6: (21-Sep-2005)
         * [BUG] The XML Parser handler for function properties did not handle
           specified classes correctly.
 
@@ -28,14 +30,14 @@ A list of changes in recent versions:
 
         * [BUG] Removed the 'table-layout: fixed' style attribute, as it does
           have a negative effect with the MSIE and all other browsers seem to
-          ignore it.
+          ignore it. (Bug #1276654)
 
         * [BUG] The HTML exports need to add no-break-spaces to empty cells,
           if not using CSS, messed up the export. The fix alters the font size
-          to one point, and therefore minimizes the effect. Bug #1277122.
+          to one point, and therefore minimizes the effect. (Bug #1277122).
 
         * [BUG] Ilkka fixed the Anchor support in JFreeReport. The Anchor element
-          is now fully functional.
+          is now fully functional. (Bug #1293615 and #1290405)
 
         * [BUG] The XML-Parsers replaced the content for marked report properties,
           even if the report definition document did not specify any value for
@@ -43,6 +45,10 @@ A list of changes in recent versions:
 
         * [BUG] A bug in the TotalGroupSumQuotient-function family caused the
           functions to return invalid results.
+
+        * [BUG] The XML parsers and writers used 'reverselandscape' as attribute
+          value for the page orientation, but the DTDs declared it as
+          'reverse_landscape'. (Bug #1297258)
 
         * The HTML renderer now has an option to switch to proportional column
           widths. The resulting table will consume the complete page width.

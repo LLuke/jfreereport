@@ -27,9 +27,13 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVUserInputPanel.java,v 1.1 2005/08/29 17:34:18 taqua Exp $
+ * $Id: CSVUserInputPanel.java,v 1.2 2005/09/07 14:23:49 taqua Exp $
  *
  * $Log: CSVUserInputPanel.java,v $
+ * Revision 1.2  2005/09/07 14:23:49  taqua
+ * Totally removed the report properties - we are now switching to
+ * Jcommons configuration interface
+ *
  * Revision 1.1  2005/08/29 17:34:18  taqua
  * Demo restructuring - work in progress ...
  *
@@ -156,7 +160,7 @@ public class CSVUserInputPanel extends JPanel
   {
     public LoadCSVDataAction()
     {
-      putValue(NAME, "Select");
+      putValue(Action.NAME, "Select");
     }
 
     public void actionPerformed(ActionEvent e)
