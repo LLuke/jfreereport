@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviousPageAction.java,v 1.5 2005/01/25 00:01:20 taqua Exp $
+ * $Id: PreviousPageAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public abstract class PreviousPageAction extends AbstractActionDowngrade
     putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.back.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-            resources.getKeyStroke("action.back.accelerator"));
+            resources.getKeyStroke("action.back.accelerator", 0));
     putValue(SMALL_ICON, resources.getIcon("action.back.small-icon", false));
     putValue("ICON24", resources.getIcon("action.back.icon", true));
   }

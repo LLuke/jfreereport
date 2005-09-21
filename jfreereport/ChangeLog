@@ -112,6 +112,10 @@ A list of changes in recent versions:
           elements. Although still slower than static elements, this caching
           prevents unneccessary recomputations between layouting and printing.
 
+        * Changed the Key-Binding for the Preview-Component's Next- and Previous
+          Page action to plain keystrokes. From now on, a simple PageDown or
+          PageUp is sufficient to navigate through the pages. 
+
 0.8.5-5: (1-Jun-2005)
         * [BUG] The ItemHideFunction did not reset the visible state to visible
           after a pagebreak.

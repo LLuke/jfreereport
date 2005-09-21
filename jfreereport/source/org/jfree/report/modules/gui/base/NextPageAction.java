@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: NextPageAction.java,v 1.5 2005/01/25 00:01:16 taqua Exp $
+ * $Id: NextPageAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public abstract class NextPageAction extends AbstractActionDowngrade
     putValue(NAME, resources.getString("action.forward.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.forward.description"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-            resources.getKeyStroke("action.forward.accelerator"));
+            resources.getKeyStroke("action.forward.accelerator", 0));
     putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.forward.mnemonic"));
     putValue(SMALL_ICON, resources.getIcon("action.forward.small-icon", false));
