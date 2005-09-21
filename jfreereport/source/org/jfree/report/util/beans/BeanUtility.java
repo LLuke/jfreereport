@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BeanUtility.java,v 1.7 2005/09/20 16:56:05 taqua Exp $
+ * $Id: BeanUtility.java,v 1.8 2005/09/20 19:53:05 taqua Exp $
  *
  * Changes
  * -------
@@ -172,10 +172,10 @@ public final class BeanUtility
   public Object getProperty (final String name)
           throws BeanException
   {
-    return getProperty(new PropertySpecification(name));
+    return getPropertyForSpecification(new PropertySpecification(name));
   }
 
-  private Object getProperty (final PropertySpecification name)
+  private Object getPropertyForSpecification (final PropertySpecification name)
           throws BeanException
   {
     final PropertyDescriptor pd = (PropertyDescriptor) properties.get(name.getName());
@@ -261,7 +261,7 @@ public final class BeanUtility
     {
       throw new BeanException("No such property:" + name);
     }
-    final Object o = getProperty(ps);
+    final Object o = getPropertyForSpecification(ps);
     if (o == null)
     {
       return null;
@@ -528,7 +528,7 @@ public final class BeanUtility
   {
     try
     {
-      final Object o = getProperty
+      final Object o = getPropertyForSpecification
               (new PropertySpecification(id.getName()));
       return Array.getLength(o);
     }
