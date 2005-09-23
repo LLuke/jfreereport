@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.19 2005/08/08 15:36:34 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.20 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -283,14 +283,6 @@ public class BaseFontSupport implements FontMapper
                                             final boolean embedded)
           throws IOException, DocumentException
   {
-
-    // TrueType fonts need extra handling if the font is a symbolic font.
-    if ((StringUtil.endsWithIgnoreCase(filename, ".ttf") == false) &&
-            (StringUtil.endsWithIgnoreCase(filename, ".ttc") == false))
-    {
-      return null;
-    }
-
     String fontKey = filename;
     if (font.isBold() && font.isItalic())
     {

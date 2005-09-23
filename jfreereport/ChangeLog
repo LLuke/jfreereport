@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+        * [BUG] The BaseFontSupport did not accept font files other than
+         'ttf' due to an overly paranoid check. (Bug #1299056)
+
 0.8.6: (21-Sep-2005)
         * [BUG] The XML Parser handler for function properties did not handle
           specified classes correctly.
