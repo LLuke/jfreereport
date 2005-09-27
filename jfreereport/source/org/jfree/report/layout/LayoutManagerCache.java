@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.15 2005/09/07 14:25:10 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.16 2005/09/19 13:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -249,8 +249,8 @@ public class LayoutManagerCache
         }
         else
         {
-          elementCache.put(element.getObjectID(), ec);
           dynamicCache.remove(element.getObjectID());
+          elementCache.put(element.getObjectID(), ec);
         }
       }
     }
@@ -292,8 +292,8 @@ public class LayoutManagerCache
         }
         else
         {
-          elementCache.put(element.getObjectID(), ec);
           dynamicCache.remove(element.getObjectID());
+          elementCache.put(element.getObjectID(), ec);
         }
       }
     }
@@ -301,6 +301,9 @@ public class LayoutManagerCache
 
   /**
    * Returns true if the specified element is cachable, and false otherwise.
+   * If the element itself is dynamic, the element is considered cachable. If
+   * the element is a band and contains a dynamic element as its child,
+   * it is considered uncachable.
    *
    * @param e the element.
    * @return A boolean.
@@ -312,14 +315,44 @@ public class LayoutManagerCache
       return false;
     }
 
-    // if the element is dynamic, then it is not cachable ...
-    // docmark: Dynamic height does not mean, that the element is not cachable ..
-//    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
-//    {
-//      e.getStyle().setBooleanStyleProperty
-//              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
-//      return false;
-//    }
+    if (e instanceof Band)
+    {
+      // search for dynamic elements within the element's children ...
+      // if there is no dynamic element, then the element is cachable ...
+      final Element[] elements = ((Band) e).getElementArray();
+      for (int i = 0; i < elements.length; i++)
+      {
+        if (isChildCachable(elements[i]) == false)
+        {
+          e.getStyle().setBooleanStyleProperty
+                  (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Returns true if the specified element contains dynamic or non-cachable
+   * elements.
+   *
+   * @param e the element.
+   * @return A boolean.
+   */
+  private boolean isChildCachable (final Element e)
+  {
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE) == false)
+    {
+      return false;
+    }
+
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
+    {
+      e.getStyle().setBooleanStyleProperty
+              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
+      return false;
+    }
 
     if (e instanceof Band)
     {
@@ -328,7 +361,7 @@ public class LayoutManagerCache
       final Element[] elements = ((Band) e).getElementArray();
       for (int i = 0; i < elements.length; i++)
       {
-        if (isCachable(elements[i]) == false)
+        if (isChildCachable(elements[i]) == false)
         {
           e.getStyle().setBooleanStyleProperty
                   (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
@@ -345,10 +378,12 @@ public class LayoutManagerCache
   public void flush ()
   {
     elementCache.clear();
+    dynamicCache.clear();
   }
 
   public void flushDynamicCache ()
   {
+    //Log.debug ("Flushing the dynamics cache");
     dynamicCache.clear();
   }
   

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.6 2005/09/06 11:40:20 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.7 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -80,8 +80,9 @@ public class HtmlTableCellStyle implements HtmlStyle
   {
     if (background == null)
     {
-      return "font-size: 1pt; vertical-alignment:" +
-              translateVerticalAlignment(verticalAlignment);
+      return "font-size: 1pt; " +
+              "vertical-align:" +
+              translateVerticalAlignment(verticalAlignment) + ";";
     }
 
     final StyleBuilder b = new StyleBuilder(compact);

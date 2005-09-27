@@ -16,8 +16,7 @@ Changes from 0.8.5 to 0.8.6
 
 * The ItemColumnQuotientExpression has been deprecated. The same functionality
   is now provided by the 'PercentageExpression'.
-
-  
+   
 Changes from 0.8.4-* to 0.8.5-4
 
 * Functions and expressions are no longer handled specially during the

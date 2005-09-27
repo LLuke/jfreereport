@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.12 2005/08/08 15:36:35 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.13 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -115,11 +115,11 @@ public class HtmlImageMetaElement extends HtmlMetaElement
         }
         if (isUsesXHTML())
         {
-          pout.print("\" />");
+          pout.print(" />");
         }
         else
         {
-          pout.print("\" >");
+          pout.print(" >");
         }
       }
       else

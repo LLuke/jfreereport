@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.25 2005/08/10 14:22:21 taqua Exp $
+ * $Id: TableWriter.java,v 1.26 2005/09/19 13:09:09 taqua Exp $
  *
  * Changes
  * -------
@@ -790,7 +790,7 @@ public strictfp class TableWriter
     // TableProcessors do not generate that event type ...
   }
 
-  public void prepareEvent(ReportEvent event)
+  public void prepareEvent(final ReportEvent event)
   {
     getLayoutSupport().getCache().flushDynamicCache();
   }
