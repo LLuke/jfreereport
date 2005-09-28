@@ -504,7 +504,7 @@
 
 
 
-  <target name="compile-all-modules">
+  <target name="compile-all-modules" depends="init">
     <mkdir dir="build"/>
 
     <antcall target="build-module-ext-barcode"/>
@@ -585,10 +585,7 @@
 
   </target>
 
-  <!-- Make .zip distribution for JFreeReport -->
-  <!-- the war file is not included, as it can be rebuild easily and is also available -->
-  <!-- as an separate download -->
-  <target name="make-zip" depends="compile, build-war">
+  <target name="create-dist-dir">
 
     <!-- make a temporary distribution directory -->
     <mkdir dir="distribution"/>
@@ -630,6 +627,22 @@
     <copy todir="distribution/ant">
       <fileset dir="ant"/>
     </copy>
+
+  </target>
+
+  <target name="remove-dist-dir">
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+
+  </target>
+
+  <!-- Make .zip distribution for JFreeReport -->
+  <!-- the war file is not included, as it can be rebuild easily and is also available -->
+  <!-- as an separate download -->
+  <target name="make-zip" depends="compile, compile-all-modules, build-war">
+
+    <antcall target="create-dist-dir"/>
 
     <!-- convert end-of-line characters in text files -->
     <!-- end of file does not need to be marked, and causes trouble if it is -->
@@ -645,58 +658,16 @@
         prefix="${jfreereport.name}-ext-${jfreereport.version}"/>
     </zip>
 
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
+    <antcall target="remove-dist-dir"/>
 
   </target>
 
   <!-- Make .tar.gz distribution for JFreeReport -->
   <!-- the war file is not included, as it can be rebuild easily and is also available -->
   <!-- as an separate download -->
-  <target name="make-targz" depends="compile, build-war">
+  <target name="make-targz" depends="compile, compile-all-modules, build-war">
 
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-
-    <!-- copy across README -->
-    <copy file="README" tofile="distribution/README"/>
-
-    <!-- copy across ChangeLog -->
-    <copy file="ChangeLog" tofile="distribution/ChangeLog"/>
-
-    <!-- copy across LICENCE -->
-    <copy file="licence-LGPL.txt" tofile="distribution/licence-LGPL.txt"/>
-
-    <!-- copy across runtime jar file -->
-    <copy file="${jfreereport-chart-demo-jar-file}" tofile="distribution/${jfreereport-chart-demo-jar-file}"/>
-    <copy file="${jfreereport-servlet-demo-jar-file}" tofile="distribution/${jfreereport-servlet-demo-jar-file}"/>
-    <copy file="${jfreereport-junit-jar-file}" tofile="distribution/${jfreereport-junit-jar-file}"/>
-    <copy file="${module-ext-all-file}" tofile="distribution/${module-ext-all-file}"/>
-    <copy file="${module-ext-java14config-file}" tofile="distribution/${module-ext-java14config-file}"/>
-    <copy file="${module-ext-java14imageio-file}" tofile="distribution/${module-ext-java14imageio-file}"/>
-    <copy file="${module-ext-java14log-file}" tofile="distribution/${module-ext-java14log-file}"/>
-    <copy file="${module-ext-java14print-file}" tofile="distribution/${module-ext-java14print-file}"/>
-    <copy file="${module-ext-log4jlog-file}" tofile="distribution/${module-ext-log4jlog-file}"/>
-
-    <!-- copy across source files -->
-    <copy todir="distribution/source">
-      <fileset dir="source"/>
-    </copy>
-
-    <!-- copy across web application files -->
-    <copy todir="distribution/webapp">
-      <fileset dir="webapp"/>
-    </copy>
-
-    <!-- copy across lib files -->
-    <copy todir="distribution/lib">
-      <fileset dir="lib"/>
-    </copy>
-
-    <!-- copy across ant build file (this file) -->
-    <copy todir="distribution/ant">
-      <fileset dir="ant"/>
-    </copy>
+    <antcall target="create-dist-dir"/>
 
     <!-- convert end-of-line characters in text files -->
     <fixcrlf srcdir="distribution/source"
@@ -714,8 +685,7 @@
       src="${jfreereport.name}-ext-${jfreereport.version}.tar"/>
     <delete file="${jfreereport.name}-ext-${jfreereport.version}.tar"/>
 
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
+    <antcall target="remove-dist-dir"/>
 
   </target>
 
@@ -746,6 +716,6 @@
   </target>
 
 
-  <target name="all" depends="init, compile, javadoc, build-war, make-zip, make-targz,maven-bundle"/>
+  <target name="all" depends="init, compile, javadoc, build-war, make-zip, make-targz, maven-bundle"/>
 </project>
 
