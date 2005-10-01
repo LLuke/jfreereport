@@ -30,7 +30,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTokenizer.java,v 1.4 2004/05/07 08:14:23 mungady Exp $
+ * $Id: CSVTokenizer.java,v 1.5 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,6 +102,8 @@ public class CSVTokenizer implements Enumeration
    */
   private int currentIndex;
 
+  private boolean beforeStart;
+
   /**
    * A possible separator constant.
    */
@@ -158,6 +160,7 @@ public class CSVTokenizer implements Enumeration
     this.separator = theSeparator;
     this.quate = theQuate;
     this.currentIndex = 0;
+    this.beforeStart = true;
   }
 
   /**
@@ -211,53 +214,60 @@ public class CSVTokenizer implements Enumeration
   public String nextToken ()
           throws NoSuchElementException, IllegalArgumentException
   {
-    String token;
-    final int start;
-    int end;
 
     if (!this.hasMoreTokens())
     {
       throw new NoSuchElementException();
     }
+    String token;
+
+    if (beforeStart == false)
+    {
+      currentIndex += this.separator.length();
+    }
     else
     {
-      if (this.record.startsWith(this.quate, this.currentIndex))
+      beforeStart = false;
+    }
+
+    if (this.record.startsWith(this.quate, this.currentIndex))
+    {
+      String rec = this.record.substring(this.currentIndex + this.quate.length());
+      token = "";
+      for (; ;)
       {
-        String rec = this.record.substring(this.currentIndex + this.quate.length());
-        token = "";
-        for (; ;)
+        final int end = rec.indexOf(this.quate);
+        if (end < 0)
         {
-          end = rec.indexOf(this.quate);
-          if (end < 0)
-          {
-            throw new IllegalArgumentException("Illegal format");
-          }
-          if (!rec.startsWith(this.quate, end + 1))
-          {
-            token = token + rec.substring(0, end);
-            break;
-          }
-          token = token + rec.substring(0, end + 1);
-          rec = rec.substring(end + this.quate.length() * 2);
-          this.currentIndex++;
+          throw new IllegalArgumentException("Illegal format");
         }
-        this.currentIndex += (token.length() + this.quate.length() * 2 + this.separator.length());
+
+        if (!rec.startsWith(this.quate, end + 1))
+        {
+          token += rec.substring(0, end);
+          break;
+        }
+        token = token + rec.substring(0, end + 1);
+        rec = rec.substring(end + this.quate.length() * 2);
+        this.currentIndex++;
+      }
+
+      this.currentIndex += (token.length() + this.quate.length() * 2);
+    }
+    else
+    {
+      final int end = this.record.indexOf(this.separator, this.currentIndex);
+      if (end >= 0)
+      {
+        final int start = this.currentIndex;
+        token = this.record.substring(start, end);
+        this.currentIndex = end;
       }
       else
       {
-        end = this.record.indexOf(this.separator, this.currentIndex);
-        if (end >= 0)
-        {
-          start = this.currentIndex;
-          token = this.record.substring(start, end);
-          this.currentIndex = end + separator.length();
-        }
-        else
-        {
-          start = this.currentIndex;
-          token = this.record.substring(start);
-          this.currentIndex = this.record.length();
-        }
+        final int start = this.currentIndex;
+        token = this.record.substring(start);
+        this.currentIndex = this.record.length();
       }
     }
 
@@ -330,12 +340,14 @@ public class CSVTokenizer implements Enumeration
     int count = 0;
 
     final int preserve = this.currentIndex;
+    final boolean preserveStart = this.beforeStart;
     while (this.hasMoreTokens())
     {
       this.nextToken();
       count++;
     }
     this.currentIndex = preserve;
+    this.beforeStart = preserveStart;
 
     return count;
   }

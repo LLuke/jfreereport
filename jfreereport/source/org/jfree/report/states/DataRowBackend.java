@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.9 2005/08/08 15:36:37 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.10 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@
 package org.jfree.report.states;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.DataRow;
@@ -76,6 +77,7 @@ public class DataRowBackend implements Cloneable
    * The item cache.
    */
   private final HashMap colcache;
+  private HashSet invalidColumns;
 
   /**
    * The functions (set by the report state).
@@ -136,6 +138,7 @@ public class DataRowBackend implements Cloneable
    * The datarow connector that is used to feed the functions.
    */
   private DataRowConnector dataRowConnector;
+  protected static final Integer NOT_FOUND_VALUE = new Integer(-1);
 
   /**
    * Creates a new DataRowBackend.
@@ -149,6 +152,10 @@ public class DataRowBackend implements Cloneable
     warnInvalidColumns =
             JFreeReportBoot.getInstance().getExtendedConfig().getBoolProperty
                     (WARN_INVALID_COLUMNS_KEY);
+    if (warnInvalidColumns)
+    {
+      invalidColumns = new HashSet();
+    }
     lastRow = -1;
     revalidateColumnLock();
   }
@@ -165,12 +172,14 @@ public class DataRowBackend implements Cloneable
     this.dataRowConnector = new DataRowConnector();
     this.dataRowConnector.setDataRowBackend(this);
     this.columnlocks = EMPTY_BOOLS;
-    this.colcache = new HashMap();
+    this.colcache = db.colcache;
     this.warnInvalidColumns = db.warnInvalidColumns;
     this.tablemodel = db.tablemodel;
     this.lastRow = db.lastRow;
     this.reportProperties = db.reportProperties;
+    this.invalidColumns = db.invalidColumns;
     revalidateColumnLock();
+
   }
 
   /**
@@ -392,6 +401,16 @@ public class DataRowBackend implements Cloneable
     final int idx = findColumn(name);
     if (idx == -1)
     {
+      if (warnInvalidColumns)
+      {
+        if (invalidColumns.contains(name) == false)
+        {
+          // print an warning for the logs.
+          Log.warn(new Log.SimpleMessage
+                  ("Invalid column name specified on query: ", name));
+          invalidColumns.add(name);
+        }
+      }
       return null;
     }
     return get(idx);
@@ -434,11 +453,7 @@ public class DataRowBackend implements Cloneable
         return i;
       }
     }
-    if (warnInvalidColumns)
-    {
-      // print an warning for the logs.
-      Log.warn(new Log.SimpleMessage("Invalid column name specified on query: ", name));
-    }
+    colcache.put(name, NOT_FOUND_VALUE);
     return -1;
   }
 

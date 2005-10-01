@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.9 2005/04/15 18:46:58 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.10 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   /**
    * A useful constant representing zero.
    */
-  private static final BigDecimal ZERO = new BigDecimal(0.0);
+  protected static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /**
    * The item sum.
@@ -173,6 +173,7 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
     this.field = field;
   }
 
+
   /**
    * Receives notification that a row of data is being processed.  Reads the data from the
    * field defined for this function and adds it to the running total. <P> This function
@@ -207,6 +208,20 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   public Object getValue ()
   {
     return sum;
+  }
+
+  protected BigDecimal getSum()
+  {
+    return sum;
+  }
+
+  protected void setSum(final BigDecimal sum)
+  {
+    if (sum == null)
+    {
+      throw new NullPointerException("Sum must not be null");
+    }
+    this.sum = sum;
   }
 
   /**

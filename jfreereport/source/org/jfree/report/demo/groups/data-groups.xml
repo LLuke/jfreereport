@@ -17,14 +17,14 @@
   <!-- PAGE HEADER -->
   <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
     <line x1="0" y1="30" x2="100%" y2="30" weight="0.5"/>
-    <label x="0" y="12" width="100%" height="20" alignment="center">PAGE HEADER</label>
+    <label x="0" y="0" width="100%" height="20" alignment="center">PAGE HEADER</label>
   </pageheader>
 
   <!-- PAGE FOOTER -->
   <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="plain" fontsize="9">
-    <line x1="0" y1="4" x2="100%" y2="4" weight="0.5"/>
-    <date-field fieldname="report.date" format="d-MMM-yyyy" x="0" y="4" width="100" height="18" alignment="left"/>
-    <string-field fieldname="pageXofY" x="0" y="4" width="100%" height="18" alignment="right"/>
+    <line x1="0" y1="2" x2="100%" y2="2" weight="0.5"/>
+    <date-field fieldname="report.date" format="d-MMM-yyyy" x="0" y="4" width="25%" height="18" alignment="left"/>
+    <string-field fieldname="pageXofY" x="25%" y="4" width="75%" height="18" alignment="right"/>
   </pagefooter>
 
   <!-- GROUPS -->
@@ -43,7 +43,7 @@
 
       <!-- GROUP FOOTER -->
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-        <label x="0" y="2" width="100%" height="12" alignment="left">Total for letter:</label>
+        <label x="0" y="2" width="276" height="12" alignment="left">Total for letter:</label>
         <number-field fieldname="Sum2" format="#,##0.00" x="276" y="2" width="176" height="12" alignment="right"/>
       </groupfooter>
 
@@ -67,7 +67,7 @@
       <!-- GROUP FOOTER -->
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
         <line x1="0" y1="1" x2="100%" y2="1" weight="0.25"/>
-        <label x="0" y="3" width="150" height="12" alignment="left">Subtotal for color:</label>
+        <label x="0" y="3" width="276" height="12" alignment="left">Subtotal for color:</label>
         <number-field fieldname="Sum1" format="#,##0.00" x="276" y="3" width="176" height="12" alignment="right"/>
       </groupfooter>
 
@@ -149,6 +149,7 @@
         <property name="field[1]">PageTotal</property>
       </properties>
     </expression>
+
   </functions>
 
 </report>

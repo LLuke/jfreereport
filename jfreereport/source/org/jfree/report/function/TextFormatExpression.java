@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.8 2005/09/19 11:00:50 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.9 2005/09/21 12:38:25 taqua Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    * An ordered list containing the fieldnames used in the expression.
    */
   private ArrayList fields;
+
   private String pattern;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.14 2005/04/14 17:48:28 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.15 2005/09/19 11:00:50 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,11 @@ public final class FunctionUtilities
     }
 
     final Element[] elements = band.getElementArray();
+    if (band.getName().equals(element))
+    {
+      return band;
+    }
+
     for (int i = 0; i < elements.length; i++)
     {
       final Element e = elements[i];
@@ -108,6 +113,10 @@ public final class FunctionUtilities
       throw new NullPointerException("Element name must not be null");
     }
     final ArrayList collector = new ArrayList();
+    if (band.getName().equals(element))
+    {
+      collector.add(band);
+    }
     performFindElement(band, element, collector);
     return (Element[]) collector.toArray(new Element[collector.size()]);
   }
