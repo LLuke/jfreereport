@@ -8,7 +8,14 @@ A list of changes in recent versions:
 
         * [BUG] The FunctionUtilities.findElement and findAllElements methods
           did not take the given root band into account and therefore only worked
-          on subbands. 
+          on subbands.
+
+        * [BUG] The CSVTokenizer did not handle trailing commas correctly.
+          Rob (redgeler), reported the bug and provided a test case to track
+          it down.
+
+        * New Functions: PageItemSumFunction, PageItemCountFunction,
+          HideNullValuesFunction and ShowElementByNameFunction added.
 
 0.8.6: (21-Sep-2005)
         * [BUG] The XML Parser handler for function properties did not handle
