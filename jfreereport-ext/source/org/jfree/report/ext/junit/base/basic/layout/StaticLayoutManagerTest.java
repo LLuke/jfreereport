@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.7 2005/08/10 19:29:29 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.8 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,6 +46,7 @@ import java.awt.geom.Rectangle2D;
 import junit.framework.TestCase;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
@@ -55,12 +56,14 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.FloatDimension;
+import org.jfree.base.BaseBoot;
 
 public class StaticLayoutManagerTest extends TestCase
 {
   public StaticLayoutManagerTest (final String s)
   {
     super(s);
+    JFreeReportBoot.getInstance().start();
   }
 
   /**
@@ -75,8 +78,8 @@ public class StaticLayoutManagerTest extends TestCase
    * @param height the height of the band and the rectangle
    * @return the created band
    */
-  private Band createBand (final String name, final Color color, 
-                           final int x, final int y, 
+  private Band createBand (final String name, final Color color,
+                           final int x, final int y,
                            final int width, final int height)
   {
     final Band band = new Band ();
@@ -137,7 +140,8 @@ public class StaticLayoutManagerTest extends TestCase
   {
     final Band band = createBand();
     band.setLayout(new StaticLayoutManager());
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+    final DefaultLayoutSupport support = new DefaultLayoutSupport();
+    BandLayoutManagerUtil.doLayout(band, support,
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
 
     assertEquals(new StrictBounds(0,0, 500 * STRICT_FACTOR, 100 * STRICT_FACTOR),

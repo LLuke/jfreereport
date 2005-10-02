@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StackedLayoutManagerTest.java,v 1.1 2005/08/10 19:30:44 taqua Exp $
+ * $Id: StackedLayoutManagerTest.java,v 1.2 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,21 @@
  */
 package org.jfree.report.ext.junit.base.basic.layout;
 
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
+
 import junit.framework.TestCase;
 import org.jfree.report.Band;
+import org.jfree.report.TextElement;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.elementfactory.TextFieldElementFactory;
+import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.StackedLayoutManager;
+import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.ui.FloatDimension;
 
 public class StackedLayoutManagerTest extends TestCase
 {
@@ -55,8 +65,34 @@ public class StackedLayoutManagerTest extends TestCase
 
   public void testForEmptyBand ()
   {
+
+    LabelElementFactory lfe = new LabelElementFactory();
+    lfe.setName("T2");
+    lfe.setMinimumSize(new FloatDimension(-100, 30));
+    lfe.setText("Bend It Like Beckham UK IMPORT");
+    lfe.setFontSize(new Integer (30));
+    lfe.setDynamicHeight(Boolean.TRUE);
+
     final Band b = new Band();
     b.setLayout(new StackedLayoutManager());
-    BandLayoutManagerUtil.doLayout(b, new DefaultLayoutSupport(), 100, 100);
+    b.addElement(lfe.createElement());
+
+    lfe.setFontSize(new Integer (10));
+    lfe.setName("T3");
+    b.addElement(lfe.createElement());
+    b.setLayoutCacheable(false);
+    b.getStyle().setStyleProperty
+            (StaticLayoutManager.ABSOLUTE_POS, new Point2D.Double(90, 0));
+
+
+    BandLayoutManagerUtil.doLayout(b, new DefaultLayoutSupport(), 210000, 500000);
+
+    assertEquals("BandBounds", new StrictBounds (0,0,210000, 120000),
+            b.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
+
+    final Band b2 = new Band();
+    b2.addElement(b);
+
+    BandLayoutManagerUtil.doLayout(b2, new DefaultLayoutSupport(), 210000, 500000);
   }
 }

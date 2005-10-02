@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.7 2005/02/19 16:15:46 taqua Exp $
+ * $Id: TextContentTest.java,v 1.8 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -164,12 +164,15 @@ public class TextContentTest extends TestCase
   {
     final String content = "123 thousand people";
     final SizeCalculator ds = new DebugSizeCalculator(10, 10);
-    final TextParagraph tp = new TextParagraph(ds, 10 * STRICT_FACTOR, "..", false);
-    tp.setContent(content, 0, 0, 100*STRICT_FACTOR, 10 * STRICT_FACTOR);
+    final TextParagraph tp = new TextParagraph
+            (ds, 10 * STRICT_FACTOR, "..", false);
+    tp.setContent
+            (content, 0, 0, 100*STRICT_FACTOR, 10 * STRICT_FACTOR);
 
     final TextLine tl = (TextLine) tp.getContentPart(0);
     assertEquals("123 thou..", tl.getContent());
-    assertEquals(new StrictBounds(0,0, STRICT_FACTOR * 100, STRICT_FACTOR * 10), tl.getBounds());
+    assertEquals(new StrictBounds(0,0, STRICT_FACTOR * 100, STRICT_FACTOR * 10),
+            tl.getBounds());
   }
 
   public static void testLineBreaking1()
