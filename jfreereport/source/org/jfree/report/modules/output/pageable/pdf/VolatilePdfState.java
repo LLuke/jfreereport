@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: VolatilePdfState.java,v 1.2 2005/03/30 17:25:41 taqua Exp $
+ * $Id: VolatilePdfState.java,v 1.3 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -388,19 +388,9 @@ public class VolatilePdfState
       {
         return true;
       }
-
-      if (!Arrays.equals(nStroke.getDashArray(), oStroke.getDashArray()))
-      {
-        return true;
-      }
-      return false;
+      return !Arrays.equals(nStroke.getDashArray(), oStroke.getDashArray());
     }
-
-    if (oStroke.getDashArray() != null)
-    {
-      return true;
-    }
-    return false;
+    return oStroke.getDashArray() != null;
   }
 
   public Paint getFillPaint ()

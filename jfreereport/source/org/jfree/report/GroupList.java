@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.11 2005/04/09 17:43:12 taqua Exp $
+ * $Id: GroupList.java,v 1.12 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes:
  * --------
@@ -250,12 +250,14 @@ public class GroupList implements Cloneable, Serializable
           throws CloneNotSupportedException
   {
     final GroupList l = (GroupList) super.clone();
+    final Group[] groups = getGroupCache();
+
     l.backend = new ArrayList();
     l.reportDefinition = null;
-    l.cache = new Group[backend.size()];
-    for (int i = 0; i < backend.size(); i++)
+    l.cache = new Group[groups.length];
+    for (int i = 0; i < groups.length; i++)
     {
-      final Group group = (Group) get(i).clone();
+      final Group group = (Group) groups[i].clone();
       group.setReportDefinition(null);
       l.backend.add(group);
       l.cache[i] = group;

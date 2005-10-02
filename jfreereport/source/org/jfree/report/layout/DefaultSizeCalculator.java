@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.11 2005/08/08 15:36:30 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.12 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -244,14 +244,16 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    */
   private FontDefinition font;
 
+  private char[] chars;
+
   /**
    * Returns an instance.
    *
    * @param font The font definition.
    * @return A default size calculator.
    */
-  public static DefaultSizeCalculator getDefaultSizeCalculator (
-          final FontDefinition font)
+  public static DefaultSizeCalculator getDefaultSizeCalculator
+          (final FontDefinition font)
   {
     if (cache == null)
     {
@@ -282,6 +284,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
       throw new IllegalArgumentException("The given FontSize is <= 0");
     }
     this.font = font;
+    this.chars = new char[100];
   }
 
   /**
@@ -322,11 +325,17 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
     }
 
     final FontRenderContext frc = getFrcDetector().createFontRenderContext();
-    final Rectangle2D textBounds2 = font.getFont().getStringBounds(text, lineStartPos, endPos, frc);
-    final float x2 = (float) textBounds2.getWidth();
-    return x2;
-  }
 
+    if (chars.length < text.length())
+    {
+      chars = new char[Math.max(chars.length + 100, text.length())];
+    }
+
+    text.getChars(lineStartPos, endPos, chars, 0);
+    final Rectangle2D textBounds2 = font.getFont().getStringBounds
+            (chars, 0, endPos - lineStartPos, frc);
+    return (float) textBounds2.getWidth();
+  }
 
   /**
    * Converts this object to a string.

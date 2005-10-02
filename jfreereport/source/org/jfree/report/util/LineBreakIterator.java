@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.5 2005/02/23 21:06:05 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.6 2005/08/08 15:36:38 taqua Exp $
  *
  * Changes
  * -------
@@ -224,7 +224,7 @@ public class LineBreakIterator implements Iterator
     if (pos > 0)
     {
       final int end = lastFound;
-      for (; ((pos) > end) && ((text[pos - 1] == '\n') || text[pos - 1] == '\r'); pos--)
+      for (; pos > end && (text[pos - 1] == '\n' || text[pos - 1] == '\r'); pos--)
       {
         // search the end of the current linebreak sequence ..
       }

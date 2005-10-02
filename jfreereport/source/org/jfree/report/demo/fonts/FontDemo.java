@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.2 2005/09/11 10:29:59 taqua Exp $
+ * $Id: FontDemo.java,v 1.2 2005/09/21 12:00:15 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class FontDemo extends AbstractXmlDemoHandler
 
   public FontDemo()
   {
-    data = new ColorAndLetterTableModel();
+    data = new FontTableModel();
   }
 
   public String getDemoName()

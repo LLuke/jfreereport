@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContent.java,v 1.17 2005/08/29 17:56:46 taqua Exp $
+ * $Id: TextContent.java,v 1.18 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package org.jfree.report.content;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.layout.SizeCalculator;
@@ -89,10 +88,27 @@ public class TextContent extends ContentContainer
     final long w = bounds.getWidth();
     final long h = bounds.getHeight();
 
-    if (w != 0)
+    if (w <= 0)
     {
+      return;
+    }
+
+    final LineBreakIterator iterator = new LineBreakIterator(value);
+    if (iterator.hasNext() == false)
+    {
+      return;
+    }
+    final String firstLine = (String) iterator.next();
+    if (iterator.hasNext())
+    {
+      final ArrayList paragraphs = new ArrayList();
+      paragraphs.add(firstLine);
+      while (iterator.hasNext())
+      {
+        paragraphs.add(iterator.next());
+      }
+
       long usedHeight = 0;
-      final List paragraphs = splitContent(value);
       for (int i = 0; i < paragraphs.size(); i++)
       {
         final TextParagraph p = new TextParagraph
@@ -109,6 +125,14 @@ public class TextContent extends ContentContainer
         Log.warn("Empty TextContent created. This might indicate an invalid font size definition.");
       }
     }
+    else
+    {
+      // the simplified, one paragraph version ..
+      final TextParagraph p = new TextParagraph
+              (getSizeCalculator(), lineHeight, reservedLiteral, trimTextContent);
+      p.setContent(firstLine, x, y, w, h);
+      addContentPart(p);
+    }
   }
 
   /**
@@ -120,29 +144,4 @@ public class TextContent extends ContentContainer
   {
     return sizeCalculator;
   }
-
-  /**
-   * Returns the supplied text as a list of lines/paragraphs.
-   *
-   * @param text the text.
-   * @return a list of lines/paragraphs.
-   */
-  private List splitContent (final String text)
-  {
-    final List lines = new ArrayList();
-
-    // check if empty content ... this case is easy ...
-    if (text.length() == 0)
-    {
-      return lines;
-    }
-
-    final LineBreakIterator iterator = new LineBreakIterator(text);
-    while (iterator.hasNext())
-    {
-      lines.add(iterator.next());
-    }
-    return lines;
-  }
-
 }

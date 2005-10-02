@@ -3,6 +3,7 @@ Pending:
   * Implement JFreeChart adapter and Barcode stuff
   * Generic/On-The-Fly reports
   * Out-of-the-box Label printing (as seen in the card-demo)
+  * ttc-files are always lost files in the iText font cache. Fix it!
 
 LibLayout dependent features:
   * Formated Text support for printing (RTF, HTML or other jx.swing.doc)

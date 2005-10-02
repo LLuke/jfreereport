@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextLine.java,v 1.13 2005/06/25 17:51:57 taqua Exp $
+ * $Id: TextLine.java,v 1.14 2005/08/12 12:09:38 taqua Exp $
  *
  * Changes
  * -------
@@ -195,8 +195,26 @@ public class TextLine implements Content
       return EmptyContent.getDefaultEmptyContent();
     }
     final long frontW = actBounds.getX() - this.bounds.getX();
-    final int frontPos = calcStringLength(0, frontW);
-    final int endPos = calcStringLength(frontPos, actBounds.getWidth());
+    final int frontPos;
+    if (frontW > 0)
+    {
+      frontPos = calcStringLength(0, frontW);
+    }
+    else
+    {
+      frontPos = 0;
+    }
+
+    final long actBoundsWidth = actBounds.getWidth();
+    final int endPos;
+    if (frontPos == 0 && actBoundsWidth == this.bounds.getWidth())
+    {
+      endPos = content.length();
+    }
+    else
+    {
+       endPos = calcStringLength(frontPos, actBoundsWidth);
+    }
 
     if (frontPos == endPos)
     {
@@ -207,7 +225,7 @@ public class TextLine implements Content
     final TextLine line = new TextLine(getSizeCalculator(), lineHeight);
     line.setContent(content.substring(frontPos, endPos),
             actBounds.getX(), actBounds.getY(),
-            actBounds.getWidth(), actBounds.getHeight());
+            actBoundsWidth, actBounds.getHeight());
     return line;
   }
 
