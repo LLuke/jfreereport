@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GenericObjectTable.java,v 1.4 2005/04/09 17:43:13 taqua Exp $
+ * $Id: GenericObjectTable.java,v 1.5 2005/09/05 11:43:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -58,7 +58,14 @@ public class GenericObjectTable extends ObjectTable
 
   public Object getObject (final int row, final int column)
   {
-    return super.getObject(row, column);
+    try
+    {
+      return super.getObject(row, column);
+    }
+    catch(IndexOutOfBoundsException ie)
+    {
+      throw ie;
+    }
   }
 
   public void setObject (final int row, final int column, final Object object)

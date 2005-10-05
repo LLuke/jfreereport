@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandLayoutManager.java,v 1.8 2005/03/03 14:42:34 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.9 2005/08/10 14:22:16 taqua Exp $
  *
  * Changes
  * -------
@@ -64,10 +64,13 @@ public interface BandLayoutManager
    *
    * @param b             the band.
    * @param containerDims the bounds of the surrounding container.
+   * @param maxUsableSize the maximum size that can be granted by the surrounding container.
    * @param support       the layout support used to compute sizes.
    * @return the preferred size.
    */
-  public StrictDimension preferredLayoutSize (Band b, StrictDimension containerDims,
+  public StrictDimension preferredLayoutSize (Band b,
+                                              StrictDimension containerDims,
+                                              StrictDimension maxUsableSize,
                                               LayoutSupport support);
 
   /**
@@ -75,10 +78,12 @@ public interface BandLayoutManager
    *
    * @param b             the band.
    * @param containerDims the bounds of the surrounding container.
+   * @param maxUsableSize
    * @param support       the layout support used to compute sizes.
    * @return the minimum size.
    */
   public StrictDimension minimumLayoutSize (Band b, StrictDimension containerDims,
+                                            StrictDimension maxUsableSize,
                                             LayoutSupport support);
 
   /**

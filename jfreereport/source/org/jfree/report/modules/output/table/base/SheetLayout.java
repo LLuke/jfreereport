@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.15 2005/09/05 11:43:24 taqua Exp $
+ * $Id: SheetLayout.java,v 1.16 2005/09/16 16:08:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,6 +51,8 @@ import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.LogContext;
+import org.jfree.util.Log;
 
 
 /**
@@ -205,6 +207,8 @@ public class SheetLayout
   /** A flag indicating whether the last row holds a line definition. */
   private boolean lastRowCutIsSignificant;
 
+  protected static final LogContext logger =
+          Log.createContext(SheetLayout.class);
   /**
    * The right border of the grid. This is needed when not being in the strict
    * mode.
@@ -253,9 +257,16 @@ public class SheetLayout
    */
   public void add(final MetaElement element)
   {
+
     final StrictBounds bounds = element.getBounds();
     final boolean isBackground = (element instanceof TableCellBackground);
 
+    if (logger.isDebugEnabled())
+    {
+      logger.debug("adding " + element.getName() +
+              "; bounds: " + bounds +
+              "; isBackground: " + isBackground);
+    }
     // an indicator flag whether this cell is an anchor point.
     final boolean isAnchor;
     if (bounds.getWidth() == 0 && bounds.getHeight() == 0)
@@ -987,7 +998,7 @@ public class SheetLayout
   public TableRectangle getTableBounds(final MetaElement e,
                                        final TableRectangle rect)
   {
-    return this.getTableBounds(e.getBounds(), rect);
+    return getTableBounds(e.getBounds(), rect);
   }
 
   /**

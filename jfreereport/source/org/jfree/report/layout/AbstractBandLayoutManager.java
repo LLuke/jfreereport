@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.21 2005/08/08 15:36:30 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.22 2005/08/10 14:22:16 taqua Exp $
  *
  * Changes
  * -------
@@ -80,13 +80,17 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @param bounds    the bounds of the element calculated so far. These bounds will be
    *                  modified and returned.
    * @param e         the element.
-   * @param conBounds the bounds of the surrounding container.
+   * @param containerBounds
+   * @param maxUsablesize
    * @param support   the layout support used to compute sizes.
    * @return the new elements dimension.
    */
   protected StrictDimension getElementContentBounds
-          (final StrictDimension bounds, final Element e,
-           final StrictDimension conBounds, final LayoutSupport support)
+          (final StrictDimension bounds,
+           final Element e,
+           final StrictDimension containerBounds,
+           final StrictDimension maxUsablesize,
+           final LayoutSupport support)
   {
     // check if we can handle the content before doing anything...
     // ...
@@ -97,7 +101,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     }
 
     final ElementLayoutInformation eli =
-            createLayoutInfoForDynamics(e, conBounds, support);
+            createLayoutInfoForDynamics(e, containerBounds, maxUsablesize, support);
     final StrictDimension minSize = eli.getMinimumSize();
     try
     {
@@ -121,8 +125,9 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     catch (Exception ex)
     {
       Log.info("Exception while layouting dynamic content: ", ex);
-      bounds.setSize(Math.max(minSize.getWidth(), bounds.getWidth()),
-              Math.max(minSize.getHeight(), bounds.getHeight()));
+      bounds.setSize
+              (Math.max(minSize.getWidth(), bounds.getWidth()),
+               Math.max(minSize.getHeight(), bounds.getHeight()));
       return bounds;
     }
   }
@@ -133,11 +138,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @param e         the element for that the layout should be done.
    * @param parentDim the dimensions for the parent of the element
+   * @param maxUsableSize
    * @return the created layout information.
    */
   protected ElementLayoutInformation createLayoutInfoForDynamics
-          (final Element e, 
+          (final Element e,
            final StrictDimension parentDim,
+           final StrictDimension maxUsableSize,
            final LayoutSupport support)
   {
     final Dimension2D eMaxDim = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
@@ -165,8 +172,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
     // the width is the limiting element in the calculation, height is considered
     // infinitive ...
-    maxSize.setSize(Math.min(parentDim.getWidth(), maxSize.getWidth()),
-            maxSize.getHeight());
+    maxSize.setSize(Math.min(maxUsableSize.getWidth(), maxSize.getWidth()),
+            maxUsableSize.getHeight());
     final ElementLayoutInformation eli
             = new ElementLayoutInformation(new StrictPoint(), minSize, maxSize, prefSize);
     return eli;
@@ -177,11 +184,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @param e               the element.
    * @param containerBounds the bounds of the container.
+   * @param maxUsableSize
    * @return layout information.
    */
-  protected ElementLayoutInformation
-          createLayoutInformationForMinimumSize 
-          (final Element e, final StrictDimension containerBounds,
+  protected ElementLayoutInformation createLayoutInformationForMinimumSize
+          (final Element e,
+           final StrictDimension containerBounds,
+           final StrictDimension maxUsableSize,
            final LayoutSupport support)
   {
     // the preferred size of an band can be a relative value. Then this value is
@@ -196,8 +205,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     final StrictDimension maxSize = correctDimension
             (StrictGeomUtility.createDimension
             (eMaxDim.getWidth(), eMaxDim.getHeight()), containerBounds, null, support);
-    final long maxW = Math.min(maxSize.getWidth(), containerBounds.getWidth());
-    final long maxH = Math.min(maxSize.getHeight(), containerBounds.getHeight());
+    final long maxW = Math.min(maxSize.getWidth(), maxUsableSize.getWidth());
+    final long maxH = Math.min(maxSize.getHeight(), maxUsableSize.getHeight());
 
     // the bounds inherited from the parent, cut down to the maximum size defined
     // for this elements.
@@ -210,24 +219,26 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @param e             the element.
    * @param containerDims the dimensions of the container.
+   * @param maxUsableSize
    * @return layout information.
    */
-  protected ElementLayoutInformation
-          createLayoutInformationForPreferredSize 
-          (final Element e, final StrictDimension containerDims,
+  protected ElementLayoutInformation createLayoutInformationForPreferredSize
+          (final Element e,
+           final StrictDimension containerDims,
+           final StrictDimension maxUsableSize,
            final LayoutSupport support)
   {
-
-
-    final Dimension2D eMinDim = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
+    final Dimension2D eMinDim = (Dimension2D)
+            e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
     final StrictDimension minSize = correctDimension
-            (StrictGeomUtility.createDimension
-            (eMinDim.getWidth(), eMinDim.getHeight()), containerDims, null, support);
+            (StrictGeomUtility.createDimension(eMinDim.getWidth(), eMinDim.getHeight()),
+                    containerDims, null, support);
 
-    final Dimension2D eMaxDim = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
+    final Dimension2D eMaxDim = (Dimension2D)
+            e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
     final StrictDimension maxSize = correctDimension
-            (StrictGeomUtility.createDimension
-            (eMaxDim.getWidth(), eMaxDim.getHeight()), containerDims, null, support);
+            (StrictGeomUtility.createDimension(eMaxDim.getWidth(), eMaxDim.getHeight()),
+                    containerDims, null, support);
 
     // there is a preferredSize defined, don't calculate one...
     long height = 0;
@@ -259,8 +270,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     width = Math.max(width, minSize.getWidth());
 
     // now take the maximum limit defined for that band into account.
-    final long maxW = Math.min(maxSize.getWidth(), containerDims.getWidth());
-    final long maxH = Math.min(maxSize.getHeight(), containerDims.getHeight());
+    final long maxW = Math.min(maxSize.getWidth(), maxUsableSize.getWidth());
+    final long maxH = Math.min(maxSize.getHeight(), maxUsableSize.getHeight());
 
     // the bounds inherited from the parent, cut down to the maximum size defined
     // for this elements.
@@ -346,8 +357,10 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @return the corrected dimension.
    */
   protected static StrictDimension correctDimension
-          (final StrictDimension dim, final StrictDimension base,
-           final StrictDimension retval, final LayoutSupport support)
+          (final StrictDimension dim,
+           final StrictDimension base,
+           final StrictDimension retval,
+           final LayoutSupport support)
   {
     long newWidth = dim.getWidth();
     if (dim.getWidth() < 0)

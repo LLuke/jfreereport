@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StackedLayoutManager.java,v 1.1 2005/08/10 14:23:40 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 public class StackedLayoutManager extends AbstractBandLayoutManager
 {
@@ -97,20 +98,23 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
         continue;
       }
 
+      if (e.getName().equals("T2"))
+      {
+        Log.debug ("EH");
+      }
       absDim = computePreferredSize(e, parentDim, absDim, support, true);
       // docmark: Compute preferred size does never return negative values!
-      // Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + absDim);
-
+      Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + absDim);
       // here apply the maximum bounds ...
       final long height = alignUp(absDim.getHeight(), intVAlign);
       final StrictBounds bounds = new StrictBounds
               (alignDown(0, intHAlign),
-              alignDown(yPosition, intVAlign),
-              parentWidth, height);
+               alignDown(yPosition, intVAlign),
+               parentWidth, height);
 
       yPosition += height;
       BandLayoutManagerUtil.setBounds(e, bounds);
-      // Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
+      Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
       if (e instanceof Band)
       {
         final BandLayoutManager lm =
@@ -123,8 +127,10 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
 
 
   protected StrictDimension computeMinimumSize
-          (final Element e, final StrictDimension containerBounds,
-           StrictDimension retval, final LayoutSupport support,
+          (final Element e,
+           final StrictDimension containerBounds,
+           StrictDimension retval,
+           final LayoutSupport support,
            final boolean allowCaching)
   {
     final LayoutManagerCache cache = support.getCache();
@@ -142,7 +148,7 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
     if (e instanceof Band)
     {
       final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
-      retval = lm.minimumLayoutSize((Band) e, containerBounds, support);
+      retval = lm.minimumLayoutSize((Band) e, containerBounds, containerBounds, support);
     }
     else
     {
@@ -170,7 +176,8 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, containerBounds, support);
+      retval = getElementContentBounds
+              (retval, e, containerBounds, containerBounds, support);
     }
 
     retval.setSize
@@ -210,6 +217,11 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
                                                   final boolean allowCaching)
   {
     final LayoutManagerCache cache = support.getCache();
+    Log.debug ("Stacked ContainerDims: " + containerBounds);
+    if (containerBounds.getWidth() == 210000)
+    {
+      Log.debug ("F!U!");
+    }
     final boolean isCachable = cache.isCachable(e) && allowCaching;
     if (isCachable)
     {
@@ -227,7 +239,7 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
     if (e instanceof Band)
     {
       final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
-      retval = lm.preferredLayoutSize((Band) e, containerBounds, support);
+      retval = lm.preferredLayoutSize((Band) e, containerBounds, containerBounds, support);
     }
     else
     {
@@ -264,7 +276,8 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, containerBounds, support);
+      retval = getElementContentBounds
+              (retval, e, containerBounds, containerBounds, support);
     }
 
     retval.setSize
@@ -290,11 +303,13 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
    *
    * @param b             the band.
    * @param containerDims the bounds of the surrounding container.
+   * @param maxUsableSize
    * @param support       the layout support used to compute sizes.
    * @return the minimum size.
    */
   public StrictDimension minimumLayoutSize (final Band b,
                                             final StrictDimension containerDims,
+                                            StrictDimension maxUsableSize,
                                             final LayoutSupport support)
   {
     if (support == null)
@@ -325,7 +340,7 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
     final long vAlignBorder = support.getInternalVerticalAlignmentBorder();
 
     final ElementLayoutInformation eli =
-            createLayoutInformationForMinimumSize(b, containerDims, support);
+            createLayoutInformationForMinimumSize(b, containerDims, containerDims, support);
     final StrictDimension maxSize = eli.getMaximumSize();
     final StrictDimension minSize = eli.getMinimumSize();
 
@@ -440,11 +455,13 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
    *
    * @param b             the band.
    * @param containerDims the bounds of the surrounding container.
+   * @param maxUsableSize
    * @param support       the layout support used to compute sizes.
    * @return the preferred size.
    */
   public StrictDimension preferredLayoutSize (final Band b,
                                               final StrictDimension containerDims,
+                                              final StrictDimension maxUsableSize,
                                               final LayoutSupport support)
   {
     if (support == null)
@@ -475,7 +492,7 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
     final long vAlignBorder = support.getInternalVerticalAlignmentBorder();
 
     final ElementLayoutInformation eli =
-            createLayoutInformationForPreferredSize(b, containerDims, support);
+            createLayoutInformationForPreferredSize(b, containerDims, maxUsableSize, support);
     final StrictDimension maxSize = eli.getMaximumSize();
     final StrictDimension minSize = eli.getMinimumSize();
     final StrictDimension prefSize = eli.getPreferredSize();

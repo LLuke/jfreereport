@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.24 2005/06/25 17:52:00 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.25 2005/08/10 14:22:16 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.util.geom.StrictPoint;
+import org.jfree.util.Log;
 
 /**
  * An implementation of the BandLayoutManager interface.
@@ -101,14 +102,17 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param e               the element.
    * @param containerBounds the bounds of the elements parents.
+   * @param maxUsableSize
    * @param retval          a dimension object that should be filled, or null, if a new
    *                        object should be created
    * @param support         the layout support used to compute sizes.
    * @return the minimum size.
    */
   protected StrictDimension computeMinimumSize
-          (final Element e, final StrictDimension containerBounds,
-           StrictDimension retval, final LayoutSupport support,
+          (final Element e,
+           final StrictDimension containerBounds,
+           StrictDimension maxUsableSize, StrictDimension retval,
+           final LayoutSupport support,
            final boolean allowCaching)
   {
     final LayoutManagerCache cache = support.getCache();
@@ -148,7 +152,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     if (e instanceof Band)
     {
       final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
-      retval = lm.minimumLayoutSize((Band) e, containerBounds, support);
+      retval = lm.minimumLayoutSize((Band) e, containerBounds, null, support);
     }
     else
     {
@@ -170,12 +174,13 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
             (maxSizeElement.getWidth(), maxSizeElement.getHeight()),
                     containerBounds, null, support);
 
-    maxSize.setSize(Math.min(containerBounds.getWidth() - absPosX, maxSize.getWidth()),
-            Math.min(containerBounds.getHeight() - absPosY, maxSize.getHeight()));
+    maxSize.setSize(Math.min(containerBounds.getWidth(), maxSize.getWidth()),
+            Math.min(containerBounds.getHeight(), maxSize.getHeight()));
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, containerBounds, support);
+      retval = getElementContentBounds
+              (retval, e, containerBounds, maxUsableSize, support);
     }
 
     retval.setSize
@@ -204,15 +209,22 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param e               the element.
    * @param containerBounds the bounds of the element's container.
+   * @param maxUsableSize
    * @param support         the layout support used to compute sizes.
    * @return the preferred size of the element.
    */
   protected StrictDimension computePreferredSize (final Element e,
                                                   final StrictDimension containerBounds,
+                                                  final StrictDimension maxUsableSize,
                                                   StrictDimension retval,
                                                   final LayoutSupport support,
                                                   final boolean allowCaching)
   {
+    if (e.getName().equals("Band-A1-B1"))
+    {
+      Log.debug ("HWA");
+    }
+
     final LayoutManagerCache cache = support.getCache();
     final boolean isCachable = cache.isCachable(e) && allowCaching;
     if (isCachable)
@@ -253,7 +265,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     if (e instanceof Band)
     {
       final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e);
-      retval = lm.preferredLayoutSize((Band) e, containerBounds, support);
+      retval = lm.preferredLayoutSize((Band) e, containerBounds, maxUsableSize, support);
     }
     else
     {
@@ -285,12 +297,13 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
             StrictGeomUtility.createDimension(maxDim.getWidth(), maxDim.getHeight());
     final StrictDimension maxSize = correctDimension(sMaxDim, containerBounds, null, support);
 
-    maxSize.setSize(Math.min(containerBounds.getWidth() - absPosX, maxSize.getWidth()),
-            Math.min(containerBounds.getHeight() - absPosY, maxSize.getHeight()));
+    maxSize.setSize
+            (Math.min(containerBounds.getWidth(), maxSize.getWidth()),
+            Math.min(containerBounds.getHeight(), maxSize.getHeight()));
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
-      retval = getElementContentBounds(retval, e, containerBounds, support);
+      retval = getElementContentBounds(retval, e, containerBounds, maxUsableSize, support);
     }
 
     retval.setSize
@@ -307,7 +320,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     {
       cache.setPrefSize(e, retval);
     }
-    //Log.debug ("+" + retval);
+    Log.debug (e.getName() + " =+= " + retval);
     return retval;
   }
 
@@ -321,11 +334,14 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param b             the band.
    * @param containerDims the maximum size the band should use for that container.
+   * @param maxUsableSize
    * @param support       the layout support used to compute sizes.
    * @return the preferred size.
    */
   public StrictDimension preferredLayoutSize
-          (final Band b, final StrictDimension containerDims,
+          (final Band b,
+           final StrictDimension containerDims,
+           final StrictDimension maxUsableSize,
            final LayoutSupport support)
   {
     if (support == null)
@@ -340,8 +356,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     {
       throw new NullPointerException("ContainerBounds are null.");
     }
-    final LayoutManagerCache cache = support.getCache();
 
+    final LayoutManagerCache cache = support.getCache();
     final boolean isCacheable = cache.isCachable(b);
     if (isCacheable)
     {
@@ -355,8 +371,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     final long vAlignBorder = support.getInternalVerticalAlignmentBorder();
 
     //Log.debug(">" + containerDims + " vs - " + b.getName());
-    final ElementLayoutInformation eli =
-            createLayoutInformationForPreferredSize(b, containerDims, support);
+    final ElementLayoutInformation eli = createLayoutInformationForPreferredSize
+            (b, containerDims, maxUsableSize, support);
     final StrictDimension maxSize = eli.getMaximumSize();
     final StrictDimension minSize = eli.getMinimumSize();
     final StrictDimension prefSize = eli.getPreferredSize();
@@ -379,6 +395,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // Now adjust the defined sizes by using the elements stored in the band.
     final Element[] elements = b.getElementArray();
 
+    final StrictDimension childMaxUsableSize = new StrictDimension();
     StrictDimension tmpResult = null;
     // calculate absolute width
     for (int i = 0; i < elements.length; i++)
@@ -393,7 +410,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       final boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth || staticHeight)
       {
-        final Point2D absPosElement = (Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
+        final Point2D absPosElement = (Point2D)
+                e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
         final long absPosX = alignDown(correctRelativeValue
                 (StrictGeomUtility.toInternalValue(absPosElement.getX()),
                         containerDims.getWidth()), hAlignBorder);
@@ -407,7 +425,12 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
           // dont display, as this element is larger than the container ...
           continue;
         }
-        tmpResult = computePreferredSize(e, base, tmpResult, support,
+
+        childMaxUsableSize.setSize
+                (Math.max(0, base.getWidth() - absPosX),
+                 Math.max (0, base.getHeight() - absPosY));
+        tmpResult = computePreferredSize
+                (e, base, childMaxUsableSize, tmpResult, support,
                 staticWidth && staticHeight);
 
         if (staticWidth)
@@ -468,8 +491,11 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
           continue;
         }
 
+        childMaxUsableSize.setSize
+                (Math.max(0, base.getWidth() - absPosX),
+                 Math.max (0, base.getHeight() - absPosY));
         absDim = correctDimension
-                (computePreferredSize(e, base, absDim, support, true), base, absDim, support);
+                (computePreferredSize(e, base, childMaxUsableSize, absDim, support, true), base, absDim, support);
 
         if (staticWidth == false)
         {
@@ -512,11 +538,14 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param b               the band.
    * @param containerBounds the bounds of the bands parents.
+   * @param maxUsableSize
    * @param support         the layout support used to compute sizes.
    * @return the minimum size.
    */
   public StrictDimension minimumLayoutSize
-          (final Band b, final StrictDimension containerBounds,
+          (final Band b,
+           final StrictDimension containerBounds,
+           final StrictDimension maxUsableSize,
            final LayoutSupport support)
   {
     if (support == null)
@@ -546,11 +575,11 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     final long hAlignBorder = support.getInternalHorizontalAlignmentBorder();
     final long vAlignBorder = support.getInternalVerticalAlignmentBorder();
 
-    final ElementLayoutInformation eli =
-            createLayoutInformationForMinimumSize(b, containerBounds, support);
+    final ElementLayoutInformation eli = createLayoutInformationForMinimumSize
+            (b, containerBounds, maxUsableSize, support);
     final StrictDimension maxSize = eli.getMaximumSize();
     final StrictDimension minSize = eli.getMinimumSize();
-    
+
     // we use the max width, as the width is bound to the outside container,
     // either an other band or the page; the width is required to compute dynamic
     // elements or elements with an 100% width ...
@@ -561,6 +590,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // needed to display all elements
     final Element[] elements = b.getElementArray();
     final StrictDimension tmpResult = new StrictDimension();
+    final StrictDimension childMaxUsableSize = new StrictDimension();
 
     // calculate absolute width
     for (int i = 0; i < elements.length; i++)
@@ -588,8 +618,11 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
           // dont display, as this element is larger than the container ...
           continue;
         }
+        childMaxUsableSize.setSize
+                (Math.max(0, maxSize.getWidth() - absPosX),
+                 Math.max (0, maxSize.getHeight() - absPosY));
         final StrictDimension size = computeMinimumSize
-                (e, maxSize, tmpResult, support, staticHeight && staticWidth);
+                (e, maxSize, childMaxUsableSize, tmpResult, support, staticHeight && staticWidth);
 
         if (staticWidth)
         {
@@ -646,8 +679,11 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
           // dont display, as this element is larger than the container ...
           continue;
         }
+        childMaxUsableSize.setSize
+                (Math.max(0, base.getWidth() - absPosX),
+                 Math.max (0, base.getHeight() - absPosY));
         absDim = correctDimension
-                (computeMinimumSize(e, base, absDim, support, true), base, absDim, support);
+                (computeMinimumSize(e, base, childMaxUsableSize, absDim, support, true), base, absDim, support);
 
         if (staticWidth == false)
         {
@@ -721,7 +757,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
 
     final StrictDimension parentDim = new StrictDimension
             (parentBounds.getWidth(), parentBounds.getHeight());
-
+    final StrictDimension tmpParent = new StrictDimension();
     StrictDimension absDim = null;
     for (int i = 0; i < elements.length; i++)
     {
@@ -752,7 +788,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
         continue;
       }
 
-      absDim = computePreferredSize(e, parentDim, absDim, support, true);
+      tmpParent.setSize
+              (Math.max(0, parentDim.getWidth() - absPosX),
+               Math.max (0, parentDim.getHeight() - absPosY));
+      absDim = computePreferredSize(e, parentDim, tmpParent, absDim, support, true);
       // docmark: Compute preferred size does never return negative values!
       // Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + absDim);
 
@@ -820,11 +859,13 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param e         the element for that the layout should be done.
    * @param parentDim the dimensions for the parent of the element
+   * @param maxUsableSize
    * @return the created layout information.
    */
   protected ElementLayoutInformation
-          createLayoutInfoForDynamics (final Element e, 
+          createLayoutInfoForDynamics (final Element e,
                                        final StrictDimension parentDim,
+                                       final StrictDimension maxUsableSize,
                                        final LayoutSupport support)
   {
     final Point2D absPosFromStyle = (Point2D)
@@ -853,20 +894,22 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       throw new IllegalStateException("Height violation!");
     }
 
-    final long maximumWidth = (parentDim.getWidth() - absPosX);
+    final long maximumWidth = (maxUsableSize.getWidth() - absPosX);
 
-    final Dimension2D eMaxDim = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
+    final Dimension2D eMaxDim = (Dimension2D)
+            e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);
     final StrictDimension maxSize = correctDimension
-            (StrictGeomUtility.createDimension
-            (eMaxDim.getWidth(), eMaxDim.getHeight()), parentDim, null, support);
+            (StrictGeomUtility.createDimension (eMaxDim.getWidth(), eMaxDim.getHeight()),
+                    parentDim, null, support);
 
-    final Dimension2D eMinDim = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
+    final Dimension2D eMinDim = (Dimension2D)
+            e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
     final StrictDimension minSize = correctDimension
-            (StrictGeomUtility.createDimension
-            (eMinDim.getWidth(), eMinDim.getHeight()), parentDim, null, support);
+            (StrictGeomUtility.createDimension (eMinDim.getWidth(), eMinDim.getHeight()),
+                    parentDim, null, support);
 
-    maxSize.setSize(Math.min(maximumWidth, maxSize.getWidth()), maxSize.getHeight());
-    minSize.setSize(Math.min(maximumWidth, minSize.getWidth()), minSize.getHeight());
+    maxSize.setWidth(Math.min(maximumWidth, maxSize.getWidth()));
+    minSize.setWidth(Math.min(maximumWidth, minSize.getWidth()));
 
     final Dimension2D ePrefDim
             = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
@@ -875,7 +918,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     {
       prefSize = correctDimension(StrictGeomUtility.createDimension
               (ePrefDim.getWidth(), ePrefDim.getHeight()), parentDim, null, support);
-      prefSize.setSize(Math.min(maximumWidth, prefSize.getWidth()), prefSize.getHeight());
+      prefSize.setWidth(Math.min(maximumWidth, prefSize.getWidth()));
     }
     else
     {

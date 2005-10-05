@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextParagraph.java,v 1.15 2005/06/25 17:51:57 taqua Exp $
+ * $Id: TextParagraph.java,v 1.16 2005/10/02 10:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -145,10 +145,10 @@ public class TextParagraph extends ContentContainer
             (height / StrictGeomUtility.toInternalValue
                     (getSizeCalculator().getLineHeight()));
 
-
     if (maxLines == 0)
     {
       setBounds(x, y, width, 0);
+      return;
     }
 
     if (maxLines == 1)
@@ -156,7 +156,7 @@ public class TextParagraph extends ContentContainer
       // check, whether we can take a shortcut ...
       final float lineSize =
               getSizeCalculator().getStringWidth(content, 0, content.length());
-      if (lineSize <= width)
+      if (StrictGeomUtility.toInternalValue(lineSize) <= width)
       {
         final TextLine line = new TextLine(getSizeCalculator(), lineHeight);
         line.setContent(content, x, y, width, height);
@@ -222,7 +222,7 @@ public class TextParagraph extends ContentContainer
     // create a Max-Bounds and test that bound...
     if (maxLines < 1)
     {
-      throw new IllegalArgumentException("MaxLines of <1 is not allowed");
+      throw new IllegalArgumentException("MaxLines of <1 is not allowed; was " + maxLines);
     }
 
     // Reserve some space for the last line if there is more than one line to display.

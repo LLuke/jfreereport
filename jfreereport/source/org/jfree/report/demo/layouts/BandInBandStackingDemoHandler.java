@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandInBandStackingDemoHandler.java,v 1.1 2005/08/29 17:39:33 taqua Exp $
+ * $Id: BandInBandStackingDemoHandler.java,v 1.2 2005/09/21 12:00:17 taqua Exp $
  *
  * Changes:
  * --------
@@ -201,8 +201,6 @@ public class BandInBandStackingDemoHandler extends AbstractDemoHandler
    * bands.
    *
    * @return the created report.
-   *
-   * @throws FunctionInitializeException if there is a problem initialising the function.
    */
   public JFreeReport createReport ()
   {
@@ -239,6 +237,7 @@ public class BandInBandStackingDemoHandler extends AbstractDemoHandler
     final JFreeReport report = new JFreeReport();
     report.setReportHeader(header);
     report.setReportFooter(footer);
+    report.setName("Band in Band stacking");
 
     report.addExpression(new ComplexComponentExpression("CreateComponent"));
 

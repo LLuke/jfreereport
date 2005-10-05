@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.8 2005/03/01 10:09:41 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.9 2005/03/30 17:26:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -159,8 +159,10 @@ public class ExcelMetaBandProducer
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
-    return new ExcelMetaElement(new RawContent(rect, String.valueOf(o)),
+    final MetaElement me = new ExcelMetaElement(new RawContent(rect, String.valueOf(o)),
             createStyleForTextElement(e, x, y));
+    me.setName(e.getName());
+    return me;
   }
 
   private String getFormatString (final DataSource ds)

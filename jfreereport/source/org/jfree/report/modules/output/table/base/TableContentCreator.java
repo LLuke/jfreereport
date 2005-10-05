@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.9 2005/09/06 11:40:20 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.10 2005/09/11 10:45:28 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -148,6 +148,7 @@ public abstract class TableContentCreator extends AbstractTableCreator
     }
     if (handleFlush())
     {
+      // docmark: The layout offset may be wrong ..
       layoutOffset += backend.getRowCount();
       backend.clear();
       return true;
