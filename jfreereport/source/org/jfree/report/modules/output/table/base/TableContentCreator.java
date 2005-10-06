@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.10 2005/09/11 10:45:28 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.11 2005/10/05 13:35:40 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -226,6 +226,13 @@ public abstract class TableContentCreator extends AbstractTableCreator
       }
       return;
     }
+
+    if (rect.getY1() - layoutOffset < 0)
+    {
+      final TableRectangle rect2 = currentLayout.getTableBounds(e, getLookupRectangle());
+      throw new IllegalStateException("This MUST not happen");
+    }
+
 
     if (isCellSpaceOccupied(rect) == false)
     {

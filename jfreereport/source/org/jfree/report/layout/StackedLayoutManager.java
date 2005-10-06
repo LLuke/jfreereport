@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StackedLayoutManager.java,v 1.1 2005/08/10 14:23:40 taqua Exp $
+ * $Id: StackedLayoutManager.java,v 1.2 2005/10/05 13:35:40 taqua Exp $
  *
  * Changes
  * -------
@@ -98,13 +98,8 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
         continue;
       }
 
-      if (e.getName().equals("T2"))
-      {
-        Log.debug ("EH");
-      }
       absDim = computePreferredSize(e, parentDim, absDim, support, true);
       // docmark: Compute preferred size does never return negative values!
-      Log.debug ("UBounds: Element: " + e.getName() + " Bounds: " + absDim);
       // here apply the maximum bounds ...
       final long height = alignUp(absDim.getHeight(), intVAlign);
       final StrictBounds bounds = new StrictBounds
@@ -114,7 +109,7 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
 
       yPosition += height;
       BandLayoutManagerUtil.setBounds(e, bounds);
-      Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
+
       if (e instanceof Band)
       {
         final BandLayoutManager lm =
@@ -217,11 +212,6 @@ public class StackedLayoutManager extends AbstractBandLayoutManager
                                                   final boolean allowCaching)
   {
     final LayoutManagerCache cache = support.getCache();
-    Log.debug ("Stacked ContainerDims: " + containerBounds);
-    if (containerBounds.getWidth() == 210000)
-    {
-      Log.debug ("F!U!");
-    }
     final boolean isCachable = cache.isCachable(e) && allowCaching;
     if (isCachable)
     {

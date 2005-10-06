@@ -136,6 +136,7 @@
     <function name="backgroundTrigger" class="org.jfree.report.function.ElementVisibilitySwitchFunction">
       <properties>
         <property name="element">background</property>
+        <property name="numberOfElements">5</property>
       </properties>
     </function>
   </functions>

@@ -3,6 +3,12 @@
 ---------------
 A list of changes in recent versions:
 
+        * [BUG] The TableExport behaved unpredictable, including raising
+          errors when using the "StackedLayoutmanager". The real cause was
+          hidden in the LayoutManager API which did not compute band sizes
+          correctly. Combining relative y-positions and dynamic elements
+          creates undefined behaviour and must be avoided at all price.
+
         * [BUG] The BaseFontSupport did not accept font files other than
          'ttf' due to an overly paranoid check. (Bug #1299056)
 

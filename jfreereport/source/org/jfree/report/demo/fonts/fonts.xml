@@ -31,7 +31,7 @@
 
   <items height="30" fontname="Monospaced" fontstyle="plain" fontsize="10">
     <string-field x="0" y="0" width="40%" height="15" alignment="left" fieldname="fontname"/>
-    <string-field name="SampleElement" x="10%" y="50%" width="90%" height="15" 
+    <string-field name="SampleElement" x="10%" y="15" width="90%" height="15" 
                   alignment="left" fieldname="sample" dynamic="true"/>
   </items>
 

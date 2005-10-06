@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.16 2005/09/16 16:08:06 taqua Exp $
+ * $Id: SheetLayout.java,v 1.17 2005/10/05 13:35:40 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -207,8 +207,6 @@ public class SheetLayout
   /** A flag indicating whether the last row holds a line definition. */
   private boolean lastRowCutIsSignificant;
 
-  protected static final LogContext logger =
-          Log.createContext(SheetLayout.class);
   /**
    * The right border of the grid. This is needed when not being in the strict
    * mode.
@@ -261,12 +259,6 @@ public class SheetLayout
     final StrictBounds bounds = element.getBounds();
     final boolean isBackground = (element instanceof TableCellBackground);
 
-    if (logger.isDebugEnabled())
-    {
-      logger.debug("adding " + element.getName() +
-              "; bounds: " + bounds +
-              "; isBackground: " + isBackground);
-    }
     // an indicator flag whether this cell is an anchor point.
     final boolean isAnchor;
     if (bounds.getWidth() == 0 && bounds.getHeight() == 0)
@@ -1321,9 +1313,9 @@ public class SheetLayout
    * background for a certain cell, or null, if there is no background at that
    * cell.
    *
-   * @param row
-   * @param column
-   * @return
+   * @param row the row of the requested element
+   * @param column the column starting with zero.
+   * @return the element at the specified position.
    */
   public TableCellBackground getElementAt(final int row, final int column)
   {

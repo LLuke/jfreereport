@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.10 2005/09/07 14:25:11 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.11 2005/10/01 11:48:16 taqua Exp $
  *
  * Changes
  * -------
@@ -172,7 +172,7 @@ public class DataRowBackend implements Cloneable
     this.dataRowConnector = new DataRowConnector();
     this.dataRowConnector.setDataRowBackend(this);
     this.columnlocks = EMPTY_BOOLS;
-    this.colcache = db.colcache;
+    this.colcache = new HashMap();
     this.warnInvalidColumns = db.warnInvalidColumns;
     this.tablemodel = db.tablemodel;
     this.lastRow = db.lastRow;

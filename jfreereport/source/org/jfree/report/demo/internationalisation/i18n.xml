@@ -5,7 +5,7 @@
 <report name="i18n Demo" pageformat="A4">
 
   <configuration>
-    <property name="org.jfree.report.ResourceBundle">org.jfree.report.demo.i18ndemo</property>
+    <property name="org.jfree.report.ResourceBundle">org.jfree.report.demo.internationalisation.i18ndemo</property>
   </configuration>
 
   <!-- REPORT HEADER -->

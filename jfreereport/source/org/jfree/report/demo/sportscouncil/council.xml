@@ -10,7 +10,7 @@
   <groups>
     <group name="orgGroup">
       <groupheader>
-        <band name="logoSection" x="0" y="0" width="100%" fontname="Sans-Serif" fontsize="20">
+        <band name="logoSection" x="0" y="0" width="100%" fontname="SansSerif" fontsize="20">
           <rectangle x="100" y="0" width="300" height="50" fill="true" color="#8F8F8F"/>
           <label x="100" y="0" width="300" height="50" alignment="center" vertical-alignment="middle">LOGO</label>
           <label x="0" y="55" width="100%" height="20" alignment="center" vertical-alignment="middle">Club Sports Council Organizations</label>
@@ -20,7 +20,7 @@
           <label x="0" y="0" width="100%" height="15" fontsize="15">About</label>
           <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 
-          <band name="addressArea" x="50" y="20" height="120" fontname="Sans-Serif" fontsize="10">
+          <band name="addressArea" x="50" y="20" height="120" fontname="SansSerif" fontsize="10">
             <line x1="1" y1="0" x2="1" y2="100"/>
             <string-field x="5" y="0" width="80%" height="10" fieldname="council.orgName" fsbold="true"/>
             <string-field x="5" y="10" width="80%" height="10" fieldname="council.street1"/>
@@ -40,7 +40,7 @@
       </groupheader>
 
       <groupfooter>
-        <band name="eventsFooterSection" x="0" y="20" height="50" fontsize="10" fontname="Sans-Serif">
+        <band name="eventsFooterSection" x="0" y="20" height="50" fontsize="10" fontname="SansSerif">
           <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true">Events</label>
           <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 
@@ -60,7 +60,7 @@
           <number-field x="95%" y="30" width="4%" height="10" fieldname="council.futureEventCount"/>
         </band>
 
-        <band name="demographicsSection" x="0" y="70" fontsize="10" fontname="Sans-Serif">
+        <band name="demographicsSection" x="0" y="70" fontsize="10" fontname="SansSerif">
           <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true">Demographics</label>
           <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 

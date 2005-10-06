@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.26 2005/09/19 13:09:09 taqua Exp $
+ * $Id: TableWriter.java,v 1.27 2005/09/27 17:00:20 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,8 @@
  *
  */
 package org.jfree.report.modules.output.table.base;
+
+import java.util.List;
 
 import org.jfree.report.Band;
 import org.jfree.report.ReportProcessingException;
@@ -57,6 +59,7 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.util.Log;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data. After
@@ -479,6 +482,12 @@ public strictfp class TableWriter
     cEventState.firePageFinishedEvent();
     if (cEventState.isErrorOccured())
     {
+      List errors = cEventState.getErrors();
+      for (int i = 0; i < errors.size(); i++)
+      {
+        Exception exception = (Exception) errors.get(i);
+        exception.printStackTrace();
+      }
       throw new ReportProcessingException
               ("An error occured while processing the page start - aborting");
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.25 2005/08/10 14:22:16 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.26 2005/10/05 13:35:40 taqua Exp $
  *
  * Changes
  * -------
@@ -220,11 +220,6 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
                                                   final LayoutSupport support,
                                                   final boolean allowCaching)
   {
-    if (e.getName().equals("Band-A1-B1"))
-    {
-      Log.debug ("HWA");
-    }
-
     final LayoutManagerCache cache = support.getCache();
     final boolean isCachable = cache.isCachable(e) && allowCaching;
     if (isCachable)
@@ -320,7 +315,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     {
       cache.setPrefSize(e, retval);
     }
-    Log.debug (e.getName() + " =+= " + retval);
+
     return retval;
   }
 

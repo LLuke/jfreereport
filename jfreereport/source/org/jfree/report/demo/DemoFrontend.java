@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.9 2005/09/07 14:23:49 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.10 2005/09/20 16:56:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,6 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.bookstore.BookstoreDemo;
 import org.jfree.report.demo.cards.CardDemo;
 import org.jfree.report.demo.conditionalgroup.ConditionalGroupDemo;
-import org.jfree.report.demo.csv.CSVReaderDemo;
 import org.jfree.report.demo.fonts.FontDemo;
 import org.jfree.report.demo.form.SimplePatientFormDemo;
 import org.jfree.report.demo.functions.FunctionsDemo;
@@ -81,6 +80,7 @@ public class DemoFrontend extends CompoundDemoFrame
   {
     final DefaultDemoSelector rootSelector = new DefaultDemoSelector
             ("All JFreeReport Demos");
+
     rootSelector.addChild(CardDemo.createDemoInfo());
     rootSelector.addChild(InvoiceDemo.createDemoInfo());
     rootSelector.addChild(PeopleReportDemo.createDemoInfo());
@@ -91,7 +91,7 @@ public class DemoFrontend extends CompoundDemoFrame
     rootSelector.addChild(LayoutDemo.createDemoInfo());
     // report footer
     rootSelector.addDemo(new ConditionalGroupDemo());
-    rootSelector.addDemo(new CSVReaderDemo());
+    //rootSelector.addDemo(new CSVReaderDemo());
     rootSelector.addDemo(new SimplePatientFormDemo());
     rootSelector.addDemo(new MultiReportDemo());
     rootSelector.addDemo(new SportsCouncilDemo());
@@ -104,6 +104,7 @@ public class DemoFrontend extends CompoundDemoFrame
     rootSelector.addDemo(new FontDemo());
     rootSelector.addDemo(new VeryLargeReportDemo());
     rootSelector.addDemo(new BookstoreDemo());
+
     return rootSelector;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.9 2005/08/08 15:36:35 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.10 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -180,7 +180,14 @@ public class RTFContentCreator extends TableContentCreator
         }
       }
 
-      document.add(table);
+      try
+      {
+        document.add(table);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+      }
     }
     catch (BadElementException be)
     {
