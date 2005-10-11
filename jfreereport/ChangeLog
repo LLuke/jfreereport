@@ -3,7 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
-0.8.6-1: (13-Oct-2005)
+0.8.6-1: (12-Oct-2005)
         * [BUG] There was inconsistent behaviour when exporting single table
           reports using PageHeaders with 'print-on-lastpage' set to false.
 
