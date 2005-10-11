@@ -27,6 +27,8 @@
   2005-02-16: Rewrote the DTD to match JFreeReport 0.8.5
   2005-08-09: Added the layout attribute for bands.
   2005-08-10: Added pagespan attribute
+  2005-10-12: Now all style attributes are optional, as they may have been
+              defined by an external stylesheet; added the component field type
 
   Use this as Document type definition:
 
@@ -75,8 +77,8 @@
 <!ENTITY % position
 "x           CDATA          #IMPLIED
  y           CDATA          #IMPLIED
- width       CDATA          #REQUIRED
- height      CDATA          #REQUIRED"
+ width       CDATA          #IMPLIED
+ height      CDATA          #IMPLIED"
 >
 
 <!--
@@ -123,7 +125,7 @@
 "(label | string-field | number-field | date-field |
 imageref | image-field | imageurl-field | rectangle |
 resource-label | resource-field | line |
-drawable-url-field | drawableref |
+drawable-url-field | drawableref | component-field |
 message-field | anchor-field |
 drawable-field | shape-field | band)*">
 
@@ -542,7 +544,7 @@ excel-format		     CDATA         #IMPLIED
 <!ATTLIST imageref
 %position;
 name                 CDATA         #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
 src                  CDATA         #REQUIRED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
@@ -562,7 +564,7 @@ href                 CDATA         #IMPLIED
 %position;
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
@@ -582,7 +584,7 @@ href                 CDATA         #IMPLIED
 %position;
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
@@ -603,6 +605,9 @@ href                 CDATA         #IMPLIED
 draw                 (%boolean;)   #IMPLIED
 fill                 (%boolean;)   #IMPLIED
 weight               CDATA         #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+href                 CDATA         #IMPLIED
+visible              (%boolean;)   #IMPLIED
 >
 
 <!--
@@ -622,16 +627,19 @@ weight               CDATA         #IMPLIED
  -->
 <!ELEMENT line      EMPTY>
 <!ATTLIST line
-x1                   CDATA         #REQUIRED
-y1                   CDATA         #REQUIRED
-x2                   CDATA         #REQUIRED
-y2                   CDATA         #REQUIRED
+x1                   CDATA         #IMPLIED
+y1                   CDATA         #IMPLIED
+x2                   CDATA         #IMPLIED
+y2                   CDATA         #IMPLIED
 width                CDATA         #IMPLIED
 height               CDATA         #IMPLIED
 color                CDATA         #IMPLIED
 name                 CDATA         #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
 weight               CDATA         #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+href                 CDATA         #IMPLIED
+visible              (%boolean;)   #IMPLIED
 >
 
 
@@ -642,8 +650,11 @@ weight               CDATA         #IMPLIED
 %position;
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+dynamic              (%boolean;)   #IMPLIED
+visible              (%boolean;)   #IMPLIED
 >
 
 <!ELEMENT drawable-url-field   EMPTY>
@@ -651,8 +662,11 @@ href                 CDATA         #IMPLIED
 %position;
 fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+dynamic              (%boolean;)   #IMPLIED
+visible              (%boolean;)   #IMPLIED
 >
 
 <!ELEMENT drawableref   EMPTY>
@@ -661,7 +675,22 @@ href                 CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
 src                  CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+dynamic              (%boolean;)   #IMPLIED
+visible              (%boolean;)   #IMPLIED
+>
+
+<!ELEMENT component-field   EMPTY>
+<!ATTLIST component-field
+%position;
+fieldname            CDATA         #REQUIRED
+name                 CDATA         #IMPLIED
+styleClass           CDATA         #IMPLIED
+href                 CDATA         #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+dynamic              (%boolean;)   #IMPLIED
+visible              (%boolean;)   #IMPLIED
 >
 
 
@@ -694,10 +723,10 @@ nullstring           CDATA        #IMPLIED
  -->
 <!ELEMENT anchor-field  EMPTY>
 <!ATTLIST anchor-field
-x                    CDATA        #REQUIRED
-y                    CDATA        #REQUIRED
+x                    CDATA        #IMPLIED
+y                    CDATA        #IMPLIED
 name                 CDATA        #IMPLIED
-  styleClass           CDATA         #IMPLIED
+styleClass           CDATA        #IMPLIED
 fieldname            CDATA        #REQUIRED
 >
 
@@ -723,6 +752,7 @@ fieldname            CDATA        #REQUIRED
 <!ATTLIST property-ref
 name       CDATA   #REQUIRED
 encoding   CDATA   #IMPLIED
+class      CDATA   #IMPLIED
 >
 
 <!--

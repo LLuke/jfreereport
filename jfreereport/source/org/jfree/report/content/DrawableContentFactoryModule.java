@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.11 2005/06/25 17:51:57 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.12 2005/08/08 15:36:27 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,17 @@
  */
 package org.jfree.report.content;
 
+import java.awt.Dimension;
+
 import org.jfree.report.Element;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictPoint;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
+import org.jfree.ui.ExtendedDrawable;
 
 /**
  * A factory module for drawable content.
@@ -81,20 +85,37 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */
-  public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
+  public Content createContentForElement (final Element e,
+                                          final ElementLayoutInformation bounds,
                                           final LayoutSupport ot)
           throws ContentCreationException
   {
-    final Drawable drawable = (Drawable) e.getValue();
+    final Object value = e.getValue();
+    final Drawable drawable = (Drawable) value;
     if (drawable == null)
     {
       return EmptyContent.getDefaultEmptyContent();
     }
 
     final StrictPoint point = bounds.getAbsolutePosition();
-    final StrictDimension iBounds =
-            ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-                    bounds.getPreferredSize());
+    final StrictDimension iBounds;
+
+    final StrictDimension preferredSize = bounds.getPreferredSize();
+    if (preferredSize == null && drawable instanceof ExtendedDrawable)
+    {
+      final ExtendedDrawable extDrawable = (ExtendedDrawable) drawable;
+      final Dimension extDim = extDrawable.getPreferredSize();
+      final StrictDimension drawableSize = StrictGeomUtility.createDimension
+              (extDim.getWidth(), extDim.getHeight());
+      iBounds = ElementLayoutInformation.unionMin
+              (bounds.getMaximumSize(), drawableSize);
+    }
+    else
+    {
+      iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+                    preferredSize);
+    }
+
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return EmptyContent.getDefaultEmptyContent();

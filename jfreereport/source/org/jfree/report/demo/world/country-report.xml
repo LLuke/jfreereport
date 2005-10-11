@@ -67,7 +67,7 @@
         <line name="Continent-H2" x1="0" y1="14" x2="100%" y2="14" weight="0.5"/>
       </groupheader>
 
-      <groupfooter height="20" fontname="Monospaced" fontstyle="bold" fontsize="14">
+      <groupfooter height="20">
         <label name="Continent-F0" x="0" y="0" width="220" height="14" alignment="left" fontname="SansSerif" fsunderline="true">Population:</label>
         <number-field name="Continent-F1" x="220" y="0" width="116" height="16" alignment="right" format="#,##0" fieldname="sum"/>
       </groupfooter>

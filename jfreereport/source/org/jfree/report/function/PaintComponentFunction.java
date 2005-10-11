@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.18 2005/09/07 14:25:10 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.19 2005/09/16 10:25:02 taqua Exp $
  *
  * Changes
  * -------
@@ -72,6 +72,8 @@ import org.jfree.util.Log;
  * In an headless environment this function wont work and will always return null.
  *
  * @author Thomas Morgner
+ * @deprecated Use the new Component-Element instead. It uses drawables for this
+ * job, and therefore the result looks much better.
  */
 public class PaintComponentFunction extends AbstractFunction
         implements LayoutListener, Serializable
@@ -213,6 +215,9 @@ public class PaintComponentFunction extends AbstractFunction
 
     if (comp instanceof Window)
     {
+      Window window = (Window) comp;
+      window.addNotify(); // pack or validate do not work well here
+
       final BufferedImage bi =
               ImageUtils.createTransparentImage
               ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
@@ -228,9 +233,9 @@ public class PaintComponentFunction extends AbstractFunction
       // supplies the peer and allows drawing ...
       synchronized (peerSupply)
       {
+        peerSupply.pack();
         peerSupply.add(comp, BorderLayout.CENTER);
         peerSupply.setSize((int) dim.getWidth(), (int) dim.getHeight());
-        peerSupply.validate();
 
         final BufferedImage bi =
                 ImageUtils.createTransparentImage
@@ -242,6 +247,7 @@ public class PaintComponentFunction extends AbstractFunction
         graph.dispose();
         image = bi;
         peerSupply.remove(comp);
+        peerSupply.dispose();
       }
     }
   }

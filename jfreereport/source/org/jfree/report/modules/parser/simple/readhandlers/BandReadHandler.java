@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BandReadHandler.java,v 1.6 2005/08/10 14:22:22 taqua Exp $
+ * $Id: BandReadHandler.java,v 1.7 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -47,16 +47,19 @@ import java.util.ArrayList;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.layout.BandLayoutManager;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.simple.FontFactory;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
@@ -118,6 +121,11 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
   /**
    * Literal text for an XML report element.
    */
+  public static final String COMPONENTFIELD_TAG = "component-field";
+
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String LINE_TAG = "line";
 
   /**
@@ -160,12 +168,17 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
   private static final String LAYOUT_ATT = "layout";
   private static final String NAME_ATT = "name";
   private static final String COLOR_ATT = "color";
-  public static final String RESERVED_LITERAL_ATT = "reserved-literal";
+  private static final String RESERVED_LITERAL_ATT = "reserved-literal";
+  private static final String DRAWABLE_REF_TAG = "drawableref";
+  private static final String DRAWABLE_URL_FIELD_TAG = "drawable-url-field";
+  private static final String STYLE_CLASS_ATT = "styleClass";
+  private static final String LAYOUT_CACHABLE_ATT = "layout-cachable";
+  private static final String VISIBLE_ATT = "visible";
+  private static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
+  private static final String HREF_ATT = "href";
 
   private Band band;
   private ArrayList elementHandlers;
-  private static final String DRAWABLE_REF_TAG = "drawableref";
-  private static final String DRAWABLE_URL_FIELD_TAG = "drawable-url-field";
 
   public BandReadHandler ()
   {
@@ -198,6 +211,7 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
       band.setName(name);
     }
 
+    handleStyleClass(attr);
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(band.getStyle(), fi);
@@ -211,27 +225,61 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     handleVisible(attr);
     handleLayoutCachable(attr);
     handleLayout(attr);
+    handleHRef(attr);
+  }
+
+  private void handleHRef(final PropertyAttributes attr) {
+    final String href = attr.getValue(HREF_ATT);
+    if (href != null)
+    {
+      getBand().getStyle().setStyleProperty(ElementStyleSheet.HREF_TARGET, href);
+    }
+  }
+
+  private void handleStyleClass(final PropertyAttributes attr) {
+    final String styleClass = attr.getValue(STYLE_CLASS_ATT);
+    if (styleClass != null)
+    {
+      final JFreeReport report = (JFreeReport) getRootHandler().getHelperObject
+              (ReportParser.HELPER_OBJ_REPORT_NAME);
+      final ElementStyleSheet existingStyleSheet =
+              report.getStyleSheetCollection().getStyleSheet(styleClass);
+      if (existingStyleSheet != null)
+      {
+        getBand().getStyle().addParent(existingStyleSheet);
+      }
+      else
+      {
+        Log.warn ("The specified stylesheet '" + styleClass + "' is not defined - creating a new instance.");
+        getBand().getStyle().addParent
+                (report.getStyleSheetCollection().createStyleSheet(styleClass));
+      }
+    }
   }
 
   private void handleVisible (final Attributes attr)
   {
-    final String trimTextContent = attr.getValue("visible");
+    final String trimTextContent = attr.getValue(VISIBLE_ATT);
     if (trimTextContent != null)
     {
+      final Boolean value =
+              ParserUtil.parseBoolean(trimTextContent, true) ?
+                      Boolean.TRUE : Boolean.FALSE;
       getBand().getStyle().setStyleProperty
-              (ElementStyleSheet.VISIBLE,
-                      new Boolean(ParserUtil.parseBoolean(trimTextContent, true)));
+              (ElementStyleSheet.VISIBLE, value);
     }
   }
 
   private void handleLayoutCachable (final Attributes attr)
   {
-    final String trimTextContent = attr.getValue("layout-cachable");
+    final String trimTextContent = attr.getValue(LAYOUT_CACHABLE_ATT);
     if (trimTextContent != null)
     {
+      final Boolean value =
+              (ParserUtil.parseBoolean(trimTextContent, true)) ?
+                      Boolean.TRUE : Boolean.FALSE;
       getBand().getStyle().setStyleProperty
-              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE,
-                      new Boolean(ParserUtil.parseBoolean(trimTextContent, true)));
+              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, value);
     }
   }
 
@@ -263,12 +311,14 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
 
   private void handleTrimTextContent (final Attributes attr)
   {
-    final String trimTextContent = attr.getValue("trim-text-content");
+    final String trimTextContent = attr.getValue(TRIM_TEXT_CONTENT_ATT);
     if (trimTextContent != null)
     {
+      final Boolean value =
+              (ParserUtil.parseBoolean(trimTextContent, true)) ?
+                      Boolean.TRUE : Boolean.FALSE;
       getBand().getStyle().setStyleProperty
-              (ElementStyleSheet.TRIM_TEXT_CONTENT,
-                      new Boolean(ParserUtil.parseBoolean(trimTextContent, true)));
+              (ElementStyleSheet.TRIM_TEXT_CONTENT, value);
     }
   }
 
@@ -435,6 +485,12 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     else if (tagName.equals(ANCHOR_FIELD_TAG))
     {
       final XmlReadHandler readHandler = new AnchorFieldReadHandler();
+      elementHandlers.add(readHandler);
+      return readHandler;
+    }
+    else if (tagName.equals(COMPONENTFIELD_TAG))
+    {
+      final XmlReadHandler readHandler = new ComponentFieldReadHandler();
       elementHandlers.add(readHandler);
       return readHandler;
     }

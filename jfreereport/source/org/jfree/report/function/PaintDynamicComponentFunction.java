@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.12 2005/03/16 21:06:48 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.13 2005/09/16 10:25:02 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,8 @@ import org.jfree.util.Log;
  * Paints a AWT or Swing Component. The component must be contained in the dataRow.
  *
  * @author Thomas Morgner
+ * @deprecated Use the new Component-Element instead. It uses drawables for this
+ * job, and therefore the result looks much better.
  */
 public class PaintDynamicComponentFunction extends AbstractFunction
         implements Serializable, PageEventListener
@@ -249,7 +251,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
 
     final int width = Math.max (1, (int) scale * dim.width);
     final int height = Math.max (1, (int) scale * dim.height);
-    Log.warn ("Creating image with: " + width + ", " + height);
+    //Log.warn ("Creating image with: " + width + ", " + height);
     final BufferedImage bi =
             ImageUtils.createTransparentImage(width, height);
     final Graphics2D graph = bi.createGraphics();

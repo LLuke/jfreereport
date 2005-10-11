@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractElementReadHandler.java,v 1.8 2005/08/29 17:56:47 taqua Exp $
+ * $Id: AbstractElementReadHandler.java,v 1.9 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -54,95 +54,62 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.util.Log;
 import org.xml.sax.SAXException;
 
 public abstract class AbstractElementReadHandler
         extends AbstractPropertyXmlReadHandler
 {
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String FONT_NAME_ATT = "fontname";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String FONT_STYLE_ATT = "fontstyle";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String FONT_SIZE_ATT = "fontsize";
 
-  /**
-   * Literal text for an XML attribute value.
-   */
+  /** Literal text for an XML attribute value. */
   public static final String FS_BOLD = "fsbold";
 
-  /**
-   * Literal text for an XML attribute value.
-   */
+  /** Literal text for an XML attribute value. */
   public static final String FS_ITALIC = "fsitalic";
 
-  /**
-   * Literal text for an XML attribute value.
-   */
+  /** Literal text for an XML attribute value. */
   public static final String FS_UNDERLINE = "fsunderline";
 
-  /**
-   * Literal text for an XML attribute value.
-   */
+  /** Literal text for an XML attribute value. */
   public static final String FS_STRIKETHR = "fsstrikethr";
 
-  /**
-   * Literal text for an XML attribute value.
-   */
+  /** Literal text for an XML attribute value. */
   public static final String FS_EMBEDDED = "font-embedded";
 
-  /**
-   * Literal text for an XML attribute value.
-   */
+  /** Literal text for an XML attribute value. */
   public static final String FS_ENCODING = "font-encoding";
 
-  /**
-   * Literal text for an XML attribute value.
-   */
+  /** Literal text for an XML attribute value. */
   public static final String LINEHEIGHT = "line-height";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String NAME_ATT = "name";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String ALIGNMENT_ATT = "alignment";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String VALIGNMENT_ATT = "vertical-alignment";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String COLOR_ATT = "color";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String FIELDNAME_ATT = "fieldname";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String FUNCTIONNAME_ATT = "function";
 
-  /**
-   * Literal text for an XML attribute.
-   */
+  /** Literal text for an XML attribute. */
   public static final String NULLSTRING_ATT = "nullstring";
   private static final String DYNAMIC_ATT = "dynamic";
   private static final String LAYOUT_CACHABLE_ATT = "layout-cachable";
@@ -153,11 +120,11 @@ public abstract class AbstractElementReadHandler
   private Element element;
   private String styleClass;
 
-  public AbstractElementReadHandler ()
+  public AbstractElementReadHandler()
   {
   }
 
-  protected abstract ElementFactory getElementFactory ();
+  protected abstract ElementFactory getElementFactory();
 
   /**
    * Starts parsing.
@@ -165,23 +132,28 @@ public abstract class AbstractElementReadHandler
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final PropertyAttributes atts)
+  protected void startParsing(final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     final ElementFactory factory = getElementFactory();
     factory.setName(atts.getValue(NAME_ATT));
     styleClass = atts.getValue(STYLE_CLASS_ATT);
+    
     final Point2D elementPosition = getElementPosition(atts);
     if (elementPosition != null)
     {
       factory.setAbsolutePosition(elementPosition);
     }
-    factory.setMinimumSize(getElementDimension(atts));
+    final Dimension2D elementSize = getElementDimension(atts);
+    if (elementSize != null)
+    {
+      factory.setMinimumSize(elementSize);
+    }
 
     final String dynamicValue = atts.getValue(DYNAMIC_ATT);
     if (dynamicValue != null)
     {
-      final boolean dynamic = ParserUtil.parseBoolean(dynamicValue,false);
+      final boolean dynamic = ParserUtil.parseBoolean(dynamicValue, false);
       factory.setDynamicHeight(dynamic ? Boolean.TRUE : Boolean.FALSE);
     }
 
@@ -211,10 +183,9 @@ public abstract class AbstractElementReadHandler
    *
    * @param atts the attribute set containing the "x" and "y" attributes.
    * @return the parsed element position, never null.
-   *
    * @throws SAXException if parsing the element position failed.
    */
-  protected final Point2D getElementPosition (final PropertyAttributes atts)
+  protected final Point2D getElementPosition(final PropertyAttributes atts)
           throws SAXException
   {
     final String xValue = atts.getValue("x");
@@ -249,18 +220,44 @@ public abstract class AbstractElementReadHandler
   /**
    * Parses the element dimension.
    *
-   * @param atts the attribute set containing the "width" and "height" attributes.
+   * @param atts the attribute set containing the "width" and "height"
+   *             attributes.
    * @return the parsed element dimensions, never null.
-   *
    * @throws SAXException if parsing the element dimensions failed.
    */
-  private Dimension2D getElementDimension (final PropertyAttributes atts)
+  private Dimension2D getElementDimension(final PropertyAttributes atts)
           throws SAXException
   {
-    final float w = ParserUtil.parseRelativeFloat(atts.getValue("width"),
-            "Element width not specified");
-    final float h = ParserUtil.parseRelativeFloat(atts.getValue("height"),
-            "Element height not specified");
+
+    final String width = atts.getValue("width");
+    final String height = atts.getValue("height");
+
+    if (width == null && height == null)
+    {
+      return null;
+    }
+
+    final float w;
+
+    if (width == null)
+    {
+      w = 0;
+    }
+    else
+    {
+      w = ParserUtil.parseRelativeFloat(width,
+            "Element width not valid.");
+    }
+    final float h;
+    if (height == null)
+    {
+      h = 0;
+    }
+    else
+    {
+      h = ParserUtil.parseRelativeFloat(height,
+            "Element height not valid.");
+    }
     return new FloatDimension(w, h);
   }
 
@@ -271,7 +268,7 @@ public abstract class AbstractElementReadHandler
    * @throws org.jfree.xml.parser.XmlReaderException
    *                                  if there is a reader error.
    */
-  protected void doneParsing ()
+  protected void doneParsing()
           throws SAXException, XmlReaderException
   {
     element = getElementFactory().createElement();
@@ -279,14 +276,23 @@ public abstract class AbstractElementReadHandler
     {
       final JFreeReport report = (JFreeReport) getRootHandler().getHelperObject
               (ReportParser.HELPER_OBJ_REPORT_NAME);
-      final ElementStyleSheet styleSheet =
+      final ElementStyleSheet existingStyleSheet =
               report.getStyleSheetCollection().getStyleSheet(styleClass);
-      element.getStyle().addParent(styleSheet);
+      if (existingStyleSheet != null)
+      {
+        element.getStyle().addParent(existingStyleSheet);
+      }
+      else
+      {
+        Log.warn ("The specified stylesheet '" + styleClass + "' is not defined - creating a new instance.");
+        element.getStyle().addParent
+                (report.getStyleSheetCollection().createStyleSheet(styleClass));
+      }
     }
     super.doneParsing();
   }
 
-  protected void storeComments ()
+  protected void storeComments()
           throws SAXException
   {
     final CommentHintPath commentHintPath = new CommentHintPath(element);
@@ -294,15 +300,13 @@ public abstract class AbstractElementReadHandler
   }
 
   /**
-   * Returns the object for this element or null, if this element does not create an
-   * object.
+   * Returns the object for this element or null, if this element does not
+   * create an object.
    *
    * @return the object.
-   *
-   * @throws org.jfree.xml.parser.XmlReaderException
-   *          if there is a parsing error.
+   * @throws XmlReaderException if there is a parsing error.
    */
-  public Object getObject ()
+  public Object getObject()
           throws XmlReaderException
   {
     return element;
