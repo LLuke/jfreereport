@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Treatment.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
+ * $Id: LayoutDemo.java,v 1.3 2005/09/21 12:00:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,6 +75,7 @@ public class LayoutDemo extends CompoundDemoFrame
     demoSelector.addDemo(new BandInBandStackingDemoHandler());
     demoSelector.addDemo(new StackedLayoutXMLDemoHandler());
     demoSelector.addDemo(new StackedLayoutAPIDemoHandler());
+    demoSelector.addDemo(new ComponentDrawingDemoHandler());
     return demoSelector;
   }
 }

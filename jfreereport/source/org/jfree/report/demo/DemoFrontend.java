@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.10 2005/09/20 16:56:05 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.11 2005/10/06 00:50:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -63,6 +63,7 @@ import org.jfree.report.demo.sportscouncil.SportsCouncilDemo;
 import org.jfree.report.demo.surveyscale.SurveyScaleDemo;
 import org.jfree.report.demo.swingicons.SwingIconsDemo;
 import org.jfree.report.demo.world.WorldDemo;
+import org.jfree.report.demo.stylesheets.StyleSheetDemoHandler;
 import org.jfree.ui.RefineryUtilities;
 
 public class DemoFrontend extends CompoundDemoFrame
@@ -104,6 +105,7 @@ public class DemoFrontend extends CompoundDemoFrame
     rootSelector.addDemo(new FontDemo());
     rootSelector.addDemo(new VeryLargeReportDemo());
     rootSelector.addDemo(new BookstoreDemo());
+    rootSelector.addDemo(new StyleSheetDemoHandler());
 
     return rootSelector;
   }
