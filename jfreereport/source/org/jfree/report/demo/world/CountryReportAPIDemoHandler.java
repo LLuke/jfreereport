@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CountryReportAPIDemoHandler.java,v 1.15 2005/06/25 17:51:58 taqua Exp $
+ * $Id: CountryReportAPIDemoHandler.java,v 1.1 2005/08/29 17:43:38 taqua Exp $
  *
  * Changes:
  * --------
@@ -60,7 +60,6 @@ import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.demo.helper.AbstractDemoHandler;
-import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.report.elementfactory.DateFieldElementFactory;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.NumberFieldElementFactory;
@@ -70,10 +69,10 @@ import org.jfree.report.function.ElementVisibilitySwitchFunction;
 import org.jfree.report.function.ExpressionCollection;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.function.ItemSumFunction;
+import org.jfree.report.modules.output.table.csv.CSVReportUtil;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -117,6 +116,7 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
   private PageHeader createPageHeader ()
   {
     final PageHeader header = new PageHeader();
+    header.setName("Page-header");
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
     header.getStyle().setFontDefinitionProperty(new FontDefinition("Serif", 10));
     header.setDisplayOnFirstPage(true);
@@ -127,7 +127,7 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
             new Rectangle2D.Float(0, 0, -100, -100),
             false, true));
     final DateFieldElementFactory factory = new DateFieldElementFactory();
-    factory.setName("date1");
+    factory.setName("Date");
     factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 14));
     factory.setHorizontalAlignment(ElementAlignment.RIGHT);
@@ -150,6 +150,7 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
   private PageFooter createPageFooter ()
   {
     final PageFooter pageFooter = new PageFooter();
+    pageFooter.setName("Page-Footer");
     pageFooter.getStyle().setStyleProperty
             (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 30));
     pageFooter.getStyle().setFontDefinitionProperty(new FontDefinition("Dialog", 10));
@@ -158,7 +159,7 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
             (null, Color.black, null, new Rectangle2D.Float(0, 0, -100, -100), true, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
-    factory.setName("Label 2");
+    factory.setName("Page-Footer-Label");
     factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 0));
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -177,13 +178,14 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
   private ReportFooter createReportFooter ()
   {
     final ReportFooter footer = new ReportFooter();
+    footer.setName("Report-Footer");
     footer.getStyle().setStyleProperty
             (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
     footer.getStyle().setFontDefinitionProperty
             (new FontDefinition("Serif", 16, true, false, false, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
-    factory.setName("Label 2");
+    factory.setName("Report-Footer-Label");
     factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 24));
     factory.setHorizontalAlignment(ElementAlignment.CENTER);
@@ -201,13 +203,14 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
   private ReportHeader createReportHeader ()
   {
     final ReportHeader header = new ReportHeader();
+    header.setName("Report-Header");
     header.getStyle().setStyleProperty
             (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
     header.getStyle().setFontDefinitionProperty
             (new FontDefinition("Serif", 20, true, false, false, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
-    factory.setName("Label 1");
+    factory.setName("Report-Header-Label");
     factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(-100, 24));
     factory.setHorizontalAlignment(ElementAlignment.CENTER);
@@ -226,6 +229,7 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
   private ItemBand createItemBand ()
   {
     final ItemBand items = new ItemBand();
+    items.setName("Items");
     items.getStyle().setStyleProperty
             (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 10));
     items.getStyle().setFontDefinitionProperty
@@ -366,14 +370,14 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
     continentGroup.addField("Continent");
 
     final GroupHeader header = new GroupHeader();
-
+    header.setName("Continent-Group-Header");
     header.getStyle().setStyleProperty
             (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
     header.getStyle().setFontDefinitionProperty
             (new FontDefinition("Monospaced", 9, true, false, false, false));
 
     LabelElementFactory factory = new LabelElementFactory();
-    factory.setName("Label 5");
+    factory.setName("Continent-Group-Header-Label");
     factory.setAbsolutePosition(new Point2D.Float(0, 1));
     factory.setMinimumSize(new FloatDimension(76, 9));
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -382,7 +386,7 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
     header.addElement(factory.createElement());
 
     final TextFieldElementFactory tfactory = new TextFieldElementFactory();
-    tfactory.setName("Continent Element");
+    tfactory.setName("Continent-Group-Header Continent Element");
     tfactory.setAbsolutePosition(new Point2D.Float(96, 1));
     tfactory.setMinimumSize(new FloatDimension(76, 9));
     tfactory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -392,17 +396,18 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
     header.addElement(tfactory.createElement());
 
     header.addElement(StaticShapeElementFactory.createHorizontalLine
-            ("line1", null, new BasicStroke(0.5f), 12));
+            ("Continent-Group-Header line", null, new BasicStroke(0.5f), 12));
     continentGroup.setHeader(header);
 
     final GroupFooter footer = new GroupFooter();
+    footer.setName("Continent-Group-Footer");
     footer.getStyle().setStyleProperty
             (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
     footer.getStyle().setFontDefinitionProperty
             (new FontDefinition("Monospaced", 9, true, false, false, false));
 
     factory = new LabelElementFactory();
-    factory.setName("Label 6");
+    factory.setName("Continent-Group-Footer Label");
     factory.setAbsolutePosition(new Point2D.Float(0, 0));
     factory.setMinimumSize(new FloatDimension(100, 12));
     factory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -411,7 +416,7 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
     footer.addElement(factory.createElement());
 
     final NumberFieldElementFactory nfactory = new NumberFieldElementFactory();
-    nfactory.setName("anonymous");
+    nfactory.setName("Continent-Group-Footer Sum");
     nfactory.setAbsolutePosition(new Point2D.Float(260, 0));
     nfactory.setMinimumSize(new FloatDimension(76, 12));
     nfactory.setHorizontalAlignment(ElementAlignment.LEFT);
@@ -463,10 +468,12 @@ public class CountryReportAPIDemoHandler extends AbstractDemoHandler
     JFreeReportBoot.getInstance().start();
 
     final CountryReportAPIDemoHandler handler = new CountryReportAPIDemoHandler();
-    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
-    frame.init();
-    frame.pack();
-    RefineryUtilities.centerFrameOnScreen(frame);
-    frame.setVisible(true);
+//    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+//    frame.init();
+//    frame.pack();
+//    RefineryUtilities.centerFrameOnScreen(frame);
+//    frame.setVisible(true);
+    final JFreeReport report = handler.createReport();
+    CSVReportUtil.createCSV(report, "/tmp/export.csv");
   }
 }

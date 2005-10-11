@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleAPIDemoHandler.java,v 1.2 2005/09/07 14:25:09 taqua Exp $
+ * $Id: SurveyScaleAPIDemoHandler.java,v 1.3 2005/09/16 10:25:02 taqua Exp $
  *
  * Changes
  * -------
@@ -225,7 +225,7 @@ public final class SurveyScaleAPIDemoHandler extends AbstractDemoHandler
     sef.setStroke(new BasicStroke(1.0f));
     sef.setShouldDraw(Boolean.TRUE);
     pageFooter.addElement(sef.createElement());
-
+    
     final PageOfPagesFunction pageNofM = new PageOfPagesFunction();
     pageNofM.setName("PAGE_N_OF_M");
     pageNofM.setFormat("Page {0} of {1}");

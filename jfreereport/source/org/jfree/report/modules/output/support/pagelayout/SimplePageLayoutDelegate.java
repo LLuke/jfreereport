@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.15 2005/02/23 21:05:32 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.16 2005/04/17 21:09:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -121,6 +121,7 @@ public class SimplePageLayoutDelegate implements
   private boolean groupFinishPending;
   public static final String HANDLE_PENDING_GROUP_FOOTER_KEY =
           "org.jfree.report.modules.output.support.pagelayout.HandlePendingGroupFooter";
+  private boolean simplePageHeaderHandling;
 
   /**
    * DefaultConstructor. A worker needs to be assigned to use this delegate.
@@ -254,6 +255,11 @@ public class SimplePageLayoutDelegate implements
       return false;
     }
 
+    if (isSimplePageHeaderHandling())
+    {
+      return true;
+    }
+
     if ((event.getState().getCurrentPage() == getMaxPage()) &&
             (b.getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE) == false))
     {
@@ -265,7 +271,18 @@ public class SimplePageLayoutDelegate implements
     {
       return false;
     }
+
     return true;
+  }
+
+  public void setSimplePageHeaderHandling(final boolean simplePageHeaderHandling)
+  {
+    this.simplePageHeaderHandling = simplePageHeaderHandling;
+  }
+
+  public boolean isSimplePageHeaderHandling()
+  {
+    return simplePageHeaderHandling;
   }
 
   /**

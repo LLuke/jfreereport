@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Treatment.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
+ * $Id: PeopleReportXmlDemoHandler.java,v 1.3 2005/09/21 12:00:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,7 +68,7 @@ public class PeopleReportXmlDemoHandler extends AbstractXmlDemoHandler
   {
     JFreeReport report = parseReport();
     report.setData(tableModel);
-    return null;
+    return report;
   }
 
   public URL getDemoDescriptionSource()

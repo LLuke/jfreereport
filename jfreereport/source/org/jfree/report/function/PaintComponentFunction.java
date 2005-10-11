@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.19 2005/09/16 10:25:02 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.20 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes
  * -------
@@ -231,24 +231,21 @@ public class PaintComponentFunction extends AbstractFunction
     else
     {
       // supplies the peer and allows drawing ...
-      synchronized (peerSupply)
-      {
-        peerSupply.pack();
-        peerSupply.add(comp, BorderLayout.CENTER);
-        peerSupply.setSize((int) dim.getWidth(), (int) dim.getHeight());
+      peerSupply.pack();
+      peerSupply.add(comp, BorderLayout.CENTER);
+      peerSupply.setSize((int) dim.getWidth(), (int) dim.getHeight());
 
-        final BufferedImage bi =
-                ImageUtils.createTransparentImage
-                ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
-        final Graphics2D graph = bi.createGraphics();
-        graph.setBackground(new Color(0, 0, 0, 0));
-        graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
-        comp.paint(graph);
-        graph.dispose();
-        image = bi;
-        peerSupply.remove(comp);
-        peerSupply.dispose();
-      }
+      final BufferedImage bi =
+              ImageUtils.createTransparentImage
+              ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
+      final Graphics2D graph = bi.createGraphics();
+      graph.setBackground(new Color(0, 0, 0, 0));
+      graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
+      comp.paint(graph);
+      graph.dispose();
+      image = bi;
+      peerSupply.remove(comp);
+      peerSupply.dispose();
     }
   }
 

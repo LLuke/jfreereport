@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.21 2005/08/30 18:59:45 mtennes Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.22 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -458,9 +458,12 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   protected void printText (final String text)
   {
     final Rectangle2D bounds = getOperationBounds();
+    final Rectangle2D pageBounds = getPageBounds();
 
-    final int x = correctedDivisionFloor((float) bounds.getX(), characterWidthInPoint);
-    final int y = correctedDivisionFloor((float) bounds.getY(), characterHeightInPoint);
+    final int x = correctedDivisionFloor
+            ((float) (bounds.getX() - pageBounds.getX()), characterWidthInPoint);
+    final int y = correctedDivisionFloor
+            ((float) (bounds.getY() - pageBounds.getY()), characterHeightInPoint);
     final int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidthInPoint);
 
     pageBuffer.addTextChunk(x, y, w, text, getFont());

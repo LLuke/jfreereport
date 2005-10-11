@@ -105,5 +105,7 @@ Object getValue()
         <property name="field[1]">Average Response</property>
       </properties>
     </expression>
+
+    <expression name="PAGE_N_OF_M" class="org.jfree.report.function.PageOfPagesFunction"/>
   </functions>
 </report>

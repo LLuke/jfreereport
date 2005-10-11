@@ -4,6 +4,12 @@
 A list of changes in recent versions:
 
 0.8.6-1: (13-Oct-2005)
+        * [BUG] There was inconsistent behaviour when exporting single table
+          reports using PageHeaders with 'print-on-lastpage' set to false.
+
+        * [BUG] Exporting multipage-wide reports to the plain-text export
+          did not work correctly.
+
         * [BUG] The TableExport behaved unpredictable, including raising
           errors when using the "StackedLayoutmanager". The real cause was
           hidden in the LayoutManager API which did not compute band sizes

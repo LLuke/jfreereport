@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultTemplateCollection.java,v 1.8 2005/02/23 21:05:40 taqua Exp $
+ * $Id: DefaultTemplateCollection.java,v 1.9 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class DefaultTemplateCollection extends TemplateCollection
   {
     addTemplate(new AnchorFieldTemplateDescription("anchor-field"));
     addTemplate(new DateFieldTemplateDescription("date-field"));
-    addTemplate(new DrawableFieldTemplateDescription("component-field"));
+    addTemplate(new ComponentFieldTemplateDescription("component-field"));
     addTemplate(new DrawableFieldTemplateDescription("drawable-field"));
     addTemplate(new DrawableURLElementTemplateDescription("drawable-url-element"));
     addTemplate(new DrawableURLFieldTemplateDescription("drawable-url-field"));

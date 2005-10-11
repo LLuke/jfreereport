@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.17 2005/10/05 13:35:40 taqua Exp $
+ * $Id: SheetLayout.java,v 1.18 2005/10/06 00:50:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -255,7 +255,6 @@ public class SheetLayout
    */
   public void add(final MetaElement element)
   {
-
     final StrictBounds bounds = element.getBounds();
     final boolean isBackground = (element instanceof TableCellBackground);
 

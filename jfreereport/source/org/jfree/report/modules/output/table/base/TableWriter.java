@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.27 2005/09/27 17:00:20 taqua Exp $
+ * $Id: TableWriter.java,v 1.28 2005/10/06 00:50:26 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import org.jfree.report.Band;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.event.PageEventListener;
-import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.PrepareEventListener;
+import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
@@ -59,7 +59,6 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.util.geom.StrictBounds;
-import org.jfree.util.Log;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data. After
@@ -134,6 +133,7 @@ public strictfp class TableWriter
   {
     setDependencyLevel(OUTPUT_LEVEL);
     this.delegate = new SimplePageLayoutDelegate(this);
+    this.delegate.setSimplePageHeaderHandling(true);
     this.metaBandProducer = metaBandProducer;
     this.layoutSupport = metaBandProducer.getLayoutSupport();
   }
@@ -166,6 +166,7 @@ public strictfp class TableWriter
   {
     final TableWriter tw = (TableWriter) super.getInstance();
     tw.delegate = new SimplePageLayoutDelegate(tw);
+    tw.delegate.setSimplePageHeaderHandling(true);
     return tw;
   }
 
