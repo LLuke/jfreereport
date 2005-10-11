@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKeyReferenceTableModel.java,v 1.6 2005/02/23 21:05:23 taqua Exp $
+ * $Id: StyleKeyReferenceTableModel.java,v 1.7 2005/04/17 21:09:00 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -109,7 +109,9 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
           {
             "stylekey-factory",
             "key-name",
-            "key-class"
+            "key-class",
+            "inherit",
+            "transient"
           };
 
   /**
@@ -223,7 +225,10 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    */
   public Class getColumnClass (final int columnIndex)
   {
-    return String.class;
+    if (columnIndex < 3)
+      return String.class;
+    
+    return Boolean.class;
   }
 
   /**
@@ -245,6 +250,10 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
         return String.valueOf(or.getKey().getName());
       case 2:
         return String.valueOf(or.getKey().getValueType().getName());
+      case 3:
+        return (or.getKey().isInheritable()) ? Boolean.TRUE : Boolean.FALSE;
+      case 4:
+        return (or.getKey().isTransient()) ? Boolean.TRUE : Boolean.FALSE;
       default:
         return null;
     }

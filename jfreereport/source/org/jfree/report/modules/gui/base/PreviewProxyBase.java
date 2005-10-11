@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.46 2005/09/07 11:21:09 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.47 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.Frame;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -945,7 +947,7 @@ public class PreviewProxyBase extends JComponent
     zoomActionMap.setParent(baseActionMap);
 
     this.proxy = proxy;
-    progressDialog = new ReportProgressDialog();
+    progressDialog = createProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
 
     progressBar = new ReportProgressBar();
@@ -996,6 +998,23 @@ public class PreviewProxyBase extends JComponent
     add(createStatusBar(), BorderLayout.SOUTH);
 
     zoomSelect = createZoomSelector();
+  }
+
+  protected ReportProgressDialog createProgressDialog ()
+  {
+
+    if (proxy instanceof Frame)
+    {
+      return new ReportProgressDialog((Frame) proxy);
+    }
+    else if (proxy instanceof Dialog)
+    {
+      return new ReportProgressDialog((Dialog) proxy);
+    }
+    else
+    {
+      return new ReportProgressDialog();
+    }
   }
 
   /**

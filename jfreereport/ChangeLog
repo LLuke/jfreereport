@@ -3,6 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.6-1: (13-Oct-2005)
         * [BUG] The TableExport behaved unpredictable, including raising
           errors when using the "StackedLayoutmanager". The real cause was
           hidden in the LayoutManager API which did not compute band sizes
@@ -19,6 +20,18 @@ A list of changes in recent versions:
         * [BUG] The CSVTokenizer did not handle trailing commas correctly.
           Rob (redgeler), reported the bug and provided a test case to track
           it down.
+
+        * [BUG] The PreviewDialog did not pass a 'parent' reference to its
+          repagination dialog, thus making that dialog inaccessible.
+
+        * Added a new Drawable-Element type to allow high-quality printing of
+          AWT and Swing components. The component-element is available from within
+          the SimpleXML, the ExtendedXML and the API. The new 'ComponentDrawing'-
+          demo shows how to use it.
+
+        * Modified the Simple DTD to make most of the style properties optional.
+          Styles can be inherited using stylesheets, as shown in the new
+          StyleSheet demo.
 
         * New Functions: PageItemSumFunction, PageItemCountFunction,
           HideNullValuesFunction and ShowElementByNameFunction added.
