@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.8 2005/09/07 11:24:09 taqua Exp $
+ * $Id: ExportTest.java,v 1.9 2005/09/20 16:58:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -59,6 +59,7 @@ public class ExportTest extends TestCase
 
       final JFreeReport report = handler.createReport();
       Log.debug ("Processing " + handler.getDemoName());
+      assertNotNull(report);
 
       Log.debug("   GRAPHICS2D ..");
       assertTrue(FunctionalityTestLib.execGraphics2D(report));

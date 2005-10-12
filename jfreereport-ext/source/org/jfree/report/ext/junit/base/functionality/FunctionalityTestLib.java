@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.13 2005/09/19 13:34:24 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.14 2005/09/20 16:58:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import org.jfree.report.EmptyReportException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.DemoFrontend;
+import org.jfree.report.demo.huge.VeryLargeReportDemo;
 import org.jfree.report.demo.helper.DemoHandler;
 import org.jfree.report.demo.helper.DemoSelector;
 import org.jfree.report.demo.helper.XmlDemoHandler;
@@ -90,7 +91,10 @@ public class FunctionalityTestLib
       DemoHandler demoHandler = demoHandlers[i];
       if (demoHandler instanceof InternalDemoHandler)
       {
-        list.add(demoHandler);
+        if (demoHandler instanceof VeryLargeReportDemo == false)
+        {
+          list.add(demoHandler);
+        }
       }
     }
     DemoSelector[] childs = selector.getChilds();
@@ -118,7 +122,10 @@ public class FunctionalityTestLib
       DemoHandler demoHandler = demoHandlers[i];
       if (demoHandler instanceof XmlDemoHandler)
       {
-        list.add(demoHandler);
+        if (demoHandler instanceof VeryLargeReportDemo == false)
+        {
+          list.add(demoHandler);
+        }
       }
     }
     DemoSelector[] childs = selector.getChilds();
