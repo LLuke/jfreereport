@@ -49,13 +49,7 @@
     <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-support-pagelayout"/>
   </target>
 
-  <target name="compile-module-output-table-base" depends="init, rebuild-module-output-support-pagelayout">
-    <description>
-      Compiles the table output target base module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-table-base">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -70,7 +64,18 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-table-base" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-table-base" depends="init, rebuild-module-output-support-pagelayout">
+    <description>
+      Compiles the table output target base module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-table-base" inheritall="true"/>
+    <antcall target="copy-resources-output-table-base" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-table-base-file}"
@@ -108,13 +113,7 @@
     <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-csv"/>
   </target>
 
-  <target name="compile-module-output-table-csv" depends="init, compile-module-output-table-base, rebuild-module-output-csv">
-    <description>
-      Compiles the CSV table output module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-table-csv">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -130,7 +129,18 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-table-csv" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-table-csv" depends="init, compile-module-output-table-base, rebuild-module-output-csv">
+    <description>
+      Compiles the CSV table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-table-csv" inheritall="true"/>
+    <antcall target="copy-resources-output-table-csv" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-table-csv-file}"
@@ -159,13 +169,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-table-html" depends="compile-module-output-table-base">
-    <description>
-      Compiles the HTML table output module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-table-html">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -175,12 +179,24 @@
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-support-pagelayout-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-meta-file}"/>
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-table-html" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-table-html" depends="compile-module-output-table-base">
+    <description>
+      Compiles the HTML table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-table-html" inheritall="true"/>
+    <antcall target="copy-resources-output-table-html" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-table-html-file}"
@@ -226,14 +242,7 @@
     </fail>
   </target>
 
-  <target name="compile-module-output-table-rtf"
-    depends="init-module-output-table-rtf, compile-module-output-table-base, rebuild-module-output-support-itext">
-    <description>
-      Compiles the RTF table output module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-table-rtf">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -244,13 +253,26 @@
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${libdir}/${itext-jar-file}" />
         <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-support-pagelayout-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-support-itext-file}"/>
         <pathelement location="${module-output-meta-file}"/>
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-table-rtf" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-table-rtf"
+    depends="init-module-output-table-rtf, compile-module-output-table-base, rebuild-module-output-support-itext">
+    <description>
+      Compiles the RTF table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-table-rtf" inheritall="true"/>
+    <antcall target="copy-resources-output-table-rtf" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-table-rtf-file}"
@@ -287,14 +309,7 @@
     </fail>
   </target>
 
-  <target name="compile-module-output-table-xls"
-    depends="init-module-output-table-xls, compile-module-output-table-base">
-    <description>
-      Compiles the Excel table output module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-table-xls">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -305,12 +320,25 @@
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${libdir}/${jakarta-poi-jar-file}" />
         <pathelement location="${core-jar-file}"/>
+        <pathelement location="${module-output-support-pagelayout-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-meta-file}"/>
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-table-xls" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-table-xls"
+    depends="init-module-output-table-xls, compile-module-output-table-base">
+    <description>
+      Compiles the Excel table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-table-xls" inheritall="true"/>
+    <antcall target="copy-resources-output-table-xls" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-table-xls-file}"

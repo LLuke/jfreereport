@@ -58,14 +58,7 @@
     <ant antfile="${antfile.dir}/build-output-pageable.xml" target="compile-module-output-pageable-graphics"/>
   </target>
 
-  <target name="compile-module-gui-base"
-    depends="init, rebuild-module-output-pageable-base, rebuild-module-output-pageable-graphics, rebuild-module-misc-configstore-base">
-    <description>
-      Compiles the GUI base module, contains the preview dialogs/frames etc.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-base">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -83,7 +76,19 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-base" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-base"
+    depends="init, rebuild-module-output-pageable-base, rebuild-module-output-pageable-graphics, rebuild-module-misc-configstore-base">
+    <description>
+      Compiles the GUI base module, contains the preview dialogs/frames etc.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-gui-base" inheritall="true"/>
+    <antcall target="copy-resources-gui-base" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-base-file}"
@@ -155,20 +160,7 @@
     <ant antfile="${antfile.dir}/build-parser.xml" target="compile-module-parser-extwriter"/>
   </target>
 
-  <target name="compile-module-gui-converter"
-    depends="compile-module-gui-base,
-      rebuild-module-parser-base,
-      rebuild-module-parser-simple,
-      rebuild-module-parser-ext,
-      rebuild-module-parser-extwriter">
-
-    <description>
-      Compiles the Report Converter GUI. The real report converter is contained
-      in the ext writer package.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-converter">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -189,7 +181,26 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-converter" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-converter"
+    depends="compile-module-gui-base,
+      rebuild-module-parser-base,
+      rebuild-module-parser-simple,
+      rebuild-module-parser-ext,
+      rebuild-module-parser-extwriter">
+
+    <description>
+      Compiles the Report Converter GUI. The real report converter is contained
+      in the ext writer package.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+
+    <antcall target="compile-classes-gui-converter" inheritall="true"/>
+    <antcall target="copy-resources-gui-converter" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-converter-file}"
@@ -227,18 +238,7 @@
   <!--                                                                -->
   <!-- ************************************************************** -->
 
-
-  <target name="compile-module-gui-config"
-    depends="compile-module-gui-base">
-
-    <description>
-      Compiles the Report Configuration GUI. 
-    </description>
-
-    <ant antfile="${antfile.dir}/build-parser.xml" target="init-module-parser-base"/>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-config">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -255,7 +255,22 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-config" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-config"
+    depends="compile-module-gui-base">
+
+    <description>
+      Compiles the Report Configuration GUI. 
+    </description>
+
+    <ant antfile="${antfile.dir}/build-parser.xml" target="init-module-parser-base"/>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-gui-config" inheritall="true"/>
+    <antcall target="copy-resources-gui-config" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-config-file}"
@@ -326,20 +341,7 @@
     <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-csv"/>
   </target>
 
-  <target name="compile-module-gui-csv"
-    depends="compile-module-gui-base,
-    rebuild-module-output-table-base,
-    rebuild-module-output-csv,
-    rebuild-module-output-table-csv,
-    rebuild-module-misc-configstore-base">
-
-    <description>
-      Compiles the CSV Export GUI. This export handles both the raw and the table
-      output.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-csv">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -359,7 +361,25 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-csv" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-csv"
+    depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
+    rebuild-module-output-csv,
+    rebuild-module-output-table-csv,
+    rebuild-module-misc-configstore-base">
+
+    <description>
+      Compiles the CSV Export GUI. This export handles both the raw and the table
+      output.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-gui-csv" inheritall="true"/>
+    <antcall target="copy-resources-gui-csv" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-csv-file}"
@@ -402,18 +422,7 @@
     <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-html"/>
   </target>
 
-  <target name="compile-module-gui-html"
-    depends="compile-module-gui-base,
-    rebuild-module-output-table-base,
-    rebuild-module-output-table-html,
-    rebuild-module-misc-configstore-base">
-
-    <description>
-      Compiles the HTML Export GUI.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-html">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -432,7 +441,23 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-html" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-html"
+    depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
+    rebuild-module-output-table-html,
+    rebuild-module-misc-configstore-base">
+
+    <description>
+      Compiles the HTML Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-gui-html" inheritall="true"/>
+    <antcall target="copy-resources-gui-html" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-html-file}"
@@ -476,18 +501,7 @@
     <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-xls"/>
   </target>
 
-  <target name="compile-module-gui-xls"
-    depends="compile-module-gui-base,
-    rebuild-module-output-table-base,
-    rebuild-module-output-table-xls,
-    rebuild-module-misc-configstore-base">
-
-    <description>
-      Compiles the xls Export GUI.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-xls">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -506,7 +520,23 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-xls" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-xls"
+    depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
+    rebuild-module-output-table-xls,
+    rebuild-module-misc-configstore-base">
+
+    <description>
+      Compiles the xls Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-gui-xls" inheritall="true"/>
+    <antcall target="copy-resources-gui-xls" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-xls-file}"
@@ -551,18 +581,7 @@
     <ant antfile="${antfile.dir}/build-output-table.xml" target="compile-module-output-table-rtf"/>
   </target>
 
-  <target name="compile-module-gui-rtf"
-    depends="compile-module-gui-base,
-    rebuild-module-output-table-base,
-    rebuild-module-output-table-rtf,
-    rebuild-module-misc-configstore-base">
-
-    <description>
-      Compiles the RTF Export GUI.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-rtf">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -582,7 +601,23 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-rtf" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-rtf"
+    depends="compile-module-gui-base,
+    rebuild-module-output-table-base,
+    rebuild-module-output-table-rtf,
+    rebuild-module-misc-configstore-base">
+
+    <description>
+      Compiles the RTF Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-gui-rtf" inheritall="true"/>
+    <antcall target="copy-resources-gui-rtf" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-rtf-file}"
@@ -626,18 +661,7 @@
     <ant antfile="${antfile.dir}/build-output-pageable.xml" target="compile-module-output-pageable-pdf"/>
   </target>
 
-  <target name="compile-module-gui-pdf"
-    depends="compile-module-gui-base,
-    rebuild-module-output-pageable-base,
-    rebuild-module-output-pageable-pdf,
-    rebuild-module-misc-configstore-base">
-
-    <description>
-      Compiles the PDF Export GUI.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-pdf">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -656,7 +680,24 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-pdf" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-pdf"
+    depends="compile-module-gui-base,
+    rebuild-module-output-pageable-base,
+    rebuild-module-output-pageable-pdf,
+    rebuild-module-misc-configstore-base">
+
+    <description>
+      Compiles the PDF Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+
+    <antcall target="compile-classes-gui-pdf" inheritall="true"/>
+    <antcall target="copy-resources-gui-pdf" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-pdf-file}"
@@ -700,18 +741,7 @@
     <ant antfile="${antfile.dir}/build-output-pageable.xml" target="compile-module-output-pageable-plaintext"/>
   </target>
 
-  <target name="compile-module-gui-plaintext"
-    depends="compile-module-gui-base,
-    rebuild-module-output-pageable-base,
-    rebuild-module-output-pageable-plaintext,
-    rebuild-module-misc-configstore-base">
-
-    <description>
-      Compiles the plaintext Export GUI.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-plaintext">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -730,6 +760,23 @@
       </classpath>
     </javac>
 
+  </target>
+
+  <target name="compile-module-gui-plaintext"
+    depends="compile-module-gui-base,
+    rebuild-module-output-pageable-base,
+    rebuild-module-output-pageable-plaintext,
+    rebuild-module-misc-configstore-base">
+
+    <description>
+      Compiles the plaintext Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+
+    <antcall target="compile-classes-gui-plaintext" inheritAll="true"/>
     <antcall target="copy-resources-gui-plaintext" inheritAll="true"/>
 
     <!-- make the jar -->
@@ -764,15 +811,7 @@
   <!--                                                                -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-gui-print"
-    depends="compile-module-gui-base">
-
-    <description>
-      Compiles the AWT Print Export GUI.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-gui-print">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -788,7 +827,20 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-gui-print" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-gui-print"
+    depends="compile-module-gui-base">
+
+    <description>
+      Compiles the AWT Print Export GUI.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-gui-print" inheritall="true"/>
+    <antcall target="copy-resources-gui-print" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-gui-print-file}"

@@ -86,13 +86,7 @@
     </ant>
   </target>
 
-  <target name="compile" depends="init">
-    <description>
-      Compiles the CSV table output module. check-files
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -125,6 +119,7 @@
         <pathelement location="${module-parser-ext-file}"/>
         <pathelement location="${module-parser-simple-file}"/>
         <pathelement location="${module-misc-beanshell-file}"/>
+        <pathelement location="${module-misc-tablemodel-file}"/>
         <pathelement location="${module-misc-bsf-file}"/>
         <pathelement location="${module-misc-configstore-base-file}"/>
         <pathelement location="${module-misc-configstore-filesystem-file}"/>
@@ -133,6 +128,17 @@
       </classpath>
     </javac>
 
+  </target>
+
+  <target name="compile" depends="init">
+    <description>
+      Compiles the CSV table output module. check-files
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes" inheritall="true"/>
     <antcall target="copy-resources" inheritAll="true"/>
 
     <!-- make the jar -->

@@ -38,14 +38,7 @@
       tofile="build/jcommon.properties"/>
   </target>
 
-  <target name="compile" depends="init">
-    <description>
-      Compiles the core classes of JFreeReport. This will be the base for
-      all modules.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations and the demos by default -->
@@ -63,6 +56,18 @@
       </classpath>
     </javac>
 
+  </target>
+
+  <target name="compile" depends="init">
+    <description>
+      Compiles the core classes of JFreeReport. This will be the base for
+      all modules.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes" inheritAll="true"/>
     <antcall target="copy-resources" inheritAll="true"/>
 
     <!-- make the jar -->

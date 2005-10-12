@@ -50,13 +50,7 @@
     <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-support-pagelayout"/>
   </target>
 
-  <target name="compile-module-output-pageable-base" depends="init, rebuild-module-output-support-pagelayout">
-    <description>
-      Compiles the pageable output target base module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-pageable-base">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -71,7 +65,18 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-pageable-base" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-pageable-base" depends="init, rebuild-module-output-support-pagelayout">
+    <description>
+      Compiles the pageable output target base module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-pageable-base" inheritall="true"/>
+    <antcall target="copy-resources-output-pageable-base" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-pageable-base-file}"
@@ -117,17 +122,7 @@
     </fail>
   </target>
 
-  <target name="compile-module-output-pageable-pdf"
-    depends="init-module-output-pageable-pdf,
-    compile-module-output-pageable-base,
-    rebuild-module-output-support-itext">
-    <description>
-      Compiles the PDF pageable output module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
+  <target name="compile-classes-output-pageable-pdf">
     <!-- compile the source -->
     <javac srcdir="source"
       destdir="build" target="${build.target}"
@@ -143,7 +138,21 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-pageable-pdf" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-pageable-pdf"
+    depends="init-module-output-pageable-pdf,
+    compile-module-output-pageable-base,
+    rebuild-module-output-support-itext">
+    <description>
+      Compiles the PDF pageable output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-pageable-pdf" inheritall="true"/>
+    <antcall target="copy-resources-output-pageable-pdf" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-pageable-pdf-file}"
@@ -172,13 +181,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-pageable-graphics" depends="compile-module-output-pageable-base">
-    <description>
-      Compiles the Graphics2D table output module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-pageable-graphics">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -193,7 +196,18 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-pageable-graphics" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-pageable-graphics" depends="compile-module-output-pageable-base">
+    <description>
+      Compiles the Graphics2D table output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-pageable-graphics" inheritall="true"/>
+    <antcall target="copy-resources-output-pageable-graphics" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-pageable-graphics-file}"
@@ -219,13 +233,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-pageable-plaintext" depends="compile-module-output-pageable-base">
-    <description>
-      Compiles the pageable PlainText output module.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-pageable-plaintext">
 
     <!-- compile the source -->
     <javac srcdir="source"
@@ -240,7 +248,18 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-pageable-plaintext" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-pageable-plaintext" depends="compile-module-output-pageable-base">
+    <description>
+      Compiles the pageable PlainText output module.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-pageable-plaintext" inheritall="true"/>
+    <antcall target="copy-resources-output-pageable-plaintext" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-pageable-plaintext-file}"

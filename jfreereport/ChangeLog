@@ -42,6 +42,13 @@ A list of changes in recent versions:
         * New Functions: PageItemSumFunction, PageItemCountFunction,
           HideNullValuesFunction and ShowElementByNameFunction added.
 
+        * Minor performance improvements when handling singlelined text, which
+          gives roughly a 25% bonus on the report processing time.
+
+        * Modified the ANT-Scripts to make custom builds easier. All compilation
+          tasks have been factored out and can be called directly using the
+          'antcall' task.
+
 0.8.6: (21-Sep-2005)
         * [BUG] The XML Parser handler for function properties did not handle
           specified classes correctly.

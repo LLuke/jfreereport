@@ -90,7 +90,7 @@ John W. Doe, Salesman</label>
     <string-field x="70" y="0" width="230" height="12" alignment="left" fieldname="article.name"/>
     <number-field x="300" y="0" width="50" height="12" alignment="left" format="#,##0" fieldname="article.count"/>
     <number-field x="350" y="0" width="50" height="12" alignment="left" format="'$' #,##0.00" fieldname="article.price"/>
-    <number-field x="400" y="0" width="70" height="12" alignment="left" format="'$' #,##0.00" fieldname="article.totalPrice"/>
+    <number-field x="400" y="0" width="70" height="12" alignment="left" format="$###,###.##" fieldname="article.totalPrice"/>
     <!-- the name will be referenced in the hide function to lookup this element -->
     <string-field name="details" x="70" y="12" fsitalic="true" width="230" height="0" alignment="left" dynamic="true" fieldname="article.details"/>
   </items>

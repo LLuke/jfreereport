@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Treatment.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
+ * $Id: CompoundDemoFrame.java,v 1.2 2005/09/21 12:00:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -141,9 +141,20 @@ public class CompoundDemoFrame extends AbstractDemoFrame
 
   protected Container createDefaultContentPane()
   {
+
     demoContent = new JPanel();
     demoContent.setLayout(new BorderLayout());
     demoContent.setMinimumSize(new Dimension(100, 100));
+
+    JPanel placeHolder = new JPanel();
+    placeHolder.setMinimumSize(new Dimension(300, 0));
+    placeHolder.setPreferredSize(new Dimension(300, 0));
+    placeHolder.setMaximumSize(new Dimension(300, 0));
+
+    JPanel rootContent = new JPanel();
+    rootContent.setLayout(new BorderLayout());
+    rootContent.add(demoContent, BorderLayout.CENTER);
+    rootContent.add(placeHolder, BorderLayout.NORTH);
 
     final DemoSelectorTreeNode root = new DemoSelectorTreeNode(null,
             demoSelector);
@@ -152,7 +163,7 @@ public class CompoundDemoFrame extends AbstractDemoFrame
     demoTree.addTreeSelectionListener(new TreeSelectionHandler());
 
     JSplitPane rootSplitPane =
-            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, demoTree, demoContent);
+            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, demoTree, rootContent);
     rootSplitPane.setContinuousLayout(true);
     rootSplitPane.setDividerLocation(200);
     rootSplitPane.setOneTouchExpandable(true);
@@ -196,6 +207,8 @@ public class CompoundDemoFrame extends AbstractDemoFrame
     final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     splitPane.setTopComponent(scroll);
     splitPane.setBottomComponent(demoHandler.getPresentationComponent());
+    splitPane.setDividerLocation(200);
+    splitPane.setOneTouchExpandable(true);
     content.add(splitPane, BorderLayout.CENTER);
     content.add(previewButton, BorderLayout.SOUTH);
     return content;

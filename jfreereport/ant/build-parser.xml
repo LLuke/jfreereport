@@ -48,15 +48,7 @@
     </fail>
   </target>
 
-  <target name="compile-module-parser-base"
-    depends="init-module-parser-base">
-    <description>
-      Compiles the parser-base module classes of JFreeReport.
-      This contains common classes for all parsers and the parser frontend implementation.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-parser-base">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -72,7 +64,20 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-parser-base" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-parser-base"
+    depends="init-module-parser-base">
+    <description>
+      Compiles the parser-base module classes of JFreeReport.
+      This contains common classes for all parsers and the parser frontend implementation.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-parser-base" inheritall="true"/>
+    <antcall target="copy-resources-parser-base" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-parser-base-file}"
@@ -101,14 +106,7 @@
   <!--  Depends on: parser base                                       -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-parser-ext" depends="compile-module-parser-base">
-    <description>
-      Compiles the extended parser. This parser is also required if the
-      report writer is built.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-parser-ext">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -125,7 +123,19 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-parser-ext"/>
+  </target>
+
+  <target name="compile-module-parser-ext" depends="compile-module-parser-base">
+    <description>
+      Compiles the extended parser. This parser is also required if the
+      report writer is built.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-parser-ext" inheritall="true"/>
+    <antcall target="copy-resources-parser-ext" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-parser-ext-file}"
@@ -154,13 +164,7 @@
   <!--  Depends on: parser base, ext parser                           -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-parser-extwriter" depends="compile-module-parser-ext">
-    <description>
-      Compiles the report writer.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-parser-extwriter">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -178,7 +182,19 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-parser-extwriter" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-parser-extwriter" depends="compile-module-parser-ext">
+    <description>
+      Compiles the report writer.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-parser-extwriter" inheritall="true"/>
+    <antcall target="copy-resources-parser-extwriter" inheritall="true"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-parser-extwriter-file}"
          basedir="build">
@@ -204,13 +220,7 @@
   <!--  Depends on: parser base, ext parser                           -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-parser-simple" depends="compile-module-parser-base">
-    <description>
-      Compiles the simple report parser.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-parser-simple">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -227,7 +237,18 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-parser-simple" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-parser-simple" depends="compile-module-parser-base">
+    <description>
+      Compiles the simple report parser.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-parser-simple" inheritall="true"/>
+    <antcall target="copy-resources-parser-simple" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-parser-simple-file}"

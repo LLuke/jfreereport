@@ -31,13 +31,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-csv" depends="init">
-    <description>
-      Compiles the CSV raw output.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-csv">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -52,7 +46,18 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-csv" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-csv" depends="init">
+    <description>
+      Compiles the CSV raw output.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-csv" inheritall="true"/>
+    <antcall target="copy-resources-output-csv" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-csv-file}"
@@ -81,14 +86,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-xml" depends="init">
-    <description>
-      Compiles the XML raw output.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
+  <target name="compile-classes-output-xml">
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
     <javac srcdir="source"
@@ -101,8 +99,18 @@
         <pathelement location="${core-jar-file}"/>
       </classpath>
     </javac>
+  </target>
 
-    <antcall target="copy-resources-output-xml" inheritAll="true"/>
+  <target name="compile-module-output-xml" depends="init">
+    <description>
+      Compiles the XML raw output.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-xml" inheritall="true"/>
+    <antcall target="copy-resources-output-xml" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-xml-file}"
@@ -147,15 +155,7 @@
     <ant antfile="${antfile.dir}/build-misc.xml" target="compile-module-misc-configstore-base"/>
   </target>
 
-
-  <target name="compile-module-output-support-itext"
-    depends="init-module-output-support-itext">
-    <description>
-      Compiles the iText base font support.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-support-itext">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -172,7 +172,19 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-support-itext" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-support-itext"
+    depends="init-module-output-support-itext">
+    <description>
+      Compiles the iText base font support.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-support-itext" inheritall="true"/>
+    <antcall target="copy-resources-output-support-itext" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-support-itext-file}"
@@ -201,14 +213,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-support-pagelayout"
-    depends="init">
-    <description>
-      Compiles the iText base font support.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-support-pagelayout">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -222,7 +227,19 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-support-pagelayout" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-support-pagelayout"
+    depends="init">
+    <description>
+      Compiles the iText base font support.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-support-pagelayout" inheritall="true"/>
+    <antcall target="copy-resources-output-support-pagelayout" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-support-pagelayout-file}"
@@ -250,14 +267,7 @@
   <!--  Depends on: Core task                                         -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-meta"
-    depends="init">
-    <description>
-      Compiles the meta support.
-    </description>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
+  <target name="compile-classes-output-meta">
 
     <!-- compile the source -->
     <!-- We exclude all module implementations by default -->
@@ -271,7 +281,19 @@
       </classpath>
     </javac>
 
-    <antcall target="copy-resources-output-meta" inheritAll="true"/>
+  </target>
+
+  <target name="compile-module-output-meta"
+    depends="init">
+    <description>
+      Compiles the meta support.
+    </description>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <antcall target="compile-classes-output-meta" inheritall="true"/>
+    <antcall target="copy-resources-output-meta" inheritall="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-output-meta-file}"
