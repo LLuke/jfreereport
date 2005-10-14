@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayoutCollection.java,v 1.6 2005/03/03 17:07:58 taqua Exp $
+ * $Id: SheetLayoutCollection.java,v 1.7 2005/03/10 19:24:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -115,14 +115,13 @@ public class SheetLayoutCollection
       }
       return globalLayout;
     }
+    else if (page < pageLayouts.size())
+    {
+      return (SheetLayout) pageLayouts.get(page);
+    }
     else
     {
-      final SheetLayout layout = (SheetLayout) pageLayouts.get(page);
-      if (layout == null)
-      {
-        throw new IllegalStateException("No sheet layout for page " + page);
-      }
-      return layout;
+      return null;
     }
   }
 

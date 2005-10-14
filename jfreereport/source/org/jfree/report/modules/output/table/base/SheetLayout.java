@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.18 2005/10/06 00:50:26 taqua Exp $
+ * $Id: SheetLayout.java,v 1.19 2005/10/11 19:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -1312,7 +1312,7 @@ public class SheetLayout
    * background for a certain cell, or null, if there is no background at that
    * cell.
    *
-   * @param row the row of the requested element
+   * @param row    the row of the requested element
    * @param column the column starting with zero.
    * @return the element at the specified position.
    */
@@ -1366,6 +1366,15 @@ public class SheetLayout
    */
   public long getCellWidth(final int startCell, final int endCell)
   {
+    if (startCell < 0)
+    {
+      throw new IndexOutOfBoundsException("Start-Cell must not be negative");
+    }
+    if (endCell < 0)
+    {
+      throw new IndexOutOfBoundsException("End-Cell must not be negative");
+    }
+    
     final Long[] xCuts = getXCuts();
     final long rightBorder;
     if (endCell >= xCuts.length)

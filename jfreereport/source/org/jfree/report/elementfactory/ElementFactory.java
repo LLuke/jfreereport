@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementFactory.java,v 1.12 2005/02/23 21:04:44 taqua Exp $
+ * $Id: ElementFactory.java,v 1.13 2005/06/25 17:51:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -90,6 +90,8 @@ public abstract class ElementFactory
 
   /** The URL for an hyperlink that contains this element as content. */
   private String hRefTarget;
+
+  private String hRefWindow;
 
   /**
    * Default Constructor.
@@ -313,6 +315,16 @@ public abstract class ElementFactory
     }
   }
 
+  public String getHRefWindow()
+  {
+    return hRefWindow;
+  }
+
+  public void setHRefWindow(final String hRefWindow)
+  {
+    this.hRefWindow = hRefWindow;
+  }
+
   /**
    * Applies the style definition to the elements stylesheet.
    *
@@ -328,6 +340,7 @@ public abstract class ElementFactory
     style.setStyleProperty(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, getLayoutCachable());
     style.setStyleProperty(ElementStyleSheet.VISIBLE, getVisible());
     style.setStyleProperty(ElementStyleSheet.HREF_TARGET, getHRefTarget());
+    style.setStyleProperty(ElementStyleSheet.HREF_WINDOW, getHRefWindow());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.13 2005/06/25 17:52:01 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.14 2005/08/12 12:09:41 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -224,6 +224,8 @@ public class MetaBandProducer
             elementStyle.getStyleProperty(ElementStyleSheet.ALIGNMENT));
     style.setStyleProperty(ElementStyleSheet.HREF_TARGET,
             elementStyle.getStyleProperty(ElementStyleSheet.HREF_TARGET));
+    style.setStyleProperty(ElementStyleSheet.HREF_WINDOW,
+            elementStyle.getStyleProperty(ElementStyleSheet.HREF_WINDOW));
     style.setBooleanStyleProperty(ElementStyleSheet.HREF_INHERITED,
             elementStyle.isLocalKey(ElementStyleSheet.HREF_TARGET));
     return style;

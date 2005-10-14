@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLayoutCreator.java,v 1.3 2005/01/25 00:12:23 taqua Exp $
+ * $Id: DefaultLayoutCreator.java,v 1.4 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -155,7 +155,10 @@ public class DefaultLayoutCreator extends AbstractTableCreator
   public void endTable ()
   {
     currentSheet.pageCompleted();
-    sheetLayoutCollection.addLayout(currentSheet);
+    if (currentSheet.isEmpty() == false)
+    {
+      sheetLayoutCollection.addLayout(currentSheet);
+    }
     currentSheet = null;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableContentCreator.java,v 1.12 2005/10/06 00:50:26 taqua Exp $
+ * $Id: TableContentCreator.java,v 1.13 2005/10/11 19:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,14 +45,15 @@ import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.util.Log;
 
 /**
- * Collects the generated MetaElements and produces the layout. The layout is stored in an
- * ObjectTable and will be converted into the output data when commit() is called.
+ * Collects the generated MetaElements and produces the layout. The layout is
+ * stored in an ObjectTable and will be converted into the output data when
+ * commit() is called.
  */
 public abstract class TableContentCreator extends AbstractTableCreator
 {
   /**
-   * The SheetName-function property, defines the name of an StringFunction that creates
-   * the sheet names.
+   * The SheetName-function property, defines the name of an StringFunction that
+   * creates the sheet names.
    */
   public static final String SHEET_NAME_FUNCTION_PROPERTY =
           "org.jfree.report.targets.table.TableWriter.SheetNameFunction";
@@ -69,7 +70,7 @@ public abstract class TableContentCreator extends AbstractTableCreator
   private int layoutOffset;
   private boolean debugReportLayout;
 
-  public TableContentCreator (final SheetLayoutCollection sheetLayoutCollection)
+  public TableContentCreator(final SheetLayoutCollection sheetLayoutCollection)
   {
     if (sheetLayoutCollection == null)
     {
@@ -81,13 +82,13 @@ public abstract class TableContentCreator extends AbstractTableCreator
   }
 
   /**
-   * Starts the report processing. This method is called only once per report processing.
-   * The TableCreator might use the report definition to configure itself and to perform
-   * startup operations.
+   * Starts the report processing. This method is called only once per report
+   * processing. The TableCreator might use the report definition to configure
+   * itself and to perform startup operations.
    *
    * @param report the report definition.
    */
-  public final void open (final ReportDefinition report)
+  public final void open(final ReportDefinition report)
           throws ReportProcessingException
   {
     tableCounter = -1;
@@ -98,17 +99,17 @@ public abstract class TableContentCreator extends AbstractTableCreator
     handleOpen(report);
   }
 
-  protected abstract void handleOpen (ReportDefinition reportDefinition)
+  protected abstract void handleOpen(ReportDefinition reportDefinition)
           throws ReportProcessingException;
 
   /**
-   * Begins a table. A table is considered a closed entity, it usually represents a sheet
-   * or a single page. Table headers and table properties can be defined using the given
-   * report definition.
+   * Begins a table. A table is considered a closed entity, it usually
+   * represents a sheet or a single page. Table headers and table properties can
+   * be defined using the given report definition.
    *
    * @param report the report definiton.
    */
-  public final void beginTable (final ReportDefinition report)
+  public final void beginTable(final ReportDefinition report)
           throws ReportProcessingException
   {
     setEmpty(true);
@@ -116,36 +117,46 @@ public abstract class TableContentCreator extends AbstractTableCreator
     tableCounter += 1;
     layoutOffset = 0;
     currentLayout = sheetLayoutCollection.getLayoutForPage(tableCounter);
-    handleBeginTable(report);
+    if (currentLayout != null)
+    {
+      handleBeginTable(report);
+    }
   }
 
-  protected abstract void handleBeginTable (ReportDefinition reportDefinition)
+  protected abstract void handleBeginTable(ReportDefinition reportDefinition)
           throws ReportProcessingException;
 
-  /**
-   * Finishes the current table.
-   */
-  public final void endTable ()
+  /** Finishes the current table. */
+  public final void endTable()
           throws ReportProcessingException
   {
-    handleEndTable();
+    if (currentLayout != null)
+    {
+      handleEndTable();
+    }
     backend.clear();
     setEmpty(true);
     currentLayout = null;
   }
 
   /**
-   * Commits all bands. See the class description for details on the flushing process.
+   * Commits all bands. See the class description for details on the flushing
+   * process.
    *
    * @return true, if the content was flushed, false otherwise.
    */
-  public final boolean flush ()
+  public final boolean flush()
           throws ReportProcessingException
   {
     if (debugReportLayout)
     {
       Log.debug("Begin Flush! " + layoutOffset);
     }
+    if (currentLayout == null)
+    {
+      return false;
+    }
+
     if (handleFlush())
     {
       // docmark: The layout offset may be wrong ..
@@ -156,56 +167,60 @@ public abstract class TableContentCreator extends AbstractTableCreator
     return false;
   }
 
-  protected boolean handleFlush ()
+  protected boolean handleFlush()
           throws ReportProcessingException
   {
     return false;
   }
 
-  protected int getRowCount ()
+  protected int getRowCount()
   {
     return backend.getRowCount();
   }
 
-  protected abstract void handleEndTable ()
+  protected abstract void handleEndTable()
           throws ReportProcessingException;
 
   /**
-   * Add the specified band definition to the table sheet. By default, Band definitions
-   * are not used to create content, but they might be important for the layout. it is up
-   * to the implementor to decide whether to use the supplied content of the band (if
-   * any).
+   * Add the specified band definition to the table sheet. By default, Band
+   * definitions are not used to create content, but they might be important for
+   * the layout. it is up to the implementor to decide whether to use the
+   * supplied content of the band (if any).
    * <p/>
-   * This implementation does nothing and always returns false, as bands do not create any
-   * content.
+   * This implementation does nothing and always returns false, as bands do not
+   * create any content.
    *
    * @param e the element.
-   * @return true, if the band is fully processed and the children should be ignored,
-   *         false to indicate that we need the children to complete the process.
-   *
-   * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
-   *                              Bounds are usually defined by the BandLayoutManager.
+   * @return true, if the band is fully processed and the children should be
+   *         ignored, false to indicate that we need the children to complete
+   *         the process.
+   * @throws NullPointerException if the element has no valid layout (no BOUNDS
+   *                              defined). Bounds are usually defined by the
+   *                              BandLayoutManager.
    */
-  protected boolean processBandDefinition (final MetaBand e)
+  protected boolean processBandDefinition(final MetaBand e)
   {
     return false;
   }
 
   /**
-   * Add the specified element to the logical page. Create content from the values
-   * contained in the element and format the content by using the element's attributes.
+   * Add the specified element to the logical page. Create content from the
+   * values contained in the element and format the content by using the
+   * element's attributes.
    *
    * @param e the element.
-   * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
-   *                              Bounds are usually defined by the BandLayoutManager.
+   * @throws NullPointerException if the element has no valid layout (no BOUNDS
+   *                              defined). Bounds are usually defined by the
+   *                              BandLayoutManager.
    */
-  protected void processElement (final MetaElement e)
+  protected void processElement(final MetaElement e)
   {
     if (currentLayout == null)
     {
-      throw new IllegalStateException("No current layout");
+      throw new IllegalStateException("No current layout, but want to print content.");
     }
-    final TableRectangle rect = currentLayout.getTableBounds(e, getLookupRectangle());
+    final TableRectangle rect = currentLayout.getTableBounds(e,
+            getLookupRectangle());
 
     if (e instanceof TableCellBackground)
     {
@@ -229,8 +244,10 @@ public abstract class TableContentCreator extends AbstractTableCreator
 
     if (rect.getY1() - layoutOffset < 0)
     {
-      final TableRectangle rect2 = currentLayout.getTableBounds(e, getLookupRectangle());
-      throw new IllegalStateException("Inconsistent layout detected - check your report definition!");
+//      final TableRectangle rect2 = currentLayout.getTableBounds(e,
+//              getLookupRectangle());
+      throw new IllegalStateException(
+              "Inconsistent layout detected - check your report definition!");
     }
 
 
@@ -258,7 +275,7 @@ public abstract class TableContentCreator extends AbstractTableCreator
     }
   }
 
-  private boolean isCellSpaceOccupied (final TableRectangle rect)
+  private boolean isCellSpaceOccupied(final TableRectangle rect)
   {
     final int x2 = rect.getX2();
     final int y2 = rect.getY2() - layoutOffset;
@@ -282,56 +299,55 @@ public abstract class TableContentCreator extends AbstractTableCreator
     return false;
   }
 
-  protected boolean isDebugReportLayout ()
+  protected boolean isDebugReportLayout()
   {
     return debugReportLayout;
   }
 
-  protected final TableRectangle getLookupRectangle ()
+  protected final TableRectangle getLookupRectangle()
   {
     return lookupRectangle;
   }
 
-  /**
-   * Closes the report processing.
-   */
-  public final void close ()
+  /** Closes the report processing. */
+  public final void close()
           throws ReportProcessingException
   {
     handleClose();
     tableCounter = -1;
   }
 
-  protected int getCurrentTableNumber ()
+  protected int getCurrentTableNumber()
   {
     return tableCounter;
   }
 
-  protected abstract void handleClose ()
+  protected abstract void handleClose()
           throws ReportProcessingException;
 
-  protected GenericObjectTable getBackend ()
+  protected GenericObjectTable getBackend()
   {
     return backend;
   }
 
-  protected SheetLayout getCurrentLayout ()
+  protected SheetLayout getCurrentLayout()
   {
     return currentLayout;
   }
 
   /**
-   * Gets the name of the SheetName function. The sheetname function defines the names of
-   * the generated sheets.
+   * Gets the name of the SheetName function. The sheetname function defines the
+   * names of the generated sheets.
    *
-   * @return the name of the sheet name function, or null, if that name is not known yet.
+   * @return the name of the sheet name function, or null, if that name is not
+   *         known yet.
    */
-  protected String getSheetNameFunction ()
+  protected String getSheetNameFunction()
   {
     return sheetNameFunction;
   }
 
-  public int getLayoutOffset ()
+  public int getLayoutOffset()
   {
     return layoutOffset;
   }

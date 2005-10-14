@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractElementReadHandler.java,v 1.9 2005/09/07 14:25:11 taqua Exp $
+ * $Id: AbstractElementReadHandler.java,v 1.10 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes
  * -------
@@ -115,6 +115,7 @@ public abstract class AbstractElementReadHandler
   private static final String LAYOUT_CACHABLE_ATT = "layout-cachable";
   private static final String VISIBLE_ATT = "visible";
   private static final String HREF_ATT = "href";
+  private static final String HREF_WINDOW_ATT = "href-window";
   public static final String STYLE_CLASS_ATT = "styleClass";
 
   private Element element;
@@ -175,6 +176,12 @@ public abstract class AbstractElementReadHandler
     if (href != null)
     {
       factory.setHRefTarget(href);
+    }
+
+    final String hrefWindow = atts.getValue(HREF_WINDOW_ATT);
+    if (hrefWindow != null)
+    {
+      factory.setHRefWindow(hrefWindow);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.23 2005/06/25 17:52:03 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.24 2005/09/19 15:38:48 taqua Exp $
  *
  * Changes
  * -------
@@ -249,6 +249,12 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
 
   public static final StyleKey HREF_TARGET = StyleKey.getStyleKey("href-target",
           String.class);
+
+  /**
+   * Specifies the anchor tag's target window for opening the link.
+   */
+  public static final StyleKey HREF_WINDOW = StyleKey.getStyleKey
+          ("href-html-window", String.class);
 
   /**
    * An internal flag style indicating whether the current HRef is inherited from

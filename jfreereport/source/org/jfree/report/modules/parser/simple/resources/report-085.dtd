@@ -29,6 +29,7 @@
   2005-08-10: Added pagespan attribute
   2005-10-12: Now all style attributes are optional, as they may have been
               defined by an external stylesheet; added the component field type
+  2005-10-14: Link-Target-Windows can be defined.
 
   Use this as Document type definition:
 
@@ -101,6 +102,7 @@
   visible              (%boolean;)   #IMPLIED
   layout-cachable      (%boolean;)   #IMPLIED
   href                 CDATA         #IMPLIED
+  href-window          CDATA         #IMPLIED
   reserved-literal     CDATA         #IMPLIED"
 >
 
@@ -552,6 +554,7 @@ layout-cachable      (%boolean;)   #IMPLIED
 scale                (%boolean;)   #IMPLIED
 keepAspectRatio      (%boolean;)   #IMPLIED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 >
 <!--
 
@@ -571,6 +574,7 @@ layout-cachable      (%boolean;)   #IMPLIED
 scale                (%boolean;)   #IMPLIED
 keepAspectRatio      (%boolean;)   #IMPLIED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 >
 
 <!--
@@ -591,6 +595,7 @@ layout-cachable      (%boolean;)   #IMPLIED
 scale                (%boolean;)   #IMPLIED
 keepAspectRatio      (%boolean;)   #IMPLIED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 >
 
 <!--
@@ -606,7 +611,6 @@ draw                 (%boolean;)   #IMPLIED
 fill                 (%boolean;)   #IMPLIED
 weight               CDATA         #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
-href                 CDATA         #IMPLIED
 visible              (%boolean;)   #IMPLIED
 >
 
@@ -639,6 +643,7 @@ styleClass           CDATA         #IMPLIED
 weight               CDATA         #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 visible              (%boolean;)   #IMPLIED
 >
 
@@ -652,6 +657,7 @@ fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
 styleClass           CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
@@ -664,6 +670,7 @@ fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
 styleClass           CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
@@ -672,10 +679,11 @@ visible              (%boolean;)   #IMPLIED
 <!ELEMENT drawableref   EMPTY>
 <!ATTLIST drawableref
 %position;
-href                 CDATA         #IMPLIED
 src                  CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
 styleClass           CDATA         #IMPLIED
+href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
@@ -688,6 +696,7 @@ fieldname            CDATA         #REQUIRED
 name                 CDATA         #IMPLIED
 styleClass           CDATA         #IMPLIED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
 dynamic              (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
@@ -705,6 +714,7 @@ visible              (%boolean;)   #IMPLIED
 %basicform;
 fieldname            CDATA         #REQUIRED
 href                 CDATA         #IMPLIED
+href-window          CDATA         #IMPLIED
 draw                 (%boolean;)   #IMPLIED
 fill                 (%boolean;)   #IMPLIED
 weight               CDATA         #IMPLIED

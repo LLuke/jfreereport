@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.28 2005/09/16 16:08:06 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.29 2005/09/19 18:41:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -491,13 +491,22 @@ public class HtmlContentCreator extends TableContentCreator
           pout.print("<div>");
         }
 
-        final String hrefTarget = (String) element.getProperty(
-                ElementStyleSheet.HREF_TARGET);
+        final String hrefTarget = (String) element.getProperty
+                (ElementStyleSheet.HREF_TARGET);
         if (hrefTarget != null)
         {
           pout.print("<a href=\"");
           pout.print(hrefTarget);
-          pout.print("\">");
+          pout.print("\"");
+          final String hrefWindow = (String) element.getProperty
+                  (ElementStyleSheet.HREF_WINDOW);
+          if (hrefWindow != null)
+          {
+            pout.print(" target=\"");
+            pout.print(hrefWindow);
+            pout.print("\"");
+          }
+          pout.print(">");
         }
 
         if (element instanceof HtmlMetaElement)

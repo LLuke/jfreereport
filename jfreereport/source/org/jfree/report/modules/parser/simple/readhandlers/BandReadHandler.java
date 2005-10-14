@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BandReadHandler.java,v 1.7 2005/09/07 14:25:11 taqua Exp $
+ * $Id: BandReadHandler.java,v 1.8 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes
  * -------
@@ -176,6 +176,7 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
   private static final String VISIBLE_ATT = "visible";
   private static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
   private static final String HREF_ATT = "href";
+  private static final String HREF_WINDOW_ATT = "href-window";
 
   private Band band;
   private ArrayList elementHandlers;
@@ -234,6 +235,13 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     {
       getBand().getStyle().setStyleProperty(ElementStyleSheet.HREF_TARGET, href);
     }
+
+    final String hrefTarget = attr.getValue(HREF_WINDOW_ATT);
+    if (hrefTarget != null)
+    {
+      getBand().getStyle().setStyleProperty(ElementStyleSheet.HREF_WINDOW, hrefTarget);
+    }
+
   }
 
   private void handleStyleClass(final PropertyAttributes attr) {
