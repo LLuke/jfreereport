@@ -7,7 +7,17 @@ A list of changes in recent versions:
         * [BUG] Having a pagebreak-after-print on a group-footer without
           having an report footer caused the reporting to fail.
 
-        * 
+        * [BUG] Printing pepeated group-headers used the wrong table row index
+          if the printing occured if the group-header for the next group instance
+          has been printed just before the pagebreak occured.
+
+        * [BUG] An invalid computation of the maximum size of dynamic elements
+          caused all content to disapear, if the absolute position of the
+          dynamic element was greater than the horizontal space left for
+          the element content.
+
+        * It is now possible to add HTML link-targets to the elements. This way,
+          the link can be opened in a named or new frame or window.
 
 0.8.6-1: (12-Oct-2005)
         * [BUG] There was inconsistent behaviour when exporting single table

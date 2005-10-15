@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.26 2005/10/05 13:35:40 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.27 2005/10/06 00:50:26 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.util.geom.StrictPoint;
-import org.jfree.util.Log;
 
 /**
  * An implementation of the BandLayoutManager interface.
@@ -889,7 +888,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       throw new IllegalStateException("Height violation!");
     }
 
-    final long maximumWidth = (maxUsableSize.getWidth() - absPosX);
+    final long maximumWidth = maxUsableSize.getWidth();
 
     final Dimension2D eMaxDim = (Dimension2D)
             e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE);

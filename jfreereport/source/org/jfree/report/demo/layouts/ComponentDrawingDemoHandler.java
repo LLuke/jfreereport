@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PaintComponentDemoHandler.java,v 1.4 2005/09/21 12:00:15 taqua Exp $
+ * $Id: ComponentDrawingDemoHandler.java,v 1.1 2005/10/11 14:54:30 taqua Exp $
  *
  * Changes
  * -------
@@ -39,12 +39,9 @@
 package org.jfree.report.demo.layouts;
 
 import java.net.URL;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
