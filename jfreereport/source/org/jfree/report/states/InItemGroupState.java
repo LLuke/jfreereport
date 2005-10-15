@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.6 2005/02/23 21:06:04 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.7 2005/09/19 15:38:48 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package org.jfree.report.states;
 import org.jfree.report.Group;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.ReportEvent;
+import org.jfree.util.Log;
 
 /**
  * Prints the itemBand. Before the band is printed, the items are advanced and the next
@@ -57,6 +58,7 @@ import org.jfree.report.event.ReportEvent;
  */
 public final class InItemGroupState extends ReportState
 {
+  private boolean prevStateWasPrefetch;
   /**
    * Creates a new '<code>IN-ITEM-GROUP</code>' state.
    *
@@ -65,11 +67,23 @@ public final class InItemGroupState extends ReportState
   public InItemGroupState (final ReportState previous)
   {
     super(previous);
+    prevStateWasPrefetch = previous.isPrefetchState();
+    getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
   }
 
   public int getEventCode ()
   {
     return ReportEvent.ITEMS_ADVANCED;
+  }
+
+  public boolean isPrevStateWasPrefetch()
+  {
+    return prevStateWasPrefetch;
+  }
+
+  public boolean isPrefetchState()
+  {
+    return prevStateWasPrefetch;
   }
 
   /**
@@ -80,14 +94,15 @@ public final class InItemGroupState extends ReportState
    * @throws ReportProcessingException if there is a problem processing the report.
    */
   public ReportState advance ()
-          throws ReportProcessingException
   {
     // If there is enough space to print the itemband, advance the items, populate
     // the band and print it. If there was not enough space, the engine will return
     // here after the pagebreak.
 
+
     firePrepareEvent();
 
+    prevStateWasPrefetch = false;
     advanceItem();
 
     fireItemsAdvancedEvent();

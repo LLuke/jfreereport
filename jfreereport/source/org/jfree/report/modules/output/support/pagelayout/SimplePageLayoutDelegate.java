@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.16 2005/04/17 21:09:01 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.17 2005/10/11 19:27:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,6 +49,7 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.style.BandStyleKeys;
+import org.jfree.util.Log;
 
 /**
  * The simple page layout delegate encasulates all required tasks to perform a plain
