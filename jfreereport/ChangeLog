@@ -3,11 +3,11 @@
 ---------------
 A list of changes in recent versions:
 
-0.8.6-2:
+0.8.6-2: (17-Oct-2005)
         * [BUG] Having a pagebreak-after-print on a group-footer without
-          having an report footer caused the reporting to fail.
+          having an report footer caused the table-type reporting to fail.
 
-        * [BUG] Printing pepeated group-headers used the wrong table row index
+        * [BUG] Printing repeated group-headers used the wrong table row index
           if the printing occured if the group-header for the next group instance
           has been printed just before the pagebreak occured.
 
