@@ -15,12 +15,12 @@ import org.jfree.report.util.ReportProperties;
  */
 public class HidePageBandForTableExportFunction extends AbstractFunction
 {
-  private boolean hidePageHeader;
+  private boolean hidePageBands;
   private boolean disableRepeatingHeader;
 
   public HidePageBandForTableExportFunction()
   {
-    hidePageHeader = true;
+    hidePageBands = true;
   }
 
   public void reportInitialized(final ReportEvent event)
@@ -30,7 +30,7 @@ public class HidePageBandForTableExportFunction extends AbstractFunction
     boolean isPageable = (o instanceof OutputTarget);
 
     final ReportDefinition report = event.getReport();
-    if (isHidePageHeader())
+    if (isHidePageBands())
     {
       report.getPageHeader().setVisible(isPageable);
       report.getPageFooter().setVisible(isPageable);
@@ -49,14 +49,14 @@ public class HidePageBandForTableExportFunction extends AbstractFunction
     }
   }
 
-  public boolean isHidePageHeader()
+  public boolean isHidePageBands()
   {
-    return hidePageHeader;
+    return hidePageBands;
   }
 
-  public void setHidePageHeader(final boolean hidePageHeader)
+  public void setHidePageBands(final boolean hidePageBands)
   {
-    this.hidePageHeader = hidePageHeader;
+    this.hidePageBands = hidePageBands;
   }
 
   public boolean isDisableRepeatingHeader()
