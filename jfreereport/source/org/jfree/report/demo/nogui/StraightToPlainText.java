@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPlainText.java,v 1.1 2005/08/29 17:40:09 taqua Exp $
+ * $Id: StraightToPlainText.java,v 1.2 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.demo.nogui;
 
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.net.URL;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
@@ -51,7 +51,6 @@ import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.util.WaitingImageObserver;
 import org.jfree.xml.ParseException;
 
 /**
@@ -95,14 +94,9 @@ public class StraightToPlainText
     try
     {
       final JFreeReport report = generator.parseReport(templateURL);
-      final URL imageURL = ObjectUtilities.getResource
-              ("org/jfree/report/demo/opensource/gorilla.jpg", StraightToPlainText.class);
-      final Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
-      final WaitingImageObserver obs = new WaitingImageObserver(image);
-      obs.waitImageLoaded();
-      report.setProperty("logo", image);
+      // plain text does not support images, so we do not care about the logo ..
+      report.setProperty("logo", null);
       report.setPropertyMarked("logo", true);
-
       return report;
     }
     catch (Exception e)
@@ -122,7 +116,10 @@ public class StraightToPlainText
   {
     try
     {
-      final TextFilePrinterDriver tf = new TextFilePrinterDriver(System.out, 10, 10);
+      final BufferedOutputStream bout = new BufferedOutputStream
+              (new FileOutputStream(fileName));
+
+      final TextFilePrinterDriver tf = new TextFilePrinterDriver(bout, 10, 10);
       tf.setEndOfLine(new char[]{'\n'});
       tf.setEndOfPage(new char[]{'\n'});
       final PlainTextOutputTarget target = new PlainTextOutputTarget(tf);
@@ -133,12 +130,12 @@ public class StraightToPlainText
       proc.setOutputTarget(target);
       proc.processReport();
       target.close();
+      bout.close();
       return true;
     }
     catch (Exception e)
     {
-      System.err.println("Writing PlainText failed.");
-      e.printStackTrace();
+      Log.error ("Writing PlainText failed.", e);
       return false;
     }
   }
