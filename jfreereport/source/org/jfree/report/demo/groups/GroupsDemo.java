@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Treatment.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
+ * $Id: GroupsDemo.java,v 1.3 2005/09/21 12:00:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,7 @@ import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 
 /**
  * This demo shows how to define nested groups.

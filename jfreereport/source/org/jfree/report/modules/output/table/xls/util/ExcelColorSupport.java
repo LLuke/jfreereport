@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelColorSupport.java,v 1.4 2005/02/23 21:05:37 taqua Exp $
+ * $Id: ExcelColorSupport.java,v 1.5 2005/08/08 15:36:35 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
 package org.jfree.report.modules.output.table.xls.util;
 
 import java.awt.Color;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -79,65 +78,48 @@ public final class ExcelColorSupport
    */
   public static short getNearestColor (final Color awtColor)
   {
-    short color = HSSFColor.BLACK.index;
-
     if (triplets == null)
     {
       triplets = HSSFColor.getTripletHash();
     }
 
-    if (triplets == null)
+
+    if (triplets == null || triplets.isEmpty())
     {
       Log.warn("Unable to get triplet hashtable");
-      return color;
+      return HSSFColor.BLACK.index;
     }
 
-    final Collection keys = triplets.keySet();
-    if (keys != null && keys.size() > 0)
+    short color = HSSFColor.BLACK.index;
+    double minDiff = Double.MAX_VALUE;
+
+    // get the color without the alpha chanel
+    final float[] hsb = Color.RGBtoHSB
+            (awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), null);
+
+    float[] excelHsb = null;
+    final Enumeration elements = triplets.elements();
+    while (elements.hasMoreElements())
     {
-      long minDiff = Long.MAX_VALUE;
+      final HSSFColor crtColor = (HSSFColor) elements.nextElement();
+      final short[] rgb = crtColor.getTriplet();
+      excelHsb = Color.RGBtoHSB(rgb[0], rgb[1], rgb[2], excelHsb);
 
-      // get the color without the alpha chanel
-      final int colorValue = awtColor.getRGB() & 0x00ffffff;
+      final double weight = 3d * Math.abs(excelHsb[0] - hsb[0]) +
+              Math.abs(excelHsb[2] - hsb[2]) +
+              Math.abs(excelHsb[2] - hsb[2]);
 
-      final int cdRG = awtColor.getRed() - awtColor.getGreen();
-      final int cdGB = awtColor.getGreen() - awtColor.getBlue();
-      final int cdBR = awtColor.getBlue() - awtColor.getRed();
-
-      final Enumeration elements = triplets.elements();
-      while (elements.hasMoreElements())
+      if (weight < minDiff)
       {
-        final HSSFColor crtColor = (HSSFColor) elements.nextElement();
-        final short[] rgb = crtColor.getTriplet();
-
-        final int xlRG = rgb[0] - rgb[1];
-        final int xlGB = rgb[1] - rgb[2];
-        final int xlBR = rgb[2] - rgb[0];
-
-        final int deltaRG = Math.abs(xlRG - cdRG);
-        final int deltaGB = Math.abs(xlGB - cdGB);
-        final int deltaBR = Math.abs(xlBR - cdBR);
-
-        final long delta = deltaBR + deltaGB + deltaRG;
-
-        final long excelColor = (delta << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
-
-        final long diff = Math.abs(colorValue - excelColor);
-
-        if (diff < minDiff)
+        minDiff = weight;
+        if (minDiff == 0)
         {
-          minDiff = diff;
-          if (minDiff == 0)
-          {
-            // we found the color ...
-            return crtColor.getIndex();
-          }
-          color = crtColor.getIndex();
+          // we found the color ...
+          return crtColor.getIndex();
         }
+        color = crtColor.getIndex();
       }
     }
-
-
     return color;
   }
 }

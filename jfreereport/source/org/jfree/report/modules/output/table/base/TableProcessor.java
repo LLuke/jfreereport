@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.22 2005/09/04 18:58:15 taqua Exp $
+ * $Id: TableProcessor.java,v 1.23 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,6 @@ public abstract class TableProcessor
    * Literal text for the 'author' property name.
    */
   public static final String AUTHOR = "Author";
-
 
   /**
    * the report that should be processed.
