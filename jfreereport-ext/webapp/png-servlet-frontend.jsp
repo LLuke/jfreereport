@@ -9,8 +9,8 @@
 
 <%
   // initalize the report if not already done ...
-  URL in = ObjectUtilities.getResourceRelative
-          ("org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReport.class);
+  URL in = ObjectUtilities.getResource
+          ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReport.class);
   if (in == null)
   {
     throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");

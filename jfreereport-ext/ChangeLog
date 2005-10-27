@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.6-2:
+  * [BUG] The ServletDemo was not able to find the XML report definition file.
+
 0.8.6: (21-Sep-2005):
   * [BUG] The ImageIO module was not initialized properly.
 

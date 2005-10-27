@@ -46,7 +46,7 @@ public class JFreeReportPDFServlet extends HttpServlet
       httpServletResponse.setHeader("Content-Type", "application/pdf");
 
       final URL in = ObjectUtilities.getResource
-              ("yourreportdefinition.xml", JFreeReportPDFServlet.class);
+              ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportPDFServlet.class);
       final ReportGenerator generator = ReportGenerator.getInstance();
       final JFreeReport report = generator.parseReport(in);
 

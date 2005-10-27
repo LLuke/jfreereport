@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.10 2005/09/19 13:34:25 taqua Exp $
  *
  * Changes
  * -------
@@ -116,8 +116,8 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
     final BufferedImage image;
     try
     {
-      final URL in = ObjectUtilities.getResourceRelative
-              ("org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportPngServlet.class);
+      final URL in = ObjectUtilities.getResource
+              ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportPngServlet.class);
       if (in == null)
       {
         throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");
