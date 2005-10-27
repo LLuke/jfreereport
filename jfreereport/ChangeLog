@@ -12,6 +12,14 @@ A list of changes in recent versions:
         * [BUG] The Excel-Color computation was totally messed up. The new
           algorithm uses science instead of magic (and HSB instead of RGB)
 
+        * [BUG] The ImageContentFactory was not able to handle invalid inputs,
+          which caused ClassCastExceptions.
+
+        * [BUG] The image handling for the HTML export was invalid and caused
+          ugly scaled images.
+
+        * SurveyScale-Drawable is now serializable.
+
         * A 'PrintableTableModel' has been added, which allows to override the
           column names specified in the tablemodel. This is a contribution by
           'LordOfCode'.
