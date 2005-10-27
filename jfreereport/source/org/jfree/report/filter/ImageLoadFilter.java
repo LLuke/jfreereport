@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.8 2005/08/08 15:36:29 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.9 2005/10/11 14:53:21 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -38,6 +38,8 @@ package org.jfree.report.filter;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 
 import org.jfree.report.DefaultImageReference;
@@ -68,7 +70,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
   /**
    * the cache for previously loaded images. If the maximum size of the cache reached,
    */
-  private KeyedQueue imageCache;
+  private transient KeyedQueue imageCache;
 
   /**
    * The datasource from where to read the urls.
@@ -181,6 +183,21 @@ public class ImageLoadFilter implements DataFilter, Serializable
       il.source = (DataSource) source.clone();
     }
     return il;
+  }
+
+  private void writeObject(ObjectOutputStream out)
+     throws IOException
+  {
+    out.defaultWriteObject();
+    out.writeInt(imageCache.getLimit());
+  }
+
+  private void readObject(ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    int limit = in.readInt();
+    imageCache = new KeyedQueue(limit);
   }
 
 }

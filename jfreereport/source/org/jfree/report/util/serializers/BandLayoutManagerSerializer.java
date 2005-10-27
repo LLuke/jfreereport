@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandLayoutManagerSerializer.java,v 1.3 2004/05/07 12:43:01 mungady Exp $
+ * $Id: BandLayoutManagerSerializer.java,v 1.4 2005/02/23 21:06:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import java.io.ObjectOutputStream;
 
 import org.jfree.report.layout.BandLayoutManager;
 import org.jfree.report.util.SerializeMethod;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A SerializeMethod implementation that handles BandLayoutManagers.
@@ -73,7 +74,7 @@ public class BandLayoutManagerSerializer implements SerializeMethod
   public void writeObject (final Object o, final ObjectOutputStream out)
           throws IOException
   {
-    out.writeObject(o.getClass());
+    out.writeObject(o.getClass().getName());
   }
 
   /**
@@ -90,14 +91,16 @@ public class BandLayoutManagerSerializer implements SerializeMethod
   public Object readObject (final ObjectInputStream in)
           throws IOException, ClassNotFoundException
   {
-    final Class c = (Class) in.readObject();
+    final String cn = (String) in.readObject();
+
     try
     {
-      return c.newInstance();
+      return ObjectUtilities.loadAndInstantiate
+              (cn, BandLayoutManagerSerializer.class);
     }
     catch (Exception e)
     {
-      throw new NotSerializableException(c.getName());
+      throw new NotSerializableException(cn);
     }
   }
 

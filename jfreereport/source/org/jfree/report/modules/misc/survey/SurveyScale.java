@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.5 2005/08/29 17:56:46 taqua Exp $
+ * $Id: SurveyScale.java,v 1.6 2005/09/19 11:00:50 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,10 @@ import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.Drawable;
@@ -56,6 +60,7 @@ import org.jfree.util.BooleanList;
 import org.jfree.util.BooleanUtilities;
 import org.jfree.util.ShapeList;
 import org.jfree.util.ShapeUtilities;
+import org.jfree.report.util.SerializerHelper;
 
 /**
  * Draws a survey scale.  By implementing the {@link Drawable} interface,
@@ -64,7 +69,7 @@ import org.jfree.util.ShapeUtilities;
  *
  * @author David Gilbert
  */
-public class SurveyScale implements Drawable
+public class SurveyScale implements Drawable, Serializable
 {
   private static final Number[] EMPTY_VALUES = new Number[0];
 
@@ -79,15 +84,6 @@ public class SurveyScale implements Drawable
 
   /** The upper margin. */
   private double upperMargin = 0.10;
-
-  /** The shapes to display. */
-  private ShapeList shapes;
-
-  /** The fill paint. */
-  private Paint fillPaint;
-
-  /** The outline stroke for the shapes. */
-  private Stroke outlineStroke;
 
   /** A list of flags that control whether or not the shapes are filled. */
   private BooleanList fillShapes;
@@ -107,9 +103,6 @@ public class SurveyScale implements Drawable
   /** Draw the tick marks? */
   private boolean drawTickMarks;
 
-  /** The tick mark paint. */
-  private Paint tickMarkPaint;
-
   /** Draw the scale values. */
   private boolean drawScaleValues = false;
 
@@ -117,21 +110,34 @@ public class SurveyScale implements Drawable
   private Font scaleValueFont;
 
   /** The paint used to draw the scale values. */
-  private Paint scaleValuePaint;
+  private transient Paint scaleValuePaint;
 
   /** The range paint. */
-  private Paint rangePaint;
+  private transient Paint rangePaint;
+
+  /** The shapes to display. */
+  private transient ShapeList shapes;
+
+  /** The fill paint. */
+  private transient Paint fillPaint;
+
+  /** The outline stroke for the shapes. */
+  private transient Stroke outlineStroke;
 
   /**
    * The default shape, if no shape is defined in the shapeList for the given
    * value.
    */
-  private Shape defaultShape;
+  private transient Shape defaultShape;
+
+  /** The tick mark paint. */
+  private transient Paint tickMarkPaint;
+
+  private transient Paint borderPaint;
 
   private int range;
   private double lowerBound;
   private double upperBound;
-  private Paint borderPaint;
 
   /** Creates a new default instance. */
   public SurveyScale()
@@ -757,4 +763,49 @@ public class SurveyScale implements Drawable
             (upperBound - lowerBound) * area .getWidth());
 
   }
+
+  private void writeObject(ObjectOutputStream out)
+     throws IOException
+  {
+    out.defaultWriteObject();
+    SerializerHelper helper = SerializerHelper.getInstance();
+    helper.writeObject(scaleValuePaint, out);
+    helper.writeObject(rangePaint, out);
+    helper.writeObject(fillPaint, out);
+    helper.writeObject(outlineStroke, out);
+    helper.writeObject(defaultShape, out);
+    helper.writeObject(tickMarkPaint, out);
+    helper.writeObject(borderPaint, out);
+    final int size = shapes.size();
+    out.writeInt(size);
+    for (int i = 0; i < size; i++)
+    {
+      final Shape s = shapes.getShape(i);
+      helper.writeObject(s, out);
+    }
+  }
+
+ private void readObject(ObjectInputStream in)
+     throws IOException, ClassNotFoundException
+ {
+   in.defaultReadObject();
+   SerializerHelper helper = SerializerHelper.getInstance();
+   scaleValuePaint = (Paint) helper.readObject(in);
+   rangePaint = (Paint) helper.readObject(in);
+   fillPaint = (Paint) helper.readObject(in);
+   outlineStroke = (Stroke) helper.readObject(in);
+   defaultShape = (Shape) helper.readObject(in);
+   tickMarkPaint = (Paint) helper.readObject(in);
+   borderPaint = (Paint) helper.readObject(in);
+   shapes = new ShapeList();
+
+   int size = in.readInt();
+   for (int i = 0; i < size; i++)
+   {
+     final Shape s = (Shape) helper.readObject(in);
+     shapes.setShape(i, s);
+   }
+
+ }
+
 }

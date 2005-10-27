@@ -3,6 +3,19 @@
 ---------------
 A list of changes in recent versions:
 
+        * [BUG] Distributing text content over multiple pages caused exceptions
+          if the string got split and continued on a later page.
+
+        * [BUG] The ComponentDrawable was not able to handle java.awt.Window
+          instances.
+
+        * [BUG] The Excel-Color computation was totally messed up. The new
+          algorithm uses science instead of magic (and HSB instead of RGB)
+
+        * A 'PrintableTableModel' has been added, which allows to override the
+          column names specified in the tablemodel. This is a contribution by
+          'LordOfCode'.
+
 0.8.6-2: (17-Oct-2005)
         * [BUG] Having a pagebreak-after-print on a group-footer without
           having an report footer caused the table-type reporting to fail.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.14 2005/04/17 21:08:02 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.15 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes
  * -------
@@ -85,12 +85,14 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
   public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
                                           final LayoutSupport ot)
   {
-    final ImageContainer ir = (ImageContainer) e.getValue();
-    // there is no content?
-    if (ir == null)
+    final Object value = e.getValue();
+    // there is no (valid) content?
+    if (value instanceof ImageContainer == false)
     {
       return EmptyContent.getDefaultEmptyContent();
     }
+
+    final ImageContainer ir = (ImageContainer) value;
 
     final StrictPoint point = bounds.getAbsolutePosition();
     final StrictDimension iBounds = ElementLayoutInformation.unionMin
@@ -134,7 +136,6 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
       return  EmptyContent.getDefaultEmptyContent();
     }
 
-    final ImageContent ic = new ImageContent(ir, imageBounds);
-    return ic;
+    return new ImageContent(ir, imageBounds);
   }
 }

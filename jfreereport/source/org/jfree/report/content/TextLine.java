@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextLine.java,v 1.14 2005/08/12 12:09:38 taqua Exp $
+ * $Id: TextLine.java,v 1.15 2005/10/02 10:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -194,6 +194,10 @@ public class TextLine implements Content
     {
       return EmptyContent.getDefaultEmptyContent();
     }
+//    if (actBounds.getWidth() == 0)
+//    {
+//      return EmptyContent.getDefaultEmptyContent();
+//    }
     final long frontW = actBounds.getX() - this.bounds.getX();
     final int frontPos;
     if (frontW > 0)
@@ -207,13 +211,15 @@ public class TextLine implements Content
 
     final long actBoundsWidth = actBounds.getWidth();
     final int endPos;
+    int calcStringLength = 0;
     if (frontPos == 0 && actBoundsWidth == this.bounds.getWidth())
     {
       endPos = content.length();
     }
     else
     {
-       endPos = calcStringLength(frontPos, actBoundsWidth);
+      calcStringLength = calcStringLength(frontPos, actBoundsWidth);
+      endPos = frontPos + calcStringLength;
     }
 
     if (frontPos == endPos)
@@ -251,10 +257,10 @@ public class TextLine implements Content
             (getSizeCalculator().getStringWidth(content, startPos, content.length()));
     if (lineWidth <= maxWidth)
     {
-      return content.length();
+      return content.length() - startPos;
     }
 
-    return calculateWidthPos(startPos, startPos, content.length(), maxWidth);
+    return calculateWidthPos(startPos, startPos, content.length(), maxWidth) - startPos;
   }
 
   /**

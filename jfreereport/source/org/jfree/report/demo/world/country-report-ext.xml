@@ -14,7 +14,7 @@
 
 
   <report-config>
-    <simple-page-definition>
+    <simple-page-definition width="2">
       <page orientation="portrait" pageformat="LETTER" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
     </simple-page-definition>
     <configuration>

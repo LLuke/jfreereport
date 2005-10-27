@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StackedLayoutManager.java,v 1.2 2005/10/05 13:35:40 taqua Exp $
+ * $Id: StackedLayoutManager.java,v 1.3 2005/10/06 00:50:26 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,6 @@ import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictGeomUtility;
-import org.jfree.util.Log;
 
 public class StackedLayoutManager extends AbstractBandLayoutManager
 {

@@ -132,9 +132,17 @@ public class ComponentDrawable implements ExtendedDrawable
       return new Dimension(0,0);
     }
     peerSupply.pack();
-    contentPane.add(component);
+    if (component instanceof Window == false)
+    {
+      contentPane.add(component);
+      contentPane.validate();
+    }
+    else
+    {
+      component.validate();
+    }
     component.validate();
-    Dimension retval = component.getPreferredSize();
+    final Dimension retval = component.getPreferredSize();
     cleanUp();
     return retval;
   }

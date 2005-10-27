@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.11 2005/03/30 17:26:01 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.12 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,6 +47,10 @@ import org.jfree.report.DefaultImageReference;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.content.ImageContent;
+import org.jfree.report.content.ContentFactory;
+import org.jfree.report.content.Content;
+import org.jfree.report.content.EmptyContent;
+import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
@@ -56,6 +60,7 @@ import org.jfree.report.modules.output.table.html.metaelements.HtmlMetaElement;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
@@ -93,8 +98,8 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
   protected MetaElement createImageCell
           (final Element e, final long x, final long y)
   {
-    final Object o = e.getValue();
-    if (o instanceof ImageContainer == false)
+    final ContentFactory contentFactory = getLayoutSupport().getContentFactory();
+    if (contentFactory.canHandleContent(e.getContentType()) == false)
     {
       return null;
     }
@@ -106,11 +111,28 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
       // remove emtpy images.
       return null;
     }
-    final ImageContent ic = new ImageContent((ImageContainer) o, (StrictBounds) rect.clone());
-    final HtmlMetaElement me = new HtmlImageMetaElement
-            (ic, createStyleForImageElement(e, x, y), useXHTML, useDeviceIndependentImageSizes);
-    me.setName(e.getName());
-    return me;
+
+
+    try
+    {
+
+      final ElementLayoutInformation eli = new ElementLayoutInformation(rect);
+      final Content content =
+              contentFactory.createContentForElement(e, eli, getLayoutSupport());
+      if (EmptyContent.getDefaultEmptyContent().equals(content))
+      {
+        return null;
+      }
+      final ImageContent ic = (ImageContent) content;
+      final HtmlMetaElement me = new HtmlImageMetaElement
+              (ic, createStyleForImageElement(e, x, y), useXHTML, useDeviceIndependentImageSizes);
+      me.setName(e.getName());
+      return me;
+    }
+    catch(ContentCreationException cce)
+    {
+      return null;
+    }
   }
 
   protected MetaElement createDrawableCell

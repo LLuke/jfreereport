@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: KeyedQueue.java,v 1.4 2005/02/22 20:20:00 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.5 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -206,5 +206,6 @@ public class KeyedQueue implements Serializable, Cloneable
     q.table = (HashMap) table.clone();
     return q;
   }
+
 
 }

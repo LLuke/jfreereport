@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.22 2005/08/10 14:22:16 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.23 2005/10/05 13:35:40 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,8 @@ import org.jfree.util.Log;
  *
  * @author Thomas Morgner.
  */
-public abstract class AbstractBandLayoutManager implements BandLayoutManager
+public abstract class AbstractBandLayoutManager
+        implements BandLayoutManager
 {
   /**
    * The factor which gets used to correct relative coordinate values.
