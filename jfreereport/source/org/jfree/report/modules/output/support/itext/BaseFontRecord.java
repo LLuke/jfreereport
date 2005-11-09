@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.8 2005/02/19 15:41:23 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.9 2005/02/23 21:05:32 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
 package org.jfree.report.modules.output.support.itext;
 
 import com.lowagie.text.pdf.BaseFont;
+import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontFamily;
 
 /**
  * A PDF font record. The record is used to cache the generated PDF fonts. Once created
@@ -56,9 +58,9 @@ public final class BaseFontRecord
   private BaseFont baseFont;
 
   /**
-   * The logical name.
+   * The file name.
    */
-  private String logicalName;
+  private String fileName;
 
   /**
    * A flag indicating whether this font record describes an embedded PDF font.
@@ -66,6 +68,8 @@ public final class BaseFontRecord
   private boolean embedded;
 
   private transient BaseFontRecordKey key;
+  private boolean bold;
+  private boolean italics;
 
   /**
    * Creates a new font record.
@@ -75,20 +79,33 @@ public final class BaseFontRecord
    *                    target document.
    * @param baseFont    the generated base font for the given font definition.
    */
-  public BaseFontRecord (final String logicalName,
-                         final boolean embedded, final BaseFont baseFont)
+  public BaseFontRecord (final String fileName,
+                         final boolean embedded, final BaseFont baseFont,
+                         final boolean bold, final boolean italics)
   {
     if (baseFont == null)
     {
       throw new NullPointerException("iText-FontDefinition is null.");
     }
-    if (logicalName == null)
+    if (fileName == null)
     {
       throw new NullPointerException("Logical font name is null.");
     }
     this.baseFont = baseFont;
-    this.logicalName = logicalName;
+    this.fileName = fileName;
     this.embedded = embedded;
+    this.italics = italics;
+    this.bold = bold;
+  }
+
+  public boolean isBold()
+  {
+    return bold;
+  }
+
+  public boolean isItalics()
+  {
+    return italics;
   }
 
   /**
@@ -100,7 +117,7 @@ public final class BaseFontRecord
   {
     if (key == null)
     {
-      key = new BaseFontRecordKey(getLogicalName(), getEncoding(), isEmbedded());
+      key = new BaseFontRecordKey(getFileName(), getEncoding(), isEmbedded());
     }
     return key;
   }
@@ -130,9 +147,9 @@ public final class BaseFontRecord
    *
    * @return the logical name.
    */
-  public String getLogicalName ()
+  public String getFileName ()
   {
-    return logicalName;
+    return fileName;
   }
 
   /**
@@ -144,4 +161,5 @@ public final class BaseFontRecord
   {
     return baseFont;
   }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.36 2005/09/07 14:25:11 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.37 2005/10/02 10:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -133,6 +133,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
      * The font size.
      */
     private final float fontSize;
+    private boolean bold;
 
     /**
      * Creates a new size calculator.
@@ -140,7 +141,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
      * @param font     the font.
      * @param fontSize the font size.
      */
-    private PDFSizeCalculator (final BaseFont font, final float fontSize)
+    private PDFSizeCalculator (final BaseFont font,
+                               final float fontSize,
+                               final boolean bold)
     {
       if (font == null)
       {
@@ -152,6 +155,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       }
       this.baseFont = font;
       this.fontSize = fontSize;
+      this.bold = bold;
     }
 
     /**
@@ -166,7 +170,16 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     public float getStringWidth (final String text, final int lineStartPos,
                                  final int endPos)
     {
-      return baseFont.getWidthPoint(text.substring(lineStartPos, endPos), fontSize);
+      final float rawWidth =
+              baseFont.getWidthPoint(text.substring(lineStartPos, endPos), fontSize);
+      if (bold)
+      {
+        // for now, bold fonts do not affect the width ...
+        // we'll need font specific information, which is not available using
+        // the iText font implementation
+        return rawWidth * 1;
+      }
+      return rawWidth;
     }
 
     /**
@@ -310,6 +323,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   public static final String PDF_VERSION_DEFAULT = "1.4";
 
+  private static final float ITALIC_ANGLE = 0.21256f;
+
   /**
    * The output stream.
    */
@@ -324,11 +339,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    * The document writer.
    */
   private PdfWriter writer;
-
-  /**
-   * The current base font.
-   */
-  private BaseFont baseFont;
 
   /**
    * The AWT font.
@@ -378,6 +388,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     (byte) 0x69, (byte) 0x7A};
 
   private VolatilePdfState pdfGraphics;
+  private BaseFontRecord baseFontRecord;
 
   /**
    * Creates a new PDFOutputTarget.
@@ -421,9 +432,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the iText BaseFont.
    */
-  protected BaseFont getBaseFont ()
+  protected BaseFont _getBaseFont ()
   {
-    return baseFont;
+    return baseFontRecord.getBaseFont();
   }
 
   /**
@@ -443,17 +454,21 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
 
     // do nothing if this font is already set
-    if (baseFont != null && fontDefinition != null && fontDefinition.equals(font))
+    if (baseFontRecord != null &&
+        fontDefinition != null &&
+        fontDefinition.equals(font))
     {
       //Log.debug ("The Fonts are equal, request ignored.");
       return; // no need to do anything ...
     }
+
     this.fontDefinition = font;
     try
     {
-      this.baseFont = fontSupport.createBaseFont(font, font.getFontEncoding(getFontEncoding()),
-              (isEmbedFonts() || font.isEmbeddedFont())).getBaseFont();
-      if (baseFont == null)
+      this.baseFontRecord = fontSupport.createBaseFont
+              (font, font.getFontEncoding(getFontEncoding()),
+              (isEmbedFonts() || font.isEmbeddedFont()));
+      if (baseFontRecord == null)
       {
         throw new OutputTargetException("The font definition was not successfull.");
       }
@@ -843,7 +858,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     this.pdfDocument = null;
     this.writer = null;
   }
-  
+
+
   /**
    * Draws the band onto the specified graphics device. The Text is printed on the bottom
    * of the elements bounds.
@@ -860,20 +876,62 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     pdfGraphics.setPaint(getPaint(), true);
     pdfGraphics.setPaint(getPaint(), false);
-    pdfGraphics.setStroke(getStroke());
 
+    Log.debug ("BaseFontRecord: " + baseFontRecord.getFileName());
     cb.beginText();
-    cb.setFontAndSize(this.baseFont, fontSize);
+    cb.setFontAndSize(this.baseFontRecord.getBaseFont(), fontSize);
+
+    // if the font does not have an own bold style, emulate one ..
+    if (font.isBold() && (baseFontRecord.isBold() == false))
+    {
+      final float strokeWidth = fontSize / 30f; // right from iText ...
+      if (strokeWidth != 1)
+      {
+        cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_FILL_STROKE);
+        cb.setLineWidth(strokeWidth);
+      }
+      else
+      {
+        cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_FILL);
+      }
+    }
+    else
+    {
+      cb.setTextRenderingMode(PdfContentByte.TEXT_RENDER_MODE_FILL);
+    }
+
+    final BaseFont baseFont = baseFontRecord.getBaseFont();
 
     final float ascent = baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize);
     final float y2 = (float) (StrictGeomUtility.toExternalValue(bounds.getY()) + ascent);
     final float x1 = (float) StrictGeomUtility.toExternalValue(bounds.getX());
     final float x2 = (float) StrictGeomUtility.toExternalValue(bounds.getX() + bounds.getWidth());
 
-    cb.showTextAligned(PdfContentByte.ALIGN_LEFT,
-            text, x1, this.getPageHeight() - y2, 0);
-    cb.endText();
+    final float y = this.getPageHeight() - y2;
 
+    // if the font does not declare to be italics already, emulate it ..
+    if (font.isItalic() && (baseFontRecord.isItalics() == false))
+    {
+      final float italicAngle =
+              baseFont.getFontDescriptor(BaseFont.ITALICANGLE, fontSize);
+      if (italicAngle == 0)
+      {
+        // italics requested, but the font itself does not supply italics gylphs.
+        Log.debug ("Modify the text matrix");
+        cb.setTextMatrix(1, 0, ITALIC_ANGLE, 1, x1, y);
+      }
+      else
+      {
+        cb.setTextMatrix(x1, y);
+      }
+    }
+    else
+    {
+      cb.setTextMatrix(x1, y);
+    }
+
+    cb.showText(text);
+    cb.endText();
 
     if (font.isUnderline())
     {
@@ -1150,7 +1208,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     {
       final BaseFontRecord record = fontSupport.createBaseFont(font,
               font.getFontEncoding(getFontEncoding()), isEmbedFonts() || font.isEmbeddedFont());
-      return new PDFSizeCalculator(record.getBaseFont(), font.getFontSize());
+      return new PDFSizeCalculator(record.getBaseFont(), font.getFontSize(), font.isBold());
     }
     catch (BaseFontCreateException bfce)
     {
@@ -1273,4 +1331,17 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     cb.setAction(action, leftX, lowerY, rightX, upperY);
   }
 
+  /**
+   * An ugly hack to work around iText's inapropriate Font implementation.
+   * For a real and clean support we will have to go the long way alone -
+   * using iText only for the PDF export - but not for the fancy and advanced
+   * font computations.
+   *
+   * @return true, if the given basefont class is an TrueType font, false otherwise.
+   */
+  protected static boolean isTrueTypeFont (final BaseFont font)
+  {
+    return font.getFontType() == BaseFont.FONT_TYPE_TT ||
+           font.getFontType() == BaseFont.FONT_TYPE_TTUNI;
+  }
 }

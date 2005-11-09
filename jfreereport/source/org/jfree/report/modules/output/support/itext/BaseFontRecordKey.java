@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.8 2005/02/19 13:30:00 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.9 2005/02/23 21:05:32 taqua Exp $
  *
  * Changes
  * -------
@@ -48,9 +48,10 @@ package org.jfree.report.modules.output.support.itext;
 public final class BaseFontRecordKey
 {
   /**
-   * The logical name.
+   * The file name of the font file.
    */
-  private final String logicalName;
+  private String fileName;
+
 
   /**
    * The encoding.
@@ -59,10 +60,7 @@ public final class BaseFontRecordKey
 
   private boolean embedded;
 
-  /**
-   * The cached hashcode for this object.
-   */
-  private int hashCode;
+  private Integer hashCode;
 
   /**
    * Creates a new key.
@@ -70,18 +68,18 @@ public final class BaseFontRecordKey
    * @param logicalName the logical name.
    * @param encoding    the encoding.
    */
-  public BaseFontRecordKey (final String logicalName,
+  public BaseFontRecordKey (final String fileName,
                             final String encoding, final boolean embedded)
   {
-    if (logicalName == null)
+    if (fileName == null)
     {
-      throw new NullPointerException("Logical font name is null.");
+      throw new NullPointerException("font name is null.");
     }
     if (encoding == null)
     {
       throw new NullPointerException("Encoding is null.");
     }
-    this.logicalName = logicalName;
+    this.fileName = fileName;
     this.encoding = encoding;
     this.embedded = embedded;
   }
@@ -108,7 +106,7 @@ public final class BaseFontRecordKey
     {
       return false;
     }
-    if (!logicalName.equals(key.logicalName))
+    if (!fileName.equals(key.fileName))
     {
       return false;
     }
@@ -116,25 +114,20 @@ public final class BaseFontRecordKey
     {
       return false;
     }
+
     return true;
   }
 
-  /**
-   * Returns a hash code for the key.
-   *
-   * @return the hash code.
-   */
-  public int hashCode ()
+  public int hashCode()
   {
-    if (hashCode == 0)
+    if (hashCode == null)
     {
-      int result;
-      result = embedded ? 0 : 1;
-      result = 29 * result + logicalName.hashCode();
+      int result = fileName.hashCode();
       result = 29 * result + encoding.hashCode();
-      hashCode = result;
+      result = 29 * result + (embedded ? 1 : 0);
+      hashCode = new Integer(result);
     }
-    return hashCode;
+    return hashCode.intValue();
   }
 
   /**
@@ -156,7 +149,7 @@ public final class BaseFontRecordKey
    */
   public String toString ()
   {
-    return ("FontKey={name=" + logicalName + "; encoding=" +
+    return ("FontKey={name=" + fileName + "; encoding=" +
             encoding + "; embedded=" + embedded + "}");
 
   }

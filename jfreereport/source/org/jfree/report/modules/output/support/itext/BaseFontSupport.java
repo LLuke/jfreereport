@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.20 2005/09/07 14:25:11 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.21 2005/09/23 10:05:38 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ package org.jfree.report.modules.output.support.itext;
 
 import java.awt.Font;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
@@ -51,6 +51,8 @@ import com.lowagie.text.pdf.FontMapper;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.StringUtil;
 import org.jfree.util.Log;
+import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.TrueTypeFontRecord;
 
 /**
  * iText font support.
@@ -76,7 +78,7 @@ public class BaseFontSupport implements FontMapper
 
   public BaseFontSupport (final String defaultEncoding)
   {
-    this.baseFonts = new WeakHashMap();
+    this.baseFonts = new HashMap();
     this.defaultEncoding = defaultEncoding;
   }
 
@@ -178,40 +180,48 @@ public class BaseFontSupport implements FontMapper
       stringEncoding = "utf-8";
     }
 
-    BaseFontRecord fontRecord = getFromCache(fontKey, encoding, embedded);
-    if (fontRecord != null)
-    {
-      return fontRecord;
-    }
-    fontRecord = getFromCache(fontKey, stringEncoding, embedded);
-    if (fontRecord != null)
-    {
-      return fontRecord;
-    }
-
     final BaseFontFactory factory = BaseFontFactory.getFontFactory();
     try
     {
-      final String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);
-      if (filename != null)
+      final FontRecord registryFontRecord =
+              factory.getFontForName(fontKey, bold, italic);
+      if (registryFontRecord != null)
       {
+        // Try one: We do have a registered TrueType file. The cache is checked
+        // first, creating fonts is expensive. If no cached version is found,
+        // we create one..
+
         boolean embeddedOverride = embedded;
-        if (embedded == true && factory.isEmbeddable(filename) == false)
+        if (embedded == true && registryFontRecord.isEmbeddable() == false)
         {
           Log.warn("License of font forbids embedded usage for font: " + fontKey);
           // strict mode here?
           embeddedOverride = false;
         }
-        fontRecord = createFontFromTTF(font, filename, encoding, stringEncoding, embeddedOverride);
+        BaseFontRecord fontRecord = createFontFromTTF(registryFontRecord, encoding, stringEncoding, embeddedOverride);
         if (fontRecord != null)
         {
           // store an additional logical record too..
-          putToCache(new BaseFontRecordKey(fontKey, encoding, embedded), fontRecord);
+//          putToCache(new BaseFontRecordKey(fontKey, encoding, embedded), fontRecord);
           return fontRecord;
         }
       }
       else
       {
+        // Alternative: No Registered TrueType font was found. OK; don't panic,
+        // we try to create a font anyway..
+
+        BaseFontRecord fontRecord = getFromCache(fontKey, encoding, embedded);
+        if (fontRecord != null)
+        {
+          return fontRecord;
+        }
+        fontRecord = getFromCache(fontKey, stringEncoding, embedded);
+        if (fontRecord != null)
+        {
+          return fontRecord;
+        }
+
         // Log.debug ("The font with name " + fontKey + " was not recognized.");
         // filename is null, so no ttf file registered for the fontname, maybe this is
         // one of the internal fonts ...
@@ -219,7 +229,7 @@ public class BaseFontSupport implements FontMapper
                 false, null, null);
         if (f != null)
         {
-          fontRecord = new BaseFontRecord(fontKey, embedded, f);
+          fontRecord = new BaseFontRecord(fontKey, embedded, f, bold, italic);
           putToCache(fontRecord);
           return fontRecord;
         }
@@ -236,7 +246,7 @@ public class BaseFontSupport implements FontMapper
     try
     {
       // check, whether HELVETICA is already created - yes, then return cached instance instead
-      fontRecord = getFromCache(BaseFont.HELVETICA, stringEncoding, embedded);
+      BaseFontRecord fontRecord = getFromCache(BaseFont.HELVETICA, stringEncoding, embedded);
       if (fontRecord != null)
       {
         // map all font references of the invalid font to the default font..
@@ -250,7 +260,8 @@ public class BaseFontSupport implements FontMapper
               false, null, null);
       if (f != null)
       {
-        fontRecord = new BaseFontRecord(BaseFont.HELVETICA, embedded, f);
+        fontRecord = new BaseFontRecord
+                (BaseFont.HELVETICA, embedded, f, bold, italic);
         putToCache(fontRecord);
         putToCache(new BaseFontRecordKey(fontKey, encoding, embedded), fontRecord);
         return fontRecord;
@@ -278,29 +289,34 @@ public class BaseFontSupport implements FontMapper
    * @throws IOException       if there is an I/O problem.
    * @throws DocumentException if the BaseFont could not be created.
    */
-  private BaseFontRecord createFontFromTTF (final FontDefinition font, final String filename,
-                                            final String encoding, final String stringEncoding,
+  private BaseFontRecord createFontFromTTF (final FontRecord fontRecord,
+                                            final String encoding,
+                                            final String stringEncoding,
                                             final boolean embedded)
           throws IOException, DocumentException
   {
-    String fontKey = filename;
-    if (font.isBold() && font.isItalic())
-    {
-      fontKey += ",BoldItalic";
-    }
-    else if (font.isBold())
-    {
-      fontKey += ",Bold";
-    }
-    else if (font.isItalic())
-    {
-      fontKey += ",Italic";
-    }
-
     // check if this font is in the cache ...
     //Log.warn ("TrueTypeFontKey : " + fontKey + " Font: " + font.isItalic() + " Encoding: "
     //          + encoding);
-    final BaseFontRecord fontRec = getFromCache(fontKey, encoding, embedded);
+    final String filename;
+    if (fontRecord instanceof TrueTypeFontRecord)
+    {
+      TrueTypeFontRecord ttfRecord = (TrueTypeFontRecord) fontRecord;
+      if (ttfRecord.getCollectionIndex() >= 0)
+      {
+        filename = ttfRecord.getFontFile() + "," + ttfRecord.getCollectionIndex();
+      }
+      else
+      {
+        filename = ttfRecord.getFontFile();
+      }
+    }
+    else
+    {
+      filename = fontRecord.getFontFile();
+    }
+
+    final BaseFontRecord fontRec = getFromCache(filename, encoding, embedded);
     if (fontRec != null)
     {
       return fontRec;
@@ -309,16 +325,17 @@ public class BaseFontSupport implements FontMapper
     BaseFont f;
     try
     {
-      f = BaseFont.createFont(fontKey, encoding, embedded, false, null, null);
+      f = BaseFont.createFont(filename, encoding, embedded, false, null, null);
     }
     catch (DocumentException de)
     {
       // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
-      f = BaseFont.createFont(fontKey, stringEncoding, embedded, false, null, null);
+      f = BaseFont.createFont(filename, stringEncoding, embedded, false, null, null);
     }
 
     // no, we have to create a new instance
-    final BaseFontRecord record = new BaseFontRecord(fontKey, embedded, f);
+    final BaseFontRecord record = new BaseFontRecord
+            (filename, embedded, f, fontRecord.isBold(), fontRecord.isItalics());
     putToCache(record);
     return record;
   }
@@ -346,11 +363,11 @@ public class BaseFontSupport implements FontMapper
    * @param encoding the encoding; never null.
    * @return the PDF font record or null, if not found.
    */
-  private BaseFontRecord getFromCache (final String fontKey,
+  private BaseFontRecord getFromCache (final String fileName,
                                        final String encoding,
                                        final boolean embedded)
   {
-    final Object key = new BaseFontRecordKey(fontKey, encoding, embedded);
+    final Object key = new BaseFontRecordKey(fileName, encoding, embedded);
     final BaseFontRecord r = (BaseFontRecord) baseFonts.get(key);
     if (r != null)
     {
@@ -514,10 +531,12 @@ public class BaseFontSupport implements FontMapper
     for (int k = 0; k < names.length; ++k)
     {
       final String name[] = names[k];
+      // Macintosh language english
       if (name[0].equals("1") && name[1].equals("0"))
       {
         nameExtr = name[3];
       }
+      // Microsoft language code for US-English ...
       else if (name[2].equals("1033"))
       {
         nameExtr = name[3];
@@ -525,7 +544,7 @@ public class BaseFontSupport implements FontMapper
       }
     }
 
-    if (nameExtr == null)
+    if (nameExtr != null)
     {
       return nameExtr;
     }

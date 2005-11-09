@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.21 2005/08/08 15:36:34 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.22 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -42,14 +42,19 @@ package org.jfree.report.modules.output.support.itext;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
+import org.jfree.fonts.registry.FontFamily;
+import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
@@ -143,23 +148,7 @@ public final class BaseFontFactory extends DefaultFontMapper
         return true;
       }
       final String name = pathname.getName();
-      if (StringUtil.endsWithIgnoreCase(name, ".afm"))
-      {
-        return true;
-      }
-      if (StringUtil.endsWithIgnoreCase(name, ".ttf"))
-      {
-        return true;
-      }
-      if (StringUtil.endsWithIgnoreCase(name, ".ttc"))
-      {
-        return true;
-      }
-      if (StringUtil.endsWithIgnoreCase(name, ".otf"))
-      {
-        return true;
-      }
-      return false;
+      return StringUtil.endsWithIgnoreCase(name, ".afm");
     }
 
   }
@@ -212,6 +201,8 @@ public final class BaseFontFactory extends DefaultFontMapper
    */
   private Properties confirmedFiles;
 
+  private FontRegistry registry;
+
   /**
    * Creates a new factory.
    */
@@ -219,6 +210,7 @@ public final class BaseFontFactory extends DefaultFontMapper
   {
     fontsByName = new Properties();
     notEmbeddedFonts = new Properties();
+    registry = new FontRegistry();
   }
 
   /**
@@ -259,9 +251,9 @@ public final class BaseFontFactory extends DefaultFontMapper
     {
       Log.info("Registering fonts for the iText library.");
     }
+
     if (store.existsProperties(KNOWN_FONTS_PATH))
     {
-
       try
       {
         final Properties loadedSeenFiles = store.loadProperties(KNOWN_FONTS_PATH, null);
@@ -333,6 +325,9 @@ public final class BaseFontFactory extends DefaultFontMapper
       Log.info("Failed to store font configuration. This error is non-fatal, " +
               "the font configuration will be rebuild from scratch, if necessary.");
     }
+
+    registry.registerDefaultFontPath();
+
     Log.info("Completed font registration.");
     initialized = true;
   }
@@ -405,7 +400,8 @@ public final class BaseFontFactory extends DefaultFontMapper
   public synchronized void registerFontPath
           (final File file, final String encoding)
   {
-    registerFontPath(file, encoding, new HashNMap(), new Properties());
+    this.registerFontPath(file, encoding, new HashNMap(), new Properties());
+    this.registry.registerFontPath(file);
   }
 
   /**
@@ -475,13 +471,26 @@ public final class BaseFontFactory extends DefaultFontMapper
   public synchronized void registerFontFile (final String filename,
                                              final String encoding)
   {
-    if (!filename.toLowerCase().endsWith(".ttf") &&
-            !filename.toLowerCase().endsWith(".ttc") &&
-            !filename.toLowerCase().endsWith(".afm") &&
-            !filename.toLowerCase().endsWith(".otf"))
+    if (filename.toLowerCase().endsWith(".ttf") ||
+        filename.toLowerCase().endsWith(".ttc") ||
+        filename.toLowerCase().endsWith(".otf"))
+    {
+      try
+      {
+        this.registry.registerFontFile(new File (filename));
+      }
+      catch (IOException e)
+      {
+        // ignore ..
+      }
+      return;
+    }
+
+    if (filename.toLowerCase().endsWith(".afm") == false)
     {
       return;
     }
+
     final File file = new File(filename);
     if (file.exists() && file.isFile() && file.canRead())
     {
@@ -490,18 +499,7 @@ public final class BaseFontFactory extends DefaultFontMapper
       confirmedFiles.put(filename, newAccessTime);
       try
       {
-        if (filename.toLowerCase().endsWith(".ttc"))
-        {
-          final String[] fontNames = BaseFont.enumerateTTCNames(filename);
-          for (int i = 0; i < fontNames.length; i++)
-          {
-            addFont(filename + "," + i, encoding);
-          }
-        }
-        else
-        {
-          addFont(filename, encoding);
-        }
+        addFont(filename, encoding);
       }
       catch (Exception e)
       {
@@ -565,6 +563,15 @@ public final class BaseFontFactory extends DefaultFontMapper
                         embedded, new Log.SimpleMessage("File=", font)));
       }
     }
+
+    final String[][] afi = bfont.getFamilyFontName();
+    for (int i = 0; i < afi.length; i++)
+    {
+      String[] strings = afi[i];
+      Log.debug(new Log.SimpleMessage
+              ("Registered truetype font ", strings[3], "; Embedded=",
+                      embedded, new Log.SimpleMessage("File=", font)));
+    }
   }
 
   /**
@@ -574,7 +581,10 @@ public final class BaseFontFactory extends DefaultFontMapper
    */
   public Iterator getRegisteredFonts ()
   {
-    return fontsByName.keySet().iterator();
+    final TreeSet treeSet = new TreeSet();
+    treeSet.addAll(fontsByName.keySet());
+    treeSet.addAll(Arrays.asList(registry.getRegisteredFamilies()));
+    return treeSet.iterator();
   }
 
   /**
@@ -582,27 +592,17 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @param font the font name
    * @return the font file name.
+   * @deprecated this method does not support font styles.
    */
   public String getFontfileForName (final String font)
   {
-    if (isInitialized() == false)
-    {
-      if (getPDFTargetAutoInit().equals(ITEXT_FONT_AUTOINIT_LAZY))
-      {
-        registerDefaultFontPath();
-      }
-    }
-    return fontsByName.getProperty(font);
+    final FontRecord record = getFontForName(font, false, false);
+    return record.getFontFile();
   }
 
-  /**
-   * Checks, whether the font has known license restrictions. Returns true, if the font
-   * can be embedded, and false otherwise.
-   *
-   * @param fontFileName the filename of the font (not the logical name!)
-   * @return true, if the font can be embedded, false otherwise.
-   */
-  public boolean isEmbeddable (final String fontFileName)
+  public FontRecord getFontForName (final String font,
+                                    final boolean bold,
+                                    final boolean italics)
   {
     if (isInitialized() == false)
     {
@@ -611,7 +611,18 @@ public final class BaseFontFactory extends DefaultFontMapper
         registerDefaultFontPath();
       }
     }
-    return notEmbeddedFonts.getProperty(fontFileName, "false").equals("true");
+    String retval = fontsByName.getProperty(font);
+    if (retval != null)
+    {
+      return new MinimalFontRecord(font, retval, bold, italics);
+    }
+    FontFamily family = registry.getFontFamily(font);
+    if (family == null)
+    {
+      return null;
+    }
+
+    return family.getFontRecord(bold, italics);
   }
 
   /**

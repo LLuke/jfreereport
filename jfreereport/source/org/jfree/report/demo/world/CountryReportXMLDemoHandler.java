@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Treatment.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
+ * $Id: CountryReportXMLDemoHandler.java,v 1.2 2005/09/21 12:00:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import javax.swing.JComponent;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.modules.output.pageable.pdf.PDFReportUtil;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
@@ -95,16 +96,17 @@ public class CountryReportXMLDemoHandler extends AbstractXmlDemoHandler
    *
    * @param args ignored.
    */
-  public static void main (final String[] args)
+  public static void main (final String[] args) throws ReportDefinitionException
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
     final CountryReportXMLDemoHandler handler = new CountryReportXMLDemoHandler();
-    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
-    frame.init();
-    frame.pack();
-    RefineryUtilities.centerFrameOnScreen(frame);
-    frame.setVisible(true);
+//    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+//    frame.init();
+//    frame.pack();
+//    RefineryUtilities.centerFrameOnScreen(frame);
+//    frame.setVisible(true);
+    PDFReportUtil.createPDF(handler.createReport(), "/tmp/report.pdf");
   }
 }

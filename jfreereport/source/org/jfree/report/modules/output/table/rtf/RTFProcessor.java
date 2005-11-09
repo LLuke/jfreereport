@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFProcessor.java,v 1.12 2005/09/04 13:15:07 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.13 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -54,11 +54,12 @@ import org.jfree.report.util.EncodingSupport;
  */
 public class RTFProcessor extends TableProcessor
 {
+  public static final String CONFIGURATION_PREFIX = "org.jfree.report.targets.table.rtf";
+
   /**
    * the target output stream for writing the generated content.
    */
   private OutputStream outputStream;
-  public static final String CONFIGURATION_PREFIX = "org.jfree.report.targets.table.rtf.";
 
   /**
    * Creates a new RTF processor for the Report.
@@ -114,7 +115,7 @@ public class RTFProcessor extends TableProcessor
   protected MetaBandProducer createMetaBandProducer ()
   {
     final String encoding = getReport().getReportConfiguration().
-            getConfigProperty(getReportConfigurationPrefix() + "." + "Encoding",
+            getConfigProperty(getReportConfigurationPrefix() + ".Encoding",
                     EncodingSupport.getPlatformDefaultEncoding());
     return new RTFMetaBandProducer(encoding);
   }

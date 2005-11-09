@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.16 2005/03/10 19:05:37 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.17 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * --------
@@ -472,7 +472,7 @@ public class ExcelExportDialog extends AbstractExportDialog
   public void initFromConfiguration (final Configuration config)
   {
     final String strict = config.getConfigProperty
-            (ExcelProcessor.CONFIGURATION_PREFIX +
+            (ExcelProcessor.CONFIGURATION_PREFIX + "." +
             TableProcessor.STRICT_LAYOUT,
                     config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                             TableProcessor.STRICT_LAYOUT_DEFAULT));
@@ -486,7 +486,7 @@ public class ExcelExportDialog extends AbstractExportDialog
    */
   public void storeToConfiguration (final ModifiableConfiguration config)
   {
-    config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +
+    config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX + "." +
         TableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
 

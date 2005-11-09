@@ -18,6 +18,17 @@ A list of changes in recent versions:
         * [BUG] The image handling for the HTML export was invalid and caused
           ugly scaled images.
 
+        * [BUG] The CSV and Excel export dialogs did not update the report
+          configuration properly.
+
+        * [BUG] The PDF export did not create italic or bold fonts. A new library
+          was introduced to solve the problem. 'libFonts' allows to map fonts
+          into Font-Families and to select the most appropriate font file for
+          a given style. 
+
+        * JCommon has reached 1.0.0. JFreeChart users should switch to the
+          latest CVS version of JFreeChart til the next release.
+
         * SurveyScale-Drawable is now serializable.
 
         * A 'PrintableTableModel' has been added, which allows to override the

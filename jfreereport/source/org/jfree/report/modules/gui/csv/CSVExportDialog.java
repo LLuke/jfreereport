@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.15 2005/03/10 19:05:22 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.16 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * --------
@@ -847,19 +847,26 @@ public class CSVExportDialog extends AbstractExportDialog
    */
   public void initFromConfiguration (final Configuration config)
   {
-    setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, COMMA_SEPARATOR));
+    // the CSV separator has two sources, either the data CSV or the
+    // table CSV. As we have only one input field for that property,
+    // we use a cascading schema to resolve this. The data oriented
+    // separator is preferred ...
+    final String tableCSVSeparator = config.getConfigProperty
+            (CSVTableProcessor.CONFIGURATION_PREFIX + "." +
+                    CSVTableProcessor.SEPARATOR_KEY, COMMA_SEPARATOR);
+    setSeparatorString(config.getConfigProperty
+            (CSVProcessor.CSV_SEPARATOR, tableCSVSeparator));
 
     final String strict = config.getConfigProperty
-            (CSVTableProcessor.CONFIGURATION_PREFIX +
-            CSVTableProcessor.STRICT_LAYOUT,
-                    config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
-                            TableProcessor.STRICT_LAYOUT_DEFAULT));
+            (CSVTableProcessor.CONFIGURATION_PREFIX + "." + CSVTableProcessor.STRICT_LAYOUT,
+                    config.getConfigProperty(TableProcessor.STRICT_LAYOUT, TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
 
     final String colNames = config.getConfigProperty (CSVProcessor.CSV_DATAROWNAME, "false");
     setColumnNamesAsFirstRow(colNames.equals("true"));
 
-    final String encoding = getCSVTargetEncoding(config);
+    final String encoding = config.getConfigProperty
+            (CSV_OUTPUT_ENCODING, CSV_OUTPUT_ENCODING_DEFAULT);
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
   }
@@ -872,9 +879,13 @@ public class CSVExportDialog extends AbstractExportDialog
   public void storeToConfiguration (final ModifiableConfiguration config)
   {
     config.setConfigProperty(CSVProcessor.CSV_SEPARATOR, getSeparatorString());
-    config.setConfigProperty(CSVTableProcessor.CONFIGURATION_PREFIX +
+    config.setConfigProperty(CSVTableProcessor.CONFIGURATION_PREFIX + "." +
             CSVTableProcessor.SEPARATOR_KEY, getSeparatorString());
-    config.setConfigProperty(CSVTableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+    config.setConfigProperty(CSVTableProcessor.CONFIGURATION_PREFIX + "." +
+            CSVTableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+    config.setConfigProperty(CSVProcessor.CSV_DATAROWNAME,
+            String.valueOf(isColumnNamesAsFirstRow()));
+    config.setConfigProperty(CSV_OUTPUT_ENCODING, getEncoding());
   }
 
 
@@ -921,29 +932,6 @@ public class CSVExportDialog extends AbstractExportDialog
   public void setStrictLayout (final boolean strictLayout)
   {
     cbxStrictLayout.setSelected(strictLayout);
-  }
-
-  /**
-   * Returns the CSV encoding property value.
-   *
-   * @param config the report configuration from where to read the values.
-   * @return the CSV encoding property value.
-   */
-  public String getCSVTargetEncoding (final Configuration config)
-  {
-    return config.getConfigProperty(CSV_OUTPUT_ENCODING, CSV_OUTPUT_ENCODING_DEFAULT);
-  }
-
-  /**
-   * Sets the CSV encoding property value.
-   *
-   * @param config         the report configuration from where to read the values.
-   * @param targetEncoding the new encoding.
-   */
-  public void setCSVTargetEncoding (final ModifiableConfiguration config,
-                                    final String targetEncoding)
-  {
-    config.setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
   }
 
   protected String getConfigurationSuffix ()

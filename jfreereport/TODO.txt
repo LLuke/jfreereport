@@ -14,6 +14,7 @@ LibLayout dependent features:
   * Better Support for international Fonts
     - parse TTF-Files for supported Charsets/Unicode-Ranges
     - automaticly adjust encoding if nessesary
+    - Keep track of Italics/Bold and justification information
   * Keep-Together of groups and bands
   * LTR and RTL text, vertical text
   

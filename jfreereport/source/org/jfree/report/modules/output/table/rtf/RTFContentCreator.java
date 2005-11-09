@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.10 2005/09/07 14:25:11 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.11 2005/10/06 00:50:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -264,7 +264,7 @@ public class RTFContentCreator extends TableContentCreator
     RtfWriter2.getInstance(document, new NoCloseOutputStream(outputStream));
 
     final String author = reportDefinition.getReportConfiguration().getConfigProperty
-            (RTFProcessor.CONFIGURATION_PREFIX + TableProcessor.AUTHOR);
+            (RTFProcessor.CONFIGURATION_PREFIX + "." + TableProcessor.AUTHOR);
     if (author != null)
     {
       document.addAuthor(author);

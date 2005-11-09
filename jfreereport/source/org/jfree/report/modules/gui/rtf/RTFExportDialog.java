@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFExportDialog.java,v 1.3 2005/09/07 14:25:10 taqua Exp $
+ * $Id: RTFExportDialog.java,v 1.4 2005/09/20 19:53:04 taqua Exp $
  *
  * Changes
  * --------
@@ -472,7 +472,7 @@ public class RTFExportDialog extends AbstractExportDialog
   public void initFromConfiguration (final Configuration config)
   {
     final String strict = config.getConfigProperty
-            (RTFProcessor.CONFIGURATION_PREFIX +
+            (RTFProcessor.CONFIGURATION_PREFIX + "." +
             TableProcessor.STRICT_LAYOUT,
                     config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                             TableProcessor.STRICT_LAYOUT_DEFAULT));
@@ -486,7 +486,7 @@ public class RTFExportDialog extends AbstractExportDialog
    */
   public void storeToConfiguration (final ModifiableConfiguration config)
   {
-    config.setConfigProperty(RTFProcessor.CONFIGURATION_PREFIX +
+    config.setConfigProperty(RTFProcessor.CONFIGURATION_PREFIX + "." + 
         TableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
 
