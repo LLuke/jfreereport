@@ -1,0 +1,13 @@
+---------------
+1.  WHAT's NEW
+---------------
+A list of changes in recent versions:
+
+09-Nov-2005: Version 0.1.0:
+    * Reading the 'name', 'head' and 'OS/2' table for truetype files is
+      implemented. This is all that is needed to successfully register
+      fonts.
+
+    * A serializable 'FontRegistry' loads all available fonts from the system
+      directories. It can be stored and reloaded, as this implementation is no
+      singleton anymore.
