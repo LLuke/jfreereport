@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.13 2005/09/04 18:58:15 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.14 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,6 +61,7 @@ import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
 import org.jfree.report.modules.output.table.xls.util.ExcelPrintSetupFactory;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.util.Log;
+import org.jfree.base.config.ModifiableConfiguration;
 
 public class ExcelContentCreator extends TableContentCreator
 {
@@ -123,10 +124,11 @@ public class ExcelContentCreator extends TableContentCreator
       sheet = workbook.createSheet(sheetName);
     }
 
-    final String paper = reportDefinition.getReportConfiguration().getConfigProperty
+    final ModifiableConfiguration config = reportDefinition
+            .getReportConfiguration();
+    final String paper = config.getConfigProperty
             (ExcelProcessor.CONFIGURATION_PREFIX + ".Paper");
-    final String paperOrientation = reportDefinition.getReportConfiguration()
-            .getConfigProperty
+    final String paperOrientation = config.getConfigProperty
             (ExcelProcessor.CONFIGURATION_PREFIX + ".PaperOrientation");
 
     final HSSFPrintSetup printSetup = sheet.getPrintSetup();
@@ -134,6 +136,12 @@ public class ExcelContentCreator extends TableContentCreator
             (printSetup, reportDefinition.getPageDefinition(),
                     paper, paperOrientation);
 
+    final boolean displayGridLines = "true".equals(config.getConfigProperty
+            (ExcelProcessor.CONFIGURATION_PREFIX + ".GridLinesDisplayed"));
+    final boolean printGridLines = "true".equals(config.getConfigProperty
+            (ExcelProcessor.CONFIGURATION_PREFIX + ".GridLinesPrinted"));
+    sheet.setDisplayGridlines(displayGridLines);
+    sheet.setPrintGridlines(printGridLines);
   }
 
   protected void handleClose ()
