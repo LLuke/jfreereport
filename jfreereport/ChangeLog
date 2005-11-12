@@ -35,6 +35,9 @@ A list of changes in recent versions:
           column names specified in the tablemodel. This is a contribution by
           'LordOfCode'.
 
+        * Repeating Group-Footers have been implemented to support the printing
+          of running totals in large lists, without having to use the pagefooter.
+
 0.8.6-2: (17-Oct-2005)
         * [BUG] Having a pagebreak-after-print on a group-footer without
           having an report footer caused the table-type reporting to fail.

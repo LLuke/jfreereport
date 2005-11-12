@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.30 2005/09/19 13:09:09 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.31 2005/09/19 15:38:47 taqua Exp $
  *
  * Changes
  * -------
@@ -171,6 +171,7 @@ public class SimplePageLayouter extends PageLayouter
    * The delegate which is used to perform the layouting.
    */
   private SimplePageLayoutDelegate delegate;
+  private int currentEffectiveGroupIndex;
 
   /**
    * Creates a new page layouter.
@@ -672,7 +673,7 @@ public class SimplePageLayouter extends PageLayouter
     final StrictBounds bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
             bounds.getWidth(), bounds.getHeight());
-    return doPrint(bounds, b, true, false, -1);
+    return doPrint(bounds, b, true, false, POSITION_UNDEFINED);
   }
 
   /**
@@ -796,18 +797,58 @@ public class SimplePageLayouter extends PageLayouter
    */
   public boolean isSpaceFor (final long height)
   {
-    if (isLastPageBreak && (getReport().getPageFooter().isDisplayOnLastPage() == false))
+    if (isLastPageBreak &&
+            (getReport().getPageFooter().isDisplayOnLastPage() == false))
     {
       getCursor().setReservedSpace(0);
     }
     else
     {
+      long reservedHeight = 0;
+
       final Band b = getReport().getPageFooter();
       // perform layout, but do not fire the event, as we don't print the band ...
       final StrictBounds rect = doLayout(b, false);
-      getCursor().setReservedSpace(rect.getHeight());
+      reservedHeight += rect.getHeight();
+
+      // todo Test Pending ..
+
+      int groupsPrinted = getCurrentEffectiveGroupIndex();
+      for (int gidx = 0; gidx < groupsPrinted; gidx++)
+      {
+        final Group g = getReport().getGroup(gidx);
+        if (g.getFooter().getStyle().getBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER))
+        {
+          final StrictBounds rect2 = doLayout(b, false);
+          reservedHeight += rect2.getHeight();
+        }
+      }
+
+      setReservedSpace(reservedHeight);
     }
     return getCursor().isSpaceFor(height);
+  }
+
+
+  /**
+   * Defines the currently effective group index. This index is used for the repeating
+   * group headers feature.
+   *
+   * @return the current group index.
+   */
+  public int getCurrentEffectiveGroupIndex ()
+  {
+    return currentEffectiveGroupIndex;
+  }
+
+  /**
+   * Defines the currently effective group index.
+   *
+   * @param currentEffectiveGroupIndex the current group index.
+   */
+  public void setCurrentEffectiveGroupIndex (final int currentEffectiveGroupIndex)
+  {
+    this.currentEffectiveGroupIndex = currentEffectiveGroupIndex;
   }
 
   /**

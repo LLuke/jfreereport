@@ -252,6 +252,7 @@
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${libdir}/${libfonts-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-support-pagelayout-file}"/>
         <pathelement location="${module-output-table-base-file}"/>

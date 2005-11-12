@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.28 2005/10/06 00:50:26 taqua Exp $
+ * $Id: TableWriter.java,v 1.29 2005/10/11 19:27:57 taqua Exp $
  *
  * Changes
  * -------
@@ -124,6 +124,7 @@ public strictfp class TableWriter
   private MetaBandProducer metaBandProducer;
 
   private LayoutSupport layoutSupport;
+  private int currentEffectiveGroupIndex;
 
   /**
    * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth is
@@ -804,4 +805,27 @@ public strictfp class TableWriter
   {
     getLayoutSupport().getCache().flushDynamicCache();
   }
+
+
+  /**
+   * Defines the currently effective group index. This index is used for the repeating
+   * group headers feature.
+   *
+   * @return the current group index.
+   */
+  public int getCurrentEffectiveGroupIndex ()
+  {
+    return currentEffectiveGroupIndex;
+  }
+
+  /**
+   * Defines the currently effective group index.
+   *
+   * @param currentEffectiveGroupIndex the current group index.
+   */
+  public void setCurrentEffectiveGroupIndex (final int currentEffectiveGroupIndex)
+  {
+    this.currentEffectiveGroupIndex = currentEffectiveGroupIndex;
+  }
+
 }

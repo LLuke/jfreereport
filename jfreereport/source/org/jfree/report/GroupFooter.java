@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupFooter.java,v 1.5 2005/02/23 19:31:38 taqua Exp $
+ * $Id: GroupFooter.java,v 1.6 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,6 +40,8 @@
  */
 
 package org.jfree.report;
+
+import org.jfree.report.style.BandStyleKeys;
 
 /**
  * A band that appears at the end of each instance of a group.
@@ -64,6 +66,26 @@ public class GroupFooter extends Band implements RootLevelBand
   public void setReportDefinition (final ReportDefinition reportDefinition)
   {
     super.setReportDefinition(reportDefinition);
+  }
+
+  /**
+   * Checks, whether this group header should be repeated on new pages.
+   *
+   * @return true, if the header will be repeated, false otherwise
+   */
+  public boolean isRepeat ()
+  {
+    return getStyle().getBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER);
+  }
+
+  /**
+   * Defines, whether this group header should be repeated on new pages.
+   *
+   * @param repeat true, if the header will be repeated, false otherwise
+   */
+  public void setRepeat (final boolean repeat)
+  {
+    getStyle().setBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER, repeat);
   }
 
 }

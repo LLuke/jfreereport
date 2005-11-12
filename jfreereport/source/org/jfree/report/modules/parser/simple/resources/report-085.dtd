@@ -30,6 +30,7 @@
   2005-10-12: Now all style attributes are optional, as they may have been
               defined by an external stylesheet; added the component field type
   2005-10-14: Link-Target-Windows can be defined.
+  2005-11-11; Repeating Group-Footers.
 
   Use this as Document type definition:
 
@@ -383,6 +384,7 @@ layout                    CDATA         #IMPLIED
 <!ATTLIST groupfooter
 pagebreak-after-print     (%boolean;)   #IMPLIED
 pagebreak-before-print    (%boolean;)   #IMPLIED
+repeat                    (%boolean;)   #IMPLIED
 height                    CDATA         #IMPLIED
 fixed-position            CDATA         #IMPLIED
 layout                    CDATA         #IMPLIED

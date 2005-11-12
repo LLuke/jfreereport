@@ -32,6 +32,7 @@
         <pathelement location="${libdir}/${bsf-jar-file}"/>
         <pathelement location="${libdir}/${jaxp-jar-file}"/>
         <pathelement location="${libdir}/${itext-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
         <pathelement location="${libdir}/${jakarta-poi-jar-file}"/>
       </classpath>
     </javac>

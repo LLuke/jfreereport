@@ -165,8 +165,8 @@
       <include name="org/jfree/report/modules/output/support/itext/*"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
-        <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${libdir}/${libfonts-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>
@@ -190,7 +190,7 @@
     <jar jarfile="${module-output-support-itext-file}"
          basedir="build">
       <manifest>
-          <attribute name="Class-Path" value="${core-jar-file} ${module-misc-configstore-base-file} ${manifest-lib-prefix}${itext-jar-file}"/>
+          <attribute name="Class-Path" value="${core-jar-file} ${module-misc-configstore-base-file} ${manifest-lib-prefix}${itext-jar-file} ${manifest-lib-prefix}${libfonts-jar-file}"/>
       </manifest>
     </jar>
 

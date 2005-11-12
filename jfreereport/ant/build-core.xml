@@ -34,8 +34,6 @@
       tofile="build/org/jfree/report/coremodule.properties"/>
     <copy file="source/org/jfree/report/logmodule.properties"
       tofile="build/org/jfree/report/logmodule.properties"/>
-    <copy file="source/jcommon.properties"
-      tofile="build/jcommon.properties"/>
   </target>
 
   <target name="compile-classes">

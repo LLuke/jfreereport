@@ -27,7 +27,7 @@
   </configuration>
 
   <reportheader height="90" fontname="Arial Unicode MS" fontsize="20">
-    <label name="RH0" x="0" y="0" width="100%" height="20" fsunderline="true" fsbold="true" fsitalic="true" alignment="center">LIST OF COUNTRIES BY CONTINENT (${title})</label>
+    <label vertical-alignment="middle" dynamic="true" name="RH0" x="0" y="0" width="100%" height="90" fsunderline="true" fsbold="true" fsitalic="true" alignment="center">LIST OF COUNTRIES BY CONTINENT (${title})</label>
   </reportheader>
 
   <reportfooter height="60" fontname="Serif" fontstyle="bold" fontsize="20">

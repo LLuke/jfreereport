@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.37 2005/10/02 10:43:52 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.38 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes
  * -------
@@ -877,7 +877,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     pdfGraphics.setPaint(getPaint(), true);
     pdfGraphics.setPaint(getPaint(), false);
 
-    Log.debug ("BaseFontRecord: " + baseFontRecord.getFileName());
     cb.beginText();
     cb.setFontAndSize(this.baseFontRecord.getBaseFont(), fontSize);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayoutWorker.java,v 1.5 2005/02/19 13:30:00 taqua Exp $
+ * $Id: SimplePageLayoutWorker.java,v 1.6 2005/02/23 21:05:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -157,4 +157,20 @@ public interface SimplePageLayoutWorker
 
   public boolean printWatermark (Band watermark)
           throws ReportProcessingException;
+
+  /**
+   * Defines the currently effective group index. This index is used for the repeating
+   * group headers feature.
+   *
+   * @return the current group index.
+   */
+  public int getCurrentEffectiveGroupIndex ();
+
+  /**
+   * Defines the currently effective group index.
+   *
+   * @param currentEffectiveGroupIndex the current group index.
+   */
+  public void setCurrentEffectiveGroupIndex (final int currentEffectiveGroupIndex);
+
 }

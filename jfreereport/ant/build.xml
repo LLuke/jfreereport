@@ -53,6 +53,7 @@ module-file=$${module-${module}-file}</echo>
         <pathelement location="${libdir}/${bsf-jar-file}" />
         <pathelement location="${libdir}/${beanshell-jar-file}" />
         <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
         <pathelement location="${libdir}/${pixie-jar-file}" />
         <pathelement location="${libdir}/${jakarta-poi-jar-file}"/>
       </classpath>

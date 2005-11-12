@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.17 2005/10/11 19:27:56 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.18 2005/10/15 14:04:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,6 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.style.BandStyleKeys;
-import org.jfree.util.Log;
 
 /**
  * The simple page layout delegate encasulates all required tasks to perform a plain
@@ -115,10 +114,7 @@ public class SimplePageLayoutDelegate implements
    * A flag indicating whether the next pagebreak will be the last one.
    */
   private boolean lastPagebreak;
-  /**
-   * The current group index (used to select the correct group header and footer).
-   */
-  private int currentEffectiveGroupIndex;
+
   private boolean groupFinishPending;
   public static final String HANDLE_PENDING_GROUP_FOOTER_KEY =
           "org.jfree.report.modules.output.support.pagelayout.HandlePendingGroupFooter";
@@ -188,7 +184,7 @@ public class SimplePageLayoutDelegate implements
    */
   protected int getCurrentEffectiveGroupIndex ()
   {
-    return currentEffectiveGroupIndex;
+    return worker.getCurrentEffectiveGroupIndex();
   }
 
   /**
@@ -198,7 +194,7 @@ public class SimplePageLayoutDelegate implements
    */
   protected void setCurrentEffectiveGroupIndex (final int currentEffectiveGroupIndex)
   {
-    this.currentEffectiveGroupIndex = currentEffectiveGroupIndex;
+    this.worker.setCurrentEffectiveGroupIndex(currentEffectiveGroupIndex);
   }
 
   /**
@@ -334,6 +330,8 @@ public class SimplePageLayoutDelegate implements
       /**
        * Repeating group header are only printed while ItemElements are
        * processed.
+       *
+       * Dive into the pending group to print the group header ... 
        */
       // was currentEffectiveGroupIndex - 1
       int groupsPrinted = getCurrentEffectiveGroupIndex();
@@ -385,7 +383,25 @@ public class SimplePageLayoutDelegate implements
     try
     {
       worker.setReservedSpace(0);
-      final Band b = event.getReport().getPageFooter();
+      final ReportDefinition report = event.getReport();
+
+      /**
+       * Repeating group header are only printed while ItemElements are
+       * processed.
+       */
+      // was currentEffectiveGroupIndex - 1
+      int groupsPrinted = getCurrentEffectiveGroupIndex();
+      for (int gidx = groupsPrinted -1; gidx >= 0; gidx -= 1)
+      {
+        final Group g = report.getGroup(gidx);
+        if (g.getFooter().getStyle().getBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER))
+        {
+          worker.print(g.getFooter(), SimplePageLayoutWorker.BAND_SPOOLED,
+                  SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+        }
+      }
+
+      final Band b = report.getPageFooter();
       if (event.getState().getCurrentPage() == 1)
       {
         if (b.getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE) == true)
@@ -662,9 +678,6 @@ public class SimplePageLayoutDelegate implements
   /**
    * Checks, whether the printing of the last group footer was delayed. This influences
    * the repeating group headers.
-   * <p/>
-   * This is part of a Q&D hack and will be removed in 0.8.5, when a proper pagebreak
-   * handing gets implemented.
    *
    * @return true, if the printing of the last group footer is still pending, false
    *         otherwise.
@@ -677,7 +690,7 @@ public class SimplePageLayoutDelegate implements
   /**
    * Defines, whether the printing of the current group footer is pending.
    * <p/>
-   * Will be removed in release 0.8.5
+   * Will be removed in release 0.8.7
    *
    * @param groupFinishPending true or false
    */

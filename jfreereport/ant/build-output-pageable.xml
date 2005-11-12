@@ -131,6 +131,7 @@
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${libdir}/${libfonts-jar-file}" />
         <pathelement location="${core-jar-file}"/>
         <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-support-itext-file}"/>
