@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.33 2005/10/06 00:50:25 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.34 2005/10/14 15:43:33 taqua Exp $
  *
  * Changes:
  * --------
@@ -102,6 +102,12 @@ public class JFreeReportInfo extends ProjectInfo
       addLibrary(pixieLibraryInfo);
       addDependency(pixieLibraryInfo);
     }
+    final BootableProjectInfo libfontsLibraryInfo = tryLoadLibFontInfo();
+    if (libfontsLibraryInfo != null)
+    {
+      addLibrary(libfontsLibraryInfo);
+      addDependency(libfontsLibraryInfo);
+    }
   }
 
   /**
@@ -116,6 +122,25 @@ public class JFreeReportInfo extends ProjectInfo
     {
       return (BootableProjectInfo) ObjectUtilities.loadAndInstantiate
               ("org.jfree.pixie.PixieInfo", JFreeReportInfo.class);
+    }
+    catch (Exception e)
+    {
+      return null;
+    }
+  }
+
+  /**
+   * Tries to load the libFonts boot classes. If the loading fails,
+   * this method returns null.
+   *
+   * @return the Pixie boot info, if Pixie is available.
+   */
+  private static BootableProjectInfo tryLoadLibFontInfo ()
+  {
+    try
+    {
+      return (BootableProjectInfo) ObjectUtilities.loadAndInstantiate
+              ("org.jfree.fonts.LibFontInfo", JFreeReportInfo.class);
     }
     catch (Exception e)
     {
