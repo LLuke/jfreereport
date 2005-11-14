@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.8 2005/09/19 13:34:24 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.9 2005/10/02 19:48:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -195,6 +195,37 @@ public class StaticLayoutManagerTest extends TestCase
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
     assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
     assertTrue(bounds.getHeight() > 0);
+  }
+
+  public void testDynamicLayoutAlignment ()
+  {
+    final Element label1 = LabelElementFactory.createLabelElement
+            (null, new Rectangle2D.Float(0,0, 250, 250), null, null, null, "A very short text");
+    label1.setDynamicContent(true);
+
+    final Element label2 = LabelElementFactory.createLabelElement
+            (null, new Rectangle2D.Float(250,0, 250, 250), null, null, null,
+                    "A very short text but enough to force a line break so that " +
+                    "we can check whether the dynamic element is truely dynamic " +
+                    "or whether it is just a fake.");
+    label2.setDynamicContent(true);
+
+    final Band band = new Band ();
+    band.addElement(label1);
+    band.addElement(label2);
+
+    final StrictBounds bounds =
+            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
+    assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
+    assertEquals(250 * STRICT_FACTOR, bounds.getHeight());
+
+    final StrictBounds l2bounds = (StrictBounds)
+            label2.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+
+    assertEquals(250 * STRICT_FACTOR, l2bounds.getWidth());
+    assertEquals(250 * STRICT_FACTOR, l2bounds.getHeight());
+
   }
 
   public void testHalfRelativeContent ()

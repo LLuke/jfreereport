@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
+ * $Id: WriterTest.java,v 1.10 2005/09/20 16:58:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,7 +50,16 @@ import org.jfree.report.demo.helper.XmlDemoHandler;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
+import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
+import org.jfree.report.modules.parser.ext.factory.objects.BandLayoutClassFactory;
+import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory;
+import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
+import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
+import org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory;
+import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
 import org.jfree.util.Log;
+import org.jfree.xml.factory.objects.URLClassFactory;
+import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.xml.sax.InputSource;
 
 public class WriterTest extends TestCase
@@ -102,17 +111,13 @@ public class WriterTest extends TestCase
       try
       {
         report = ReportGenerator.getInstance().parseReport(url);
-        ReportBuilderHints ph = report.getReportBuilderHints();
-        if (ph == null)
-        {
-          continue;
-        }
-        String type = (String) ph.getHint(report, "parser.type", String.class);
-        if (type == null)
-        {
-          continue;
-        }
-//        if (type.equals(ExtReportHandler.EXT_PARSER_TYPE_HINT_VALUE) == false)
+//        ReportBuilderHints ph = report.getReportBuilderHints();
+//        if (ph == null)
+//        {
+//          continue;
+//        }
+//        String type = (String) ph.getHint(report, "parser.type", String.class);
+//        if (type == null)
 //        {
 //          continue;
 //        }
@@ -124,10 +129,21 @@ public class WriterTest extends TestCase
       }
       try
       {
-        final ReportWriter rc = new ReportWriter
+        final ReportWriter writer = new ReportWriter
           (report, "UTF-16", ReportWriter.createDefaultConfiguration(report));
+        writer.addClassFactoryFactory(new URLClassFactory());
+        writer.addClassFactoryFactory(new DefaultClassFactory());
+        writer.addClassFactoryFactory(new BandLayoutClassFactory());
+        writer.addClassFactoryFactory(new ArrayClassFactory());
+
+        writer.addStyleKeyFactory(new DefaultStyleKeyFactory());
+        writer.addStyleKeyFactory(new PageableLayoutStyleKeyFactory());
+        writer.addTemplateCollection(new DefaultTemplateCollection());
+        writer.addElementFactory(new DefaultElementFactory());
+        writer.addDataSourceFactory(new DefaultDataSourceFactory());
+
         final OutputStreamWriter owriter = new OutputStreamWriter (bo, "UTF-16");
-        rc.write(owriter);
+        writer.write(owriter);
         owriter.close();
       }
       catch (Exception e)

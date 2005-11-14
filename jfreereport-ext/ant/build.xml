@@ -130,6 +130,7 @@
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jakarta-poi-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
         <pathelement location="${ext.libdir}/${servlet-jar-file}"/>
@@ -537,6 +538,7 @@
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jakarta-poi-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
         <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
