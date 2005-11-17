@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.12 2005/07/20 18:47:30 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.13 2005/07/22 16:39:55 taqua Exp $
  *
  * Changes
  * -------

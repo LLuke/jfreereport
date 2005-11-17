@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.16 2005/03/03 14:42:34 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.17 2005/10/05 13:35:40 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.report.util.geom.StrictDimension;
  *
  * @author Thomas Morgner
  */
-public final strictfp class BandLayoutManagerUtil
+public final class BandLayoutManagerUtil
 {
   /**
    * Default constructor.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.20 2005/08/08 15:36:33 taqua Exp $
+ * $Id: PageLayouter.java,v 1.21 2005/08/10 14:22:19 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ import org.jfree.util.Log;
  *
  * @author Thomas Morgner
  */
-public abstract strictfp class PageLayouter extends AbstractFunction
+public abstract class PageLayouter extends AbstractFunction
         implements PageEventListener
 {
 

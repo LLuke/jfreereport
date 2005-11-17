@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.1 2005/08/29 17:40:09 taqua Exp $
+ * $Id: StraightToXML.java,v 1.2 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes
  * -------

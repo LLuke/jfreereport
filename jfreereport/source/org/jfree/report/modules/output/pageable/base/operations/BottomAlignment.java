@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BottomAlignment.java,v 1.9 2005/02/19 13:29:58 taqua Exp $
+ * $Id: BottomAlignment.java,v 1.10 2005/02/23 21:05:29 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import org.jfree.report.util.geom.StrictBounds;
  *
  * @author Thomas Morgner
  */
-public strictfp class BottomAlignment extends VerticalBoundsAlignment
+public class BottomAlignment extends VerticalBoundsAlignment
 {
   /**
    * Creates a new alignment object.

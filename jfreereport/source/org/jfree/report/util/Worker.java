@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.19 2005/09/19 15:38:48 taqua Exp $
+ * $Id: Worker.java,v 1.20 2005/09/20 15:38:23 taqua Exp $
  *
  *
  * Changes

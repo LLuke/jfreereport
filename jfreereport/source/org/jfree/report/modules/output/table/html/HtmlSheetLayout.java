@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.11 2005/09/04 16:45:51 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.12 2005/09/05 11:43:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,7 +61,7 @@ import org.jfree.util.ObjectUtilities;
  * <p/>
  * Currently, one global stylesheet is created for all tables.
  */
-public strictfp class HtmlSheetLayout extends SheetLayout
+public class HtmlSheetLayout extends SheetLayout
 {
   private HtmlStyleCollection styleCollection;
   private TableRectangle rectangle;

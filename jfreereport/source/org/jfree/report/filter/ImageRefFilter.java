@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageRefFilter.java,v 1.9 2005/08/08 15:36:29 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.10 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------

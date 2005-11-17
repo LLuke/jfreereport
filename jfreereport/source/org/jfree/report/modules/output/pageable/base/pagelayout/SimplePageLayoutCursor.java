@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.7 2005/02/19 13:29:58 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.8 2005/02/23 21:05:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,7 +56,7 @@ import java.io.Serializable;
  *
  * @author David Gilbert
  */
-public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
+public class SimplePageLayoutCursor implements Cloneable, Serializable
 {
   /**
    * The y-coordinate.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRow.java,v 1.5 2005/03/09 21:13:00 taqua Exp $
+ * $Id: DataRow.java,v 1.6 2005/03/16 21:06:37 taqua Exp $
  *
  * Changes
  * -------

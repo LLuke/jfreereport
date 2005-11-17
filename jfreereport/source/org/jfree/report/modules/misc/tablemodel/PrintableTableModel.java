@@ -28,7 +28,7 @@
  * Original Author:  LordOfCode;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintableTableModel.java,v 1.14 2005/09/07 14:25:10 taqua Exp $
+ * $Id: PrintableTableModel.java,v 1.1 2005/10/27 18:34:22 taqua Exp $
  *
  * Changes
  * -------

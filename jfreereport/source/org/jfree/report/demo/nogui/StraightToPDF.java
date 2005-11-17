@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.1 2005/08/29 17:40:09 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.2 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes
  * -------

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExceptionDialog.java,v 1.8 2005/08/08 15:36:30 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.9 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------

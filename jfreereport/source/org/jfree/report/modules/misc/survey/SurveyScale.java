@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.6 2005/09/19 11:00:50 taqua Exp $
+ * $Id: SurveyScale.java,v 1.7 2005/10/27 18:31:48 taqua Exp $
  *
  * Changes
  * -------

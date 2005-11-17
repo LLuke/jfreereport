@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.20 2005/08/08 15:36:33 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.21 2005/08/12 12:09:41 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ import org.jfree.util.Log;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public abstract strictfp class AbstractOutputTarget implements OutputTarget
+public abstract class AbstractOutputTarget implements OutputTarget
 {
   /**
    * Storage for the output target properties.

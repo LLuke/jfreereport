@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.11 2005/02/23 21:04:52 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.12 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -328,22 +328,21 @@ public class ConfigDescriptionModel extends AbstractListModel
         {
           throw new SAXException("class element: instanceof attribute missing.");
         }
-        final Class baseClass;
         try
         {
-          baseClass = ObjectUtilities.getClassLoader(getClass()).loadClass(className);
+          final Class baseClass = ObjectUtilities.getClassLoader(getClass()).loadClass(className);
+          final ClassConfigDescriptionEntry ce = new ClassConfigDescriptionEntry(keyName);
+          ce.setBaseClass(baseClass);
+          ce.setDescription(descr);
+          ce.setGlobal(keyGlobal);
+          ce.setHidden(keyHidden);
+          add(ce);
+          continue;
         }
         catch (Exception ex)
         {
           throw new SAXException("Failed to load base class", ex);
         }
-        final ClassConfigDescriptionEntry ce = new ClassConfigDescriptionEntry(keyName);
-        ce.setBaseClass(baseClass);
-        ce.setDescription(descr);
-        ce.setGlobal(keyGlobal);
-        ce.setHidden(keyHidden);
-        add(ce);
-        continue;
       }
 
       final NodeList textNodes = keyElement.getElementsByTagName("text");

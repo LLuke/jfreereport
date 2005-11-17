@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AnchorFieldTemplateDescription.java,v 1.1 2005/02/22 20:25:35 taqua Exp $
+ * $Id: AnchorFieldTemplateDescription.java,v 1.2 2005/02/23 21:05:40 taqua Exp $
  *
  * Changes (from 09-Apr-2003)
  * -------------------------

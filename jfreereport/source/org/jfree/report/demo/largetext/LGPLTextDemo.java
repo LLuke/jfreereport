@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.8 2005/05/20 16:06:20 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.1 2005/08/29 17:39:15 taqua Exp $
  *
  * Changes
  * -------

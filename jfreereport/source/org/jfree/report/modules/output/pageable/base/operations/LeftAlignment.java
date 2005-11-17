@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LeftAlignment.java,v 1.8 2005/02/19 13:29:58 taqua Exp $
+ * $Id: LeftAlignment.java,v 1.9 2005/02/23 21:05:29 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.jfree.report.util.geom.StrictBounds;
  *
  * @author Thomas Morgner
  */
-public strictfp class LeftAlignment extends HorizontalBoundsAlignment
+public class LeftAlignment extends HorizontalBoundsAlignment
 {
   /**
    * Creates a new left alignment object.

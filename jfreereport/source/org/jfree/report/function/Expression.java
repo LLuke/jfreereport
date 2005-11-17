@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.7 2005/02/04 19:22:54 taqua Exp $
+ * $Id: Expression.java,v 1.8 2005/02/23 21:04:47 taqua Exp $
  *
  * ChangeLog
  * ------------

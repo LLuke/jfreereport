@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: WeakReferenceList.java,v 1.6 2005/02/23 21:06:06 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.7 2005/08/29 17:56:47 taqua Exp $
  *
  * Changes
  * -------

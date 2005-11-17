@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Epson9PinPrinterDriver.java,v 1.8 2005/09/09 14:23:49 mtennes Exp $
+ * $Id: Epson9PinPrinterDriver.java,v 1.9 2005/09/19 15:38:47 taqua Exp $
  *
  * Changes
  * -------

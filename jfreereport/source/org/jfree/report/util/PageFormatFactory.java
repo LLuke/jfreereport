@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: PageFormatFactory.java,v 1.11 2005/09/07 14:25:11 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.12 2005/09/21 12:00:19 taqua Exp $
  *
  * Changes
  * -------

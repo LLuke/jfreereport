@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFieldTemplateDescription.java,v 1.3 2004/05/07 14:29:23 mungady Exp $
+ * $Id: ShapeFieldTemplateDescription.java,v 1.4 2005/02/23 21:05:40 taqua Exp $
  *
  * Changes (from 09-Apr-2003)
  * -------------------------

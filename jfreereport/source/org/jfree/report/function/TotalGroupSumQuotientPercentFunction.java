@@ -29,7 +29,7 @@
  * Contributor(s): Thomas Morgner, David Gilbert (for Simba Management Limited)
  * for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.7 2005/08/08 15:36:30 taqua Exp $
+ * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.8 2005/09/19 11:00:50 taqua Exp $
  *
  * Changes
  * -------

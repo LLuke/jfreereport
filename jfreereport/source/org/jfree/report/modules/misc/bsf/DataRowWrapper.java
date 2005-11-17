@@ -34,7 +34,7 @@ public class DataRowWrapper implements DataRow
     return parent.get(col);
   }
 
-  public Object get(String col) throws IllegalStateException
+  public Object get(String col)
   {
     if (parent == null)
     {

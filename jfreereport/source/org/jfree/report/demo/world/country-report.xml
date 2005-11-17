@@ -85,7 +85,7 @@
     <string-field name="IB-3" x="180" y="0" width="50" height="14" alignment="left" fieldname="ISO Code"/>
     <number-field name="IB-4" x="240" y="0" width="76" height="14" alignment="right" format="#,##0" fieldname="Population"/>
     <string-field name="IB-5" x="330" y="0" width="126" height="14" alignment="right" fieldname="expression"/>
-    <number-field name="IB-6" x="460" y="0" width="76" height="14" alignment="right" format="#,##0.00 '%'" excel-format="#,##0.00&quot;%&quot;" fieldname="percent"/>
+    <number-field name="IB-6" x="460" y="0" width="76" height="14" alignment="right" format="#,##0.00 '%'" excel-format="#,##0.00&quot;%&quot;" fieldname="percent" />
   </items>
 
   <functions>

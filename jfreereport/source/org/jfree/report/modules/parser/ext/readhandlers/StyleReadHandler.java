@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: StyleReadHandler.java,v 1.4 2005/03/03 23:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -135,6 +135,10 @@ public class StyleReadHandler extends CompoundObjectReadHandler
     public Object getParameter (final String name)
     {
       final StyleKey key = keyfactory.getStyleKey(name);
+      if (key == null)
+      {
+        throw new IllegalArgumentException("There is no handler for the stylekey: " + name);
+      }
       return styleSheet.getStyleProperty(key);
     }
 
@@ -148,6 +152,10 @@ public class StyleReadHandler extends CompoundObjectReadHandler
     public Class getParameterDefinition (final String name)
     {
       final StyleKey key = keyfactory.getStyleKey(name);
+      if (key == null)
+      {
+        throw new IllegalArgumentException("There is no handler for the stylekey: " + name);
+      }
       return key.getValueType();
     }
 
@@ -189,6 +197,10 @@ public class StyleReadHandler extends CompoundObjectReadHandler
     public void setParameter (final String name, final Object value)
     {
       final StyleKey key = keyfactory.getStyleKey(name);
+      if (key == null)
+      {
+        throw new IllegalArgumentException("There is no handler for the stylekey: " + name);
+      }
       styleSheet.setStyleProperty(key, value);
     }
 

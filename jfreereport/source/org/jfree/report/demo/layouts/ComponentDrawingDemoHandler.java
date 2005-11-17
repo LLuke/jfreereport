@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ComponentDrawingDemoHandler.java,v 1.1 2005/10/11 14:54:30 taqua Exp $
+ * $Id: ComponentDrawingDemoHandler.java,v 1.2 2005/10/15 23:29:48 taqua Exp $
  *
  * Changes
  * -------

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.27 2005/09/07 14:25:11 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.28 2005/09/19 15:38:47 taqua Exp $
  *
  * Changes
  * -------
@@ -559,8 +559,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     if (getFont().isStrikeThrough())
     {
       final float fontHeight = getFont().getFont().getSize2D();
-      final Line2D line = new Line2D.Float(0, fontHeight / 2,
-              (float) getOperationBounds().getWidth(), fontHeight / 2);
+      final Line2D line = new Line2D.Float(0, fontHeight / 2f,
+              (float) getOperationBounds().getWidth(), fontHeight / 2f);
       g2.draw(line);
     }
   }
@@ -641,8 +641,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     // undo the last bounds operation
 
     g2.transform(AffineTransform.getTranslateInstance
-            (0 - StrictGeomUtility.toExternalValue(oldBounds.getX()),
-                    0 - StrictGeomUtility.toExternalValue(oldBounds.getY())));
+            (0f - StrictGeomUtility.toExternalValue(oldBounds.getX()),
+                    0f - StrictGeomUtility.toExternalValue(oldBounds.getY())));
     super.setInternalOperationBounds(bounds);
     // then apply the new bounds operation
     g2.transform(AffineTransform.getTranslateInstance

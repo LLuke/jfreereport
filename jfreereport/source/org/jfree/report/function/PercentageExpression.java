@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PercentageExpression.java,v 1.1 2005/07/22 16:42:26 taqua Exp $
+ * $Id: PercentageExpression.java,v 1.2 2005/07/28 10:33:27 taqua Exp $
  *
  * Changes
  * -------

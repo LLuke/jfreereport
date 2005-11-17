@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.10 2005/02/23 21:05:28 taqua Exp $
+ * $Id: ReportStateList.java,v 1.11 2005/04/17 21:09:00 taqua Exp $
  *
  * Changes
  * -------

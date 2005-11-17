@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: URLFilter.java,v 1.5 2005/02/23 21:04:45 taqua Exp $
+ * $Id: URLFilter.java,v 1.6 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------

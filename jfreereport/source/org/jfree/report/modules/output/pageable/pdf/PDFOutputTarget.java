@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.38 2005/11/09 20:02:12 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.39 2005/11/12 15:38:32 taqua Exp $
  *
  * Changes
  * -------
@@ -172,13 +172,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     {
       final float rawWidth =
               baseFont.getWidthPoint(text.substring(lineStartPos, endPos), fontSize);
-      if (bold)
-      {
-        // for now, bold fonts do not affect the width ...
-        // we'll need font specific information, which is not available using
-        // the iText font implementation
-        return rawWidth * 1;
-      }
+//      if (bold)
+//      {
+//        // for now, bold fonts do not affect the width ...
+//        // we'll need font specific information, which is not available using
+//        // the iText font implementation
+//        return rawWidth * 1;
+//      }
       return rawWidth;
     }
 
@@ -432,7 +432,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the iText BaseFont.
    */
-  protected BaseFont _getBaseFont ()
+  protected BaseFont getBaseFont ()
   {
     return baseFontRecord.getBaseFont();
   }
@@ -513,13 +513,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       final PdfContentByte cb = this.writer.getDirectContent();
       cb.saveState();
 
-      final float clipX = (float) StrictGeomUtility.toExternalValue
-              (imageArea.getX() + bounds.getX());
+      final float clipX = (float)
+              StrictGeomUtility.toExternalValue(bounds.getX());
       final float clipY = (float) (getPageHeight() -
-              StrictGeomUtility.toExternalValue (bounds.getY() + imageArea.getHeight()));
+              StrictGeomUtility.toExternalValue (bounds.getY() + bounds.getHeight()));
       cb.rectangle(clipX, clipY,
-              (float) StrictGeomUtility.toExternalValue(imageArea.getWidth()),
-              (float) StrictGeomUtility.toExternalValue(imageArea.getHeight()));
+              (float) StrictGeomUtility.toExternalValue(bounds.getWidth()),
+              (float) StrictGeomUtility.toExternalValue(bounds.getHeight()));
       cb.clip();
       cb.newPath();
       cb.addImage(image);

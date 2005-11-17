@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.29 2005/10/11 19:27:57 taqua Exp $
+ * $Id: TableWriter.java,v 1.30 2005/11/12 15:38:32 taqua Exp $
  *
  * Changes
  * -------
@@ -73,8 +73,7 @@ import org.jfree.report.util.geom.StrictBounds;
  *
  * @author Thomas Morgner
  */
-public strictfp class TableWriter
-        extends AbstractFunction
+public class TableWriter extends AbstractFunction
         implements PageEventListener, SimplePageLayoutWorker, PrepareEventListener
 {
   /**

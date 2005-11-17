@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.8 2005/03/25 16:37:53 taqua Exp $
+ * $Id: IconTableModel.java,v 1.1 2005/08/29 17:42:57 taqua Exp $
  *
  * Changes
  * -------

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplateDescription.java,v 1.4 2005/02/23 21:05:40 taqua Exp $
+ * $Id: ComponentFieldTemplateDescription.java,v 1.1 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes (from 09-Apr-2003)
  * -------------------------

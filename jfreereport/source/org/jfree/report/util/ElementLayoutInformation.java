@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.9 2005/02/19 13:30:06 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.10 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.report.util.geom.StrictPoint;
  *
  * @author Thomas Morgner
  */
-public strictfp class ElementLayoutInformation
+public class ElementLayoutInformation
 {
   /**
    * The absolute position of the element.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.7 2005/01/25 00:01:16 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.8 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------

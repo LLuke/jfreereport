@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.10 2005/08/08 15:36:29 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.11 2005/09/19 11:00:50 taqua Exp $
  *
  * Changes
  * -------

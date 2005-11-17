@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CloseableTableModel.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
+ * $Id: CloseableTableModel.java,v 1.4 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.13 2005/02/22 20:19:57 taqua Exp $
+ * $Id: StyleWriter.java,v 1.14 2005/02/23 21:05:56 taqua Exp $
  *
  * Changes
  * -------
@@ -233,6 +233,15 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       throw new ReportWriterException("Unable to fill the parameters for key: "
               + key.getName(), e);
     }
+    final StyleKey keyFromFactory = getReportWriter().getStyleKeyFactoryCollector()
+            .getStyleKey(key.getName());
+    if (keyFromFactory == null)
+    {
+      throw new ReportWriterException
+              ("The stylekey " + key.getName() +
+                      " has no corresponding key description.");
+    }
+
 
     final AttributeList p = new AttributeList();
     p.setAttribute("name", key.getName());

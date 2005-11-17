@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ItemHidingDemoHandler.java,v 1.1 2005/08/29 17:35:44 taqua Exp $
+ * $Id: ItemHidingDemoHandler.java,v 1.2 2005/09/21 12:00:15 taqua Exp $
  *
  * Changes
  * -------

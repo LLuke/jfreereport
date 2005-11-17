@@ -3,7 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
-0.8.2-3: (14-Nov-2005)
+0.8.6-3: (14-Nov-2005)
         * [BUG] Distributing text content over multiple pages caused exceptions
           if the string got split and continued on a later page.
 

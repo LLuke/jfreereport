@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PaintComponentDemoHandler.java,v 1.3 2005/09/19 15:38:45 taqua Exp $
+ * $Id: PaintComponentDemoHandler.java,v 1.4 2005/09/21 12:00:15 taqua Exp $
  *
  * Changes
  * -------

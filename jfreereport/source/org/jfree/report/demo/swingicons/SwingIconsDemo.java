@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.10 2005/05/20 16:06:20 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.1 2005/08/29 17:42:57 taqua Exp $
  *
  * Changes
  * -------

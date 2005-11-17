@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.8 2005/08/08 15:36:29 taqua Exp $
  *
  * Changes
  * -------

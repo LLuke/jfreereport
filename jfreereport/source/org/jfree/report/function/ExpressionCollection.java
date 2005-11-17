@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionCollection.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
  =======
- * $Id: ExpressionCollection.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
  >>>>>>> 1.7
  =======
- * $Id: ExpressionCollection.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
  >>>>>>> 1.8
  *
  * Changes

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.11 2005/08/29 17:43:59 taqua Exp $
+ * $Id: HelloWorld.java,v 1.12 2005/09/06 11:40:19 taqua Exp $
  *
  * Changes
  * -------
