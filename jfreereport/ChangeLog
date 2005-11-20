@@ -3,6 +3,18 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.6-4: (20-Nov-2005)
+        * (As the public CVS is not available, this release is used to make
+          the current changes available to the public.)
+
+        * [BUG] In the PDF output target printing scaled images did not work
+          propertly, as the clipping code used the unscaled coordinates.
+
+        * Removed most of the 'strictfp' modifiers. They were no longer
+          neccessary and a bug in the IBM JDK tries to apply the class-wide
+          modifier to all abstract methods as well, which renders JFreeReport
+          useless on that JDK version.
+
 0.8.6-3: (14-Nov-2005)
         * [BUG] Distributing text content over multiple pages caused exceptions
           if the string got split and continued on a later page.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.20 2005/10/11 14:53:21 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.21 2005/10/11 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -195,6 +195,7 @@ public class PaintComponentFunction extends AbstractFunction
     if (element == null)
     {
       // don't change/delete the image if already created ...
+      // or if no output is needed ...
       return;
     }
 
