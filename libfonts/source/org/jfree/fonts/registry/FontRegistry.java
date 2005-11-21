@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: FontRegistry.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -430,8 +430,19 @@ public class FontRegistry implements Serializable
             (new String[fontFamilies.size()]);
   }
 
+  public String[] getAllRegisteredFamilies ()
+  {
+    return (String[]) alternateFamilyNames.keySet().toArray
+            (new String[alternateFamilyNames.size()]);
+  }
+
   public FontFamily getFontFamily (String name)
   {
-    return (FontFamily) this.fontFamilies.get(name);
+    final FontFamily primary = (FontFamily) this.fontFamilies.get(name);
+    if (primary != null)
+    {
+      return primary;
+    }
+    return (FontFamily) this.alternateFamilyNames.get (name);
   }
 }

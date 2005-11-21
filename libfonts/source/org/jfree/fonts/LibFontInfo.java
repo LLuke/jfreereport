@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: LibFontInfo.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -59,7 +59,7 @@ public class LibFontInfo extends ProjectInfo
   private LibFontInfo()
   {
     setName("LibFont");
-    setVersion("0.0.1");
+    setVersion("0.1.1");
     addLibrary(JCommon.INFO);
     addDependency(JCommon.INFO);
   }

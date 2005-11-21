@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+21-Nov-2005: Version 0.1.1:
+    * [BUG] All names should be used, when looking for font family names. 
+
 09-Nov-2005: Version 0.1.0:
     * Reading the 'name', 'head' and 'OS/2' table for truetype files is
       implemented. This is all that is needed to successfully register
