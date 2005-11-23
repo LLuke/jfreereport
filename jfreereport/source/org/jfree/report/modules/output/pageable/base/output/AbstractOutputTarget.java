@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.21 2005/08/12 12:09:41 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.22 2005/11/17 17:03:48 taqua Exp $
  *
  * Changes
  * -------
@@ -402,7 +402,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
   }
 
-  protected void printHRefForCurrentContent (final String href)
+  protected void printHRefForCurrentContent (final String href, final String hrefWindow)
   {
   }
 
@@ -442,7 +442,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
     updateStroke(stroke);
 
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
-    printTextLine((TextLine) content, hrefTarget);
+    final String hrefWindow = (String) element.getProperty(ElementStyleSheet.HREF_WINDOW);
+    printTextLine((TextLine) content, hrefTarget, hrefWindow);
   }
 
   protected void printShapeContent (final MetaElement element, final Content content)
@@ -479,9 +480,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
 
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    final String hrefWindow = (String) element.getProperty(ElementStyleSheet.HREF_WINDOW);
     if (hrefTarget != null)
     {
-      printHRefForCurrentContent(hrefTarget);
+      printHRefForCurrentContent(hrefTarget, hrefWindow);
     }
 
     final ShapeContent sc = (ShapeContent) content;
@@ -511,9 +513,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
     setInternalOperationBounds(content.getBounds());
 
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    final String hrefWindow = (String) element.getProperty(ElementStyleSheet.HREF_WINDOW);
     if (hrefTarget != null)
     {
-      printHRefForCurrentContent(hrefTarget);
+      printHRefForCurrentContent(hrefTarget, hrefWindow);
     }
 
     drawImage(ic);
@@ -531,9 +534,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
     setInternalOperationBounds(content.getBounds());
 
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    final String hrefWindow = (String) element.getProperty(ElementStyleSheet.HREF_WINDOW);
     if (hrefTarget != null)
     {
-      printHRefForCurrentContent(hrefTarget);
+      printHRefForCurrentContent(hrefTarget, hrefWindow);
     }
 
     drawDrawable(drawableContent);
@@ -602,14 +606,15 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param c        the content.
    */
   protected void printTextLine (final TextLine c,
-                                final String hrefTarget)
+                                final String hrefTarget,
+                                final String hrefWindow)
   {
     final String value = c.getContent();
     setInternalOperationBounds(c.getBounds());
     // docmark: At this point: Do no translate ..
     if (hrefTarget != null)
     {
-      printHRefForCurrentContent(hrefTarget);
+      printHRefForCurrentContent(hrefTarget, hrefWindow);
     }
 
     printText(value);

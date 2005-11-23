@@ -151,6 +151,7 @@
           <basic-key name="font">Monospaced</basic-key>
           <basic-key name="font-size">9</basic-key>
           <basic-key name="href-target">http://java.sun.com/developer/techDocs/hi/repository/</basic-key>
+          <basic-key name="href-html-window">_blank</basic-key>
         </style>
         <template references="label">
           <basic-object name="content">http://java.sun.com/developer/techDocs/hi/repository/</basic-object>

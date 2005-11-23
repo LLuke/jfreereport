@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.39 2005/11/12 15:38:32 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.40 2005/11/17 17:03:48 taqua Exp $
  *
  * Changes
  * -------
@@ -1312,9 +1312,25 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
-  protected void printHRefForCurrentContent (final String href)
+  protected void printHRefForCurrentContent (final String hrefTarget,
+                                             final String hrefWindow)
   {
-    final PdfAction action = new PdfAction(href);
+    final int anchorPos = hrefTarget.indexOf('#');
+    final String filename;
+    final String anchorName;
+    if (anchorPos < 0)
+    {
+      filename = hrefTarget;
+      anchorName = null;
+    }
+    else
+    {
+      filename = hrefTarget.substring(0, anchorPos);
+      anchorName = hrefTarget.substring(anchorPos + 1);
+    }
+
+    final PdfAction action = PdfAction.gotoRemotePage
+            (filename, anchorName, false, "_blank".equalsIgnoreCase(hrefWindow));
     final StrictBounds elementBounds = getInternalPDFOperationBounds();
 
     final float leftX = (float) StrictGeomUtility.toExternalValue(elementBounds.getX());
