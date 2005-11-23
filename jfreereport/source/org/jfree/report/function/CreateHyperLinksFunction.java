@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CreateHyperLinksFunction.java,v 1.2 2005/03/03 23:00:00 taqua Exp $
+ * $Id: CreateHyperLinksFunction.java,v 1.3 2005/09/19 13:09:08 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.function;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.style.ElementStyleSheet;
 
 /**
  * Adds hyperlinks to all elements with the name specified in 'element'. The
@@ -53,6 +54,7 @@ import org.jfree.report.Element;
 public class CreateHyperLinksFunction extends AbstractElementFormatFunction
 {
   private String field;
+  private String windowField;
 
   /**
    * Creates an unnamed function. Make sure the name of the function is set using {@link
@@ -83,6 +85,16 @@ public class CreateHyperLinksFunction extends AbstractElementFormatFunction
     this.field = field;
   }
 
+  public String getWindowField()
+  {
+    return windowField;
+  }
+
+  public void setWindowField(final String windowField)
+  {
+    this.windowField = windowField;
+  }
+
   protected void processRootBand (final Band b)
   {
     final Object targetRaw = getDataRow().get(getField());
@@ -91,10 +103,26 @@ public class CreateHyperLinksFunction extends AbstractElementFormatFunction
       return;
     }
     final String target = String.valueOf(targetRaw);
+
+    final Object windowRaw = getDataRow().get(getWindowField());
+    final String window;
+    if (windowRaw != null)
+    {
+      window = String.valueOf(windowRaw);
+    }
+    else
+    {
+      window = null;
+    }
+
     final Element[] elements = FunctionUtilities.findAllElements(b, getElement());
     for (int i = 0; i < elements.length; i++)
     {
       elements[i].setHRefTarget(target);
+      if (windowField != null)
+      {
+        elements[i].getStyle().setStyleProperty(ElementStyleSheet.HREF_WINDOW, window);
+      }
     }
   }
 }
