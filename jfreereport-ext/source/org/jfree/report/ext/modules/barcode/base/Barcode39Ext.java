@@ -47,7 +47,7 @@ public class Barcode39Ext extends Barcode39
    */
   protected Barcode39Ext ()
   {
-  };
+  }
 
   /**
    * Transforms <code>code</code> into code39 readable characters

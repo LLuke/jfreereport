@@ -40,7 +40,7 @@ public abstract class Barcode implements Drawable, Cloneable
   private Insets margins;
   private String code;
   private boolean showCode;
-  private Insets quietZones;;     //10x the minimun size
+  private Insets quietZones;     //10x the minimun size
 
 
   /**

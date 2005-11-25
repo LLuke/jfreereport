@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterTest.java,v 1.5 2005/02/19 16:15:46 taqua Exp $
+ * $Id: ReportWriterTest.java,v 1.6 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -89,7 +89,7 @@ public class ReportWriterTest extends TestCase
     writer.addElementFactory(new DefaultElementFactory());
     writer.addDataSourceFactory(new DefaultDataSourceFactory());
     return writer;
-  };
+  }
 
   public void testFactories()
   {

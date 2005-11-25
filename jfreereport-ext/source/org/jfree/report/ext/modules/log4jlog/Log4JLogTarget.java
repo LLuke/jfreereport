@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.3 2003/08/20 19:24:58 taqua Exp $
+ * $Id: Log4JLogTarget.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------

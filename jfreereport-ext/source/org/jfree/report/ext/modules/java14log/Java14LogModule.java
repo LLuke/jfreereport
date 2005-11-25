@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogModule.java,v 1.6 2005/08/09 15:43:59 taqua Exp $
+ * $Id: Java14LogModule.java,v 1.7 2005/09/19 13:34:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,10 +38,12 @@
 
 package org.jfree.report.ext.modules.java14log;
 
+import org.jfree.base.log.LogConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.DefaultLogModule;
+import org.jfree.base.BaseBoot;
+import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
 /**
@@ -73,16 +75,23 @@ public class Java14LogModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    if (subSystem.getExtendedConfig().getBoolProperty
-            (DefaultLogModule.DISABLE_LOGGING_KEY, false))
+    if (BaseBoot.getConfiguration().getConfigProperty
+            (LogConfiguration.DISABLE_LOGGING, "false").equals("false"))
     {
       return;
     }
-    if (subSystem.getGlobalConfig().getConfigProperty(DefaultLogModule.LOGTARGET_KEY).equals
-        (Java14LogTarget.class.getName()))
+
+    final Configuration config = BaseBoot.getConfiguration();
+    if (Java14LogTarget.class.getName().equals
+            (config.getConfigProperty(LogConfiguration.LOGTARGET)))
     {
       Log.getInstance().addTarget(new Java14LogTarget());
-      Log.info ("Java 1.4 log target started ... previous log messages could have been ignored.");
+      if ("true".equals(subSystem.getGlobalConfig().getConfigProperty
+              ("org.jfree.base.LogAutoInit")))
+      {
+        Log.getInstance().init();
+      }
+      Log.info ("Java1.4 log target started ... previous log messages could have been ignored.");
     }
   }
 }
