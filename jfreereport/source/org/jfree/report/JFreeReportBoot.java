@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.8 2005/09/12 13:18:59 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.9 2005/09/19 15:38:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,10 +40,11 @@ import java.util.Enumeration;
 
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
-import org.jfree.base.config.ModifiableConfiguration;
+import org.jfree.base.BaseBoot;
 import org.jfree.base.config.HierarchicalConfiguration;
-import org.jfree.base.config.SystemPropertyConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.base.config.PropertyFileConfiguration;
+import org.jfree.base.config.SystemPropertyConfiguration;
 import org.jfree.base.log.DefaultLog;
 import org.jfree.base.modules.PackageManager;
 import org.jfree.report.util.CSVTokenizer;
@@ -85,8 +86,13 @@ public class JFreeReportBoot extends AbstractBoot
      */
     public UserConfigWrapper ()
     {
+      this (null);
     }
 
+    public UserConfigWrapper (Configuration config)
+    {
+      this.wrappedConfiguration = config;
+    }
     /**
      * Sets a new configuration. This configuration will be inserted into the
      * report configuration hierarchy. Set this property to null to disable
@@ -287,6 +293,12 @@ public class JFreeReportBoot extends AbstractBoot
    */
   protected void performBoot ()
   {
+    // Inject JFreeReport's configuration into jcommon.
+    // make sure logging is re-initialized after we injected our configuration.
+    HierarchicalConfiguration hc = (HierarchicalConfiguration) BaseBoot.getConfiguration();
+    hc.insertConfiguration(new UserConfigWrapper(getGlobalConfig()));
+    Log.getInstance().init();
+
     if (isStrictFP() == false)
     {
       Log.warn("The used VM seems to use a non-strict floating point arithmetics");
@@ -300,7 +312,6 @@ public class JFreeReportBoot extends AbstractBoot
     final PackageManager mgr = getPackageManager();
 
     mgr.addModule(JFreeReportCoreModule.class.getName());
-    mgr.addModule(DefaultLogModule.class.getName());
     mgr.load("org.jfree.report.modules.");
     mgr.load("org.jfree.report.ext.modules.");
     mgr.load("org.jfree.report.userdefined.modules.");
