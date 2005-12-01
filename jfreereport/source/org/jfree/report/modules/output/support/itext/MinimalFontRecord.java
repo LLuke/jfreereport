@@ -1,8 +1,7 @@
 package org.jfree.report.modules.output.support.itext;
 
-import org.jfree.fonts.registry.FontRecord;
-import org.jfree.fonts.registry.DefaultFontFamily;
 import org.jfree.fonts.registry.FontFamily;
+import org.jfree.fonts.registry.FontRecord;
 
 /**
  * Creation-Date: 09.11.2005, 20:32:33
@@ -18,7 +17,8 @@ public class MinimalFontRecord implements FontRecord
 
   public MinimalFontRecord(final String fontName,
                            final String fontFile,
-                           final boolean bold, final boolean italics)
+                           final boolean bold,
+                           final boolean italics)
   {
     this.fontName = fontName;
     this.fontFile = fontFile;
@@ -34,6 +34,21 @@ public class MinimalFontRecord implements FontRecord
   public boolean isItalics()
   {
     return italics;
+  }
+
+  /**
+   * Returns tue, if this font's italic mode is in fact some sort of being
+   * oblique. An oblique font's glyphs are sheared, but they are not made to
+   * look more script like.
+   *
+   * iText or JFreeReport's current code does not use this hint, so it is safe
+   * to return false here.
+   *
+   * @return always false
+   */
+  public boolean isOblique()
+  {
+    return false;
   }
 
   public String getFontFile()

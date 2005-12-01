@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.21 2005/09/23 10:05:38 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.22 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes
  * -------
@@ -174,7 +174,8 @@ public class BaseFontSupport implements FontMapper
 
     // Correct the encoding for truetype fonts
     // iText will crash if IDENTITY_H is used to create a base font ...
-    if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+    if (encoding.equalsIgnoreCase(BaseFont.IDENTITY_H) ||
+        encoding.equalsIgnoreCase(BaseFont.IDENTITY_V))
     {
       //changed to UTF to support all unicode characters ..
       stringEncoding = "utf-8";

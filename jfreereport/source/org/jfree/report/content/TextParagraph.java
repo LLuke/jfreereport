@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextParagraph.java,v 1.16 2005/10/02 10:43:51 taqua Exp $
+ * $Id: TextParagraph.java,v 1.17 2005/10/05 13:35:38 taqua Exp $
  *
  * Changes
  * -------
@@ -466,7 +466,8 @@ public class TextParagraph extends ContentContainer
                 lastCheckedChar + i - 1) + reservedLiteral;
       }
     }
-    return baseLine + reservedLiteral;
+    return base.substring(lineStart, lastCheckedChar + maxFillerLength - 1) +
+            reservedLiteral;
   }
 
   /**
