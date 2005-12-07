@@ -18,11 +18,7 @@
 <!ELEMENT text               (#PCDATA)>
  ]>
 <config-description>
-    <key name="org.jfree.report.ConfigStore" global="true" hidden="false">
-        <description>Selects which implementation is responsible for storing configuration information.</description>
-        <class instanceof="org.jfree.report.modules.misc.configstore.base.ConfigStorage"/>
-    </key>
-    <key name="org.jfree.report.LogLevel" global="true" hidden="false">
+    <key name="org.jfree.base.LogLevel" global="true" hidden="false">
         <description>The minimum loglevel that is logged.</description>
         <enum>
             <text>Debug</text>
@@ -31,12 +27,39 @@
             <text>Error</text>
         </enum>
     </key>
-    <key name="org.jfree.report.LogTarget" global="true" hidden="false">
+    <key name="org.jfree.base.LogTarget" global="true" hidden="false">
         <description>Selects which implementation is responsible for logging.</description>
         <class instanceof="org.jfree.util.LogTarget"/>
     </key>
+    <key name="org.jfree.report.ConfigStore" global="true" hidden="false">
+        <description>Selects which implementation is responsible for storing configuration information.</description>
+        <class instanceof="org.jfree.report.modules.misc.configstore.base.ConfigStorage"/>
+    </key>
+    <key name="org.jfree.report.LogLevel" global="true" hidden="false">
+        <description>The minimum loglevel that is logged. (Deprecated: Use org.jfree.base.LogLevel instead)</description>
+        <enum>
+            <text>Debug</text>
+            <text>Info</text>
+            <text>Warn</text>
+            <text>Error</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.LogTarget" global="true" hidden="false">
+        <description>Selects which implementation is responsible for logging. (Deprecated: Use org.jfree.base.LogTarget instead)</description>
+        <class instanceof="org.jfree.util.LogTarget"/>
+    </key>
     <key name="org.jfree.report.NoDefaultDebug" global="true" hidden="false">
-        <description>Defines, whether the debugging system should be disabled by default. This option will surpress all output, no single line of debug information will be printed. If you want to remove System.out-debugging on the server side, try to switch to a Log4J-LogTarget instead.</description>
+        <description>Defines, whether the debugging system should be disabled by default. This option will surpress all output, no single line of debug information will be printed. If you want to remove System.out-debugging on the server side, try to switch to a Log4J-LogTarget instead. (Deprecated: This is no longer used. Undefine the LogTarget instead)</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.NoPrinterAvailable" global="true" hidden="false">
+        <description>Defines, whether JFreeReport should query the default page format from the printerdriver. If there is no printer installed on Windows, this seems to block the JavaVM until a time out is reached.
+
+If this property is set to &quot;true&quot; a hard coded default page format is used instead.
+</description>
         <enum>
             <text>true</text>
             <text>false</text>
@@ -101,7 +124,8 @@
         </enum>
     </key>
     <key name="org.jfree.report.ext.modules.java14print.Enable" global="true" hidden="false">
-        <description>Defines, whether to enable the Java.1.4 style printing plugin. At the moment, this only usses the default dialogs, and you should not see any difference to the AWT engine.</description>
+        <description>Defines, whether to enable the Java.1.4 style printing plugin. At the moment, this only usses the default dialogs, and you should not see any difference to the AWT engine. If this module is enabled and JDK 1.4 or higher is enabled, JFreeReport will use this implementation automaticly.
+</description>
         <enum>
             <text>true</text>
             <text>false</text>
@@ -111,7 +135,7 @@
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.base.modules.Module"/>
     </key>
-    <key name="org.jfree.report.ext.modules.java14print.Order" global="false" hidden="false">
+    <key name="org.jfree.report.ext.modules.java14print.Order" global="true" hidden="false">
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
     </key>
@@ -144,8 +168,12 @@
             <text>false</text>
         </enum>
     </key>
+    <key name="org.jfree.report.modules.base.core.Module" global="true" hidden="true">
+        <description>A module definition. Do not edit.</description>
+        <class instanceof="org.jfree.base.modules.Module"/>
+    </key>
     <key name="org.jfree.report.modules.gui.base.About" global="true" hidden="false">
-        <description>Defines, whether an how the About-Dialog functionallity will be exposed to the user. (Yes, it is an very, very important part of JFreeReport, isn&apos;t it :))</description>
+        <description>Defines, whether and how the About-Dialog functionallity will be exposed to the user. </description>
         <enum>
             <text>disable</text>
             <text>toolbar</text>
@@ -224,10 +252,18 @@ The property points to a resources in the classpath, not to a real file!</descri
             <text>false</text>
         </enum>
     </key>
+    <key name="org.jfree.report.modules.gui.base.Skin" global="true" hidden="false">
+        <description>The Skin implementation supplies the resource-bundle and is responsible for loading all icons. Use this configuration setting to replace the default icons and resource-bundles with your own implementation.
+</description>
+        <class instanceof="org.jfree.report.modules.gui.base.Skin"/>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.SkinResourceBundle" global="true" hidden="false">
+        <description>The resource bundle name for the default skin implementation. If you only want to replace the icons, point this entry to your own property file. The default icons are stored in the module-jar file &apos;skin-base&apos;. 
+</description>
+        <text/>
+    </key>
     <key name="org.jfree.report.modules.gui.base.StoreExportDialogInputs" global="true" hidden="false">
-        <description>Defines, whether the export dialogs will store the users input
-(except any passwords) into the local configuration base. Set this
-to false if you are concerned about any privacy leaks. 
+        <description>Defines, whether the export dialogs will store the users input (except any passwords) into the local configuration base. Set this to false if you are concerned about any privacy leaks. 
 </description>
         <enum>
             <text>true</text>
@@ -250,6 +286,13 @@ to false if you are concerned about any privacy leaks.
     </key>
     <key name="org.jfree.report.modules.gui.base.ToolbarFloatable" global="false" hidden="false">
         <description>Defines, whether the toolbar will be floatable. This is not enabled by default.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.UseReportLocale" global="true" hidden="true">
+        <description>This property is not yet used.</description>
         <enum>
             <text>true</text>
             <text>false</text>
@@ -410,6 +453,43 @@ If not defined here, it will default to the platform specific encoding.</descrip
             <text>false</text>
         </enum>
     </key>
+    <key name="org.jfree.report.modules.gui.plaintext.FallbackEncoding" global="false" hidden="false">
+        <description>The fallback endcoding for old epson printers.
+
+Valid values are:
+
+ 0 = USA
+ 1 = France
+ 2 = Germany
+ 3 = UK
+ 4 = Denmark I
+ 5 = Sweden
+ 6 = Italy
+ 7 = Spain I
+ 8 = Japan
+ 9 = Norway
+ 10 = Denmark II
+ 11 = Spain II
+ 12 = Latin America
+
+For details on the supported characters, please refer to your printer reference manual.
+      </description>
+        <enum>
+            <text>0</text>
+            <text>1</text>
+            <text>2</text>
+            <text>3</text>
+            <text>4</text>
+            <text>5</text>
+            <text>6</text>
+            <text>7</text>
+            <text>8</text>
+            <text>9</text>
+            <text>10</text>
+            <text>11</text>
+            <text>12</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.gui.plaintext.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.base.modules.Module"/>
@@ -495,6 +575,38 @@ If not defined here, it will default to the platform specific encoding.</descrip
             <text>false</text>
         </enum>
     </key>
+    <key name="org.jfree.report.modules.gui.rtf.AddToToolbar" global="false" hidden="false">
+        <description>Defines, whether this export action will be added to the toolbar of the preview component.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.rtf.Enable" global="false" hidden="false">
+        <description>Set to false to disable the RTF export using the preview dialog. This will not prevent anyone from calling the dialog&apos;s methods manually, but the export plugin will not be visible by default.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.rtf.Module" global="true" hidden="true">
+        <description>A module definition. Please do not edit this entry.</description>
+        <class instanceof="org.jfree.base.modules.Module"/>
+    </key>
+    <key name="org.jfree.report.modules.gui.rtf.Order" global="true" hidden="false">
+        <description>Defines the export plugin order in the preview dialogs.</description>
+        <text/>
+    </key>
+    <key name="org.jfree.report.modules.gui.rtf.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when exporting the report.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.rtf.Separated" global="false" hidden="false">
+        <text/>
+    </key>
     <key name="org.jfree.report.modules.gui.xls.AddToToolbar" global="true" hidden="false">
         <description>Defines, whether this export action will be added to the toolbar of the preview component.</description>
         <enum>
@@ -533,6 +645,10 @@ If not defined here, it will default to the platform specific encoding.</descrip
         </enum>
     </key>
     <key name="org.jfree.report.modules.misc.beanshell.Module" global="true" hidden="true">
+        <description>A module definition. Please do not edit this entry.</description>
+        <class instanceof="org.jfree.base.modules.Module"/>
+    </key>
+    <key name="org.jfree.report.modules.misc.bsf.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.base.modules.Module"/>
     </key>
@@ -601,6 +717,10 @@ Explaination: The JDBC specifications allow the use of both, column names and co
             <text>true</text>
             <text>false</text>
         </enum>
+    </key>
+    <key name="org.jfree.report.modules.output.meta.Module" global="true" hidden="true">
+        <description>A module definition. Do not edit.</description>
+        <class instanceof="org.jfree.base.modules.Module"/>
     </key>
     <key name="org.jfree.report.modules.output.pageable.base.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
@@ -761,6 +881,15 @@ be adjusted when using one of the printer specific command sets, as these comman
         <description>Defines an init string for the plain text output target. This string will be sent to the printer as is, without any translation applied.</description>
         <text/>
     </key>
+    <key name="org.jfree.report.modules.output.pageable.plaintext.UseEpsonMasterSelect" global="true" hidden="false">
+        <description>Defines, whether a single command (the master select) or a series of separate  commands is used to define the font style on epson printers. Enabling this
+property may improve the printing speed.
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.output.pageable.plaintext.epson.PrinterType" global="true" hidden="false">
         <description>Defines the Epson printer model. The models are defined in the &apos;epson-printerspecs.properties&apos; file and define how java encodings are mapped into printer specific control sequences.</description>
         <text/>
@@ -794,6 +923,13 @@ Valid values are &quot;onInit&quot;, &quot;never&quot; or &quot;lazy&quot;.</des
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.base.modules.Module"/>
     </key>
+    <key name="org.jfree.report.modules.output.support.pagelayout.HandlePendingGroupFooter" global="true" hidden="true">
+        <description>This is a compatibility setting - it defaults to true and should remain true for ever.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.output.support.pagelayout.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.base.modules.Module"/>
@@ -817,12 +953,32 @@ Valid values are &quot;onInit&quot;, &quot;never&quot; or &quot;lazy&quot;.</des
         <description>Defines the default separator, that should be used for the output.</description>
         <text/>
     </key>
+    <key name="org.jfree.report.modules.output.table.html.AllowRawLinkTargets" global="false" hidden="false">
+        <description>Defines, whether to encode link targets. For historical reasons, this defaults to &apos;true&apos; and therefore *disables* the encoding of link targets. Links are printed as is, possibly breaking the generated HTML-code, if they are not properly URL-encoded.
+
+For future report versions, this should default to &apos;false&apos; to make sure that there is no way to break the reports.
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.output.table.html.Author" global="false" hidden="false">
         <description>Defines a author for generated HTML documents.</description>
         <text/>
     </key>
     <key name="org.jfree.report.modules.output.table.html.BodyFragment" global="false" hidden="false">
         <description>Defines whether to define a body fragment only. This removes the header and body tags and makes it easy to include the generated content in own pages.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.output.table.html.EmptyCellsUseCSS" global="false" hidden="false">
+        <description>Defines, whether empty cells will be controled using CSS. If this is set to true, the Table get the style property &quot;empty-cells: show&quot; assigned and the otherwise required no-break-space entites will no longer be generated.
+
+The Internet-Explorer is not able to use correct CSS2 yet - they never obeyed to standards anyway, so that&apos;s no surprise that this defaults to &quot;false&quot;..
+</description>
         <enum>
             <text>true</text>
             <text>false</text>
@@ -843,9 +999,35 @@ Valid values are &quot;onInit&quot;, &quot;never&quot; or &quot;lazy&quot;.</des
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.base.modules.Module"/>
     </key>
+    <key name="org.jfree.report.modules.output.table.html.ProportionalColumnWidths" global="false" hidden="false">
+        <description>Enables the use of proportional column widths instead of static ones. The resulting table will have a width of 100% and the columns will have the proportional equivalent of their static widths as width.
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.output.table.html.TableRowBorderDefinition" global="false" hidden="false">
+        <description>Defines, whether table rows should carry a border definition (in addition to the cell definitions). This is a workaround for a layout bug in the Mozilla browser family. 
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.output.table.html.Title" global="false" hidden="false">
         <description>Defines the default title for generated HTML documents.</description>
         <text/>
+    </key>
+    <key name="org.jfree.report.modules.output.table.html.UseDeviceIndependentImageSize" global="false" hidden="false">
+        <description>Defines, whether image sizes should be given in device independent Point unit (1/72 inch) or in pixels (which is device dependent and makes it hard to predict the final size in the HTML-Page.
+
+Most users are used to think in pixels, therefore the default is &apos;false&apos;.
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
     </key>
     <key name="org.jfree.report.modules.output.table.rtf.EnableImages" global="false" hidden="false">
         <description>Defines, whether the RTF-Export should try to contain images. 
@@ -862,6 +1044,30 @@ OutOfMemoryExceptions, so use that option with care.</description>
     </key>
     <key name="org.jfree.report.modules.output.table.xls.EnhancedDataFormat" global="false" hidden="false">
         <description>Whether to apply the Cell-DataFormat strings to excel cells. If disabled, all content is inserted as text. This way you won&apos;t be able to perform calculations on the generated content, but it is more safe in case of invalid cell formats.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.output.table.xls.GridLinesDisplayed" global="false" hidden="false">
+        <description>Defines, whether sheets generated by the excel export should display grid-lines in the viewer.
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.output.table.xls.GridLinesPrinted" global="true" hidden="false">
+        <description>Defines, whether sheets generated by the excel export should print grid-lines.
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.output.table.xls.HardStyleCountLimit" global="false" hidden="false">
+        <description>Limits the number of defined styles to 4000. Excel seems to crash if there are too many styles defined in a workbook. Once the limit is reached, and this property is set to true (which is the default), all subsequent style definitions will be ignored for that workbook.
+</description>
         <enum>
             <text>true</text>
             <text>false</text>
@@ -971,43 +1177,4 @@ This option defaults to &apos;false&apos;.</description>
             <text>false</text>
         </enum>
     </key>
-
-  <key name="org.jfree.report.modules.gui.plaintext.FallbackEncoding" global="false" hidden="false">
-      <description>The fallback endcoding for old epson printers.
-
-Valid values are:
-
- 0 = USA
- 1 = France
- 2 = Germany
- 3 = UK
- 4 = Denmark I
- 5 = Sweden
- 6 = Italy
- 7 = Spain I
- 8 = Japan
- 9 = Norway
- 10 = Denmark II
- 11 = Spain II
- 12 = Latin America
-
-For details on the supported characters, please refer to your printer reference manual.
-      </description>
-      <enum>
-        <text>0</text>
-        <text>1</text>
-        <text>2</text>
-        <text>3</text>
-        <text>4</text>
-        <text>5</text>
-        <text>6</text>
-        <text>7</text>
-        <text>8</text>
-        <text>9</text>
-        <text>10</text>
-        <text>11</text>
-        <text>12</text>
-      </enum>
-  </key>
-
 </config-description>
