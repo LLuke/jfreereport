@@ -2,6 +2,7 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+	* recognizes italic and oblique fonts.
 
 21-Nov-2005: Version 0.1.1:
     * [BUG] All names should be used, when looking for font family names. 
