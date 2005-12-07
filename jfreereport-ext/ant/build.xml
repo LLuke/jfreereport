@@ -573,6 +573,7 @@
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jakarta-poi-jar-file}"/>
+    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${libfonts-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-servlet-demo-jar-file}"/>
