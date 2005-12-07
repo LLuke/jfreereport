@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: FontRecord.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -60,7 +60,23 @@ public interface FontRecord extends Serializable
    */
   public boolean isBold();
 
+  /**
+   * Returns true, if this font includes italic glyphs. Italics is different
+   * from oblique, as certain glyphs (most notably the lowercase 'f') will
+   * have a different appearance, making the font look more like a script font.
+   *
+   * @return true, if the font is italic.
+   */
   public boolean isItalics ();
+
+  /**
+   * Returns tue, if this font's italic mode is in fact some sort of being oblique.
+   * An oblique font's glyphs are sheared, but they are not made to look more
+   * script like.
+   *
+   * @return true, if the font is oblique.
+   */
+  public boolean isOblique ();
 
   public String getFontFile ();
 

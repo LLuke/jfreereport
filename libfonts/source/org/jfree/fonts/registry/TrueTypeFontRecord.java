@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TrueTypeFontRecord.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,6 +54,7 @@ public class TrueTypeFontRecord implements FontRecord
   private long offset;
   private boolean bold;
   private boolean italics;
+  private boolean oblique;
   private FontFamily family;
   private boolean embeddable;
 
@@ -82,6 +83,7 @@ public class TrueTypeFontRecord implements FontRecord
     this.allNames = nameTable.getAllNames(NameTable.NAME_FULLNAME);
     this.variant = nameTable.getPrimaryName(NameTable.NAME_SUBFAMILY);
     this.allVariants = nameTable.getAllNames(NameTable.NAME_SUBFAMILY);
+    this.oblique = variant.toLowerCase().contains("oblique");
 
     final FontHeaderTable headTable = (FontHeaderTable) trueTypeFont.getTable(FontHeaderTable.TABLE_ID);
     this.bold = headTable.isBold();
@@ -131,6 +133,11 @@ public class TrueTypeFontRecord implements FontRecord
   public boolean isItalics()
   {
     return italics;
+  }
+
+  public boolean isOblique()
+  {
+    return oblique;
   }
 
   public String getFontFile()

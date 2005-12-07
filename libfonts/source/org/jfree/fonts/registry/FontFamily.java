@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: FontFamily.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,5 +53,13 @@ public interface FontFamily extends Serializable
 
   public String[] getAllNames ();
 
+  /**
+   * This selects the most suitable font in that family. Italics fonts are
+   * preferred over oblique fonts.
+   * 
+   * @param bold
+   * @param italics
+   * @return
+   */
   public FontRecord getFontRecord (final boolean bold, final boolean italics);
 }

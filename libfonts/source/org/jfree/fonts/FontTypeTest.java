@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: FontTypeTest.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,16 +63,16 @@ public class FontTypeTest
     }
     else
     {
-      System.out.println("  " + record.getName() + " " + record.getFontFile());
+      System.out.println("  " + record.getName() + " " + record.getFontFile() + " " + record.isOblique());
     }
   }
 
   public static void main(String[] args) throws IOException
   {
-    String file = ("/usr/X11R6/lib/X11/fonts/truetype/GARAIT.ttf");
-    TrueTypeFont font = new TrueTypeFont(new File(file));
-    NameTable table = (NameTable) font.getTable(NameTable.TABLE_ID);
-    System.out.println("Name: " + table.getPrimaryName(NameTable.NAME_FAMILY));
+//    String file = ("/usr/X11R6/lib/X11/fonts/truetype/GARAIT.ttf");
+//    TrueTypeFont font = new TrueTypeFont(new File(file));
+//    NameTable table = (NameTable) font.getTable(NameTable.TABLE_ID);
+//    System.out.println("Name: " + table.getPrimaryName(NameTable.NAME_FAMILY));
 
     final FontRegistry registry = new FontRegistry();
     registry.registerDefaultFontPath();
@@ -87,6 +87,13 @@ public class FontTypeTest
       printRecord(family.getFontRecord(true, false));
       printRecord(family.getFontRecord(false, true));
       printRecord(family.getFontRecord(true, true));
+    }
+
+    final String[] allFontFamilies = registry.getAllRegisteredFamilies();
+    for (int i = 0; i < allFontFamilies.length; i++)
+    {
+      String family = allFontFamilies[i];
+      System.out.println("I18n: FontFamily: " + family);
     }
   }
 }

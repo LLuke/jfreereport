@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DefaultFontFamily.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -156,6 +156,11 @@ public class DefaultFontFamily implements FontFamily
     else if (oldRecord.isEmbeddable() == false &&
              record.isEmbeddable())
     {
+      if (record.isOblique() && oldRecord.isOblique() == false)
+      {
+        // skip, an non-oblique font is more valuable than an oblique font
+        return;
+      }
       fontRecords[index] = record;
     }
 
