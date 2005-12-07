@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   Thomas Morgner;
  *
- * $Id: FirstPageAction.java,v 1.5 2005/01/25 00:01:15 taqua Exp $
+ * $Id: FirstPageAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,8 @@ public abstract class FirstPageAction extends AbstractActionDowngrade
    *
    * @param resources localised resources.
    */
-  protected FirstPageAction (final ResourceBundleSupport resources)
+  protected FirstPageAction (final ResourceBundleSupport resources,
+                             final Skin skin)
   {
     putValue(NAME, resources.getString("action.firstpage.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.firstpage.description"));
@@ -69,7 +70,7 @@ public abstract class FirstPageAction extends AbstractActionDowngrade
             resources.getMnemonic("action.firstpage.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.firstpage.accelerator"));
-    putValue(SMALL_ICON, resources.getIcon("action.firstpage.small-icon", false));
-    putValue("ICON24", resources.getIcon("action.firstpage.icon", true));
+    putValue(SMALL_ICON, skin.getIcon("action.firstpage.small-icon", true, false));
+    putValue("ICON24", skin.getIcon("action.firstpage.icon", true, true));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.18 2005/03/18 13:49:38 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.19 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -178,7 +178,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon ()
   {
-    return resources.getIcon("action.export-to-plaintext.small-icon");
+    return getSkin().getIcon("action.export-to-plaintext.small-icon", true, false);
   }
 
   /**
@@ -188,7 +188,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon ()
   {
-    return resources.getIcon("action.export-to-plaintext.icon");
+    return getSkin().getIcon("action.export-to-plaintext.icon", true, true);
   }
 
   /**

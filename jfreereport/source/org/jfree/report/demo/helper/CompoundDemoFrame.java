@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundDemoFrame.java,v 1.2 2005/09/21 12:00:16 taqua Exp $
+ * $Id: CompoundDemoFrame.java,v 1.3 2005/10/12 10:17:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,6 +57,7 @@ import javax.swing.tree.TreePath;
 
 import org.jfree.ui.action.ActionButton;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The CompoundDemoFrame provides a unified GUI which is able to present more
@@ -100,6 +101,7 @@ public class CompoundDemoFrame extends AbstractDemoFrame
   private DemoHandler selectedHandler;
   private DemoSelector demoSelector;
   private JPanel demoContent;
+  private JComponent externalHandlerArea;
 
   public CompoundDemoFrame(final DemoSelector demoSelector)
   {
@@ -127,56 +129,39 @@ public class CompoundDemoFrame extends AbstractDemoFrame
       demoContent.add(createDefaultDemoPane((InternalDemoHandler) handler));
       getPreviewAction().setEnabled(true);
     }
+    else if (handler != null)
+    {
+      demoContent.add(getExternalHandlerInfoPane());
+      getPreviewAction().setEnabled(true);
+    }
     else
     {
-      getPreviewAction().setEnabled(handler != null);
+      demoContent.add(getNoHandlerInfoPane());
+      getPreviewAction().setEnabled(false);
     }
     demoContent.revalidate();
   }
 
-  public DemoHandler getSelectedHandler()
+  protected JComponent getExternalHandlerInfoPane()
   {
-    return selectedHandler;
+    if (externalHandlerArea == null)
+    {
+      final JPanel content = new JPanel(new BorderLayout());
+      content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+
+      final URL url = ObjectUtilities.getResource
+              ("org/jfree/report/demo/resources/external-handler-info.html", CompoundDemoFrame.class);
+      final JComponent scroll = createDescriptionTextPane(url);
+      final JButton previewButton = new ActionButton(getPreviewAction());
+      content.add(scroll, BorderLayout.CENTER);
+      content.add(previewButton, BorderLayout.SOUTH);
+      externalHandlerArea = content;
+    }
+    return externalHandlerArea;
   }
 
-  protected Container createDefaultContentPane()
-  {
-
-    demoContent = new JPanel();
-    demoContent.setLayout(new BorderLayout());
-    demoContent.setMinimumSize(new Dimension(100, 100));
-
-    JPanel placeHolder = new JPanel();
-    placeHolder.setMinimumSize(new Dimension(300, 0));
-    placeHolder.setPreferredSize(new Dimension(300, 0));
-    placeHolder.setMaximumSize(new Dimension(300, 0));
-
-    JPanel rootContent = new JPanel();
-    rootContent.setLayout(new BorderLayout());
-    rootContent.add(demoContent, BorderLayout.CENTER);
-    rootContent.add(placeHolder, BorderLayout.NORTH);
-
-    final DemoSelectorTreeNode root = new DemoSelectorTreeNode(null,
-            demoSelector);
-    final DefaultTreeModel model = new DefaultTreeModel(root);
-    final JTree demoTree = new JTree(model);
-    demoTree.addTreeSelectionListener(new TreeSelectionHandler());
-
-    JSplitPane rootSplitPane =
-            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, demoTree, rootContent);
-    rootSplitPane.setContinuousLayout(true);
-    rootSplitPane.setDividerLocation(200);
-    rootSplitPane.setOneTouchExpandable(true);
-    return rootSplitPane;
-  }
-
-  protected JComponent createDefaultDemoPane(final InternalDemoHandler demoHandler)
-  {
-    final JPanel content = new JPanel(new BorderLayout());
-    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-
+  protected JComponent createDescriptionTextPane(final URL url) {
     final JEditorPane editorPane = new JEditorPane();
-    final URL url = demoHandler.getDemoDescriptionSource();
     editorPane.setEditable(false);
     editorPane.setPreferredSize(new Dimension(400, 200));
     if (url != null)
@@ -198,9 +183,61 @@ public class CompoundDemoFrame extends AbstractDemoFrame
               "Unable to load the demo description. No such resource.");
     }
 
-    final JScrollPane scroll = new JScrollPane(editorPane,
+    return new JScrollPane(editorPane,
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+  }
+
+  protected JComponent getNoHandlerInfoPane ()
+  {
+    return new JPanel();
+  }
+
+  public DemoHandler getSelectedHandler()
+  {
+    return selectedHandler;
+  }
+
+  protected Container createDefaultContentPane()
+  {
+
+    demoContent = new JPanel();
+    demoContent.setLayout(new BorderLayout());
+    demoContent.setMinimumSize(new Dimension(100, 100));
+    demoContent.add(getNoHandlerInfoPane(), BorderLayout.CENTER);
+
+    JPanel placeHolder = new JPanel();
+    placeHolder.setMinimumSize(new Dimension(300, 0));
+    placeHolder.setPreferredSize(new Dimension(300, 0));
+    placeHolder.setMaximumSize(new Dimension(300, 0));
+
+    JPanel rootContent = new JPanel();
+    rootContent.setLayout(new BorderLayout());
+    rootContent.add(demoContent, BorderLayout.CENTER);
+    rootContent.add(placeHolder, BorderLayout.NORTH);
+
+    final DemoSelectorTreeNode root = new DemoSelectorTreeNode(null,
+            demoSelector);
+    final DefaultTreeModel model = new DefaultTreeModel(root);
+    final JTree demoTree = new JTree(model);
+    demoTree.addTreeSelectionListener(new TreeSelectionHandler());
+
+    JSplitPane rootSplitPane =
+            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                    new JScrollPane(demoTree), rootContent);
+    rootSplitPane.setContinuousLayout(true);
+    rootSplitPane.setDividerLocation(200);
+    rootSplitPane.setOneTouchExpandable(true);
+    return rootSplitPane;
+  }
+
+  protected JComponent createDefaultDemoPane(final InternalDemoHandler demoHandler)
+  {
+    final JPanel content = new JPanel(new BorderLayout());
+    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+
+    final URL url = demoHandler.getDemoDescriptionSource();
+    final JComponent scroll = createDescriptionTextPane(url);
 
     final JButton previewButton = new ActionButton(getPreviewAction());
 

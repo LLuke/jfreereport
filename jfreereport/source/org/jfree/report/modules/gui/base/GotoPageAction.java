@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.8 2005/02/23 21:04:48 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.9 2005/11/17 17:03:47 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 
 package org.jfree.report.modules.gui.base;
 
-import org.jfree.report.util.ImageUtils;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
@@ -60,7 +59,8 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
    *
    * @param resources Localised resources for the action.
    */
-  protected GotoPageAction (final ResourceBundleSupport resources)
+  protected GotoPageAction (final ResourceBundleSupport resources,
+                            final Skin skin)
   {
     this.putValue(NAME, resources.getString("action.gotopage.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.gotopage.description"));
@@ -68,8 +68,8 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
             resources.getMnemonic("action.gotopage.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.gotopage.accelerator"));
-    this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
-    this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
+    this.putValue(SMALL_ICON, skin.getIcon("action.gotopage.small-icon", true, false));
+    this.putValue("ICON24", skin.getIcon("action.gotopage.icon", true, true));
   }
 
 }

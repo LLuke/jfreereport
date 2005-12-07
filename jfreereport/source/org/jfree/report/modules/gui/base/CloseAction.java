@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CloseAction.java,v 1.8 2005/01/25 00:01:05 taqua Exp $
+ * $Id: CloseAction.java,v 1.9 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,8 @@ public abstract class CloseAction extends AbstractActionDowngrade
    *
    * @param resources localised resources.
    */
-  protected CloseAction (final ResourceBundleSupport resources)
+  protected CloseAction (final ResourceBundleSupport resources,
+                         final Skin skin)
   {
     this.putValue(NAME, resources.getString("action.close.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.close.description"));
@@ -68,7 +69,7 @@ public abstract class CloseAction extends AbstractActionDowngrade
             resources.getMnemonic("action.close.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.close.accelerator"));
-    this.putValue(SMALL_ICON, resources.getIcon("action.close.small-icon", false));
-    this.putValue("ICON24", resources.getIcon("action.close.icon", true));
+    this.putValue(SMALL_ICON, skin.getIcon("action.close.small-icon", true, false));
+    this.putValue("ICON24", skin.getIcon("action.close.icon", true, true));
   }
 }

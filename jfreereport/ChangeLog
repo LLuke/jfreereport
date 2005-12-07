@@ -2,6 +2,16 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * The build process did not include the demo documentation files in
+          the demo-jar.
+
+        * Replacing the Exit and About-Action in the Preview-Dialogs works
+          again. Replacing the navigation or zoom actions is no longer allowed
+          (as it makes no sense to replace them).
+
+        * The GUI-icons have been factored out into an own package. The
+          skinning facility makes it easier to replace the icons and/or the
+          resource bundles of the GUI components.
 
         * The PDF-Output target now interprets the '_blank' window name as
           command to open the link target document in a new window. 

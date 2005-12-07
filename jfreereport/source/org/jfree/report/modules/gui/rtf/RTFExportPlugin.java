@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFExportPlugin.java,v 1.2 2005/03/18 13:49:38 taqua Exp $
+ * $Id: RTFExportPlugin.java,v 1.3 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -154,7 +154,7 @@ public class RTFExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon ()
   {
-    return resources.getIcon("action.export-to-rtf.small-icon");
+    return getSkin().getIcon("action.export-to-rtf.small-icon", true, false);
   }
 
   /**
@@ -164,7 +164,7 @@ public class RTFExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon ()
   {
-    return resources.getIcon("action.export-to-rtf.icon");
+    return getSkin().getIcon("action.export-to-rtf.icon", true, true);
   }
 
   /**

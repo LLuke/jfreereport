@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.21 2005/03/18 13:49:38 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.22 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -153,7 +153,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon ()
   {
-    return resources.getIcon("action.export-to-excel.small-icon");
+    return getSkin().getIcon("action.export-to-excel.small-icon", true, false);
   }
 
   /**
@@ -163,7 +163,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon ()
   {
-    return resources.getIcon("action.export-to-excel.icon");
+    return getSkin().getIcon("action.export-to-excel.icon", true, true);
   }
 
   /**

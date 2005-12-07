@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.15 2005/08/08 15:36:32 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.16 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -189,7 +189,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon ()
   {
-    return resources.getIcon("action.page-setup.small-icon");
+    return getSkin().getIcon("action.page-setup.small-icon", true, false);
   }
 
   /**
@@ -199,7 +199,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon ()
   {
-    return resources.getIcon("action.page-setup.icon");
+    return getSkin().getIcon("action.page-setup.icon", true, true);
   }
 
   /**

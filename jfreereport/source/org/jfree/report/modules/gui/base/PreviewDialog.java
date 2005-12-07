@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.13 2005/01/30 23:37:20 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.14 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -73,7 +73,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
      */
     public DefaultCloseAction ()
     {
-      super(getResources());
+      super(getResources(), SkinLoader.loadSkin());
     }
 
     /**

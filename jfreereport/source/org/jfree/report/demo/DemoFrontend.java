@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.11 2005/10/06 00:50:25 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.12 2005/10/11 14:55:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -37,6 +37,9 @@
  */
 
 package org.jfree.report.demo;
+
+import java.net.URL;
+import javax.swing.JComponent;
 
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReportBoot;
@@ -65,9 +68,12 @@ import org.jfree.report.demo.swingicons.SwingIconsDemo;
 import org.jfree.report.demo.world.WorldDemo;
 import org.jfree.report.demo.stylesheets.StyleSheetDemoHandler;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ObjectUtilities;
 
 public class DemoFrontend extends CompoundDemoFrame
 {
+  private JComponent infoPane;
+
   public DemoFrontend(final DemoSelector demoSelector)
   {
     super(demoSelector);
@@ -82,32 +88,46 @@ public class DemoFrontend extends CompoundDemoFrame
     final DefaultDemoSelector rootSelector = new DefaultDemoSelector
             ("All JFreeReport Demos");
 
-    rootSelector.addChild(CardDemo.createDemoInfo());
+    // the most important demos first: the ones that get you started
+    rootSelector.addDemo(new HelloWorld());
+    rootSelector.addDemo(new GroupsDemo());
+    rootSelector.addDemo(new SwingIconsDemo());
+    //
+    rootSelector.addChild(OpenSourceDemo.createDemoInfo());
+    rootSelector.addChild(WorldDemo.createDemoInfo());
     rootSelector.addChild(InvoiceDemo.createDemoInfo());
     rootSelector.addChild(PeopleReportDemo.createDemoInfo());
     rootSelector.addChild(SurveyScaleDemo.createDemoInfo());
-    rootSelector.addChild(WorldDemo.createDemoInfo());
-    rootSelector.addChild(OpenSourceDemo.createDemoInfo());
     rootSelector.addChild(FunctionsDemo.createDemoInfo());
     rootSelector.addChild(LayoutDemo.createDemoInfo());
+    rootSelector.addChild(CardDemo.createDemoInfo());
     // report footer
+    rootSelector.addDemo(new PercentageDemo());
     rootSelector.addDemo(new ConditionalGroupDemo());
-    //rootSelector.addDemo(new CSVReaderDemo());
     rootSelector.addDemo(new SimplePatientFormDemo());
     rootSelector.addDemo(new MultiReportDemo());
     rootSelector.addDemo(new SportsCouncilDemo());
-    rootSelector.addDemo(new SwingIconsDemo());
-    rootSelector.addDemo(new HelloWorld());
     rootSelector.addDemo(new LGPLTextDemo());
     rootSelector.addDemo(new I18nDemo());
-    rootSelector.addDemo(new PercentageDemo());
-    rootSelector.addDemo(new GroupsDemo());
-    rootSelector.addDemo(new FontDemo());
     rootSelector.addDemo(new VeryLargeReportDemo());
     rootSelector.addDemo(new BookstoreDemo());
+    rootSelector.addDemo(new FontDemo());
     rootSelector.addDemo(new StyleSheetDemoHandler());
+    //rootSelector.addDemo(new CSVReaderDemo());
 
     return rootSelector;
+  }
+
+  protected JComponent getNoHandlerInfoPane()
+  {
+    if (infoPane == null)
+    {
+      final URL url = ObjectUtilities.getResource
+            ("org/jfree/report/demo/demo-introduction.html", CompoundDemoFrame.class);
+
+      infoPane = createDescriptionTextPane(url);
+    }
+    return infoPane;
   }
 
   public static void main (final String[] args)

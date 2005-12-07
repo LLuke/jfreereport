@@ -164,6 +164,7 @@
         <include name="**/*.wmf"/>
         <include name="**/*.jpg"/>
         <include name="**/*.png"/>
+        <include name="**/*.html"/>
         <include name="**/*.properties"/>
       </fileset>
     </copy>

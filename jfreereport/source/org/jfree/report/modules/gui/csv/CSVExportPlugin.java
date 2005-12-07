@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.17 2005/03/18 13:49:37 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.18 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -207,7 +207,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon ()
   {
-    return resources.getIcon("action.export-to-csv.small-icon");
+    return getSkin().getIcon("action.export-to-csv.small-icon", true, false);
   }
 
   /**
@@ -217,7 +217,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon ()
   {
-    return resources.getIcon("action.export-to-csv.icon");
+    return getSkin().getIcon("action.export-to-csv.icon", true, true);
   }
 
   /**

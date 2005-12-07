@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviousPageAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
+ * $Id: PreviousPageAction.java,v 1.7 2005/09/21 14:52:05 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,8 @@ public abstract class PreviousPageAction extends AbstractActionDowngrade
    *
    * @param resources localised resources.
    */
-  protected PreviousPageAction (final ResourceBundleSupport resources)
+  protected PreviousPageAction (final ResourceBundleSupport resources,
+                                final Skin skin)
   {
     putValue(NAME, resources.getString("action.back.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.back.description"));
@@ -65,8 +66,8 @@ public abstract class PreviousPageAction extends AbstractActionDowngrade
             resources.getMnemonic("action.back.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.back.accelerator", 0));
-    putValue(SMALL_ICON, resources.getIcon("action.back.small-icon", false));
-    putValue("ICON24", resources.getIcon("action.back.icon", true));
+    putValue(SMALL_ICON, skin.getIcon("action.back.small-icon", true, false));
+    putValue("ICON24", skin.getIcon("action.back.icon", true, true));
   }
 
 }

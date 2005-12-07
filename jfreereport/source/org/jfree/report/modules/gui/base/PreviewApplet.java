@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewApplet.java,v 1.10 2005/01/30 23:37:20 taqua Exp $
+ * $Id: PreviewApplet.java,v 1.11 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,7 +69,7 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
      */
     public DefaultCloseAction ()
     {
-      super(getResources());
+      super(getResources(), SkinLoader.loadSkin());
     }
 
     /**

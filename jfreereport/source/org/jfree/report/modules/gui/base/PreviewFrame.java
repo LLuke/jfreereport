@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.13 2005/01/30 23:37:20 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.14 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -87,7 +87,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
      */
     public DefaultCloseAction ()
     {
-      super(getResources());
+      super(getResources(), SkinLoader.loadSkin());
     }
 
     /**

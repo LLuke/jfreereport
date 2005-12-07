@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.18 2005/03/18 13:49:38 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.19 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -188,7 +188,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon ()
   {
-    return resources.getIcon("action.export-to-html.small-icon");
+    return getSkin().getIcon("action.export-to-html.small-icon", true, false);
   }
 
   /**
@@ -198,7 +198,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon ()
   {
-    return resources.getIcon("action.export-to-html.icon");
+    return getSkin().getIcon("action.export-to-html.icon", true, true);
   }
 
   /**

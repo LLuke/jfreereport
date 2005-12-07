@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
+ * $Id: AboutAction.java,v 1.7 2005/03/04 13:52:06 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,6 @@ import org.jfree.util.ResourceBundleSupport;
  *
  * @author David Gilbert
  */
-
 public abstract class AboutAction extends AbstractActionDowngrade
 {
 
@@ -66,13 +65,14 @@ public abstract class AboutAction extends AbstractActionDowngrade
    *
    * @param resources localised resources.
    */
-  protected AboutAction (final ResourceBundleSupport resources)
+  protected AboutAction (final ResourceBundleSupport resources,
+                         final Skin skin)
   {
     putValue(Action.NAME, resources.getString("action.about.name"));
     putValue(Action.SHORT_DESCRIPTION, resources.getString("action.about.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.about.mnemonic"));
-    putValue(Action.SMALL_ICON, resources.getIcon("action.about.small-icon", false));
-    putValue("ICON24", resources.getIcon("action.about.icon", true));
+    putValue(Action.SMALL_ICON, skin.getIcon("action.about.small-icon", true, false));
+    putValue("ICON24", skin.getIcon("action.about.icon", true, true));
   }
 }

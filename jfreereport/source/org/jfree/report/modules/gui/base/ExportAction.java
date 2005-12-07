@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.8 2005/08/08 15:36:30 taqua Exp $
+ * $Id: ExportAction.java,v 1.9 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * --------
@@ -61,7 +61,8 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     private ExportPlugin plugin;
     private Action action;
     
-    public ExportPluginListener (final Action action, final ExportPlugin plugin)
+    public ExportPluginListener (final Action action,
+                                 final ExportPlugin plugin)
     {
       this.plugin = plugin;
       this.action = action;

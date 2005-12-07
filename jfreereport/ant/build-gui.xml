@@ -94,7 +94,7 @@
     <jar jarfile="${module-gui-base-file}"
          basedir="build">
       <manifest>
-          <attribute name="Class-Path" value="${core-jar-file} ${module-output-pageable-graphics-file} ${module-misc-configstore-base-file}"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-output-pageable-graphics-file} ${module-misc-configstore-base-file} ${module-gui-skin-base-file}"/>
       </manifest>
     </jar>
 
@@ -111,6 +111,31 @@
 
     <copy todir="build/org/jfree/report/modules/gui/base">
       <fileset dir="source/org/jfree/report/modules/gui/base">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+  </target>
+
+
+  <target name="compile-module-gui-skin-base">
+    <mkdir dir="build"/>
+    <antcall target="copy-resources-gui-skin-base" inheritall="true"/>
+    <jar jarfile="${module-gui-skin-base-file}"
+         basedir="build">
+    </jar>
+    <delete dir="build" />
+
+  </target>
+
+  <target name="copy-resources-gui-skin-base">
+    <copy todir="build/org/jfree/report/modules/gui/skin/base">
+      <fileset dir="source/org/jfree/report/modules/gui/skin/base">
+        <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+
+    <copy todir="build/org/jfree/report/modules/gui/skin/base">
+      <fileset dir="source/org/jfree/report/modules/gui/skin/base">
         <include name="**/*.properties"/>
       </fileset>
     </copy>
@@ -878,7 +903,8 @@
     copy-resources-gui-plaintext,
     copy-resources-gui-pdf,
     copy-resources-gui-print,
-    copy-resources-gui-base"/>
+    copy-resources-gui-base,
+    copy-resources-gui-skin-base"/>
 
   <target name="all" depends="init,
     compile-module-gui-base,
@@ -890,5 +916,6 @@
     compile-module-gui-plaintext,
     compile-module-gui-pdf,
     compile-module-gui-print,
-    compile-module-gui-converter"/>
+    compile-module-gui-converter,
+    compile-module-gui-skin-base"/>
 </project>

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   Thomas Morgner;
  *
- * $Id: LastPageAction.java,v 1.5 2005/01/25 00:01:16 taqua Exp $
+ * $Id: LastPageAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
  *
  * 29-May-2002 : Initial version
  * 05-Jun-2002 : Documentation update.
@@ -58,7 +58,8 @@ public abstract class LastPageAction extends AbstractActionDowngrade
    *
    * @param resources localised resources.
    */
-  protected LastPageAction (final ResourceBundleSupport resources)
+  protected LastPageAction (final ResourceBundleSupport resources,
+                            final Skin skin)
   {
     putValue(NAME, resources.getString("action.lastpage.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.lastpage.description"));
@@ -66,7 +67,7 @@ public abstract class LastPageAction extends AbstractActionDowngrade
             resources.getMnemonic("action.lastpage.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.lastpage.accelerator"));
-    putValue(SMALL_ICON, resources.getIcon("action.lastpage.small-icon", false));
-    putValue("ICON24", resources.getIcon("action.lastpage.icon", true));
+    putValue(SMALL_ICON, skin.getIcon("action.lastpage.small-icon", true, false));
+    putValue("ICON24", skin.getIcon("action.lastpage.icon", true, true));
   }
 }

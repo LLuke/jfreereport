@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.13 2005/02/23 21:04:48 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.14 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -130,6 +130,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   private PropertyChangeSupport propertyChangeSupport;
 
   private boolean enabled;
+  private Skin skin;
 
   /**
    * DefaultConstructor.
@@ -137,6 +138,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   public AbstractExportPlugin ()
   {
     propertyChangeSupport = new PropertyChangeSupport(this);
+    skin = SkinLoader.loadSkin();
   }
 
   protected PropertyChangeSupport getPropertyChangeSupport ()
@@ -387,5 +389,8 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     return enabled;
   }
 
-
+  protected Skin getSkin()
+  {
+    return skin;
+  }
 }

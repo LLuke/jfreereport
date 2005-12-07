@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomOutAction.java,v 1.5 2005/01/25 00:01:38 taqua Exp $
+ * $Id: ZoomOutAction.java,v 1.6 2005/02/23 21:04:49 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,8 @@ public abstract class ZoomOutAction extends AbstractActionDowngrade
    *
    * @param resources localised resources.
    */
-  protected ZoomOutAction (final ResourceBundleSupport resources)
+  protected ZoomOutAction (final ResourceBundleSupport resources,
+                           final Skin skin)
   {
     putValue(NAME, resources.getString("action.zoomOut.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.zoomOut.description"));
@@ -66,8 +67,8 @@ public abstract class ZoomOutAction extends AbstractActionDowngrade
             resources.getMnemonic("action.zoomOut.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.zoomOut.accelerator"));
-    putValue(SMALL_ICON, resources.getIcon("action.zoomOut.small-icon", false));
-    putValue("ICON24", resources.getIcon("action.zoomOut.icon", true));
+    putValue(SMALL_ICON, skin.getIcon("action.zoomOut.small-icon", true, false));
+    putValue("ICON24", skin.getIcon("action.zoomOut.icon", true, true));
   }
 
 }

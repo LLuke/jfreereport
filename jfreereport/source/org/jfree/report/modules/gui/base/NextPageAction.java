@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: NextPageAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
+ * $Id: NextPageAction.java,v 1.7 2005/09/21 14:52:05 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,8 @@ public abstract class NextPageAction extends AbstractActionDowngrade
    *
    * @param resources localised resources.
    */
-  protected NextPageAction (final ResourceBundleSupport resources)
+  protected NextPageAction (final ResourceBundleSupport resources,
+                            final Skin skin)
   {
     putValue(NAME, resources.getString("action.forward.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.forward.description"));
@@ -65,7 +66,7 @@ public abstract class NextPageAction extends AbstractActionDowngrade
             resources.getKeyStroke("action.forward.accelerator", 0));
     putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.forward.mnemonic"));
-    putValue(SMALL_ICON, resources.getIcon("action.forward.small-icon", false));
-    putValue("ICON24", resources.getIcon("action.forward.icon", true));
+    putValue(SMALL_ICON, skin.getIcon("action.forward.small-icon", true, false));
+    putValue("ICON24", skin.getIcon("action.forward.icon", true, true));
   }
 }
