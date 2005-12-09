@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaElement.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelMetaElement.java,v 1.3 2005/01/25 00:16:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,8 +39,10 @@
 package org.jfree.report.modules.output.table.xls.metaelements;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
+import org.jfree.report.modules.output.table.xls.ExcelExportContext;
 import org.jfree.report.style.ElementStyleSheet;
 
 public class ExcelMetaElement extends MetaElement
@@ -51,7 +53,7 @@ public class ExcelMetaElement extends MetaElement
     super(elementContent, style);
   }
 
-  public void applyValue (final HSSFCell cell)
+  public void applyValue(final ExcelExportContext context, final HSSFCell cell)
   {
     final RawContent rc = (RawContent) getContent();
     cell.setCellValue(String.valueOf(rc.getContent()));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelDateMetaElement.java,v 1.3 2005/01/25 00:16:47 taqua Exp $
+ * $Id: ExcelDateMetaElement.java,v 1.4 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,7 +41,9 @@ package org.jfree.report.modules.output.table.xls.metaelements;
 import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.jfree.report.modules.output.table.base.RawContent;
+import org.jfree.report.modules.output.table.xls.ExcelExportContext;
 import org.jfree.report.style.ElementStyleSheet;
 
 public class ExcelDateMetaElement extends ExcelMetaElement
@@ -52,7 +54,7 @@ public class ExcelDateMetaElement extends ExcelMetaElement
     super(elementContent, style);
   }
 
-  public void applyValue (final HSSFCell cell)
+  public void applyValue(final ExcelExportContext context, final HSSFCell cell)
   {
     final RawContent rc = (RawContent) getContent();
     final Date date = (Date) rc.getContent();

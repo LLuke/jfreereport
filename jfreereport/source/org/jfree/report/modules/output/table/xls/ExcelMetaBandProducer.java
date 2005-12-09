@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.9 2005/03/30 17:26:15 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.10 2005/10/05 13:35:40 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,16 +38,27 @@
 
 package org.jfree.report.modules.output.table.xls;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.Element;
 import org.jfree.report.content.AnchorContentFactoryModule;
+import org.jfree.report.content.Content;
+import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
+import org.jfree.report.content.EmptyContent;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
+import org.jfree.report.content.DrawableContentFactoryModule;
+import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
 import org.jfree.report.filter.DateFormatFilter;
@@ -60,10 +71,16 @@ import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelDateMetaElement;
+import org.jfree.report.modules.output.table.xls.metaelements.ExcelImageElement;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelNumberMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.ui.Drawable;
+import org.jfree.util.Log;
 
 public class ExcelMetaBandProducer
         extends TableMetaBandProducer
@@ -82,6 +99,8 @@ public class ExcelMetaBandProducer
     contentFactory.addModule(new TextContentFactoryModule());
     contentFactory.addModule(new ShapeContentFactoryModule());
     contentFactory.addModule(new AnchorContentFactoryModule());
+    contentFactory.addModule(new DrawableContentFactoryModule());
+    contentFactory.addModule(new ImageContentFactoryModule());
     return contentFactory;
   }
 
@@ -102,34 +121,92 @@ public class ExcelMetaBandProducer
     return defineDataFormats;
   }
 
-  /**
-   * The Excel-Target does not support drawable content.
-   *
-   * @param e
-   * @param x
-   * @param y
-   * @return
-   */
-  protected MetaElement createDrawableCell (final Element e,
-                                            final long x, final long y)
+
+  protected MetaElement createDrawableCell
+          (final Element e, final long x, final long y)
   {
-    // drawable elements are not supported...
-    return null;
+    final Object o = e.getValue();
+    if (o instanceof Drawable == false)
+    {
+      return null;
+    }
+
+    final Drawable drawable = (Drawable) o;
+    final StrictBounds rect = (StrictBounds)
+            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+
+    final int imageWidth = (int) StrictGeomUtility.toExternalValue(rect.getWidth());
+    final int imageHeight = (int) StrictGeomUtility.toExternalValue(rect.getHeight());
+
+    if (imageWidth == 0 && imageHeight == 0)
+    {
+      return null;
+    }
+    final Image image = ImageUtils.createTransparentImage(imageWidth, imageHeight);
+    final Graphics2D g2 = (Graphics2D) image.getGraphics();
+    // the clipping bounds are a sub-area of the whole drawable
+    // we only want to print a certain area ...
+
+    drawable.draw(g2, new Rectangle2D.Double(0, 0, imageWidth, imageHeight));
+    g2.dispose();
+    final DefaultImageReference imgref;
+    try
+    {
+      imgref = new DefaultImageReference(image);
+    }
+    catch (IOException e1)
+    {
+      Log.warn ("Unable to fully load a given image. (It should not happen here.)");
+      return null;
+    }
+    final ImageContent ic = new ImageContent(imgref, (StrictBounds) rect.clone());
+    final ExcelImageElement me = new ExcelImageElement
+            (new RawContent(rect, ic.getContent()),
+                    // we have to use the text style here, for this cheap hack.
+                    // this code will be removed in the next,
+                    // libLayout-enabled version anyway
+                    createStyleForTextElement(e, x, y));
+    me.setName(e.getName());
+    return me;
   }
 
-  /**
-   * The Excel-Target does not support image content.
-   *
-   * @param e
-   * @param x
-   * @param y
-   * @return
-   */
-  protected MetaElement createImageCell (final Element e,
-                                         final long x, final long y)
+  protected MetaElement createImageCell
+          (final Element e, final long x, final long y)
   {
-    // image elements are not supported...
-    return null;
+    final ContentFactory contentFactory = getLayoutSupport().getContentFactory();
+    if (contentFactory.canHandleContent(e.getContentType()) == false)
+    {
+      return null;
+    }
+
+    final StrictBounds rect = (StrictBounds)
+            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    if (rect.getWidth() == 0 || rect.getHeight() == 0)
+    {
+      // remove emtpy images.
+      return null;
+    }
+
+    try
+    {
+      final ElementLayoutInformation eli = new ElementLayoutInformation(rect);
+      final Content content =
+              contentFactory.createContentForElement(e, eli, getLayoutSupport());
+      if (EmptyContent.getDefaultEmptyContent().equals(content))
+      {
+        return null;
+      }
+      final ImageContent ic = (ImageContent) content;
+      final ExcelImageElement me = new ExcelImageElement
+              (new RawContent(rect, ic.getContent()),
+                      createStyleForTextElement(e, x, y));
+      me.setName(e.getName());
+      return me;
+    }
+    catch(ContentCreationException cce)
+    {
+      return null;
+    }
   }
 
   protected MetaElement createTextCell (final Element e,

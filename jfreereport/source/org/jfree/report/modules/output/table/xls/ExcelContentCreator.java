@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.14 2005/09/07 14:25:11 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.15 2005/11/09 20:57:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.table.xls;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -47,6 +48,7 @@ import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.util.Region;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
@@ -64,6 +66,7 @@ import org.jfree.util.Log;
 import org.jfree.base.config.ModifiableConfiguration;
 
 public class ExcelContentCreator extends TableContentCreator
+        implements ExcelExportContext
 {
   /**
    * factor for transformation of internal scale to excel scale.
@@ -97,12 +100,32 @@ public class ExcelContentCreator extends TableContentCreator
    * original developers of that weird file format did as he wrote that stuff]).
    */
   private static final double SCALE_FACTOR = 2560f/45f;
+  private HSSFPatriarch patriarch;
+  private HashMap sheetNamesCount;
 
   public ExcelContentCreator (final SheetLayoutCollection sheetLayoutCollection,
                               final OutputStream outputStream)
   {
     super(sheetLayoutCollection);
     this.outputStream = outputStream;
+    sheetNamesCount = new HashMap();
+  }
+
+  private String makeUnique (String name)
+  {
+    Integer count = (Integer) sheetNamesCount.get(name);
+    if (count == null)
+    {
+      sheetNamesCount.put (name, new Integer(1));
+      return name;
+    }
+    else
+    {
+      final int value = count.intValue() + 1;
+      sheetNamesCount.put (name, new Integer(value));
+      return makeUnique(name + " " + value);
+    }
+
   }
 
   protected void handleBeginTable (final ReportDefinition reportDefinition)
@@ -121,8 +144,27 @@ public class ExcelContentCreator extends TableContentCreator
     }
     else
     {
-      sheet = workbook.createSheet(sheetName);
+      final String uniqueSheetname = makeUnique(sheetName);
+      if (uniqueSheetname.length() == 0 || uniqueSheetname.length() > 31)
+      {
+        Log.warn ("A sheet name must not be empty and greater than 31 characters");
+        sheet = workbook.createSheet();
+      }
+      else if (isValidSheetName(uniqueSheetname) == false)
+      {
+        Log.warn ("A sheet name must not contain any of '/\\*?[]'");
+        // OpenOffice is even more restrictive and only allows Letters,
+        // Digits, Spaces and the Underscore
+        sheet = workbook.createSheet();
+      }
+      else
+      {
+        Log.debug ("Creating a workbook: " + uniqueSheetname);
+        sheet = workbook.createSheet(uniqueSheetname);
+      }
     }
+    // make sure a new patriarch is created if needed.
+    patriarch = null;
 
     final ModifiableConfiguration config = reportDefinition
             .getReportConfiguration();
@@ -144,6 +186,21 @@ public class ExcelContentCreator extends TableContentCreator
     sheet.setPrintGridlines(printGridLines);
   }
 
+  private boolean isValidSheetName(final String sheetname)
+  {
+    if ((sheetname.indexOf('/') > -1)
+      || (sheetname.indexOf('\\') > -1)
+      || (sheetname.indexOf('?') > -1)
+      || (sheetname.indexOf('*') > -1)
+      || (sheetname.indexOf(']') > -1)
+      || (sheetname.indexOf('[') > -1) )
+    {
+      return false;
+    }
+
+    return true;
+  }
+
   protected void handleClose ()
           throws ReportProcessingException
   {
@@ -151,6 +208,9 @@ public class ExcelContentCreator extends TableContentCreator
     try
     {
       workbook.write(outputStream);
+      // cleanup..
+      patriarch = null;
+      sheet = null;
     }
     catch (IOException e)
     {
@@ -161,6 +221,7 @@ public class ExcelContentCreator extends TableContentCreator
   protected void handleEndTable ()
           throws ReportProcessingException
   {
+    patriarch = null;
     sheet = null;
   }
 
@@ -308,7 +369,7 @@ public class ExcelContentCreator extends TableContentCreator
     {
       final ExcelMetaElement me = (ExcelMetaElement) element;
       cell.setEncoding(HSSFCell.ENCODING_UTF_16);
-      me.applyValue(cell);
+      me.applyValue(this, cell);
     }
   }
 
@@ -331,5 +392,24 @@ public class ExcelContentCreator extends TableContentCreator
       return row;
     }
     return sheet.createRow(y);
+  }
+
+  public HSSFWorkbook getWorkbook()
+  {
+    return workbook;
+  }
+
+  public HSSFPatriarch getPatriarch()
+  {
+    if (patriarch == null)
+    {
+      patriarch = getCurrentSheet().createDrawingPatriarch();
+    }
+    return patriarch;
+  }
+
+  public HSSFSheet getCurrentSheet()
+  {
+    return sheet;
   }
 }

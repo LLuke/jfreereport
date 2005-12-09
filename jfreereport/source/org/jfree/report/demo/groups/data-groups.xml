@@ -2,6 +2,11 @@
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
                         "http://jfreereport.sourceforge.net/report-085.dtd">
 <report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
+  <configuration>
+    <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">Identity-H</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.EmbedFonts">true</property>
+    <property name="org.jfree.report.targets.table.TableWriter.SheetNameFunction">sheetNameExpression</property>
+  </configuration>
 
   <!-- REPORT HEADER -->
   <reportheader height="50" fontname="SansSerif" fontstyle="bold" fontsize="18">
@@ -147,6 +152,20 @@
         <property name="pattern">Page {0,number,integer} of {1,number,integer}</property>
         <property name="field[0]">PageNumber</property>
         <property name="field[1]">PageTotal</property>
+      </properties>
+    </expression>
+
+    <!--
+    This expression is used when exporting to table targets, like HTML or Excel.
+    The name of this expression is referenced by the configuration key
+    "org.jfree.report.targets.table.TableWriter.SheetNameFunction" in the
+    configuration section above.
+     -->
+    <expression name="sheetNameExpression" class="org.jfree.report.function.TextFormatExpression">
+      <properties>
+        <property name="pattern">{0}, {1}</property>
+        <property name="field[0]">Integer</property>
+        <property name="field[1]">Letter</property>
       </properties>
     </expression>
 

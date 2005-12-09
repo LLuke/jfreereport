@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsDemo.java,v 1.3 2005/09/21 12:00:16 taqua Exp $
+ * $Id: GroupsDemo.java,v 1.4 2005/10/19 20:21:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,11 +38,14 @@
 package org.jfree.report.demo.groups;
 
 import java.net.URL;
+import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
@@ -98,15 +101,18 @@ public class GroupsDemo extends AbstractXmlDemoHandler
    * @param args ignored.
    */
   public static void main (final String[] args)
+          throws ReportProcessingException,
+          IOException, ReportDefinitionException
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
     final GroupsDemo handler = new GroupsDemo();
-    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
-    frame.init();
-    frame.pack();
-    RefineryUtilities.centerFrameOnScreen(frame);
-    frame.setVisible(true);
+//    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+//    frame.init();
+//    frame.pack();
+//    RefineryUtilities.centerFrameOnScreen(frame);
+//    frame.setVisible(true);
+    ExcelReportUtil.createXLS(handler.createReport(), "/tmp/export.xls");
   }
 }

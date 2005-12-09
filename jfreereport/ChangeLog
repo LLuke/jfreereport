@@ -2,6 +2,14 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * [BUG] The sheet-name function and the page headers in the table
+          exports now always use the data from the next report state. This
+          prevents some ugly misbehaviour when using 'pagebreak-after-print'
+          flags on group footers.
+
+        * [BUG] Duplicate values returned by the sheetName-function do no longer
+          interrupt the report process in the Excel-Exporter.
+
         * The build process did not include the demo documentation files in
           the demo-jar.
 

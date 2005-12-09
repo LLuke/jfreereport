@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JStatusBar.java,v 1.4 2005/03/03 23:00:00 taqua Exp $
+ * $Id: JStatusBar.java,v 1.5 2005/04/14 16:37:33 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.jfree.report.modules.gui.base.PreviewBaseModule;
+import org.jfree.report.modules.gui.base.Skin;
+import org.jfree.report.modules.gui.base.SkinLoader;
 import org.jfree.util.ResourceBundleSupport;
 
 public class JStatusBar extends JComponent
@@ -63,6 +65,7 @@ public class JStatusBar extends JComponent
   private JLabel statusHolder;
   private JComponent otherComponents;
   private ResourceBundleSupport resources;
+  private Skin skin;
 
   public JStatusBar ()
   {
@@ -81,6 +84,12 @@ public class JStatusBar extends JComponent
     otherComponents = new JPanel();
     add(otherComponents, BorderLayout.EAST);
     resources = new ResourceBundleSupport(locale, PreviewBaseModule.RESOURCES_BASE_NAME);
+    skin = SkinLoader.loadSkin();
+  }
+
+  protected Skin getSkin()
+  {
+    return skin;
   }
 
   public JComponent getOtherComponents ()
@@ -93,22 +102,22 @@ public class JStatusBar extends JComponent
 //    Log.debug ("Setting status: " + type + ", " + text);
     if (type == TYPE_ERROR)
     {
-      final Icon res = getResources().getIcon("statusbar.errorIcon");
+      final Icon res = getSkin().getIcon("statusbar.errorIcon", true, false);
       statusHolder.setIcon(res);
     }
     else if (type == TYPE_WARNING)
     {
-      final Icon res = getResources().getIcon("statusbar.warningIcon");
+      final Icon res = getSkin().getIcon("statusbar.warningIcon", true, false);
       statusHolder.setIcon(res);
     }
     else if (type == TYPE_INFORMATION)
     {
-      final Icon res = getResources().getIcon("statusbar.informationIcon");
+      final Icon res = getSkin().getIcon("statusbar.informationIcon", true, false);
       statusHolder.setIcon(res);
     }
     else
     {
-      final Icon res = getResources().getIcon("statusbar.otherIcon");
+      final Icon res = getSkin().getIcon("statusbar.otherIcon", true, false);
       statusHolder.setIcon(res);
     }
     statusHolder.setText(text);

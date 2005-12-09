@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.30 2005/11/12 15:38:32 taqua Exp $
+ * $Id: TableWriter.java,v 1.31 2005/11/17 17:03:48 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,7 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.util.Log;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data. After
@@ -124,6 +125,7 @@ public class TableWriter extends AbstractFunction
 
   private LayoutSupport layoutSupport;
   private int currentEffectiveGroupIndex;
+  private boolean pageOpen;
 
   /**
    * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth is
@@ -136,6 +138,7 @@ public class TableWriter extends AbstractFunction
     this.delegate.setSimplePageHeaderHandling(true);
     this.metaBandProducer = metaBandProducer;
     this.layoutSupport = metaBandProducer.getLayoutSupport();
+    this.pageOpen = false;
   }
 
   /**
@@ -293,18 +296,26 @@ public class TableWriter extends AbstractFunction
                         final boolean handlePagebreakBefore)
           throws ReportProcessingException
   {
-    if (!isInEndPage() && handlePagebreakBefore
-            && band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE) == true)
+    if (!isInEndPage())
     {
-      if (isPageEmpty() == false)
+      if(handlePagebreakBefore
+            && band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE) == true)
       {
-        endPage();
-        startPage();
-      }
+        if (isPageEmpty() == false)
+        {
+          endPage();
+        }
 //      else
 //      {
 //        Log.debug("Page is empty; so no break");
 //      }
+      }
+    }
+
+    if (isPageOpen() == false)
+    {
+      // make sure that there is a page, when we need one.
+      startPage();
     }
 
     final long y = getCursor().getY();
@@ -329,12 +340,8 @@ public class TableWriter extends AbstractFunction
       if (isPageEmpty() == false)
       {
         endPage();
-        startPage();
+        //startPage();
       }
-//      else
-//      {
-//        Log.debug("Empty Page, ignore!");
-//      }
     }
     return true;
   }
@@ -466,6 +473,11 @@ public class TableWriter extends AbstractFunction
     tableCreator.flush();
   }
 
+  public boolean isPageOpen()
+  {
+    return pageOpen;
+  }
+
   /**
    * Ends the current page. Fires the PageFinished event.
    */
@@ -487,7 +499,7 @@ public class TableWriter extends AbstractFunction
       for (int i = 0; i < errors.size(); i++)
       {
         Exception exception = (Exception) errors.get(i);
-        exception.printStackTrace();
+        Log.error ("While finishing the page: ", exception);
       }
       throw new ReportProcessingException
               ("An error occured while processing the page start - aborting");
@@ -495,6 +507,7 @@ public class TableWriter extends AbstractFunction
     cEventState.nextPage();
     setCurrentEvent(currentEvent);
     inEndPage = false;
+    pageOpen = false;
   }
 
   /**
@@ -508,6 +521,7 @@ public class TableWriter extends AbstractFunction
       throw new IllegalStateException("Already in startPage or endPage");
     }
     inEndPage = true;
+    pageOpen = true;
 
     final ReportEvent currentEvent = getCurrentEvent();
     final ReportState cEventState = currentEvent.getState();
