@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.14 2005/08/12 12:09:41 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.15 2005/10/14 15:43:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -191,7 +191,8 @@ public class MetaBandProducer
       return null;
     }
 
-    final ElementStyleSheet styleSheet = createStyleForElement(e, parentx, parenty);
+    final ElementStyleSheet styleSheet = createStyleForElement
+            (e, parentx, parenty);
     final Content content = createContent(e, styleSheet);
     final MetaElement element = new MetaElement
             (content, styleSheet);

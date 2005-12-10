@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.19 2005/10/11 19:27:57 taqua Exp $
+ * $Id: SheetLayout.java,v 1.20 2005/10/14 15:43:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -1356,6 +1356,11 @@ public class SheetLayout
     return bottomBorder - yCuts[row].longValue();
   }
 
+  public long getCellWidth (final int startCell)
+  {
+    return getCellWidth(startCell, startCell + 1);
+  }
+
   /**
    * Computes the height of the given row.
    *
@@ -1428,13 +1433,24 @@ public class SheetLayout
     }
   }
 
+  public long getXPosition(final int col)
+  {
+    final Long[] xCuts = getXCuts();
+    if (col >= xCuts.length)
+    {
+      throw new IndexOutOfBoundsException
+              ("Column " + col + " is invalid. Max valid column is " + xCuts.length);
+    }
+    return xCuts[col].longValue();
+  }
+
   public long getYPosition(final int row)
   {
     final Long[] yCuts = getYCuts();
     if (row >= yCuts.length)
     {
       throw new IndexOutOfBoundsException
-              ("Row " + row + " is invalid. Max valud row is " + yCuts.length);
+              ("Row " + row + " is invalid. Max valid row is " + yCuts.length);
     }
     return yCuts[row].longValue();
   }

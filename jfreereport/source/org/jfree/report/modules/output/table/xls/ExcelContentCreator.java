@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.15 2005/11/09 20:57:08 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.16 2005/12/09 20:05:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -68,15 +68,6 @@ import org.jfree.base.config.ModifiableConfiguration;
 public class ExcelContentCreator extends TableContentCreator
         implements ExcelExportContext
 {
-  /**
-   * factor for transformation of internal scale to excel scale.
-   * This is called a Twips and is a 1/20th of a point.
-   * (In theory. In practice, that does not work out or font
-   * rendering is different in the Java and Windows World.
-   * It is (Windows uses 96dpi displays, we use 72dpi).
-   */
-  private static final double HEIGHT_SCALE_FACTOR = 20d * 96d / 72d;
-
   private HSSFCellStyleProducer cellStyleProducer;
   private OutputStream outputStream;
   private boolean open;
@@ -94,12 +85,11 @@ public class ExcelContentCreator extends TableContentCreator
    * These funny things make me wanting to hurt the guys who implemented
    * that weird stuff in MS-Excel.
    * <p>
-   * I now assume that Arial 10 is the default font (as given in the document
-   * above) and now assume that a character is 4.5 points wide
-   * (just guessing here [at least I'm not taking the same stuff(drugs?) as the
-   * original developers of that weird file format did as he wrote that stuff]).
+   * With POI 3.0 it seems that some default fonts have already been created,
+   * which actually make the workbook widths independent from the used fonts.
    */
-  private static final double SCALE_FACTOR = 2560f/45f;
+  private static final double SCALE_FACTOR = 2000f/46f;
+
   private HSSFPatriarch patriarch;
   private HashMap sheetNamesCount;
 
@@ -270,6 +260,7 @@ public class ExcelContentCreator extends TableContentCreator
       newTable = false;
     }
 
+    /** Split: first create the rows */
     final int height = go.getRowCount();
     final int layoutOffset = getLayoutOffset();
     for (int y = layoutOffset; y < height + layoutOffset; y++)
@@ -278,8 +269,14 @@ public class ExcelContentCreator extends TableContentCreator
       final double lastRowHeight =
               StrictGeomUtility.toExternalValue(layout.getRowHeight(y));
       // we use 1/72 as unit, Excel uses 1/20 so we have to convert
-      row.setHeight((short) (lastRowHeight * HEIGHT_SCALE_FACTOR));
+      // POI sets a special flag, when using this function to make sure that
+      // the height of the row is not connected to the fontsize.
+      row.setHeightInPoints((short) (lastRowHeight));
+    }
 
+    /** Split: and then fill them */
+    for (int y = layoutOffset; y < height + layoutOffset; y++)
+    {
       for (int x = 0; x < width; x++)
       {
         final MetaElement element =
@@ -411,5 +408,15 @@ public class ExcelContentCreator extends TableContentCreator
   public HSSFSheet getCurrentSheet()
   {
     return sheet;
+  }
+
+  public SheetLayout getCurrentLayout()
+  {
+    return super.getCurrentLayout();
+  }
+
+  public int getLayoutOffset()
+  {
+    return super.getLayoutOffset();
   }
 }

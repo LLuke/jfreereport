@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsDemo.java,v 1.4 2005/10/19 20:21:04 taqua Exp $
+ * $Id: GroupsDemo.java,v 1.5 2005/12/09 20:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -101,18 +101,15 @@ public class GroupsDemo extends AbstractXmlDemoHandler
    * @param args ignored.
    */
   public static void main (final String[] args)
-          throws ReportProcessingException,
-          IOException, ReportDefinitionException
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
     final GroupsDemo handler = new GroupsDemo();
-//    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
-//    frame.init();
-//    frame.pack();
-//    RefineryUtilities.centerFrameOnScreen(frame);
-//    frame.setVisible(true);
-    ExcelReportUtil.createXLS(handler.createReport(), "/tmp/export.xls");
+    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+    frame.init();
+    frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.1 2005/08/29 17:42:57 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.2 2005/11/17 17:03:47 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,13 @@
 package org.jfree.report.demo.swingicons;
 
 import java.net.URL;
+import java.io.IOException;
 import javax.swing.JComponent;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;
@@ -108,16 +111,19 @@ public class SwingIconsDemo extends AbstractXmlDemoHandler
    * @param args ignored.
    */
   public static void main (final String[] args)
+          throws ReportProcessingException,
+          IOException, ReportDefinitionException
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
     final SwingIconsDemo handler = new SwingIconsDemo();
-    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
-    frame.init();
-    frame.pack();
-    RefineryUtilities.centerFrameOnScreen(frame);
-    frame.setVisible(true);
+//    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+//    frame.init();
+//    frame.pack();
+//    RefineryUtilities.centerFrameOnScreen(frame);
+//    frame.setVisible(true);
+    ExcelReportUtil.createXLS(handler.createReport(), "/tmp/icons.xls");
   }
 
 }

@@ -2,13 +2,22 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.6-5: (??)
         * [BUG] The sheet-name function and the page headers in the table
           exports now always use the data from the next report state. This
           prevents some ugly misbehaviour when using 'pagebreak-after-print'
           flags on group footers.
 
         * [BUG] Duplicate values returned by the sheetName-function do no longer
-          interrupt the report process in the Excel-Exporter.
+          interrupt the report process in the Excel-Exporter. Invalid sheetnames
+          do no longer cause trouble - they will be ignored.
+
+        * [BUG] The cell-width and height computations in previous versions of
+          JFreeReport have been some kind of voodoo. This has been fixed and
+          now the width and height are always correct.
+
+        * The Excel export target does now support images. Drawables get
+          converted to images before they get added to the sheets.
 
         * The build process did not include the demo documentation files in
           the demo-jar.

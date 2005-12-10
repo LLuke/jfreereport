@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.7 2005/03/25 16:37:53 taqua Exp $
+ * $Id: PreviewAction.java,v 1.1 2005/08/29 17:46:10 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import javax.swing.Action;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
+import org.jfree.report.modules.gui.base.Skin;
+import org.jfree.report.modules.gui.base.SkinLoader;
 
 /**
  * The preview action invokes the parsing and processing of the currently selected sample
@@ -61,13 +63,14 @@ public abstract class PreviewAction extends AbstractActionDowngrade
    */
   public PreviewAction (final ResourceBundleSupport resources)
   {
+    Skin skin = SkinLoader.loadSkin();
     this.putValue(Action.NAME, resources.getString("action.print-preview.name"));
     this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.print-preview.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.print-preview.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.print-preview.accelerator"));
-    this.putValue(Action.SMALL_ICON, resources.getIcon("action.print-preview.small-icon", false));
-    this.putValue("ICON24", resources.getIcon("action.print-preview.icon", false));
+    this.putValue(Action.SMALL_ICON, skin.getIcon("action.print-preview.small-icon", true, false));
+    this.putValue("ICON24", skin.getIcon("action.print-preview.icon", true, true));
   }
 }

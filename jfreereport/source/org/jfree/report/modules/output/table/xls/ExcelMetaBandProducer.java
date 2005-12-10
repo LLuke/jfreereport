@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.10 2005/10/05 13:35:40 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.11 2005/12/09 20:05:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,17 +48,19 @@ import java.util.Date;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.Element;
+import org.jfree.report.ElementAlignment;
 import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
+import org.jfree.report.content.DrawableContentFactoryModule;
 import org.jfree.report.content.EmptyContent;
 import org.jfree.report.content.ImageContent;
+import org.jfree.report.content.ImageContentFactoryModule;
+import org.jfree.report.content.MultipartContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
-import org.jfree.report.content.DrawableContentFactoryModule;
-import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
 import org.jfree.report.filter.DateFormatFilter;
@@ -67,7 +69,11 @@ import org.jfree.report.filter.RawDataSource;
 import org.jfree.report.filter.templates.DateFieldTemplate;
 import org.jfree.report.filter.templates.NumberFieldTemplate;
 import org.jfree.report.layout.DefaultLayoutSupport;
+import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.modules.output.pageable.base.operations.AlignmentTools;
+import org.jfree.report.modules.output.pageable.base.operations.HorizontalBoundsAlignment;
+import org.jfree.report.modules.output.pageable.base.operations.VerticalBoundsAlignment;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelDateMetaElement;
@@ -87,7 +93,7 @@ public class ExcelMetaBandProducer
 {
   private boolean defineDataFormats;
 
-  public ExcelMetaBandProducer (final boolean defineDataFormats)
+  public ExcelMetaBandProducer(final boolean defineDataFormats)
   {
     super(new DefaultLayoutSupport(createExcelContentFactory()));
     this.defineDataFormats = defineDataFormats;
@@ -105,18 +111,19 @@ public class ExcelMetaBandProducer
   }
 
   /**
-   * Defines whether to map java objects into excel extended cell formats. This feature
-   * can be used to create numeric and date cells in the excel sheet, but the mapping may
-   * contain errors.
+   * Defines whether to map java objects into excel extended cell formats. This
+   * feature can be used to create numeric and date cells in the excel sheet,
+   * but the mapping may contain errors.
    * <p/>
-   * We try to directly map the java.text.SimpleDateFormat and java.text.DecimalFormat
-   * into their excel counter parts and hope that everything works fine. If not, you will
-   * have to adjust the format afterwards.
+   * We try to directly map the java.text.SimpleDateFormat and
+   * java.text.DecimalFormat into their excel counter parts and hope that
+   * everything works fine. If not, you will have to adjust the format
+   * afterwards.
    *
-   * @return true if cells should contain a custom data format for numeric or date cells
-   *         or false when all cells should contain strings.
+   * @return true if cells should contain a custom data format for numeric or
+   *         date cells or false when all cells should contain strings.
    */
-  public boolean isDefineDataFormats ()
+  public boolean isDefineDataFormats()
   {
     return defineDataFormats;
   }
@@ -135,14 +142,17 @@ public class ExcelMetaBandProducer
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
-    final int imageWidth = (int) StrictGeomUtility.toExternalValue(rect.getWidth());
-    final int imageHeight = (int) StrictGeomUtility.toExternalValue(rect.getHeight());
+    final int imageWidth = (int) StrictGeomUtility.toExternalValue(
+            rect.getWidth());
+    final int imageHeight = (int) StrictGeomUtility.toExternalValue(
+            rect.getHeight());
 
     if (imageWidth == 0 && imageHeight == 0)
     {
       return null;
     }
-    final Image image = ImageUtils.createTransparentImage(imageWidth, imageHeight);
+    final Image image = ImageUtils.createTransparentImage(imageWidth,
+            imageHeight);
     final Graphics2D g2 = (Graphics2D) image.getGraphics();
     // the clipping bounds are a sub-area of the whole drawable
     // we only want to print a certain area ...
@@ -156,16 +166,29 @@ public class ExcelMetaBandProducer
     }
     catch (IOException e1)
     {
-      Log.warn ("Unable to fully load a given image. (It should not happen here.)");
+      Log.warn(
+              "Unable to fully load a given image. (It should not happen here.)");
       return null;
     }
+
+    // align the image ...
     final ImageContent ic = new ImageContent(imgref, (StrictBounds) rect.clone());
+    final ElementStyleSheet styleSheet = createStyleForTextElement(e, x, y);
+    final StrictBounds bounds = (StrictBounds)
+            styleSheet.getStyleProperty(ElementStyleSheet.BOUNDS);
+    final ElementAlignment hAlign = (ElementAlignment)
+            styleSheet.getStyleProperty(ElementStyleSheet.ALIGNMENT);
+    final ElementAlignment vAlign = (ElementAlignment)
+            styleSheet.getStyleProperty(ElementStyleSheet.VALIGNMENT);
+    final Content content = alignContent(ic, bounds, hAlign, vAlign);
+    if (content instanceof ImageContent == false)
+            return null;
+
+    // we have to use the text style here, for this cheap hack.
+    // this code will be removed in the next,
+    // libLayout-enabled version anyway
     final ExcelImageElement me = new ExcelImageElement
-            (new RawContent(rect, ic.getContent()),
-                    // we have to use the text style here, for this cheap hack.
-                    // this code will be removed in the next,
-                    // libLayout-enabled version anyway
-                    createStyleForTextElement(e, x, y));
+            ((ImageContent) content, styleSheet);
     me.setName(e.getName());
     return me;
   }
@@ -173,7 +196,8 @@ public class ExcelMetaBandProducer
   protected MetaElement createImageCell
           (final Element e, final long x, final long y)
   {
-    final ContentFactory contentFactory = getLayoutSupport().getContentFactory();
+    final ContentFactory contentFactory = getLayoutSupport()
+            .getContentFactory();
     if (contentFactory.canHandleContent(e.getContentType()) == false)
     {
       return null;
@@ -189,28 +213,97 @@ public class ExcelMetaBandProducer
 
     try
     {
-      final ElementLayoutInformation eli = new ElementLayoutInformation(rect);
-      final Content content =
-              contentFactory.createContentForElement(e, eli, getLayoutSupport());
+      final ElementStyleSheet style = createStyleForTextElement(e, x, y);
+      final Content content = createContent(e, style);
       if (EmptyContent.getDefaultEmptyContent().equals(content))
       {
         return null;
       }
       final ImageContent ic = (ImageContent) content;
-      final ExcelImageElement me = new ExcelImageElement
-              (new RawContent(rect, ic.getContent()),
-                      createStyleForTextElement(e, x, y));
+      final ExcelImageElement me = new ExcelImageElement(ic, style);
       me.setName(e.getName());
       return me;
     }
-    catch(ContentCreationException cce)
+    catch (ContentCreationException cce)
     {
       return null;
     }
   }
 
-  protected MetaElement createTextCell (final Element e,
-                                        final long x, final long y)
+
+  protected Content createContent(final Element e,
+                                  final ElementStyleSheet styleSheet)
+          throws ContentCreationException
+  {
+    final StrictBounds bounds = (StrictBounds)
+            styleSheet.getStyleProperty(ElementStyleSheet.BOUNDS);
+    final ElementAlignment hAlign = (ElementAlignment)
+            styleSheet.getStyleProperty(ElementStyleSheet.ALIGNMENT);
+    final ElementAlignment vAlign = (ElementAlignment)
+            styleSheet.getStyleProperty(ElementStyleSheet.VALIGNMENT);
+    final LayoutSupport support = getLayoutSupport();
+    final ElementLayoutInformation eli = new ElementLayoutInformation(bounds);
+    final Content content =
+            support.getContentFactory().createContentForElement(e, eli,
+                    support);
+    if (content.equals(EmptyContent.getDefaultEmptyContent()))
+    {
+      return content;
+    }
+    return alignContent(content, bounds, hAlign, vAlign);
+  }
+
+  /** Directly from AligningMetaBandProducer (pageable content) */
+  protected Content alignContent(final Content content,
+                                 final StrictBounds bounds,
+                                 final ElementAlignment hAlign,
+                                 final ElementAlignment vAlign)
+  {
+    final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(vAlign,
+            bounds);
+    final StrictBounds minimumContentSize = content.getMinimumContentSize();
+    if (minimumContentSize == null)
+    {
+      return EmptyContent.getDefaultEmptyContent();
+    }
+    final StrictBounds cb = vba.align(
+            (StrictBounds) minimumContentSize.clone());
+    final long verticalShift = cb.getY() - minimumContentSize.getY();
+    content.translate(0, verticalShift);
+    return alignHorizontalContent(content, bounds, hAlign);
+  }
+
+  /** Directly from AligningMetaBandProducer (pageable content) */
+  protected Content alignHorizontalContent(final Content content,
+                                           final StrictBounds bounds,
+                                           final ElementAlignment hAlign)
+  {
+    final HorizontalBoundsAlignment hba = AlignmentTools.getHorizontalLayout(
+            hAlign, bounds);
+    final StrictBounds minimumContentSize = content.getMinimumContentSize();
+    if (minimumContentSize == null)
+    {
+      return EmptyContent.getDefaultEmptyContent();
+    }
+    final StrictBounds cb = hba.align(
+            (StrictBounds) minimumContentSize.clone());
+    final long horizontalShift = cb.getX() - minimumContentSize.getX();
+    content.translate(horizontalShift, 0);
+    if (content instanceof MultipartContent)
+    {
+      final MultipartContent mp = (MultipartContent) content;
+      final int size = mp.getContentPartCount();
+      for (int i = 0; i < size; i++)
+      {
+        alignHorizontalContent(mp.getContentPart(i), bounds, hAlign);
+      }
+    }
+    return content;
+  }
+
+
+  protected MetaElement createTextCell(final Element e,
+                                       final long x, final long y)
   {
     final Object o = e.getValue();
     if (o == null)
@@ -236,13 +329,14 @@ public class ExcelMetaBandProducer
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
-    final MetaElement me = new ExcelMetaElement(new RawContent(rect, String.valueOf(o)),
+    final MetaElement me = new ExcelMetaElement(new RawContent(rect,
+            String.valueOf(o)),
             createStyleForTextElement(e, x, y));
     me.setName(e.getName());
     return me;
   }
 
-  private String getFormatString (final DataSource ds)
+  private String getFormatString(final DataSource ds)
   {
     if (ds instanceof NumberFieldTemplate)
     {
@@ -259,7 +353,8 @@ public class ExcelMetaBandProducer
       final DateFormatFilter filter = (DateFormatFilter) ds;
       if (filter.getDateFormat() instanceof SimpleDateFormat)
       {
-        final SimpleDateFormat dateFormat = (SimpleDateFormat) filter.getDateFormat();
+        final SimpleDateFormat dateFormat = (SimpleDateFormat) filter
+                .getDateFormat();
         return dateFormat.toLocalizedPattern();
       }
     }
@@ -268,7 +363,8 @@ public class ExcelMetaBandProducer
       final NumberFormatFilter filter = (NumberFormatFilter) ds;
       if (filter.getNumberFormat() instanceof DecimalFormat)
       {
-        final DecimalFormat dateFormat = (DecimalFormat) filter.getNumberFormat();
+        final DecimalFormat dateFormat = (DecimalFormat) filter
+                .getNumberFormat();
         return dateFormat.toLocalizedPattern();
       }
     }
@@ -280,7 +376,9 @@ public class ExcelMetaBandProducer
     return null;
   }
 
-  private MetaElement createNumberCell (final Element e, final long x, final long y)
+  private MetaElement createNumberCell(final Element e,
+                                       final long x,
+                                       final long y)
   {
     final RawDataSource nft = (RawDataSource) e.getDataSource();
     final Number number = (Number) nft.getRawValue();
@@ -291,13 +389,16 @@ public class ExcelMetaBandProducer
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);
     styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
-            e.getStyle().getStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
+            e.getStyle().getStyleProperty(
+                    ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
                     getFormatString(nft)));
 
     return new ExcelNumberMetaElement(new RawContent(rect, number), styleSheet);
   }
 
-  private MetaElement createDateCell (final Element e, final long x, final long y)
+  private MetaElement createDateCell(final Element e,
+                                     final long x,
+                                     final long y)
   {
     final RawDataSource dft = (RawDataSource) e.getDataSource();
     final Date date = (Date) dft.getRawValue();
@@ -307,7 +408,8 @@ public class ExcelMetaBandProducer
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);
     styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
-            e.getStyle().getStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
+            e.getStyle().getStyleProperty(
+                    ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
                     getFormatString(dft)));
 
     return new ExcelDateMetaElement(new RawContent(rect, date), styleSheet);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.7 2005/03/04 13:52:06 taqua Exp $
+ * $Id: AboutAction.java,v 1.1 2005/08/29 17:46:10 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import javax.swing.Action;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
+import org.jfree.report.modules.gui.base.Skin;
+import org.jfree.report.modules.gui.base.SkinLoader;
 
 /**
  * The About action is used to show some information about the demo programm of
@@ -62,11 +64,12 @@ public abstract class AboutAction extends AbstractActionDowngrade
    */
   protected AboutAction (final ResourceBundleSupport resources)
   {
+    Skin skin = SkinLoader.loadSkin();
     this.putValue(Action.NAME, resources.getString("action.about.name"));
     this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.about.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.about.mnemonic"));
-    this.putValue(Action.SMALL_ICON, resources.getIcon("action.about.small-icon", false));
-    this.putValue("ICON24", resources.getIcon("action.about.icon", true));
+    this.putValue(Action.SMALL_ICON, skin.getIcon("action.about.small-icon", true, false));
+    this.putValue("ICON24", skin.getIcon("action.about.icon", true, true));
   }
 }
