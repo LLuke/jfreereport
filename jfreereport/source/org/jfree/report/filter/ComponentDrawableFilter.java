@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2005, by Object Refinery Limited.
  *
- * $Id: FormatParser.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
+ * $Id: ComponentDrawableFilter.java,v 1.1 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes
  * -------
@@ -37,16 +37,18 @@ import java.awt.Component;
 
 import org.jfree.report.util.ComponentDrawable;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.ReportDefinition;
 
 /**
  * Creation-Date: 11.10.2005, 14:58:34
  *
  * @author Thomas Morgner
  */
-public class ComponentDrawableFilter implements DataFilter
+public class ComponentDrawableFilter implements DataFilter, ReportConnectable
 {
   /** The datasource from where to read the urls. */
   private DataSource source;
+  private ReportDefinition reportDefinition;
 
   public ComponentDrawableFilter()
   {
@@ -75,6 +77,10 @@ public class ComponentDrawableFilter implements DataFilter
       return null;
     }
     ComponentDrawable cd = new ComponentDrawable();
+    final String allowOwnPeer =
+            reportDefinition.getReportConfiguration().getConfigProperty
+                    ("org.jfree.report.AllowOwnPeerForComponentDrawable");
+    cd.setAllowOwnPeer ("true".equals(allowOwnPeer));
     cd.setComponent((Component) o);
     return cd;
   }
@@ -92,6 +98,7 @@ public class ComponentDrawableFilter implements DataFilter
     {
       il.source = (DataSource) source.clone();
     }
+    il.reportDefinition = null;
     return il;
   }
 
@@ -104,4 +111,42 @@ public class ComponentDrawableFilter implements DataFilter
   {
     this.source = ds;
   }
+
+
+  /**
+   * Connects the connectable to the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != null)
+    {
+      throw new IllegalStateException("Already connected.");
+    }
+    if (reportDefinition == null)
+    {
+      throw new NullPointerException("The given report definition is null");
+    }
+    this.reportDefinition = reportDefinition;
+  }
+
+  /**
+   * Disconnects the connectable from the given report definition.
+   *
+   * @param reportDefinition the reportDefinition for this report connectable.
+   * @throws IllegalStateException if this instance is already connected to a
+   * report definition.
+   */
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != reportDefinition)
+    {
+      throw new IllegalStateException("This report definition is not registered.");
+    }
+    this.reportDefinition = null;
+  }
+
 }

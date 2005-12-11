@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutDemo.java,v 1.3 2005/09/21 12:00:17 taqua Exp $
+ * $Id: LayoutDemo.java,v 1.4 2005/10/11 14:55:41 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,6 +41,7 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.CompoundDemoFrame;
 import org.jfree.report.demo.helper.DefaultDemoSelector;
 import org.jfree.report.demo.helper.DemoSelector;
+import org.jfree.report.demo.layouts.internalframe.InternalFrameDrawingDemoHandler;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -76,6 +77,7 @@ public class LayoutDemo extends CompoundDemoFrame
     demoSelector.addDemo(new StackedLayoutXMLDemoHandler());
     demoSelector.addDemo(new StackedLayoutAPIDemoHandler());
     demoSelector.addDemo(new ComponentDrawingDemoHandler());
+    demoSelector.addDemo(new InternalFrameDrawingDemoHandler());
     return demoSelector;
   }
 }

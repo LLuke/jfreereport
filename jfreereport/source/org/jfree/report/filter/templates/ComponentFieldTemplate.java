@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplate.java,v 1.10 2005/09/20 19:53:04 taqua Exp $
+ * $Id: ComponentFieldTemplate.java,v 1.1 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -121,6 +121,7 @@ public class ComponentFieldTemplate extends AbstractTemplate
   public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
+    getDrawableFilter().registerReportDefinition(reportDefinition);
   }
 
   /**
@@ -130,6 +131,7 @@ public class ComponentFieldTemplate extends AbstractTemplate
    */
   public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
+    getDrawableFilter().unregisterReportDefinition(reportDefinition);
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 

@@ -58,6 +58,11 @@ public class ComponentDrawable implements ExtendedDrawable
       {
         component.addNotify();
       }
+      else if (isOwnPeerConnected())
+      {
+        Window w = SwingUtilities.getWindowAncestor(component);
+        w.validate();
+      }
       else
       {
         peerSupply.pack();
@@ -79,6 +84,7 @@ public class ComponentDrawable implements ExtendedDrawable
   private JPanel contentPane;
   private PainterRunnable runnable;
   private boolean paintSynchronously;
+  private boolean allowOwnPeer;
 
   public ComponentDrawable()
   {
@@ -88,6 +94,16 @@ public class ComponentDrawable implements ExtendedDrawable
     contentPane.setLayout(null);
     peerSupply.setContentPane(contentPane);
     runnable = new PainterRunnable();
+  }
+
+  public boolean isAllowOwnPeer()
+  {
+    return allowOwnPeer;
+  }
+
+  public void setAllowOwnPeer(final boolean allowOwnPeer)
+  {
+    this.allowOwnPeer = allowOwnPeer;
   }
 
   public boolean isPaintSynchronously()
@@ -102,7 +118,7 @@ public class ComponentDrawable implements ExtendedDrawable
 
   private void cleanUp ()
   {
-    if (component instanceof JComponent)
+    if (component instanceof JComponent && isOwnPeerConnected() == false)
     {
       JComponent jc = (JComponent) component;
       RepaintManager.currentManager(jc).removeInvalidComponent(jc);
@@ -131,20 +147,35 @@ public class ComponentDrawable implements ExtendedDrawable
     {
       return new Dimension(0,0);
     }
-    peerSupply.pack();
-    if (component instanceof Window == false)
+    if (component instanceof Window == false &&
+            isOwnPeerConnected() == false)
     {
+      peerSupply.pack();
       contentPane.add(component);
       contentPane.validate();
+      component.validate();
+    }
+    else if (isOwnPeerConnected())
+    {
+      return component.getSize();
     }
     else
     {
       component.validate();
     }
-    component.validate();
     final Dimension retval = component.getPreferredSize();
     cleanUp();
     return retval;
+  }
+
+  private boolean isOwnPeerConnected()
+  {
+    if (allowOwnPeer == false)
+    {
+      return false;
+    }
+    final Window windowAncestor = SwingUtilities.getWindowAncestor(component);
+    return (windowAncestor != null && windowAncestor != peerSupply);
   }
 
   public void setPreserveAspectRatio(final boolean preserveAspectRatio)
