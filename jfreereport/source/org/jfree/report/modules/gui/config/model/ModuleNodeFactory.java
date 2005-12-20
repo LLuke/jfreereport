@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.13 2005/08/08 15:36:30 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.14 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,7 +50,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.modules.Module;
 import org.jfree.base.modules.PackageManager;
-import org.jfree.report.DefaultLogModule;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.util.Log;
@@ -339,10 +338,6 @@ public class ModuleNodeFactory
       if (activeModules[i].getClass().equals(JFreeReportCoreModule.class))
       {
         fallback = activeModules[i];
-      }
-      else if (activeModules[i].getClass().equals(DefaultLogModule.class))
-      {
-        // just ignore it ..
       }
       else
       {

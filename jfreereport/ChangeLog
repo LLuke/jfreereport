@@ -2,7 +2,12 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.6-5: (??)
+0.8.6-5: (21-Dec-2005)
+        * [BUG] The colors used in the HTML export stylesheets were not
+          conforming to CSS2.1. Users working with the internet explorer using
+          one of the named colors in their reports did not see these colors at
+          all, as invalid style definitions got ignored by the browser.
+
         * [BUG] The sheet-name function and the page headers in the table
           exports now always use the data from the next report state. This
           prevents some ugly misbehaviour when using 'pagebreak-after-print'

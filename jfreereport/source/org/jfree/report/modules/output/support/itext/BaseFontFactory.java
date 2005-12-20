@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.22 2005/09/07 14:25:11 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.23 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
-import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
@@ -201,7 +201,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    */
   private Properties confirmedFiles;
 
-  private FontRegistry registry;
+  private TrueTypeFontRegistry registry;
 
   /**
    * Creates a new factory.
@@ -210,7 +210,7 @@ public final class BaseFontFactory extends DefaultFontMapper
   {
     fontsByName = new Properties();
     notEmbeddedFonts = new Properties();
-    registry = new FontRegistry();
+    registry = new TrueTypeFontRegistry();
   }
 
   /**
@@ -325,8 +325,6 @@ public final class BaseFontFactory extends DefaultFontMapper
       Log.info("Failed to store font configuration. This error is non-fatal, " +
               "the font configuration will be rebuild from scratch, if necessary.");
     }
-
-    registry.registerDefaultFontPath();
 
     Log.info("Completed font registration.");
     initialized = true;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.22 2005/11/09 20:02:12 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.23 2005/12/01 19:00:31 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.StringUtil;
 import org.jfree.util.Log;
 import org.jfree.fonts.registry.FontRecord;
-import org.jfree.fonts.registry.TrueTypeFontRecord;
+import org.jfree.fonts.truetype.TrueTypeFontRecord;
 
 /**
  * iText font support.
@@ -336,7 +336,7 @@ public class BaseFontSupport implements FontMapper
 
     // no, we have to create a new instance
     final BaseFontRecord record = new BaseFontRecord
-            (filename, embedded, f, fontRecord.isBold(), fontRecord.isItalics());
+            (filename, embedded, f, fontRecord.isBold(), fontRecord.isItalic());
     putToCache(record);
     return record;
   }

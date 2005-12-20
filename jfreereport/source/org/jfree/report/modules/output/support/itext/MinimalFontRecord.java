@@ -2,6 +2,8 @@ package org.jfree.report.modules.output.support.itext;
 
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontIdentifier;
+import org.jfree.fonts.io.FontDataInputSource;
 
 /**
  * Creation-Date: 09.11.2005, 20:32:33
@@ -31,7 +33,7 @@ public class MinimalFontRecord implements FontRecord
     return bold;
   }
 
-  public boolean isItalics()
+  public boolean isItalic()
   {
     return italics;
   }
@@ -48,7 +50,7 @@ public class MinimalFontRecord implements FontRecord
    */
   public boolean isOblique()
   {
-    return false;
+    return italics;
   }
 
   public String getFontFile()
@@ -84,5 +86,15 @@ public class MinimalFontRecord implements FontRecord
   public String[] getAllVariants()
   {
     return new String[] { "" };
+  }
+
+  public FontDataInputSource getFontInputSource()
+  {
+    return null;
+  }
+
+  public FontIdentifier getIdentifier()
+  {
+    return null;
   }
 }

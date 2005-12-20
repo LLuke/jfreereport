@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.14 2005/09/05 11:43:24 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.15 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -37,45 +37,39 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.util.PaintUtilities;
+import org.jfree.report.modules.output.table.html.util.HtmlColors;
 
 /**
- * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these cell
- * styles into Cascading StyleSheet code.
+ * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these
+ * cell styles into Cascading StyleSheet code.
  * <p/>
  * The collection reuses previously generated styles to create optimized code.
  * <p/>
- * Created StyleSheets are stored in the collection and can be used as keys to lookup the
- * name of that style in the global style sheet.
+ * Created StyleSheets are stored in the collection and can be used as keys to
+ * lookup the name of that style in the global style sheet.
  *
  * @author Thomas Morgner
  */
 public class HtmlStyleCollection
 {
-  /**
-   * contains all generated style sheets.
-   */
+  /** contains all generated style sheets. */
   private final HashMap table;
   private final HashMap reverseTable;
 
-  /**
-   * the name counter helps to create unique names for the tablerow-styles.
-   */
+  /** the name counter helps to create unique names for the tablerow-styles. */
   private int rowCounter;
-  /**
-   * the name counter helps to create unique names for the tabledata-styles.
-   */
+  /** the name counter helps to create unique names for the tabledata-styles. */
   private int cellCounter;
 
-  /**
-   * the name counter helps to create unique names for the styles.
-   */
+  /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
 
   private static final String ROW_STYLE_PREFIX = "tr.";
@@ -84,10 +78,8 @@ public class HtmlStyleCollection
 
   private HtmlTableCellStyle emptyCellStyle;
 
-  /**
-   * Creates a new HtmlStyleCollection.
-   */
-  public HtmlStyleCollection ()
+  /** Creates a new HtmlStyleCollection. */
+  public HtmlStyleCollection()
   {
     this.table = new HashMap();
     this.reverseTable = new HashMap();
@@ -100,7 +92,7 @@ public class HtmlStyleCollection
    *
    * @return the generated name.
    */
-  private String createName ()
+  private String createName()
   {
     // the leading dot is important - it makes the style a generic class definition
     final String name = GENERIC_STYLE_PREFIX + "style-" + nameCounter;
@@ -115,7 +107,7 @@ public class HtmlStyleCollection
    * @param style the generated style, that should be added to the style cache.
    * @return the registered name for the stylesheet.
    */
-  public String addContentStyle (final HtmlContentStyle style)
+  public String addContentStyle(final HtmlContentStyle style)
   {
     String name = lookupName(style);
     if (name == null)
@@ -138,7 +130,7 @@ public class HtmlStyleCollection
    * @param style the style, that should be checked.
    * @return true, if the style is registered, false otherwise.
    */
-  public boolean isRegistered (final HtmlStyle style)
+  public boolean isRegistered(final HtmlStyle style)
   {
     final String name = lookupName(style);
 
@@ -151,12 +143,12 @@ public class HtmlStyleCollection
    *
    * @return the styles as enumeration.
    */
-  public Iterator getDefinedStyles ()
+  public Iterator getDefinedStyles()
   {
     return table.keySet().iterator();
   }
 
-  public TreeMap getSortedStyleMap ()
+  public TreeMap getSortedStyleMap()
   {
     final TreeMap map = new TreeMap();
     final Iterator it = table.entrySet().iterator();
@@ -169,15 +161,14 @@ public class HtmlStyleCollection
   }
 
   /**
-   * Try to find the registered name of the given style. Returns null, if the style is not
-   * registered.
+   * Try to find the registered name of the given style. Returns null, if the
+   * style is not registered.
    *
    * @param name the name of the style, that should be looked up.
    * @return the style, or null, if the name is not registed.
-   *
    * @see HtmlStyleCollection#isRegistered
    */
-  public HtmlStyle lookupStyle (final String name)
+  public HtmlStyle lookupStyle(final String name)
   {
     if (name == null)
     {
@@ -192,20 +183,20 @@ public class HtmlStyleCollection
   }
 
   /**
-   * Try to find the registered name of the given style. Returns null, if the style is not
-   * registered.
+   * Try to find the registered name of the given style. Returns null, if the
+   * style is not registered.
    *
    * @param style the style, which should be looked up.
-   * @return the registered name for this style, or null, if the style is not registed.
-   *
+   * @return the registered name for this style, or null, if the style is not
+   *         registed.
    * @see HtmlStyleCollection#isRegistered
    */
-  public String lookupName (final HtmlStyle style)
+  public String lookupName(final HtmlStyle style)
   {
     return (String) table.get(style);
   }
 
-  public String getPublicName (final HtmlStyle style)
+  public String getPublicName(final HtmlStyle style)
   {
     final String styleName = (String) table.get(style);
     if (styleName == null)
@@ -226,10 +217,8 @@ public class HtmlStyleCollection
     }
   }
 
-  /**
-   * Removes all registered styles.
-   */
-  public void clear ()
+  /** Removes all registered styles. */
+  public void clear()
   {
     table.clear();
     reverseTable.clear();
@@ -238,28 +227,59 @@ public class HtmlStyleCollection
 
 
   /**
-   * Creates the color string for the given AWT color. If the color is one of the
-   * predefined HTML colors, then the logical name is returned. For all other colors, the
-   * RGB-Tripple is returned.
+   * Creates the color string for the given AWT color. If the color is one of
+   * the predefined HTML colors, then the logical name is returned. For all
+   * other colors, the RGB-Tripple is returned.
    *
    * @param color the AWTColor that should be translated.
    * @return the translated html color definition
    */
-  public static String getColorString (final Color color)
+  public static String getColorString(final Color color)
   {
     try
     {
-      return PaintUtilities.colorToString(color);
+      final Field[] fields = HtmlColors.class.getFields();
+      for (int i = 0; i < fields.length; i++)
+      {
+        final Field f = fields[i];
+        if (Modifier.isPublic(f.getModifiers())
+                && Modifier.isFinal(f.getModifiers())
+                && Modifier.isStatic(f.getModifiers()))
+        {
+          final String name = f.getName();
+          final Object oColor = f.get(null);
+          if (oColor instanceof Color)
+          {
+            if (color.equals(oColor))
+            {
+              return name;
+            }
+          }
+        }
+      }
     }
-    catch (Exception ofe)
+    catch (Exception e)
     {
-      //Log.debug ("Failed to compute the color value");
+      //
     }
-    return null;
+
+    // no defined constant color, so this must be a user defined color
+    final String colorText = Integer.toHexString(color.getRGB() & 0x00ffffff);
+    final StringBuffer retval = new StringBuffer(7);
+    retval.append("#");
+
+    final int fillUp = 6 - colorText.length();
+    for (int i = 0; i < fillUp; i++)
+    {
+      retval.append("0");
+    }
+
+    retval.append(colorText);
+    return retval.toString();
   }
 
 
-  public String addRowStyle (final HtmlTableRowStyle style)
+  public String addRowStyle(final HtmlTableRowStyle style)
   {
     String name = (String) table.get(style);
     if (name == null)
@@ -272,7 +292,7 @@ public class HtmlStyleCollection
     return name;
   }
 
-  public String addCellStyle (final HtmlTableCellStyle style)
+  public String addCellStyle(final HtmlTableCellStyle style)
   {
     String name = (String) table.get(style);
     if (name == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandInBandStackingDemoHandler.java,v 1.2 2005/09/21 12:00:17 taqua Exp $
+ * $Id: BandInBandStackingDemoHandler.java,v 1.3 2005/10/05 13:35:39 taqua Exp $
  *
  * Changes:
  * --------
@@ -58,7 +58,6 @@ import org.jfree.report.elementfactory.ImageFieldElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.function.Expression;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.function.PaintComponentFunction;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.modules.gui.pdf.PDFSaveDialog;
