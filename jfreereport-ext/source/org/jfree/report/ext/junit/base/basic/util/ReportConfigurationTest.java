@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigurationTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: ReportConfigurationTest.java,v 1.4 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,12 +39,11 @@
 package org.jfree.report.ext.junit.base.basic.util;
 
 import junit.framework.TestCase;
-import org.jfree.report.DefaultLogModule;
 import org.jfree.report.JFreeReportBoot;
 
 public class ReportConfigurationTest extends TestCase
 {
-  private static final String key = DefaultLogModule.LOGTARGET_KEY;
+  private static final String key = "org.jfree.report.layout.fontrenderer.UseAliasing";
 
   public ReportConfigurationTest()
   {

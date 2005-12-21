@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.6-6:
+  * SVG-Image support added. This library requires Java 1.4. 
+
 0.8.6-2:
   * [BUG] The ServletDemo was not able to find the XML report definition file.
 
