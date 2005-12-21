@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: DrawableLoadFilter.java,v 1.2 2005/02/23 21:04:45 taqua Exp $
+ * $Id: DrawableLoadFilter.java,v 1.3 2005/08/08 15:36:29 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -132,6 +132,10 @@ public class DrawableLoadFilter implements DataFilter, Serializable
       catch (IOException ioe)
       {
         Log.warn("Error while loading the image from " + url, ioe);
+        return null;
+      }
+      if (retval == null)
+      {
         return null;
       }
     }

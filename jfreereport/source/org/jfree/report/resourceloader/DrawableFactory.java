@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DrawableFactory.java,v 1.5 2005/08/08 15:36:37 taqua Exp $
+ * $Id: DrawableFactory.java,v 1.6 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -77,16 +77,17 @@ public class DrawableFactory
     {
       final Class c = ObjectUtilities.getClassLoader
               (getClass()).loadClass(className);
-      registerModule((ImageFactoryModule) c.newInstance());
+      registerModule((DrawableFactoryModule) c.newInstance());
       return true;
     }
     catch (Exception e)
     {
+      Log.debug ("Failed to register module: " + className, e);
       return false;
     }
   }
 
-  public synchronized void registerModule (final ImageFactoryModule module)
+  public synchronized void registerModule (final DrawableFactoryModule module)
   {
     if (factoryModules.contains(module) == false)
     {
