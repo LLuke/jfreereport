@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.6 2005/09/07 11:24:09 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.7 2005/10/27 18:36:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
@@ -62,6 +63,11 @@ public class JFreeReportHtmlServlet extends HttpServlet
 {
   public JFreeReportHtmlServlet ()
   {
+  }
+  public void init() throws ServletException
+  {
+    super.init();
+    JFreeReportBoot.getInstance().start();
   }
 
   /**
@@ -97,10 +103,10 @@ public class JFreeReportHtmlServlet extends HttpServlet
     Log.debug("in processRequest..." + getClass());
 
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportHtmlServlet.class);
+            (DemoConstants.REPORT_DEFINITION, JFreeReportHtmlServlet.class);
     if (in == null)
     {
-      throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");
+      throw new ServletException("Missing Resource: /org/jfree/report/demo/swingicons/swing-icons.xml");
     }
 
     final URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.9 2005/09/07 11:24:09 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.10 2005/10/27 18:36:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
@@ -60,6 +61,11 @@ public class JFreeReportServlet extends HttpServlet
 {
   public JFreeReportServlet ()
   {
+  }
+  public void init() throws ServletException
+  {
+    super.init();
+    JFreeReportBoot.getInstance().start();
   }
 
   /**
@@ -93,7 +99,7 @@ public class JFreeReportServlet extends HttpServlet
     Log.debug("in processRequest..." + getClass());
 
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportServlet.class);
+            (DemoConstants.REPORT_DEFINITION, JFreeReportServlet.class);
     if (in == null)
     {
       throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");
@@ -120,7 +126,7 @@ public class JFreeReportServlet extends HttpServlet
     response.setHeader("Content-Type", "application/pdf");
 
     // display the content in the browser window (see RFC2183)
-    response.setHeader("Content-Disposition", "inline; filename=\"first.pdf\"");
+    response.setHeader("Content-Disposition", "inline; filename=\"swingicons.pdf\"");
 
     //response.setHeader("Content-Disposition", "attachment; filename=\"" + "unknown.pdf" + "\"");
 

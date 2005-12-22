@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportExcelServlet.java,v 1.7 2005/09/07 11:24:09 taqua Exp $
+ * $Id: JFreeReportExcelServlet.java,v 1.8 2005/10/27 18:36:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
@@ -63,6 +64,12 @@ public class JFreeReportExcelServlet extends HttpServlet
 {
   public JFreeReportExcelServlet ()
   {
+  }
+
+  public void init() throws ServletException
+  {
+    super.init();
+    JFreeReportBoot.getInstance().start();
   }
 
   /**
@@ -97,10 +104,10 @@ public class JFreeReportExcelServlet extends HttpServlet
     Log.debug("in processRequest..." + getClass());
 
     final URL in = ObjectUtilities.getResource
-            ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportExcelServlet.class);
+            (DemoConstants.REPORT_DEFINITION, JFreeReportExcelServlet.class);
     if (in == null)
     {
-      throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");
+      throw new ServletException("Missing Resource: /org/jfree/report/demo/swingicons/swing-icons.xml");
     }
 
     final URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
@@ -110,7 +117,7 @@ public class JFreeReportExcelServlet extends HttpServlet
 
     // display the content in the browser window (see RFC2183)
     // may or may not work for excel content ...
-    response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.xls" + "\"");
+    response.setHeader("Content-Disposition", "inline; filename=\"" + "swingicons.xls" + "\"");
     response.setHeader("Content-Type", "application/vnd.ms-excel");
 
     final ServletOutputStream outputStream = response.getOutputStream();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportHtmlFragmentGenerator.java,v 1.4 2005/09/07 11:24:09 taqua Exp $
+ * $Id: JFreeReportHtmlFragmentGenerator.java,v 1.5 2005/10/27 18:36:08 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import javax.servlet.jsp.PageContext;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.modules.parser.base.ReportGenerator;
@@ -67,6 +68,7 @@ public class JFreeReportHtmlFragmentGenerator
 {
   public JFreeReportHtmlFragmentGenerator ()
   {
+    JFreeReportBoot.getInstance().start();
   }
 
   public String performGenerate (final PageContext pageContext)
@@ -77,10 +79,10 @@ public class JFreeReportHtmlFragmentGenerator
       Log.debug("in processRequest..." + getClass());
 
       final URL in = ObjectUtilities.getResource
-              ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportHtmlFragmentGenerator.class);
+              (DemoConstants.REPORT_DEFINITION, JFreeReportHtmlFragmentGenerator.class);
       if (in == null)
       {
-        throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");
+        throw new ServletException("Missing Resource: /org/jfree/report/demo/swingicons/swing-icons.xml");
       }
 
       final URL base = pageContext.getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");

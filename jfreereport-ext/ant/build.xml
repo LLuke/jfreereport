@@ -613,6 +613,7 @@
     </copy>
 
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${beanshell-jar-file}"/>
+    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${bsf-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jaxp-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
     <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>

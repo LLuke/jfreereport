@@ -2,7 +2,6 @@ package org.jfree.report.ext.servletdemo;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -10,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.misc.tablemodel.ResultSetTableModelFactory;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.demo.swingicons.SwingIconsDemoTableModel;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.CloseableTableModel;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -26,6 +25,11 @@ public class JFreeReportPDFServlet extends HttpServlet
 {
   public JFreeReportPDFServlet()
   {
+  }
+  public void init() throws ServletException
+  {
+    super.init();
+    JFreeReportBoot.getInstance().start();
   }
 
   protected void doGet(HttpServletRequest httpServletRequest,
@@ -42,22 +46,15 @@ public class JFreeReportPDFServlet extends HttpServlet
     try
     {
       // display the content in the browser window (see RFC2183)
-      httpServletResponse.setHeader("Content-Disposition", "inline; filename=\"first.pdf\"");
+      httpServletResponse.setHeader("Content-Disposition", "inline; filename=\"swingicons.pdf\"");
       httpServletResponse.setHeader("Content-Type", "application/pdf");
 
       final URL in = ObjectUtilities.getResource
-              ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportPDFServlet.class);
+              (DemoConstants.REPORT_DEFINITION, JFreeReportPDFServlet.class);
       final ReportGenerator generator = ReportGenerator.getInstance();
       final JFreeReport report = generator.parseReport(in);
 
-      // get me a valid result set
-      // return a scrollable resultset if the database should be responsible for
-      // the caching, else we will copy the contents of the result set into a
-      // default table model - which may be faster..
-      final ResultSet queryResult = queryDB (httpServletRequest);
-      final CloseableTableModel data =
-              ResultSetTableModelFactory.getInstance().createTableModel(queryResult);
-      report.setData(data);
+      report.setData(new SwingIconsDemoTableModel());
 
       final ServletOutputStream outputStream = httpServletResponse.getOutputStream();
       final PDFOutputTarget target = new PDFOutputTarget(outputStream);
@@ -69,17 +66,11 @@ public class JFreeReportPDFServlet extends HttpServlet
       proc.processReport();
 
       target.close();
-      data.close();
       outputStream.close();
     }
     catch(Exception e)
     {
       throw new ServletException(e);
     }
-  }
-
-  private ResultSet queryDB(final HttpServletRequest httpServletRequest)
-  {
-    return null;
   }
 }

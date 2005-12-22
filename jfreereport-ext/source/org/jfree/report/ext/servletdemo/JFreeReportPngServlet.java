@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.10 2005/09/19 13:34:25 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.11 2005/10/27 18:36:08 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.keypoint.PngEncoder;
 import org.jfree.report.PageDefinition;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
@@ -75,6 +76,11 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
 {
   public JFreeReportPngServlet ()
   {
+  }
+  public void init() throws ServletException
+  {
+    super.init();
+    JFreeReportBoot.getInstance().start();
   }
 
   /**
@@ -117,7 +123,7 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
     try
     {
       final URL in = ObjectUtilities.getResource
-              ("/org/jfree/report/demo/swingicons/swing-icons.xml", JFreeReportPngServlet.class);
+              (DemoConstants.REPORT_DEFINITION, JFreeReportPngServlet.class);
       if (in == null)
       {
         throw new ServletException("Missing Resource: /org/jfree/report/demo/swing-icons.xml");
