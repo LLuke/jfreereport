@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: InternalFrameDemoFrame.java,v 1.1 2005/12/11 12:47:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,8 +107,6 @@ public class InternalFrameDemoFrame extends AbstractDemoFrame
 
     desktop = new JDesktopPane();
     setContentPane(desktop);
-
-    desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
   }
 
   public void updateFrameSize (int inset)
@@ -168,7 +166,7 @@ public class InternalFrameDemoFrame extends AbstractDemoFrame
     }
     frame.setBounds(bounds);
     frame.setVisible(visible);
-    frame.setLayer(layer);
+    frame.setLayer(new Integer(layer));
   }
 
 

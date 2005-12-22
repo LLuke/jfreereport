@@ -60,7 +60,7 @@ public class ComponentDrawable implements ExtendedDrawable
       }
       else if (isOwnPeerConnected())
       {
-        Window w = SwingUtilities.getWindowAncestor(component);
+        Window w = getWindowAncestor(component);
         w.validate();
       }
       else
@@ -174,8 +174,22 @@ public class ComponentDrawable implements ExtendedDrawable
     {
       return false;
     }
-    final Window windowAncestor = SwingUtilities.getWindowAncestor(component);
+    final Window windowAncestor = getWindowAncestor(component);
     return (windowAncestor != null && windowAncestor != peerSupply);
+  }
+
+  protected static Window getWindowAncestor(final Component component)
+  {
+    Component parent = component.getParent();
+    while (parent != null)
+    {
+      if (parent instanceof Window)
+      {
+        return (Window) parent;
+      }
+      parent = component.getParent();
+    }
+    return null;
   }
 
   public void setPreserveAspectRatio(final boolean preserveAspectRatio)

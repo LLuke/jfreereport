@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.9 2005/09/19 15:38:44 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.10 2005/11/25 15:54:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -231,8 +231,11 @@ public class JFreeReportBoot extends AbstractBoot
     if (instance == null)
     {
       // make sure that I am able to debug the package manager ..
-      DefaultLog.getDefaultLog();
+      DefaultLog.installDefaultLog();
       instance = new JFreeReportBoot();
+      
+      HierarchicalConfiguration hc = (HierarchicalConfiguration) BaseBoot.getConfiguration();
+      hc.insertConfiguration(new UserConfigWrapper(instance.getGlobalConfig()));
     }
     return instance;
   }
@@ -295,8 +298,6 @@ public class JFreeReportBoot extends AbstractBoot
   {
     // Inject JFreeReport's configuration into jcommon.
     // make sure logging is re-initialized after we injected our configuration.
-    HierarchicalConfiguration hc = (HierarchicalConfiguration) BaseBoot.getConfiguration();
-    hc.insertConfiguration(new UserConfigWrapper(getGlobalConfig()));
     Log.getInstance().init();
 
     if (isStrictFP() == false)
