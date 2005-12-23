@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.15 2005/09/07 14:25:11 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.16 2005/12/20 10:04:51 taqua Exp $
  *
  * Changes
  * -------

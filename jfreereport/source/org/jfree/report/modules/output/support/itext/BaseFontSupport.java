@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.23 2005/12/01 19:00:31 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.24 2005/12/20 10:04:50 taqua Exp $
  *
  * Changes
  * -------
