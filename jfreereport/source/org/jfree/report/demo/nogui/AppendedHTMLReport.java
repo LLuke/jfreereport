@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Treatment.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
+ * $Id: AppendedHTMLReport.java,v 1.3 2005/09/21 12:00:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.io.IOException;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.opensource.OpenSourceXMLDemoHandler;
 import org.jfree.report.demo.world.CountryReportXMLDemoHandler;
@@ -83,6 +84,7 @@ public class AppendedHTMLReport
    */
   public static void main (final String[] args)
   {
+    JFreeReportBoot.getInstance().start();
     // disable PDF target autoinit must be done outside ...
     try
     {

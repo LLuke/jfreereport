@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVWriter.java,v 1.6 2005/03/01 10:09:40 taqua Exp $
+ * $Id: CSVWriter.java,v 1.7 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -156,6 +156,12 @@ public class CSVWriter extends AbstractFunction
    * a flag indicating whether to writer data row names as column header.
    */
   private boolean writeDataRowNames;
+  private boolean writeStateColumns;
+  private boolean enableReportHeader;
+  private boolean enableReportFooter;
+  private boolean enableGroupHeader;
+  private boolean enableGroupFooter;
+  private boolean enableItemband;
 
   /**
    * DefaulConstructor. Creates a CSVWriter with a dependency level of -1 and a default
@@ -185,6 +191,66 @@ public class CSVWriter extends AbstractFunction
   public void setWriteDataRowNames (final boolean writeDataRowNames)
   {
     this.writeDataRowNames = writeDataRowNames;
+  }
+
+  public boolean isWriteStateColumns ()
+  {
+    return writeStateColumns;
+  }
+
+  public void setWriteStateColumns (boolean writeStateColumns)
+  {
+    this.writeStateColumns = writeStateColumns;
+  }
+
+  public boolean isEnableGroupFooter ()
+  {
+    return enableGroupFooter;
+  }
+
+  public void setEnableGroupFooter (boolean enableGroupFooter)
+  {
+    this.enableGroupFooter = enableGroupFooter;
+  }
+
+  public boolean isEnableGroupHeader ()
+  {
+    return enableGroupHeader;
+  }
+
+  public void setEnableGroupHeader (boolean enableGroupHeader)
+  {
+    this.enableGroupHeader = enableGroupHeader;
+  }
+
+  public boolean isEnableItemband ()
+  {
+    return enableItemband;
+  }
+
+  public void setEnableItemband (boolean enableItemband)
+  {
+    this.enableItemband = enableItemband;
+  }
+
+  public boolean isEnableReportFooter ()
+  {
+    return enableReportFooter;
+  }
+
+  public void setEnableReportFooter (boolean enableReportFooter)
+  {
+    this.enableReportFooter = enableReportFooter;
+  }
+
+  public boolean isEnableReportHeader ()
+  {
+    return enableReportHeader;
+  }
+
+  public void setEnableReportHeader (boolean enableReportHeader)
+  {
+    this.enableReportHeader = enableReportHeader;
   }
 
   /**
@@ -291,9 +357,17 @@ public class CSVWriter extends AbstractFunction
         names.write(getWriter());
       }
 
+      if (isEnableReportHeader() == false)
+      {
+        return;
+      }
+
       final CSVRow row = new CSVRow(quoter);
-      row.append(-1);
-      row.append("reportheader");
+      if (isWriteStateColumns())
+      {
+        row.append(-1);
+        row.append("reportheader");
+      }
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
@@ -310,11 +384,18 @@ public class CSVWriter extends AbstractFunction
    */
   public void reportFinished (final ReportEvent event)
   {
+    if (isEnableReportFooter() == false)
+    {
+      return;
+    }
     try
     {
       final CSVRow row = new CSVRow(quoter);
-      row.append(-1);
-      row.append("reportfooter");
+      if (isWriteStateColumns())
+      {
+        row.append(-1);
+        row.append("reportfooter");
+      }
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
@@ -331,16 +412,23 @@ public class CSVWriter extends AbstractFunction
    */
   public void groupStarted (final ReportEvent event)
   {
+    if (isEnableGroupHeader() == false)
+    {
+      return;
+    }
+
     try
     {
       final int currentIndex = event.getState().getCurrentGroupIndex();
 
       final CSVRow row = new CSVRow(quoter);
-      row.append(currentIndex);
-
-      final Group g = event.getReport().getGroup(currentIndex);
-      final String bandInfo = "groupheader name=\"" + g.getName() + "\"";
-      row.append(bandInfo);
+      if (isWriteStateColumns())
+      {
+        row.append(currentIndex);
+        final Group g = event.getReport().getGroup(currentIndex);
+        final String bandInfo = "groupheader name=\"" + g.getName() + "\"";
+        row.append(bandInfo);
+      }
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
@@ -357,16 +445,23 @@ public class CSVWriter extends AbstractFunction
    */
   public void groupFinished (final ReportEvent event)
   {
+    if (isEnableGroupFooter() == false)
+    {
+      return;
+    }
+
     try
     {
       final int currentIndex = event.getState().getCurrentGroupIndex();
 
       final CSVRow row = new CSVRow(quoter);
-      row.append(currentIndex);
-
-      final Group g = event.getReport().getGroup(currentIndex);
-      final String bandInfo = "groupfooter name=\"" + g.getName() + "\"";
-      row.append(bandInfo);
+      if (isWriteStateColumns())
+      {
+        row.append(currentIndex);
+        final Group g = event.getReport().getGroup(currentIndex);
+        final String bandInfo = "groupfooter name=\"" + g.getName() + "\"";
+        row.append(bandInfo);
+      }
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }
@@ -383,11 +478,19 @@ public class CSVWriter extends AbstractFunction
    */
   public void itemsAdvanced (final ReportEvent event)
   {
+    if (isEnableItemband() == false)
+    {
+      return;
+    }
+
     try
     {
       final CSVRow row = new CSVRow(quoter);
-      row.append(event.getState().getCurrentGroupIndex());
-      row.append("itemband");
+      if (isWriteStateColumns())
+      {
+        row.append(event.getState().getCurrentGroupIndex());
+        row.append("itemband");
+      }
       writeDataRow(event.getDataRow(), row);
       row.write(getWriter());
     }

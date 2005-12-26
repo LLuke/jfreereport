@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.13 2005/02/23 21:05:27 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.14 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,8 @@ import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
 import org.jfree.report.util.NullOutputStream;
 import org.jfree.report.util.ReportConfigurationUtil;
+import org.jfree.util.Configuration;
+import org.jfree.base.config.ModifiableConfiguration;
 
 /**
  * The <code>CSVProcessor</code> coordinates the writing process for the raw CSV output.
@@ -79,6 +81,19 @@ public class CSVProcessor
    */
   public static final String CSV_DATAROWNAME
           = "org.jfree.report.modules.output.csv.WriteDatarowNames";
+
+  public static final String CSV_WRITE_STATECOLUMNS
+          = "org.jfree.report.modules.output.csv.WriteStateColumns";
+  public static final String CSV_ENABLE_REPORTHEADER
+          = "org.jfree.report.modules.output.csv.EnableReportHeader";
+  public static final String CSV_ENABLE_REPORTFOOTER
+          = "org.jfree.report.modules.output.csv.EnableReportFooter";
+  public static final String CSV_ENABLE_GROUPHEADERS
+          = "org.jfree.report.modules.output.csv.EnableGroupHeaders";
+  public static final String CSV_ENABLE_GROUPFOOTERS
+          = "org.jfree.report.modules.output.csv.EnableGroupFooters";
+  public static final String CSV_ENABLE_ITEMBANDS
+          = "org.jfree.report.modules.output.csv.EnableItembands";
 
   /**
    * The default name for the csv writer function used by this processor.
@@ -130,8 +145,7 @@ public class CSVProcessor
           throws ReportProcessingException
   {
     this(report, separator,
-            report.getReportConfiguration().getConfigProperty
-            (CSV_DATAROWNAME, "false").equals("true"));
+            queryBoolConfig(report.getReportConfiguration(), CSV_DATAROWNAME));
   }
 
   /**
@@ -145,7 +159,8 @@ public class CSVProcessor
    * @param writeDataRowNames controls whether or not the data row names are output.
    * @throws ReportProcessingException if the report initialisation failed.
    */
-  public CSVProcessor (final JFreeReport report, final String separator,
+  public CSVProcessor (final JFreeReport report,
+                       final String separator,
                        final boolean writeDataRowNames)
           throws ReportProcessingException
   {
@@ -169,7 +184,22 @@ public class CSVProcessor
     lm.setName(CSV_WRITER);
     lm.setSeparator(separator);
     lm.setWriteDataRowNames(writeDataRowNames);
+
+    final ModifiableConfiguration config = report.getReportConfiguration();
+    lm.setWriteStateColumns(queryBoolConfig(config, CSV_WRITE_STATECOLUMNS));
+    lm.setEnableReportHeader(queryBoolConfig(config, CSV_ENABLE_REPORTHEADER));
+    lm.setEnableReportFooter(queryBoolConfig(config, CSV_ENABLE_REPORTFOOTER));
+    lm.setEnableGroupHeader(queryBoolConfig(config, CSV_ENABLE_GROUPHEADERS));
+    lm.setEnableGroupFooter(queryBoolConfig(config, CSV_ENABLE_GROUPFOOTERS));
+    lm.setEnableItemband(queryBoolConfig(config, CSV_ENABLE_ITEMBANDS));
     this.report.addExpression(lm);
+  }
+
+  private static boolean queryBoolConfig (final Configuration config,
+                                          final String name)
+  {
+    return config.getConfigProperty
+            (CSV_DATAROWNAME, "false").equals("true");
   }
 
   /**

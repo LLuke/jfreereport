@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.16 2005/09/07 14:25:10 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.17 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes
  * --------
@@ -71,6 +71,7 @@ import javax.swing.event.ChangeListener;
 
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.JStatusBar;
@@ -149,9 +150,9 @@ public class CSVExportDialog extends AbstractExportDialog
     }
   }
 
-  private class RawExportSelectionChangeListener implements ChangeListener
+  private class ExportTypeSelectionChangeListener implements ChangeListener
   {
-    public RawExportSelectionChangeListener ()
+    public ExportTypeSelectionChangeListener ()
     {
     }
 
@@ -162,7 +163,7 @@ public class CSVExportDialog extends AbstractExportDialog
      */
     public void stateChanged (final ChangeEvent e)
     {
-      updateRawExportSelection();
+      updateExportTypeSelection();
     }
   }
 
@@ -201,6 +202,13 @@ public class CSVExportDialog extends AbstractExportDialog
    * The strict layout check-box.
    */
   private JCheckBox cbxStrictLayout;
+
+  private JCheckBox cbxEnableReportHeader;
+  private JCheckBox cbxEnableReportFooter;
+  private JCheckBox cbxEnableGroupHeader;
+  private JCheckBox cbxEnableGroupFooter;
+  private JCheckBox cbxEnableItemband;
+  private JCheckBox cbxWriteStateColumns;
 
   /**
    * The columnnames-as-first-row layout check-box.
@@ -313,9 +321,9 @@ public class CSVExportDialog extends AbstractExportDialog
     final JLabel lblFileName = new JLabel(getResources().getString("csvexportdialog.filename"));
     final JLabel lblEncoding = new JLabel(getResources().getString("csvexportdialog.encoding"));
     final JButton btnSelect = new ActionButton(new ActionSelectFile(getResources()));
-    cbxStrictLayout = new JCheckBox(getResources().getString("csvexportdialog.strict-layout"));
 
     txFilename = new JTextField();
+    txFilename.setColumns(30);
     encodingModel = EncodingComboBoxModel.createDefaultModel();
     encodingModel.sort();
     cbEncoding = new JComboBox(encodingModel);
@@ -339,7 +347,6 @@ public class CSVExportDialog extends AbstractExportDialog
     gbc.weightx = 1;
     gbc.gridx = 1;
     gbc.gridy = 0;
-    gbc.ipadx = 120;
     gbc.gridwidth = 1;
     gbc.insets = new Insets(3, 1, 5, 1);
     contentPane.add(txFilename, gbc);
@@ -362,17 +369,14 @@ public class CSVExportDialog extends AbstractExportDialog
     contentPane.add(cbEncoding, gbc);
 
     gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 0;
-    gbc.gridx = 1;
-    gbc.gridy = 2;
-    gbc.gridwidth = 2;
-    gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(cbxStrictLayout, gbc);
-
-    final JPanel p = new JPanel(new GridLayout(2,1,5,5));
-    p.add(createSeparatorPanel());
-    p.add(createExportTypePanel());
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.weighty = 1;
+    gbc.weightx = 1;
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    gbc.gridwidth = 3;
+    gbc.insets = new Insets(10, 1, 1, 1);
+    contentPane.add(createSeparatorPanel(), gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.BOTH;
@@ -382,13 +386,13 @@ public class CSVExportDialog extends AbstractExportDialog
     gbc.gridy = 4;
     gbc.gridwidth = 3;
     gbc.insets = new Insets(10, 1, 1, 1);
-    contentPane.add(p, gbc);
+    contentPane.add(createExportTypePanel(), gbc);
 
     // button panel
     final JButton btnCancel = new ActionButton(getCancelAction());
     final JButton btnConfirm = new ActionButton(getConfirmAction());
     final JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(1,2,5,5));
+    buttonPanel.setLayout(new GridLayout(1, 2, 5, 5));
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
@@ -415,7 +419,6 @@ public class CSVExportDialog extends AbstractExportDialog
 
     setContentPane(contentWithStatus);
 
-    getFormValidator().registerButton(cbxStrictLayout);
     getFormValidator().registerTextField(txFilename);
     getFormValidator().registerComboBox(cbEncoding);
   }
@@ -435,15 +438,31 @@ public class CSVExportDialog extends AbstractExportDialog
             new TitledBorder(getResources().getString("csvexportdialog.exporttype"));
     exportTypePanel.setBorder(tb);
 
+    JLabel lbExportedBands = new JLabel(getResources().getString("csvexportdialog.exported-bands"));
+
     rbExportData = new JRadioButton(getResources().getString("csvexportdialog.export.data"));
     rbExportPrintedElements = new JRadioButton(getResources().getString("csvexportdialog.export.printed_elements"));
     cbxColumnNamesAsFirstRow = new JCheckBox(getResources().getString("cvsexportdialog.export.columnnames"));
-    rbExportData.addChangeListener(new RawExportSelectionChangeListener());
+    rbExportData.addChangeListener(new ExportTypeSelectionChangeListener());
+    cbxStrictLayout = new JCheckBox(getResources().getString("csvexportdialog.strict-layout"));
 
+    cbxEnableGroupFooter = new JCheckBox(getResources().getString("csvexportdialog.enable-report-header"));
+    cbxEnableGroupHeader = new JCheckBox(getResources().getString("csvexportdialog.enable-report-footer"));
+    cbxEnableItemband = new JCheckBox(getResources().getString("csvexportdialog.enable-itemband"));
+    cbxEnableReportFooter = new JCheckBox(getResources().getString("csvexportdialog.enable-group-header"));
+    cbxEnableReportHeader = new JCheckBox(getResources().getString("csvexportdialog.enable-group-footer"));
+    cbxWriteStateColumns = new JCheckBox(getResources().getString("csvexportdialog.write-state-columns"));
 
     getFormValidator().registerButton(rbExportData);
     getFormValidator().registerButton(rbExportPrintedElements);
+    getFormValidator().registerButton(cbxStrictLayout);
     getFormValidator().registerButton(cbxColumnNamesAsFirstRow);
+
+    getFormValidator().registerButton(cbxEnableGroupFooter);
+    getFormValidator().registerButton(cbxEnableGroupHeader);
+    getFormValidator().registerButton(cbxEnableItemband);
+    getFormValidator().registerButton(cbxEnableReportFooter);
+    getFormValidator().registerButton(cbxEnableReportHeader);
 
     final ButtonGroup btg = new ButtonGroup();
     btg.add(rbExportData);
@@ -460,11 +479,20 @@ public class CSVExportDialog extends AbstractExportDialog
     exportTypePanel.add(rbExportPrintedElements, gbc);
 
     gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 0;
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    gbc.gridwidth = 2;
+    gbc.insets = new Insets(1, 20, 1, 1);
+    exportTypePanel.add(cbxStrictLayout, gbc);
+
+    gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
     gbc.gridx = 0;
-    gbc.gridy = 1;
+    gbc.gridy = 2;
     gbc.insets = new Insets(1, 1, 1, 1);
     gbc.gridwidth = 2;
     exportTypePanel.add(rbExportData, gbc);
@@ -473,10 +501,48 @@ public class CSVExportDialog extends AbstractExportDialog
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0;
     gbc.gridx = 1;
-    gbc.gridy = 2;
+    gbc.gridy = 3;
     gbc.gridwidth = 1;
     gbc.insets = new Insets(1, 20, 1, 1);
     exportTypePanel.add(cbxColumnNamesAsFirstRow, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 0;
+    gbc.gridx = 1;
+    gbc.gridy = 4;
+    gbc.gridwidth = 1;
+    gbc.insets = new Insets(1, 20, 1, 1);
+    exportTypePanel.add(cbxWriteStateColumns, gbc);
+
+    JPanel rowTypePanel = new JPanel();
+    rowTypePanel.setLayout(new GridLayout(2, 3, 5, 2));
+    rowTypePanel.add(cbxEnableReportHeader);
+    rowTypePanel.add(cbxEnableGroupHeader);
+    rowTypePanel.add(cbxEnableItemband);
+    rowTypePanel.add(cbxEnableReportFooter);
+    rowTypePanel.add(cbxEnableGroupFooter);
+
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.NONE;
+    gbc.weightx = 0;
+    gbc.gridx = 1;
+    gbc.gridy = 5;
+    gbc.gridwidth = 1;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(5, 20, 1, 1);
+    exportTypePanel.add(lbExportedBands, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.NONE;
+    gbc.weightx = 0;
+    gbc.gridx = 1;
+    gbc.gridy = 6;
+    gbc.gridwidth = 1;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(1, 20, 1, 1);
+    exportTypePanel.add(rowTypePanel, gbc);
 
     return exportTypePanel;
   }
@@ -521,6 +587,7 @@ public class CSVExportDialog extends AbstractExportDialog
     final LengthLimitingDocument ldoc = new LengthLimitingDocument(1);
     txSeparatorOther = new JTextField();
     txSeparatorOther.setDocument(ldoc);
+    txSeparatorOther.setColumns(5);
     getFormValidator().registerTextField(txSeparatorOther);
 
 
@@ -563,7 +630,6 @@ public class CSVExportDialog extends AbstractExportDialog
     gbc.weightx = 1;
     gbc.gridx = 1;
     gbc.gridy = 3;
-    gbc.ipadx = 120;
     gbc.insets = new Insets(1, 1, 1, 1);
     separatorPanel.add(txSeparatorOther, gbc);
 
@@ -602,8 +668,8 @@ public class CSVExportDialog extends AbstractExportDialog
     rbSeparatorColon.setSelected(true);
     cbxStrictLayout.setSelected(false);
     cbxColumnNamesAsFirstRow.setSelected(false);
-    cbxColumnNamesAsFirstRow.setEnabled(false);
     performSeparatorSelection();
+    updateExportTypeSelection();
   }
 
   /**
@@ -817,6 +883,21 @@ public class CSVExportDialog extends AbstractExportDialog
       getStatusBar().setStatus(JStatusBar.TYPE_WARNING, message);
 
     }
+
+    if (isExportRawData())
+    {
+      if (cbxEnableGroupFooter.isSelected() == false &&
+          cbxEnableGroupHeader.isSelected() == false &&
+          cbxEnableReportFooter.isSelected() == false &&
+          cbxEnableReportHeader.isSelected() == false &&
+          cbxEnableItemband.isSelected() == false)
+      {
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+              getResources().getString("csvexportdialog.noContentForExport"));
+        return false;
+      }
+    }
+
     return true;
   }
 
@@ -862,13 +943,39 @@ public class CSVExportDialog extends AbstractExportDialog
                     config.getConfigProperty(TableProcessor.STRICT_LAYOUT, TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
 
-    final String colNames = config.getConfigProperty (CSVProcessor.CSV_DATAROWNAME, "false");
+    final String colNames = config.getConfigProperty
+            (CSVProcessor.CSV_DATAROWNAME, "false");
     setColumnNamesAsFirstRow(colNames.equals("true"));
 
     final String encoding = config.getConfigProperty
             (CSV_OUTPUT_ENCODING, CSV_OUTPUT_ENCODING_DEFAULT);
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
+
+    final String stateCols = config.getConfigProperty
+            (CSVProcessor.CSV_WRITE_STATECOLUMNS, "false");
+    setWriteStateColumns(stateCols.equals("true"));
+
+    final String enableReportHeader = config.getConfigProperty
+            (CSVProcessor.CSV_ENABLE_REPORTHEADER, "false");
+    setEnableReportHeader(enableReportHeader.equals("true"));
+
+    final String enableReportFooter = config.getConfigProperty
+            (CSVProcessor.CSV_ENABLE_REPORTFOOTER, "false");
+    setEnableReportFooter(enableReportFooter.equals("true"));
+
+    final String enableGroupHeader = config.getConfigProperty
+            (CSVProcessor.CSV_ENABLE_GROUPHEADERS, "false");
+    setEnableGroupHeader(enableGroupHeader.equals("true"));
+
+    final String enableGroupFooter= config.getConfigProperty
+            (CSVProcessor.CSV_ENABLE_GROUPFOOTERS, "false");
+    setEnableGroupFooter(enableGroupFooter.equals("true"));
+
+    final String enableItemBand = config.getConfigProperty
+            (CSVProcessor.CSV_ENABLE_ITEMBANDS, "false");
+    setEnableItembands(enableItemBand.equals("true"));
+
   }
 
   /**
@@ -883,9 +990,14 @@ public class CSVExportDialog extends AbstractExportDialog
             CSVTableProcessor.SEPARATOR_KEY, getSeparatorString());
     config.setConfigProperty(CSVTableProcessor.CONFIGURATION_PREFIX + "." +
             CSVTableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
-    config.setConfigProperty(CSVProcessor.CSV_DATAROWNAME,
-            String.valueOf(isColumnNamesAsFirstRow()));
+    config.setConfigProperty(CSVProcessor.CSV_DATAROWNAME, String.valueOf(isColumnNamesAsFirstRow()));
     config.setConfigProperty(CSV_OUTPUT_ENCODING, getEncoding());
+
+    config.setConfigProperty(CSVProcessor.CSV_ENABLE_GROUPFOOTERS, String.valueOf(isEnableGroupFooter()));
+    config.setConfigProperty(CSVProcessor.CSV_ENABLE_GROUPHEADERS, String.valueOf(isEnableGroupHeader()));
+    config.setConfigProperty(CSVProcessor.CSV_ENABLE_ITEMBANDS, String.valueOf(isEnableItembands()));
+    config.setConfigProperty(CSVProcessor.CSV_ENABLE_REPORTFOOTER, String.valueOf(isEnableReportFooter()));
+    config.setConfigProperty(CSVProcessor.CSV_ENABLE_REPORTHEADER, String.valueOf(isEnableReportHeader()));
   }
 
 
@@ -906,7 +1018,7 @@ public class CSVExportDialog extends AbstractExportDialog
 
   public boolean isColumnNamesAsFirstRow ()
   {
-    return  cbxColumnNamesAsFirstRow.isSelected();
+    return cbxColumnNamesAsFirstRow.isSelected();
   }
 
   public void setColumnNamesAsFirstRow (final boolean colsAsFirstRow)
@@ -934,18 +1046,87 @@ public class CSVExportDialog extends AbstractExportDialog
     cbxStrictLayout.setSelected(strictLayout);
   }
 
+  public boolean isWriteStateColumns ()
+  {
+    return cbxWriteStateColumns.isSelected();
+  }
+
+  public void setWriteStateColumns (boolean writeStateColumns)
+  {
+    this.cbxWriteStateColumns.setSelected(writeStateColumns);
+  }
+
+  public boolean isEnableGroupFooter ()
+  {
+    return cbxEnableGroupFooter.isSelected();
+  }
+
+  public void setEnableGroupFooter (boolean enableGroupFooter)
+  {
+    this.cbxEnableGroupFooter.setSelected(enableGroupFooter);
+  }
+
+  public boolean isEnableGroupHeader ()
+  {
+    return cbxEnableGroupHeader.isSelected();
+  }
+
+  public void setEnableGroupHeader (boolean enableGroupHeader)
+  {
+    this.cbxEnableGroupHeader.setSelected(enableGroupHeader);
+  }
+
+  public boolean isEnableItembands ()
+  {
+    return cbxEnableItemband.isSelected();
+  }
+
+  public void setEnableItembands (boolean enableItembands)
+  {
+    this.cbxEnableItemband.setSelected(enableItembands);
+  }
+
+  public boolean isEnableReportFooter ()
+  {
+    return cbxEnableReportFooter.isSelected();
+  }
+
+  public void setEnableReportFooter (boolean enableReportFooter)
+  {
+    this.cbxEnableReportFooter.setSelected(enableReportFooter);
+  }
+
+  public boolean isEnableReportHeader ()
+  {
+    return cbxEnableReportHeader.isSelected();
+  }
+
+  public void setEnableReportHeader (boolean enableReportHeader)
+  {
+    this.cbxEnableReportHeader.setSelected(enableReportHeader);
+  }
+
   protected String getConfigurationSuffix ()
   {
     return "_csvexport";
   }
 
-  protected void updateRawExportSelection()
+  protected void updateExportTypeSelection ()
   {
+    cbxStrictLayout.setEnabled(rbExportPrintedElements.isSelected());
     cbxColumnNamesAsFirstRow.setEnabled(rbExportData.isSelected());
+    cbxEnableGroupFooter.setEnabled(rbExportData.isSelected());
+    cbxEnableGroupHeader.setEnabled(rbExportData.isSelected());
+    cbxEnableItemband.setEnabled(rbExportData.isSelected());
+    cbxEnableReportFooter.setEnabled(rbExportData.isSelected());
+    cbxEnableReportHeader.setEnabled(rbExportData.isSelected());
+    cbxWriteStateColumns.setEnabled(rbExportData.isSelected());
   }
 
   public static void main (final String[] args)
   {
+    JFreeReportBoot.getInstance().start();
+
     final CSVExportDialog dialog = new CSVExportDialog();
     dialog.setModal(true);
     dialog.pack();

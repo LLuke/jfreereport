@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.1 2005/08/29 17:35:44 taqua Exp $
+ * $Id: PercentageDemo.java,v 1.2 2005/11/17 17:03:47 taqua Exp $
  *
  * Changes
  * -------
@@ -65,8 +65,6 @@ public class PercentageDemo extends AbstractXmlDemoHandler
 
   /**
    * Constructs the demo application.
-   *
-   * @param title the frame title.
    */
   public PercentageDemo ()
   {

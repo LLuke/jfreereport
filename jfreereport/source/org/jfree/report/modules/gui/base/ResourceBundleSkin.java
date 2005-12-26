@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ResourceBundleSkin.java,v 1.1 2005/12/07 22:21:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,6 +56,11 @@ public class ResourceBundleSkin implements Skin
     final String resourceBundle =
             JFreeReportBoot.getInstance().getGlobalConfig().getConfigProperty
                     ("org.jfree.report.modules.gui.base.SkinResourceBundle");
+    if (resourceBundle == null)
+    {
+      throw new IllegalStateException("JFreeReportBoot has not been started. Initialize the system first.");
+    }
+    
     final ResourceBundle iconResourceBundle =
             ResourceBundle.getBundle(resourceBundle);
     resourceBundleSupport = new ResourceBundleSupport(iconResourceBundle);

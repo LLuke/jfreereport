@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.12 2005/10/11 14:55:41 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.13 2005/12/07 22:20:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -132,6 +132,7 @@ public class DemoFrontend extends CompoundDemoFrame
 
   public static void main (final String[] args)
   {
+    JFreeReportBoot.getInstance().start();
 
     final DemoFrontend frontend = new DemoFrontend(createDemoInfo());
     frontend.pack();
