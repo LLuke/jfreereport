@@ -36,14 +36,14 @@
  *
  */
 
-package org.jfree.report.modules.output.table.csv;
+package org.jfree.report.modules.output.csv;
 
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
@@ -53,12 +53,12 @@ import org.jfree.report.ReportProcessingException;
  *
  * @author Thomas Morgner
  */
-public final class CSVReportUtil
+public final class CSVDataReportUtil
 {
   /**
    * DefaultConstructor.
    */
-  private CSVReportUtil ()
+  private CSVDataReportUtil ()
   {
   }
 
@@ -66,12 +66,13 @@ public final class CSVReportUtil
    * Saves a report to CSV format.
    *
    * @param report   the report.
-   * @throws ReportProcessingException if the report processing failed.
+   * @param writer   the writer
+   * @throws org.jfree.report.ReportProcessingException if the report processing failed.
    */
   public static void createCSV (final JFreeReport report, final Writer writer)
           throws ReportProcessingException
   {
-    final CSVTableProcessor pr = new CSVTableProcessor(report);
+    final CSVProcessor pr = new CSVProcessor(report);
     pr.setWriter(writer);
     pr.processReport();
   }
@@ -81,20 +82,20 @@ public final class CSVReportUtil
    *
    * @param report   the report.
    * @param filename target file name.
-   * @throws ReportProcessingException if the report processing failed.
-   * @throws IOException               if there was an IOerror while processing the
+   * @throws org.jfree.report.ReportProcessingException if the report processing failed.
+   * @throws java.io.IOException               if there was an IOerror while processing the
    *                                   report.
    */
   public static void createCSV (final JFreeReport report, final String filename)
           throws ReportProcessingException, IOException
   {
-    final CSVTableProcessor pr = new CSVTableProcessor(report);
+    final CSVProcessor pr = new CSVProcessor(report);
+
     final Writer fout = new BufferedWriter(new FileWriter(filename));
     pr.setWriter(fout);
     pr.processReport();
     fout.close();
   }
-
 
   /**
    * Saves a report to CSV format.
@@ -110,7 +111,7 @@ public final class CSVReportUtil
                                 final String encoding)
           throws ReportProcessingException, IOException
   {
-    final CSVTableProcessor pr = new CSVTableProcessor(report);
+    final CSVProcessor pr = new CSVProcessor(report);
     final FileOutputStream outstr = new FileOutputStream(filename);
     final Writer fout = new BufferedWriter(new OutputStreamWriter(outstr, encoding));
     pr.setWriter(fout);
