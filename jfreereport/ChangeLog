@@ -2,6 +2,16 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.6-6: (27-Dec-2005)
+        * [BUG] The demo did not initialize JFreeReport through the
+          JFreeReportBoot class and thus ran into an ugly NullPointer.
+
+        * The CSV-Data export is more configurable now. It does no longer
+          add extra state columns by default and which bands should be exported
+          can be controled using report properties. I also added some convienience
+          methods to the CSVDataReportUtil so that exporting to CSV files
+          is now a single line of code.
+
 0.8.6-5: (21-Dec-2005)
         * [BUG] The colors used in the HTML export stylesheets were not
           conforming to CSS2.1. Users working with the internet explorer using
