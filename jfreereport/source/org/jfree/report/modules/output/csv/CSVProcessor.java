@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.14 2005/09/07 14:25:10 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.15 2005/12/26 14:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -198,8 +198,7 @@ public class CSVProcessor
   private static boolean queryBoolConfig (final Configuration config,
                                           final String name)
   {
-    return config.getConfigProperty
-            (CSV_DATAROWNAME, "false").equals("true");
+    return config.getConfigProperty(name, "false").equals("true");
   }
 
   /**
@@ -394,7 +393,7 @@ public class CSVProcessor
         checkInterrupted();
         progress = state.createStateProgress(progress);
         state = state.advance();
-        if (failOnError && state.isErrorOccured() == true)
+        if (failOnError && state.isErrorOccured())
         {
           throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
         }
