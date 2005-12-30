@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ConvertToNumberExpression.java,v 1.1 2005/04/15 19:01:28 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,15 @@ import org.jfree.report.DataRow;
 
 public class ConvertToNumberExpression extends AbstractExpression
 {
+  private static final String DECIMALFORMAT_DEFAULT_PATTERN =
+    "#,###.###################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "####";
+
   private static final BigDecimal ZERO = new BigDecimal(0);
   private String field;
   private String format;
@@ -94,12 +103,12 @@ public class ConvertToNumberExpression extends AbstractExpression
     }
 
     // get a string and convert
-    if (format == null)
+    final String formatString = getFormat();
+    if (formatString == null)
     {
       try
       {
-        final BigDecimal f = new BigDecimal(String.valueOf(o));
-        return f;
+        return new BigDecimal(String.valueOf(o));
       }
       catch (NumberFormatException nfe)
       {
@@ -110,8 +119,17 @@ public class ConvertToNumberExpression extends AbstractExpression
     {
       try
       {
-        final DecimalFormat format =
-                new DecimalFormat(getFormat());
+        final DecimalFormat format;
+        if (formatString.length() == 0)
+        {
+          // this is a workaround for a bug in JDK 1.5
+          format = new DecimalFormat(DECIMALFORMAT_DEFAULT_PATTERN);
+        }
+        else
+        {
+          format = new DecimalFormat(formatString);
+        }
+
         return format.parse(String.valueOf(o));
       }
       catch (ParseException e)

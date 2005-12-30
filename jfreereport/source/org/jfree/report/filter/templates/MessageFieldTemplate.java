@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFieldTemplate.java,v 1.4 2005/03/03 23:00:00 taqua Exp $
+ * $Id: MessageFieldTemplate.java,v 1.5 2005/09/20 19:53:04 taqua Exp $
  *
  * Changes
  * -------
@@ -117,6 +117,7 @@ public class MessageFieldTemplate extends AbstractTemplate
    */
   public void setNullValue (final String nullValue)
   {
+    messageFormatFilter.setNullString(nullValue);
     stringFilter.setNullValue(nullValue);
   }
 

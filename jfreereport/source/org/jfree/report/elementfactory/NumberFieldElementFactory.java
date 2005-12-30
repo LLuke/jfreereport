@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.14 2005/07/18 18:09:19 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.15 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,6 +66,15 @@ import org.jfree.ui.FloatDimension;
  */
 public class NumberFieldElementFactory extends TextFieldElementFactory
 {
+  private static final String DECIMALFORMAT_DEFAULT_PATTERN =
+    "#,###.###################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "#########################################################" +
+    "####";
+
   /**
    * The number format instance used to format numeric values in the text element.
    */
@@ -153,7 +162,15 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
     }
     else
     {
-      setFormat(new DecimalFormat(formatString));
+      if (formatString.length() == 0)
+      {
+        // this is a workaround for a bug in JDK 1.5
+        setFormat(new DecimalFormat(DECIMALFORMAT_DEFAULT_PATTERN));
+      }
+      else
+      {
+        setFormat(new DecimalFormat(formatString));
+      }
     }
   }
 

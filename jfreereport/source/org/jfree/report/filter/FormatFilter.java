@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FormatFilter.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
+ * $Id: FormatFilter.java,v 1.5 2005/03/01 10:09:19 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,12 @@
 package org.jfree.report.filter;
 
 import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.Format;
+
+import org.jfree.report.style.StyleChangeSupport;
 
 /**
  * The base class for filters that format data.  Data is received from a DataSource and
@@ -62,7 +67,7 @@ public class FormatFilter implements DataFilter, Serializable, RawDataSource
   /**
    * The format used to create the string representation of the data.
    */
-  private Format format;
+  private transient Format format;
 
   /**
    * The datasource from where the data is obtained.
@@ -219,6 +224,19 @@ public class FormatFilter implements DataFilter, Serializable, RawDataSource
   public Object getRawValue ()
   {
     return datasource.getValue();
+  }
+
+  private void writeObject (final ObjectOutputStream out)
+          throws IOException
+  {
+    out.defaultWriteObject();
+    
+  }
+
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
   }
 }
 

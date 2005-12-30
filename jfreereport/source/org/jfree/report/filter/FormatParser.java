@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: FormatParser.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
+ * $Id: FormatParser.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,9 @@
 package org.jfree.report.filter;
 
 import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.Format;
 import java.text.ParseException;
 
@@ -57,7 +60,7 @@ public class FormatParser implements DataFilter, Serializable
   /**
    * The format used to create the string representation of the data.
    */
-  private Format format;
+  private transient Format format;
 
   /**
    * The datasource from where the data is obtained.
@@ -231,4 +234,16 @@ public class FormatParser implements DataFilter, Serializable
     return p;
   }
 
+  private void writeObject (final ObjectOutputStream out)
+          throws IOException
+  {
+    out.defaultWriteObject();
+
+  }
+
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+  }
 }

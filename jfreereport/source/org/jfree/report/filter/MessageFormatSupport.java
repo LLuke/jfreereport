@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupport.java,v 1.7 2005/09/07 14:25:10 taqua Exp $
+ * $Id: MessageFormatSupport.java,v 1.8 2005/09/20 15:38:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,15 +41,19 @@
 package org.jfree.report.filter;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.Format;
 import java.text.MessageFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.util.CSVTokenizer;
 import org.jfree.report.util.PropertyLookupParser;
 
-public class MessageFormatSupport implements Serializable
+public class MessageFormatSupport implements Serializable, Cloneable
 {
   protected static class MessageCompiler extends PropertyLookupParser
   {
@@ -73,12 +77,14 @@ public class MessageFormatSupport implements Serializable
         return null;
       }
       final String varName = tokenizer.nextToken();
+/*    // we have to collect every occurence, even if it is included twice
+      // to allow the null-value-processing later ..
       final int index = fields.indexOf(varName);
       if (index != -1)
       {
         return (String) completeFormatString.get(index);
       }
-
+*/
       final StringBuffer b = new StringBuffer();
       b.append("{");
       b.append(String.valueOf(fields.size()));
@@ -104,6 +110,7 @@ public class MessageFormatSupport implements Serializable
   private MessageFormat format;
   private String formatString;
   private String compiledFormat;
+  private String nullString;
 
   public MessageFormatSupport ()
   {
@@ -134,12 +141,75 @@ public class MessageFormatSupport implements Serializable
       return null;
     }
 
+    boolean fastProcessingPossible;
+    fastProcessingPossible = (nullString == null);
+
+    final Format[] formats = format.getFormats();
+    boolean fastProcessing = true;
     final Object[] parameters = new Object[fields.length];
+    final boolean[] replaced = new boolean[fields.length];
     for (int i = 0; i < parameters.length; i++)
     {
-      parameters[i] = dataRow.get(fields[i]);
+      final Object value = dataRow.get(fields[i]);
+      final Format currentFormat = formats[i];
+      if (value == null)
+      {
+        parameters[i] = nullString;
+        replaced[i] = currentFormat != null;
+        fastProcessing = (fastProcessing && fastProcessingPossible && replaced[i] == false);
+      }
+      else
+      {
+        if (currentFormat instanceof DateFormat)
+        {
+          if (value instanceof Date)
+          {
+            parameters[i] = value;
+            replaced[i] = false;
+          }
+          else
+          {
+            parameters[i] = nullString;
+            replaced[i] = true;
+            fastProcessing = (fastProcessing && fastProcessingPossible && replaced[i] == false);
+          }
+        }
+        else if (currentFormat instanceof NumberFormat)
+        {
+          if (value instanceof Number)
+          {
+            parameters[i] = value;
+            replaced[i] = false;
+          }
+          else
+          {
+            parameters[i] = nullString;
+            replaced[i] = true;
+            fastProcessing = (fastProcessing && fastProcessingPossible && replaced[i] == false);
+          }
+        }
+        else
+        {
+          parameters[i] = value;
+          replaced[i] = false;
+        }
+      }
     }
-    return format.format(parameters);
+    if (fastProcessing)
+    {
+      return format.format(parameters);
+    }
+
+    final MessageFormat effectiveFormat = (MessageFormat) format.clone();
+    for (int i = 0; i < replaced.length; i++)
+    {
+      boolean b = replaced[i];
+      if (b)
+      {
+        effectiveFormat.setFormat(i, null);
+      }
+    }
+    return effectiveFormat.format(parameters);
   }
 
   public Locale getLocale ()
@@ -147,7 +217,7 @@ public class MessageFormatSupport implements Serializable
     return format.getLocale();
   }
 
-  public String getCompiledFormat()
+  public String getCompiledFormat ()
   {
     return compiledFormat;
   }
@@ -156,5 +226,23 @@ public class MessageFormatSupport implements Serializable
   {
     format.setLocale(locale);
     format.applyPattern(compiledFormat);
+  }
+
+  public String getNullString ()
+  {
+    return nullString;
+  }
+
+  public void setNullString (String nullString)
+  {
+    this.nullString = nullString;
+  }
+
+  public Object clone ()
+          throws CloneNotSupportedException
+  {
+    MessageFormatSupport support = (MessageFormatSupport) super.clone();
+    support.format = (MessageFormat) format.clone();
+    return support;
   }
 }

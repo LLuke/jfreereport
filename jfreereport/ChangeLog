@@ -2,6 +2,11 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+
+        * The Message-Format handling has been improved. The Message-field
+          now recognizes the 'nullstring' attribute and replaces invalid or
+          missing content with that string.
+
 0.8.6-6: (27-Dec-2005)
         * [BUG] The demo did not initialize JFreeReport through the
           JFreeReportBoot class and thus ran into an ugly NullPointer.

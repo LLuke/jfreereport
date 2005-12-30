@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFormatFilter.java,v 1.6 2005/09/20 15:38:23 taqua Exp $
+ * $Id: MessageFormatFilter.java,v 1.7 2005/09/20 19:53:01 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class MessageFormatFilter
   }
 
   /**
-   * Defines the format string for the {@link MessageFormat} object used in this
+   * Defines the format string for the {@link java.text.MessageFormat} object used in this
    * implementation.
    *
    * @param format the message format.
@@ -162,6 +162,17 @@ public class MessageFormatFilter
   {
     final MessageFormatFilter mf = (MessageFormatFilter) super.clone();
     mf.reportDefinition = null;
+    mf.messageFormatSupport = (MessageFormatSupport) messageFormatSupport.clone();
     return mf;
+  }
+
+  public String getNullString ()
+  {
+    return messageFormatSupport.getNullString();
+  }
+
+  public void setNullString (String nullString)
+  {
+    this.messageFormatSupport.setNullString(nullString);
   }
 }
