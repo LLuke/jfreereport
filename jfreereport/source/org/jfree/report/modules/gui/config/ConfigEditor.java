@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.16 2005/08/08 15:36:30 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.17 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -252,7 +252,7 @@ public class ConfigEditor extends JFrame
    * The name of the resource bundle implementation used in this dialog.
    */
   public static final String RESOURCE_BUNDLE =
-          "org.jfree.report.modules.gui.config.resources/config-resources";
+          "org.jfree.report.modules.gui.config.resources.config-resources";
   /**
    * A label that serves as status bar.
    */
