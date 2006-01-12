@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicJFreeChartDemo.java,v 1.6 2005/05/31 18:27:27 taqua Exp $
+ * $Id: BasicJFreeChartDemo.java,v 1.7 2005/09/19 13:34:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,6 +54,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.elementfactory.DrawableFieldElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
@@ -202,6 +203,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
    */
   public static void main(final String[] args)
   {
+    JFreeReportBoot.getInstance().start();
 
     final BasicJFreeChartDemo demo = new BasicJFreeChartDemo();
     demo.pack();
@@ -224,7 +226,7 @@ public class BasicJFreeChartDemo extends AbstractDemoFrame
     factory.setAbsolutePosition(new Point2D.Float(7, 7));
     factory.setMinimumSize(new FloatDimension(400, 250));
     factory.setFieldname("Chart");
-    report.getItemBand().addElement(factory.createElement());
+    report.getReportHeader().addElement(factory.createElement());
 
     // create a dataset...
     final PieDataset dataset = createSampleDataset();

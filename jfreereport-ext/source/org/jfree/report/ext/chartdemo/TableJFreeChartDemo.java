@@ -43,7 +43,6 @@ package org.jfree.report.ext.chartdemo;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.geom.Point2D;
 import java.net.URL;
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -60,47 +59,23 @@ import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
-import org.jfree.report.elementfactory.DrawableFieldElementFactory;
 import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.ui.FloatDimension;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Rotation;
 
-public class MultipleJFreeChartDemo extends AbstractDemoFrame
+public class TableJFreeChartDemo extends AbstractDemoFrame
 {
-  protected class PreviewAPIReportAction extends AbstractActionDowngrade
-  {
-    public PreviewAPIReportAction()
-    {
-      putValue(Action.NAME, "Preview API Report");
-    }
-
-    /**
-     * Receives notification of an action event.
-     *
-     * @param event  the event.
-     */
-    public void actionPerformed(final ActionEvent event)
-    {
-      attemptAPIPreview();
-    }
-  }
-
   protected class PreviewXMLReportAction extends AbstractActionDowngrade
   {
-    private String resourceName;
-
-    public PreviewXMLReportAction(final String resourceName, final String actionName)
+    public PreviewXMLReportAction(final String actionName)
     {
       putValue(Action.NAME, actionName);
-      this.resourceName = resourceName;
     }
 
     /**
@@ -110,12 +85,11 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
      */
     public void actionPerformed(final ActionEvent event)
     {
-      attemptXMLPreview(resourceName);
+      attemptPreview();
     }
   }
 
-  private static final String EXT_DEMO_DEF = "multi-chart-ext.xml";
-  private static final String SIMPLE_DEMO_DEF = "multi-chart-simple.xml";
+  private static final String SIMPLE_DEMO_DEF = "table-chart-simple.xml";
 
   private TableModel data;
 
@@ -123,7 +97,7 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
   /**
    * Creates a new demo.
    */
-  public MultipleJFreeChartDemo()
+  public TableJFreeChartDemo()
   {
     setTitle("JFreeChart demo (Multiple charts)");
 
@@ -133,7 +107,7 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
     for (int i = 0; i < 12; i++)
     {
       // create the chart...
-      final JFreeChart chart = (JFreeChart) data.getValueAt(i, 0);
+      final JFreeChart chart = (JFreeChart) data.getValueAt(i * 5, 3);
 
       // add the chart to a panel...
       final ChartPanel chartPanel = new ChartPanel(chart);
@@ -150,11 +124,8 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
   private void buildMenu()
   {
     final JMenu demoMenu = new JMenu("Demo");
-    demoMenu.add(new ActionMenuItem(new PreviewAPIReportAction()));
     demoMenu.add(new ActionMenuItem(new PreviewXMLReportAction
-        (EXT_DEMO_DEF, "Preview " + EXT_DEMO_DEF)));
-    demoMenu.add(new ActionMenuItem(new PreviewXMLReportAction
-        (SIMPLE_DEMO_DEF, "Preview " + SIMPLE_DEMO_DEF)));
+        ("Preview")));
 
     demoMenu.addSeparator();
     demoMenu.add(new ActionMenuItem(getCloseAction()));
@@ -169,15 +140,15 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
    *
    * @return A sample dataset.
    */
-  private PieDataset createSampleDataset()
+  private PieDataset createSampleDataset(int[] votes)
   {
     final DefaultPieDataset result = new DefaultPieDataset();
     // cheating: java has a higher chance to be the best language :)
-    result.setValue("Java", new Integer((int) (Math.random() * 200)));
-    result.setValue("Visual Basic", new Integer((int) (Math.random() * 50)));
-    result.setValue("C/C++", new Integer((int) (Math.random() * 100)));
-    result.setValue("PHP", new Integer((int) (Math.random() * 50)));
-    result.setValue("Perl", new Integer((int) (Math.random() * 100)));
+    result.setValue("Java", new Integer(votes[0]));
+    result.setValue("Visual Basic", new Integer(votes[1]));
+    result.setValue("C/C++", new Integer(votes[2]));
+    result.setValue("PHP", new Integer(votes[3]));
+    result.setValue("Perl", new Integer(votes[4]));
     return result;
 
   }
@@ -187,12 +158,12 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
    *
    * @return A chart.
    */
-  private JFreeChart createChart(final int year)
+  private JFreeChart createChart(final int year, int[] votes)
   {
 
     final JFreeChart chart = ChartFactory.createPieChart3D(
-        "Programming Language of the Year " + year, // chart title
-        createSampleDataset(), // data
+        "Programming Language of the Year " + (year), // chart title
+        createSampleDataset(votes), // data
         true, // include legend
         true,
         false
@@ -218,69 +189,61 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
   {
     JFreeReportBoot.getInstance().start();
 
-    final MultipleJFreeChartDemo demo = new MultipleJFreeChartDemo();
+    final TableJFreeChartDemo demo = new TableJFreeChartDemo();
     demo.pack();
     RefineryUtilities.centerFrameOnScreen(demo);
     demo.setVisible(true);
 
   }
 
-  /**
-   * Handler method called by the preview action. This method should perform all
-   * operations to preview the report.
-   */
-  protected void attemptAPIPreview()
-  {
-    // empty as implementation side effect
-    final JFreeReport report = new JFreeReport();
-
-    final DrawableFieldElementFactory factory = new DrawableFieldElementFactory();
-    factory.setName("drawable-field");
-    factory.setAbsolutePosition(new Point2D.Float(7, 7));
-    factory.setMinimumSize(new FloatDimension(400, 250));
-    factory.setFieldname("Chart");
-    report.getItemBand().addElement(factory.createElement());
-
-    report.setData(data);
-
-    try
-    {
-      final PreviewDialog dialog = new PreviewDialog(report);
-      dialog.getBase().setToolbarFloatable(true);
-      dialog.pack();
-      RefineryUtilities.positionFrameRandomly(dialog);
-      dialog.setVisible(true);
-      dialog.requestFocus();
-    }
-    catch (ReportProcessingException re)
-    {
-      showExceptionDialog("report.definitionfailure", re);
-    }
-  }
-
   private TableModel createTableModel ()
   {
-    final Object[][] data = new Object[12][];
+    final Object[][] data = new Object[12 * 5][];
+    final int[] votes = new int[5];
     for (int i = 0; i < 12; i++)
     {
-      data[i] = new Object[]{ createChart(i + 1995)};
+      final Integer year = new Integer (1995 + i);
+      votes[0] = (int) (Math.random() * 200);
+      votes[1] = (int) (Math.random() * 50);
+      votes[2] = (int) (Math.random() * 100);
+      votes[3] = (int) (Math.random() * 50);
+      votes[4] = (int) (Math.random() * 100);
+
+      final JFreeChart chart = createChart(year.intValue(), votes);
+
+      data[i * 5] = new Object[] {
+        year, "Java", new Integer(votes[0]), chart
+      };
+      data[i * 5 + 1] = new Object[] {
+        year, "Visual Basic", new Integer(votes[1]), chart
+      };
+      data[i * 5 + 2] = new Object[] {
+        year, "C/C++", new Integer(votes[2]), chart
+      };
+      data[i * 5 + 3] = new Object[] {
+        year, "PHP", new Integer(votes[3]), chart
+      };
+      data[i * 5 + 4] = new Object[] {
+        year, "Perl", new Integer(votes[4]), chart
+      };
+
     }
 
     final String[] colNames = {
-      "Chart"
+      "year", "language", "votes", "chart"
     };
-    final DefaultTableModel model = new DefaultTableModel(data, colNames);
-    return model;
+
+    return new DefaultTableModel(data, colNames);
   }
   /**
    * Handler method called by the preview action. This method should perform all
    * operations to preview the report.
    */
-  protected void attemptXMLPreview(final String resourceName)
+  protected void attemptPreview()
   {
     try
     {
-      final URL url = ObjectUtilities.getResourceRelative(resourceName, MultipleJFreeChartDemo.class);
+      final URL url = ObjectUtilities.getResourceRelative(SIMPLE_DEMO_DEF, TableJFreeChartDemo.class);
       final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
       report.setData(data);
 
@@ -297,14 +260,5 @@ public class MultipleJFreeChartDemo extends AbstractDemoFrame
     {
       showExceptionDialog("report.definitionfailure", re);
     }
-  }
-
-  /**
-   * Handler method called by the preview action. This method should perform all
-   * operations to preview the report.
-   */
-  protected void attemptPreview()
-  {
-    // empty as implementation side effect
   }
 }

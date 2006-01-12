@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 
 <report name="ReportProperty Demo" pageformat="A4">
 
   <!-- ITEM BAND -->
   <!-- This band appears for all rows in the tablemodel. -->
-  <items>
+  <reportheader>
 
     <drawable-field x="0" y="0" width="450" height="250"
       fieldname="Chart"/>
 
-  </items>
+  </reportheader>
 
   <functions>
     <!-- This will mark the property to be included in the datarow -->
