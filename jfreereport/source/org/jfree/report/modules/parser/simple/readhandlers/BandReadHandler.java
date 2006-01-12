@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BandReadHandler.java,v 1.8 2005/10/11 14:53:21 taqua Exp $
+ * $Id: BandReadHandler.java,v 1.9 2005/10/14 15:43:33 taqua Exp $
  *
  * Changes
  * -------
@@ -165,18 +165,33 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
   public static final String VALIGNMENT_ATT = "vertical-alignment";
 
 
+  /** Literal text for an XML attribute value. */
   private static final String LAYOUT_ATT = "layout";
+  /** Literal text for an XML attribute value. */
   private static final String NAME_ATT = "name";
+  /** Literal text for an XML attribute value. */
   private static final String COLOR_ATT = "color";
+  /** Literal text for an XML attribute value. */
   private static final String RESERVED_LITERAL_ATT = "reserved-literal";
+  /** Literal text for an XML attribute value. */
   private static final String DRAWABLE_REF_TAG = "drawableref";
+  /** Literal text for an XML attribute value. */
   private static final String DRAWABLE_URL_FIELD_TAG = "drawable-url-field";
+  /** Literal text for an XML attribute value. */
   private static final String STYLE_CLASS_ATT = "styleClass";
+  /** Literal text for an XML attribute value. */
   private static final String LAYOUT_CACHABLE_ATT = "layout-cachable";
+  /** Literal text for an XML attribute value. */
   private static final String VISIBLE_ATT = "visible";
+  /** Literal text for an XML attribute value. */
   private static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
+  /** Literal text for an XML attribute value. */
   private static final String HREF_ATT = "href";
+  /** Literal text for an XML attribute value. */
   private static final String HREF_WINDOW_ATT = "href-window";
+  /** Literal text for an XML attribute value. */
+  public static final String LINEHEIGHT = "line-height";
+  public static final String WRAP_TEXT = "excel-wrap-text";
 
   private Band band;
   private ArrayList elementHandlers;
@@ -227,6 +242,64 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     handleLayoutCachable(attr);
     handleLayout(attr);
     handleHRef(attr);
+
+    band.getStyle().setStyleProperty
+            (ElementStyleSheet.LINEHEIGHT, parseFloat(attr.getValue(LINEHEIGHT)));
+    band.getStyle().setStyleProperty
+            (ElementStyleSheet.EXCEL_WRAP_TEXT, parseBoolean(attr.getValue(WRAP_TEXT)));
+
+  }
+
+  /**
+   * Translates an boolean string ("true" or "false") into the corresponding Boolean
+   * object.
+   *
+   * @param value the string that represents the boolean.
+   * @return Boolean.TRUE or Boolean.FALSE
+   *
+   * @throws SAXException if an parse error occured.
+   */
+  private Boolean parseBoolean (final String value)
+          throws SAXException
+  {
+    if (value == null)
+    {
+      return null;
+    }
+    if (value.equals("true"))
+    {
+      return Boolean.TRUE;
+    }
+    else if (value.equals("false"))
+    {
+      return Boolean.FALSE;
+    }
+    throw new SAXException("Failed to parse value: Expected 'true' or 'false'");
+  }
+
+  /**
+   * Reads an attribute as float and returns <code>def</code> if that fails.
+   *
+   * @param value the attribute value.
+   * @return the float value.
+   *
+   * @throws SAXException if an parse error occured.
+   */
+  private Float parseFloat (final String value)
+          throws SAXException
+  {
+    if (value == null)
+    {
+      return null;
+    }
+    try
+    {
+      return new Float(value);
+    }
+    catch (Exception ex)
+    {
+      throw new SAXException("Failed to parse value", ex);
+    }
   }
 
   private void handleHRef(final PropertyAttributes attr) {

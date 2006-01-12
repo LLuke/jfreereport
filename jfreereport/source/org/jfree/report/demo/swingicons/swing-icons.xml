@@ -28,7 +28,7 @@
   <!-- ************************ -->
   <report-config>
     <page-definition>
-      <page orientation="portrait"
+      <page orientation="landscape"
         pageformat="LETTER"
         topmargin="72"
         bottommargin="72"

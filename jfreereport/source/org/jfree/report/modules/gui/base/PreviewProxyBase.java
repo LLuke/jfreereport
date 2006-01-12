@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.48 2005/10/11 16:14:01 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.49 2005/12/07 22:20:35 taqua Exp $
  *
  * Changes
  * -------
@@ -2113,6 +2113,12 @@ public class PreviewProxyBase extends JComponent
   /** Disposes the preview frame. */
   public void dispose()
   {
+    if (repaginationWorker != null)
+    {
+      repaginationWorker.finish();
+      repaginationWorker = null;
+    }
+
     freeResources();
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering
     // I dont want this here, as PreviewFrames are evil and resource expensive ...
@@ -2135,25 +2141,7 @@ public class PreviewProxyBase extends JComponent
       {
         // make sure that the pagination worker does no longer waste our time.
         // this won't kill the export worker ...
-        repaginationWorker.interrupt();
-        synchronized (repaginationWorker)
-        {
-          while (repaginationWorker.isAvailable() == false)
-          {
-            // wait until the worker is done with his current job
-            //Log.debug ("Worker is unavailable ... ");
-            try
-            {
-              repaginationWorker.wait();
-            }
-            catch (InterruptedException ie)
-            {
-              // ignored
-            }
-          }
-          // now we can be sure, that the beast is killed and wont
-          // cause trouble later.
-        }
+        repaginationWorker.finish();
         repaginationWorker = null;
       }
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextParagraph.java,v 1.17 2005/10/05 13:35:38 taqua Exp $
+ * $Id: TextParagraph.java,v 1.18 2005/12/01 19:00:31 taqua Exp $
  *
  * Changes
  * -------
@@ -141,9 +141,9 @@ public class TextParagraph extends ContentContainer
       throw new IllegalArgumentException();
     }
 
-    final int maxLines = (int)
-            (height / StrictGeomUtility.toInternalValue
-                    (getSizeCalculator().getLineHeight()));
+    final int maxLines = (int) (height / Math.max
+          (StrictGeomUtility.toInternalValue(getSizeCalculator().getLineHeight()),
+           lineHeight));
 
     if (maxLines == 0)
     {
@@ -181,6 +181,12 @@ public class TextParagraph extends ContentContainer
               height - usedHeight);
 
       usedHeight += line.getHeight();
+      if (usedHeight > height)
+      {
+        // if that line would not fit into the specified content bounds,
+        // dont add it and stop any further processing ...
+        break;
+      }
       if (line.getBounds().getHeight() > 0)
       {
         addContentPart(line);
