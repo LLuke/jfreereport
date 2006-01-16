@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.12 2005/09/07 14:25:10 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.13 2005/10/02 10:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -219,6 +219,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    * the FontRenderContext bug detector instance.
    */
   private static BuggyFontRendererDetector frcDetector;
+  private float lineHeight;
 
   /**
    * Returns a singleon instance of the FontRenderContext bug detector.
@@ -252,7 +253,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    * @param font The font definition.
    * @return A default size calculator.
    */
-  public static DefaultSizeCalculator getDefaultSizeCalculator
+  public static synchronized DefaultSizeCalculator getDefaultSizeCalculator
           (final FontDefinition font)
   {
     if (cache == null)
@@ -283,6 +284,11 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
     {
       throw new IllegalArgumentException("The given FontSize is <= 0");
     }
+
+    final Rectangle2D rect =
+            font.getFont().getMaxCharBounds(getFrcDetector().createFontRenderContext());
+    this.lineHeight = (float) rect.getHeight();
+    // Log.debug ("FontSize: " + rect + " -> " + font.getFont().getSize2D() + " vs " + lineHeight + " -> " + font.getFontName());
     this.font = font;
     this.chars = new char[100];
   }
@@ -295,7 +301,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    */
   public float getLineHeight ()
   {
-    return font.getFont().getSize2D();
+    return lineHeight;
   }
 
   /**

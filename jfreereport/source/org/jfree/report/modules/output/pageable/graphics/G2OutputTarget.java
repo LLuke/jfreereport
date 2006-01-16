@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.28 2005/09/19 15:38:47 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.29 2005/11/17 17:03:48 taqua Exp $
  *
  * Changes
  * -------
@@ -541,18 +541,17 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     // correct the AWT-fontMetrics. This correction is not 100% perfect, but it is
     // perfect enough for printing ...
     final FontMetrics fm = g2.getFontMetrics();
-    final float baseline = fm.getAscent();
-    final float cFact = getFont().getFont().getSize2D() / fm.getHeight();
+    final Rectangle2D rect = fm.getMaxCharBounds(g2);
+    final float baseline = (float) (-rect.getY());
 
-    final float correctedBaseline = baseline * cFact;
     final Stroke stroke = getStroke();
     g2.setStroke(new BasicStroke(1));
-    g2.drawString(text, 0.0f, correctedBaseline);
+    g2.drawString(text, 0.0f, baseline);
     g2.setStroke(stroke);
 
     if (getFont().isUnderline())
     {
-      final float l = (getFont().getFont().getSize2D() + correctedBaseline) / 2.0f;
+      final float l = (getFont().getFont().getSize2D() + baseline) / 2.0f;
       final Line2D line = new Line2D.Float(0, l, (float) getOperationBounds().getWidth(), l);
       g2.draw(line);
     }

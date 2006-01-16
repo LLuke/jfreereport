@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.40 2005/11/17 17:03:48 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.41 2005/11/23 16:52:44 taqua Exp $
  *
  * Changes
  * -------
@@ -901,7 +901,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     final BaseFont baseFont = baseFontRecord.getBaseFont();
 
-    final float ascent = baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize);
+    // The bounding Boxes Upper Right Y coordinate is the maximum Ascent .. 
+    final float ascent = baseFont.getFontDescriptor(BaseFont.BBOXURY, fontSize);
     final float y2 = (float) (StrictGeomUtility.toExternalValue(bounds.getY()) + ascent);
     final float x1 = (float) StrictGeomUtility.toExternalValue(bounds.getX());
     final float x2 = (float) StrictGeomUtility.toExternalValue(bounds.getX() + bounds.getWidth());

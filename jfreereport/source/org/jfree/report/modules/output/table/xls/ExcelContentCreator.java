@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.16 2005/12/09 20:05:32 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.17 2005/12/10 17:39:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.modules.output.table.xls;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.awt.Font;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -79,6 +80,7 @@ public class ExcelContentCreator extends TableContentCreator
    * This is a weird thing: According to
    * http://support.microsoft.com/?kbid=214123
    * this value depends on the Normal-Font used in the cells.
+   * The character '0' is used for that.
    * <p>
    * The actual width unit is 1/256th of a character. Now how to
    * compute a character for a proportial font. Which one is used.
@@ -88,7 +90,8 @@ public class ExcelContentCreator extends TableContentCreator
    * With POI 3.0 it seems that some default fonts have already been created,
    * which actually make the workbook widths independent from the used fonts.
    */
-  private static final double SCALE_FACTOR = 2000f/46f;
+  private double SCALE_FACTOR = 2000f/40f;
+  private double scaleFactor;
 
   private HSSFPatriarch patriarch;
   private HashMap sheetNamesCount;
@@ -98,6 +101,7 @@ public class ExcelContentCreator extends TableContentCreator
   {
     super(sheetLayoutCollection);
     this.outputStream = outputStream;
+    this.scaleFactor = SCALE_FACTOR;
     sheetNamesCount = new HashMap();
   }
 

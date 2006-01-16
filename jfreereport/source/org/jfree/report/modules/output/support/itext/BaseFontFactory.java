@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.23 2005/11/09 20:02:12 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.24 2005/12/20 10:04:50 taqua Exp $
  *
  * Changes
  * -------
@@ -224,6 +224,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     final HashNMap knownFonts = new HashNMap();
     Properties seenFiles = new Properties();
     confirmedFiles = new Properties();
+    registry.initialize();
 
     if (store.existsProperties(FONTS_STORAGE_PATH))
     {
