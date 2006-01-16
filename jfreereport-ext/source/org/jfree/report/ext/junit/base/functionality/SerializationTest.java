@@ -45,7 +45,6 @@ public class SerializationTest extends TestCase
       final InternalDemoHandler handler = handlers[i];
       Log.debug("Starting to read " + handler.getDemoName());
 
-      final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       final JFreeReport report = handler.createReport();
       final TableModel model = report.getData();
 
@@ -63,6 +62,7 @@ public class SerializationTest extends TestCase
         }
       }
 
+      final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       try
       {
         final ObjectOutputStream oout = new ObjectOutputStream(bo);

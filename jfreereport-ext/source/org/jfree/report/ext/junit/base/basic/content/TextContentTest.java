@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.8 2005/09/07 11:24:09 taqua Exp $
+ * $Id: TextContentTest.java,v 1.9 2005/10/02 19:47:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.ext.junit.base.basic.content;
 
 import junit.framework.TestCase;
 import org.jfree.report.TextElement;
+import org.jfree.report.style.FontDefinition;
 import org.jfree.report.content.ContentContainer;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.EmptyContent;
@@ -50,6 +51,8 @@ import org.jfree.report.content.TextParagraph;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.SizeCalculator;
+import org.jfree.report.layout.SizeCalculatorException;
+import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
@@ -277,4 +280,19 @@ public class TextContentTest extends TestCase
     assertEquals(new StrictBounds(0,0, STRICT_FACTOR * 200, STRICT_FACTOR * 70), tp.getMinimumContentSize());
   }
 
+
+   public void testLineHeight() throws SizeCalculatorException
+    {
+        LayoutSupport ot = new DefaultLayoutSupport();
+        StrictBounds tBounds = new StrictBounds(0, 0, 114 * 1000, 38 * 1000);
+        FontDefinition fontDefinition = new FontDefinition("dialog", 12);
+        long lineHeight = StrictGeomUtility.toInternalValue(20);
+
+        TextContent tc = new TextContent("asd as da sd a sd as da sda sd a sdas d  asd asd a sd a sd a sd a sd ",
+                                         lineHeight,
+                                         tBounds,
+                                         ot.createTextSizeCalculator(fontDefinition),
+                                         "..",
+                                         false);
+    }
 }

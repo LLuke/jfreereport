@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupportTest.java,v 1.1 2005/08/08 15:57:03 taqua Exp $
+ * $Id: MessageFormatSupportTest.java,v 1.2 2005/09/20 16:58:22 taqua Exp $
  *
  * Changes
  * -------
@@ -67,4 +67,21 @@ public class MessageFormatSupportTest extends TestCase
     assertEquals(tokenizer.nextToken(), "Test");
   }
 
+  public void testComplexReplacement ()
+  {
+    MessageFormatSupport support = new MessageFormatSupport();
+    support.setFormatString("$(null,number,integer), $(dummy), $(null,date), $(null,number,integer)");
+    SimpleDataRow sdr = new SimpleDataRow();
+    sdr.add("null", null);
+    sdr.add("dummy", "Content");
+
+    String text = support.performFormat(sdr);
+    assertEquals("Expected content w/o nullString", "null, Content, null, null", text);
+    System.out.println(text);
+
+    support.setNullString("-");
+    String ntext = support.performFormat(sdr);
+    assertEquals("Expected content w nullString", "-, Content, -, -",ntext);
+    System.out.println(ntext);
+  }
 }
