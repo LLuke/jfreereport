@@ -40,31 +40,22 @@
  */
 package org.jfree.report.function;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ResourceBundleFactory;
 
-public class ConvertToNumberExpression extends AbstractExpression
+public class ConvertToDateExpression extends AbstractExpression
 {
-  private static final String DECIMALFORMAT_DEFAULT_PATTERN =
-    "#,###.###################################################" +
-    "#########################################################" +
-    "#########################################################" +
-    "#########################################################" +
-    "#########################################################" +
-    "#########################################################" +
-    "####";
-
-  private static final BigDecimal ZERO = new BigDecimal(0);
   private String field;
   private String format;
 
-  public ConvertToNumberExpression ()
+  public ConvertToDateExpression ()
   {
   }
 
@@ -100,7 +91,7 @@ public class ConvertToNumberExpression extends AbstractExpression
     // get the row directly as a Number
     final Object o = dataRow.get(field);
     // check if that thing is a Number
-    if (o instanceof Number)
+    if (o instanceof Date)
     {
       return o;
     }
@@ -109,31 +100,25 @@ public class ConvertToNumberExpression extends AbstractExpression
     final String formatString = getFormat();
     try
     {
-      final String effectiveFormatString;
       if (formatString == null || formatString.length() == 0)
       {
-        // this is a workaround for a bug in JDK 1.5
-        effectiveFormatString = DECIMALFORMAT_DEFAULT_PATTERN;
-      }
-      else
-      {
-        effectiveFormatString = formatString;
+        DateFormat format = DateFormat.getDateInstance();
+        return format.parse(String.valueOf(o));
       }
 
-
-      final DecimalFormat format = new DecimalFormat(effectiveFormatString);
+      final SimpleDateFormat format = new SimpleDateFormat(formatString);
       final ResourceBundleFactory factory = getResourceBundleFactory();
       if (factory != null)
       {
-        format.setDecimalFormatSymbols
-                (new DecimalFormatSymbols(factory.getLocale()));
+        format.setDateFormatSymbols
+                (new DateFormatSymbols(factory.getLocale()));
       }
 
       return format.parse(String.valueOf(o));
     }
     catch (ParseException e)
     {
-      return ZERO;
+      return null;
     }
   }
 

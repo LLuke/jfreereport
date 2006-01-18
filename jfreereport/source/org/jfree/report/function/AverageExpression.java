@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: AverageExpression.java,v 1.3 2005/02/23 21:04:47 taqua Exp $
+ * $Id: AverageExpression.java,v 1.4 2005/04/17 21:08:59 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,8 @@ import java.util.Arrays;
 /**
  * An expression that takes values from one or more fields and returns the average of
  * them.
+ *
+ * @deprecated this has been replaced by the ColumnAverageExpression. 
  */
 public class AverageExpression extends AbstractExpression implements Serializable
 {

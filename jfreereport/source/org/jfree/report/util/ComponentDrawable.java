@@ -245,14 +245,4 @@ public class ComponentDrawable implements ExtendedDrawable
       }
     }
   }
-
-  public static void main(String[] args)
-  {
-    ComponentDrawable drawa = new ComponentDrawable();
-    drawa.setComponent(new JFileChooser());
-    BufferedImage bi = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
-    final Graphics2D graphics = bi.createGraphics();
-    drawa.draw(graphics, new Rectangle2D.Double(0, 0, 500, 500));
-    graphics.dispose();
-  }
 }
