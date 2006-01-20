@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConvertToNumberExpression.java,v 1.2 2005/12/30 11:05:55 taqua Exp $
+ * $Id: ConvertToNumberExpression.java,v 1.3 2006/01/18 22:49:46 taqua Exp $
  *
  * Changes
  * -------
@@ -137,18 +137,4 @@ public class ConvertToNumberExpression extends AbstractExpression
     }
   }
 
-  protected ResourceBundleFactory getResourceBundleFactory()
-  {
-    if (getDataRow().findColumn(JFreeReport.REPORT_LOCALIZATION_PROPERTY) < 0)
-    {
-      return null;
-    }
-
-    Object localesSupport = getDataRow().get(JFreeReport.REPORT_LOCALIZATION_PROPERTY);
-    if (localesSupport instanceof ResourceBundleFactory == false)
-    {
-      return null;
-    }
-    return (ResourceBundleFactory) localesSupport;
-  }
 }

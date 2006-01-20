@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.8 2005/02/04 19:22:53 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.9 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ package org.jfree.report.function;
 import java.io.Serializable;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ResourceBundleFactory;
+import org.jfree.report.JFreeReport;
 
 /**
  * An abstract base class for implementing new report expressions.
@@ -220,5 +222,21 @@ public abstract class AbstractExpression implements Expression, Serializable
     {
       return null;
     }
+  }
+
+
+  protected ResourceBundleFactory getResourceBundleFactory()
+  {
+    if (getDataRow().findColumn(JFreeReport.REPORT_LOCALIZATION_PROPERTY) < 0)
+    {
+      return null;
+    }
+
+    Object localesSupport = getDataRow().get(JFreeReport.REPORT_LOCALIZATION_PROPERTY);
+    if (localesSupport instanceof ResourceBundleFactory == false)
+    {
+      return null;
+    }
+    return (ResourceBundleFactory) localesSupport;
   }
 }

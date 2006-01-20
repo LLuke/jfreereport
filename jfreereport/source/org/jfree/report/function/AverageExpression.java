@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: AverageExpression.java,v 1.4 2005/04/17 21:08:59 taqua Exp $
+ * $Id: AverageExpression.java,v 1.5 2006/01/18 22:49:46 taqua Exp $
  *
  * Changes
  * -------
@@ -119,7 +119,7 @@ public class AverageExpression extends AbstractExpression implements Serializabl
           throws CloneNotSupportedException
   {
     final AverageExpression ae = (AverageExpression) super.clone();
-    ae.fieldList = new ArrayList(this.fieldList);
+    ae.fieldList = (ArrayList) fieldList.clone();
     return ae;
   }
 

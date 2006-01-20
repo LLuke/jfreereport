@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ColumnAggreationExpression.java,v 1.1 2006/01/06 09:05:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -100,5 +100,12 @@ public abstract class ColumnAggreationExpression extends AbstractExpression
   {
     this.fields.clear();
     this.fields.addAll(Arrays.asList(fields));
+  }
+
+  public Object clone() throws CloneNotSupportedException
+  {
+    ColumnAggreationExpression co = (ColumnAggreationExpression) super.clone();
+    co.fields = (ArrayList) fields.clone();
+    return co;
   }
 }
