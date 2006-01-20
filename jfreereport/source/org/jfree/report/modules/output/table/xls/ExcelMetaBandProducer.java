@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.11 2005/12/09 20:05:32 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.12 2005/12/10 17:39:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -355,7 +355,7 @@ public class ExcelMetaBandProducer
       {
         final SimpleDateFormat dateFormat = (SimpleDateFormat) filter
                 .getDateFormat();
-        return dateFormat.toLocalizedPattern();
+        return dateFormat.toPattern();
       }
     }
     else if (ds instanceof NumberFormatFilter)
@@ -365,7 +365,7 @@ public class ExcelMetaBandProducer
       {
         final DecimalFormat dateFormat = (DecimalFormat) filter
                 .getNumberFormat();
-        return dateFormat.toLocalizedPattern();
+        return dateFormat.toPattern();
       }
     }
     if (ds instanceof DataTarget)
