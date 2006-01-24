@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.24 2005/12/20 10:04:50 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.25 2006/01/16 20:56:52 taqua Exp $
  *
  * Changes
  * -------
@@ -148,7 +148,8 @@ public final class BaseFontFactory extends DefaultFontMapper
         return true;
       }
       final String name = pathname.getName();
-      return StringUtil.endsWithIgnoreCase(name, ".afm");
+      return StringUtil.endsWithIgnoreCase(name, ".afm") ||
+             StringUtil.endsWithIgnoreCase(name, ".pfm");
     }
 
   }
@@ -485,25 +486,24 @@ public final class BaseFontFactory extends DefaultFontMapper
       return;
     }
 
-    if (filename.toLowerCase().endsWith(".afm") == false)
+    if (filename.toLowerCase().endsWith(".afm") ||
+        filename.toLowerCase().endsWith(".pfm"))
     {
-      return;
-    }
-
-    final File file = new File(filename);
-    if (file.exists() && file.isFile() && file.canRead())
-    {
-      final String newAccessTime =
-              String.valueOf(file.lastModified() + "," + file.length());
-      confirmedFiles.put(filename, newAccessTime);
-      try
+      final File file = new File(filename);
+      if (file.exists() && file.isFile() && file.canRead())
       {
-        addFont(filename, encoding);
-      }
-      catch (Exception e)
-      {
-        Log.warn(new Log.SimpleMessage("Font ", filename, " is invalid. Message:", e.getMessage()));
-        notEmbeddedFonts.setProperty(filename, "false");
+        final String newAccessTime =
+                String.valueOf(file.lastModified() + "," + file.length());
+        confirmedFiles.put(filename, newAccessTime);
+        try
+        {
+          addFont(filename, encoding);
+        }
+        catch (Exception e)
+        {
+          Log.warn(new Log.SimpleMessage("Font ", filename, " is invalid. Message:", e.getMessage()));
+          notEmbeddedFonts.setProperty(filename, "false");
+        }
       }
     }
   }
@@ -526,22 +526,34 @@ public final class BaseFontFactory extends DefaultFontMapper
       return; // already in there
     }
 
+    final String filePfbName = font.substring(0, font.length() - 3) + "pfb";
+    final File filePfb = new File(filePfbName);
+    boolean embedded = true;
+    if (filePfb.exists() == false || filePfb.isFile() == false || filePfb.canRead() == false)
+    {
+      Log.warn ("Cannot embedd font: " + filePfb + " is missing for " + font);
+      embedded = false;
+    }
     BaseFont bfont;
-    String embedded = "false";
     try
     {
-      bfont = BaseFont.createFont(font, encoding, true, false, null, null);
-      embedded = "true";
+      bfont = BaseFont.createFont(font, encoding, embedded, false, null, null);
     }
     catch (DocumentException de)
     {
+      if (embedded == false)
+      {
+        throw de;
+      }
       // failed to load the font as embedded font, try not-embedded.
       bfont = BaseFont.createFont(font, encoding, false, false, null, null);
+      embedded = false;
       Log.info(new Log.SimpleMessage
               ("Font ", font, "  cannot be used as embedded font " +
               "due to licensing restrictions."));
     }
 
+    String embeddedText = String.valueOf(embedded);
     final String[][] fi = bfont.getFullFontName();
     for (int i = 0; i < fi.length; i++)
     {
@@ -551,15 +563,15 @@ public final class BaseFontFactory extends DefaultFontMapper
       // if unknown or the known font is a restricted version and this one is none,
       // then register the new font
       final String logicalFontname = ffi[3];
-      notEmbeddedFonts.setProperty(font, embedded);
+      notEmbeddedFonts.setProperty(font, embeddedText);
       if ((fontsByName.containsKey(logicalFontname) == false) ||
               ((knownFontEmbeddedState.equals("true") == false) &&
-              embedded.equals(knownFontEmbeddedState) == false))
+              embeddedText.equals(knownFontEmbeddedState) == false))
       {
         fontsByName.setProperty(logicalFontname, font);
         Log.debug(new Log.SimpleMessage
-                ("Registered truetype font ", logicalFontname, "; Embedded=",
-                        embedded, new Log.SimpleMessage("File=", font)));
+                ("Registered font (primary name):", logicalFontname, "; embedded=",
+                        embeddedText, new Log.SimpleMessage(", file=", font)));
       }
     }
 
@@ -568,8 +580,10 @@ public final class BaseFontFactory extends DefaultFontMapper
     {
       String[] strings = afi[i];
       Log.debug(new Log.SimpleMessage
-              ("Registered truetype font ", strings[3], "; Embedded=",
-                      embedded, new Log.SimpleMessage("File=", font)));
+              ("Registered font (alternate name):", strings[3], "; embedded=",
+                      embeddedText, new Log.SimpleMessage(", file=", font)));
+      // also register the alternate names, if there are any ..
+      fontsByName.setProperty(strings[3], font);
     }
   }
 
@@ -613,7 +627,9 @@ public final class BaseFontFactory extends DefaultFontMapper
     String retval = fontsByName.getProperty(font);
     if (retval != null)
     {
-      return new MinimalFontRecord(font, retval, bold, italics);
+      boolean embedded =
+              notEmbeddedFonts.getProperty(retval, "false").equalsIgnoreCase("true");
+      return new MinimalFontRecord(font, retval, bold, italics, embedded);
     }
     FontFamily family = registry.getFontFamily(font);
     if (family == null)

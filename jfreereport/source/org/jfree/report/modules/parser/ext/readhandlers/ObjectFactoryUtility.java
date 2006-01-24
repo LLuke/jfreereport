@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ObjectFactoryUtility.java,v 1.2 2005/03/03 23:00:21 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,10 @@ public class ObjectFactoryUtility
                                                    final Class c)
           throws ElementDefinitionException
   {
+    if (c == null) {
+      throw new NullPointerException("Class cannot be null");
+    }
+
     final ObjectDescription directMatch = cf.getDescriptionForClass(c);
     if (directMatch != null)
     {

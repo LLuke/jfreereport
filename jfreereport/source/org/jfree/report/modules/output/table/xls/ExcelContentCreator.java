@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.17 2005/12/10 17:39:48 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.18 2006/01/16 20:56:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,15 +41,14 @@ package org.jfree.report.modules.output.table.xls;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.awt.Font;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.util.Region;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
@@ -63,8 +62,8 @@ import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
 import org.jfree.report.modules.output.table.xls.util.ExcelPrintSetupFactory;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Configuration;
 import org.jfree.util.Log;
-import org.jfree.base.config.ModifiableConfiguration;
 
 public class ExcelContentCreator extends TableContentCreator
         implements ExcelExportContext
@@ -90,7 +89,6 @@ public class ExcelContentCreator extends TableContentCreator
    * With POI 3.0 it seems that some default fonts have already been created,
    * which actually make the workbook widths independent from the used fonts.
    */
-  private double SCALE_FACTOR = 2000f/40f;
   private double scaleFactor;
 
   private HSSFPatriarch patriarch;
@@ -101,7 +99,6 @@ public class ExcelContentCreator extends TableContentCreator
   {
     super(sheetLayoutCollection);
     this.outputStream = outputStream;
-    this.scaleFactor = SCALE_FACTOR;
     sheetNamesCount = new HashMap();
   }
 
@@ -125,6 +122,25 @@ public class ExcelContentCreator extends TableContentCreator
   protected void handleBeginTable (final ReportDefinition reportDefinition)
           throws ReportProcessingException
   {
+    final Configuration config = reportDefinition.getReportConfiguration();
+    try
+    {
+      String scaleFactorText = config.getConfigProperty
+              ("org.jfree.report.modules.output.table.xls.CellWidthScaleFactor");
+      if (scaleFactorText == null)
+      {
+        scaleFactor = 50;
+      }
+      else
+      {
+        scaleFactor = Double.parseDouble(scaleFactorText);
+      }
+    }
+    catch(Exception e)
+    {
+      this.scaleFactor = 50;
+    }
+
     newTable = true;
     String sheetName = null;
     if (getSheetNameFunction() != null)
@@ -160,8 +176,6 @@ public class ExcelContentCreator extends TableContentCreator
     // make sure a new patriarch is created if needed.
     patriarch = null;
 
-    final ModifiableConfiguration config = reportDefinition
-            .getReportConfiguration();
     final String paper = config.getConfigProperty
             (ExcelProcessor.CONFIGURATION_PREFIX + ".Paper");
     final String paperOrientation = config.getConfigProperty
@@ -258,7 +272,7 @@ public class ExcelContentCreator extends TableContentCreator
       {
         final double cellWidth = StrictGeomUtility.toExternalValue
                 (layout.getCellWidth(i, i + 1));
-        final double poiCellWidth = (cellWidth * SCALE_FACTOR);
+        final double poiCellWidth = (cellWidth * scaleFactor);
         sheet.setColumnWidth(i, (short) poiCellWidth);
       }
       newTable = false;

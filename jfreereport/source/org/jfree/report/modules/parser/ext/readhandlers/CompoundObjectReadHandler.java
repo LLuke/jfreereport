@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: CompoundObjectReadHandler.java,v 1.4 2005/03/03 23:00:20 taqua Exp $
  *
  * Changes
  * -------
@@ -147,9 +147,15 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
     }
 
     final ClassFactory fact = getClassFactory();
+    final Class paramDesc = getObjectDescription().getParameterDefinition(name);
+    if (paramDesc == null)
+    {
+      getObjectDescription().getParameterDefinition(name);
+      throw new ElementDefinitionException
+              ("The parameter type for '" + name + "' is not known.");
+    }
     final ObjectDescription objectDescription =
-            ObjectFactoryUtility.findDescription
-            (fact, getObjectDescription().getParameterDefinition(name));
+            ObjectFactoryUtility.findDescription(fact, paramDesc);
 
     final CommentHintPath path = getCommentHintPath().getInstance();
     path.addName(name);

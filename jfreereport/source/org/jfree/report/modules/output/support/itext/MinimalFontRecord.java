@@ -14,18 +14,21 @@ public class MinimalFontRecord implements FontRecord
 {
   private boolean bold;
   private boolean italics;
+  private boolean embeddable;
   private String fontFile;
   private String fontName;
 
   public MinimalFontRecord(final String fontName,
                            final String fontFile,
                            final boolean bold,
-                           final boolean italics)
+                           final boolean italics,
+                           final boolean embeddable)
   {
     this.fontName = fontName;
     this.fontFile = fontFile;
     this.bold = bold;
     this.italics = italics;
+    this.embeddable = embeddable;
   }
 
   public boolean isBold()
@@ -65,7 +68,7 @@ public class MinimalFontRecord implements FontRecord
 
   public boolean isEmbeddable()
   {
-    return false;
+    return embeddable;
   }
 
   public String getName()

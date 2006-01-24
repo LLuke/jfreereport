@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.23 2005/10/05 13:35:40 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.24 2005/10/27 18:31:48 taqua Exp $
  *
  * Changes
  * -------
@@ -492,9 +492,11 @@ public abstract class AbstractBandLayoutManager
 
     // Did I ever mention that this whole code is a cheap hack and should have
     // been removed long ago?
-//    final long flooredVal = (long) Math.floor((float)value / (float)boundary);
-//    return flooredVal * boundary;
-    return (value / boundary) * boundary;
+
+    // todo: This cannot be fixed in this version ...
+    final long flooredVal = (long) Math.ceil((double)value / (double)boundary);
+    return flooredVal * boundary;
+//    return (value / boundary) * boundary;
   }
 
 }

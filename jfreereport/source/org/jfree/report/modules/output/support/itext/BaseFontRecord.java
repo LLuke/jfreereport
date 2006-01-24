@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.9 2005/02/23 21:05:32 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.10 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@
 package org.jfree.report.modules.output.support.itext;
 
 import com.lowagie.text.pdf.BaseFont;
-import org.jfree.fonts.registry.FontRecord;
-import org.jfree.fonts.registry.FontFamily;
 
 /**
  * A PDF font record. The record is used to cache the generated PDF fonts. Once created
@@ -66,6 +64,8 @@ public final class BaseFontRecord
    * A flag indicating whether this font record describes an embedded PDF font.
    */
   private boolean embedded;
+  // give me a marker to know whether to apply manual bold and italics styles ..
+  private boolean trueTypeFont;
 
   private transient BaseFontRecordKey key;
   private boolean bold;
@@ -79,7 +79,7 @@ public final class BaseFontRecord
    *                    target document.
    * @param baseFont    the generated base font for the given font definition.
    */
-  public BaseFontRecord (final String fileName,
+  public BaseFontRecord (final String fileName, final boolean trueTypeFont,
                          final boolean embedded, final BaseFont baseFont,
                          final boolean bold, final boolean italics)
   {
@@ -91,11 +91,17 @@ public final class BaseFontRecord
     {
       throw new NullPointerException("Logical font name is null.");
     }
+    this.trueTypeFont = trueTypeFont;
     this.baseFont = baseFont;
     this.fileName = fileName;
     this.embedded = embedded;
     this.italics = italics;
     this.bold = bold;
+  }
+
+  public boolean isTrueTypeFont()
+  {
+    return trueTypeFont;
   }
 
   public boolean isBold()

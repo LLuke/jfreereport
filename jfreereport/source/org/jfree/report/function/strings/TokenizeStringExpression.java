@@ -21,44 +21,39 @@
  * Boston, MA 02111-1307, USA.
  *
  * ---------
- * CapitalizeStringExpression.java
+ * TokenizeStringExpression.java
  * ---------
  *
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: CapitalizeStringExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
+ * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
- * 20.01.2006 : Initial version
+ * 22.01.2006 : Initial version
  */
 package org.jfree.report.function.strings;
+
+import java.util.StringTokenizer;
 
 import org.jfree.report.function.AbstractExpression;
 
 /**
- * Creation-Date: 20.01.2006, 18:19:18
+ * Creation-Date: 22.01.2006, 14:38:02
  *
  * @author Thomas Morgner
  */
-public class CapitalizeStringExpression extends AbstractExpression
+public class TokenizeStringExpression extends AbstractExpression
 {
   private String field;
-  private boolean firstWordOnly;
+  private String delimeter;
+  private String replacement;
+  private String prefix;
+  private String suffix;
 
-  public CapitalizeStringExpression()
+  public TokenizeStringExpression()
   {
-  }
-
-  public boolean isFirstWordOnly()
-  {
-    return firstWordOnly;
-  }
-
-  public void setFirstWordOnly(final boolean firstWordOnly)
-  {
-    this.firstWordOnly = firstWordOnly;
   }
 
   public String getField()
@@ -69,6 +64,46 @@ public class CapitalizeStringExpression extends AbstractExpression
   public void setField(final String field)
   {
     this.field = field;
+  }
+
+  public String getDelimeter()
+  {
+    return delimeter;
+  }
+
+  public void setDelimeter(final String delimeter)
+  {
+    this.delimeter = delimeter;
+  }
+
+  public String getReplacement()
+  {
+    return replacement;
+  }
+
+  public void setReplacement(final String replacement)
+  {
+    this.replacement = replacement;
+  }
+
+  public String getPrefix()
+  {
+    return prefix;
+  }
+
+  public void setPrefix(final String prefix)
+  {
+    this.prefix = prefix;
+  }
+
+  public String getSuffix()
+  {
+    return suffix;
+  }
+
+  public void setSuffix(final String suffix)
+  {
+    this.suffix = suffix;
   }
 
   /**
@@ -85,32 +120,30 @@ public class CapitalizeStringExpression extends AbstractExpression
       return null;
     }
     final String text = String.valueOf(raw);
-    final char[] textArray = text.toCharArray();
 
-    boolean startOfWord = true;
+    final StringBuffer buffer = new StringBuffer();
 
-    for (int i = 0; i < textArray.length; i++)
+    if (prefix != null)
     {
-      char c = textArray[i];
-      // we ignore the punctutation chars or any other possible extra chars
-      // for now. Words start at whitespaces ...
-      if (Character.isWhitespace(c))
+      buffer.append(prefix);
+    }
+
+    final StringTokenizer strtok = new StringTokenizer(text, delimeter, false);
+    while (strtok.hasMoreTokens())
+    {
+      final String o = strtok.nextToken();
+      buffer.append(o);
+      if (strtok.hasMoreTokens())
       {
-        startOfWord = true;
-      }
-      else
-      {
-        if (startOfWord == true)
-        {
-          textArray[i] = Character.toTitleCase(c);
-        }
-        if (firstWordOnly)
-        {
-          break;
-        }
-        startOfWord = false;
+        buffer.append(replacement);
       }
     }
-    return new String (textArray);
+
+    if (suffix != null)
+    {
+      buffer.append(suffix);
+    }
+
+    return buffer.toString();
   }
 }

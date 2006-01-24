@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.41 2005/11/23 16:52:44 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.42 2006/01/16 20:56:52 taqua Exp $
  *
  * Changes
  * -------
@@ -880,8 +880,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     cb.beginText();
     cb.setFontAndSize(this.baseFontRecord.getBaseFont(), fontSize);
 
-    // if the font does not have an own bold style, emulate one ..
-    if (font.isBold() && (baseFontRecord.isBold() == false))
+    if (this.baseFontRecord.isTrueTypeFont() && font.isBold())
     {
       final float strokeWidth = fontSize / 30f; // right from iText ...
       if (strokeWidth != 1)
@@ -910,14 +909,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     final float y = this.getPageHeight() - y2;
 
     // if the font does not declare to be italics already, emulate it ..
-    if (font.isItalic() && (baseFontRecord.isItalics() == false))
+    if (this.baseFontRecord.isTrueTypeFont() && font.isItalic())
     {
       final float italicAngle =
               baseFont.getFontDescriptor(BaseFont.ITALICANGLE, fontSize);
       if (italicAngle == 0)
       {
         // italics requested, but the font itself does not supply italics gylphs.
-        Log.debug ("Modify the text matrix");
         cb.setTextMatrix(1, 0, ITALIC_ANGLE, 1, x1, y);
       }
       else

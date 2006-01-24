@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: SubStringExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -117,11 +117,20 @@ public class SubStringExpression extends AbstractExpression
       return null;
     }
     final String text = String.valueOf(raw);
+
+    // the text is not large enough to fit the start-bounds. Return nothing,
+    // but indicate that there would have been some more content ...
     if (start >= text.length())
     {
       return appendEllipsis(null);
     }
-    final int length = Math.min (text.length() - start, getLength());
+
+    // the text fully fits into the given range. No clipping needed ...
+    if ((start + length) >= text.length())
+    {
+      return text;
+    }
+
     return appendEllipsis(text.substring(start, start + length));
   }
 
