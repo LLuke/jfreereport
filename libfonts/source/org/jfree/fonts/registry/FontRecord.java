@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: FontRecord.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
+ * $Id: FontRecord.java,v 1.3 2005/12/07 22:57:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -36,6 +36,8 @@
 package org.jfree.fonts.registry;
 
 import java.io.Serializable;
+
+import org.jfree.fonts.io.FontDataInputSource;
 
 /**
  * Creation-Date: 07.11.2005, 19:07:09
@@ -67,18 +69,25 @@ public interface FontRecord extends Serializable
    *
    * @return true, if the font is italic.
    */
-  public boolean isItalics ();
+  public boolean isItalic ();
 
   /**
    * Returns tue, if this font's italic mode is in fact some sort of being oblique.
    * An oblique font's glyphs are sheared, but they are not made to look more
    * script like.
    *
-   * @return true, if the font is oblique.
+   * @return true, if the font is oblique. All italic fonts are also oblique.
    */
   public boolean isOblique ();
 
+  /**
+   * Returns the file name used to load the font.
+   *
+   * @return this is needed for iText.
+   */
   public String getFontFile ();
+
+  public FontDataInputSource getFontInputSource();
 
   public boolean isEmbeddable();
 
@@ -89,4 +98,6 @@ public interface FontRecord extends Serializable
   public String getVariant ();
 
   public String[] getAllVariants ();
+
+  public FontIdentifier getIdentifier();
 }

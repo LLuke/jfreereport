@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ByteAccessUtilities.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -99,7 +99,7 @@ public class ByteAccessUtilities
 
   public static short readShort (final byte[] data, final int pos)
   {
-    return (short) (data[pos] << 8 + data[pos + 1]);
+    return (short) ((data[pos] & 0xff) << 8 | (data[pos + 1] & 0xff));
   }
 
   public static int readLong (final byte[] data, final int pos)

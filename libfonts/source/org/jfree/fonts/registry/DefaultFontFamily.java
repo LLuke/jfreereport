@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: DefaultFontFamily.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
+ * $Id: DefaultFontFamily.java,v 1.3 2005/12/07 22:57:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -128,7 +128,7 @@ public class DefaultFontFamily implements FontFamily
   public void setFontRecord (final FontRecord record)
   {
     final boolean bold = record.isBold();
-    final boolean italics = record.isItalics();
+    final boolean italics = record.isItalic();
 
     int index;
     if (bold && italics)

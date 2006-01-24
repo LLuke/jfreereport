@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: OS2Table.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,7 @@ public class OS2Table implements FontTable
           ('O' << 24 | 'S' << 16 | '/' << 8 | '2');
 
   private int version;
+  /** This value is deprecated in version 3 */
   private short xAvgCharWidth;
   private int weightClass;
   private int widthClass;
@@ -64,6 +65,7 @@ public class OS2Table implements FontTable
   private short yStrikeoutPosition;
   private short familyClass;
   private byte[] panose;
+  // This field is not set for Version 0 records.
   private byte[] unicodeRange;
   private byte[] vendorId;
   private int fsSelection;
@@ -82,9 +84,36 @@ public class OS2Table implements FontTable
   private int maxContext;
   private static final int TYPE_RESTRICTED_LICENSE = 0x002;
 
-  public OS2Table(final byte[] data)
+  public OS2Table(final byte[] data, final int unitsPerEm)
   {
+    // create a sensible default ...
+
+    // the height of the uppercase characters
+    capHeight = (short) (0.7 * unitsPerEm);
+    // the height of the lowercase-x
+    xHeight = (short) (0.5 * unitsPerEm);
+    // used for justification and to separate words
+    breakChar = ' ';
+
     version = ByteAccessUtilities.readUShort(data, 0);
+    if (version == 3 || version == 2)
+    {
+      // in version 3 the *meaning* of some fields has been clarified. We use
+      // the updated semantics.
+      loadVersion2Table(data);
+    }
+    else if (version == 1)
+    {
+      loadVersion1Table(data);
+    }
+    else if (version == 0)
+    {
+      loadVersion0Table(data);
+    }
+  }
+
+  private void loadVersion0Table (final byte[] data)
+  {
     xAvgCharWidth = ByteAccessUtilities.readShort(data, 2);
     weightClass = ByteAccessUtilities.readUShort(data, 4);
     widthClass = ByteAccessUtilities.readUShort(data, 6);
@@ -111,7 +140,16 @@ public class OS2Table implements FontTable
     typoLineGap = ByteAccessUtilities.readShort(data, 72);
     winAscent = ByteAccessUtilities.readUShort(data, 74);
     winDescent = ByteAccessUtilities.readUShort(data, 76);
+  }
+
+  private void loadVersion1Table(final byte[] data) {
+    loadVersion0Table(data);
     codepageRange = ByteAccessUtilities.readBytes(data, 78, 8);
+  }
+
+  private void loadVersion2Table(final byte[] data) {
+    loadVersion1Table(data);
+
     xHeight = ByteAccessUtilities.readShort(data, 86);
     capHeight = ByteAccessUtilities.readShort(data, 88);
 

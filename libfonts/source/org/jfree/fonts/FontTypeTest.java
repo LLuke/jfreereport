@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: FontTypeTest.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
+ * $Id: FontTypeTest.java,v 1.3 2005/12/07 22:57:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,14 +35,15 @@
  */
 package org.jfree.fonts;
 
-import java.io.File;
+import java.awt.Font;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
-import org.jfree.fonts.registry.FontRegistry;
-import org.jfree.fonts.truetype.NameTable;
-import org.jfree.fonts.truetype.TrueTypeFont;
+import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 
 /**
  * Creation-Date: 06.11.2005, 20:29:08
@@ -61,22 +62,44 @@ public class FontTypeTest
     {
       System.out.println("  -");
     }
-    else
+    else if (record.isItalic() || record.isOblique())
     {
-      System.out.println("  " + record.getName() + " " + record.getFontFile() + " " + record.isOblique());
+      System.out.println("  " + record.getName() + " it:" + record.isItalic() + " ob:" + record.isOblique());
     }
   }
 
   public static void main(String[] args) throws IOException
   {
-//    String file = ("/usr/X11R6/lib/X11/fonts/truetype/GARAIT.ttf");
+//    String file = ("/usr/X11R6/lib/X11/fonts/truetype/arial.ttf");
 //    TrueTypeFont font = new TrueTypeFont(new File(file));
 //    NameTable table = (NameTable) font.getTable(NameTable.TABLE_ID);
 //    System.out.println("Name: " + table.getPrimaryName(NameTable.NAME_FAMILY));
-
-    final FontRegistry registry = new FontRegistry();
-    registry.registerDefaultFontPath();
-    registry.registerFontPath(new File ("/home/user/fonts"));
+//    OS2Table otable = (OS2Table) font.getTable(OS2Table.TABLE_ID);
+//
+//    TrueTypeFontMetrics tfm = new TrueTypeFontMetrics(font, 120);
+//
+//    Font awtFont = new Font ("Arial", Font.PLAIN, 120);
+//    AttributedCharacterIterator.Attribute[] att = awtFont.getAvailableAttributes();
+//    FontRenderContext frc = new FontRenderContext(null, false, true);
+//    BufferedImage img = new BufferedImage(10, 10, BufferedImage.TYPE_BYTE_GRAY);
+//    FontMetrics fm = img.createGraphics().getFontMetrics(awtFont);
+//    int ascent = fm.getAscent();
+//    int descent = fm.getDescent();
+//    int leading = fm.getLeading();
+//
+//    System.out.println("Name: " + table.getPrimaryName(NameTable.NAME_FAMILY));
+//
+//
+//    byte[] data = { -2, -100 };
+//    final int tx = ByteAccessUtilities.readShort(data, 0);
+//    if (tx == 0) throw new IllegalStateException();
+//
+//
+    final TrueTypeFontRegistry registry = new TrueTypeFontRegistry();
+    registry.initialize();
+//    AWTFontRegistry registry = new AWTFontRegistry();
+//    registry.registerDefaultFontPath();
+//    registry.registerFontPath(new File ("/home/user/fonts"));
     final String[] fontFamilies = registry.getRegisteredFamilies();
     for (int i = 0; i < fontFamilies.length; i++)
     {
@@ -87,6 +110,8 @@ public class FontTypeTest
       printRecord(family.getFontRecord(true, false));
       printRecord(family.getFontRecord(false, true));
       printRecord(family.getFontRecord(true, true));
+
+
     }
 
     final String[] allFontFamilies = registry.getAllRegisteredFamilies();
@@ -95,5 +120,8 @@ public class FontTypeTest
       String family = allFontFamilies[i];
       System.out.println("I18n: FontFamily: " + family);
     }
+
+    System.out.println (registry.getFontFamily("Skolle"));
+    System.out.println (registry.getFontFamily("Tahoma2"));
   }
 }

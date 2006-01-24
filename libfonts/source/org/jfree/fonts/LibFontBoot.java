@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: LibFontBoot.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,7 +63,10 @@ public class LibFontBoot extends AbstractBoot
 
   protected Configuration loadConfiguration()
   {
-    return null;
+    return createDefaultHierarchicalConfiguration
+            ("/org/jfree/layout/libfont.properties",
+             "/libfont.properties", true);
+
   }
 
   protected void performBoot()
@@ -73,6 +76,6 @@ public class LibFontBoot extends AbstractBoot
 
   protected BootableProjectInfo getProjectInfo()
   {
-    return null;
+    return LibFontInfo.getInstance();
   }
 }
