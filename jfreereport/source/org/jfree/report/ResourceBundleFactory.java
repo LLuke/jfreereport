@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceBundleFactory.java,v 1.3 2005/03/03 22:59:19 taqua Exp $
+ * $Id: ResourceBundleFactory.java,v 1.4 2005/04/14 16:37:25 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,8 @@ import java.util.ResourceBundle;
  */
 public interface ResourceBundleFactory extends Serializable
 {
+  public static final String DEFAULT_RESOURCE_BUNDLE_CONFIG_KEY =
+          "org.jfree.report.ResourceBundle";
   /**
    * Creates a resource bundle for the given key. How that key is interpreted depends on
    * the used concrete implementation of this interface.

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConvertToNumberExpression.java,v 1.3 2006/01/18 22:49:46 taqua Exp $
+ * $Id: ConvertToNumberExpression.java,v 1.4 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,9 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.Locale;
 
 import org.jfree.report.DataRow;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ResourceBundleFactory;
 
 public class ConvertToNumberExpression extends AbstractExpression
@@ -63,6 +63,7 @@ public class ConvertToNumberExpression extends AbstractExpression
   private static final BigDecimal ZERO = new BigDecimal(0);
   private String field;
   private String format;
+  private Locale locale;
 
   public ConvertToNumberExpression ()
   {
@@ -86,6 +87,16 @@ public class ConvertToNumberExpression extends AbstractExpression
   public void setFormat (final String format)
   {
     this.format = format;
+  }
+
+  public Locale getLocale()
+  {
+    return locale;
+  }
+
+  public void setLocale(final Locale locale)
+  {
+    this.locale = locale;
   }
 
   /**
@@ -122,13 +133,17 @@ public class ConvertToNumberExpression extends AbstractExpression
 
 
       final DecimalFormat format = new DecimalFormat(effectiveFormatString);
-      final ResourceBundleFactory factory = getResourceBundleFactory();
-      if (factory != null)
+      if (locale != null)
       {
         format.setDecimalFormatSymbols
-                (new DecimalFormatSymbols(factory.getLocale()));
+              (new DecimalFormatSymbols(getLocale()));
       }
-
+      else
+      {
+        final ResourceBundleFactory factory = getResourceBundleFactory();
+        format.setDecimalFormatSymbols
+              (new DecimalFormatSymbols(factory.getLocale()));
+      }
       return format.parse(String.valueOf(o));
     }
     catch (ParseException e)

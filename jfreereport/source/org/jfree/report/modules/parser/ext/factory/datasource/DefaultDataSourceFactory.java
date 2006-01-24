@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.9 2005/02/23 21:05:39 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.10 2005/10/11 14:53:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -61,6 +61,7 @@ import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.filter.StringFilter;
 import org.jfree.report.filter.URLFilter;
 import org.jfree.report.filter.ComponentDrawableFilter;
+import org.jfree.report.filter.ResourceMessageFormatFilter;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 
@@ -97,6 +98,7 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("NumberFormatFilter", new BeanObjectDescription(NumberFormatFilter.class));
     registerDataSources("NumberFormatParser", new BeanObjectDescription(NumberFormatParser.class));
     registerDataSources("ResourceFileFilter", new BeanObjectDescription(ResourceFileFilter.class));
+    registerDataSources("ResourceMessageFormatFilter", new BeanObjectDescription(ResourceMessageFormatFilter.class));
     registerDataSources("ShapeFilter", new BeanObjectDescription(ShapeFilter.class));
     registerDataSources("SimpleDateFormatFilter",
             new BeanObjectDescription(SimpleDateFormatFilter.class));

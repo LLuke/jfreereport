@@ -5,7 +5,7 @@ A list of changes in recent versions:
 0.8.6-7: (??-Jan-2006)
         * [BUG] Type1 Fonts can be embedded, if there is a 'pfb' file for that
           font. The old code simply declared all of these fonts to be
-          non-embeddable, which is simply not true.
+          non-embeddable, which is definitly not true.
 
         * [BUG] The excel export used the localized pattern to define the cell-
           format for number and date cells. This caused trouble in most non-
@@ -45,7 +45,20 @@ A list of changes in recent versions:
             of Date objects by encapsulating the functionality of
             java.util.Calendar.
 
-          - String functions allow to truncate, replace or transform strings. 
+          - String functions allow to truncate, replace or transform strings.
+
+        * Expressions and functions now both have access to the current report
+          configuration and the ResourceBundleFactory holding all the
+          localization information.
+
+          Warning: This changed the interface of the Expression class.
+          Expressions and functions derived from AbstractExpression should not
+          notice a difference in most cases and should work as usual.
+
+        * The new field type 'resource-message' provides an internationalizable
+          counterpart of the message-field. The field's format string is read
+          from an resourcebundle and must have the same format as the
+          message-field.
 
 0.8.6-6: (27-Dec-2005)
         * [BUG] The demo did not initialize JFreeReport through the

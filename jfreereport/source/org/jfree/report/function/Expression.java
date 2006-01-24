@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.8 2005/02/23 21:04:47 taqua Exp $
+ * $Id: Expression.java,v 1.9 2005/11/17 17:03:47 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -37,6 +37,8 @@
 package org.jfree.report.function;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ResourceBundleFactory;
+import org.jfree.util.Configuration;
 
 /**
  * An expression is a lightweight function that does not maintain a state. Expressions are
@@ -89,15 +91,6 @@ public interface Expression extends Cloneable
   public DataRow getDataRow ();
 
   /**
-   * Defines the DataRow used in this expression. The dataRow is set when the report
-   * processing starts and can be used to access the values of functions, expressions and
-   * the reports datasource.
-   *
-   * @param theDataRow the DataRow for this expression.
-   */
-  public void setDataRow (DataRow theDataRow);
-
-  /**
    * Clones the expression, expression should be reinitialized after the cloning. <P>
    * Expression maintain no state, cloning is done at the beginning of the report
    * processing to disconnect the used expression from any other object space.
@@ -137,4 +130,18 @@ public interface Expression extends Cloneable
    * @return a copy of this function.
    */
   public Expression getInstance ();
+
+  public ResourceBundleFactory getResourceBundleFactory ();
+  public Configuration getReportConfiguration();
+
+
+  /**
+   * Defines the DataRow used in this expression. The dataRow is set when the report
+   * processing starts and can be used to access the values of functions, expressions and
+   * the reports datasource.
+   *
+   * @param runtime the runtime information for the expression
+   */
+  public void setRuntime (ExpressionRuntime runtime);
+
 }

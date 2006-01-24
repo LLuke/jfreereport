@@ -731,6 +731,22 @@ nullstring           CDATA        #IMPLIED
 >
 
 <!--
+
+  A message field is text that contains placeholder for data from other columns.
+  The #PCDATA section contains a ResourceBundle key, which is looked up during the
+  report processing. That lookup result is used as format string.
+
+  -->
+<!ELEMENT resource-message   (#PCDATA)>
+<!ATTLIST resource-message
+%basicform;
+%fontdef;
+%position;
+nullstring           CDATA         #IMPLIED
+resource-base        CDATA         #IMPLIED
+>
+
+<!--
   Anchors are not visible, so it makes no sense to define visual parameters.
  -->
 <!ELEMENT anchor-field  EMPTY>

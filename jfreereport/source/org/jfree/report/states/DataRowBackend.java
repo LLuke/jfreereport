@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.11 2005/10/01 11:48:16 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.12 2005/10/06 00:50:26 taqua Exp $
  *
  * Changes
  * -------
@@ -52,10 +52,13 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.LevelledExpressionList;
+import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.report.util.ReportPropertiesList;
 import org.jfree.util.Log;
+import org.jfree.util.Configuration;
 
 /**
  * The DataRow-Backend maintains the state of a datarow. Whenever the  report state
@@ -67,6 +70,7 @@ import org.jfree.util.Log;
  */
 public class DataRowBackend implements Cloneable
 {
+
   /**
    * The 'warn on invalid columns' property key.
    */
@@ -139,11 +143,13 @@ public class DataRowBackend implements Cloneable
    */
   private DataRowConnector dataRowConnector;
   protected static final Integer NOT_FOUND_VALUE = new Integer(-1);
+  private DataRowExpressionRuntime expressionRuntime;
 
   /**
    * Creates a new DataRowBackend.
    */
-  public DataRowBackend ()
+  public DataRowBackend (final ResourceBundleFactory resourceBundleFactory,
+                         final Configuration configuration)
   {
     columnlocks = EMPTY_BOOLS;
     dataRowConnector = new DataRowConnector();
@@ -157,6 +163,8 @@ public class DataRowBackend implements Cloneable
       invalidColumns = new HashSet();
     }
     lastRow = -1;
+    expressionRuntime = new DataRowExpressionRuntime(this, configuration, resourceBundleFactory);
+
     revalidateColumnLock();
   }
 
@@ -178,6 +186,7 @@ public class DataRowBackend implements Cloneable
     this.lastRow = db.lastRow;
     this.reportProperties = db.reportProperties;
     this.invalidColumns = db.invalidColumns;
+    this.expressionRuntime = db.expressionRuntime;
     revalidateColumnLock();
 
   }
@@ -269,6 +278,11 @@ public class DataRowBackend implements Cloneable
     this.currentRow = currentRow;
   }
 
+  public DataRowExpressionRuntime getExpressionRuntime()
+  {
+    return expressionRuntime;
+  }
+
   /**
    * Sets the function collection used in this DataRow. This also updates the function's
    * dataRow reference.
@@ -280,13 +294,13 @@ public class DataRowBackend implements Cloneable
     if (this.functions != null)
     {
       // remove the old dataRow
-      this.functions.setDataRow(null);
+      this.functions.setExpressionRuntime(null);
     }
     this.functions = functions;
     if (this.functions != null)
     {
       // and connect the new one...
-      this.functions.setDataRow(getDataRow());
+      this.functions.setExpressionRuntime(getExpressionRuntime());
     }
     revalidateColumnLock();
   }
@@ -528,12 +542,15 @@ public class DataRowBackend implements Cloneable
   {
     final DataRowBackend db = (DataRowBackend) super.clone();
     db.columnlocks = new boolean[getColumnCount()];
+    db.expressionRuntime = new DataRowExpressionRuntime
+            (db, expressionRuntime.getConfiguration(),
+                    expressionRuntime.getResourceBundleFactory());
     db.dataRowConnector = new DataRowConnector();
     db.dataRowConnector.setDataRowBackend(db);
     if (functions != null)
     {
       db.functions = (LevelledExpressionList) functions.clone();
-      db.functions.updateDataRow(db.dataRowConnector);
+      db.functions.setExpressionRuntime(db.expressionRuntime);
     }
     return db;
   }

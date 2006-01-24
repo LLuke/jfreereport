@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.27 2005/09/19 11:00:49 taqua Exp $
+ * $Id: JFreeReport.java,v 1.28 2005/09/19 15:38:44 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -250,6 +250,8 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   /**
    * This report property contains the ResourceBundleFactory, allowing expressions
    * to use the available localization information.
+   *
+   * @deprecated Since JFreeReport 0.8.7 Expressions have full access to report locales 
    */
   public static final String REPORT_LOCALIZATION_PROPERTY = "report.localization";
 

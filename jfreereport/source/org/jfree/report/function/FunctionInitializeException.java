@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
+ * $Id: FunctionInitializeException.java,v 1.6 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.report.ReportInitialisationException;
  * An exception that indicates that a function has not been correctly initialised.
  *
  * @author Thomas Morgner
+ * @deprecated Noone is using this anymore, since Expressions use the bean interface
  */
 public class FunctionInitializeException extends ReportInitialisationException
 {

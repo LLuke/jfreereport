@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.5 2005/01/25 21:40:35 taqua Exp $
+ * $Id: TemplateClassFactory.java,v 1.6 2005/02/23 21:05:40 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -61,6 +61,7 @@ public class TemplateClassFactory extends ClassFactoryImpl
     addTemplate(new StringFieldTemplateDescription("string-field"));
     addTemplate(new ResourceFieldTemplateDescription("resource-field"));
     addTemplate(new ResourceLabelTemplateDescription("resource-label"));
+    addTemplate(new ResourceMessageTemplateDescription("resource-message"));
     addTemplate(new ShapeFieldTemplateDescription("shape-field"));
     addTemplate(new RectangleTemplateDescription("rectangle"));
     addTemplate(new HorizontalLineTemplateDescription("horizontal-line"));

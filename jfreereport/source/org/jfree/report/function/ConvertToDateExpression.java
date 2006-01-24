@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConvertToDateExpression.java,v 1.1 2006/01/18 22:49:46 taqua Exp $
+ * $Id: ConvertToDateExpression.java,v 1.2 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -45,15 +45,16 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.jfree.report.DataRow;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ResourceBundleFactory;
 
 public class ConvertToDateExpression extends AbstractExpression
 {
   private String field;
   private String format;
+  private Locale locale;
 
   public ConvertToDateExpression ()
   {
@@ -77,6 +78,16 @@ public class ConvertToDateExpression extends AbstractExpression
   public void setFormat (final String format)
   {
     this.format = format;
+  }
+
+  public Locale getLocale()
+  {
+    return locale;
+  }
+
+  public void setLocale(final Locale locale)
+  {
+    this.locale = locale;
   }
 
   /**
@@ -107,12 +118,18 @@ public class ConvertToDateExpression extends AbstractExpression
       }
 
       final SimpleDateFormat format = new SimpleDateFormat(formatString);
-      final ResourceBundleFactory factory = getResourceBundleFactory();
-      if (factory != null)
+      if (locale != null)
       {
         format.setDateFormatSymbols
-                (new DateFormatSymbols(factory.getLocale()));
+                  (new DateFormatSymbols(getLocale()));
       }
+      else
+      {
+        final ResourceBundleFactory factory = getResourceBundleFactory();
+        format.setDateFormatSymbols
+                  (new DateFormatSymbols(factory.getLocale()));
+      }
+
 
       return format.parse(String.valueOf(o));
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.19 2005/09/19 15:38:48 taqua Exp $
+ * $Id: ReportState.java,v 1.20 2005/09/20 19:53:05 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -161,7 +161,9 @@ public abstract class ReportState implements Cloneable
     final LevelledExpressionList functions =
             new LevelledExpressionList(reportPar.getExpressions());
 
-    final DataRowBackend dr = new DataRowBackend();
+    final DataRowBackend dr = new DataRowBackend
+            (getReportDefinition().getResourceBundleFactory(),
+             getReportDefinition().getReportConfiguration());
     dr.setTablemodel(reportPar.getData());
     dr.setFunctions(functions);
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
@@ -423,10 +425,6 @@ public abstract class ReportState implements Cloneable
    */
   protected final LevelledExpressionList getFunctions ()
   {
-    if (dataRow.getFunctions().getDataRow() != dataRow.getDataRow())
-    {
-      throw new IllegalStateException("Paranoia: Unconnected or invalid function datarow");
-    }
     return dataRow.getFunctions();
   }
 

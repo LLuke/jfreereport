@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionCollection.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.8 2005/11/17 17:03:47 taqua Exp $
  =======
- * $Id: ExpressionCollection.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.8 2005/11/17 17:03:47 taqua Exp $
  >>>>>>> 1.7
  =======
- * $Id: ExpressionCollection.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.8 2005/11/17 17:03:47 taqua Exp $
  >>>>>>> 1.8
  *
  * Changes
@@ -93,7 +93,6 @@ public class ExpressionCollection implements Cloneable, Serializable
    * @throws ClassCastException          if the collection does not contain Expressions
    */
   public ExpressionCollection (final Collection expressions)
-          throws FunctionInitializeException
   {
     this();
     addAll(expressions);
@@ -109,7 +108,6 @@ public class ExpressionCollection implements Cloneable, Serializable
    *                                     initialized.
    */
   public void addAll (final Collection expressions)
-          throws FunctionInitializeException
   {
     if (expressions != null)
     {

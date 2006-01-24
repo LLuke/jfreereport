@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.9 2005/09/21 12:38:25 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.10 2005/10/01 11:48:16 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ResourceBundleFactory;
 
 /**
@@ -97,18 +96,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    */
   public Object getValue ()
   {
-    if (getDataRow().findColumn(JFreeReport.REPORT_LOCALIZATION_PROPERTY) < 0)
-    {
-      return MessageFormat.format(getPattern(), getFieldValues());
-    }
-
-    Object localesSupport = getDataRow().get(JFreeReport.REPORT_LOCALIZATION_PROPERTY);
-    if (localesSupport instanceof ResourceBundleFactory == false)
-    {
-      return MessageFormat.format(getPattern(), getFieldValues());
-    }
-
-    final ResourceBundleFactory factory = (ResourceBundleFactory) localesSupport;
+    final ResourceBundleFactory factory = getResourceBundleFactory();
     final MessageFormat format = new MessageFormat("");
     format.setLocale(factory.getLocale());
     format.applyPattern(getPattern());

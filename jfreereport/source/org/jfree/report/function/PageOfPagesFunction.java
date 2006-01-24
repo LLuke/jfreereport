@@ -27,7 +27,7 @@
  *
  * Original Author:  J&ouml;rg Schaible;
  *
- * $Id: PageOfPagesFunction.java,v 1.4 2005/07/22 16:39:55 taqua Exp $
+ * $Id: PageOfPagesFunction.java,v 1.5 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,7 +39,6 @@ package org.jfree.report.function;
 import java.text.MessageFormat;
 import java.util.Locale;
 
-import org.jfree.report.DataRow;
 import org.jfree.report.event.ReportEvent;
 
 
@@ -179,16 +178,17 @@ public class PageOfPagesFunction extends PageFunction
     pageTotalFunction.setDependencyLevel(level);
   }
 
-  public void setDataRow (final DataRow dataRow)
-  {
-    super.setDataRow(dataRow);
-    pageTotalFunction.setDataRow(dataRow);
-  }
-
   public Expression getInstance ()
   {
     final PageOfPagesFunction function = (PageOfPagesFunction) super.getInstance();
     function.pageTotalFunction = (PageTotalFunction) pageTotalFunction.getInstance();
     return function;
+  }
+
+
+  public void setRuntime (final ExpressionRuntime runtime)
+  {
+    super.setRuntime(runtime);
+    pageTotalFunction.setRuntime(runtime);
   }
 }

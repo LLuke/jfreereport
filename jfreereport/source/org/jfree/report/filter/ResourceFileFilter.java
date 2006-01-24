@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.10 2005/09/20 15:38:23 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.11 2005/09/20 19:53:01 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -38,6 +38,7 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.ResourceBundleFactory;
 import org.jfree.util.Log;
 
 /**
@@ -125,10 +126,18 @@ public class ResourceFileFilter
       else
       {
         resourceId = reportDefinition.getReportConfiguration().getConfigProperty
-                ("org.jfree.report.ResourceBundle");
+                (ResourceBundleFactory.DEFAULT_RESOURCE_BUNDLE_CONFIG_KEY);
       }
 
-      final ResourceBundle bundle = reportDefinition.getResourceBundle(resourceId);
+      if (resourceId == null)
+      {
+        return null;
+      }
+
+      final ResourceBundleFactory resourceBundleFactory =
+              reportDefinition.getResourceBundleFactory();
+      final ResourceBundle bundle =
+              resourceBundleFactory.getResourceBundle(resourceId);
       if (bundle != null)
       {
         return bundle.getObject(svalue);

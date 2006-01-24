@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DateExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,9 +39,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.ResourceBundleFactory;
-import org.jfree.report.JFreeReport;
+import org.jfree.report.function.AbstractExpression;
 
 /**
  * Creation-Date: 20.01.2006, 18:50:12
@@ -61,18 +60,18 @@ public class DateExpression extends AbstractExpression
   private Integer dayOfYear;
   private Integer dayOfMonth;
   private Integer dayOfWeekInMonth;
-  private String timeZone;
+  private TimeZone timeZone;
 
   public DateExpression()
   {
   }
 
-  public String getTimeZone()
+  public TimeZone getTimeZone()
   {
     return timeZone;
   }
 
-  public void setTimeZone(final String timeZone)
+  public void setTimeZone(final TimeZone timeZone)
   {
     this.timeZone = timeZone;
   }
@@ -259,24 +258,14 @@ public class DateExpression extends AbstractExpression
       }
       if (timeZone != null)
       {
-        calendar.setTimeZone(TimeZone.getTimeZone(getTimeZone()));
+        calendar.setTimeZone(getTimeZone());
       }
     }
   }
 
   protected Calendar getCalendar()
   {
-    if (getDataRow().findColumn(JFreeReport.REPORT_LOCALIZATION_PROPERTY) < 0)
-    {
-      return Calendar.getInstance();
-    }
-
-    Object localesSupport = getDataRow().get(JFreeReport.REPORT_LOCALIZATION_PROPERTY);
-    if (localesSupport instanceof ResourceBundleFactory == false)
-    {
-      return Calendar.getInstance();
-    }
-    ResourceBundleFactory rf = (ResourceBundleFactory) localesSupport;
+    ResourceBundleFactory rf = getResourceBundleFactory();
     return Calendar.getInstance(rf.getLocale());
   }
 }

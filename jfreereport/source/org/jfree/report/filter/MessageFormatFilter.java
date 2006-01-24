@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFormatFilter.java,v 1.7 2005/09/20 19:53:01 taqua Exp $
+ * $Id: MessageFormatFilter.java,v 1.8 2005/12/30 11:05:55 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,11 @@
 package org.jfree.report.filter;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.ResourceBundleFactory;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A filter that formats values from a data source to a string representation.
@@ -65,6 +68,7 @@ public class MessageFormatFilter
    * datarow. 
    */
   private MessageFormatSupport messageFormatSupport;
+  private transient Locale locale;
 
   /**
    * Default constructor. <P> Uses a general number format for the current locale.
@@ -110,7 +114,14 @@ public class MessageFormatFilter
     {
       return null;
     }
-    messageFormatSupport.setLocale(reportDefinition.getResourceBundleFactory().getLocale());
+    final ResourceBundleFactory resourceBundleFactory =
+            reportDefinition.getResourceBundleFactory();
+    final Locale newLocale = resourceBundleFactory.getLocale();
+    if (ObjectUtilities.equal(newLocale, locale) == false)
+    {
+      messageFormatSupport.setLocale(resourceBundleFactory.getLocale());
+      locale = newLocale;
+    }
     return messageFormatSupport.performFormat(reportDefinition.getDataRow());
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.18 2005/03/03 21:50:38 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.19 2005/06/25 17:51:59 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.event.PageEventListener;
@@ -163,11 +164,6 @@ public final class LevelledExpressionList implements ReportListener,
   private int level;
 
   /**
-   * The dataRow for all functions.
-   */
-  private DataRow dataRow;
-
-  /**
    * The expressions sorted by levels.
    */
   private LevelStorage[] levelData;
@@ -176,6 +172,8 @@ public final class LevelledExpressionList implements ReportListener,
    * all data as flat list.
    */
   private Expression[] flatData;
+
+  private ExpressionRuntime expressionRuntime;
 
   /**
    * The number of functions and expressions in this list.
@@ -196,6 +194,15 @@ public final class LevelledExpressionList implements ReportListener,
   {
     errorList = new ArrayList();
     initialize(ec);
+  }
+
+  public void setExpressionRuntime (ExpressionRuntime runtime)
+  {
+    for (int i = 0; i < flatData.length; i++)
+    {
+      Expression expression = flatData[i];
+      expression.setRuntime(runtime);
+    }
   }
 
   /**
@@ -834,54 +841,6 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Connects the given datarow to the expression collection and all expressions contained
-   * in this collection.
-   *
-   * @param dr the datarow to be connected (null not permitted).
-   * @throws IllegalStateException if there is a datarow already connected.
-   * @throws NullPointerException  if the given datarow is null.
-   */
-  public void setDataRow (final DataRow dr)
-  {
-    if (dr != null && dataRow != null)
-    {
-      // be paranoid and make sure that we dont replace the datarow
-      // by accident
-      throw new IllegalStateException
-              ("Paranoia: Update calls must be done using the updateDataRow method.");
-    }
-    updateDataRow(dr);
-  }
-
-  /**
-   * Updates the datarow for all expressions. Does not perform validity checks, so use
-   * this function with care.
-   *
-   * @param dr the datarow to be connected.
-   * @throws NullPointerException  if the given datarow is null.
-   * @throws IllegalStateException if there is no datarow connected.
-   */
-  public void updateDataRow (final DataRow dr)
-  {
-    dataRow = dr;
-    for (int i = 0; i < flatData.length; i++)
-    {
-      final Expression f = flatData[i];
-      f.setDataRow(dr);
-    }
-  }
-
-  /**
-   * Returns the currently connected dataRow.
-   *
-   * @return the dataRow.
-   */
-  public DataRow getDataRow ()
-  {
-    return dataRow;
-  }
-
-  /**
    * Initialises the expressions.
    *
    * @param expressionCollection the expression collection.
@@ -1014,14 +973,14 @@ public final class LevelledExpressionList implements ReportListener,
     final LevelledExpressionList ft = (LevelledExpressionList) super.clone();
     // ft.levels = levels; // no need to clone them ...
     // ft.size = size;     // already copied during cloning ...
-    ft.dataRow = null;
+    ft.expressionRuntime = null;
     ft.errorList = (ArrayList) errorList.clone();
     ft.flatData = (Expression[]) ft.flatData.clone();
 
     for (int expression = 0; expression < flatData.length; expression++)
     {
       ft.flatData[expression] = (Expression) flatData[expression].clone();
-      ft.flatData[expression].setDataRow(null);
+      ft.flatData[expression].setRuntime(null);
     }
     return ft;
   }
