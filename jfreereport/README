@@ -1,5 +1,5 @@
 ************************
-* JFREEREPORT 0.8.6-5  *
+* JFREEREPORT 0.8.7    *
 ************************
 
 21 Dec 2005
@@ -36,14 +36,14 @@ file.
 To edit the properties file, you may use the graphical configuration editor
 from the module "gui-config". The editor can be started by calling
 
-  java -jar jfreereport-gui-config-0.8.6-5.jar
+  java -jar jfreereport-gui-config-0.8.7.jar
 
 
 4. RUNNING THE DEMO
 -------------------
 The demo for JFreeReport can be started with
 
-  java -jar jfreereport-demo-0.8.6-5.jar
+  java -jar jfreereport-demo-0.8.7.jar
 
 
 5. OTHER LIBRARIES
@@ -67,7 +67,7 @@ The RTF or PDF support requires the iText library (version 1.2 or higher):
 
   iText - http://www.lowagie.com/iText/
 
-The Excel export requires the Apache POI library (version 2.5.1 or higher)
+The Excel export requires the Apache POI library (version 3.0-alpha1 or higher)
 
   POI - http://jakarta.apache.org/poi/
 
@@ -90,7 +90,7 @@ java class
 
 or by starting the misc-referencedoc module with
 
-  java -jar jfreereport-misc-referencedoc-0.8.6-5.jar
+  java -jar jfreereport-misc-referencedoc-0.8.7.jar
 
 The reference manual documents all currently defined StyleKeys and
 the object definitions used in the stylekeys and when defining
@@ -107,6 +107,9 @@ level of service.
 Please avoid e-mailing the developers directly for support questions.
 If you post a message in the forum, then everyone can see the
 question, and everyone can see the answer.
+
+Commercial support and consulting is available from Pentaho.
+(http://www.pentaho.org/)
 
 
 9. REPORTING BUGS
