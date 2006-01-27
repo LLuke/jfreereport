@@ -48,6 +48,10 @@
 "plain | bold | italic | bold-italic"
 >
 
+<!ENTITY % stroketypes
+"dashed | solid | dotted | dot-dot-dash | dot-dash"
+>
+
 <!ENTITY % alignmentEnum
 "left | center | right"
 >
@@ -129,7 +133,7 @@
 imageref | image-field | imageurl-field | rectangle |
 resource-label | resource-field | line |
 drawable-url-field | drawableref | component-field |
-message-field | anchor-field |
+message-field | anchor-field | resource-message |
 drawable-field | shape-field | band)*">
 
 
@@ -612,6 +616,7 @@ href-window          CDATA         #IMPLIED
 draw                 (%boolean;)   #IMPLIED
 fill                 (%boolean;)   #IMPLIED
 weight               CDATA         #IMPLIED
+stroke-style         (%stroketypes;)   #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
 visible              (%boolean;)   #IMPLIED
 >
@@ -643,6 +648,7 @@ color                CDATA         #IMPLIED
 name                 CDATA         #IMPLIED
 styleClass           CDATA         #IMPLIED
 weight               CDATA         #IMPLIED
+stroke-style         (%stroketypes;)   #IMPLIED
 layout-cachable      (%boolean;)   #IMPLIED
 href                 CDATA         #IMPLIED
 href-window          CDATA         #IMPLIED
@@ -720,6 +726,7 @@ href-window          CDATA         #IMPLIED
 draw                 (%boolean;)   #IMPLIED
 fill                 (%boolean;)   #IMPLIED
 weight               CDATA         #IMPLIED
+stroke-style         (%stroketypes;)   #IMPLIED
 >
 
 <!ELEMENT message-field  (#PCDATA)>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.10 2005/08/10 14:22:17 taqua Exp $
+ * $Id: PageProcess.java,v 1.11 2005/10/02 10:43:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -170,6 +170,9 @@ public class PageProcess
         state = state.advance();
         if (state.isFinish() == false)
         {
+          // the only reason to allow a finish-event after the page has been
+          // restarted, is when the report processing as ended after we printed
+          // the report footer.
           throw new ReportProcessingException("State finished page during restore");
         }
       }
@@ -191,7 +194,10 @@ public class PageProcess
 
         {
           final PageLayouter org = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
-          oldState = state.createPageProgressCopy();
+          if (oldState == null || state.isValidSaveStateGenerator())
+          {
+            oldState = state.createPageProgressCopy();
+          }
           lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
           state = state.advance();
           if (failOnError)
@@ -227,15 +233,9 @@ public class PageProcess
           state = oldState.restorePageProgressCopy();
           // due to the cloning involved in the restore process, we have a new instance
           lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
-          lm.finishPageAfterRestore(state);
         }
-//        else
-//        {
-//          // perform a commit ...
-//
-//        }
+        lm.finishPageAfterRestore(state);
       }
-
 
       metaPage = lm.getMetaPage();
     }

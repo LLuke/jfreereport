@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.21 2005/08/10 14:22:19 taqua Exp $
+ * $Id: PageLayouter.java,v 1.22 2005/11/17 17:03:48 taqua Exp $
  *
  * Changes
  * -------
@@ -367,29 +367,11 @@ public abstract class PageLayouter extends AbstractFunction
     {
       throw new ReportProcessingException("Report does not proceed (PageEnd during RestartPage)");
     }
-    // cannot finish
-    if (isFinishingPage())
-    {
-      throw new IllegalStateException("Page is currently finishing");
-    }
-    setFinishingPage(true);
-
-    final ReportEvent cEvent = getCurrentEvent();
-    clearCurrentEvent();
-
-    cEvent.getState().firePageFinishedEvent();
-    cEvent.getState().nextPage();
-
-    setCurrentEvent(cEvent);
-    setFinishingPage(false);
-
     // save the state after the PageFinished event is fired to
     // gather as many information as possible
     // log // no cloning save the orignal state
     layoutManagerState = saveCurrentState();
 
-    //setGeneratedPageEmpty(getLogicalPage().isEmpty());
-    //getLogicalPage().close();
     pageEnded = true;
   }
 
@@ -639,4 +621,5 @@ public abstract class PageLayouter extends AbstractFunction
       clearCurrentEvent();
     }
   }
+
 }

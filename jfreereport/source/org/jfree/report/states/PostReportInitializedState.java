@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PostReportInitializedState.java,v 1.5 2005/02/23 21:06:04 taqua Exp $
+ * $Id: PostReportInitializedState.java,v 1.6 2005/09/04 13:15:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -79,7 +79,7 @@ public class PostReportInitializedState extends ReportState
 
     // initialise the report before any band (and especially before the pageheader) is printed.
     fireReportStartedEvent();
-    return new PreGroupHeaderState(this);
+    return new PostReportHeaderState(this);
   }
 
   /**

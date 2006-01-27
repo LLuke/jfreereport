@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.18 2005/10/15 14:04:20 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.19 2005/11/12 15:38:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -311,7 +311,8 @@ public class SimplePageLayoutDelegate implements
       final ReportDefinition report = event.getReport();
 
       final Band watermark = report.getWatermark();
-      if (worker.isWatermarkSupported() && isPageHeaderPrinting(watermark, event))
+      if (worker.isWatermarkSupported() &&
+          isPageHeaderPrinting(watermark, event))
       {
         // a new page has started, so reset the cursor ...
         worker.resetCursor();
@@ -597,11 +598,15 @@ public class SimplePageLayoutDelegate implements
         setGroupFinishPending(false);
         setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() - 1);
       }
-      else if (event.getReport().getReportConfiguration().getConfigProperty
-              (HANDLE_PENDING_GROUP_FOOTER_KEY, "true").equals("true") == false)
+      else
       {
-        setGroupFinishPending(false);
-        setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() - 1);
+        if (event.getReport().getReportConfiguration().getConfigProperty
+                (HANDLE_PENDING_GROUP_FOOTER_KEY, "true").equals("true") == false)
+        {
+          setGroupFinishPending(false);
+          setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() - 1);
+        }
+        
       }
     }
     catch (FunctionProcessingException fe)
@@ -690,7 +695,7 @@ public class SimplePageLayoutDelegate implements
   /**
    * Defines, whether the printing of the current group footer is pending.
    * <p/>
-   * Will be removed in release 0.8.7
+   * Will be removed in release 0.9.0
    *
    * @param groupFinishPending true or false
    */

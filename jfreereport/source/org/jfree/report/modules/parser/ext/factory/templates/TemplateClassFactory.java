@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.6 2005/02/23 21:05:40 taqua Exp $
+ * $Id: TemplateClassFactory.java,v 1.7 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,21 +52,26 @@ public class TemplateClassFactory extends ClassFactoryImpl
    */
   public TemplateClassFactory ()
   {
+    addTemplate(new AnchorFieldTemplateDescription("anchor-field"));
     addTemplate(new DateFieldTemplateDescription("date-field"));
+    addTemplate(new ComponentFieldTemplateDescription("component-field"));
+    addTemplate(new DrawableFieldTemplateDescription("drawable-field"));
+    addTemplate(new DrawableURLElementTemplateDescription("drawable-url-element"));
+    addTemplate(new DrawableURLFieldTemplateDescription("drawable-url-field"));
+    addTemplate(new HorizontalLineTemplateDescription("horizontal-line"));
     addTemplate(new ImageFieldTemplateDescription("image-field"));
-    addTemplate(new ImageURLFieldTemplateDescription("image-url-field"));
     addTemplate(new ImageURLElementTemplateDescription("image-url-element"));
+    addTemplate(new ImageURLFieldTemplateDescription("image-url-field"));
     addTemplate(new LabelTemplateDescription("label"));
+    addTemplate(new MessageFieldTemplateDescription("message-field"));
     addTemplate(new NumberFieldTemplateDescription("number-field"));
-    addTemplate(new StringFieldTemplateDescription("string-field"));
+    addTemplate(new RectangleTemplateDescription("rectangle"));
     addTemplate(new ResourceFieldTemplateDescription("resource-field"));
     addTemplate(new ResourceLabelTemplateDescription("resource-label"));
     addTemplate(new ResourceMessageTemplateDescription("resource-message"));
     addTemplate(new ShapeFieldTemplateDescription("shape-field"));
-    addTemplate(new RectangleTemplateDescription("rectangle"));
-    addTemplate(new HorizontalLineTemplateDescription("horizontal-line"));
+    addTemplate(new StringFieldTemplateDescription("string-field"));
     addTemplate(new VerticalLineTemplateDescription("vertical-line"));
-    addTemplate(new DrawableFieldTemplateDescription("drawable-field"));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultTemplateCollection.java,v 1.9 2005/10/11 14:53:21 taqua Exp $
+ * $Id: DefaultTemplateCollection.java,v 1.10 2005/10/11 19:27:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -66,6 +66,7 @@ public class DefaultTemplateCollection extends TemplateCollection
     addTemplate(new RectangleTemplateDescription("rectangle"));
     addTemplate(new ResourceFieldTemplateDescription("resource-field"));
     addTemplate(new ResourceLabelTemplateDescription("resource-label"));
+    addTemplate(new ResourceMessageTemplateDescription("resource-message"));
     addTemplate(new ShapeFieldTemplateDescription("shape-field"));
     addTemplate(new StringFieldTemplateDescription("string-field"));
     addTemplate(new VerticalLineTemplateDescription("vertical-line"));

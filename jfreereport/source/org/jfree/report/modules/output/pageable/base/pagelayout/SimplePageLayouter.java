@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.31 2005/09/19 15:38:47 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.32 2005/11/12 15:38:32 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,7 @@ import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 /**
  * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport,
@@ -630,6 +631,7 @@ public class SimplePageLayouter extends PageLayouter
       {
         // a pagebreak was requested and granted, printing is delayed
         setNewPageStarted(true);
+        setAutomaticPagebreak(true);
         return false;
       }
     }
@@ -744,7 +746,9 @@ public class SimplePageLayouter extends PageLayouter
         return true;
       }
       // handle a automatic pagebreak in case there is not enough space here ...
-      else if ((watermark == false) && (isPageEnded() == false) && (isSpaceFor(height) == false))
+      else if ((watermark == false) &&
+               (isPageEnded() == false) &&
+               (isSpaceFor(height) == false))
       {
         setAutomaticPagebreak(true);
         return false;
@@ -753,6 +757,7 @@ public class SimplePageLayouter extends PageLayouter
       {
         // page has ended before, that band should be printed on the next page
         createSaveState(band);
+        setAutomaticPagebreak(true);
         return false;
       }
       else
@@ -774,6 +779,7 @@ public class SimplePageLayouter extends PageLayouter
         {
           createSaveState(null);
           endPage(ENDPAGE_REQUESTED);
+          setAutomaticPagebreak(false);
         }
         return true;
       }
@@ -967,7 +973,11 @@ public class SimplePageLayouter extends PageLayouter
               (BandStyleKeys.PAGEBREAK_AFTER, false);
 
       setCurrentEvent(new ReportEvent (reportState, reportState.getEventCode()));
-      print(band, pagebreakAfter, PAGEBREAK_BEFORE_IGNORED);
+      if (print(band, pagebreakAfter, PAGEBREAK_BEFORE_IGNORED) == false)
+      {
+        Log.warn("Failed to print saved band on page-restore.");
+      }
+
       band.getStyle().setBooleanStyleProperty
               (BandStyleKeys.PAGEBREAK_AFTER, pagebreakAfter);
       clearCurrentEvent();

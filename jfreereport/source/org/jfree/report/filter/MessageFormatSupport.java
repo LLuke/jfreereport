@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupport.java,v 1.8 2005/09/20 15:38:23 taqua Exp $
+ * $Id: MessageFormatSupport.java,v 1.9 2005/12/30 11:05:55 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class MessageFormatSupport implements Serializable, Cloneable
     private ArrayList fields;
     private ArrayList completeFormatString;
 
-    public MessageCompiler ()
+    public MessageCompiler()
     {
       this.fields = new ArrayList();
       this.completeFormatString = new ArrayList();
@@ -69,7 +69,7 @@ public class MessageFormatSupport implements Serializable, Cloneable
       setClosingBraceChar(')');
     }
 
-    protected String lookupVariable (final String name)
+    protected String lookupVariable(final String name)
     {
       final CSVTokenizer tokenizer = new CSVTokenizer(name, ",", "\"");
       if (tokenizer.hasMoreTokens() == false)
@@ -100,7 +100,7 @@ public class MessageFormatSupport implements Serializable, Cloneable
       return formatString;
     }
 
-    public String[] getFields ()
+    public String[] getFields()
     {
       return (String[]) fields.toArray(new String[fields.size()]);
     }
@@ -112,16 +112,16 @@ public class MessageFormatSupport implements Serializable, Cloneable
   private String compiledFormat;
   private String nullString;
 
-  public MessageFormatSupport ()
+  public MessageFormatSupport()
   {
   }
 
-  public String getFormatString ()
+  public String getFormatString()
   {
     return formatString;
   }
 
-  public void setFormatString (final String formatString)
+  public void setFormatString(final String formatString)
   {
     final MessageCompiler compiler = new MessageCompiler();
     if (formatString == null)
@@ -134,7 +134,7 @@ public class MessageFormatSupport implements Serializable, Cloneable
     this.formatString = formatString;
   }
 
-  public String performFormat (final DataRow dataRow)
+  public String performFormat(final DataRow dataRow)
   {
     if (fields == null || format == null)
     {
@@ -212,37 +212,40 @@ public class MessageFormatSupport implements Serializable, Cloneable
     return effectiveFormat.format(parameters);
   }
 
-  public Locale getLocale ()
+  public Locale getLocale()
   {
     return format.getLocale();
   }
 
-  public String getCompiledFormat ()
+  public String getCompiledFormat()
   {
     return compiledFormat;
   }
 
-  public void setLocale (final Locale locale)
+  public void setLocale(final Locale locale)
   {
     format.setLocale(locale);
     format.applyPattern(compiledFormat);
   }
 
-  public String getNullString ()
+  public String getNullString()
   {
     return nullString;
   }
 
-  public void setNullString (String nullString)
+  public void setNullString(String nullString)
   {
     this.nullString = nullString;
   }
 
-  public Object clone ()
+  public Object clone()
           throws CloneNotSupportedException
   {
     MessageFormatSupport support = (MessageFormatSupport) super.clone();
-    support.format = (MessageFormat) format.clone();
+    if (format != null)
+    {
+      support.format = (MessageFormat) format.clone();
+    }
     return support;
   }
 }

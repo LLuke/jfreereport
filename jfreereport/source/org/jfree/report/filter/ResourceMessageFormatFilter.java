@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ResourceMessageFormatFilter.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,7 @@ package org.jfree.report.filter;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.io.Serializable;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ResourceBundleFactory;
@@ -47,7 +48,8 @@ import org.jfree.util.ObjectUtilities;
  *
  * @author Thomas Morgner
  */
-public class ResourceMessageFormatFilter implements DataSource
+public class ResourceMessageFormatFilter
+        implements ReportConnectable, Serializable, DataSource
 {
   /** The report definition registered to this connectable. */
   private transient ReportDefinition reportDefinition;

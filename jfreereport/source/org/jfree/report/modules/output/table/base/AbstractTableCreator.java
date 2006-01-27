@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractTableCreator.java,v 1.5 2005/02/23 21:05:33 taqua Exp $
+ * $Id: AbstractTableCreator.java,v 1.6 2005/09/04 18:58:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,7 @@ public abstract class AbstractTableCreator implements TableCreator
     empty = true;
   }
 
-  protected void setEmpty (final boolean b)
+  public void setEmpty (final boolean b)
   {
     empty = b;
   }

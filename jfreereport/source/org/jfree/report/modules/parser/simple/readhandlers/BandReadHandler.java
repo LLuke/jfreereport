@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BandReadHandler.java,v 1.9 2005/10/14 15:43:33 taqua Exp $
+ * $Id: BandReadHandler.java,v 1.10 2006/01/12 20:54:54 taqua Exp $
  *
  * Changes
  * -------
@@ -117,6 +117,11 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
    * Literal text for an XML report element.
    */
   public static final String RESOURCEFIELD_TAG = "resource-field";
+
+  /**
+   * Literal text for an XML report element.
+   */
+  public static final String RESOURCEMESSAGE_TAG = "resource-message";
 
   /**
    * Literal text for an XML report element.
@@ -548,6 +553,12 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     else if (tagName.equals(RESOURCELABEL_TAG))
     {
       final XmlReadHandler readHandler = new ResourceLabelReadHandler();
+      elementHandlers.add(readHandler);
+      return readHandler;
+    }
+    else if (tagName.equals(RESOURCEMESSAGE_TAG))
+    {
+      final XmlReadHandler readHandler = new ResourceMessageReadHandler();
       elementHandlers.add(readHandler);
       return readHandler;
     }

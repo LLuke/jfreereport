@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.23 2005/09/07 14:25:11 taqua Exp $
+ * $Id: TableProcessor.java,v 1.24 2005/10/19 20:21:06 taqua Exp $
  *
  * Changes
  * -------
@@ -270,8 +270,9 @@ public abstract class TableProcessor
 
       boolean hasNext;
       final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
-      ReportStateProgress progress = null;
       int level = ((Integer) it.next()).intValue();
+      //ReportStateProgress progress = null;
+
       // outer loop: process all function levels
       do
       {
@@ -292,6 +293,7 @@ public abstract class TableProcessor
                         (JFreeReportCoreModule.STRICT_ERROR_HANDLING_KEY);
         final boolean failOnError =
                 (level == -1) && "true".equals(strictError);
+        ReportState.PageBreakSaveState oldState = null;
         while (!state.isFinish())
         {
           checkInterrupted();
@@ -319,7 +321,18 @@ public abstract class TableProcessor
             }
           }
 
-          progress = state.createStateProgress(progress);
+//          if (progress == null || state.isValidSaveStateGenerator())
+//          {
+//            progress = state.createStateProgress(progress);
+//          }
+
+          if (level == -1)
+          {
+            if (oldState == null || state.isValidSaveStateGenerator())
+            {
+              oldState = state.createPageProgressCopy();
+            }
+          }
           state = state.advance();
           if (failOnError)
           {
@@ -329,15 +342,34 @@ public abstract class TableProcessor
             }
           }
 
-          if (!state.isFinish())
+          if (level == -1)
           {
-            // if the report processing is stalled, throw an exception; an infinite
-            // loop would be caused.
-            if (!state.isProceeding(progress))
+            TableWriter writer = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+            // check if we reached a pagebreak...
+            if (writer.isPageEnded())
             {
-              throw new ReportProcessingException("State did not proceed, bailing out!");
+              if (writer.isAutoPageBreak())
+              {
+                // if the pagebreak is a autobreak or has been caused by an
+                // pagebreak-before-print request
+                // perform a rollback
+                state = oldState.restorePageProgressCopy();
+                // due to the cloning involved in the restore process, we have a new instance
+                writer = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+              }
+
+              writer.finishPage(state);
             }
           }
+//          if (!state.isFinish())
+//          {
+//            // if the report processing is stalled, throw an exception; an infinite
+//            // loop would be caused.
+//            if (!state.isProceeding(progress))
+//            {
+//              throw new ReportProcessingException("State did not proceed, bailing out!");
+//            }
+//          }
         }
 
         // if there is an other level to process, then use the finish state to
@@ -423,6 +455,8 @@ public abstract class TableProcessor
   protected void createContent(ReportState state)
           throws ReportProcessingException
   {
+    try
+    {
     final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
     w.setTableCreator(createContentCreator());
 
@@ -438,7 +472,7 @@ public abstract class TableProcessor
     final boolean failOnError = ReportConfigurationUtil.isStrictErrorHandling
             (getReport().getReportConfiguration());
 
-    ReportStateProgress progress = null;
+    ReportState.PageBreakSaveState oldState = null;
     while (!state.isFinish())
     {
       checkInterrupted();
@@ -465,20 +499,45 @@ public abstract class TableProcessor
           }
         }
       }
-
-      progress = state.createStateProgress(progress);
+      if (oldState == null || state.isValidSaveStateGenerator())
+      {
+        oldState = state.createPageProgressCopy();
+      }
       state = state.advance();
       if (failOnError && state.isErrorOccured() == true)
       {
         throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
       }
-      if (!state.isFinish())
+
+      TableWriter writer = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+      // check if we reached a pagebreak...
+      if (writer.isPageEnded())
       {
-        if (!state.isProceeding(progress))
+        if (writer.isAutoPageBreak())
         {
-          throw new ReportProcessingException("State did not proceed, bailing out!");
+          // if the pagebreak is a autobreak or has been caused by an
+          // pagebreak-before-print request
+          // perform a rollback
+          state = oldState.restorePageProgressCopy();
+          // due to the cloning involved in the restore process, we have a new instance
+          writer = (TableWriter) state.getDataRow().get(TABLE_WRITER);
         }
+
+        writer.finishPage(state);
       }
+
+//      if (!state.isFinish())
+//      {
+//        if (!state.isProceeding(progress))
+//        {
+//          throw new ReportProcessingException("State did not proceed, bailing out!");
+//        }
+//      }
+    }
+    }
+    catch(CloneNotSupportedException cnse)
+    {
+      throw new ReportProcessingException("Unable to create temporary state object.");
     }
   }
 

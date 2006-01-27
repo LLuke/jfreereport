@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ResourceMessageTemplate.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,7 @@ import java.util.MissingResourceException;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.ResourceMessageFormatFilter;
 import org.jfree.report.filter.StringFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 /**
  * Creation-Date: 24.01.2006, 16:33:54
@@ -47,6 +48,7 @@ import org.jfree.report.filter.StringFilter;
  * @author Thomas Morgner
  */
 public class ResourceMessageTemplate extends AbstractTemplate
+        implements ReportConnectable
 {
   /**
    * A string filter.

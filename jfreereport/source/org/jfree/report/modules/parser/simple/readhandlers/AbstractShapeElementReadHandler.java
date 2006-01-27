@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AbstractShapeElementReadHandler.java,v 1.4 2005/03/03 23:00:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
 import java.awt.Stroke;
+import java.awt.BasicStroke;
 
 import org.jfree.report.elementfactory.ShapeElementFactory;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
@@ -85,7 +86,36 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
 
   private void handleStroke (final PropertyAttributes atts)
   {
-    final Stroke stroke = ParserUtil.parseStroke(atts.getValue("weight"));
+    final String strokeStyle = atts.getValue("stroke-style");
+    final float weight = ParserUtil.parseFloat (atts.getValue("weight"), 1);
+
+    // "dashed | solid | dotted | dot-dot-dash | dot-dash"
+    Stroke stroke = null;
+    if ("dashed".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
+              10.0f, new float[]{6, 6}, 0.0f);
+    }
+    else if ("dotted".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
+              5.0f, new float[]{0.1f, 2}, 0.0f);
+    }
+    else if ("dot-dot-dash".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
+              10.0f, new float[]{2, 2, 2, 2, 6, 2}, 0.0f);
+    }
+    else if ("dot-dash".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
+              10.0f, new float[]{2, 2, 6, 2}, 0.0f);
+    }
+    else if ("solid".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = new BasicStroke(weight);
+    }
+
     if (stroke != null)
     {
       final ShapeElementFactory elementFactory = (ShapeElementFactory) getElementFactory();

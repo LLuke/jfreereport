@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceLabelReadHandler.java,v 1.4 2005/03/03 23:00:23 taqua Exp $
+ * $Id: ResourceLabelReadHandler.java,v 1.5 2005/05/20 16:06:45 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,7 @@ public class ResourceLabelReadHandler extends AbstractTextElementReadHandler
   {
     super.startParsing(atts);
     elementFactory.setResourceBase(atts.getValue("resource-base"));
+    elementFactory.setNullString(atts.getValue("nullstring"));
     getRootHandler().delegate(stringReadHandler, getTagName(), atts);
   }
 

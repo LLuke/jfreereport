@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.31 2005/11/17 17:03:48 taqua Exp $
+ * $Id: TableWriter.java,v 1.32 2005/12/09 20:05:32 taqua Exp $
  *
  * Changes
  * -------
@@ -126,6 +126,9 @@ public class TableWriter extends AbstractFunction
   private LayoutSupport layoutSupport;
   private int currentEffectiveGroupIndex;
   private boolean pageOpen;
+  private boolean autoPageBreak;
+  private boolean pageEnded;
+  private boolean empty;
 
   /**
    * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth is
@@ -185,7 +188,8 @@ public class TableWriter extends AbstractFunction
     {
       throw new IllegalStateException("tableCreator is null." + toString());
     }
-    return tableCreator.isEmpty();
+
+    return empty || tableCreator.isEmpty();
   }
 
   /**
@@ -262,7 +266,7 @@ public class TableWriter extends AbstractFunction
    */
   public boolean isPageEnded ()
   {
-    return false;
+    return pageEnded;
   }
 
   /**
@@ -303,19 +307,12 @@ public class TableWriter extends AbstractFunction
       {
         if (isPageEmpty() == false)
         {
-          endPage();
+          Log.debug ("A) Band requested a pagebreak for break-before-print");
+          endPage(true);
+          Log.debug ("B) Band requested a pagebreak for break-before-print");
+          return false;
         }
-//      else
-//      {
-//        Log.debug("Page is empty; so no break");
-//      }
       }
-    }
-
-    if (isPageOpen() == false)
-    {
-      // make sure that there is a page, when we need one.
-      startPage();
     }
 
     final long y = getCursor().getY();
@@ -328,6 +325,10 @@ public class TableWriter extends AbstractFunction
     try
     {
       doPrint(bounds, band);
+      if (spoolBand == false)
+      {
+        empty = false;
+      }
     }
     catch (ContentCreationException e)
     {
@@ -339,7 +340,8 @@ public class TableWriter extends AbstractFunction
     {
       if (isPageEmpty() == false)
       {
-        endPage();
+        Log.debug ("Band requested a pagebreak for break-before-after");
+        endPage(false);
         //startPage();
       }
     }
@@ -481,40 +483,62 @@ public class TableWriter extends AbstractFunction
   /**
    * Ends the current page. Fires the PageFinished event.
    */
-  private void endPage ()
-          throws ReportProcessingException
+  private void endPage (final boolean autoPageBreak)
   {
     if (inEndPage == true)
     {
       throw new IllegalStateException("Already in startPage or endPage");
     }
-    inEndPage = true;
 
-    final ReportEvent currentEvent = getCurrentEvent();
-    final ReportState cEventState = getCurrentEvent().getState();
-    cEventState.firePageFinishedEvent();
-    if (cEventState.isErrorOccured())
+    this.pageEnded = true;
+    this.autoPageBreak = autoPageBreak;
+  }
+
+  public void finishPage (ReportState state) throws ReportProcessingException
+  {
+    try
     {
-      List errors = cEventState.getErrors();
-      for (int i = 0; i < errors.size(); i++)
+      inEndPage = true;
+
+      final ReportEvent cEvent = new ReportEvent
+              (state, state.getEventCode() | ReportEvent.PAGE_FINISHED);
+      cEvent.getState().firePageFinishedEvent();
+      if (state.isErrorOccured())
       {
-        Exception exception = (Exception) errors.get(i);
-        Log.error ("While finishing the page: ", exception);
+        List errors = state.getErrors();
+        for (int i = 0; i < errors.size(); i++)
+        {
+          Exception exception = (Exception) errors.get(i);
+          Log.error ("While finishing the page: ", exception);
+        }
+        throw new ReportProcessingException
+                ("An error occured while processing the page start - aborting");
       }
-      throw new ReportProcessingException
-              ("An error occured while processing the page start - aborting");
+      state.nextPage();
     }
-    cEventState.nextPage();
-    setCurrentEvent(currentEvent);
-    inEndPage = false;
-    pageOpen = false;
+    finally
+    {
+      pageOpen = false;
+      inEndPage = false;
+      pageEnded = false;
+      clearCurrentEvent();
+
+    }
+    if (isPageEmpty() == false)
+    {
+      throw new IllegalStateException();
+    }
+  }
+
+  public boolean isAutoPageBreak()
+  {
+    return autoPageBreak;
   }
 
   /**
    * Starts a new page. Fires the PageStarted event.
    */
-  private void startPage ()
-          throws ReportProcessingException
+  public void restartPage ()
   {
     if (inEndPage == true)
     {
@@ -522,17 +546,20 @@ public class TableWriter extends AbstractFunction
     }
     inEndPage = true;
     pageOpen = true;
+    empty = true;
 
     final ReportEvent currentEvent = getCurrentEvent();
     final ReportState cEventState = currentEvent.getState();
     cEventState.firePageStartedEvent(currentEvent.getType());
     if (cEventState.isErrorOccured())
     {
-      throw new ReportProcessingException
+      throw new FunctionProcessingException
               ("An error occured while processing the page start - aborting");
     }
     setCurrentEvent(currentEvent);
     inEndPage = false;
+
+    if (isPageEmpty() == false) throw new IllegalStateException();
   }
 
   /**
@@ -571,6 +598,10 @@ public class TableWriter extends AbstractFunction
   public void reportStarted (final ReportEvent event)
   {
     setCurrentEvent(event);
+    if (isPageOpen() == false)
+    {
+      restartPage();
+    }
     delegate.reportStarted(event);
     clearCurrentEvent();
   }
@@ -582,13 +613,24 @@ public class TableWriter extends AbstractFunction
    */
   public void reportFinished (final ReportEvent event)
   {
+    setCurrentEvent(event);
+    if (isPageOpen() == false)
+    {
+      restartPage();
+    }
+    delegate.reportFinished(event);
+    if (isPageEnded() == false)
+    {
+      endPage(false);
+    }
+    clearCurrentEvent();
+  }
+
+  public void reportDone (ReportEvent event)
+  {
     try
     {
-      setCurrentEvent(event);
-      delegate.reportFinished(event);
-      endPage();
       tableCreator.close();
-      clearCurrentEvent();
     }
     catch (ReportProcessingException e)
     {
@@ -645,6 +687,10 @@ public class TableWriter extends AbstractFunction
   public void groupStarted (final ReportEvent event)
   {
     setCurrentEvent(event);
+    if (isPageOpen() == false)
+    {
+      restartPage();
+    }
     delegate.groupStarted(event);
     clearCurrentEvent();
   }
@@ -657,6 +703,10 @@ public class TableWriter extends AbstractFunction
   public void groupFinished (final ReportEvent event)
   {
     setCurrentEvent(event);
+    if (isPageOpen() == false)
+    {
+      restartPage();
+    }
     delegate.groupFinished(event);
     clearCurrentEvent();
   }
@@ -669,6 +719,10 @@ public class TableWriter extends AbstractFunction
   public void itemsAdvanced (final ReportEvent event)
   {
     setCurrentEvent(event);
+    if (isPageOpen() == false)
+    {
+      restartPage();
+    }
     delegate.itemsAdvanced(event);
     clearCurrentEvent();
   }
@@ -682,6 +736,10 @@ public class TableWriter extends AbstractFunction
   public void itemsStarted (final ReportEvent event)
   {
     setCurrentEvent(event);
+    if (isPageOpen() == false)
+    {
+      restartPage();
+    }
     delegate.itemsStarted(event);
     clearCurrentEvent();
   }
@@ -696,6 +754,10 @@ public class TableWriter extends AbstractFunction
   {
     // this event does nothing
     setCurrentEvent(event);
+    if (isPageOpen() == false)
+    {
+      restartPage();
+    }
     delegate.itemsFinished(event);
     clearCurrentEvent();
   }
@@ -782,7 +844,7 @@ public class TableWriter extends AbstractFunction
     {
       setCurrentEvent(event);
       tableCreator.open(event.getReport());
-      startPage();
+      restartPage();
       clearCurrentEvent();
     }
     catch (ReportProcessingException e)

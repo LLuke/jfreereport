@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.20 2005/09/20 19:53:05 taqua Exp $
+ * $Id: ReportState.java,v 1.21 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -893,4 +893,9 @@ public abstract class ReportState implements Cloneable
    * @return the event code for this state type.
    */
   public abstract int getEventCode ();
+
+  public boolean isValidSaveStateGenerator()
+  {
+    return true;
+  }
 }

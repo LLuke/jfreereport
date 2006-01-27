@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.5 2005/01/28 19:26:59 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.6 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -96,5 +96,10 @@ public final class PreGroupHeaderState extends ReportState
   public boolean isPrefetchState ()
   {
     return true;
+  }
+
+  public boolean isValidSaveStateGenerator()
+  {
+    return false;
   }
 }
