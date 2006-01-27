@@ -2,7 +2,11 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.6-7: (??-Jan-2006)
+0.8.7: (27-Jan-2006)
+        * [BUG] Performing a pagebreak-before-print on a group header and
+          printing values from the datarow in the pagefooter of the previous
+          page already showed the contents of the to-be-printed group.
+
         * [BUG] Type1 Fonts can be embedded, if there is a 'pfb' file for that
           font. The old code simply declared all of these fonts to be
           non-embeddable, which is definitly not true.
@@ -59,6 +63,10 @@ A list of changes in recent versions:
           counterpart of the message-field. The field's format string is read
           from an resourcebundle and must have the same format as the
           message-field.
+
+        * Shape-elements have a new property to define the stroke-type of the
+          shapes contained in them. In the Simple-XML definition, a set of
+          predefined strokes is available.
 
 0.8.6-6: (27-Dec-2005)
         * [BUG] The demo did not initialize JFreeReport through the

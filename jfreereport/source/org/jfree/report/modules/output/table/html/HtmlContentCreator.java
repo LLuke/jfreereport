@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.29 2005/09/19 18:41:51 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.30 2005/10/14 15:43:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -642,9 +642,9 @@ public class HtmlContentCreator extends TableContentCreator
       rowStyle = new HtmlTableRowStyle(lastRowHeight, regionStyle.getColor(),
               tableRowBorderDefinition);
       rowStyle.setBorderTop(regionStyle.getColorTop(),
-              regionStyle.getBorderSizeTop());
+              regionStyle.getBorderStrokeTop());
       rowStyle.setBorderBottom(regionStyle.getColorBottom(),
-              regionStyle.getBorderSizeBottom());
+              regionStyle.getBorderStrokeBottom());
     }
 
 

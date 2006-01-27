@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.11 2005/02/23 21:05:37 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.12 2005/05/01 15:07:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.output.table.xls;
 
 import java.awt.Color;
+import java.awt.Stroke;
 import java.util.HashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -51,6 +52,7 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.xls.util.ExcelColorSupport;
 import org.jfree.report.modules.output.table.xls.util.ExcelFontFactory;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.StrokeUtility;
 import org.jfree.util.Log;
 
 /**
@@ -257,22 +259,22 @@ public class HSSFCellStyleProducer
     {
       if (bg.getColorBottom() != null)
       {
-        hssfCellStyle.setBorderBottom(translateStroke(bg.getBorderSizeBottom()));
+        hssfCellStyle.setBorderBottom(translateStroke(bg.getBorderStrokeBottom()));
         hssfCellStyle.setBottomBorderColor(ExcelColorSupport.getNearestColor(bg.getColorBottom()));
       }
       if (bg.getColorTop() != null)
       {
-        hssfCellStyle.setBorderTop(translateStroke(bg.getBorderSizeTop()));
+        hssfCellStyle.setBorderTop(translateStroke(bg.getBorderStrokeTop()));
         hssfCellStyle.setTopBorderColor(ExcelColorSupport.getNearestColor(bg.getColorTop()));
       }
       if (bg.getColorLeft() != null)
       {
-        hssfCellStyle.setBorderLeft(translateStroke(bg.getBorderSizeLeft()));
+        hssfCellStyle.setBorderLeft(translateStroke(bg.getBorderStrokeLeft()));
         hssfCellStyle.setLeftBorderColor(ExcelColorSupport.getNearestColor(bg.getColorLeft()));
       }
       if (bg.getColorRight() != null)
       {
-        hssfCellStyle.setBorderRight(translateStroke(bg.getBorderSizeRight()));
+        hssfCellStyle.setBorderRight(translateStroke(bg.getBorderStrokeRight()));
         hssfCellStyle.setRightBorderColor(ExcelColorSupport.getNearestColor(bg.getColorRight()));
       }
       if (bg.getColor() != null)
@@ -329,8 +331,49 @@ public class HSSFCellStyleProducer
    * @param width the AWT-Stroke-Width.
    * @return the translated excel border width.
    */
-  private short translateStroke (final float width)
+  private short translateStroke (final Stroke stroke)
   {
+    final float width = StrokeUtility.getStrokeWidth(stroke);
+    final int style = StrokeUtility.getStrokeType(stroke);
+
+    if (style == StrokeUtility.STROKE_DASHED)
+    {
+      if (width < 1.5)
+      {
+        return HSSFCellStyle.BORDER_DASHED;
+      }
+      else
+      {
+        return HSSFCellStyle.BORDER_MEDIUM_DASHED;
+      }
+    }
+    if (style == StrokeUtility.STROKE_DOT_DOT_DASH)
+    {
+      if (width < 1.5)
+      {
+        return HSSFCellStyle.BORDER_DASH_DOT_DOT;
+      }
+      else
+      {
+        return HSSFCellStyle.BORDER_MEDIUM_DASH_DOT_DOT;
+      }
+    }
+    if (style == StrokeUtility.STROKE_DOT_DASH)
+    {
+      if (width < 1.5)
+      {
+        return HSSFCellStyle.BORDER_DASH_DOT;
+      }
+      else
+      {
+        return HSSFCellStyle.BORDER_MEDIUM_DASH_DOT;
+      }
+    }
+    if (style == StrokeUtility.STROKE_DOTTED)
+    {
+      return HSSFCellStyle.BORDER_DOTTED;
+    }
+
     if (width == 0)
     {
       return HSSFCellStyle.BORDER_NONE;

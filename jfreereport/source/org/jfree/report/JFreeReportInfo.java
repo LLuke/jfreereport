@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Thomas Morgner, Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Thomas Morgner, Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * JFreeReportInfo.java
  * --------------------
- * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C)opyright 2000-2006, by Object Refinery Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.38 2005/12/10 17:39:48 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.39 2005/12/27 09:25:02 taqua Exp $
  *
  * Changes:
  * --------
@@ -66,10 +66,10 @@ public class JFreeReportInfo extends ProjectInfo
   public JFreeReportInfo ()
   {
     setName("JFreeReport");
-    setVersion("0.8.6-6");
+    setVersion("0.8.7");
     setInfo("http://www.jfree.org/jfreereport/");
     setCopyright
-            ("(C)opyright 2000-2005, by Thomas Morgner, Object Refinery Limited and Contributors");
+            ("(C)opyright 2000-2006, by Thomas Morgner, Object Refinery Limited and Contributors");
 
     setContributors(Arrays.asList(new Contributor[]
     {

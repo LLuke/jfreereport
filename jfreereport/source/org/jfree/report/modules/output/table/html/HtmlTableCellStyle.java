@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.7 2005/09/07 14:25:11 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.8 2005/09/27 17:00:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,8 +39,10 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
+import java.awt.Stroke;
 
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.util.StrokeUtility;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 
 /**
@@ -96,36 +98,40 @@ public class HtmlTableCellStyle implements HtmlStyle
 
     if (background.getColorTop() != null)
     {
-      b.append("border-top", String.valueOf(background.getBorderSizeTop()),
+      b.append("border-top-width",
+              String.valueOf(StrokeUtility.getStrokeWidth(background.getBorderStrokeTop())),
               "pt");
-      b.append("border-top-style", "solid");
+      b.append("border-top-style", translateStrokeStyle(background.getBorderStrokeTop()));
       b.append("border-top-color", HtmlStyleCollection.getColorString(
               background.getColorTop()));
     }
 
     if (background.getColorBottom() != null)
     {
-      b.append("border-bottom", String.valueOf(
-              background.getBorderSizeBottom()), "pt");
-      b.append("border-bottom-style", "solid");
+      b.append("border-bottom-width",
+              String.valueOf(StrokeUtility.getStrokeWidth(background.getBorderStrokeBottom())),
+              "pt");
+      b.append("border-bottom-style", translateStrokeStyle(background.getBorderStrokeBottom()));
       b.append("border-bottom-color", HtmlStyleCollection.getColorString(
               background.getColorBottom()));
     }
 
     if (background.getColorLeft() != null)
     {
-      b.append("border-left", String.valueOf(background.getBorderSizeLeft()),
+      b.append("border-left-width",
+              String.valueOf(StrokeUtility.getStrokeWidth(background.getBorderStrokeLeft())),
               "pt");
-      b.append("border-left-style", "solid");
+      b.append("border-left-style", translateStrokeStyle(background.getBorderStrokeLeft()));
       b.append("border-left-color", HtmlStyleCollection.getColorString(
               background.getColorLeft()));
     }
 
     if (background.getColorRight() != null)
     {
-      b.append("border-right", String.valueOf(background.getBorderSizeRight()),
+      b.append("border-right-width",
+              String.valueOf(StrokeUtility.getStrokeWidth(background.getBorderStrokeRight())),
               "pt");
-      b.append("border-right-style", "solid");
+      b.append("border-right-style", translateStrokeStyle(background.getBorderStrokeRight()));
       b.append("border-right-color", HtmlStyleCollection.getColorString(
               background.getColorRight()));
     }
@@ -134,6 +140,19 @@ public class HtmlTableCellStyle implements HtmlStyle
     return b.toString();
   }
 
+
+  public static String translateStrokeStyle (Stroke s)
+  {
+    int style = StrokeUtility.getStrokeType(s);
+    switch (style)
+    {
+      case StrokeUtility.STROKE_DASHED: return "dashed";
+      case StrokeUtility.STROKE_DOTTED: return "dotted";
+      case StrokeUtility.STROKE_DOT_DASH: return "dot-dash";
+      case StrokeUtility.STROKE_DOT_DOT_DASH: return "dot-dot-dash";
+      default: return "solid";
+    }
+  }
 
   /**
    * Translates the JFreeReport horizontal element alignment into a HTML alignment

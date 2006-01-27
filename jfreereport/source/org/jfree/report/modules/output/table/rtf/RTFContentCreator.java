@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.11 2005/10/06 00:50:26 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.12 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.output.table.rtf;
 
 import java.awt.Color;
+import java.awt.Stroke;
 import java.awt.print.PageFormat;
 import java.io.OutputStream;
 
@@ -62,7 +63,9 @@ import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.rtf.metaelements.RTFMetaElement;
 import org.jfree.report.util.NoCloseOutputStream;
+import org.jfree.report.util.StrokeUtility;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class RTFContentCreator extends TableContentCreator
 {
@@ -176,6 +179,7 @@ public class RTFContentCreator extends TableContentCreator
             cell.setColspan(rectangle.getColumnSpan());
           }
           table.addCell(cell, y, x);
+          //noinspection AssignmentToForLoopParameter
           x += rectangle.getColumnSpan() - 1;
         }
       }
@@ -230,13 +234,15 @@ public class RTFContentCreator extends TableContentCreator
     {
       return;
     }
-    if (bT.equals(bB) && bT.equals(bL) && bT.equals(bR)
-            && bg.getBorderSizeBottom() == bg.getBorderSizeTop()
-            && bg.getBorderSizeBottom() == bg.getBorderSizeLeft()
-            && bg.getBorderSizeBottom() == bg.getBorderSizeRight())
+    if (bT.equals(bB) && bT.equals(bL) && bT.equals(bR) &&
+        ObjectUtilities.equal(bg.getBorderStrokeTop(), bg.getBorderStrokeBottom()) &&
+        ObjectUtilities.equal(bg.getBorderStrokeTop(), bg.getBorderStrokeLeft()) &&
+        ObjectUtilities.equal(bg.getBorderStrokeTop(), bg.getBorderStrokeRight()))
     {
+      Stroke s = bg.getBorderStrokeTop();
+      float width = StrokeUtility.getStrokeWidth(s);
       cell.setBorderColor(bT);
-      cell.setBorderWidth(bg.getBorderSizeTop());
+      cell.setBorderWidth(width);
     }
   }
 

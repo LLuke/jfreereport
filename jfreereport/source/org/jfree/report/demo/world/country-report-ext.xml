@@ -5,6 +5,7 @@
 <report-definition name="Sample Report 1">
   <parser-config>
     <object-factory class="org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory"/>
+    <object-factory class="org.jfree.xml.factory.objects.ArrayClassFactory"/>
     <element-factory class="org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory"/>
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory"/>
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory"/>
@@ -54,12 +55,30 @@
 
     <style name="thin_horizontal_line">
       <extends name="horizontal_line"/>
-      <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
+      <compound-key name="stroke" class="java.awt.BasicStroke">
+        <basic-object name="width">1.0</basic-object>
+        <compound-object name="dashes">
+          <basic-object name="0">2</basic-object>
+          <basic-object name="1">2</basic-object>
+          <basic-object name="2">2</basic-object>
+          <basic-object name="3">6</basic-object>
+        </compound-object>
+      </compound-key>
     </style>
 
     <style name="thick_horizontal_line">
       <extends name="horizontal_line"/>
-      <basic-key name="stroke" class="java.awt.BasicStroke">2.0</basic-key>
+      <compound-key name="stroke" class="java.awt.BasicStroke">
+        <basic-object name="width">1.0</basic-object>
+        <compound-object name="dashes">
+          <basic-object name="0">2</basic-object>
+          <basic-object name="1">2</basic-object>
+          <basic-object name="2">2</basic-object>
+          <basic-object name="3">2</basic-object>
+          <basic-object name="4">6</basic-object>
+          <basic-object name="5">2</basic-object>
+        </compound-object>
+      </compound-key>
     </style>
   </styles>
 

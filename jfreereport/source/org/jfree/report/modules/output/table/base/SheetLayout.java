@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.20 2005/10/14 15:43:33 taqua Exp $
+ * $Id: SheetLayout.java,v 1.21 2005/12/10 17:39:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.output.table.base;
 
 import java.awt.Color;
+import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -432,21 +433,21 @@ public class SheetLayout
     if (isVerticalBorderValid(rect, mappedX1, true))
     {
       retval.setBorderLeft(bgTopLeft.getColorLeft(),
-              bgTopLeft.getBorderSizeLeft());
+              bgTopLeft.getBorderStrokeLeft());
     }
     else
     {
-      retval.setBorderLeft(null, 0);
+      retval.setBorderLeft(null, null);
     }
 
     if (isHorizontalBorderValid(rect, mappedY1, true))
     {
       retval.setBorderTop(bgTopLeft.getColorTop(),
-              bgTopLeft.getBorderSizeTop());
+              bgTopLeft.getBorderStrokeTop());
     }
     else
     {
-      retval.setBorderTop(null, 0);
+      retval.setBorderTop(null, null);
     }
 
     return retval;
@@ -483,7 +484,7 @@ public class SheetLayout
                                         final boolean left)
   {
     Color color = null;
-    float border = 0;
+    Stroke border = null;
     for (int row = rect.getY1(); row < rect.getY2(); row++)
     {
       final int mappedRow = mapRow(row);
@@ -500,10 +501,10 @@ public class SheetLayout
         if (color == null)
         {
           color = background.getColorLeft();
-          border = background.getBorderSizeLeft();
+          border = background.getBorderStrokeLeft();
         }
         else if (color.equals(background.getColorLeft()) == false ||
-                (border != background.getBorderSizeLeft()))
+                ObjectUtilities.equal(border, background.getBorderStrokeLeft()) == false)
         {
           return false;
         }
@@ -513,10 +514,10 @@ public class SheetLayout
         if (color == null)
         {
           color = background.getColorRight();
-          border = background.getBorderSizeRight();
+          border = background.getBorderStrokeRight();
         }
         else if (color.equals(background.getColorRight()) == false ||
-                (border != background.getBorderSizeRight()))
+                ObjectUtilities.equal(border, background.getBorderStrokeRight()) == false)
         {
           return false;
         }
@@ -530,7 +531,7 @@ public class SheetLayout
                                           final boolean top)
   {
     Color color = null;
-    float border = 0;
+    Stroke border = null;
     for (int col = rect.getX1(); col < rect.getX2(); col++)
     {
       final int mappedCol = mapColumn(col);
@@ -547,10 +548,10 @@ public class SheetLayout
         if (color == null)
         {
           color = background.getColorTop();
-          border = background.getBorderSizeTop();
+          border = background.getBorderStrokeTop();
         }
         else if (color.equals(background.getColorTop()) == false ||
-                (border != background.getBorderSizeTop()))
+                ObjectUtilities.equal(border, background.getBorderStrokeTop()) == false)
         {
           return false;
         }
@@ -560,10 +561,10 @@ public class SheetLayout
         if (color == null)
         {
           color = background.getColorBottom();
-          border = background.getBorderSizeBottom();
+          border = background.getBorderStrokeBottom();
         }
         else if (color.equals(background.getColorBottom()) == false ||
-                (border != background.getBorderSizeBottom()))
+                ObjectUtilities.equal(border, background.getBorderStrokeBottom()) == false)
         {
           return false;
         }
@@ -844,7 +845,7 @@ public class SheetLayout
         // the original cell was split into two new cells ...
         // the new right border is no longer filled ...
         // a border was found, but is invalid now.
-        bg.setBorderRight(null, 0);
+        bg.setBorderRight(null, null);
       }
       backend.setObject(i, newColumn, newBackground);
     }
@@ -907,7 +908,7 @@ public class SheetLayout
       // the Top-Border of the original background is not touched ...
       if (bg.getColorBottom() != null)
       {
-        bg.setBorderBottom(null, 0);
+        bg.setBorderBottom(null, null);
       }
       backend.setObject(newRow, i, newBackground);
     }
@@ -1250,7 +1251,7 @@ public class SheetLayout
         final TableCellBackground unionBg = leftBg.createSplittedInstance(
                 newBounds);
         unionBg.setBorderRight(rightBg.getColorRight(),
-                rightBg.getBorderSizeRight());
+                rightBg.getBorderStrokeRight());
         backend.setObject(row, previousCol, unionBg);
         backend.setObject(row, col, null);
       }
@@ -1293,7 +1294,7 @@ public class SheetLayout
         final TableCellBackground unionBg = topBg.createSplittedInstance(
                 newBounds);
         unionBg.setBorderBottom(bottomBg.getColorBottom(),
-                bottomBg.getBorderSizeBottom());
+                bottomBg.getBorderStrokeBottom());
         backend.setObject(previousRow, col, unionBg);
         backend.setObject(row, col, null);
       }

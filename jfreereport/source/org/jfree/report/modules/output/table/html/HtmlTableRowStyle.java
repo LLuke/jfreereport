@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableRowStyle.java,v 1.6 2005/04/14 16:48:24 taqua Exp $
+ * $Id: HtmlTableRowStyle.java,v 1.7 2005/05/31 20:37:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,6 +39,10 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
+import java.awt.Stroke;
+
+import org.jfree.util.ObjectUtilities;
+import org.jfree.report.util.StrokeUtility;
 
 public class HtmlTableRowStyle implements HtmlStyle
 {
@@ -46,11 +50,11 @@ public class HtmlTableRowStyle implements HtmlStyle
   private Color background;
   private Color colorTop;
   private Color colorBottom;
-  private float borderSizeTop;
-  private float borderSizeBottom;
+  private Stroke borderStrokeTop;
+  private Stroke borderStrokeBottom;
   private boolean tableRowBorderDefinition;
 
-  public HtmlTableRowStyle (final int height, 
+  public HtmlTableRowStyle (final int height,
                             final Color background,
                             final boolean tableRowBorderDefinition)
   {
@@ -76,41 +80,47 @@ public class HtmlTableRowStyle implements HtmlStyle
     {
       if (colorTop != null)
       {
-        styleBuilder.append("border-top", String.valueOf(borderSizeTop), "pt");
-        styleBuilder.append("border-top-style", "solid");
+        styleBuilder.append("border-top-width",
+                String.valueOf(StrokeUtility.getStrokeWidth(borderStrokeTop)),
+                "pt");
+        styleBuilder.append("border-top-style",
+                HtmlTableCellStyle.translateStrokeStyle(borderStrokeTop));
         styleBuilder.append("border-top-color", HtmlStyleCollection.getColorString(getColorTop()));
       }
 
       if (getColorBottom() != null)
       {
-        styleBuilder.append("border-bottom", String.valueOf(getBorderSizeBottom()), "pt");
-        styleBuilder.append("border-bottom-style", "solid");
+        styleBuilder.append("border-top-width",
+                String.valueOf(StrokeUtility.getStrokeWidth(borderStrokeBottom)),
+                "pt");
+        styleBuilder.append("border-top-style",
+                HtmlTableCellStyle.translateStrokeStyle(borderStrokeBottom));
         styleBuilder.append("border-bottom-color", HtmlStyleCollection.getColorString(getColorBottom()));
       }
     }
     return styleBuilder.toString();
   }
 
-  public void setBorderTop (final Color top, final float size)
+  public void setBorderTop (final Color top, final Stroke size)
   {
     this.colorTop = top;
-    this.borderSizeTop = size;
+    this.borderStrokeTop = size;
   }
 
-  public void setBorderBottom (final Color bottom, final float size)
+  public void setBorderBottom (final Color bottom, final Stroke size)
   {
     this.colorBottom = bottom;
-    this.borderSizeBottom = size;
+    this.borderStrokeBottom = size;
   }
 
-  public float getBorderSizeBottom ()
+  public Stroke getBorderStrokeTop()
   {
-    return borderSizeBottom;
+    return borderStrokeTop;
   }
 
-  public float getBorderSizeTop ()
+  public Stroke getBorderStrokeBottom()
   {
-    return borderSizeTop;
+    return borderStrokeBottom;
   }
 
   public Color getColorBottom ()
@@ -143,11 +153,12 @@ public class HtmlTableRowStyle implements HtmlStyle
 
     if (tableRowBorderDefinition)
     {
-      if (borderSizeBottom != htmlTableRowStyle.borderSizeBottom)
+      // comparison should be against the *mapped* values ...
+      if (ObjectUtilities.equal(borderStrokeTop, htmlTableRowStyle.borderStrokeTop) == false)
       {
         return false;
       }
-      if (borderSizeTop != htmlTableRowStyle.borderSizeTop)
+      if (ObjectUtilities.equal(borderStrokeBottom, htmlTableRowStyle.borderStrokeBottom) == false)
       {
         return false;
       }
@@ -181,8 +192,8 @@ public class HtmlTableRowStyle implements HtmlStyle
     result = 29 * result + (background != null ? background.hashCode() : 0);
     result = 29 * result + (colorTop != null ? colorTop.hashCode() : 0);
     result = 29 * result + (colorBottom != null ? colorBottom.hashCode() : 0);
-    result = 29 * result + borderSizeTop != +0.0f ? Float.floatToIntBits(borderSizeTop) : 0;
-    result = 29 * result + borderSizeBottom != +0.0f ? Float.floatToIntBits(borderSizeBottom) : 0;
+    result = 29 * result + (borderStrokeTop != null ? borderStrokeTop.hashCode() : 0);
+    result = 29 * result + (borderStrokeBottom != null ? borderStrokeBottom.hashCode() : 0);
     return result;
   }
 }

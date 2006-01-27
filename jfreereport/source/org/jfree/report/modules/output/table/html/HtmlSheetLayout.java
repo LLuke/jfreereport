@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.12 2005/09/05 11:43:24 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.13 2005/11/17 17:03:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
+import java.awt.Stroke;
 import java.util.HashMap;
 
 import org.jfree.report.ElementAlignment;
@@ -193,8 +194,8 @@ public class HtmlSheetLayout extends SheetLayout
       Color rowColor = null;
       Color borderTop = null;
       Color borderBottom = null;
-      float borderTopSize = 0;
-      float borderBottomSize = 0;
+      Stroke borderTopSize = null;
+      Stroke borderBottomSize = null;
 
       for (int layoutCol = 0; layoutCol < getColumnCount(); layoutCol++)
       {
@@ -228,9 +229,9 @@ public class HtmlSheetLayout extends SheetLayout
           // therefore reset the whole thing!
           rowColor = null;
           borderTop = null;
-          borderTopSize = 0;
+          borderTopSize = null;
           borderBottom = null;
-          borderBottomSize = 0;
+          borderBottomSize = null;
           continue;
         }
 
@@ -238,10 +239,10 @@ public class HtmlSheetLayout extends SheetLayout
         if (layoutCol == 0)
         {
           rowColor = bgColor;
-          borderTopSize = bg.getBorderSizeTop();
+          borderTopSize = bg.getBorderStrokeTop();
           borderTop = bg.getColorTop();
           borderBottom = bg.getColorBottom();
-          borderBottomSize = bg.getBorderSizeBottom();
+          borderBottomSize = bg.getBorderStrokeBottom();
         }
         else
         {
@@ -253,12 +254,12 @@ public class HtmlSheetLayout extends SheetLayout
           if (ObjectUtilities.equal(borderTop, bg.getColorTop()) == false)
           {
             borderTop = null;
-            borderTopSize = 0;
+            borderTopSize = null;
           }
           if (ObjectUtilities.equal(borderBottom, bg.getColorBottom()) == false)
           {
             borderBottom = null;
-            borderBottomSize = 0;
+            borderBottomSize = null;
           }
         }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableMetaBandProducer.java,v 1.10 2005/08/08 15:36:34 taqua Exp $
+ * $Id: TableMetaBandProducer.java,v 1.11 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.modules.output.table.base;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
@@ -151,22 +152,20 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     {
       final Object maybeStroke =
               backgroundStyle.getStyleProperty(ElementStyleSheet.STROKE);
-      final float strokeWidth;
-
-      if (maybeStroke instanceof BasicStroke)
+      final Stroke stroke;
+      if (maybeStroke instanceof Stroke)
       {
-        final BasicStroke stroke = (BasicStroke) maybeStroke;
-        strokeWidth = stroke.getLineWidth();
+        stroke = (Stroke) maybeStroke;
       }
       else
       {
-        strokeWidth = 1;
+        stroke = new BasicStroke(1);
       }
 
       if (shape instanceof Line2D)
       {
         // invisible lines get removed as early as possible.
-        if (strokeWidth == 0)
+        if (isStrokeVisible(stroke) == false)
         {
           return null;
         }
@@ -179,13 +178,13 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
         {
           // horizontal line
           bg = new TableCellBackground(shapeContent, backgroundStyle, null);
-          bg.setBorderTop(color, strokeWidth);
+          bg.setBorderTop(color, stroke);
         }
         else if (shapeBounds.getWidth() == 0)
         {
           // vertical line
           bg = new TableCellBackground(shapeContent, backgroundStyle, null);
-          bg.setBorderLeft(color, strokeWidth);
+          bg.setBorderLeft(color, stroke);
         }
       }
       else if (shape instanceof Rectangle2D)
@@ -198,12 +197,12 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
         {
           bg = new TableCellBackground(shapeContent, backgroundStyle, null);
         }
-        if (strokeWidth > 0)
+        if (isStrokeVisible(stroke))
         {
-          bg.setBorderLeft(color, strokeWidth);
-          bg.setBorderTop(color, strokeWidth);
-          bg.setBorderBottom(color, strokeWidth);
-          bg.setBorderRight(color, strokeWidth);
+          bg.setBorderLeft(color, stroke);
+          bg.setBorderTop(color, stroke);
+          bg.setBorderBottom(color, stroke);
+          bg.setBorderRight(color, stroke);
         }
       }
       else
@@ -223,6 +222,16 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
       bg.setName(element.getName());
     }
     return bg;
+  }
+
+  private boolean isStrokeVisible (Stroke s)
+  {
+    if (s instanceof BasicStroke == false)
+    {
+      return true;
+    }
+    BasicStroke bs = (BasicStroke) s;
+    return bs.getLineWidth() > 0;
   }
 
   /**

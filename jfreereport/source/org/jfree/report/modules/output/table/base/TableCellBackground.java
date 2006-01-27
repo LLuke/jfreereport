@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.24 2005/09/04 13:15:06 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.25 2005/09/16 16:08:06 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.output.table.base;
 
 import java.awt.Color;
+import java.awt.Stroke;
 import java.util.HashSet;
 
 import org.jfree.report.Anchor;
@@ -46,6 +47,7 @@ import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Encapsulates all TableCellBackground informations, such as borders and
@@ -62,16 +64,16 @@ public class TableCellBackground extends MetaElement implements Cloneable
   private HashSet anchors;
 
   /** The top border's size. */
-  private float borderSizeTop;
+  private Stroke borderStrokeTop;
 
   /** The bottom border's size. */
-  private float borderSizeBottom;
+  private Stroke borderStrokeBottom;
 
   /** The left border's size. */
-  private float borderSizeLeft;
+  private Stroke borderStrokeLeft;
 
   /** The right border's size. */
-  private float borderSizeRight;
+  private Stroke borderStrokeRight;
 
   /** The top border's color. */
   private Color colorTop;
@@ -122,17 +124,17 @@ public class TableCellBackground extends MetaElement implements Cloneable
    * @param color the color of the top border.
    * @param size  the line width of the top border.
    */
-  public void setBorderTop(final Color color, final float size)
+  public void setBorderTop(final Color color, final Stroke stroke)
   {
-    if (size == 0)
+    if (stroke == null)
     {
       colorTop = null;
-      borderSizeTop = 0;
+      borderStrokeTop = null;
     }
     else
     {
       colorTop = color;
-      borderSizeTop = size;
+      borderStrokeTop = stroke;
     }
   }
 
@@ -143,17 +145,17 @@ public class TableCellBackground extends MetaElement implements Cloneable
    * @param color the color of the left border.
    * @param size  the line width of the left border.
    */
-  public void setBorderLeft(final Color color, final float size)
+  public void setBorderLeft(final Color color, final Stroke stroke)
   {
-    if (size == 0)
+    if (stroke == null)
     {
       colorLeft = null;
-      borderSizeLeft = 0;
+      borderStrokeLeft = null;
     }
     else
     {
       colorLeft = color;
-      borderSizeLeft = size;
+      borderStrokeLeft = stroke;
     }
   }
 
@@ -164,17 +166,17 @@ public class TableCellBackground extends MetaElement implements Cloneable
    * @param color the color of the bottom border.
    * @param size  the line width of the bottom border.
    */
-  public void setBorderBottom(final Color color, final float size)
+  public void setBorderBottom(final Color color, final Stroke stroke)
   {
-    if (size == 0)
+    if (stroke == null)
     {
       colorBottom = null;
-      borderSizeBottom = 0;
+      borderStrokeBottom = null;
     }
     else
     {
       colorBottom = color;
-      borderSizeBottom = size;
+      borderStrokeBottom = stroke;
     }
   }
 
@@ -185,28 +187,29 @@ public class TableCellBackground extends MetaElement implements Cloneable
    * @param color the color of the right border.
    * @param size  the line width of the right border.
    */
-  public void setBorderRight(final Color color, final float size)
+  public void setBorderRight(final Color color, final Stroke stroke)
   {
-    if (size == 0)
+    if (stroke == null)
     {
       colorRight = null;
-      borderSizeRight = 0;
+      borderStrokeRight = null;
     }
     else
     {
       colorRight = color;
-      borderSizeRight = size;
+      borderStrokeRight = stroke;
     }
   }
+
 
   /**
    * Returns the line width of the top border.
    *
    * @return the  line width of the top border.
    */
-  public float getBorderSizeTop()
+  public Stroke getBorderStrokeTop()
   {
-    return borderSizeTop;
+    return borderStrokeTop;
   }
 
   /**
@@ -214,9 +217,9 @@ public class TableCellBackground extends MetaElement implements Cloneable
    *
    * @return the  line width of the bottom border.
    */
-  public float getBorderSizeBottom()
+  public Stroke getBorderStrokeBottom()
   {
-    return borderSizeBottom;
+    return borderStrokeBottom;
   }
 
   /**
@@ -224,9 +227,9 @@ public class TableCellBackground extends MetaElement implements Cloneable
    *
    * @return the  line width of the left border.
    */
-  public float getBorderSizeLeft()
+  public Stroke getBorderStrokeLeft()
   {
-    return borderSizeLeft;
+    return borderStrokeLeft;
   }
 
   /**
@@ -234,9 +237,9 @@ public class TableCellBackground extends MetaElement implements Cloneable
    *
    * @return the  line width of the right border.
    */
-  public float getBorderSizeRight()
+  public Stroke getBorderStrokeRight()
   {
-    return borderSizeRight;
+    return borderStrokeRight;
   }
 
   /**
@@ -366,12 +369,12 @@ public class TableCellBackground extends MetaElement implements Cloneable
     if (merged.getColorTop() == null)
     {
       // the thing does not have a border ..
-      merged.setBorderTop(getColorTop(), getBorderSizeTop());
+      merged.setBorderTop(getColorTop(), getBorderStrokeTop());
     }
     if (merged.getColorLeft() == null)
     {
       // the thing does not have a border ..
-      merged.setBorderLeft(getColorLeft(), getBorderSizeLeft());
+      merged.setBorderLeft(getColorLeft(), getBorderStrokeLeft());
     }
 
     return merged;
@@ -409,24 +412,24 @@ public class TableCellBackground extends MetaElement implements Cloneable
               (bounds.getX() == orgX2 && bounds.getY() == orgY2))
       {
         // this cell is out of bounds ..
-        bg.setBorderTop(null, 0);
-        bg.setBorderBottom(null, 0);
-        bg.setBorderLeft(null, 0);
-        bg.setBorderRight(null, 0);
+        bg.setBorderTop(null, null);
+        bg.setBorderBottom(null, null);
+        bg.setBorderLeft(null, null);
+        bg.setBorderRight(null, null);
         bg.setColor(null);
       }
       else
       {
         if (bg.getTopBorderPos() != getTopBorderPos())
         {
-          bg.setBorderTop(null, 0);
+          bg.setBorderTop(null, null);
         }
         if (bg.getLeftBorderPos() != getLeftBorderPos())
         {
-          bg.setBorderLeft(null, 0);
+          bg.setBorderLeft(null, null);
         }
-        bg.setBorderRight(null, 0);
-        bg.setBorderBottom(null, 0);
+        bg.setBorderRight(null, null);
+        bg.setBorderBottom(null, null);
       }
       return bg;
     }
@@ -469,23 +472,23 @@ public class TableCellBackground extends MetaElement implements Cloneable
               (bounds.getX() == orgX2 && bounds.getY() == orgY2))
       {
         // this cell is out of bounds ..
-        bg.setBorderTop(null, 0);
-        bg.setBorderBottom(null, 0);
-        bg.setBorderLeft(null, 0);
-        bg.setBorderRight(null, 0);
+        bg.setBorderTop(null, null);
+        bg.setBorderBottom(null, null);
+        bg.setBorderLeft(null, null);
+        bg.setBorderRight(null, null);
         bg.setColor(null);
       }
       else if (bounds.getX() == orgX2)
       {
         // this is a right border .. make it a left border definition ..
-        bg.setBorderTop(null, 0);
-        bg.setBorderBottom(null, 0);
+        bg.setBorderTop(null, null);
+        bg.setBorderBottom(null, null);
         if (bg.getColorLeft() == null)
         {
           // only copy the right border, if there is no left border
-          bg.setBorderLeft(getColorRight(), getBorderSizeRight());
+          bg.setBorderLeft(getColorRight(), getBorderStrokeRight());
         }
-        bg.setBorderRight(null, 0);
+        bg.setBorderRight(null, null);
         bg.setColor(null);
       }
       else if (bounds.getY() == orgY2)
@@ -493,25 +496,25 @@ public class TableCellBackground extends MetaElement implements Cloneable
         // this is a bottom border element .. make it a top border definition ..
         if (bg.getColorTop() == null)
         {
-          bg.setBorderTop(getColorBottom(), getBorderSizeBottom());
+          bg.setBorderTop(getColorBottom(), getBorderStrokeBottom());
         }
-        bg.setBorderBottom(null, 0);
-        bg.setBorderLeft(null, 0);
-        bg.setBorderRight(null, 0);
+        bg.setBorderBottom(null, null);
+        bg.setBorderLeft(null, null);
+        bg.setBorderRight(null, null);
         bg.setColor(null);
       }
       else
       {
         if (bg.getTopBorderPos() != getTopBorderPos())
         {
-          bg.setBorderTop(null, 0);
+          bg.setBorderTop(null, null);
         }
         if (bg.getLeftBorderPos() != getLeftBorderPos())
         {
-          bg.setBorderLeft(null, 0);
+          bg.setBorderLeft(null, null);
         }
-        bg.setBorderRight(null, 0);
-        bg.setBorderBottom(null, 0);
+        bg.setBorderRight(null, null);
+        bg.setBorderBottom(null, null);
       }
       return bg;
     }
@@ -566,19 +569,19 @@ public class TableCellBackground extends MetaElement implements Cloneable
     b.append(", colorTop=");
     b.append(colorTop);
     b.append(", widthTop=");
-    b.append(borderSizeTop);
+    b.append(borderStrokeTop);
     b.append(", colorLeft=");
     b.append(colorLeft);
     b.append(", widthLeft=");
-    b.append(borderSizeLeft);
+    b.append(borderStrokeLeft);
     b.append(", colorBottom=");
     b.append(colorBottom);
     b.append(", widthBottom=");
-    b.append(borderSizeBottom);
+    b.append(borderStrokeBottom);
     b.append(", colorRight=");
     b.append(colorRight);
     b.append(", widthRight=");
-    b.append(borderSizeRight);
+    b.append(borderStrokeRight);
     b.append("}");
     return b.toString();
   }
@@ -603,19 +606,19 @@ public class TableCellBackground extends MetaElement implements Cloneable
 
     final TableCellBackground tableCellBackground = (TableCellBackground) o;
 
-    if (borderSizeBottom != tableCellBackground.borderSizeBottom)
+    if (ObjectUtilities.equal(borderStrokeBottom, tableCellBackground.borderStrokeBottom))
     {
       return false;
     }
-    if (borderSizeLeft != tableCellBackground.borderSizeLeft)
+    if (ObjectUtilities.equal(borderStrokeLeft, tableCellBackground.borderStrokeLeft))
     {
       return false;
     }
-    if (borderSizeRight != tableCellBackground.borderSizeRight)
+    if (ObjectUtilities.equal(borderStrokeRight, tableCellBackground.borderStrokeRight))
     {
       return false;
     }
-    if (borderSizeTop != tableCellBackground.borderSizeTop)
+    if (ObjectUtilities.equal(borderStrokeTop, tableCellBackground.borderStrokeTop))
     {
       return false;
     }
@@ -655,10 +658,10 @@ public class TableCellBackground extends MetaElement implements Cloneable
    */
   public int hashCode()
   {
-    int result = Float.floatToIntBits(borderSizeTop);
-    result = 29 * result + Float.floatToIntBits(borderSizeBottom);
-    result = 29 * result + Float.floatToIntBits(borderSizeLeft);
-    result = 29 * result + Float.floatToIntBits(borderSizeRight);
+    int result = (borderStrokeBottom != null ? borderStrokeBottom.hashCode() : 0);
+    result = 29 * result + (borderStrokeTop != null ? borderStrokeTop.hashCode() : 0);
+    result = 29 * result + (borderStrokeLeft != null ? borderStrokeLeft.hashCode() : 0);
+    result = 29 * result + (borderStrokeRight != null ? borderStrokeRight.hashCode() : 0);
     result = 29 * result + (colorTop != null ? colorTop.hashCode() : 0);
     result = 29 * result + (colorLeft != null ? colorLeft.hashCode() : 0);
     result = 29 * result + (colorBottom != null ? colorBottom.hashCode() : 0);

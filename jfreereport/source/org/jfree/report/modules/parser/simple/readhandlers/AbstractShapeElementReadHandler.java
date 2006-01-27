@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractShapeElementReadHandler.java,v 1.4 2005/03/03 23:00:23 taqua Exp $
+ * $Id: AbstractShapeElementReadHandler.java,v 1.5 2006/01/27 16:25:36 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.awt.BasicStroke;
 
 import org.jfree.report.elementfactory.ShapeElementFactory;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.util.StrokeUtility;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
@@ -93,27 +94,23 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
     Stroke stroke = null;
     if ("dashed".equalsIgnoreCase(strokeStyle))
     {
-      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-              10.0f, new float[]{6, 6}, 0.0f);
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DASHED, weight);
     }
     else if ("dotted".equalsIgnoreCase(strokeStyle))
     {
-      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-              5.0f, new float[]{0.1f, 2}, 0.0f);
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DOTTED, weight);
     }
     else if ("dot-dot-dash".equalsIgnoreCase(strokeStyle))
     {
-      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-              10.0f, new float[]{2, 2, 2, 2, 6, 2}, 0.0f);
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DOT_DOT_DASH, weight);
     }
     else if ("dot-dash".equalsIgnoreCase(strokeStyle))
     {
-      stroke = new BasicStroke(weight, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER,
-              10.0f, new float[]{2, 2, 6, 2}, 0.0f);
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DOT_DASH, weight);
     }
     else if ("solid".equalsIgnoreCase(strokeStyle))
     {
-      stroke = new BasicStroke(weight);
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_SOLID, weight);
     }
 
     if (stroke != null)
