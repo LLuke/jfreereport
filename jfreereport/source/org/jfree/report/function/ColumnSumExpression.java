@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ColumnSumExpression.java,v 1.1 2006/01/06 09:05:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.function;
  *
  * @author Thomas Morgner
  */
-public class ColumnSumExpression extends ColumnAggreationExpression
+public class ColumnSumExpression extends ColumnAggregationExpression
 {
   public ColumnSumExpression()
   {

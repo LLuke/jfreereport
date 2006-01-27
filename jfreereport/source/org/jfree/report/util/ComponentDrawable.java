@@ -5,9 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Window;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.RepaintManager;
@@ -187,7 +185,7 @@ public class ComponentDrawable implements ExtendedDrawable
       {
         return (Window) parent;
       }
-      parent = component.getParent();
+      parent = parent.getParent();
     }
     return null;
   }

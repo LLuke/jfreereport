@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ColumnMaximumExpression.java,v 1.1 2006/01/20 19:51:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.function;
  *
  * @author Thomas Morgner
  */
-public class ColumnMaximumExpression extends ColumnAggreationExpression
+public class ColumnMaximumExpression extends ColumnAggregationExpression
 {
   public ColumnMaximumExpression()
   {

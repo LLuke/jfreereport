@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ColumnSumExpression.java,v 1.1 2006/01/06 09:05:37 taqua Exp $
+ * $Id: ColumnDifferenceExpression.java,v 1.1 2006/01/18 22:49:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.function;
  *
  * @author Thomas Morgner
  */
-public class ColumnDifferenceExpression extends ColumnAggreationExpression
+public class ColumnDifferenceExpression extends ColumnAggregationExpression
 {
   public ColumnDifferenceExpression()
   {

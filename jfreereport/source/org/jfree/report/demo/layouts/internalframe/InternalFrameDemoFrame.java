@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: InternalFrameDemoFrame.java,v 1.1 2005/12/11 12:47:05 taqua Exp $
+ * $Id: InternalFrameDemoFrame.java,v 1.2 2005/12/22 01:25:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,7 @@ import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.functions.PaintComponentTableModel;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.demo.layouts.ComponentDrawingDemoHandler;
@@ -219,6 +220,8 @@ public class InternalFrameDemoFrame extends AbstractDemoFrame
 
   public static void main(String[] args)
   {
+    JFreeReportBoot.getInstance().start();
+
     InternalFrameDemoFrame frame = new InternalFrameDemoFrame();
     frame.updateFrameSize(50);
     frame.setVisible(true);

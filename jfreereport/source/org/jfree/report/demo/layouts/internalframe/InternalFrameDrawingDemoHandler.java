@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: InternalFrameDrawingDemoHandler.java,v 1.1 2005/12/11 12:47:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,7 @@ package org.jfree.report.demo.layouts.internalframe;
 
 import org.jfree.report.demo.helper.DemoHandler;
 import org.jfree.report.demo.helper.PreviewHandler;
+import org.jfree.report.JFreeReportBoot;
 
 /**
  * Creation-Date: 11.12.2005, 12:33:51
@@ -72,5 +73,11 @@ public class InternalFrameDrawingDemoHandler implements DemoHandler
   public PreviewHandler getPreviewHandler()
   {
     return new InternalFrameDrawingPreviewHandler();
+  }
+
+  public static void main(String[] args)
+  {
+    JFreeReportBoot.getInstance().start();
+    new InternalFrameDrawingDemoHandler().getPreviewHandler().attemptPreview();
   }
 }
