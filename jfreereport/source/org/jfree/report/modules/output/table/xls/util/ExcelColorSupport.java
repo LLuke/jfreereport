@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelColorSupport.java,v 1.5 2005/08/08 15:36:35 taqua Exp $
+ * $Id: ExcelColorSupport.java,v 1.6 2005/10/19 20:21:06 taqua Exp $
  *
  * Changes
  * -------
@@ -105,8 +105,9 @@ public final class ExcelColorSupport
       final short[] rgb = crtColor.getTriplet();
       excelHsb = Color.RGBtoHSB(rgb[0], rgb[1], rgb[2], excelHsb);
 
-      final double weight = 3d * Math.abs(excelHsb[0] - hsb[0]) +
-              Math.abs(excelHsb[2] - hsb[2]) +
+      final double weight =
+              3d * Math.abs(excelHsb[0] - hsb[0]) +
+              Math.abs(excelHsb[1] - hsb[1]) +
               Math.abs(excelHsb[2] - hsb[2]);
 
       if (weight < minDiff)
