@@ -88,12 +88,26 @@
 
     <available classname="java.nio.Buffer" property="java-1.4.present"/>
 
+    <condition property="svg.present">
+      <and>
+        <available classname="java.nio.Buffer" property="java-1.4.present"/>
+        <available file="${ext.libdir}/${svgsalamander-jar-file}"/>
+        <available classname="com.kitfox.svg.SVGUniverse">
+           <classpath>
+              <pathelement location="${ext.libdir}/${svgsalamander-jar-file}"/>
+           </classpath>
+         </available>
+      </and>
+    </condition>
+
+
     <echo>
       Available features:
         Java1.3    : ${java-1.3.present}
         Java1.4    : ${java-1.4.present}
         JUnit      : ${junit.present}
         Log4J      : ${log4j.present}
+        SVG        : ${svg.present}
         Servlets   : ${servlet.present}
         JFreeChart : ${jfreechart.present}
     </echo>
@@ -106,6 +120,7 @@
       compile-module-ext-java14imageio,
       compile-module-ext-java14log,
       compile-module-ext-java14print,
+      compile-module-ext-svgimage,
       compile-module-ext-log4jlog"></target>
 
   <!-- ************************************************************** -->
@@ -182,17 +197,6 @@
       </classpath>
     </javac>
 
-    <!-- include the report definition files -->
-    <!--
-    <copy todir="build/org/jfree/report/ext/servletdemo">
-      <fileset dir="source/org/jfree/report/ext/servletdemo">
-        <include name="**/*.xml"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.dbf"/>
-      </fileset>
-    </copy>
-    -->
-
     <!-- make the jar -->
     <jar jarfile="${jfreereport-servlet-demo-jar-file}"
       basedir="build">
@@ -246,7 +250,6 @@
     <delete dir="build"/>
   </target>
 
-
   <!-- ************************************************************** -->
   <!--                                                                -->
   <!--  Java 1.4 configstore module                                   -->
@@ -279,6 +282,10 @@
     <mkdir dir="build"/>
 
     <antcall target="build-module-ext-java14config"/>
+
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-ext-java14config-file}"
@@ -323,6 +330,10 @@
 
     <antcall target="build-module-ext-java14log"/>
 
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-java14log-file}"
       basedir="build">
@@ -366,6 +377,10 @@
 
     <antcall target="build-module-ext-java14imageio"/>
 
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-java14imageio-file}"
       basedir="build">
@@ -407,7 +422,11 @@
     <mkdir dir="build"/>
 
     <antcall target="build-module-ext-java14print"/>
-    
+
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-java14print-file}"
       basedir="build">
@@ -420,14 +439,14 @@
 
   <!-- ************************************************************** -->
   <!--                                                                -->
-  <!--  Java 1.4 printing API module                                  -->
+  <!--  SVG image support module                                      -->
   <!--                                                                -->
   <!-- ************************************************************** -->
-  <target name="build-module-ext-svgimage" if="java-1.4.present">
+  <target name="build-module-ext-svgimage" if="svg.present">
     <javac srcdir="source"
       destdir="build" target="${build.target}"
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/java14print/*.java"/>
+      <include name="org/jfree/report/ext/modules/svgimage/*.java"/>
       <classpath>
         <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
         <pathelement location="${ext.libdir}/${svgsalamander-jar-file}"/>
@@ -444,7 +463,7 @@
 
   </target>
 
-  <target name="compile-module-ext-svgimage" depends="init" if="java-1.4.present">
+  <target name="compile-module-ext-svgimage" depends="init" if="svg.present">
     <echo>Building SVG-Image modules</echo>
 
     <!-- create a temp build directory -->
@@ -452,9 +471,16 @@
 
     <antcall target="build-module-ext-svgimage"/>
 
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-svgimage-file}"
       basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${svgsalamander-jar-file} ${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-bsf-file} ${module-misc-beanshell-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-gui-rtf-file} ${module-misc-survey-file} ${jfreereport-all-jar-file}"/>
+      </manifest>
     </jar>
 
     <!-- delete the temp directory -->
@@ -495,9 +521,16 @@
 
     <antcall target="build-module-ext-log4jlog"/>
 
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-log4jlog-file}"
       basedir="build">
+      <manifest>
+        <attribute name="Class-Path" value="${log4j-jar-file} ${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-bsf-file} ${module-misc-beanshell-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-gui-rtf-file} ${module-misc-survey-file} ${jfreereport-all-jar-file}"/>
+      </manifest>
     </jar>
 
     <!-- delete the temp directory -->
@@ -531,12 +564,16 @@
   </target>
 
   <target name="compile-module-ext-barcode" depends="init">
-    <echo>Building Log4J logging modules</echo>
+    <echo>Building BarCode modules</echo>
 
     <!-- create a temp build directory -->
     <mkdir dir="build"/>
 
     <antcall target="build-module-ext-barcode"/>
+
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
 
     <!-- make the jar -->
     <jar jarfile="${module-ext-barcode-file}"
@@ -552,7 +589,6 @@
   <target name="compile-all-modules" depends="init">
     <mkdir dir="build"/>
 
-    <antcall target="build-module-ext-barcode"/>
     <antcall target="build-module-ext-java14config"/>
     <antcall target="build-module-ext-java14imageio"/>
     <antcall target="build-module-ext-java14log"/>
@@ -568,7 +604,6 @@
     <!-- delete the temp directory -->
     <delete dir="build"/>
   </target>
-
 
 
   <!-- Generate the JFreeReport JavaDoc HTML pages -->

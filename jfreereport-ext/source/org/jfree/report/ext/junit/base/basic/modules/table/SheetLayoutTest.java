@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SheetLayoutTest.java,v 1.4 2005/09/07 11:24:09 taqua Exp $
+ * $Id: SheetLayoutTest.java,v 1.5 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------
@@ -361,10 +361,10 @@ public class SheetLayoutTest extends TestCase
   private void assertBackground (final Color color, final TableCellBackground background)
   {
     assertNotNull(background);
-    assertEquals(0, background.getBorderSizeTop(),0);
-    assertEquals(0, background.getBorderSizeLeft(),0);
-    assertEquals(0, background.getBorderSizeBottom(),0);
-    assertEquals(0, background.getBorderSizeRight(),0);
+    assertNull(background.getBorderStrokeTop());
+    assertNull(background.getBorderStrokeLeft());
+    assertNull(background.getBorderStrokeBottom());
+    assertNull(background.getBorderStrokeRight());
     assertEquals(color, background.getColor());
   }
 
@@ -778,7 +778,7 @@ public class SheetLayoutTest extends TestCase
     if (top)
     {
       assertEquals(c, background.getColorTop());
-      assertTrue(background.getBorderSizeTop() != 0);
+      assertNotNull(background.getBorderStrokeTop());
     }
     else
     {
@@ -788,7 +788,7 @@ public class SheetLayoutTest extends TestCase
     if (left)
     {
       assertEquals(c, background.getColorLeft());
-      assertTrue(background.getBorderSizeLeft() != 0);
+      assertNotNull(background.getBorderStrokeLeft());
     }
     else
     {
@@ -798,9 +798,9 @@ public class SheetLayoutTest extends TestCase
     // after successfull layouting, there should never be a
     // 'right' or 'bottom' border definition
     assertNull(background.getColorBottom());
-    assertTrue( background.getBorderSizeBottom() == 0);
+    assertNull( background.getBorderStrokeBottom());
     assertNull(background.getColorRight());
-    assertTrue( background.getBorderSizeRight() == 0);
+    assertNull( background.getBorderStrokeRight());
 
   }
 

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractPageableReportServletWorker.java,v 1.4 2005/01/31 17:16:41 taqua Exp $
+ * $Id: AbstractPageableReportServletWorker.java,v 1.5 2005/08/09 15:44:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ import javax.servlet.http.HttpSession;
 
 import org.jfree.report.ReportInitialisationException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 
@@ -101,12 +100,11 @@ public abstract class AbstractPageableReportServletWorker
    *
    * @throws ReportInitialisationException if the report could not be initialized.
    * @throws ReportProcessingException if the report processing failes.
-   * @throws FunctionInitializeException if the output function could not be initalized.
    * @throws IllegalStateException if no output target is defined.
    */
   private void repaginateReport()
       throws ReportInitialisationException,
-      ReportProcessingException, FunctionInitializeException
+      ReportProcessingException
   {
     if (outputTarget == null)
     {
@@ -144,10 +142,9 @@ public abstract class AbstractPageableReportServletWorker
    * @return the number of pages for the report.
    * @throws ReportInitialisationException if the report could not be initialized.
    * @throws ReportProcessingException if the report processing failes.
-   * @throws FunctionInitializeException if the output function could not be initalized.
    */
   public int getNumberOfPages ()
-    throws  ReportInitialisationException, ReportProcessingException, FunctionInitializeException
+    throws  ReportInitialisationException, ReportProcessingException
   {
     if (!isPaginated)
     {

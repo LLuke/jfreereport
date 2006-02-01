@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.10 2005/09/20 16:58:23 taqua Exp $
+ * $Id: WriterTest.java,v 1.11 2005/11/14 20:44:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,7 @@ import java.net.URL;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.XmlDemoHandler;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
@@ -68,6 +69,7 @@ public class WriterTest extends TestCase
   public WriterTest(final String s)
   {
     super(s);
+    JFreeReportBoot.getInstance().start();
   }
 
   public void testConvertReport() throws Exception

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendPreviewTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: DataRowBackendPreviewTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,6 +43,8 @@ import javax.swing.table.DefaultTableModel;
 import junit.framework.TestCase;
 import org.jfree.report.states.DataRowBackend;
 import org.jfree.report.states.DataRowPreview;
+import org.jfree.report.DefaultResourceBundleFactory;
+import org.jfree.util.DefaultConfiguration;
 
 public class DataRowBackendPreviewTest extends TestCase
 {
@@ -53,7 +55,8 @@ public class DataRowBackendPreviewTest extends TestCase
 
   public void testCreate()
   {
-    final DataRowBackend db = new DataRowBackend();
+    final DataRowBackend db = new DataRowBackend
+            (new DefaultResourceBundleFactory(), new DefaultConfiguration());
     db.setCurrentRow(-1);
     final DefaultTableModel model = new DefaultTableModel();
     final Object[][] data = new Object[][]{
@@ -99,7 +102,8 @@ public class DataRowBackendPreviewTest extends TestCase
 
   public void testFunctionality()
   {
-    final DataRowBackend db = new DataRowBackend();
+    final DataRowBackend db = new DataRowBackend
+            (new DefaultResourceBundleFactory(), new DefaultConfiguration());
     db.setCurrentRow(-1);
     final DefaultTableModel model = new DefaultTableModel();
     final Object[][] data = new Object[][]{

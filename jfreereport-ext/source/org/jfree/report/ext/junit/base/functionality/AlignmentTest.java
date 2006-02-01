@@ -81,6 +81,11 @@ public class AlignmentTest extends TestCase
       {
         counter += 1;
       }
+      else
+      {
+        Log.debug ("Text: " + text);
+      }
+
       final StrictBounds sb = getInternalOperationBounds();
       final StrictBounds pb = getInternalPageBounds();
 
