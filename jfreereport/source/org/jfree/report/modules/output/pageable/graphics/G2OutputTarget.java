@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.29 2005/11/17 17:03:48 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.30 2006/01/16 20:56:52 taqua Exp $
  *
  * Changes
  * -------
@@ -681,5 +681,10 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     final double drawableHeight = StrictGeomUtility.toExternalValue(drawableBounds.getHeight());
     drawable.draw(g2, new Rectangle2D.Double(0, 0, drawableWidth, drawableHeight));
     g2.dispose();
+  }
+
+  public String getExportDescription()
+  {
+    return "pageable/AWT";
   }
 }

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelProcessor.java,v 1.13 2005/02/23 21:05:37 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.14 2005/09/04 13:15:07 taqua Exp $
  *
  * Changes
  * -------
@@ -171,5 +171,8 @@ public class ExcelProcessor extends TableProcessor
                     String.valueOf(defineDataFormats));
   }
 
-
+  protected String getExportDescription()
+  {
+    return "table/excel";
+  }
 }

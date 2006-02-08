@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.26 2005/08/10 18:04:45 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.27 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -380,7 +380,7 @@ public class PageableReportProcessor
     try
     {
       // every report processing starts with an StartState.
-      final StartState startState = new StartState(getReport());
+      final StartState startState = new StartState(getReport(), outputTarget.getExportDescription());
       ReportState state = startState;
       final int maxRows = getReport().getData().getRowCount();
 

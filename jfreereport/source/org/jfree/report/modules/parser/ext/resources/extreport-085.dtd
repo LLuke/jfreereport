@@ -464,7 +464,8 @@ references     CDATA           #REQUIRED
 
  -->
 <!ELEMENT report-description
-(report-header?, report-footer?, page-header?, page-footer?, watermark?, groups?, itemband?)>
+(report-header?, report-footer?, page-header?, page-footer?,
+ watermark?, no-data-band?, groups?, itemband?)>
 
 <!--
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.6 2005/02/23 21:05:28 taqua Exp $
+ * $Id: OutputTarget.java,v 1.7 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -132,4 +132,6 @@ public interface OutputTarget extends LayoutSupport
    * @param config the configuration.
    */
   public void configure (Configuration config);
+
+  public String getExportDescription();
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.24 2005/10/19 20:21:06 taqua Exp $
+ * $Id: TableProcessor.java,v 1.25 2006/01/27 16:25:36 taqua Exp $
  *
  * Changes
  * -------
@@ -220,6 +220,8 @@ public abstract class TableProcessor
     return report;
   }
 
+  protected abstract String getExportDescription();
+
   /**
    * Processes the entire report and records the state at the end of every page.
    *
@@ -235,7 +237,7 @@ public abstract class TableProcessor
 
     try
     {
-      final StartState startState = new StartState(getReport());
+      final StartState startState = new StartState(getReport(), getExportDescription());
       ReportState state = startState;
 
       // the report processing can be splitted into 2 separate processes.

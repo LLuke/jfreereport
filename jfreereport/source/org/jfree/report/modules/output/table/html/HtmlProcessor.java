@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.17 2005/09/04 13:15:06 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.18 2005/09/06 11:40:20 taqua Exp $
  *
  * Changes
  * -------
@@ -288,5 +288,10 @@ public class HtmlProcessor extends TableProcessor
   protected MetaBandProducer createMetaBandProducer ()
   {
     return new HtmlMetaBandProducer(isGenerateXHTML(), isUseDeviceIndependentImageSize());
+  }
+
+  protected String getExportDescription()
+  {
+    return "table/html";
   }
 }

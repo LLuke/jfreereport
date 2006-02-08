@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ReportDescriptionReadHandler.java,v 1.4 2005/03/03 23:00:21 taqua Exp $
  *
  * Changes
  * -------
@@ -91,6 +91,10 @@ public class ReportDescriptionReadHandler extends AbstractPropertyXmlReadHandler
     else if (tagName.equals("watermark"))
     {
       return new BandReadHandler(report.getWatermark());
+    }
+    else if (tagName.equals("no-data-band"))
+    {
+      return new BandReadHandler(report.getNoDataBand());
     }
     else if (tagName.equals("groups"))
     {

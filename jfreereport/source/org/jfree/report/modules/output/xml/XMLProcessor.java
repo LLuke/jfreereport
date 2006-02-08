@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.12 2005/02/23 21:05:37 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.13 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes
  * -------
@@ -151,7 +151,7 @@ public class XMLProcessor
           throws
           ReportProcessingException, CloneNotSupportedException
   {
-    final StartState startState = new StartState(getReport());
+    final StartState startState = new StartState(getReport(), "document/xml");
     ReportState state = startState;
     ReportState retval = null;
 

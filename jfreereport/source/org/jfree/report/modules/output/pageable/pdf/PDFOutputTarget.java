@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.42 2006/01/16 20:56:52 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.43 2006/01/24 14:17:38 taqua Exp $
  *
  * Changes
  * -------
@@ -134,6 +134,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
      */
     private final float fontSize;
     private boolean bold;
+    private float fontHeight;
 
     /**
      * Creates a new size calculator.
@@ -156,6 +157,11 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       this.baseFont = font;
       this.fontSize = fontSize;
       this.bold = bold;
+
+      final float ascent = baseFont.getFontDescriptor(BaseFont.AWT_ASCENT, fontSize);
+      final float descent = baseFont.getFontDescriptor(BaseFont.AWT_DESCENT, fontSize);
+      final float leading = baseFont.getFontDescriptor(BaseFont.AWT_LEADING, fontSize);
+      this.fontHeight = ascent - descent + leading;
     }
 
     /**
@@ -190,7 +196,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
      */
     public float getLineHeight ()
     {
-      return fontSize;
+      return fontHeight;
     }
   }
 
@@ -1357,5 +1363,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   {
     return font.getFontType() == BaseFont.FONT_TYPE_TT ||
            font.getFontType() == BaseFont.FONT_TYPE_TTUNI;
+  }
+
+  public String getExportDescription()
+  {
+    return "pageable/pdf";
   }
 }

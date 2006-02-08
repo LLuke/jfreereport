@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportReadHandler.java,v 1.9 2005/08/10 18:04:45 taqua Exp $
+ * $Id: JFreeReportReadHandler.java,v 1.10 2005/09/21 12:00:19 taqua Exp $
  *
  * Changes
  * -------
@@ -347,6 +347,10 @@ public class JFreeReportReadHandler extends AbstractPropertyXmlReadHandler
     else if (tagName.equals("watermark"))
     {
       return new RootLevelBandReadHandler(report.getWatermark());
+    }
+    else if (tagName.equals("no-data-band"))
+    {
+      return new RootLevelBandReadHandler(report.getNoDataBand());
     }
     else if (tagName.equals("groups"))
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.12 2005/05/01 15:07:52 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.13 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -239,7 +239,6 @@ public class HSSFCellStyleProducer
       }
     }
     final HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
-    hssfCellStyle.setWrapText(true);
     hssfCellStyle.setFillForegroundColor(WHITE_INDEX);
     hssfCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
@@ -250,6 +249,7 @@ public class HSSFCellStyleProducer
       hssfCellStyle.setAlignment(convertAlignment(style.getHorizontalAlignment()));
       hssfCellStyle.setVerticalAlignment(convertAlignment(style.getVerticalAlignment()));
       hssfCellStyle.setFont(fontFactory.getExcelFont(wrapper));
+      hssfCellStyle.setWrapText(style.isWrapText());
       if (style.getDataStyle() != null)
       {
         hssfCellStyle.setDataFormat(dataFormat.getFormat(style.getDataStyle()));

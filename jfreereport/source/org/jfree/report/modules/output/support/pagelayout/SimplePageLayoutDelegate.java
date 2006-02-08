@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.19 2005/11/12 15:38:32 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.20 2006/01/27 16:25:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -633,6 +633,26 @@ public class SimplePageLayoutDelegate implements
       throw new IllegalStateException("AssertationFailed: Page is closed.");
     }
     setCurrentEffectiveGroupIndex(getCurrentEffectiveGroupIndex() + 1);
+
+    if (event.getState().getNumberOfRows() == 0)
+    {
+      // ups, we have no data. Lets signal that ...
+      try
+      {
+        worker.print(event.getReport().getNoDataBand(),
+                SimplePageLayoutWorker.BAND_PRINTED,
+                SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+      }
+      catch (FunctionProcessingException fe)
+      {
+        throw fe;
+      }
+      catch (Exception e)
+      {
+        throw new FunctionProcessingException("ItemsStarted failed", e);
+      }
+      // there will be no item-band printed. 
+    }
   }
 
   /**

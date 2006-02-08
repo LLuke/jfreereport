@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFProcessor.java,v 1.13 2005/09/07 14:25:11 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.14 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes
  * -------
@@ -118,5 +118,10 @@ public class RTFProcessor extends TableProcessor
             getConfigProperty(getReportConfigurationPrefix() + ".Encoding",
                     EncodingSupport.getPlatformDefaultEncoding());
     return new RTFMetaBandProducer(encoding);
+  }
+
+  protected String getExportDescription()
+  {
+    return "table/rtf";
   }
 }

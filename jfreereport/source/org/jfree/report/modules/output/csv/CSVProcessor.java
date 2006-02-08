@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.15 2005/12/26 14:01:54 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.16 2005/12/27 09:25:04 taqua Exp $
  *
  * Changes
  * -------
@@ -248,7 +248,7 @@ public class CSVProcessor
     final StartState startState;
     try
     {
-      startState = new StartState(getReport());
+      startState = new StartState(getReport(), "data/csv");
     }
     catch (CloneNotSupportedException e)
     {

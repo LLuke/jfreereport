@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.12 2005/04/09 17:43:13 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.13 2005/09/04 13:15:06 taqua Exp $
  *
  * Changes
  * -------
@@ -186,5 +186,10 @@ public class CSVTableProcessor extends TableProcessor
     final DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
     return new CSVMetaBandProducer(new DefaultLayoutSupport(contentFactory));
+  }
+
+  protected String getExportDescription()
+  {
+    return "table/csv";
   }
 }

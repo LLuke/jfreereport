@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.22 2005/09/07 14:25:11 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.23 2005/10/11 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -641,5 +641,10 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   protected void drawDrawable (final DrawableContent drawable)
   {
+  }
+
+  public String getExportDescription()
+  {
+    return "pageable/text";
   }
 }

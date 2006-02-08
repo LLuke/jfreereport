@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.11 2005/10/02 10:43:52 taqua Exp $
+ * $Id: PageProcess.java,v 1.12 2006/01/27 16:25:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -251,7 +251,7 @@ public class PageProcess
         lm.clearLogicalPage();
       }
     }
-    lastRecentlyUsedState = new WeakReference
+     lastRecentlyUsedState = new WeakReference
             (new CacheInformation(currPage, state));
     return state;
   }

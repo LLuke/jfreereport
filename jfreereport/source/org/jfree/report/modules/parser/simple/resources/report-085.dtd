@@ -206,7 +206,7 @@ drawable-field | shape-field | band)*">
     SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
-<!ELEMENT report   ((configuration | reportheader | reportfooter |
+<!ELEMENT report   ((configuration | reportheader | reportfooter | no-data-band |
                      pageheader | pagefooter | watermark | groups |
                      items | functions | include | parser-config)*)>
 
