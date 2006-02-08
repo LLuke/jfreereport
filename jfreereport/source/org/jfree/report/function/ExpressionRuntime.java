@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ExpressionRuntime.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,4 +56,17 @@ public interface ExpressionRuntime
   public TableModel getData();
   /** Where are we in the current processing. */
   public int getCurrentRow();
+
+  /**
+   * The output descriptor is a simple string collections consisting of
+   * the following components: exportclass/type/subtype
+   *
+   * For example, the PDF export would be: pageable/pdf
+   * The StreamHTML export would return table/html/stream
+   *
+   * @return the export descriptor.
+   */
+  public String getExportDescriptor();
+
+  // JFreeReport 0.9.x will introduce libLayout's OutputProcessorMetaData here.
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.22 2005/08/08 15:36:30 taqua Exp $
+ * $Id: ReportPane.java,v 1.23 2005/09/07 11:21:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -1040,7 +1040,10 @@ public class ReportPane extends JComponent
     {
       repaginationListenersCache = repaginationListeners.toArray();
     }
-
+    if (repaginationListenersCache == null)
+    {
+      throw new IllegalStateException();
+    }
     for (int i = 0; i < repaginationListenersCache.length; i++)
     {
       final RepaginationListener l = (RepaginationListener) repaginationListenersCache[i];

@@ -1,11 +1,8 @@
 package org.jfree.report.function;
 
-import org.jfree.report.event.ReportEvent;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportDefinition;
 import org.jfree.report.Group;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
-import org.jfree.report.util.ReportProperties;
+import org.jfree.report.ReportDefinition;
+import org.jfree.report.event.ReportEvent;
 
 /**
  * Hides the page header and footer if the export type is not pageable.
@@ -25,15 +22,13 @@ public class HidePageBandForTableExportFunction extends AbstractFunction
 
   public void reportInitialized(final ReportEvent event)
   {
-    final ReportProperties properties = event.getReport().getProperties();
-    Object o = properties.get(JFreeReport.REPORT_LAYOUT_SUPPORT);
-    boolean isPageable = (o instanceof OutputTarget);
+    boolean isTable = getRuntime().getExportDescriptor().startsWith("table");
 
     final ReportDefinition report = event.getReport();
     if (isHidePageBands())
     {
-      report.getPageHeader().setVisible(isPageable);
-      report.getPageFooter().setVisible(isPageable);
+      report.getPageHeader().setVisible(isTable == false);
+      report.getPageFooter().setVisible(isTable == false);
     }
     if (isDisableRepeatingHeader())
     {
@@ -43,7 +38,7 @@ public class HidePageBandForTableExportFunction extends AbstractFunction
         final Group g = report.getGroup(i);
         if (g.getHeader().isRepeat())
         {
-          g.getHeader().setRepeat(isPageable);
+          g.getHeader().setRepeat(isTable == false);
         }
       }
     }

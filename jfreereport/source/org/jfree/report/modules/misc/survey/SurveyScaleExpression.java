@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleExpression.java,v 1.5 2005/04/15 19:53:46 taqua Exp $
+ * $Id: SurveyScaleExpression.java,v 1.6 2005/08/29 17:56:46 taqua Exp $
  *
  * Changes
  * -------
@@ -220,6 +220,26 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
   public void setOverrideShapeFilled (final boolean b)
   {
     this.overrideShapeFilled = b;
+  }
+
+  public int getLowest()
+  {
+    return lowest;
+  }
+
+  public void setLowest(final int lowest)
+  {
+    this.lowest = lowest;
+  }
+
+  public int getHighest()
+  {
+    return highest;
+  }
+
+  public void setHighest(final int highest)
+  {
+    this.highest = highest;
   }
 
   /**

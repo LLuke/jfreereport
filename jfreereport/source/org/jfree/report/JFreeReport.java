@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.28 2005/09/19 15:38:44 taqua Exp $
+ * $Id: JFreeReport.java,v 1.29 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -345,6 +345,8 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    */
   private ResourceBundleFactory resourceBundleFactory;
 
+  private NoDataBand noDataBand;
+
   /**
    * The default constructor. Creates an empty but fully initialized report.
    */
@@ -362,6 +364,7 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     this.pageFooter = new PageFooter();
     this.itemBand = new ItemBand();
     this.watermark = new Watermark();
+    this.noDataBand = new NoDataBand();
 
     this.data = new DefaultTableModel();
     this.expressions = new ExpressionCollection();
@@ -598,6 +601,32 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    *
    * @return the watermark band (never <code>null</code>).
    */
+  public NoDataBand getNoDataBand ()
+  {
+    return this.noDataBand;
+  }
+
+  /**
+   * Sets the watermark band for the report.
+   *
+   * @param band the new watermark band (<code>null</code> not permitted).
+   */
+  public void setNoDataBand (final NoDataBand band)
+  {
+    if (band == null)
+    {
+      throw new NullPointerException("JFreeReport.setWatermark(...) : null not permitted.");
+    }
+    this.noDataBand.setReportDefinition(null);
+    this.noDataBand = band;
+    this.noDataBand.setReportDefinition(this);
+  }
+
+  /**
+   * Returns the report's watermark band.
+   *
+   * @return the watermark band (never <code>null</code>).
+   */
   public Watermark getWatermark ()
   {
     return this.watermark;
@@ -811,15 +840,18 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     report.itemBand = (ItemBand) itemBand.clone();
     report.pageFooter = (PageFooter) pageFooter.clone();
     report.pageHeader = (PageHeader) pageHeader.clone();
-    report.properties = (ReportProperties) properties.clone();
     report.reportFooter = (ReportFooter) reportFooter.clone();
     report.reportHeader = (ReportHeader) reportHeader.clone();
+    report.noDataBand = (NoDataBand) noDataBand.clone();
+
+    report.properties = (ReportProperties) properties.clone();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     // we replace the reportbuilder-hints with an empty set here
     // as only the original report definition will be hinted.
     report.reportBuilderHints = new ReportBuilderHints();
 
+    report.noDataBand.setReportDefinition(report);
     report.groups.setReportDefinition(report);
     report.reportHeader.setReportDefinition(report);
     report.reportFooter.setReportDefinition(report);

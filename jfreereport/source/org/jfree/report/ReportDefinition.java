@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.12 2005/08/08 15:36:27 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.13 2005/09/07 14:23:49 taqua Exp $
  *
  * Changes
  * -------
@@ -100,6 +100,13 @@ public interface ReportDefinition extends Cloneable
    * @return The watermark band.
    */
   public Watermark getWatermark ();
+
+  /**
+   * Returns the "no-data" band, which is displayed if there is no data available.
+   *
+   * @return The no-data band.
+   */
+  public NoDataBand getNoDataBand();
 
   /**
    * Returns the report properties.
