@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.5 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,10 @@ public final class PreItemGroupState extends ReportState
     {
       return new PostItemGroupState(this);
     }
-    return new InItemGroupState(this);
+    else
+    {
+      return new InItemGroupState(this);
+    }
   }
 
   /**

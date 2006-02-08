@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.12 2005/09/19 11:00:50 taqua Exp $
+ * $Id: StartState.java,v 1.13 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes
  * -------
@@ -66,10 +66,11 @@ public final class StartState extends ReportState
    * @throws CloneNotSupportedException if the initial cloning of the report definition
    *                                    fails.
    */
-  public StartState (final JFreeReport report)
+  public StartState (final JFreeReport report,
+                     final String exportDescription)
           throws CloneNotSupportedException
   {
-    super(report);
+    super(report, exportDescription);
     final Iterator it = getLevels();
     if (it.hasNext())
     {

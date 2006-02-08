@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.12 2005/10/06 00:50:26 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.13 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes
  * -------
@@ -149,7 +149,8 @@ public class DataRowBackend implements Cloneable
    * Creates a new DataRowBackend.
    */
   public DataRowBackend (final ResourceBundleFactory resourceBundleFactory,
-                         final Configuration configuration)
+                         final Configuration configuration,
+                         final String exportDescriptor)
   {
     columnlocks = EMPTY_BOOLS;
     dataRowConnector = new DataRowConnector();
@@ -163,7 +164,8 @@ public class DataRowBackend implements Cloneable
       invalidColumns = new HashSet();
     }
     lastRow = -1;
-    expressionRuntime = new DataRowExpressionRuntime(this, configuration, resourceBundleFactory);
+    expressionRuntime = new DataRowExpressionRuntime
+            (this, configuration, resourceBundleFactory, exportDescriptor);
 
     revalidateColumnLock();
   }
@@ -544,7 +546,8 @@ public class DataRowBackend implements Cloneable
     db.columnlocks = new boolean[getColumnCount()];
     db.expressionRuntime = new DataRowExpressionRuntime
             (db, expressionRuntime.getConfiguration(),
-                    expressionRuntime.getResourceBundleFactory());
+                    expressionRuntime.getResourceBundleFactory(),
+                    expressionRuntime.getExportDescriptor());
     db.dataRowConnector = new DataRowConnector();
     db.dataRowConnector.setDataRowBackend(db);
     if (functions != null)

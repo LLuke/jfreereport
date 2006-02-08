@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DataRowExpressionRuntime.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,16 +47,24 @@ import org.jfree.util.Configuration;
  *
  * @author Thomas Morgner
  */
-public class DataRowExpressionRuntime implements ExpressionRuntime
+public final class DataRowExpressionRuntime implements ExpressionRuntime
 {
   private DataRowBackend backend;
   private Configuration configuration;
   private ResourceBundleFactory resourceBundleFactory;
+  private String exportDescriptor;
 
   public DataRowExpressionRuntime(final DataRowBackend backend,
                                   final Configuration configuration,
-                                  final ResourceBundleFactory resourceBundleFactory)
+                                  final ResourceBundleFactory resourceBundleFactory,
+                                  final String exportDescriptor)
   {
+    if (backend == null) throw new NullPointerException();
+    if (configuration == null) throw new NullPointerException();
+    if (exportDescriptor == null) throw new NullPointerException();
+    if (resourceBundleFactory == null) throw new NullPointerException();
+
+    this.exportDescriptor = exportDescriptor;
     this.backend = backend;
     this.configuration = configuration;
     this.resourceBundleFactory = resourceBundleFactory;
@@ -87,5 +95,19 @@ public class DataRowExpressionRuntime implements ExpressionRuntime
   public int getCurrentRow()
   {
     return backend.getCurrentRow();
+  }
+
+  /**
+   * The output descriptor is a simple string collections consisting of the
+   * following components: exportclass/type/subtype
+   * <p/>
+   * For example, the PDF export would be: pageable/pdf The StreamHTML export
+   * would return table/html/stream
+   *
+   * @return the export descriptor.
+   */
+  public String getExportDescriptor()
+  {
+    return exportDescriptor;
   }
 }

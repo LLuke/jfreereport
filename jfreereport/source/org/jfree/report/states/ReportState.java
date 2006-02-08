@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.21 2006/01/24 18:58:29 taqua Exp $
+ * $Id: ReportState.java,v 1.22 2006/01/27 16:25:36 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -151,7 +151,8 @@ public abstract class ReportState implements Cloneable
    * @throws CloneNotSupportedException if the initial cloning of the report definition
    *                                    fails.
    */
-  protected ReportState (final JFreeReport reportPar)
+  protected ReportState (final JFreeReport reportPar,
+                         final String exportDescriptor)
           throws CloneNotSupportedException
   {
     setReportDefinition(new ReportDefinitionImpl(reportPar));
@@ -163,7 +164,8 @@ public abstract class ReportState implements Cloneable
 
     final DataRowBackend dr = new DataRowBackend
             (getReportDefinition().getResourceBundleFactory(),
-             getReportDefinition().getReportConfiguration());
+             getReportDefinition().getReportConfiguration(),
+             exportDescriptor);
     dr.setTablemodel(reportPar.getData());
     dr.setFunctions(functions);
     dr.setReportProperties(new ReportPropertiesList(reportProperties));

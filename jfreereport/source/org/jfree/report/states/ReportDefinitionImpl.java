@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.14 2005/09/07 14:25:11 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.15 2005/09/20 19:53:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,6 +53,7 @@ import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.Watermark;
+import org.jfree.report.NoDataBand;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportProperties;
 
@@ -104,6 +105,11 @@ public class ReportDefinitionImpl implements ReportDefinition
   private Watermark watermark;
 
   /**
+   * The watermark acts a global page background.
+   */
+  private NoDataBand noDataBand;
+
+  /**
    * Storage for arbitrary properties that a user can assign to the report.
    */
   private ReportProperties properties;
@@ -150,6 +156,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     pageHeader = (PageHeader) report.getPageHeader().clone();
     itemBand = (ItemBand) report.getItemBand().clone();
     watermark = (Watermark) report.getWatermark().clone();
+    noDataBand = (NoDataBand) report.getNoDataBand().clone();
     reportConfiguration = report.getReportConfiguration();
     pageDefinition = (PageDefinition) report.getPageDefinition().clone();
     styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
@@ -223,6 +230,17 @@ public class ReportDefinitionImpl implements ReportDefinition
   public ItemBand getItemBand ()
   {
     return itemBand;
+  }
+
+  /**
+   * Returns the "no-data" band, which is displayed if there is no data
+   * available.
+   *
+   * @return The no-data band.
+   */
+  public NoDataBand getNoDataBand()
+  {
+    return noDataBand;
   }
 
   /**
