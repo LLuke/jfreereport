@@ -2,7 +2,7 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.7: (27-Jan-2006)
+0.8.7: (10-Feb-2006)
         * [BUG] Performing a pagebreak-before-print on a group header and
           printing values from the datarow in the pagefooter of the previous
           page already showed the contents of the to-be-printed group.
@@ -20,9 +20,18 @@ A list of changes in recent versions:
           around these problems. It can be adjusted using the report
           configuration for cases where the default is not appropriate.
 
+        * [BUG] The excel color mapping was still buggy. The bug caused gray
+          areas to be rendered in red shades.
+
         * [BUG] The line height of text elements was computed incorrectly and
           therefore clipped large glyphs. Now, the maximum height defined for the
           current font is used to define the line height.
+
+          Warning:
+          This has the sad side effect, that the effective lineheight is greater
+          than the font's height most of the time. Therefore an element with
+          Arial 10 needs a defined height of 11pt or 12pt to display a single
+          line.
 
           Setting a custom line height in conjunction with multiline elements
           caused exceptions due to another bug in that code.
@@ -33,6 +42,14 @@ A list of changes in recent versions:
 
         * [BUG] Component-Drawing was causing an infinite loop because of stupid
           coding.
+
+        * [BUG] The preview components did not shutdown the repagination thread
+          properly. The thread eventually lived forever, eating valuable resources.
+
+        * [BUG] Groups declaring their headers to have a 'pagebreak-before-print'
+          behaved differently than groups having a 'pagebreak-after-print'
+          on their footers. This was caused by an incomplete roll-back of the
+          layout-states.
 
         * As a workaround for a bug in the JDK 1.5, DecimalFormats with
           an empty format string get initialized manually using a hardcoded
@@ -73,6 +90,17 @@ A list of changes in recent versions:
         * Shape-elements have a new property to define the stroke-type of the
           shapes contained in them. In the Simple-XML definition, a set of
           predefined strokes is available.
+
+        * The ExpressionRuntime interface now allows expressions to safely
+          detect the current export type.
+
+        * A new band type is available to display special content if the table
+          model of the report does not contain any data. The 'no-data-band'
+          replaces the 'itemband' in such cases and is printed exactly one time.
+
+          The new functions HideElementIfDataAvailableExpression and
+          ShowElementIfDataAvailableExpression can be used to customize the
+          report layout even further, if needed.
 
 0.8.6-6: (27-Dec-2005)
         * [BUG] The demo did not initialize JFreeReport through the

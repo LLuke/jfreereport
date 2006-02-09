@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.10 2005/08/08 15:36:29 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.11 2005/09/19 15:38:45 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -89,6 +89,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   private int numberOfElements;
   private String element;
   private boolean initialState;
+  private boolean newPageState;
 
   /**
    * Default constructor.
@@ -107,7 +108,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   public void pageStarted (final ReportEvent event)
   {
     pagebreak = false;
-    trigger = !getInitialState();
+    trigger = newPageState;
     togglecount = getNumberOfElements();
     count = 0;
     triggerVisibleState(event);
@@ -210,6 +211,16 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   public void setNumberOfElements (final int numberOfElements)
   {
     this.numberOfElements = numberOfElements;
+  }
+
+  public boolean isNewPageState()
+  {
+    return newPageState;
+  }
+
+  public void setNewPageState(final boolean newPageState)
+  {
+    this.newPageState = newPageState;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.25 2005/09/16 16:08:06 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.26 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes
  * -------
@@ -606,45 +606,44 @@ public class TableCellBackground extends MetaElement implements Cloneable
 
     final TableCellBackground tableCellBackground = (TableCellBackground) o;
 
-    if (ObjectUtilities.equal(borderStrokeBottom, tableCellBackground.borderStrokeBottom))
+    if (ObjectUtilities.equal(borderStrokeBottom,
+            tableCellBackground.borderStrokeBottom) == false)
     {
       return false;
     }
-    if (ObjectUtilities.equal(borderStrokeLeft, tableCellBackground.borderStrokeLeft))
+    if (ObjectUtilities.equal(borderStrokeLeft,
+            tableCellBackground.borderStrokeLeft) == false)
     {
       return false;
     }
-    if (ObjectUtilities.equal(borderStrokeRight, tableCellBackground.borderStrokeRight))
+    if (ObjectUtilities.equal(borderStrokeRight,
+            tableCellBackground.borderStrokeRight) == false)
     {
       return false;
     }
-    if (ObjectUtilities.equal(borderStrokeTop, tableCellBackground.borderStrokeTop))
+    if (ObjectUtilities.equal(borderStrokeTop,
+            tableCellBackground.borderStrokeTop) == false)
     {
       return false;
     }
-    if (color != null ? !color.equals(tableCellBackground.color)
-            : tableCellBackground.color != null)
+    if (ObjectUtilities.equal(color,
+            tableCellBackground.color) == false)
     {
       return false;
     }
-    if (colorBottom != null ? !colorBottom.equals(
-            tableCellBackground.colorBottom)
-            : tableCellBackground.colorBottom != null)
+    if (ObjectUtilities.equal(colorBottom, tableCellBackground.colorBottom) == false)
     {
       return false;
     }
-    if (colorLeft != null ? !colorLeft.equals(tableCellBackground.colorLeft)
-            : tableCellBackground.colorLeft != null)
+    if (ObjectUtilities.equal(colorRight, tableCellBackground.colorRight) == false)
     {
       return false;
     }
-    if (colorRight != null ? !colorRight.equals(tableCellBackground.colorRight)
-            : tableCellBackground.colorRight != null)
+    if (ObjectUtilities.equal(colorLeft, tableCellBackground.colorLeft) == false)
     {
       return false;
     }
-    if (colorTop != null ? !colorTop.equals(tableCellBackground.colorTop)
-            : tableCellBackground.colorTop != null)
+    if (ObjectUtilities.equal(colorTop, tableCellBackground.colorTop ) == false)
     {
       return false;
     }

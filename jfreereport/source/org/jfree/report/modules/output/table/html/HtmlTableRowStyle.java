@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableRowStyle.java,v 1.7 2005/05/31 20:37:25 taqua Exp $
+ * $Id: HtmlTableRowStyle.java,v 1.8 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -167,17 +167,17 @@ public class HtmlTableRowStyle implements HtmlStyle
     {
       return false;
     }
-    if (background != null ? !background.equals(htmlTableRowStyle.background) : htmlTableRowStyle.background != null)
+    if (ObjectUtilities.equal(background, htmlTableRowStyle.background) == false)
     {
       return false;
     }
     if (tableRowBorderDefinition)
     {
-      if (colorBottom != null ? !colorBottom.equals(htmlTableRowStyle.colorBottom) : htmlTableRowStyle.colorBottom != null)
+      if (ObjectUtilities.equal(colorBottom, htmlTableRowStyle.colorBottom) == false)
       {
         return false;
       }
-      if (colorTop != null ? !colorTop.equals(htmlTableRowStyle.colorTop) : htmlTableRowStyle.colorTop != null)
+      if (ObjectUtilities.equal(colorTop, htmlTableRowStyle.colorTop) == false)
       {
         return false;
       }

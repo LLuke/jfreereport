@@ -400,4 +400,14 @@ files into a repository located in the local filesystem.
 
 This module will not work without the "misc-configstore-base".
 
-4.4.6 misc-bsh
+4.4.6 misc-bsf
+
+The bean-scripting framework module provides support for scripting using one
+of the supported languages of the Apache-BeanScripting framework. This is
+an simple way of adding small scripts to the xml report definitions.
+
+Users which define their reports using the API will be faster when
+implementing the expressions as own classes.
+
+This requires the bean scripting framework classes (contained in
+"bsf-2.3.0.jar") to be present in the classpath.

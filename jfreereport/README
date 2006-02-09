@@ -2,7 +2,7 @@
 * JFREEREPORT 0.8.7    *
 ************************
 
-21 Dec 2005
+10 Jan 2006
 
 1. INTRODUCTION
 ---------------
@@ -52,6 +52,7 @@ JFreeReport uses several other open source libraries:
 
   JCommon - http://www.jfree.org/jcommon/
   Pixie - http://sourceforge.net/projects/jfreereport/
+  LibFonts - http://sourceforge.net/projects/jfreereport/
 
 If you want to use the bean shell module, you will need:
 

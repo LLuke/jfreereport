@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.30 2005/10/14 15:43:33 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.31 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -540,12 +540,12 @@ public class HtmlContentCreator extends TableContentCreator
    * @param rectangle        the cell's rectangle in the table grid
    * @param x                the cell's x coordinate
    * @param y                the cell's y coordinate
-   * @param elementAlignment
+   * @param elementAlignment vertical alignment ...
    */
   private void printContentCellStart(final TableRectangle rectangle,
                                      final int x,
                                      final int y,
-                                     final ElementAlignment elementAlignment)
+                                     final ElementAlignment vAlignment)
   {
     final HtmlSheetLayout layout = (HtmlSheetLayout) getCurrentLayout();
     // now, finally we got a printable data cell.
@@ -586,7 +586,7 @@ public class HtmlContentCreator extends TableContentCreator
       style = layout.getStyleCollection().lookupStyle(internalStyleName);
       if (style == null)
       {
-        style = new HtmlTableCellStyle(background, elementAlignment);
+        style = new HtmlTableCellStyle(background, vAlignment);
       }
     }
     // now check, whether an equal style is already stored.

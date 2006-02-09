@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.21 2005/12/10 17:39:48 taqua Exp $
+ * $Id: SheetLayout.java,v 1.22 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -1319,14 +1319,14 @@ public class SheetLayout
    */
   public TableCellBackground getElementAt(final int row, final int column)
   {
-    return (TableCellBackground) backend.getObject(mapRow(row), mapColumn(
-            column));
+    return (TableCellBackground)
+            backend.getObject(mapRow(row), mapColumn(column));
   }
 
   public CellReference getContentAt(final int row, final int column)
   {
-    return (CellReference) objectIdTable.getObject(mapRow(row), mapColumn(
-            column));
+    return (CellReference) objectIdTable.getObject
+            (mapRow(row), mapColumn(column));
   }
 
   /**

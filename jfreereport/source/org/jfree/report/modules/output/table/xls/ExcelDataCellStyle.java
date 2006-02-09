@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.8 2005/02/23 21:05:37 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.9 2006/01/20 19:51:44 taqua Exp $
  *
  * Changes
  * -------
@@ -145,8 +145,6 @@ public final class ExcelDataCellStyle
     this.textColor = textColor;
     this.horizontalAlignment = horizontal;
     this.verticalAlignment = vertical;
-
-    Log.debug ("CellStyle:" + dataStyle);
   }
 
   /**

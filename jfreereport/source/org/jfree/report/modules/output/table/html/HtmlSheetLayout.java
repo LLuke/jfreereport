@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.13 2005/11/17 17:03:48 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.14 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,16 +40,15 @@ package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
 import java.awt.Stroke;
-import java.util.HashMap;
+import java.util.HashSet;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
-import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.SheetLayout;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableRectangle;
+import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.geom.StrictGeomUtility;
@@ -64,6 +63,60 @@ import org.jfree.util.ObjectUtilities;
  */
 public class HtmlSheetLayout extends SheetLayout
 {
+  private static class BackgroundPair
+  {
+    private ElementAlignment verticalAlignment;
+    private TableCellBackground background;
+    private int hashCode;
+
+    public BackgroundPair(final TableCellBackground background,
+                          final ElementAlignment verticalAlignment)
+    {
+      update(background, verticalAlignment);
+    }
+
+    public void update (final TableCellBackground background,
+                          final ElementAlignment verticalAlignment)
+    {
+      this.background = background;
+      this.verticalAlignment = verticalAlignment;
+
+      // precompute for performance reasons ...
+      hashCode = (verticalAlignment != null ? verticalAlignment.hashCode() : 0);
+      hashCode = 29 * hashCode + (background != null ? background.hashCode() : 0);
+    }
+
+    public boolean equals(final Object o)
+    {
+      if (this == o)
+      {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass())
+      {
+        return false;
+      }
+
+      final BackgroundPair that = (BackgroundPair) o;
+
+      if (ObjectUtilities.equal(background, that.background) == false)
+      {
+        return false;
+      }
+      if (ObjectUtilities.equal(verticalAlignment, that.verticalAlignment) == false)
+      {
+        return false;
+      }
+
+      return true;
+    }
+
+    public int hashCode()
+    {
+      return hashCode;
+    }
+  }
+
   private HtmlStyleCollection styleCollection;
   private TableRectangle rectangle;
 
@@ -108,17 +161,17 @@ public class HtmlSheetLayout extends SheetLayout
     {
       return;
     }
-    final Content co = element.getContent();
-    if (co instanceof RawContent)
+    if (element instanceof HtmlTextMetaElement)
     {
-      final RawContent rawContent = (RawContent) co;
-      if (rawContent.getContent() instanceof String)
-      {
-        addStringContentStyle(element);
-      }
+      addStringContentStyle(element);
     }
     // all other elements have no effect on the CSS-definitions
     // or are not yet cachable
+//    else
+//    {
+//      Log.debug ("Ignoring content of " + element.getContent() +
+//              "(" + element.getName() + ")");
+//    }
   }
 
   private void addStringContentStyle (final MetaElement element)
@@ -129,7 +182,6 @@ public class HtmlSheetLayout extends SheetLayout
             = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
     final ElementAlignment valign
             = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
-
     final HtmlContentStyle style =
             new HtmlContentStyle(font, color, halign);
     final String styleName = styleCollection.addContentStyle(style);
@@ -187,9 +239,15 @@ public class HtmlSheetLayout extends SheetLayout
     // Process all elements; duplicate entries will not be processed twice
     // Spanned elements are only stored in their upper left corner, as all
     // other cells will be skipped anyway ..
-    final HashMap completedElements = new HashMap();
+
+    // contains the completed elements and the alignment for them ...
+    final HashSet completedElements = new HashSet();
+    final BackgroundPair keyPair = new BackgroundPair(null, null);
+    final int rowCount = getRowCount();
+    final int columnCount = getColumnCount();
+
     TableRectangle rect = null;
-    for (int layoutRow = 0; layoutRow < getRowCount(); layoutRow++)
+    for (int layoutRow = 0; layoutRow < rowCount; layoutRow++)
     {
       Color rowColor = null;
       Color borderTop = null;
@@ -197,12 +255,10 @@ public class HtmlSheetLayout extends SheetLayout
       Stroke borderTopSize = null;
       Stroke borderBottomSize = null;
 
-      for (int layoutCol = 0; layoutCol < getColumnCount(); layoutCol++)
+      for (int layoutCol = 0; layoutCol < columnCount; layoutCol++)
       {
         final TableCellBackground bg;
         final CellReference reference = getContentAt(layoutRow, layoutCol);
-        final ElementAlignment verticalAlignment =
-                getVerticalAlignmentAt(layoutRow, layoutCol);
         if (reference != null)
         {
           // it's a spanning cell - we have to do a bit more than usual ..
@@ -215,11 +271,19 @@ public class HtmlSheetLayout extends SheetLayout
           {
             bg = getRegionBackground(rect);
           }
-
         }
         else
         {
           bg = getElementAt(layoutRow, layoutCol);
+        }
+
+        final ElementAlignment verticalAlignment =
+                getVerticalAlignmentAt(layoutRow, layoutCol);
+        keyPair.update(bg, verticalAlignment);
+
+        if (completedElements.contains(keyPair))
+        {
+          continue;
         }
 
         if (bg == null)
@@ -232,50 +296,47 @@ public class HtmlSheetLayout extends SheetLayout
           borderTopSize = null;
           borderBottom = null;
           borderBottomSize = null;
-          continue;
-        }
-
-        final Color bgColor = bg.getColor();
-        if (layoutCol == 0)
-        {
-          rowColor = bgColor;
-          borderTopSize = bg.getBorderStrokeTop();
-          borderTop = bg.getColorTop();
-          borderBottom = bg.getColorBottom();
-          borderBottomSize = bg.getBorderStrokeBottom();
         }
         else
         {
-          if (ObjectUtilities.equal(bgColor, rowColor) == false)
+          final Color bgColor = bg.getColor();
+          if (layoutCol == 0)
           {
-            // no common color ... therefore reset ..
-            rowColor = null;
+            // if this is the first column, initialize the row background ..
+            rowColor = bgColor;
+            borderTopSize = bg.getBorderStrokeTop();
+            borderTop = bg.getColorTop();
+            borderBottom = bg.getColorBottom();
+            borderBottomSize = bg.getBorderStrokeBottom();
           }
-          if (ObjectUtilities.equal(borderTop, bg.getColorTop()) == false)
+          else
           {
-            borderTop = null;
-            borderTopSize = null;
-          }
-          if (ObjectUtilities.equal(borderBottom, bg.getColorBottom()) == false)
-          {
-            borderBottom = null;
-            borderBottomSize = null;
-          }
-        }
+            // on all other columns: Check whether that thing is still valid ..
 
-        final String cachedStyleName = (String) completedElements.get(bg);
-        if (cachedStyleName != null)
-        {
-          // we already had that one ...
-          backgroundStyleTable.setObject(layoutRow, layoutCol, cachedStyleName);
-          continue;
+            if (ObjectUtilities.equal(bgColor, rowColor) == false)
+            {
+              // no common color ... therefore reset ..
+              rowColor = null;
+            }
+            if (ObjectUtilities.equal(borderTop, bg.getColorTop()) == false)
+            {
+              borderTop = null;
+              borderTopSize = null;
+            }
+            if (ObjectUtilities.equal(borderBottom, bg.getColorBottom()) == false)
+            {
+              borderBottom = null;
+              borderBottomSize = null;
+            }
+          }
         }
 
         final HtmlTableCellStyle style =
                 new HtmlTableCellStyle(bg, verticalAlignment);
+
         final String styleName = styleCollection.addCellStyle(style);
         backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
-        completedElements.put(bg, styleName);
+        completedElements.add (new BackgroundPair(bg, verticalAlignment));
       }
 
       final int height = (int) Math.ceil
@@ -292,8 +353,10 @@ public class HtmlSheetLayout extends SheetLayout
 
   protected ElementAlignment getVerticalAlignmentAt(final int row, final int column)
   {
+    final int mrow = mapRow(row);
+    final int mcolumn = mapColumn(column);
     final ElementAlignment ea = (ElementAlignment)
-            verticalAlignmentTable.getObject(mapRow(row), mapColumn(column));
+            verticalAlignmentTable.getObject(mrow, mcolumn);
     if (ea == null)
     {
       return ElementAlignment.TOP;
@@ -314,7 +377,7 @@ public class HtmlSheetLayout extends SheetLayout
 
   /**
    * Returns the name of the style assigned to the given cell position. The style itself
-   * is storef in the stylecollection.
+   * is stored in the stylecollection.
    *
    * @param row
    * @param column

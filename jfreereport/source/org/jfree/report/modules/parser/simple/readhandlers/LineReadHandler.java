@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LineReadHandler.java,v 1.6 2005/03/03 23:00:23 taqua Exp $
+ * $Id: LineReadHandler.java,v 1.7 2005/08/08 15:36:37 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.util.StrokeUtility;
 import org.jfree.util.Log;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
@@ -82,7 +83,7 @@ public class LineReadHandler extends AbstractPropertyXmlReadHandler
     final float y1 = ParserUtil.parseRelativeFloat(atts.getValue("y1"), "Element y1 not specified");
     final float x2 = ParserUtil.parseRelativeFloat(atts.getValue("x2"), "Element x2 not specified");
     final float y2 = ParserUtil.parseRelativeFloat(atts.getValue("y2"), "Element y2 not specified");
-    final Stroke stroke = ParserUtil.parseStroke(atts.getValue("weight"));
+    final Stroke stroke = readStroke(atts);
 
     final String widthValue = atts.getValue("width");
     final float width;
@@ -131,6 +132,37 @@ public class LineReadHandler extends AbstractPropertyXmlReadHandler
     }
   }
 
+
+  private Stroke readStroke (final PropertyAttributes atts)
+  {
+    final String strokeStyle = atts.getValue("stroke-style");
+    final float weight = ParserUtil.parseFloat (atts.getValue("weight"), 1);
+
+    // "dashed | solid | dotted | dot-dot-dash | dot-dash"
+    Stroke stroke = null;
+    if ("dashed".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DASHED, weight);
+    }
+    else if ("dotted".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DOTTED, weight);
+    }
+    else if ("dot-dot-dash".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DOT_DOT_DASH, weight);
+    }
+    else if ("dot-dash".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_DOT_DASH, weight);
+    }
+    else if ("solid".equalsIgnoreCase(strokeStyle))
+    {
+      stroke = StrokeUtility.createStroke(StrokeUtility.STROKE_SOLID, weight);
+    }
+
+    return stroke;
+  }
 
   /**
    * Returns the object for this element or null, if this element does not create an

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.8 2005/09/27 17:00:20 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.9 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,6 +44,7 @@ import java.awt.Stroke;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.util.StrokeUtility;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Encapsulates a background definition for a &lt;td&gt; element. For layout
@@ -187,12 +188,11 @@ public class HtmlTableCellStyle implements HtmlStyle
 
     final HtmlTableCellStyle that = (HtmlTableCellStyle) o;
 
-    if (background != null ? !background.equals(
-            that.background) : that.background != null)
+    if (ObjectUtilities.equal(background, that.background) == false)
     {
       return false;
     }
-    if (!verticalAlignment.equals(that.verticalAlignment))
+    if (verticalAlignment.equals(that.verticalAlignment) == false)
     {
       return false;
     }
