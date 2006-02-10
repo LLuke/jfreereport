@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.9 2005/10/02 19:48:01 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.10 2005/11/14 20:44:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -140,7 +140,7 @@ public class StaticLayoutManagerTest extends TestCase
   {
     final Band band = createBand();
     band.setLayout(new StaticLayoutManager());
-    final DefaultLayoutSupport support = new DefaultLayoutSupport();
+    final DefaultLayoutSupport support = new DefaultLayoutSupport(false);
     BandLayoutManagerUtil.doLayout(band, support,
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
 
@@ -191,7 +191,7 @@ public class StaticLayoutManagerTest extends TestCase
     band.addElement(label2);
 
     final StrictBounds bounds =
-            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false),
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
     assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
     assertTrue(bounds.getHeight() > 0);
@@ -215,7 +215,7 @@ public class StaticLayoutManagerTest extends TestCase
     band.addElement(label2);
 
     final StrictBounds bounds =
-            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false),
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
     assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
     assertEquals(250 * STRICT_FACTOR, bounds.getHeight());
@@ -242,7 +242,7 @@ public class StaticLayoutManagerTest extends TestCase
     band.addElement(halfRect);
 
     final StrictBounds bounds =
-            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false),
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
     assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
     assertEquals(100 * STRICT_FACTOR, bounds.getHeight());
@@ -263,7 +263,7 @@ public class StaticLayoutManagerTest extends TestCase
     rootBand.addElement(band);
 
     final StrictBounds bounds =
-            BandLayoutManagerUtil.doLayout(rootBand, new DefaultLayoutSupport(),
+            BandLayoutManagerUtil.doLayout(rootBand, new DefaultLayoutSupport(false),
             500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
     final StrictBounds bandBounds = (StrictBounds)
             band.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);

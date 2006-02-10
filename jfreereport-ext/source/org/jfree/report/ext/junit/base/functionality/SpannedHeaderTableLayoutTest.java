@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpannedHeaderTableLayoutTest.java,v 1.2 2005/05/18 18:50:29 taqua Exp $
+ * $Id: SpannedHeaderTableLayoutTest.java,v 1.3 2005/09/07 11:24:09 taqua Exp $
  *
  * Changes
  * -------
@@ -147,7 +147,12 @@ public class SpannedHeaderTableLayoutTest extends TestCase
 
     protected MetaBandProducer createMetaBandProducer ()
     {
-      return new HtmlMetaBandProducer(true, true);
+      return new HtmlMetaBandProducer(true, true, false);
+    }
+
+    protected String getExportDescription()
+    {
+      return "table/test";
     }
 
     /**

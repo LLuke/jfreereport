@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestShapeAndDrawableLayout.java,v 1.4 2005/05/31 18:28:00 taqua Exp $
+ * $Id: TestShapeAndDrawableLayout.java,v 1.5 2005/09/07 11:24:08 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class TestShapeAndDrawableLayout
     }
 
     BandLayoutManagerUtil.doLayout(report.getReportHeader(),
-        new DefaultLayoutSupport(), 550, 200);
+        new DefaultLayoutSupport(false), 550, 200);
 
   }
 }

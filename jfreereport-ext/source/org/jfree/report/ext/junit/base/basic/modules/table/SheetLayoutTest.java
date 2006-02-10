@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SheetLayoutTest.java,v 1.5 2005/09/19 13:34:24 taqua Exp $
+ * $Id: SheetLayoutTest.java,v 1.6 2006/02/01 09:47:40 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class SheetLayoutTest extends TestCase
   {
     public TestMetaBandProducer ()
     {
-      super(new DefaultLayoutSupport());
+      super(new DefaultLayoutSupport(false));
     }
 
     protected MetaElement createDrawableCell (final Element e,
@@ -140,7 +140,7 @@ public class SheetLayoutTest extends TestCase
 
     final TestMetaBandProducer producer = new TestMetaBandProducer();
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     bounds.setRect(0, 0, bounds.getWidth(), bounds.getHeight());
     assertEquals(500000, bounds.getWidth());
     assertEquals(200000, bounds.getHeight());
@@ -167,7 +167,7 @@ public class SheetLayoutTest extends TestCase
     assertLeftLine(Color.red, sheetLayout.getElementAt(1, 1));
     assertLeftLine(Color.blue, sheetLayout.getElementAt(1, 2));
 
-    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     bounds2.setRect(0, y1, bounds.getWidth(), bounds.getHeight());
     final MetaBand mband2 = producer.createBand(band, false);
 
@@ -238,7 +238,7 @@ public class SheetLayoutTest extends TestCase
 
     final TestMetaBandProducer producer = new TestMetaBandProducer();
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     bounds.setRect(0, 0, bounds.getWidth(), bounds.getHeight());
     assertEquals(500000, bounds.getWidth());
     assertEquals(200000, bounds.getHeight());
@@ -256,7 +256,7 @@ public class SheetLayoutTest extends TestCase
     assertEquals("ColumnCount", 1, sheetLayout.getColumnCount());
     assertEquals("RowCount", 3, sheetLayout.getRowCount());
 
-    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     bounds2.setRect(0, y1, bounds.getWidth(), bounds.getHeight());
     final MetaBand mband2 = producer.createBand(band, false);
 
@@ -321,7 +321,7 @@ public class SheetLayoutTest extends TestCase
 
     final TestMetaBandProducer producer = new TestMetaBandProducer();
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     assertEquals(500000, bounds.getWidth());
     assertEquals(200000, bounds.getHeight());
 
@@ -336,7 +336,7 @@ public class SheetLayoutTest extends TestCase
     sheetLayout.add(mband.getElementAt(1));
     sheetLayout.add(mband.getElementAt(2));
 
-    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     bounds2.setRect(0, y1, bounds.getWidth(), bounds.getHeight());
     final MetaBand mband2 = producer.createBand(band, false);
 
@@ -395,7 +395,7 @@ public class SheetLayoutTest extends TestCase
 
     final TestMetaBandProducer producer = new TestMetaBandProducer();
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     assertEquals(500000, bounds.getWidth());
     assertEquals(200000, bounds.getHeight());
 
@@ -416,7 +416,7 @@ public class SheetLayoutTest extends TestCase
     sheetLayout.add(mband.getElementAt(7));
     sheetLayout.add(mband.getElementAt(8));
 
-    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     bounds2.setRect(0, y1, bounds.getWidth(), bounds.getHeight());
     final MetaBand mband2 = producer.createBand(band, false);
 
@@ -561,7 +561,7 @@ public class SheetLayoutTest extends TestCase
 
     final TestMetaBandProducer producer = new TestMetaBandProducer();
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(hband, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(hband, new DefaultLayoutSupport(false), 500000, 250000);
     bounds.setRect(0, 0, bounds.getWidth(), bounds.getHeight());
     assertEquals(500000, bounds.getWidth());
     assertEquals(200000, bounds.getHeight());
@@ -576,7 +576,7 @@ public class SheetLayoutTest extends TestCase
     sheetLayout.add(mband.getElementAt(2));
     sheetLayout.add(mband.getElementAt(3));
 
-    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(vband, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(vband, new DefaultLayoutSupport(false), 500000, 250000);
     bounds2.setRect(0, y1, bounds.getWidth(), bounds.getHeight());
     final MetaBand mband2 = producer.createBand(vband, false);
     sheetLayout.add(mband2);
@@ -632,7 +632,7 @@ public class SheetLayoutTest extends TestCase
     band.addElement(StaticShapeElementFactory.createRectangleShapeElement
             ("border-inner", Color.green, null, new Rectangle2D.Float(100,100,300, 100), true, false));
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 360000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 360000);
     assertEquals(500000, bounds.getWidth());
     assertEquals(300000, bounds.getHeight());
 
@@ -690,7 +690,7 @@ public class SheetLayoutTest extends TestCase
 
     final TestMetaBandProducer producer = new TestMetaBandProducer();
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     assertEquals(500000, bounds.getWidth());
     assertEquals(200000, bounds.getHeight());
 
@@ -725,7 +725,7 @@ public class SheetLayoutTest extends TestCase
     // next, we simulate a 'cursor advance'; the y coordinate is non zero,
     // when we add the same band again.
 
-    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds2 = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     bounds2.setRect(0, y1, bounds.getWidth(), bounds.getHeight());
     final MetaBand mband2 = producer.createBand(band, false);
 
@@ -825,7 +825,7 @@ public class SheetLayoutTest extends TestCase
 
     final TestMetaBandProducer producer = new TestMetaBandProducer();
 
-    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500000, 250000);
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500000, 250000);
     assertEquals(500000, bounds.getWidth());
     assertEquals(102000, bounds.getHeight());
 

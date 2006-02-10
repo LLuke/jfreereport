@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentTest.java,v 1.6 2005/02/19 16:15:46 taqua Exp $
+ * $Id: ImageContentTest.java,v 1.7 2005/03/24 23:09:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,10 +73,10 @@ public class ImageContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli =
       new ElementLayoutInformation(new StrictBounds(0, 0, 10, 10));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
   public void testInvisibleContent() throws Exception
@@ -90,10 +90,10 @@ public class ImageContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli =
       new ElementLayoutInformation(new StrictBounds(0, 0, 10, 10));
-    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
   public void testSizedContent() throws Exception
@@ -110,7 +110,7 @@ public class ImageContentTest extends TestCase
     final StrictDimension prefSize = new StrictDimension(10,10);
     final StrictDimension maxSize = new StrictDimension(100,1000);
     final ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
-    final Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
+    final Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport(false));
     // content size is defined by the image .. the ELI just defines the view window
     assertEquals(new StrictBounds(0,0, 10000, 10000), c.getBounds());
 

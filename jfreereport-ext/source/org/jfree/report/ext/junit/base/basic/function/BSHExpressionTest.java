@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpressionTest.java,v 1.6 2005/09/19 13:34:23 taqua Exp $
+ * $Id: BSHExpressionTest.java,v 1.7 2006/02/01 09:47:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,7 +57,8 @@ public class BSHExpressionTest extends TestCase
     assertTrue(DataRow.class.isAssignableFrom(DataRowConnector.class));
     final BSHExpression ex = new BSHExpression();
     ex.setExpression("");
-    ex.setRuntime(new TestingExpressionRuntime(new DefaultTableModel(), 0));
+    ex.setRuntime(new TestingExpressionRuntime
+            (new DefaultTableModel(), 0, "pageable/pdf"));
     ex.getValue();
   }
 }

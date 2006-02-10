@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentTest.java,v 1.5 2005/01/31 17:16:31 taqua Exp $
+ * $Id: DrawableContentTest.java,v 1.6 2005/02/19 16:15:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,10 +68,10 @@ public class DrawableContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation
       (new StrictBounds(0, 0, 10, 10));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
   public void testInvisibleContent() throws Exception
@@ -84,10 +84,10 @@ public class DrawableContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = 
       new ElementLayoutInformation(new StrictBounds(0, 0, 10, 10));
-    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
 }

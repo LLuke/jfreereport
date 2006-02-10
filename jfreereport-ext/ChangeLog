@@ -2,6 +2,10 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.7:
+  * Fixes in the build process. The module files created by the ANT script
+    did not contain the jFreereport-ext.properties file, and thus JFreeReport
+    never picked them up.
 
 0.8.6-6:
   * SVG-Image support added. This library requires Java 1.4. 

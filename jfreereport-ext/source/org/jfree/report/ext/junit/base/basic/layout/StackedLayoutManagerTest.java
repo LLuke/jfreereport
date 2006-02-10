@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StackedLayoutManagerTest.java,v 1.2 2005/09/19 13:34:24 taqua Exp $
+ * $Id: StackedLayoutManagerTest.java,v 1.3 2005/10/02 19:48:01 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class StackedLayoutManagerTest extends TestCase
             (StaticLayoutManager.ABSOLUTE_POS, new Point2D.Double(90, 0));
 
 
-    BandLayoutManagerUtil.doLayout(b, new DefaultLayoutSupport(), 210000, 500000);
+    BandLayoutManagerUtil.doLayout(b, new DefaultLayoutSupport(false), 210000, 500000);
 
     assertEquals("BandBounds", new StrictBounds (0,0,210000, 120000),
             b.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
@@ -93,6 +93,6 @@ public class StackedLayoutManagerTest extends TestCase
     final Band b2 = new Band();
     b2.addElement(b);
 
-    BandLayoutManagerUtil.doLayout(b2, new DefaultLayoutSupport(), 210000, 500000);
+    BandLayoutManagerUtil.doLayout(b2, new DefaultLayoutSupport(false), 210000, 500000);
   }
 }

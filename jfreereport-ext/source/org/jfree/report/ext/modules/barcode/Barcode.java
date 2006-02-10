@@ -659,13 +659,14 @@ public abstract class Barcode implements Drawable, Cloneable
   {
     if (this.isShowCode())
     {
-      final DefaultSizeCalculator calc = new DefaultSizeCalculator(this.getFont());
+      // this class is not really used ..
+      final DefaultSizeCalculator calc = new DefaultSizeCalculator(this.getFont(), false);
       final float codeWidth = calc.getStringWidth(this.getCode(), 0, this.getCode()
               .length());
       final float codeHeigh = calc.getLineHeight();
 
-      if (codeWidth > (rectangle2D.getWidth() - this.getMargins().left - this.getMargins()
-              .right))
+      if (codeWidth > (rectangle2D.getWidth() - this.getMargins().left -
+              this.getMargins().right))
       {
         Log.warn("The code width exceedes the bound width, disabling code string printing (Reduce font size).");
         this.setShowCode(false);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.9 2005/08/08 15:56:00 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.10 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,7 +75,7 @@ public class BandLayoutTest extends TestCase
     JFreeReportBoot.getInstance().start();
     final Band band = new Band();
     BandLayoutManagerUtil.doLayout(band,
-            new DefaultLayoutSupport(), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
+            new DefaultLayoutSupport(false), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ...
     assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 0),
             BandLayoutManagerUtil.getBounds(band, null));
@@ -83,7 +83,7 @@ public class BandLayoutTest extends TestCase
     final Element e = StaticShapeElementFactory.createRectangleShapeElement(null, null, null,
         new Rectangle2D.Float(0, 0, 10, 10), true, true);
     band.addElement(e);
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false),
             500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ... height is the one given in the element
     assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 10 * STRICT_FACTOR), BandLayoutManagerUtil.getBounds(band, null));
@@ -93,7 +93,7 @@ public class BandLayoutTest extends TestCase
   public void testLineLayout()
   {
     final Band band = new Band();
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false),
             500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ...
     assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 0), BandLayoutManagerUtil.getBounds(band, null));
@@ -101,7 +101,7 @@ public class BandLayoutTest extends TestCase
     final Element e = StaticShapeElementFactory.createHorizontalLine
         (null, null, null, 10);
     band.addElement(e);
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(false), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ... height is the one given in the element
     assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 10 * STRICT_FACTOR), BandLayoutManagerUtil.getBounds(band, null));
 
@@ -125,7 +125,7 @@ public class BandLayoutTest extends TestCase
     Log.debug (BandLayoutManagerUtil.getBounds(element, null));
 
     BandLayoutManagerUtil.doLayout(report.getReportHeader(),
-            new DefaultLayoutSupport(), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
+            new DefaultLayoutSupport(false), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 70 * STRICT_FACTOR),
               BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
   }

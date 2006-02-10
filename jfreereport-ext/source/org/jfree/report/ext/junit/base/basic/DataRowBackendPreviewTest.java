@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendPreviewTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
+ * $Id: DataRowBackendPreviewTest.java,v 1.5 2006/02/01 09:47:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,7 +56,7 @@ public class DataRowBackendPreviewTest extends TestCase
   public void testCreate()
   {
     final DataRowBackend db = new DataRowBackend
-            (new DefaultResourceBundleFactory(), new DefaultConfiguration());
+            (new DefaultResourceBundleFactory(), new DefaultConfiguration(), "pageable/pdf");
     db.setCurrentRow(-1);
     final DefaultTableModel model = new DefaultTableModel();
     final Object[][] data = new Object[][]{
@@ -103,7 +103,7 @@ public class DataRowBackendPreviewTest extends TestCase
   public void testFunctionality()
   {
     final DataRowBackend db = new DataRowBackend
-            (new DefaultResourceBundleFactory(), new DefaultConfiguration());
+            (new DefaultResourceBundleFactory(), new DefaultConfiguration(), "pageable/pdf");
     db.setCurrentRow(-1);
     final DefaultTableModel model = new DefaultTableModel();
     final Object[][] data = new Object[][]{

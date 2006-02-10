@@ -2,7 +2,7 @@
  * Date: Feb 20, 2003
  * Time: 9:00:04 PM
  *
- * $Id: HiddenLayoutTest.java,v 1.5 2005/08/08 15:55:59 taqua Exp $
+ * $Id: HiddenLayoutTest.java,v 1.6 2005/09/07 11:24:08 taqua Exp $
  */
 package org.jfree.report.ext.junit;
 
@@ -72,13 +72,13 @@ public class HiddenLayoutTest
       Log.debug("report.reportHeader " + report.getReportHeader().getElementCount());
 
       final Group g = report.getGroup(1);
-      BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);
+      BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(false), 450, 500);
       Log.debug("---------------------------------------------");
       g.getHeader().setVisible(false);
-      BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);
+      BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(false), 450, 500);
       Log.debug("---------------------------------------------");
       g.getHeader().setVisible(true);
-      BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);
+      BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(false), 450, 500);
       Log.debug("---------------------------------------------");
     }
     catch (Exception e)

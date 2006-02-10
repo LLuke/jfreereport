@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DebugOutputTarget.java,v 1.6 2005/03/04 16:58:17 taqua Exp $
+ * $Id: DebugOutputTarget.java,v 1.7 2005/09/19 13:34:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -282,6 +282,11 @@ public class DebugOutputTarget extends AbstractOutputTarget
   {
   }
 
+  public String getExportDescription()
+  {
+    return "pageable/test";
+  }
+
   /**
    * Creates a size calculator for the current state of the output target.  The calculator
    * is used to calculate the string width and line height and later maybe more...
@@ -295,7 +300,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
   public SizeCalculator createTextSizeCalculator(final FontDefinition font)
       throws SizeCalculatorException
   {
-    return new DefaultSizeCalculator(font);
+    return new DefaultSizeCalculator(font, false);
   }
 
   protected void beginPage (final PageDefinition page, final int index)

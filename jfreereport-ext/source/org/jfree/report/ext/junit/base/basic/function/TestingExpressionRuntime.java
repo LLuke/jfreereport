@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TestingExpressionRuntime.java,v 1.1 2006/02/01 09:48:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,9 +57,13 @@ public class TestingExpressionRuntime implements ExpressionRuntime
   private ResourceBundleFactory resourceBundleFactory;
   private TableModel data;
   private int currentRow;
+  private String exportType;
 
-  public TestingExpressionRuntime(final TableModel data, final int currentRow)
+  public TestingExpressionRuntime(final TableModel data,
+                                  final int currentRow,
+                                  final String exportType)
   {
+    this.exportType = exportType;
     this.data = data;
     this.currentRow = currentRow;
     dataRow = new DataRowConnector();
@@ -92,5 +96,19 @@ public class TestingExpressionRuntime implements ExpressionRuntime
   public int getCurrentRow()
   {
     return currentRow;
+  }
+
+  /**
+   * The output descriptor is a simple string collections consisting of the
+   * following components: exportclass/type/subtype
+   * <p/>
+   * For example, the PDF export would be: pageable/pdf The StreamHTML export
+   * would return table/html/stream
+   *
+   * @return the export descriptor.
+   */
+  public String getExportDescriptor()
+  {
+    return exportType;
   }
 }

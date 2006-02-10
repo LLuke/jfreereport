@@ -119,7 +119,12 @@ public class TableLayoutTest extends TestCase
 
     protected MetaBandProducer createMetaBandProducer ()
     {
-      return new HtmlMetaBandProducer(true, true);
+      return new HtmlMetaBandProducer(true, true, false);
+    }
+
+    protected String getExportDescription()
+    {
+      return "table/test";
     }
 
     /**

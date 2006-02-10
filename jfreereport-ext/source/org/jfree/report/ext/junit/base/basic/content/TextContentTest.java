@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.9 2005/10/02 19:47:57 taqua Exp $
+ * $Id: TextContentTest.java,v 1.10 2006/01/16 20:59:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -119,10 +119,10 @@ public class TextContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = 
       new ElementLayoutInformation(new StrictBounds(0, 0, 10 * STRICT_FACTOR, 10 * STRICT_FACTOR));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
   public void testInvisibleContent() throws Exception
@@ -135,10 +135,10 @@ public class TextContentTest extends TestCase
 
     ElementLayoutInformation eli =
       new ElementLayoutInformation(new StrictBounds(0, 0, 10 * STRICT_FACTOR, 10 * STRICT_FACTOR));
-    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
   public void testLeadingWhiteSpaces () throws Exception
@@ -283,7 +283,7 @@ public class TextContentTest extends TestCase
 
    public void testLineHeight() throws SizeCalculatorException
     {
-        LayoutSupport ot = new DefaultLayoutSupport();
+        LayoutSupport ot = new DefaultLayoutSupport(false);
         StrictBounds tBounds = new StrictBounds(0, 0, 114 * 1000, 38 * 1000);
         FontDefinition fontDefinition = new FontDefinition("dialog", 12);
         long lineHeight = StrictGeomUtility.toInternalValue(20);

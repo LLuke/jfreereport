@@ -596,6 +596,10 @@
     <antcall target="build-module-ext-log4jlog"/>
     <antcall target="build-module-ext-svgimage"/>
 
+    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
+          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
+          failonerror="true"/>
+
     <!-- make the jar -->
     <jar jarfile="${module-ext-all-file}"
       basedir="build">
@@ -713,6 +717,9 @@
       <fileset dir="ant"/>
     </copy>
 
+
+    <copy file="maven-jfreereport-ext-project.xml" tofile="distribution/maven-jfreereport-ext-project.xml" />
+	
   </target>
 
   <target name="remove-dist-dir">

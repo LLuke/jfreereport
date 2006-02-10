@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentTest.java,v 1.5 2005/02/19 16:15:46 taqua Exp $
+ * $Id: ShapeContentTest.java,v 1.6 2005/09/19 13:34:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -70,10 +70,10 @@ public class ShapeContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = 
       new ElementLayoutInformation(new StrictBounds(0, 0, 10, 10));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
   public void testInvisibleContent() throws Exception
@@ -85,11 +85,11 @@ public class ShapeContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = 
       new ElementLayoutInformation(new StrictBounds(0, 0, 10, 10));
-    final Content contentForElement = df.createContentForElement(se, eli, new DefaultLayoutSupport());
+    final Content contentForElement = df.createContentForElement(se, eli, new DefaultLayoutSupport(false));
     assertTrue(contentForElement instanceof EmptyContent);
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 
   public void testLineContent() throws Exception
@@ -102,13 +102,13 @@ public class ShapeContentTest extends TestCase
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = 
       new ElementLayoutInformation(new StrictBounds(0, 0, 10, 10));
-    assertFalse(df.createContentForElement(se, eli, new DefaultLayoutSupport()) instanceof EmptyContent);
+    assertFalse(df.createContentForElement(se, eli, new DefaultLayoutSupport(false)) instanceof EmptyContent);
 
     eli = new ElementLayoutInformation(new StrictBounds(40, 70, 100, 0));
-    final Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
+    final Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport(false));
     assertEquals(new StrictBounds(40, 70, 100, 0), c.getBounds());
 
     eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
-    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport(false)));
   }
 }
