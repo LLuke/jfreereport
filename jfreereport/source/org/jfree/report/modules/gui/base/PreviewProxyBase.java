@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.49 2005/12/07 22:20:35 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.50 2006/01/12 20:54:54 taqua Exp $
  *
  * Changes
  * -------
@@ -97,7 +97,7 @@ import org.jfree.report.util.Worker;
 import org.jfree.report.util.WorkerPool;
 import org.jfree.ui.FloatingButtonEnabler;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.about.AboutFrame;
+import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.action.ActionDowngrade;
@@ -470,7 +470,7 @@ public class PreviewProxyBase extends JComponent
   /** Default 'about' action (does nothing). */
   private class DefaultAboutAction extends AboutAction
   {
-    private AboutFrame aboutFrame;
+    private AboutDialog aboutFrame;
 
     /** Creates an 'about' action. */
     public DefaultAboutAction()
@@ -487,10 +487,37 @@ public class PreviewProxyBase extends JComponent
     {
       if (aboutFrame == null)
       {
-        aboutFrame = new AboutFrame
-                (getResources().getString("action.about.name"),
-                        JFreeReport.getInfo());
-
+        final String title = getResources().getString("action.about.name");
+        if (proxy instanceof Frame)
+        {
+          aboutFrame = new AboutDialog
+                  ((Frame) proxy, title, JFreeReport.getInfo());
+        }
+        else if (proxy instanceof Dialog)
+        {
+          aboutFrame = new AboutDialog
+                  ((Dialog) proxy, title, JFreeReport.getInfo());
+        }
+        else
+        {
+          // look where we have been added ...
+          Window w = getWindowAncestor(PreviewProxyBase.this);
+          if (w instanceof Frame)
+          {
+            aboutFrame = new AboutDialog
+                    ((Frame) w, title, JFreeReport.getInfo());
+          }
+          else if (w instanceof Dialog)
+          {
+            aboutFrame = new AboutDialog
+                    ((Dialog) w, title, JFreeReport.getInfo());
+          }
+          else
+          {
+            aboutFrame = new AboutDialog
+                    (title, JFreeReport.getInfo());
+          }
+        }
         aboutFrame.pack();
         RefineryUtilities.centerFrameOnScreen(aboutFrame);
       }
@@ -2776,5 +2803,20 @@ public class PreviewProxyBase extends JComponent
       // an action has been removed.
       reinitialize();
     }
+  }
+
+
+  public static Window getWindowAncestor(final Component component)
+  {
+    Component parent = component.getParent();
+    while (parent != null)
+    {
+      if (parent instanceof Window)
+      {
+        return (Window) parent;
+      }
+      parent = parent.getParent();
+    }
+    return null;
   }
 }

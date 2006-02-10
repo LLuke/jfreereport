@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.22 2005/09/07 14:25:10 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.23 2005/12/07 22:20:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.gui.xls;
 
 import java.awt.Dialog;
 import java.awt.Frame;
+import java.awt.Window;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
@@ -47,6 +48,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
+import org.jfree.report.modules.gui.base.PreviewProxyBase;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ResourceBundleSupport;
@@ -243,7 +245,28 @@ public class ExcelExportPlugin extends AbstractExportPlugin
       }
       else
       {
-        exportDialog = new ExcelExportDialog();
+        // look where we have been added ...
+        if (proxy != null)
+        {
+          final PreviewProxyBase base = proxy.getBase();
+          final Window w = PreviewProxyBase.getWindowAncestor(base);
+          if (w instanceof Frame)
+          {
+            exportDialog = new ExcelExportDialog((Frame) w);
+          }
+          else if (w instanceof Dialog)
+          {
+            exportDialog = new ExcelExportDialog((Dialog) w);
+          }
+          else
+          {
+            exportDialog = new ExcelExportDialog();
+          }
+        }
+        else
+        {
+          exportDialog = new ExcelExportDialog();
+        }
       }
       exportDialog.pack();
     }

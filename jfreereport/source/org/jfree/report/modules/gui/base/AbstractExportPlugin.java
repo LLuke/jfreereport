@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.14 2005/09/06 11:40:20 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.15 2005/12/07 22:20:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.gui.base;
 
 import java.awt.Dialog;
 import java.awt.Frame;
+import java.awt.Window;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -357,6 +358,20 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     }
     else
     {
+      // look where we have been added ...
+      if (proxy != null)
+      {
+        final PreviewProxyBase base = proxy.getBase();
+        final Window w = PreviewProxyBase.getWindowAncestor(base);
+        if (w instanceof Frame)
+        {
+          return new ReportProgressDialog((Frame) w);
+        }
+        else if (w instanceof Dialog)
+        {
+          return new ReportProgressDialog((Dialog) w);
+        }
+      }
       return new ReportProgressDialog();
     }
   }

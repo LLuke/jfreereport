@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.19 2005/09/07 14:25:10 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.20 2005/12/07 22:20:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.gui.html;
 
 import java.awt.Dialog;
 import java.awt.Frame;
+import java.awt.Window;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
@@ -48,6 +49,7 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
+import org.jfree.report.modules.gui.base.PreviewProxyBase;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ResourceBundleSupport;
@@ -267,7 +269,28 @@ public class HtmlExportPlugin extends AbstractExportPlugin
       }
       else
       {
-        exportDialog = new HtmlExportDialog();
+        // look where we have been added ...
+        if (proxy != null)
+        {
+          final PreviewProxyBase base = proxy.getBase();
+          final Window w = PreviewProxyBase.getWindowAncestor(base);
+          if (w instanceof Frame)
+          {
+            exportDialog = new HtmlExportDialog((Frame) w);
+          }
+          else if (w instanceof Dialog)
+          {
+            exportDialog = new HtmlExportDialog((Dialog) w);
+          }
+          else
+          {
+            exportDialog = new HtmlExportDialog();
+          }
+        }
+        else
+        {
+          exportDialog = new HtmlExportDialog();
+        }
       }
       exportDialog.pack();
     }
