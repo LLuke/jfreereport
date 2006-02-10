@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.43 2006/01/24 14:17:38 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.44 2006/02/08 18:03:34 taqua Exp $
  *
  * Changes
  * -------
@@ -144,7 +144,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
      */
     private PDFSizeCalculator (final BaseFont font,
                                final float fontSize,
-                               final boolean bold)
+                               final boolean bold,
+                               final boolean maxLineHeightUsed)
     {
       if (font == null)
       {
@@ -158,10 +159,17 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       this.fontSize = fontSize;
       this.bold = bold;
 
-      final float ascent = baseFont.getFontDescriptor(BaseFont.AWT_ASCENT, fontSize);
-      final float descent = baseFont.getFontDescriptor(BaseFont.AWT_DESCENT, fontSize);
-      final float leading = baseFont.getFontDescriptor(BaseFont.AWT_LEADING, fontSize);
-      this.fontHeight = ascent - descent + leading;
+      if (maxLineHeightUsed)
+      {
+        final float ascent = baseFont.getFontDescriptor(BaseFont.AWT_ASCENT, fontSize);
+        final float descent = baseFont.getFontDescriptor(BaseFont.AWT_DESCENT, fontSize);
+        final float leading = baseFont.getFontDescriptor(BaseFont.AWT_LEADING, fontSize);
+        this.fontHeight = ascent - descent + leading;
+      }
+      else
+      {
+        this.fontHeight = fontSize;
+      }
     }
 
     /**
@@ -395,6 +403,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
   private VolatilePdfState pdfGraphics;
   private BaseFontRecord baseFontRecord;
+  private boolean useMaxCharSize;
 
   /**
    * Creates a new PDFOutputTarget.
@@ -640,7 +649,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       return '4';
     }
     final char retval = version.charAt(2);
-    if (retval < '2' || retval > '5')
+    if (retval < '2' || retval > '9')
     {
       Log.warn("PDF version specification is invalid, using default version '1.4'.");
       return '4';
@@ -1136,6 +1145,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     // encryption needs more info: <undefined> <none> <40> <128>.
     updateProperty(SECURITY_ENCRYPTION, config);
+
+    useMaxCharSize = "true".equals
+            (config.getConfigProperty(SizeCalculator.USE_MAX_CHAR_SIZE));
   }
 
   /**
@@ -1212,7 +1224,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     {
       final BaseFontRecord record = fontSupport.createBaseFont(font,
               font.getFontEncoding(getFontEncoding()), isEmbedFonts() || font.isEmbeddedFont());
-      return new PDFSizeCalculator(record.getBaseFont(), font.getFontSize(), font.isBold());
+      return new PDFSizeCalculator
+              (record.getBaseFont(), font.getFontSize(), font.isBold(), useMaxCharSize);
     }
     catch (BaseFontCreateException bfce)
     {

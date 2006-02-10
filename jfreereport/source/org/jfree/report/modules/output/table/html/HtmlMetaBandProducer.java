@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.12 2005/09/07 14:25:11 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.13 2005/10/27 18:31:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -72,9 +72,10 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
   private boolean useDeviceIndependentImageSizes;
 
   public HtmlMetaBandProducer (final boolean useXHTML,
-                               final boolean imageUnitIsPoint)
+                               final boolean imageUnitIsPoint,
+                               final boolean useMaxLineHeight)
   {
-    super(new DefaultLayoutSupport());
+    super(new DefaultLayoutSupport(useMaxLineHeight));
     this.useXHTML = useXHTML;
     this.useDeviceIndependentImageSizes = imageUnitIsPoint;
   }

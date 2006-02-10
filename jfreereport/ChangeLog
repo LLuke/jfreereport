@@ -27,11 +27,13 @@ A list of changes in recent versions:
           therefore clipped large glyphs. Now, the maximum height defined for the
           current font is used to define the line height.
 
-          Warning:
-          This has the sad side effect, that the effective lineheight is greater
-          than the font's height most of the time. Therefore an element with
-          Arial 10 needs a defined height of 11pt or 12pt to display a single
-          line.
+          This bugfix is not enabled by default, as it has the side effect,
+          that the effective lineheight is now greater than the font's declared
+          height most of the time. Therefore an element with Arial 10 needs a
+          defined element height of 11pt or 12pt to display a single line.
+
+          Please read the corresponding section in 'migration.txt' on how to
+          activate the bugfix.
 
           Setting a custom line height in conjunction with multiline elements
           caused exceptions due to another bug in that code.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SizeCalculator.java,v 1.3 2004/05/07 08:03:40 mungady Exp $
+ * $Id: SizeCalculator.java,v 1.4 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,9 @@ package org.jfree.report.layout;
  */
 public interface SizeCalculator
 {
+  public static final String USE_MAX_CHAR_SIZE = "org.jfree.report.layout.fontrenderer.UseMaxCharBounds";
+  public static final String CLIP_TEXT = "org.jfree.report.layout.fontrenderer.ClipText";
+  
   /**
    * Calculates the width of a <code>String<code> in the current <code>Graphics</code>
    * context.

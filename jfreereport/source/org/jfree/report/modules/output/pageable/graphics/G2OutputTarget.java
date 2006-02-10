@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.30 2006/01/16 20:56:52 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.31 2006/02/08 18:03:34 taqua Exp $
  *
  * Changes
  * -------
@@ -120,6 +120,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    * The current font definition for this outputtarget.
    */
   private FontDefinition fontDefinition;
+  private boolean useMaxCharSize;
+  private boolean clipText;
 
   /**
    * Creates an empty graphics by using a 1x1 pixel buffered image.
@@ -316,12 +318,16 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   protected void beginPage (final PageDefinition page, final int index)
   {
     currentPageFormat = page.getPageFormat(index);
-    final Rectangle2D bounds = new Rectangle2D.Double
-            (currentPageFormat.getImageableX(),
-             currentPageFormat.getImageableY(),
-             currentPageFormat.getImageableWidth() + 1d,
-             currentPageFormat.getImageableHeight() + 1d);
-    g2.clip(bounds);
+
+    if (clipText)
+    {
+      final Rectangle2D bounds = new Rectangle2D.Double
+              (currentPageFormat.getImageableX(),
+               currentPageFormat.getImageableY(),
+               currentPageFormat.getImageableWidth() + 1d,
+               currentPageFormat.getImageableHeight() + 1d);
+      g2.clip(bounds);
+    }
 
     final Rectangle2D pbounds = page.getPagePosition(index);
     g2.translate(-pbounds.getX(), -pbounds.getY());
@@ -614,7 +620,10 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   public void configure (final Configuration config)
   {
-    // nothing to do here, G2OuputTarget is not configured in any way.
+    useMaxCharSize = "true".equals
+            (config.getConfigProperty(SizeCalculator.USE_MAX_CHAR_SIZE));
+    clipText = "true".equals
+            (config.getConfigProperty(SizeCalculator.CLIP_TEXT));
   }
 
   /**
@@ -626,7 +635,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   public SizeCalculator createTextSizeCalculator (final FontDefinition font)
   {
-    return DefaultSizeCalculator.getDefaultSizeCalculator(font);
+    return DefaultSizeCalculator.getDefaultSizeCalculator(font, useMaxCharSize);
   }
 
   /**

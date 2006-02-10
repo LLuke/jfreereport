@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.2 2005/11/17 17:03:47 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.3 2005/12/10 17:39:48 taqua Exp $
  *
  * Changes
  * -------
@@ -111,19 +111,17 @@ public class SwingIconsDemo extends AbstractXmlDemoHandler
    * @param args ignored.
    */
   public static void main (final String[] args)
-          throws ReportProcessingException,
-          IOException, ReportDefinitionException
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
 
     final SwingIconsDemo handler = new SwingIconsDemo();
-//    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
-//    frame.init();
-//    frame.pack();
-//    RefineryUtilities.centerFrameOnScreen(frame);
-//    frame.setVisible(true);
-    ExcelReportUtil.createXLS(handler.createReport(), "/tmp/icons.xls");
+    final SimpleDemoFrame frame = new SimpleDemoFrame(handler);
+    frame.init();
+    frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
+//    ExcelReportUtil.createXLS(handler.createReport(), "/tmp/icons.xls");
   }
 
 }

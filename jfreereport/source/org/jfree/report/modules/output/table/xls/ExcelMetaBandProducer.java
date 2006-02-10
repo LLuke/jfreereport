@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.12 2005/12/10 17:39:48 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.13 2006/01/20 19:51:44 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -93,9 +93,10 @@ public class ExcelMetaBandProducer
 {
   private boolean defineDataFormats;
 
-  public ExcelMetaBandProducer(final boolean defineDataFormats)
+  public ExcelMetaBandProducer(final boolean defineDataFormats,
+                               final boolean useMaxLineHeight)
   {
-    super(new DefaultLayoutSupport(createExcelContentFactory()));
+    super(new DefaultLayoutSupport(createExcelContentFactory(), useMaxLineHeight));
     this.defineDataFormats = defineDataFormats;
   }
 

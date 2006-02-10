@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.7 2005/03/03 14:42:34 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.8 2005/03/30 17:25:19 taqua Exp $
  *
  * Changes
  * -------
@@ -63,10 +63,12 @@ public class DefaultLayoutSupport implements LayoutSupport
 
   private LayoutManagerCache cache;
 
+  private boolean useMaxLineHeight;
+
   /**
    * Default-Constructor.
    */
-  public DefaultLayoutSupport ()
+  public DefaultLayoutSupport (final boolean useMaxLineHeight)
   {
     final DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
@@ -75,17 +77,20 @@ public class DefaultLayoutSupport implements LayoutSupport
     contentFactory.addModule(new DrawableContentFactoryModule());
     contentFactory.addModule(new AnchorContentFactoryModule());
     this.contentFactory = contentFactory;
+    this.useMaxLineHeight = useMaxLineHeight;
 
     cache = new LayoutManagerCache();
   }
 
-  public DefaultLayoutSupport (final ContentFactory cf)
+  public DefaultLayoutSupport (final ContentFactory cf,
+                               final boolean useMaxLineHeight)
   {
     if (cf == null)
     {
       throw new NullPointerException();
     }
     this.contentFactory = cf;
+    this.useMaxLineHeight = useMaxLineHeight;
 
     cache = new LayoutManagerCache();
   }
@@ -101,7 +106,7 @@ public class DefaultLayoutSupport implements LayoutSupport
   public SizeCalculator createTextSizeCalculator (final FontDefinition font)
           throws SizeCalculatorException
   {
-    return DefaultSizeCalculator.getDefaultSizeCalculator(font);
+    return DefaultSizeCalculator.getDefaultSizeCalculator(font, useMaxLineHeight);
   }
 
   /**

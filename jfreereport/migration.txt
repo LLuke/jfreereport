@@ -3,6 +3,49 @@ releases. It contains hints on how to upgrade to a new version and how
 to cope with the possible changes of the report behaviour.
 
 ---------------------------------------------------------------------------
+Changes from 0.8.6 to 0.8.7
+
+* The functions API changed a bit. Custom function implementation which do
+  not use the 'AbstractExpression' as baseclass need to be changed to fit the
+  new API.
+
+* The line height computation of previous JFreeReport versions was too
+  simplicistic. The layouter assumed that the declared font height is equal to
+  the effective size of the rendered text. This assumption fails for uppercase
+  roman letters with accents, rings or other pronouncation modifiers (as it is
+  common in most nordic languages).
+
+  Bluntly changing the line height requirements will cause trouble, as all
+  reports would have to be adjusted. Therefore a soft migration path is available.
+
+  By default, the old line height algorithm is used, but clipping is disabled
+  globally. This way, text will be rendered correctly most of the time, but may
+  appear a bit displaced if it contains such problematic letters.
+
+  In such cases, the stricter new line height computation can be enabled by
+  setting the report configuration property
+
+       'org.jfree.report.layout.fontrenderer.UseMaxCharBounds'
+
+  to true. All element heights must now be adjusted to fit the effective line
+  height, which is approximatly 10% larger than the font's declared size.
+
+  Clipping can be reenabled by setting the configuration property
+
+      'org.jfree.report.layout.fontrenderer.ClipText'
+
+  to true again.
+
+* The new font mapping engine now uses the font's declared family names
+  to build the system's font map. This change only affects PDF exports, where
+  fonts were not mapped correctly. Specifying the full font name
+  (for example 'Arial Bold') does no longer work, the font's family name must
+  be specified instead (here: 'Arial') and the font style properties must be
+  adjusted.
+
+  If there is both an oblique and an italic font version available, the italic
+  font is preferred.
+
 Changes from 0.8.5 to 0.8.6
 
 * The report system does no longer boot automaticly when accessing the

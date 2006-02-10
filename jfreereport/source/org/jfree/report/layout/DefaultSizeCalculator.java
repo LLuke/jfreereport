@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.13 2005/10/02 10:43:52 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.14 2006/01/16 20:56:37 taqua Exp $
  *
  * Changes
  * -------
@@ -254,7 +254,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    * @return A default size calculator.
    */
   public static synchronized DefaultSizeCalculator getDefaultSizeCalculator
-          (final FontDefinition font)
+          (final FontDefinition font, final boolean maxLineHeightUsed)
   {
     if (cache == null)
     {
@@ -263,7 +263,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
     DefaultSizeCalculator retval = (DefaultSizeCalculator) cache.get(font);
     if (retval == null)
     {
-      retval = new DefaultSizeCalculator(font);
+      retval = new DefaultSizeCalculator(font, maxLineHeightUsed);
       cache.put(font, retval);
     }
     return retval;
@@ -274,7 +274,8 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    *
    * @param font the font.
    */
-  public DefaultSizeCalculator (final FontDefinition font)
+  public DefaultSizeCalculator (final FontDefinition font,
+                                final boolean maxLineHeightUsed)
   {
     if (font == null)
     {
@@ -285,9 +286,16 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
       throw new IllegalArgumentException("The given FontSize is <= 0");
     }
 
-    final Rectangle2D rect =
-            font.getFont().getMaxCharBounds(getFrcDetector().createFontRenderContext());
-    this.lineHeight = (float) rect.getHeight();
+    if (maxLineHeightUsed)
+    {
+      final Rectangle2D rect =
+              font.getFont().getMaxCharBounds(getFrcDetector().createFontRenderContext());
+      this.lineHeight = (float) rect.getHeight();
+    }
+    else
+    {
+      this.lineHeight = font.getFont().getSize2D();
+    }
     // Log.debug ("FontSize: " + rect + " -> " + font.getFont().getSize2D() + " vs " + lineHeight + " -> " + font.getFontName());
     this.font = font;
     this.chars = new char[100];

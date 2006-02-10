@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.8 2005/03/30 17:26:02 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.9 2005/09/07 14:25:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -69,9 +69,10 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
   private String encoding;
   private ITextImageCache imageCache;
 
-  public RTFMetaBandProducer (final String encoding)
+  public RTFMetaBandProducer (final String encoding,
+                              final boolean useMaxLineHeight)
   {
-    super(new DefaultLayoutSupport(createContentFactory()));
+    super(new DefaultLayoutSupport(createContentFactory(), useMaxLineHeight));
     if (encoding == null)
     {
       throw new NullPointerException("Encoding must be a non null value");

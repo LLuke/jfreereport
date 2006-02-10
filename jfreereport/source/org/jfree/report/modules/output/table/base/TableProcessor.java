@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.25 2006/01/27 16:25:36 taqua Exp $
+ * $Id: TableProcessor.java,v 1.26 2006/02/08 18:03:35 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.JFreeReportCoreModule;
+import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
@@ -171,6 +172,12 @@ public abstract class TableProcessor
 
   protected abstract MetaBandProducer createMetaBandProducer ();
 
+  protected boolean isMaxLineHeightUsed()
+  {
+    return "true".equals
+            (report.getReportConfiguration().getConfigProperty
+            (SizeCalculator.USE_MAX_CHAR_SIZE));
+  }
   /**
    * returns true, if the TableWriter should perform a stricter layout translation. When
    * set to true, all element bounds are used to create the table. This could result in a

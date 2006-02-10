@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelProcessor.java,v 1.14 2005/09/04 13:15:07 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.15 2006/02/08 18:03:35 taqua Exp $
  *
  * Changes
  * -------
@@ -129,7 +129,7 @@ public class ExcelProcessor extends TableProcessor
 
   protected MetaBandProducer createMetaBandProducer ()
   {
-    return new ExcelMetaBandProducer(isDefineDataFormats());
+    return new ExcelMetaBandProducer(isDefineDataFormats(), isMaxLineHeightUsed());
   }
 
   /**
