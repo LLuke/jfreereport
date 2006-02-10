@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CountryReportXMLDemoHandler.java,v 1.2 2005/09/21 12:00:18 taqua Exp $
+ * $Id: CountryReportXMLDemoHandler.java,v 1.3 2005/11/09 20:02:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,11 +42,9 @@ import javax.swing.JComponent;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.modules.output.pageable.pdf.PDFReportUtil;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
-import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.ui.RefineryUtilities;
+import org.jfree.report.modules.output.pageable.pdf.PDFReportUtil;
 import org.jfree.util.ObjectUtilities;
 
 /**

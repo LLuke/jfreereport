@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPlainText.java,v 1.4 2005/11/17 17:03:47 taqua Exp $
+ * $Id: StraightToPlainText.java,v 1.5 2005/12/26 14:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.demo.nogui;
 
-import java.net.URL;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.net.URL;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;

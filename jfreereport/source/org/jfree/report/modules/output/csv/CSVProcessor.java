@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.16 2005/12/27 09:25:04 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.17 2006/02/08 18:03:34 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
@@ -57,7 +58,6 @@ import org.jfree.report.states.StartState;
 import org.jfree.report.util.NullOutputStream;
 import org.jfree.report.util.ReportConfigurationUtil;
 import org.jfree.util.Configuration;
-import org.jfree.base.config.ModifiableConfiguration;
 
 /**
  * The <code>CSVProcessor</code> coordinates the writing process for the raw CSV output.

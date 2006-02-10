@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ResourceBundleSkin.java,v 1.1 2005/12/07 22:21:11 taqua Exp $
+ * $Id: ResourceBundleSkin.java,v 1.2 2005/12/26 14:01:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,8 @@ package org.jfree.report.modules.gui.base;
 import java.util.ResourceBundle;
 import javax.swing.Icon;
 
-import org.jfree.util.ResourceBundleSupport;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * Creation-Date: 07.12.2005, 20:07:45

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableCellStyle.java,v 1.9 2006/01/27 18:50:53 taqua Exp $
+ * $Id: HtmlTableCellStyle.java,v 1.10 2006/02/09 22:04:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,8 +42,8 @@ import java.awt.Color;
 import java.awt.Stroke;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.util.StrokeUtility;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
+import org.jfree.report.util.StrokeUtility;
 import org.jfree.util.ObjectUtilities;
 
 /**

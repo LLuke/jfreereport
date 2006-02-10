@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.26 2006/02/08 18:03:35 taqua Exp $
+ * $Id: TableProcessor.java,v 1.27 2006/02/10 13:21:35 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportCoreModule;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.JFreeReportCoreModule;
-import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
+import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
-import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
-import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.util.ReportConfigurationUtil;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets. It

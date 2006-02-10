@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.12 2005/08/08 15:36:27 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.13 2005/10/11 14:53:19 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
-import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.ExtendedDrawable;
 

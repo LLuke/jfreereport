@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableRowStyle.java,v 1.8 2006/01/27 18:50:53 taqua Exp $
+ * $Id: HtmlTableRowStyle.java,v 1.9 2006/02/09 22:04:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,8 @@ package org.jfree.report.modules.output.table.html;
 import java.awt.Color;
 import java.awt.Stroke;
 
-import org.jfree.util.ObjectUtilities;
 import org.jfree.report.util.StrokeUtility;
+import org.jfree.util.ObjectUtilities;
 
 public class HtmlTableRowStyle implements HtmlStyle
 {

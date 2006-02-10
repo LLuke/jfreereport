@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.13 2006/01/20 19:51:44 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.14 2006/02/10 13:21:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -260,8 +260,8 @@ public class ExcelMetaBandProducer
                                  final ElementAlignment hAlign,
                                  final ElementAlignment vAlign)
   {
-    final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(vAlign,
-            bounds);
+    final VerticalBoundsAlignment vba =
+            AlignmentTools.getVerticalLayout(vAlign, bounds);
     final StrictBounds minimumContentSize = content.getMinimumContentSize();
     if (minimumContentSize == null)
     {

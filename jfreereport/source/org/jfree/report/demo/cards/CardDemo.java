@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CardDemo.java,v 1.7 2005/09/11 10:29:59 taqua Exp $
+ * $Id: CardDemo.java,v 1.8 2005/12/26 14:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -36,10 +36,10 @@
  */
 package org.jfree.report.demo.cards;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.CompoundDemoFrame;
 import org.jfree.report.demo.helper.DefaultDemoSelector;
 import org.jfree.report.demo.helper.DemoSelector;
-import org.jfree.report.JFreeReportBoot;
 import org.jfree.ui.RefineryUtilities;
 
 /**

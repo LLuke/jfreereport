@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ExcelImageElement.java,v 1.1 2005/12/10 17:49:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,17 +47,16 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.io.IOUtils;
+import org.jfree.report.ImageContainer;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.URLImageContainer;
-import org.jfree.report.ImageContainer;
-import org.jfree.report.util.geom.StrictGeomUtility;
-import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.content.ImageContent;
-import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.base.SheetLayout;
+import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.xls.ExcelExportContext;
 import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.util.Log;
 import org.jfree.util.WaitingImageObserver;
 

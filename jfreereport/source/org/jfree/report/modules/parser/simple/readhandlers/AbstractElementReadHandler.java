@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractElementReadHandler.java,v 1.10 2005/10/11 14:53:21 taqua Exp $
+ * $Id: AbstractElementReadHandler.java,v 1.11 2005/10/14 15:43:33 taqua Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,9 @@ import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
+import org.jfree.util.Log;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.util.Log;
 import org.xml.sax.SAXException;
 
 public abstract class AbstractElementReadHandler

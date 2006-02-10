@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.15 2005/09/20 19:53:05 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.16 2006/02/08 18:03:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import org.jfree.report.DataRow;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.ItemBand;
+import org.jfree.report.NoDataBand;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
@@ -53,7 +54,6 @@ import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.Watermark;
-import org.jfree.report.NoDataBand;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportProperties;
 

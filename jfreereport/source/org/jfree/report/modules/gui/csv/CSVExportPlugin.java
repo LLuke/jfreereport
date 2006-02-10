@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.19 2005/12/07 22:20:36 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.20 2006/02/10 13:53:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,9 +49,8 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
-import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.base.PreviewProxyBase;
-import org.jfree.report.modules.gui.pdf.PDFSaveDialog;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.ResourceBundleSupport;
 

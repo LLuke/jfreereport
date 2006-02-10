@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FormatFilter.java,v 1.5 2005/03/01 10:09:19 taqua Exp $
+ * $Id: FormatFilter.java,v 1.6 2005/12/30 11:05:55 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,11 @@
 
 package org.jfree.report.filter;
 
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.text.Format;
-
-import org.jfree.report.style.StyleChangeSupport;
 
 /**
  * The base class for filters that format data.  Data is received from a DataSource and

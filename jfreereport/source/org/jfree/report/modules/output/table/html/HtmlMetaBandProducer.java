@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.13 2005/10/27 18:31:49 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.14 2006/02/10 13:21:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,12 +45,11 @@ import java.io.IOException;
 
 import org.jfree.report.DefaultImageReference;
 import org.jfree.report.Element;
-import org.jfree.report.ImageContainer;
-import org.jfree.report.content.ImageContent;
-import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.Content;
-import org.jfree.report.content.EmptyContent;
 import org.jfree.report.content.ContentCreationException;
+import org.jfree.report.content.ContentFactory;
+import org.jfree.report.content.EmptyContent;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
@@ -59,8 +58,8 @@ import org.jfree.report.modules.output.table.html.metaelements.HtmlImageMetaElem
 import org.jfree.report.modules.output.table.html.metaelements.HtmlMetaElement;
 import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;

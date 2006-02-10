@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.22 2006/01/27 18:50:53 taqua Exp $
+ * $Id: SheetLayout.java,v 1.23 2006/02/09 22:04:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,8 +52,6 @@ import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.util.LogContext;
-import org.jfree.util.Log;
 
 
 /**

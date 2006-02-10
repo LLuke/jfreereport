@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigEditorPanel.java,v 1.9 2005/09/07 14:25:10 taqua Exp $
+ * $Id: ConfigEditorPanel.java,v 1.10 2005/09/19 15:38:46 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,8 +46,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
-import org.jfree.base.modules.Module;
 import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.modules.Module;
 import org.jfree.report.modules.gui.config.VerticalLayout;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 

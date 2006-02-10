@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.13 2006/01/24 18:58:29 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.14 2006/02/08 18:03:56 taqua Exp $
  *
  * Changes
  * -------
@@ -55,10 +55,9 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.LevelledExpressionList;
-import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.report.util.ReportPropertiesList;
-import org.jfree.util.Log;
 import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * The DataRow-Backend maintains the state of a datarow. Whenever the  report state

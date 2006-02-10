@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DocumentInternalFrame.java,v 1.1 2005/12/11 12:47:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,9 +37,9 @@ package org.jfree.report.demo.layouts.internalframe;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JButton;
 
 /**
  * Creation-Date: 11.12.2005, 12:50:21

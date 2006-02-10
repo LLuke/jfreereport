@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ResourceMessageFormatFilter.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
+ * $Id: ResourceMessageFormatFilter.java,v 1.2 2006/01/27 16:25:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,9 +35,9 @@
  */
 package org.jfree.report.filter;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.io.Serializable;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ResourceBundleFactory;

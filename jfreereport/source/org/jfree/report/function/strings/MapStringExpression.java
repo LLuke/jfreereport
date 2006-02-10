@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: MapStringExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.jfree.report.function.AbstractExpression;
-import org.jfree.report.function.Expression;
 
 /**
  * Maps a string read from a column into an other string. The possible mappings

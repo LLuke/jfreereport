@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.7 2005/10/27 18:31:48 taqua Exp $
+ * $Id: SurveyScale.java,v 1.8 2005/11/17 17:03:48 taqua Exp $
  *
  * Changes
  * -------
@@ -48,11 +48,12 @@ import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.io.Serializable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
+import org.jfree.report.util.SerializerHelper;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.TextAnchor;
@@ -60,7 +61,6 @@ import org.jfree.util.BooleanList;
 import org.jfree.util.BooleanUtilities;
 import org.jfree.util.ShapeList;
 import org.jfree.util.ShapeUtilities;
-import org.jfree.report.util.SerializerHelper;
 
 /**
  * Draws a survey scale.  By implementing the {@link Drawable} interface,

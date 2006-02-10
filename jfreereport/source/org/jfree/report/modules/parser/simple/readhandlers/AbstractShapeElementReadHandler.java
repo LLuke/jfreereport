@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractShapeElementReadHandler.java,v 1.5 2006/01/27 16:25:36 taqua Exp $
+ * $Id: AbstractShapeElementReadHandler.java,v 1.6 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
 import java.awt.Stroke;
-import java.awt.BasicStroke;
 
 import org.jfree.report.elementfactory.ShapeElementFactory;
 import org.jfree.report.modules.parser.base.PropertyAttributes;

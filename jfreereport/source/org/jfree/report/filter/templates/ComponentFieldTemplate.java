@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ComponentFieldTemplate.java,v 1.1 2005/10/11 14:53:21 taqua Exp $
+ * $Id: ComponentFieldTemplate.java,v 1.2 2005/12/11 12:47:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,9 +39,9 @@
 package org.jfree.report.filter.templates;
 
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.filter.ComponentDrawableFilter;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ReportConnectable;
-import org.jfree.report.filter.ComponentDrawableFilter;
 
 /**
  * An drawable field template. The drawable content will be read from the datarow.

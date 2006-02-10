@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):
  *
- * $Id: ElementColorFunction.java,v 1.12 2005/08/29 17:56:46 taqua Exp $
+ * $Id: NegativeNumberPaintChangeFunction.java,v 1.1 2005/10/19 14:47:52 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@ package org.jfree.report.function;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;

@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: StrokeUtility.java,v 1.1 2006/01/27 18:50:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,8 +35,8 @@
  */
 package org.jfree.report.util;
 
-import java.awt.Stroke;
 import java.awt.BasicStroke;
+import java.awt.Stroke;
 import java.util.Arrays;
 
 /**

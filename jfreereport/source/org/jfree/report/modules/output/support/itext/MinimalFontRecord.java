@@ -1,9 +1,9 @@
 package org.jfree.report.modules.output.support.itext;
 
-import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontRecord;
-import org.jfree.fonts.registry.FontIdentifier;
 import org.jfree.fonts.io.FontDataInputSource;
+import org.jfree.fonts.registry.FontFamily;
+import org.jfree.fonts.registry.FontIdentifier;
+import org.jfree.fonts.registry.FontRecord;
 
 /**
  * Creation-Date: 09.11.2005, 20:32:33

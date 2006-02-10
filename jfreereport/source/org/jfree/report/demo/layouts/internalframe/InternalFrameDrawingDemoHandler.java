@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: InternalFrameDrawingDemoHandler.java,v 1.1 2005/12/11 12:47:05 taqua Exp $
+ * $Id: InternalFrameDrawingDemoHandler.java,v 1.2 2006/01/27 20:13:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,9 +35,9 @@
  */
 package org.jfree.report.demo.layouts.internalframe;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.demo.helper.DemoHandler;
 import org.jfree.report.demo.helper.PreviewHandler;
-import org.jfree.report.JFreeReportBoot;
 
 /**
  * Creation-Date: 11.12.2005, 12:33:51

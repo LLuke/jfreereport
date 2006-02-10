@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ComponentDrawingDemoHandler.java,v 1.3 2005/11/17 17:03:47 taqua Exp $
+ * $Id: ShapeAndDrawableDemoHandler.java,v 1.1 2006/01/27 16:26:19 taqua Exp $
  *
  * Changes
  * -------
@@ -39,14 +39,11 @@
 package org.jfree.report.demo.layouts;
 
 import java.net.URL;
-import javax.swing.JColorChooser;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.demo.functions.PaintComponentTableModel;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;

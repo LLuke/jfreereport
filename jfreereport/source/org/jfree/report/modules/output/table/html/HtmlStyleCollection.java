@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.17 2005/12/23 17:37:20 mtennes Exp $
+ * $Id: HtmlStyleCollection.java,v 1.18 2006/02/09 22:04:50 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@ import java.util.TreeMap;
 
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.modules.output.table.html.util.HtmlColors;
-import org.jfree.util.Log;
 
 /**
  * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these

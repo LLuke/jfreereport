@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.19 2005/06/25 17:51:59 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.20 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jfree.report.DataRow;
-import org.jfree.report.ResourceBundleFactory;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.event.PageEventListener;

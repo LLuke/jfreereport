@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.13 2005/09/07 14:25:11 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.14 2005/09/20 16:56:05 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 
-import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.SimplePageDefinition;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.util.PageFormatFactory;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.xml.CommentHandler;

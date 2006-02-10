@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.10 2005/11/25 15:54:46 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.11 2005/12/22 01:25:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,8 +39,8 @@ package org.jfree.report;
 import java.util.Enumeration;
 
 import org.jfree.base.AbstractBoot;
-import org.jfree.base.BootableProjectInfo;
 import org.jfree.base.BaseBoot;
+import org.jfree.base.BootableProjectInfo;
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.base.config.PropertyFileConfiguration;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.27 2005/09/07 14:25:11 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.28 2006/02/08 18:03:34 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,6 @@ import org.jfree.report.PageDefinition;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.util.ReportConfigurationUtil;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -60,6 +59,7 @@ import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
+import org.jfree.report.util.ReportConfigurationUtil;
 import org.jfree.util.Log;
 
 /**

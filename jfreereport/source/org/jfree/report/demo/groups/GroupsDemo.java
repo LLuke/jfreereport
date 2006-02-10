@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsDemo.java,v 1.6 2005/12/10 17:39:48 taqua Exp $
+ * $Id: GroupsDemo.java,v 1.7 2006/01/27 16:25:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,22 +37,18 @@
  */
 package org.jfree.report.demo.groups;
 
-import java.net.URL;
 import java.io.IOException;
+import java.net.URL;
 import javax.swing.JComponent;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
-import org.jfree.report.modules.output.table.html.HtmlReportUtil;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
-import org.jfree.report.demo.helper.SimpleDemoFrame;
-import org.jfree.ui.RefineryUtilities;
+import org.jfree.report.modules.output.table.html.HtmlReportUtil;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.util.Log;
 
 /**
  * This demo shows how to define nested groups.

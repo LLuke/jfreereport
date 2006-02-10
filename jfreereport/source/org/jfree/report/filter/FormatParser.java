@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: FormatParser.java,v 1.4 2005/02/23 21:04:45 taqua Exp $
+ * $Id: FormatParser.java,v 1.5 2005/12/30 11:05:55 taqua Exp $
  *
  * Changes
  * -------
@@ -37,10 +37,10 @@
  */
 package org.jfree.report.filter;
 
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
 

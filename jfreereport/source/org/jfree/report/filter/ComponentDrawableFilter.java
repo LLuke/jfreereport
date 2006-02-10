@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2005, by Object Refinery Limited.
  *
- * $Id: ComponentDrawableFilter.java,v 1.1 2005/10/11 14:53:21 taqua Exp $
+ * $Id: ComponentDrawableFilter.java,v 1.2 2005/12/11 12:47:06 taqua Exp $
  *
  * Changes
  * -------
@@ -35,9 +35,9 @@ package org.jfree.report.filter;
 
 import java.awt.Component;
 
-import org.jfree.report.util.ComponentDrawable;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.util.ComponentDrawable;
 
 /**
  * Creation-Date: 11.10.2005, 14:58:34

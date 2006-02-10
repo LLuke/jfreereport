@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ToUpperCaseStringExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,8 +35,8 @@
  */
 package org.jfree.report.function.strings;
 
-import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.ResourceBundleFactory;
+import org.jfree.report.function.AbstractExpression;
 
 /**
  * Creation-Date: 20.01.2006, 18:19:18

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.7 2005/09/19 15:38:48 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.8 2005/10/15 14:04:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ package org.jfree.report.states;
 import org.jfree.report.Group;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.util.Log;
 
 /**
  * Prints the itemBand. Before the band is printed, the items are advanced and the next

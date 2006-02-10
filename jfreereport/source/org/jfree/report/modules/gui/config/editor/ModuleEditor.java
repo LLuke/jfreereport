@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ModuleEditor.java,v 1.7 2005/09/07 14:25:10 taqua Exp $
+ * $Id: ModuleEditor.java,v 1.8 2005/09/19 15:38:46 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.gui.config.editor;
 
 import javax.swing.JComponent;
 
-import org.jfree.base.modules.Module;
 import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.modules.Module;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 
 /**

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ExpressionPropertyReadHandler.java,v 1.4 2005/04/09 17:43:14 taqua Exp $
+ * $Id: ExpressionPropertyReadHandler.java,v 1.5 2005/09/20 16:56:05 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,10 @@ import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanException;
 import org.jfree.report.util.beans.BeanUtility;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.util.ObjectUtilities;
 import org.xml.sax.SAXException;
 
 public class ExpressionPropertyReadHandler extends PropertyStringReadHandler

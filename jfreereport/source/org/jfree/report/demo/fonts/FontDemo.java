@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontDemo.java,v 1.2 2005/09/21 12:00:15 taqua Exp $
+ * $Id: FontDemo.java,v 1.3 2005/10/02 10:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.demo.groups.ColorAndLetterTableModel;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;

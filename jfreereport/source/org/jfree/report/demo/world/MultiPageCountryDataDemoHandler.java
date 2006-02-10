@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MultiPageCountryDataDemoHandler.java,v 1.1 2005/08/29 17:43:38 taqua Exp $
+ * $Id: MultiPageCountryDataDemoHandler.java,v 1.2 2005/10/11 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,22 +40,21 @@
  */
 package org.jfree.report.demo.world;
 
-import java.net.URL;
-import java.io.OutputStream;
 import java.io.BufferedOutputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import javax.swing.JComponent;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.util.NullOutputStream;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
-import org.jfree.report.modules.output.pageable.plaintext.PlainTextReportUtil;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
-import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.util.NullOutputStream;
 import org.jfree.util.ObjectUtilities;
 
 public class MultiPageCountryDataDemoHandler extends AbstractXmlDemoHandler

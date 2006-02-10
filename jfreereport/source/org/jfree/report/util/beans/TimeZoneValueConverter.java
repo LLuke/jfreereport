@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TimeZoneValueConverter.java,v 1.1 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,8 +35,6 @@
  */
 package org.jfree.report.util.beans;
 
-import java.util.Locale;
-import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 /**

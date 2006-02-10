@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ResourceMessageTemplate.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
+ * $Id: ResourceMessageTemplate.java,v 1.2 2006/01/27 16:25:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,9 +38,9 @@ package org.jfree.report.filter.templates;
 import java.util.MissingResourceException;
 
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.ResourceMessageFormatFilter;
 import org.jfree.report.filter.StringFilter;
-import org.jfree.report.filter.ReportConnectable;
 
 /**
  * Creation-Date: 24.01.2006, 16:33:54

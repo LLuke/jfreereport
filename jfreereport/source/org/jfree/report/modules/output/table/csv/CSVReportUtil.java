@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVReportUtil.java,v 1.8 2005/02/23 21:05:34 taqua Exp $
+ * $Id: CSVReportUtil.java,v 1.9 2005/12/26 14:23:13 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,11 +39,11 @@
 package org.jfree.report.modules.output.table.csv;
 
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;

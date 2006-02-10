@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.10 2005/10/11 14:53:21 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.11 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.parser.ext.factory.datasource;
 
 import org.jfree.report.filter.AnchorFilter;
+import org.jfree.report.filter.ComponentDrawableFilter;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DateFormatFilter;
 import org.jfree.report.filter.DateFormatParser;
@@ -54,14 +55,13 @@ import org.jfree.report.filter.MessageFormatFilter;
 import org.jfree.report.filter.NumberFormatFilter;
 import org.jfree.report.filter.NumberFormatParser;
 import org.jfree.report.filter.ResourceFileFilter;
+import org.jfree.report.filter.ResourceMessageFormatFilter;
 import org.jfree.report.filter.ShapeFilter;
 import org.jfree.report.filter.SimpleDateFormatFilter;
 import org.jfree.report.filter.SimpleDateFormatParser;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.filter.StringFilter;
 import org.jfree.report.filter.URLFilter;
-import org.jfree.report.filter.ComponentDrawableFilter;
-import org.jfree.report.filter.ResourceMessageFormatFilter;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 

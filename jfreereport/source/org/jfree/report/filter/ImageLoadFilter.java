@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.9 2005/10/11 14:53:21 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.10 2005/10/27 18:31:43 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -37,9 +37,9 @@
 package org.jfree.report.filter;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.URL;
 
 import org.jfree.report.DefaultImageReference;

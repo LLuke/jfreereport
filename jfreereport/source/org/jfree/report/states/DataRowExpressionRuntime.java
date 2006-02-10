@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: DataRowExpressionRuntime.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
+ * $Id: DataRowExpressionRuntime.java,v 1.2 2006/02/08 18:03:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,9 +37,9 @@ package org.jfree.report.states;
 
 import javax.swing.table.TableModel;
 
-import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.report.DataRow;
 import org.jfree.report.ResourceBundleFactory;
+import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.util.Configuration;
 
 /**

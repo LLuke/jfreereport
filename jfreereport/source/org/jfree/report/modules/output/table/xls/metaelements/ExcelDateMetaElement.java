@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelDateMetaElement.java,v 1.4 2005/02/23 21:05:37 taqua Exp $
+ * $Id: ExcelDateMetaElement.java,v 1.5 2005/12/09 20:05:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,7 +41,6 @@ package org.jfree.report.modules.output.table.xls.metaelements;
 import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.xls.ExcelExportContext;
 import org.jfree.report.style.ElementStyleSheet;

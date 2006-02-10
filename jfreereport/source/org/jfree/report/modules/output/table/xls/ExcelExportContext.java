@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ExcelExportContext.java,v 1.1 2005/12/10 17:49:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,9 +35,9 @@
  */
 package org.jfree.report.modules.output.table.xls;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.report.modules.output.table.base.SheetLayout;
 
 /**

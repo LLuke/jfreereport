@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.50 2006/01/12 20:54:54 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.51 2006/02/10 13:53:19 taqua Exp $
  *
  * Changes
  * -------
@@ -877,7 +877,7 @@ public class PreviewProxyBase extends JComponent
   /** An action map storing all export related actions. */
   private DowngradeActionMap exportActionMap;
   /** An action map storing all custom toolbar actions. */
-  private final DowngradeActionMap customActionMap;
+  private DowngradeActionMap customActionMap;
 
   /** The available zoom factors. */
   protected static final float[]

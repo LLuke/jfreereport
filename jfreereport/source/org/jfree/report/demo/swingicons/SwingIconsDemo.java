@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.3 2005/12/10 17:39:48 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.4 2006/02/10 13:21:34 taqua Exp $
  *
  * Changes
  * -------
@@ -41,13 +41,10 @@
 package org.jfree.report.demo.swingicons;
 
 import java.net.URL;
-import java.io.IOException;
 import javax.swing.JComponent;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.modules.output.table.xls.ExcelReportUtil;
 import org.jfree.report.demo.helper.AbstractXmlDemoHandler;
 import org.jfree.report.demo.helper.ReportDefinitionException;
 import org.jfree.report.demo.helper.SimpleDemoFrame;

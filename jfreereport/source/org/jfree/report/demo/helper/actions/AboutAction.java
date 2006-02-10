@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.1 2005/08/29 17:46:10 taqua Exp $
+ * $Id: AboutAction.java,v 1.2 2005/12/10 17:39:48 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@ package org.jfree.report.demo.helper.actions;
 
 import javax.swing.Action;
 
+import org.jfree.report.modules.gui.base.Skin;
+import org.jfree.report.modules.gui.base.SkinLoader;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
-import org.jfree.report.modules.gui.base.Skin;
-import org.jfree.report.modules.gui.base.SkinLoader;
 
 /**
  * The About action is used to show some information about the demo programm of
