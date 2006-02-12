@@ -1,0 +1,200 @@
+<!-- An ANT build file for libfonts. -->
+
+<!-- Written by David Gilbert and modified for libFonts by Thomas Morgner. -->
+<!-- 09-Nov-2005 -->
+
+<!-- This script has been tested with Ant version 1.6.2. -->
+
+<!-- Several temporary directories are created while the script is -->
+<!-- running: "../build" and "../distribution".  -->
+
+<!-- A "../javadoc" directory will be created for the Javadoc -->
+<!-- HTML pages. -->
+
+<!-- The script should work for the distribution and also the CVS -->
+<!-- repository. -->
+
+<project name="libfonts" default="all" basedir="..">
+
+  <!-- Initialisation. -->
+  <target name="initialise" description="Initialise required settings.">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+
+    <path id="build.classpath">
+      <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      <pathelement location="${libdir}/${libfonts-jar-file}"/>
+      <pathelement location="${libdir}/${sac-jar-file}"/>
+      <pathelement location="${libdir}/${flute-jar-file}"/>
+    </path>
+  </target>
+
+  <!-- Compile the libfonts classes -->
+  <target name="compile" depends="initialise"
+    description="Compile the libFonts source code.">
+
+    <!-- create a temp build directory -->
+    <mkdir dir="${builddir}"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="${builddir}"
+      deprecation="${build.deprecation}" debug="${build.debug}"
+      optimize="${build.optimize}" target="${build.target}">
+      <classpath refid="build.classpath"/>
+      <include name="org/jfree/layouting/**"/>
+    </javac>
+
+    <!-- copy across .properties files -->
+    <copy todir="${builddir}/org/jfree/layouting/">
+      <fileset dir="source/org/jfree/layouting">
+        <include name="*.properties"/>
+      </fileset>
+    </copy>
+
+    <!-- make the jar -->
+    <jar jarfile="${libfonts-jar-file}" basedir="${builddir}"/>
+
+    <!-- delete the temp directory -->
+    <delete dir="${builddir}"/>
+
+  </target>
+
+  <!-- Generate the libfonts JavaDoc HTML pages -->
+  <target name="javadoc" depends="initialise">
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="LibLayout Class Library (version ${liblayout.version})"
+      overview="source/overview.html"
+      linksource="true">
+      <classpath refid="build.classpath"/>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/layouting"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+      tofile="distribution/README.txt" failonerror="false"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="distribution/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${liblayout-jar-file}"
+      tofile="distribution/${liblayout-jar-file}"/>
+
+  	<!-- copy across maven xml files -->
+  	<copy file="maven-liblayout-project.xml"
+  		tofile="distribution/maven-liblayout-project.xml"/>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+      tofile="distribution/ant/build.xml" failonerror="false"/>
+
+    <copy file="ant/build.properties"
+      tofile="distribution/ant/build.properties"/>
+
+    <!-- copy across checkstyle property file -->
+    <copy todir="distribution/checkstyle">
+      <fileset dir="checkstyle"/>
+    </copy>
+  </target>
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+
+    <antcall target="fill-dist-dir"/>
+
+    <!-- convert end-of-line characters in text files -->
+    <fixcrlf srcdir="distribution/source"
+      eol="crlf" eof="remove"/>
+
+    <!-- make the zip file -->
+    <zip zipfile="${liblayout.name}-${liblayout.version}.zip">
+      <zipfileset dir="distribution"
+        prefix="${liblayout.name}-${liblayout.version}"/>
+    </zip>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+
+    <antcall target="fill-dist-dir"/>
+
+    <!-- convert end-of-line characters in text files -->
+    <fixcrlf srcdir="distribution/source"
+      eol="lf" eof="remove"/>
+
+    <!-- make the tar.gz file -->
+    <tar tarfile="${liblayout.name}-${liblayout.version}.tar">
+      <tarfileset dir="distribution"
+        prefix="${liblayout.name}-${liblayout.version}"/>
+    </tar>
+    <gzip zipfile="${liblayout.name}-${liblayout.version}.tar.gz"
+      src="${liblayout.name}-${liblayout.version}.tar"/>
+    <delete file="${liblayout.name}-${liblayout.version}.tar"/>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+
+  </target>
+
+  <target name="maven-bundle" depends="zip" >
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
+    
+    <filterchain id="version.filters">
+       <replacetokens>
+         <token key="VERSION" value="${liblayout.version}"/>
+       </replacetokens>
+    </filterchain>
+    <copy file="maven-liblayout-project.xml" tofile="distribution/project.xml">
+	    <filterchain refid="version.filters"/>
+    </copy>
+    
+    <!-- copy across runtime jar file -->
+    <copy file="${liblayout-jar-file}" tofile="distribution/${liblayout-jar-file}"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${liblayout-bundle-file}" basedir="distribution"/>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+
+  </target>
+
+
+  <!-- ALL -->
+  <target name="all"
+    depends="compile,javadoc,zip,targz,maven-bundle"
+    description="Compiles Libfonts, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+  </target>
+
+</project>
