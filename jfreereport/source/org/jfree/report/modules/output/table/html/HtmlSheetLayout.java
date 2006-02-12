@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.14 2006/01/27 18:50:53 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.15 2006/02/09 22:04:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
 import java.awt.Stroke;
-import java.util.HashSet;
 
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.modules.output.meta.MetaElement;
@@ -63,60 +62,6 @@ import org.jfree.util.ObjectUtilities;
  */
 public class HtmlSheetLayout extends SheetLayout
 {
-  private static class BackgroundPair
-  {
-    private ElementAlignment verticalAlignment;
-    private TableCellBackground background;
-    private int hashCode;
-
-    public BackgroundPair(final TableCellBackground background,
-                          final ElementAlignment verticalAlignment)
-    {
-      update(background, verticalAlignment);
-    }
-
-    public void update (final TableCellBackground background,
-                          final ElementAlignment verticalAlignment)
-    {
-      this.background = background;
-      this.verticalAlignment = verticalAlignment;
-
-      // precompute for performance reasons ...
-      hashCode = (verticalAlignment != null ? verticalAlignment.hashCode() : 0);
-      hashCode = 29 * hashCode + (background != null ? background.hashCode() : 0);
-    }
-
-    public boolean equals(final Object o)
-    {
-      if (this == o)
-      {
-        return true;
-      }
-      if (o == null || getClass() != o.getClass())
-      {
-        return false;
-      }
-
-      final BackgroundPair that = (BackgroundPair) o;
-
-      if (ObjectUtilities.equal(background, that.background) == false)
-      {
-        return false;
-      }
-      if (ObjectUtilities.equal(verticalAlignment, that.verticalAlignment) == false)
-      {
-        return false;
-      }
-
-      return true;
-    }
-
-    public int hashCode()
-    {
-      return hashCode;
-    }
-  }
-
   private HtmlStyleCollection styleCollection;
   private TableRectangle rectangle;
 
@@ -240,9 +185,6 @@ public class HtmlSheetLayout extends SheetLayout
     // Spanned elements are only stored in their upper left corner, as all
     // other cells will be skipped anyway ..
 
-    // contains the completed elements and the alignment for them ...
-    final HashSet completedElements = new HashSet();
-    final BackgroundPair keyPair = new BackgroundPair(null, null);
     final int rowCount = getRowCount();
     final int columnCount = getColumnCount();
 
@@ -279,12 +221,6 @@ public class HtmlSheetLayout extends SheetLayout
 
         final ElementAlignment verticalAlignment =
                 getVerticalAlignmentAt(layoutRow, layoutCol);
-        keyPair.update(bg, verticalAlignment);
-
-        if (completedElements.contains(keyPair))
-        {
-          continue;
-        }
 
         if (bg == null)
         {
@@ -336,7 +272,6 @@ public class HtmlSheetLayout extends SheetLayout
 
         final String styleName = styleCollection.addCellStyle(style);
         backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
-        completedElements.add (new BackgroundPair(bg, verticalAlignment));
       }
 
       final int height = (int) Math.ceil
@@ -359,7 +294,7 @@ public class HtmlSheetLayout extends SheetLayout
             verticalAlignmentTable.getObject(mrow, mcolumn);
     if (ea == null)
     {
-      return ElementAlignment.TOP;
+      return ElementAlignment.LEFT;
     }
     return ea;
   }
