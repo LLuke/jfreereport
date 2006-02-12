@@ -1,0 +1,36 @@
+#
+# Border-Module
+
+background-color:
+
+  Accepts:     org.jfree.layouting.input.values.CSSColor
+               org.jfree.layouting.input.values.CSSConstant
+
+  Auto:        not available
+  Computed:    a real CSSColor value
+  Percentages: n/a
+
+background-image:  (List)
+
+  Accepts:     CSSValueList <[CSSString | LayoutImageData]>
+
+  Auto:        not available
+  Computed:    a list of images, invalid elements replaced by transparent images
+  Percentages: n/a
+
+background-repeat:  (List)
+
+  Accepts:     CSSValueList <[BackgroundRepeatValue]>
+
+  Auto:        not available
+  Computed:    a list of BRVs, invalid elements replaced by default value
+  Percentages: n/a
+
+
+background-position:
+
+  Auto:        n/a
+  Computed:    n/a
+  Percentages: - deferred -
+
+  

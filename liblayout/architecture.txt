@@ -1,0 +1,249 @@
+$Id$
+
+{This document is a scapbook of all architecture related questions;
+ it may or may not evolve into a final document.}
+
+libLayout
+---------
+
+Purpose:
+The layouting engine is responsible for transforming high level input
+enriched with style information into a low level layout. To make the
+implementation more applicable to different input and output sets,
+the intput and output feeds will be event driven.
+
+The output processing will be encapsulated into output transactions -
+only if all transactions are closed, the content is created. As long
+as a transaction is open, all output will be buffered so that it can
+be discarded easily.
+
+The engin can be divided into separate subsystems.
+
+The first system is the "primary feed". That feed receives the content
+and style information that should be printed. The content must be given
+in the printing order, it is not allowed to re-specify content for elements
+already processed.
+
+The second subsystem is the layout computing engine. This subsystem estaminates
+the size of the content and tries to find suitable locations. For these
+computations, feedback from the output targets is need.
+
+The third subsystem is made up by the output targets. These target control
+how the output content is created from the given layout specifications. These
+targets don't have to be very smart - they just have to create the raw data.
+
+----
+
+How page header and footer are handled
+
+Pageheader and footer are special bands, which do not really count as content.
+The headers are inserted into the output whenever a new page starts, and the
+footer get inserted when a page finishes.
+
+As it is not known to the input feed, whether a page started or finished,
+page header and footer have to be defined during the normal feed operations.
+
+The page header has to be set before the page printing started; the page footer
+can be redefined at any time until the page is finished. When printing content,
+the current page footer is used to compute the footers required size. This size
+is substracted from the content area.
+
+If the content does not fit into the current page area, and no content has
+been printed yet, then the *previous* page footer is used for closing the
+page. If at least some of the new content has been printed, the new page
+footer is used instead of the previous one. To reduce the workload, the
+pagefooter/header should only be redefined if they changed.
+
+--
+
+Layouting engines
+-----------------
+
+From the experiences with JFreeReport we know, that there are at least two
+different layouting engines. One is used for graphical layouts like
+Printing, PDF or postscript; the other one would be the tablular layout for
+the excel export.
+
+The HTML export can also be done with the table layout, but on the other
+hand, using tables is not really needed when using CSS smartly. So the third
+engine type would be a "document" layout - suitable for HTML, Word and RTF
+output.
+
+Schematic layout of the processing
+----------------------------------
+                                     feedback         layout hints
+Html,       \                      +------------+   +-----------+
+Style info,  |                    \/            |  \/           |
+Text,        |--> Parser --> input feed  ---> Layouting  ---> output,
+RTF,         |                                engine          spooling
+Raw Content /
+
+
+If possible, the three main components should be loosely coupled so
+that they can be distributed on different noded if necessary.
+
+(1) Input
+(2) Normalization, Computation
+(3) Layouting
+(4) Output/ContentCreation
+
+
+----------------------------------
+Elements and style inheritance
+
+For now, three types of style inheritance are known.
+
+a) None - the simplest case. All elements supply all information on how they
+   should be displayed. This is true for all unstructured content like
+   postscript or PDFs.
+
+b) Direct inheritance. This is the simple HTML way (without stylesheets).
+   The parent element defines the layout properties for all child elements.
+   Childs may override some or all style properties
+
+c) Mixed inheritance. HTML with stylesheets and JFreeReport. In this model,
+   a set of global Stylesheets has been defined and is used to lookup the
+   style for the elements. Additionally, the elements inherit the style of
+   their parents and can define own styles.
+
+-----------------------------------
+The input feed will only forward consistent content to the layouting engine.
+The layouter cannot compute a valid layout, as long as there is important
+data missing. For instance, we cannot estaminate the layout properties of
+table elements for "autolayout" tables, until we know the content for all
+cells of the table. On the other hand, if all widths of the table columns
+are defines, there is no reason, to wait for the complete table. Once we
+received a row completly, we can start to compute the layout immediatly.
+
+When passing a consistent state to the layouter, we can assume, that the
+whole layout will remain consistent even if we remove the sent elements.
+
+An element cannot be consistent, if the child of the element is invalid.
+An element cannot be passed to the layouter, if the element itself or 
+one of the parents is in an inconsistent state. For the table example
+above: The "manual layout" table is in a consistent state, if all given
+rows are valid (have the required number of column definitions).
+
+Tables within other tables will reduce the performance gain from the 
+schema above, as the inner tables have to be complete to allow the outer
+table to be consistent. Nested tables are not expect to be seen in the
+wild often, at least when speaking about large scale data generation
+processes.
+
+-------------
+Feedback systems
+
+Sometimes, it might be usefull to receive feedback about the content
+creation process, for instance when counting pages.
+
+Providing a feedback interface will increase the complexity of the 
+content creation process. Feedback about pagebreaks will be important
+for JFR; so at least basic events have to be given.
+
+* provide a way to monitor the current page generation state and to
+  intercept the processing on page events to set a new pageheader or
+  footer. The content itself is immutable, only new data might be allowed
+  to be added.
+  
+
+
+Steps required for successful layouting
+-----------------------------------------
+
+1) Band Generation (part of the report definition; maybe done by functions)
+2) DOM-Generation (part of the input feed, converts bands into DOM-elements)
+3) Apply rule mapping (compute the effective style Part I)
+4) Normalize the style I (convert relative values to absolute values)
+5) Generate content (Autoboxes for anonymous elements etc...)
+6) resolve Pseudo-classes
+7) Generate line boxes abd line breaks.
+
+
+---------------------------------------------------------------------------
+The InputFeed collects the content and the style. Once an element is completed,
+it can be passed over to the normalization process.
+
+[quote]
+The final value of a CSS3 property for a given element is the result of a
+four-step calculation: cascading and inheritance [!CSS3CASCADE] yields a value
+(the specified value), then relative values are computed into absolute values
+as far as possible without formatting the document (yielding the computed value),
+then the and finally transformed according to the limitations of the local
+environment (yielding the actual value).
+[/quote]
+
+The document is normalized and simplified.
+The style is inherited/cascaded as far as possible.
+
+The generated-content is created and added to the document.
+For the generated content: The document is normalized and simplified.
+For the generated content: The style is inherited/cascaded as far as possible.
+
+Compute the missing style values (without actually looking at the content).
+(This is another resolve step and not yet the ugly layouting.)
+
+Resolve the pageable-pseudo-classes and rerun the normalization/generation for
+these elements. Compute the layout sizes (now thats the layouting)
+
+(For now, the content generation can be ignored. We do not have a textual
+representation of the document model, and therefore there is no way to make
+use of this feature.)
+
+
+
+Note: padding-top,padding-bottom are relative to the WIDTH of an element, if
+given in percentages..
+
+
+Note: @font-face matching is not yet implemented. (Module: WebFonts)
+Note: generated content is not yet implemented. (Module: generated)
+Note: tables are not yet implemented. (Module: table)
+
+
+
+-------------------------------------------------------------------------
+There are three different layout processes available - each one for a given
+purpose:
+
+1. Streaming:
+
+The streaming layouter is the simplest one. The layout process computes the
+'computed style sheet', loads all external referenced content and passes the
+input to the normalizer. The normalizer is not required to generate line boxes,
+as it is assumed that the generated content will be rendered by a browser or
+text processing system.
+
+This process is most suitable for generating HTML and OpenOffice Text documents.
+
+
+2. Flowing
+
+The flowing layout process assumes that the generated content must fit into a
+certain width. The canvas is assumed to have an infinite height, as it is
+usually found in web-browsers. The normalizer will generate lineboxes, but
+will not generate pagebreaks. Manual pagebreaks get translated into starting
+a new canvas.
+
+The process consists of two phases. Phase one computes global layout properties
+and possibly collect styles. Phase two generates the content.
+
+This process is intended to be used in conjunction with the various table
+outputs (Excel, OpenOffice Calc and the HTML table targets).
+
+
+3. Paginating
+
+The third layouter generates lineboxes and is working on a canvas with a limited
+height. It offers the option to save processing states and to restart the
+content generation process.
+
+The process consists of two phases. Phase one computes global layout properties
+and possibly collect the page states. Phase two generates the content.
+
+The pageable output is primarily designed for the PDF and printing export.
+
+
+
+[1] The CSS3 specifications draft. We 'reuse' ideas but do not yet attemp a
+    standards-conforming implementation.
+    http://www.w3.org/Style/CSS/current-work
