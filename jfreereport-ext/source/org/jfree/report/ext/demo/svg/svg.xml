@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
+<!--
+
+  Defined fields for this TableModel:
+
+  0: "name"   = String;
+  1: "street" = String;
+  2: "town"   = String;
+  3: "productcode" = String;
+  4: "productname" = String;
+  5: "count"  = Integer;
+  6: "price"  = Double;
+  7: "total"  = Double (is calculated inside the model);
+    else
+
+ -->
+<report name="SVG Demo" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
+  <reportheader>
+    <label x="0" y="0" width="100%" height="15">SVG Image referenced by an URL</label>
+    <line x1="0" y1="15" x2="100%" y2="15" color="black" stroke-style="dashed"/>
+    <!--
+    SVG images, like all drawables have no explicit height. They always
+    scale to fit the element bounds. SVG is a bit special, as it preserves the
+    aspect ratio of the original image.
+    -->
+    <drawableref src="acroread.svg" x="0" y="20" width="100%" height="100"/>
+  </reportheader>
+
+  <reportfooter>
+    <label x="0" y="0" width="100%" height="15">SVG Image directly passed to the report.</label>
+    <line x1="0" y1="15" x2="100%" y2="15" color="black" stroke-style="dashed"/>
+    <!--
+    SVG images, like all drawables have no explicit height. They always
+    scale to fit the element bounds. SVG is a bit special, as it preserves the
+    aspect ratio of the original image.
+    -->
+    <drawable-field x="0" y="20" width="100%" height="100" fieldname="drawable"/>
+  </reportfooter>
+
+  <functions>
+    <property-ref name="drawable"/>
+  </functions>
+</report>
