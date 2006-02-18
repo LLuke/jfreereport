@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogTarget.java,v 1.3 2003/08/20 19:24:58 taqua Exp $
+ * $Id: Java14LogTarget.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jfree.util.LogTarget;
+import org.jfree.JCommon;
 
 /**
  * A log target for the JDK 1.4 logging API. This target can be used
@@ -50,81 +51,79 @@ import org.jfree.util.LogTarget;
  */
 public class Java14LogTarget implements LogTarget
 {
-  /** the log category receives the generated log statements. */
   private Logger logger;
 
-  /**
-   * Creates a new Java 1.4 log target, which logs all statements into the
-   * category "JFreeReport".
-   */
   public Java14LogTarget ()
   {
-    this (Logger.getLogger("JFreeReport"));
+    logger = Logger.getLogger(JCommon.class.getName());
   }
 
-  /**
-   * Creates a new Java 1.4 log target, which uses the given Logger to log
-   * the generated log statements.
-   *
-   * @param logger the logger instance, that should be used for logging.
-   */
-  public Java14LogTarget (final Logger logger)
-  {
-    if (logger == null)
-    { 
-      throw new NullPointerException("Given category is null");
-    }
-    this.logger = logger;
-  }
-
-  /**
-   * Logs a message at a specified log level. The message is logged using the
-   * private Log4J Category.
-   *
-   * @param level  the log level.
-   * @param message  the log message.
-   */
   public void log (final int level, final Object message)
   {
-    logger.log(translateLogLevel(level), String.valueOf(message));
-  }
-
-  /**
-   * Logs a message at a specified log level. The message is logged using the
-   * private Log4J Category.
-   *
-   * @param level  the log level.
-   * @param message  the log message.
-   * @param e  the exception
-   */
-  public void log (final int level, final Object message, final Exception e)
-  {
-    logger.log(translateLogLevel(level), String.valueOf(message), e);
-  }
-
-  /**
-   * Translates the JFreeReport log level into a Java1.4 log level.
-   *
-   * @param level the JFreeReport log level.
-   * @return the Java 1.4 log level.
-   */
-  private Level translateLogLevel (final int level)
-  {
-    if (level == ERROR)
+    String messageText;
+    if (message == null)
     {
-      return Level.SEVERE;
-    }
-    else if (level == WARN)
-    {
-      return Level.WARNING;
-    }
-    else if (level == INFO)
-    {
-      return Level.INFO;
+      messageText = null;
     }
     else
     {
-      return Level.FINE;
+      messageText = String.valueOf(message);
+    }
+    if (level == ERROR)
+    {
+      logger.log(Level.SEVERE, messageText);
+    }
+    else if (level == WARN)
+    {
+      logger.log(Level.WARNING, messageText);
+    }
+    else if (level == INFO && logger.isLoggable(Level.INFO))
+    {
+      logger.log(Level.INFO, messageText);
+    }
+    else if (level == DEBUG && logger.isLoggable(Level.FINE))
+    {
+      logger.log(Level.FINE, messageText);
+    }
+    else
+    {
+      // should not happen, but make sure it does not get surpressed ..
+      logger.log(Level.SEVERE, messageText);
+    }
+  }
+
+  public void log (final int level, final Object message, final Exception e)
+  {
+    String messageText;
+    if (message == null)
+    {
+      messageText = null;
+    }
+    else
+    {
+      messageText = String.valueOf(message);
+    }
+
+    if (level == ERROR)
+    {
+      logger.log(Level.SEVERE, messageText, e);
+    }
+    else if (level == WARN)
+    {
+      logger.log(Level.WARNING, messageText, e);
+    }
+    else if (level == INFO && logger.isLoggable(Level.INFO))
+    {
+      logger.log(Level.INFO, messageText, e);
+    }
+    else if (level == DEBUG && logger.isLoggable(Level.FINE))
+    {
+      logger.log(Level.FINE, messageText, e);
+    }
+    else
+    {
+      // should not happen, but make sure it does not get surpressed ..
+      logger.log(Level.SEVERE, messageText, e);
     }
   }
 }

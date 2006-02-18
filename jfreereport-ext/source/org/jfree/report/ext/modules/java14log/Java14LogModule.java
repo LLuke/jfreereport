@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogModule.java,v 1.7 2005/09/19 13:34:25 taqua Exp $
+ * $Id: Java14LogModule.java,v 1.8 2005/11/25 16:07:45 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -85,7 +85,7 @@ public class Java14LogModule extends AbstractModule
     if (Java14LogTarget.class.getName().equals
             (config.getConfigProperty(LogConfiguration.LOGTARGET)))
     {
-      Log.getInstance().addTarget(new Java14LogTarget());
+      Java14Log.install();
       if ("true".equals(subSystem.getGlobalConfig().getConfigProperty
               ("org.jfree.base.LogAutoInit")))
       {

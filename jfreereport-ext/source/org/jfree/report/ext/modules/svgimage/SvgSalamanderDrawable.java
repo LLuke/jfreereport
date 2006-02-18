@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: SvgSalamanderDrawable.java,v 1.1 2005/12/21 20:15:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -111,10 +111,17 @@ public class SvgSalamanderDrawable implements ExtendedDrawable
     float height = diagram.getHeight();
     float width = diagram.getWidth();
 
-    final double sx = area.getWidth() / width;
-    final double sy = area.getHeight() / height;
-    final double sm = Math.min (sx, sy);
-    g2.scale(sm, sm);
+    if (width == 0 || height == 0)
+    {
+      Log.warn ("SVGSalamanderDrawable: Diagramm has no width or heigth");
+    }
+    else
+    {
+      final double sx = area.getWidth() / width;
+      final double sy = area.getHeight() / height;
+      final double sm = Math.min (sx, sy);
+      g2.scale(sm, sm);
+    }
 
     try
     {

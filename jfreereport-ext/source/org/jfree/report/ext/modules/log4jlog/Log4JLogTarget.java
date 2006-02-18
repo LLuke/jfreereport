@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.4 2003/09/09 10:27:59 taqua Exp $
+ * $Id: Log4JLogTarget.java,v 1.5 2005/11/25 16:07:46 taqua Exp $
  *
  * Changes
  * -------
@@ -36,8 +36,9 @@
  */
 package org.jfree.report.ext.modules.log4jlog;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.jfree.JCommon;
 import org.jfree.util.LogTarget;
 
 /**
@@ -50,57 +51,60 @@ import org.jfree.util.LogTarget;
  */
 public class Log4JLogTarget implements LogTarget
 {
-  /** the log category receives the generated log statements. */
-  private Category cat;
+  private Logger logger;
 
-  /**
-   * Creates a new Log4J log target, which logs all statements into the
-   * category "JFreeReport".
-   */
   public Log4JLogTarget ()
   {
-    this (Category.getInstance("JFreeReport"));
+    logger = Logger.getLogger(JCommon.class);
   }
 
-  /**
-   * Creates a new Log4J log target, which uses the given Category to log
-   * the generated log statements.
-   *
-   * @param cat the category, that should be used for logging.
-   */
-  public Log4JLogTarget (final Category cat)
-  {
-    if (cat == null)
-    { 
-      throw new NullPointerException("Given category is null");
-    }
-    this.cat = cat;
-  }
-
-  /**
-   * Logs a message at a specified log level. The message is logged using the
-   * private Log4J Category.
-   *
-   * @param level  the log level.
-   * @param message  the log message.
-   */
   public void log (final int level, final Object message)
   {
-    final Priority priority = Priority.toPriority(level);
-    cat.log(priority, message);
+    if (level == ERROR)
+    {
+      logger.log(Priority.ERROR, message);
+    }
+    else if (level == WARN)
+    {
+      logger.log(Priority.WARN, message);
+    }
+    else if (level == INFO && logger.isInfoEnabled())
+    {
+      logger.log(Priority.INFO, message);
+    }
+    else if (level == DEBUG && logger.isDebugEnabled())
+    {
+      logger.log(Priority.DEBUG, message);
+    }
+    else
+    {
+      // should not happen, but make sure it does not get surpressed ..
+      logger.log(Priority.FATAL, message);
+    }
   }
 
-  /**
-   * Logs a message at a specified log level. The message is logged using the
-   * private Log4J Category.
-   *
-   * @param level  the log level.
-   * @param message  the log message.
-   * @param e  the exception
-   */
   public void log (final int level, final Object message, final Exception e)
   {
-    final Priority priority = Priority.toPriority(level);
-    cat.log(priority, message, e);
+    if (level == ERROR)
+    {
+      logger.log(Priority.ERROR, message, e);
+    }
+    else if (level == WARN)
+    {
+      logger.log(Priority.WARN, message, e);
+    }
+    else if (level == INFO && logger.isInfoEnabled())
+    {
+      logger.log(Priority.INFO, message, e);
+    }
+    else if (level == DEBUG && logger.isDebugEnabled())
+    {
+      logger.log(Priority.DEBUG, message, e);
+    }
+    else
+    {
+      // should not happen, but make sure it does not get surpressed ..
+      logger.log(Priority.FATAL, message, e);
+    }
   }
 }

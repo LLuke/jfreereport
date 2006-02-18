@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogModule.java,v 1.7 2005/09/19 13:34:25 taqua Exp $
+ * $Id: Log4JLogModule.java,v 1.8 2005/11/25 16:07:46 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,8 +70,7 @@ public class Log4JLogModule extends AbstractModule
    */
   public void initialize(final SubSystem subSystem) throws ModuleInitializeException
   {
-    if (BaseBoot.getConfiguration().getConfigProperty
-            (LogConfiguration.DISABLE_LOGGING, "false").equals("false"))
+    if (LogConfiguration.isDisableLogging())
     {
       return;
     }
@@ -80,7 +79,7 @@ public class Log4JLogModule extends AbstractModule
     if (Log4JLogTarget.class.getName().equals
             (config.getConfigProperty(LogConfiguration.LOGTARGET)))
     {
-      Log.getInstance().addTarget(new Log4JLogTarget());
+      Log4JLog.install();
       if ("true".equals(subSystem.getGlobalConfig().getConfigProperty
               ("org.jfree.base.LogAutoInit")))
       {
