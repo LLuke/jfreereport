@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: OS2Table.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
+ * $Id: OS2Table.java,v 1.3 2006/01/24 14:43:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -325,7 +325,7 @@ public class OS2Table implements FontTable
 
   public boolean isRestricted ()
   {
-    return (fsType & TYPE_RESTRICTED_LICENSE) == TYPE_RESTRICTED_LICENSE;
+    return fsType == TYPE_RESTRICTED_LICENSE;
   }
 
   public long getName()

@@ -2,7 +2,10 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-
+27-Jan-2006: Version 0.1.4:
+    * restructuring and more font reading
+	
+..
     * recognizes italic and oblique fonts.
 
     * Support AWT and TrueType fonts using an common interface.

@@ -27,13 +27,16 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TrueTypeFontMetricsFactory.java,v 1.1 2006/01/27 20:38:37 taqua Exp $
  *
  * Changes
  * -------------------------
  * 16.12.2005 : Initial version
  */
 package org.jfree.fonts.truetype;
+
+import java.util.HashMap;
+import java.io.IOException;
 
 import org.jfree.fonts.registry.FontMetricsFactory;
 import org.jfree.fonts.registry.FontMetrics;
@@ -48,7 +51,7 @@ import org.jfree.fonts.io.FontDataInputSource;
  */
 public class TrueTypeFontMetricsFactory implements FontMetricsFactory
 {
-
+  private HashMap fontRecords;
 
   public TrueTypeFontMetricsFactory()
   {
@@ -57,10 +60,15 @@ public class TrueTypeFontMetricsFactory implements FontMetricsFactory
   public FontMetrics createMetrics(final FontRecord record,
                                    final FontContext context)
   {
-    final FontDataInputSource fdis = record.getFontInputSource();
-    
-    final TrueTypeFontMetrics metrics =
-            new TrueTypeFontMetrics(null, context.getFontSize());
-    return metrics;
+    try
+    {
+      final FontDataInputSource fdis = record.getFontInputSource();
+      final TrueTypeFont font = new TrueTypeFont(fdis);
+      return new TrueTypeFontMetrics(new ScalableTrueTypeFontMetrics(font), context.getFontSize());
+    }
+    catch (IOException e)
+    {
+      return null;
+    }
   }
 }

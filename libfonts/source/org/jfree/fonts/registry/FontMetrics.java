@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: FontMetrics.java,v 1.1 2006/01/27 20:38:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,10 +69,12 @@ public interface FontMetrics
   public double getMaxAscent();
   public double getMaxDescent();
   public double getMaxLeading();
+  public double getMaxHeight();
 
   public double getMaxCharAdvance();
 
   public double getCharWidth(char character);
   public double getCharWidthWithKerning(char previous, char character);
+
 
 }

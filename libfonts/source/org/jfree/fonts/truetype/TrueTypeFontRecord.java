@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: TrueTypeFontRecord.java,v 1.4 2005/12/07 23:00:55 taqua Exp $
+ * $Id: TrueTypeFontRecord.java,v 1.1 2006/01/27 20:38:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,6 +41,7 @@ import org.jfree.fonts.io.FontDataInputSource;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
 import org.jfree.fonts.registry.FontIdentifier;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 09.11.2005, 16:27:35
@@ -85,7 +86,7 @@ public class TrueTypeFontRecord implements FontRecord
     final OS2Table table = (OS2Table) trueTypeFont.getTable(OS2Table.TABLE_ID);
     if (table != null)
     {
-      this.embeddable = table.isRestricted() == false;
+      this.embeddable = (table.isRestricted() == false);
     }
 
     final NameTable nameTable = (NameTable) trueTypeFont.getTable(NameTable.TABLE_ID);

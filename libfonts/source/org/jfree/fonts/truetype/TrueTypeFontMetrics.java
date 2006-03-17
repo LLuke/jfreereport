@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TrueTypeFontMetrics.java,v 1.1 2006/01/27 20:38:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -101,17 +101,22 @@ public class TrueTypeFontMetrics implements FontMetrics
 
   public double getMaxAscent()
   {
-    return 0;
+    return fontSize * fontMetrics.getAscent();
   }
 
   public double getMaxDescent()
   {
-    return 0;
+    return fontSize * fontMetrics.getDescent();
   }
 
   public double getMaxLeading()
   {
-    return 0;
+    return fontSize * fontMetrics.getLeading();
+  }
+
+  public double getMaxHeight()
+  {
+    return getMaxAscent() - getMaxDescent() - getMaxLeading();
   }
 
   public double getMaxCharAdvance()

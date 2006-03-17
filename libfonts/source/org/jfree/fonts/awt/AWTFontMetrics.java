@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: AWTFontMetrics.java,v 1.1 2006/01/27 20:38:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -155,6 +155,11 @@ public class AWTFontMetrics implements FontMetrics
   public double getMaxLeading()
   {
     return 0;
+  }
+
+  public double getMaxHeight()
+  {
+    return getMaxAscent() + getMaxDescent() + getMaxLeading();
   }
 
   public double getMaxCharAdvance()

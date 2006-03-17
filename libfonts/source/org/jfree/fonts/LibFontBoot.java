@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: LibFontBoot.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
+ * $Id: LibFontBoot.java,v 1.3 2006/01/24 14:43:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -64,7 +64,7 @@ public class LibFontBoot extends AbstractBoot
   protected Configuration loadConfiguration()
   {
     return createDefaultHierarchicalConfiguration
-            ("/org/jfree/layout/libfont.properties",
+            ("/org/jfree/fonts/libfont.properties",
              "/libfont.properties", true);
 
   }

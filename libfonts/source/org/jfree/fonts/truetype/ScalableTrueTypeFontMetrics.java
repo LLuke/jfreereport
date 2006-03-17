@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ScalableTrueTypeFontMetrics.java,v 1.1 2006/01/27 20:38:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,6 +55,8 @@ public class ScalableTrueTypeFontMetrics
   private double xHeight;
   private double strikethroughPosition;
 
+  private static final boolean preferMacSettings = false;
+
   private double overlinePosition;
   private double underlinePosition;
 
@@ -71,30 +73,53 @@ public class ScalableTrueTypeFontMetrics
     final int unitsPerEm = head.getUnitsPerEm();
     // prefer the mac table, as at least for the old version of Arial
     // I use, the mac table is consistent with the Java-Font-Metrics
-    final HorizontalHeaderTable hhea = (HorizontalHeaderTable) font.getTable(
-            HorizontalHeaderTable.TABLE_ID);
-    if (hhea == null)
+    if (preferMacSettings)
     {
-      final OS2Table table = (OS2Table) font.getTable(OS2Table.TABLE_ID);
-      if (table != null)
+      final HorizontalHeaderTable hhea = (HorizontalHeaderTable) font.getTable(
+              HorizontalHeaderTable.TABLE_ID);
+      if (hhea == null)
       {
-        computeWindowsMetrics(table, unitsPerEm);
+        final OS2Table table = (OS2Table) font.getTable(OS2Table.TABLE_ID);
+        if (table != null)
+        {
+          computeWindowsMetrics(table, unitsPerEm);
+        }
+        else
+        {
+          createFallbackMetrics();
+        }
       }
       else
       {
-        createFallbackMetrics();
+        createMacMetrics(hhea, unitsPerEm);
       }
     }
     else
     {
-      createMacMetrics(hhea, unitsPerEm);
+      final OS2Table table = (OS2Table) font.getTable(OS2Table.TABLE_ID);
+      if (table == null)
+      {
+        final HorizontalHeaderTable hhea = (HorizontalHeaderTable) font.getTable(
+                HorizontalHeaderTable.TABLE_ID);
+        if (hhea != null)
+        {
+          createMacMetrics(hhea, unitsPerEm);
+        }
+        else
+        {
+          createFallbackMetrics();
+        }
+      }
+      else
+      {
+        computeWindowsMetrics(table, unitsPerEm);
+      }
     }
-
     font.dispose();
   }
 
   private void createMacMetrics(final HorizontalHeaderTable hhea,
-                                final int unitsPerEm)
+                                final double unitsPerEm)
   {
     this.ascent = (hhea.getAscender()) / unitsPerEm;
     this.descent = (hhea.getDescender()) / unitsPerEm;
@@ -114,7 +139,7 @@ public class ScalableTrueTypeFontMetrics
   }
 
   private void computeWindowsMetrics(final OS2Table table,
-                                     final int unitsPerEm)
+                                     final double unitsPerEm)
   {
     int ascentRaw = table.getTypoAscender();
     if (ascentRaw == 0)
