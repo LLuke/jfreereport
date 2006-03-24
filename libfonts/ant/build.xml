@@ -45,6 +45,7 @@
       optimize="${build.optimize}" target="${build.target}">
       <classpath refid="build.classpath"/>
       <include name="org/jfree/fonts/**"/>
+      <exclude name="**/junit/**"/>
     </javac>
 
     <!-- copy across .properties files -->
@@ -73,6 +74,7 @@
       <classpath refid="build.classpath"/>
       <packageset dir="source" defaultexcludes="yes">
         <include name="org/jfree/fonts"/>
+        <exclude name="**/junit/**"/>
       </packageset>
     </javadoc>
   </target>

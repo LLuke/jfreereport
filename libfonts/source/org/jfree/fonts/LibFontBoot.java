@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: LibFontBoot.java,v 1.3 2006/01/24 14:43:10 taqua Exp $
+ * $Id: LibFontBoot.java,v 1.4 2006/03/17 20:19:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,7 @@ package org.jfree.fonts;
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 06.11.2005, 18:25:11
@@ -71,7 +72,7 @@ public class LibFontBoot extends AbstractBoot
 
   protected void performBoot()
   {
-
+//    Log.debug ("LibFonts ..");
   }
 
   protected BootableProjectInfo getProjectInfo()

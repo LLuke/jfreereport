@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: LibFontInfo.java,v 1.4 2006/01/24 14:43:10 taqua Exp $
+ * $Id: LibFontInfo.java,v 1.5 2006/03/17 20:19:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,11 +56,12 @@ public class LibFontInfo extends ProjectInfo
     return instance;
   }
 
-  private LibFontInfo()
+  public LibFontInfo()
   {
     setName("LibFont");
     setVersion("0.1.5");
+    setLicenceName("LGPL");
+    setBootClass("org.jfree.fonts.LibFontBoot");
     addLibrary(JCommon.INFO);
-    addDependency(JCommon.INFO);
   }
 }

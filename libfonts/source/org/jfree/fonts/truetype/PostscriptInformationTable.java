@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: PostscriptInformationTable.java,v 1.2 2005/11/09 21:24:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,7 @@ package org.jfree.fonts.truetype;
  */
 public class PostscriptInformationTable implements FontTable
 {
-  private static final long TABLE_ID =
+  public static final long TABLE_ID =
           ('p' << 24 | 'o' << 16 | 's' << 8 | 't');
 
   public PostscriptInformationTable()

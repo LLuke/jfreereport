@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: FontRegistry.java,v 1.3 2005/11/21 19:49:52 taqua Exp $
+ * $Id: TrueTypeFontRegistry.java,v 1.1 2006/01/27 20:38:37 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,8 +46,8 @@ import java.util.TreeMap;
 import org.jfree.fonts.StringUtilities;
 import org.jfree.fonts.registry.DefaultFontFamily;
 import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontMetricsFactory;
+import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.util.Log;
 import org.jfree.util.LogContext;
 import org.jfree.util.ObjectUtilities;
@@ -57,7 +57,7 @@ import org.jfree.util.ObjectUtilities;
  *
  * @author Thomas Morgner
  */
-public class TrueTypeFontRegistry implements FontRegistry,Serializable
+public class TrueTypeFontRegistry implements FontRegistry, Serializable
 {
   private static class FontFileRecord implements Serializable
   {
@@ -186,17 +186,20 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
 
   /** The singleton instance of the font path filter. */
   private static final FontPathFilter FONTPATHFILTER = new FontPathFilter();
-  private static final LogContext logger = Log.createContext(TrueTypeFontRegistry.class);
+  private static final LogContext logger = Log.createContext(
+          TrueTypeFontRegistry.class);
 
   private HashMap seenFiles;
   private TreeMap fontFamilies;
   private TreeMap alternateFamilyNames;
+  private TreeMap fullFontNames;
 
   public TrueTypeFontRegistry()
   {
     this.seenFiles = new HashMap();
     this.fontFamilies = new TreeMap();
     this.alternateFamilyNames = new TreeMap();
+    this.fullFontNames = new TreeMap();
   }
 
 
@@ -271,7 +274,8 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
     if (windirs != null)
     {
       final StringTokenizer strtok = new StringTokenizer
-              (windirs, safeSystemGetProperty("path.separator", File.pathSeparator));
+              (windirs, safeSystemGetProperty("path.separator",
+                      File.pathSeparator));
       while (strtok.hasMoreTokens())
       {
         final String token = strtok.nextToken();
@@ -297,7 +301,7 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
   /**
    * Register all fonts (*.ttf files) in the given path.
    *
-   * @param file     the directory that contains the font files.
+   * @param file the directory that contains the font files.
    */
   public synchronized void registerFontPath(final File file)
   {
@@ -307,7 +311,7 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
   /**
    * Register all fonts (*.ttf files) in the given path.
    *
-   * @param file       the directory that contains the font files.
+   * @param file the directory that contains the font files.
    */
   private synchronized void internalRegisterFontPath(final File file)
   {
@@ -346,7 +350,8 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
     }
   }
 
-  public void registerFontFile(final File currentFile) throws IOException {
+  public void registerFontFile(final File currentFile) throws IOException
+  {
     final FontFileRecord record = new FontFileRecord(currentFile);
 
     final FontFileRecord cachedRecord = (FontFileRecord)
@@ -400,6 +405,14 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
       fontFamily.addName(name);
       alternateFamilyNames.put(name, fontFamily);
     }
+
+    final String[] allFullNames = table.getAllNames(NameTable.NAME_FULLNAME);
+    for (int i = 0; i < allFullNames.length; i++)
+    {
+      final String name = allFullNames[i];
+      this.fullFontNames.put(name, fontFamily);
+    }
+
     TrueTypeFontRecord record = new TrueTypeFontRecord(font, fontFamily);
     fontFamily.setFontRecord(record);
   }
@@ -418,13 +431,13 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
     return createdFamily;
   }
 
-  public String[] getRegisteredFamilies ()
+  public String[] getRegisteredFamilies()
   {
     return (String[]) fontFamilies.keySet().toArray
             (new String[fontFamilies.size()]);
   }
 
-  public String[] getAllRegisteredFamilies ()
+  public String[] getAllRegisteredFamilies()
   {
     return (String[]) alternateFamilyNames.keySet().toArray
             (new String[alternateFamilyNames.size()]);
@@ -435,14 +448,20 @@ public class TrueTypeFontRegistry implements FontRegistry,Serializable
     registerDefaultFontPath();
   }
 
-  public FontFamily getFontFamily (String name)
+  public FontFamily getFontFamily(String name)
   {
     final FontFamily primary = (FontFamily) this.fontFamilies.get(name);
     if (primary != null)
     {
       return primary;
     }
-    return (FontFamily) this.alternateFamilyNames.get (name);
+    final FontFamily secondary = (FontFamily)
+            this.alternateFamilyNames.get(name);
+    if (secondary != null)
+    {
+      return secondary;
+    }
+    return (FontFamily) this.fullFontNames.get(name);
   }
 
   /**
