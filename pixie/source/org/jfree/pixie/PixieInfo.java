@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PixieInfo.java,v 1.3 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class PixieInfo extends ProjectInfo
   {
     setName("Pixie");
     setVersion("0.8.5");
-    setInfo("Pixie is a viewer library for WindowsMetaFiles (WMF)");
+    setInfo("http://www.jfree.org/jfreereport/pixie/");
     setCopyright ("(C)opyright 2000-2005, by Pentaho Corporation, Object Refinery Limited and Contributors");
 
     setLicenceName("LGPL");
@@ -84,6 +84,7 @@ public class PixieInfo extends ProjectInfo
     {
       new Contributor("David Gilbert", "david.gilbert@object-refinery.com"),
       new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
+      new Contributor("David R. Harris", "-"),
     }));
 
     addLibrary(JCommon.INFO);

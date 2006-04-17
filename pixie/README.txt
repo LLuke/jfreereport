@@ -1,10 +1,11 @@
 *************************************************
-* THE PIXIE CLASS LIBRARY: Version 0.8.4        *
+* THE PIXIE CLASS LIBRARY: Version 0.8.5        *
 *************************************************
 
-4 March 2005.
+17 April 2006.
 
 (C)opyright, 2000-2005, by Object Refinery Limited and Contributors.
+(C)opyright, 2006, by Pentaho Corporation and Contributors.
 
 -----------------
 1.  INTRODUCTION
@@ -22,7 +23,7 @@ General Public Licence.  A copy of the licence is included in the download.
 
 The latest version of this class library can be obtained from:
 
-    http://www.jfree.org/jfreereport/
+    http://www.jfree.org/jfreereport/pixie/
 
 If you have any comments, suggestions or bugs to report, please post a
 message in the JFreeReport forum.
