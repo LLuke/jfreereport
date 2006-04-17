@@ -14,7 +14,7 @@
 <!-- The script should work for the distribution and also the CVS -->
 <!-- repository. -->
 
-<project name="libfonts" default="all" basedir="..">
+<project name="liblayout" default="all" basedir="..">
 
   <import file="build-lib.xml"/>
 
@@ -109,7 +109,7 @@
   <target name="fill-dist-dir">
     <!-- copy across README -->
     <copy file="README.txt"
-      tofile="distribution/README.txt" failonerror="false"/>
+      tofile="distribution/README.txt"/>
 
     <!-- copy across LICENCE -->
     <copy file="licence-LGPL.txt"
@@ -126,6 +126,11 @@
     <!-- copy across source files -->
     <copy todir="distribution/source">
       <fileset dir="source"/>
+    </copy>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
     </copy>
 
     <!-- copy across ant build file (this file) -->

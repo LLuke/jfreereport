@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LocaleUtility.java,v 1.1 2006/04/17 21:04:28 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ public class LocaleUtility
     }
     if (langBuffer != null)
     {
-      return new Locale(langBuffer.toString());
+      return new Locale(langBuffer.toString(), "");
     }
     return Locale.getDefault();
   }
