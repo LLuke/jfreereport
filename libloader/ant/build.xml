@@ -1,0 +1,266 @@
+<!-- An ANT build file for libloader. -->
+
+<!-- Written by David Gilbert and modified for libLoader by Thomas Morgner. -->
+<!-- 09-Nov-2005 -->
+
+<!-- This script has been tested with Ant version 1.6.2. -->
+
+<!-- Several temporary directories are created while the script is -->
+<!-- running: "../build" and "../distribution".  -->
+
+<!-- A "../javadoc" directory will be created for the Javadoc -->
+<!-- HTML pages. -->
+
+<!-- The script should work for the distribution and also the CVS -->
+<!-- repository. -->
+
+<project name="libloader" default="all" basedir="..">
+
+  <import file="build-lib.xml"/>
+
+  <!-- Initialisation. -->
+  <target name="initialise" description="Initialise required settings.">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+
+    <fail unless="lib.jcommon.present"/>
+
+    <isClassAndFileAvailable
+            class-name="com.opensymphony.oscache.general.GeneralCacheAdministrator"
+            property-name="lib.oscache.present"
+            file-name="${libdir}/${oscache-jar-file}"/>
+
+    <isClassAndFileAvailable
+            class-name="org.jfree.pixie.PixieInfo"
+            property-name="lib.pixie.present"
+            file-name="${libdir}/${pixie-jar-file}">
+       <test-classpath>
+         <pathelement location="${libdir}/${jcommon-jar-file}"/>
+       </test-classpath>
+     </isClassAndFileAvailable>
+
+    <isClassAvailableEx
+            class-name="net.sf.ehcache.CacheManager"
+            property-name="lib.ehcache.present">
+      <additional-tests>
+        <available file="${libdir}/${ehcache-jar-file}"/>
+        <available file="${libdir}/${commons-logging-jar-file}"/>
+        <available file="${libdir}/${commons-collections-jar-file}"/>
+      </additional-tests>
+      <test-classpath>
+        <pathelement location="${libdir}/${commons-logging-jar-file}"/>
+        <pathelement location="${libdir}/${commons-collections-jar-file}"/>
+        <pathelement location="${libdir}/${ehcache-jar-file}"/>
+      </test-classpath>
+    </isClassAvailableEx>
+
+  </target>
+
+  <target name="compile-core" depends="initialise">
+    <build-core target-jar="${libloader-core-jar-file}"
+                source-dir="source"
+                module-path="org/jfree/resourceloader/modules">
+      <core-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </core-classpath>
+      <core-resources>
+        <include name="*.properties"/>
+      </core-resources>
+    </build-core>
+  </target>
+
+  <target name="compile-all" depends="initialise">
+    <build-all source-dir="source"
+               target-jar="${libloader-jar-file}">
+      <all-classpath>
+        <pathelement location="${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${commons-logging-jar-file}"/>
+        <pathelement location="${libdir}/${commons-collections-jar-file}"/>
+        <pathelement location="${libdir}/${ehcache-jar-file}"/>
+        <pathelement location="${libdir}/${pixie-jar-file}"/>
+        <pathelement location="${libdir}/${oscache-jar-file}"/>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+      </all-resources>
+    </build-all>
+  </target>
+
+  <target name="compile-module-cache-oscache"
+          depends="initialise,compile-core"
+          if="lib.oscache.present">
+    <build-module source-dir="source"
+                  target-jar="${module-cache-oscache-jar-file}"
+                  module-path="org/jfree/resourceloader/modules/cache/oscache">
+      <module-classpath>
+        <pathelement location="${libloader-core-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${commons-logging-jar-file}"/>
+        <pathelement location="${libdir}/${oscache-jar-file}"/>
+      </module-classpath>
+      <module-resources>
+        <include name="*.properties"/>
+      </module-resources>
+    </build-module>
+  </target>
+
+  <target name="compile-module-cache-ehcache"
+          depends="initialise,compile-core"
+          if="lib.ehcache.present">
+    <build-module source-dir="source"
+                  target-jar="${module-cache-ehcache-jar-file}"
+                  module-path="org/jfree/resourceloader/modules/cache/ehcache">
+      <module-classpath>
+        <pathelement location="${libloader-core-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${commons-logging-jar-file}"/>
+        <pathelement location="${libdir}/${commons-collections-jar-file}"/>
+        <pathelement location="${libdir}/${ehcache-jar-file}"/>
+      </module-classpath>
+      <module-resources>
+        <include name="*.properties"/>
+      </module-resources>
+    </build-module>
+  </target>
+
+  <target name="compile-module-factory-wmf"
+          depends="initialise,compile-core"
+          if="lib.pixie.present">
+    <build-module source-dir="source"
+                  target-jar="${module-factory-wmf-jar-file}"
+                  module-path="org/jfree/resourceloader/modules/factory/wmf">
+      <module-classpath>
+        <pathelement location="${libloader-core-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${pixie-jar-file}"/>
+      </module-classpath>
+      <module-resources>
+        <include name="*.properties"/>
+      </module-resources>
+    </build-module>
+  </target>
+
+
+  <target name="compile"
+          depends="compile-core,
+          compile-all,
+          compile-module-cache-ehcache,
+          compile-module-cache-oscache,
+          compile-module-factory-wmf">
+    <description>
+      Compile the LibLoader source code.
+    </description>
+  </target>
+
+  <target name="javadoc" depends="initialise">
+    <description>
+      Generate the LibLoader JavaDoc HTML pages
+    </description>
+
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="LibLoader Class Library (version ${libloader.version})"
+      linksource="true">
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+      </classpath>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/resourceloader"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+      tofile="${dist-dir}/README.txt" failonerror="false"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="${dist-dir}/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${libloader-jar-file}"
+      tofile="${dist-dir}/${libloader-jar-file}"/>
+    <copy file="${libloader-core-jar-file}"
+      tofile="${dist-dir}/${libloader-core-jar-file}"/>
+    <copy file="${module-cache-oscache-jar-file}"
+      tofile="${dist-dir}/${module-cache-oscache-jar-file}"/>
+    <copy file="${module-cache-ehcache-jar-file}"
+      tofile="${dist-dir}/${module-cache-ehcache-jar-file}"/>
+    <copy file="${module-factory-wmf-jar-file}"
+      tofile="${dist-dir}/${module-factory-wmf-jar-file}"/>
+
+  	<!-- copy across maven xml files -->
+  	<copy file="maven-libloader-project.xml"
+  		tofile="${dist-dir}/maven-libloader-project.xml"/>
+
+    <!-- copy across source files -->
+    <copy todir="${dist-dir}/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <copy todir="${dist-dir}/lib">
+      <fileset dir="lib"/>
+    </copy>
+    <copy todir="${dist-dir}/resources">
+      <fileset dir="resources"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+      tofile="${dist-dir}/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+      tofile="${dist-dir}/ant/build-lib.xml" failonerror="false"/>
+
+    <copy file="ant/build.properties"
+      tofile="${dist-dir}/ant/build.properties"/>
+  </target>
+
+
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+
+    <make-zip lib.version="${libloader.version}" lib.name="${libloader.name}"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+
+    <make-targz lib.version="${libloader.version}" lib.name="${libloader.name}"/>
+
+  </target>
+
+  <target name="maven-bundle" depends="compile-all" >
+    <make-maven-bundle lib.version="${libloader.version}"
+                       lib.name="${libloader.name}"
+                       lib.file="${libloader-jar-file}"
+                       target="${libloader-bundle-file}"/>
+  </target>
+
+
+  <!-- ALL -->
+  <target name="all"
+    depends="compile,javadoc,zip,targz,maven-bundle">
+    <description>
+      Compiles libloader, builds the jar files, generates the Javadoc HTML
+      pages and creates distribution files (.zip and .tar.gz).
+    </description>
+  </target>
+
+</project>
