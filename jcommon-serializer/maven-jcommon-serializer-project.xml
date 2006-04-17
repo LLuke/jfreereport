@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<project
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd">
+  <pomVersion>3</pomVersion>
+  <id>jcommon-serializer</id>
+  <name>jcommon-serializer</name>
+  <groupId>jfree</groupId>
+  <currentVersion>@VERSION@</currentVersion>
+  <organization>
+    <name>JFree.org</name>
+    <url>http://www.jfree.org/</url>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+
+  <description>
+    The 'jcommon-serializer' is a generic serialziation framework. It simplifies
+    the ugly task of having to implement custom serialization handler for
+    non-serializable objects.
+  </description>
+
+  <shortDescription>jcommon-serializer is a serialization framework.</shortDescription>
+
+  <url>http://www.jfree.org/jfreereport/jcommon-serializer</url>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=51669</issueTrackingUrl>
+
+  <repository>
+    <connection>
+      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport:jcommon-serializer
+    </connection>
+    <url>
+      http://cvs.sourceforge.net/viewcvs.py/jfreereport/jcommon-serializer
+    </url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>JFreeReport Developer List</name>
+      <subscribe>
+        jfreereport-developers-request@lists.sourceforge.net?subject=subscribe
+      </subscribe>
+      <unsubscribe>
+        jfreereport-developers-request@lists.sourceforge.net?subject=unsubscribe
+      </unsubscribe>
+      <archive>
+        http://sourceforge.net/mailarchive/forum.php?forum=jfreereport-developers
+      </archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <!--
+    For an up to date list of developers and contributors have a look at
+    the project info implementations.
+    -->
+  </developers>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public Licence</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <dependencies>
+    <dependency>
+      <groupId>jfree</groupId>
+      <artifactId>jcommon</artifactId>
+      <version>1.0.0</version>
+      <url>http://www.jfree.org/jcommon/</url>
+    </dependency>
+
+    <!--
+     There are optional dependencies on OSCache, EHCache and the Pixie library.
+     -->
+  </dependencies>
+
+  <build>
+    <!-- We don't use Maven as build system. -->
+  </build>
+</project>
+

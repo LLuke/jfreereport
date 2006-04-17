@@ -1,0 +1,115 @@
+<!-- An ANT build file for jcommon-logger. -->
+
+<!-- Written by David Gilbert and modified for jcommon-logger by Thomas Morgner. -->
+<!-- 09-Nov-2005 -->
+
+<!-- This script has been tested with Ant version 1.6.2. -->
+
+<!-- Several temporary directories are created while the script is -->
+<!-- running: "../build" and "../distribution".  -->
+
+<!-- A "../javadoc" directory will be created for the Javadoc -->
+<!-- HTML pages. -->
+
+<!-- The script should work for the distribution and also the CVS -->
+<!-- repository. -->
+
+<project name="jcommon-serializer" default="all" basedir="..">
+
+  <import file="build-lib.xml"/>
+
+  <!-- Initialisation. -->
+  <target name="initialise" description="Initialise required settings.">
+    <tstamp/>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+    <fail unless="lib.jcommon.present"/>
+
+  </target>
+
+  <!-- Compile the jcommon-serializer classes -->
+  <target name="compile" depends="initialise">
+
+    <build-all target-jar="${module-serializer-file}"
+               source-dir="source">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+      </all-resources>
+    </build-all>
+  </target>
+
+  <!-- Generate the libfonts JavaDoc HTML pages -->
+  <target name="javadoc" depends="initialise">
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="Jcommon Serializer Class Library (version ${jcommon.serializer.version})"
+      overview="source/overview.html"
+      linksource="true">
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </classpath>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/serializer"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+      tofile="distribution/README.txt"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="distribution/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${module-serializer-file}"
+      tofile="distribution/${module-serializer-file}"/>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <!-- copy across library files -->
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+      tofile="distribution/ant/build.xml"/>
+    <copy file="ant/build-lib.xml"
+      tofile="distribution/ant/build-lib.xml"/>
+
+    <copy file="ant/build.properties"
+      tofile="distribution/ant/build.properties"/>
+  </target>
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="make-zip" depends="compile">
+    <make-zip lib.version="${jcommon.serializer.version}" lib.name="${jcommon.serializer.name}"/>
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="make-targz" depends="compile">
+    <make-targz lib.version="${jcommon.serializer.version}" lib.name="${jcommon.serializer.name}"/>
+  </target>
+
+  <!-- ALL -->
+  <target name="all"
+    depends="compile,javadoc,make-zip,make-targz"
+    description="Compiles Libfonts, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+  </target>
+
+</project>
