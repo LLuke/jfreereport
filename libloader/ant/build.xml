@@ -99,7 +99,6 @@
   </target>
 
   <target name="initialise-ehcache" if="module.cache.ehcache.Enabled">
-    <path id="module.cache.ehcache.Classpath"></path>
     <path id="all.Classpath">
       <path refid="core.Classpath"/>
       <path refid="module.cache.ehcache.Classpath"/>
@@ -198,14 +197,14 @@
       <include name="org/jfree/resourceloader/modules/cache/ehcache/*.java"/>
     </fileset>
 
-    <fileset dir="source/org/jfree/resourceloader/modules/cache/ehcache/"
+    <fileset dir="source"
              id="module.cache.ehcache.ResourceFiles">
       <include name="org/jfree/resourceloader/modules/cache/ehcache/**/*.properties"/>
       <include name="org/jfree/resourceloader/modules/cache/ehcache/*.properties"/>
     </fileset>
 
-    <path id="module.cache.escache.BuildClasspath">
-      <path refid="module.cache.escache.Classpath"/>
+    <path id="module.cache.ehcache.BuildClasspath">
+      <path refid="module.cache.ehcache.Classpath"/>
       <pathelement location="${libloader-core-jar-file}"/>
     </path>
 
