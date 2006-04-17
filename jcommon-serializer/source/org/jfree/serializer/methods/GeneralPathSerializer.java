@@ -1,12 +1,12 @@
 /**
- * ========================================
- * JFreeReport : a free Java report library
- * ========================================
+ * ===================================================
+ * JCommon-Serializer : a free serialization framework
+ * ===================================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/jcommon-serializer/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2006, by Object Refinery Limited and Pentaho Corporation.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,12 +26,12 @@
  * ------------
  * GeneralPathSerializer.java
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
+ * (C) Copyright 2006, by Object Refinery Limited and Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GeneralPathSerializer.java,v 1.5 2005/08/08 15:36:38 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
