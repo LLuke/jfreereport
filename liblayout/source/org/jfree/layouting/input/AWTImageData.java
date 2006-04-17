@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * AWTLayoutImageData.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * AWTImageData.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: AWTLayoutImageData.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 14.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input;
 
@@ -40,26 +45,49 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
+import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.resourceloader.Resource;
+import org.jfree.ui.ExtendedDrawable;
+
 /**
  * Creation-Date: 14.12.2005, 14:03:08
  *
  * @author Thomas Morgner
  */
-public class AWTLayoutImageData implements LayoutImageData
+public class AWTImageData implements ImageData, ExtendedDrawable
 {
+  private Resource source;
   private Image image;
 
-  public AWTLayoutImageData(final Image image)
+  public AWTImageData(final Resource source,
+                      final Image image)
   {
+    if (image == null)
+    {
+      throw new NullPointerException();
+    }
+    this.source = source;
     this.image = image;
   }
 
-  public int getWidth()
+  /**
+   * Returns the resource definition that was used to load the image. Return
+   * null, if there was no resource loader involved. (This covers both
+   * invalid/empty content and generated content.)
+   *
+   * @return
+   */
+  public Resource getSource()
+  {
+    return source;
+  }
+
+  public long getWidth()
   {
     return image.getWidth(null);
   }
 
-  public int getHeight()
+  public long getHeight()
   {
     return image.getWidth(null);
   }
@@ -73,7 +101,9 @@ public class AWTLayoutImageData implements LayoutImageData
    */
   public Dimension getPreferredSize()
   {
-    return new Dimension(getWidth(), getHeight());
+    return new Dimension
+            ((int) StrictGeomUtility.toExternalValue(getWidth()),
+                    (int) StrictGeomUtility.toExternalValue(getHeight()));
   }
 
   /**
@@ -95,6 +125,6 @@ public class AWTLayoutImageData implements LayoutImageData
    */
   public void draw(Graphics2D g2, Rectangle2D area)
   {
-    g2.drawImage(image, 0,0, null);
+    g2.drawImage(image, 0, 0, null);
   }
 }

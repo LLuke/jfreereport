@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * EmptyLayoutImageData.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * EmptyImageData.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: EmptyLayoutImageData.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 14.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input;
 
@@ -39,23 +44,25 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import org.jfree.resourceloader.Resource;
+
 /**
- * Creation-Date: 14.12.2005, 14:07:48
+ * This is a placeholder for non-resolveable image values.
  *
  * @author Thomas Morgner
  */
-public class EmptyLayoutImageData implements LayoutImageData
+public class EmptyImageData implements ImageData
 {
-  public EmptyLayoutImageData()
+  public EmptyImageData()
   {
   }
 
-  public int getWidth()
+  public long getWidth()
   {
     return 0;
   }
 
-  public int getHeight()
+  public long getHeight()
   {
     return 0;
   }
@@ -92,5 +99,10 @@ public class EmptyLayoutImageData implements LayoutImageData
   public void draw(Graphics2D g2, Rectangle2D area)
   {
 
+  }
+
+  public Resource getSource()
+  {
+    return null;
   }
 }

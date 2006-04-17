@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,29 +20,46 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * UrlLayoutImageData.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * DefaultExternalContent.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: ExternalLayoutImageData.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 14.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input;
 
-import java.net.URL;
-
 /**
- * Creation-Date: 14.12.2005, 14:06:24
+ * Creation-Date: 16.04.2006, 13:08:51
  *
  * @author Thomas Morgner
  */
-public interface ExternalLayoutImageData extends LayoutImageData, ExternalResourceData
+public class DefaultExternalContent implements ExternalContent
 {
-  public String getUri();
+  private Object content;
+
+  public DefaultExternalContent(final Object content)
+  {
+    if (content == null)
+    {
+      throw new NullPointerException();
+    }
+    this.content = content;
+  }
+
+  public Object getObject()
+  {
+    return content;
+  }
 }
