@@ -19,4 +19,4 @@ For the latest news and information about LibLoader, please refer to:
 2. CHANGES
 ----------
 
-14-Apr-2006: Initial version
+14-Apr-2006: Initial version. 
