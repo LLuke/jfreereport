@@ -3,7 +3,7 @@
  * LibFonts : a free Java font reading library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/libfonts/
+ * Project Info:  http://www.jfree.org/jfreereport/libfonts/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
@@ -43,7 +43,6 @@ package org.jfree.fonts;
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.util.Configuration;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 06.11.2005, 18:25:11
