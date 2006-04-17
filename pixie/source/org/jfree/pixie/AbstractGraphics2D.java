@@ -1,8 +1,43 @@
 /**
- * Date: Mar 9, 2003
- * Time: 1:33:05 PM
+ * ========================================
+ * Pixie : a free Java vector image library
+ * ========================================
  *
- * $Id: AbstractGraphics2D.java,v 1.2 2003/07/03 16:13:35 taqua Exp $
+ * Project Info:  http://www.jfree.org/jfreereport/pixie/
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * AbstractGraphics2D.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 09-Mar-2003 : Initial version
+ *
  */
 package org.jfree.pixie;
 

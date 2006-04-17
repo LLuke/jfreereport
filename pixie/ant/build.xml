@@ -17,51 +17,33 @@
 
 <project name="pixie" default="all" basedir="..">
 
+  <import file="build-lib.xml"/>
+
   <target name="init">
 
     <dirname property="antfile.dir" file="${ant.file}"/>
     <property file="${antfile.dir}/build.properties"/>
 
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+
+    <fail unless="lib.jcommon.present"/>
   </target>
 
   <target name="compile" depends="init">
     <echo>Building Pixie</echo>
 
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/pixie/**"/>
-	  <exclude name="org/jfree/pixie/g2recorder/**"/>
-      <classpath>
+    <build-all source-dir="source"
+               target-jar="${pixie-jar-file}">
+      <all-classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
-      </classpath>
-    </javac>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+      </all-resources>
+    </build-all>
 
-    <!-- include the resource files -->
-    <copy todir="build">
-      <fileset dir="source">
-        <include name="**/*.xml"/>
-        <include name="**/*.jpg"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.png"/>
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-    <!-- make the jar -->
-    <jar jarfile="${pixie-jar-file}"
-      basedir="build">
-      <manifest>
-        <attribute name="Class-Path" value="${manifest-lib-prefix}/${jcommon-jar-file}"/>
-      </manifest>
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
   </target>
 
   <!-- Generate the Pixie JavaDoc HTML pages -->
@@ -81,24 +63,21 @@
     </javadoc>
   </target>
 
-  <!-- Make .zip distribution for Pixie -->
-  <!-- as an separate download -->
-  <target name="make-zip" depends="compile">
-
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
+  <target name="fill-dist-dir">
 
     <!-- copy across README -->
-    <copy file="README" tofile="distribution/README"/>
+    <copy file="README.txt"
+      tofile="${dist-dir}/README.txt" failonerror="false"/>
 
-    <!-- copy across Licences -->
-    <copy file="licence-LGPL.txt" tofile="distribution/Licence"/>
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="${dist-dir}/licence-LGPL.txt"/>
 
     <!-- copy across ChangeLog -->
-    <copy file="ChangeLog" tofile="distribution/ChangeLog"/>
+    <copy file="ChangeLog" tofile="${dist-dir}/ChangeLog"/>
 
     <!-- copy across runtime jar file -->
-    <copy file="${pixie-jar-file}" tofile="distribution/${pixie-jar-file}"/>
+    <copy file="${pixie-jar-file}" tofile="${dist-dir}/${pixie-jar-file}"/>
 
     <!-- copy across source files -->
     <copy todir="distribution/source">
@@ -111,27 +90,13 @@
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy todir="distribution/ant">
-      <fileset dir="ant"/>
-    </copy>
+    <copy file="ant/build.xml"
+      tofile="${dist-dir}/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+      tofile="${dist-dir}/ant/build-lib.xml" failonerror="false"/>
 
-    <!-- convert end-of-line characters in text files -->
-    <!-- end of file does not need to be marked, and causes trouble if it is -->
-    <fixcrlf srcdir="distribution/source"
-      eol="crlf" eof="remove"
-      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
-    <fixcrlf srcdir="distribution/ant"
-      eol="crlf" eof="remove"/>
-
-    <!-- make the zip file -->
-    <zip zipfile="${pixie.name}-${pixie.version}.zip">
-      <zipfileset dir="distribution"
-        prefix="${pixie.name}-${pixie.version}"/>
-    </zip>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+    <copy file="ant/build.properties"
+      tofile="${dist-dir}/ant/build.properties"/>
   </target>
 
   <!-- Make .tar.gz distribution for Pixie -->
