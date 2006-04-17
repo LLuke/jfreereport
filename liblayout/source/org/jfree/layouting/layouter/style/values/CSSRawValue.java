@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,35 +20,50 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * StreamingInputFeed.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * CSSRawType.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: StreamingInputFeed.java,v 1.1 2006/02/12 21:49:31 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 02.01.2006 : Initial version
+ * -------
+ *
+ *
  */
-package org.jfree.layouting.layouter.feed;
+package org.jfree.layouting.layouter.style.values;
 
-import org.jfree.layouting.StreamingLayoutProcess;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
- * Creation-Date: 02.01.2006, 19:34:44
+ * Creation-Date: 16.04.2006, 15:18:08
  *
  * @author Thomas Morgner
  */
-public class StreamingInputFeed extends AbstractInputFeed
+public class CSSRawValue implements CSSValue
 {
-  private StreamingLayoutProcess process;
+  private Object value;
 
-  public StreamingInputFeed(final StreamingLayoutProcess process)
+  public CSSRawValue(Object value)
   {
-    super(process);
-    this.process = process;
+    this.value = value;
+  }
+
+  public Object getValue()
+  {
+    return value;
+  }
+
+  public String getCSSText()
+  {
+    // this type has no representation in the outside world.
+    return null;
   }
 }

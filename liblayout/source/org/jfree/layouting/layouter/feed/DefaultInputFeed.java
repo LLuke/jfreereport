@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,39 +20,45 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * AbstractInputFeed.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * DefaultInputFeed.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: AbstractInputFeed.java,v 1.1 2006/02/12 21:49:31 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 05.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.layouter.feed;
 
 import java.util.Stack;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.normalizer.Normalizer;
 import org.jfree.layouting.model.ContextId;
+import org.jfree.layouting.model.DefaultDocumentMetaNode;
+import org.jfree.layouting.model.DocumentContext;
+import org.jfree.layouting.model.DocumentMetaNode;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutTextNode;
-import org.jfree.layouting.model.DocumentMetaNode;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.model.DefaultDocumentMetaNode;
-import org.jfree.layouting.layouter.state.InputFeedState;
+import org.jfree.layouting.namespace.Namespaces;
+import org.jfree.layouting.normalizer.ContentNormalizer;
+import org.jfree.layouting.normalizer.Normalizer;
 
 /**
  * Creation-Date: 05.12.2005, 18:19:03
  *
  * @author Thomas Morgner
  */
-public abstract class AbstractInputFeed implements InputFeed
+public class DefaultInputFeed implements InputFeed
 {
   public static final int DOCUMENT_STARTING = 0;
   public static final int META_EXPECTED = 1;
@@ -72,6 +78,7 @@ public abstract class AbstractInputFeed implements InputFeed
     "ELEMENT_CONTENT", "DOCUMENT_FINISHED"
   };
 
+  private boolean initialized;
   private int state;
   private boolean [][] validStateTransitions;
   private LayoutElement document;
@@ -82,12 +89,14 @@ public abstract class AbstractInputFeed implements InputFeed
   private InputFeedState savePoint;
   private DocumentMetaNode metaNode;
   private DocumentContext documentContext;
+  private Normalizer normalizer;
 
-  public AbstractInputFeed(final LayoutProcess process)
+  public DefaultInputFeed(final LayoutProcess process)
   {
     this.process = process;
     this.documentContext = process.getDocumentContext();
-    elements = new Stack();
+    this.elements = new Stack();
+    this.normalizer = new ContentNormalizer(process);
 
     validStateTransitions = new boolean[10][];
     // after startDocument we expect metadata...
@@ -118,7 +127,7 @@ public abstract class AbstractInputFeed implements InputFeed
     };
     validStateTransitions[ELEMENT_EXPECTED] = new boolean[]{
             false, false, false, false, false,
-            true, true, false, false, true
+            true, true, false, true, true
     };
     validStateTransitions[ELEMENT_STARTED] = new boolean[]{
             false, false, false, false, false,
@@ -140,7 +149,7 @@ public abstract class AbstractInputFeed implements InputFeed
     state = DOCUMENT_STARTING;
   }
 
-  public AbstractInputFeed(final LayoutProcess process, final InputFeedState state)
+  public DefaultInputFeed(final LayoutProcess process, final InputFeedState state)
   {
     this(process);
     if (state != null)
@@ -163,8 +172,9 @@ public abstract class AbstractInputFeed implements InputFeed
   {
     if (validStateTransitions[state][newState] == false)
     {
-      throw new IllegalStateException(
-              "illegal transition from " + STATE_NAMES[state] + " to " + STATE_NAMES[newState]);
+      throw new IllegalStateException
+              ("illegal transition from " + STATE_NAMES[state] +
+                      " to " + STATE_NAMES[newState]);
     }
     int oldState = this.state;
     this.state = newState;
@@ -180,7 +190,7 @@ public abstract class AbstractInputFeed implements InputFeed
   protected void performStartDocument()
   {
     document = new LayoutElement(process.generateContextId(-1),
-            process.getOutputProcessor(), "@document@");
+            process.getOutputProcessor(), Namespaces.LIBLAYOUT_NAMESPACE, "@document@");
     currentElement = document;
     elements.push(document);
   }
@@ -195,30 +205,30 @@ public abstract class AbstractInputFeed implements InputFeed
   {
   }
 
-  public final void addMetaAttribute(String name, Object attr)
+  public final void addDocumentAttribute(String name, Object attr)
   {
     checkState(META_PROCESSING);
-    performAddMetaAttribute(name, attr);
+    performAddDocumentAttribute(name, attr);
   }
 
-  protected void performAddMetaAttribute(String name, Object attr)
+  protected void performAddDocumentAttribute(String name, Object attr)
   {
-    document.setAttribute(name, attr);
+    documentContext.setMetaAttribute(name, attr);
   }
 
-  public void startMetaNode(String type)
+  public void startMetaNode()
   {
     checkState(META_NODE_START);
-    performStartMetaNode(type);
+    performStartMetaNode();
   }
 
-  protected void performStartMetaNode (String type)
+  protected void performStartMetaNode ()
   {
     metaNode = new DefaultDocumentMetaNode();// create new DocumentMetaNode(type)
     documentContext.addMetaNode(metaNode);
   }
 
-  public void setMetaNodeAttribute(String name, Object attr)
+  public final void setMetaNodeAttribute(String name, Object attr)
   {
     checkState(META_NODE_ATTRIBUTES);
     performSetMetaNodeAttribute(name, attr);
@@ -251,56 +261,73 @@ public abstract class AbstractInputFeed implements InputFeed
 
   }
 
-  public final void startElement(String name)
+  public final void startElement(String namespace, String name)
   {
     int oldState = checkState(ELEMENT_STARTED);
-    if (oldState == ELEMENT_EXPECTED ||
-        oldState == DOCUMENT_STARTING)
+
+    if (oldState == META_EXPECTED ||
+        oldState == ELEMENT_EXPECTED)
     {
-      getNormalizer().startDocument();
+      initializeDocument();
     }
     else if (oldState == ELEMENT_ATTRIBUTES ||
-        oldState == ELEMENT_STARTED)
+             oldState == ELEMENT_STARTED)
     {
-      resolveStyle(currentElement);
+      getNormalizer().startElement(currentElement);
     }
-    performStartElement(name);
+    performStartElement(namespace, name);
   }
 
-  protected void performStartElement(String name)
+  private void initializeDocument()
+  {
+    if (initialized) return;
+
+    // initialize all factories from the given meta-data.
+    // the execution order here is important!
+    documentContext.initialize();
+    getNormalizer().startDocument();
+    initialized = true;
+  }
+
+  protected void performStartElement(String namespace, String name)
   {
     final ContextId contextId = process.generateContextId(-1);
     LayoutElement newElement = new LayoutElement
-            (contextId, process.getOutputProcessor(), name);
+            (contextId, process.getOutputProcessor(), namespace, name);
+    newElement.setInputSavePoint(getSavePoint());
     currentElement.addChild(newElement);
     elements.push(newElement);
-    getNormalizer().startElement(newElement);
     this.currentElement = newElement;
   }
 
-  protected void resolveStyle (LayoutElement context)
-  {
-    process.getStyleResolver().resolveStyle(context);
-  }
+//  protected void resolveStyle (LayoutElement context)
+//  {
+//    getNormalizer().startElement(context);
+//  }
 
-  public final void setAttribute(String name, Object attr)
+  public final void setAttribute(String namespace, String name, Object attr)
   {
     checkState(ELEMENT_ATTRIBUTES);
-    performSetAttribute(name, attr);
+    performSetAttribute(namespace, name, attr);
   }
 
-  protected void performSetAttribute(String name, Object attr)
+  protected void performSetAttribute(String namespace, String name, Object attr)
   {
-    currentElement.setAttribute(name, attr);
+    currentElement.setAttribute(namespace, name, attr);
   }
 
   public final void addContent(String text)
   {
-    int oldState = checkState(ELEMENT_STARTED);
+    int oldState = checkState(ELEMENT_CONTENT);
     if (oldState == ELEMENT_ATTRIBUTES ||
         oldState == ELEMENT_STARTED)
     {
-      resolveStyle(currentElement);
+      getNormalizer().startElement(currentElement);
+    }
+    else if (oldState == ELEMENT_EXPECTED ||
+             oldState == META_EXPECTED)
+    {
+      initializeDocument();
     }
     //System.out.println("GEN: " + (text));
     performAddContent(text);
@@ -312,24 +339,24 @@ public abstract class AbstractInputFeed implements InputFeed
           (process.generateContextId(-1),
                   process.getOutputProcessor(),
                   text.toCharArray(), 0, text.length());
+    ctx.setInputSavePoint(getSavePoint());
     currentElement.addChild(ctx);
     getNormalizer().addText(ctx);
   }
 
   public final void endElement()
   {
-    int oldState = checkState(ELEMENT_STARTED);
+    int oldState = checkState(ELEMENT_EXPECTED);
     if (oldState == ELEMENT_ATTRIBUTES ||
         oldState == ELEMENT_STARTED)
     {
-      resolveStyle(currentElement);
+      getNormalizer().startElement(currentElement);
     }
     performEndElement ();
   }
 
   protected void performEndElement ()
   {
-    // todo Maybe trigger another event to signal that we are done with the element
     elements.pop();
     getNormalizer().endElement(currentElement);
     currentElement = (LayoutElement) elements.peek();
@@ -346,7 +373,7 @@ public abstract class AbstractInputFeed implements InputFeed
     elements.pop();
     if (elements.isEmpty() == false)
     {
-      throw new IllegalStateException("Stack is " + elements);
+      throw new IllegalStateException("Stack is not yet empty: " + elements);
     }
     getNormalizer().endDocument();
     currentElement = null;
@@ -413,6 +440,6 @@ public abstract class AbstractInputFeed implements InputFeed
 
   protected Normalizer getNormalizer()
   {
-    return process.getNormalizer();
+    return normalizer;
   }
 }

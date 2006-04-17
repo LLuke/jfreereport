@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,39 +20,40 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * ContentInputFeed.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * StyleFunction.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: ContentInputFeed.java,v 1.1 2006/02/12 21:49:31 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 05.12.2005 : Initial version
+ * -------
+ *
+ *
  */
-package org.jfree.layouting.layouter.feed;
+package org.jfree.layouting.layouter.style.functions;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.state.InputFeedState;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.model.LayoutElement;
 
 /**
- * Creation-Date: 05.12.2005, 18:58:25
+ * Creation-Date: 15.04.2006, 18:34:06
  *
  * @author Thomas Morgner
  */
-public class ContentInputFeed extends AbstractInputFeed
+public interface StyleFunction
 {
-  public ContentInputFeed(final LayoutProcess process, final InputFeedState state)
-  {
-    super(process, state);
-  }
-
-  protected void addSavePoint(LayoutElement ctx)
-  {
-    // intentionally left empty ..
-  }
+  public CSSValue getValue(final LayoutProcess layoutProcess,
+                         final LayoutElement element,
+                         final CSSFunctionValue function)
+          throws FunctionEvaluationException;
 }

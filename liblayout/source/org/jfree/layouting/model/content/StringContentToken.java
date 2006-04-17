@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,38 +20,47 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * PaginationInputFeed.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * StringContent.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: PaginationInputFeed.java,v 1.1 2006/02/12 21:49:31 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 05.12.2005 : Initial version
- */
-package org.jfree.layouting.layouter.feed;
-
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutElement;
-
-/**
- * Creation-Date: 05.12.2005, 18:18:03
+ * -------
  *
- * @author Thomas Morgner
+ *
  */
-public class PaginationInputFeed extends AbstractInputFeed
+
+package org.jfree.layouting.model.content;
+
+public class StringContentToken implements ContentToken
 {
-  public PaginationInputFeed(final LayoutProcess process)
+  private String content;
+
+  public StringContentToken (String content)
   {
-    super(process);
+    if (content == null)
+    {
+      throw new NullPointerException();
+    }
+    this.content = content;
   }
 
-  protected void addSavePoint(LayoutElement ctx)
+  public String getContent ()
   {
-    // todo
+    return content;
+  }
+
+  public int getType ()
+  {
+    return ContentToken.STRING_CONTENT;
   }
 }
