@@ -15,6 +15,9 @@ For the latest news and information about LibLayout, please refer to:
     http://www.jfree.org/jfreereport/liblayout/
 
 
+Like all JFreeReport related projects, LibLayout upholds the good tradition
+of compatibility to JDK 1.2.2. 
+
 2. CHANGES
 ----------
 
