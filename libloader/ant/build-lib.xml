@@ -16,12 +16,18 @@
     <attribute name="property-name"
                description="The property that will receive the result."/>
     <attribute name="class-name" description="The class to test for"/>
+    <attribute name="classpath-id"
+               description="The classpath reference for this module"/>
     <element name="test-classpath" optional="true"
             description="The classpath used for the testing"/>
     <sequential>
+      <path id="@{classpath-id}">
+        <test-classpath/>
+      </path>
+
       <condition property="@{property-name}">
          <available classname="@{class-name}">
-           <test-classpath/>
+           <classpath refid="@{classpath-id}"/>
          </available>
       </condition>
     </sequential>
@@ -35,6 +41,8 @@
                description="The property that will receive the result."/>
     <attribute name="class-name" description="The class to test for"/>
     <attribute name="file-name" description="The file which we test for"/>
+    <attribute name="classpath-id"
+               description="The classpath reference for this module"/>
     <element name="test-classpath" optional="true"
             description="The classpath used for the testing"/>
     <sequential>
@@ -42,10 +50,7 @@
         <and>
           <available file="@{file-name}"/>
           <available classname="@{class-name}">
-            <classpath>
-              <pathelement location="@{file-name}"/>
-              <test-classpath/>
-            </classpath>
+            <classpath refid="@{classpath-id}"/>
           </available>
         </and>
       </condition>
@@ -60,108 +65,36 @@
     <attribute name="property-name"
                description="The property that will receive the result."/>
     <attribute name="class-name" description="The class to test for"/>
+    <attribute name="classpath-id"
+               description="The classpath reference for this module"/>
+
     <element name="additional-tests" optional="true"
             description="Additional tests, which have to evaluate to true."/>
-    <element name="test-classpath" optional="true"
-            description="The classpath used for the testing"/>
     <sequential>
       <condition property="@{property-name}">
         <and>
           <additional-tests/>
           <available classname="@{class-name}">
-            <classpath>
-              <test-classpath/>
-            </classpath>
+            <classpath refid="@{classpath-id}"/>
           </available>
         </and>
       </condition>
     </sequential>
   </macrodef>
 
-
-  <!--
-     This target builds a single module. The module is specified by its path
-     inside the source directory.
-
-   -->
-  <macrodef name="build-module">
-    <attribute name="module-path"
-               description="The package name of the module"/>
-    <attribute name="source-dir" description="The source directory"/>
-    <attribute name="target-jar"
-               description="The name of the resulting jar-file"/>
-    <element name="module-classpath"
-            description="The classpath for building this module."/>
-    <element name="module-resources"
-            description="Additional resources to be copied."/>
-    <element name="jar-args" optional="true"
-            description="Parameters for the 'jar' task"/>
-    <sequential>
-      <!-- prune possibly existing entries from temp build directory -->
-      <delete dir="${builddir}"/>
-
-      <!-- create a temp build directory -->
-      <mkdir dir="${builddir}"/>
-      <mkdir dir="${builddir}/src"/>
-      <mkdir dir="${builddir}/bin"/>
-
-      <!-- import all java files for compilation -->
-      <copy todir="${builddir}/src/@{module-path}/">
-        <fileset dir="@{source-dir}/@{module-path}">
-          <exclude name="**/junit/**"/>
-          <include name="*.java"/>
-        </fileset>
-      </copy>
-
-      <!-- compile the source -->
-      <javac
-              srcdir="${builddir}/src"
-              destdir="${builddir}/bin"
-
-              deprecation="${build.deprecation}"
-              debug="${build.debug}"
-              optimize="${build.optimize}"
-              target="${build.target}"
-              source="${build.source}">
-        <classpath>
-          <module-classpath/>
-        </classpath>
-      </javac>
-
-      <!-- copy across required resource files -->
-      <copy todir="${builddir}/bin/@{module-path}">
-        <fileset dir="@{source-dir}/@{module-path}">
-          <module-resources/>
-        </fileset>
-      </copy>
-
-      <!-- make the jar -->
-      <jar jarfile="@{target-jar}" basedir="${builddir}/bin">
-        <jar-args/>
-      </jar>
-
-
-      <!-- delete the temp directory -->
-      <delete dir="${builddir}"/>
-    </sequential>
-  </macrodef>
-
-
   <!--
       This target builds the core classes. All classes outside the modules
       directory are considered core classes.
    -->
   <macrodef name="build-core">
-    <attribute name="module-path"
-               description="The package name of the modules"/>
-    <attribute name="source-dir"
-               description="The source directory"/>
     <attribute name="target-jar"
                description="The name of the resulting jar-file"/>
-    <element name="core-classpath"
-            description="The classpath for the build process"/>
-    <element name="core-resources"
-            description="The resources to be included in the file jar file."/>
+    <attribute name="classpath-id"
+               description="The classpath reference for this module"/>
+    <attribute name="source-files-id"
+               description="The source-fileset reference for this module"/>
+    <attribute name="resource-files-id"
+               description="The resource-fileset reference for this module"/>
     <element name="jar-args" optional="true"
             description="Parameters for the 'jar' task"/>
     <sequential>
@@ -175,11 +108,7 @@
 
       <!-- import all java files for compilation -->
       <copy todir="${builddir}/src">
-        <fileset dir="@{source-dir}">
-          <exclude name="**/junit/**"/>
-          <exclude name="@{module-path}/**"/>
-          <include name="**/*.java"/>
-        </fileset>
+        <fileset refid="@{source-files-id}"/>
       </copy>
 
       <javac
@@ -191,87 +120,16 @@
               optimize="${build.optimize}"
               target="${build.target}"
               source="${build.source}">
-        <classpath>
-          <core-classpath/>
-        </classpath>
+        <classpath refid="@{classpath-id}"/>
       </javac>
 
-
       <copy todir="${builddir}/bin">
-        <fileset dir="@{source-dir}">
-          <exclude name="@{module-path}/**"/>
-          <core-resources/>
-        </fileset>
+        <fileset refid="@{resource-files-id}"/>
       </copy>
-
 
       <jar jarfile="@{target-jar}" basedir="${builddir}/bin">
         <jar-args/>
       </jar>
-
-
-      <!-- delete the temp directory -->
-      <delete dir="${builddir}"/>
-    </sequential>
-  </macrodef>
-
-
-  <!--
-      This target builds the complete project.
-   -->
-  <macrodef name="build-all">
-    <attribute name="source-dir" description="The source directory"/>
-    <attribute name="target-jar"
-               description="The name of the resulting jar-file"/>
-    <element name="all-classpath"
-             description="The classpath for the build process"/>
-    <element name="all-resources"
-             description="The resources to be included in the file jar file."/>
-    <element name="jar-args" optional="true"
-            description="Parameters for the 'jar' task"/>
-    <sequential>
-      <!-- prune possibly existing entries from temp build directory -->
-      <delete dir="${builddir}"/>
-
-      <!-- create a temp build directory -->
-      <mkdir dir="${builddir}"/>
-      <mkdir dir="${builddir}/src"/>
-      <mkdir dir="${builddir}/bin"/>
-
-      <!-- import all java files for compilation -->
-      <copy todir="${builddir}/src">
-        <fileset dir="@{source-dir}">
-          <exclude name="**/junit/**"/>
-          <include name="**/*.java"/>
-        </fileset>
-      </copy>
-
-      <javac
-              srcdir="${builddir}/src"
-              destdir="${builddir}/bin"
-
-              deprecation="${build.deprecation}"
-              debug="${build.debug}"
-              optimize="${build.optimize}"
-              target="${build.target}"
-              source="${build.source}">
-        <classpath>
-          <all-classpath/>
-        </classpath>
-      </javac>
-
-
-      <copy todir="${builddir}/bin">
-        <fileset dir="@{source-dir}">
-          <all-resources/>
-        </fileset>
-      </copy>
-
-
-      <jar jarfile="@{target-jar}" basedir="${builddir}/bin">
-        <jar-args/>
-      </jar>
-
 
       <!-- delete the temp directory -->
       <delete dir="${builddir}"/>
