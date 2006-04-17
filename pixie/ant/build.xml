@@ -103,22 +103,22 @@
   <!-- Make .zip distribution for libfonts -->
   <target name="make-zip" depends="compile">
 
-    <make-zip lib.version="${libloader.version}" lib.name="${libloader.name}"/>
+    <make-zip lib.version="${pixie.version}" lib.name="${pixie.name}"/>
 
   </target>
 
   <!-- Make .tar.gz distribution for libfonts -->
   <target name="make-targz" depends="compile">
 
-    <make-targz lib.version="${libloader.version}" lib.name="${libloader.name}"/>
+    <make-targz lib.version="${pixie.version}" lib.name="${pixie.name}"/>
 
   </target>
 
-  <target name="maven-bundle" depends="compile-all" >
-    <make-maven-bundle lib.version="${libloader.version}"
-                       lib.name="${libloader.name}"
-                       lib.file="${libloader-jar-file}"
-                       target="${libloader-bundle-file}"/>
+  <target name="maven-bundle" depends="compile" >
+    <make-maven-bundle lib.version="${pixie.version}"
+                       lib.name="${pixie.name}"
+                       lib.file="${pixie-jar-file}"
+                       target="${pixie-bundle-file}"/>
   </target>
 
   <target name="all" depends="init, compile, javadoc, make-zip, make-targz, maven-bundle"/>

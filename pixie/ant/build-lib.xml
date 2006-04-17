@@ -90,6 +90,8 @@
     <attribute name="source-dir" description="The source directory"/>
     <attribute name="target-jar"
                description="The name of the resulting jar-file"/>
+    <attribute name="builddir" default="build"
+               description="The temporary build directory"/>
     <element name="module-classpath"
             description="The classpath for building this module."/>
     <element name="module-resources"
@@ -98,15 +100,15 @@
             description="Parameters for the 'jar' task"/>
     <sequential>
       <!-- prune possibly existing entries from temp build directory -->
-      <delete dir="${builddir}"/>
+      <delete dir="@{builddir}"/>
 
       <!-- create a temp build directory -->
-      <mkdir dir="${builddir}"/>
-      <mkdir dir="${builddir}/src"/>
-      <mkdir dir="${builddir}/bin"/>
+      <mkdir dir="@{builddir}"/>
+      <mkdir dir="@{builddir}/src"/>
+      <mkdir dir="@{builddir}/bin"/>
 
       <!-- import all java files for compilation -->
-      <copy todir="${builddir}/src/@{module-path}/">
+      <copy todir="@{builddir}/src/@{module-path}/">
         <fileset dir="@{source-dir}/@{module-path}">
           <exclude name="**/junit/**"/>
           <include name="*.java"/>
@@ -115,8 +117,8 @@
 
       <!-- compile the source -->
       <javac
-              srcdir="${builddir}/src"
-              destdir="${builddir}/bin"
+              srcdir="@{builddir}/src"
+              destdir="@{builddir}/bin"
 
               deprecation="${build.deprecation}"
               debug="${build.debug}"
@@ -129,20 +131,20 @@
       </javac>
 
       <!-- copy across required resource files -->
-      <copy todir="${builddir}/bin/@{module-path}">
+      <copy todir="@{builddir}/bin/@{module-path}">
         <fileset dir="@{source-dir}/@{module-path}">
           <module-resources/>
         </fileset>
       </copy>
 
       <!-- make the jar -->
-      <jar jarfile="@{target-jar}" basedir="${builddir}/bin">
+      <jar jarfile="@{target-jar}" basedir="@{builddir}/bin">
         <jar-args/>
       </jar>
 
 
       <!-- delete the temp directory -->
-      <delete dir="${builddir}"/>
+      <delete dir="@{builddir}"/>
     </sequential>
   </macrodef>
 
@@ -158,6 +160,8 @@
                description="The source directory"/>
     <attribute name="target-jar"
                description="The name of the resulting jar-file"/>
+    <attribute name="builddir" default="build"
+               description="The temporary build directory"/>
     <element name="core-classpath"
             description="The classpath for the build process"/>
     <element name="core-resources"
@@ -166,15 +170,15 @@
             description="Parameters for the 'jar' task"/>
     <sequential>
       <!-- prune possibly existing entries from temp build directory -->
-      <delete dir="${builddir}"/>
+      <delete dir="@{builddir}"/>
 
       <!-- create a temp build directory -->
-      <mkdir dir="${builddir}"/>
-      <mkdir dir="${builddir}/src"/>
-      <mkdir dir="${builddir}/bin"/>
+      <mkdir dir="@{builddir}"/>
+      <mkdir dir="@{builddir}/src"/>
+      <mkdir dir="@{builddir}/bin"/>
 
       <!-- import all java files for compilation -->
-      <copy todir="${builddir}/src">
+      <copy todir="@{builddir}/src">
         <fileset dir="@{source-dir}">
           <exclude name="**/junit/**"/>
           <exclude name="@{module-path}/**"/>
@@ -183,8 +187,8 @@
       </copy>
 
       <javac
-              srcdir="${builddir}/src"
-              destdir="${builddir}/bin"
+              srcdir="@{builddir}/src"
+              destdir="@{builddir}/bin"
 
               deprecation="${build.deprecation}"
               debug="${build.debug}"
@@ -197,7 +201,7 @@
       </javac>
 
 
-      <copy todir="${builddir}/bin">
+      <copy todir="@{builddir}/bin">
         <fileset dir="@{source-dir}">
           <exclude name="@{module-path}/**"/>
           <core-resources/>
@@ -205,13 +209,13 @@
       </copy>
 
 
-      <jar jarfile="@{target-jar}" basedir="${builddir}/bin">
+      <jar jarfile="@{target-jar}" basedir="@{builddir}/bin">
         <jar-args/>
       </jar>
 
 
       <!-- delete the temp directory -->
-      <delete dir="${builddir}"/>
+      <delete dir="@{builddir}"/>
     </sequential>
   </macrodef>
 
@@ -223,6 +227,8 @@
     <attribute name="source-dir" description="The source directory"/>
     <attribute name="target-jar"
                description="The name of the resulting jar-file"/>
+    <attribute name="builddir" default="build"
+               description="The temporary build directory"/>
     <element name="all-classpath"
              description="The classpath for the build process"/>
     <element name="all-resources"
@@ -231,15 +237,15 @@
             description="Parameters for the 'jar' task"/>
     <sequential>
       <!-- prune possibly existing entries from temp build directory -->
-      <delete dir="${builddir}"/>
+      <delete dir="@{builddir}"/>
 
       <!-- create a temp build directory -->
-      <mkdir dir="${builddir}"/>
-      <mkdir dir="${builddir}/src"/>
-      <mkdir dir="${builddir}/bin"/>
+      <mkdir dir="@{builddir}"/>
+      <mkdir dir="@{builddir}/src"/>
+      <mkdir dir="@{builddir}/bin"/>
 
       <!-- import all java files for compilation -->
-      <copy todir="${builddir}/src">
+      <copy todir="@{builddir}/src">
         <fileset dir="@{source-dir}">
           <exclude name="**/junit/**"/>
           <include name="**/*.java"/>
@@ -247,8 +253,8 @@
       </copy>
 
       <javac
-              srcdir="${builddir}/src"
-              destdir="${builddir}/bin"
+              srcdir="@{builddir}/src"
+              destdir="@{builddir}/bin"
 
               deprecation="${build.deprecation}"
               debug="${build.debug}"
@@ -261,20 +267,20 @@
       </javac>
 
 
-      <copy todir="${builddir}/bin">
+      <copy todir="@{builddir}/bin">
         <fileset dir="@{source-dir}">
           <all-resources/>
         </fileset>
       </copy>
 
 
-      <jar jarfile="@{target-jar}" basedir="${builddir}/bin">
+      <jar jarfile="@{target-jar}" basedir="@{builddir}/bin">
         <jar-args/>
       </jar>
 
 
       <!-- delete the temp directory -->
-      <delete dir="${builddir}"/>
+      <delete dir="@{builddir}"/>
     </sequential>
   </macrodef>
 
