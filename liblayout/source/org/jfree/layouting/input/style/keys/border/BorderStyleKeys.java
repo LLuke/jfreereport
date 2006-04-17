@@ -1,3 +1,44 @@
+/**
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
+ *
+ * Project Info:  http://www.jfree.org/liblayout/
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * BorderStyleKeys.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ *
+ *
+ */
+
 package org.jfree.layouting.input.style.keys.border;
 
 import org.jfree.layouting.input.style.StyleKey;
@@ -20,16 +61,16 @@ public class BorderStyleKeys
   {
   }
 
-  public static StyleKey BACKGROUND_COLOR =
+  public static final StyleKey BACKGROUND_COLOR =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-color", false, false, false);
 
   /** This expects a list of images. How to handle that? */
-  public static StyleKey BACKGROUND_IMAGE =
+  public static final StyleKey BACKGROUND_IMAGE =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-image", false, false, true);
 
-  public static StyleKey BACKGROUND_REPEAT =
+  public static final StyleKey BACKGROUND_REPEAT =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-repeat", false, false, true);
 
@@ -37,7 +78,7 @@ public class BorderStyleKeys
    * BackgroundAttachment needs scrolling, and thus we do not implement this
    * style-attribute yet.
    */
-  public static StyleKey BACKGROUND_ATTACHMENT =
+  public static final StyleKey BACKGROUND_ATTACHMENT =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-attachment", false, false, true);
 
@@ -45,28 +86,28 @@ public class BorderStyleKeys
    * The position is always specified in numeric values. The constants are
    * mapped by the parser.
    */
-  public static StyleKey BACKGROUND_POSITION =
+  public static final StyleKey BACKGROUND_POSITION =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-position", false, false, true);
 
-  public static StyleKey BACKGROUND_ORIGIN =
+  public static final StyleKey BACKGROUND_ORIGIN =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-origin", false, false, true);
 
-  public static StyleKey BACKGROUND_CLIP =
+  public static final StyleKey BACKGROUND_CLIP =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-clip", false, false, true);
 
-  public static StyleKey BACKGROUND_SIZE =
+  public static final StyleKey BACKGROUND_SIZE =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-size", false, false, true);
 
-  public static StyleKey BACKGROUND_BREAK =
+  public static final StyleKey BACKGROUND_BREAK =
           StyleKeyRegistry.getRegistry().createKey
                   ("background-break", false, false, false);
 
 
-  public static StyleKey BORDER_IMAGE =
+  public static final StyleKey BORDER_IMAGE =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-image", false, false, true);
 
@@ -79,83 +120,83 @@ public class BorderStyleKeys
    * are relative to the <strong>width</strong> of the parent (if the
    * flow is horizontal, else the height is used).
    */
-  public static StyleKey BORDER_TOP_WIDTH =
+  public static final StyleKey BORDER_TOP_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-top-width", false, false, false);
 
-  public static StyleKey BORDER_LEFT_WIDTH =
+  public static final StyleKey BORDER_LEFT_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-left-width", false, false, false);
 
-  public static StyleKey BORDER_BOTTOM_WIDTH =
+  public static final StyleKey BORDER_BOTTOM_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-bottom-width", false, false, false);
 
-  public static StyleKey BORDER_RIGHT_WIDTH =
+  public static final StyleKey BORDER_RIGHT_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-right-width", false, false, false);
 
-  public static StyleKey BORDER_TOP_COLOR =
+  public static final StyleKey BORDER_TOP_COLOR =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-top-color", false, false, false);
 
-  public static StyleKey BORDER_LEFT_COLOR =
+  public static final StyleKey BORDER_LEFT_COLOR =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-left-color", false, false, false);
 
-  public static StyleKey BORDER_BOTTOM_COLOR =
+  public static final StyleKey BORDER_BOTTOM_COLOR =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-bottom-color", false, false, false);
 
-  public static StyleKey BORDER_RIGHT_COLOR =
+  public static final StyleKey BORDER_RIGHT_COLOR =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-right-color", false, false, false);
 
-  public static StyleKey BORDER_TOP_STYLE =
+  public static final StyleKey BORDER_TOP_STYLE =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-top-style", false, false, false);
 
-  public static StyleKey BORDER_LEFT_STYLE =
+  public static final StyleKey BORDER_LEFT_STYLE =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-left-style", false, false, false);
 
-  public static StyleKey BORDER_BOTTOM_STYLE =
+  public static final StyleKey BORDER_BOTTOM_STYLE =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-bottom-style", false, false, false);
 
-  public static StyleKey BORDER_RIGHT_STYLE =
+  public static final StyleKey BORDER_RIGHT_STYLE =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-right-style", false, false, false);
 
-  public static StyleKey BORDER_BOTTOM_RIGHT_RADIUS =
+  public static final StyleKey BORDER_BOTTOM_RIGHT_RADIUS =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-bottom-right-radius", false, false, false);
 
-  public static StyleKey BORDER_TOP_LEFT_RADIUS=
+  public static final StyleKey BORDER_TOP_LEFT_RADIUS=
           StyleKeyRegistry.getRegistry().createKey
                   ("border-top-left-radius", false, false, false);
 
-  public static StyleKey BORDER_BOTTOM_LEFT_RADIUS =
+  public static final StyleKey BORDER_BOTTOM_LEFT_RADIUS =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-bottom-left-radius", false, false, false);
 
-  public static StyleKey BORDER_TOP_RIGHT_RADIUS =
+  public static final StyleKey BORDER_TOP_RIGHT_RADIUS =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-top-right-radius", false, false, false);
 
-  public static StyleKey BORDER_BREAK_WIDTH =
+  public static final StyleKey BORDER_BREAK_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-break-width", false, true, false);
 
-  public static StyleKey BORDER_BREAK_COLOR =
+  public static final StyleKey BORDER_BREAK_COLOR =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-break-color", false, true, false);
 
-  public static StyleKey BORDER_BREAK_STYLE =
+  public static final StyleKey BORDER_BREAK_STYLE =
           StyleKeyRegistry.getRegistry().createKey
                   ("border-break-style", false, true, false);
 
-  public static StyleKey BOX_SHADOW =
+  public static final StyleKey BOX_SHADOW =
           StyleKeyRegistry.getRegistry().createKey
                   ("box-shadow", false, false, false);
 

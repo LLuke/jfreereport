@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,30 +20,36 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * BackgroundRepeatResolveHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: BackgroundRepeatResolveHandler.java,v 1.1 2006/02/12 21:49:32 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 11.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.layouter.style.resolver.computed.border;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.border.BackgroundRepeatValue;
+import org.jfree.layouting.input.style.keys.border.BackgroundRepeat;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.border.BackgroundSpecification;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.model.border.BackgroundSpecification;
 
 /**
  * Creation-Date: 11.12.2005, 23:46:01
@@ -52,6 +58,9 @@ import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
  */
 public class BackgroundRepeatResolveHandler implements ResolveHandler
 {
+  private static final CSSValuePair EMPTY_BACKGROUND_REPEAT =
+          new CSSValuePair(BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT);
+
   public BackgroundRepeatResolveHandler()
   {
   }
@@ -101,14 +110,14 @@ public class BackgroundRepeatResolveHandler implements ResolveHandler
     {
       CSSValue item = list.getItem(i);
 
-      if (item instanceof BackgroundRepeatValue == false)
+      if (item instanceof CSSValuePair == false)
       {
         backgroundSpecification.setBackgroundRepeat
-                (i, BackgroundRepeatValue.DEFAULT_REPEAT);
+                (i, EMPTY_BACKGROUND_REPEAT);
       }
       else
       {
-        BackgroundRepeatValue bvalue = (BackgroundRepeatValue) item;
+        CSSValuePair bvalue = (CSSValuePair) item;
         backgroundSpecification.setBackgroundRepeat(i, bvalue);
       }
     }

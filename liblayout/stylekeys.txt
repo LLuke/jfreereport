@@ -33,4 +33,13 @@ background-position:
   Computed:    n/a
   Percentages: - deferred -
 
-  
+
+-----------------------------------------------------------------------
+
+Document model
+
+StyleSheets are given in the InputFeed's metadata nodes. They can be either
+given as strings or as already parsed stylesheets. The later one is preferred
+for performance reasons.
+
+

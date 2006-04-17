@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,29 +20,34 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * BorderRadiusResolveHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: BorderRadiusResolveHandler.java,v 1.1 2006/02/12 21:49:33 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 14.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.layouter.style.resolver.percentages.border;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.border.BorderRadiusValue;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.model.LayoutNode;
 
 /**
  * Resolves the border radius into absolute values.
@@ -81,12 +86,12 @@ public class BorderRadiusResolveHandler implements ResolveHandler
                          StyleKey key)
   {
     CSSValue value = style.getValue(key);
-    if (value instanceof BorderRadiusValue == false)
+    if (value instanceof CSSValuePair == false)
     {
       return;
     }
 
-    BorderRadiusValue brv = (BorderRadiusValue) value;
+    CSSValuePair brv = (CSSValuePair) value;
     final long horizontal;
     final long vertical;
     if (true) // todo: Where to store the block progression and direction?

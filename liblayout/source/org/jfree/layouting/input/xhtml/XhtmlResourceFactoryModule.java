@@ -1,20 +1,54 @@
+/**
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
+ *
+ * Project Info:  http://www.jfree.org/liblayout/
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * XhtmlResourceFactoryModule.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ *
+ *
+ */
+
 package org.jfree.layouting.input.xhtml;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import org.jfree.resourceloader.Resource;
+import org.jfree.resourceloader.ResourceCreationException;
+import org.jfree.resourceloader.ResourceData;
+import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.factory.AbstractFactoryModule;
 
-import org.jfree.loader.resourceloader.ResourceFactoryModule;
-import org.jfree.util.StringUtils;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-public class XhtmlResourceFactoryModule implements ResourceFactoryModule
+public class XhtmlResourceFactoryModule extends AbstractFactoryModule
 {
   private static final String[] MIMETYPES =
           {
@@ -33,34 +67,19 @@ public class XhtmlResourceFactoryModule implements ResourceFactoryModule
   {
   }
 
-  public boolean canHandleResourceByContent (byte[] content)
+  protected int[] getFingerPrint()
   {
-    // there are thousand ways to encode html, we dont go that way
-    return false;
+    return new int[0];
   }
 
-  public boolean canHandleResourceByMimeType (String name)
+  protected String[] getMimeTypes()
   {
-    for (int i = 0; i < MIMETYPES.length; i++)
-    {
-      if (name.equals(MIMETYPES[i]))
-      {
-        return true;
-      }
-    }
-    return false;
+    return MIMETYPES;
   }
 
-  public boolean canHandleResourceByName (String name)
+  protected String[] getFileExtensions()
   {
-    for (int i = 0; i < EXTENSIONS.length; i++)
-    {
-      if (StringUtils.endsWithIgnoreCase(name, EXTENSIONS[i]))
-      {
-        return true;
-      }
-    }
-    return false;
+    return EXTENSIONS;
   }
 
   public int getHeaderFingerprintSize ()
@@ -68,60 +87,66 @@ public class XhtmlResourceFactoryModule implements ResourceFactoryModule
     return 0;
   }
 
-  public XhtmlDocument createDocument (final byte[] data,
-                                  final URL source,
-                                  final String fileName,
-                                  final String mimeType)
-          throws IOException
+  public Resource create(ResourceData data, ResourceKey context)
+          throws ResourceLoadingException
   {
-    try
-    {
-      final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      final DocumentBuilder db = dbf.newDocumentBuilder();
-      InputSource is = new InputSource(new ByteArrayInputStream(data));
-      Document doc = db.parse(is);
-      return new XhtmlDocument(source, data, doc);
-    }
-    catch(IOException ioe)
-    {
-      throw ioe;
-    }
-    catch (ParserConfigurationException e)
-    {
-      throw new IOException(e.getMessage());
-    }
-    catch (SAXException e)
-    {
-      throw new IOException(e.getMessage());
-    }
+    return null;
   }
-
-
-  public XhtmlDocument createDocument (final InputStream data,
-                                  final URL source,
-                                  final String fileName,
-                                  final String mimeType)
-          throws IOException
-  {
-    try
-    {
-      final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      final DocumentBuilder db = dbf.newDocumentBuilder();
-      InputSource is = new InputSource(data);
-      Document doc = db.parse(is);
-      return new XhtmlDocument(source, null, doc);
-    }
-    catch(IOException ioe)
-    {
-      throw ioe;
-    }
-    catch (ParserConfigurationException e)
-    {
-      throw new IOException(e.getMessage());
-    }
-    catch (SAXException e)
-    {
-      throw new IOException(e.getMessage());
-    }
-  }
+//
+//  public XhtmlDocument createDocument (final byte[] data,
+//                                  final URL source,
+//                                  final String fileName,
+//                                  final String mimeType)
+//          throws IOException
+//  {
+//    try
+//    {
+//      final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//      final DocumentBuilder db = dbf.newDocumentBuilder();
+//      InputSource is = new InputSource(new ByteArrayInputStream(data));
+//      Document doc = db.parse(is);
+//      return new XhtmlDocument(source, data, doc);
+//    }
+//    catch(IOException ioe)
+//    {
+//      throw ioe;
+//    }
+//    catch (ParserConfigurationException e)
+//    {
+//      throw new IOException(e.getMessage());
+//    }
+//    catch (SAXException e)
+//    {
+//      throw new IOException(e.getMessage());
+//    }
+//  }
+//
+//
+//  public XhtmlDocument createDocument (final InputStream data,
+//                                  final URL source,
+//                                  final String fileName,
+//                                  final String mimeType)
+//          throws IOException
+//  {
+//    try
+//    {
+//      final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//      final DocumentBuilder db = dbf.newDocumentBuilder();
+//      InputSource is = new InputSource(data);
+//      Document doc = db.parse(is);
+//      return new XhtmlDocument(source, null, doc);
+//    }
+//    catch(IOException ioe)
+//    {
+//      throw ioe;
+//    }
+//    catch (ParserConfigurationException e)
+//    {
+//      throw new IOException(e.getMessage());
+//    }
+//    catch (SAXException e)
+//    {
+//      throw new IOException(e.getMessage());
+//    }
+//  }
 }

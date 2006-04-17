@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,38 +20,40 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * BackgroundImageResolveHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: BackgroundImageResolveHandler.java,v 1.1 2006/02/12 21:49:32 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 14.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.layouter.style.resolver.computed.border;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.jfree.layouting.input.URLLayoutImageData;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.values.CSSImageValue;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.input.style.values.CSSValueSupport;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.model.LayoutNode;
 import org.jfree.layouting.model.border.BackgroundSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.output.OutputProcessorFeature;
-import org.jfree.util.Log;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceKeyCreationException;
 
 /**
  * Creation-Date: 14.12.2005, 13:17:40
@@ -82,9 +84,9 @@ public class BackgroundImageResolveHandler implements ResolveHandler
    * @param currentNode
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
-                         LayoutStyle style,
-                         StyleKey key)
+                      LayoutNode currentNode,
+                      LayoutStyle style,
+                      StyleKey key)
   {
     // start loading all images, assume that they are found and include them
     // in the list.
@@ -113,7 +115,7 @@ public class BackgroundImageResolveHandler implements ResolveHandler
     }
     BackgroundSpecification backgroundSpecification =
             currentNode.getLayoutContext().getBackgroundSpecification();
-    URL baseURL = process.getDocumentContext().getBaseURL();
+    ResourceKey baseURL = DocumentContextUtility.getBaseResource(process.getDocumentContext());
 
     for (int i = 0; i < length; i++)
     {
@@ -124,20 +126,16 @@ public class BackgroundImageResolveHandler implements ResolveHandler
         CSSStringValue svalue = (CSSStringValue) item;
         try
         {
-          URL sourceURL = new URL (baseURL, svalue.getValue());
-          backgroundSpecification.setBackgroundImage
-                  (i, new URLLayoutImageData(sourceURL, svalue.getValue()));
+          ResourceKey sourceURL = process.getResourceManager().deriveKey
+                  (baseURL, svalue.getValue());
+          // todo: We have to rethink the image feeding ..
+//          backgroundSpecification.setBackgroundImage
+//                  (i, new URLLayoutImageData(sourceURL, svalue.getValue()));
         }
-        catch (MalformedURLException e)
+        catch (ResourceKeyCreationException e)
         {
-          Log.warn ("Malformed URL while processing an element background", e);
+          e.printStackTrace();
         }
-      }
-      else if (item instanceof CSSImageValue)
-      {
-        CSSImageValue img = (CSSImageValue) item;
-        backgroundSpecification.setBackgroundImage
-                  (i, img.getImageData());
       }
     }
   }

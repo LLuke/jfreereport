@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * OutputProcessorMetaData.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: OutputProcessorMetaData.java,v 1.1 2006/02/12 21:40:16 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 14.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.output;
 
@@ -52,4 +57,13 @@ public interface OutputProcessorMetaData
   public FontFamily getDefaultFontFamily();
   public FontFamily getFontFamily(FontFamilyValues genericName);
   public double getFontSize (FontSizeConstant constant);
+
+  /**
+   * Returns the media type of the output target. This corresponds directly to
+   * the CSS defined media types and is used as a selector.
+   *
+   * @return the media type of the output target.
+   */
+  public String getMediaType();
+  public String getExportDescriptor();
 }

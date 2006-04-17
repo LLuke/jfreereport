@@ -1,9 +1,9 @@
 /**
- * ========================================
- * JFreeReport : a free Java report library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
@@ -26,12 +26,12 @@
  * ------------
  * StrictPoint.java
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StrictPoint.java,v 1.1 2006/02/12 21:38:20 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------

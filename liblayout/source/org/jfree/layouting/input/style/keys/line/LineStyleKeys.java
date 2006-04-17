@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * LineStyleKeys.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: LineStyleKeys.java,v 1.1 2006/02/12 21:54:27 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 24.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.keys.line;
 
@@ -50,7 +55,7 @@ public class LineStyleKeys
    * The 'text-height' property determine the block-progression dimension of the
    * text content area of an inline box.
    */
-  public static StyleKey TEXT_HEIGHT =
+  public static final StyleKey TEXT_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("text-height", false, true, false);
 
@@ -59,7 +64,7 @@ public class LineStyleKeys
    * number. The computed value is a result of a computation based on the
    * current line-box and therefore is only valid for that particluar linebox.
    */
-  public static StyleKey LINE_HEIGHT =
+  public static final StyleKey LINE_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("line-height", false, true, false);
 
@@ -69,25 +74,25 @@ public class LineStyleKeys
    * context of this property description to indicate the block-progression
    * advance for the line boxes.
    */
-  public static StyleKey LINE_STACKING_STRATEGY =
+  public static final StyleKey LINE_STACKING_STRATEGY =
           StyleKeyRegistry.getRegistry().createKey
                   ("line-stacking-strategy",false, true, false);
 
   /**
    * Ruby is not implemented.
    */
-  public static StyleKey LINE_STACKING_RUBY =
+  public static final StyleKey LINE_STACKING_RUBY =
           StyleKeyRegistry.getRegistry().createKey
                   ("line-stacking-ruby",false, true, false);
 
   /**
    * This is a character level computation, we ignore that for now.
    */
-  public static StyleKey LINE_STACKING_SHIFT =
+  public static final StyleKey LINE_STACKING_SHIFT =
           StyleKeyRegistry.getRegistry().createKey
                   ("line-stacking-shift",false, true, false);
 
-  public static StyleKey BASELINE_SHIFT =
+  public static final StyleKey BASELINE_SHIFT =
           StyleKeyRegistry.getRegistry().createKey
                   ("baseline-shift",false, true, false);
 
@@ -97,45 +102,45 @@ public class LineStyleKeys
    * and 'alignment-adjust' properties. It has a different meaning in the context
    * of table cells.
    */
-  public static StyleKey VERTICAL_ALIGN =
+  public static final StyleKey VERTICAL_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
                   ("vertical-align",false, true, false);
 
-  public static StyleKey INLINE_BOX_ALIGN =
+  public static final StyleKey INLINE_BOX_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
                   ("inline-box-align",false, false, false);
 
   /**
    * DominantBaseLine is not implemented.
    */
-  public static StyleKey DOMINANT_BASELINE =
+  public static final StyleKey DOMINANT_BASELINE =
           StyleKeyRegistry.getRegistry().createKey
                   ("dominant-baseline",false, true, false);
-  public static StyleKey ALIGNMENT_BASELINE =
+  public static final StyleKey ALIGNMENT_BASELINE =
           StyleKeyRegistry.getRegistry().createKey
                   ("alignment-baseline", false, true, false);
-  public static StyleKey ALIGNMENT_ADJUST =
+  public static final StyleKey ALIGNMENT_ADJUST =
           StyleKeyRegistry.getRegistry().createKey
                   ("alignment-adjust",false, true, false);
 
-  public static StyleKey DROP_INITIAL_AFTER_ADJUST =
+  public static final StyleKey DROP_INITIAL_AFTER_ADJUST =
           StyleKeyRegistry.getRegistry().createKey
                   ("drop-initial-after-adjust",false, false, false);
-  public static StyleKey DROP_INITIAL_AFTER_ALIGN =
+  public static final StyleKey DROP_INITIAL_AFTER_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
                   ("drop-initial-after-align",false, false, false);
 
-  public static StyleKey DROP_INITIAL_BEFORE_ADJUST =
+  public static final StyleKey DROP_INITIAL_BEFORE_ADJUST =
           StyleKeyRegistry.getRegistry().createKey
                   ("drop-initial-before-adjust",false, false, false);
-  public static StyleKey DROP_INITIAL_BEFORE_ALIGN =
+  public static final StyleKey DROP_INITIAL_BEFORE_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
                   ("drop-initial-before-align",false, false, false);
 
-  public static StyleKey DROP_INITIAL_SIZE =
+  public static final StyleKey DROP_INITIAL_SIZE =
           StyleKeyRegistry.getRegistry().createKey
                   ("drop-initial-size",false, false, false);
-  public static StyleKey DROP_INITIAL_VALUE =
+  public static final StyleKey DROP_INITIAL_VALUE =
           StyleKeyRegistry.getRegistry().createKey
                   ("drop-initial-value",false, false, false);
 

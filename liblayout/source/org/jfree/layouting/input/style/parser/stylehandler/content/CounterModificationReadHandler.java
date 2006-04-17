@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,32 +20,37 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * CounterModificationReadHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: CounterModificationReadHandler.java,v 1.1 2006/02/12 21:57:20 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 01.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.parser.stylehandler.content;
 
 import java.util.ArrayList;
 
-import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
-import org.jfree.layouting.input.style.parser.CSSValueFactory;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSCounterValue;
-import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.parser.CSSValueFactory;
+import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSValueList;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -64,6 +69,16 @@ public class CounterModificationReadHandler implements CSSValueReadHandler
 
   public CSSValue createValue(StyleKey name, LexicalUnit value)
   {
+    if (value.getLexicalUnitType() != LexicalUnit.SAC_IDENT)
+    {
+      return null;
+    }
+    final String mayBeNone = value.getStringValue();
+    if ("none".equalsIgnoreCase(mayBeNone))
+    {
+      return new CSSConstant("none");
+    }
+
     final ArrayList counterSpecs = new ArrayList();
     while (value != null)
     {
@@ -72,10 +87,6 @@ public class CounterModificationReadHandler implements CSSValueReadHandler
         return null;
       }
       final String identifier = value.getStringValue();
-      if ("none".equalsIgnoreCase(identifier))
-      {
-        return new CSSConstant("none");
-      }
       value = value.getNextLexicalUnit();
       CSSValue counterValue = ZERO;
       if (value != null)
@@ -86,14 +97,19 @@ public class CounterModificationReadHandler implements CSSValueReadHandler
                   (CSSNumericType.NUMBER, value.getIntegerValue());
           value = value.getNextLexicalUnit();
         }
-        else if (value.getLexicalUnitType() == LexicalUnit.SAC_ATTR ||
-                 value.getLexicalUnitType() == LexicalUnit.SAC_FUNCTION)
+        else if (value.getLexicalUnitType() == LexicalUnit.SAC_ATTR)
         {
           counterValue = CSSValueFactory.parseAttrFunction(value);
           value = value.getNextLexicalUnit();
         }
+        else if (CSSValueFactory.isFunctionValue(value))
+        {
+          counterValue = CSSValueFactory.parseFunction(value);
+          value = value.getNextLexicalUnit();
+        }
       }
-      counterSpecs.add(new CSSCounterValue(identifier, counterValue));
+      counterSpecs.add(new CSSValuePair
+              (new CSSConstant(identifier), counterValue));
     }
 
     return new CSSValueList(counterSpecs);

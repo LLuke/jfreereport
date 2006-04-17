@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,34 +20,37 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * BackgroundSpecification.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: BackgroundSpecification.java,v 1.1 2006/02/12 21:43:08 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 14.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.model.border;
 
 import java.io.Serializable;
 
-import org.jfree.layouting.input.EmptyLayoutImageData;
-import org.jfree.layouting.input.LayoutImageData;
-import org.jfree.layouting.input.style.keys.border.BackgroundRepeat;
-import org.jfree.layouting.input.style.keys.border.BackgroundRepeatValue;
-import org.jfree.layouting.input.style.keys.border.BackgroundOrigin;
-import org.jfree.layouting.input.style.keys.border.BackgroundClip;
-import org.jfree.layouting.input.style.keys.border.BackgroundBreak;
 import org.jfree.layouting.input.style.keys.border.BackgroundAttachment;
+import org.jfree.layouting.input.style.keys.border.BackgroundBreak;
+import org.jfree.layouting.input.style.keys.border.BackgroundClip;
+import org.jfree.layouting.input.style.keys.border.BackgroundOrigin;
+import org.jfree.layouting.input.style.keys.border.BackgroundRepeat;
 import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.util.geom.StrictDimension;
-import org.jfree.layouting.util.geom.StrictPoint;
+import org.jfree.resourceloader.Resource;
 import org.jfree.util.ObjectList;
 
 /**
@@ -57,10 +60,8 @@ import org.jfree.util.ObjectList;
  */
 public class BackgroundSpecification implements Serializable
 {
-  public static final EmptyLayoutImageData EMPTY_LAYOUT_IMAGE_DATA =
-          new EmptyLayoutImageData();
-  public static final BackgroundRepeatValue EMPTY_BACKGROUND_REPEAT =
-          new BackgroundRepeatValue(BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT);
+  public static final CSSValuePair EMPTY_BACKGROUND_REPEAT =
+          new CSSValuePair(BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT);
 
   private CSSColorValue backgroundColor;
   private BackgroundBreak backgroundBreak;
@@ -96,17 +97,18 @@ public class BackgroundSpecification implements Serializable
     this.backgroundColor = backgroundColor;
   }
 
-  public LayoutImageData getBackgroundImage(int i)
+  // todo: Use some other container for that ...
+  public Resource getBackgroundImage(int i)
   {
     if (backgroundImages == null)
     {
-      return EMPTY_LAYOUT_IMAGE_DATA;
+      return null;
     }
-    LayoutImageData retval = (LayoutImageData)
+    Resource retval = (Resource)
             backgroundImages.get(i % backgroundImages.size());
     if (retval == null)
     {
-      return EMPTY_LAYOUT_IMAGE_DATA;
+      return null;
     }
     return retval;
   }
@@ -121,7 +123,7 @@ public class BackgroundSpecification implements Serializable
   }
 
   public void setBackgroundImage(final int i,
-                                 final LayoutImageData data)
+                                 final Resource data)
   {
     if (backgroundImages == null)
     {
@@ -130,13 +132,13 @@ public class BackgroundSpecification implements Serializable
     backgroundImages.set(i, data);
   }
 
-  public BackgroundRepeatValue getBackgroundRepeat(int i)
+  public CSSValuePair getBackgroundRepeat(int i)
   {
     if (backgroundRepeats == null)
     {
       return EMPTY_BACKGROUND_REPEAT;
     }
-    BackgroundRepeatValue retval = (BackgroundRepeatValue)
+    CSSValuePair retval = (CSSValuePair)
             backgroundRepeats.get(i % backgroundRepeats.size());
     if (retval == null)
     {
@@ -155,7 +157,7 @@ public class BackgroundSpecification implements Serializable
   }
 
   public void setBackgroundRepeat(final int i,
-                                  final BackgroundRepeatValue data)
+                                  final CSSValuePair data)
   {
     if (backgroundRepeats == null)
     {
@@ -205,19 +207,19 @@ public class BackgroundSpecification implements Serializable
     }
   }
 
-  public StrictPoint getBackgroundPosition(int i)
+  public CSSValuePair getBackgroundPosition(int i)
   {
     if (backgroundPositions == null)
     {
-      return new StrictPoint();
+      return null;
     }
-    StrictPoint retval = (StrictPoint)
+    CSSValuePair retval = (CSSValuePair)
             backgroundPositions.get(i % backgroundPositions.size());
     if (retval == null)
     {
-      return new StrictPoint();
+      return null;
     }
-    return (StrictPoint) retval.clone();
+    return retval;
   }
 
   public int getBackgroundPositionsCount()
@@ -230,7 +232,7 @@ public class BackgroundSpecification implements Serializable
   }
 
   public void setBackgroundPosition(final int i,
-                                    final StrictDimension data)
+                                    final CSSValuePair data)
   {
     if (backgroundPositions == null)
     {
@@ -242,7 +244,7 @@ public class BackgroundSpecification implements Serializable
     }
     else
     {
-      backgroundPositions.set(i, data.clone());
+      backgroundPositions.set(i, data);
     }
   }
 
@@ -313,7 +315,7 @@ public class BackgroundSpecification implements Serializable
   }
 
   public void setBackgroundClip(final int i,
-                                  final BackgroundClip data)
+                                final BackgroundClip data)
   {
     if (backgroundClip == null)
     {
@@ -354,7 +356,7 @@ public class BackgroundSpecification implements Serializable
   }
 
   public void setBackgroundAttachment(final int i,
-                                  final BackgroundAttachment data)
+                                      final BackgroundAttachment data)
   {
     if (backgroundAttachment == null)
     {

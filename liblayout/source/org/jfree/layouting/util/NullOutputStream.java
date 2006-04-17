@@ -1,12 +1,12 @@
 /**
- * ========================================
- * JFreeReport : a free Java report library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------
- * NullOutputStream.java
- * ---------------------
- * (C)opyright 2000-2002, by Object Refinery Limited.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * $Id: NullOutputStream.java,v 1.1 2006/02/12 21:38:20 taqua Exp $
+ * ------------
+ * NullOutputStream.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
  *
  * Changes
  * -------
- * 12-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG).
+ *
  *
  */
 package org.jfree.layouting.util;

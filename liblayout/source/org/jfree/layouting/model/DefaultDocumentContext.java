@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,33 +20,40 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * DefaultDocumentContext.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: DefaultDocumentContext.java,v 1.1 2006/02/12 21:43:08 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 08.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.model;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Date;
+import java.util.HashMap;
 
-import org.jfree.util.HashNMap;
-import org.jfree.loader.ContentCache;
-import org.jfree.layouting.layouter.loader.GenericResourceFactory;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
-import org.jfree.layouting.layouter.i18n.LocalizationContext;
 import org.jfree.layouting.layouter.i18n.DefaultLocalizationContext;
+import org.jfree.layouting.namespace.DefaultNamespaceCollection;
+import org.jfree.layouting.namespace.DefaultNamespaceDefinition;
+import org.jfree.layouting.namespace.NamespaceCollection;
+import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.HashNMap;
 
 /**
  * Creation-Date: 08.12.2005, 20:17:07
@@ -56,23 +63,22 @@ import org.jfree.layouting.layouter.i18n.DefaultLocalizationContext;
 public class DefaultDocumentContext extends DefaultDocumentMetaNode
         implements DocumentContext
 {
-  public static final LayoutElement[] EMPTY_ELEMENT_ARRAY = new LayoutElement[0];
-  private static final String BASE_URL_ATTR = "base-url";
-  private static final String DATE_ATTR = "date";
-  private static final String LOCALIZATION_ATTR = "localization-context";
+
+  private static final LayoutElement[] EMPTY_ELEMENT_ARRAY =
+          new LayoutElement[0];
 
   private ArrayList metaNodes;
   private HashNMap pendingContent;
   private HashMap strings;
-  private GenericResourceFactory resourceFactory;
   private HashMap counterStyles;
+  private DefaultNamespaceCollection namespaceCollection;
+  private int quoteLevel;
 
   public DefaultDocumentContext()
   {
     metaNodes = new ArrayList();
     strings = new HashMap();
     pendingContent = new HashNMap();
-    resourceFactory = new GenericResourceFactory();
     counterStyles = new HashMap();
     setMetaAttribute(DATE_ATTR, new Date());
     setMetaAttribute(LOCALIZATION_ATTR, new DefaultLocalizationContext());
@@ -106,60 +112,28 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
     return metaNodes.size();
   }
 
-  public Date getDate()
-  {
-    Object o = getMetaAttribute(DATE_ATTR);
-    if (o instanceof Date == false)
-    {
-      return null;
-    }
-    return (Date) o;
-  }
-
-  public URL getBaseURL()
-  {
-    Object o = getMetaAttribute(BASE_URL_ATTR);
-    if (o instanceof URL == false)
-    {
-      return null;
-    }
-    return (URL) o;
-  }
-
-  public LocalizationContext getLocalizationContext()
-  {
-    Object o = getMetaAttribute(LOCALIZATION_ATTR);
-    if (o instanceof LocalizationContext == false)
-    {
-      DefaultLocalizationContext value = new DefaultLocalizationContext();
-      setMetaAttribute(LOCALIZATION_ATTR, value);
-      return value;
-    }
-    return (LocalizationContext) o;
-  }
-
-  public void addPendingContent (String name, LayoutElement element)
+  public void addPendingContent(String name, LayoutElement element)
   {
     pendingContent.add(name, element);
   }
 
-  public void clearPendingContent (String name)
+  public void clearPendingContent(String name)
   {
     pendingContent.removeAll(name);
   }
 
-  public LayoutElement[] getPendingContent (String name)
+  public LayoutElement[] getPendingContent(String name)
   {
     return (LayoutElement[])
             pendingContent.toArray(name, EMPTY_ELEMENT_ARRAY);
   }
 
-  public String getString (String name)
+  public String getString(String name)
   {
     return (String) strings.get(name);
   }
 
-  public void setString (String name, String value)
+  public void setString(String name, String value)
   {
     if (value == null)
     {
@@ -167,21 +141,29 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
     }
     else
     {
-      strings.put (name, value);
+      strings.put(name, value);
     }
   }
 
-  public ContentCache getResourceLoader ()
+  public ResourceManager getResourceManager()
   {
-    return resourceFactory;
+    final Object o = getMetaAttribute(RESOURCE_MANAGER_ATTR);
+    if (o instanceof ResourceManager == false)
+    {
+      ResourceManager value = new ResourceManager();
+      value.registerDefaults();
+      setMetaAttribute(RESOURCE_MANAGER_ATTR, value);
+      return value;
+    }
+    return (ResourceManager) o;
   }
 
-  public void setCounterStyle (String counterName, CounterStyle style)
+  public void setCounterStyle(String counterName, CounterStyle style)
   {
-    counterStyles.put (counterName, style);
+    counterStyles.put(counterName, style);
   }
 
-  public CounterStyle getCounterStyle (String counterName)
+  public CounterStyle getCounterStyle(String counterName)
   {
     CounterStyle style = (CounterStyle) counterStyles.get(counterName);
     if (style == null)
@@ -189,5 +171,67 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
       return new DecimalCounterStyle();
     }
     return style;
+  }
+
+  /**
+   * This method is called once after the input-feed received all the document
+   * meta-data.
+   */
+  public void initialize()
+  {
+    namespaceCollection = new DefaultNamespaceCollection();
+    namespaceCollection.addDefinition(DefaultNamespaceDefinition.LIBLAYOUT);
+    namespaceCollection.addDefinition(DefaultNamespaceDefinition.HTML);
+    namespaceCollection.addDefinition(DefaultNamespaceDefinition.XHTML);
+    for (int i = 0; i < metaNodes.size(); i++)
+    {
+      final DocumentMetaNode metaNode = (DocumentMetaNode) metaNodes.get(i);
+      final Object nodeType = metaNode.getMetaAttribute("type");
+      if ("namespace".equals(nodeType) == false)
+      {
+        continue;
+      }
+      final Object def = metaNode.getMetaAttribute("definition");
+      if (def instanceof NamespaceDefinition)
+      {
+        namespaceCollection.addDefinition((NamespaceDefinition) def);
+        continue;
+      }
+
+      final String uri = (String) metaNode.getMetaAttribute("uri");
+      final String prefix = (String) metaNode.getMetaAttribute("prefix");
+      final String classAttr = (String) metaNode.getMetaAttribute(
+              "class-attribute");
+      final String styleAttr = (String) metaNode.getMetaAttribute(
+              "style-attribute");
+      final ResourceKey styleSheetLocation =
+              (ResourceKey) metaNode.getMetaAttribute("default-stylesheet");
+      namespaceCollection.addDefinition(new DefaultNamespaceDefinition
+              (uri, styleSheetLocation, classAttr, styleAttr, prefix));
+    }
+  }
+
+  public NamespaceCollection getNamespaces()
+  {
+    return namespaceCollection;
+  }
+
+  public int getQuoteLevel()
+  {
+    return quoteLevel;
+  }
+
+  public void openQuote()
+  {
+    quoteLevel += 1;
+  }
+
+  public void closeQuote()
+  {
+    quoteLevel -= 1;
+    if (quoteLevel < 0)
+    {
+      quoteLevel = 0;
+    }
   }
 }

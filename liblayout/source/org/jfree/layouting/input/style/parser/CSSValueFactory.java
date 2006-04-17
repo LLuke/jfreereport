@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,32 +20,39 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * CSSValueFactory.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: CSSValueFactory.java,v 1.1 2006/02/12 21:57:19 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 25.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.parser;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.values.CSSAttrFunction;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
@@ -71,7 +78,7 @@ public class CSSValueFactory
   private HashMap compoundHandlers;
   private StyleKeyRegistry registry;
 
-  public CSSValueFactory (StyleKeyRegistry registry)
+  public CSSValueFactory(StyleKeyRegistry registry)
   {
     if (registry == null)
     {
@@ -84,7 +91,7 @@ public class CSSValueFactory
   }
 
 
-  public void registerDefaults ()
+  public void registerDefaults()
   {
     final Configuration config = LibLayoutBoot.getInstance().getGlobalConfig();
     Iterator sit = config.findPropertyKeys(SIMPLE_PREFIX);
@@ -121,7 +128,7 @@ public class CSSValueFactory
   }
 
 
-  private CSSValue createValue (StyleKey key, LexicalUnit value)
+  private CSSValue createValue(StyleKey key, LexicalUnit value)
   {
     final CSSValueReadHandler module =
             (CSSValueReadHandler) handlers.get(key.getName());
@@ -133,34 +140,191 @@ public class CSSValueFactory
     return module.createValue(key, value);
   }
 
-  public static CSSAttrFunction parseAttrFunction (LexicalUnit unit)
+  public static CSSAttrFunction parseAttrFunction(LexicalUnit unit)
   {
-    if (unit.getLexicalUnitType() != LexicalUnit.SAC_ATTR &&
-            unit.getLexicalUnitType() != LexicalUnit.SAC_FUNCTION)
+    if (unit.getLexicalUnitType() != LexicalUnit.SAC_ATTR)
     {
       return null;
     }
 
-    LexicalUnit parameter = unit.getParameters();
-    if (parameter.getLexicalUnitType() == LexicalUnit.SAC_IDENT)
-    {
-      final String attrName = parameter.getStringValue();
-      final LexicalUnit comma = parameter.getNextLexicalUnit();
-      if (comma == null)
-      {
-        return null;
-      }
-      final String attrType = parseAttributeType(comma.getNextLexicalUnit());
-      if (attrType == null || attrName == null)
-      {
-        return null;
-      }
-      return new CSSAttrFunction(attrName, attrType);
-    }
-    return null;
+    final String attrName = unit.getStringValue().trim();
+    final String[] name = parseAttributeName(attrName);
+    return new CSSAttrFunction(name[0], name[1]);
   }
 
-  private static String parseAttributeType (LexicalUnit unit)
+  private static String[] parseAttributeName (String attrName)
+  {
+    final String name;
+    final String namespace;
+    final StringTokenizer strtok = new StringTokenizer(attrName, "|");
+    final CSSParserContext context = CSSParserContext.getContext();
+    // explicitly undefined is different from default namespace..
+    // With that construct I definitly violate the standard, but
+    // most stylesheets are not yet written with namespaces in mind
+    // (and most tools dont support namespaces in CSS).
+    //
+    // by acknowledging the explicit rule but redefining the rule where
+    // no namespace syntax is used at all, I create compatiblity. Still,
+    // if the stylesheet does not carry a @namespace rule, this is the same
+    // as if the namespace was omited.
+    if (strtok.countTokens() == 2)
+    {
+      String tkNamespace = strtok.nextToken();
+      if (tkNamespace.length() == 0)
+      {
+        namespace = null;
+      }
+      else if (tkNamespace.equals("*"))
+      {
+        namespace = "*";
+      }
+      else
+      {
+        namespace = (String)
+                context.getNamespaces().get(tkNamespace);
+      }
+      name = strtok.nextToken();
+    }
+    else
+    {
+      name = strtok.nextToken();
+      namespace = context.getDefaultNamespace();
+    }
+    return new String[]{namespace, name};
+  }
+
+  public static boolean isFunctionValue(LexicalUnit unit)
+  {
+    if (unit.getLexicalUnitType() != LexicalUnit.SAC_FUNCTION &&
+            unit.getLexicalUnitType() != LexicalUnit.SAC_COUNTER_FUNCTION &&
+            unit.getLexicalUnitType() != LexicalUnit.SAC_COUNTERS_FUNCTION &&
+            unit.getLexicalUnitType() != LexicalUnit.SAC_RGBCOLOR &&
+            unit.getLexicalUnitType() != LexicalUnit.SAC_RECT_FUNCTION &&
+            unit.getLexicalUnitType() != LexicalUnit.SAC_FUNCTION)
+    {
+      return false;
+    }
+    return true;
+  }
+
+  private static CSSAttrFunction parseComplexAttrFn (LexicalUnit parameters)
+  {
+    if (parameters == null) return null;
+
+    final String attrName = parameters.getStringValue().trim();
+    final String[] name = parseAttributeName(attrName);
+
+    final LexicalUnit afterComma = parseComma(parameters);
+    if (afterComma == null)
+    {
+      return new CSSAttrFunction(name[0], name[1]);
+    }
+
+    final String attrType = parseAttributeType(afterComma.getNextLexicalUnit());
+    if (attrType == null)
+    {
+      return new CSSAttrFunction(name[0], name[1]);
+    }
+    else
+    {
+      return new CSSAttrFunction(name[0], name[1], attrType);
+    }
+  }
+
+  public static CSSFunctionValue parseFunction(LexicalUnit unit)
+  {
+    if (isFunctionValue(unit) == false)
+    {
+      return null;
+    }
+    LexicalUnit parameters = unit.getParameters();
+    final String functionName = unit.getFunctionName();
+    if (parameters == null)
+    {
+      // no-parameter function include the date() function...
+      return new CSSFunctionValue(functionName, new CSSValue[0]);
+    }
+    if ("attr".equalsIgnoreCase(functionName))
+    {
+      return parseComplexAttrFn(unit.getParameters());
+    }
+
+
+    final ArrayList contentList = new ArrayList();
+    while (parameters != null)
+    {
+      if (parameters.getLexicalUnitType() == LexicalUnit.SAC_IDENT)
+      {
+        contentList.add(new CSSConstant(parameters.getStringValue()));
+      }
+      else if (parameters.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE)
+      {
+        contentList.add(new CSSStringValue(CSSStringType.STRING,
+                parameters.getStringValue()));
+      }
+      else if (CSSValueFactory.isNumericValue(parameters))
+      {
+        final CSSNumericValue numericValue =
+                CSSValueFactory.createNumericValue(parameters);
+        if (numericValue == null)
+        {
+          return null;
+        }
+        contentList.add(numericValue);
+      }
+      else if (CSSValueFactory.isLengthValue(parameters))
+      {
+        final CSSNumericValue lengthValue =
+                CSSValueFactory.createLengthValue(parameters);
+        if (lengthValue == null)
+        {
+          return null;
+        }
+        contentList.add(lengthValue);
+      }
+      else if (parameters.getLexicalUnitType() == LexicalUnit.SAC_ATTR)
+      {
+        final CSSAttrFunction attrFn =
+                CSSValueFactory.parseAttrFunction(parameters);
+        if (attrFn == null)
+        {
+          return null;
+        }
+        contentList.add(attrFn);
+      }
+      else if (parameters.getLexicalUnitType() == LexicalUnit.SAC_URI)
+      {
+        final CSSStringValue uriValue = CSSValueFactory.createUriValue(
+                parameters);
+        if (uriValue == null)
+        {
+          return null;
+        }
+        contentList.add(uriValue);
+      }
+      else if (isFunctionValue(parameters))
+      {
+        final CSSFunctionValue functionValue = parseFunction(parameters);
+        if (functionValue == null)
+        {
+          return null;
+        }
+        contentList.add(functionValue);
+      }
+      else
+      {
+        // parse error: Something we do not understand ...
+        return null;
+      }
+      parameters = CSSValueFactory.parseComma(parameters);
+    }
+    final CSSValue[] paramVals = (CSSValue[])
+            contentList.toArray(new CSSValue[contentList.size()]);
+    return new CSSFunctionValue(functionName, paramVals);
+  }
+
+
+  private static String parseAttributeType(LexicalUnit unit)
   {
     if (unit == null)
     {
@@ -173,10 +337,10 @@ public class CSSValueFactory
     return null;
   }
 
-  public void parseValue (CSSDeclarationRule rule,
-                          String name,
-                          LexicalUnit value,
-                          boolean important)
+  public void parseValue(CSSDeclarationRule rule,
+                         String name,
+                         LexicalUnit value,
+                         boolean important)
           throws CSSParserFactoryException
   {
     String normalizedName = name.toLowerCase();
@@ -185,19 +349,20 @@ public class CSSValueFactory
     {
       if (key == null)
       {
-        Log.debug("Got no key for " + normalizedName);
+        Log.warn("Got no key for inherited " + normalizedName, new Exception());
         return;
       }
       rule.setPropertyValue(key, CSSInheritValue.getInstance());
       rule.setImportant(key, important);
       return;
     }
-    else if (value.getLexicalUnitType() == LexicalUnit.SAC_ATTR)
+
+    if (value.getLexicalUnitType() == LexicalUnit.SAC_ATTR)
     {
       // ATTR function.
       if (key == null)
       {
-        Log.debug("Got no key for " + normalizedName);
+        Log.warn("Got no key for attribute-function " + normalizedName);
         return;
       }
       final CSSAttrFunction attrFn = parseAttrFunction(value);
@@ -207,7 +372,6 @@ public class CSSValueFactory
         rule.setImportant(key, important);
       }
       return;
-
     }
 
     if (key != null)
@@ -228,12 +392,12 @@ public class CSSValueFactory
     {
       if (key == null)
       {
-        Log.debug("Got no key for " + normalizedName);
+        Log.warn("Got no key for compound handler " + normalizedName);
         return;
       }
       else
       {
-        Log.debug("Got no value for " + normalizedName);
+        Log.warn("Got no value for " + normalizedName);
       }
       return; // ignore this rule ..
     }
@@ -255,7 +419,7 @@ public class CSSValueFactory
     }
   }
 
-  public static CSSStringValue createUriValue (LexicalUnit value)
+  public static CSSStringValue createUriValue(LexicalUnit value)
   {
     if (value.getLexicalUnitType() != LexicalUnit.SAC_URI)
     {
@@ -263,20 +427,10 @@ public class CSSValueFactory
     }
 
     final String uri = value.getStringValue();
-    final URL url = CSSParserContext.getContext().getURL();
-    try
-    {
-      final URL target = new URL(url, uri);
-      return new CSSStringValue(CSSStringType.URI, target.toExternalForm());
-    }
-    catch (MalformedURLException e)
-    {
-      // dont know what to do here ...
-      return null;
-    }
+    return new CSSStringValue(CSSStringType.URI, uri);
   }
 
-  public static boolean isNumericValue (LexicalUnit value)
+  public static boolean isNumericValue(LexicalUnit value)
   {
     if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
@@ -290,7 +444,7 @@ public class CSSValueFactory
   }
 
 
-  public static CSSNumericValue createNumericValue (LexicalUnit value)
+  public static CSSNumericValue createNumericValue(LexicalUnit value)
   {
     if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
@@ -305,7 +459,7 @@ public class CSSValueFactory
     return null;
   }
 
-  public static boolean isLengthValue (LexicalUnit value)
+  public static boolean isLengthValue(LexicalUnit value)
   {
     if (value.getLexicalUnitType() == LexicalUnit.SAC_EM)
     {
@@ -343,7 +497,7 @@ public class CSSValueFactory
   }
 
 
-  public static CSSNumericValue createLengthValue (LexicalUnit value)
+  public static CSSNumericValue createLengthValue(LexicalUnit value)
   {
     if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
@@ -396,7 +550,7 @@ public class CSSValueFactory
     return null;
   }
 
-  public static LexicalUnit parseComma (final LexicalUnit value)
+  public static LexicalUnit parseComma(final LexicalUnit value)
   {
     if (value == null)
     {

@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,22 +20,30 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * CSSStyleRule.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: CSSStyleRule.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 23.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style;
 
+import java.util.Iterator;
+
 import org.jfree.layouting.input.style.selectors.CSSSelector;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * Creation-Date: 23.11.2005, 10:59:26
@@ -66,8 +74,14 @@ public class CSSStyleRule extends CSSDeclarationRule
     this.selector = selector;
   }
 
-  public Object clone() throws CloneNotSupportedException
+  public void merge(final CSSStyleRule elementRule)
   {
-    return super.clone();
+    Iterator it = elementRule.getPropertyKeys();
+    while (it.hasNext())
+    {
+      StyleKey key = (StyleKey) it.next();
+      CSSValue value = elementRule.getPropertyCSSValue(key);
+      setPropertyValue(key, value);
+    }
   }
 }

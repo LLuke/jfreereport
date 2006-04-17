@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,27 +20,33 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * LayoutElement.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: LayoutElement.java,v 1.1 2006/02/12 21:43:08 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 20.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.model;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-import org.jfree.layouting.layouter.state.InputSavePoint;
 import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.LayoutStylePool;
+import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.output.OutputProcessor;
+import org.jfree.layouting.util.AttributeMap;
 
 /**
  * This class represents an element node in the document model. An element node
@@ -51,41 +57,65 @@ import org.jfree.layouting.output.OutputProcessor;
 public class LayoutElement extends LayoutNode
 {
   private LayoutStyle style;
-  private HashMap attributes;
-  private LinkedList childNodes;
+  private AttributeMap attributes;
+  private ArrayList childNodes;
   private String name;
+  private String namespace;
   private DefaultElementContext elementContext;
+  private static final LayoutNode[] EMPTY_LAYOUT = new LayoutNode[0];
+
+  protected LayoutElement(final LayoutElement completedElement)
+  {
+    super(completedElement);
+    this.name = completedElement.name;
+    this.namespace = completedElement.namespace;
+    this.attributes = new AttributeMap(completedElement.getAttributes());
+    // Style and child nodes are not copied ..
+  }
 
   public LayoutElement(final ContextId contextId,
                        final OutputProcessor outputProcessor,
+                       final String namespace,
                        final String name)
   {
     super(contextId, outputProcessor);
     this.elementContext = new DefaultElementContext();
-    this.style = new LayoutStyle();
-    this.attributes = new HashMap();
-    this.childNodes = new LinkedList();
+    this.attributes = new AttributeMap();
+    this.childNodes = null;
     this.name = name;
+    this.namespace = namespace;
   }
 
   public LayoutStyle getStyle()
   {
+    if (style == null)
+    {
+      style = LayoutStylePool.getPool().getStyle();
+    }
     return style;
   }
 
-  public void setAttribute(String name, Object value)
+  public void setAttribute(final String namespace,
+                           final String name,
+                           final Object value)
   {
-    attributes.put(name, value);
+    attributes.setAttribute(namespace, name, value);
   }
 
-  public Object getAttribute(String name)
+  public Object getAttribute(final String namespace,
+                             final String name)
   {
-    return attributes.get(name);
+    return attributes.getAttribute(namespace, name);
   }
 
-  public String[] getAttributeNames ()
+  public AttributeMap getAttributes()
   {
-    return (String[]) attributes.keySet().toArray(new String[attributes.size()]);
+    return attributes;
+  }
+
+  protected void setAttributes(AttributeMap attributes)
+  {
+    this.attributes = new AttributeMap(attributes);
   }
 
   public String getName()
@@ -93,9 +123,14 @@ public class LayoutElement extends LayoutNode
     return name;
   }
 
+  public String getNamespace()
+  {
+    return namespace;
+  }
+
   public String getId()
   {
-    return (String) attributes.get("id");
+    return (String) attributes.getAttribute(Namespaces.XML_NAMESPACE, "id");
   }
 
   public ElementContext getElementContext()
@@ -105,77 +140,72 @@ public class LayoutElement extends LayoutNode
 
   public void addChild(LayoutNode ctx)
   {
-    childNodes.add(ctx);
-    ctx.setParent(this);
-    if (childNodes.size() > 1)
+    if (childNodes == null)
     {
-      LayoutNode prevNode = (LayoutNode) childNodes.get(childNodes.size() - 2);
-      ctx.setPredecessor(prevNode);
+      childNodes = new ArrayList();
     }
+    final int insertPosition = childNodes.size();
+    childNodes.add(ctx);
+    ctx.setParent(this, insertPosition);
   }
 
-  public void removeChild(int indx)
-  {
-    LayoutNode oldNode = (LayoutNode) childNodes.remove(indx);
-    oldNode.setPredecessor(null);
-    oldNode.setParent(null);
-    if (indx == 0)
-    {
-      LayoutNode firstNode = (LayoutNode) childNodes.get(0);
-      firstNode.setPredecessor(null);
-    }
-    else
-    {
-      LayoutNode prevNode = (LayoutNode) childNodes.get(indx-1);
-      LayoutNode nextNode = (LayoutNode) childNodes.get(indx);
-      nextNode.setPredecessor(prevNode);
-    }
-  }
+//  // not allowed for sanity reasons. We do not allow reordering
+//  // of elements.
+//  private void removeChild (int indx)
+//  {
+//    if (childNodes == null)
+//    {
+//      throw new IndexOutOfBoundsException();
+//    }
+//    LayoutNode oldNode = (LayoutNode) childNodes.remove(indx);
+//    oldNode.setParent(null, -1);
+//  }
 
   public LayoutNode getChild(int indx)
   {
+    if (childNodes == null)
+    {
+      throw new IndexOutOfBoundsException();
+    }
     return (LayoutNode) childNodes.get(indx);
   }
 
   public int getChildCount()
   {
+    if (childNodes == null)
+    {
+      return 0;
+    }
     return childNodes.size();
   }
 
   public LayoutNode[] getChilds()
   {
+    if (childNodes == null)
+    {
+      return EMPTY_LAYOUT;
+    }
     return (LayoutNode[]) childNodes.toArray(new LayoutNode[childNodes.size()]);
   }
 
-  public void replaceElement(int position, LayoutNode ctx)
+  private void clearElement(int position)
   {
-    LayoutNode oldNode = (LayoutNode) childNodes.set(position, ctx);
-    oldNode.setParent(null);
-    oldNode.setPredecessor(null);
-    ctx.setParent(this);
-    if (position == 0)
+    if (childNodes == null)
     {
-      ctx.setPredecessor(null);
+      throw new IndexOutOfBoundsException();
     }
-    else
+    LayoutNode oldNode = (LayoutNode) childNodes.set(position, null);
+    oldNode.setParent(null, -1);
+  }
+
+  public void setParent(LayoutElement parent, final int position)
+  {
+    super.setParent(parent, position);
+    if (elementContext == null)
     {
-      ctx.setPredecessor(getChild(position - 1));
+      return;
     }
-  }
 
-  public InputSavePoint getSavePoint()
-  {
-    return (InputSavePoint) getProcessAttribute(ProcessAttributeName.INPUT_SAVE_POINT);
-  }
-
-  public void setSavePoint(final InputSavePoint savePoint)
-  {
-    setProcessAttribute(ProcessAttributeName.INPUT_SAVE_POINT, savePoint);
-  }
-
-  protected void setParent (LayoutElement parent)
-  {
-    super.setParent(parent);
     if (parent != null)
     {
       elementContext.setParent(parent.getElementContext());
@@ -187,24 +217,58 @@ public class LayoutElement extends LayoutNode
   }
 
   /**
-   * Returns a string representation of the object. In general, the <code>toString</code>
-   * method returns a string that "textually represents" this object. The result should be
-   * a concise but informative representation that is easy for a person to read. It is
-   * recommended that all subclasses override this method.
+   * Returns a string representation of the object. In general, the
+   * <code>toString</code> method returns a string that "textually represents"
+   * this object. The result should be a concise but informative representation
+   * that is easy for a person to read. It is recommended that all subclasses
+   * override this method.
    * <p/>
-   * The <code>toString</code> method for class <code>Object</code> returns a string
-   * consisting of the name of the class of which the object is an instance, the at-sign
-   * character `<code>@</code>', and the unsigned hexadecimal representation of the hash
-   * code of the object. In other words, this method returns a string equal to the value
-   * of: <blockquote>
+   * The <code>toString</code> method for class <code>Object</code> returns a
+   * string consisting of the name of the class of which the object is an
+   * instance, the at-sign character `<code>@</code>', and the unsigned
+   * hexadecimal representation of the hash code of the object. In other words,
+   * this method returns a string equal to the value of: <blockquote>
    * <pre>
    * getClass().getName() + '@' + Integer.toHexString(hashCode())
    * </pre></blockquote>
    *
    * @return a string representation of the object.
    */
-  public String toString ()
+  public String toString()
   {
-    return "LayoutElement={name=" + name + ",  childs=" + childNodes.size()+ "}";
+    return "LayoutElement={name=" + name + ",  childs=" + (childNodes == null ? 0 : childNodes
+            .size()) + "}";
+  }
+
+  public void clearElement(LayoutNode element)
+  {
+    // step one: Check for child-parent-relationship
+    if (this != element.getParent())
+    {
+      return;
+    }
+
+    final int position = element.getPosition();
+    if (position == -1)
+    {
+      return;
+    }
+
+    LayoutNode node = (LayoutNode) childNodes.get(position);
+    if (node != element)
+    {
+      throw new IllegalStateException("Ho ho ho ho ho");
+    }
+    clearElement(position);
+  }
+
+  public void clearFromParent()
+  {
+    super.clearFromParent();
+    if (style != null)
+    {
+      style.dispose();
+      style = null;
+    }
   }
 }

@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,24 +20,29 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * PageableOutputProcessor.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: PageableOutputProcessor.java,v 1.1 2006/02/12 21:40:17 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 03.01.2006 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.output.pageable;
 
 import org.jfree.layouting.output.OutputProcessor;
-import org.jfree.layouting.normalizer.pagable.ContentGeneratingNormalizer;
-import org.jfree.layouting.normalizer.pagable.PaginatingNormalizer;
+import org.jfree.layouting.normalizer.pagable.PageGeneratingNormalizer;
+import org.jfree.layouting.normalizer.pagable.PagePreparationNormalizer;
 
 /**
  * Creation-Date: 03.01.2006, 12:28:14
@@ -46,6 +51,6 @@ import org.jfree.layouting.normalizer.pagable.PaginatingNormalizer;
  */
 public interface PageableOutputProcessor extends OutputProcessor
 {
-  public ContentGeneratingNormalizer createContentNormalizer();
-  public PaginatingNormalizer createPaginatingNormalizer();
+  public PageGeneratingNormalizer createGenerateNormalizer();
+  public PagePreparationNormalizer createPrepareNormalizer();
 }

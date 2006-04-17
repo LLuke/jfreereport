@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,25 +20,30 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * DefaultStreamingLayoutProcess.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: DefaultStreamingLayoutProcess.java,v 1.1 2006/02/12 21:38:19 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 02.01.2006 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting;
 
+import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.layouter.feed.StreamingInputFeed;
-import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
 import org.jfree.layouting.normalizer.Normalizer;
+import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
 
 /**
@@ -59,7 +64,7 @@ public class DefaultStreamingLayoutProcess extends AbstractLayoutProcess
 
   protected InputFeed createInputFeed()
   {
-    return new StreamingInputFeed(this);
+    return new DefaultInputFeed(this);
   }
 
   public Normalizer getNormalizer()

@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,28 +20,34 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * StyleSheetHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: StyleSheetHandler.java,v 1.1 2006/02/12 21:57:19 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 23.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.parser;
 
-import java.net.URL;
-import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Stack;
+import java.util.StringTokenizer;
 
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSFontFaceRule;
-import org.jfree.layouting.input.style.CSSImportRule;
 import org.jfree.layouting.input.style.CSSMediaRule;
 import org.jfree.layouting.input.style.CSSPageRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
@@ -49,12 +55,16 @@ import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
+import org.jfree.resourceloader.DependencyCollector;
+import org.jfree.resourceloader.Resource;
+import org.jfree.resourceloader.ResourceException;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.Log;
 import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.DocumentHandler;
 import org.w3c.css.sac.InputSource;
 import org.w3c.css.sac.LexicalUnit;
-import org.w3c.css.sac.Parser;
 import org.w3c.css.sac.SACMediaList;
 import org.w3c.css.sac.Selector;
 import org.w3c.css.sac.SelectorList;
@@ -66,24 +76,73 @@ import org.w3c.css.sac.SelectorList;
  */
 public class StyleSheetHandler implements DocumentHandler
 {
+  private HashMap namespaces;
   private StyleKeyRegistry registry;
   private StyleSheet styleSheet;
   private Stack parentRules;
   private CSSDeclarationRule styleRule;
+  private ResourceKey source;
+  private DependencyCollector dependencies;
+  private String defaultNamespace;
+  private ResourceManager manager;
 
-  public StyleSheetHandler(final StyleKeyRegistry registry,
+  public StyleSheetHandler(final ResourceManager manager,
+                           final ResourceKey source,
+                           final long version,
+                           final StyleKeyRegistry registry,
                            final StyleRule parentRule)
   {
     if (registry == null)
     {
       throw new NullPointerException();
     }
+
+    this.manager = manager;
     this.registry = registry;
     this.parentRules = new Stack();
     if (parentRule != null)
     {
       parentRules.push(parentRule);
     }
+    this.source = source;
+    if (source != null)
+    {
+      this.dependencies = new DependencyCollector(source, version);
+    }
+    this.namespaces = new HashMap();
+  }
+
+  public void registerNamespace(String prefix, String uri)
+  {
+    if (prefix == null)
+    {
+      throw new NullPointerException();
+    }
+    if (uri == null)
+    {
+      throw new NullPointerException();
+    }
+    namespaces.put(prefix, uri);
+  }
+
+  public String getDefaultNamespaceURI()
+  {
+    return defaultNamespace;
+  }
+
+  public void setDefaultNamespaceURI(final String defaultNamespace)
+  {
+    this.defaultNamespace = defaultNamespace;
+  }
+
+  public ResourceKey getSource()
+  {
+    return source;
+  }
+
+  public DependencyCollector getDependencies()
+  {
+    return dependencies;
   }
 
   public CSSDeclarationRule getStyleRule()
@@ -106,10 +165,17 @@ public class StyleSheetHandler implements DocumentHandler
     this.styleSheet = styleSheet;
   }
 
-  public void init (InputSource source)
+  public ResourceManager getResourceManager()
   {
+    return manager;
+  }
+
+  public void init(InputSource source)
+  {
+    // the default namespace might be fed from outside ..
+    CSSParserContext.getContext().setNamespaces(namespaces);
     CSSParserContext.getContext().setStyleKeyRegistry(registry);
-    CSSParserContext.getContext().setInputSource(source);
+    CSSParserContext.getContext().setSource(getSource());
   }
 
   /**
@@ -128,27 +194,7 @@ public class StyleSheetHandler implements DocumentHandler
     if (this.styleSheet == null)
     {
       this.styleSheet = new StyleSheet();
-      if (source instanceof URLInputSource)
-      {
-        URLInputSource u = (URLInputSource) source;
-        styleSheet.setHref(u.getUrl());
-      }
-      else if (source instanceof StringInputSource)
-      {
-        StringInputSource u = (StringInputSource) source;
-        styleSheet.setHref(u.getBaseUrl());
-      }
-      else
-      {
-        try
-        {
-          this.styleSheet.setHref(new URL(source.getURI()));
-        }
-        catch (MalformedURLException e)
-        {
-          // ignore ..
-        }
-      }
+      this.styleSheet.setSource(getSource());
     }
   }
 
@@ -166,8 +212,14 @@ public class StyleSheetHandler implements DocumentHandler
    */
   public void endDocument(InputSource source) throws CSSException
   {
-    CSSParserContext.getContext().setStyleKeyRegistry(null);
-    CSSParserContext.getContext().setInputSource(null);
+    final Iterator entries = namespaces.entrySet().iterator();
+    while (entries.hasNext())
+    {
+      final Map.Entry entry = (Map.Entry) entries.next();
+      final String prefix = (String) entry.getKey();
+      final String uri = (String) entry.getValue();
+      styleSheet.addNamespace(prefix, uri);
+    }
   }
 
   /**
@@ -194,7 +246,53 @@ public class StyleSheetHandler implements DocumentHandler
    */
   public void ignorableAtRule(String atRule) throws CSSException
   {
-    Log.debug("Ignorable AT-Rule: " + atRule);
+    StringTokenizer strtok = new StringTokenizer(atRule);
+    if (strtok.hasMoreTokens() == false)
+    {
+      return;
+    }
+    String ruleName = strtok.nextToken();
+    if (ruleName.equalsIgnoreCase("@namespace"))
+    {
+      parseNamespaceRule(strtok);
+    }
+  }
+
+  private void parseNamespaceRule(final StringTokenizer strtok)
+  {
+    String next = strtok.nextToken();
+    final String prefix;
+    final String uri;
+    if (next.startsWith("url("))
+    {
+      prefix = "";
+      uri = next;
+    }
+    else
+    {
+      prefix = next;
+      if (strtok.hasMoreTokens() == false)
+      {
+        return;
+      }
+      uri = strtok.nextToken();
+    }
+    int uriStart = uri.indexOf("(");
+    if (uriStart == -1)
+    {
+      return;
+    }
+    int uriEnd = uri.indexOf(")");
+    if (uriEnd == -1)
+    {
+      return;
+    }
+    if (uriStart > uriEnd)
+    {
+      return;
+    }
+    final String uriValue = uri.substring(uriStart + 1, uriEnd);
+    namespaceDeclaration(prefix, uriValue);
   }
 
   /**
@@ -209,17 +307,26 @@ public class StyleSheetHandler implements DocumentHandler
   public void namespaceDeclaration(String prefix, String uri)
           throws CSSException
   {
-    Log.debug("Namespace Declaration: " + prefix + " " + uri);
+    if (prefix == null || "".equals(prefix))
+    {
+      this.namespaces.put("", uri);
+      this.defaultNamespace = uri;
+      CSSParserContext.getContext().setDefaultNamespace(defaultNamespace);
+    }
+    else
+    {
+      this.namespaces.put(prefix, uri);
+    }
   }
 
   /**
    * Receive notification of a import statement in the style sheet.
    *
-   * @param uri                The URI of the imported style sheet.
-   * @param media              The intended destination media for style
-   *                           information.
+   * @param uri                 The URI of the imported style sheet.
+   * @param media               The intended destination media for style
+   *                            information.
    * @param defaultNamespaceURI The default namespace URI for the imported style
-   *                           sheet.
+   *                            sheet.
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
@@ -227,47 +334,49 @@ public class StyleSheetHandler implements DocumentHandler
                           SACMediaList media,
                           String defaultNamespaceURI) throws CSSException
   {
-    Log.debug("Import Style: " + uri + " (" + defaultNamespaceURI + ")");
-
-    final InputSource source = CSSParserContext.getContext().getInputSource();
-    // instantiate a new parser and parse the stylesheet.
+    //  instantiate a new parser and parse the stylesheet.
+    final ResourceManager manager = getResourceManager();
+    if (manager == null)
+    {
+      // there is no source set, so we have no resource manager, and thus
+      // we do no parsing.
+      //
+      // This should only be the case if we parse style-values; in that case
+      // include-statement are not supported anyway.
+      return;
+    }
     try
     {
-      final InputSource inputSource = CSSParserContext.getContext().getInputSource();
-      URL parentURL = null;
-      if (inputSource instanceof URLInputSource)
+      CSSParserContext.getContext().setDefaultNamespace(defaultNamespaceURI);
+      final ResourceKey key;
+      if (source == null)
       {
-        URLInputSource urlInputSource = (URLInputSource) inputSource;
-        parentURL = urlInputSource.getUrl();
+        key = manager.createKey(uri);
       }
-      else if (inputSource != null)
+      else
       {
-        try
-        {
-          parentURL = new URL (inputSource.getURI());
-        }
-        catch(Exception e)
-        {
-          // ignore it ...
-        }
+        key  = manager.deriveKey(source, uri);
       }
-      final Parser parser = CSSParserFactory.getInstance().createCSSParser();
-      final CSSImportRule importRule = new CSSImportRule(styleSheet, getParentRule());
-      final URL url = new URL(parentURL, uri);
-      final StyleSheetHandler handler = new StyleSheetHandler(registry, importRule);
-      parser.setDocumentHandler(handler);
-      importRule.setHref(url);
-      importRule.setStyleSheet(handler.getStyleSheet());
-      parser.parseStyleSheet(new URLInputSource(url));
+
+      final Resource res = manager.create(key, source, StyleSheet.class);
+      if (res == null)
+      {
+        return;
+      }
+      final StyleSheet styleSheet = (StyleSheet) res.getResource();
+      this.styleSheet.addStyleSheet(styleSheet);
     }
-    catch (Exception e)
+    catch (ResourceException e)
     {
-      Log.warn("Unable to load sub-stylesheet " + uri);
+      // ignore ..
     }
-
-    CSSParserContext.getContext().setStyleKeyRegistry(registry);
-    CSSParserContext.getContext().setInputSource(source);
-
+    finally
+    {
+      CSSParserContext.getContext().setStyleKeyRegistry(registry);
+      CSSParserContext.getContext().setSource(getSource());
+      CSSParserContext.getContext().setNamespaces(namespaces);
+      CSSParserContext.getContext().setDefaultNamespace(defaultNamespace);
+    }
   }
 
   /**
@@ -283,7 +392,6 @@ public class StyleSheetHandler implements DocumentHandler
    */
   public void startMedia(SACMediaList media) throws CSSException
   {
-    Log.debug("Start Media: " + media);
     // ignore for now ..
     CSSMediaRule rule = new CSSMediaRule(styleSheet, getParentRule());
     parentRules.push(rule);
@@ -299,7 +407,6 @@ public class StyleSheetHandler implements DocumentHandler
    */
   public void endMedia(SACMediaList media) throws CSSException
   {
-    Log.debug("End Media: " + media);
     parentRules.pop();
   }
 
@@ -317,7 +424,6 @@ public class StyleSheetHandler implements DocumentHandler
    */
   public void startPage(String name, String pseudo_page) throws CSSException
   {
-    Log.debug("Start Page: " + name + " " + pseudo_page);
     // yes, we have to parse that.
     CSSPageRule rule = new CSSPageRule(styleSheet, getParentRule());
     parentRules.push(rule);
@@ -326,14 +432,13 @@ public class StyleSheetHandler implements DocumentHandler
   /**
    * Receive notification of the end of a media statement.
    *
-   * @param name       The intended destination medium for style information.
+   * @param name        The intended destination medium for style information.
    * @param pseudo_page the pseudo page (if any, null otherwise)
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
   public void endPage(String name, String pseudo_page) throws CSSException
   {
-    Log.debug("End Page: " + name + " " + pseudo_page);
     parentRules.pop();
   }
 
@@ -371,7 +476,6 @@ public class StyleSheetHandler implements DocumentHandler
    */
   public void endFontFace() throws CSSException
   {
-    Log.debug("End FontFace");
     parentRules.pop();
   }
 
@@ -385,8 +489,6 @@ public class StyleSheetHandler implements DocumentHandler
   public void startSelector(SelectorList selectors) throws CSSException
   {
     styleRule = new CSSStyleRule(styleSheet, getParentRule());
-    Log.debug ("Starting to parse new rule");
-
   }
 
   /**
@@ -400,7 +502,6 @@ public class StyleSheetHandler implements DocumentHandler
   {
     if (styleRule.getSize() == 0)
     {
-      Log.debug ("Skipping empty rule");
       return;
     }
 
@@ -419,7 +520,6 @@ public class StyleSheetHandler implements DocumentHandler
         // should not happen
       }
     }
-    Log.debug ("Adding new rule");
   }
 
   /**

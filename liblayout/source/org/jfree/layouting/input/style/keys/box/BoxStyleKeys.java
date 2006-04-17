@@ -1,3 +1,44 @@
+/**
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
+ *
+ * Project Info:  http://www.jfree.org/liblayout/
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * BoxStyleKeys.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ *
+ *
+ */
+
 package org.jfree.layouting.input.style.keys.box;
 
 import org.jfree.layouting.input.style.StyleKey;
@@ -12,7 +53,7 @@ import org.jfree.layouting.input.style.StyleKeyRegistry;
  */
 public class BoxStyleKeys
 {
-  public static StyleKey BOX_SIZING =
+  public static final StyleKey BOX_SIZING =
           StyleKeyRegistry.getRegistry().createKey
                   ("box-sizing", false, false, false);
 
@@ -20,7 +61,7 @@ public class BoxStyleKeys
    * The 'display-model' property determines the algorithm with which an element
    * lays out its children.
    */
-  public static StyleKey DISPLAY_MODEL =
+  public static final StyleKey DISPLAY_MODEL =
           StyleKeyRegistry.getRegistry().createKey
                   ("display-model", false, false, false);
 
@@ -28,7 +69,7 @@ public class BoxStyleKeys
    * 'display-role' specifies what role an element has in its parent's
    * algorithm.
    */
-  public static StyleKey DISPLAY_ROLE =
+  public static final StyleKey DISPLAY_ROLE =
           StyleKeyRegistry.getRegistry().createKey
                   ("display-role", false, false, false);
 
@@ -40,19 +81,19 @@ public class BoxStyleKeys
    * are relative to the <strong>width</strong> of the parent (if the flow is
    * horizontal, else the height is used).
    */
-  public static StyleKey PADDING_TOP =
+  public static final StyleKey PADDING_TOP =
           StyleKeyRegistry.getRegistry().createKey
                   ("padding-top", false, false, false);
 
-  public static StyleKey PADDING_LEFT =
+  public static final StyleKey PADDING_LEFT =
           StyleKeyRegistry.getRegistry().createKey
                   ("padding-left", false, false, false);
 
-  public static StyleKey PADDING_BOTTOM =
+  public static final StyleKey PADDING_BOTTOM =
           StyleKeyRegistry.getRegistry().createKey
                   ("padding-bottom", false, false, false);
 
-  public static StyleKey PADDING_RIGHT =
+  public static final StyleKey PADDING_RIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("padding-right", false, false, false);
 
@@ -89,69 +130,69 @@ public class BoxStyleKeys
    * Note that 'margin-top' and 'margin-bottom' do not apply to non-replaced,
    * inline elements (in horizontal flow); see [CSS3LINE].
    */
-  public static StyleKey MARGIN_TOP =
+  public static final StyleKey MARGIN_TOP =
           StyleKeyRegistry.getRegistry().createKey
                   ("margin-top", false, false, false);
 
-  public static StyleKey MARGIN_LEFT =
+  public static final StyleKey MARGIN_LEFT =
           StyleKeyRegistry.getRegistry().createKey
                   ("margin-left", false, false, false);
 
-  public static StyleKey MARGIN_BOTTOM =
+  public static final StyleKey MARGIN_BOTTOM =
           StyleKeyRegistry.getRegistry().createKey
                   ("margin-bottom", false, false, false);
 
-  public static StyleKey MARGIN_RIGHT =
+  public static final StyleKey MARGIN_RIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("margin-right", false, false, false);
 
   /** These values may be auto. */
-  public static StyleKey WIDTH =
+  public static final StyleKey WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("width", false, false, false);
 
   /** These values may be auto. */
-  public static StyleKey HEIGHT =
+  public static final StyleKey HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("height", false, false, false);
 
   /** These values may be auto. If specified, this overrides the width.*/
-  public static StyleKey BOX_WIDTH =
+  public static final StyleKey BOX_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("box-width", false, false, false);
 
   /** These values may be auto. If specified, this overrides the height.*/
-  public static StyleKey BOX_HEIGHT =
+  public static final StyleKey BOX_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("box-height", false, false, false);
 
   // The Box-Sizing property is not implemented here.
 
-  public static StyleKey MAX_WIDTH =
+  public static final StyleKey MAX_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("max-width", false, false, false);
 
-  public static StyleKey MAX_HEIGHT =
+  public static final StyleKey MAX_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("max-height", false, false, false);
 
-  public static StyleKey MIN_WIDTH =
+  public static final StyleKey MIN_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("min-width", false, false, false);
 
-  public static StyleKey MIN_HEIGHT =
+  public static final StyleKey MIN_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("min-height", false, false, false);
 
 
-  public static StyleKey FIT =
+  public static final StyleKey FIT =
           StyleKeyRegistry.getRegistry().createKey
                   ("fit", false, true, false);
 
   /**
    * A pair of values.
    */
-  public static StyleKey FIT_POSITION =
+  public static final StyleKey FIT_POSITION =
           StyleKeyRegistry.getRegistry().createKey
                   ("fit-position", false, true, false);
 
@@ -159,48 +200,48 @@ public class BoxStyleKeys
    * We alter the semantics a bit. When crop is computed, absolute values are
    * used. Inset-Rect is voodoo, so ignore it for now.
    */
-  public static StyleKey CROP =
+  public static final StyleKey CROP =
           StyleKeyRegistry.getRegistry().createKey
                   ("crop", false, false, false);
 
-  public static StyleKey FLOAT =
+  public static final StyleKey FLOAT =
           StyleKeyRegistry.getRegistry().createKey
                   ("float", false, false, false);
   /**
    * Optional: (The old idea from 1996; allow shapes).
    * Do not implement it for now, assume 'box'
    */
-  public static StyleKey FLOAT_TYPE =
+  public static final StyleKey FLOAT_TYPE =
           StyleKeyRegistry.getRegistry().createKey
                   ("float-type", false, false, false);
 
-  public static StyleKey CLEAR =
+  public static final StyleKey CLEAR =
           StyleKeyRegistry.getRegistry().createKey
                   ("clear", false, false, false);
 
-  public static StyleKey CLEAR_AFTER =
+  public static final StyleKey CLEAR_AFTER =
           StyleKeyRegistry.getRegistry().createKey
                   ("clear-after", false, false, false);
 
-  public static StyleKey FLOAT_DISPLACE =
+  public static final StyleKey FLOAT_DISPLACE =
           StyleKeyRegistry.getRegistry().createKey
                   ("float-displace", false, true, false);
 
-  public static StyleKey INDENT_EDGE_RESET =
+  public static final StyleKey INDENT_EDGE_RESET =
           StyleKeyRegistry.getRegistry().createKey
                   ("indent-edge-reset", false, false, false);
 
   /** The plain overflow behaviour can be constructed using these both properties. */
-  public static StyleKey OVERFLOW_X =
+  public static final StyleKey OVERFLOW_X =
           StyleKeyRegistry.getRegistry().createKey
                   ("overflow-x", false, false, false);
 
-  public static StyleKey OVERFLOW_Y =
+  public static final StyleKey OVERFLOW_Y =
           StyleKeyRegistry.getRegistry().createKey
                   ("overflow-y", false, false, false);
   // todo...
 
-  public static StyleKey OVERFLOW_CLIP =
+  public static final StyleKey OVERFLOW_CLIP =
           StyleKeyRegistry.getRegistry().createKey
                   ("overflow-clip", false, false, false);
 
@@ -210,7 +251,7 @@ public class BoxStyleKeys
    * when printing.
    */
 
-  public static StyleKey VISIBILITY =
+  public static final StyleKey VISIBILITY =
           StyleKeyRegistry.getRegistry().createKey
                   ("visibility", false, true, false);
 

@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * StyleKeyFactory.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * StyleKeyRegistry.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: StyleKeyRegistry.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 20.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style;
 
@@ -65,6 +70,7 @@ public class StyleKeyRegistry
   }
 
   private HashMap knownStyleKeys;
+  private transient StyleKey[] cachedStyleKeys;
 
   private StyleKeyRegistry()
   {
@@ -84,7 +90,7 @@ public class StyleKeyRegistry
       return index.intValue();
     }
 
-    throw new IllegalStateException("This key is none of mine.");
+    throw new IllegalStateException("This key is not registered. How could that be?");
   }
 
   public int getKeyCount()
@@ -130,8 +136,12 @@ public class StyleKeyRegistry
         Field field = fields[i];
         final int modifiers = field.getModifiers();
         if (Modifier.isPublic(modifiers) &&
-                Modifier.isStatic(modifiers))
+            Modifier.isStatic(modifiers))
         {
+          if (Modifier.isFinal(modifiers) == false)
+          {
+            Log.warn ("Invalid implementation: StyleKeys should be 'public static final': " + c);
+          }
           if (field.getType().isAssignableFrom(StyleKey.class))
           {
             StyleKey value = (StyleKey) field.get(null);
@@ -164,9 +174,15 @@ public class StyleKeyRegistry
     return createdKey;
   }
 
-  public StyleKey[] getKeys()
+  public synchronized StyleKey[] getKeys()
   {
-    return (StyleKey[]) knownStyleKeys.values().toArray
-            (new StyleKey[knownStyleKeys.size()]);
+    return getKeys(new StyleKey[knownStyleKeys.size()]);
   }
+
+  public synchronized StyleKey[] getKeys(StyleKey[] input)
+  {
+    return (StyleKey[]) knownStyleKeys.values().toArray(input);
+  }
+
+
 }

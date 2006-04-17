@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,26 +20,30 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * CSSParserContext.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: CSSParserContext.java,v 1.1 2006/02/12 21:57:19 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 25.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.parser;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Map;
 
 import org.jfree.layouting.input.style.StyleKeyRegistry;
-import org.w3c.css.sac.InputSource;
+import org.jfree.resourceloader.ResourceKey;
 
 /**
  * Creation-Date: 25.11.2005, 17:47:10
@@ -64,8 +68,9 @@ public class CSSParserContext
 
   private StyleKeyRegistry styleKeyRegistry;
   private CSSValueFactory valueFactory;
-  private InputSource inputSource;
-  private URL url;
+  private ResourceKey source;
+  private Map namespaces;
+  private String defaultNamespace;
 
   public static CSSParserContext getContext()
   {
@@ -100,36 +105,42 @@ public class CSSParserContext
     return valueFactory;
   }
 
-  public InputSource getInputSource()
+  public ResourceKey getSource()
   {
-    return inputSource;
+    return source;
   }
 
-  public void setInputSource(final InputSource inputSource)
+  public void setSource(final ResourceKey source)
   {
-    this.inputSource = inputSource;
+    this.source = source;
   }
 
-  public URL getURL()
+  public Map getNamespaces()
   {
-    if (inputSource == null)
-    {
-      return null;
-    }
+    return namespaces;
+  }
 
-    final String uri = inputSource.getURI();
-    if (uri == null)
-    {
-      return null;
-    }
+  public void setNamespaces(final Map namespaces)
+  {
+    this.namespaces = namespaces;
+  }
 
-    try
-    {
-      return new URL(uri);
-    }
-    catch (MalformedURLException e)
-    {
-      return null;
-    }
+  public String getDefaultNamespace()
+  {
+    return defaultNamespace;
+  }
+
+  public void setDefaultNamespace(final String defaultNamespace)
+  {
+    this.defaultNamespace = defaultNamespace;
+  }
+
+  public void destroy()
+  {
+    this.defaultNamespace = null;
+    this.namespaces = null;
+    this.source = null;
+    this.styleKeyRegistry = null;
+    this.valueFactory = null;
   }
 }

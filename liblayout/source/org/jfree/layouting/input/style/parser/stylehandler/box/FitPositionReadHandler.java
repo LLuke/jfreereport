@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,29 +20,34 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * FitPositionReadHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: FitPositionReadHandler.java,v 1.1 2006/02/12 21:57:20 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 27.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.parser.stylehandler.box;
 
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.box.FitPositionValue;
 import org.jfree.layouting.input.style.parser.CSSValueFactory;
 import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -143,20 +148,20 @@ public class FitPositionReadHandler extends OneOfConstantsReadHandler
     return null;
   }
 
-  protected FitPositionValue createResultList(CSSValue firstPosition,
+  protected CSSValuePair createResultList(CSSValue firstPosition,
                                           CSSValue secondPosition)
   {
     if (firstPosition == TOP || firstPosition == BOTTOM)
     {
-      return new FitPositionValue(secondPosition, firstPosition);
+      return new CSSValuePair(secondPosition, firstPosition);
     }
     else if (secondPosition == LEFT || secondPosition == RIGHT)
     {
-      return new FitPositionValue(secondPosition, firstPosition);
+      return new CSSValuePair(secondPosition, firstPosition);
     }
     else
     {
-      return new FitPositionValue(firstPosition, secondPosition);
+      return new CSSValuePair(firstPosition, secondPosition);
     }
   }
 

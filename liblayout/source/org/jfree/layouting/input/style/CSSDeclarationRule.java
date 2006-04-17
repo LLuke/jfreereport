@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * CSSDeclarationRule.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: CSSDeclarationRule.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 23.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style;
 
@@ -39,7 +44,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.jfree.layouting.input.style.parser.StyleSheetParserUtil;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * This class is a merger between the CSSStyleDeclaration and the other
@@ -80,6 +88,7 @@ public abstract class CSSDeclarationRule extends StyleRule
     }
   }
 
+  // todo
 //  public String getPropertyValue(StyleKey propertyName)
 //  {
 //    CSSValue value = getPropertyCSSValue(propertyName);
@@ -90,19 +99,48 @@ public abstract class CSSDeclarationRule extends StyleRule
 //    return value.getCSSText();
 //  }
 //
+
   public CSSValue getPropertyCSSValue(StyleKey propertyName)
   {
     return (CSSValue) declarations.get(propertyName);
   }
 
-//  public void setPropertyCSSValue(StyleKey propertyName, String value)
-//  {
-//    // for performance: Keep the parser code central.
-//    // where do we get the base URL from?
-//    // We cant use the parent-style, as this one might not be given
-//    // (which is true for inline styles)
-//  }
-//
+  public void setPropertyValueAsString(final StyleKey name, final String value)
+  {
+    final StyleSheet parentStyle = getParentStyle();
+    final ResourceKey source;
+    final ResourceManager resourceManager;
+    if (parentStyle == null)
+    {
+      source = null;
+      resourceManager = null;
+    }
+    else
+    {
+      source = parentStyle.getSource();
+      resourceManager = parentStyle.getResourceManager();
+    }
+    StyleSheet parent = getParentStyle();
+    if (parent != null)
+    {
+      CSSValue cssValue = StyleSheetParserUtil.parseStyleValue
+              (parent.getNamespaces(), name, value, resourceManager, source);
+      if (cssValue != null)
+      {
+        setPropertyValue(name, cssValue);
+      }
+    }
+    else
+    {
+      CSSValue cssValue = StyleSheetParserUtil.parseStyleValue
+              (null, name, value, resourceManager, source);
+      if (cssValue != null)
+      {
+        setPropertyValue(name, cssValue);
+      }
+    }
+  }
+
   public void setPropertyValue(StyleKey propertyName, CSSValue value)
   {
     if (value == null)

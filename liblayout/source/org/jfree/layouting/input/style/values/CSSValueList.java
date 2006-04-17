@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,22 +20,29 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * CSSValueList.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: CSSValueList.java,v 1.1 2006/02/12 21:54:28 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 23.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.values;
 
 import java.util.Collection;
+
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Creation-Date: 23.11.2005, 12:37:21
@@ -82,17 +89,30 @@ public class CSSValueList implements CSSValue
     return b.toString();
   }
 
-  public String toString ()
+  public String toString()
   {
     return getCSSText();
   }
 
-  public static CSSValueList createDuoList (CSSValue value)
+  public boolean contains(CSSValue value)
+  {
+    for (int i = 0; i < values.length; i++)
+    {
+      CSSValue cssValue = values[i];
+      if (ObjectUtilities.equal(cssValue, value))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static CSSValueList createDuoList(CSSValue value)
   {
     return CSSValueList.createDuoList(value, value);
   }
 
-  public static CSSValueList createDuoList (CSSValue first, CSSValue second)
+  public static CSSValueList createDuoList(CSSValue first, CSSValue second)
   {
     final CSSValue[] values = new CSSValue[2];
     values[0] = first;
@@ -100,18 +120,18 @@ public class CSSValueList implements CSSValue
     return new CSSValueList(values);
   }
 
-  public static CSSValueList createQuadList (CSSValue value)
+  public static CSSValueList createQuadList(CSSValue value)
   {
     return CSSValueList.createQuadList(value, value);
   }
 
-  public static CSSValueList createQuadList (CSSValue first, CSSValue second)
+  public static CSSValueList createQuadList(CSSValue first, CSSValue second)
   {
     return CSSValueList.createQuadList(first, second, first, second);
   }
 
-  public static CSSValueList createQuadList (CSSValue first, CSSValue second,
-                                             CSSValue third, CSSValue fourth)
+  public static CSSValueList createQuadList(CSSValue first, CSSValue second,
+                                            CSSValue third, CSSValue fourth)
   {
     final CSSValue[] values = new CSSValue[4];
     values[0] = first;

@@ -1,73 +1,100 @@
+/**
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
+ *
+ * Project Info:  http://www.jfree.org/liblayout/
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * ContentResolveHandler.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ *
+ *
+ */
+
 package org.jfree.layouting.layouter.style.resolver.computed.content;
 
-import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Date;
-import java.util.Locale;
-import java.text.DateFormat;
 
+import org.jfree.layouting.DocumentContextUtility;
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.content.ContentSequence;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.keys.content.ContentValues;
+import org.jfree.layouting.input.style.values.CSSAttrFunction;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.i18n.LocalizationContext;
-import org.jfree.layouting.layouter.counters.CounterStyle;
-import org.jfree.layouting.layouter.counters.CounterStyleFactory;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.values.CSSResourceValue;
+import org.jfree.layouting.layouter.style.values.CSSRawValue;
+import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
+import org.jfree.layouting.layouter.style.functions.FunctionFactory;
+import org.jfree.layouting.layouter.style.functions.StyleFunction;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.ElementContext;
 import org.jfree.layouting.model.content.CloseQuoteToken;
 import org.jfree.layouting.model.content.ContentSpecification;
 import org.jfree.layouting.model.content.ContentToken;
 import org.jfree.layouting.model.content.ContentsToken;
-import org.jfree.layouting.model.content.DrawableContent;
-import org.jfree.layouting.model.content.ExternalContent;
 import org.jfree.layouting.model.content.OpenQuoteToken;
-import org.jfree.layouting.model.content.StringContent;
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.loader.ContentCache;
-import org.jfree.ui.Drawable;
+import org.jfree.layouting.model.content.StringContentToken;
+import org.jfree.layouting.model.content.ResourceContentToken;
+import org.jfree.layouting.model.content.ExternalContentToken;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.loader.URLResourceKey;
+import org.jfree.util.Log;
 
 public class ContentResolveHandler implements ResolveHandler
 {
+  private static final ContentToken[] DEFAULT_CONTENT = new ContentToken[]{ContentsToken.CONTENTS};
+  private static final DecimalCounterStyle DEFAULT_COUNTER_STYLE = new DecimalCounterStyle();
+
   private HashMap tokenMapping;
   private HashMap tokenAlias;
-  private static final DecimalCounterStyle DEFAULT_COUNTER_STYLE = new DecimalCounterStyle();
 
   public ContentResolveHandler ()
   {
     tokenMapping = new HashMap();
-    tokenMapping.put(ContentValues.CONTENTS, new ContentsToken());
+    tokenMapping.put(ContentValues.CONTENTS, ContentsToken.CONTENTS);
     tokenMapping.put(ContentValues.OPEN_QUOTE, new OpenQuoteToken(false));
     tokenMapping.put(ContentValues.NO_OPEN_QUOTE, new OpenQuoteToken(true));
     tokenMapping.put(ContentValues.CLOSE_QUOTE, new CloseQuoteToken(false));
     tokenMapping.put(ContentValues.NO_CLOSE_QUOTE, new CloseQuoteToken(true));
-
-    // todo: Make this an ordinary counter stuff ...
-//    tokenMapping.put(ListStyleTypeGlyphs.BOX,
-//            new StringContent(ListStyleTypeGlyphs.BOX.getDefaultText()));
-//    tokenMapping.put(ListStyleTypeGlyphs.CHECK,
-//            new StringContent(ListStyleTypeGlyphs.CHECK.getDefaultText()));
-//    tokenMapping.put(ListStyleTypeGlyphs.CIRCLE,
-//            new StringContent(ListStyleTypeGlyphs.CIRCLE.getDefaultText()));
-//    tokenMapping.put(ListStyleTypeGlyphs.DIAMOND,
-//            new StringContent(ListStyleTypeGlyphs.DIAMOND.getDefaultText()));
-//    tokenMapping.put(ListStyleTypeGlyphs.DISC,
-//            new StringContent(ListStyleTypeGlyphs.DISC.getDefaultText()));
-//    tokenMapping.put(ListStyleTypeGlyphs.HYPHEN,
-//            new StringContent(ListStyleTypeGlyphs.HYPHEN.getDefaultText()));
-//    tokenMapping.put(ListStyleTypeGlyphs.SQUARE,
-//            new StringContent(ListStyleTypeGlyphs.SQUARE.getDefaultText()));
 
     tokenAlias = new HashMap();
     tokenAlias.put(ContentValues.FOOTNOTE, new CSSFunctionValue("counter", new CSSValue[]{
@@ -114,11 +141,12 @@ public class ContentResolveHandler implements ResolveHandler
   {
     if (currentNode instanceof LayoutElement == false)
     {
-      return; // we ignore non-elements, as they cannot have
-      // the string-set property.
+      return;
     }
 
+
     final LayoutElement element = (LayoutElement) currentNode;
+
     final ContentSpecification contentSpecification =
             element.getLayoutContext().getContentSpecification();
     final CSSValue value = style.getValue(key);
@@ -126,13 +154,26 @@ public class ContentResolveHandler implements ResolveHandler
     {
       if (ContentValues.NONE.equals(value))
       {
-        contentSpecification.setContentProcessing(ContentSpecification.NONE);
+        contentSpecification.setAllowContentProcessing(false);
       }
       else if (ContentValues.INHIBIT.equals(value))
       {
-        contentSpecification.setContentProcessing(ContentSpecification.INHIBIT);
+        contentSpecification.setAllowContentProcessing(false);
       }
       return;
+    }
+    contentSpecification.setAllowContentProcessing(true);
+    contentSpecification.setContents((ContentToken[]) DEFAULT_CONTENT.clone());
+
+    if (value instanceof CSSAttrFunction)
+    {
+      final ContentToken token =
+              evaluateFunction((CSSFunctionValue) value, process, element);
+      if (token == null)
+      {
+        return;
+      }
+      contentSpecification.setContents(new ContentToken[]{token});
     }
 
     if (value instanceof CSSValueList == false)
@@ -140,19 +181,29 @@ public class ContentResolveHandler implements ResolveHandler
       return; // cant handle that one
     }
 
+    final ArrayList tokens = new ArrayList();
     final CSSValueList list = (CSSValueList) value;
     final int size = list.getLength();
     for (int i = 0; i < size; i++)
     {
-      final ContentSequence sequence = (ContentSequence) list.getItem(i);
-      final CSSValue[] contents = sequence.getContents();
-      for (int j = 0; j < contents.length; j++)
+      final CSSValueList sequence = (CSSValueList) list.getItem(i);
+      for (int j = 0; j < sequence.getLength(); j++)
       {
-        final CSSValue content = contents[j];
+        final CSSValue content = sequence.getItem(j);
         final ContentToken token = createToken(process, element, content);
-
+        if (token == null)
+        {
+          // ok, a failure. Skip to the next content spec ...
+          tokens.clear();
+          break;
+        }
+        tokens.add(token);
       }
     }
+
+    final ContentToken[] contents = (ContentToken[]) tokens.toArray
+            (new ContentToken[tokens.size()]);
+    contentSpecification.setContents(contents);
   }
 
 
@@ -165,38 +216,35 @@ public class ContentResolveHandler implements ResolveHandler
       CSSStringValue sval = (CSSStringValue) content;
       if (CSSStringType.STRING.equals(sval.getType()))
       {
-        return new StringContent(sval.getValue());
+        return new StringContentToken(sval.getValue());
       }
       else
       {
         // this is an external URL, so try to load it.
-        try
-        {
-          final URL url = new URL(sval.getValue());
-          final ContentCache cc = process.getDocumentContext().getResourceLoader();
-          final Object externalContent = cc.getContent(url);
-          if (externalContent instanceof Drawable)
-          {
-            return new DrawableContent((Drawable) externalContent);
-          }
-          else if (externalContent != null)
-          {
-            return new ExternalContent(externalContent);
-          }
-        }
-        catch (IOException e)
-        {
-          // ignore, we cant handle that one ...
-        }
-        return null;
+        CSSFunctionValue function = new CSSFunctionValue
+                ("url", new CSSValue[]{sval});
+        return evaluateFunction(function, process, element);
       }
     }
     else if (content instanceof CSSConstant)
     {
       if (ContentValues.DOCUMENT_URL.equals(content))
       {
-        return new StringContent
-                (String.valueOf(process.getDocumentContext().getBaseURL()));
+        Object docUrl = process.getDocumentContext().getMetaAttribute
+                ("document-url");
+        if (docUrl != null)
+        {
+          return new StringContentToken(String.valueOf(docUrl));
+        }
+
+        ResourceKey baseKey = DocumentContextUtility.getBaseResource
+                (process.getDocumentContext());
+        if (baseKey instanceof URLResourceKey)
+        {
+          URLResourceKey urlResourceKey = (URLResourceKey) baseKey;
+          return new StringContentToken(urlResourceKey.toExternalForm());
+        }
+        return null;
       }
 
       ContentToken token = (ContentToken) tokenMapping.get(content);
@@ -210,239 +258,42 @@ public class ContentResolveHandler implements ResolveHandler
 
     if (content instanceof CSSFunctionValue)
     {
-      final CSSFunctionValue functionValue = (CSSFunctionValue) content;
-      final String fnName = functionValue.getFunctionName();
-      if ("counter".equals(fnName))
-      {
-        return handleCounterFunction(functionValue, element, process);
-      }
-      else if ("counters".equals(fnName))
-      {
-        return handleCountersFunction(functionValue, element, process);
-      }
-      else if ("attr".equals(fnName))
-      {
-        return handleAttrFunction(functionValue, element);
-      }
-      else if ("string".equals(fnName))
-      {
-        return handleStringFunction(functionValue, process);
-      }
-      else if ("date".equals(fnName))
-      {
-        return handleDateFunction(functionValue, process);
-      }
-      else if ("pending".equals(fnName))
-      {
-        // todo Not today ...
-      }
+      return evaluateFunction((CSSFunctionValue) content, process, element);
     }
 
     return null; // todo
   }
 
-  private ContentToken handleDateFunction (CSSFunctionValue value, LayoutProcess process)
+  private ContentToken evaluateFunction(final CSSFunctionValue function,
+                                        final LayoutProcess process,
+                                        final LayoutElement element)
   {
-    final Date date = process.getDocumentContext().getDate();
-    final CSSValue[] parameters = value.getParameters();
-    final LocalizationContext localizationContext =
-            process.getDocumentContext().getLocalizationContext();
-    DateFormat format = getDateFormat(parameters, localizationContext);
-    return new StringContent(format.format(date));
-  }
-
-  private DateFormat getDateFormat (CSSValue[] parameters,
-                              LocalizationContext localizationContext)
-  {
-    if (parameters.length < 1)
+    StyleFunction styleFunction =
+            FunctionFactory.getInstance().getFunction(function.getFunctionName());
+    try
     {
-      return localizationContext.getDateFormat(Locale.getDefault());
-    }
-
-    final CSSValue formatValue = parameters[0];
-    if (formatValue instanceof CSSStringValue == false)
-    {
-      return localizationContext.getDateFormat(Locale.getDefault());
-    }
-
-    CSSStringValue sval = (CSSStringValue) formatValue;
-    DateFormat format = localizationContext.getDateFormat
-            (sval.getValue(), Locale.getDefault());
-    if (format != null)
-    {
-      return format;
-    }
-    return localizationContext.getDateFormat(Locale.getDefault());
-  }
-
-  private ContentToken handleStringFunction (CSSFunctionValue value,
-                                             LayoutProcess process)
-  {
-    final CSSValue[] parameters = value.getParameters();
-    if (parameters.length < 1)
-    {
-      return null;
-    }
-    final CSSValue counterName = parameters[0];
-    if (counterName instanceof CSSConstant == false)
-    {
-      return null;
-    }
-    final CSSConstant sval = (CSSConstant) counterName;
-    final Object attribute = process.getDocumentContext().getString(sval.getCSSText());
-    // todo: The string to be printed should be taken from the page context ...
-    return new StringContent(String.valueOf(attribute));
-  }
-
-  private ContentToken handleAttrFunction (CSSFunctionValue functionValue,
-                                           LayoutElement element)
-  {
-    final CSSValue[] parameters = functionValue.getParameters();
-    if (parameters.length < 1)
-    {
-      return null;
-    }
-    final CSSValue counterName = parameters[0];
-    if (counterName instanceof CSSConstant == false)
-    {
-      return null;
-    }
-    final CSSConstant sval = (CSSConstant) counterName;
-    final Object attribute = element.getAttribute(sval.getCSSText());
-    // todo: This can be an URL or an image as well ...
-    return new StringContent(String.valueOf(attribute));
-  }
-
-  private ContentToken handleCountersFunction (CSSFunctionValue functionValue,
-                                               LayoutElement element,
-                                               LayoutProcess process)
-  {
-    final CSSValue[] parameters = functionValue.getParameters();
-    if (parameters.length < 2)
-    {
-      return null;
-    }
-    final CSSValue counterName = parameters[0];
-    if (counterName instanceof CSSConstant == false)
-    {
-      return null;
-    }
-    final CSSConstant sval = (CSSConstant) counterName;
-
-    final CSSValue separatorValue = parameters[1];
-    if (separatorValue instanceof CSSStringValue == false)
-    {
-      return null;
-    }
-    final CSSStringValue separatorSval = (CSSStringValue) separatorValue;
-
-    CounterStyle cstyle = DEFAULT_COUNTER_STYLE;
-    final String counterNameStr = sval.getCSSText();
-    if (parameters.length > 2)
-    {
-      final CSSValue styleValue = parameters[1];
-
-      // cascading order: First ask the function itself ..
-      cstyle = getCounterStyle(styleValue, process);
-      if (cstyle == null)
+      CSSValue value = styleFunction.getValue(process, element, function);
+      if (value instanceof CSSResourceValue)
       {
-        // next ask the pageContext
-        // todo: Define where the page context is stored..
-
-        // if that fails, as the global document context.
-        cstyle = process.getDocumentContext().getCounterStyle (counterNameStr);
+        CSSResourceValue refValue = (CSSResourceValue) value;
+        return new ResourceContentToken(refValue.getValue());
       }
-    }
-
-    final StringBuffer buffer = new StringBuffer();
-    buildCountersValue(element, counterNameStr,
-            separatorValue.getCSSText(), cstyle, buffer);
-    return new StringContent(separatorSval.getValue());
-  }
-
-  private void buildCountersValue (final LayoutElement element,
-                                   final String counterName,
-                                   final String separator,
-                                   final CounterStyle cstyle,
-                                   final StringBuffer buffer)
-  {
-    if (element.getParent() != null)
-    {
-      buildCountersValue(element.getParent(), counterName, separator, cstyle, buffer);
-    }
-
-    ElementContext elementContext = element.getElementContext();
-    if (elementContext.isCounterDefined(counterName))
-    {
-      if (buffer.length() != 0)
+      else if (value instanceof CSSStringValue)
       {
-        buffer.append(separator);
+        CSSStringValue strval = (CSSStringValue) value;
+        return new StringContentToken(strval.getValue());
       }
-
-      final int cval = elementContext.getCounterValue(counterName);
-      final String counterText = cstyle.getCounterValue(cval);
-      buffer.append(counterText);
-    }
-  }
-
-  private ContentToken handleCounterFunction (CSSFunctionValue functionValue,
-                                              LayoutElement element,
-                                              LayoutProcess process)
-  {
-    final CSSValue[] parameters = functionValue.getParameters();
-    if (parameters.length < 1)
-    {
-      return null;
-    }
-    final CSSValue counterName = parameters[0];
-    if (counterName instanceof CSSConstant == false)
-    {
-      return null;
-    }
-    final CSSConstant sval = (CSSConstant) counterName;
-    final String counterNameStr = sval.getCSSText();
-    final int cval = element.getElementContext().getCounterValue(counterNameStr);
-
-    CounterStyle cstyle = DEFAULT_COUNTER_STYLE;
-    if (parameters.length > 1)
-    {
-      final CSSValue styleValue = parameters[1];
-
-      // cascading order: First ask the function itself ..
-      cstyle = getCounterStyle(styleValue, process);
-      if (cstyle == null)
+      else if (value instanceof CSSRawValue)
       {
-        // next ask the pageContext
-        // todo: Define where the page context is stored..
-
-        // if that fails, as the global document context.
-        cstyle = process.getDocumentContext().getCounterStyle (counterNameStr);
+        CSSRawValue rawValue = (CSSRawValue) value;
+        return new ExternalContentToken(rawValue.getValue());
       }
+      return new StringContentToken(value.getCSSText());
     }
-    final String counterText = cstyle.getCounterValue(cval);
-    return new StringContent(counterText);
-  }
-
-  private CounterStyle getCounterStyle (final CSSValue value,
-                                        final LayoutProcess process)
-  {
-    if (value instanceof CSSConstant == false)
+    catch (FunctionEvaluationException e)
     {
+      Log.debug ("Evaluation failed " + e);
       return null;
     }
-
-    final String styleName = value.getCSSText();
-    if ("normal".equals(styleName))
-    {
-      // use document context to resolve the counter's default style.
-      return null;
-    }
-
-    final CounterStyle style = CounterStyleFactory.getInstance().getCounterStyle(styleName);
-    if (style != null)
-    {
-      return style;
-    }
-    return null;
   }
 }

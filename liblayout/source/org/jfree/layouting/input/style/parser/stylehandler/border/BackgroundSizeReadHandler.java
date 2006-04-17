@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * BackgroundPositionReadHandler.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * BackgroundSizeReadHandler.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: BackgroundSizeReadHandler.java,v 1.1 2006/02/12 21:57:19 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 26.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.parser.stylehandler.border;
 
@@ -60,6 +65,13 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
   {
   }
 
+  private CSSValueList createList (final CSSValue first,
+                                   final CSSValue second,
+                                   final CSSValue third)
+  {
+    return new CSSValueList(new CSSValue[]{first, second, third});
+  }
+
   public CSSValue createValue(StyleKey name, LexicalUnit value) 
   {
     ArrayList values = new ArrayList();
@@ -71,14 +83,15 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
       {
         if (value.getStringValue().equalsIgnoreCase("round"))
         {
-          values.add(CSSAutoValue.getInstance());
-          values.add(CSSAutoValue.getInstance());
-          values.add(BackgroundSize.ROUND);
+          values.add(createList(CSSAutoValue.getInstance(),
+                  CSSAutoValue.getInstance(),
+                  BackgroundSize.ROUND));
 
           value = CSSValueFactory.parseComma(value);
           continue;
         }
-        else if (value.getStringValue().equalsIgnoreCase("auto"))
+
+        if (value.getStringValue().equalsIgnoreCase("auto"))
         {
           firstValue = CSSAutoValue.getInstance();
         }
@@ -103,9 +116,9 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
       value = value.getNextLexicalUnit();
       if (value == null)
       {
-        values.add(firstValue);
-        values.add(CSSAutoValue.getInstance());
-        values.add(BackgroundSize.ROUND);
+        values.add(createList(firstValue,
+                  CSSAutoValue.getInstance(),
+                  BackgroundSize.ROUND));
         continue;
       }
 
@@ -114,10 +127,9 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
       {
         if (value.getStringValue().equalsIgnoreCase("round"))
         {
-          values.add(firstValue);
-          values.add(CSSAutoValue.getInstance());
-          values.add(BackgroundSize.ROUND);
-
+          values.add(createList(firstValue,
+                  CSSAutoValue.getInstance(),
+                  BackgroundSize.ROUND));
           value = CSSValueFactory.parseComma(value);
           continue;
         }
@@ -132,9 +144,9 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_OPERATOR_COMMA)
       {
-        values.add(firstValue);
-        values.add(CSSAutoValue.getInstance());
-        values.add(BackgroundSize.ROUND);
+        values.add(createList(firstValue,
+                  CSSAutoValue.getInstance(),
+                  BackgroundSize.ROUND));
         value = value.getNextLexicalUnit();
         continue;
       }
@@ -152,16 +164,17 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
       }
 
       value = value.getNextLexicalUnit();
-      values.add(firstValue);
-      values.add(secondValue);
-
       if (value == null)
       {
-        values.add(BackgroundSize.NO_ROUND);
+        values.add(createList(firstValue,
+                  secondValue,
+                  BackgroundSize.NO_ROUND));
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_OPERATOR_COMMA)
       {
-        values.add(BackgroundSize.NO_ROUND);
+        values.add(createList(firstValue,
+                  secondValue,
+                  BackgroundSize.NO_ROUND));
         value = value.getNextLexicalUnit();
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_IDENT)
@@ -170,7 +183,9 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
         {
           return null;
         }
-        values.add(BackgroundSize.ROUND);
+        values.add(createList(firstValue,
+                  secondValue,
+                  BackgroundSize.ROUND));
         value = CSSValueFactory.parseComma(value);
       }
       else

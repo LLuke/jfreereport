@@ -1,3 +1,44 @@
+/**
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
+ *
+ * Project Info:  http://www.jfree.org/liblayout/
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * XhtmlInputDriver.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ *
+ *
+ */
+
 package org.jfree.layouting.input.xhtml;
 
 import java.io.IOException;
@@ -7,6 +48,8 @@ import java.net.URL;
 import org.jfree.layouting.DefaultStreamingLayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.StreamingLayoutProcess;
+import org.jfree.layouting.model.DocumentContext;
+import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.util.NullOutputStream;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessor;
@@ -20,6 +63,8 @@ import org.w3c.dom.Text;
 
 public class XhtmlInputDriver
 {
+  public static final String NAMESPACE = "http://www.w3.org/1999/xhtml";
+
   private InputFeed feed;
 
   public XhtmlInputDriver (InputFeed feed)
@@ -56,7 +101,7 @@ public class XhtmlInputDriver
       for (int t = 0; t < titles.getLength(); t++)
       {
         Element title = (Element) titles.item(t);
-        feed.addMetaAttribute("title", getCData(title));
+        feed.addDocumentAttribute(DocumentContext.TITLE_ATTR, getCData(title));
       }
 
       NodeList metas = headerElement.getChildNodes();
@@ -74,7 +119,8 @@ public class XhtmlInputDriver
           continue;
         }
 
-        feed.startMetaNode(meta.getTagName());
+        feed.startMetaNode();
+        feed.setMetaNodeAttribute("type", meta.getTagName());
         NamedNodeMap nnm = meta.getAttributes();
         for (int ac = 0; ac < nnm.getLength(); ac++)
         {
@@ -109,13 +155,13 @@ public class XhtmlInputDriver
 
   private void processBodyElement (Element element)
   {
-    feed.startElement(element.getTagName());
+    feed.startElement(NAMESPACE, element.getTagName());
 
     NamedNodeMap nnm = element.getAttributes();
     for (int ac = 0; ac < nnm.getLength(); ac++)
     {
       Attr attr = (Attr) nnm.item(ac);
-      feed.setAttribute(attr.getName(), attr.getValue());
+      feed.setAttribute(NAMESPACE, attr.getName(), attr.getValue());
     }
 
     NodeList childs = element.getChildNodes();
@@ -147,7 +193,7 @@ public class XhtmlInputDriver
 
     URL url = new URL ("file:///home/src/jfreereport/head/liblayout/styletest/simple.html");
     XhtmlResourceFactoryModule module = new XhtmlResourceFactoryModule();
-    XhtmlDocument doc = module.createDocument(url.openStream(), url, url.toExternalForm(), "text/html");
+   // XhtmlDocument doc = module.createDocument(url.openStream(), url, url.toExternalForm(), "text/html");
 
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < 10; i++)
@@ -155,7 +201,7 @@ public class XhtmlInputDriver
       final StreamingLayoutProcess process =
               new DefaultStreamingLayoutProcess(new HtmlOutputProcessor(out));
       XhtmlInputDriver idrDriver = new XhtmlInputDriver(process.getInputFeed());
-      idrDriver.processDomTree(doc.getDocument());
+     // idrDriver.processDomTree(doc.getDocument());
     }
     long endTime = System.currentTimeMillis();
 

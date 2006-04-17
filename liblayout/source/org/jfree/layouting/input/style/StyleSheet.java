@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,23 +20,33 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * StyleSheet.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: StyleSheet.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 23.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Collections;
+
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * A CSS stylesheet. Unlike the W3C stylesheet classes, this class is a minimal
@@ -58,41 +68,60 @@ import java.util.ArrayList;
 public class StyleSheet
 {
   private boolean readOnly;
-  private URL href;
+  private ResourceKey source;
+  private ResourceManager resourceManager;
   private ArrayList rules;
   private ArrayList styleSheets;
+  private HashMap namespaces;
+  private transient Map roNamespaces;
 
   public StyleSheet()
   {
     this.rules = new ArrayList();
     this.styleSheets = new ArrayList();
+    this.namespaces = new HashMap();
   }
 
-  public boolean isReadOnly()
+  public synchronized boolean isReadOnly()
   {
     return readOnly;
   }
 
-  protected void setReadOnly(final boolean readOnly)
+  protected synchronized void setReadOnly(final boolean readOnly)
   {
     this.readOnly = readOnly;
   }
 
-  public URL getHref()
+  public ResourceKey getSource()
   {
-    return href;
+    return source;
   }
 
-  public void setHref(final URL href)
+  public synchronized void setSource(final ResourceKey href)
   {
     if (isReadOnly())
     {
       throw new IllegalStateException();
     }
-    this.href = href;
+    this.source = href;
   }
 
-  public void addRule(final StyleRule rule)
+  public void setResourceManager(final ResourceManager resourceManager)
+  {
+    this.resourceManager = resourceManager;
+  }
+
+  public ResourceManager getResourceManager()
+  {
+    if (resourceManager == null)
+    {
+      resourceManager = new ResourceManager();
+      resourceManager.registerDefaults();
+    }
+    return resourceManager;
+  }
+
+  public synchronized void addRule(final StyleRule rule)
   {
     if (isReadOnly())
     {
@@ -101,7 +130,7 @@ public class StyleSheet
     rules.add(rule);
   }
 
-  public void insertRule(final int index, final StyleRule rule)
+  public synchronized void insertRule(final int index, final StyleRule rule)
   {
     if (isReadOnly())
     {
@@ -110,7 +139,7 @@ public class StyleSheet
     rules.add(index, rule);
   }
 
-  public void deleteRule(final int index)
+  public synchronized void deleteRule(final int index)
   {
     if (isReadOnly())
     {
@@ -119,33 +148,71 @@ public class StyleSheet
     rules.remove(index);
   }
 
-  public int getRuleCount()
+  public synchronized int getRuleCount()
   {
     return rules.size();
   }
 
-  public StyleRule getRule(int index)
+  public synchronized StyleRule getRule(int index)
   {
     return (StyleRule) rules.get(index);
   }
 
-  public void addStyleSheet (StyleSheet styleSheet)
+  public synchronized void addStyleSheet (StyleSheet styleSheet)
   {
     styleSheets.add(styleSheet);
   }
 
-  public int getStyleSheetCount ()
+  public synchronized int getStyleSheetCount ()
   {
     return styleSheets.size();
   }
 
-  public StyleSheet getStyleSheet (int index)
+  public synchronized StyleSheet getStyleSheet (int index)
   {
     return (StyleSheet) styleSheets.get(index);
   }
 
-  public void removeStyleSheet (StyleSheet styleSheet)
+  public synchronized void removeStyleSheet (StyleSheet styleSheet)
   {
     styleSheets.remove(styleSheet);
+  }
+
+  public synchronized void addNamespace (String prefix, String uri)
+  {
+    if (isReadOnly())
+    {
+      throw new IllegalStateException();
+    }
+    if (prefix == null)
+    {
+      throw new NullPointerException();
+    }
+    if (uri == null)
+    {
+      throw new NullPointerException();
+    }
+    namespaces.put(prefix, uri);
+    roNamespaces = null;
+  }
+
+  public synchronized String getNamespaceURI (String prefix)
+  {
+    return (String) namespaces.get(prefix);
+  }
+
+  public synchronized String[] getNamespacePrefixes()
+  {
+    return (String[]) namespaces.keySet().toArray
+            (new String[namespaces.size()]);
+  }
+
+  public synchronized Map getNamespaces()
+  {
+    if (roNamespaces == null)
+    {
+      roNamespaces = Collections.unmodifiableMap(namespaces);
+    }
+    return roNamespaces;
   }
 }

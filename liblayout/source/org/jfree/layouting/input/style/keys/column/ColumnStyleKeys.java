@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * ColumnStyleKeys.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: ColumnStyleKeys.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 03.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.keys.column;
 
@@ -62,43 +67,43 @@ The third group consists of one property which make it possible an element to sp
  */
 public class ColumnStyleKeys
 {
-  public static StyleKey COLUMN_COUNT =
+  public static final StyleKey COLUMN_COUNT =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-count", false, false, false);
 
-  public static StyleKey COLUMN_SPACE_DISTRIBUTION =
+  public static final StyleKey COLUMN_SPACE_DISTRIBUTION =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-space-distribution", false, false, false);
 
-  public static StyleKey COLUMN_WIDTH =
+  public static final StyleKey COLUMN_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-width", false, false, false);
 
-  public static StyleKey COLUMN_MIN_WIDTH =
+  public static final StyleKey COLUMN_MIN_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-min-width", false, false, false);
 
-  public static StyleKey COLUMN_WIDTH_POLICY =
+  public static final StyleKey COLUMN_WIDTH_POLICY =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-width-policy", false, false, false);
 
-  public static StyleKey COLUMN_GAP =
+  public static final StyleKey COLUMN_GAP =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-gap", false, false, false);
 
-  public static StyleKey COLUMN_RULE_COLOR =
+  public static final StyleKey COLUMN_RULE_COLOR =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-rule-color", false, false, false);
 
-  public static StyleKey COLUMN_RULE_STYLE =
+  public static final StyleKey COLUMN_RULE_STYLE =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-rule-style", false, false, false);
 
-  public static StyleKey COLUMN_RULE_WIDTH =
+  public static final StyleKey COLUMN_RULE_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-rule-width", false, false, false);
 
-  public static StyleKey COLUMN_SPAN =
+  public static final StyleKey COLUMN_SPAN =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-span", false, false, false);
   

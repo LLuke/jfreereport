@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * HyperlinkStyleKeys.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: HyperlinkStyleKeys.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 24.11.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.keys.hyperlinks;
 
@@ -45,15 +50,36 @@ import org.jfree.layouting.input.style.StyleKeyRegistry;
  */
 public class HyperlinkStyleKeys
 {
-  public static StyleKey TARGET_NAME =
+  public static final StyleKey TARGET_NAME =
           StyleKeyRegistry.getRegistry().createKey
                   ("target-name", false, false, false);
-  public static StyleKey TARGET_NEW =
+  public static final StyleKey TARGET_NEW =
           StyleKeyRegistry.getRegistry().createKey
                   ("target-new", false, false, false);
-  public static StyleKey TARGET_POSITION =
+  public static final StyleKey TARGET_POSITION =
           StyleKeyRegistry.getRegistry().createKey
                   ("target-position", false, false, false);
+
+  /**
+   * todo: implement me
+   * This is a libLayout extension to allow a document independent
+   * link specification. It is up to the output target to support that.
+   *
+   * Example style definition:  a { x-href-target: attr("href"); }
+   */
+  public static final StyleKey HREF_TARGET =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-href-target", true, false, false);
+  /**
+   * todo: implement me
+   * This is a libLayout extension to allow a document independent
+   * anchor specifications. It is up to the output target to support that.
+   *
+   * Example style definition:  a { x-href-anchor: attr("name"); }
+   */
+  public static final StyleKey ANCHOR =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-href-anchor", true, false, false);
 
   private HyperlinkStyleKeys()
   {

@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * QuotingValues.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: QuotingValues.java,v 1.1 2006/02/12 21:54:26 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 01.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.keys.content;
 
@@ -45,31 +50,33 @@ import org.jfree.layouting.input.style.values.CSSStringType;
  *
  * @author Thomas Morgner
  */
-public class QuotingValues extends CSSStringValue
+public class QuotingValues
 {
-  public static final QuotingValues QUOTATION_MARK = new QuotingValues("\"");
-  public static final QuotingValues APOSTROPHE = new QuotingValues("\u0027");
-  public static final QuotingValues SINGLE_LEFT_POINTING_ANGLE_QUOTATION_MARK =
-          new QuotingValues("\u2039");
-  public static final QuotingValues SINGLE_RIGHT_POINTING_ANGLE_QUOTATION_MARK =
-          new QuotingValues("\u203A");
-  public static final QuotingValues DOUBLE_LEFT_POINTING_ANGLE_QUOTATION_MARK =
-          new QuotingValues("\u00AB");
-  public static final QuotingValues DOUBLE_RIGHT_POINTING_ANGLE_QUOTATION_MARK =
-          new QuotingValues("\u00BB");
-  public static final QuotingValues SINGLE_LEFT_QUOTATION_MARK =
-          new QuotingValues("\u2018");
-  public static final QuotingValues SINGLE_RIGHT_QUOTATION_MARK =
-          new QuotingValues("\u2019");
-  public static final QuotingValues DOUBLE_LEFT_QUOTATION_MARK =
-          new QuotingValues("\u201C");
-  public static final QuotingValues DOUBLE_RIGHT_QUOTATION_MARK =
-          new QuotingValues("\u201D");
-  public static final QuotingValues DOUBLE_LOW9_QUOTATION_MARK =
-          new QuotingValues("\u201E");
 
-  private QuotingValues(final String value)
+  public static final CSSStringValue QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\"");
+  public static final CSSStringValue APOSTROPHE =
+          new CSSStringValue(CSSStringType.STRING, "\u0027");
+  public static final CSSStringValue SINGLE_LEFT_POINTING_ANGLE_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u2039");
+  public static final CSSStringValue SINGLE_RIGHT_POINTING_ANGLE_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u203A");
+  public static final CSSStringValue DOUBLE_LEFT_POINTING_ANGLE_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u00AB");
+  public static final CSSStringValue DOUBLE_RIGHT_POINTING_ANGLE_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u00BB");
+  public static final CSSStringValue SINGLE_LEFT_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u2018");
+  public static final CSSStringValue SINGLE_RIGHT_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u2019");
+  public static final CSSStringValue DOUBLE_LEFT_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u201C");
+  public static final CSSStringValue DOUBLE_RIGHT_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u201D");
+  public static final CSSStringValue DOUBLE_LOW9_QUOTATION_MARK =
+          new CSSStringValue(CSSStringType.STRING, "\u201E");
+
+  private QuotingValues()
   {
-    super(CSSStringType.STRING, value);
   }
 }

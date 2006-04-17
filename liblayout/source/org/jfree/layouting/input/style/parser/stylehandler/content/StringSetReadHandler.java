@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,25 +20,29 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * StringSetReadHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: StringSetReadHandler.java,v 1.1 2006/02/12 21:57:20 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 01.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.input.style.parser.stylehandler.content;
 
 import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.content.ContentSequence;
 import org.jfree.layouting.input.style.keys.content.ContentValues;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeGlyphs;
 import org.jfree.layouting.input.style.parser.CSSValueFactory;
@@ -47,6 +51,8 @@ import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
+import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSAttrFunction;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -82,13 +88,20 @@ public class StringSetReadHandler extends OneOfConstantsReadHandler
 
   public CSSValue createValue(StyleKey name, LexicalUnit value)
   {
+
     final ArrayList contents = new ArrayList();
     final ArrayList contentList = new ArrayList();
     while (value != null)
     {
       if (value.getLexicalUnitType() == LexicalUnit.SAC_IDENT)
       {
-        contentList.add(lookupValue(value));
+        CSSValue o = lookupValue(value);
+        if (o == null)
+        {
+          // parse error ...
+          return null;
+        }
+        contentList.add(o);
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE)
       {
@@ -96,30 +109,40 @@ public class StringSetReadHandler extends OneOfConstantsReadHandler
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_URI)
       {
-        contentList.add(CSSValueFactory.createUriValue(value));
+        final CSSStringValue uriValue = CSSValueFactory.createUriValue(value);
+        if (uriValue == null)
+        {
+          return null;
+        }
+        contentList.add(uriValue);
       }
-      else if (value.getLexicalUnitType() == LexicalUnit.SAC_FUNCTION)
+      else if (value.getLexicalUnitType() == LexicalUnit.SAC_FUNCTION ||
+              value.getLexicalUnitType() == LexicalUnit.SAC_COUNTER_FUNCTION ||
+              value.getLexicalUnitType() == LexicalUnit.SAC_COUNTERS_FUNCTION)
       {
-        contentList.add(new CSSFunctionValue(value.getStringValue(), createFunctionParameters(value.getParameters())));
+        final CSSFunctionValue functionValue =
+                CSSValueFactory.parseFunction(value);
+        if (functionValue == null)
+        {
+          return null;
+        }
+        contentList.add(functionValue);
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_ATTR)
       {
-        contentList.add(new CSSFunctionValue(value.getStringValue(), createFunctionParameters(value.getParameters())));
-      }
-      else if (value.getLexicalUnitType() == LexicalUnit.SAC_COUNTER_FUNCTION)
-      {
-        contentList.add(new CSSFunctionValue(value.getStringValue(), createFunctionParameters(value.getParameters())));
-      }
-      else if (value.getLexicalUnitType() == LexicalUnit.SAC_COUNTERS_FUNCTION)
-      {
-        contentList.add(new CSSFunctionValue(value.getStringValue(),
-                createFunctionParameters(value.getParameters())));
+        final CSSAttrFunction attrFn = CSSValueFactory.parseAttrFunction(value);
+        if (attrFn == null)
+        {
+          return null;
+        }
+        contentList.add(attrFn);
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_OPERATOR_COMMA)
       {
         final CSSValue[] values =
-                (CSSValue[]) contentList.toArray(new CSSValue[contentList.size()]);
-        final ContentSequence sequence = new ContentSequence(values);
+                (CSSValue[]) contentList.toArray(
+                        new CSSValue[contentList.size()]);
+        final CSSValueList sequence = new CSSValueList(values);
         contents.add(sequence);
       }
       value = value.getNextLexicalUnit();
@@ -127,35 +150,9 @@ public class StringSetReadHandler extends OneOfConstantsReadHandler
 
     final CSSValue[] values =
             (CSSValue[]) contentList.toArray(new CSSValue[contentList.size()]);
-    final ContentSequence sequence = new ContentSequence(values);
+    final CSSValueList sequence = new CSSValueList(values);
     contents.add(sequence);
     return new CSSValueList(contents);
   }
 
-  private CSSValue[] createFunctionParameters (LexicalUnit value)
-  {
-    final ArrayList contentList = new ArrayList();
-    while (value != null)
-    {
-      if (value.getLexicalUnitType() == LexicalUnit.SAC_IDENT)
-      {
-        contentList.add(new CSSConstant(value.getStringValue()));
-      }
-      else if (value.getLexicalUnitType() == LexicalUnit.SAC_STRING_VALUE)
-      {
-        contentList.add(new CSSConstant(value.getStringValue()));
-      }
-      else if (CSSValueFactory.isNumericValue(value))
-      {
-        contentList.add(CSSValueFactory.createNumericValue(value));
-      }
-      else if (CSSValueFactory.isLengthValue(value))
-      {
-        contentList.add(CSSValueFactory.createLengthValue(value));
-      }
-
-      value = CSSValueFactory.parseComma(value);
-    }
-    return (CSSValue[]) contentList.toArray(new CSSValue[contentList.size()]);
-  }
 }

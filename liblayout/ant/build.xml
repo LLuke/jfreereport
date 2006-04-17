@@ -16,6 +16,9 @@
 
 <project name="libfonts" default="all" basedir="..">
 
+  <import file="build-lib.xml"/>
+
+
   <!-- Initialisation. -->
   <target name="initialise" description="Initialise required settings.">
     <tstamp/>
@@ -25,44 +28,61 @@
     <dirname property="antfile.dir" file="${ant.file}"/>
     <property file="${antfile.dir}/build.properties"/>
 
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+    <fail unless="lib.jcommon.present"/>
 
-    <path id="build.classpath">
-      <pathelement location="${libdir}/${jcommon-jar-file}"/>
-      <pathelement location="${libdir}/${libfonts-jar-file}"/>
-      <pathelement location="${libdir}/${sac-jar-file}"/>
-      <pathelement location="${libdir}/${flute-jar-file}"/>
-    </path>
+    <isClassAndFileAvailable class-name="org.jfree.fonts.LibFontInfo"
+                             property-name="lib.libfonts.present"
+                             file-name="${libdir}/${libfonts-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.libfonts.present"/>
+
+    <isClassAndFileAvailable class-name="org.jfree.resourceloader.LibLoaderInfo"
+                             property-name="lib.libloader.present"
+                             file-name="${libdir}/${libloader-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.libloader.present"/>
+
+    <isClassAndFileAvailable class-name="org.w3c.css.sac.Parser"
+                             property-name="lib.sac.present"
+                             file-name="${libdir}/${sac-jar-file}"/>
+    <fail unless="lib.sac.present"/>
+
+    <isClassAndFileAvailable class-name="org.w3c.flute.parser.Parser"
+                             property-name="lib.flute.present"
+                             file-name="${libdir}/${flute-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.flute.present"/>
+
   </target>
 
   <!-- Compile the libfonts classes -->
   <target name="compile" depends="initialise"
     description="Compile the libFonts source code.">
 
-    <!-- create a temp build directory -->
-    <mkdir dir="${builddir}"/>
-
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="${builddir}"
-      deprecation="${build.deprecation}" debug="${build.debug}"
-      optimize="${build.optimize}" target="${build.target}">
-      <classpath refid="build.classpath"/>
-      <include name="org/jfree/layouting/**"/>
-    </javac>
-
-    <!-- copy across .properties files -->
-    <copy todir="${builddir}/org/jfree/layouting/">
-      <fileset dir="source/org/jfree/layouting">
+    <build-all target-jar="${liblayout-jar-file}" source-dir="source">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+      </all-classpath>
+      <all-resources>
         <include name="*.properties"/>
-      </fileset>
-    </copy>
-
-    <!-- make the jar -->
-    <jar jarfile="${libfonts-jar-file}" basedir="${builddir}"/>
-
-    <!-- delete the temp directory -->
-    <delete dir="${builddir}"/>
-
+      </all-resources>
+    </build-all>
   </target>
 
   <!-- Generate the libfonts JavaDoc HTML pages -->
@@ -73,7 +93,13 @@
       windowtitle="LibLayout Class Library (version ${liblayout.version})"
       overview="source/overview.html"
       linksource="true">
-      <classpath refid="build.classpath"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+      </classpath>
       <packageset dir="source" defaultexcludes="yes">
         <include name="org/jfree/layouting"/>
       </packageset>
@@ -105,89 +131,29 @@
     <!-- copy across ant build file (this file) -->
     <copy file="ant/build.xml"
       tofile="distribution/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+      tofile="distribution/ant/build-lib.xml"/>
 
     <copy file="ant/build.properties"
       tofile="distribution/ant/build.properties"/>
 
-    <!-- copy across checkstyle property file -->
-    <copy todir="distribution/checkstyle">
-      <fileset dir="checkstyle"/>
-    </copy>
   </target>
 
   <!-- Make .zip distribution for libfonts -->
   <target name="zip" depends="compile">
-
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-
-    <antcall target="fill-dist-dir"/>
-
-    <!-- convert end-of-line characters in text files -->
-    <fixcrlf srcdir="distribution/source"
-      eol="crlf" eof="remove"/>
-
-    <!-- make the zip file -->
-    <zip zipfile="${liblayout.name}-${liblayout.version}.zip">
-      <zipfileset dir="distribution"
-        prefix="${liblayout.name}-${liblayout.version}"/>
-    </zip>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+    <make-zip lib.version="${liblayout.version}" lib.name="${liblayout.name}"/>
   </target>
 
   <!-- Make .tar.gz distribution for libfonts -->
   <target name="targz" depends="compile">
-
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-
-    <antcall target="fill-dist-dir"/>
-
-    <!-- convert end-of-line characters in text files -->
-    <fixcrlf srcdir="distribution/source"
-      eol="lf" eof="remove"/>
-
-    <!-- make the tar.gz file -->
-    <tar tarfile="${liblayout.name}-${liblayout.version}.tar">
-      <tarfileset dir="distribution"
-        prefix="${liblayout.name}-${liblayout.version}"/>
-    </tar>
-    <gzip zipfile="${liblayout.name}-${liblayout.version}.tar.gz"
-      src="${liblayout.name}-${liblayout.version}.tar"/>
-    <delete file="${liblayout.name}-${liblayout.version}.tar"/>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+    <make-targz lib.version="${liblayout.version}" lib.name="${liblayout.name}"/>
   </target>
 
-  <target name="maven-bundle" depends="zip" >
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-    <!-- copy across LICENCE -->
-    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
-    
-    <filterchain id="version.filters">
-       <replacetokens>
-         <token key="VERSION" value="${liblayout.version}"/>
-       </replacetokens>
-    </filterchain>
-    <copy file="maven-liblayout-project.xml" tofile="distribution/project.xml">
-	    <filterchain refid="version.filters"/>
-    </copy>
-    
-    <!-- copy across runtime jar file -->
-    <copy file="${liblayout-jar-file}" tofile="distribution/${liblayout-jar-file}"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${liblayout-bundle-file}" basedir="distribution"/>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+  <target name="maven-bundle" depends="compile" >
+    <make-maven-bundle lib.version="${liblayout.version}"
+                       lib.name="${liblayout.name}"
+                       lib.file="${liblayout-jar-file}"
+                       target="${liblayout-bundle-file}"/>
   </target>
 
 

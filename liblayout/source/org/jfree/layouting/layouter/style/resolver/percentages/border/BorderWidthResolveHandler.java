@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,24 +20,30 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
  * BorderWidthResolveHandler.java
- * ---------
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: BorderWidthResolveHandler.java,v 1.1 2006/02/12 21:49:33 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 11.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.layouter.style.resolver.percentages.border;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
+import org.jfree.layouting.input.style.keys.border.BorderWidth;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.text.BlockProgression;
@@ -46,6 +52,7 @@ import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueSupport;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.style.resolver.percentages.LengthResolverUtility;
@@ -106,13 +113,33 @@ public class BorderWidthResolveHandler implements ResolveHandler
                 (size, currentNode, process.getOutputMetaData());
 
         setValue(currentNode, key, resolvedSize);
+        return;
       }
     }
-    else
+    else if (value instanceof CSSConstant)
     {
-      // correct the invalid value ...
-      style.setValue(key, new CSSNumericValue(CSSNumericType.PT, 0));
+      if (BorderWidth.THICK.equals(value))
+      {
+        // make it 5pt for now; later bind it to the output target instead
+        setValue(currentNode, key, 5000);
+        return;
+      }
+      else if (BorderWidth.MEDIUM.equals(value))
+      {
+        // make it 3pt for now; later bind it to the output target instead
+        setValue(currentNode, key, 3000);
+        return;
+      }
+      else if (BorderWidth.THIN.equals(value))
+      {
+        // make it 1pt for now; later bind it to the output target instead
+        setValue(currentNode, key, 1000);
+        return;
+      }
     }
+
+    // correct the invalid value ...
+    setValue(currentNode, key, 0);
   }
 
   private void setValue(final LayoutNode currentNode,
@@ -172,7 +199,7 @@ public class BorderWidthResolveHandler implements ResolveHandler
     {
       // in asian scripts:
       // grab the height ..
-      CSSValue height = parent.getStyle().getValue(BoxStyleKeys.WIDTH);
+      CSSValue height = parent.getStyle().getValue(BoxStyleKeys.HEIGHT);
       CSSNumericValue nval = LengthResolverUtility.getLength(height);
       if (nval != null)
       {

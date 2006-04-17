@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,25 +20,30 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * PagableNormalizer.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * AbstractPagableNormalizer.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: AbstractPagableNormalizer.java,v 1.1 2006/02/12 21:43:11 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 02.01.2006 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.normalizer.pagable;
 
 import org.jfree.layouting.normalizer.Normalizer;
+import org.jfree.layouting.normalizer.common.ContentBox;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutTextNode;
-import org.jfree.layouting.model.LayoutReplacedElement;
 import org.jfree.layouting.model.PageContext;
 
 /**
@@ -49,6 +54,8 @@ import org.jfree.layouting.model.PageContext;
 public class AbstractPagableNormalizer implements Normalizer
 {
   private PageContext pageContext;
+  private ContentBox contentArea;
+  
 
   public AbstractPagableNormalizer()
   {
@@ -64,7 +71,7 @@ public class AbstractPagableNormalizer implements Normalizer
 
   }
 
-  public void addReplacedElement(LayoutReplacedElement element)
+  public void addReplacedElement(LayoutElement element)
   {
 
   }

@@ -22,10 +22,10 @@
 
   <repository>
     <connection>
-      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport:pixie
+      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport:liblayout
     </connection>
     <url>
-      http://cvs.sourceforge.net/viewcvs.py/jfreereport/pixie
+      http://cvs.sourceforge.net/viewcvs.py/jfreereport/liblayout
     </url>
   </repository>
 

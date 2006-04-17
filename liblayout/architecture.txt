@@ -1,4 +1,4 @@
-$Id$
+$Id: architecture.txt,v 1.1 2006/02/12 22:17:40 taqua Exp $
 
 {This document is a scapbook of all architecture related questions;
  it may or may not evolve into a final document.}
@@ -242,6 +242,31 @@ and possibly collect the page states. Phase two generates the content.
 
 The pageable output is primarily designed for the PDF and printing export.
 
+
+4. Content-Feeding of non-textual content
+
+There is a special elemnt type in the libLayout namespace.
+Element-Name: 'content'
+  Attributes: 'type' = (image, drawable, text, shape, auto)
+
+  more attributes to be defined later.
+
+
+-----------------------------------------------------------------------------
+Savepoints
+
+There are two kinds of savepoints. The first savepoint system stores the state
+of the input feed. It is intended to support fast play-back capabilities for
+paginated content. The savepoint carries a single user defined data item and
+the current state of the input feed.
+
+The second savepoint saves the layoutstate. It wraps around an input feed
+savepoint and marks a page boundary. If the page specified by the given layout
+savepoint needs to be displayed, the underlying input feed savepoint is used
+to restart the inputfeed on the last stored point. Now all generated content
+is ignored until the layout position specified by the layoutstate is reached.
+From now all processing is performed as usual.
+-----------------------------------------------------------------------------
 
 
 [1] The CSS3 specifications draft. We 'reuse' ideas but do not yet attemp a
