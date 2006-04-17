@@ -24,10 +24,10 @@
 
   <repository>
     <connection>
-      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport:jfreereport
+      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport:libfonts
     </connection>
     <url>
-      http://cvs.sourceforge.net/viewcvs.py/jfreereport/jfreereport
+      http://cvs.sourceforge.net/viewcvs.py/jfreereport/libfonts
     </url>
   </repository>
 

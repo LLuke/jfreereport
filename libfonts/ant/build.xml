@@ -16,6 +16,8 @@
 
 <project name="libfonts" default="all" basedir="..">
 
+  <import file="build-lib.xml"/>
+
   <!-- Initialisation. -->
   <target name="initialise" description="Initialise required settings.">
     <tstamp/>
@@ -25,42 +27,25 @@
     <dirname property="antfile.dir" file="${ant.file}"/>
     <property file="${antfile.dir}/build.properties"/>
 
-
-    <path id="build.classpath">
-      <pathelement location="${libdir}/${jcommon-jar-file}"/>
-    </path>
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+    <fail unless="lib.jcommon.present"/>
   </target>
 
   <!-- Compile the libfonts classes -->
   <target name="compile" depends="initialise"
     description="Compile the libFonts source code.">
 
-    <!-- create a temp build directory -->
-    <mkdir dir="${builddir}"/>
-
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="${builddir}"
-      deprecation="${build.deprecation}" debug="${build.debug}"
-      optimize="${build.optimize}" target="${build.target}">
-      <classpath refid="build.classpath"/>
-      <include name="org/jfree/fonts/**"/>
-      <exclude name="**/junit/**"/>
-    </javac>
-
-    <!-- copy across .properties files -->
-    <copy todir="${builddir}/org/jfree/fonts/">
-      <fileset dir="source/org/jfree/fonts">
+    <build-all target-jar="${libfonts-jar-file}"
+               source-dir="source">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </all-classpath>
+      <all-resources>
         <include name="*.properties"/>
-      </fileset>
-    </copy>
-
-    <!-- make the jar -->
-    <jar jarfile="${libfonts-jar-file}" basedir="${builddir}"/>
-
-    <!-- delete the temp directory -->
-    <delete dir="${builddir}"/>
-
+      </all-resources>
+    </build-all>
   </target>
 
   <!-- Generate the libfonts JavaDoc HTML pages -->
@@ -71,7 +56,9 @@
       windowtitle="LibFonts Class Library (version ${libfonts.version})"
       overview="source/overview.html"
       linksource="true">
-      <classpath refid="build.classpath"/>
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </classpath>
       <packageset dir="source" defaultexcludes="yes">
         <include name="org/jfree/fonts"/>
         <exclude name="**/junit/**"/>
@@ -104,89 +91,28 @@
     <!-- copy across ant build file (this file) -->
     <copy file="ant/build.xml"
       tofile="distribution/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+      tofile="distribution/ant/build-lib.xml"/>
 
     <copy file="ant/build.properties"
       tofile="distribution/ant/build.properties"/>
-
-    <!-- copy across checkstyle property file -->
-    <copy todir="distribution/checkstyle">
-      <fileset dir="checkstyle"/>
-    </copy>
   </target>
 
   <!-- Make .zip distribution for libfonts -->
   <target name="zip" depends="compile">
-
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-
-    <antcall target="fill-dist-dir"/>
-
-    <!-- convert end-of-line characters in text files -->
-    <fixcrlf srcdir="distribution/source"
-      eol="crlf" eof="remove"/>
-
-    <!-- make the zip file -->
-    <zip zipfile="${libfonts.name}-${libfonts.version}.zip">
-      <zipfileset dir="distribution"
-        prefix="${libfonts.name}-${libfonts.version}"/>
-    </zip>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+    <make-zip lib.version="${libfonts.version}" lib.name="${libfonts.name}"/>
   </target>
 
   <!-- Make .tar.gz distribution for libfonts -->
   <target name="targz" depends="compile">
-
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-
-    <antcall target="fill-dist-dir"/>
-
-    <!-- convert end-of-line characters in text files -->
-    <fixcrlf srcdir="distribution/source"
-      eol="lf" eof="remove"/>
-
-    <!-- make the tar.gz file -->
-    <tar tarfile="${libfonts.name}-${libfonts.version}.tar">
-      <tarfileset dir="distribution"
-        prefix="${libfonts.name}-${libfonts.version}"/>
-    </tar>
-    <gzip zipfile="${libfonts.name}-${libfonts.version}.tar.gz"
-      src="${libfonts.name}-${libfonts.version}.tar"/>
-    <delete file="${libfonts.name}-${libfonts.version}.tar"/>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+    <make-targz lib.version="${libfonts.version}" lib.name="${libfonts.name}"/>
   </target>
 
-  <target name="maven-bundle" depends="zip" >
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-    <!-- copy across LICENCE -->
-    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
-    
-    <filterchain id="version.filters">
-       <replacetokens>
-         <token key="VERSION" value="${libfonts.version}"/>
-       </replacetokens>
-    </filterchain>
-    <copy file="maven-libfonts-project.xml" tofile="distribution/project.xml">
-	    <filterchain refid="version.filters"/>
-    </copy>
-    
-    <!-- copy across runtime jar file -->
-    <copy file="${libfonts-jar-file}" tofile="distribution/${libfonts-jar-file}"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${libfonts-bundle-file}" basedir="distribution"/>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+  <target name="maven-bundle" depends="compile" >
+    <make-maven-bundle lib.version="${libfonts.version}"
+                       lib.name="${libfonts.name}"
+                       lib.file="${libfonts-jar-file}"
+                       target="${libfonts-bundle-file}"/>
   </target>
 
 
