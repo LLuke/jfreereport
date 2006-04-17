@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,69 +20,80 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * DefaultPaginationLayoutProcess.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * DefaultPageGenerationLayoutProcess.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: DefaultContentLayoutProcess.java,v 1.1 2006/02/12 21:38:19 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 05.12.2005 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting;
 
-import org.jfree.layouting.layouter.feed.ContentInputFeed;
+import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.layouter.state.InputFeedState;
-import org.jfree.layouting.layouter.state.LayoutProcessingSavePoint;
-import org.jfree.layouting.layouter.state.LayoutSavePoint;
-import org.jfree.layouting.output.OutputProcessor;
-import org.jfree.layouting.output.pageable.PageableOutputProcessor;
-import org.jfree.layouting.normalizer.pagable.ContentGeneratingNormalizer;
+import org.jfree.layouting.layouter.feed.InputFeedState;
 import org.jfree.layouting.normalizer.Normalizer;
+import org.jfree.layouting.normalizer.pagable.PageProcessingState;
+import org.jfree.layouting.output.pageable.PageableOutputProcessor;
 
 /**
  * Creation-Date: 05.12.2005, 19:16:56
  *
  * @author Thomas Morgner
  */
-public class DefaultContentLayoutProcess extends AbstractLayoutProcess
-  implements ContentLayoutProcess
+public class DefaultPageGenerationLayoutProcess extends AbstractLayoutProcess
+  implements PageGenerationLayoutProcess
 {
-  private LayoutSavePoint startingSavePoint;
-  private LayoutSavePoint endingSavePoint;
+  private PageProcessingState startingSavePoint;
+  private PageProcessingState endingSavePoint;
   private PageableOutputProcessor outputProcessor;
   private InputFeed inputFeed;
 
-  public DefaultContentLayoutProcess(final PageableOutputProcessor outputProcessor,
-                                     final LayoutSavePoint startingSavePoint,
-                                     final LayoutSavePoint endingSavePoint)
+  public DefaultPageGenerationLayoutProcess(final PageableOutputProcessor outputProcessor,
+                                            final PageProcessingState startingSavePoint,
+                                            final PageProcessingState endingSavePoint)
   {
     super(outputProcessor);
     this.outputProcessor = outputProcessor;
     this.startingSavePoint = startingSavePoint;
     this.endingSavePoint = endingSavePoint;
 
-    if (startingSavePoint instanceof LayoutProcessingSavePoint)
+    if (startingSavePoint != null)
     {
-      LayoutProcessingSavePoint gp = (LayoutProcessingSavePoint) startingSavePoint;
-      final InputFeedState state = (InputFeedState) gp.getParent();
+      final InputFeedState state = startingSavePoint.getInputFeedState();
       setNextId(state.getCurrentId());
-      this.inputFeed = new ContentInputFeed(this, state);
+      this.inputFeed = new DefaultInputFeed(this, state);
     }
     else
     {
       setNextId(0);
-      this.inputFeed = new ContentInputFeed(this, null);
+      this.inputFeed = new DefaultInputFeed(this);
     }
 
     this.startingSavePoint = startingSavePoint;
     this.endingSavePoint = endingSavePoint;
     this.outputProcessor = outputProcessor;
+  }
+
+  public PageProcessingState getStartingSavePoint()
+  {
+    return startingSavePoint;
+  }
+
+  public PageProcessingState getEndingSavePoint()
+  {
+    return endingSavePoint;
   }
 
   protected InputFeed createInputFeed()
@@ -93,6 +104,6 @@ public class DefaultContentLayoutProcess extends AbstractLayoutProcess
 
   public Normalizer getNormalizer()
   {
-    return null;
+    return outputProcessor.createGenerateNormalizer();
   }
 }

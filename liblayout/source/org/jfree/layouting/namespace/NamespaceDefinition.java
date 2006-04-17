@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,26 +20,38 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * PaginatingPageableNormalizer.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * NamespaceDefinition.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: ContentGeneratingNormalizer.java,v 1.1 2006/02/12 21:43:11 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 03.01.2006 : Initial version
+ * -------
+ *
+ *
  */
-package org.jfree.layouting.normalizer.pagable;
+package org.jfree.layouting.namespace;
+
+import org.jfree.resourceloader.ResourceKey;
 
 /**
- * Creation-Date: 03.01.2006, 12:52:01
+ * Creation-Date: 13.04.2006, 12:31:43
  *
  * @author Thomas Morgner
  */
-public class ContentGeneratingNormalizer extends AbstractPagableNormalizer
+public interface NamespaceDefinition
 {
+  public String getPreferredPrefix();
+  public String getURI();
+  public String getClassAttribute(String element);
+  public String getStyleAttribute (String element);
+  public ResourceKey getDefaultStyleSheetLocation();
 }

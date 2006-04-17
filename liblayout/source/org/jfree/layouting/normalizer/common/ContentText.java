@@ -1,12 +1,12 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,41 +20,48 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * LayoutElement.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * ContentText.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributors: -;
+ * Contributor(s):   -;
  *
- * $Id: LayoutElement.java,v 1.1 2006/02/12 21:43:11 taqua Exp $
+ * $Id$
  *
  * Changes
- * -------------------------
- * 12.02.2006 : Initial version
+ * -------
+ *
+ *
  */
 package org.jfree.layouting.normalizer.common;
 
+import org.jfree.layouting.model.LayoutTextNode;
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
+
 /**
- * A primitive element in the layouting process.
+ * Creation-Date: 03.04.2006, 14:36:17
  *
  * @author Thomas Morgner
  */
-public class LayoutElement
+public class ContentText extends ContentNode
 {
-  private LayoutBox parent;
-
-  public LayoutElement()
+  public ContentText(final LayoutTextNode layoutElement)
   {
+    super(layoutElement);
   }
 
-  public LayoutBox getParent()
+  /**
+   * Is a enum in the real world ..
+   *
+   * @return
+   */
+  public DisplayRole getDisplayRole()
   {
-    return parent;
-  }
-
-  protected void setParent(final LayoutBox parent)
-  {
-    this.parent = parent;
+    return DisplayRole.INLINE;
   }
 }

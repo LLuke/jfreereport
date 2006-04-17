@@ -1,0 +1,142 @@
+/**
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
+ *
+ * Project Info:  http://www.jfree.org/liblayout/
+ * Project Lead:  Thomas Morgner;
+ *
+ * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ * ------------
+ * DocumentContextUtility.java
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   -;
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ *
+ *
+ */
+package org.jfree.layouting;
+
+import java.util.Date;
+
+import org.jfree.layouting.layouter.i18n.DefaultLocalizationContext;
+import org.jfree.layouting.layouter.i18n.LocalizationContext;
+import org.jfree.layouting.layouter.style.resolver.StyleResolver;
+import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
+import org.jfree.layouting.layouter.style.resolver.StyleRuleMatcher;
+import org.jfree.layouting.layouter.style.resolver.SimpleStyleRuleMatcher;
+import org.jfree.layouting.model.DocumentContext;
+import org.jfree.layouting.namespace.NamespaceCollection;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
+
+/**
+ * Creation-Date: 13.04.2006, 12:11:20
+ *
+ * @author Thomas Morgner
+ */
+public class DocumentContextUtility
+{
+  private DocumentContextUtility()
+  {
+  }
+
+
+  public static ResourceKey getBaseResource(DocumentContext context)
+  {
+    final Object o = context.getMetaAttribute
+            (DocumentContext.BASE_RESOURCE_ATTR);
+    if (o instanceof ResourceKey == false)
+    {
+      return null;
+    }
+    return (ResourceKey) o;
+  }
+
+  public static LocalizationContext getLocalizationContext(DocumentContext context)
+  {
+    final Object o = context.getMetaAttribute
+            (DocumentContext.LOCALIZATION_ATTR);
+    if (o instanceof LocalizationContext == false)
+    {
+      DefaultLocalizationContext value = new DefaultLocalizationContext();
+      context.setMetaAttribute(DocumentContext.LOCALIZATION_ATTR, value);
+      return value;
+    }
+    return (LocalizationContext) o;
+  }
+
+  public static ResourceManager getResourceManager(DocumentContext context)
+  {
+    final Object o = context.getMetaAttribute(DocumentContext.RESOURCE_MANAGER_ATTR);
+    if (o instanceof ResourceManager == false)
+    {
+      ResourceManager value = new ResourceManager();
+      value.registerDefaults();
+      context.setMetaAttribute(DocumentContext.RESOURCE_MANAGER_ATTR, value);
+      return value;
+    }
+    return (ResourceManager) o;
+  }
+
+  public static Date getDate(DocumentContext context)
+  {
+    final Object o = context.getMetaAttribute(DocumentContext.DATE_ATTR);
+    if (o instanceof Date == false)
+    {
+      Date value = new Date();
+      context.setMetaAttribute(DocumentContext.DATE_ATTR, value);
+      return value;
+    }
+    return (Date) o;
+  }
+
+  public static StyleResolver getStyleResolver(DocumentContext context)
+  {
+    final Object o = context.getMetaAttribute(DocumentContext.STYLE_RESOLVER_ATTR);
+    if (o instanceof StyleResolver == false)
+    {
+      StyleResolver value = new DefaultStyleResolver();
+      context.setMetaAttribute(DocumentContext.STYLE_RESOLVER_ATTR, value);
+      return value;
+    }
+    return (StyleResolver) o;
+  }
+
+
+  public static StyleRuleMatcher getStyleRuleMatcher(DocumentContext context)
+  {
+    final Object o = context.getMetaAttribute(DocumentContext.STYLE_MATCHER_ATTR);
+    if (o instanceof StyleRuleMatcher == false)
+    {
+      StyleRuleMatcher value = new SimpleStyleRuleMatcher();
+      context.setMetaAttribute(DocumentContext.STYLE_MATCHER_ATTR, value);
+      return value;
+    }
+    return (StyleRuleMatcher) o;
+  }
+
+}
