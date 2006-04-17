@@ -99,76 +99,26 @@
       tofile="${dist-dir}/ant/build.properties"/>
   </target>
 
-  <!-- Make .tar.gz distribution for Pixie -->
-  <!-- the war file is not included, as it can be rebuild easily and is also available -->
-  <!-- as an separate download -->
-  <target name="make-targz" depends="compile">
 
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
+  <!-- Make .zip distribution for libfonts -->
+  <target name="make-zip" depends="compile">
 
-    <!-- copy across README -->
-    <copy file="README" tofile="distribution/README"/>
-
-    <!-- copy across Licences -->
-    <copy file="licence-LGPL.txt" tofile="distribution/Licence"/>
-
-    <!-- copy across ChangeLog -->
-    <copy file="ChangeLog" tofile="distribution/ChangeLog"/>
-
-    <!-- copy across runtime jar file -->
-    <copy file="${pixie-jar-file}" tofile="distribution/${pixie-jar-file}"/>
-
-    <!-- copy across source files -->
-    <copy todir="distribution/source">
-      <fileset dir="source"/>
-    </copy>
-
-    <!-- copy across lib files -->
-    <copy todir="distribution/lib">
-      <fileset dir="lib"/>
-    </copy>
-
-    <!-- copy across ant build file (this file) -->
-    <copy todir="distribution/ant">
-      <fileset dir="ant"/>
-    </copy>
-
-    <!-- convert end-of-line characters in text files -->
-    <fixcrlf srcdir="distribution/source"
-      eol="lf" eof="remove"
-      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
-    <fixcrlf srcdir="distribution/ant"
-      eol="lf" eof="remove"/>
-
-    <!-- make the tar.gz file -->
-    <tar tarfile="${pixie.name}-${pixie.version}.tar">
-      <tarfileset dir="distribution"
-        prefix="${pixie.name}-${pixie.version}"/>
-    </tar>
-    <gzip zipfile="${pixie.name}-${pixie.version}.tar.gz"
-      src="${pixie.name}-${pixie.version}.tar"/>
-    <delete file="${pixie.name}-${pixie.version}.tar"/>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
+    <make-zip lib.version="${libloader.version}" lib.name="${libloader.name}"/>
 
   </target>
 
-  <target name="maven-bundle" depends="compile" >
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-    <!-- copy across Licences -->
-    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
-    <copy file="maven-pixie-project.xml" tofile="distribution/project.xml"/>
-    <copy file="maven-pixie-project.xml" tofile="distribution/project.xml"/>
-    <copy file="${pixie-jar-file}" tofile="distribution/${pixie-jar-file}"/>
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="make-targz" depends="compile">
 
-    <!-- make the jar -->
-    <jar jarfile="${pixie-bundle-file}" basedir="distribution"/>
+    <make-targz lib.version="${libloader.version}" lib.name="${libloader.name}"/>
 
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
+  </target>
+
+  <target name="maven-bundle" depends="compile-all" >
+    <make-maven-bundle lib.version="${libloader.version}"
+                       lib.name="${libloader.name}"
+                       lib.file="${libloader-jar-file}"
+                       target="${libloader-bundle-file}"/>
   </target>
 
   <target name="all" depends="init, compile, javadoc, make-zip, make-targz, maven-bundle"/>
