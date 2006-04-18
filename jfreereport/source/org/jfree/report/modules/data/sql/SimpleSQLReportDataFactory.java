@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SimpleSQLReportDataFactory.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.report.modules.data.sql;
 
 import java.sql.Connection;
-import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -181,7 +180,7 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory
         SQLParameterLookupParser parser = new SQLParameterLookupParser();
         final String translatedQuery = parser.translateAndLookup(query);
         PreparedStatement pstmt = getConnection().prepareStatement
-                (translatedQuery, getBestResultSetType());
+                (translatedQuery, getBestResultSetType(), ResultSet.CONCUR_READ_ONLY);
         pstmtCarrier = new PreparedStatementCarrier(pstmt, parser.getFields());
         preparedStatements.put(query, pstmtCarrier);
       }
@@ -203,11 +202,14 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory
         }
         else if (pvalue == null)
         {
-          pstmt.setNull(i+1, getParameterType(i+1, pstmt));
+          // this should work, but some driver are known to die here.
+          // they should be fed with setNull(..) instead; something
+          // we cant do as JDK1.2's JDBC does not define it.
+          pstmt.setObject(i+1, null);
         }
         else
         {
-          pstmt.setObject(i+1, pvalue, getParameterType(i+1, pstmt));
+          pstmt.setObject(i+1, pvalue);
         }
       }
       ResultSet res = pstmt.executeQuery();
@@ -232,13 +234,6 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory
     {
       throw new ReportDataFactoryException("Failed at query: " + query, e);
     }
-  }
-
-  private int getParameterType (int paramCol, PreparedStatement pstmt)
-          throws SQLException
-  {
-    ParameterMetaData pmdta = pstmt.getParameterMetaData();
-    return pmdta.getParameterType(paramCol);
   }
 
   public void close() throws SQLException

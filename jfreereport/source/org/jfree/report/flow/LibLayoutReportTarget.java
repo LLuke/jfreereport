@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LibLayoutReportTarget.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -168,13 +168,13 @@ public class LibLayoutReportTarget implements ReportTarget
     CSSDeclarationRule rule = createStyle(styleAttributeValue, node, runtime);
     feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "style", rule);
     feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "content", value.getValue());
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isChanged", Boolean.toString(value.isChanged()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isDate", Boolean.toString(value.isDate()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNegative", Boolean.toString(value.isNegative()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNull", Boolean.toString(value.isNull()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNumber", Boolean.toString(value.isNumeric()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isPositive", Boolean.toString(value.isPositive()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isZero", Boolean.toString(value.isZero()));
+    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isChanged", String.valueOf(value.isChanged()));
+    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isDate", String.valueOf(value.isDate()));
+    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNegative", String.valueOf(value.isNegative()));
+    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNull", String.valueOf(value.isNull()));
+    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNumber", String.valueOf(value.isNumeric()));
+    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isPositive", String.valueOf(value.isPositive()));
+    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isZero", String.valueOf(value.isZero()));
     //feed.addContent(String.valueOf(value.getValue()));
     feed.endElement();
   }
