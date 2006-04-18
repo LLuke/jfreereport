@@ -88,7 +88,15 @@
   <target name="fill-dist-dir">
     <!-- copy across README -->
     <copy file="README"
-      tofile="distribution/README" failonerror="false"/>
+      tofile="distribution/README"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="migration.txt"
+      tofile="distribution/migration.txt"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="ChangeLog"
+      tofile="distribution/ChangeLog"/>
 
     <!-- copy across LICENCE -->
     <copy file="licence-LGPL.txt"
@@ -98,9 +106,9 @@
     <copy file="${jfreereport-jar-file}"
       tofile="distribution/${jfreereport-jar-file}"/>
 
-  	<!-- copy across maven xml files -->
-  	<copy file="maven-jfreereport-project.xml"
-  		tofile="distribution/maven-jfreereport-project.xml"/>
+    <!-- copy across maven xml files -->
+    <copy file="maven-jfreereport-project.xml"
+      tofile="distribution/maven-jfreereport-project.xml"/>
 
     <!-- copy across source files -->
     <copy todir="distribution/source">
