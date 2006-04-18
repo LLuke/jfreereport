@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<sql-datasource
+        xmlns="http://jfreereport.sourceforge.net/namespaces/datasources/sql"
+        xmlns:html="http://www.w3.org/1999/xhtml">
+  <connection>
+    <driver>com.mysql.jdbc.Driver</driver>
+    <url>jdbc:mysql://localhost/database</url>
+    <properties>
+      <property name="user">joe</property>
+      <property name="pass">secret</property>
+    </properties>
+  </connection>
+
+  <query name="default">SELECT * FROM Users</query>
+  <query name="customersByUser">SELECT * FROM Customers WHERE user=${user}</query>
+</sql-datasource>
