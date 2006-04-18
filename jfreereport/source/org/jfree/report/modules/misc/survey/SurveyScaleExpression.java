@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2004, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleExpression.java,v 1.6 2005/08/29 17:56:46 taqua Exp $
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.jfree.report.DrawableElement;
+import org.jfree.report.DataSourceException;
 import org.jfree.report.function.AbstractExpression;
 import org.jfree.ui.Drawable;
 
@@ -202,7 +202,7 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
 
   /**
    * Sets the override shape.  The {@link SurveyScale} is created with a set of default
-   * shapes, this method allows you to replace the *first* shape if you need to (leave it
+   * shapes, this method allows you to clearFromParent the *first* shape if you need to (leave it
    * as <code>null</code> otherwise).
    *
    * @param shape the shape (<code>null</code> permitted).
@@ -248,7 +248,7 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
    *
    * @return a {@link SurveyScale} instance.
    */
-  public Object getValue ()
+  public Object getValue () throws DataSourceException
   {
     final SurveyScale result =
             new SurveyScale(this.lowest, this.highest, collectValues());
@@ -274,7 +274,7 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
    *
    * @return an Objectarray containing all defined values from the datarow
    */
-  private Number[] collectValues ()
+  private Number[] collectValues () throws DataSourceException
   {
     final Number[] retval = new Number[this.fieldList.size()];
     for (int i = 0; i < this.fieldList.size(); i++)

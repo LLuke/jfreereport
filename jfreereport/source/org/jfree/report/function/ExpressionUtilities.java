@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ExpressionUtilities.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,6 +35,7 @@
  */
 package org.jfree.report.function;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -48,11 +49,14 @@ public class ExpressionUtilities
   {
   }
 
-  public static ResourceBundle getDefaultResourceBundle(Expression expression)
+  public static ResourceBundle getDefaultResourceBundle
+          (final ExpressionRuntime expression)
   {
+    final Locale locale = expression.getDeclaringParent().getLocale();
     final String resourceBundleName =
-            expression.getReportConfiguration().getConfigProperty
+            expression.getConfiguration().getConfigProperty
             ("org.jfree.report.ResourceBundle");
-    return expression.getResourceBundleFactory().getResourceBundle(resourceBundleName);
+    return expression.getResourceBundleFactory().getResourceBundle
+            (locale, resourceBundleName);
   }
 }

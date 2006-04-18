@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ColumnAggreationExpression.java,v 1.2 2006/01/20 19:50:52 taqua Exp $
+ * $Id: ColumnAggregationExpression.java,v 1.1 2006/01/27 20:15:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,9 @@ package org.jfree.report.function;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.jfree.report.DataSourceException;
+import org.jfree.report.DataRow;
+
 /**
  * Creation-Date: 04.01.2006, 17:23:01
  *
@@ -46,25 +49,28 @@ import java.util.Arrays;
 public abstract class ColumnAggregationExpression extends AbstractExpression
 {
   private ArrayList fields;
+  private transient String[] fieldsCached;
+  private transient ExpressionDependencyInfo dependencyInfo;
 
   protected ColumnAggregationExpression()
   {
     fields = new ArrayList();
   }
 
-
   /**
    * collects the values of all fields defined in the fieldList.
    *
    * @return an Objectarray containing all defined values from the datarow
    */
-  protected Object[] getFieldValues ()
+  protected Object[] getFieldValues () throws DataSourceException
   {
-    final Object[] retval = new Object[fields.size()];
-    for (int i = 0; i < fields.size(); i++)
+    final String[] fields = getField();
+    final Object[] retval = new Object[fields.length];
+    final DataRow dataRow = getDataRow();
+    for (int i = 0; i < fields.length; i++)
     {
-      final String field = (String) fields.get(i);
-      retval[i] = getDataRow().get(field);
+      final String field = fields[i];
+      retval[i] = dataRow.get(field);
     }
     return retval;
   }
@@ -79,6 +85,8 @@ public abstract class ColumnAggregationExpression extends AbstractExpression
     {
       fields.set(index, field);
     }
+    fieldsCached = null;
+    dependencyInfo = null;
   }
 
   public String getField (final int index)
@@ -93,19 +101,33 @@ public abstract class ColumnAggregationExpression extends AbstractExpression
 
   public String[] getField ()
   {
-    return (String[]) fields.toArray(new String[fields.size()]);
+    if (fieldsCached == null)
+    {
+      fieldsCached = (String[]) fields.toArray(new String[fields.size()]);
+    }
+    return (String[]) fieldsCached.clone();
   }
 
   public void setField (final String[] fields)
   {
     this.fields.clear();
     this.fields.addAll(Arrays.asList(fields));
+    this.fieldsCached = (String[]) fields.clone();
+    this.dependencyInfo = null;
   }
 
   public Object clone() throws CloneNotSupportedException
   {
     ColumnAggregationExpression co = (ColumnAggregationExpression) super.clone();
     co.fields = (ArrayList) fields.clone();
+    co.fieldsCached = fieldsCached;
+    co.dependencyInfo = dependencyInfo;
     return co;
+  }
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(getField());
   }
 }

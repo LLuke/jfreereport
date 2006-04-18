@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2004, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * SurveyScale.java
  * ----------------
- * (C)opyright 2004, by Object Refinery Limited.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.8 2005/11/17 17:03:48 taqua Exp $
+ * $Id: SurveyScale.java,v 1.9 2006/02/10 14:58:44 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import org.jfree.report.util.SerializerHelper;
+import org.jfree.serializer.SerializerHelper;
 import org.jfree.text.TextUtilities;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.TextAnchor;

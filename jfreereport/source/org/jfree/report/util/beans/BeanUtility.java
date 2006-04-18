@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BeanUtility.java,v 1.8 2005/09/20 19:53:05 taqua Exp $
+ * $Id: BeanUtility.java,v 1.9 2005/09/21 14:03:06 taqua Exp $
  *
  * Changes
  * -------

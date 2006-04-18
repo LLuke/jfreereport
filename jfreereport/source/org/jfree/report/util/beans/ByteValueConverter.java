@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ByteValueConverter.java,v 1.3 2005/03/03 23:00:27 taqua Exp $
+ * $Id: ByteValueConverter.java,v 1.4 2005/09/20 15:38:23 taqua Exp $
  *
  * Changes
  * -------

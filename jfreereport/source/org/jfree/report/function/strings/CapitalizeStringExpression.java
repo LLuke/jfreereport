@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: CapitalizeStringExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
+ * $Id: CapitalizeStringExpression.java,v 1.2 2006/01/24 14:17:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -36,6 +36,8 @@
 package org.jfree.report.function.strings;
 
 import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.function.ExpressionDependencyInfo;
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 20.01.2006, 18:19:18
@@ -77,7 +79,7 @@ public class CapitalizeStringExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Object raw = getDataRow().get(getField());
     if (raw == null)
@@ -113,4 +115,12 @@ public class CapitalizeStringExpression extends AbstractExpression
     }
     return new String (textArray);
   }
+
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{getField()});
+  }
+  
 }

@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,52 +20,43 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
  * ------------
  * DataRow.java
  * ------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   -;
  *
- * $Id: DataRow.java,v 1.6 2005/03/16 21:06:37 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
- * 27-Jul-2002 : Initial version
- * 05-Sep-2002 : Documentation
- * 13-Sep-2002 : Ran checkstyle and fixed reported issues
- * 07-Nov-2002 : Included an ID-tag into the header for better bug-tracking.
- * 05-Dec-2002 : Updated Javadocs (DG);
- * 06-Dec-2002 : Completed ChangeLog
- * 10-Dec-2002 : more Docs.
+ *
+ *
  */
-
 package org.jfree.report;
 
 /**
- * The datarow is used to access the current row in the <code>TableModel</code>,
- * <code>Expression</code>s and <code>Function</code>s using a generic interface. The
- * DataRow is able to detect deadlocks and to check function depencies.
- * <p/>
- * The DataRows depends on a unmodifiable row structure, so it is forbidden to add new
- * functions and expressions to the report or to modify the tablemodel after the report
- * processing has started.
- * <p/>
- * JFreeReport assumes, that the tablemodels given for reporting are immutable and do not
- * change during the report processing.
- * <p/>
- * ReportProperties can only be queried if they are marked. Marked properties get
- * enumerated when the report processing starts. Marking properties after that point has
- * no effect. Removing the property will not remove the column from this datarow, this
- * DataRow's column will return <code>null</code> when queried in that case.
+ * This is the base interface for all data access collectors. Expressions usually
+ * work with the {@link MasterDataRow} interface instead. A data-row adds a
+ * certain order to the elements in the dataset. It also allows statefull
+ * comparisions and data attributes using DataFlags.
+ *
+ * The data-row is an internal concept of JFreeReport. The report engine will be
+ * responsible for creating and maintaining these implementations. Authors of
+ * functions and expressions usually dont have to care where a datarow comes from
+ * or at which particular instance they are looking right now.
+ *
+ * Note: Do not attempt to cache the datarow outside the core engine. This can
+ * have funny sideeffects and might trigger the end of the world.
  *
  * @author Thomas Morgner
- * @see org.jfree.report.function.Expression
- * @see org.jfree.report.function.Function
- * @see javax.swing.table.TableModel
  */
-public interface DataRow
+public interface DataRow extends DataSet
 {
   /**
    * Returns the value of the expression or column in the tablemodel using the given
@@ -77,7 +68,7 @@ public interface DataRow
    * @return the value.
    * @throws IllegalStateException if the datarow detected a deadlock.
    */
-  public Object get (int col);
+  Object get (int col) throws DataSourceException;
 
   /**
    * Returns the value of the function, expression or column using its specific name. The
@@ -91,8 +82,8 @@ public interface DataRow
    *
    * @throws IllegalStateException if the datarow detected a deadlock.
    */
-  public Object get (String col)
-          throws IllegalStateException;
+  Object get (String col)
+          throws DataSourceException;
 
   /**
    * Returns the name of the column, expression or function. For columns from the
@@ -102,16 +93,7 @@ public interface DataRow
    * @param col the item index.
    * @return the name.
    */
-  public String getColumnName (int col);
-
-  /**
-   * Returns the column position of the column, expression or function with the given name
-   * or -1 if the given name does not exist in this DataRow.
-   *
-   * @param name the item name.
-   * @return the item index.
-   */
-  public int findColumn (String name);
+  String getColumnName (int col) throws DataSourceException;
 
   /**
    * Returns the number of columns, expressions and functions and marked ReportProperties
@@ -119,5 +101,9 @@ public interface DataRow
    *
    * @return the item count.
    */
-  public int getColumnCount ();
+  int getColumnCount () throws DataSourceException;
+
+  DataFlags getFlags (String col) throws DataSourceException;
+
+  DataFlags getFlags (int col) throws DataSourceException;
 }

@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.9 2005/11/17 17:03:47 taqua Exp $
+ * $Id: Expression.java,v 1.10 2006/01/24 18:58:29 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -36,9 +36,7 @@
 
 package org.jfree.report.function;
 
-import org.jfree.report.DataRow;
-import org.jfree.report.ResourceBundleFactory;
-import org.jfree.util.Configuration;
+import org.jfree.report.DataSourceException;
 
 /**
  * An expression is a lightweight function that does not maintain a state. Expressions are
@@ -71,24 +69,7 @@ public interface Expression extends Cloneable
    *
    * @return the value of the function.
    */
-  public Object getValue ();
-
-  /**
-   * Returns true if this expression contains autoactive content and should be called by
-   * the system, regardless whether this expression is referenced in the datarow.
-   *
-   * @return true, if the expression is activated automaticly, false otherwise.
-   */
-  public boolean isActive ();
-
-  /**
-   * Returns the DataRow used in this expression. The dataRow is set when the report
-   * processing starts and can be used to access the values of functions, expressions and
-   * the reports datasource.
-   *
-   * @return the assigned DataRow for this report processing.
-   */
-  public DataRow getDataRow ();
+  public Object getValue () throws DataSourceException;
 
   /**
    * Clones the expression, expression should be reinitialized after the cloning. <P>
@@ -102,26 +83,6 @@ public interface Expression extends Cloneable
   public Object clone ()
           throws CloneNotSupportedException;
 
-  /**
-   * The dependency level defines the level of execution for this function. Higher
-   * dependency functions are executed before lower dependency functions. For ordinary
-   * functions and expressions, the range for dependencies is defined to start from 0
-   * (lowest dependency possible) to 2^31 (upper limit of int).
-   * <p/>
-   * Levels below 0 are reserved for system-functionality (printing and layouting).
-   * <p/>
-   * The level must not change during the report processing, or the result is invalid.
-   *
-   * @return the level.
-   */
-  public int getDependencyLevel ();
-
-  /**
-   * Sets the dependency level for the expression.
-   *
-   * @param level the level.
-   */
-  public void setDependencyLevel (int level);
 
   /**
    * Return a new instance of this expression. The copy is initialized and uses the same
@@ -131,10 +92,6 @@ public interface Expression extends Cloneable
    */
   public Expression getInstance ();
 
-  public ResourceBundleFactory getResourceBundleFactory ();
-  public Configuration getReportConfiguration();
-
-
   /**
    * Defines the DataRow used in this expression. The dataRow is set when the report
    * processing starts and can be used to access the values of functions, expressions and
@@ -143,5 +100,14 @@ public interface Expression extends Cloneable
    * @param runtime the runtime information for the expression
    */
   public void setRuntime (ExpressionRuntime runtime);
+
+  /**
+   * Queries the dependency information provided by this expression. While this
+   * method is called, an ExpressionRuntime will be made available; although it
+   * is not guaranteed that this runtime has a valid DataRow. 
+   *
+   * @param info
+   */
+  public void queryDependencyInfo (final ExpressionDependencyInfo info);
 
 }

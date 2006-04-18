@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
+ * $Id: Function.java,v 1.7 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -40,22 +40,29 @@
 
 package org.jfree.report.function;
 
-import org.jfree.report.event.ReportListener;
+import org.jfree.report.DataSourceException;
 
 /**
- * The interface for report functions.  A report function separates the business logic
- * from presentation of the result.  The function is called whenever JFreeReport changes
- * its state while generating the report. The working model for the functions is based on
- * cloning the state of the function on certain checkpoints to support the ReportState
- * implementation of JFreeReport.
+ * The interface for report functions.  A report function separates the business
+ * logic from presentation of the result.
  * <p/>
- * Although functions support the ReportListener interface, they are not directly added to
- * a report. A report FunctionCollection is used to control the functions. Functions are
- * required to be cloneable.
- * <p/>
+ * Since JFreeReport 0.9 functions are considered immutable. During the
+ * advancement process, the function returns a new instance with the updated
+ * state.
  *
  * @author Thomas Morgner
  */
-public interface Function extends ReportListener, Expression
+public interface Function extends Expression
 {
+  /**
+   * When the advance method is called, the function is asked to perform the
+   * next step of its computation.
+   * <p/>
+   * The original function must not be altered during that step (or more
+   * correctly, calling advance on the original expression again must not return
+   * a different result).
+   *
+   * @return a copy of the function containing the new state.
+   */
+  public Function advance() throws DataSourceException;
 }

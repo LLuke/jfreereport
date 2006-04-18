@@ -3,12 +3,11 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2004, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
- /**
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
  * either version 2.1 of the License, or (at your option) any later version.
@@ -24,12 +23,12 @@
  * --------------------------
  * SurveyScaleLegendItem.java
  * --------------------------
- * (C)opyright 2004, by Object Refinery Limited.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleLegendItem.java,v 1.3 2005/02/04 19:22:55 taqua Exp $
+ * $Id: SurveyScaleLegendItem.java,v 1.4 2005/08/29 17:56:46 taqua Exp $
  *
  * Changes
  * -------

@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: IsExportTypeExpression.java,v 1.1 2006/02/08 18:04:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -72,7 +72,7 @@ public class IsExportTypeExpression extends AbstractExpression
     {
       return Boolean.FALSE;
     }
-    if (getRuntime().getExportDescriptor().startsWith(exportType))
+    if (getRuntime().getOutputMetaData().getExportDescriptor().startsWith(exportType))
     {
       return Boolean.TRUE;
     }

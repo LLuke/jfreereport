@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * ----------------------------------
  * ScrollableResultSetTableModel.java
  * ----------------------------------
- * (C)opyright 2002, 2003, by Thomas Morgner.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.7 2005/02/23 21:05:26 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.8 2005/08/08 15:36:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.report.util.CloseableTableModel;
 import org.jfree.util.Log;
 
 /**

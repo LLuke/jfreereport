@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: DateExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
+ * $Id: DateExpression.java,v 1.2 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,8 +39,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.jfree.report.ResourceBundleFactory;
+import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 20.01.2006, 18:50:12
@@ -202,14 +203,16 @@ public class DateExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Calendar calendar = getCalendar();
     configureCalendar(calendar);
     return calendar.getTime();
   }
 
-  protected void configureCalendar(final Calendar calendar) {
+  protected void configureCalendar(final Calendar calendar) throws
+          DataSourceException
+  {
     if (time != null)
     {
       calendar.setTime(new Date(time.longValue()));
@@ -265,7 +268,6 @@ public class DateExpression extends AbstractExpression
 
   protected Calendar getCalendar()
   {
-    ResourceBundleFactory rf = getResourceBundleFactory();
-    return Calendar.getInstance(rf.getLocale());
+    return Calendar.getInstance(getParentLocale());
   }
 }

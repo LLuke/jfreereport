@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: VariableDateExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,9 @@ package org.jfree.report.function.date;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import org.jfree.report.DataSourceException;
+import org.jfree.report.function.ExpressionDependencyInfo;
 
 /**
  * Creation-Date: 20.01.2006, 19:04:24
@@ -62,6 +65,18 @@ public class VariableDateExpression extends DateExpression
 
   public VariableDateExpression()
   {
+  }
+
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{
+            getMonthField(), getYearField(), getHourField(),
+            getMinuteField(), getSecondField(), getMilliSecondField(),
+            getTimeField(), getDayOfWeekField(), getDayOfYearField(),
+            getDayOfMonthField(), getDayOfWeekInMonthField(), getTimeZoneField()
+    });
   }
 
   public String getMonthField()
@@ -185,6 +200,7 @@ public class VariableDateExpression extends DateExpression
   }
 
   protected void configureCalendar(final Calendar calendar)
+          throws DataSourceException
   {
     // first add the hardcoded values, if any ...
     super.configureCalendar(calendar);
@@ -262,6 +278,7 @@ public class VariableDateExpression extends DateExpression
   }
 
   private void trySetField(Calendar calendar, int field, String column)
+          throws DataSourceException
   {
     if (column == null)
     {

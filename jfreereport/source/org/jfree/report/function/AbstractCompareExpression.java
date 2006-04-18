@@ -27,13 +27,15 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: AbstractCompareExpression.java,v 1.1 2006/01/27 20:13:35 taqua Exp $
  *
  * Changes
  * -------------------------
  * 27.01.2006 : Initial version
  */
 package org.jfree.report.function;
+
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 27.01.2006, 20:38:41
@@ -62,7 +64,7 @@ public abstract class AbstractCompareExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Object o = getDataRow().get(getField());
 
@@ -79,7 +81,7 @@ public abstract class AbstractCompareExpression extends AbstractExpression
       {
         return Boolean.FALSE;
       }
-      
+
       int result = c.compareTo(comparable);
 
       final String method = getCompareMethod();
@@ -159,6 +161,12 @@ public abstract class AbstractCompareExpression extends AbstractExpression
     this.compareMethod = compareMethod;
   }
 
-  protected abstract Comparable getComparable();
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{getField()});
+  }
+
+  protected abstract Comparable getComparable() throws DataSourceException;
 
 }

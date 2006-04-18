@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Info:  http://www.jfree.org/jfreereport/
+ * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------------------
  * JFreeReportCoreModule.java
  * ------------------------------
- * (C)opyright 2003, by Thomas Morgner and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.11 2005/09/07 14:23:49 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.12 2005/09/19 15:38:44 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,12 +43,6 @@ import java.io.InputStream;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.resourceloader.DrawableFactory;
-import org.jfree.report.resourceloader.GIFImageFactoryModule;
-import org.jfree.report.resourceloader.ImageFactory;
-import org.jfree.report.resourceloader.JPEGImageFactoryModule;
-import org.jfree.report.resourceloader.PNGImageFactoryModule;
-import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 
@@ -120,17 +114,5 @@ public class JFreeReportCoreModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
-    final ImageFactory factory = ImageFactory.getInstance();
-
-    factory.registerModule(new PNGImageFactoryModule());
-    factory.registerModule(new GIFImageFactoryModule());
-    factory.registerModule(new JPEGImageFactoryModule());
-    if (JFreeReportInfo.isPixieAvailable())
-    {
-      Log.info("Pixie library found. WMF file support will be available.");
-      factory.registerModule("org.jfree.report.resourceloader.WmfImageFactoryModule");
-      final DrawableFactory drawableFactory = DrawableFactory.getInstance();
-      drawableFactory.registerModule("org.jfree.report.resourceloader.WmfImageFactoryModule");
-    }
   }
 }

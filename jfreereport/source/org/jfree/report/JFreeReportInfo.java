@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2006, by Thomas Morgner, Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * --------------------
  * JFreeReportInfo.java
  * --------------------
- * (C)opyright 2000-2006, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.39 2005/12/27 09:25:02 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.40 2006/01/27 18:50:52 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,6 +45,8 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
+import org.jfree.resourceloader.LibLoaderInfo;
+import org.jfree.serializer.JCommonSerializerInfo;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.Licences;
@@ -59,14 +61,45 @@ import org.jfree.util.ObjectUtilities;
 public class JFreeReportInfo extends ProjectInfo
 {
   /**
+   * This namespace covers all current reporting structures. These structures
+   * are not being forwarded to libLayout and should be treated to be generally
+   * invisible for all non-liblayout output targets.
+   *
+   * This is not an XML namespace, so dont expect to see documents using that
+   * namespace. It is purely internal.
+   */
+  public static final String REPORT_NAMESPACE =
+          "http://jfreereport.sourceforge.net/namespaces/engine/flow";
+  /**
+   * This namespace contains the compatibility layer for the old JFreeReport
+   * structures.
+   *
+   * This is not an XML namespace, so dont expect to see documents using that
+   * namespace. It is purely internal.
+   */
+  public static final String COMPATIBILITY_NAMESPACE =
+          "http://jfreereport.sourceforge.net/namespaces/engine/compatibility";
+
+  private static JFreeReportInfo instance;
+
+  public static synchronized JFreeReportInfo getInstance()
+  {
+    if (instance == null)
+    {
+      instance = new JFreeReportInfo();
+    }
+    return instance;
+  }
+
+  /**
    * Constructs an object containing information about the JFreeReport project.
    * <p/>
    * Uses a resource bundle to localise some of the information.
    */
-  public JFreeReportInfo ()
+  private JFreeReportInfo ()
   {
     setName("JFreeReport");
-    setVersion("0.8.7");
+    setVersion("0.9.0");
     setInfo("http://www.jfree.org/jfreereport/");
     setCopyright
             ("(C)opyright 2000-2006, by Thomas Morgner, Object Refinery Limited and Contributors");
@@ -94,19 +127,18 @@ public class JFreeReportInfo extends ProjectInfo
     }));
 
     addLibrary(JCommon.INFO);
-    addDependency(JCommon.INFO);
+    addLibrary(JCommonSerializerInfo.getInstance());
+    addLibrary(LibLoaderInfo.getInstance());
 
     final BootableProjectInfo pixieLibraryInfo = tryLoadPixieInfo();
     if (pixieLibraryInfo != null)
     {
       addLibrary(pixieLibraryInfo);
-      addDependency(pixieLibraryInfo);
     }
     final BootableProjectInfo libfontsLibraryInfo = tryLoadLibFontInfo();
     if (libfontsLibraryInfo != null)
     {
       addLibrary(libfontsLibraryInfo);
-      addDependency(libfontsLibraryInfo);
     }
   }
 

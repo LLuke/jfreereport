@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DateSpanExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,8 @@ package org.jfree.report.function.date;
 import java.util.Date;
 
 import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.function.ExpressionDependencyInfo;
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 20.01.2006, 19:13:39
@@ -79,7 +81,7 @@ public class DateSpanExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     if (startDateField == null)
     {
@@ -104,4 +106,12 @@ public class DateSpanExpression extends AbstractExpression
     Date end = (Date) endRaw;
     return new Date(end.getTime() - start.getTime());
   }
+
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{getStartDateField(), getEndDateField()});
+  }
+
 }

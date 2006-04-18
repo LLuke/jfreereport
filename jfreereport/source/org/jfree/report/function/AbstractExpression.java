@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.10 2006/01/20 19:50:51 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.11 2006/01/24 18:58:29 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,10 @@
 package org.jfree.report.function;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.jfree.report.DataRow;
-import org.jfree.report.ResourceBundleFactory;
+import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.util.Configuration;
 
 /**
@@ -63,13 +64,12 @@ public abstract class AbstractExpression implements Expression, Serializable
   /** The expression name. */
   private String name;
 
-  /** The dependency level. */
-  private int dependency;
-
   /** The data row. */
   private transient ExpressionRuntime runtime;
 
-  private boolean active;
+  private boolean precompute;
+  private boolean deepTraversal;
+  private boolean exported;
 
   /**
    * Creates an unnamed expression. Make sure the name of the expression is set
@@ -113,57 +113,7 @@ public abstract class AbstractExpression implements Expression, Serializable
   }
 
   /**
-   * Returns <code>true</code> if this expression contains "auto-active" content
-   * and should be called by the system regardless of whether this expression is
-   * referenced in the {@link DataRow}.
-   *
-   * @return true, if the expression is activated automaticly, false otherwise.
-   */
-  public final boolean isActive()
-  {
-    return active;
-  }
-
-  public final void setActive(final boolean active)
-  {
-    this.active = active;
-  }
-
-  /**
-   * Returns the dependency level for the expression (controls evaluation order
-   * for expressions and functions).
-   *
-   * @return the level.
-   */
-  public int getDependencyLevel()
-  {
-    return dependency;
-  }
-
-  /**
-   * Sets the dependency level for the expression.
-   * <p/>
-   * The dependency level controls the order of evaluation for expressions and
-   * functions. Higher level expressions are evaluated before lower level
-   * expressions.  Any level in the range 0 to Integer.MAX_VALUE is allowed.
-   * Negative values are reserved for system functions (printing and
-   * layouting).
-   *
-   * @param level the level (must be greater than or equal to 0).
-   */
-  public void setDependencyLevel(final int level)
-  {
-    if (level < 0)
-    {
-      throw new IllegalArgumentException(
-              "AbstractExpression.setDependencyLevel(...) : negative "
-                      + "dependency not allowed for user-defined expressions.");
-    }
-    this.dependency = level;
-  }
-
-  /**
-   * Returns the current {@link DataRow}.
+   * Returns the current {@link MasterDataRow}.
    *
    * @return the data row.
    */
@@ -210,7 +160,7 @@ public abstract class AbstractExpression implements Expression, Serializable
     }
   }
 
-  public ResourceBundleFactory getResourceBundleFactory()
+  protected ResourceBundleFactory getResourceBundleFactory()
   {
     if (runtime == null)
     {
@@ -219,13 +169,22 @@ public abstract class AbstractExpression implements Expression, Serializable
     return runtime.getResourceBundleFactory();
   }
 
-  public Configuration getReportConfiguration()
+  protected  Configuration getReportConfiguration()
   {
     if (runtime == null)
     {
       return null;
     }
     return runtime.getConfiguration();
+  }
+
+  protected Locale getParentLocale ()
+  {
+    if (runtime == null)
+    {
+      return null;
+    }
+    return runtime.getDeclaringParent().getLocale();
   }
 
   /**
@@ -243,5 +202,42 @@ public abstract class AbstractExpression implements Expression, Serializable
   protected ExpressionRuntime getRuntime()
   {
     return runtime;
+  }
+
+  public boolean isPrecompute()
+  {
+    return precompute;
+  }
+
+  public void setPrecompute(final boolean precompute)
+  {
+    this.precompute = precompute;
+  }
+
+  public boolean isDeepTraversal()
+  {
+    return deepTraversal;
+  }
+
+  public void setDeepTraversal(final boolean deepTraversal)
+  {
+    this.deepTraversal = deepTraversal;
+  }
+
+  public boolean isExported()
+  {
+    return exported;
+  }
+
+  public void setExported(final boolean exported)
+  {
+    this.exported = exported;
+  }
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    info.setDeepTraversal(deepTraversal);
+    info.setExported(exported);
+    info.setPrecompute(precompute);
   }
 }

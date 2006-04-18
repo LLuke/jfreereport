@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.8 2005/02/04 19:22:54 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.9 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,6 @@
 package org.jfree.report.function;
 
 import java.io.Serializable;
-
-import org.jfree.report.event.ReportEvent;
 
 /**
  * Base class for implementing new report functions.  Provides empty implementations of
@@ -83,107 +81,4 @@ public abstract class AbstractFunction extends AbstractExpression
   {
     setName(name);
   }
-
-  /**
-   * Receives notification that report generation initializes the current run. <P> The
-   * event carries a ReportState.Started state.  Use this to initialize the report.
-   *
-   * @param event The event.
-   */
-  public void reportInitialized (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that the report has started.
-   *
-   * @param event the event.
-   */
-  public void reportStarted (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that the report has finished.
-   *
-   * @param event the event.
-   */
-  public void reportFinished (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that a group has started.
-   *
-   * @param event the event.
-   */
-  public void groupStarted (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that a group has finished.
-   *
-   * @param event the event.
-   */
-  public void groupFinished (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that a row of data is being processed.
-   *
-   * @param event the event.
-   */
-  public void itemsAdvanced (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that a group of item bands is about to be processed. <P> The
-   * next events will be itemsAdvanced events until the itemsFinished event is raised.
-   *
-   * @param event The event.
-   */
-  public void itemsStarted (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that a group of item bands has been completed. <P> The itemBand
-   * is finished, the report starts to close open groups.
-   *
-   * @param event The event.
-   */
-  public void itemsFinished (final ReportEvent event)
-  {
-  }
-
-  /**
-   * Receives notification that report generation has completed, the report footer was
-   * printed, no more output is done. This is a helper event to shut down the output
-   * service.
-   *
-   * @param event The event.
-   */
-  public void reportDone (final ReportEvent event)
-  {
-    // does nothing...
-  }
-
-  /**
-   * Clones the function. <P> Be aware, this does not create a deep copy. If you have
-   * complex strucures contained in objects, you have to override this function.
-   *
-   * @return a clone of this function.
-   *
-   * @throws CloneNotSupportedException this should never happen.
-   */
-  public Object clone ()
-          throws CloneNotSupportedException
-  {
-    final AbstractFunction function = (AbstractFunction) super.clone();
-    return function;
-  }
-
 }

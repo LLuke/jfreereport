@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------
  * Worker.java
  * -----------
- * (C)opyright 2002, 2003 by Thomas Morgner and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.20 2005/09/20 15:38:23 taqua Exp $
+ * $Id: Worker.java,v 1.21 2005/11/17 17:03:49 taqua Exp $
  *
  *
  * Changes
@@ -46,8 +46,6 @@ package org.jfree.report.util;
  */
 public final class Worker extends Thread
 {
-  // Todo: this class is totally messed up. Needs work !
-
   /**
    * the worker's task.
    */
@@ -59,10 +57,6 @@ public final class Worker extends Thread
   private volatile boolean finish;
 
   /**
-   * the time in milliseconds beween 2 checks for exit or work requests.
-   */
-  private final int sleeptime;
-  /**
    * The worker pool, to which this worker is assigned. May be null.
    */
   private WorkerPool workerPool;
@@ -72,19 +66,10 @@ public final class Worker extends Thread
    *
    * @param sleeptime the time this worker sleeps until he checks for new work.
    */
-  public Worker (final int sleeptime)
-  {
-    this.sleeptime = sleeptime;
-    this.setDaemon(true);
-    start();
-  }
-
-  /**
-   * Creates a new worker with an default idle timeout of 2 minutes.
-   */
   public Worker ()
   {
-    this(120000);
+    this.setDaemon(true);
+    start();
   }
 
   /**
@@ -129,6 +114,7 @@ public final class Worker extends Thread
     try
     {
       this.interrupt();
+      this.notifyAll();
     }
     catch (SecurityException se)
     {
@@ -180,8 +166,7 @@ public final class Worker extends Thread
       {
         try
         {
-          // remove lock
-          this.wait(sleeptime);
+          this.wait();
         }
         catch (InterruptedException ie)
         {

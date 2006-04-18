@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ExpressionRuntime.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
+ * $Id: ExpressionRuntime.java,v 1.2 2006/02/08 18:03:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,10 +35,11 @@
  */
 package org.jfree.report.function;
 
-import javax.swing.table.TableModel;
-
+import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.report.ReportData;
 import org.jfree.report.DataRow;
-import org.jfree.report.ResourceBundleFactory;
+import org.jfree.report.structure.Element;
+import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.util.Configuration;
 
 /**
@@ -48,25 +49,27 @@ import org.jfree.util.Configuration;
  */
 public interface ExpressionRuntime
 {
+  /**
+   * Returns the datarow.
+   * 
+   * @return
+   */
   public DataRow getDataRow();
   public Configuration getConfiguration();
   public ResourceBundleFactory getResourceBundleFactory();
 
-  /** Access to the tablemodel was granted using report properties, now direct.*/
-  public TableModel getData();
-  /** Where are we in the current processing. */
-  public int getCurrentRow();
-
   /**
-   * The output descriptor is a simple string collections consisting of
-   * the following components: exportclass/type/subtype
+   * Returns the report data used in this section. If subreports are used,
+   * this does not reflect the complete report data.
+   * <p>
+   * All access to the report data must be properly synchronized. Failure to
+   * do so may result in funny results. Do not assume that the report data
+   * will be initialized on the current cursor positon.
    *
-   * For example, the PDF export would be: pageable/pdf
-   * The StreamHTML export would return table/html/stream
-   *
-   * @return the export descriptor.
+   * @return
    */
-  public String getExportDescriptor();
+  public ReportData getData();
+  public Element getDeclaringParent();
 
-  // JFreeReport 0.9.x will introduce libLayout's OutputProcessorMetaData here.
+  public OutputProcessorMetaData getOutputMetaData();
 }

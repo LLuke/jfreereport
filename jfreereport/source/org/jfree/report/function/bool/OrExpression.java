@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: OrExpression.java,v 1.1 2006/01/27 20:15:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -36,6 +36,7 @@
 package org.jfree.report.function.bool;
 
 import org.jfree.report.function.ColumnAggregationExpression;
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 27.01.2006, 21:09:20
@@ -54,14 +55,14 @@ public class OrExpression extends ColumnAggregationExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Object[] values = getFieldValues();
     if (values.length == 0)
     {
       return Boolean.FALSE;
     }
-    
+
     for (int i = 0; i < values.length; i++)
     {
       final Object value = values[i];

@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------------
  * WeakReferenceList.java
  * ----------------------
- * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: WeakReferenceList.java,v 1.7 2005/08/29 17:56:47 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.8 2005/11/17 17:03:49 taqua Exp $
  *
  * Changes
  * -------
@@ -62,11 +62,9 @@ import java.lang.ref.WeakReference;
  * To customize the list, override createReference to create a different kind of
  * reference.
  * <p/>
- * This list is able to add or replace elements, but inserting or removing of elements is
+ * This list is able to add or clearFromParent elements, but inserting or removing of elements is
  * not possible.
  * <p/>
- * Todo: Check, if the master computation can be removed - master seems to be always at
- * index 0
  *
  * @author Thomas Morgner
  */

@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,12 +26,12 @@
  * ------------
  * TypeMapper.java
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TypeMapper.java,v 1.4 2005/05/18 18:38:30 taqua Exp $
+ * $Id: TypeMapper.java,v 1.5 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import org.jfree.util.ObjectUtilities;
 
 /**
  * @author $Author: taqua $
- * @version $Id: TypeMapper.java,v 1.4 2005/05/18 18:38:30 taqua Exp $
+ * @version $Id: TypeMapper.java,v 1.5 2005/09/07 14:25:10 taqua Exp $
  */
 public class TypeMapper
 {

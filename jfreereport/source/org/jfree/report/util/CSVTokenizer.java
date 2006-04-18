@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Info:  http://www.jfree.org/jfreereport/
+ * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,14 +23,15 @@
  * ------------------------------
  * ConverterAttributes.java
  * ------------------------------
- * (C)opyright 2003, by Thomas Morgner and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ *
  * This class is based on the CSV tokenizer found at
  * http://sourceforge.net/projects/csvtokenizer/
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTokenizer.java,v 1.5 2005/02/23 21:06:05 taqua Exp $
+ * $Id: CSVTokenizer.java,v 1.6 2005/10/01 11:48:16 taqua Exp $
  *
  * Changes
  * -------------------------

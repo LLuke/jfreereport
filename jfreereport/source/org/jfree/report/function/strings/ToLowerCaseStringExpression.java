@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ToLowerCaseStringExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
+ * $Id: ToLowerCaseStringExpression.java,v 1.2 2006/02/10 14:58:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,8 +35,9 @@
  */
 package org.jfree.report.function.strings;
 
-import org.jfree.report.ResourceBundleFactory;
+import org.jfree.report.DataSourceException;
 import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.function.ExpressionDependencyInfo;
 
 /**
  * Creation-Date: 20.01.2006, 18:19:18
@@ -67,7 +68,7 @@ public class ToLowerCaseStringExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Object raw = getDataRow().get(getField());
     if (raw == null)
@@ -75,14 +76,13 @@ public class ToLowerCaseStringExpression extends AbstractExpression
       return null;
     }
     final String text = String.valueOf(raw);
-    final ResourceBundleFactory rf = getResourceBundleFactory();
-    if (rf == null)
-    {
-      return text.toUpperCase();
-    }
-    else
-    {
-      return text.toUpperCase(rf.getLocale());
-    }
+    return text.toLowerCase(getParentLocale());
   }
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{getField()});
+  }
+  
 }

@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Info:  http://www.jfree.org/jfreereport/
+ * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------------------
  * JFreeReportBoot.java
  * ------------------------------
- * (C)opyright 2003, by Thomas Morgner and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.11 2005/12/22 01:25:55 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.12 2006/02/10 14:58:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -218,7 +218,7 @@ public class JFreeReportBoot extends AbstractBoot
    */
   private JFreeReportBoot ()
   {
-    projectInfo = new JFreeReportInfo();
+    projectInfo = JFreeReportInfo.getInstance();
   }
 
   /**

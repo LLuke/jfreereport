@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------------
  * ResultSetTableModelFactory.java
  * -------------------------------
- * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.13 2005/08/08 15:36:32 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.14 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.util.CloseableTableModel;
 import org.jfree.util.Log;
 
 /**

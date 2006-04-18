@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: IsPositiveExpression.java,v 1.1 2006/01/27 20:15:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -36,6 +36,8 @@
 package org.jfree.report.function.numeric;
 
 import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.function.ExpressionDependencyInfo;
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 27.01.2006, 20:38:41
@@ -56,7 +58,7 @@ public class IsPositiveExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Object o = getDataRow().get(getField());
     if (o instanceof Number == false)
@@ -80,4 +82,11 @@ public class IsPositiveExpression extends AbstractExpression
   {
     this.field = field;
   }
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{getField()});
+  }
+  
 }

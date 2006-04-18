@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,12 +26,12 @@
  * ------------
  * JoiningTableModel.java
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JoiningTableModel.java,v 1.1 2005/04/15 19:01:29 taqua Exp $
+ * $Id: JoiningTableModel.java,v 1.2 2005/09/07 14:25:10 taqua Exp $
  *
  * Changes
  * -------

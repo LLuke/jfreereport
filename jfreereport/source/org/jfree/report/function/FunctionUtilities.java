@@ -3,7 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
  * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.15 2005/09/19 11:00:50 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.16 2005/10/01 11:48:16 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,11 @@ package org.jfree.report.function;
 
 import java.util.ArrayList;
 
-import org.jfree.report.Band;
-import org.jfree.report.Element;
-import org.jfree.report.Group;
-import org.jfree.report.event.ReportEvent;
+import org.jfree.report.structure.Element;
+import org.jfree.report.structure.Group;
+import org.jfree.report.structure.Node;
+import org.jfree.report.structure.Section;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A collection of utility methods relating to functions.
@@ -51,11 +52,8 @@ import org.jfree.report.event.ReportEvent;
  */
 public final class FunctionUtilities
 {
-
-  /**
-   * Default Constructor.
-   */
-  private FunctionUtilities ()
+  /** Default Constructor. */
+  private FunctionUtilities()
   {
   }
 
@@ -66,38 +64,52 @@ public final class FunctionUtilities
    * @param element the element name.
    * @return the found element or null, if no element could be found.
    */
-  public static Element findElement (final Band band, final String element)
+  public static Element findElement(final Element element,
+                                    final String namespace,
+                                    final String name)
   {
-    if (element == null)
+    if (name == null || namespace == null)
     {
       throw new NullPointerException("Element name must not be null");
     }
 
-    final Element[] elements = band.getElementArray();
-    if (band.getName().equals(element))
+    if (isMatch(element, namespace, name))
     {
-      return band;
+      return element;
     }
 
-    for (int i = 0; i < elements.length; i++)
+    if (element instanceof Section == false)
     {
-      final Element e = elements[i];
-      if (e.getName().equals(element))
+      return null;
+    }
+
+    final Section band = (Section) element;
+    final Node[] nodes = band.getNodeArray();
+    for (int i = 0; i < nodes.length; i++)
+    {
+      final Node n = nodes[i];
+      if (n instanceof Element == false)
       {
-        return e;
+        continue;
       }
-      if (e instanceof Band)
+      final Element e = (Element) n;
+      final Element retval = findElement(e, namespace, name);
+      if (retval != null)
       {
-        final Element retval = findElement((Band) e, element);
-        if (retval != null)
-        {
-          return retval;
-        }
+        return retval;
       }
     }
     return null;
   }
 
+  public static boolean isMatch(final Element element,
+                                final String namespace,
+                                final String name)
+  {
+    return ObjectUtilities.equal(element.getName(), name) &&
+            ObjectUtilities.equal(element.getNamespace(), namespace);
+  }
+
 
   /**
    * Try to find the defined element in the last active root-band.
@@ -106,112 +118,93 @@ public final class FunctionUtilities
    * @param element the element name.
    * @return the found element or null, if no element could be found.
    */
-  public static Element[] findAllElements (final Band band, final String element)
+  public static Element[] findAllElements(final Element element,
+                                          final String namespace,
+                                          final String name)
   {
     if (element == null)
     {
-      throw new NullPointerException("Element name must not be null");
+      throw new NullPointerException("Element must not be null");
     }
-    final ArrayList collector = new ArrayList();
-    if (band.getName().equals(element))
+    if (name == null)
     {
-      collector.add(band);
+      throw new NullPointerException("Name must not be null");
     }
-    performFindElement(band, element, collector);
-    return (Element[]) collector.toArray(new Element[collector.size()]);
+    if (element instanceof Section)
+    {
+      Section s = (Section) element;
+      final ArrayList collector = new ArrayList();
+      if (isMatch(s, namespace, name))
+      {
+        collector.add(s);
+      }
+      performFindElement(s, namespace, name, collector);
+      return (Element[]) collector.toArray(new Element[collector.size()]);
+    }
+    else
+    {
+      if (isMatch(element, namespace, name))
+      {
+        return new Element[]{element};
+      }
+      return new Element[0];
+    }
   }
 
-  private static void performFindElement (final Band band, final String element,
-                                          final ArrayList collector)
+  private static void performFindElement(final Section band,
+                                         final String namespace,
+                                         final String name,
+                                         final ArrayList collector)
   {
-    final Element[] elements = band.getElementArray();
+    final Node[] elements = band.getNodeArray();
     for (int i = 0; i < elements.length; i++)
     {
-      final Element e = elements[i];
-      if (e.getName().equals(element))
+
+      final Node n = elements[i];
+      if (n instanceof Element == false)
+      {
+        continue;
+      }
+      final Element e = (Element) n;
+      if (isMatch(e, namespace, name))
       {
         collector.add(e);
       }
-      if (e instanceof Band)
+      if (e instanceof Section)
       {
-        performFindElement((Band) e, element, collector);
+        performFindElement((Section) e, namespace, name, collector);
       }
     }
   }
 
-  /**
-   * Returns true if the events current groupname is equal to the group name.
-   *
-   * @param groupName the group name.
-   * @param event     the report event.
-   * @return A boolean.
-   */
-  public static boolean isDefinedGroup (final String groupName, final ReportEvent event)
+  public static Group getSubGroup(final Element element, final String groupName)
   {
     if (groupName == null)
     {
-      return false;
+      throw new NullPointerException("Group name must not be null");
     }
 
-    final Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    return groupName.equals(group.getName());
-  }
-
-  /**
-   * Returns true, if the current run level is defined for the given function and this is
-   * a prepare run. The prepare run is used to compute the function values.
-   *
-   * @param f     the function.
-   * @param event the event.
-   * @return A boolean.
-   */
-  public static boolean isDefinedPrepareRunLevel (final Function f,
-                                                  final ReportEvent event)
-  {
-    if (f == null)
+    if (element instanceof Section == false)
     {
-      throw new NullPointerException("Function is null");
+      return null;
     }
 
-    if (event == null)
+    final Section band = (Section) element;
+    final Node[] nodes = band.getNodeArray();
+    for (int i = 0; i < nodes.length; i++)
     {
-      throw new NullPointerException("ReportEvent is null");
-    }
+      final Node n = nodes[i];
+      if (n instanceof Section == false)
+      {
+        continue;
+      }
 
-    if (event.getState().isPrepareRun() == false)
-    {
-      return false;
+      final Group retval = getSubGroup((Section) n, groupName);
+      if (retval != null)
+      {
+        return retval;
+      }
     }
-    return (event.getState().getLevel() == f.getDependencyLevel());
-  }
-
-  /**
-   * Returns true or false.
-   *
-   * @param event the report event.
-   * @return A boolean.
-   */
-  public static boolean isLayoutLevel (final ReportEvent event)
-  {
-    if (event == null)
-    {
-      throw new NullPointerException("ReportEvent is null");
-    }
-    return (event.getState().getLevel() < 0);
-  }
-
-  /**
-   * Returns the current group instance, based on the given report event.
-   *
-   * @param event the event which is base for the action.
-   * @return the current group of the event, never null.
-   */
-  public static Group getCurrentGroup (final ReportEvent event)
-  {
-    if (event == null)
-    {
-      throw new NullPointerException("ReportEvent is null");
-    }
-    return event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+    return null;
   }
 }

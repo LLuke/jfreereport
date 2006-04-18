@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TokenizeStringExpression.java,v 1.1 2006/01/24 14:17:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,8 @@ package org.jfree.report.function.strings;
 import java.util.StringTokenizer;
 
 import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.function.ExpressionDependencyInfo;
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 22.01.2006, 14:38:02
@@ -112,7 +114,7 @@ public class TokenizeStringExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Object raw = getDataRow().get(getField());
     if (raw == null)
@@ -146,4 +148,12 @@ public class TokenizeStringExpression extends AbstractExpression
 
     return buffer.toString();
   }
+
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{getField()});
+  }
+  
 }

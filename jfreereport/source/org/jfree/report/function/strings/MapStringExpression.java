@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: MapStringExpression.java,v 1.1 2006/01/20 19:50:52 taqua Exp $
+ * $Id: MapStringExpression.java,v 1.2 2006/02/10 14:58:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.function.ExpressionDependencyInfo;
+import org.jfree.report.DataSourceException;
 
 /**
  * Maps a string read from a column into an other string. The possible mappings
@@ -192,7 +194,7 @@ public class MapStringExpression extends AbstractExpression
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue() throws DataSourceException
   {
     Object raw = getDataRow().get(getField());
     if (raw == null)
@@ -226,4 +228,12 @@ public class MapStringExpression extends AbstractExpression
     }
     return raw;
   }
+
+
+  public void queryDependencyInfo(final ExpressionDependencyInfo info)
+  {
+    super.queryDependencyInfo(info);
+    info.setDependendFields(new String[]{getField()});
+  }
+
 }
