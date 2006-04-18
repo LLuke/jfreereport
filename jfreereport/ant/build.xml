@@ -107,6 +107,16 @@
       <fileset dir="source"/>
     </copy>
 
+    <!-- copy across source files -->
+    <copy todir="distribution/resource">
+      <fileset dir="resource"/>
+    </copy>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
+    </copy>
+
     <!-- copy across ant build file (this file) -->
     <copy file="ant/build.xml"
       tofile="distribution/ant/build.xml" failonerror="false"/>
