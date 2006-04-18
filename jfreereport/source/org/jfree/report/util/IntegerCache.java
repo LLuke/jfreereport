@@ -1,12 +1,12 @@
 /**
  * ========================================
- * JFreeReport : a free Java report library
+ * <libname> : a free Java <foobar> library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,40 +20,48 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------
- * CloseableTableModel.java
- * ------------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ---------
+ * IntegerCache.java
+ * ---------
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributors: -;
  *
- * $Id: CloseableTableModel.java,v 1.4 2005/02/23 21:06:05 taqua Exp $
+ * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
- * -------
- * 09-Jun-2002 : Initial version to correct the fact, that resultsets are not closed when
- *               the tablemodel is no longer in use.
- * 10-Dec-2002 : Minor Javadoc updates (DG);
- *
+ * -------------------------
+ * 03.03.2006 : Initial version
  */
-
 package org.jfree.report.util;
 
-import javax.swing.table.TableModel;
-
 /**
- * Extends the TableModel interface to be closeable. SQLResultSets need to be closed for
- * instance.
+ * Creation-Date: 03.03.2006, 12:36:07
  *
  * @author Thomas Morgner
  */
-public interface CloseableTableModel extends TableModel
+public class IntegerCache
 {
-  /**
-   * If this model has a resultset assigned, close it, if this is a DefaultTableModel,
-   * remove all data.
-   */
-  public void close ();
+  private static Integer[] cachedNumbers;
 
+  static
+  {
+    cachedNumbers = new Integer[1000];
+    for (int i = 0; i < cachedNumbers.length; i++)
+    {
+      cachedNumbers[i] = new Integer(i);
+    }
+  }
+
+  private IntegerCache()
+  {
+  }
+
+  public static Integer getInteger(int i)
+  {
+    if (i < 0) return new Integer(i);
+    if (i > 999) return new Integer(i);
+    return cachedNumbers[i];
+  }
 }

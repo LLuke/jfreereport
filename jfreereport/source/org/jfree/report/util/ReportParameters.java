@@ -3,10 +3,10 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
+ * Project Info:  http://www.jfree.org/jfreereport/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ---------------------
- * ReportProperties.java
+ * ReportParameters.java
  * ---------------------
- * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.6 2005/02/23 21:06:06 taqua Exp $
+ * $Id: ReportProperties.java,v 1.7 2005/03/16 21:06:50 taqua Exp $
  *
  * Changes
  * -------
@@ -37,39 +37,21 @@
  * 09-Jun-2002 : Documentation
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 16-Jan-2003 : BugFix: Properties could not be marked when no value was set.
+ * 17-Apr-2006 : Renamed and refactored to 'ReportParameters'
  */
 
 package org.jfree.report.util;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
 
 /**
- * The report properties is a hashtable with string keys. ReportProperties are bound to a
- * report as a general purpose storage. ReportProperties bound to a JFreeReport object are
- * visible to all generated report-state chains. A ReportState will inherit all
- * ReportProperties bound to the JFreeReport-object when the ReportState.StartState object
- * is created.  Properties bound to the report definition after the report state is
- * created are not visible to the ReportState and its children.
- * <p/>
- * ReportProperties bound to a ReportState are not visible to the report definition (the
- * JFreeReport object), but are visible to all ReportStates of that ReportState-chain. So
- * when you add a property at the end of a report run to a ReportState, the value of this
- * property will be visible to all ReportStates when the report is restarted at a certain
- * point.
- * <p/>
- * ReportProperties can be seen as a stateless shared report internal storage area. All
- * functions have access to the properties by using the ReportState.getProperty() and
- * ReportState.setProperty() functions.
- * <p/>
- * For a list of defined default properties, have a look at the
- * {@link org.jfree.report.JFreeReport} class.
+ * The report parameters collection is a map with string keys. The parameters
+ * can be used in a query and will appear as part of the datarow. 
  *
  * @author Thomas Morgner
  */
-public class ReportProperties implements Serializable, Cloneable
+public final class ReportParameters implements Serializable, Cloneable
 {
   /**
    * Storage for the properties.
@@ -77,29 +59,21 @@ public class ReportProperties implements Serializable, Cloneable
   private HashMap properties;
 
   /**
-   * Marked property names.
-   */
-  private TreeSet markedProperties;
-
-  /**
    * Copy constructor.
    *
    * @param props an existing ReportProperties instance.
    */
-  public ReportProperties (final ReportProperties props)
+  public ReportParameters (final ReportParameters props)
   {
     this.properties = new HashMap(props.properties);
-    this.markedProperties = new TreeSet();
   }
 
   /**
    * Default constructor.
    */
-  public ReportProperties ()
+  public ReportParameters ()
   {
     this.properties = new HashMap();
-    this.markedProperties = new TreeSet();
-    this.markedProperties = new TreeSet();
   }
 
   /**
@@ -170,16 +144,13 @@ public class ReportProperties implements Serializable, Cloneable
   }
 
   /**
-   * Returns all property keys as enumeration.
+   * Returns all property keys as array.
    *
    * @return an enumeration of the property keys.
    */
-  public Iterator keys ()
+  public String[] keys ()
   {
-    final TreeSet list = new TreeSet();
-    list.addAll(this.properties.keySet());
-    list.addAll(this.markedProperties);
-    return list.iterator();
+    return (String[]) this.properties.keySet().toArray(new String[properties.size()]);
   }
 
   /**
@@ -216,58 +187,13 @@ public class ReportProperties implements Serializable, Cloneable
   public Object clone ()
           throws CloneNotSupportedException
   {
-    final ReportProperties p = (ReportProperties) super.clone();
+    final ReportParameters p = (ReportParameters) super.clone();
     p.properties = (HashMap) this.properties.clone();
-    p.markedProperties = (TreeSet) this.markedProperties.clone();
     return p;
   }
 
-  /**
-   * Marks a property.
-   *
-   * @param property the property key.
-   * @param marked   boolean.
-   */
-  public void setMarked (final String property, final boolean marked)
+  public int size()
   {
-    if (property == null)
-    {
-      throw new NullPointerException
-              ("ReportProperties.setMarked (..): Parameter property must not be null");
-    }
-    if (marked)
-    {
-      this.markedProperties.add(property);
-    }
-    else
-    {
-      this.markedProperties.remove(property);
-    }
-  }
-
-  /**
-   * Returns true if the specified property is marked, and false otherwise.
-   *
-   * @param property the property key.
-   * @return true for marked properties, false otherwise.
-   */
-  public boolean isMarked (final String property)
-  {
-    if (property == null)
-    {
-      throw new NullPointerException
-              ("ReportProperties.isMarked (..): Parameter property must not be null");
-    }
-    return this.markedProperties.contains(property);
-  }
-
-  /**
-   * Returns true, if there is at least one marked property.
-   *
-   * @return true, if there are some properties marked, false otherwise.
-   */
-  public boolean containsMarkedProperties ()
-  {
-    return markedProperties.isEmpty() == false;
+    return properties.size();
   }
 }
