@@ -1,0 +1,85 @@
+#
+# This file is non declarative.
+
+pagebreak-before:             style: page-break-before
+  true                            always
+  false                           avoid
+
+pagebreak-after:              style: page-break-after
+  true                            always
+  false                           avoid
+
+#
+# Report headers can span more than one page.
+# The old display-on-first page property is not longer bound to the page
+# number. We bind it to the report header and footer instead.
+display-on-first-page:        attr: rpt:page-header-print-option
+  true                            not-with-report-header
+  false                           not-with-report-footer
+                                  not-with-report-header-nor-footer
+
+display-on-last-page:        attr: rpt:page-footer-print-option
+  true                            not-with-report-header
+  false                           not-with-report-footer
+                                  not-with-report-header-nor-footer
+
+
+#
+# Data element properties
+                             attr: rpt:suppress-line-if-blank
+                                  true
+                                  false
+
+# This is solved using element properties.
+#                             attr: rpt:print-repeated-values
+#                                  true
+#                                  false
+
+Content-Element properties:
+   is-numeric
+   is-date
+   is-null
+   is-zero
+   is-negative
+   is-positive
+   is-repeat
+   (userdefined properties possible..)
+   (Stylesheet can pick them up as attributes)
+
+
+
+?? Dynamic-content ??
+?? Href ?? -> Attribute
+
+Anchors are added as extra attributes 'report::anchor'. It is possible to
+give local anchors using the <a name=".."> tag, but the attribute anchor allows
+the generation of that weird stuff.
+
+
+-----------------
+
+DataRow advancement order.
+
+Principle: You cant see what has not yet been declared. A function can and
+should use only already defined functions (or the underlying datasource).
+
+ -> Oldest DataRow advances first.
+
+DataRow-Group advancement:
+
+Principle: A ship at sea is its own world. A subreport's function
+cannot access functions from outside, nor can a common outsider receive messages
+from inside. Exception: Deep-traversal functions may receive and access the
+deeper levels.
+
+--> Rule: Inner subreports are advanced before outer subreports. This way the
+deep traversing functions will see the correct result.
+
+--> Newest DR-Group first.
+
+
+-------------
+Deep-Traversing expressions get access to the global datarow, which allows to
+see all data from all currently open datarows. They do not have access to the
+report data instance, as there is no single unique report data instance for such
+complex reports.
