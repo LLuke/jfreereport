@@ -5,43 +5,6 @@
   -x-liblayout-language: attr("xml|lang");
 }
 
-resource-node {
-  content: attr(content);
-}
-
-external-node {
-  content: attr(content);
-}
-
-content-node {
-  content: attr(content);
-  display: inline;
-}
-
-content-node[isDate=true] {
-  content: format(attr(content), date);
-}
-
-content-node[isDate=true][format] {
-  content: format(attr(content), date, attr(format,string));
-}
-
-content-node[isNumber=true] {
-  content: format(attr(content), number, "#,##0.00");
-}
-
-content-node[isNumber=true][format] {
-  content: format(attr(content), number, attr(format,string));
-}
-
-content-node[isNumber=true][isInteger=true] {
-  content: format(attr(content), number, "#,##0");
-}
-
-content-node[isNumber=true][isInteger=true][format] {
-  content: format(attr(content), number, attr(format,string));
-}
-
 /** todo: An CSS3 parser would accept li::marker instead. */
 li-marker {
   margin-right: 1em;

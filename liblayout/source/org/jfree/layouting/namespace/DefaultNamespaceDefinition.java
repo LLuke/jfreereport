@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultNamespaceDefinition.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,6 @@
 package org.jfree.layouting.namespace;
 
 import org.jfree.resourceloader.ResourceKey;
-import org.jfree.resourceloader.ResourceManager;
-import org.jfree.resourceloader.ResourceKeyCreationException;
-import org.jfree.util.Log;
 
 /**
  * A default implementation of the NamespaceDefinition interface. This
@@ -54,43 +51,6 @@ import org.jfree.util.Log;
  */
 public class DefaultNamespaceDefinition implements NamespaceDefinition
 {
-  public static final NamespaceDefinition HTML;
-  public static final NamespaceDefinition LIBLAYOUT;
-  public static final DefaultNamespaceDefinition XHTML;
-
-  static
-  {
-    ResourceManager resourceManager = new ResourceManager();
-    resourceManager.registerDefaults();
-    ResourceKey htmlKey = null;
-    try
-    {
-      htmlKey = resourceManager.createKey
-              ("res://org/jfree/layouting/html.css");
-    }
-    catch (ResourceKeyCreationException e)
-    {
-      Log.warn ("Unable to create resource manager for HTML namespace");
-    }
-    HTML = new DefaultNamespaceDefinition
-            (Namespaces.HTML_NAMESPACE, htmlKey, "class", "style", "html");
-    XHTML = new DefaultNamespaceDefinition
-            (Namespaces.XHTML_NAMESPACE, htmlKey, "class", "style", "html");
-
-    ResourceKey libLayoutKey = null;
-    try
-    {
-      libLayoutKey = resourceManager.createKey
-              ("res://org/jfree/layouting/liblayout.css");
-    }
-    catch (ResourceKeyCreationException e)
-    {
-      Log.warn ("Unable to create resource manager for LibLayout namespace");
-    }
-    LIBLAYOUT = new DefaultNamespaceDefinition
-            (Namespaces.LIBLAYOUT_NAMESPACE, libLayoutKey, "class", "style", "liblayout");
-  }
-
   private String uri;
   private String classAttribute;
   private String styleAttribute;

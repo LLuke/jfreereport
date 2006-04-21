@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AttrFunction.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,11 @@ import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.values.CSSRawValue;
+import org.jfree.layouting.layouter.style.values.CSSResourceValue;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.util.ColorUtil;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.Resource;
 
 /**
  * Creation-Date: 15.04.2006, 18:33:56
@@ -159,6 +161,10 @@ public class AttrFunction extends AbstractStyleFunction
     else if (value instanceof URL)
     {
       return convertToURI(layoutProcess, value);
+    }
+    else if (value instanceof Resource)
+    {
+      return new CSSResourceValue((Resource) value);
     }
     else if (value instanceof ResourceKey)
     {

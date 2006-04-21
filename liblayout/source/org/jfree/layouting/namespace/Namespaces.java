@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Namespaces.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,15 @@
  *
  */
 package org.jfree.layouting.namespace;
+
+import java.util.Iterator;
+import java.util.ArrayList;
+
+import org.jfree.resourceloader.ResourceException;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * Known and supported namespaces.
@@ -50,15 +59,11 @@ public final class Namespaces
   public static final String LIBLAYOUT_NAMESPACE =
           "http://jfreereport.sourceforge.net/namespaces/layout";
 
-  /**
-   * The XML-Namespace is used for the 'id' attribute.
-   */
+  /** The XML-Namespace is used for the 'id' attribute. */
   public static final String XML_NAMESPACE =
           "http://www.w3.org/XML/1998/namespace";
 
-  /**
-   * The XML-Namespace is used for the 'id' attribute.
-   */
+  /** The XML-Namespace is used for the 'id' attribute. */
   public static final String HTML_NAMESPACE =
           "http://www.w3.org/TR/REC-html40";
   public static final String XHTML_NAMESPACE =
@@ -67,5 +72,54 @@ public final class Namespaces
 
   private Namespaces()
   {
+  }
+
+  public static NamespaceDefinition[] createFromConfig
+          (final Configuration config,
+           final String prefix,
+           final ResourceManager resourceManager)
+  {
+    final ArrayList retvals = new ArrayList();
+    final Iterator keys = config.findPropertyKeys(prefix);
+    while (keys.hasNext())
+    {
+      final String key = (String) keys.next();
+      if (key.endsWith(".Uri") == false)
+      {
+        continue;
+      }
+      final String nsPrefix = key.substring(0, key.length() - 3);
+      final String uri = config.getConfigProperty(key);
+      if (uri == null)
+      {
+        continue;
+      }
+      final String trimmedUri = uri.trim();
+      if (trimmedUri.length() == 0)
+      {
+        continue;
+      }
+      final String classAttr = config.getConfigProperty(nsPrefix + "ClassAttr");
+      final String styleAttr = config.getConfigProperty(nsPrefix + "StyleAttr");
+      final String prefixAttr = config.getConfigProperty(nsPrefix + "Prefix");
+      final String defaultStyle = config.getConfigProperty(
+              nsPrefix + "Default-Style");
+
+      ResourceKey styleResourceKey = null;
+      try
+      {
+        styleResourceKey = resourceManager.createKey(defaultStyle);
+      }
+      catch (ResourceException e)
+      {
+        // ignored ..
+        Log.info("Unable to create resourcekey for style " + trimmedUri);
+      }
+      retvals.add(new DefaultNamespaceDefinition
+              (trimmedUri, styleResourceKey, classAttr, styleAttr, prefixAttr));
+    }
+
+    return (NamespaceDefinition[])
+            retvals.toArray(new NamespaceDefinition[retvals.size()]);
   }
 }

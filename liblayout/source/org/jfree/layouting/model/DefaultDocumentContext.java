@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultDocumentContext.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,8 @@ import org.jfree.layouting.namespace.DefaultNamespaceCollection;
 import org.jfree.layouting.namespace.DefaultNamespaceDefinition;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.namespace.Namespaces;
+import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.HashNMap;
@@ -180,9 +182,16 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
   public void initialize()
   {
     namespaceCollection = new DefaultNamespaceCollection();
-    namespaceCollection.addDefinition(DefaultNamespaceDefinition.LIBLAYOUT);
-    namespaceCollection.addDefinition(DefaultNamespaceDefinition.HTML);
-    namespaceCollection.addDefinition(DefaultNamespaceDefinition.XHTML);
+
+    NamespaceDefinition[] defaults = Namespaces.createFromConfig
+            (LibLayoutBoot.getInstance().getGlobalConfig(),
+                    "org.jfree.layouting.namespaces.", getResourceManager());
+    for (int i = 0; i < defaults.length; i++)
+    {
+      final NamespaceDefinition definition = defaults[i];
+      namespaceCollection.addDefinition(definition);
+    }
+
     for (int i = 0; i < metaNodes.size(); i++)
     {
       final DocumentMetaNode metaNode = (DocumentMetaNode) metaNodes.get(i);

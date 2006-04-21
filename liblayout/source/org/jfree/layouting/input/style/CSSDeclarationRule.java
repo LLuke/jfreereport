@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSDeclarationRule.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -88,18 +88,6 @@ public abstract class CSSDeclarationRule extends StyleRule
     }
   }
 
-  // todo
-//  public String getPropertyValue(StyleKey propertyName)
-//  {
-//    CSSValue value = getPropertyCSSValue(propertyName);
-//    if (value == null)
-//    {
-//      return null;
-//    }
-//    return value.getCSSText();
-//  }
-//
-
   public CSSValue getPropertyCSSValue(StyleKey propertyName)
   {
     return (CSSValue) declarations.get(propertyName);
@@ -123,20 +111,32 @@ public abstract class CSSDeclarationRule extends StyleRule
     StyleSheet parent = getParentStyle();
     if (parent != null)
     {
-      CSSValue cssValue = StyleSheetParserUtil.parseStyleValue
+      final CSSStyleRule cssValues = StyleSheetParserUtil.parseStyles
               (parent.getNamespaces(), name, value, resourceManager, source);
-      if (cssValue != null)
+      if (cssValues != null)
       {
-        setPropertyValue(name, cssValue);
+        final Iterator keys = cssValues.getPropertyKeys();
+        while (keys.hasNext())
+        {
+          StyleKey key = (StyleKey) keys.next();
+          setPropertyValue(name, cssValues.getPropertyCSSValue(key));
+          setImportant(key, cssValues.isImportant(key));
+        }
       }
     }
     else
     {
-      CSSValue cssValue = StyleSheetParserUtil.parseStyleValue
+      final CSSStyleRule cssValues = StyleSheetParserUtil.parseStyles
               (null, name, value, resourceManager, source);
-      if (cssValue != null)
+      if (cssValues != null)
       {
-        setPropertyValue(name, cssValue);
+        final Iterator keys = cssValues.getPropertyKeys();
+        while (keys.hasNext())
+        {
+          StyleKey key = (StyleKey) keys.next();
+          setPropertyValue(name, cssValues.getPropertyCSSValue(key));
+          setImportant(key, cssValues.isImportant(key));
+        }
       }
     }
   }
