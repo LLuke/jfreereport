@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Element.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -210,7 +210,7 @@ public abstract class Element extends Node
     return new AttributeMap(this.attributes);
   }
 
-  public String[] getNameSpaces()
+  public String[] getAttributeNameSpaces()
   {
     return this.attributes.getNameSpaces();
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultFlowControler.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class DefaultFlowControler implements FlowControler
     this.markStack = new Stack();
     this.expressionsStack = new Stack();
     this.dataRow = GlobalMasterRow.createReportRow();
-    this.dataRow.setParameterDataRow(new ParameterDataRow(job.getReport()));
+    this.dataRow.setParameterDataRow(new ParameterDataRow(job.getParameters()));
     this.job = job;
     lastTime = System.currentTimeMillis();
   }
@@ -165,8 +165,11 @@ public class DefaultFlowControler implements FlowControler
   }
 
   /**
-   * The constructor already added the parameter datarow, so that all defined
-   * input parameters are available.
+   * This should be called only once per report processing. A JFreeReport object
+   * defines the global master report - all other reports are subreport instances.
+   * <p/>
+   * The global master report receives its parameter set from the Job-Definition,
+   * while subreports will read their parameters from the current datarow state.
    *
    * @param report
    * @return
@@ -182,7 +185,7 @@ public class DefaultFlowControler implements FlowControler
             dataRow.getGlobalView());
     final GlobalMasterRow masterRow =
             GlobalMasterRow.createReportRow(dataRow);
-    masterRow.setParameterDataRow(new ParameterDataRow(report));
+    masterRow.setParameterDataRow(new ParameterDataRow(job.getParameters()));
     masterRow.setReportDataRow(ReportDataRow.createDataRow(data));
 
     DefaultFlowControler fc = new DefaultFlowControler(this, masterRow);
@@ -244,7 +247,7 @@ public class DefaultFlowControler implements FlowControler
     final StaticExpressionRuntimeData sdd = new StaticExpressionRuntimeData();
     sdd.setData(dataRow.getReportDataRow().getReportData());
     sdd.setDeclaringParent(element);
-    sdd.setConfiguration(rootReport.getConfiguration());
+    sdd.setConfiguration(job.getConfiguration());
     sdd.setResourceBundleFactory(report.getResourceBundleFactory());
     sdd.setOutputProcessorMetaData(job.getMetaData());
 

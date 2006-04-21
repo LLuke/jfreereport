@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportDefinition.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
  */
 package org.jfree.report.structure;
 
-import org.jfree.report.i18n.DefaultResourceBundleFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**

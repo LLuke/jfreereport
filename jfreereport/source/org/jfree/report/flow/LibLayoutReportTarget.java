@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutReportTarget.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.2 2006/04/18 13:32:50 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ package org.jfree.report.flow;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
@@ -52,6 +51,8 @@ import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.model.DocumentContext;
+import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
@@ -66,7 +67,6 @@ import org.jfree.report.util.AttributeMap;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 07.03.2006, 18:56:37
@@ -78,6 +78,7 @@ public class LibLayoutReportTarget implements ReportTarget
   private ResourceKey baseResource;
   private ResourceManager resourceManager;
   private InputFeed feed;
+  private ReportJob reportJob;
 
   /**
    *
@@ -85,7 +86,8 @@ public class LibLayoutReportTarget implements ReportTarget
    * @param resourceManager may be null, a generic resource manager will be built
    * @param feed
    */
-  public LibLayoutReportTarget(final ResourceKey basResourceKey,
+  public LibLayoutReportTarget(final ReportJob reportJob,
+                               final ResourceKey basResourceKey,
                                final ResourceManager resourceManager,
                                final InputFeed feed)
   {
@@ -93,6 +95,11 @@ public class LibLayoutReportTarget implements ReportTarget
     {
       throw new NullPointerException();
     }
+    if (reportJob == null)
+    {
+      throw new NullPointerException();
+    }
+    this.reportJob = reportJob;
     this.feed = feed;
     this.baseResource = basResourceKey;
 
@@ -108,6 +115,11 @@ public class LibLayoutReportTarget implements ReportTarget
 
   }
 
+  public ReportJob getReportJob()
+  {
+    return reportJob;
+  }
+
   protected InputFeed getInputFeed ()
   {
     return feed;
@@ -121,6 +133,18 @@ public class LibLayoutReportTarget implements ReportTarget
 
     feed.addDocumentAttribute(DocumentContext.BASE_RESOURCE_ATTR, report.getBaseResource());
     feed.addDocumentAttribute(DocumentContext.RESOURCE_MANAGER_ATTR, report.getResourceManager());
+
+    NamespaceDefinition[] namespaces = Namespaces.createFromConfig
+            (reportJob.getConfiguration(), "org.jfree.report.namespaces.",
+                    resourceManager);
+    for (int i = 0; i < namespaces.length; i++)
+    {
+      final NamespaceDefinition definition = namespaces[i];
+      feed.startMetaNode();
+      feed.setMetaNodeAttribute("type", "namespace");
+      feed.setMetaNodeAttribute("definition", definition);
+      feed.endMetaNode();
+    }
 
     final int size = report.getStyleSheetCount();
     for (int i = 0; i < size; i++)
@@ -162,19 +186,19 @@ public class LibLayoutReportTarget implements ReportTarget
     }
     else
     {
-      feed.startElement(Namespaces.LIBLAYOUT_NAMESPACE, "content-node");
+      feed.startElement(JFreeReportInfo.REPORT_NAMESPACE, "content-node");
     }
     Object styleAttributeValue = handleAttributes(node, runtime);
     CSSDeclarationRule rule = createStyle(styleAttributeValue, node, runtime);
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "style", rule);
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "content", value.getValue());
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isChanged", String.valueOf(value.isChanged()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isDate", String.valueOf(value.isDate()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNegative", String.valueOf(value.isNegative()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNull", String.valueOf(value.isNull()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isNumber", String.valueOf(value.isNumeric()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isPositive", String.valueOf(value.isPositive()));
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "isZero", String.valueOf(value.isZero()));
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "style", rule);
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "content", value.getValue());
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isChanged", String.valueOf(value.isChanged()));
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isDate", String.valueOf(value.isDate()));
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isNegative", String.valueOf(value.isNegative()));
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isNull", String.valueOf(value.isNull()));
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isNumber", String.valueOf(value.isNumeric()));
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isPositive", String.valueOf(value.isPositive()));
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isZero", String.valueOf(value.isZero()));
     //feed.addContent(String.valueOf(value.getValue()));
     feed.endElement();
   }
@@ -183,17 +207,13 @@ public class LibLayoutReportTarget implements ReportTarget
           throws DataSourceException
   {
     final String namespace = node.getNamespace();
-    if (JFreeReportInfo.REPORT_NAMESPACE.equals(namespace))
-    {
-      // we do not expose structural information ...
-      // content elements are also usually in that namespace, we
-      // skip them too..
-      return;
-    }
-
     if (JFreeReportInfo.COMPATIBILITY_NAMESPACE.equals(namespace))
     {
-      // hoho, a compatibility layer is what we need here.
+      // hoho, a compatibility layer is what we need here. Whenever we hit
+      // that namespace, this means that something strange is going on, which
+      // needs a smart conversion.
+      //
+      // Luckily, for now, there are no compatibility elements required.
       return;
     }
 
@@ -203,7 +223,7 @@ public class LibLayoutReportTarget implements ReportTarget
     Object styleAttributeValue = handleAttributes(node, runtime);
 
     CSSDeclarationRule rule = createStyle(styleAttributeValue, node, runtime);
-    feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "style", rule);
+    feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "style", rule);
   }
 
   private CSSDeclarationRule createStyle(final Object styleAttributeValue,
@@ -312,8 +332,8 @@ public class LibLayoutReportTarget implements ReportTarget
     for (int i = 0; i < attrNamespaces.length; i++)
     {
       final String namespace = attrNamespaces[i];
-      final boolean libLayoutNamespace =
-              Namespaces.LIBLAYOUT_NAMESPACE.equals(namespace);
+      final boolean jfreeReportNamespace =
+              JFreeReportInfo.REPORT_NAMESPACE.equals(namespace);
       final Map attributeMap = attributes.getAttributes(namespace);
       if (attributeMap == null)
       {
@@ -324,7 +344,7 @@ public class LibLayoutReportTarget implements ReportTarget
       {
         final Map.Entry entry = (Map.Entry) attributeIt.next();
         final String key = (String) entry.getKey();
-        if (libLayoutNamespace && "style".equals(key))
+        if (jfreeReportNamespace && "style".equals(key))
         {
           styleAttributeValue = entry.getValue();
         }
@@ -341,12 +361,6 @@ public class LibLayoutReportTarget implements ReportTarget
           throws DataSourceException
   {
     final String namespace = node.getNamespace();
-    if (JFreeReportInfo.REPORT_NAMESPACE.equals(namespace))
-    {
-      // we do not expose structural information ...
-      return;
-    }
-
     if (JFreeReportInfo.COMPATIBILITY_NAMESPACE.equals(namespace))
     {
       // hoho, a compatibility layer is what we need here.

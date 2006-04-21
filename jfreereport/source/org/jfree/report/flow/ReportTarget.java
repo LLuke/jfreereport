@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportTarget.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,13 @@
  */
 package org.jfree.report.flow;
 
-import org.jfree.report.DataSourceException;
 import org.jfree.report.DataFlags;
+import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.function.ExpressionRuntime;
-import org.jfree.report.structure.Node;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
+import org.jfree.report.structure.Node;
 
 /**
  * The report target is responsible for the content creation. There are targets
@@ -77,4 +77,5 @@ public interface ReportTarget
   void endReport (JFreeReport report)
           throws DataSourceException;
 
+  ReportJob getReportJob ();
 }

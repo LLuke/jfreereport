@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RawReportTarget.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -62,8 +62,16 @@ import org.jfree.report.structure.ContentElement;
  */
 public class RawReportTarget implements ReportTarget
 {
-  public RawReportTarget()
+  private ReportJob reportJob;
+
+  public RawReportTarget(ReportJob job)
   {
+    this.reportJob = job;
+  }
+
+  public ReportJob getReportJob()
+  {
+    return reportJob;
   }
 
   public void startReport(JFreeReport report) throws DataSourceException

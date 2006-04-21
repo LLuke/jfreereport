@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PaginatingReportProcessor.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public class PaginatingReportProcessor implements ReportProcessor
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
   }
 
   protected ReportTarget createGenerateTarget(ReportJob job)
@@ -114,7 +114,7 @@ public class PaginatingReportProcessor implements ReportProcessor
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
   }
 
   public void processReport(ReportJob job)

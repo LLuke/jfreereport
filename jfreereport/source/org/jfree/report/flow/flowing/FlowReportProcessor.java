@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FlowReportProcessor.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -46,19 +46,18 @@ import org.jfree.layouting.FlowGenerationLayoutProcess;
 import org.jfree.layouting.FlowPreparationLayoutProcess;
 import org.jfree.layouting.output.flowing.FlowingOutputProcessor;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.flow.DefaultFlowControler;
 import org.jfree.report.flow.DefaultLayoutControler;
+import org.jfree.report.flow.FlowControler;
 import org.jfree.report.flow.LayoutControler;
 import org.jfree.report.flow.LayoutPosition;
 import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportProcessor;
 import org.jfree.report.flow.ReportTarget;
-import org.jfree.report.flow.FlowControler;
-import org.jfree.report.flow.DefaultFlowControler;
-import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 02.04.2006, 15:11:55
@@ -102,7 +101,7 @@ public class FlowReportProcessor implements ReportProcessor
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
   }
 
   protected ReportTarget createGenerateTarget(final ReportJob job)
@@ -118,7 +117,7 @@ public class FlowReportProcessor implements ReportProcessor
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
   }
 
 
@@ -152,15 +151,15 @@ public class FlowReportProcessor implements ReportProcessor
     synchronized (job)
     {
       // set up the scene
-      final JFreeReport report = job.getReport();
       final LayoutControler layoutControler = new DefaultLayoutControler();
 
       // we have the data and we have our position inside the report.
       // lets prepare the layout ...
-      LayoutPosition position = new LayoutPosition
-              (createFlowControler(job), report);
+      final FlowControler flowControler = createFlowControler(job);
+      LayoutPosition position = layoutControler.createInitialPosition
+              (flowControler, job.getReport());
       final ReportTarget prepareTarget = createPrepareTarget(job);
-      while (position.getNode() != null)
+      while (position.isFinalPosition())
       {
         position = layoutControler.process(prepareTarget, position);
       }
@@ -173,15 +172,15 @@ public class FlowReportProcessor implements ReportProcessor
     synchronized (job)
     {
       // set up the scene
-      final JFreeReport report = job.getReport();
       final LayoutControler layoutControler = new DefaultLayoutControler();
 
       // we have the data and we have our position inside the report.
       // lets prepare the layout ...
-      LayoutPosition position =
-              new LayoutPosition (createFlowControler(job), report);
+      final FlowControler flowControler = createFlowControler(job);
+      LayoutPosition position = layoutControler.createInitialPosition
+              (flowControler, job.getReport());
       final ReportTarget generateTarget = createGenerateTarget(job);
-      while (position.getNode() != null)
+      while (position.isFinalPosition())
       {
         position = layoutControler.process(generateTarget, position);
       }

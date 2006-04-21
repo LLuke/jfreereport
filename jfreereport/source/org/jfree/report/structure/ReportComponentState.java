@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportComponentState.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -46,5 +46,5 @@ import java.io.Serializable;
 public interface ReportComponentState
         extends Cloneable, Serializable
 {
-  // this is just a marker interface.
+  public boolean isFinished();
 }

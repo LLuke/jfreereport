@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportComponent.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,15 @@ import org.jfree.report.flow.LayoutControler;
  */
 public abstract class ReportComponent extends Element
 {
-  public abstract ReportComponentState init ();
+  protected ReportComponent()
+  {
+  }
+
+  public abstract ReportComponentState createInitialState
+          (ReportProcessor processor,
+           FlowControler flowControler,
+           LayoutControler layoutControler);
+
   public abstract ReportComponentState advance
           (ReportComponentState state,
            ReportProcessor processor,
@@ -67,5 +75,5 @@ public abstract class ReportComponent extends Element
    * @return true or false, depending on whether the processing has
    * been finished.
    */
-  public abstract boolean deinit (ReportComponentState state);
+  public abstract boolean finishState (ReportComponentState state);
 }

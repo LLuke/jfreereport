@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RawReportProcessor.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,6 @@ public class RawReportProcessor extends SinglePassReportProcessor
 
   protected ReportTarget createReportTarget(ReportJob job)
   {
-    return new RawReportTarget();
+    return new RawReportTarget(job);
   }
 }

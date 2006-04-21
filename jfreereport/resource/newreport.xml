@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <report xmlns:html="http://www.w3.org/1999/xhtml"
-        xmlns="http://jfreereport.sourceforge.net/namespaces/reports/flow"
-        xmlns:liblayout="http://jfreereport.sourceforge.net/namespaces/layout">
+        xmlns="http://jfreereport.sourceforge.net/namespaces/reports/flow">
   <query>default</query>
   <configuration>
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</property>

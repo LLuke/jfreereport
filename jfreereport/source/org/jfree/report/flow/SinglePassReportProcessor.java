@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SinglePassReportProcessor.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -78,15 +78,15 @@ public abstract class SinglePassReportProcessor implements ReportProcessor
           DataSourceException
   {
     // set up the scene
-    final JFreeReport report = job.getReport();
     final LayoutControler layoutControler = new DefaultLayoutControler();
 
     // we have the data and we have our position inside the report.
     // lets generate something ...
-    LayoutPosition position = new LayoutPosition
-            (createFlowControler(job), report);
+    final FlowControler flowControler = createFlowControler(job);
+    LayoutPosition position = layoutControler.createInitialPosition
+            (flowControler, job.getReport());
     final ReportTarget target = createReportTarget(job);
-    while (position.getNode() != null)
+    while (position.isFinalPosition())
     {
       position = layoutControler.process(target, position);
     }

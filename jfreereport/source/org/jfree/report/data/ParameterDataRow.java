@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ParameterDataRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.report.data;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.structure.SubReport;
 import org.jfree.report.util.ReportParameters;
 
@@ -56,9 +55,8 @@ import org.jfree.report.util.ReportParameters;
  */
 public class ParameterDataRow extends StaticDataRow
 {
-  public ParameterDataRow(final JFreeReport report)
+  public ParameterDataRow(final ReportParameters parameters)
   {
-    final ReportParameters parameters = report.getInputParameters();
     final String[] names = parameters.keys();
     final Object[] values = new Object[parameters.size()];
 

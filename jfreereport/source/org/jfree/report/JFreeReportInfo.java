@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.40 2006/01/27 18:50:52 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.41 2006/04/18 11:28:39 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,9 +45,9 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
+import org.jfree.base.BootableProjectInfo;
 import org.jfree.resourceloader.LibLoaderInfo;
 import org.jfree.serializer.JCommonSerializerInfo;
-import org.jfree.base.BootableProjectInfo;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.ProjectInfo;
@@ -70,6 +70,7 @@ public class JFreeReportInfo extends ProjectInfo
    */
   public static final String REPORT_NAMESPACE =
           "http://jfreereport.sourceforge.net/namespaces/engine/flow";
+
   /**
    * This namespace contains the compatibility layer for the old JFreeReport
    * structures.

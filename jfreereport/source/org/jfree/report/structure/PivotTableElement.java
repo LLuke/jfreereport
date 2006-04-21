@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PivotTableElement.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -69,15 +69,17 @@ public class PivotTableElement extends ReportComponent
    * @param state
    * @return true or false, depending on whether the processing has been finished.
    */
-  public boolean deinit (ReportComponentState state)
+  public boolean finishState (ReportComponentState state)
   {
     // todo implement me
     return false;
   }
 
-  public ReportComponentState init ()
+  public ReportComponentState createInitialState
+          (ReportProcessor processor,
+           FlowControler flowControler,
+           LayoutControler layoutControler)
   {
-    // todo implement me
     return null;
   }
 }

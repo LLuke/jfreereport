@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultLayoutControler.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -65,9 +65,10 @@ public class DefaultLayoutControler implements LayoutControler
   }
 
   public LayoutPosition process(final ReportTarget processor,
-                                final LayoutPosition pos)
+                                final LayoutPosition position)
           throws DataSourceException, ReportDataFactoryException
   {
+    final DefaultLayoutPosition pos = (DefaultLayoutPosition) position;
     final Node n = pos.getNode();
 
     if (n instanceof Element)
@@ -91,7 +92,7 @@ public class DefaultLayoutControler implements LayoutControler
     return skipPosition(pos, pos.getFlowControler());
   }
 
-  private LayoutPosition endElement(final LayoutPosition pos, final Element e,
+  private DefaultLayoutPosition endElement(final DefaultLayoutPosition pos, final Element e,
                                     final ReportTarget processor) throws
           DataSourceException
   {
@@ -125,7 +126,7 @@ public class DefaultLayoutControler implements LayoutControler
     return advancePosition(pos, fc);
   }
 
-  private LayoutPosition startElement(final LayoutPosition pos,
+  private DefaultLayoutPosition startElement(final DefaultLayoutPosition pos,
                                       final Element e,
                                       final ReportTarget processor)
           throws ReportDataFactoryException, DataSourceException
@@ -176,8 +177,8 @@ public class DefaultLayoutControler implements LayoutControler
     return advanceForStartElement(pos, e, fc);
   }
 
-  protected LayoutPosition processContentElement
-          (final LayoutPosition pos,
+  protected DefaultLayoutPosition processContentElement
+          (final DefaultLayoutPosition pos,
            final FlowControler fc,
            final ReportTarget processor)
           throws DataSourceException
@@ -233,7 +234,7 @@ public class DefaultLayoutControler implements LayoutControler
     return fc;
   }
 
-  private boolean isElementEnabled(final LayoutPosition pos,
+  private boolean isElementEnabled(final DefaultLayoutPosition pos,
                                    final FlowControler fc,
                                    final Element e) throws DataSourceException
   {
@@ -267,18 +268,18 @@ public class DefaultLayoutControler implements LayoutControler
    * @param flowControler
    * @return
    */
-  protected LayoutPosition skipPosition(final LayoutPosition position,
+  protected DefaultLayoutPosition skipPosition(final DefaultLayoutPosition position,
                                         final FlowControler flowControler)
   {
     final Node n = position.getNode();
 
     // so this is either a closed element or it is a plain node. Try to
     // go to the next element or (if there is no next element) to the parent ...
-    final LayoutPosition parent = position.getParent();
+    final DefaultLayoutPosition parent = position.getParent();
     if (parent == null)
     {
       // we are finished here ...
-      return new LayoutPosition(flowControler, null);
+      return new DefaultLayoutPosition(flowControler, null);
     }
 
     final Node parentNode = parent.getNode();
@@ -299,7 +300,7 @@ public class DefaultLayoutControler implements LayoutControler
     return parent.derive(flowControler);
   }
 
-  protected LayoutPosition advanceForStartElement(final LayoutPosition pos,
+  protected DefaultLayoutPosition advanceForStartElement(final DefaultLayoutPosition pos,
                                                   final Element element,
                                                   final FlowControler fc)
   {
@@ -314,7 +315,7 @@ public class DefaultLayoutControler implements LayoutControler
       Section s = (Section) element;
       if (s.getNodeCount() > 0)
       {
-        final LayoutPosition parent = pos.createOpenParent(fc);
+        final DefaultLayoutPosition parent = pos.createOpenParent(fc);
         return parent.deriveChildPosition(fc, s.getNode(0));
       }
     }
@@ -334,7 +335,7 @@ public class DefaultLayoutControler implements LayoutControler
    * @param fc
    * @return
    */
-  protected LayoutPosition advancePosition(final LayoutPosition position,
+  protected DefaultLayoutPosition advancePosition(final DefaultLayoutPosition position,
                                            final FlowControler fc)
           throws DataSourceException
   {
@@ -379,7 +380,7 @@ public class DefaultLayoutControler implements LayoutControler
    * @param position
    * @return
    */
-  private boolean isGroupActive(final LayoutPosition position,
+  private boolean isGroupActive(final DefaultLayoutPosition position,
                                 final FlowControler fc)
           throws DataSourceException
   {
@@ -445,5 +446,12 @@ public class DefaultLayoutControler implements LayoutControler
       }
     }
     return -1;
+  }
+
+  public LayoutPosition createInitialPosition
+          (final FlowControler flowControler,
+           final Node initialNode)
+  {
+    return new DefaultLayoutPosition (flowControler, initialNode);
   }
 }
