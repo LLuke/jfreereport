@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OutOfOrderSection.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ public class OutOfOrderSection extends Section
    */
   public OutOfOrderSection ()
   {
+    setType("out-of-order-section");
   }
 
   public String getRole()

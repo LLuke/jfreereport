@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SectionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,7 @@ public class SectionReadHandler extends ElementReadHandler
   private ArrayList nodes;
   private ArrayList operationsAfter;
   private ArrayList operationsBefore;
-  private boolean repeat;
+  private String repeat;
 
   public SectionReadHandler()
   {
@@ -157,11 +157,7 @@ public class SectionReadHandler extends ElementReadHandler
     final String repeatValue = attrs.getValue(getUri(), "repeat");
     if (repeatValue != null)
     {
-      repeat = "true".equals(repeatValue);
-    }
-    else
-    {
-      repeat = true;
+      repeat = repeatValue;
     }
 
     if (FlowReportFactoryModule.NAMESPACE.equals(getUri()) == false)
@@ -184,7 +180,10 @@ public class SectionReadHandler extends ElementReadHandler
     super.configureElement(e);
 
     final Section section = (Section) e;
-    section.setRepeat(repeat);
+    if (repeat != null)
+    {
+      section.setRepeat("true".equals(repeat));
+    }
   }
 
   /**

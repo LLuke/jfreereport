@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutControler.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: DefaultLayoutControler.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -117,7 +117,7 @@ public class DefaultLayoutControler implements LayoutControler
     {
       fc = fc.performReturnFromQuery();
     }
-    if (e instanceof Section)
+    else if (e instanceof Section)
     {
       final Section s = (Section) e;
       fc = processFlowOperations(fc, s.getOperationAfter());
@@ -133,13 +133,14 @@ public class DefaultLayoutControler implements LayoutControler
   {
     // Step 1: Activate the enable expression ...
     FlowControler fc = pos.getFlowControler();
+    if (fc == null)
+    {
+      throw new NullPointerException("Assertation: FlowControler is null");
+    }
+
     if (isElementEnabled(pos, fc, e) == false)
     {
       return skipPosition(pos, fc);
-    }
-    if (fc == null)
-    {
-      throw new NullPointerException();
     }
 
     // Step 2a: Perform queries, if necessary, and do the SubReporting
@@ -253,7 +254,9 @@ public class DefaultLayoutControler implements LayoutControler
       }
 
       dc.setRuntime(pos.getExpressionRuntime(fc));
-      return Boolean.TRUE.equals(dc.getValue());
+      final boolean retval = Boolean.TRUE.equals(dc.getValue());
+      dc.setRuntime(null);
+      return retval;
     }
 
     return true;
@@ -336,7 +339,7 @@ public class DefaultLayoutControler implements LayoutControler
    * @return
    */
   protected DefaultLayoutPosition advancePosition(final DefaultLayoutPosition position,
-                                           final FlowControler fc)
+                                                  FlowControler fc)
           throws DataSourceException
   {
     final Node n = position.getNode();
@@ -359,17 +362,18 @@ public class DefaultLayoutControler implements LayoutControler
     // since the last repeat request [to prevent infinite loops]) ...
     final boolean advanceRequested = fc.isAdvanceRequested();
     final boolean advanceable = fc.getMasterRow().isAdvanceable();
-    if (advanceRequested && advanceable)
+    if (advanceable && advanceRequested)
     {
-      final FlowControler cfc = fc.performOperation(
-              FlowControlOperation.COMMIT);
+      // we check against the commited target; But we will not use the
+      // commited target if the group is no longer active...
+      final FlowControler cfc =
+              fc.performOperation(FlowControlOperation.COMMIT);
       final boolean groupActive = isGroupActive(position, cfc);
       if (groupActive)
       {
         return position.createRepeatPosition(cfc);
       }
     }
-
     return skipPosition(position, fc);
   }
 

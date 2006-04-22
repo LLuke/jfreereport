@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Section.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -89,6 +89,7 @@ public class Section extends Element implements Serializable
   /** Constructs a new band (initially empty). */
   public Section()
   {
+    setType("section");
     allElements = new ArrayList();
 
   }

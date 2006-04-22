@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ExpressionDataRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -166,6 +166,11 @@ public final class ExpressionDataRow implements DataRow
       value = null;
       queried = false;
     }
+
+    public int getCurrentRow()
+    {
+      return staticRuntimeData.getCurrentRow();
+    }
   }
 
   private ExpressionSlot[] expressions;
@@ -266,7 +271,6 @@ public final class ExpressionDataRow implements DataRow
     }
 
     ensureCapacity(length + ex.length);
-    int counter = 0;
     for (int i = 0; i < ex.length; i++)
     {
       Expression expression = ex[i];
@@ -275,9 +279,7 @@ public final class ExpressionDataRow implements DataRow
         continue;
       }
       pushExpression(expression, rd);
-      counter += 1;
     }
-    //length += counter;
   }
 
   public synchronized void popExpressions(final int counter) throws

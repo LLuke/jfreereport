@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportDataRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -255,5 +255,10 @@ public final class ReportDataRow implements DataRow
   public ReportData getReportData()
   {
     return reportData;
+  }
+
+  public int getCursor()
+  {
+    return cursor;
   }
 }

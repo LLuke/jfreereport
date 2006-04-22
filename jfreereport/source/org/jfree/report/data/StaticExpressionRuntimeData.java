@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StaticExpressionRuntimeData.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -60,9 +60,20 @@ public class StaticExpressionRuntimeData
   private ResourceBundleFactory resourceBundleFactory;
   private OutputProcessorMetaData metaData;
   private ReportData data;
+  private int currentRow;
 
   public StaticExpressionRuntimeData()
   {
+  }
+
+  public int getCurrentRow()
+  {
+    return currentRow;
+  }
+
+  public void setCurrentRow(final int currentRow)
+  {
+    this.currentRow = currentRow;
   }
 
   public ReportData getData()

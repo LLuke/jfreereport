@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ImportedVariablesDataRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,22 @@ public class ImportedVariablesDataRow extends StaticDataRow
 {
   private String[] outerNames;
   private String[] innerNames;
+
+  public ImportedVariablesDataRow(final GlobalMasterRow innerRow)
+          throws DataSourceException
+  {
+    final DataRow globalView = innerRow.getGlobalView();
+    final int cols = globalView.getColumnCount();
+    this.outerNames = new String[cols];
+    this.innerNames = outerNames;
+    final Object[] values = new Object[outerNames.length];
+    for (int i = 0; i < outerNames.length; i++)
+    {
+      outerNames[i] = globalView.getColumnName(i);
+      values[i] = globalView.get(i);
+    }
+    setData(outerNames, values);
+  }
 
   public ImportedVariablesDataRow(final GlobalMasterRow innerRow,
                                   final String[] outerNames,

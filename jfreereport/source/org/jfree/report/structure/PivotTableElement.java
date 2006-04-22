@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PivotTableElement.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: PivotTableElement.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ public class PivotTableElement extends ReportComponent
 
   public PivotTableElement ()
   {
+    setType("pivot-table");
   }
 
   public ReportComponentState advance (ReportComponentState state,

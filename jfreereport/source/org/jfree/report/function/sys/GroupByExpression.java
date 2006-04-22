@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: GroupByExpression.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -72,7 +72,6 @@ public class GroupByExpression extends ColumnAggregationExpression
       }
       if (df.isChanged())
       {
-        Log.debug ("Group-by: " + df.getName());
         return Boolean.FALSE;
       }
     }

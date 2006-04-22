@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.31 2006/04/18 11:28:39 taqua Exp $
+ * $Id: JFreeReport.java,v 1.32 2006/04/21 17:31:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -115,6 +115,7 @@ public class JFreeReport extends ReportDefinition implements Serializable
   /** The default constructor. Creates an empty but fully initialized report. */
   public JFreeReport()
   {
+    setType("report");
     this.reportConfiguration = new HierarchicalConfiguration
             (JFreeReportBoot.getInstance().getGlobalConfig());
 

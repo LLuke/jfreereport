@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutExpressionRuntime.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -61,9 +61,15 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   private ReportData reportData;
   private Element declaringParent;
   private OutputProcessorMetaData metaData;
+  private int currentRow;
 
   public LayoutExpressionRuntime()
   {
+  }
+
+  public void setCurrentRow(final int currentRow)
+  {
+    this.currentRow = currentRow;
   }
 
   public void setDataRow(final DataRow dataRow)
@@ -95,6 +101,7 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   {
     this.metaData = metaData;
   }
+
 
   /**
    * Returns the datarow.
@@ -139,5 +146,10 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   public OutputProcessorMetaData getOutputMetaData()
   {
     return metaData;
+  }
+
+  public int getCurrentRow()
+  {
+    return currentRow;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SubReport.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -53,10 +53,12 @@ public class SubReport extends ReportDefinition
 {
   private HashMap exportParameters;
   private HashMap inputParameters;
+
   private ResourceBundleFactory resourceBundleFactory;
 
   public SubReport()
   {
+    setType("sub-report");
     exportParameters = new HashMap();
     inputParameters = new HashMap();
   }
@@ -126,5 +128,21 @@ public class SubReport extends ReportDefinition
   {
     return (String[])
             inputParameters.keySet().toArray(new String[inputParameters.size()]);
+  }
+
+  public String[] getPeerInputParameters ()
+  {
+    return (String[])
+            inputParameters.values().toArray(new String[inputParameters.size()]);
+  }
+
+  public boolean isGlobalImport()
+  {
+    return "*".equals(inputParameters.get("*"));
+  }
+
+  public boolean isGlobalExport()
+  {
+    return "*".equals(exportParameters.get("*"));
   }
 }

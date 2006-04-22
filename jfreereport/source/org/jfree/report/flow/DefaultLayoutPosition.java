@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutPosition.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: DefaultLayoutPosition.java,v 1.1 2006/04/21 17:32:04 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,11 @@
 package org.jfree.report.flow;
 
 import org.jfree.report.data.GlobalMasterRow;
+import org.jfree.report.data.ReportDataRow;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 import org.jfree.report.structure.ReportDefinition;
+import org.jfree.report.EmptyReportData;
 
 /**
  * The layout position describes the current state in the processing of the
@@ -61,6 +63,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
   private FlowControler flowControler;
   /** A flag indicating whether the current element has been opened successfully. */
   private boolean elementOpen;
+  public static final EmptyReportData EMPTY_REPORT_DATA = new EmptyReportData();
 
   /**
    * This is the initial layout position.
@@ -97,7 +100,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
    * @return
    */
   public DefaultLayoutPosition deriveChildPosition (final FlowControler flowControler,
-                                             final Node node)
+                                                    final Node node)
   {
     return new DefaultLayoutPosition(flowControler, node, this);
   }
@@ -111,7 +114,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
    * @return
    */
   public DefaultLayoutPosition deriveSilblingPosition (final FlowControler flowControler,
-                                                final Node node)
+                                                       final Node node)
   {
     return new DefaultLayoutPosition(flowControler, node, this.parent);
   }
@@ -189,7 +192,17 @@ public final class DefaultLayoutPosition implements LayoutPosition
 
     final GlobalMasterRow masterRow = fc.getMasterRow();
     ler.setDataRow(masterRow.getGlobalView());
-    ler.setData(masterRow.getReportDataRow().getReportData());
+    final ReportDataRow reportDataRow = masterRow.getReportDataRow();
+    if (reportDataRow == null)
+    {
+      ler.setData(EMPTY_REPORT_DATA);
+      ler.setCurrentRow(-1);
+    }
+    else
+    {
+      ler.setData(reportDataRow.getReportData());
+      ler.setCurrentRow(reportDataRow.getCursor());
+    }
     ler.setOutputMetaData(fc.getReportJob().getMetaData());
     if (node instanceof Element)
     {

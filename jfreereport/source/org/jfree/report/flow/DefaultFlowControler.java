@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFlowControler.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: DefaultFlowControler.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -49,17 +49,16 @@ import org.jfree.report.ReportDataFactory;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.data.ExpressionDataRow;
 import org.jfree.report.data.GlobalMasterRow;
+import org.jfree.report.data.ImportedVariablesDataRow;
 import org.jfree.report.data.ParameterDataRow;
 import org.jfree.report.data.ReportDataRow;
 import org.jfree.report.data.StaticExpressionRuntimeData;
-import org.jfree.report.data.ImportedVariablesDataRow;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.sys.QueryVariableExpression;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.ReportDefinition;
 import org.jfree.report.structure.SubReport;
 import org.jfree.report.util.IntegerCache;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 20.02.2006, 15:30:21
@@ -68,11 +67,25 @@ import org.jfree.util.Log;
  */
 public class DefaultFlowControler implements FlowControler
 {
-  private static long lastTime;
+  private static class ReportContext
+  {
+    private Stack markStack;
+
+    public ReportContext(final Stack markStack)
+    {
+      this.markStack = markStack;
+    }
+
+    public Stack getMarkStack()
+    {
+      return markStack;
+    }
+  }
 
   private ReportJob job;
   private GlobalMasterRow dataRow;
   private boolean advanceRequested;
+  private Stack reportStack;
   private Stack markStack;
   private Stack expressionsStack;
 
@@ -83,22 +96,24 @@ public class DefaultFlowControler implements FlowControler
       throw new NullPointerException();
     }
 
+    this.reportStack = new Stack();
     this.markStack = new Stack();
     this.expressionsStack = new Stack();
     this.dataRow = GlobalMasterRow.createReportRow();
     this.dataRow.setParameterDataRow(new ParameterDataRow(job.getParameters()));
     this.job = job;
-    lastTime = System.currentTimeMillis();
   }
 
   protected DefaultFlowControler(final DefaultFlowControler fc,
                                  final GlobalMasterRow dataRow)
   {
+    this.reportStack = (Stack) fc.reportStack.clone();
     this.markStack = (Stack) fc.markStack.clone();
     this.expressionsStack = (Stack) fc.expressionsStack.clone();
     this.job = fc.job;
     this.advanceRequested = fc.advanceRequested;
     this.dataRow = dataRow;
+
   }
 
 
@@ -122,6 +137,8 @@ public class DefaultFlowControler implements FlowControler
     }
     else if (operation == FlowControlOperation.RECALL)
     {
+      if (markStack.isEmpty()) return this;
+      
       DefaultFlowControler fc = new DefaultFlowControler(this, dataRow);
       fc.dataRow = (GlobalMasterRow) fc.markStack.pop();
       return fc;
@@ -140,13 +157,6 @@ public class DefaultFlowControler implements FlowControler
       {
         DefaultFlowControler fc = new DefaultFlowControler(this, dataRow);
         fc.dataRow = dataRow.advance();
-        int currentRow = dataRow.getReportDataRow().getReportData().getCurrentRow();
-        if (currentRow % 1000 == 0)
-        {
-          long time = System.currentTimeMillis();
-          Log.debug ("" + currentRow + " Time: " + (time - lastTime));
-          lastTime = time;
-        }
         fc.advanceRequested = false;
         return fc;
       }
@@ -189,7 +199,8 @@ public class DefaultFlowControler implements FlowControler
     masterRow.setReportDataRow(ReportDataRow.createDataRow(data));
 
     DefaultFlowControler fc = new DefaultFlowControler(this, masterRow);
-    fc.markStack.push(dataRow);
+    fc.reportStack.push(new ReportContext(fc.markStack));
+    fc.markStack = new Stack();
     fc.dataRow = masterRow;
     return fc;
   }
@@ -197,18 +208,29 @@ public class DefaultFlowControler implements FlowControler
   public FlowControler performQuery(final SubReport report)
           throws ReportDataFactoryException, DataSourceException
   {
-    // check and rebuild the parameter mapping from the inner to the outer
-    // context. Only deep-traversal expressions will be able to see these
-    // values (unless they have been defined as local variables).
-    final String[] exportedParams = report.getExportParameters();
-    final String[] exportedNames = report.getPeerExportParameters();
     final GlobalMasterRow outerRow = dataRow.derive();
 
     // create a view for the parameters of the report ...
     final GlobalMasterRow masterRow =
             GlobalMasterRow.createReportRow(outerRow);
-    masterRow.setParameterDataRow
-            (new ParameterDataRow(report, outerRow.getGlobalView()));
+
+    if (report.isGlobalImport())
+    {
+      masterRow.setParameterDataRow
+              (new ParameterDataRow(report, outerRow.getGlobalView()));
+    }
+    else
+    {
+      // check and rebuild the parameter mapping from the outer to the int
+      // context. We allow only the defined input set here. This helps a lot
+      // in reducing (or at least documenting) the dependencies between subreports
+      final String[] importedParams = report.getInputParameters();
+      final String[] importedNames = report.getPeerInputParameters();
+      masterRow.setParameterDataRow
+              (new ParameterDataRow(report, new ImportedVariablesDataRow
+              (masterRow, importedNames, importedParams)));
+    }
+
     // perform the query ...
     final String query = report.getQuery();
     final ReportDataFactory dataFactory = job.getDataFactory();
@@ -217,11 +239,24 @@ public class DefaultFlowControler implements FlowControler
     // add the resultset ...
     masterRow.setReportDataRow(ReportDataRow.createDataRow(data));
 
-    outerRow.setExportedDataRow(new ImportedVariablesDataRow
-            (masterRow, exportedNames, exportedParams));
+    if (report.isGlobalExport())
+    {
+      outerRow.setExportedDataRow(new ImportedVariablesDataRow(masterRow));
+    }
+    else
+    {
+      // check and rebuild the parameter mapping from the inner to the outer
+      // context. Only deep-traversal expressions will be able to see these
+      // values (unless they have been defined as local variables).
+      final String[] exportedParams = report.getExportParameters();
+      final String[] exportedNames = report.getPeerExportParameters();
+      outerRow.setExportedDataRow(new ImportedVariablesDataRow
+              (masterRow, exportedNames, exportedParams));
+    }
 
     DefaultFlowControler fc = new DefaultFlowControler(this, masterRow);
-    fc.markStack.push(outerRow);
+    fc.reportStack.push(new ReportContext(fc.markStack));
+    fc.markStack = new Stack();
     fc.dataRow = masterRow;
     return fc;
   }
@@ -292,9 +327,12 @@ public class DefaultFlowControler implements FlowControler
   public FlowControler performReturnFromQuery() throws DataSourceException
   {
     DefaultFlowControler fc = new DefaultFlowControler(this, dataRow);
-    fc.dataRow = (GlobalMasterRow) fc.markStack.pop();
+
+    ReportContext context = (ReportContext) fc.reportStack.pop();
+    fc.dataRow = dataRow.getParentDataRow();
     fc.dataRow = fc.dataRow.derive();
     fc.dataRow.setExportedDataRow(null);
+    fc.markStack = context.getMarkStack();
     return fc;
   }
 

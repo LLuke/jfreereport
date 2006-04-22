@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutReportTarget.java,v 1.2 2006/04/18 13:32:50 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.3 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -177,17 +177,7 @@ public class LibLayoutReportTarget implements ReportTarget
                                     final ExpressionRuntime runtime)
           throws DataSourceException
   {
-    final String namespace = node.getNamespace();
     final InputFeed feed = getInputFeed();
-    final String type = node.getType();
-    if (type != null)
-    {
-      feed.startElement(namespace, type);
-    }
-    else
-    {
-      feed.startElement(JFreeReportInfo.REPORT_NAMESPACE, "content-node");
-    }
     Object styleAttributeValue = handleAttributes(node, runtime);
     CSSDeclarationRule rule = createStyle(styleAttributeValue, node, runtime);
     feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "style", rule);
@@ -199,8 +189,6 @@ public class LibLayoutReportTarget implements ReportTarget
     feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isNumber", String.valueOf(value.isNumeric()));
     feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isPositive", String.valueOf(value.isPositive()));
     feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isZero", String.valueOf(value.isZero()));
-    //feed.addContent(String.valueOf(value.getValue()));
-    feed.endElement();
   }
 
   public void startElement(Element node, ExpressionRuntime runtime)

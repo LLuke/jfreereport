@@ -34,7 +34,7 @@
 
   <group>
     <grouping-expression>
-      <property name="field[0]">group_argument_0</property>
+      <property name="field[0]">group_arg_1</property>
     </grouping-expression>
     <display-condition class="org.jfree.report.function.sys.IsNotEmptyDataExpression"/>
     <operation-before operation="mark"/>
@@ -45,12 +45,18 @@
     <group>
       <!-- this class is also the default value for the class attribute.. -->
       <grouping-expression class="org.jfree.report.function.sys.GroupByExpression">
-        <property name="field[0]">group_argument_1</property>
+        <property name="field[0]">Continent</property>
       </grouping-expression>
 
       A nested group.
+      <content>
+        <value-expression>
+          <property name="field">Country</property>
+        </value-expression>
+      </content>
 
-      <detail-section>
+      <section repeat="true">
+        <operation-before operation="advance"/>
         Thats the left over from my Itemband.
         <content>
           <value-expression>
@@ -59,12 +65,22 @@
         </content>
         <content>
           <value-expression>
+            <property name="field">Country</property>
+          </value-expression>
+        </content>
+        <content>
+          <value-expression>
             <property name="field">Population</property>
           </value-expression>
         </content>
-      </detail-section>
+      </section>
 
       The nested group's footer.
+      <content>
+        <value-expression>
+          <property name="field">Country</property>
+        </value-expression>
+      </content>
 
     </group>
 
@@ -73,7 +89,7 @@
         <property name="field[0]">group_argument_2</property>
       </grouping-expression>
       <operation-before operation="recall"/>
-      
+
       A nested paralell group. Given a clean way to control the cursor
       (attribute 'cursor="reset"') this allows us to traverse the same
       data twice.
@@ -92,6 +108,7 @@
       </detail-section>
       The nested group's footer.
     </group>
+
     As usual, all text after the detail section makes up the group footer.
   </group>
 
@@ -104,5 +121,3 @@
 
   <html:img src="gorilla.jpg" alt="Gorilla"/>
 </report>
-
-

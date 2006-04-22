@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DetailSection.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,8 @@ public class DetailSection extends Section
 {
   public DetailSection()
   {
-    addOperationAfter(FlowControlOperation.ADVANCE);
+    setType("detail-section");
+    addOperationBefore(FlowControlOperation.ADVANCE);
+    setRepeat(true);
   }
 }

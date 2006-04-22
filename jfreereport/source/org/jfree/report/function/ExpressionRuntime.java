@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ExpressionRuntime.java,v 1.2 2006/02/08 18:03:02 taqua Exp $
+ * $Id: ExpressionRuntime.java,v 1.3 2006/04/18 11:28:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -67,8 +67,10 @@ public interface ExpressionRuntime
    * will be initialized on the current cursor positon.
    *
    * @return
+   * @see ExpressionRuntime#getCurrentRow()
    */
   public ReportData getData();
+  public int getCurrentRow();
   public Element getDeclaringParent();
 
   public OutputProcessorMetaData getOutputMetaData();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportDefining.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -94,17 +94,17 @@ public class ReportDefining
 
     processReport();
 
-    long startTime = System.currentTimeMillis();
-    final int reportCount = 250;
-    for (int i = 0; i < reportCount; i++)
-    {
-      processReport();
-    }
-    long endTime = System.currentTimeMillis();
-
-    long delta = endTime - startTime;
-    System.out.println("Total-Time for " + reportCount + " Reports: " + delta / 1000f);
-    System.out.println("Time per Report " + (delta / (reportCount * 1000f)));
+//    long startTime = System.currentTimeMillis();
+//    final int reportCount = 250;
+//    for (int i = 0; i < reportCount; i++)
+//    {
+//      processReport();
+//    }
+//    long endTime = System.currentTimeMillis();
+//
+//    long delta = endTime - startTime;
+//    System.out.println("Total-Time for " + reportCount + " Reports: " + delta / 1000f);
+//    System.out.println("Time per Report " + (delta / (reportCount * 1000f)));
 
 //
 //    JFreeReport report = new JFreeReport();
@@ -149,8 +149,8 @@ public class ReportDefining
     job.setDataFactory(dataFactory);
 
     final HtmlOutputProcessor out = new HtmlOutputProcessor(
-            new NullOutputStream());
-            //System.out);
+            //new NullOutputStream());
+            System.err);
     job.setMetaData(out.getMetaData());
 
     final StreamingReportProcessor rp = new StreamingReportProcessor();

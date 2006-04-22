@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Group.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,8 @@ public class Group extends Section implements Serializable
   /** Constructs a group with no fields, and an empty header and footer. */
   public Group()
   {
+    setType("group");
+    setRepeat(true);
   }
 
   /**

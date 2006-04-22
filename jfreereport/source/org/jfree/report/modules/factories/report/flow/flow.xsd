@@ -423,7 +423,7 @@
 
   <xsd:element name="query" type="xsd:string"/>
 
-  <xsd:complexType name="report-definition-type">
+  <xsd:complexType name="report-definition-query">
     <xsd:complexContent mixed="true">
       <xsd:extension base="section-type">
         <xsd:all>
@@ -432,6 +432,19 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
+
+  <xsd:complexType name="report-definition-type">
+    <xsd:complexContent mixed="true">
+      <xsd:restriction base="report-definition-query">
+        <xsd:all>
+          <xsd:element ref="operation-before" minOccurs="0" maxOccurs="0"/>
+          <xsd:element ref="operation-after" minOccurs="0" maxOccurs="0"/>
+        </xsd:all>
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
 
   <xsd:element name="configuration">
     <xsd:annotation>
@@ -483,9 +496,8 @@
   <xsd:element name="report" substitutionGroup="section">
     <xsd:complexType>
       <xsd:complexContent mixed="true">
-        <xsd:extension base="section-type">
+        <xsd:extension base="report-definition-type">
           <xsd:sequence>
-            <xsd:element ref="query" minOccurs="0" maxOccurs="1"/>
             <xsd:element ref="configuration" minOccurs="0" maxOccurs="1"/>
             <xsd:element ref="datasource" minOccurs="0" maxOccurs="1"/>
             <xsd:element ref="stylesheet" minOccurs="0" maxOccurs="unbounded"/>
