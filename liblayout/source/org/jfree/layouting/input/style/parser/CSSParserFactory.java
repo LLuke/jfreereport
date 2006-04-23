@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSParserFactory.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -57,8 +57,6 @@ import org.w3c.css.sac.helpers.ParserFactory;
 public class CSSParserFactory
 {
   private static CSSParserFactory parserFactory;
-  private CSSConditionFactory conditionFactory;
-  private CSSSelectorFactory selectorFactory;
 
   public static synchronized CSSParserFactory getInstance()
   {
@@ -71,8 +69,6 @@ public class CSSParserFactory
 
   private CSSParserFactory()
   {
-    conditionFactory = new CSSConditionFactory();
-    selectorFactory = new CSSSelectorFactory();
   }
 
   public Parser createCSSParser ()
@@ -87,8 +83,8 @@ public class CSSParserFactory
             (parserClass, CSSParserFactory.class);
       if (p != null)
       {
-        p.setConditionFactory(conditionFactory);
-        p.setSelectorFactory(selectorFactory);
+        p.setConditionFactory(new FixNamespaceConditionFactory(new CSSConditionFactory()));
+        p.setSelectorFactory(new FixNamespaceSelectorFactory(new CSSSelectorFactory()));
         return p;
       }
     }
@@ -99,8 +95,8 @@ public class CSSParserFactory
       {
         return null;
       }
-      p.setConditionFactory(conditionFactory);
-      p.setSelectorFactory(selectorFactory);
+      p.setConditionFactory(new FixNamespaceConditionFactory(new CSSConditionFactory()));
+      p.setSelectorFactory(new FixNamespaceSelectorFactory(new CSSSelectorFactory()));
       return p;
     }
     catch (Exception e)

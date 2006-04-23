@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ContentSpecification.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ public class ContentSpecification
   {
     quotes = EMPTY_QUOTES;
     contents = EMPTY_CONTENT;
+    allowContentProcessing = true;
   }
 
   public QuotesPair[] getQuotes ()

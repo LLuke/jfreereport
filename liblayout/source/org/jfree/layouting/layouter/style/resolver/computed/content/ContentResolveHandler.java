@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ContentResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -56,25 +56,23 @@ import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
 import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.layouter.style.values.CSSResourceValue;
-import org.jfree.layouting.layouter.style.values.CSSRawValue;
 import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.functions.FunctionFactory;
 import org.jfree.layouting.layouter.style.functions.StyleFunction;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.style.values.CSSRawValue;
+import org.jfree.layouting.layouter.style.values.CSSResourceValue;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutNode;
 import org.jfree.layouting.model.content.CloseQuoteToken;
 import org.jfree.layouting.model.content.ContentSpecification;
 import org.jfree.layouting.model.content.ContentToken;
 import org.jfree.layouting.model.content.ContentsToken;
-import org.jfree.layouting.model.content.OpenQuoteToken;
-import org.jfree.layouting.model.content.StringContentToken;
-import org.jfree.layouting.model.content.ResourceContentToken;
 import org.jfree.layouting.model.content.ExternalContentToken;
+import org.jfree.layouting.model.content.OpenQuoteToken;
+import org.jfree.layouting.model.content.ResourceContentToken;
+import org.jfree.layouting.model.content.StringContentToken;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.loader.URLResourceKey;
 import org.jfree.util.Log;
@@ -82,7 +80,6 @@ import org.jfree.util.Log;
 public class ContentResolveHandler implements ResolveHandler
 {
   private static final ContentToken[] DEFAULT_CONTENT = new ContentToken[]{ContentsToken.CONTENTS};
-  private static final DecimalCounterStyle DEFAULT_COUNTER_STYLE = new DecimalCounterStyle();
 
   private HashMap tokenMapping;
   private HashMap tokenAlias;
@@ -155,15 +152,16 @@ public class ContentResolveHandler implements ResolveHandler
       if (ContentValues.NONE.equals(value))
       {
         contentSpecification.setAllowContentProcessing(false);
+        return;
       }
       else if (ContentValues.INHIBIT.equals(value))
       {
         contentSpecification.setAllowContentProcessing(false);
+        return;
       }
-      return;
     }
     contentSpecification.setAllowContentProcessing(true);
-    contentSpecification.setContents((ContentToken[]) DEFAULT_CONTENT.clone());
+    contentSpecification.setContents(DEFAULT_CONTENT);
 
     if (value instanceof CSSAttrFunction)
     {

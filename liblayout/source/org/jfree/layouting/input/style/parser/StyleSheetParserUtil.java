@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetParserUtil.java,v 1.1 2006/04/17 20:54:49 taqua Exp $
+ * $Id: StyleSheetParserUtil.java,v 1.2 2006/04/21 17:29:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.input.style.parser;
 import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
@@ -192,5 +193,46 @@ public class StyleSheetParserUtil
       e.printStackTrace();
       return null;
     }
+  }
+
+  public static String[] parseNamespaceIdent (String attrName)
+  {
+    final String name;
+    final String namespace;
+    final StringTokenizer strtok = new StringTokenizer(attrName, "|");
+    final CSSParserContext context = CSSParserContext.getContext();
+    // explicitly undefined is different from default namespace..
+    // With that construct I definitly violate the standard, but
+    // most stylesheets are not yet written with namespaces in mind
+    // (and most tools dont support namespaces in CSS).
+    //
+    // by acknowledging the explicit rule but redefining the rule where
+    // no namespace syntax is used at all, I create compatiblity. Still,
+    // if the stylesheet does not carry a @namespace rule, this is the same
+    // as if the namespace was omited.
+    if (strtok.countTokens() == 2)
+    {
+      String tkNamespace = strtok.nextToken();
+      if (tkNamespace.length() == 0)
+      {
+        namespace = null;
+      }
+      else if (tkNamespace.equals("*"))
+      {
+        namespace = "*";
+      }
+      else
+      {
+        namespace = (String)
+                context.getNamespaces().get(tkNamespace);
+      }
+      name = strtok.nextToken();
+    }
+    else
+    {
+      name = strtok.nextToken();
+      namespace = context.getDefaultNamespace();
+    }
+    return new String[]{namespace, name};
   }
 }

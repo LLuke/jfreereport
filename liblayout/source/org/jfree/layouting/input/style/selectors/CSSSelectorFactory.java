@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSSelectorFactory.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -42,18 +42,18 @@ package org.jfree.layouting.input.style.selectors;
 
 import java.io.Serializable;
 
-import org.w3c.css.sac.SelectorFactory;
 import org.w3c.css.sac.CSSException;
-import org.w3c.css.sac.ConditionalSelector;
-import org.w3c.css.sac.SimpleSelector;
-import org.w3c.css.sac.Condition;
-import org.w3c.css.sac.NegativeSelector;
-import org.w3c.css.sac.ElementSelector;
 import org.w3c.css.sac.CharacterDataSelector;
-import org.w3c.css.sac.ProcessingInstructionSelector;
+import org.w3c.css.sac.Condition;
+import org.w3c.css.sac.ConditionalSelector;
 import org.w3c.css.sac.DescendantSelector;
+import org.w3c.css.sac.ElementSelector;
+import org.w3c.css.sac.NegativeSelector;
+import org.w3c.css.sac.ProcessingInstructionSelector;
 import org.w3c.css.sac.Selector;
+import org.w3c.css.sac.SelectorFactory;
 import org.w3c.css.sac.SiblingSelector;
+import org.w3c.css.sac.SimpleSelector;
 
 /**
  * Creation-Date: 30.11.2005, 15:38:21

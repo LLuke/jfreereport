@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ContentNormalizer.java,v 1.1 2006/04/17 21:04:27 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,7 @@ import org.jfree.layouting.model.content.QuotesPair;
 import org.jfree.layouting.model.content.ResourceContentToken;
 import org.jfree.layouting.model.content.StringContentToken;
 import org.jfree.resourceloader.Resource;
+import org.jfree.util.Log;
 
 /**
  * This class is responsible for normalizing content from the 'content' style
@@ -89,6 +90,7 @@ public class ContentNormalizer implements Normalizer
   {
     if (ignoredElement != null)
     {
+      Log.debug ("Ignored element " + element + " as it has Display:NONE");
       return;
     }
     openElements.push(element);
@@ -100,6 +102,7 @@ public class ContentNormalizer implements Normalizer
     {
       // ignore that element ..
       ignoredElement = element.getContextId();
+      Log.debug ("Ignored element " + element + " as it has Display:NONE");
       return;
     }
 
@@ -129,6 +132,7 @@ public class ContentNormalizer implements Normalizer
     {
       // the element does not allow content processing at all.
       ignoredElement = element.getContextId();
+      Log.debug ("Ignored element " + element + " as it does not allow content processing.");
       return;
     }
 
@@ -137,11 +141,12 @@ public class ContentNormalizer implements Normalizer
     generateElementBefore(element);
 
     // check, whether we have a 'contents' token inside
-    if (generateContentBefore(element))
+    if (generateContentBefore(element) == false)
     {
       // we have none, so we will ignore all other content of that element
       // however, we will generate ::before and ::after pseudo-elements and
       // we will process whatever content has been given.
+      Log.debug ("Ignored element " + element + " as it does not contain the 'contents' token.");
       ignoredElement = element.getContextId();
     }
   }

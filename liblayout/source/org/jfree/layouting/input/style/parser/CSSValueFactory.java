@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSValueFactory.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
@@ -148,49 +147,8 @@ public class CSSValueFactory
     }
 
     final String attrName = unit.getStringValue().trim();
-    final String[] name = parseAttributeName(attrName);
+    final String[] name = StyleSheetParserUtil.parseNamespaceIdent(attrName);
     return new CSSAttrFunction(name[0], name[1]);
-  }
-
-  private static String[] parseAttributeName (String attrName)
-  {
-    final String name;
-    final String namespace;
-    final StringTokenizer strtok = new StringTokenizer(attrName, "|");
-    final CSSParserContext context = CSSParserContext.getContext();
-    // explicitly undefined is different from default namespace..
-    // With that construct I definitly violate the standard, but
-    // most stylesheets are not yet written with namespaces in mind
-    // (and most tools dont support namespaces in CSS).
-    //
-    // by acknowledging the explicit rule but redefining the rule where
-    // no namespace syntax is used at all, I create compatiblity. Still,
-    // if the stylesheet does not carry a @namespace rule, this is the same
-    // as if the namespace was omited.
-    if (strtok.countTokens() == 2)
-    {
-      String tkNamespace = strtok.nextToken();
-      if (tkNamespace.length() == 0)
-      {
-        namespace = null;
-      }
-      else if (tkNamespace.equals("*"))
-      {
-        namespace = "*";
-      }
-      else
-      {
-        namespace = (String)
-                context.getNamespaces().get(tkNamespace);
-      }
-      name = strtok.nextToken();
-    }
-    else
-    {
-      name = strtok.nextToken();
-      namespace = context.getDefaultNamespace();
-    }
-    return new String[]{namespace, name};
   }
 
   public static boolean isFunctionValue(LexicalUnit unit)
@@ -212,7 +170,7 @@ public class CSSValueFactory
     if (parameters == null) return null;
 
     final String attrName = parameters.getStringValue().trim();
-    final String[] name = parseAttributeName(attrName);
+    final String[] name = StyleSheetParserUtil.parseNamespaceIdent(attrName);
 
     final LexicalUnit afterComma = parseComma(parameters);
     if (afterComma == null)
@@ -220,7 +178,7 @@ public class CSSValueFactory
       return new CSSAttrFunction(name[0], name[1]);
     }
 
-    final String attrType = parseAttributeType(afterComma.getNextLexicalUnit());
+    final String attrType = parseAttributeType(afterComma);
     if (attrType == null)
     {
       return new CSSAttrFunction(name[0], name[1]);
@@ -366,6 +324,22 @@ public class CSSValueFactory
         return;
       }
       final CSSAttrFunction attrFn = parseAttrFunction(value);
+      if (attrFn != null)
+      {
+        rule.setPropertyValue(key, attrFn);
+        rule.setImportant(key, important);
+      }
+      return;
+    }
+    else if (isFunctionValue(value) && "attr".equals(value.getFunctionName()))
+    {
+      // ATTR function.
+      if (key == null)
+      {
+        Log.warn("Got no key for attribute-function " + normalizedName);
+        return;
+      }
+      final CSSAttrFunction attrFn = parseComplexAttrFn(value.getParameters());
       if (attrFn != null)
       {
         rule.setPropertyValue(key, attrFn);

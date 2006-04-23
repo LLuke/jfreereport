@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSParseTest.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,14 @@
 package org.jfree.layouting.tools;
 
 import java.util.HashMap;
+import java.io.StringReader;
+import java.io.IOException;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.parser.StyleSheetParserUtil;
+import org.w3c.flute.parser.Parser;
+import org.w3c.css.sac.InputSource;
 
 /**
  * Creation-Date: 23.11.2005, 13:00:17
@@ -60,9 +64,34 @@ public class CSSParseTest
     namespaces.put("xml", "balh");
 
     Object value = StyleSheetParserUtil.parseStyleValue
-            (namespaces, ContentStyleKeys.CONTENT, "'Test' attr(Grump,url))", null, null);
+            (namespaces, ContentStyleKeys.CONTENT, "attr(xml|Grump,url))", null, null);
     System.out.println ("Value: " + value);
 
+    final InputSource source = new InputSource();
+    source.setCharacterStream(new StringReader("A|A"));
+
+    Parser p = new Parser();
+    try
+    {
+      System.out.println (p.parseNamespaceToken(source));
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+
+
+    final String selector = "html|tag[Test|Attr]";
+    source.setCharacterStream(new StringReader(selector));
+    try
+    {
+      Object o = p.parseSelectors(source);
+      System.out.println(o);
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
 //    Log.error ("Start..." + StyleKeyRegistry.getRegistry().getKeyCount());
 //
 //    StyleSheetLoader.getInstance().getInitialValuesSheet();

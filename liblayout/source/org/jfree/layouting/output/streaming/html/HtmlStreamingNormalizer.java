@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HtmlStreamingNormalizer.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
  *
  * Changes
  * -------
@@ -72,6 +72,7 @@ public class HtmlStreamingNormalizer implements StreamingNormalizer
     if (element.getName() == null)
     {
       // this is an anonymous/generated element. Ignore it.
+      outstream.println("<!-- Annonymous element -->");
       return;
     }
 
