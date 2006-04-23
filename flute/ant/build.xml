@@ -1,0 +1,125 @@
+<!--
+  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  -->
+<project name="flute-13a" default="compile" basedir="..">
+
+  <import file="build-lib.xml"/>
+
+  <!-- Initialisation. -->
+  <target name="initialise" description="Initialise required settings.">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="ant/build.properties"/>
+
+    <path id="core.Classpath">
+      <pathelement location="${libdir}/${sac-jar-file}"/>
+    </path>
+    <isClassAndFileAvailable class-name="org.w3c.css.sac.Parser"
+                             property-name="core.Enabled"
+                             file-name="${libdir}/${sac-jar-file}"
+                             classpath-id="core.Classpath"/>
+    <fail unless="core.Enabled"/>
+
+  </target>
+
+  <!-- Compile the JCommon classes -->
+  <target name="compile-jj" depends="initialise">
+    <javacc
+        target="source/org/w3c/flute/parser/Parser.jj"
+        outputdirectory="source/org/w3c/flute/parser/"
+        javacchome="/home/src/ext/javacc"
+    />
+  </target>
+
+
+  <target name="compile" depends="initialise">
+
+    <fileset dir="source/" id="core.SourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.java"/>
+    </fileset>
+
+    <fileset dir="source/" id="core.ResourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.properties"/>
+      <include name="**/*.jj"/>
+    </fileset>
+
+    <build-core target-jar="${flute-jar-file}"
+                source-files-id="core.SourceFiles"
+                resource-files-id="core.ResourceFiles"
+                classpath-id="core.Classpath">
+    </build-core>
+  </target>
+
+
+  <target name="javadoc" depends="initialise">
+    <description>
+      Generate the Flute JavaDoc HTML pages
+    </description>
+
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+             windowtitle="Flute CSS-Parser Library (version ${flute.version})"
+             linksource="true">
+      <classpath refid="all.Classpath"/>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/w3c/flute"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+          tofile="${dist-dir}/README.txt"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="COPYRIGHT.html"
+          tofile="${dist-dir}/COPYRIGHT.html"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${flute-jar-file}"
+          tofile="${dist-dir}/${flute-jar-file}"/>
+
+    <!-- copy across source files -->
+    <copy todir="${dist-dir}/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <copy todir="${dist-dir}/lib">
+      <fileset dir="lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+          tofile="${dist-dir}/ant/build.xml"/>
+    <copy file="ant/build-lib.xml"
+          tofile="${dist-dir}/ant/build-lib.xml"/>
+
+    <copy file="ant/build.properties"
+          tofile="${dist-dir}/ant/build.properties"/>
+  </target>
+
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+
+    <make-zip lib.version="${flute.version}" lib.name="${flute.name}"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+
+    <make-targz lib.version="${flute.version}"
+                lib.name="${flute.name}"/>
+
+  </target>
+
+  <target name="all" depends="compile,javadoc,zip,targz"/>
+</project>
