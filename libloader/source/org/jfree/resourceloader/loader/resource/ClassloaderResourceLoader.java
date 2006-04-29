@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ClassloaderResourceLoader.java,v 1.1.1.1 2006/04/17 16:48:31 taqua Exp $
  *
  * Changes
  * -------
@@ -128,7 +128,7 @@ public class ClassloaderResourceLoader implements ResourceLoader
     }
 
     return new ClassloaderResourceKey
-            ("res:/" + LoaderUtils.mergePaths(parentResourceKey, childResource));
+            (LoaderUtils.mergePaths(parentResourceKey, childResource));
   }
 
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractResourceData.java,v 1.1.1.1 2006/04/17 16:48:30 taqua Exp $
  *
  * Changes
  * -------
@@ -65,10 +65,18 @@ public abstract class AbstractResourceData implements ResourceData, Serializable
     try
     {
       final InputStream in = getResourceAsStream();
+      if (in == null)
+      {
+        throw new ResourceLoadingException("Unable to read Stream: No input stream: " + getKey());
+      }
       final ByteArrayOutputStream bout = new ByteArrayOutputStream();
       IOUtils.getInstance().copyStreams(in, bout);
       in.close();
       return bout.toByteArray();
+    }
+    catch(ResourceLoadingException rle)
+    {
+      throw rle;
     }
     catch (IOException e)
     {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LoaderUtils.java,v 1.1.1.1 2006/04/17 16:48:30 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.resourceloader.loader;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.jfree.resourceloader.ResourceKeyCreationException;
@@ -53,22 +53,64 @@ import org.jfree.resourceloader.ResourceKeyCreationException;
  */
 public class LoaderUtils
 {
-  private LoaderUtils() {}
+  private LoaderUtils()
+  {
+  }
 
-  public static final String mergePaths (final String parent, final String child)
+  /**
+   * Merges two paths. A path is recognized as an absolute path, if
+   * it has an URL-schema definition attached. A parent is recognized as
+   * container path (a directory, in the common language), if it ends with
+   * a slash.
+   *
+   * Todo: Introduce escaping using "\" as escape char.
+   *
+   * @param parent
+   * @param child
+   * @return
+   * @throws ResourceKeyCreationException
+   */
+  public static String mergePaths(final String parent,
+                                  final String child)
           throws ResourceKeyCreationException
   {
+    final int childPrefix = child.indexOf("://");
+    if (childPrefix > 0) return child;
 
-    final String parentResource = parent.substring(6);
-    final List parentList = parseName(parentResource);
+    String parentResource;
+    String parentPrefix;
+    final int parentPrefixPos = parent.indexOf("://");
+    if (parentPrefixPos > 0)
+    {
+      parentResource = parent.substring(parentPrefixPos + 3);
+      parentPrefix = parent.substring(0, parentPrefixPos + 3);
+    }
+    else
+    {
+      parentResource = parent;
+      parentPrefix = "";
+    }
+
+    final List parentList;
+    if (parentResource.endsWith("/"))
+    {
+      parentList = parseName(parentResource, false);
+    }
+    else
+    {
+      parentList = parseName(parentResource, true);
+    }
     // construct the full name ...
-    parentList.addAll(parseName(child));
+    parentList.addAll(parseName(child, false));
     // and normalize it by removing all '.' and '..' elements.
     final ArrayList normalizedList = new ArrayList();
     for (int i = 0; i < parentList.size(); i++)
     {
       String o = (String) parentList.get(i);
-      if (".".equals(o)) continue;
+      if (".".equals(o))
+      {
+        continue;
+      }
       if ("..".equals(o))
       {
         if (normalizedList.isEmpty() == false)
@@ -88,10 +130,15 @@ public class LoaderUtils
       throw new ResourceKeyCreationException("Unable to build a valid key.");
     }
     StringBuffer buffer = new StringBuffer();
+    buffer.append(parentPrefix);
+
     for (int i = 0; i < normalizedList.size(); i++)
     {
       String s = (String) normalizedList.get(i);
-      buffer.append("/");
+      if (i > 0)
+      {
+        buffer.append("/");
+      }
       buffer.append(s);
     }
     return buffer.toString();
@@ -104,16 +151,23 @@ public class LoaderUtils
    * @param name the name, that should be parsed.
    * @return the parsed name.
    */
-  private static List parseName(final String name) {
-      final ArrayList list = new ArrayList();
-      final StringTokenizer strTok = new StringTokenizer(name, "/");
-      while (strTok.hasMoreElements()) {
-          final String s = (String) strTok.nextElement();
-          if (s.length() != 0) {
-              list.add(s);
-          }
+  private static List parseName(final String name, final boolean skipLast)
+  {
+    final ArrayList list = new ArrayList();
+    final StringTokenizer strTok = new StringTokenizer(name, "/");
+    while (strTok.hasMoreElements())
+    {
+      final String s = (String) strTok.nextElement();
+      if (s.length() != 0)
+      {
+        list.add(s);
       }
-      return list;
+    }
+    if (skipLast && list.isEmpty() == false)
+    {
+      list.remove(list.size() - 1);
+    }
+    return list;
   }
 
 

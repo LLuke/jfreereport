@@ -13,7 +13,7 @@ transparent to the user of that library.
 
 For the latest news and information about LibLoader, please refer to:
 
-    http://www.jfree.org/libloader/
+    http://www.jfree.org/jfreereport/libloader/
 
 
 2. CHANGES

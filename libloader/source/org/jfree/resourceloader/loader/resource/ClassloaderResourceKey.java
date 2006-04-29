@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ClassloaderResourceKey.java,v 1.1.1.1 2006/04/17 16:48:31 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public class ClassloaderResourceKey implements ResourceKey
     }
     if (valueString.startsWith("res://") == false)
     {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(valueString);
     }
     this.resource = valueString;
   }

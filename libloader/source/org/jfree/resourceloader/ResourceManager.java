@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResourceManager.java,v 1.1.1.1 2006/04/17 16:48:27 taqua Exp $
  *
  * Changes
  * -------
@@ -347,7 +347,7 @@ public class ResourceManager
     registerFactoryCache();
   }
 
-  private void registerDefaultFactories()
+  public void registerDefaultFactories()
   {
     final Configuration config = LibLoaderBoot.getInstance().getGlobalConfig();
     final Iterator itType = config.findPropertyKeys(FACTORY_TYPE_PREFIX);
@@ -381,10 +381,18 @@ public class ResourceManager
     if (maybeDataCacheProvider instanceof ResourceDataCacheProvider)
     {
       ResourceDataCacheProvider provider = (ResourceDataCacheProvider) maybeDataCacheProvider;
-      final ResourceDataCache cache = provider.createDataCache();
-      if (cache != null)
+      try
       {
-        setDataCache(cache);
+        final ResourceDataCache cache = provider.createDataCache();
+        if (cache != null)
+        {
+          setDataCache(cache);
+        }
+      }
+      catch(Throwable e)
+      {
+        // ok, did not work ...
+        Log.warn ("Failed to set data cache: " + e.getLocalizedMessage());
       }
     }
   }
@@ -402,10 +410,17 @@ public class ResourceManager
     if (maybeCacheProvider instanceof ResourceFactoryCacheProvider)
     {
       ResourceFactoryCacheProvider provider = (ResourceFactoryCacheProvider) maybeCacheProvider;
-      final ResourceFactoryCache cache = provider.createFactoryCache();
-      if (cache != null)
+      try
       {
-        setFactoryCache(cache);
+        final ResourceFactoryCache cache = provider.createFactoryCache();
+        if (cache != null)
+        {
+          setFactoryCache(cache);
+        }
+      }
+      catch(Throwable e)
+      {
+        Log.warn ("Failed to set factory cache: " + e.getLocalizedMessage());
       }
     }
   }
@@ -422,7 +437,9 @@ public class ResourceManager
               ObjectUtilities.loadAndInstantiate(value, ResourceManager.class);
       if (o instanceof ResourceLoader)
       {
-        registerLoader((ResourceLoader) o);
+        final ResourceLoader loader = (ResourceLoader) o;
+        Log.debug ("Registering loader for " + loader.getSchema());
+        registerLoader(loader);
       }
     }
   }
