@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ByteAccessUtilities.java,v 1.5 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,15 @@
 package org.jfree.fonts;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
+
+import org.jfree.fonts.encoding.EncodingRegistry;
+import org.jfree.fonts.encoding.Encoding;
+import org.jfree.fonts.encoding.ByteBuffer;
+import org.jfree.fonts.encoding.CodePointBuffer;
+import org.jfree.fonts.encoding.EncodingException;
+import org.jfree.fonts.encoding.manual.Utf16LE;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 06.11.2005, 18:46:43
@@ -95,7 +104,7 @@ public class ByteAccessUtilities
   }
 
   public static byte[] readBytes (final byte[] data,
-                                 final int pos, final int length)
+                                  final int pos, final int length)
   {
     final byte[] retval = new byte[length];
     System.arraycopy(data, pos, retval, 0, length);
@@ -117,41 +126,30 @@ public class ByteAccessUtilities
     return retval;
   }
 
-  public static String readUnicode (final byte[] data, final int pos,
-                                    final int length)
-  {
-    final StringBuffer buffer = new StringBuffer(length / 2);
-    // align the max bounds ...
-    final int maxPos = pos + (length / 2) * 2;
-    for (int i = pos; i < maxPos; i += 2)
-    {
-      final int cdata = readUShort(data, i);
-      final char c = (char) cdata;
-      buffer.append(c);
-    }
-    return buffer.toString();
-  }
-
+//  public static String readUnicode (final byte[] data, final int pos,
+//                                    final int length)
+//  {
+//    final ByteBuffer byteBuffer = new ByteBuffer(data, pos, length);
+//    final CodePointBuffer cp = Utf16LE.getInstance().decode(byteBuffer, null);
+//    return Utf16LE.getInstance().encodeString(cp);
+//  }
+//
   public static String readString (final byte[] data, final int pos,
                                    final int length, final String encoding)
-          throws UnsupportedEncodingException
+          throws EncodingException
   {
+    final Encoding enc;
     if ("UTF-16".equals(encoding))
     {
-      return readUnicode(data, pos, length);
+      enc = EncodingRegistry.getInstance().getEncoding("UTF-16LE");
     }
-
-    return new String (data, pos, length, encoding);
-  }
-
-  public static void main(String[] args)
-  {
-    byte[] test = new byte[] {
-            (byte) 0xf9, (byte) 0x06, (byte) 0x80, (byte) 0x11
-    };
-    if (readULong(test, 0) < 0)
+    else
     {
-      throw new NullPointerException();
+      enc = EncodingRegistry.getInstance().getEncoding(encoding);
     }
+//    Log.debug ("Encoding: " + enc);
+    final ByteBuffer byteBuffer = new ByteBuffer(data, pos, length);
+    final CodePointBuffer cp = enc.decode(byteBuffer, null);
+    return Utf16LE.getInstance().encodeString(cp);
   }
 }

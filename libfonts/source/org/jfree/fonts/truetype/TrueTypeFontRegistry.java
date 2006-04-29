@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TrueTypeFontRegistry.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -369,23 +369,31 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
     seenFiles.put(record.getFilename(), record);
   }
 
-  private void internalRegisterFontFile(final File file) throws IOException
+  private void internalRegisterFontFile(final File file) 
   {
-    if (StringUtilities.endsWithIgnoreCase(file.getName(), ".ttc"))
+    try
     {
-      TrueTypeCollection ttc = new TrueTypeCollection(file);
-      for (int i = 0; i < ttc.getNumFonts(); i++)
+      if (StringUtilities.endsWithIgnoreCase(file.getName(), ".ttc"))
       {
-        final TrueTypeFont font = ttc.getFont(i);
+        TrueTypeCollection ttc = new TrueTypeCollection(file);
+        for (int i = 0; i < ttc.getNumFonts(); i++)
+        {
+          final TrueTypeFont font = ttc.getFont(i);
+          registerTrueTypeFont(font);
+          font.dispose();
+        }
+      }
+      else
+      {
+        TrueTypeFont font = new TrueTypeFont(file);
         registerTrueTypeFont(font);
         font.dispose();
       }
     }
-    else
+    catch(Exception e)
     {
-      TrueTypeFont font = new TrueTypeFont(file);
-      registerTrueTypeFont(font);
-      font.dispose();
+      // An error must not stop us on our holy mission to find an register
+      // all fonts :)
     }
   }
 

@@ -43,7 +43,10 @@
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
       </all-classpath>
       <all-resources>
+        <include name="**/*.properties"/>
         <include name="*.properties"/>
+        <include name="**/*.ser"/>
+        <include name="*.ser"/>
       </all-resources>
     </build-all>
   </target>

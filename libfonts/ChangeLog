@@ -2,22 +2,32 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-27-Jan-2006: Version 0.1.4:
-    * restructuring and more font reading
-	
-..
-    * recognizes italic and oblique fonts.
 
-    * Support AWT and TrueType fonts using an common interface.
+0.1.7: (30-Apr-2006)
+        * [BUG] Missing or invalid encoding implementations interrupted the
+          font registration process. Missing encodings are now replaced by
+          internal UTF-32-aware encoding implementations.
 
-21-Nov-2005: Version 0.1.1:
-    * [BUG] All names should be used, when looking for font family names. 
+        * LibFonts is now dependent on LibLoader for loading external encodings.
 
-09-Nov-2005: Version 0.1.0:
-    * Reading the 'name', 'head' and 'OS/2' table for truetype files is
-      implemented. This is all that is needed to successfully register
-      fonts.
+0.1.6: (17-Apr-2006)
+        * BugFixes
 
-    * A serializable 'FontRegistry' loads all available fonts from the system
-      directories. It can be stored and reloaded, as this implementation is no
-      singleton anymore.
+0.1.4: (27-Jan-2006)
+        * restructuring and more font reading
+
+        * recognizes italic and oblique fonts.
+
+        * Support AWT and TrueType fonts using an common interface.
+
+0.1.1: (21-Nov-2005)
+        * [BUG] All names should be used, when looking for font family names.
+
+0.1.0: (09-Nov-2005)
+        * Reading the 'name', 'head' and 'OS/2' table for truetype files is
+          implemented. This is all that is needed to successfully register
+          fonts.
+
+        * A serializable 'FontRegistry' loads all available fonts from the system
+          directories. It can be stored and reloaded, as this implementation is no
+          singleton anymore.

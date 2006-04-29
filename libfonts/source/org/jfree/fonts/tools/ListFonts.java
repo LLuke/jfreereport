@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListFonts.java,v 1.3 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ package org.jfree.fonts.tools;
 import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.LibFontBoot;
 
 public class ListFonts
 {
@@ -58,7 +59,7 @@ public class ListFonts
       System.out.println("  - (there is no font defined for that style and family.)");
       return;
     }
-    System.out.println("  " + record.getName() + " italics:" + record.isItalic() + " oblique:" + record.isOblique());
+    System.out.println("  " + record.getName() + " italics:" + record.isItalic() + " oblique:" + record.isOblique() + " bold: " + record.isBold());
     String[] allNames = record.getAllNames();
     for (int i = 0; i < allNames.length; i++)
     {
@@ -76,6 +77,8 @@ public class ListFonts
 
   public static void main (String[] args)
   {
+    LibFontBoot.getInstance().start();
+
     final TrueTypeFontRegistry registry = new TrueTypeFontRegistry();
     registry.initialize();
     final String[] fontFamilies = registry.getRegisteredFamilies();
@@ -84,17 +87,17 @@ public class ListFonts
       String fontFamily = fontFamilies[i];
       final FontFamily family = registry.getFontFamily(fontFamily);
       String[] names = family.getAllNames();
-      for (int j = 0; j < names.length; j++)
-      {
-        String name = names[j];
-        System.out.println("  Alias: " + j + " Name:" + name);
-      }
-/*
-      printRecord(family.getFontRecord(false, false));
+//      for (int j = 0; j < names.length; j++)
+//      {
+//        String name = names[j];
+//        System.out.println("  Alias: " + j + " Name:" + name);
+//      }
+
+//      printRecord(family.getFontRecord(false, false));
       printRecord(family.getFontRecord(true, false));
-      printRecord(family.getFontRecord(false, true));
-      printRecord(family.getFontRecord(true, true));
-*/
+//      printRecord(family.getFontRecord(false, true));
+//      printRecord(family.getFontRecord(true, true));
+
     }
   }
 }

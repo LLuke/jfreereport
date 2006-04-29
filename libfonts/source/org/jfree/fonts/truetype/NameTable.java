@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: NameTable.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.TreeSet;
 
 import org.jfree.fonts.ByteAccessUtilities;
 import org.jfree.fonts.LanguageCode;
+import org.jfree.fonts.encoding.EncodingException;
 import org.jfree.fonts.truetype.mappings.PlatformIdentifier;
 
 /**
@@ -65,7 +66,7 @@ public class NameTable implements FontTable
     public NameRecord(final byte[] data,
                       final int recordOffset,
                       final int stringOffset)
-            throws UnsupportedEncodingException
+            throws EncodingException
     {
       platformId = PlatformIdentifier.getIdentifier(
               ByteAccessUtilities.readUShort(data, recordOffset));
@@ -105,6 +106,23 @@ public class NameTable implements FontTable
     {
       return name;
     }
+
+    public String toString ()
+    {
+      StringBuffer b = new StringBuffer();
+      b.append("NameRecord={PlattformID=");
+      b.append(platformId);
+      b.append(", EncodingID=");
+      b.append(platformEncodingId);
+      b.append(", LanguageID=");
+      b.append(languageId);
+      b.append(", NameID=");
+      b.append(nameId);
+      b.append(", Name=");
+      b.append(name);
+      b.append("}");
+      return b.toString();
+    }
   }
 
   public static final int NAME_COPYRIGHT = 0;
@@ -139,7 +157,7 @@ public class NameTable implements FontTable
   private int stringOffset;
   private NameRecord[] names;
 
-  public NameTable(final byte[] buffer) throws UnsupportedEncodingException
+  public NameTable(final byte[] buffer) throws EncodingException
   {
     format = 0; // const ...
     recordCount = ByteAccessUtilities.readUShort(buffer, 2);
@@ -224,19 +242,19 @@ public class NameTable implements FontTable
         continue;
       }
 
-      if (name.getPlatformId().equals(PlatformIdentifier.MACINTOSH))
+      if (name.getPlatformId().equals(PlatformIdentifier.MICROSOFT))
       {
         if (name.getLanguageId() ==
-                LanguageCode.MacLanguageCode.ENGLISH.getCode())
+                LanguageCode.MicrosoftLanguageCode.ENGLISH_US.getCode())
         {
           return name.getName();
         }
       }
 
-      if (name.getPlatformId().equals(PlatformIdentifier.MICROSOFT))
+      if (name.getPlatformId().equals(PlatformIdentifier.MACINTOSH))
       {
         if (name.getLanguageId() ==
-                LanguageCode.MicrosoftLanguageCode.ENGLISH_US.getCode())
+                LanguageCode.MacLanguageCode.ENGLISH.getCode())
         {
           return name.getName();
         }
@@ -269,7 +287,8 @@ public class NameTable implements FontTable
 
       retvalCollector.add(name.getName());
     }
-    return (String[]) retvalCollector.toArray(new String[retvalCollector.size()]);
+    return (String[]) retvalCollector.toArray
+            (new String[retvalCollector.size()]);
   }
 
   public long getName()

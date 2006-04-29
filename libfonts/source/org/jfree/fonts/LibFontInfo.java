@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LibFontInfo.java,v 1.8 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.ui.about.ProjectInfo;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.Contributor;
 import org.jfree.JCommon;
+import org.jfree.resourceloader.LibLoaderInfo;
 
 /**
  * Creation-Date: 06.11.2005, 18:24:57
@@ -68,10 +69,13 @@ public class LibFontInfo extends ProjectInfo
   public LibFontInfo()
   {
     setName("LibFonts");
-    setVersion("0.1.6");
+    setVersion("0.1.7");
+
     setLicenceName("LGPL");
+    setLicenceText(Licences.getInstance().getLGPL());
+
     setInfo("http://www.jfree.org/jfreereport/libfonts/");
-    setCopyright ("(C)opyright 2000-2005, by Pentaho Corporation and Contributors");
+    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
     setLicenceText(Licences.getInstance().getLGPL());
 
     setContributors(Arrays.asList(new Contributor[]
@@ -80,6 +84,9 @@ public class LibFontInfo extends ProjectInfo
     }));
 
     setBootClass("org.jfree.fonts.LibFontBoot");
+    setAutoBoot(true);
+
     addLibrary(JCommon.INFO);
+    addLibrary(LibLoaderInfo.getInstance());
   }
 }
