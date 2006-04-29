@@ -1,0 +1,13 @@
+---------------
+1.  WHAT's NEW
+---------------
+A list of changes in recent versions:
+
+0.1.1: (30-Apr-2006)
+        * New factory implementation for loading properties.
+
+        * [BUG] Fixes in the resource and zip-loader implementations for dealing
+          with derived keys.
+
+0.1.0: (17-Apr-2006)
+        * Initial public version.
