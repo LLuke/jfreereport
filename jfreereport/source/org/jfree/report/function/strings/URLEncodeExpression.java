@@ -1,10 +1,10 @@
 package org.jfree.report.function.strings;
 
-import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
 
-import org.jfree.report.function.AbstractExpression;
+import org.jfree.layouting.util.UTFEncodingUtil;
 import org.jfree.report.DataSourceException;
+import org.jfree.report.function.AbstractExpression;
 
 public class URLEncodeExpression extends AbstractExpression
 {
@@ -39,7 +39,7 @@ public class URLEncodeExpression extends AbstractExpression
     }
     try
     {
-      return URLEncoder.encode(String.valueOf(value), "iso-8859-1");
+      return UTFEncodingUtil.encode(String.valueOf(value), "iso-8859-1");
     }
     catch (UnsupportedEncodingException e)
     {

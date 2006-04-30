@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.2 2006/04/30 09:47:49 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.function.ColumnAggregationExpression;
 import org.jfree.report.util.MessageFormatSupport;
 import org.jfree.util.Log;
+import org.jfree.layouting.util.UTFEncodingUtil;
 
 /**
  * A TextFormatExpression uses a java.text.MessageFormat to concat and format
@@ -120,7 +121,7 @@ public class TextFormatExpression extends ColumnAggregationExpression
           {
             continue;
           }
-          fieldValues[i] = URLEncoder.encode(String.valueOf(fieldValue), encoding);
+          fieldValues[i] = UTFEncodingUtil.encode(String.valueOf(fieldValue), encoding);
         }
       }
 
@@ -128,7 +129,7 @@ public class TextFormatExpression extends ColumnAggregationExpression
               fieldValues, nullValue);
       if (isUrlEncodeResult())
       {
-        return URLEncoder.encode(result, encoding);
+        return UTFEncodingUtil.encode(result, encoding);
       }
       return result;
     }
