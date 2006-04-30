@@ -1,0 +1,50 @@
+/**
+ * The StyleSheet mapping for the built-in elements. This mapping is only
+ * active, if no namespace aware XML-parser touched the elements.
+ */
+@namespace flow url(http://jfreereport.sourceforge.net/namespaces/engine/flow); /* set default namespace to HTML */
+@namespace xml url(http://www.w3.org/XML/1998/namespace);
+@namespace url(http://jfreereport.sourceforge.net/namespaces/engine/flow); /* set default namespace to HTML */
+
+/**
+ * The quoting of the attribute's name constant is an intentional violation
+ * of the CSS standard. This forces the 'flute' parser to return the attr(..)
+ * function as function object, which enables us to interpret the type
+ * parameter.
+ */
+flow|resource-node {
+  content: attr("flow|content", url);
+}
+
+flow|external-node {
+  content: attr("flow|content", raw);
+}
+
+flow|content-node {
+  content: attr("flow|content", string);
+  display: inline;
+}
+
+content-node[isDate=true] {
+  content: format(attr("flow|content", date), date);
+}
+
+flow|content-node[isDate=true][format] {
+  content: format(attr("flow|content", date), date, attr("flow|format",string));
+}
+
+flow|content-node[isNumber=true] {
+  content: format(attr("flow|content", number), number, "#,##0.00");
+}
+
+flow|content-node[isNumber=true][format] {
+  content: format(attr("flow|content", number), number, attr("flow|format",string));
+}
+
+flow|content-node[isNumber=true][isInteger=true] {
+  content: format(attr("flow|content", number), number, "#,##0");
+}
+
+flow|content-node[isNumber=true][isInteger=true][format] {
+  content: format(attr("flow|content", number), number, attr("flow|format",string));
+}
