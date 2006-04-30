@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ResourceMesssageFormatExpression.java,v 1.1 2006/01/24 19:01:08 taqua Exp $
+ * $Id: TranslateMesssageExpression.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,6 +58,7 @@ public class TranslateMesssageExpression extends AbstractExpression
   private transient Locale locale;
 
   private String formatKey;
+  private String nullValue;
 
   /** the used resource bundle. */
   private String resourceIdentifier;
@@ -97,6 +98,7 @@ public class TranslateMesssageExpression extends AbstractExpression
   public Object getValue() throws DataSourceException
   {
     updateMessageFormat();
+    messageFormatSupport.setNullString(nullValue);
     return messageFormatSupport.performFormat(getDataRow());
   }
 
@@ -139,4 +141,13 @@ public class TranslateMesssageExpression extends AbstractExpression
     info.setDependendFields(messageFormatSupport.getFields());
   }
 
+  public String getNullValue()
+  {
+    return nullValue;
+  }
+
+  public void setNullValue(final String nullValue)
+  {
+    this.nullValue = nullValue;
+  }
 }

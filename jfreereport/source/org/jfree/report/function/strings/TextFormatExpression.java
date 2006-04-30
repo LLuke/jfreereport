@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.11 2006/01/24 18:58:29 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------
@@ -37,19 +37,25 @@
  */
 package org.jfree.report.function.strings;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.MessageFormat;
+import java.util.Date;
 
 import org.jfree.report.DataSourceException;
 import org.jfree.report.function.ColumnAggregationExpression;
+import org.jfree.report.util.MessageFormatSupport;
+import org.jfree.util.Log;
 
 /**
- * A TextFormatExpression uses a java.text.MessageFormat to concat and format one or more
- * values evaluated from an expression, function or report datasource.
+ * A TextFormatExpression uses a java.text.MessageFormat to concat and format
+ * one or more values evaluated from an expression, function or report
+ * datasource.
  * <p/>
- * The TextFormatExpression uses the pattern property to define the global format-pattern
- * used when evaluating the expression. The dataRow fields used to fill the expressions
- * placeholders are defined in a list of properties where the property-names are numbers.
- * The property counting starts at "0".
+ * The TextFormatExpression uses the pattern property to define the global
+ * format-pattern used when evaluating the expression. The dataRow fields used
+ * to fill the expressions placeholders are defined in a list of properties
+ * where the property-names are numbers. The property counting starts at "0".
  * <p/>
  * The Syntax of the <code>pattern</code> property is explained in
  * java.text.MessageFormat.
@@ -70,28 +76,67 @@ import org.jfree.report.function.ColumnAggregationExpression;
 public class TextFormatExpression extends ColumnAggregationExpression
 {
   private String pattern;
+  private String nullValue;
+  private String encoding;
+  private boolean urlEncodeValues;
+  private boolean urlEncodeResult;
 
-  /**
-   * Default constructor, creates a new unnamed TextFormatExpression.
-   */
-  public TextFormatExpression ()
+  /** Default constructor, creates a new unnamed TextFormatExpression. */
+  public TextFormatExpression()
   {
+    encoding = "iso-8859-1";
   }
 
   /**
-   * Evaluates the expression by collecting all values defined in the fieldlist from the
-   * datarow. The collected values are then parsed and formated by the
+   * Evaluates the expression by collecting all values defined in the fieldlist
+   * from the datarow. The collected values are then parsed and formated by the
    * MessageFormat-object.
    *
-   * @return a string containing the pattern inclusive the formatted values from the
-   *         datarow
+   * @return a string containing the pattern inclusive the formatted values from
+   *         the datarow
    */
-  public Object getValue () throws DataSourceException
+  public Object getValue() throws DataSourceException
   {
     final MessageFormat format = new MessageFormat("");
     format.setLocale(getParentLocale());
     format.applyPattern(getPattern());
-    return format.format(getFieldValues());
+    final Object[] fieldValues = getFieldValues();
+    try
+    {
+      if (isUrlEncodeValues())
+      {
+        for (int i = 0; i < fieldValues.length; i++)
+        {
+          Object fieldValue = fieldValues[i];
+          if (fieldValue == null)
+          {
+            continue;
+          }
+          if (fieldValue instanceof Date)
+          {
+            continue;
+          }
+          if (fieldValue instanceof Number)
+          {
+            continue;
+          }
+          fieldValues[i] = URLEncoder.encode(String.valueOf(fieldValue), encoding);
+        }
+      }
+
+      final String result = MessageFormatSupport.formatWithReplace(format,
+              fieldValues, nullValue);
+      if (isUrlEncodeResult())
+      {
+        return URLEncoder.encode(result, encoding);
+      }
+      return result;
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      Log.warn("Encoding is not supported: " + encoding);
+      return null;
+    }
   }
 
   /**
@@ -99,20 +144,60 @@ public class TextFormatExpression extends ColumnAggregationExpression
    *
    * @return the pattern.
    */
-  public String getPattern ()
+  public String getPattern()
   {
     return pattern;
   }
 
   /**
-   * Defines the pattern for this expression. The pattern syntax is defined by the
-   * java.text.MessageFormat object and the given pattern string has to be valid according
-   * to the rules defined there.
+   * Defines the pattern for this expression. The pattern syntax is defined by
+   * the java.text.MessageFormat object and the given pattern string has to be
+   * valid according to the rules defined there.
    *
    * @param pattern the pattern string
    */
-  public void setPattern (final String pattern)
+  public void setPattern(final String pattern)
   {
     this.pattern = pattern;
+  }
+
+  public String getNullValue()
+  {
+    return nullValue;
+  }
+
+  public void setNullValue(final String nullValue)
+  {
+    this.nullValue = nullValue;
+  }
+
+  public boolean isUrlEncodeValues()
+  {
+    return urlEncodeValues;
+  }
+
+  public void setUrlEncodeValues(final boolean urlEncodeValues)
+  {
+    this.urlEncodeValues = urlEncodeValues;
+  }
+
+  public boolean isUrlEncodeResult()
+  {
+    return urlEncodeResult;
+  }
+
+  public void setUrlEncodeResult(final boolean urlEncodeResult)
+  {
+    this.urlEncodeResult = urlEncodeResult;
+  }
+
+  public String getEncoding()
+  {
+    return encoding;
+  }
+
+  public void setEncoding(final String encoding)
+  {
+    this.encoding = encoding;
   }
 }

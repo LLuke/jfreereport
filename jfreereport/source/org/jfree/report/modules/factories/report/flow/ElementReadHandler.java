@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ElementReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -98,8 +98,8 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
   protected void startParsing(final Attributes attrs) throws SAXException
   {
     super.startParsing(attrs);
-    style = attrs.getValue(getUri(), "style");
-    final String enabledValue = attrs.getValue(getUri(), "enabled");
+    style = attrs.getValue(FlowReportFactoryModule.NAMESPACE, "style");
+    final String enabledValue = attrs.getValue(FlowReportFactoryModule.NAMESPACE, "enabled");
     if (enabledValue != null)
     {
       enabled = "true".equals(enabledValue);
@@ -222,7 +222,7 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
     e.setEnabled(enabled);
     if (style != null)
     {
-      e.setAttribute("style", style);
+      e.setAttribute(FlowReportFactoryModule.NAMESPACE,"style", style);
     }
   }
 

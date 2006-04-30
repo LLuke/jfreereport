@@ -54,8 +54,13 @@
       </all-classpath>
       <all-resources>
         <include name="*.properties"/>
+        <include name="**/*.properties"/>
         <include name="*.bsh"/>
+        <include name="**/*.bsh"/>
         <include name="*.xsd"/>
+        <include name="**/*.xsd"/>
+        <include name="*.css"/>
+        <include name="**/*.css"/>
       </all-resources>
     </build-all>
   </target>

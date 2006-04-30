@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MessageFormatSupport.java,v 1.10 2006/01/27 16:25:36 taqua Exp $
+ * $Id: MessageFormatSupport.java,v 1.1 2006/04/18 13:32:51 taqua Exp $
  *
  * Changes
  * -------
@@ -135,6 +135,58 @@ public class MessageFormatSupport implements Serializable, Cloneable
 
   public String performFormat(final DataRow dataRow) throws DataSourceException
   {
+    return formatWithReplace(dataRow, format, fields, nullString);
+  }
+
+  public Locale getLocale()
+  {
+    return format.getLocale();
+  }
+
+  public String getCompiledFormat()
+  {
+    return compiledFormat;
+  }
+
+  public void setLocale(final Locale locale)
+  {
+    format.setLocale(locale);
+    format.applyPattern(compiledFormat);
+  }
+
+  public String getNullString()
+  {
+    return nullString;
+  }
+
+  public void setNullString(String nullString)
+  {
+    this.nullString = nullString;
+  }
+
+  public Object clone()
+          throws CloneNotSupportedException
+  {
+    MessageFormatSupport support = (MessageFormatSupport) super.clone();
+    if (format != null)
+    {
+      support.format = (MessageFormat) format.clone();
+    }
+    return support;
+  }
+
+  public String[] getFields()
+  {
+    return (String[]) fields.clone();
+  }
+
+
+  public static String formatWithReplace(final DataRow dataRow,
+                                         final MessageFormat format,
+                                         final String[] fields,
+                                         final String nullString)
+          throws DataSourceException
+  {
     if (fields == null || format == null)
     {
       return null;
@@ -210,45 +262,85 @@ public class MessageFormatSupport implements Serializable, Cloneable
     return effectiveFormat.format(parameters);
   }
 
-  public Locale getLocale()
-  {
-    return format.getLocale();
-  }
 
-  public String getCompiledFormat()
+  public static String formatWithReplace(final MessageFormat format,
+                                         final Object[] inputValues,
+                                         final String nullString)
   {
-    return compiledFormat;
-  }
-
-  public void setLocale(final Locale locale)
-  {
-    format.setLocale(locale);
-    format.applyPattern(compiledFormat);
-  }
-
-  public String getNullString()
-  {
-    return nullString;
-  }
-
-  public void setNullString(String nullString)
-  {
-    this.nullString = nullString;
-  }
-
-  public Object clone()
-          throws CloneNotSupportedException
-  {
-    MessageFormatSupport support = (MessageFormatSupport) super.clone();
-    if (format != null)
+    if (inputValues == null || format == null)
     {
-      support.format = (MessageFormat) format.clone();
+      return null;
     }
-    return support;
+
+    Object[] values = (Object[]) inputValues.clone();
+
+    boolean fastProcessingPossible = (nullString == null);
+
+    final Format[] formats = format.getFormats();
+    boolean fastProcessing = true;
+    final boolean[] replaced = new boolean[values.length];
+    for (int i = 0; i < values.length; i++)
+    {
+      final Object value = values[i];
+      final Format currentFormat = formats[i];
+      if (value == null)
+      {
+        values[i] = nullString;
+        replaced[i] = currentFormat != null;
+        fastProcessing = (fastProcessing && fastProcessingPossible && replaced[i] == false);
+      }
+      else
+      {
+        if (currentFormat instanceof DateFormat)
+        {
+          if (value instanceof Date)
+          {
+            values[i] = value;
+            replaced[i] = false;
+          }
+          else
+          {
+            values[i] = nullString;
+            replaced[i] = true;
+            fastProcessing = (fastProcessing && fastProcessingPossible && replaced[i] == false);
+          }
+        }
+        else if (currentFormat instanceof NumberFormat)
+        {
+          if (value instanceof Number)
+          {
+            values[i] = value;
+            replaced[i] = false;
+          }
+          else
+          {
+            values[i] = nullString;
+            replaced[i] = true;
+            fastProcessing = (fastProcessing && fastProcessingPossible && replaced[i] == false);
+          }
+        }
+        else
+        {
+          values[i] = value;
+          replaced[i] = false;
+        }
+      }
+    }
+    if (fastProcessing)
+    {
+      return format.format(values);
+    }
+
+    final MessageFormat effectiveFormat = (MessageFormat) format.clone();
+    for (int i = 0; i < replaced.length; i++)
+    {
+      boolean b = replaced[i];
+      if (b)
+      {
+        effectiveFormat.setFormat(i, null);
+      }
+    }
+    return effectiveFormat.format(values);
   }
 
-  public String[] getFields()
-  {
-    return (String[]) fields.clone();
-  }
 }

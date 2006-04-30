@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: Element.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -64,11 +64,12 @@ import org.jfree.report.util.AttributeMap;
  * <p/>
  * Both the name and the id attribute may be null.
  * <p/>
- * Property names starting with '::' are considered internal properties. They
- * will not be passed over to any layouter; output targets which deal directly
- * with element objects should treat them according to their special meaning.
+ * Properties in the 'http://jfreereport.sourceforge.net/namespaces/engine/flow'
+ * namespace and in the
+ * 'http://jfreereport.sourceforge.net/namespaces/engine/compatibility'
+ * namespace are considered internal. You should only touch them, if you really
+ * know what you are doing. 
  *
- * @author David Gilbert
  * @author Thomas Morgner
  */
 public abstract class Element extends Node
