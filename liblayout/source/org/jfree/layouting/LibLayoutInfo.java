@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LibLayoutInfo.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -59,9 +59,9 @@ public class LibLayoutInfo extends ProjectInfo
   private LibLayoutInfo ()
   {
     setName("LibLayout");
-    setVersion("pre-alpha-01");
+    setVersion("0.1.1");
     setInfo("http://www.jfree.org/jfreereport/index.html");
-    setCopyright ("(C)opyright 2000-2004, by Thomas Morgner, " +
+    setCopyright ("(C)opyright 2006, by Thomas Morgner, " +
             "Object Refinery Limited and Contributors");
 
     setContributors(Arrays.asList(

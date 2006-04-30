@@ -81,6 +81,7 @@
       </all-classpath>
       <all-resources>
         <include name="*.properties"/>
+        <include name="*.css"/>
       </all-resources>
     </build-all>
   </target>
