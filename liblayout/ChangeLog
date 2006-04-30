@@ -1,0 +1,24 @@
+---------------
+1.  WHAT's NEW
+---------------
+A list of changes in recent versions:
+
+0.1.1: (30-Apr-2006)
+        * LibLayout now depends on a modified version of flute - W3C's CSS-Parser.
+          Our version has improved namespace awareness, while maintaining backward
+          compatiblity with the original semantics (to allow co-existence with 
+          BIRT). The stylesheets provided in LibLayout will not work properly with
+          an unpatched version of the parser.
+
+        * Namespace awareness has been improved. Namespace-characteristics can
+          be defined by the document within the Document's MetaData section.
+
+        * Removed all traces of JFreeReport namespaces. The namespaces and the
+          default style are now part of JFreeReport (or any other library).
+
+          LibLayout's stylesheet now only contains helper rules for its own
+          internal use (like list markers or other meant-to-be-pseudo-elements
+          definitions).
+
+0.1.0: (17-Apr-2006)
+        * Initial release
