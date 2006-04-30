@@ -1,8 +1,8 @@
 ************************
-* LIBLAYOUT 0.1.0      *
+* LIBLAYOUT 0.1.1      *
 ************************
 
-14 Apr 2006
+30 Apr 2006
 
 1. INTRODUCTION
 ---------------
@@ -21,4 +21,5 @@ of compatibility to JDK 1.2.2.
 2. CHANGES
 ----------
 
+30-Apr-2006: More namespace awareness
 14-Apr-2006: Initial version.
