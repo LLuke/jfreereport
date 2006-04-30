@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AWTFontMetrics.java,v 1.4 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -172,12 +172,12 @@ public class AWTFontMetrics implements FontMetrics
     return 0;
   }
 
-  public double getCharWidth(char character)
+  public double getCharWidth(int character)
   {
     return 0;
   }
 
-  public double getCharWidthWithKerning(char previous, char character)
+  public double getCharWidthWithKerning(int previous, int character)
   {
     return 0;
   }

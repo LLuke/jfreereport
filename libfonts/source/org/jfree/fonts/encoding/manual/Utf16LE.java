@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Utf16LE.java,v 1.1 2006/04/29 15:12:58 taqua Exp $
  *
  * Changes
  * -------
@@ -194,7 +194,7 @@ public class Utf16LE implements ComplexEncoding
           result |= (highByteL & 0x03) << 8;
           result |= lowByte << 10;
           result |= (highByte & 0x03) << 18;
-          targetData[position] = result;
+          targetData[position] = result + 0x10000;
           position += 1;
         }
         else
@@ -271,8 +271,8 @@ public class Utf16LE implements ComplexEncoding
           final char c2 = chars[i];
           if ((c2 & 0xFC00) == 0xDC00)
           {
-            final int codePoint = (c2 & 0x3FF) |
-                    ((c & 0x3FF) << 10);
+            final int codePoint = 0x10000 +
+                    ((c2 & 0x3FF) | ((c & 0x3FF) << 10));
             cps.put(codePoint);
           }
           else

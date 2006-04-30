@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EncodingRegistry.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
  *
  * Changes
  * -------
@@ -273,17 +273,17 @@ public final class EncodingRegistry
     }
   }
 
-
-  public static void main(String[] args) throws EncodingException
-  {
-    LibFontBoot.getInstance().start();
-    final EncodingRegistry reg = EncodingRegistry.getInstance();
-    final Encoding encoding = reg.getEncoding("MacRoman");
-    System.out.println ("MacRoman: " + encoding);
-    byte[] text = new byte[] { 'A', 'b', 'c' };
-    final ByteBuffer byteBuffer = new ByteBuffer(text);
-    final CodePointBuffer cp = encoding.decode(byteBuffer, null);
-    System.out.println (Utf16LE.getInstance().encodeString(cp));
-
-  }
+//
+//  public static void main(String[] args) throws EncodingException
+//  {
+//    LibFontBoot.getInstance().start();
+//    final EncodingRegistry reg = EncodingRegistry.getInstance();
+//    final Encoding encoding = reg.getEncoding("MacRoman");
+//    System.out.println ("MacRoman: " + encoding);
+//    byte[] text = new byte[] { 'A', 'b', 'c' };
+//    final ByteBuffer byteBuffer = new ByteBuffer(text);
+//    final CodePointBuffer cp = encoding.decode(byteBuffer, null);
+//    System.out.println (Utf16LE.getInstance().encodeString(cp));
+//
+//  }
 }
