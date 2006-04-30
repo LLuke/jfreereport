@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: UrlFunction.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class UrlFunction extends AbstractStyleFunction
     }
     if (value instanceof CSSStringValue == false)
     {
-      throw new FunctionEvaluationException("Not even remotely an URI");
+      throw new FunctionEvaluationException("Not even remotely an URI: " + value);
     }
     final CSSStringValue strval = (CSSStringValue) value;
     return convertToURI(layoutProcess, strval.getValue());

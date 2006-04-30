@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FixNamespaceSelectorFactory.java,v 1.1 2006/04/23 15:18:58 taqua Exp $
  *
  * Changes
  * -------
@@ -106,8 +106,15 @@ public class FixNamespaceSelectorFactory implements SelectorFactory
     }
     else
     {
-      final String[] ns = StyleSheetParserUtil.parseNamespaceIdent(tagName);
-      return parent.createElementSelector(ns[0], ns[1]);
+      if (tagName == null)
+      {
+        return parent.createElementSelector(null, null);
+      }
+      else
+      {
+        final String[] ns = StyleSheetParserUtil.parseNamespaceIdent(tagName);
+        return parent.createElementSelector(ns[0], ns[1]);
+      }
     }
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AttrFunction.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
+ * $Id: AttrFunction.java,v 1.2 2006/04/21 17:29:37 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,14 @@ public class AttrFunction extends AbstractStyleFunction
       type = getStringParameter(layoutProcess, element, params[2]);
     }
 
-    if ("*".equals(namespace))
+    if (namespace == null || "".equals(namespace))
+    {
+      final Object value = element.getAttribute
+              (element.getNamespace(), name);
+      return convertValue(layoutProcess, value, type);
+
+    }
+    else if ("*".equals(namespace))
     {
       // this is a lot of work. Query all attributes in all namespaces...
       final Object value = element.getAttributes().getFirstAttribute(name);

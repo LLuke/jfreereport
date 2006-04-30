@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.1 2006/04/17 21:04:27 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.2 2006/04/23 15:18:18 taqua Exp $
  *
  * Changes
  * -------
@@ -146,7 +146,8 @@ public class ContentNormalizer implements Normalizer
       // we have none, so we will ignore all other content of that element
       // however, we will generate ::before and ::after pseudo-elements and
       // we will process whatever content has been given.
-      Log.debug ("Ignored element " + element + " as it does not contain the 'contents' token.");
+      Log.debug ("Starting to ignore childs of element " + element +
+                 " as it does not contain the 'contents' token.");
       ignoredElement = element.getContextId();
     }
   }
