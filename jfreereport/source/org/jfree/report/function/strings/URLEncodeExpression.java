@@ -9,9 +9,21 @@ import org.jfree.report.function.AbstractExpression;
 public class URLEncodeExpression extends AbstractExpression
 {
   private String field;
+  private String encoding;
 
   public URLEncodeExpression ()
   {
+    encoding = "ISO-8859-1";
+  }
+
+  public String getEncoding()
+  {
+    return encoding;
+  }
+
+  public void setEncoding(final String encoding)
+  {
+    this.encoding = encoding;
   }
 
   public String getField ()
@@ -39,7 +51,7 @@ public class URLEncodeExpression extends AbstractExpression
     }
     try
     {
-      return UTFEncodingUtil.encode(String.valueOf(value), "iso-8859-1");
+      return UTFEncodingUtil.encode(String.valueOf(value), encoding);
     }
     catch (UnsupportedEncodingException e)
     {
