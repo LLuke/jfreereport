@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TrueTypeFontRegistry.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
+ * $Id: TrueTypeFontRegistry.java,v 1.5 2006/04/29 15:09:46 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import org.jfree.fonts.FontException;
 import org.jfree.fonts.StringUtilities;
 import org.jfree.fonts.registry.DefaultFontFamily;
 import org.jfree.fonts.registry.FontFamily;
@@ -369,7 +370,7 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
     seenFiles.put(record.getFilename(), record);
   }
 
-  private void internalRegisterFontFile(final File file) 
+  private void internalRegisterFontFile(final File file)
   {
     try
     {
@@ -390,7 +391,7 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
         font.dispose();
       }
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       // An error must not stop us on our holy mission to find an register
       // all fonts :)
@@ -403,7 +404,8 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
     NameTable table = (NameTable) font.getTable(NameTable.TABLE_ID);
     if (table == null)
     {
-      throw new IOException("The NameTable is required");
+      throw new IOException(
+              "The NameTable is required for all conforming fonts.");
     }
 
     final String familyName = table.getPrimaryName(NameTable.NAME_FAMILY);
@@ -426,8 +428,15 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
       this.fullFontNames.put(name, fontFamily);
     }
 
-    TrueTypeFontRecord record = new TrueTypeFontRecord(font, fontFamily);
-    fontFamily.setFontRecord(record);
+    try
+    {
+      TrueTypeFontRecord record = new TrueTypeFontRecord(font, fontFamily);
+      fontFamily.setFontRecord(record);
+    }
+    catch (FontException e)
+    {
+      Log.info("The font '" + font.getFilename() + "' is invalid.");
+    }
   }
 
   private DefaultFontFamily createFamily(String name)

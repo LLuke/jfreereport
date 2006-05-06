@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TrueTypeFontRecord.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -42,14 +42,22 @@ package org.jfree.fonts.truetype;
 
 import java.io.IOException;
 
+import org.jfree.fonts.FontException;
 import org.jfree.fonts.io.FontDataInputSource;
 import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontRecord;
 import org.jfree.fonts.registry.FontIdentifier;
-import org.jfree.util.Log;
+import org.jfree.fonts.registry.FontRecord;
 
 /**
- * Creation-Date: 09.11.2005, 16:27:35
+ * A true-type font record. The record contains meta-information about the
+ * font, which allows the system to lookup the font by one of its names and
+ * other style attributes.
+ * <p/>
+ * A font without a 'name' table is rejected. The Name-Table is a mandatory
+ * table in the OpenType standard, and only weird MacOS fonts omit that table.
+ * <p/>
+ * Missing 'head' or 'OS/2' tables are ignored and default values are assumed
+ * instead.
  *
  * @author Thomas Morgner
  */
@@ -63,6 +71,7 @@ public class TrueTypeFontRecord implements FontRecord
   private boolean oblique;
   private FontFamily family;
   private boolean embeddable;
+  private boolean nonWindows; // the font does not have an OS2-Table
   private FontIdentifier identifier;
 
   private String name;
@@ -72,7 +81,8 @@ public class TrueTypeFontRecord implements FontRecord
   private FontDataInputSource fontInputSource;
 
   public TrueTypeFontRecord(final TrueTypeFont trueTypeFont,
-                            final FontFamily family) throws IOException
+                            final FontFamily family) throws IOException,
+          FontException
   {
     if (trueTypeFont == null)
     {
@@ -92,25 +102,56 @@ public class TrueTypeFontRecord implements FontRecord
     if (table != null)
     {
       this.embeddable = (table.isRestricted() == false);
+      this.nonWindows = false;
+    }
+    else
+    {
+      this.nonWindows = true;
     }
 
     final NameTable nameTable = (NameTable) trueTypeFont.getTable(NameTable.TABLE_ID);
+    if (nameTable == null)
+    {
+      throw new FontException
+              ("This font does not have a 'name' table. It is not valid.");
+    }
+
     this.name = nameTable.getPrimaryName(NameTable.NAME_FULLNAME);
     this.allNames = nameTable.getAllNames(NameTable.NAME_FULLNAME);
     this.variant = nameTable.getPrimaryName(NameTable.NAME_SUBFAMILY);
     this.allVariants = nameTable.getAllNames(NameTable.NAME_SUBFAMILY);
 
-    final FontHeaderTable headTable = (FontHeaderTable) trueTypeFont.getTable(FontHeaderTable.TABLE_ID);
-    this.bold = headTable.isBold();
-    if (variant.toLowerCase().indexOf("oblique") >= 0)
+    final FontHeaderTable headTable = (FontHeaderTable)
+            trueTypeFont.getTable(FontHeaderTable.TABLE_ID);
+    if (headTable != null)
     {
-      this.oblique = true;
-      this.italics = false;
+      this.bold = headTable.isBold();
+      if (variant.toLowerCase().indexOf("oblique") >= 0)
+      {
+        this.oblique = true;
+        this.italics = false;
+      }
+      else
+      {
+        this.italics = headTable.isItalic();
+        this.oblique = this.italics;
+      }
     }
     else
     {
-      this.italics = headTable.isItalic();
-      this.oblique = this.italics;
+      // try to use the english name instead. If there is no english name,
+      // then do whatever you like. Buggy non standard fonts are not funny ..
+      this.bold = (variant.toLowerCase().indexOf("bold") >= 0);
+      if (variant.toLowerCase().indexOf("oblique") >= 0)
+      {
+        this.oblique = true;
+        this.italics = false;
+      }
+      else
+      {
+        this.oblique = (variant.toLowerCase().indexOf("italic") >= 0);
+        this.oblique = this.italics;
+      }
     }
 
     this.identifier = new TrueTypeFontIdentifier
@@ -227,6 +268,11 @@ public class TrueTypeFontRecord implements FontRecord
   public FontIdentifier getIdentifier()
   {
     return identifier;
+  }
+
+  public boolean isNonWindows()
+  {
+    return nonWindows;
   }
 
   public int hashCode()

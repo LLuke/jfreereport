@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TrueTypeFont.java,v 1.5 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.jfree.fonts.ByteAccessUtilities;
-import org.jfree.fonts.io.FontDataInputSource;
 import org.jfree.fonts.io.FileFontDataInputSource;
+import org.jfree.fonts.io.FontDataInputSource;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 06.11.2005, 18:27:21
@@ -151,15 +152,15 @@ public class TrueTypeFont
     /**
      * Returns a string representation of the object. In general, the
      * <code>toString</code> method returns a string that "textually represents"
-     * this object. The result should be a concise but informative representation
-     * that is easy for a person to read. It is recommended that all subclasses
-     * override this method.
+     * this object. The result should be a concise but informative
+     * representation that is easy for a person to read. It is recommended that
+     * all subclasses override this method.
      * <p/>
      * The <code>toString</code> method for class <code>Object</code> returns a
      * string consisting of the name of the class of which the object is an
      * instance, the at-sign character `<code>@</code>', and the unsigned
-     * hexadecimal representation of the hash code of the object. In other words,
-     * this method returns a string equal to the value of: <blockquote>
+     * hexadecimal representation of the hash code of the object. In other
+     * words, this method returns a string equal to the value of: <blockquote>
      * <pre>
      * getClass().getName() + '@' + Integer.toHexString(hashCode())
      * </pre></blockquote>
@@ -188,16 +189,18 @@ public class TrueTypeFont
   public TrueTypeFont(final FontDataInputSource filename)
           throws IOException
   {
-    this (filename, 0, -1);
+    this(filename, 0, -1);
   }
 
   public TrueTypeFont(final FontDataInputSource filename, final long offset)
           throws IOException
   {
-    this (filename,  offset, -1);
+    this(filename, offset, -1);
   }
 
-  public TrueTypeFont(final FontDataInputSource filename, final long offset, final int collectionIndex)
+  public TrueTypeFont(final FontDataInputSource filename,
+                      final long offset,
+                      final int collectionIndex)
           throws IOException
   {
     if (offset < 0)
@@ -213,23 +216,25 @@ public class TrueTypeFont
             (readFully(offset, TrueTypeFontHeader.ENTRY_LENGTH));
     this.directory = readTableDirectory();
   }
-  
+
   public TrueTypeFont(final File filename)
           throws IOException
   {
-    this (filename, 0, -1);
+    this(filename, 0, -1);
   }
 
   public TrueTypeFont(final File filename, final long offset)
           throws IOException
   {
-    this (filename,  offset, -1);
+    this(filename, offset, -1);
   }
 
-  public TrueTypeFont(final File filename, final long offset, final int collectionIndex)
+  public TrueTypeFont(final File filename,
+                      final long offset,
+                      final int collectionIndex)
           throws IOException
   {
-    this (new FileFontDataInputSource(filename), offset, collectionIndex);
+    this(new FileFontDataInputSource(filename), offset, collectionIndex);
   }
 
   public int getCollectionIndex()
@@ -237,7 +242,7 @@ public class TrueTypeFont
     return collectionIndex;
   }
 
-  private TableDirectoryEntry[] readTableDirectory () throws IOException
+  private TableDirectoryEntry[] readTableDirectory() throws IOException
   {
     final int numTables = header.getNumTables();
     final int directorySize =
@@ -279,8 +284,8 @@ public class TrueTypeFont
   }
 
   /**
-   * The file that was used to load the font. This is deprecated, as only
-   * the transition version of JFreeReport is using this hack.
+   * The file that was used to load the font. This is deprecated, as only the
+   * transition version of JFreeReport is using this hack.
    *
    * @return
    */
@@ -289,7 +294,7 @@ public class TrueTypeFont
     return filename;
   }
 
-  public FontTable getTable (long key) throws IOException
+  public FontTable getTable(long key) throws IOException
   {
     for (int i = 0; i < directory.length; i++)
     {
@@ -302,6 +307,10 @@ public class TrueTypeFont
           return table;
         }
         final FontTable readTable = readTable(entry);
+        if (readTable == null)
+        {
+          return null;
+        }
         entry.setTable(readTable);
         return readTable;
       }
@@ -310,7 +319,8 @@ public class TrueTypeFont
     return null;
   }
 
-  protected synchronized FontTable readTable (TableDirectoryEntry table) throws IOException
+  protected synchronized FontTable readTable(TableDirectoryEntry table)
+          throws IOException
   {
     if (table.getTag() == NameTable.TABLE_ID)
     {
@@ -334,6 +344,12 @@ public class TrueTypeFont
     {
       final FontHeaderTable header =
               (FontHeaderTable) getTable(FontHeaderTable.TABLE_ID);
+      if (header == null)
+      {
+        Log.warn(
+                "The font '" + filename + "' does not have a 'head' table. The font file is not valid.");
+        return null;
+      }
       final byte[] buffer =
               readFully(table.getOffset(), table.getLength());
       return new OS2Table(buffer, header.getUnitsPerEm());
@@ -341,7 +357,7 @@ public class TrueTypeFont
     return null;
   }
 
-  public void dispose ()
+  public void dispose()
   {
     input.dispose();
   }
