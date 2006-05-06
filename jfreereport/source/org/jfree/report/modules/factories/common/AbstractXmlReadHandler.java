@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractXmlReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -94,7 +94,6 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
    * @param tagName the tag name.
    * @param attrs   the attributes.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   public final void startElement(final String uri,
                                  final String tagName,
@@ -170,7 +169,6 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
@@ -189,7 +187,6 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,

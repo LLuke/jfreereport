@@ -1,0 +1,7 @@
+*.jar	-k b
+*.zip	-k b
+*.gz	-k b
+*.png	-k b
+*.gif	-k b
+*.jpg	-k b
+*.wmf	-k b

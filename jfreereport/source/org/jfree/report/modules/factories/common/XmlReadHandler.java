@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: XmlReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,6 @@ public interface XmlReadHandler {
      * @param attrs  the attributes.
      *
      * @throws SAXException if there is a parsing error.
-     * @throws XmlReaderException if there is a reader error.
      */
     public void startElement(String uri, String tagName, Attributes attrs)
         throws SAXException;
@@ -78,7 +77,6 @@ public interface XmlReadHandler {
      * @param tagName  the tag name.
      *
      * @throws SAXException if there is a parsing error.
-     * @throws XmlReaderException if there is a reader error.
      */
     public void endElement(String uri, String tagName)
         throws SAXException;
@@ -88,8 +86,6 @@ public interface XmlReadHandler {
      * not create an object.
      *
      * @return the object.
-     *
-     * @throws XmlReaderException if there is a parsing error.
      */
     public Object getObject() throws SAXException;
 

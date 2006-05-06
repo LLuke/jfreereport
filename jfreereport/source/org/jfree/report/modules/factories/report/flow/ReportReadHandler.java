@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -70,9 +70,6 @@ public class ReportReadHandler extends SectionReadHandler
    * Creates a new generic read handler. The given namespace and tagname can be
    * arbitary values and should not be confused with the ones provided by the
    * XMLparser itself.
-   *
-   * @param namespace
-   * @param tagName
    */
   public ReportReadHandler()
   {
@@ -87,7 +84,6 @@ public class ReportReadHandler extends SectionReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
@@ -130,7 +126,6 @@ public class ReportReadHandler extends SectionReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {

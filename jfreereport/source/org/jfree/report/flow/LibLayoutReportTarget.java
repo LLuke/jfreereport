@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutReportTarget.java,v 1.3 2006/04/21 17:31:23 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.4 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -133,6 +133,13 @@ public class LibLayoutReportTarget implements ReportTarget
 
     feed.addDocumentAttribute(DocumentContext.BASE_RESOURCE_ATTR, report.getBaseResource());
     feed.addDocumentAttribute(DocumentContext.RESOURCE_MANAGER_ATTR, report.getResourceManager());
+
+    String strictStyleMode = "false";
+    if ("true".equals(strictStyleMode))
+    {
+      feed.addDocumentAttribute(DocumentContext.STRICT_STYLE_MODE, Boolean.TRUE);
+    }
+
 
     NamespaceDefinition[] namespaces = Namespaces.createFromConfig
             (reportJob.getConfiguration(), "org.jfree.report.namespaces.",
