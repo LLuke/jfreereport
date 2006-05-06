@@ -1,0 +1,8 @@
+The OSCache version contained in this directory has been patched to work with
+the good old JDK 1.2.2. There is no reason to use one of the newer releases,
+as all the new additions there only increase the code size without adding any
+real value.
+
+This build contains all the features of the original OSCache, except for the
+JGroups clustering support. The JGroups implementation does not uphold to the
+tradition and uses JDK 1.4. So it had to be removed.
