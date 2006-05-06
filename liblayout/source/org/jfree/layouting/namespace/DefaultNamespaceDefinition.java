@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultNamespaceDefinition.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
+ * $Id: DefaultNamespaceDefinition.java,v 1.2 2006/04/21 17:29:37 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.namespace;
+
+import java.util.StringTokenizer;
 
 import org.jfree.resourceloader.ResourceKey;
 
@@ -52,8 +54,8 @@ import org.jfree.resourceloader.ResourceKey;
 public class DefaultNamespaceDefinition implements NamespaceDefinition
 {
   private String uri;
-  private String classAttribute;
-  private String styleAttribute;
+  private String[] classAttribute;
+  private String[] styleAttribute;
   private ResourceKey defaultStyleSheet;
   private String preferredPrefix;
 
@@ -69,9 +71,33 @@ public class DefaultNamespaceDefinition implements NamespaceDefinition
     }
     this.uri = uri;
     this.defaultStyleSheet = defaultStyleSheet;
-    this.classAttribute = classAttribute;
-    this.styleAttribute = styleAttribute;
+    this.classAttribute = buildArray(classAttribute);
+    this.styleAttribute = buildArray(styleAttribute);
     this.preferredPrefix = preferredPrefix;
+  }
+
+  /**
+   * This method accepts a whitespace separated list of tokens and transforms
+   * it into a String array.
+   *
+   * @param attr the whitespace separated list of tokens
+   * @return the contents as string array
+   */
+  private String[] buildArray (String attr)
+  {
+    if (attr == null)
+    {
+      return new String[0];
+    }
+
+    final StringTokenizer strtok = new StringTokenizer(attr);
+    final int size = strtok.countTokens();
+    final String[] retval = new String[size];
+    for (int i = 0; i < retval.length; i++)
+    {
+      retval[i] = strtok.nextToken();
+    }
+    return retval;
   }
 
   public String getURI()
@@ -79,14 +105,14 @@ public class DefaultNamespaceDefinition implements NamespaceDefinition
     return uri;
   }
 
-  public String getClassAttribute(String element)
+  public String[] getClassAttribute(String element)
   {
-    return classAttribute;
+    return (String[]) classAttribute.clone();
   }
 
-  public String getStyleAttribute(String element)
+  public String[] getStyleAttribute(String element)
   {
-    return styleAttribute;
+    return (String[]) styleAttribute.clone();
   }
 
   public ResourceKey getDefaultStyleSheetLocation()

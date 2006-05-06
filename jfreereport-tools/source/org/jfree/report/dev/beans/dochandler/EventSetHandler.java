@@ -175,7 +175,7 @@ public class EventSetHandler
         final String[] parsedTags = BeanInfoDoclet.parseTag(tags[ti]);
         if (parsedTags.length != 2 && parsedTags.length != 3)
         {
-          System.err.println(tags[ti].position() + ": Invalid number of arguments for tag @event");
+//          System.err.println(tags[ti].position() + ": Invalid number of arguments for tag @event");
           continue;
         }
         final String type = parsedTags[0];
@@ -188,8 +188,8 @@ public class EventSetHandler
           }
           else
           {
-            System.err.println(tags[ti].position() +
-                ": default event for event type '" + eventName + "' already specified.");
+//            System.err.println(tags[ti].position() +
+//                ": default event for event type '" + eventName + "' already specified.");
           }
         }
         if (type.equals("add"))

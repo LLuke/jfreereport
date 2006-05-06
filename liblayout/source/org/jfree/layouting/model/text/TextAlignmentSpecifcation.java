@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextAlignmentSpecifcation.java,v 1.2 2006/04/17 20:51:18 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,7 @@
  */
 package org.jfree.layouting.model.text;
 
-import org.jfree.layouting.input.style.keys.text.TextAlign;
-import org.jfree.layouting.input.style.keys.text.TextJustify;
-import org.jfree.layouting.input.style.keys.text.TextJustifyTrim;
+import org.jfree.layouting.input.style.values.CSSConstant;
 
 /**
  * Creation-Date: 21.12.2005, 13:53:29
@@ -51,11 +49,11 @@ import org.jfree.layouting.input.style.keys.text.TextJustifyTrim;
  */
 public class TextAlignmentSpecifcation
 {
-  private TextAlign textAlign;
+  private CSSConstant textAlign;
   private String subStringAlignment;
-  private TextAlign textAlignLastLine;
-  private TextJustify textJustify;
-  private TextJustifyTrim textJustifyTrim;
+  private CSSConstant textAlignLastLine;
+  private CSSConstant textJustify;
+  private CSSConstant textJustifyTrim;
   private long textIndentation;
   private boolean hangingIndentation;
   private double kashidaSpace;
@@ -64,42 +62,42 @@ public class TextAlignmentSpecifcation
   {
   }
 
-  public TextAlign getTextAlign()
+  public CSSConstant getTextAlign()
   {
     return textAlign;
   }
 
-  public void setTextAlign(final TextAlign textAlign)
+  public void setTextAlign(final CSSConstant textAlign)
   {
     this.textAlign = textAlign;
   }
 
-  public TextAlign getTextAlignLastLine()
+  public CSSConstant getTextAlignLastLine()
   {
     return textAlignLastLine;
   }
 
-  public void setTextAlignLastLine(final TextAlign textAlignLastLine)
+  public void setTextAlignLastLine(final CSSConstant textAlignLastLine)
   {
     this.textAlignLastLine = textAlignLastLine;
   }
 
-  public TextJustify getTextJustify()
+  public CSSConstant getTextJustify()
   {
     return textJustify;
   }
 
-  public void setTextJustify(final TextJustify textJustify)
+  public void setTextJustify(final CSSConstant textJustify)
   {
     this.textJustify = textJustify;
   }
 
-  public TextJustifyTrim getTextJustifyTrim()
+  public CSSConstant getTextJustifyTrim()
   {
     return textJustifyTrim;
   }
 
-  public void setTextJustifyTrim(final TextJustifyTrim textJustifyTrim)
+  public void setTextJustifyTrim(final CSSConstant textJustifyTrim)
   {
     this.textJustifyTrim = textJustifyTrim;
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SimpleStyleRuleMatcher.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,7 @@ import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 import org.w3c.css.sac.AttributeCondition;
 import org.w3c.css.sac.CombinatorCondition;
 import org.w3c.css.sac.Condition;
@@ -260,11 +261,11 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     }
     catch (ResourceCreationException e)
     {
-      e.printStackTrace();
+      Log.info ("Unable to parse StyleSheet: " + e.getLocalizedMessage());
     }
     catch (ResourceLoadingException e)
     {
-      e.printStackTrace();
+      Log.info ("Unable to parse StyleSheet: " + e.getLocalizedMessage()); 
     }
     return null;
   }
@@ -273,7 +274,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   /**
    * Creates an independent copy of this style rule matcher.
    *
-   * @return
+   * @return this instance, as this implementation is stateless
    */
   public StyleRuleMatcher deriveInstance()
   {
@@ -412,16 +413,15 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         {
           return false;
         }
-        final String classAttribute = ndef.getClassAttribute(node.getName());
-        if (classAttribute == null)
+        final String[] classAttribute = ndef.getClassAttribute(node.getName());
+        for (int i = 0; i < classAttribute.length; i++)
         {
-          return false;
-        }
-        final String htmlAttr = (String) node.getAttribute
-                (namespace, classAttribute);
-        if (isOneOfAttributes(htmlAttr, ac.getValue()))
-        {
-          return true;
+          final String attr = classAttribute[i];
+          final String htmlAttr = (String) node.getAttribute(namespace, attr);
+          if (isOneOfAttributes(htmlAttr, ac.getValue()))
+          {
+            return true;
+          }
         }
         return false;
       }

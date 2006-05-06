@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextAlign.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,19 +47,18 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextAlign extends CSSConstant
+public class TextAlign
 {
   // start | end | left | right | center | justify | <string>
 
-  public static final TextAlign START = new TextAlign("start");
-  public static final TextAlign END = new TextAlign("end");
-  public static final TextAlign LEFT = new TextAlign("left");
-  public static final TextAlign RIGHT = new TextAlign("right");
-  public static final TextAlign CENTER = new TextAlign("center");
-  public static final TextAlign JUSTIFY = new TextAlign("justify");
+  public static final CSSConstant START = new CSSConstant("start");
+  public static final CSSConstant END = new CSSConstant("end");
+  public static final CSSConstant LEFT = new CSSConstant("left");
+  public static final CSSConstant RIGHT = new CSSConstant("right");
+  public static final CSSConstant CENTER = new CSSConstant("center");
+  public static final CSSConstant JUSTIFY = new CSSConstant("justify");
 
-  private TextAlign(final String constant)
+  private TextAlign()
   {
-    super(constant);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderWidthResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,13 @@ package org.jfree.layouting.layouter.style.resolver.computed.border;
 import org.jfree.layouting.input.style.keys.border.BorderWidth;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.model.LayoutNode;
 
 /**
  * Creation-Date: 11.12.2005, 22:20:16
@@ -60,4 +66,15 @@ public class BorderWidthResolveHandler extends ConstantsResolveHandler
     setFallback(CSSNumericValue.ZERO_LENGTH);
   }
 
+  protected CSSValue resolveValue (final LayoutProcess process,
+                                   final LayoutNode currentNode, final LayoutStyle style,
+                                   final StyleKey key)
+  {
+    CSSValue value = style.getValue(key);
+    if (value instanceof CSSConstant)
+    {
+      return super.resolveValue(process, currentNode, style, key);
+    }
+    return value;
+  }
 }

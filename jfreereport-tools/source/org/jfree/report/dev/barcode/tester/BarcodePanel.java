@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: BarcodePanel.java,v 1.1 2005/06/01 21:28:55 mimil Exp $
+ * $Id: BarcodePanel.java,v 1.2 2005/06/29 20:52:13 mimil Exp $
  *
  * Changes (from 2005-05-23)
  * -------------------------

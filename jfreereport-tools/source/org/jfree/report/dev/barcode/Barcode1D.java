@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode1D.java,v 1.9 2005/06/01 21:31:19 mimil Exp $
+ * $Id: Barcode1D.java,v 1.10 2005/06/29 20:52:13 mimil Exp $
  *
  * Changes (from 2005-04-28) (CP)
  * -------------------------
@@ -94,15 +94,15 @@ public abstract class Barcode1D implements ExtendedDrawable
   /**
    * The code color.
    */
-  private Color fontColor = Color.BLACK;
+  private Color fontColor = Color.black;
   /**
    * The bar color (narrow element).
    */
-  private Color barColor = Color.BLACK;
+  private Color barColor = Color.black;
   /**
    * The background color of the code and the barcode.
    */
-  private Color backgroundColor = Color.WHITE;
+  private Color backgroundColor = Color.white;
   /**
    * The vertical alignment of the code on the bars.
    */
@@ -122,7 +122,7 @@ public abstract class Barcode1D implements ExtendedDrawable
   /**
    * The stroke color.
    */
-  private Color strokeColor = Color.BLACK;
+  private Color strokeColor = Color.black;
   /**
    * margins between the stroke and the barcode.
    */
@@ -616,7 +616,7 @@ public abstract class Barcode1D implements ExtendedDrawable
       return new Rectangle2D.Double();
     }
 
-    final DefaultSizeCalculator calculator = new DefaultSizeCalculator(getFont());
+    final DefaultSizeCalculator calculator = new DefaultSizeCalculator(getFont(), false);
     float width = calculator.getStringWidth(getDisplayedCode(), 0, getDisplayedCode()
             .length());
     float height = calculator.getLineHeight();

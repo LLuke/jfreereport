@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSValueList.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -107,6 +107,11 @@ public class CSSValueList implements CSSValue
     return false;
   }
 
+  public static CSSValueList createList(CSSValue value)
+  {
+    return new CSSValueList( new CSSValue[]{ value });
+  }
+
   public static CSSValueList createDuoList(CSSValue value)
   {
     return CSSValueList.createDuoList(value, value);
@@ -141,4 +146,23 @@ public class CSSValueList implements CSSValue
     return new CSSValueList(values);
   }
 
+  public static CSSValueList insertFirst (final CSSValueList list,
+                                          final CSSValue value)
+  {
+    final int length = list.values.length;
+    final CSSValue[] newValues = new CSSValue[length + 1];
+    newValues[0] = value;
+    System.arraycopy(list.values, 0, newValues, 1, length);
+    return new CSSValueList(newValues);
+  }
+
+  public static CSSValueList insertLast (final CSSValueList list,
+                                          final CSSValue value)
+  {
+    final int length = list.values.length;
+    final CSSValue[] newValues = new CSSValue[length + 1];
+    System.arraycopy(list.values, 0, newValues, 0, length);
+    newValues[length] = value;
+    return new CSSValueList(newValues);
+  }
 }

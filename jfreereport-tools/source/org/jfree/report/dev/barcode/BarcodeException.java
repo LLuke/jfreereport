@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: BarcodeException.java,v 1.2 2005/05/19 00:24:08 mimil Exp $
+ * $Id: BarcodeException.java,v 1.3 2005/06/29 20:52:14 mimil Exp $
  *
  * Changes (from 2005-05-17) (PC)
  * -------------------------
@@ -38,7 +38,9 @@
 
 package org.jfree.report.dev.barcode;
 
-public class BarcodeException extends RuntimeException
+import org.jfree.util.StackableRuntimeException;
+
+public class BarcodeException extends StackableRuntimeException
 {
 
   public BarcodeException ()
@@ -50,12 +52,7 @@ public class BarcodeException extends RuntimeException
     super(message);
   }
 
-  public BarcodeException (Throwable cause)
-  {
-    super(cause);
-  }
-
-  public BarcodeException (String message, Throwable cause)
+  public BarcodeException (String message, Exception cause)
   {
     super(message, cause);
   }

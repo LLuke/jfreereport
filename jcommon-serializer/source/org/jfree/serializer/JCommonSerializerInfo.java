@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: JCommonSerializerInfo.java,v 1.2 2006/04/17 16:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -79,9 +79,9 @@ public class JCommonSerializerInfo extends ProjectInfo
       final JCommonInfo info = JCommonInfo.getInstance();
 
       setName("JCommon-Serializer");
-      setVersion(info.getVersion());
-      setInfo(info.getInfo());
-      setCopyright(info.getCopyright());
+      setVersion("0.1.0");
+      setInfo("http://www.jfree.org/jfreereport/jcommon-serializer/");
+      setCopyright ("(C)opyright 2006, by Pentaho Corporation, Object Refinery Limited and Contributors");
 
       setLicenceName(info.getLicenceName());
       setLicenceText(info.getLicenceText());

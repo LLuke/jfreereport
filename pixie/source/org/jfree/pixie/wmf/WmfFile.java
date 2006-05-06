@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WmfFile.java,v 1.8 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -298,7 +298,10 @@ public class WmfFile implements Drawable
 
     //System.out.println(records.size() + " records read");
     //System.out.println("Image Extends: " + maxWidth + " " + maxHeight);
-    scaleToFit(MAX_PICTURE_SIZE, MAX_PICTURE_SIZE);
+    if (imageWidth < 1 || imageHeight < 1)
+      scaleToFit(MAX_PICTURE_SIZE, MAX_PICTURE_SIZE);
+    else
+      scaleToFit(imageWidth, imageHeight);
   }
 
   /**
@@ -339,8 +342,9 @@ public class WmfFile implements Drawable
   public static void main (final String[] args)
           throws Exception
   {
-    final WmfFile wmf = new WmfFile("./pixie/res/test.wmf", 800, 600);
+    final WmfFile wmf = new WmfFile("./head/pixie/res/test.wmf", 800, 600);
     wmf.replay();
+    System.out.println(wmf.imageWidth + ", " + wmf.imageHeight);
   }
 
   public MfDcState getCurrentState ()

@@ -1,8 +1,8 @@
 ************************
-* LIBLOADER 0.1.0      *
+* LIBLOADER 0.1.1      *
 ************************
 
-14 Apr 2006
+30 Apr 2006
 
 1. INTRODUCTION
 ---------------
@@ -19,4 +19,5 @@ For the latest news and information about LibLoader, please refer to:
 2. CHANGES
 ----------
 
+30-Apr-2006: Added factory support for loading properties file
 14-Apr-2006: Initial version. 

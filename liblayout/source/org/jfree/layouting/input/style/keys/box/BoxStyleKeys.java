@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxStyleKeys.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -254,6 +254,16 @@ public class BoxStyleKeys
   public static final StyleKey VISIBILITY =
           StyleKeyRegistry.getRegistry().createKey
                   ("visibility", false, true, false);
+
+  /**
+   * Page 664 of the OpenOffice file format specs:
+   * (This is a similiar effect as the table-cell alignment)
+   *
+   * Possible values: top, middle, bottom, justify
+   */
+  public static final StyleKey BOX_VERTICAL_ALIGN =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-box-vertical-align", false, true, false);
 
   private BoxStyleKeys()
   {

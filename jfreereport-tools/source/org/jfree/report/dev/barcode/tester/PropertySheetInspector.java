@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: $
+ * $Id: PropertySheetInspector.java,v 1.1 2005/06/01 21:28:23 mimil Exp $
  *
  * Changes (from 2005-06-01)
  * -------------------------
@@ -194,7 +194,7 @@ public class PropertySheetInspector extends JPanel
             g.translate(x, y);
             Rectangle r = new Rectangle(0, 0, getIconWidth(), getIconHeight());
             Color oldColor = g.getColor();
-            g.setColor(Color.BLACK);
+            g.setColor(Color.black);
             editor.paintValue(g, r);
             g.setColor(oldColor);
             g.translate(-x, -y);

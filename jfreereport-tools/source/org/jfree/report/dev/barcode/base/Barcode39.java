@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39.java,v 1.10 2005/06/01 21:32:47 mimil Exp $
+ * $Id: Barcode39.java,v 1.11 2005/06/29 20:51:23 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -76,7 +76,6 @@ public class Barcode39 extends Barcode1D
    * If the checksum character have to be shown.
    */
   private boolean showChecksum = false;
-
 
   public Barcode39 ()
   {
@@ -229,28 +228,27 @@ public class Barcode39 extends Barcode1D
       encode();
     }
 
+    final double[] widths = new double[2];
+    widths[0] = getBarWidth();
+    widths[1] = getBarWidth() * getNarrowToWide();
+
+    final Rectangle2D[] rectangles = new Rectangle2D[2];
+    rectangles[0] = new Rectangle2D.Double(0, 0, widths[0], getBarHeight());
+    rectangles[1] = new Rectangle2D.Double(0, 0, widths[1], getBarHeight());
+
     for (int i = 0; i < getCodeTable().size(); i++)
     {
       final byte[] bytes = (byte[]) getCodeTable().get(i);
 
       for (int j = 0; j < bytes.length; j++)
       {
-        if (bytes[j] == 0) //narrow
+        final double barWidth = widths[bytes[j]];
+
+        if (j % 2 == 0)  // bar
         {
-          if (j % 2 == 0)  // bar
-          {
-            g2.fill(new Rectangle2D.Double(0, 0, getBarWidth(), getBarHeight()));
-          }
-          g2.translate(getBarWidth(), 0);
+          g2.fill(rectangles[bytes[j]]);
         }
-        else  //wide
-        {
-          if (j % 2 == 0)  // bar
-          {
-            g2.fill(new Rectangle2D.Double(0, 0, getBarWidth() * getNarrowToWide(), getBarHeight()));
-          }
-          g2.translate(getBarWidth() * getNarrowToWide(), 0);
-        }
+        g2.translate(barWidth, 0);
       }
 
       if (i < getCodeTable().size() - 1)

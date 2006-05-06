@@ -219,7 +219,9 @@ public class LocalesTreeModel extends DefaultTreeModel
       {
         return null;
       }
-      final ResourceLocationNodeImpl locationNodeImpl = (ResourceLocationNodeImpl) getParent();
+      final LocalesTreeModel.ResourceLocationNodeImpl locationNodeImpl =
+              (LocalesTreeModel.ResourceLocationNodeImpl)
+                      LanguagePackNodeImpl.this.getParent();
       final File directory = locationNodeImpl.getResourceLocation();
       final String name = locationNodeImpl.getResourceName();
       final String resourceName;

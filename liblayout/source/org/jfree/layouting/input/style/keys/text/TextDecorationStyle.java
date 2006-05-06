@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextDecorationStyle.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,8 @@ public class TextDecorationStyle extends CSSConstant
   public static final TextDecorationStyle DOT_DASH = new TextDecorationStyle("dot-dash");
   public static final TextDecorationStyle DOT_DOT_DASH = new TextDecorationStyle("dot-dot-dash");
   public static final TextDecorationStyle WAVE = new TextDecorationStyle("wave");
+  // This is an open-office addition ...
+  public static final TextDecorationStyle LONG_DASH = new TextDecorationStyle("-x-liblayout-long-dash");
 
   private TextDecorationStyle(final String constant)
   {

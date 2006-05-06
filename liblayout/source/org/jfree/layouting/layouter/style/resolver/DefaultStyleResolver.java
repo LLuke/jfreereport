@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultStyleResolver.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,16 @@
 package org.jfree.layouting.layouter.style.resolver;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
-import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.layouting.input.style.selectors.SelectorWeight;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.CSSStyleRuleComparator;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.model.DocumentContext;
@@ -69,98 +65,44 @@ import org.jfree.util.Log;
 
 
 /**
- * Creation-Date: 05.12.2005, 19:15:57
+ * A cascading style resolver. This resolver follows the cascading rules
+ * as outlined by the Cascading Stylesheet Standard.
  *
  * @author Thomas Morgner
  */
-public class DefaultStyleResolver implements StyleResolver
+public class DefaultStyleResolver extends AbstractStyleResolver implements StyleResolver
 {
-  //private StyleSheet defaultStyleSheet;
-  private LayoutStyle initialStyle;
-  private LayoutProcess layoutProcess;
-  private DocumentContext documentContext;
-  private NamespaceCollection namespaces;
+  private boolean strictStyleMode;
 
-  private StyleKey[] keys;
   private StyleRuleMatcher styleRuleMatcher;
 
-  public DefaultStyleResolver()
+  public DefaultStyleResolver ()
   {
   }
 
-  public void initialize(final LayoutProcess layoutProcess)
+  public void initialize (final LayoutProcess layoutProcess)
   {
-    this.layoutProcess = layoutProcess;
-    this.documentContext = layoutProcess.getDocumentContext();
-    this.keys = new StyleKey[0];
-    this.initialStyle = new LayoutStyle(null);
+    super.initialize(layoutProcess);
+    DocumentContext documentContext = layoutProcess.getDocumentContext();
     this.styleRuleMatcher =
             DocumentContextUtility.getStyleRuleMatcher(documentContext);
     this.styleRuleMatcher.initialize(layoutProcess);
-    this.namespaces = documentContext.getNamespaces();
+    this.strictStyleMode = Boolean.TRUE.equals
+            (documentContext.getMetaAttribute(DocumentContext.STRICT_STYLE_MODE));
 
-    try
-    {
-      final ResourceManager manager = layoutProcess.getResourceManager();
-      final Resource resource = manager.createDirectly
-              ("res://org/jfree/layouting/initial.css", StyleSheet.class);
-      final StyleSheet initialStyleSheet = (StyleSheet) resource.getResource();
-
-
-      int rc = initialStyleSheet.getRuleCount();
-      for (int i = 0; i < rc; i++)
-      {
-        StyleRule rule = initialStyleSheet.getRule(i);
-        if (rule instanceof CSSDeclarationRule)
-        {
-          final CSSDeclarationRule drule = (CSSDeclarationRule) rule;
-          copyStyleInformation(initialStyle, drule);
-        }
-      }
-    }
-    catch (Exception e)
-    {
-      // Not yet handled ...
-      e.printStackTrace();
-    }
+    loadInitialStyle();
   }
 
-  private void copyStyleInformation(LayoutStyle target, CSSDeclarationRule rule)
-  {
-    Iterator keys = rule.getPropertyKeys();
-    while (keys.hasNext())
-    {
-      StyleKey key = (StyleKey) keys.next();
-      CSSValue value = rule.getPropertyCSSValue(key);
-      target.setValue(key, value);
-    }
-  }
-
-  protected LayoutProcess getLayoutProcess()
-  {
-    return layoutProcess;
-  }
-
-  protected LayoutStyle getInitialStyle()
-  {
-    return initialStyle;
-  }
-
-  protected DocumentContext getDocumentContext()
-  {
-    return documentContext;
-  }
-
-  public void resolveStyle(LayoutElement node)
+  public void resolveStyle (LayoutElement node)
   {
     // this is a three stage process
     final LayoutStyle style = node.getStyle();
-
-    keys = StyleKeyRegistry.getRegistry().getKeys(keys);
+    final StyleKey[] keys = getKeys();
 
     // Stage 0: Initialize with the built-in defaults
     // Stage 1a: Add the parent styles (but only the one marked as inheritable).
     final LayoutNode parent = node.getParent();
+    final LayoutStyle initialStyle = getInitialStyle();
     final LayoutStyle parentStyle;
     if (parent != null)
     {
@@ -188,7 +130,14 @@ public class DefaultStyleResolver implements StyleResolver
     performSelectionStep(node, style);
 
     // Stage 1c: Add the contents of the style attribute, if there is one ..
-    performStyleAttr(node, style);
+    if (strictStyleMode)
+    {
+      performStrictStyleAttr(node, style);
+    }
+    else
+    {
+      performCompleteStyleAttr(node, style);
+    }
 
     // Stage 2: Compute the 'specified' set of values.
 
@@ -215,42 +164,73 @@ public class DefaultStyleResolver implements StyleResolver
   /**
    * Check, whether there is a known style attribute and if so, grab its value.
    * <p/>
-   * Todo: This should not be hardcoded.
    *
    * @param node
    * @param style
    */
-  private void performStyleAttr(LayoutElement node, LayoutStyle style)
+  private void performStrictStyleAttr (LayoutElement node, LayoutStyle style)
   {
     final String namespace = node.getNamespace();
     if (namespace == null)
     {
       return;
     }
+
+    final NamespaceCollection namespaces = getNamespaces();
     final NamespaceDefinition ndef = namespaces.getDefinition(namespace);
     if (ndef == null)
     {
       return;
     }
 
-    final String classAttribute = ndef.getClassAttribute(node.getName());
-    if (classAttribute == null)
+    final String[] classAttribute = ndef.getClassAttribute(node.getName());
+    for (int i = 0; i < classAttribute.length; i++)
     {
-      return;
+      final String attr = classAttribute[i];
+      final Object styleValue = node.getAttribute(namespace, attr);
+      addStyleFromAttribute(style, styleValue);
     }
-
-    final Object styleValue = node.getAttribute(namespace, classAttribute);
-    addStyleFromAttribute(style, styleValue);
   }
 
-  private void addStyleFromAttribute(final LayoutStyle style,
-                                     final Object styleValue)
+  /**
+   * Check, whether there is a known style attribute and if so, grab its value.
+   * <p/>
+   *
+   * @param node
+   * @param style
+   */
+  private void performCompleteStyleAttr (LayoutElement node, LayoutStyle style)
+  {
+    final NamespaceCollection namespaces = getNamespaces();
+    final String[] namespaceNames = namespaces.getNamespaces();
+    for (int i = 0; i < namespaceNames.length; i++)
+    {
+      final String namespace = namespaceNames[i];
+      final NamespaceDefinition ndef = namespaces.getDefinition(namespace);
+      if (ndef == null)
+      {
+        continue;
+      }
+
+      final String[] classAttribute = ndef.getClassAttribute(node.getName());
+      for (int x = 0; x < classAttribute.length; x++)
+      {
+        final String attr = classAttribute[x];
+        final Object styleValue = node.getAttribute(namespace, attr);
+        addStyleFromAttribute(style, styleValue);
+      }
+    }
+  }
+
+  private void addStyleFromAttribute (final LayoutStyle style,
+                                      final Object styleValue)
   {
     if (styleValue instanceof String)
     {
       final String styleText = (String) styleValue;
       try
       {
+        final LayoutProcess layoutProcess = getLayoutProcess();
         final byte[] bytes = styleText.getBytes("UTF-8");
         final ResourceKey baseKey =
                 DocumentContextUtility.getBaseResource
@@ -278,14 +258,14 @@ public class DefaultStyleResolver implements StyleResolver
   }
 
   /**
-   * Todo: Make sure that the 'activeStyles' are sorted and then apply them with
-   * the lowest style first. All Matching styles have to be added.
+   * Todo: Make sure that the 'activeStyles' are sorted and then apply them with the
+   * lowest style first. All Matching styles have to be added.
    *
    * @param node
    * @param style
    */
-  private void performSelectionStep(LayoutElement node,
-                                    LayoutStyle style)
+  private void performSelectionStep (LayoutElement node,
+                                     LayoutStyle style)
   {
     final CSSStyleRule[] activeStyleRules =
             styleRuleMatcher.getMatchingRules(node);
@@ -307,25 +287,13 @@ public class DefaultStyleResolver implements StyleResolver
           continue;
         }
       }
-      
+
       oldSelectorWeight = activeWeight;
       copyStyleInformation(style, activeStyleRule);
     }
   }
 
-  /**
-   * Returns the built-in default value, which is our last resort if the layout
-   * could not be computed otherwise.
-   *
-   * @param key
-   * @return blah
-   */
-  public CSSValue getDefaultValue(StyleKey key)
-  {
-    return initialStyle.getValue(key);
-  }
-
-  public StyleResolver deriveInstance()
+  public StyleResolver deriveInstance ()
   {
     return this;
   }

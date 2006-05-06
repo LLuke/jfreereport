@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleResolver.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -62,15 +62,6 @@ public interface StyleResolver
    * @param node
    */
   public void resolveStyle (LayoutElement node);
-
-  /**
-   * Returns the built-in default value, which is our last resort if the
-   * layout could not be computed otherwise.
-   * 
-   * @param key
-   * @return
-   */
-  public CSSValue getDefaultValue (StyleKey key);
 
   public void initialize(LayoutProcess layoutProcess);
 }

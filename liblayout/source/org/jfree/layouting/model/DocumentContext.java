@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DocumentContext.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ public interface DocumentContext extends DocumentMetaNode
   public static final String STYLE_RESOLVER_ATTR = "style-resolver";
   public static final String STYLE_MATCHER_ATTR = "style-matcher";
   public static final String TITLE_ATTR = "title";
+  public static final String STRICT_STYLE_MODE = "strict-style-mode";
 
   /**
    * This method is called once after the input-feed received all the document

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: NamespaceDefinition.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public interface NamespaceDefinition
 {
   public String getPreferredPrefix();
   public String getURI();
-  public String getClassAttribute(String element);
-  public String getStyleAttribute (String element);
+  public String[] getClassAttribute (String element);
+  public String[] getStyleAttribute (String element);
   public ResourceKey getDefaultStyleSheetLocation();
 }

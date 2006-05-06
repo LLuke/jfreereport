@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Barcode39Ext.java,v 1.1 2005/05/19 00:24:08 mimil Exp $
+ * $Id: Barcode39Ext.java,v 1.2 2005/06/29 20:51:23 mimil Exp $
  *
  * Changes (from 2005-05-17) (CP)
  * -------------------------
@@ -68,7 +68,7 @@ public class Barcode39Ext extends Barcode39
    *
    * @throws NullPointerException If <code>code</code> is null.
    */
-  public boolean isValideInput (final String code)
+  public boolean isValidInput (final String code)
   {
     if (code == null)
     {

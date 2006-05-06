@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontStyleKeys.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -132,6 +132,27 @@ public class FontStyleKeys
   public static final StyleKey MAX_FONT_SIZE =
           StyleKeyRegistry.getRegistry().createKey
                   ("max-font-size", false, true, false);
+
+  /**
+   * If used in a @font rule, this defines an unique name/handle for a font
+   * definition. If used in any other style rule, this references to a previously
+   * defined font. If that font is not defined, the key is ignored.
+   *
+   * This is another idea stolen from OpenOffice :)
+   */
+  public static final StyleKey FONT_NAME =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-font-name", false, true, false);
+  /**
+   * A descriptor for @font rules, telling the system that the font either has
+   * a fixed width for each char ('fixed') or that each char may have a different
+   * width ('variable').
+   *
+   * This is another idea stolen from OpenOffice :)
+   */
+  public static final StyleKey FONT_PITCH =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-font-name", false, true, false);
 
   private FontStyleKeys () {}
 

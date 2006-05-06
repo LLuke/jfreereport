@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PixieInfo.java,v 1.3 2006/04/17 15:03:24 taqua Exp $
+ * $Id: PixieInfo.java,v 1.4 2006/04/17 15:16:25 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class PixieInfo extends ProjectInfo
     setName("Pixie");
     setVersion("0.8.5");
     setInfo("http://www.jfree.org/jfreereport/pixie/");
-    setCopyright ("(C)opyright 2000-2005, by Pentaho Corporation, Object Refinery Limited and Contributors");
+    setCopyright ("(C)opyright 2000-2006, by Pentaho Corporation, Object Refinery Limited and Contributors");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderWidth.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BorderWidth extends CSSConstant
+public class BorderWidth
 {
-  public static final BorderWidth THIN =
-          new BorderWidth("thin");
-  public static final BorderWidth MEDIUM =
-          new BorderWidth("medium");
-  public static final BorderWidth THICK =
-          new BorderWidth("thick");
+  public static final CSSConstant THIN =
+          new CSSConstant("thin");
+  public static final CSSConstant MEDIUM =
+          new CSSConstant("medium");
+  public static final CSSConstant THICK =
+          new CSSConstant("thick");
 
-  private BorderWidth(final String constant)
+  private BorderWidth()
   {
-    super(constant);
   }
 }

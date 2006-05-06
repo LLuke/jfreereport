@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceManager.java,v 1.1.1.1 2006/04/17 16:48:27 taqua Exp $
+ * $Id: ResourceManager.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
  *
  * Changes
  * -------
@@ -140,7 +140,7 @@ public class ResourceManager
     if (loader == null)
     {
       throw new ResourceLoadingException
-              ("Unable to create key: No such schema.");
+              ("Unable to create key: No such schema: " + key.getSchema());
     }
     final ResourceDataCacheEntry cached = dataCache.get(key);
     if (cached != null)

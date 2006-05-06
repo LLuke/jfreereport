@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextAlignResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.layouter.style.resolver.computed.text;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.keys.text.TextAlign;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.model.LayoutNode;
@@ -94,8 +95,8 @@ public class TextAlignResolveHandler extends ConstantsResolveHandler
       return;
     }
 
-    final TextAlign alignValue =
-            (TextAlign) resolveValue(process, currentNode, style, key);
+    final CSSConstant alignValue =
+            (CSSConstant) resolveValue(process, currentNode, style, key);
     alignmentSpecifcation.setTextAlign(alignValue);
   }
 }

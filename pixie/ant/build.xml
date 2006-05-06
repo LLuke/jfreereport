@@ -80,20 +80,20 @@
     <copy file="${pixie-jar-file}" tofile="${dist-dir}/${pixie-jar-file}"/>
 
     <!-- copy across source files -->
-    <copy todir="distribution/source">
+    <copy todir="${dist-dir}/source">
       <fileset dir="source"/>
     </copy>
 
     <!-- copy across lib files -->
-    <copy todir="distribution/lib">
+    <copy todir="${dist-dir}/lib">
       <fileset dir="lib"/>
     </copy>
 
     <!-- copy across ant build file (this file) -->
     <copy file="ant/build.xml"
-      tofile="${dist-dir}/ant/build.xml" failonerror="false"/>
+      tofile="${dist-dir}/ant/build.xml"/>
     <copy file="ant/build-lib.xml"
-      tofile="${dist-dir}/ant/build-lib.xml" failonerror="false"/>
+      tofile="${dist-dir}/ant/build-lib.xml"/>
 
     <copy file="ant/build.properties"
       tofile="${dist-dir}/ant/build.properties"/>

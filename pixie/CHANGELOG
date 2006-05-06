@@ -1,3 +1,6 @@
+20-Apr-2006 : The WmfFile did not use/obey to the initial image size given in
+              the constructor.
+
 17-Apr-2006 : The classes from package org.jfree.pixie.g2recorder have been
               removed.
 

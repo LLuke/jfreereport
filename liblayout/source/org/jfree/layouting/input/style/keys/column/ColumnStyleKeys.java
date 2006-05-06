@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColumnStyleKeys.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,17 @@ public class ColumnStyleKeys
   public static final StyleKey COLUMN_SPAN =
           StyleKeyRegistry.getRegistry().createKey
                   ("column-span", false, false, false);
-  
+
+  /**
+   * Defines, whether column contents should be balanced.
+   *
+   * Another idea stolen from OpenOffice :)  
+   */
+  public static final StyleKey COLUMN_BALANCE =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-column-balance", false, false, false);
+
+
   private ColumnStyleKeys()
   {
   }

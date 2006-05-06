@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextDecorationWidthReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,10 @@
 package org.jfree.layouting.input.style.parser.stylehandler.text;
 
 import org.jfree.layouting.input.style.parser.stylehandler.border.BorderWidthReadHandler;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.border.BorderWidth;
+import org.jfree.layouting.input.style.keys.text.TextDecorationWidth;
+import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Creation-Date: 02.12.2005, 20:10:24
@@ -53,4 +57,21 @@ public class TextDecorationWidthReadHandler extends BorderWidthReadHandler
   {
     super(true, true);
   }
+
+  protected CSSValue parseWidth(final LexicalUnit value)
+  {
+    if (value.getLexicalUnitType() == LexicalUnit.SAC_IDENT)
+    {
+      if (value.getStringValue().equalsIgnoreCase("dash"))
+      {
+        return TextDecorationWidth.DASH;
+      }
+      if (value.getStringValue().equalsIgnoreCase("bold"))
+      {
+        return TextDecorationWidth.BOLD;
+      }
+    }
+    return super.parseWidth(value);
+  }
+
 }

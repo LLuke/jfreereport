@@ -121,13 +121,13 @@ public class BeanInfoDoclet extends Doclet
       final String txt = tags[i].text();
       if (txt == null)
       {
-        System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
+        //System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
         continue;
       }
       final String trimmedText = txt.trim();
       if (trimmedText.length() == 0)
       {
-        System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
+        //System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
         continue;
       }
       return trimmedText;
@@ -145,13 +145,13 @@ public class BeanInfoDoclet extends Doclet
       final String txt = tags[i].text();
       if (txt == null)
       {
-        System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
+        //System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
         continue;
       }
       final String trimmedText = txt.trim();
       if (trimmedText.length() == 0)
       {
-        System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
+        //System.err.println(docElement.position() + ": Empty tag content for tag '" + tagName + "'");
         continue;
       }
       if (trimmedText.equals("true"))
@@ -162,7 +162,7 @@ public class BeanInfoDoclet extends Doclet
       {
         return false;
       }
-      System.err.println(docElement.position() + ": Invalid tag content for tag '" + tagName + "'");
+      //System.err.println(docElement.position() + ": Invalid tag content for tag '" + tagName + "'");
     }
     return defaultValue;
   }
