@@ -1,7 +1,7 @@
 <!--
   ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
   -->
-<project name="flute-13a" default="compile" basedir="..">
+<project name="flute-13a" default="all" basedir="..">
 
   <import file="build-lib.xml"/>
 
@@ -66,9 +66,9 @@
     <javadoc destdir="javadoc"
              windowtitle="Flute CSS-Parser Library (version ${flute.version})"
              linksource="true">
-      <classpath refid="all.Classpath"/>
+      <classpath refid="core.Classpath"/>
       <packageset dir="source" defaultexcludes="yes">
-        <include name="org/w3c/flute"/>
+        <include name="org/w3c/flute/**"/>
       </packageset>
     </javadoc>
   </target>
