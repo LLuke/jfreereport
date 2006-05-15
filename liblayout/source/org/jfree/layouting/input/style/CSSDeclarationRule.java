@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSDeclarationRule.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: CSSDeclarationRule.java,v 1.3 2006/04/21 17:29:37 taqua Exp $
  *
  * Changes
  * -------
@@ -93,8 +93,30 @@ public abstract class CSSDeclarationRule extends StyleRule
     return (CSSValue) declarations.get(propertyName);
   }
 
-  public void setPropertyValueAsString(final StyleKey name, final String value)
+  /**
+   * Parses the given value for the stylekey. As stylekeys are only defined for atomic
+   * style declarations, this method will only affect a single name-value pair.  
+   *
+   * @param styleKey
+   * @param value
+   */
+  public void setPropertyValueAsString(final StyleKey styleKey, final String value)
   {
+    setPropertyValueAsString(styleKey.getName(), value);
+  }
+
+  /**
+   * Parses the given name and value and updates the style rule. The name may reference
+   * a compound style, which has no direct representation in the style system; the
+   * definition is split into corresponding atomic style declarations instead.
+   *
+   * @param name
+   * @param value
+   */
+  public void setPropertyValueAsString(final String name, final String value)
+  {
+    if (value == null) throw new NullPointerException();
+
     final StyleSheet parentStyle = getParentStyle();
     final ResourceKey source;
     final ResourceManager resourceManager;
@@ -119,7 +141,7 @@ public abstract class CSSDeclarationRule extends StyleRule
         while (keys.hasNext())
         {
           StyleKey key = (StyleKey) keys.next();
-          setPropertyValue(name, cssValues.getPropertyCSSValue(key));
+          setPropertyValue(key, cssValues.getPropertyCSSValue(key));
           setImportant(key, cssValues.isImportant(key));
         }
       }
@@ -134,7 +156,7 @@ public abstract class CSSDeclarationRule extends StyleRule
         while (keys.hasNext())
         {
           StyleKey key = (StyleKey) keys.next();
-          setPropertyValue(name, cssValues.getPropertyCSSValue(key));
+          setPropertyValue(key, cssValues.getPropertyCSSValue(key));
           setImportant(key, cssValues.isImportant(key));
         }
       }

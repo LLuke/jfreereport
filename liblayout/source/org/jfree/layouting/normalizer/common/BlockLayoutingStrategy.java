@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BlockLayoutingStrategy.java,v 1.1 2006/04/17 21:04:27 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.normalizer.common;
+
+import org.jfree.layouting.normalizer.common.display.ContentBox;
 
 /**
  * Creation-Date: 03.04.2006, 14:06:14
@@ -54,7 +56,7 @@ public class BlockLayoutingStrategy implements LayoutingStrategy
   public void updateLayout(ContentBox element)
   {
     // very primitive at first: Relayout everything.
-    
+
   }
 
   public LayoutingStrategy getInstance()

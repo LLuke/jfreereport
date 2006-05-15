@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -253,6 +253,12 @@ public class TextStyleKeys
   public static final StyleKey EXCEL_WRAP_TEXT =
           StyleKeyRegistry.getRegistry().createKey
                   ("-x-liblayout-excel-wrap-text", false, true, false);
+  public static final StyleKey TEXT_EMPHASIZE_TYPE =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-text-emphasize-type", false, true, false);
+  public static final StyleKey TEXT_EMPHASIZE_POSITION =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-text-emphasize-position", false, true, false);
 
   private TextStyleKeys()
   {

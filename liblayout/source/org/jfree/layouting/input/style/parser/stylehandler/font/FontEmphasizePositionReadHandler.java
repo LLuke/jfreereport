@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontEmphasizePositionReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,8 @@ public class FontEmphasizePositionReadHandler extends OneOfConstantsReadHandler
   {
     super(false);
     addValue(FontEmphasizePosition.AFTER);
+    addValue(FontEmphasizePosition.ABOVE);
+    addValue(FontEmphasizePosition.BELOW);
     addValue(FontEmphasizePosition.BEFORE);
   }
 

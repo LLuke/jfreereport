@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SwingDocumentImport.java,v 1.2 2006/04/17 20:51:12 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.html.CSS;
 
 import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.feed.InputFeedException;
 
 /**
  * Right now, we do not convert Swing-styles into CSS styles. Hey, we should,
@@ -88,8 +89,8 @@ public class SwingDocumentImport
 
 
   private void handleElement (Element element,
-                                     InputFeed db)
-          throws BadLocationException
+                              InputFeed db)
+          throws BadLocationException, InputFeedException
   {
     if (element.isLeaf())
     {
@@ -122,8 +123,8 @@ public class SwingDocumentImport
   }
 
   private void handleRootElement (Element rootElement,
-                                         InputFeed db)
-          throws BadLocationException
+                                  InputFeed db)
+          throws BadLocationException, InputFeedException
   {
     final int size = rootElement.getElementCount();
     for (int i = 0; i < size; i++)
@@ -182,7 +183,7 @@ public class SwingDocumentImport
   }
 
   public void parseDocument (Document doc, InputFeed feed)
-          throws BadLocationException
+          throws BadLocationException, InputFeedException
   {
     handleRootElement(doc.getDefaultRootElement(), feed);
   }

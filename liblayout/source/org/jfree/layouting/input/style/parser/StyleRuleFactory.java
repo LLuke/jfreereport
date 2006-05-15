@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleRuleFactory.java,v 1.1 2006/04/17 20:54:49 taqua Exp $
  *
  * Changes
  * -------
@@ -42,16 +42,18 @@ package org.jfree.layouting.input.style.parser;
 
 import java.io.IOException;
 
+import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
+import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.resourceloader.CompoundResource;
+import org.jfree.resourceloader.DependencyCollector;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceFactory;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
-import org.jfree.resourceloader.DependencyCollector;
 import org.jfree.resourceloader.ResourceManager;
 import org.w3c.css.sac.InputSource;
 import org.w3c.css.sac.Parser;
@@ -63,13 +65,13 @@ import org.w3c.css.sac.Parser;
  */
 public class StyleRuleFactory implements ResourceFactory
 {
-  public StyleRuleFactory()
+  public StyleRuleFactory ()
   {
   }
 
-  public Resource create(final ResourceManager manager,
-                         final ResourceData data,
-                         final ResourceKey context)
+  public Resource create (final ResourceManager manager,
+                          final ResourceData data,
+                          final ResourceKey context)
           throws ResourceCreationException, ResourceLoadingException
   {
     try
@@ -93,7 +95,10 @@ public class StyleRuleFactory implements ResourceFactory
 
       final InputSource inputSource = new InputSource();
       inputSource.setByteStream(data.getResourceAsStream());
-      parser.parseRule(inputSource);
+
+      handler.init(inputSource);
+      handler.setStyleRule(new CSSStyleRule(null, null));
+      parser.parseStyleDeclaration(inputSource);
 
       final DependencyCollector dependencies = handler.getDependencies();
       if (context != null)
@@ -102,9 +107,14 @@ public class StyleRuleFactory implements ResourceFactory
       }
 
       CSSParserContext.getContext().destroy();
-      
+
+      final CSSDeclarationRule styleRule = handler.getStyleRule();
+      if (styleRule == null)
+      {
+        throw new ResourceCreationException("Damn, the style rule is null");
+      }
       return new CompoundResource
-              (data.getKey(), dependencies, handler.getStyleRule());
+              (data.getKey(), dependencies, styleRule);
     }
     catch (CSSParserInstantiationException e)
     {
@@ -116,12 +126,12 @@ public class StyleRuleFactory implements ResourceFactory
     }
   }
 
-  public Class getFactoryType()
+  public Class getFactoryType ()
   {
     return StyleRule.class;
   }
 
-  public void initializeDefaults()
+  public void initializeDefaults ()
   {
     // nothing needed ...
   }

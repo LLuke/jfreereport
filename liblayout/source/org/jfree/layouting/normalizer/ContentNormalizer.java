@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.2 2006/04/23 15:18:18 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.3 2006/04/30 11:46:07 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.normalizer;
 
 import java.util.Stack;
+import java.io.IOException;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.namespace.Namespaces;
@@ -87,6 +88,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   public void startElement(LayoutElement element)
+          throws IOException, NormalizationException
   {
     if (ignoredElement != null)
     {
@@ -165,6 +167,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   public void addText(LayoutTextNode text)
+          throws IOException, NormalizationException
   {
     if (ignoredElement != null)
     {
@@ -175,6 +178,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   public void addReplacedElement(LayoutElement element)
+          throws IOException, NormalizationException
   {
     if (ignoredElement != null)
     {
@@ -185,6 +189,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   public void endElement(LayoutElement element)
+          throws IOException, NormalizationException
   {
     if (element.getContextId().equals(ignoredElement))
     {
@@ -229,6 +234,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   protected boolean generateContentBefore(LayoutElement element)
+          throws IOException, NormalizationException
   {
     final ContentSpecification cspec =
             element.getLayoutContext().getContentSpecification();
@@ -246,6 +252,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   protected void generateContentAfter(LayoutElement element)
+          throws IOException, NormalizationException
   {
     final ContentSpecification cspec =
             element.getLayoutContext().getContentSpecification();
@@ -274,6 +281,7 @@ public class ContentNormalizer implements Normalizer
   private void handleContent(final ContentToken token,
                              final ContentSpecification cspec,
                              final LayoutElement element)
+          throws IOException, NormalizationException
   {
     switch(token.getType())
     {
@@ -330,6 +338,7 @@ public class ContentNormalizer implements Normalizer
 
   private void insertResourceContent(final LayoutElement element,
                                      final Resource resource)
+          throws IOException, NormalizationException
   {
     // generate an anonymous element ..
     final LayoutElement anonElement = new LayoutElement
@@ -345,6 +354,7 @@ public class ContentNormalizer implements Normalizer
 
   private void insertExternalContent(final LayoutElement element,
                                      final Object externalContent)
+          throws IOException, NormalizationException
   {
     // generate an anonymous element ..
     final LayoutElement anonElement = new LayoutElement
@@ -376,6 +386,7 @@ public class ContentNormalizer implements Normalizer
 
   private void insertTextNode (final LayoutElement element,
                                final String text)
+          throws IOException, NormalizationException
   {
     final LayoutTextNode ctx = new LayoutTextNode
           (layoutProcess.generateContextId(element.getContextId().getId()),
@@ -391,6 +402,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   public void startDocument()
+          throws IOException, NormalizationException
   {
     child.startDocument();
     styleResolver = layoutProcess.getStyleResolver();
@@ -398,6 +410,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   public void endDocument()
+          throws IOException, NormalizationException
   {
     child.endDocument();
   }

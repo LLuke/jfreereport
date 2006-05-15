@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Normalizer.java,v 1.2 2006/04/17 20:51:18 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.normalizer;
+
+import java.io.IOException;
 
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutTextNode;
@@ -50,11 +52,22 @@ import org.jfree.layouting.model.LayoutTextNode;
  */
 public interface Normalizer
 {
-  public void startElement (LayoutElement element);
-  public void addText (LayoutTextNode text);
-  public void addReplacedElement (LayoutElement element);
-  public void endElement(LayoutElement element);
-  public void startDocument();
-  public void endDocument();
+  public void startElement (LayoutElement element)
+          throws NormalizationException, IOException;
+
+  public void addText (LayoutTextNode text)
+          throws NormalizationException, IOException;
+
+  public void addReplacedElement (LayoutElement element)
+          throws NormalizationException, IOException;
+
+  public void endElement (LayoutElement element)
+          throws NormalizationException, IOException;
+
+  public void startDocument ()
+          throws NormalizationException, IOException;
+
+  public void endDocument ()
+          throws NormalizationException, IOException;
 
 }

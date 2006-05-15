@@ -7,6 +7,10 @@ import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutNode;
 
+/**
+ * Not yet used. Needs to be implemented. Its my fast resolver, but that
+ * one needs more thinking and more tweaking. 
+ */
 public class FlatStyleResolver extends AbstractStyleResolver
 {
   public FlatStyleResolver ()

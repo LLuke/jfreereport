@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutingStrategy.java,v 1.2 2006/04/17 20:51:18 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.normalizer.common;
+
+import org.jfree.layouting.normalizer.common.display.ContentBox;
 
 /**
  * Implementations of this class define how elements will be laid out. This is

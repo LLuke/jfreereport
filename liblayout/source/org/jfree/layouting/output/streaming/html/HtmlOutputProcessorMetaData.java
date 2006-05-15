@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HtmlOutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
     super(fontRegistry);
 
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");
-    setFamilyMapping(FontFamilyValues.FANTASY, "Verdana");
+    setFamilyMapping(FontFamilyValues.FANTASY, "fantasy");
     setFamilyMapping(FontFamilyValues.MONOSPACE, "monospace");
     setFamilyMapping(FontFamilyValues.SERIF, "serif");
     setFamilyMapping(FontFamilyValues.SANS_SERIF, "sans-serif");

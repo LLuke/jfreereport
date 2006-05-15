@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontEmphasizePositionResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -54,5 +54,7 @@ public class FontEmphasizePositionResolveHandler extends ConstantsResolveHandler
   {
     addNormalizeValue(FontEmphasizePosition.AFTER);
     addNormalizeValue(FontEmphasizePosition.BEFORE);
+    addValue(FontEmphasizePosition.ABOVE, FontEmphasizePosition.BEFORE);
+    addValue(FontEmphasizePosition.BELOW, FontEmphasizePosition.AFTER);
   }
 }

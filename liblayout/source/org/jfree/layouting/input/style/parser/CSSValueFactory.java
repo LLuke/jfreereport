@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueFactory.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
+ * $Id: CSSValueFactory.java,v 1.3 2006/04/23 15:18:12 taqua Exp $
  *
  * Changes
  * -------
@@ -301,6 +301,8 @@ public class CSSValueFactory
                          boolean important)
           throws CSSParserFactoryException
   {
+    if (rule == null) throw new NullPointerException();
+
     String normalizedName = name.toLowerCase();
     final StyleKey key = registry.findKeyByName(normalizedName);
     if (value.getLexicalUnitType() == LexicalUnit.SAC_INHERIT)

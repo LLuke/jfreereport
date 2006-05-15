@@ -16,6 +16,16 @@ public class TextDecorationWidth
    */
   public static final CSSConstant DASH = new CSSConstant("dash");
 
+  /**
+   * The text decoration width is the normal text decoration width
+   * for the nominal font. If no font characteristic exists for the
+   * width of the text decoration in question, the user agent should
+   * proceed as though 'auto' were specified.
+   *
+   * The computed value is 'normal'.
+   */
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+
   private TextDecorationWidth()
   {
   }

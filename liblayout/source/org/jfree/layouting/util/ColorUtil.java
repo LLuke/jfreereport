@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColorUtil.java,v 1.1 2006/04/17 21:04:28 taqua Exp $
  *
  * Changes
  * -------
@@ -194,7 +194,7 @@ public class ColorUtil
     {
       return systemColors;
     }
-    Log.debug("No such constant: " + name);
+    //Log.debug("No such constant: " + name);
     return null;
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InputFeed.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.layouter.feed;
+
+import org.jfree.layouting.namespace.NamespaceCollection;
 
 /**
  * Creation-Date: 05.12.2005, 18:04:11
@@ -51,23 +53,22 @@ public interface InputFeed
    * Starts the document processing. This is the first method to call. After
    * calling this method, the meta-data should be fed into the inputfeed.
    */
-  public void startDocument();
+  public void startDocument() throws InputFeedException;
 
   /**
    * Signals, that meta-data follows. Calling this method is only valid directly
    * after startDocument has been called.
    */
-  public void startMetaInfo();
+  public void startMetaInfo() throws InputFeedException;
 
   /**
    * Adds document attributes. Document attributes hold object factories and
    * document wide resources which appear only once.
    *
-   * @param namespace
    * @param name
    * @param attr
    */
-  public void addDocumentAttribute(String name, Object attr);
+  public void addDocumentAttribute(String name, Object attr) throws InputFeedException;
 
   /**
    * Starts a new meta-node structure. Meta-Nodes are used to hold content that
@@ -78,33 +79,34 @@ public interface InputFeed
    *
    * Calling this method is only valid after 'startMetaInfo' has been called.
    */
-  public void startMetaNode();
+  public void startMetaNode() throws InputFeedException;
 
   /**
    * Defines an attribute for the meta-nodes. For each meta node, at least the
    * 'type' attribute (namespace: LibLayout) should be defined.
    *
-   * @param namespace
    * @param name
    * @param attr
    */
-  public void setMetaNodeAttribute(String name, Object attr);
-  public void endMetaNode();
+  public void setMetaNodeAttribute(String name, Object attr) throws InputFeedException;
+  public void endMetaNode() throws InputFeedException;
 
-  public void endMetaInfo();
+  public void endMetaInfo() throws InputFeedException;
 
-  public void startElement(String namespace, String name);
+  public void startElement(String namespace, String name) throws InputFeedException;
 
-  public void setAttribute(String namespace, String name, Object attr);
+  public void setAttribute(String namespace, String name, Object attr) throws InputFeedException;
 
-  public void addContent(String text);
+  public void addContent(String text) throws InputFeedException;
 
-  public void endElement();
+  public void endElement() throws InputFeedException;
 
-  public void endDocument();
+  public void endDocument() throws InputFeedException;
 
-  public Object getSavePointData();
+  public NamespaceCollection getNamespaceCollection ();
 
-  public void setSavePointData(Object savePoint);
+  public Object getSavePointData() throws InputFeedException;
+
+  public void setSavePointData(Object savePoint) throws InputFeedException;
 
 }

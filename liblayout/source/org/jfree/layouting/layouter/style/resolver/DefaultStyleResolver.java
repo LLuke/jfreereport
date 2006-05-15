@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.3 2006/05/06 13:02:46 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutNode;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -130,6 +131,12 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     performSelectionStep(node, style);
 
     // Stage 1c: Add the contents of the style attribute, if there is one ..
+    // the libLayout style is always added: This is a computed style and the hook
+    // for a element neutral user defined tweaking ..
+    final Object libLayoutStyleValue = node.getAttribute
+            (Namespaces.LIBLAYOUT_NAMESPACE, "style");
+    addStyleFromAttribute(style, libLayoutStyleValue);
+
     if (strictStyleMode)
     {
       performStrictStyleAttr(node, style);

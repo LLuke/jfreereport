@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LibLayoutBoot.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ public class LibLayoutBoot extends AbstractBoot
 {
   private static LibLayoutBoot singleton;
 
-  public static LibLayoutBoot getInstance()
+  public static synchronized LibLayoutBoot getInstance()
   {
     if (singleton == null)
     {

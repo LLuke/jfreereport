@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: XhtmlInputDriver.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
  *
  * Changes
  * -------
@@ -48,10 +48,12 @@ import java.net.URL;
 import org.jfree.layouting.DefaultStreamingLayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.StreamingLayoutProcess;
+import org.jfree.layouting.normalizer.NormalizationException;
 import org.jfree.layouting.model.DocumentContext;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.util.NullOutputStream;
 import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.feed.InputFeedException;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessor;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -73,6 +75,7 @@ public class XhtmlInputDriver
   }
 
   public void processDomTree (Document doc)
+          throws InputFeedException
   {
     Element rootElement = doc.getDocumentElement();
     if (rootElement.getTagName().equalsIgnoreCase("html"))
@@ -90,6 +93,7 @@ public class XhtmlInputDriver
   }
 
   private void processFullDocument (Element rootElement)
+          throws InputFeedException
   {
     feed.startDocument();
     feed.startMetaInfo();
@@ -154,6 +158,7 @@ public class XhtmlInputDriver
   }
 
   private void processBodyElement (Element element)
+          throws InputFeedException
   {
     feed.startElement(NAMESPACE, element.getTagName());
 
@@ -185,7 +190,7 @@ public class XhtmlInputDriver
   }
 
   public static void main (String[] args)
-          throws IOException
+          throws IOException, NormalizationException
   {
     LibLayoutBoot.getInstance().start();
 

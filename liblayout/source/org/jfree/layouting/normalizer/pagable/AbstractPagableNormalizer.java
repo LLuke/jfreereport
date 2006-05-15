@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractPagableNormalizer.java,v 1.2 2006/04/17 20:51:18 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 package org.jfree.layouting.normalizer.pagable;
 
 import org.jfree.layouting.normalizer.Normalizer;
-import org.jfree.layouting.normalizer.common.ContentBox;
+import org.jfree.layouting.normalizer.common.display.ContentBox;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutTextNode;
 import org.jfree.layouting.model.PageContext;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetParserUtil.java,v 1.2 2006/04/21 17:29:37 taqua Exp $
+ * $Id: StyleSheetParserUtil.java,v 1.3 2006/04/23 15:18:12 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import org.jfree.resourceloader.ResourceManager;
 import org.w3c.css.sac.InputSource;
 import org.w3c.css.sac.LexicalUnit;
 import org.w3c.css.sac.Parser;
+import org.w3c.css.sac.SelectorList;
 
 /**
  * Creation-Date: 20.11.2005, 17:32:33
@@ -64,6 +65,70 @@ public class StyleSheetParserUtil
 {
   private StyleSheetParserUtil()
   {
+  }
+
+  /**
+   * Parses a single style value for the given key. Returns <code>null</code>,
+   * if the key denotes a compound definition, which has no internal
+   * representation.
+   *
+   * @param namespaces
+   * @param selector
+   * @param resourceManager
+   * @param baseURL
+   * @return the parsed selector or null
+   */
+  public static SelectorList parseSelector(final Map namespaces,
+                                       final String selector,
+                                       final ResourceManager resourceManager,
+                                       final ResourceKey baseURL)
+  {
+    if (selector == null)
+    {
+      throw new NullPointerException();
+    }
+
+    try
+    {
+      final Parser parser = CSSParserFactory.getInstance().createCSSParser();
+      final StyleSheetHandler handler = new StyleSheetHandler
+              (resourceManager, baseURL, -1, StyleKeyRegistry.getRegistry(), null);
+
+      setupNamespaces(namespaces, handler);
+
+      final InputSource source = new InputSource();
+      source.setCharacterStream(new StringReader(selector));
+
+      handler.init(source);
+      handler.setStyleRule(new CSSStyleRule(null, null));
+      parser.setDocumentHandler(handler);
+
+      final SelectorList selectorList = parser.parseSelectors(source);
+      CSSParserContext.getContext().destroy();
+      return selectorList;
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private static void setupNamespaces (Map namespaces, StyleSheetHandler handler)
+  {
+    if (namespaces == null)
+    {
+      return;
+    }
+
+    final Iterator entries = namespaces.entrySet().iterator();
+    while (entries.hasNext())
+    {
+      final Map.Entry entry = (Map.Entry) entries.next();
+      final String prefix = (String) entry.getKey();
+      final String uri = (String) entry.getValue();
+      handler.registerNamespace(prefix, uri);
+    }
   }
 
   /**
@@ -99,17 +164,7 @@ public class StyleSheetParserUtil
       final StyleSheetHandler handler = new StyleSheetHandler
               (resourceManager, baseURL, -1, StyleKeyRegistry.getRegistry(), null);
 
-      if (namespaces != null)
-      {
-        final Iterator entries = namespaces.entrySet().iterator();
-        while (entries.hasNext())
-        {
-          final Map.Entry entry = (Map.Entry) entries.next();
-          final String prefix = (String) entry.getKey();
-          final String uri = (String) entry.getValue();
-          handler.registerNamespace(prefix, uri);
-        }
-      }
+      setupNamespaces(namespaces, handler);
       final InputSource source = new InputSource();
       source.setCharacterStream(new StringReader(value));
 
@@ -152,9 +207,35 @@ public class StyleSheetParserUtil
     {
       throw new NullPointerException();
     }
+    return parseStyles(namespaces, key.getName(), value, resourceManager, baseURL);
+  }
+
+
+
+  /**
+   * Parses a style value. If the style value is a compound key, the corresonding
+   * style entries will be added to the style rule.
+   *
+   * @param namespaces
+   * @param name
+   * @param value
+   * @param resourceManager
+   * @param baseURL
+   * @return
+   */
+  public static CSSStyleRule parseStyles(final Map namespaces,
+                                         final String name,
+                                         final String value,
+                                         final ResourceManager resourceManager,
+                                         final ResourceKey baseURL)
+  {
+    if (name == null)
+    {
+      throw new NullPointerException("Name is null");
+    }
     if (value == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("Value is null");
     }
 
     try
@@ -163,17 +244,7 @@ public class StyleSheetParserUtil
       final StyleSheetHandler handler = new StyleSheetHandler
               (resourceManager, baseURL, -1, StyleKeyRegistry.getRegistry(), null);
 
-      if (namespaces != null)
-      {
-        final Iterator entries = namespaces.entrySet().iterator();
-        while (entries.hasNext())
-        {
-          final Map.Entry entry = (Map.Entry) entries.next();
-          final String prefix = (String) entry.getKey();
-          final String uri = (String) entry.getValue();
-          handler.registerNamespace(prefix, uri);
-        }
-      }
+      setupNamespaces(namespaces, handler);
       final InputSource source = new InputSource();
       source.setCharacterStream(new StringReader(value));
 
@@ -181,7 +252,7 @@ public class StyleSheetParserUtil
       handler.setStyleRule(new CSSStyleRule(null, null));
       parser.setDocumentHandler(handler);
       final LexicalUnit lu = parser.parsePropertyValue(source);
-      handler.property(key.getName(), lu, false);
+      handler.property(name, lu, false);
       CSSStyleRule rule = (CSSStyleRule) handler.getStyleRule();
 
       CSSParserContext.getContext().destroy();

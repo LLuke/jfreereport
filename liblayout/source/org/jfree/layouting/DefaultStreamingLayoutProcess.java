@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultStreamingLayoutProcess.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.normalizer.Normalizer;
+import org.jfree.layouting.normalizer.NormalizationException;
 import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
 
@@ -54,12 +55,13 @@ import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
 public class DefaultStreamingLayoutProcess extends AbstractLayoutProcess
         implements StreamingLayoutProcess
 {
-  private StreamingNormalizer streamingNormalizer;
+  private Normalizer streamingNormalizer;
 
   public DefaultStreamingLayoutProcess(StreamingOutputProcessor outputProcessor)
+          throws NormalizationException
   {
     super(outputProcessor);
-    streamingNormalizer = outputProcessor.createNormalizer();
+    streamingNormalizer = outputProcessor.createNormalizer(this);
   }
 
   protected InputFeed createInputFeed()

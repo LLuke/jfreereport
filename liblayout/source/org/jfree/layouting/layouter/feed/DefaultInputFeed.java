@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultInputFeed.java,v 1.1 2006/04/17 21:01:49 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
  */
 package org.jfree.layouting.layouter.feed;
 
+import java.io.IOException;
 import java.util.Stack;
 
 import org.jfree.layouting.LayoutProcess;
@@ -49,8 +50,10 @@ import org.jfree.layouting.model.DocumentContext;
 import org.jfree.layouting.model.DocumentMetaNode;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutTextNode;
+import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.normalizer.ContentNormalizer;
+import org.jfree.layouting.normalizer.NormalizationException;
 import org.jfree.layouting.normalizer.Normalizer;
 
 /**
@@ -72,10 +75,10 @@ public class DefaultInputFeed implements InputFeed
   public static final int DOCUMENT_FINISHED = 9;
 
   private static final String[] STATE_NAMES = new String[]{
-    "DOCUMENT_STARTING", "META_EXPECTED", "META_PROCESSING",
-    "META_NODE_START", "META_NODE_ATTRIBUTES",
-    "ELEMENT_EXPECTED", "ELEMENT_STARTED", "ELEMENT_ATTRIBUTES",
-    "ELEMENT_CONTENT", "DOCUMENT_FINISHED"
+          "DOCUMENT_STARTING", "META_EXPECTED", "META_PROCESSING",
+          "META_NODE_START", "META_NODE_ATTRIBUTES",
+          "ELEMENT_EXPECTED", "ELEMENT_STARTED", "ELEMENT_ATTRIBUTES",
+          "ELEMENT_CONTENT", "DOCUMENT_FINISHED"
   };
 
   private boolean initialized;
@@ -91,7 +94,7 @@ public class DefaultInputFeed implements InputFeed
   private DocumentContext documentContext;
   private Normalizer normalizer;
 
-  public DefaultInputFeed(final LayoutProcess process)
+  public DefaultInputFeed (final LayoutProcess process)
   {
     this.process = process;
     this.documentContext = process.getDocumentContext();
@@ -149,7 +152,7 @@ public class DefaultInputFeed implements InputFeed
     state = DOCUMENT_STARTING;
   }
 
-  public DefaultInputFeed(final LayoutProcess process, final InputFeedState state)
+  public DefaultInputFeed (final LayoutProcess process, final InputFeedState state)
   {
     this(process);
     if (state != null)
@@ -157,7 +160,7 @@ public class DefaultInputFeed implements InputFeed
       LayoutElement[] elements = state.getOpenElements();
       for (int i = 0; i < elements.length; i++)
       {
-        this.elements.add (elements[i]);
+        this.elements.add(elements[i]);
       }
       if (elements.length > 0)
       {
@@ -168,7 +171,7 @@ public class DefaultInputFeed implements InputFeed
     }
   }
 
-  private int checkState(int newState)
+  private int checkState (int newState)
   {
     if (validStateTransitions[state][newState] == false)
     {
@@ -181,13 +184,13 @@ public class DefaultInputFeed implements InputFeed
     return oldState;
   }
 
-  public final void startDocument()
+  public final void startDocument ()
   {
     checkState(META_EXPECTED);
     performStartDocument();
   }
 
-  protected void performStartDocument()
+  protected void performStartDocument ()
   {
     document = new LayoutElement(process.generateContextId(-1),
             process.getOutputProcessor(), Namespaces.LIBLAYOUT_NAMESPACE, "@document@");
@@ -195,28 +198,28 @@ public class DefaultInputFeed implements InputFeed
     elements.push(document);
   }
 
-  public final void startMetaInfo()
+  public final void startMetaInfo ()
   {
     checkState(META_PROCESSING);
     performStartMetaInfo();
   }
 
-  protected void performStartMetaInfo()
+  protected void performStartMetaInfo ()
   {
   }
 
-  public final void addDocumentAttribute(String name, Object attr)
+  public final void addDocumentAttribute (String name, Object attr)
   {
     checkState(META_PROCESSING);
     performAddDocumentAttribute(name, attr);
   }
 
-  protected void performAddDocumentAttribute(String name, Object attr)
+  protected void performAddDocumentAttribute (String name, Object attr)
   {
     documentContext.setMetaAttribute(name, attr);
   }
 
-  public void startMetaNode()
+  public void startMetaNode ()
   {
     checkState(META_NODE_START);
     performStartMetaNode();
@@ -228,7 +231,7 @@ public class DefaultInputFeed implements InputFeed
     documentContext.addMetaNode(metaNode);
   }
 
-  public final void setMetaNodeAttribute(String name, Object attr)
+  public final void setMetaNodeAttribute (String name, Object attr)
   {
     checkState(META_NODE_ATTRIBUTES);
     performSetMetaNodeAttribute(name, attr);
@@ -239,48 +242,89 @@ public class DefaultInputFeed implements InputFeed
     metaNode.setMetaAttribute(name, attr);
   }
 
-  public void endMetaNode()
+  public void endMetaNode ()
   {
     checkState(META_PROCESSING);
     performEndMetaNode();
   }
 
-  protected void performEndMetaNode()
+  protected void performEndMetaNode ()
   {
     metaNode = null;
   }
 
-  public final void endMetaInfo()
+  public final void endMetaInfo ()
+          throws InputFeedException
   {
     checkState(ELEMENT_EXPECTED);
     performEndMetaInfo();
   }
 
-  protected void performEndMetaInfo()
+  public NamespaceCollection getNamespaceCollection ()
   {
-
+    if (initialized == false)
+    {
+      throw new IllegalStateException("Not yet!");
+    }
+    return documentContext.getNamespaces();
   }
 
-  public final void startElement(String namespace, String name)
+  protected void performEndMetaInfo ()
+          throws InputFeedException
+  {
+    try
+    {
+      initializeDocument();
+    }
+    catch (Exception e)
+    {
+      throw new InputFeedException("Failed to normalize element", e);
+    }
+  }
+
+  public final void startElement (String namespace, String name)
+          throws InputFeedException
   {
     int oldState = checkState(ELEMENT_STARTED);
 
     if (oldState == META_EXPECTED ||
-        oldState == ELEMENT_EXPECTED)
+            oldState == ELEMENT_EXPECTED)
     {
-      initializeDocument();
+      try
+      {
+        initializeDocument();
+      }
+      catch (Exception e)
+      {
+        throw new InputFeedException("Failed to normalize element", e);
+      }
     }
     else if (oldState == ELEMENT_ATTRIBUTES ||
-             oldState == ELEMENT_STARTED)
+            oldState == ELEMENT_STARTED)
     {
-      getNormalizer().startElement(currentElement);
+      try
+      {
+        getNormalizer().startElement(currentElement);
+      }
+      catch (NormalizationException e)
+      {
+        throw new InputFeedException("Failed to normalize element", e);
+      }
+      catch (IOException e)
+      {
+        e.printStackTrace();
+      }
     }
     performStartElement(namespace, name);
   }
 
-  private void initializeDocument()
+  private void initializeDocument ()
+          throws IOException, NormalizationException
   {
-    if (initialized) return;
+    if (initialized)
+    {
+      return;
+    }
 
     // initialize all factories from the given meta-data.
     // the execution order here is important!
@@ -289,7 +333,7 @@ public class DefaultInputFeed implements InputFeed
     initialized = true;
   }
 
-  protected void performStartElement(String namespace, String name)
+  protected void performStartElement (String namespace, String name)
   {
     final ContextId contextId = process.generateContextId(-1);
     LayoutElement newElement = new LayoutElement
@@ -305,70 +349,120 @@ public class DefaultInputFeed implements InputFeed
 //    getNormalizer().startElement(context);
 //  }
 
-  public final void setAttribute(String namespace, String name, Object attr)
+  public final void setAttribute (String namespace, String name, Object attr)
   {
     checkState(ELEMENT_ATTRIBUTES);
     performSetAttribute(namespace, name, attr);
   }
 
-  protected void performSetAttribute(String namespace, String name, Object attr)
+  protected void performSetAttribute (String namespace, String name, Object attr)
   {
     currentElement.setAttribute(namespace, name, attr);
   }
 
-  public final void addContent(String text)
+  public final void addContent (String text)
+          throws InputFeedException
   {
-    int oldState = checkState(ELEMENT_CONTENT);
-    if (oldState == ELEMENT_ATTRIBUTES ||
-        oldState == ELEMENT_STARTED)
+    try
     {
-      getNormalizer().startElement(currentElement);
+      int oldState = checkState(ELEMENT_CONTENT);
+      if (oldState == ELEMENT_ATTRIBUTES ||
+              oldState == ELEMENT_STARTED)
+      {
+        getNormalizer().startElement(currentElement);
+      }
+      else if (oldState == ELEMENT_EXPECTED ||
+              oldState == META_EXPECTED)
+      {
+        initializeDocument();
+      }
+      //System.out.println("GEN: " + (text));
+      performAddContent(text);
     }
-    else if (oldState == ELEMENT_EXPECTED ||
-             oldState == META_EXPECTED)
+    catch (NormalizationException ne)
     {
-      initializeDocument();
+      throw new InputFeedException("Failed to normalize element", ne);
     }
-    //System.out.println("GEN: " + (text));
-    performAddContent(text);
+    catch (IOException ioe)
+    {
+      throw new InputFeedException("Failed to normalize element", ioe);
+    }
   }
 
-  protected void performAddContent(String text)
+  protected void performAddContent (String text)
+          throws InputFeedException
   {
     final LayoutTextNode ctx = new LayoutTextNode
-          (process.generateContextId(-1),
-                  process.getOutputProcessor(),
-                  text.toCharArray(), 0, text.length());
+            (process.generateContextId(-1),
+                    process.getOutputProcessor(),
+                    text.toCharArray(), 0, text.length());
     ctx.setInputSavePoint(getSavePoint());
     currentElement.addChild(ctx);
-    getNormalizer().addText(ctx);
+    try
+    {
+      getNormalizer().addText(ctx);
+    }
+    catch (NormalizationException e)
+    {
+      throw new InputFeedException("Failed to normalize element", e);
+    }
+    catch (IOException e)
+    {
+      throw new InputFeedException("Failed to normalize element", e);
+    }
   }
 
-  public final void endElement()
+  public final void endElement ()
+          throws InputFeedException
   {
-    int oldState = checkState(ELEMENT_EXPECTED);
-    if (oldState == ELEMENT_ATTRIBUTES ||
-        oldState == ELEMENT_STARTED)
+    try
     {
-      getNormalizer().startElement(currentElement);
+      int oldState = checkState(ELEMENT_EXPECTED);
+      if (oldState == ELEMENT_ATTRIBUTES ||
+              oldState == ELEMENT_STARTED)
+      {
+        getNormalizer().startElement(currentElement);
+      }
+      performEndElement();
     }
-    performEndElement ();
+    catch (NormalizationException e)
+    {
+      throw new InputFeedException("Failed to normalize element", e);
+    }
+    catch (IOException e)
+    {
+      throw new InputFeedException("Failed to normalize element", e);
+    }
   }
 
   protected void performEndElement ()
+          throws IOException, NormalizationException
   {
     elements.pop();
     getNormalizer().endElement(currentElement);
     currentElement = (LayoutElement) elements.peek();
   }
 
-  public final void endDocument()
+  public final void endDocument ()
+          throws InputFeedException
   {
     checkState(DOCUMENT_FINISHED);
-    performEndDocument();
+    try
+    {
+      performEndDocument();
+    }
+    catch (NormalizationException e)
+    {
+      throw new InputFeedException("Failed to normalize element", e);
+    }
+    catch (IOException e)
+    {
+      throw new InputFeedException("Failed to normalize element", e);
+    }
   }
 
   protected void performEndDocument ()
+          throws IOException, NormalizationException
   {
     elements.pop();
     if (elements.isEmpty() == false)
@@ -379,12 +473,12 @@ public class DefaultInputFeed implements InputFeed
     currentElement = null;
   }
 
-  public Object getSavePointData()
+  public Object getSavePointData ()
   {
     return savePointData;
   }
 
-  protected InputFeedState getSavePoint()
+  protected InputFeedState getSavePoint ()
   {
     if (savePoint == null)
     {
@@ -407,7 +501,7 @@ public class DefaultInputFeed implements InputFeed
     return savePoint;
   }
 
-  public void setSavePointData(final Object savePointData)
+  public void setSavePointData (final Object savePointData)
   {
     Object oldSavePointData = this.savePointData;
     this.savePointData = savePointData;
@@ -418,27 +512,27 @@ public class DefaultInputFeed implements InputFeed
     }
   }
 
-  protected LayoutProcess getProcess()
+  protected LayoutProcess getProcess ()
   {
     return process;
   }
 
-  protected LayoutElement getCurrentElement()
+  protected LayoutElement getCurrentElement ()
   {
     return currentElement;
   }
 
-  protected LayoutElement getDocument()
+  protected LayoutElement getDocument ()
   {
     return document;
   }
 
-  protected int getState()
+  protected int getState ()
   {
     return state;
   }
 
-  protected Normalizer getNormalizer()
+  protected Normalizer getNormalizer ()
   {
     return normalizer;
   }

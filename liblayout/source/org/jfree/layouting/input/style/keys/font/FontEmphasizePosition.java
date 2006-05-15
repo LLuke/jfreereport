@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontEmphasizePosition.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -39,21 +39,29 @@
  *
  */
 
-/**
- * Creation-Date: 26.10.2005, 14:21:47
- * 
- * @author Thomas Morgner
- */
 package org.jfree.layouting.input.style.keys.font;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
+/**
+ * Defines the emphasize marker position in asian texts. If the text
+ * layout is horizontal (ie Roman style), before means above the text,
+ * and after means below the text.
+ *
+ * See: CSS3-Fonts §4-3
+ *
+ * @author Thomas Morgner
+ */
 public class FontEmphasizePosition extends CSSConstant
 {
   public static final FontEmphasizePosition BEFORE =
           new FontEmphasizePosition("before");
   public static final FontEmphasizePosition AFTER =
           new FontEmphasizePosition("after");
+  public static final FontEmphasizePosition ABOVE =
+          new FontEmphasizePosition("above");
+  public static final FontEmphasizePosition BELOW =
+          new FontEmphasizePosition("below");
 
   private FontEmphasizePosition(String name)
   {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HtmlOutputProcessor.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
  *
  * Changes
  * -------
@@ -46,11 +46,13 @@ import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
-import org.jfree.layouting.model.LayoutNode;
 import org.jfree.layouting.model.PageContext;
 import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
+import org.jfree.layouting.normalizer.NormalizationException;
+import org.jfree.layouting.normalizer.Normalizer;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
+import org.jfree.layouting.StreamingLayoutProcess;
 
 /**
  * A later version should allow the same degree of flexibility as jfreereport's
@@ -73,11 +75,6 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
     this.metaData = new HtmlOutputProcessorMetaData(fontRegistry);
   }
 
-  public void processNode(LayoutNode node)
-  {
-    
-  }
-
   public OutputProcessorMetaData getMetaData()
   {
     return metaData;
@@ -88,9 +85,12 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
     return fontStorage;
   }
 
-  public StreamingNormalizer createNormalizer()
+  public Normalizer createNormalizer (
+          StreamingLayoutProcess layoutProcess)
+          throws NormalizationException
+
   {
-    return new HtmlStreamingNormalizer(outstream);
+    return new HtmlStreamingNormalizer(outstream, layoutProcess);
   }
 
   public PageContext createPageContext(int pageNumber)

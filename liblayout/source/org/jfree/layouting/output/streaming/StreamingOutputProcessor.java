@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StreamingOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,10 @@
  */
 package org.jfree.layouting.output.streaming;
 
-import org.jfree.layouting.output.OutputProcessor;
+import org.jfree.layouting.StreamingLayoutProcess;
+import org.jfree.layouting.normalizer.NormalizationException;
 import org.jfree.layouting.normalizer.Normalizer;
-import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
+import org.jfree.layouting.output.OutputProcessor;
 
 /**
  * Creation-Date: 03.01.2006, 11:57:03
@@ -51,5 +52,6 @@ import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
  */
 public interface StreamingOutputProcessor extends OutputProcessor
 {
-  public StreamingNormalizer createNormalizer();
+  public Normalizer createNormalizer(StreamingLayoutProcess layoutProcess)
+          throws NormalizationException;
 }

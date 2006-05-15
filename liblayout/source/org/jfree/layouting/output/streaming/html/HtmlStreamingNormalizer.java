@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HtmlStreamingNormalizer.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
+ * $Id: HtmlStreamingNormalizer.java,v 1.3 2006/04/23 15:18:18 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,27 @@
  */
 package org.jfree.layouting.output.streaming.html;
 
+import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.util.Properties;
 
+import org.jfree.layouting.StreamingLayoutProcess;
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.model.LayoutTextNode;
+import org.jfree.layouting.model.box.BoxSpecification;
+import org.jfree.layouting.normalizer.NormalizationException;
 import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
-import org.jfree.layouting.util.AttributeMap;
+import org.jfree.resourceloader.Resource;
+import org.jfree.resourceloader.ResourceException;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.DefaultConfiguration;
+import org.jfree.util.Log;
+import org.jfree.xmlns.writer.DefaultTagDescription;
+import org.jfree.xmlns.writer.XmlWriter;
 
 /**
  * Creation-Date: 02.01.2006, 19:52:34
@@ -55,56 +69,131 @@ import org.jfree.layouting.util.AttributeMap;
  */
 public class HtmlStreamingNormalizer implements StreamingNormalizer
 {
-  private PrintStream outstream;
+  private XmlWriter xmlWriter;
+  private Writer writer;
+  private StreamingLayoutProcess layoutProcess;
 
-  public HtmlStreamingNormalizer(final OutputStream outstream)
+  public HtmlStreamingNormalizer (final OutputStream outstream,
+                                  final StreamingLayoutProcess layoutProcess)
+          throws NormalizationException
   {
-    this.outstream = new PrintStream(outstream);
-  }
-
-  public void startDocument()
-  {
-    outstream.println("<!-- doctype here -->");
-  }
-
-  public void startElement(LayoutElement element)
-  {
-    if (element.getName() == null)
+    try
     {
-      // this is an anonymous/generated element. Ignore it.
-      outstream.println("<!-- Annonymous element -->");
-      return;
+      this.writer = new OutputStreamWriter(outstream, "UTF-8");
     }
-
-    outstream.print("<");
-    outstream.print(element.getNamespace() + ":" + element.getName());
-    final AttributeMap attributeMap = element.getAttributes();
-    final String[] attrNamespaces = attributeMap.getNameSpaces();
-
-    for (int i = 0; i < attrNamespaces.length; i++)
+    catch (UnsupportedEncodingException e)
     {
-      final String attrNamespace = attrNamespaces[i];
-      // todo: Hey, we need access to all defined namespaces and their shortcuts
-      //
+      throw new NormalizationException("Blah!", e);
     }
-    outstream.print(">");
+    this.layoutProcess = layoutProcess;
   }
 
-  public void addText(LayoutTextNode text)
+
+  public void startDocument ()
+  {
+    try
+    {
+      ResourceManager resourceManager = layoutProcess.getResourceManager();
+      final DefaultTagDescription dtd = new DefaultTagDescription();
+      try
+      {
+        final Resource resource = resourceManager.createDirectly
+                ("res://org/jfree/layouting/output/streaming/html/htmltags.properties", Properties.class);
+        final Properties props = (Properties) resource.getResource();
+        final DefaultConfiguration conf = new DefaultConfiguration();
+        conf.putAll(props);
+        dtd.configure(conf, "");
+      }
+      catch (ResourceException e)
+      {
+        // ignore ...
+        Log.info ("Unable to load HTML tag descriptions.");
+      }
+
+
+      this.xmlWriter = new XmlWriter(writer, dtd, "  ");
+      this.xmlWriter.writeXmlDeclaration("UTF-8");
+      this.xmlWriter.writeTag(null, "html", XmlWriter.OPEN);
+      this.xmlWriter.writeTag(null, "head", XmlWriter.OPEN);
+      this.xmlWriter.writeTag(null, "title", XmlWriter.OPEN);
+      this.xmlWriter.writeText("Title");
+      this.xmlWriter.writeCloseTag();
+      this.xmlWriter.writeCloseTag();
+      this.xmlWriter.writeTag(null, "body", XmlWriter.OPEN);
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+  public void startElement (LayoutElement element)
+          throws NormalizationException
+  {
+    try
+    {
+      if (element.getName() == null)
+      {
+        // this is an anonymous/generated element. Ignore it.
+        xmlWriter.writeComment("Annonymous element");
+        return;
+      }
+
+      xmlWriter.writeComment(element.getNamespace() + ":" + element.getName());
+      BoxSpecification boxSpecification = element.getLayoutContext().getBoxSpecification();
+      DisplayRole displayRole = boxSpecification.getDisplayRole();
+      if (displayRole == DisplayRole.BLOCK)
+      {
+        xmlWriter.writeTag(null, "div", XmlWriter.OPEN);
+      }
+      else
+      {
+        xmlWriter.writeTag(null, "span", XmlWriter.OPEN);
+      }
+      Log.debug (element.getName() + " DisplayRole: " + displayRole + " DM " + boxSpecification.getDisplayModel()); 
+    }
+    catch (IOException ne)
+    {
+      throw new NormalizationException("Failed to write", ne);
+    }
+  }
+
+  public void addText (LayoutTextNode text)
+          throws NormalizationException
   {
     final String s = new String(text.getData(), text.getOffset(), text.getLength());
-    outstream.print(s);
+    try
+    {
+      String strimed = s.trim();
+      if (strimed.length() > 0)
+      {
+        xmlWriter.writeText(strimed);
+      }
+    }
+    catch (IOException e)
+    {
+      throw new NormalizationException("Failed to write", e);
+    }
     text.clearFromParent();
   }
 
-  public void addReplacedElement(LayoutElement element)
+  public void addReplacedElement (LayoutElement element)
+          throws NormalizationException
   {
     // we ignore that one, as all information leading to that element should
     // be included in the 'startElement' call already.
-    outstream.println("<replaced:element:" + element + "/>");
+    try
+    {
+      xmlWriter.writeComment("replaced:element:" + element);
+    }
+    catch (IOException e)
+    {
+      throw new NormalizationException("Failed to write", e);
+    }
   }
 
-  public void endElement(final LayoutElement element)
+  public void endElement (final LayoutElement element)
+          throws NormalizationException
   {
     if (element.getName() == null)
     {
@@ -113,17 +202,22 @@ public class HtmlStreamingNormalizer implements StreamingNormalizer
       return;
     }
 
-    outstream.print("</");
-    outstream.print(element.getNamespace() + ":" + element.getName());
-    outstream.println(">");
-
+    try
+    {
+      xmlWriter.writeCloseTag();
+    }
+    catch (IOException e)
+    {
+      throw new NormalizationException("Failed to write", e);
+    }
     element.clearFromParent();
-
   }
 
-  public void endDocument()
+  public void endDocument ()
+          throws IOException
   {
-    outstream.println("<!-- Finito -->");
-    outstream.flush();
+    this.xmlWriter.writeCloseTag();
+    this.xmlWriter.writeCloseTag();
+    this.xmlWriter.close();
   }
 }

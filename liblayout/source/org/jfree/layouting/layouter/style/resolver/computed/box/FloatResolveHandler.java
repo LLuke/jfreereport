@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FloatResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -105,7 +105,7 @@ public class FloatResolveHandler extends ConstantsResolveHandler
     boxSpecification.setFloating(f);
     if (Floating.NONE.equals(f) == false)
     {
-      boxSpecification.setDisplayModel(DisplayModel.BLOCK_INSIDE);
+      //boxSpecification.setDisplayModel(DisplayModel.BLOCK_INSIDE);
       boxSpecification.setDisplayRole(DisplayRole.BLOCK);
     }
   }
