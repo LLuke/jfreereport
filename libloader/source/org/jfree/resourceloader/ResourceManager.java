@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceManager.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
+ * $Id: ResourceManager.java,v 1.3 2006/05/06 13:03:13 taqua Exp $
  *
  * Changes
  * -------
@@ -185,6 +185,7 @@ public class ResourceManager
   public Resource create(ResourceKey key, ResourceKey context, Class target)
           throws ResourceLoadingException, ResourceCreationException
   {
+    if (target == null) throw new NullPointerException();
     return create(key, context, new Class[]{target});
   }
 
@@ -252,7 +253,7 @@ public class ResourceManager
         if (fact == null)
         {
           throw new ResourceCreationException
-                  ("No factory known for the given target type.");
+                  ("No factory known for the given target type: " + targetClass);
         }
 
         try
