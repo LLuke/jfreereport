@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportProcessor.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.flow;
 
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 
 /**
  * The report processor is the public frontend to the reporting process.
@@ -53,5 +54,6 @@ import org.jfree.report.ReportDataFactoryException;
 public interface ReportProcessor
 {
   void processReport (ReportJob job)
-          throws ReportDataFactoryException, DataSourceException;
+          throws ReportDataFactoryException, DataSourceException,
+          ReportProcessingException;
 }

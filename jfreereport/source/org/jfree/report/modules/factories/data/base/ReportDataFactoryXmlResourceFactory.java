@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportDataFactoryXmlResourceFactory.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,9 @@
 package org.jfree.report.modules.factories.data.base;
 
 import org.jfree.report.ReportDataFactory;
-import org.jfree.report.modules.factories.common.AbstractXmlResourceFactory;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.xmlns.parser.AbstractXmlResourceFactory;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 08.04.2006, 14:25:23
@@ -52,6 +54,11 @@ public class ReportDataFactoryXmlResourceFactory extends AbstractXmlResourceFact
 {
   public ReportDataFactoryXmlResourceFactory()
   {
+  }
+
+  protected Configuration getConfiguration ()
+  {
+    return JFreeReportBoot.getInstance().getGlobalConfig();
   }
 
   public Class getFactoryType()

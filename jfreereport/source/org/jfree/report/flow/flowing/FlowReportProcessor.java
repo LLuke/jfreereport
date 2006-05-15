@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FlowReportProcessor.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: FlowReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.layouting.FlowPreparationLayoutProcess;
 import org.jfree.layouting.output.flowing.FlowingOutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.DefaultFlowControler;
 import org.jfree.report.flow.DefaultLayoutControler;
 import org.jfree.report.flow.FlowControler;
@@ -130,7 +131,8 @@ public class FlowReportProcessor implements ReportProcessor
    * @throws ReportDataFactoryException
    */
   public void processReport (final ReportJob job)
-          throws ReportDataFactoryException, DataSourceException
+          throws ReportDataFactoryException, DataSourceException,
+          ReportProcessingException
   {
     if (job == null)
     {
@@ -146,7 +148,8 @@ public class FlowReportProcessor implements ReportProcessor
 
 
   protected void prepareReport (final ReportJob job)
-          throws ReportDataFactoryException, DataSourceException
+          throws ReportDataFactoryException, DataSourceException,
+          ReportProcessingException
   {
     synchronized (job)
     {
@@ -167,7 +170,8 @@ public class FlowReportProcessor implements ReportProcessor
   }
 
   protected void generateReport (final ReportJob job)
-          throws ReportDataFactoryException, DataSourceException
+          throws ReportDataFactoryException, DataSourceException,
+          ReportProcessingException
   {
     synchronized (job)
     {

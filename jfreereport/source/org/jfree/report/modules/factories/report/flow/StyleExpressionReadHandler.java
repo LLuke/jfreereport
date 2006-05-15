@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleExpressionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

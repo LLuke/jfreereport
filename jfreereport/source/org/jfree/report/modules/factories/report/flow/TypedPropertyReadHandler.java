@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TypedPropertyReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import org.jfree.report.modules.factories.common.Base64;
-import org.jfree.report.modules.factories.common.ParseException;
-import org.jfree.report.modules.factories.common.PropertyReadHandler;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.Base64;
+import org.jfree.xmlns.parser.ParseException;
+import org.jfree.xmlns.parser.PropertyReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanException;
 import org.jfree.report.util.beans.BeanUtility;

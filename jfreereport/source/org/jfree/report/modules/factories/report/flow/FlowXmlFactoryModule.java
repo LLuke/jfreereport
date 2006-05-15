@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FlowXmlFactoryModule.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import org.jfree.report.modules.factories.common.XmlDocumentInfo;
-import org.jfree.report.modules.factories.common.XmlFactoryModule;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.XmlDocumentInfo;
+import org.jfree.xmlns.parser.XmlFactoryModule;
+import org.jfree.xmlns.parser.XmlReadHandler;
 
 /**
  * Creation-Date: 08.04.2006, 14:37:43

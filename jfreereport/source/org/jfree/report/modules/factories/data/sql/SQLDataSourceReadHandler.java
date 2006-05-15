@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SQLDataSourceReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,10 @@ import java.util.ArrayList;
 import org.jfree.report.ReportDataFactory;
 import org.jfree.report.modules.data.sql.ConnectionProvider;
 import org.jfree.report.modules.data.sql.SQLReportDataFactory;
-import org.jfree.report.modules.factories.common.AbstractXmlReadHandler;
-import org.jfree.report.modules.factories.common.PropertyReadHandler;
-import org.jfree.report.modules.factories.common.RootXmlReadHandler;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.AbstractXmlReadHandler;
+import org.jfree.xmlns.parser.PropertyReadHandler;
+import org.jfree.xmlns.parser.RootXmlReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

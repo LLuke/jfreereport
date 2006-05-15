@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDefining.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: ReportDefining.java,v 1.2 2006/04/22 16:18:15 taqua Exp $
  *
  * Changes
  * -------
@@ -43,12 +43,14 @@ package org.jfree.report.test;
 import java.net.URL;
 
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessor;
+import org.jfree.layouting.output.streaming.oowriter.OOWriterOutputProcessor;
 import org.jfree.layouting.util.NullOutputStream;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.TableReportDataFactory;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.streaming.StreamingReportProcessor;
@@ -66,6 +68,8 @@ import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -81,10 +85,10 @@ public class ReportDefining
   public static void main(String[] args)
           throws ReportDataFactoryException, DataSourceException,
           ResourceKeyCreationException, ResourceCreationException,
-          ResourceLoadingException
+          ResourceLoadingException, ReportProcessingException
   {
     JFreeReportBoot.getInstance().start();
-
+    
 //    {
 //      URL url = ReportDefining.class.getResource("/sample.sqlds");
 //      ResourceManager manager = new ResourceManager();
@@ -132,9 +136,10 @@ public class ReportDefining
 //    System.out.println("Time: " + delta / 1000f);
   }
 
-  private static void processReport() throws ResourceLoadingException,
+  private static void processReport()
+          throws ResourceLoadingException,
           ResourceCreationException, ResourceKeyCreationException,
-          ReportDataFactoryException, DataSourceException
+          ReportDataFactoryException, DataSourceException, ReportProcessingException
   {
     URL url = ReportDefining.class.getResource("/newreport.xml");
     ResourceManager manager = new ResourceManager();
@@ -142,15 +147,23 @@ public class ReportDefining
     Resource res = manager.createDirectly(url, JFreeReport.class);
     final JFreeReport resource = (JFreeReport) res.getResource();
 
+//    final JFreeReport resource = new JFreeReport();
+//    resource.setQuery("default");
+//    resource.addNode(new StaticText ("Blah"));
+//
+//    final Section sect = new Section();
+//    sect.addNode(new StaticText ("bbbb"));
+//    resource.addNode(sect);
+//    resource.addNode(new StaticText ("Blah2"));
+
     ReportJob job = new ReportJob(resource);
     final TableReportDataFactory dataFactory =
             new TableReportDataFactory("default", new CountryDataTableModel());
     dataFactory.addTable("subreport", new WorldDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final HtmlOutputProcessor out = new HtmlOutputProcessor(
-            //new NullOutputStream());
-            System.err);
+    final OOWriterOutputProcessor out = new OOWriterOutputProcessor();
+//    final HtmlOutputProcessor out = new HtmlOutputProcessor(System.err);
     job.setMetaData(out.getMetaData());
 
     final StreamingReportProcessor rp = new StreamingReportProcessor();

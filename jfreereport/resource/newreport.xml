@@ -2,122 +2,26 @@
 <report xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns="http://jfreereport.sourceforge.net/namespaces/reports/flow">
   <query>default</query>
+
   <configuration>
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</property>
   </configuration>
   <datasource href="sample.sqlds"/>
 
-  <expression class="org.jfree.report.function.aggregation.ItemCountFunction">
-    <name>RowCount</name>
-    <property name="precompute">true</property>
-  </expression>
-
-  <expression class="org.jfree.report.function.aggregation.ItemCountFunction">
-    <name>RowCount</name>
-  </expression>
-
-  <page-header>
-    This is my page header. JFreeReport will place the content defined here
-    somewhere outside of the normal document flow.
-  </page-header>
-
-  All the stuff here up to the group tag is put into the report header.
-
-  <section>
-    <display-condition class="org.jfree.report.function.sys.IsEmptyDataExpression"/>
-    Sorry, there is no data given.
-    <html:div style="font-face: serif">
-      <attribute name="test">Test</attribute>
-      <html:a href="/error.jsp">Go ask your administrator!</html:a>
+  <html:span>
+    And I'm an inline element
+    <html:div style="display-model:block; display-role:inline">
+      <html:div>
+        And I'm a inline block element.
+      </html:div>
+      <html:div>
+        All content in here is layouted as block content.
+      </html:div>
     </html:div>
-  </section>
+    And this is still inline..
+  </html:span>
 
-  <group>
-    <grouping-expression>
-      <property name="field[0]">group_arg_1</property>
-    </grouping-expression>
-    <display-condition class="org.jfree.report.function.sys.IsNotEmptyDataExpression"/>
-    <operation-before operation="mark"/>
-
-    This is a group. The text following the open group tag is placed into the
-    group header.
-
-    <group>
-      <!-- this class is also the default value for the class attribute.. -->
-      <grouping-expression class="org.jfree.report.function.sys.GroupByExpression">
-        <property name="field[0]">Continent</property>
-      </grouping-expression>
-
-      A nested group.
-      <content>
-        <value-expression>
-          <property name="field">Country</property>
-        </value-expression>
-      </content>
-
-      <section repeat="true">
-        <operation-before operation="advance"/>
-        Thats the left over from my Itemband.
-        <content>
-          <value-expression>
-            <property name="field">Continent</property>
-          </value-expression>
-        </content>
-        <content>
-          <value-expression>
-            <property name="field">Country</property>
-          </value-expression>
-        </content>
-        <content>
-          <value-expression>
-            <property name="field">Population</property>
-          </value-expression>
-        </content>
-      </section>
-
-      The nested group's footer.
-      <content>
-        <value-expression>
-          <property name="field">Country</property>
-        </value-expression>
-      </content>
-
-    </group>
-
-    <group>
-      <grouping-expression>
-        <property name="field[0]">group_argument_2</property>
-      </grouping-expression>
-      <operation-before operation="recall"/>
-
-      A nested paralell group. Given a clean way to control the cursor
-      (attribute 'cursor="reset"') this allows us to traverse the same
-      data twice.
-      <detail-section>
-        Thats the left over from my Itemband.
-        <content>
-          <value-expression>
-            <property name="field">Continent</property>
-          </value-expression>
-        </content>
-        <content>
-          <value-expression>
-            <property name="field">Population</property>
-          </value-expression>
-        </content>
-      </detail-section>
-      The nested group's footer.
-    </group>
-
-    As usual, all text after the detail section makes up the group footer.
-  </group>
-
-  <page-footer>
-    This is my page footer. JFreeReport will place the content defined here
-    somewhere outside of the normal document flow.
-  </page-footer>
-
-  Everything after the group or detail section is placed into the report footer.
+  <html:span style="float:left">I'm flowing in the wind</html:span>
 
   <html:img src="gorilla.jpg" alt="Gorilla"/>
 </report>

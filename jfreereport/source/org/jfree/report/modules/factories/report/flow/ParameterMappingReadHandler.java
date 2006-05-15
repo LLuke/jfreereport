@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ParameterMappingReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import org.jfree.report.modules.factories.common.AbstractXmlReadHandler;
+import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutControler.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: LayoutControler.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.flow;
 
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.structure.Node;
 
 /**
@@ -57,5 +58,6 @@ public interface LayoutControler
            final Node initialNode);
 
   public LayoutPosition process(ReportTarget target, LayoutPosition pos)
-          throws DataSourceException, ReportDataFactoryException;
+          throws DataSourceException, ReportDataFactoryException,
+          ReportProcessingException;
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StreamingReportProcessor.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: StreamingReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,12 @@ package org.jfree.report.flow.streaming;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
 import org.jfree.layouting.StreamingLayoutProcess;
 import org.jfree.layouting.DefaultStreamingLayoutProcess;
+import org.jfree.layouting.normalizer.NormalizationException;
 import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.SinglePassReportProcessor;
 import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.ResourceKey;
 
@@ -74,14 +76,23 @@ public class StreamingReportProcessor extends SinglePassReportProcessor
   }
 
   protected ReportTarget createReportTarget(final ReportJob job)
+          throws ReportProcessingException
   {
     if (outputProcessor == null)
     {
       throw new IllegalStateException(
               "OutputProcessor is invalid.");
     }
-    final StreamingLayoutProcess layoutProcess =
-            new DefaultStreamingLayoutProcess(outputProcessor);
+    final StreamingLayoutProcess layoutProcess
+            ;
+    try
+    {
+      layoutProcess = new DefaultStreamingLayoutProcess(outputProcessor);
+    }
+    catch (NormalizationException e)
+    {
+      throw new ReportProcessingException("Blah", e);
+    }
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 

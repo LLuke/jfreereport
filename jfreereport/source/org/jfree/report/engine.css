@@ -25,7 +25,7 @@ flow|content-node {
   display: inline;
 }
 
-content-node[isDate=true] {
+flow|content-node[isDate=true] {
   content: format(attr("flow|content", date), date);
 }
 
@@ -47,4 +47,12 @@ flow|content-node[isNumber=true][isInteger=true] {
 
 flow|content-node[isNumber=true][isInteger=true][format] {
   content: format(attr("flow|content", number), number, attr("flow|format",string));
+}
+
+flow|group, flow|report, flow|section, flow|detail-section {
+  display: block;
+}
+
+flow|out-of-order-section {
+  display: none;
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractExpressionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ package org.jfree.report.modules.factories.report.flow;
 import java.beans.IntrospectionException;
 
 import org.jfree.report.function.Expression;
-import org.jfree.report.modules.factories.common.AbstractXmlReadHandler;
-import org.jfree.report.modules.factories.common.ParseException;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.AbstractXmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanUtility;
 import org.jfree.util.ObjectUtilities;

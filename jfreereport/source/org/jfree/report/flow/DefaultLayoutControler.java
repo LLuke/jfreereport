@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutControler.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: DefaultLayoutControler.java,v 1.3 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.DataFlags;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.data.DefaultDataFlags;
 import org.jfree.report.function.Expression;
 import org.jfree.report.structure.ContentElement;
@@ -66,7 +67,8 @@ public class DefaultLayoutControler implements LayoutControler
 
   public LayoutPosition process(final ReportTarget processor,
                                 final LayoutPosition position)
-          throws DataSourceException, ReportDataFactoryException
+          throws DataSourceException, ReportDataFactoryException,
+          ReportProcessingException
   {
     final DefaultLayoutPosition pos = (DefaultLayoutPosition) position;
     final Node n = pos.getNode();
@@ -93,8 +95,9 @@ public class DefaultLayoutControler implements LayoutControler
   }
 
   private DefaultLayoutPosition endElement(final DefaultLayoutPosition pos, final Element e,
-                                    final ReportTarget processor) throws
-          DataSourceException
+                                    final ReportTarget processor)
+          throws
+          DataSourceException, ReportProcessingException
   {
     // Step 1: call End Element
     FlowControler fc = pos.getFlowControler();
@@ -129,7 +132,8 @@ public class DefaultLayoutControler implements LayoutControler
   private DefaultLayoutPosition startElement(final DefaultLayoutPosition pos,
                                       final Element e,
                                       final ReportTarget processor)
-          throws ReportDataFactoryException, DataSourceException
+          throws ReportDataFactoryException, DataSourceException,
+          ReportProcessingException
   {
     // Step 1: Activate the enable expression ...
     FlowControler fc = pos.getFlowControler();
@@ -182,7 +186,7 @@ public class DefaultLayoutControler implements LayoutControler
           (final DefaultLayoutPosition pos,
            final FlowControler fc,
            final ReportTarget processor)
-          throws DataSourceException
+          throws DataSourceException, ReportProcessingException
   {
     final LayoutExpressionRuntime er = pos.getExpressionRuntime(fc);
     final ContentElement node = (ContentElement) pos.getNode();

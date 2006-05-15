@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportTarget.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: ReportTarget.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.report.flow;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
@@ -58,24 +59,24 @@ import org.jfree.report.structure.Node;
 public interface ReportTarget
 {
   void processNode (Node node, ExpressionRuntime runtime)
-          throws DataSourceException;
+          throws DataSourceException, ReportProcessingException;
 
   void processContentElement (ContentElement node,
                               DataFlags value,
                               ExpressionRuntime runtime)
-          throws DataSourceException;
+          throws DataSourceException, ReportProcessingException;
 
   void startElement (Element node, ExpressionRuntime runtime)
-          throws DataSourceException;
+          throws DataSourceException, ReportProcessingException;
 
   void endElement (Element node, ExpressionRuntime runtime)
-          throws DataSourceException;
+          throws DataSourceException, ReportProcessingException;
 
   void startReport (JFreeReport report)
-          throws DataSourceException;
+          throws DataSourceException, ReportProcessingException;
 
   void endReport (JFreeReport report)
-          throws DataSourceException;
+          throws DataSourceException, ReportProcessingException;
 
   ReportJob getReportJob ();
 }

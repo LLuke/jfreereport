@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GroupReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Group;
 import org.xml.sax.Attributes;

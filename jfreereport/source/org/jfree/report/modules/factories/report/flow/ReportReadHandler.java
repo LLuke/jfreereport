@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: ReportReadHandler.java,v 1.2 2006/05/06 12:59:25 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.factories.common.PropertiesReadHandler;
-import org.jfree.report.modules.factories.common.StringReadHandler;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.PropertiesReadHandler;
+import org.jfree.xmlns.parser.StringReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.structure.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: JFreeReportXmlResourceFactory.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,14 @@
 package org.jfree.report.modules.factories.report.base;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.factories.common.AbstractXmlResourceFactory;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.xmlns.parser.AbstractXmlResourceFactory;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 08.04.2006, 14:27:36
@@ -63,6 +65,11 @@ public class JFreeReportXmlResourceFactory extends AbstractXmlResourceFactory
   {
     return JFreeReport.class;
   }
+  protected Configuration getConfiguration ()
+  {
+    return JFreeReportBoot.getInstance().getGlobalConfig();
+  }
+
 
   protected Object finishResult(final Object res,
                                 final ResourceManager manager,

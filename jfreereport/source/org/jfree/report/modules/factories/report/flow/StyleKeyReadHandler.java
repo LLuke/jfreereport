@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleKeyReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
-import org.jfree.report.modules.factories.common.StringReadHandler;
+import org.jfree.xmlns.parser.StringReadHandler;
 
 /**
  * Creation-Date: 09.04.2006, 13:48:17

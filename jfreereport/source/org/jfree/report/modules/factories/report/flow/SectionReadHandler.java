@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SectionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: SectionReadHandler.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -43,12 +43,11 @@ package org.jfree.report.modules.factories.report.flow;
 import java.util.ArrayList;
 
 import org.jfree.report.JFreeReportInfo;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 import org.jfree.report.structure.Section;
 import org.jfree.report.structure.StaticText;
-import org.jfree.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

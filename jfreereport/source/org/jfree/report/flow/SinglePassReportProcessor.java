@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SinglePassReportProcessor.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: SinglePassReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.report.flow;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 
 /**
  * The abstract report processor implements a single-pass report processing
@@ -64,7 +65,8 @@ public abstract class SinglePassReportProcessor implements ReportProcessor
     return new DefaultFlowControler(job);
   }
 
-  protected abstract ReportTarget createReportTarget (ReportJob job);
+  protected abstract ReportTarget createReportTarget (ReportJob job)
+          throws ReportProcessingException;
 
   /**
    * Bootstraps the local report processing. This way of executing the report
@@ -74,8 +76,9 @@ public abstract class SinglePassReportProcessor implements ReportProcessor
    * @param job
    * @throws ReportDataFactoryException
    */
-  public void processReport (ReportJob job) throws ReportDataFactoryException,
-          DataSourceException
+  public void processReport (ReportJob job)
+          throws ReportDataFactoryException,
+          DataSourceException, ReportProcessingException
   {
     // set up the scene
     final LayoutControler layoutControler = new DefaultLayoutControler();

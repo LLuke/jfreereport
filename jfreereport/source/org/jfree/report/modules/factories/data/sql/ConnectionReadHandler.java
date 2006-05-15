@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ConnectionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.jfree.report.modules.data.sql.DriverConnectionProvider;
-import org.jfree.report.modules.factories.common.AbstractXmlReadHandler;
-import org.jfree.report.modules.factories.common.PropertiesReadHandler;
-import org.jfree.report.modules.factories.common.StringReadHandler;
-import org.jfree.report.modules.factories.common.XmlReadHandler;
+import org.jfree.xmlns.parser.AbstractXmlReadHandler;
+import org.jfree.xmlns.parser.PropertiesReadHandler;
+import org.jfree.xmlns.parser.StringReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

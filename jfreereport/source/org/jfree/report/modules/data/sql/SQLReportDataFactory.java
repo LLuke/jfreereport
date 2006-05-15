@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SQLReportDataFactory.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,7 @@ public class SQLReportDataFactory extends SimpleSQLReportDataFactory
     {
       throw new ReportDataFactoryException("Query '" + query + "' is not recognized.");
     }
-    return super.queryData(query, parameters);
+    return super.queryData(realQuery, parameters);
   }
 
   public String getQuery(String name)

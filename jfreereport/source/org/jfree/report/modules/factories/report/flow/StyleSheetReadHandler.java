@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleSheetReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.layouting.input.style.StyleSheet;
-import org.jfree.report.modules.factories.common.StringReadHandler;
+import org.jfree.xmlns.parser.StringReadHandler;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKey;
