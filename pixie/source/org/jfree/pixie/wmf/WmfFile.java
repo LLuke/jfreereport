@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: WmfFile.java,v 1.8 2006/04/17 15:03:24 taqua Exp $
+ * $Id: WmfFile.java,v 1.9 2006/05/06 13:03:43 taqua Exp $
  *
  * Changes
  * -------
@@ -342,9 +342,9 @@ public class WmfFile implements Drawable
   public static void main (final String[] args)
           throws Exception
   {
-    final WmfFile wmf = new WmfFile("./head/pixie/res/test.wmf", 800, 600);
+    final WmfFile wmf = new WmfFile("./head/pixie/res/a0.wmf", 800, 600);
     wmf.replay();
-    System.out.println(wmf.imageWidth + ", " + wmf.imageHeight);
+    // System.out.println(wmf.imageWidth + ", " + wmf.imageHeight);
   }
 
   public MfDcState getCurrentState ()
@@ -365,27 +365,38 @@ public class WmfFile implements Drawable
     return dcStack.size();
   }
 
-  // Pops a state out
-  public void restoreDCState (final int state)
+  /**
+   * Restores a state. The stateCount specifies the number of states to discard
+   * to find the correct one.
+   *
+   * @param stateCount the state count.
+   */
+  public void restoreDCState (final int stateCount)
   {
-    if ((state > 0) == false)
+    if ((stateCount > 0) == false)
     {
       throw new IllegalArgumentException();
     }
 
-    if (dcStack.size() > 1 + state)
-    {
-      for (int i = 0; i < state; i++)
-      {
-        dcStack.pop();
-      }
+//    if (dcStack.size() > (1 + stateCount))
+//    {
+//      for (int i = 0; i < stateCount; i++)
+//      {
+//        dcStack.pop();
+//      }
+//
+//      System.out.println ("Removed " + stateCount + " states");
+//      getCurrentState().restoredState();
+//    }
+//    else
+//    {
+//      throw new IllegalStateException("State: " + stateCount + " is invalid: " + dcStack.size());
+//    }
 
-      getCurrentState().restoredState();
-    }
-    else
-    {
-      throw new EmptyStackException();
-    }
+    // this is contrary to Caolans description of the WMF file format, but
+    // Batik also ignores the stateCount parameter.
+    dcStack.pop();
+    getCurrentState().restoredState();
   }
 
   /**
@@ -509,5 +520,24 @@ public class WmfFile implements Drawable
     }
     resetStates();
 
+  }
+
+  public String toString ()
+  {
+    StringBuffer bo = new StringBuffer();
+    bo.append("WmfFile={width=");
+    bo.append(imageWidth);
+    bo.append(", height=");
+    bo.append(imageHeight);
+    bo.append(", recordCount=");
+    bo.append(records.size());
+    bo.append(", records={\n");
+    for (int i = 0; i < records.size(); i++)
+    {
+      MfCmd cmd = (MfCmd) records.get(i);
+      bo.append(i + "," + cmd.toString() + "\n");
+    }
+    bo.append("}\n");
+    return bo.toString();
   }
 }

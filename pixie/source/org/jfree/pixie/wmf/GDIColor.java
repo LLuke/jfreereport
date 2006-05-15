@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GDIColor.java,v 1.5 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the red channel.
    */
-  private static final int getR (final int ref)
+  private static int getR (final int ref)
   {
     int retval = (ref & 0x000000ff);
     if (retval < 0)
@@ -105,7 +105,7 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the green channel.
    */
-  private static final int getG (final int ref)
+  private static int getG (final int ref)
   {
     final int retval = (ref & 0x0000ff00) >> 8;
     return retval;
@@ -117,7 +117,7 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the blue channel.
    */
-  private static final int getB (final int ref)
+  private static int getB (final int ref)
   {
     final int retval = (ref & 0x00ff0000) >> 16;
     return retval;
@@ -129,7 +129,7 @@ public class GDIColor extends Color
    * @param ref the color reference.
    * @return the color flags.
    */
-  private static final int getFlags (final int ref)
+  private static int getFlags (final int ref)
   {
     return (ref & 0xff000000) >> 24;
   }

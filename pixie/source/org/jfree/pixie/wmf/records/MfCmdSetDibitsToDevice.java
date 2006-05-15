@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MfCmdSetDibitsToDevice.java,v 1.6 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -97,7 +97,7 @@ public class MfCmdSetDibitsToDevice extends MfCmd
    */
   public void setRecord (final MfRecord record)
   {
-    System.out.println("SetDibitsToDevice is not implemented.");
+    // System.out.println("SetDibitsToDevice is not implemented.");
 
   }
 

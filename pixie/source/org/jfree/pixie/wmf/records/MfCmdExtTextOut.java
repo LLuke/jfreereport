@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MfCmdExtTextOut.java,v 1.6 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.BasicStroke;
 
 import org.jfree.pixie.wmf.BrushConstants;
 import org.jfree.pixie.wmf.MfDcState;
@@ -138,23 +139,29 @@ public class MfCmdExtTextOut extends MfCmd
       graphics.fill(background);
       graphics.setColor(state.getTextColor());
     }
-    graphics.drawString(text, x, y);
-    state.postDrawText();
+    // System.out.println("X: " + x + " Y: " + p.y + " " + calcDeltaY(state.getHorizontalTextAlignment(), metrics));
+
+    Graphics2D g2 = (Graphics2D) graphics.create();
+    g2.drawString(text, x, y);
 
     if (lFont.isUnderline())
     {	// Underline.
       y += metrics.getDescent() / 8 + 1;
-      state.prepareDraw();
-      graphics.drawLine(x, y, x + textWidth, y);
-      state.postDraw();
+      //state.prepareDraw();
+      g2.setStroke(new BasicStroke(metrics.getHeight() / 14));
+      g2.drawLine(x, y, x + textWidth, y);
+      //state.postDraw();
     }
     if (lFont.isStrikeOut())
     {	// Underline.
-      state.prepareDraw();
-      y -= metrics.getDescent() / 2 + 1;
-      graphics.drawLine(x, y, x + textWidth, y);
-      state.postDraw();
+      //state.prepareDraw();
+      y -= metrics.getAscent() / 2.5 + 1;
+      g2.setStroke(new BasicStroke(metrics.getHeight() / 14));
+      g2.drawLine(x, y, x + textWidth, y);
+      //state.postDraw();
     }
+
+    state.postDrawText();
   }
 
   protected int calcDeltaX (final int valign, final int textWidth)
@@ -177,7 +184,7 @@ public class MfCmdExtTextOut extends MfCmd
   {
     if (halign == TextConstants.TA_TOP)
     {
-      return (fm.getAscent() * -1);
+      return (fm.getAscent());
     }
     else if (halign == TextConstants.TA_BOTTOM)
     {

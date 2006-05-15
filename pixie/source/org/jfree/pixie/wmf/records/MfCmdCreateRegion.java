@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MfCmdCreateRegion.java,v 1.5 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -139,7 +139,7 @@ public class MfCmdCreateRegion extends MfCmd
 
   public void setRecord (final MfRecord record)
   {
-    System.out.println("Create Region is not implemented.");
+    // System.out.println("Create Region is not implemented.");
 
   }
 

@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MfCmdStretchBlt.java,v 1.7 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class MfCmdStretchBlt extends MfCmd
    */
   public void setRecord (final MfRecord record)
   {
-    System.out.println("Old StretchBlt is not yet implemented.");
+    // System.out.println("Old StretchBlt is not yet implemented.");
   }
 
   public String toString ()

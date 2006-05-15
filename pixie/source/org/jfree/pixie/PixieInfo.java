@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PixieInfo.java,v 1.4 2006/04/17 15:16:25 taqua Exp $
+ * $Id: PixieInfo.java,v 1.5 2006/05/06 13:03:43 taqua Exp $
  *
  * Changes
  * -------
@@ -73,7 +73,7 @@ public class PixieInfo extends ProjectInfo
   public PixieInfo ()
   {
     setName("Pixie");
-    setVersion("0.8.5");
+    setVersion("0.8.5-cvs");
     setInfo("http://www.jfree.org/jfreereport/pixie/");
     setCopyright ("(C)opyright 2000-2006, by Pentaho Corporation, Object Refinery Limited and Contributors");
 

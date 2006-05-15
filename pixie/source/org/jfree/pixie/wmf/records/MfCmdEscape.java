@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MfCmdEscape.java,v 1.7 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public class MfCmdEscape extends MfCmd
    */
   public void setRecord (final MfRecord record)
   {
-    System.out.println("Escape is not implemented.");
+    // System.out.println("Escape is not implemented.");
   }
 
   /**

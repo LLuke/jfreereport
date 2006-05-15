@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MfCmdCreateFont.java,v 1.6 2006/04/17 15:03:24 taqua Exp $
  *
  * Changes
  * -------
@@ -188,14 +188,14 @@ public class MfCmdCreateFont extends MfCmd
     final int escape = record.getParam(POS_ESCAPEMENT);
     final int orientation = record.getParam(POS_ORIENTATION);
     final int weight = record.getParam(POS_WEIGHT);
-    final int italic = record.getParam(POS_FLAGS1) & 0xFF00;
-    final int underline = record.getParam(POS_FLAGS1) & 0x00FF;
-    final int strikeout = record.getParam(POS_FLAGS2) & 0xFF00;
-    final int charset = record.getParam(POS_FLAGS2) & 0x00FF;
-    final int outprec = record.getParam(POS_PRECISION) & 0xFF00;
-    final int clipprec = record.getParam(POS_PRECISION) & 0x00FF;
-    final int quality = record.getParam(POS_QUALITY) & 0xFF00;
-    final int pitch = record.getParam(POS_QUALITY) & 0x00FF;
+    final int italic = record.getParam(POS_FLAGS1) & 0x00FF;
+    final int underline = record.getParam(POS_FLAGS1) & 0xFF00;
+    final int strikeout = record.getParam(POS_FLAGS2) & 0x00FF;
+    final int charset = record.getParam(POS_FLAGS2) & 0xFF00;
+    final int outprec = record.getParam(POS_PRECISION) & 0x00FF;
+    final int clipprec = record.getParam(POS_PRECISION) & 0xFF00;
+    final int quality = record.getParam(POS_QUALITY) & 0x00FF;
+    final int pitch = record.getParam(POS_QUALITY) & 0xFF00;
     // A fontname must not exceed the length of 32 including the null-terminator
     final String facename = record.getStringParam(POS_FONTFACE, 32);
 
