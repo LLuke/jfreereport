@@ -1,0 +1,174 @@
+<!-- An ANT build file for libfonts. -->
+
+<!-- Written by David Gilbert and modified for libFonts by Thomas Morgner. -->
+<!-- 09-Nov-2005 -->
+
+<!-- This script has been tested with Ant version 1.6.2. -->
+
+<!-- Several temporary directories are created while the script is -->
+<!-- running: "../build" and "../distribution".  -->
+
+<!-- A "../javadoc" directory will be created for the Javadoc -->
+<!-- HTML pages. -->
+
+<!-- The script should work for the distribution and also the CVS -->
+<!-- repository. -->
+
+<project name="liblayout" default="all" basedir="..">
+
+  <import file="build-lib.xml"/>
+
+
+  <!-- Initialisation. -->
+  <target name="initialise" description="Initialise required settings.">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="${antfile.dir}/build.properties"/>
+
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+    <fail unless="lib.jcommon.present"/>
+
+    <isClassAndFileAvailable class-name="org.jfree.fonts.LibFontInfo"
+                             property-name="lib.libfonts.present"
+                             file-name="${libdir}/${libfonts-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.libfonts.present"/>
+
+    <isClassAndFileAvailable class-name="org.jfree.resourceloader.LibLoaderInfo"
+                             property-name="lib.libloader.present"
+                             file-name="${libdir}/${libloader-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.libloader.present"/>
+
+    <isClassAndFileAvailable class-name="org.w3c.css.sac.Parser"
+                             property-name="lib.sac.present"
+                             file-name="${libdir}/${sac-jar-file}"/>
+    <fail unless="lib.sac.present"/>
+
+    <isClassAndFileAvailable class-name="org.w3c.flute.parser.Parser"
+                             property-name="lib.flute.present"
+                             file-name="${libdir}/${flute-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.flute.present"/>
+
+  </target>
+
+  <!-- Compile the libfonts classes -->
+  <target name="compile" depends="initialise"
+    description="Compile the libFonts source code.">
+
+    <build-all target-jar="${liblayout-jar-file}" source-dir="source">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+        <include name="**/*.properties"/>
+        <include name="*.css"/>
+        <include name="**/*.css"/>
+      </all-resources>
+    </build-all>
+  </target>
+
+  <!-- Generate the libfonts JavaDoc HTML pages -->
+  <target name="javadoc" depends="initialise">
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="LibLayout Class Library (version ${liblayout.version})"
+      overview="source/overview.html"
+      linksource="true">
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+      </classpath>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/layouting"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+      tofile="distribution/README.txt"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="distribution/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${liblayout-jar-file}"
+      tofile="distribution/${liblayout-jar-file}"/>
+
+  	<!-- copy across maven xml files -->
+  	<copy file="maven-liblayout-project.xml"
+  		tofile="distribution/maven-liblayout-project.xml"/>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+      tofile="distribution/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+      tofile="distribution/ant/build-lib.xml"/>
+
+    <copy file="ant/build.properties"
+      tofile="distribution/ant/build.properties"/>
+
+  </target>
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+    <make-zip lib.version="${liblayout.version}" lib.name="${liblayout.name}"/>
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+    <make-targz lib.version="${liblayout.version}" lib.name="${liblayout.name}"/>
+  </target>
+
+  <target name="maven-bundle" depends="compile" >
+    <make-maven-bundle lib.version="${liblayout.version}"
+                       lib.name="${liblayout.name}"
+                       lib.file="${liblayout-jar-file}"
+                       target="${liblayout-bundle-file}"/>
+  </target>
+
+
+  <!-- ALL -->
+  <target name="all"
+    depends="compile,javadoc,zip,targz,maven-bundle"
+    description="Compiles Libfonts, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+  </target>
+
+</project>
