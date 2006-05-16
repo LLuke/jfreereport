@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ZipResourceData.java,v 1.1.1.1 2006/04/17 16:48:33 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.util.zip.ZipInputStream;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceData;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.loader.AbstractResourceData;
 import org.jfree.resourceloader.loader.LoaderUtils;
 
@@ -69,11 +70,13 @@ public class ZipResourceData extends AbstractResourceData
     this.key = key;
   }
 
-  public InputStream getResourceAsStream() throws ResourceLoadingException
+  public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     // again, this is going to hurt the performance.
-    final ResourceData data = key.getZipFile();
-    final ZipInputStream zin = new ZipInputStream(data.getResourceAsStream());
+    final ResourceKey parentKey = key.getZipFile();
+    final ResourceData data = caller.load(parentKey);
+
+    final ZipInputStream zin = new ZipInputStream(data.getResourceAsStream(caller));
     try
     {
       ZipEntry zipEntry = zin.getNextEntry();
@@ -112,9 +115,11 @@ public class ZipResourceData extends AbstractResourceData
     return key;
   }
 
-  public long getVersion()
+  public long getVersion(ResourceManager caller)
+          throws ResourceLoadingException
   {
-    final ResourceData data = key.getZipFile();
-    return data.getVersion();
+    final ResourceKey parentKey = key.getZipFile();
+    final ResourceData data = caller.load(parentKey);
+    return data.getVersion(caller);
   }
 }

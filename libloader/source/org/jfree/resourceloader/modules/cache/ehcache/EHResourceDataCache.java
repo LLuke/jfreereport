@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EHResourceDataCache.java,v 1.1.1.1 2006/04/17 16:48:43 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.cache.CachingResourceData;
 import org.jfree.resourceloader.cache.DefaultResourceDataCacheEntry;
 import org.jfree.resourceloader.cache.ResourceDataCache;
@@ -101,7 +103,7 @@ public class EHResourceDataCache implements ResourceDataCache
    * @return the resource data object, possibly wrapped by a cache-specific
    *         implementation.
    */
-  public ResourceData put(ResourceData data)
+  public ResourceData put(ResourceManager caller, ResourceData data) throws ResourceLoadingException
   {
     final String ext = data.getKey().toExternalForm();
     final CachingResourceData cdata = new CachingResourceData(data);
@@ -109,7 +111,7 @@ public class EHResourceDataCache implements ResourceDataCache
     {
       return cdata;
     }
-    dataCache.put(new Element(ext, new DefaultResourceDataCacheEntry(cdata)));
+    dataCache.put(new Element(ext, new DefaultResourceDataCacheEntry(cdata, caller)));
     return cdata;
   }
 

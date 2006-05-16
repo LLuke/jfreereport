@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractFactoryModule.java,v 1.1.1.1 2006/04/17 16:48:40 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.io.InputStream;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceCreationException;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 05.04.2006, 17:44:42
@@ -64,12 +65,13 @@ public abstract class AbstractFactoryModule implements FactoryModule
 
   protected abstract String[] getFileExtensions();
 
-  public int canHandleResource(ResourceData data)
+  public int canHandleResource(final ResourceManager caller,
+                               final ResourceData data)
           throws ResourceCreationException, ResourceLoadingException
   {
     try
     {
-      if (canHandleResourceByContent(data.getResourceAsStream()))
+      if (canHandleResourceByContent(data.getResourceAsStream(caller)))
       {
         return RECOGNIZED_FINGERPRINT;
       }

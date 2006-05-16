@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ClassloaderResourceLoader.java,v 1.1.1.1 2006/04/17 16:48:31 taqua Exp $
+ * $Id: ClassloaderResourceLoader.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,10 @@
  */
 package org.jfree.resourceloader.loader.resource;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jfree.resourceloader.AbstractResourceKey;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
@@ -76,8 +80,9 @@ public class ClassloaderResourceLoader implements ResourceLoader
     return "res";
   }
 
-  public boolean isSupportedKeyValue(Object value)
+  public boolean isSupportedKeyValue(Map values)
   {
+    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     if (value instanceof String)
     {
       String valueString = (String) value;
@@ -89,20 +94,21 @@ public class ClassloaderResourceLoader implements ResourceLoader
     return false;
   }
 
-  public ResourceKey createKey(Object value) throws ResourceKeyCreationException
+  public ResourceKey createKey(Map values) throws ResourceKeyCreationException
   {
+    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     if (value instanceof String)
     {
       String valueString = (String) value;
       if (valueString.startsWith("res://"))
       {
-        return new ClassloaderResourceKey(valueString);
+        return new ClassloaderResourceKey(values);
       }
     }
     throw new ResourceKeyCreationException("Unable to create the resource key");
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Object data)
+  public ResourceKey deriveKey(ResourceKey parent, Map values)
           throws ResourceKeyCreationException
   {
     if (parent instanceof ClassloaderResourceKey == false)
@@ -112,23 +118,31 @@ public class ClassloaderResourceLoader implements ResourceLoader
     }
     final ClassloaderResourceKey resourceKey = (ClassloaderResourceKey) parent;
     final String parentResourceKey = resourceKey.getResource();
+    final Object data = values.get(AbstractResourceKey.CONTENT_KEY);
     if (data instanceof String == false)
     {
       throw new ResourceKeyCreationException
               ("Additional parameter format is not recognized.");
     }
+
     final String childResource = (String) data;
+    final String resource;
     if (childResource.startsWith("res://"))
     {
-      return new ClassloaderResourceKey(childResource);
+      resource = childResource;
     }
-    if (childResource.startsWith("/"))
+    else if (childResource.startsWith("/"))
     {
-      return new ClassloaderResourceKey("res:/" + childResource);
+      resource = "res:/" + childResource;
     }
-
-    return new ClassloaderResourceKey
-            (LoaderUtils.mergePaths(parentResourceKey, childResource));
+    else
+    {
+      resource = LoaderUtils.mergePaths(parentResourceKey, childResource);
+    }
+    final Map derivedValues = new HashMap (parent.getParameters());
+    derivedValues.putAll(values);
+    derivedValues.put(AbstractResourceKey.CONTENT_KEY, resource);
+    return new ClassloaderResourceKey(derivedValues);
   }
 
 

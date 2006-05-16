@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CachingResourceData.java,v 1.1.1.1 2006/04/17 16:48:44 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.util.HashMap;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * A very simple implementation which is suitable for smaller objects. The
@@ -72,17 +73,17 @@ public class CachingResourceData implements ResourceData, Serializable
     this.data = data;
   }
 
-  public InputStream getResourceAsStream() throws ResourceLoadingException
+  public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
-    final byte[] data = getResource();
+    final byte[] data = getResource(caller);
     return new ByteArrayInputStream(data);
   }
 
-  public synchronized byte[] getResource() throws ResourceLoadingException
+  public synchronized byte[] getResource(ResourceManager caller) throws ResourceLoadingException
   {
     if (rawData == null)
     {
-      rawData = data.getResource();
+      rawData = data.getResource(caller);
     }
     return rawData;
   }
@@ -115,8 +116,9 @@ public class CachingResourceData implements ResourceData, Serializable
     return data.getKey();
   }
 
-  public long getVersion()
+  public long getVersion(ResourceManager caller)
+          throws ResourceLoadingException
   {
-    return data.getVersion();
+    return data.getVersion(caller);
   }
 }

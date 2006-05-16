@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResourceLoader.java,v 1.1.1.1 2006/04/17 16:48:27 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.resourceloader;
+
+import java.util.Map;
 
 /**
  * A resource loader knows how to get binary rawdata from a location specified
@@ -49,10 +51,10 @@ package org.jfree.resourceloader;
 public interface ResourceLoader
 {
   public String getSchema();
-  public boolean isSupportedKeyValue (Object value);
+  public boolean isSupportedKeyValue (Map values);
 
-  public ResourceKey createKey (Object value) throws ResourceKeyCreationException;
-  public ResourceKey deriveKey (ResourceKey parent, Object data) throws ResourceKeyCreationException;
+  public ResourceKey createKey (Map values) throws ResourceKeyCreationException;
+  public ResourceKey deriveKey (ResourceKey parent, Map data) throws ResourceKeyCreationException;
 
   public ResourceData load (ResourceKey key) throws ResourceLoadingException;
 

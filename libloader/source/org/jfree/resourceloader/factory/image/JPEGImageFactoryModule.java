@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: JPEGImageFactoryModule.java,v 1.1.1.1 2006/04/17 16:48:40 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.SimpleResource;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 05.04.2006, 17:35:12
@@ -130,12 +131,14 @@ public class JPEGImageFactoryModule extends AbstractFactoryModule
     return JPEGImageFactoryModule.FILEEXTENSIONS;
   }
 
-  public Resource create(ResourceData data, ResourceKey context)
+  public Resource create(final ResourceManager caller,
+                         final ResourceData data,
+                         final ResourceKey context)
           throws ResourceLoadingException
   {
-    final long version = data.getVersion();
+    final long version = data.getVersion(caller);
     final Image image =
-            Toolkit.getDefaultToolkit().createImage(data.getResource());
+            Toolkit.getDefaultToolkit().createImage(data.getResource(caller));
     return new SimpleResource (data.getKey(), image, version);
   }
 }

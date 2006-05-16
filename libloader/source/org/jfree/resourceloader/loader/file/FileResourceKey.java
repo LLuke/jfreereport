@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FileResourceKey.java,v 1.1.1.1 2006/04/17 16:48:32 taqua Exp $
  *
  * Changes
  * -------
@@ -42,25 +42,29 @@ package org.jfree.resourceloader.loader.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.net.URL;
 
-import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.AbstractResourceKey;
 
 /**
  * Creation-Date: 05.04.2006, 14:27:31
  *
  * @author Thomas Morgner
  */
-public class FileResourceKey implements ResourceKey
+public class FileResourceKey extends AbstractResourceKey
 {
-  private File file;
+  private transient File file;
 
-  public FileResourceKey(final File file)
+  public FileResourceKey(final Map parameters)
   {
-    if (file == null)
+    super(parameters);
+    Object maybeFile = parameters.get(AbstractResourceKey.CONTENT_KEY);
+    if (maybeFile instanceof File == false)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("File is not valid.");
     }
-    this.file = file;
+    this.file = (File) maybeFile;
   }
 
   /**
@@ -80,31 +84,6 @@ public class FileResourceKey implements ResourceKey
     return file;
   }
 
-  public boolean equals(final Object o)
-  {
-    if (this == o)
-    {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass())
-    {
-      return false;
-    }
-
-    final FileResourceKey that = (FileResourceKey) o;
-    if (!file.equals(that.file))
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    return file.hashCode();
-  }
-
   /**
    * Creates a unique identifier for this key.
    * <p/>
@@ -117,11 +96,11 @@ public class FileResourceKey implements ResourceKey
   {
     try
     {
-      return file.getCanonicalPath();
+      return getFile().getCanonicalPath();
     }
     catch (IOException e)
     {
-      return file.getAbsolutePath();
+      return getFile().getAbsolutePath();
     }
   }
 

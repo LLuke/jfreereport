@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RawResourceKey.java,v 1.1.1.1 2006/04/17 16:48:39 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,9 @@
 package org.jfree.resourceloader.loader.raw;
 
 import java.util.Arrays;
+import java.util.Map;
 
-import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.AbstractResourceKey;
 
 /**
  * This is a resource key, which already caries all the data as byte[]. It is
@@ -51,17 +52,14 @@ import org.jfree.resourceloader.ResourceKey;
  *
  * @author Thomas Morgner
  */
-public class RawResourceKey implements ResourceKey
+public class RawResourceKey extends AbstractResourceKey
 {
-  private byte[] data;
+  private transient byte[] data;
 
-  public RawResourceKey(final byte[] data)
+  public RawResourceKey(final Map values)
   {
-    if (data == null)
-    {
-      throw new NullPointerException();
-    }
-    this.data = data;
+    super(values);
+    this.data = (byte[]) getLoaderParameter(AbstractResourceKey.CONTENT_KEY);
   }
 
   /**
@@ -78,6 +76,10 @@ public class RawResourceKey implements ResourceKey
 
   public byte[] getData()
   {
+    if (data == null)
+    {
+      data = (byte[]) getLoaderParameter(AbstractResourceKey.CONTENT_KEY);
+    }
     return (byte[]) data.clone();
   }
 
@@ -93,28 +95,11 @@ public class RawResourceKey implements ResourceKey
     }
 
     final RawResourceKey that = (RawResourceKey) o;
-    return Arrays.equals(data, that.data);
-  }
-
-  public int hashCode()
-  {
-    return hashCode(data);
-  }
-
-  public static int hashCode(byte a[])
-  {
-    if (a == null)
+    if (super.equals(o) == false)
     {
-      return 0;
+      return false;
     }
-
-    int result = 1;
-    for (int i = 0; i < a.length; i++)
-    {
-      byte element = a[i];
-      result = 29 * result + element;
-    }
-    return result;
+    return Arrays.equals(getData(), that.getData());
   }
 
   /**
@@ -127,7 +112,7 @@ public class RawResourceKey implements ResourceKey
    */
   public String toExternalForm()
   {
-    final StringBuffer b = new StringBuffer ();
+    final StringBuffer b = new StringBuffer();
     b.append(data.length);
     b.append(":");
     for (int i = 0; i < data.length; i += 2)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResourceDataCache.java,v 1.1.1.1 2006/04/17 16:48:43 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ package org.jfree.resourceloader.cache;
 
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceData;
+import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 06.04.2006, 09:30:28
@@ -65,7 +67,7 @@ public interface ResourceDataCache
    * @return the resource data object, possibly wrapped by a cache-specific
    * implementation.
    */
-  public ResourceData put (ResourceData data);
+  public ResourceData put (ResourceManager caller, ResourceData data) throws ResourceLoadingException;
 
   public void remove (ResourceData data);
 

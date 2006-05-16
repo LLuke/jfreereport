@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RawResourceLoader.java,v 1.1.1.1 2006/04/17 16:48:39 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,15 @@
  */
 package org.jfree.resourceloader.loader.raw;
 
+import java.util.Map;
+
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoader;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.AbstractResourceKey;
 
 /**
  * Creation-Date: 12.04.2006, 15:19:03
@@ -65,21 +68,23 @@ public class RawResourceLoader implements ResourceLoader
     return "raw:bytes";
   }
 
-  public boolean isSupportedKeyValue(Object value)
+  public boolean isSupportedKeyValue(Map values)
   {
+    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     return (value instanceof byte[]);
   }
 
-  public ResourceKey createKey(Object value) throws ResourceKeyCreationException
+  public ResourceKey createKey(Map values) throws ResourceKeyCreationException
   {
+    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     if (value instanceof byte[])
     {
-      return new RawResourceKey((byte[]) value);
+      return new RawResourceKey(values);
     }
     throw new ResourceKeyCreationException("The key data was not recognized.");
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Object data)
+  public ResourceKey deriveKey(ResourceKey parent, Map data)
           throws ResourceKeyCreationException
   {
     // we do not support derived keys ..

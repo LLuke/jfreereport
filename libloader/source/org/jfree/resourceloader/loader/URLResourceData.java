@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: URLResourceData.java,v 1.1.1.1 2006/04/17 16:48:30 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import org.jfree.io.IOUtils;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * A generic read handler for URL resources.
@@ -98,7 +99,7 @@ public class URLResourceData extends AbstractResourceData
     metaDataOK = true;
   }
 
-  public InputStream getResourceAsStream() throws ResourceLoadingException
+  public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     try
     {
@@ -111,11 +112,6 @@ public class URLResourceData extends AbstractResourceData
     {
       throw new ResourceLoadingException("Failed to open URL connection", e);
     }
-  }
-
-  public byte[] getResource() throws ResourceLoadingException
-  {
-    return new byte[0];
   }
 
   public Object getAttribute(String key)
@@ -157,7 +153,8 @@ public class URLResourceData extends AbstractResourceData
     return null;
   }
 
-  public long getVersion()
+  public long getVersion(ResourceManager caller)
+          throws ResourceLoadingException
   {
     try
     {

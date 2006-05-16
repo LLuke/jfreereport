@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractResourceFactory.java,v 1.1.1.1 2006/04/17 16:48:39 taqua Exp $
  *
  * Changes
  * -------
@@ -190,7 +190,7 @@ public abstract class AbstractResourceFactory implements ResourceFactory
     while (factoryModulesIt.hasNext())
     {
       final FactoryModule mod = (FactoryModule) factoryModulesIt.next();
-      int weight = mod.canHandleResource(data);
+      int weight = mod.canHandleResource(manager, data);
       if (weight >= 0)
       {
         sortedEntries.add(new ResourceFactoryEntry(mod, weight));
@@ -203,7 +203,7 @@ public abstract class AbstractResourceFactory implements ResourceFactory
       final ResourceFactoryEntry entry = (ResourceFactoryEntry) it.next();
       try
       {
-        return entry.getModule().create(data, context);
+        return entry.getModule().create(manager, data, context);
       }
       catch(Exception ex)
       {

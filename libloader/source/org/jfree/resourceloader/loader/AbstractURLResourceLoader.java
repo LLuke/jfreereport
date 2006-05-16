@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractURLResourceLoader.java,v 1.1.1.1 2006/04/17 16:48:31 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ package org.jfree.resourceloader.loader;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.jfree.resourceloader.ResourceLoader;
 import org.jfree.resourceloader.ResourceKey;
@@ -49,6 +51,7 @@ import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.AbstractResourceKey;
 
 /**
  * Creation-Date: 05.04.2006, 15:32:36
@@ -73,8 +76,9 @@ public abstract class AbstractURLResourceLoader implements ResourceLoader
     return manager;
   }
 
-  public boolean isSupportedKeyValue(Object value)
+  public boolean isSupportedKeyValue(Map values)
   {
+    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     if (value instanceof URL)
     {
       URL url = (URL) value;
@@ -94,14 +98,15 @@ public abstract class AbstractURLResourceLoader implements ResourceLoader
     return false;
   }
 
-  public ResourceKey createKey(Object value) throws ResourceKeyCreationException
+  public ResourceKey createKey(Map values) throws ResourceKeyCreationException
   {
+    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     if (value instanceof URL)
     {
       URL url = (URL) value;
       if (getSchema().equalsIgnoreCase(url.getProtocol()))
       {
-        return new URLResourceKey(url);
+        return new URLResourceKey(values);
       }
     }
     else if (value instanceof String)
@@ -111,7 +116,10 @@ public abstract class AbstractURLResourceLoader implements ResourceLoader
       {
         try
         {
-          return new URLResourceKey(new URL(valueString));
+          final URL url = new URL(valueString);
+          final Map derivedValues = new HashMap (values);
+          derivedValues.put(AbstractResourceKey.CONTENT_KEY, url);
+          return new URLResourceKey(derivedValues);
         }
         catch (MalformedURLException e)
         {
@@ -123,7 +131,7 @@ public abstract class AbstractURLResourceLoader implements ResourceLoader
             ("HttpResourceLoader: This does not look like a valid http-URL");
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Object data)
+  public ResourceKey deriveKey(ResourceKey parent, Map data)
           throws ResourceKeyCreationException
   {
     if (parent instanceof URLResourceKey == false)
@@ -132,20 +140,26 @@ public abstract class AbstractURLResourceLoader implements ResourceLoader
               ("Parent key format is not recognized.");
     }
     URLResourceKey key = (URLResourceKey) parent;
-    if (data instanceof String)
+    final Object deriveUrl = data.get(AbstractResourceKey.CONTENT_KEY);
+    if (deriveUrl instanceof String == false)
     {
-      try
-      {
-        return new URLResourceKey(new URL (key.getUrl(), (String) data));
-      }
-      catch (MalformedURLException e)
-      {
-        throw new ResourceKeyCreationException
-                ("Unable to create ResourceKey for " + data);
-      }
+      throw new ResourceKeyCreationException
+              ("Additional parameter format is not recognized.");
     }
-    throw new ResourceKeyCreationException
-            ("Additional parameter format is not recognized.");
+
+    try
+    {
+      final URL url = new URL (key.getUrl(), (String) deriveUrl);
+      final Map derivedValues = new HashMap (parent.getParameters());
+      derivedValues.putAll(data);
+      derivedValues.put(AbstractResourceKey.CONTENT_KEY, url);
+      return new URLResourceKey(derivedValues);
+    }
+    catch (MalformedURLException e)
+    {
+      throw new ResourceKeyCreationException
+              ("Unable to create ResourceKey for " + data);
+    }
   }
 
   public ResourceData load(ResourceKey key) throws ResourceLoadingException

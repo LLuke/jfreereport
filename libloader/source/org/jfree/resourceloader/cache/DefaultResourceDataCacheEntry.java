@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultResourceDataCacheEntry.java,v 1.1.1.1 2006/04/17 16:48:43 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
 package org.jfree.resourceloader.cache;
 
 import org.jfree.resourceloader.ResourceData;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ResourceLoadingException;
 
 /**
  * Creation-Date: 06.04.2006, 09:53:37
@@ -52,13 +54,15 @@ public class DefaultResourceDataCacheEntry implements ResourceDataCacheEntry
   private ResourceData data;
   private long version;
 
-  public DefaultResourceDataCacheEntry(final ResourceData data)
+  public DefaultResourceDataCacheEntry(final ResourceData data,
+                                       final ResourceManager manager)
+          throws ResourceLoadingException
   {
     if (data == null)
     {
       throw new NullPointerException();
     }
-    this.version = data.getVersion();
+    this.version = data.getVersion(manager);
     this.data = data;
   }
 

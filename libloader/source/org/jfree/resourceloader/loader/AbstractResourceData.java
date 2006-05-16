@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractResourceData.java,v 1.1.1.1 2006/04/17 16:48:30 taqua Exp $
+ * $Id: AbstractResourceData.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.io.Serializable;
 import org.jfree.io.IOUtils;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 05.04.2006, 15:24:47
@@ -60,11 +61,11 @@ public abstract class AbstractResourceData implements ResourceData, Serializable
   {
   }
 
-  public byte[] getResource() throws ResourceLoadingException
+  public byte[] getResource(ResourceManager caller) throws ResourceLoadingException
   {
     try
     {
-      final InputStream in = getResourceAsStream();
+      final InputStream in = getResourceAsStream(caller);
       if (in == null)
       {
         throw new ResourceLoadingException("Unable to read Stream: No input stream: " + getKey());

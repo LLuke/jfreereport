@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RawResourceData.java,v 1.1.1.1 2006/04/17 16:48:39 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.io.ByteArrayInputStream;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 12.04.2006, 15:06:48
@@ -62,12 +63,12 @@ public class RawResourceData implements ResourceData
     this.rawKey = rawKey;
   }
 
-  public byte[] getResource() throws ResourceLoadingException
+  public byte[] getResource(ResourceManager caller) throws ResourceLoadingException
   {
     return rawKey.getData();
   }
 
-  public InputStream getResourceAsStream() throws ResourceLoadingException
+  public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     return new ByteArrayInputStream (rawKey.getData());
   }
@@ -88,7 +89,8 @@ public class RawResourceData implements ResourceData
     return rawKey;
   }
 
-  public long getVersion()
+  public long getVersion(ResourceManager caller)
+          throws ResourceLoadingException
   {
     return -1;
   }

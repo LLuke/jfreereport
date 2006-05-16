@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResourceKey.java,v 1.1.1.1 2006/04/17 16:48:26 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.resourceloader;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * The key is an unique identifier for the resource. Most of the time,
@@ -55,6 +56,14 @@ import java.io.Serializable;
  */
 public interface ResourceKey extends Serializable
 {
+  public static LoaderParameterKey PARENT_KEY = new LoaderParameterKey("parent");
+  public static LoaderParameterKey CONTENT_KEY = new LoaderParameterKey("content");
+
+  public Object getLoaderParameter (LoaderParameterKey key);
+
+  public Object getFactoryParameter (FactoryParameterKey key);
+  public Map getParameters ();
+
   /**
    *
    * @return true, if the given resource key is equal to this key.
@@ -81,3 +90,4 @@ public interface ResourceKey extends Serializable
    */
   public String toExternalForm();
 }
+

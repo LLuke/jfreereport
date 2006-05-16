@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResourceData.java,v 1.1.1.1 2006/04/17 16:48:27 taqua Exp $
  *
  * Changes
  * -------
@@ -63,9 +63,11 @@ public interface ResourceData
   public static final String CONTENT_TYPE = "content-type";
   public static final String FILENAME = "filename";
 
-  public InputStream getResourceAsStream() throws ResourceLoadingException;
-  public byte[] getResource() throws ResourceLoadingException;
+  public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException;
+  public byte[] getResource(ResourceManager caller) throws ResourceLoadingException;
   public Object getAttribute (String key);
   public ResourceKey getKey();
-  public long getVersion();
+  public long getVersion(ResourceManager caller)
+          throws ResourceLoadingException;
+
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OSResourceDataCache.java,v 1.1.1.1 2006/04/17 16:48:42 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.cache.ResourceDataCache;
 import org.jfree.resourceloader.cache.ResourceDataCacheEntry;
 import org.jfree.resourceloader.cache.CachingResourceData;
@@ -100,7 +102,8 @@ public class OSResourceDataCache implements ResourceDataCache
    * @return the resource data object, possibly wrapped by a cache-specific
    *         implementation.
    */
-  public ResourceData put(ResourceData data)
+  public ResourceData put(ResourceManager caller, ResourceData data)
+          throws ResourceLoadingException
   {
     final String ext = data.getKey().toExternalForm();
     final CachingResourceData cdata = new CachingResourceData(data);
@@ -108,7 +111,7 @@ public class OSResourceDataCache implements ResourceDataCache
     {
       return cdata;
     }
-    dataCache.putInCache(ext, new DefaultResourceDataCacheEntry(cdata));
+    dataCache.putInCache(ext, new DefaultResourceDataCacheEntry(cdata, caller));
     return cdata;
   }
 

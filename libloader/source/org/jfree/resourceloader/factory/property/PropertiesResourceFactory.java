@@ -27,8 +27,8 @@ public class PropertiesResourceFactory
     try
     {
       final Properties properties = new Properties();
-      properties.load(data.getResourceAsStream());
-      return new SimpleResource (data.getKey(), properties, data.getVersion());
+      properties.load(data.getResourceAsStream(manager));
+      return new SimpleResource (data.getKey(), properties, data.getVersion(manager));
     }
     catch (IOException e)
     {

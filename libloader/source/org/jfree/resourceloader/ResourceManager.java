@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceManager.java,v 1.3 2006/05/06 13:03:13 taqua Exp $
+ * $Id: ResourceManager.java,v 1.4 2006/05/15 12:34:08 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.resourceloader;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.jfree.resourceloader.cache.NullResourceDataCache;
 import org.jfree.resourceloader.cache.NullResourceFactoryCache;
@@ -85,6 +86,18 @@ public class ResourceManager
   public synchronized ResourceKey createKey(Object data)
           throws ResourceKeyCreationException
   {
+    if (data instanceof Map)
+    {
+      return createKey((Map) data);
+    }
+    final HashMap map = new HashMap();
+    map.put (AbstractResourceKey.CONTENT_KEY, data);
+    return createKey(map);
+  }
+
+  public synchronized ResourceKey createKey(Map data)
+          throws ResourceKeyCreationException
+  {
     if (data == null)
     {
       throw new NullPointerException("Key data must not be null.");
@@ -106,6 +119,18 @@ public class ResourceManager
   }
 
   public ResourceKey deriveKey(ResourceKey parent, Object data)
+          throws ResourceKeyCreationException
+  {
+    if (data instanceof Map)
+    {
+      return deriveKey(parent, (Map) data);
+    }
+    final HashMap map = new HashMap();
+    map.put (AbstractResourceKey.CONTENT_KEY, data);
+    return deriveKey(parent, map);
+  }
+
+  public ResourceKey deriveKey(ResourceKey parent, Map data)
           throws ResourceKeyCreationException
   {
     if (data == null)
@@ -152,7 +177,7 @@ public class ResourceManager
         // a non versioned entry is always valid. (Maybe this is from a Jar-URL?)
         return data;
       }
-      final long version = data.getVersion();
+      final long version = data.getVersion(this);
       if (version < 0)
       {
         // the system is no longer able to retrieve the version information?
@@ -170,7 +195,7 @@ public class ResourceManager
       }
     }
     final ResourceData data = loader.load(key);
-    return dataCache.put(data);
+    return dataCache.put(this, data);
   }
 
   public Resource createDirectly(Object keyValue, Class target)
@@ -195,7 +220,9 @@ public class ResourceManager
     return create(key, context, (Class[]) null);
   }
 
-  public Resource create(ResourceKey key, ResourceKey context, Class[] target)
+  public Resource create(ResourceKey key,
+                         ResourceKey context,
+                         Class[] target)
           throws ResourceLoadingException, ResourceCreationException
   {
     // ok, we have a handle to the data, and the data is current.
@@ -295,7 +322,7 @@ public class ResourceManager
       }
 
       final ResourceData data = load(dep);
-      if (data.getVersion() != version)
+      if (data.getVersion(this) != version)
       {
         // oh, my bad, an outdated or changed entry.
         // We have to re-read the whole thing.

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WMFImageFactoryModule.java,v 1.1.1.1 2006/04/17 16:48:40 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.SimpleResource;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.pixie.wmf.WmfFile;
 
 /**
@@ -61,13 +62,15 @@ public class WMFImageFactoryModule extends AbstractWMFFactoryModule
   {
   }
 
-  public Resource create(ResourceData data, ResourceKey context)
+  public Resource create(final ResourceManager caller,
+                         final ResourceData data,
+                         final ResourceKey context)
           throws ResourceLoadingException
   {
     try
     {
-      final long version = data.getVersion();
-      final WmfFile wmfFile = new WmfFile(data.getResourceAsStream(), -1, -1);
+      final long version = data.getVersion(caller);
+      final WmfFile wmfFile = new WmfFile(data.getResourceAsStream(caller), -1, -1);
       final Image image = wmfFile.replay();
       return new SimpleResource (data.getKey(), image, version);
     }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FileResourceData.java,v 1.1.1.1 2006/04/17 16:48:32 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import java.io.InputStream;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.loader.AbstractResourceData;
 
 /**
@@ -82,7 +83,7 @@ public class FileResourceData extends AbstractResourceData
     this.key = key;
   }
 
-  public InputStream getResourceAsStream() throws ResourceLoadingException
+  public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     try
     {
@@ -107,7 +108,8 @@ public class FileResourceData extends AbstractResourceData
     return null;
   }
 
-  public long getVersion()
+  public long getVersion(ResourceManager caller)
+          throws ResourceLoadingException
   {
     return key.getFile().lastModified();
   }

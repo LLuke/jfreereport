@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ClassloaderResourceKey.java,v 1.1.1.1 2006/04/17 16:48:31 taqua Exp $
+ * $Id: ClassloaderResourceKey.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,9 @@
  */
 package org.jfree.resourceloader.loader.resource;
 
-import org.jfree.resourceloader.ResourceKey;
+import java.util.Map;
+
+import org.jfree.resourceloader.AbstractResourceKey;
 
 /**
  * This resource key describes a loadable system resource, independent of the
@@ -48,12 +50,14 @@ import org.jfree.resourceloader.ResourceKey;
  *
  * @author Thomas Morgner
  */
-public class ClassloaderResourceKey implements ResourceKey
+public class ClassloaderResourceKey extends AbstractResourceKey
 {
-  private String resource;
+  private transient String resource;
 
-  public ClassloaderResourceKey(final String valueString)
+  public ClassloaderResourceKey(final Map values)
   {
+    super(values);
+    final String valueString = (String) getLoaderParameter(AbstractResourceKey.CONTENT_KEY);
     if (valueString == null)
     {
       throw new NullPointerException();
@@ -79,38 +83,16 @@ public class ClassloaderResourceKey implements ResourceKey
 
   public String getResource()
   {
+    if (resource == null)
+    {
+      resource = (String) getLoaderParameter(AbstractResourceKey.CONTENT_KEY);
+    }
     return resource;
   }
 
   public String getResourcePath()
   {
-    return resource.substring(6);
-  }
-
-  public boolean equals(final Object o)
-  {
-    if (this == o)
-    {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass())
-    {
-      return false;
-    }
-
-    final ClassloaderResourceKey that = (ClassloaderResourceKey) o;
-
-    if (!resource.equals(that.resource))
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    return resource.hashCode();
+    return getResource().substring(6);
   }
 
   /**
@@ -123,7 +105,7 @@ public class ClassloaderResourceKey implements ResourceKey
    */
   public String toExternalForm()
   {
-    return resource;
+    return getResource();
   }
 
   public String toString()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: NullResourceDataCache.java,v 1.1.1.1 2006/04/17 16:48:43 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.resourceloader.cache;
 
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Disables caching. It simply returns null on every request and ignores
@@ -56,7 +57,7 @@ public class NullResourceDataCache implements ResourceDataCache
   {
   }
 
-  public ResourceData put(ResourceData data)
+  public ResourceData put(ResourceManager caller, ResourceData data)
   {
     // this relieves the pain of having to re-open the same stream more than
     // once. This is no real long term caching, but at least a caching during

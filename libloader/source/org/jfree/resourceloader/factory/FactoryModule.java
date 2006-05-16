@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FactoryModule.java,v 1.1.1.1 2006/04/17 16:48:40 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 05.04.2006, 17:00:33
@@ -60,9 +61,14 @@ public interface FactoryModule
   public static final int FEELING_LUCKY = 0;
   public static final int REJECTED = -1;
 
-  public int canHandleResource (ResourceData data) throws
-          ResourceCreationException, ResourceLoadingException;
+  public int canHandleResource (final ResourceManager caller,
+                                final ResourceData data)
+          throws ResourceCreationException, ResourceLoadingException;
+
   public int getHeaderFingerprintSize ();
-  public Resource create (ResourceData data, ResourceKey context) throws ResourceCreationException,
-          ResourceLoadingException;
+
+  public Resource create (final ResourceManager caller,
+                          final ResourceData data,
+                          final ResourceKey context)
+          throws ResourceCreationException, ResourceLoadingException;
 }
