@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleRuleFactory.java,v 1.1 2006/04/17 20:54:49 taqua Exp $
+ * $Id: StyleRuleFactory.java,v 1.2 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class StyleRuleFactory implements ResourceFactory
       if (context == null)
       {
         key = data.getKey();
-        version = data.getVersion();
+        version = data.getVersion(manager);
       }
       else
       {
@@ -94,7 +94,7 @@ public class StyleRuleFactory implements ResourceFactory
       parser.setDocumentHandler(handler);
 
       final InputSource inputSource = new InputSource();
-      inputSource.setByteStream(data.getResourceAsStream());
+      inputSource.setByteStream(data.getResourceAsStream(manager));
 
       handler.init(inputSource);
       handler.setStyleRule(new CSSStyleRule(null, null));
@@ -103,7 +103,7 @@ public class StyleRuleFactory implements ResourceFactory
       final DependencyCollector dependencies = handler.getDependencies();
       if (context != null)
       {
-        dependencies.add(data.getKey(), data.getVersion());
+        dependencies.add(data.getKey(), data.getVersion(manager));
       }
 
       CSSParserContext.getContext().destroy();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: XhtmlResourceFactoryModule.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.factory.AbstractFactoryModule;
 
 public class XhtmlResourceFactoryModule extends AbstractFactoryModule
@@ -87,11 +88,14 @@ public class XhtmlResourceFactoryModule extends AbstractFactoryModule
     return 0;
   }
 
-  public Resource create(ResourceData data, ResourceKey context)
-          throws ResourceLoadingException
+  public Resource create(final ResourceManager caller,
+                         final ResourceData data,
+                         final ResourceKey context)
+          throws ResourceCreationException, ResourceLoadingException
   {
     return null;
   }
+
 //
 //  public XhtmlDocument createDocument (final byte[] data,
 //                                  final URL source,

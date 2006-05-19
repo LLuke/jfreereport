@@ -2,11 +2,10 @@ package org.jfree.layouting.normalizer;
 
 import java.util.Stack;
 
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.normalizer.common.display.ContentBox;
 import org.jfree.layouting.normalizer.common.display.ContentNode;
 import org.jfree.layouting.normalizer.common.display.ContentText;
-import org.jfree.layouting.input.style.keys.box.DisplayRole;
-import org.jfree.layouting.model.ElementContext;
 
 /**
  * Breaks down the content into a flat structure. Block content is no longer contained in
@@ -154,8 +153,6 @@ public abstract class FlatContentGenerator implements ContentGenerator
     {
       throw new IllegalStateException("Flow contexts have not been finished.");
     }
-
-    generator.documentStarted();
   }
 
 }
