@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLoaderInfo.java,v 1.1.1.1 2006/04/17 16:48:29 taqua Exp $
+ * $Id: LibLoaderInfo.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class LibLoaderInfo extends ProjectInfo
   public LibLoaderInfo ()
   {
     setName("LibLoader");
-    setVersion("0.1.1");
+    setVersion("0.1.2");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());
