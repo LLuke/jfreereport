@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: EncodingFactory.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,7 +66,7 @@ public class EncodingFactory implements ResourceFactory
   {
     try
     {
-      InputStream in = data.getResourceAsStream();
+      InputStream in = data.getResourceAsStream(manager);
       ObjectInputStream oin = new ObjectInputStream(in);
       final Object ob = oin.readObject();
       // yes, that will be more generic in the future ...
@@ -77,7 +77,7 @@ public class EncodingFactory implements ResourceFactory
       final External8BitEncodingData encData = (External8BitEncodingData) ob;
       final External8BitEncodingCore encCore =
               new External8BitEncodingCore(encData);
-      return new SimpleResource(data.getKey(), encCore, data.getVersion());
+      return new SimpleResource(data.getKey(), encCore, data.getVersion(manager));
     }
     catch (IOException e)
     {
