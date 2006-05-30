@@ -6,7 +6,7 @@
   <import file="build-lib.xml"/>
 
   <!-- Initialisation. -->
-  <target name="initialise" description="Initialise required settings.">
+  <target name="initialise">
     <tstamp/>
 
     <property name="builddir" value="build"/>
@@ -26,7 +26,8 @@
   </target>
 
   <!-- Compile the JCommon classes -->
-  <target name="compile-jj" depends="initialise">
+  <target name="compile-jj" depends="initialise"
+          description="Compiles the Flute-Parser from the JavaCC specs.">
     <javacc
         target="source/org/w3c/flute/parser/Parser.jj"
         outputdirectory="source/org/w3c/flute/parser/"

@@ -4,7 +4,7 @@
  *  en Informatique et en Automatique, Keio University).
  * All Rights Reserved. http://www.w3.org/Consortium/Legal/
  *
- * $Id: Parser.jj,v 1.15 2000/10/27 21:09:37 plehegar Exp $
+ * $Id: Parser.jj,v 1.1.1.1 2006/04/23 14:51:49 taqua Exp $
  */
 
 options {
@@ -47,7 +47,7 @@ import org.w3c.flute.util.Encoding;
  * A CSS2 parser
  *
  * @author Philippe Le Hégaret
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.1.1.1 $
  */
 public class Parser implements org.w3c.css.sac.Parser {
 
@@ -846,7 +846,17 @@ void page() :
 	  start = true;
 	  documentHandler.startPage(page, pseudo);
       }
-     ( declaration() )? ( ";" ( <S> )* ( declaration() )? )* 
+      (
+        (
+          declaration()
+        )?
+        (
+          ";" ( <S> )* ( declaration() )?
+        )*
+        (
+          atRuleDeclaration()
+        )*
+      )
      <RBRACE> (<S>)*
  } catch (ParseException e) {
      if (errorHandler != null) {
@@ -904,7 +914,7 @@ void atRuleDeclaration() :
 {
  n=<ATKEYWORD>
     {
-	ret=skipStatement();
+	ret=skipStatementNoSemicolon();
 	reportWarningSkipText(getLocator(), ret);
 	if ((ret != null) && (ret.charAt(0) == '@')) {
 	    documentHandler.ignorableAtRule(ret);
@@ -1872,6 +1882,42 @@ float number(char operator, Token n, int lengthUnit) {
     }
     f = Float.valueOf(image).floatValue();
     return (operator == '-')? -f: f;
+}
+
+
+JAVACODE
+String skipStatementNoSemicolon() {
+    StringBuffer s = new StringBuffer();
+    Token tok = getToken(0);
+    if (tok.image != null) {
+        s.append(tok.image);
+    }
+    while (true) {
+        tok = getToken(1);
+        if (tok.kind == EOF) {
+            return null;
+        }
+        s.append(tok.image);
+        if (tok.kind == LBRACE) {
+            getNextToken();
+            s.append(skip_to_matching_brace());
+            getNextToken();
+            tok = getToken(1);
+            break;
+        }
+        getNextToken();
+    }
+
+    // skip white space
+    while (true) {
+        if (tok.kind != S) {
+            break;
+        }
+        tok = getNextToken();
+        tok = getToken(1);
+    }
+
+    return s.toString().trim();
 }
 
 JAVACODE
