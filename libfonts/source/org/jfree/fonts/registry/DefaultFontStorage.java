@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultFontStorage.java,v 1.3 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,6 @@ public class DefaultFontStorage implements FontStorage
   public FontMetrics getFontMetrics(final FontIdentifier record,
                                     final FontContext context)
   {
-    return null;
+    return metricsFactory.createMetrics(record, context);
   }
 }

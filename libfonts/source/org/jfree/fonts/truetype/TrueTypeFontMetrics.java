@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TrueTypeFontMetrics.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
+ * $Id: TrueTypeFontMetrics.java,v 1.5 2006/04/30 09:31:14 taqua Exp $
  *
  * Changes
  * -------
@@ -134,7 +134,7 @@ public class TrueTypeFontMetrics implements FontMetrics
     return 0;
   }
 
-  public double getCharWidthWithKerning(int previous, int character)
+  public double getKerning(int previous, int character)
   {
     return 0;
   }

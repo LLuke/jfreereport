@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontDataInputSource.java,v 1.3 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -55,4 +55,8 @@ public interface FontDataInputSource
   public void dispose();
 
   public String getFileName();
+
+  public boolean equals (Object o);
+
+  public int hashCode();
 }

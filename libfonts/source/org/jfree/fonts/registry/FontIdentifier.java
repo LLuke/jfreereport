@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontIdentifier.java,v 1.3 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,9 @@
 package org.jfree.fonts.registry;
 
 /**
- * Creation-Date: 16.12.2005, 19:31:56
+ * A font identifier is a general handle to map Font-Metrics for a given font.
+ * The same font identifier may be used by several fonts, if the fonts share
+ * the same metrics (this is commonly true for TrueType fonts). 
  *
  * @author Thomas Morgner
  */
@@ -59,5 +61,11 @@ public interface FontIdentifier
    */
   public boolean isScalable();
 
+  /**
+   * Returns the general type of this font identifier. This is for debugging,
+   * not for the real world.
+   *
+   * @return
+   */
   public FontType getFontType();
 }

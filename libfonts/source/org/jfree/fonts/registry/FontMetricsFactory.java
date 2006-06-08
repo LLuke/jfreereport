@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontMetricsFactory.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,13 @@ package org.jfree.fonts.registry;
  */
 public interface FontMetricsFactory
 {
-  public FontMetrics createMetrics (final FontRecord record,
+  /**
+   * Loads the font metrics for the font identified by the given identifier.
+   *
+   * @param identifier
+   * @param context
+   * @return
+   */
+  public FontMetrics createMetrics (final FontIdentifier identifier,
                                     final FontContext context);
 }

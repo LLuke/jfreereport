@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FileFontDataInputSource.java,v 1.3 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -103,5 +103,31 @@ public class FileFontDataInputSource implements FontDataInputSource
   public String getFileName()
   {
     return file.getPath();
+  }
+
+  public boolean equals(final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    final FileFontDataInputSource that = (FileFontDataInputSource) o;
+
+    if (!file.equals(that.file))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return file.hashCode();
   }
 }

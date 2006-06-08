@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontMetrics.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
+ * $Id: FontMetrics.java,v 1.5 2006/04/30 09:31:14 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public interface FontMetrics
   public double getMaxCharAdvance();
 
   public double getCharWidth(int codePoint);
-  public double getCharWidthWithKerning(int previous, int codePoint);
+  public double getKerning(int previous, int codePoint);
 
 
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TrueTypeFontRecord.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
+ * $Id: TrueTypeFontRecord.java,v 1.5 2006/05/06 15:16:19 taqua Exp $
  *
  * Changes
  * -------
@@ -126,36 +126,39 @@ public class TrueTypeFontRecord implements FontRecord
     if (headTable != null)
     {
       this.bold = headTable.isBold();
-      if (variant.toLowerCase().indexOf("oblique") >= 0)
-      {
-        this.oblique = true;
-        this.italics = false;
-      }
-      else
-      {
-        this.italics = headTable.isItalic();
-        this.oblique = this.italics;
-      }
+      this.italics = headTable.isItalic();
     }
     else
     {
-      // try to use the english name instead. If there is no english name,
-      // then do whatever you like. Buggy non standard fonts are not funny ..
-      this.bold = (variant.toLowerCase().indexOf("bold") >= 0);
-      if (variant.toLowerCase().indexOf("oblique") >= 0)
+      final OS2Table os2Table = (OS2Table)
+              trueTypeFont.getTable(OS2Table.TABLE_ID);
+      if (os2Table != null)
       {
-        this.oblique = true;
-        this.italics = false;
+        this.bold = os2Table.isBold();
+        this.italics = os2Table.isItalic();
       }
       else
       {
-        this.oblique = (variant.toLowerCase().indexOf("italic") >= 0);
-        this.oblique = this.italics;
+        // try to use the english name instead. If there is no english name,
+        // then do whatever you like. Buggy non standard fonts are not funny ..
+        this.bold = (variant.toLowerCase().indexOf("bold") >= 0);
+        this.italics = (variant.toLowerCase().indexOf("italic") >= 0);
       }
     }
 
+    // A font may declare that it is oblique (which is the poor man's italics
+    // mode), but a font that supports italics is automaticly oblique as well.
+    if (this.oblique || variant.toLowerCase().indexOf("oblique") >= 0)
+    {
+      this.oblique = true;
+    }
+    else
+    {
+      this.oblique = false;
+    }
+
     this.identifier = new TrueTypeFontIdentifier
-            (fontFile, name, variant, collectionIndex, offset);
+            (fontInputSource, name, variant, collectionIndex, offset);
   }
 
   public long getOffset()

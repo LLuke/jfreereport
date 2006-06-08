@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AWTFontMetrics.java,v 1.4 2006/04/17 16:33:45 taqua Exp $
+ * $Id: AWTFontMetrics.java,v 1.5 2006/04/30 09:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,11 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import org.jfree.fonts.encoding.CodePointUtilities;
 import org.jfree.fonts.registry.FontContext;
 import org.jfree.fonts.registry.FontMetrics;
 
@@ -60,17 +63,25 @@ public class AWTFontMetrics implements FontMetrics
   private FontContext context;
   private java.awt.FontMetrics fontMetrics;
   private Graphics2D graphics;
+  private double lineHeight;
+  private double maxCharAdvance;
+  private char[] cpBuffer;
+  private FontRenderContext frc;
 
   public AWTFontMetrics(final Font font, final FontContext context)
   {
     this.font = font;
     this.context = context;
-    FontRenderContext frc = new FontRenderContext
+    this.frc = new FontRenderContext
             (null, context.isAntiAliased(), context.isFractionalMetrics());
 
 
     Graphics2D graphics = getGraphics(frc);
-    fontMetrics = graphics.getFontMetrics(font);
+    this.fontMetrics = graphics.getFontMetrics(font);
+    final Rectangle2D rect = this.font.getMaxCharBounds(frc);
+    this.lineHeight = rect.getHeight();
+    this.maxCharAdvance = rect.getWidth();
+    this.cpBuffer = new char[4];
   }
 
   protected Graphics2D getGraphics(final FontRenderContext frc)
@@ -78,7 +89,7 @@ public class AWTFontMetrics implements FontMetrics
     if (graphics == null)
     {
       final BufferedImage image = new BufferedImage
-              (1,1,BufferedImage.TYPE_INT_ARGB);
+              (1, 1, BufferedImage.TYPE_INT_ARGB);
       final Graphics2D g2 = image.createGraphics();
       if (context.isAntiAliased())
       {
@@ -89,7 +100,7 @@ public class AWTFontMetrics implements FontMetrics
       if (context.isFractionalMetrics())
       {
         g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
       }
       graphics = g2;
     }
@@ -149,36 +160,70 @@ public class AWTFontMetrics implements FontMetrics
 
   public double getMaxAscent()
   {
-    return 0;
+    return fontMetrics.getMaxAscent();
   }
 
   public double getMaxDescent()
   {
-    return 0;
+    return fontMetrics.getMaxDescent();
   }
 
   public double getMaxLeading()
   {
-    return 0;
+    return lineHeight - getMaxAscent() - getMaxDescent();
   }
 
   public double getMaxHeight()
   {
-    return getMaxAscent() + getMaxDescent() + getMaxLeading();
+    return lineHeight;
   }
 
   public double getMaxCharAdvance()
   {
-    return 0;
+    return maxCharAdvance;
   }
 
-  public double getCharWidth(int character)
+  public synchronized double getCharWidth(int character)
   {
-    return 0;
+    final int retval = CodePointUtilities.toChars(character, cpBuffer, 0);
+
+    if (retval > 0)
+    {
+      Rectangle2D lm = font.getStringBounds(cpBuffer, 0, retval, frc);
+      return lm.getWidth();
+    }
+    else
+    {
+      return 0;
+    }
   }
 
-  public double getCharWidthWithKerning(int previous, int character)
+  /**
+   * This method is <b>EXPENSIVE</b>. 
+   * @param previous
+   * @param character
+   * @return
+   */
+  public synchronized double getKerning(int previous, int character)
   {
-    return 0;
+    final int retvalC1 = CodePointUtilities.toChars(previous, cpBuffer, 0);
+    if (retvalC1 <= 0)
+    {
+      return 0;
+    }
+
+    final int retvalC2 = CodePointUtilities.toChars(character, cpBuffer, retvalC1);
+    if (retvalC2 > 0)
+    {
+      final int limit = (retvalC1 + retvalC2);
+      GlyphVector gv = font.createGlyphVector(frc, new String (cpBuffer, 0, limit));
+      final double totalSize = gv.getGlyphPosition(limit).getX();
+      final double renderedWidth = gv.getOutline().getBounds2D().getWidth();
+      return totalSize - renderedWidth;
+    }
+    else
+    {
+      return 0;
+    }
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OS2Table.java,v 1.6 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -261,6 +261,16 @@ public class OS2Table implements FontTable
   public int getFsSelection()
   {
     return fsSelection;
+  }
+
+  public boolean isBold ()
+  {
+    return (fsSelection & 0x20) == 0x20;
+  }
+
+  public boolean isItalic ()
+  {
+    return (fsSelection & 0x1) == 0x01;
   }
 
   public int getFirstCharIndex()

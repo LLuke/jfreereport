@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EncodingRegistry.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
+ * $Id: EncodingRegistry.java,v 1.2 2006/04/30 09:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.jfree.fonts.LibFontBoot;
+//import org.jfree.fonts.encoding.manual.Ascii;
 import org.jfree.fonts.encoding.manual.BuiltInJavaEncoding;
 import org.jfree.fonts.encoding.manual.Ascii;
-import org.jfree.fonts.encoding.manual.Utf16LE;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -92,9 +92,11 @@ public final class EncodingRegistry
   private HashMap encodingsMapping;
   private HashMap generatedMapping;
   private HashMap fallbackMapping;
+  private HashMap aliases;
   private ResourceManager manager;
 
   private static EncodingRegistry instance;
+  public static final String ENCODING_ALIAS_PREFIX = "org.jfree.fonts.encoding.alias.";
 
   public synchronized static EncodingRegistry getInstance()
   {
@@ -118,6 +120,7 @@ public final class EncodingRegistry
     this.encodingsMapping = new HashMap();
     this.generatedMapping = new HashMap();
     this.fallbackMapping = new HashMap();
+    this.aliases = new HashMap();
   }
 
   private void registerDefaults()
@@ -139,7 +142,7 @@ public final class EncodingRegistry
         final Encoding encoding = (Encoding) maybeEncoding;
         final String name = encoding.getName();
         Log.debug ("Manual mapping added. " + name);
-        encodingsMapping.put(name.toLowerCase(), encodingClass);
+        encodingsMapping.put(normalizeEncodingName(name), encodingClass);
       }
     }
 
@@ -162,7 +165,7 @@ public final class EncodingRegistry
           final String encPath = (String) entry.getValue();
           final ResourceKey encKey = manager.deriveKey(resKey, encPath);
           Log.debug ("Generated mapping added. " +  encName);
-          generatedMapping.put(encName.toLowerCase(), encKey);
+          generatedMapping.put(normalizeEncodingName(encName), encKey);
         }
       }
       catch (Exception e)
@@ -172,6 +175,15 @@ public final class EncodingRegistry
       }
     }
 
+    final Iterator aliasesIt = config.findPropertyKeys
+            (ENCODING_ALIAS_PREFIX);
+    while (aliasesIt.hasNext())
+    {
+      final String key = (String) aliasesIt.next();
+      final String alias = key.substring(ENCODING_ALIAS_PREFIX.length());
+      final String target = config.getConfigProperty(key);
+      aliases.put(normalizeEncodingName(alias), normalizeEncodingName(target));
+    }
   }
 
   /**
@@ -188,7 +200,8 @@ public final class EncodingRegistry
       throw new NullPointerException();
     }
 
-    final String key = encoding.toLowerCase();
+    final String key = normalizeEncodingName(encoding);
+
     if (encodingsMapping.containsKey(key))
     {
       return true;
@@ -200,6 +213,20 @@ public final class EncodingRegistry
     }
 
     return isEncodingSupportedJVM(encoding);
+  }
+
+  private String normalizeEncodingName (String name)
+  {
+    final String lcName = name.toLowerCase();
+    final String retval = lcName.replace('_', '-');
+
+    final String alias = (String) aliases.get(retval);
+    if (alias != null)
+    {
+      return alias;
+    }
+
+    return retval;
   }
 
   private boolean isEncodingSupportedJVM(final String encoding)
@@ -234,7 +261,7 @@ public final class EncodingRegistry
 
   public Encoding getEncoding(String name)
   {
-    String key = name.toLowerCase();
+    String key = normalizeEncodingName(name);
     String manual = (String) encodingsMapping.get(key);
     if (manual != null)
     {
@@ -266,6 +293,10 @@ public final class EncodingRegistry
     if (isEncodingSupportedJVM(name))
     {
       return new BuiltInJavaEncoding(name, true);
+    }
+    else if (isEncodingSupportedJVM(key))
+    {
+      return new BuiltInJavaEncoding(key, true);
     }
     else
     {

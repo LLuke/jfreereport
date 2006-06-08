@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TrueTypeFontMetricsFactory.java,v 1.4 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,17 @@
  */
 package org.jfree.fonts.truetype;
 
-import java.util.HashMap;
 import java.io.IOException;
+import java.util.HashMap;
 
-import org.jfree.fonts.registry.FontMetricsFactory;
-import org.jfree.fonts.registry.FontMetrics;
-import org.jfree.fonts.registry.FontContext;
-import org.jfree.fonts.registry.FontRecord;
 import org.jfree.fonts.io.FontDataInputSource;
+import org.jfree.fonts.registry.FontContext;
+import org.jfree.fonts.registry.FontIdentifier;
+import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.registry.FontMetricsFactory;
+import org.jfree.fonts.registry.FontType;
+import org.jfree.fonts.registry.EmptyFontMetrics;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 16.12.2005, 22:33:07
@@ -60,20 +63,41 @@ public class TrueTypeFontMetricsFactory implements FontMetricsFactory
 
   public TrueTypeFontMetricsFactory()
   {
+    this.fontRecords = new HashMap();
   }
 
-  public FontMetrics createMetrics(final FontRecord record,
+  public FontMetrics createMetrics(final FontIdentifier record,
                                    final FontContext context)
   {
+    if (FontType.OPENTYPE.equals(record.getFontType()) == false)
+    {
+      throw new IllegalArgumentException
+              ("This identifier does not belong to the OpenType-font system.");
+    }
+
+    final TrueTypeFontIdentifier ttfId = (TrueTypeFontIdentifier) record;
+
+    final ScalableTrueTypeFontMetrics fromCache =
+            (ScalableTrueTypeFontMetrics) fontRecords.get(ttfId);
+    if (fromCache != null)
+    {
+      return new TrueTypeFontMetrics(fromCache, context.getFontSize());
+    }
+
     try
     {
-      final FontDataInputSource fdis = record.getFontInputSource();
+      final FontDataInputSource fdis = ttfId.getInputSource();
       final TrueTypeFont font = new TrueTypeFont(fdis);
-      return new TrueTypeFontMetrics(new ScalableTrueTypeFontMetrics(font), context.getFontSize());
+      final ScalableTrueTypeFontMetrics fontMetrics =
+              new ScalableTrueTypeFontMetrics(font);
+      this.fontRecords.put(ttfId, fontMetrics);
+      return new TrueTypeFontMetrics(fontMetrics, context.getFontSize());
     }
     catch (IOException e)
     {
-      return null;
+      Log.warn ("Unable to read the font.", e);
+      // todo: We should throw exceptions instead, shouldnt we?
+      return new EmptyFontMetrics();
     }
   }
 }

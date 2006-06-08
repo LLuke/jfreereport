@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TrueTypeFontIdentifier.java,v 1.3 2006/04/17 16:33:46 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.fonts.truetype;
 
 import org.jfree.fonts.registry.FontIdentifier;
 import org.jfree.fonts.registry.FontType;
+import org.jfree.fonts.io.FontDataInputSource;
 
 /**
  * Creation-Date: 16.12.2005, 19:35:31
@@ -50,19 +51,19 @@ import org.jfree.fonts.registry.FontType;
  */
 public class TrueTypeFontIdentifier implements FontIdentifier
 {
-  private String fileName;
+  private FontDataInputSource inputSource;
   private String fontName;
   private String fontVariant;
   private int collectionIndex;
   private long offset;
 
-  public TrueTypeFontIdentifier(final String fileName,
+  public TrueTypeFontIdentifier(final FontDataInputSource inputSource,
                                 final String fontName,
                                 final String fontVariant,
                                 final int collectionIndex,
                                 final long offset)
   {
-    if (fileName == null)
+    if (inputSource == null)
     {
       throw new NullPointerException();
     }
@@ -75,7 +76,7 @@ public class TrueTypeFontIdentifier implements FontIdentifier
       throw new NullPointerException();
     }
     this.fontVariant = fontVariant;
-    this.fileName = fileName;
+    this.inputSource = inputSource;
     this.fontName = fontName;
     this.collectionIndex = collectionIndex;
     this.offset = offset;
@@ -102,7 +103,7 @@ public class TrueTypeFontIdentifier implements FontIdentifier
     {
       return false;
     }
-    if (!fileName.equals(that.fileName))
+    if (!inputSource.equals(that.inputSource))
     {
       return false;
     }
@@ -116,22 +117,22 @@ public class TrueTypeFontIdentifier implements FontIdentifier
 
   public int hashCode()
   {
-    int result = fileName.hashCode();
-    result = 29 * result + fontName.hashCode();
+    int result = fontName.hashCode();
+    result = 29 * result + inputSource.hashCode();
     result = 29 * result + fontVariant.hashCode();
     result = 29 * result + collectionIndex;
     result = 29 * result + (int) (offset ^ (offset >>> 32));
     return result;
   }
 
+  public FontDataInputSource getInputSource()
+  {
+    return inputSource;
+  }
+
   public String getFontVariant()
   {
     return fontVariant;
-  }
-
-  public String getFileName()
-  {
-    return fileName;
   }
 
   public String getFontName()
