@@ -4,7 +4,7 @@
  *  en Informatique et en Automatique, Keio University).
  * All Rights Reserved. http://www.w3.org/Consortium/Legal/
  *
- * $Id: Parser.jj,v 1.1.1.1 2006/04/23 14:51:49 taqua Exp $
+ * $Id: Parser.jj,v 1.2 2006/05/30 14:39:41 taqua Exp $
  */
 
 options {
@@ -47,7 +47,7 @@ import org.w3c.flute.util.Encoding;
  * A CSS2 parser
  *
  * @author Philippe Le Hégaret
- * @version $Revision: 1.1.1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Parser implements org.w3c.css.sac.Parser {
 
@@ -746,10 +746,10 @@ void namespaceDeclaration() :
   <NAMESPACE_SYM>
        ( <S> )*
        (
-         (
+         ((
            prefix = <IDENT>
          )
-         ( <S> )*
+         ( <S> )*)?
          (
            n=<URL>
            {
