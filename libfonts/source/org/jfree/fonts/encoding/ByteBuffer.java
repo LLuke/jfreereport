@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ByteBuffer.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
  *
  * Changes
  * -------
@@ -146,7 +146,7 @@ public class ByteBuffer implements Serializable
     if (data.length < (offset + length))
     {
       byte[] newdata = new byte[offset + length];
-      System.arraycopy(data, 0, newdata, 0, offset);
+      System.arraycopy(data, 0, newdata, 0, data.length);
       data = newdata;
     }
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CodePointUtilities.java,v 1.1 2006/06/08 18:06:56 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.fonts.encoding;
+
+import org.jfree.fonts.encoding.manual.Utf16LE;
 
 /**
  * Creation-Date: 01.06.2006, 18:10:19
@@ -70,17 +72,17 @@ public class CodePointUtilities
 
   /**
    * Converts the given codepoint into the given character array. The return
-   * value indicates either success or failure. The conversion will fail, if
-   * the given array does not contain enough space for the decoded character.
-   * In that case either -1 (one char missing) or -2 (two chars missing) is
-   * returned. On success either 1 or 2 is returned to indicate the number
-   * of chars added. 
+   * value indicates either success or failure. The conversion will fail, if the
+   * given array does not contain enough space for the decoded character. In
+   * that case either -1 (one char missing) or -2 (two chars missing) is
+   * returned. On success either 1 or 2 is returned to indicate the number of
+   * chars added.
    *
    * @param cp
    * @param buffer
    * @param offset
-   * @return the number of chars added or the number of additional
-   * chars required.
+   * @return the number of chars added or the number of additional chars
+   *         required.
    */
   public static int toChars(int cp, char[] buffer, int offset)
   {
@@ -137,6 +139,18 @@ public class CodePointUtilities
       buffer[offset + 1] = (char) lowWord;
       return 2;
     }
+  }
+
+  public static int[] charsToCodepoint(String text)
+  {
+    CodePointBuffer buffer = Utf16LE.getInstance().decodeString(text, null);
+    return buffer.getData();
+  }
+
+  public static String codepointToCharts(int[] text)
+  {
+    CodePointBuffer buffer = new CodePointBuffer(text);
+    return Utf16LE.getInstance().encodeString(buffer);
   }
 
   private CodePointUtilities()

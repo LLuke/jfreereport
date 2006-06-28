@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CodePointBuffer.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,14 @@ public class CodePointBuffer implements Serializable
     this.data = new int[length];
     this.offset = 0;
     this.cursor = 0;
+  }
+
+  public int[] getBuffer()
+  {
+    final int length = getLength();
+    int[] retval = new int[length];
+    System.arraycopy(data, offset, retval, 0, length);
+    return retval;
   }
 
   public int[] getData()
@@ -116,7 +124,7 @@ public class CodePointBuffer implements Serializable
     if (data.length < (offset + length))
     {
       int[] newdata = new int[offset + length];
-      System.arraycopy(data, 0, newdata, 0, offset);
+      System.arraycopy(data, 0, newdata, 0, data.length);
       data = newdata;
     }
   }

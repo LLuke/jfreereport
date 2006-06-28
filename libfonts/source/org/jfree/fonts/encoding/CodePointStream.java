@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CodePointStream.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
  *
  * Changes
  * -------
@@ -75,11 +75,13 @@ public class CodePointStream
   {
     if (cursor >= lastWritePos)
     {
+      System.out.print ("+");
       this.buffer.ensureSize(cursor + increment);
       this.data = buffer.getData();
       this.lastWritePos = data.length - 1;
     }
 
+    System.out.println ("Put: " + b);
     data[cursor] = b;
     cursor += 1;
   }
