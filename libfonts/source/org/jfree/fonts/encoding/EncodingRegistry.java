@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EncodingRegistry.java,v 1.2 2006/04/30 09:31:13 taqua Exp $
+ * $Id: EncodingRegistry.java,v 1.3 2006/06/08 18:06:11 taqua Exp $
  *
  * Changes
  * -------
@@ -141,7 +141,7 @@ public final class EncodingRegistry
         // ok, loaded perfectly ..
         final Encoding encoding = (Encoding) maybeEncoding;
         final String name = encoding.getName();
-        Log.debug ("Manual mapping added. " + name);
+        //Log.debug ("Manual mapping added. " + name);
         encodingsMapping.put(normalizeEncodingName(name), encodingClass);
       }
     }
@@ -164,7 +164,7 @@ public final class EncodingRegistry
           final String encName = (String) entry.getKey();
           final String encPath = (String) entry.getValue();
           final ResourceKey encKey = manager.deriveKey(resKey, encPath);
-          Log.debug ("Generated mapping added. " +  encName);
+          //Log.debug ("Generated mapping added. " +  encName);
           generatedMapping.put(normalizeEncodingName(encName), encKey);
         }
       }
