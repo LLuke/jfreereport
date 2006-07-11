@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportReadHandler.java,v 1.2 2006/05/06 12:59:25 taqua Exp $
+ * $Id: ReportReadHandler.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -113,6 +113,12 @@ public class ReportReadHandler extends SectionReadHandler
         return datasourceFactoryReadHandler;
       }
       if ("stylesheet".equals(tagName))
+      {
+        StyleSheetReadHandler srh = new StyleSheetReadHandler();
+        styleSheetReadHandlers.add(srh);
+        return srh;
+      }
+      if ("inline-stylesheet".equals(tagName))
       {
         StyleSheetReadHandler srh = new StyleSheetReadHandler();
         styleSheetReadHandlers.add(srh);

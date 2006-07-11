@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportTarget.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: ReportTarget.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -58,25 +58,27 @@ import org.jfree.report.structure.Node;
  */
 public interface ReportTarget
 {
-  void processNode (Node node, ExpressionRuntime runtime)
+  public void processNode (Node node, ExpressionRuntime runtime)
           throws DataSourceException, ReportProcessingException;
 
-  void processContentElement (ContentElement node,
+  public void processContentElement (ContentElement node,
                               DataFlags value,
                               ExpressionRuntime runtime)
           throws DataSourceException, ReportProcessingException;
 
-  void startElement (Element node, ExpressionRuntime runtime)
+  public void startElement (Element node, ExpressionRuntime runtime)
           throws DataSourceException, ReportProcessingException;
 
-  void endElement (Element node, ExpressionRuntime runtime)
+  public void endElement (Element node, ExpressionRuntime runtime)
           throws DataSourceException, ReportProcessingException;
 
-  void startReport (JFreeReport report)
+  public void startReport (JFreeReport report)
           throws DataSourceException, ReportProcessingException;
 
-  void endReport (JFreeReport report)
+  public void endReport (JFreeReport report)
           throws DataSourceException, ReportProcessingException;
 
-  ReportJob getReportJob ();
+  public ReportJob getReportJob ();
+
+  public void commit() throws ReportProcessingException;
 }

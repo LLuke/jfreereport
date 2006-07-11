@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FlowReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: FlowReportProcessor.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,10 @@
  */
 package org.jfree.report.flow.flowing;
 
-import org.jfree.layouting.DefaultFlowGenerationLayoutProcess;
-import org.jfree.layouting.DefaultFlowPreparationLayoutProcess;
-import org.jfree.layouting.FlowGenerationLayoutProcess;
-import org.jfree.layouting.FlowPreparationLayoutProcess;
-import org.jfree.layouting.output.flowing.FlowingOutputProcessor;
+import org.jfree.layouting.ChainingLayoutProcess;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.junit.DebugLayoutProcess;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
@@ -67,18 +66,18 @@ import org.jfree.resourceloader.ResourceManager;
  */
 public class FlowReportProcessor implements ReportProcessor
 {
-  private FlowingOutputProcessor outputProcessor;
+  private OutputProcessor outputProcessor;
 
   public FlowReportProcessor()
   {
   }
 
-  public FlowingOutputProcessor getOutputProcessor()
+  public OutputProcessor getOutputProcessor()
   {
     return outputProcessor;
   }
 
-  public void setOutputProcessor(final FlowingOutputProcessor outputProcessor)
+  public void setOutputProcessor(final OutputProcessor outputProcessor)
   {
     this.outputProcessor = outputProcessor;
   }
@@ -96,13 +95,13 @@ public class FlowReportProcessor implements ReportProcessor
       throw new IllegalStateException(
               "OutputProcessor is invalid.");
     }
-    final FlowPreparationLayoutProcess layoutProcess =
-            new DefaultFlowPreparationLayoutProcess(outputProcessor);
+    final LayoutProcess layoutProcess =
+            new ChainingLayoutProcess(new DebugLayoutProcess(outputProcessor));
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess);
   }
 
   protected ReportTarget createGenerateTarget(final ReportJob job)
@@ -112,13 +111,13 @@ public class FlowReportProcessor implements ReportProcessor
       throw new IllegalStateException(
               "OutputProcessor is invalid.");
     }
-    final FlowGenerationLayoutProcess layoutProcess =
-            new DefaultFlowGenerationLayoutProcess(outputProcessor);
+    final LayoutProcess layoutProcess =
+            new ChainingLayoutProcess(new DebugLayoutProcess(outputProcessor));
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess);
   }
 
 
@@ -142,7 +141,7 @@ public class FlowReportProcessor implements ReportProcessor
     synchronized (job)
     {
       prepareReport(job);
-      generateReport(job);
+     // generateReport(job);
     }
   }
 

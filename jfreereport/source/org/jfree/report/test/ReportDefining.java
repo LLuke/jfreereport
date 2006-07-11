@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDefining.java,v 1.2 2006/04/22 16:18:15 taqua Exp $
+ * $Id: ReportDefining.java,v 1.3 2006/05/15 12:56:57 taqua Exp $
  *
  * Changes
  * -------
@@ -42,17 +42,17 @@ package org.jfree.report.test;
 
 import java.net.URL;
 
+import org.jfree.layouting.output.junit.StageOnePageableOutputProcessor;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessor;
-import org.jfree.layouting.output.streaming.oowriter.OOWriterOutputProcessor;
-import org.jfree.layouting.util.NullOutputStream;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportDataFactoryException;
-import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.flowing.FlowReportProcessor;
 import org.jfree.report.flow.streaming.StreamingReportProcessor;
 import org.jfree.report.function.aggregation.ItemCountFunction;
 import org.jfree.report.function.sys.GetValueExpression;
@@ -68,8 +68,6 @@ import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.fonts.registry.FontRegistry;
-import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -96,7 +94,7 @@ public class ReportDefining
 //      Resource res = manager.createDirectly(url, ReportDataFactory.class);
 //    }
 
-    processReport();
+    processFlowReport();
 
 //    long startTime = System.currentTimeMillis();
 //    final int reportCount = 250;
@@ -162,14 +160,42 @@ public class ReportDefining
     dataFactory.addTable("subreport", new WorldDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final OOWriterOutputProcessor out = new OOWriterOutputProcessor();
-//    final HtmlOutputProcessor out = new HtmlOutputProcessor(System.err);
-    job.setMetaData(out.getMetaData());
+//    final OOWriterOutputProcessor out = new OOWriterOutputProcessor();
+    final HtmlOutputProcessor out = new HtmlOutputProcessor(System.err);
+    //job.setMetaData(out.getMetaData());
 
     final StreamingReportProcessor rp = new StreamingReportProcessor();
     rp.setOutputProcessor(out);
     rp.processReport(job);
   }
+
+
+  private static void processFlowReport()
+          throws ResourceLoadingException,
+          ResourceCreationException, ResourceKeyCreationException,
+          ReportDataFactoryException, DataSourceException, ReportProcessingException
+  {
+    URL url = ReportDefining.class.getResource("/newreport.xml");
+    ResourceManager manager = new ResourceManager();
+    manager.registerDefaults();
+    Resource res = manager.createDirectly(url, JFreeReport.class);
+    final JFreeReport resource = (JFreeReport) res.getResource();
+
+    ReportJob job = new ReportJob(resource);
+    final TableReportDataFactory dataFactory =
+            new TableReportDataFactory("default", new CountryDataTableModel());
+    dataFactory.addTable("subreport", new WorldDataTableModel());
+    job.setDataFactory(dataFactory);
+
+//    final OOWriterOutputProcessor out = new OOWriterOutputProcessor();
+    final StageOnePageableOutputProcessor out = new StageOnePageableOutputProcessor();
+    //job.setMetaData(out.getMetaData());
+
+    final FlowReportProcessor rp = new FlowReportProcessor();
+    rp.setOutputProcessor(out);
+    rp.processReport(job);
+  }
+
 
   private static Group createGroup()
   {

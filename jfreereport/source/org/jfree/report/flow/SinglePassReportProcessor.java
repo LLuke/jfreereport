@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SinglePassReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: SinglePassReportProcessor.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -92,6 +92,7 @@ public abstract class SinglePassReportProcessor implements ReportProcessor
     while (position.isFinalPosition())
     {
       position = layoutControler.process(target, position);
+      target.commit();
     }
   }
 }

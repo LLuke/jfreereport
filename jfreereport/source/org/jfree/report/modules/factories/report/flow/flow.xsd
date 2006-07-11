@@ -481,16 +481,27 @@
   <xsd:element name="stylesheet">
     <xsd:annotation>
       <xsd:documentation>
-        A stylesheet definition either references an external stylesheet
-        file (in CSS3 format) or includes the style sheet definition as
-        character data.
-
-        If both are given, the external data is preferred. 
+        A stylesheet definition references an external stylesheet
+        file (in CSS3 format). The element has the same function as the
+        HTML-Link element (which is not used, as this is a report and no
+        HTML file.)
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType mixed="true">
       <xsd:attribute ref="href" use="required"/>
     </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="inline-stylesheet">
+    <xsd:annotation>
+      <xsd:documentation>
+        This includes the style sheet definition as character data.
+        This is equal to HTML's style-tag.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
   </xsd:element>
 
   <xsd:element name="report" substitutionGroup="section">
@@ -501,6 +512,7 @@
             <xsd:element ref="configuration" minOccurs="0" maxOccurs="1"/>
             <xsd:element ref="datasource" minOccurs="0" maxOccurs="1"/>
             <xsd:element ref="stylesheet" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element ref="inline-stylesheet" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginatingReportProcessor.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: PaginatingReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,6 @@
  */
 package org.jfree.report.flow.paginating;
 
-import org.jfree.layouting.DefaultPageGenerationLayoutProcess;
-import org.jfree.layouting.DefaultPagePreparationLayoutProcess;
 import org.jfree.layouting.PageGenerationLayoutProcess;
 import org.jfree.layouting.PagePreparationLayoutProcess;
 import org.jfree.layouting.output.pageable.PageableOutputProcessor;
@@ -92,13 +90,13 @@ public class PaginatingReportProcessor implements ReportProcessor
       throw new IllegalStateException(
               "OutputProcessor is invalid.");
     }
-    final PagePreparationLayoutProcess layoutProcess =
-            new DefaultPagePreparationLayoutProcess(outputProcessor);
+    final PagePreparationLayoutProcess layoutProcess = null;
+//            new DefaultPagePreparationLayoutProcess(outputProcessor);
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess);
   }
 
   protected ReportTarget createGenerateTarget(ReportJob job)
@@ -108,13 +106,13 @@ public class PaginatingReportProcessor implements ReportProcessor
       throw new IllegalStateException(
               "OutputProcessor is invalid.");
     }
-    final PageGenerationLayoutProcess layoutProcess =
-            new DefaultPageGenerationLayoutProcess(outputProcessor, null, null);
+    final PageGenerationLayoutProcess layoutProcess = null;
+//            new DefaultPageGenerationLayoutProcess(outputProcessor, null, null);
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess);
   }
 
   public void processReport(ReportJob job)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: StyleSheetReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -74,31 +75,31 @@ public class StyleSheetReadHandler extends StringReadHandler
   {
     super.startParsing(attrs);
     String href = attrs.getValue(getUri(), "href");
-
-    final ResourceKey key = getRootHandler().getSource();
-    final ResourceManager manager = getRootHandler().getResourceManager();
-    try
+    if (href != null)
     {
-      final ResourceKey derivedKey = manager.deriveKey(key, href);
-      final Resource resource = manager.create(derivedKey, null,
-              StyleSheet.class);
-      getRootHandler().getDependencyCollector().add(resource);
-      styleSheet = (StyleSheet) resource.getResource();
-    }
-    catch (ResourceKeyCreationException e)
-    {
-      throw new SAXException(
-              "Unable to derive key for " + key + " and " + href);
-    }
-    catch (ResourceCreationException e)
-    {
-      throw new SAXException(
-              "Unable to parse resource for " + key + " and " + href);
-    }
-    catch (ResourceLoadingException e)
-    {
-      throw new SAXException(
-              "Unable to load resource data for " + key + " and " + href);
+      final ResourceKey key = getRootHandler().getSource();
+      final ResourceManager manager = getRootHandler().getResourceManager();
+      try
+      {
+        final ResourceKey derivedKey = manager.deriveKey(key, href);
+        final Resource resource = manager.create(derivedKey, null,
+                StyleSheet.class);
+        getRootHandler().getDependencyCollector().add(resource);
+        styleSheet = (StyleSheet) resource.getResource();
+      }
+      catch (ResourceKeyCreationException e)
+      {
+        throw new SAXException(
+                "Unable to derive key for " + key + " and " + href);
+      }
+      catch (ResourceCreationException e)
+      {
+        Log.warn("Unable to parse resource for " + key + " and " + href);
+      }
+      catch (ResourceLoadingException e)
+      {
+        Log.warn ("Unable to load resource data for " + key + " and " + href);
+      }
     }
   }
 

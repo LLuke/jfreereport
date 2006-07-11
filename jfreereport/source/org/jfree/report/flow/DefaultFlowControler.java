@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFlowControler.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: DefaultFlowControler.java,v 1.3 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -141,6 +141,7 @@ public class DefaultFlowControler implements FlowControler
       
       DefaultFlowControler fc = new DefaultFlowControler(this, dataRow);
       fc.dataRow = (GlobalMasterRow) fc.markStack.pop();
+      fc.advanceRequested = false;
       return fc;
     }
     else if (operation == FlowControlOperation.DONE)
@@ -284,7 +285,7 @@ public class DefaultFlowControler implements FlowControler
     sdd.setDeclaringParent(element);
     sdd.setConfiguration(job.getConfiguration());
     sdd.setResourceBundleFactory(report.getResourceBundleFactory());
-    sdd.setOutputProcessorMetaData(job.getMetaData());
+   // sdd.setOutputProcessorMetaData(job.getMetaData());
 
     final GlobalMasterRow dataRow = this.dataRow.derive();
     final ExpressionDataRow edr = dataRow.getExpressionDataRow();

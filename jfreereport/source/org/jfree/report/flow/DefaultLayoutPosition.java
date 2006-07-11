@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutPosition.java,v 1.1 2006/04/21 17:32:04 taqua Exp $
+ * $Id: DefaultLayoutPosition.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -203,7 +203,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
       ler.setData(reportDataRow.getReportData());
       ler.setCurrentRow(reportDataRow.getCursor());
     }
-    ler.setOutputMetaData(fc.getReportJob().getMetaData());
+   // ler.setOutputMetaData(fc.getReportJob().getMetaData());
     if (node instanceof Element)
     {
       ler.setDeclaringParent((Element) node);

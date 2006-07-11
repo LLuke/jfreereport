@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportJob.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: ReportJob.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,11 @@
  */
 package org.jfree.report.flow;
 
-import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactory;
 import org.jfree.report.util.ReportParameters;
-import org.jfree.base.config.ModifiableConfiguration;
-import org.jfree.base.config.HierarchicalConfiguration;
 
 /**
  * Creation-Date: 22.02.2006, 12:47:53
@@ -55,7 +54,6 @@ import org.jfree.base.config.HierarchicalConfiguration;
 public class ReportJob
 {
   private JFreeReport report;
-  private OutputProcessorMetaData metaData;
   private ReportDataFactory dataFactory;
   private ReportParameters parameters;
   private ModifiableConfiguration configuration;
@@ -81,16 +79,6 @@ public class ReportJob
   public JFreeReport getReport()
   {
     return report;
-  }
-
-  public OutputProcessorMetaData getMetaData()
-  {
-    return metaData;
-  }
-
-  public void setMetaData(final OutputProcessorMetaData metaData)
-  {
-    this.metaData = metaData;
   }
 
   public ReportDataFactory getDataFactory()

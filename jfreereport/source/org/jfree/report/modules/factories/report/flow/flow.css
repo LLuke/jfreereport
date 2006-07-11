@@ -7,7 +7,7 @@
  * namespace '../namespaces/engine/flow', regardless what namespace the element
  * itself is in.
  */
-@namespace flow url(http://jfreereport.sourceforge.net/namespaces/engine/flow); /* set default namespace to HTML */
+@namespace url(http://jfreereport.sourceforge.net/namespaces/engine/flow); /* set default namespace to HTML */
 @namespace xml url(http://www.w3.org/XML/1998/namespace);
 
 /**
@@ -16,39 +16,59 @@
  * function as function object, which enables us to interpret the type
  * parameter.
  */
-flow|resource-node {
-  content: attr("flow|content", url);
+resource-node {
+  content: attr("content", url);
 }
 
-flow|external-node {
-  content: attr("flow|content", raw);
+external-node {
+  content: attr("content", raw);
 }
 
-flow|content-node {
-  content: "Flow: " attr("flow|content", string);
+content-node {
+  content: "Flow: " attr("content", string);
   display: inline;
 }
 
-flow|content-node[isDate=true] {
-  content: format(attr("flow|content", date), date);
+content-node[isDate=true] {
+  content: format(attr("content", date), date);
 }
 
-flow|content-node[isDate=true][format] {
-  content: format(attr("flow|content", date), date, attr("flow|format",string));
+content-node[isDate=true][format] {
+  content: format(attr("content", date), date, attr("format",string));
 }
 
-flow|content-node[isNumber=true] {
-  content: "Flow: " format(attr("flow|content", number), number, "#,##0.00");
+content-node[isNumber=true] {
+  content: "Flow: " format(attr("content", number), number, "#,##0.00");
 }
 
-flow|content-node[isNumber=true][format] {
-  content: format(attr("flow|content", number), number, attr("flow|format",string));
+content-node[isNumber=true][format] {
+  content: format(attr("content", number), number, attr("format",string));
 }
 
-flow|content-node[isNumber=true][isInteger=true] {
-  content: format(attr("flow|content", number), number, "#,##0");
+content-node[isNumber=true][isInteger=true] {
+  content: format(attr("content", number), number, "#,##0");
 }
 
-flow|content-node[isNumber=true][isInteger=true][format] {
-  content: format(attr("flow|content", number), number, attr("flow|format",string));
+content-node[isNumber=true][isInteger=true][format] {
+  content: format(attr("content", number), number, attr("format",string));
+}
+
+inner-stylesheet {
+  display:none;
+}
+
+stylesheet {
+  display:none;
+}
+
+query {
+  display: none;
+}
+
+configuration {
+  display: none;
+}
+
+datasource {
+  display: none;
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutReportTarget.java,v 1.5 2006/05/06 12:59:25 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.6 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -43,46 +43,38 @@ package org.jfree.report.flow;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.jfree.layouting.input.style.CSSDeclarationRule;
-import org.jfree.layouting.input.style.CSSStyleRule;
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.StyleRule;
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleSheet;
-import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.InputFeedException;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.namespace.NamespaceDefinition;
-import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.namespace.NamespaceCollection;
+import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportInfo;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 import org.jfree.report.structure.StaticText;
-import org.jfree.report.util.AttributeMap;
-import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 07.03.2006, 18:56:37
  *
  * @author Thomas Morgner
  */
-public class LibLayoutReportTarget implements ReportTarget
+public class LibLayoutReportTarget extends AbstractReportTarget
 {
-  private ResourceKey baseResource;
-  private ResourceManager resourceManager;
   private InputFeed feed;
-  private ReportJob reportJob;
   private NamespaceCollection namespaces;
+  private LayoutProcess layoutProcess;
 
   /**
    * @param basResourceKey  may be null, if the report has not gone through the parser
@@ -92,35 +84,21 @@ public class LibLayoutReportTarget implements ReportTarget
   public LibLayoutReportTarget (final ReportJob reportJob,
                                 final ResourceKey basResourceKey,
                                 final ResourceManager resourceManager,
-                                final InputFeed feed)
+                                final LayoutProcess layoutProcess)
   {
-    if (feed == null)
+    super(reportJob, resourceManager, basResourceKey);
+
+    if (layoutProcess == null)
     {
       throw new NullPointerException();
     }
-    if (reportJob == null)
-    {
-      throw new NullPointerException();
-    }
-    this.reportJob = reportJob;
-    this.feed = feed;
-    this.baseResource = basResourceKey;
-
-    if (resourceManager == null)
-    {
-      this.resourceManager = new ResourceManager();
-      this.resourceManager.registerDefaults();
-    }
-    else
-    {
-      this.resourceManager = resourceManager;
-    }
-
+    this.layoutProcess = layoutProcess;
+    this.feed = layoutProcess.getInputFeed();
   }
 
-  public ReportJob getReportJob ()
+  public void commit()
   {
-    return reportJob;
+
   }
 
   protected InputFeed getInputFeed ()
@@ -146,10 +124,7 @@ public class LibLayoutReportTarget implements ReportTarget
         feed.addDocumentAttribute(DocumentContext.STRICT_STYLE_MODE, Boolean.TRUE);
       }
 
-
-      NamespaceDefinition[] namespaces = Namespaces.createFromConfig
-              (reportJob.getConfiguration(), "org.jfree.report.namespaces.",
-                      resourceManager);
+      NamespaceDefinition[] namespaces = createDefaultNameSpaces();
       for (int i = 0; i < namespaces.length; i++)
       {
         final NamespaceDefinition definition = namespaces[i];
@@ -174,6 +149,7 @@ public class LibLayoutReportTarget implements ReportTarget
     }
     catch (InputFeedException dse)
     {
+      dse.printStackTrace();
       throw new ReportProcessingException("Failed to process inputfeed", dse);
     }
 
@@ -184,6 +160,7 @@ public class LibLayoutReportTarget implements ReportTarget
   {
     if (node instanceof StaticText == false)
     {
+      Log.warn ("Unknown Node type encountered: " + node);
       return;
     }
 
@@ -205,7 +182,8 @@ public class LibLayoutReportTarget implements ReportTarget
           throws DataSourceException, ReportProcessingException
   {
     final InputFeed feed = getInputFeed();
-    processAttributes(node, runtime);
+    AttributeMap attrs = processAttributes(node, runtime);
+    handleAttributes(attrs);
     //Object styleAttributeValue = handleAttributes(node, runtime);
     //CSSDeclarationRule rule = createStyle(styleAttributeValue, node, runtime);
     try
@@ -244,11 +222,8 @@ public class LibLayoutReportTarget implements ReportTarget
     try
     {
       feed.startElement(namespace, node.getType());
-      processAttributes(node, runtime);
-//      Object styleAttributeValue = handleAttributes(node, runtime);
-//
-//      CSSDeclarationRule rule = createStyle(styleAttributeValue, node, runtime);
-//      feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "style", rule);
+      AttributeMap attributes = processAttributes(node, runtime);
+      handleAttributes(attributes);
     }
     catch (InputFeedException e)
     {
@@ -256,293 +231,40 @@ public class LibLayoutReportTarget implements ReportTarget
     }
   }
 
-  private void mergeDeclarationRule (final CSSDeclarationRule target,
-                                     final CSSDeclarationRule source)
-  {
-    Iterator it = source.getPropertyKeys();
-    while (it.hasNext())
-    {
-      StyleKey key = (StyleKey) it.next();
-      CSSValue value = source.getPropertyCSSValue(key);
-      boolean sourceImportant = source.isImportant(key);
-      boolean targetImportant = target.isImportant(key);
-      if (targetImportant)
-      {
-        continue;
-      }
-      target.setPropertyValue(key, value);
-      target.setImportant(key, sourceImportant);
-    }
-  }
-
-  private CSSDeclarationRule processStyleAttribute
-          (final Object styleAttributeValue,
-                                          final Element node,
-                                          final ExpressionRuntime runtime,
-                                          CSSDeclarationRule targetRule)
-          throws DataSourceException
-  {
-    if (targetRule == null)
-    {
-      try
-      {
-        targetRule = (CSSDeclarationRule) node.getStyle().clone();
-      }
-      catch (CloneNotSupportedException e)
-      {
-        targetRule = new CSSStyleRule(null, null);
-      }
-    }
-
-    if (styleAttributeValue instanceof String)
-    {
-      // ugly, we have to parse that thing. Cant think of nothing
-      // worse than that.
-      final String styleText = (String) styleAttributeValue;
-      try
-      {
-        final byte[] bytes = styleText.getBytes("UTF-8");
-        final ResourceKey key = resourceManager.createKey(bytes);
-        final Resource resource = resourceManager.create
-                (key, baseResource, StyleRule.class);
-
-        final CSSDeclarationRule parsedRule =
-                (CSSDeclarationRule) resource.getResource();
-        mergeDeclarationRule(targetRule, parsedRule);
-      }
-      catch (Exception e)
-      {
-        // ignore ..
-        e.printStackTrace();
-      }
-    }
-    else if (styleAttributeValue instanceof CSSStyleRule)
-    {
-      final CSSStyleRule styleRule =
-              (CSSStyleRule) styleAttributeValue;
-      mergeDeclarationRule(targetRule, styleRule);
-    }
-
-    // ok, not lets fill in the stuff from the style expressions ..
-    final Map styleExpressions = node.getStyleExpressions();
-    final Iterator styleExIt = styleExpressions.entrySet().iterator();
-
-    while (styleExIt.hasNext())
-    {
-      final Map.Entry entry = (Map.Entry) styleExIt.next();
-      final StyleKey name = (StyleKey) entry.getKey();
-      final Expression expression = (Expression) entry.getValue();
-      try
-      {
-        expression.setRuntime(runtime);
-        final Object value = expression.getValue();
-        if (value instanceof CSSValue)
-        {
-          targetRule.setPropertyValue(name, (CSSValue) value);
-        }
-        else if (value != null)
-        {
-          targetRule.setPropertyValueAsString(name, String.valueOf(value));
-        }
-      }
-      finally
-      {
-        expression.setRuntime(null);
-      }
-    }
-    return targetRule;
-  }
-
-  private AttributeMap collectAttributes (final Element node,
-                                          final ExpressionRuntime runtime)
-          throws DataSourceException
-  {
-    final AttributeMap attributes = node.getAttributeMap();
-    final AttributeMap attributeExpressions = node.getAttributeExpressionMap();
-    final String[] namespaces = attributeExpressions.getNameSpaces();
-    for (int i = 0; i < namespaces.length; i++)
-    {
-      final String namespace = namespaces[i];
-      final Map attrEx = attributeExpressions.getAttributes(namespace);
-
-      final Iterator attributeExIt = attrEx.entrySet().iterator();
-      while (attributeExIt.hasNext())
-      {
-        final Map.Entry entry = (Map.Entry) attributeExIt.next();
-        final String name = (String) entry.getKey();
-        final Expression expression = (Expression) entry.getValue();
-        try
-        {
-          expression.setRuntime(runtime);
-          final Object value = expression.getValue();
-          attributes.setAttribute(namespace, name, value);
-        }
-        finally
-        {
-          expression.setRuntime(null);
-        }
-      }
-    }
-    return attributes;
-  }
-
-  private void processAttributes (final Element node,
-                                  final ExpressionRuntime runtime)
-          throws DataSourceException, ReportProcessingException
-  {
-    final AttributeMap attributes = collectAttributes(node, runtime);
-
-    final InputFeed feed = getInputFeed();
-
-    try
-    {
-      CSSDeclarationRule rule = null;
-
-      final String[] attrNamespaces = attributes.getNameSpaces();
-      for (int i = 0; i < attrNamespaces.length; i++)
-      {
-        final String namespace = attrNamespaces[i];
-        final Map attributeMap = attributes.getAttributes(namespace);
-        if (attributeMap == null)
-        {
-          continue;
-        }
-
-        final NamespaceDefinition nsDef = findNamespace(namespace);
-        final Iterator attributeIt = attributeMap.entrySet().iterator();
-        while (attributeIt.hasNext())
-        {
-          final Map.Entry entry = (Map.Entry) attributeIt.next();
-          final String key = (String) entry.getKey();
-          if (isStyleAttribute(nsDef, node.getType(), key))
-          {
-            final Object styleAttributeValue = entry.getValue();
-            rule = processStyleAttribute(styleAttributeValue, node, runtime, rule);
-          }
-          else
-          {
-            feed.setAttribute(namespace, key, entry.getValue());
-          }
-        }
-      }
-
-      if (rule != null && rule.getSize() > 0)
-      {
-        feed.setAttribute(Namespaces.LIBLAYOUT_NAMESPACE, "style", rule);
-      }
-    }
-    catch (InputFeedException e)
-    {
-      throw new ReportProcessingException("Failed to process inputfeed", e);
-    }
-  }
-
-  private boolean isStyleAttribute (NamespaceDefinition def,
-                                    String elementName,
-                                    String attrName)
-  {
-    if (def == null)
-    {
-      return false;
-    }
-
-    String[] styleAttr = def.getStyleAttribute(elementName);
-    for (int i = 0; i < styleAttr.length; i++)
-    {
-      String styleAttrib = styleAttr[i];
-      if (attrName.equals(styleAttrib))
-      {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private NamespaceDefinition findNamespace (String namespace)
+  protected NamespaceDefinition findNamespace (String namespace)
   {
     if (namespace == null)
     {
       return null;
     }
-
     return namespaces.getDefinition(namespace);
   }
 
-//
-//    private Object handleAttributes(final Element node,
-//                                  final ExpressionRuntime runtime)
-//          throws
-//          DataSourceException, ReportProcessingException
-//  {
-//    final AttributeMap attributes = node.getAttributeMap();
-//    final AttributeMap attributeExpressions = node.getAttributeExpressionMap();
-//    final String[] namespaces = attributeExpressions.getNameSpaces();
-//    for (int i = 0; i < namespaces.length; i++)
-//    {
-//      final String namespace = namespaces[i];
-//      final Map attrEx = attributeExpressions.getAttributes(namespace);
-//
-//      final Iterator attributeExIt = attrEx.entrySet().iterator();
-//      while (attributeExIt.hasNext())
-//      {
-//        final Map.Entry entry = (Map.Entry) attributeExIt.next();
-//        final String name = (String) entry.getKey();
-//        final Expression expression = (Expression) entry.getValue();
-//        try
-//        {
-//          expression.setRuntime(runtime);
-//          final Object value = expression.getValue();
-//          attributes.setAttribute(namespace, name, value);
-//        }
-//        finally
-//        {
-//          expression.setRuntime(null);
-//        }
-//      }
-//    }
-//
-//    final InputFeed feed = getInputFeed();
-//
-//    Object styleAttributeValue = null;
-//
-//    try
-//    {
-//
-//
-//      final String[] attrNamespaces = attributes.getNameSpaces();
-//      for (int i = 0; i < attrNamespaces.length; i++)
-//      {
-//        final String namespace = attrNamespaces[i];
-//        final boolean jfreeReportNamespace =
-//                JFreeReportInfo.REPORT_NAMESPACE.equals(namespace);
-//        final Map attributeMap = attributes.getAttributes(namespace);
-//        if (attributeMap == null)
-//        {
-//          continue;
-//        }
-//        final Iterator attributeIt = attributeMap.entrySet().iterator();
-//        while (attributeIt.hasNext())
-//        {
-//          final Map.Entry entry = (Map.Entry) attributeIt.next();
-//          final String key = (String) entry.getKey();
-//          if (jfreeReportNamespace && "style".equals(key))
-//          {
-//            styleAttributeValue = entry.getValue();
-//          }
-//          else
-//          {
-//            feed.setAttribute(namespace, key, entry.getValue());
-//          }
-//        }
-//      }
-//    }
-//    catch (InputFeedException e)
-//    {
-//      throw new ReportProcessingException("Failed to process inputfeed", e);
-//    }
-//    return styleAttributeValue;
-//  }
-//
+
+  protected void handleAttributes(AttributeMap map)
+          throws ReportProcessingException
+  {
+    try
+    {
+      InputFeed feed = getInputFeed();
+      String[] namespaces = map.getNameSpaces();
+      for (int i = 0; i < namespaces.length; i++)
+      {
+        final String namespace = namespaces[i];
+        Map localAttrs = map.getAttributes(namespace);
+        Iterator it = localAttrs.entrySet().iterator();
+        while (it.hasNext())
+        {
+          Map.Entry entry = (Map.Entry) it.next();
+          feed.setAttribute(namespace, (String) entry.getKey(), entry.getValue());
+        }
+      }
+    }
+    catch (InputFeedException e)
+    {
+      throw new ReportProcessingException("Failed to set attribute", e);
+    }
+  }
 
   public void endElement (Element node, ExpressionRuntime runtime)
           throws DataSourceException, ReportProcessingException

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StreamingReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: StreamingReportProcessor.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ package org.jfree.report.flow.streaming;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
 import org.jfree.layouting.StreamingLayoutProcess;
 import org.jfree.layouting.DefaultStreamingLayoutProcess;
-import org.jfree.layouting.normalizer.NormalizationException;
 import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.SinglePassReportProcessor;
 import org.jfree.report.flow.LibLayoutReportTarget;
@@ -89,7 +88,7 @@ public class StreamingReportProcessor extends SinglePassReportProcessor
     {
       layoutProcess = new DefaultStreamingLayoutProcess(outputProcessor);
     }
-    catch (NormalizationException e)
+    catch (Exception e)
     {
       throw new ReportProcessingException("Blah", e);
     }
@@ -97,6 +96,6 @@ public class StreamingReportProcessor extends SinglePassReportProcessor
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess.getInputFeed());
+            (job, resourceKey, resourceManager, layoutProcess);
   }
 }

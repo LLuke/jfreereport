@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: Element.java,v 1.3 2006/04/30 09:47:49 taqua Exp $
  *
  * Changes
  * -------
@@ -50,13 +50,13 @@ import java.util.Locale;
 
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
-import org.jfree.layouting.input.style.keys.box.Visibility;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.util.LocaleUtility;
+import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.JFreeReportInfo;
 import org.jfree.report.function.Expression;
-import org.jfree.report.util.AttributeMap;
 
 /**
  * An element is a node that can have attributes. The 'id' and the 'name'
@@ -227,15 +227,15 @@ public abstract class Element extends Node
     return style;
   }
 
-  public void setVisibility(Visibility v)
+  public void setVisibility(CSSConstant v)
   {
     getStyle().setPropertyValue(BoxStyleKeys.VISIBILITY, v);
   }
 
 
-  public Visibility getVisibility()
+  public CSSConstant getVisibility()
   {
-    return (Visibility) getStyle().getPropertyCSSValue(BoxStyleKeys.VISIBILITY);
+    return (CSSConstant) getStyle().getPropertyCSSValue(BoxStyleKeys.VISIBILITY);
   }
 
   public void setAttributeExpression(final String attr,
