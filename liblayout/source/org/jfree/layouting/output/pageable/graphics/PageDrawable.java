@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageDrawable.java,v 1.1 2006/07/11 13:54:24 taqua Exp $
  *
  * Changes
  * -------
@@ -40,34 +40,23 @@
  */
 package org.jfree.layouting.output.pageable.graphics;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.Shape;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.layouting.input.style.keys.color.ColorStyleKeys;
 import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.renderer.border.Border;
-import org.jfree.layouting.renderer.border.BorderCorner;
-import org.jfree.layouting.renderer.border.BorderEdge;
+import org.jfree.layouting.output.pageable.BorderShapeFactory;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
 import org.jfree.layouting.renderer.model.RenderableText;
-import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
-import org.jfree.layouting.util.geom.StrictInsets;
-import org.jfree.layouting.output.pageable.BorderShapeFactory;
 import org.jfree.ui.Drawable;
 import org.jfree.util.Log;
 
@@ -236,6 +225,7 @@ public class PageDrawable implements Drawable
     b.append(", padding=");
     b.append(box.getPaddings());
     b.append("}");
+
     Log.debug(b.toString());
 
     RenderNode childs = box.getFirstChild();

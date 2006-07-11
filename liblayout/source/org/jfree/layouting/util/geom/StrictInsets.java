@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StrictInsets.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ package org.jfree.layouting.util.geom;
  *
  * @author Thomas Morgner
  */
-public class StrictInsets
+public class StrictInsets implements Cloneable
 {
   private long top;
   private long bottom;
@@ -184,4 +184,24 @@ public class StrictInsets
     b.append("}");
     return b.toString();
   }
+
+
+  /**
+   * Returns a copy of this bounds object. This method will never throw a
+   * 'CloneNotSupportedException'.
+   *
+   * @return the cloned instance.
+   */
+  public Object clone ()
+  {
+    try
+    {
+      return super.clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new InternalError("Clone must always be supported.");
+    }
+  }
+  
 }

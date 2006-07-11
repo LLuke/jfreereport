@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: NormalFlowRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,8 @@ import java.util.ArrayList;
  *
  * A flow may hold a set of sub-flows. Sub-Flows are derived from floating
  * elements. Absolutely positioned elements are placed on the page context.
+ *
+ * Normal-flows are derived for each absolutly or staticly positioned element.
  *
  * @author Thomas Morgner
  */
@@ -147,5 +149,15 @@ public class NormalFlowRenderBox extends BlockRenderBox
   public NormalFlowRenderBox getNormalFlow()
   {
     return this;
+  }
+
+  public long getLeadingMargin(int axis)
+  {
+    return Long.MAX_VALUE;
+  }
+
+  public long getTrailingMargin(int axis)
+  {
+    return Long.MAX_VALUE;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -398,6 +398,21 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
+   * Clones this node. Be aware that cloning can get you into deep trouble, as
+   * the relations this node has may no longer be valid.
+   *
+   * @return
+   */
+  public Object clone()
+  {
+    final RenderBox o = (RenderBox) super.clone();
+    o.borderWidths = (StrictInsets) borderWidths.clone();
+    o.margins = (StrictInsets) margins.clone();
+    o.paddings = (StrictInsets) paddings.clone();
+    return o;
+  }
+
+  /**
    * Derive creates a disconnected node that shares all the properties of the
    * original node. The derived node will no longer have any parent, silbling,
    * child or any other relationships with other nodes.
@@ -622,5 +637,66 @@ public abstract class RenderBox extends RenderNode
     }
     return new long[]{leftOrTop, rightOrBottom};
   }
+
+  /**
+   * Queries the margin of the top or left neighbour (position wise).
+   *
+   * @param axis
+   * @return
+   */
+  public long getLeadingMargin (int axis)
+  {
+    RenderBox parent = getParent();
+    if (parent == null)
+    {
+      return Long.MAX_VALUE;
+    }
+    // A block renderer box is easy. Our previous element will be the
+    // element above us.
+    if (axis == parent.getMajorAxis())
+    {
+      RenderNode previous = getPrev();
+      if (previous != null)
+      {
+        if (previous instanceof RenderBox)
+        {
+          RenderBox prevBox = (RenderBox) previous;
+          return prevBox.getTrailingMargin(axis);
+        }
+        else
+        {
+          // fall back ...
+          return 0;
+        }
+      }
+      else
+      {
+        return parent.getLeadingMargin(axis);
+      }
+    }
+    else
+    {
+      return parent.getLeadingMargin(axis);
+    }
+  }
+
+  /**
+   * Queries the bottom or right margin.
+   *
+   * @param axis
+   * @return
+   */
+  public long getTrailingMargin (int axis)
+  {
+    if (axis == VERTICAL_AXIS)
+    {
+      return getMargins().getBottom();
+    }
+    else
+    {
+      return getMargins().getRight();
+    }
+  }
+
 
 }

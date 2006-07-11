@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InlineRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -426,7 +426,7 @@ public class InlineRenderBox extends RenderBox
     {
       // minor axis means: Drive through all childs and query their size
       // then find the maximum
-      long size = 0;
+      long size = paddings[0];
       RenderNode child = getFirstChild();
       while (child != null)
       {
@@ -454,7 +454,7 @@ public class InlineRenderBox extends RenderBox
     {
       // minor axis means: Drive through all childs and query their size
       // then find the maximum
-      long size = 0;
+      long size = paddings[0];
       RenderNode child = getFirstChild();
       while (child != null)
       {
@@ -485,19 +485,24 @@ public class InlineRenderBox extends RenderBox
     if (state == RenderNodeState.UNCLEAN)
     {
       // ok, recompute the margins, paddings and border-sizes and get me a
-      // valid imageable-area. This computation is slightly different from
-      // the one done in the Block-context.
+      // valid imageable-area.
 
+      // For now, I assume a MBP (margin-border-padding) size of 10, just
+      // to get some visual appearance..
+      setState(RenderNodeState.PENDING);
+    }
+
+    if (state == RenderNodeState.PENDING)
+    {
       validateBorders();
       validateMargins();
       validatePaddings();
-
-      // For now, I assume a MBP (margin-border-padding) size of 1, just
-      // to get some visual appearance..
       setState(RenderNodeState.LAYOUTING);
     }
 
+
     final long width = getWidth() - getLeftInsets() - getRightInsets();
+
     long nodePos = getX() + getLeftInsets();
     // as defined by the stylesheet property with the same name.
     final long lineHeight = 0;
@@ -517,7 +522,7 @@ public class InlineRenderBox extends RenderBox
       node = node.getNext();
     }
 
-    setWidth((nodePos + getRightInsets()) - getX() - getLeftInsets());
+    setWidth((nodePos + getRightInsets()) - getX());
     setHeight(effectiveHeight);
     setState(RenderNodeState.FINISHED);
   }

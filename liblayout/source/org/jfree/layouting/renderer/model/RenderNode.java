@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderNode.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public abstract class RenderNode implements Cloneable
 
   private RenderNodeState state;
 
-  private RenderNode parent;
+  private RenderBox parent;
   private RenderNode prev;
   private RenderNode next;
 
@@ -275,12 +275,12 @@ public abstract class RenderNode implements Cloneable
 
   }
 
-  public RenderNode getParent()
+  public RenderBox getParent()
   {
     return parent;
   }
 
-  public void setParent(final RenderNode parent)
+  public void setParent(final RenderBox parent)
   {
     this.parent = parent;
   }

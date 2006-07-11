@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BlockRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.model;
-
-import org.jfree.util.Log;
 
 /**
  * A block box behaves according to the 'display:block' layouting rules.
@@ -241,6 +239,7 @@ public class BlockRenderBox extends RenderBox
       validateBorders();
       validateMargins();
       validatePaddings();
+      setState(RenderNodeState.LAYOUTING);
     }
 
     final long leftMbp = getLeftInsets();
@@ -267,7 +266,6 @@ public class BlockRenderBox extends RenderBox
       }
       else
       {
-        Log.debug ("BLOCK .. " + node);
         // block boxes are considered simple for now. Just validate them
         node.setWidth(nodeWidth);
         node.validate();
@@ -291,7 +289,6 @@ public class BlockRenderBox extends RenderBox
     final long desiredWidth = computeWidth(nodeWidth, node);
     if (desiredWidth <= nodeWidth)
     {
-      Log.debug ("Content fits .. " + desiredWidth + " <= " + nodeWidth);
       node.setWidth(desiredWidth);
       node.validate();
       struct.addCursorPosition(node.getHeight());
@@ -300,7 +297,7 @@ public class BlockRenderBox extends RenderBox
     }
 
     final long prefSize = node.getPreferredSize(getMinorAxis());
-    Log.debug ("Splitting .. " + nodeWidth);
+
     // not enough space; we have to break that beast ...
     target = node.split(getMinorAxis(), nodeWidth, target);
     replaceChilds(node, target);
@@ -316,26 +313,25 @@ public class BlockRenderBox extends RenderBox
     {
       if (prefSize < progress)
       {
+        // made at least some progress ...
         struct.setProgress(prefSize);
         struct.setNode(target[1]);
-        Log.debug ("Made some progress .. " + node);
         return struct;
       }
 
+      // oh, no progress at all? Break out.
       target[1].setX(getX() + getLeftInsets());
       target[1].setY(struct.getCursor());
       target[1].setWidth(firstNodeWidth);
       target[1].validate();
       struct.addCursorPosition(target[1].getHeight());
-      Log.debug ("No Progress: " + target[1] + ": " + prefSize + " vs. " + progress);
       struct.setNode(target[1].getNext());
-      throw new IllegalStateException("NO progress is not valid");
-//      return struct;
+      // throw new IllegalStateException("NO progress is not valid");
+      return struct;
     }
 
     struct.setNode(target[0].getNext());
     struct.setProgress(Long.MAX_VALUE);
-    Log.debug ("Not splitting .. " + struct.getNode());
     return struct;
   }
 
@@ -390,4 +386,5 @@ public class BlockRenderBox extends RenderBox
   {
     return getBoxDefinition().getPreferredWidth().resolve(0);
   }
+
 }
