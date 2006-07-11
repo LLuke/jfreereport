@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RawResourceKey.java,v 1.1.1.1 2006/04/17 16:48:39 taqua Exp $
+ * $Id: RawResourceKey.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -117,10 +117,10 @@ public class RawResourceKey extends AbstractResourceKey
     b.append(":");
     for (int i = 0; i < data.length; i += 2)
     {
-      char element = (char) (data[i] & 0xff);
+      int element = (data[i] & 0xff);
       if (i + 1 < data.length)
       {
-        element += (char) ((data[i] & 0xff) << 8);
+        element = element | ((data[i + 1] & 0xff) << 8);
       }
       b.append(element);
     }

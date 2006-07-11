@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceManager.java,v 1.4 2006/05/15 12:34:08 taqua Exp $
+ * $Id: ResourceManager.java,v 1.5 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -210,7 +210,8 @@ public class ResourceManager
   public Resource create(ResourceKey key, ResourceKey context, Class target)
           throws ResourceLoadingException, ResourceCreationException
   {
-    if (target == null) throw new NullPointerException();
+    if (target == null) throw new NullPointerException("Target must not be null");
+    if (key == null) throw new NullPointerException("Key must not be null.");
     return create(key, context, new Class[]{target});
   }
 
@@ -225,6 +226,7 @@ public class ResourceManager
                          Class[] target)
           throws ResourceLoadingException, ResourceCreationException
   {
+    if (key == null) throw new NullPointerException("Key must not be null.");
     // ok, we have a handle to the data, and the data is current.
     // Lets check whether we also have a cached result.
     final Resource resource = factoryCache.get(key);
@@ -289,7 +291,11 @@ public class ResourceManager
         }
         catch(ResourceCreationException rex)
         {
-          // ignore it, try the next factory ...
+//          // ignore it, try the next factory ...
+//          if (Log.isDebugEnabled())
+//          {
+//            Log.debug ("Failed at " + fact.getClass() + ": ",rex);
+//          }
         }
       }
       throw new ResourceCreationException

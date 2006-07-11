@@ -28,7 +28,7 @@ public abstract class AbstractResourceKey implements ResourceKey
       if (value instanceof Serializable == false)
       {
         throw new IllegalArgumentException(
-                "Value for key " + key + " is not serializable.");
+                "Value for key " + key + " is not serializable: " + value);
       }
       if (key instanceof LoaderParameterKey)
       {
