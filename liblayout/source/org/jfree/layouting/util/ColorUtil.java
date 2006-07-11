@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ColorUtil.java,v 1.1 2006/04/17 21:04:28 taqua Exp $
+ * $Id: ColorUtil.java,v 1.2 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -43,12 +43,11 @@ package org.jfree.layouting.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import org.jfree.layouting.input.style.values.CSSColorValue;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.keys.color.CSSSystemColors;
 import org.jfree.layouting.input.style.keys.color.HtmlColors;
 import org.jfree.layouting.input.style.keys.color.SVGColors;
-import org.jfree.util.Log;
+import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * Creation-Date: 16.04.2006, 15:23:58
@@ -57,6 +56,10 @@ import org.jfree.util.Log;
  */
 public class ColorUtil
 {
+  private ColorUtil()
+  {
+  }
+
   private static final float ONE_THIRD = 1f / 3f;
 
   /*
@@ -151,7 +154,10 @@ public class ColorUtil
   public static CSSValue parseColor(String colorSpec)
   {
     final CSSValue color = parseIdentColor(colorSpec);
-    if (color != null) return color;
+    if (color != null)
+    {
+      return color;
+    }
     try
     {
       if (colorSpec.length() == 4) // #rgb

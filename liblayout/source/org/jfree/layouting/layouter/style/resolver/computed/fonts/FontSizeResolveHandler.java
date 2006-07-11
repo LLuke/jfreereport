@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontSizeResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
@@ -96,14 +96,14 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
     addValue(FontSizeConstant.XX_LARGE, predefinedSizes[6]);
   }
 
-  private CSSNumericValue computePredefinedSize(FontSizeConstant c)
+  private CSSNumericValue computePredefinedSize(CSSConstant c)
   {
     String key = SIZE_FACTOR_PREFIX + c.getCSSText();
     double scaling = parseDouble(key, 100);
     return new CSSNumericValue(CSSNumericType.PT, fontSize * scaling / 100d);
   }
 
-  private double computePredefinedScalingFactor(FontSizeConstant c)
+  private double computePredefinedScalingFactor(CSSConstant c)
   {
     String key = SIZE_FACTOR_PREFIX + c.getCSSText();
     return parseDouble(key, 100);
@@ -141,13 +141,13 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
-                         LayoutStyle style,
-                         StyleKey key)
+                      LayoutElement currentNode,
+                      LayoutStyle style,
+                      StyleKey key)
   {
     CSSValue value = style.getValue(key);
     if (value instanceof CSSConstant == false)
@@ -156,7 +156,7 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
       return;
     }
     CSSConstant constant = (CSSConstant) value;
-    final LayoutNode parent = currentNode.getParent();
+    final LayoutElement parent = currentNode.getParent();
     if (parent != null)
     {
       final double parentFontSize =
@@ -197,7 +197,7 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
       style.setValue(key, resolvedValue);
       return;
     }
-    
+
     // do not change the font size..
     style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 100));
   }

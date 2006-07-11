@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractLayoutProcess.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,15 @@
  */
 package org.jfree.layouting;
 
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.DefaultDocumentContext;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
-import org.jfree.layouting.model.ContextId;
-import org.jfree.layouting.model.DefaultDocumentContext;
-import org.jfree.layouting.model.DefaultPageContext;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.model.PageContext;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.resourceloader.ResourceManager;
@@ -58,11 +60,72 @@ import org.jfree.resourceloader.ResourceManager;
  */
 public abstract class AbstractLayoutProcess implements LayoutProcess
 {
+  protected abstract static class AbstractLayoutProcessState
+          implements LayoutProcessState
+  {
+    private State inputFeedState;
+    private long nextId;
+    private DocumentContext documentContext;
+
+    public AbstractLayoutProcessState()
+    {
+    }
+
+    public State getInputFeedState()
+    {
+      return inputFeedState;
+    }
+
+    public void setInputFeedState(final State inputFeedState)
+    {
+      this.inputFeedState = inputFeedState;
+    }
+
+    public long getNextId()
+    {
+      return nextId;
+    }
+
+    public void setNextId(final long nextId)
+    {
+      this.nextId = nextId;
+    }
+
+    public DocumentContext getDocumentContext()
+    {
+      return documentContext;
+    }
+
+    public void setDocumentContext(final DocumentContext documentContext)
+    {
+      this.documentContext = documentContext;
+    }
+
+    protected abstract AbstractLayoutProcess create(OutputProcessor outputProcessor);
+
+    protected void fill(AbstractLayoutProcess layoutProcess)
+            throws StateException
+    {
+      layoutProcess.documentContext = documentContext;
+      if (inputFeedState != null)
+      {
+        layoutProcess.inputFeed = (InputFeed) inputFeedState.restore(
+                layoutProcess);
+      }
+    }
+
+    public LayoutProcess restore(OutputProcessor outputProcessor)
+            throws StateException
+    {
+      AbstractLayoutProcess process = create(outputProcessor);
+      fill(process);
+      return process;
+    }
+  }
+
   private InputFeed inputFeed;
-  private long nextId;
   private DocumentContext documentContext;
   private OutputProcessor outputProcessor;
-  private PageContext pageContext;
 
   protected AbstractLayoutProcess(OutputProcessor outputProcessor)
   {
@@ -73,7 +136,6 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
 
     this.outputProcessor = outputProcessor;
     this.documentContext = new DefaultDocumentContext();
-    this.pageContext = new DefaultPageContext();
   }
 
   public OutputProcessorMetaData getOutputMetaData()
@@ -81,42 +143,21 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
     return outputProcessor.getMetaData();
   }
 
-  public OutputProcessor getOutputProcessor ()
+  public OutputProcessor getOutputProcessor()
   {
     return outputProcessor;
-  }
-
-  public StyleResolver getStyleResolver()
-  {
-    return DocumentContextUtility.getStyleResolver(documentContext);
   }
 
   public InputFeed getInputFeed()
   {
     if (inputFeed == null)
     {
-      inputFeed = createInputFeed();
+      inputFeed = getOutputProcessor().createInputFeed(this);
     }
     return inputFeed;
   }
 
   protected abstract InputFeed createInputFeed();
-
-  public ContextId generateContextId(long parent)
-  {
-    nextId += 1;
-    return new ContextId (nextId, parent);
-  }
-
-  protected void setNextId (long id)
-  {
-    nextId = id;
-  }
-
-  public long getLastId()
-  {
-    return nextId;
-  }
 
   /**
    * The document context holds global information, like the used stylesheets.
@@ -129,18 +170,49 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
     return documentContext;
   }
 
-  public PageContext getPageContext ()
-  {
-    return pageContext;
-  }
-
-  public void setPageContext (PageContext pageContext)
-  {
-    this.pageContext = pageContext;
-  }
-
   public ResourceManager getResourceManager()
   {
-    return DocumentContextUtility.getResourceManager(documentContext);
+    return documentContext.getResourceManager();
+  }
+
+  public void pageBreakEncountered(final CSSValue pageName,
+                                   final PseudoPage[] pseudoPages)
+          throws NormalizationException
+  {
+    getInputFeed().handlePageBreakEncountered(pageName, pseudoPages);
+  }
+
+  public boolean isPagebreakEncountered()
+  {
+    return false;
+  }
+
+  protected abstract AbstractLayoutProcessState createState();
+
+  protected void fillState(AbstractLayoutProcessState state) throws
+          StateException
+  {
+    state.setDocumentContext(documentContext);
+    if (inputFeed != null)
+    {
+      state.setInputFeedState(inputFeed.saveState());
+    }
+  }
+
+  public LayoutProcessState saveState() throws StateException
+  {
+    AbstractLayoutProcessState state = createState();
+    fillState(state);
+    return state;
+  }
+
+  public Normalizer getNormalizer()
+  {
+    return getInputFeed().getCurrentNormalizer();
+  }
+
+  public StyleResolver getStyleResolver()
+  {
+    return getNormalizer().getStyleResolver();
   }
 }

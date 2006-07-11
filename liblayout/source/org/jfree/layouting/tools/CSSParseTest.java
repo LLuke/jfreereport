@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSParseTest.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
+ * $Id: CSSParseTest.java,v 1.3 2006/04/23 15:18:18 taqua Exp $
  *
  * Changes
  * -------
@@ -92,31 +92,5 @@ public class CSSParseTest
     {
       e.printStackTrace();
     }
-//    Log.error ("Start..." + StyleKeyRegistry.getRegistry().getKeyCount());
-//
-//    StyleSheetLoader.getInstance().getInitialValuesSheet();
-//    StyleSheetLoader.getInstance().getDefaultStyleSheet();
-//
-//    Log.debug ("---------------------------------------------------------");
-//    final URL defaultStyleURL = ObjectUtilities.getResource
-//            ("org/jfree/layouting/test.css", StyleSheetLoader.class);
-//
-//    try
-//    {
-//      final Parser parser = CSSParserFactory.getInstance().createCSSParser();
-//      final StyleSheetHandler handler = new StyleSheetHandler(
-//              StyleKeyRegistry.getRegistry(), null);
-//      parser.setDocumentHandler(handler);
-//      parser.parseStyleSheet(new URLInputSource(defaultStyleURL));
-//      StyleSheet s  = handler.getStyleSheet();
-//    }
-//    catch (Exception e)
-//    {
-//      e.printStackTrace();
-//    }
-//
-//    CSSDeclarationRule r = StyleSheetLoader.getInstance().parseStyleText
-//            ("color:#ffffff;", defaultStyleURL);
-//    r.isReadOnly();
   }
 }

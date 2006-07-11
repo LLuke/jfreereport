@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontFamilyResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,8 @@ import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 import org.jfree.layouting.output.OutputProcessorMetaData;
@@ -90,14 +90,15 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
+                         LayoutElement currentNode,
                          LayoutStyle style,
                          StyleKey key)
   {
+    Log.debug ("Processing: " + currentNode);
     final FontSpecification fs =
             currentNode.getLayoutContext().getFontSpecification();
     final OutputProcessorMetaData outputMetaData = process.getOutputMetaData();
@@ -111,11 +112,10 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
         CSSValue item = list.getItem(i);
         if (item instanceof CSSConstant)
         {
-          final FontFamilyValues c = (FontFamilyValues)
-                  lookupValue((CSSConstant) item);
+          final CSSConstant c = (CSSConstant) lookupValue((CSSConstant) item);
           final FontFamily family = outputMetaData.getFontFamily(c);
           fs.setFontFamily(family.getFamilyName());
-          if (fs.isValid())
+          if (process.getOutputMetaData().isValid(fs))
           {
             return;
           }
@@ -127,7 +127,7 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
           final CSSStringValue sval = (CSSStringValue) item;
           final String fontName = sval.getValue();
           fs.setFontFamily(fontName);
-          if (fs.isValid())
+          if (process.getOutputMetaData().isValid(fs))
           {
             return;
           }
@@ -138,6 +138,7 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
     {
       if (FontFamilyValues.NONE.equals(cssValue))
       {
+        Log.info ("Font family has been set to 'none'.");
         fs.setFontFamily(null);
         return;
       }
@@ -145,7 +146,7 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
 
     final FontFamily family = outputMetaData.getDefaultFontFamily();
     fs.setFontFamily(family.getFamilyName());
-    if (fs.isValid() == false)
+    if (process.getOutputMetaData().isValid(fs) == false)
     {
       throw new IllegalStateException
               ("Invalid state after setting the default font family.");

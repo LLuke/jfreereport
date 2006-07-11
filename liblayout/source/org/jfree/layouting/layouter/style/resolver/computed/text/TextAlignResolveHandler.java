@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextAlignResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: TextAlignResolveHandler.java,v 1.3 2006/05/06 13:02:47 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,14 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.text;
 
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSStringValue;
-import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.keys.text.TextAlign;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.text.TextAlignmentSpecifcation;
-import org.jfree.layouting.model.text.TextSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.text.TextAlign;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
@@ -73,30 +72,23 @@ public class TextAlignResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(final LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
-    final TextSpecification textSpecification =
-            currentNode.getLayoutContext().getTextSpecification();
-    final TextAlignmentSpecifcation alignmentSpecifcation =
-            textSpecification.getAlignmentSpecifcation();
-
     CSSValue value = style.getValue(key);
     if (value instanceof CSSStringValue)
     {
-      CSSStringValue sval = (CSSStringValue) value;
-      alignmentSpecifcation.setSubStringAlignment(sval.getValue());
-      alignmentSpecifcation.setTextAlign(TextAlign.START);
+      // this is a sub-string alignment.
       return;
     }
 
     final CSSConstant alignValue =
             (CSSConstant) resolveValue(process, currentNode, style, key);
-    alignmentSpecifcation.setTextAlign(alignValue);
+    style.setValue(TextStyleKeys.TEXT_ALIGN, alignValue);
   }
 }

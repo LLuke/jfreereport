@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SelectorTest.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -51,21 +51,25 @@ import org.jfree.layouting.input.style.parser.StyleSheetHandler;
 import org.jfree.layouting.input.style.parser.StringInputSource;
 import org.jfree.layouting.input.style.parser.CSSParserInstantiationException;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
+import org.jfree.resourceloader.ResourceManager;
 
 public class SelectorTest
 {
   public static void main (String[] args)
           throws IOException, CSSParserInstantiationException
   {
-    final String selector = "tag.class[name] tag .class [name]";
+    final String selector = ":marker";
 
-//    final Parser parser = CSSParserFactory.getInstance().createCSSParser();
-//    final StyleSheetHandler handler = new StyleSheetHandler(
-//            StyleKeyRegistry.getRegistry(), null);
-//    parser.setDocumentHandler(handler);
-//    SelectorList sl =
-//            parser.parseSelectors(new StringInputSource (selector, new URL("http://localhost")));
-//    System.exit(0);
+    final ResourceManager resourceManager= new ResourceManager();
+    resourceManager.registerDefaults();
+
+    final Parser parser = CSSParserFactory.getInstance().createCSSParser();
+    final StyleSheetHandler handler = new StyleSheetHandler
+            (resourceManager, null, 0, StyleKeyRegistry.getRegistry(), null);
+    parser.setDocumentHandler(handler);
+    SelectorList sl =
+            parser.parseSelectors(new StringInputSource (selector, new URL("http://localhost")));
+    System.exit(0);
   }
 
 }

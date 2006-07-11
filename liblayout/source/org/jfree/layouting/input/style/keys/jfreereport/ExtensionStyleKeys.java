@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ExtensionStyleKeys.java,v 1.1 2006/04/17 20:54:49 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.jfree.layouting.input.style.StyleKeyRegistry;
 
 /**
  * All kind of StyleKeys needed for compatiblity with the old display model
- * of JFreeReport.
+ * of JFreeReport. (I dont like the idea of having these keys here.)
  *
  * @author Thomas Morgner
  */
@@ -53,11 +53,11 @@ public class ExtensionStyleKeys
 {
   public static final StyleKey POSITION_X =
           StyleKeyRegistry.getRegistry().createKey
-          ("-x-jfreereport-x", true, false, false);
+          ("-x-jfreereport-x", true, false, StyleKey.DOM_ELEMENTS);
 
   public static final StyleKey POSITION_Y =
           StyleKeyRegistry.getRegistry().createKey
-          ("-x-jfreereport-y", true, true, false);
+          ("-x-jfreereport-y", true, true, StyleKey.DOM_ELEMENTS);
 
 
   private ExtensionStyleKeys()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PagePolicy.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class PagePolicy extends CSSConstant
+public class PagePolicy
 {
-  public static PagePolicy START = new PagePolicy("start");
-  public static PagePolicy FIRST = new PagePolicy("first");
-  public static PagePolicy LAST = new PagePolicy("last");
+  public static CSSConstant START = new CSSConstant("start");
+  public static CSSConstant FIRST = new CSSConstant("first");
+  public static CSSConstant LAST = new CSSConstant("last");
 
-  private PagePolicy(final String constant)
+  private PagePolicy()
   {
-    super(constant);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DominantBaseline.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,35 +47,34 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class DominantBaseline extends CSSConstant
+public class DominantBaseline
 {
-  public static final DominantBaseline USE_SCRIPT = new DominantBaseline(
+  public static final CSSConstant USE_SCRIPT = new CSSConstant(
           "use-script");
-  public static final DominantBaseline NO_CHANGE = new DominantBaseline(
+  public static final CSSConstant NO_CHANGE = new CSSConstant(
           "no-change");
-  public static final DominantBaseline RESET_SIZE = new DominantBaseline(
+  public static final CSSConstant RESET_SIZE = new CSSConstant(
           "reset-size");
-  public static final DominantBaseline ALPHABETIC = new DominantBaseline(
+  public static final CSSConstant ALPHABETIC = new CSSConstant(
           "alphabetic");
 
-  public static final DominantBaseline HANGING = new DominantBaseline(
+  public static final CSSConstant HANGING = new CSSConstant(
           "hanging");
-  public static final DominantBaseline IDEOGRAPHIC = new DominantBaseline(
+  public static final CSSConstant IDEOGRAPHIC = new CSSConstant(
           "ideographic");
-  public static final DominantBaseline MATHEMATICAL = new DominantBaseline(
+  public static final CSSConstant MATHEMATICAL = new CSSConstant(
           "alphabetic");
-  public static final DominantBaseline CENTRAL = new DominantBaseline(
+  public static final CSSConstant CENTRAL = new CSSConstant(
           "central");
-  public static final DominantBaseline MIDDLE = new DominantBaseline(
+  public static final CSSConstant MIDDLE = new CSSConstant(
           "middle");
-  public static final DominantBaseline TEXT_AFTER_EDGE = new DominantBaseline(
+  public static final CSSConstant TEXT_AFTER_EDGE = new CSSConstant(
           "text-after-edge");
-  public static final DominantBaseline TEXT_BEFORE_EDGE = new DominantBaseline(
+  public static final CSSConstant TEXT_BEFORE_EDGE = new CSSConstant(
           "text-before-edge");
 
-  private DominantBaseline(String name)
+  private DominantBaseline()
   {
-    super(name);
   }
 
 }

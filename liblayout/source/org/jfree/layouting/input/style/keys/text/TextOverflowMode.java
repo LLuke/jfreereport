@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextOverflowMode.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextOverflowMode extends CSSConstant
+public class TextOverflowMode
 {
   // clip | ellipsis | ellipsis-word
-  public static final TextOverflowMode CLIP = new TextOverflowMode("clip");
-  public static final TextOverflowMode ELLIPSIS = new TextOverflowMode("ellipsis");
-  public static final TextOverflowMode ELLIPSIS_WORD = new TextOverflowMode("ellipsis-word"); 
+  public static final CSSConstant CLIP = new CSSConstant("clip");
+  public static final CSSConstant ELLIPSIS = new CSSConstant("ellipsis");
+  public static final CSSConstant ELLIPSIS_WORD = new CSSConstant("ellipsis-word");
 
-  private TextOverflowMode(final String constant)
+  private TextOverflowMode()
   {
-    super(constant);
   }
 }

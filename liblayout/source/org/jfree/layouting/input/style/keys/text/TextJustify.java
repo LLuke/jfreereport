@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextJustify.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextJustify extends CSSConstant
+public class TextJustify
 {
-  public static final TextJustify INTER_WORD = new TextJustify("inter-word");
-  public static final TextJustify INTER_IDEOGRAPH = new TextJustify("inter-ideograph");
-  public static final TextJustify INTER_CHARACTER = new TextJustify("inter-character");
-  public static final TextJustify INTER_CLUSTER = new TextJustify("inter-cluster");
-  public static final TextJustify KASHIDA = new TextJustify("kashida");
-  public static final TextJustify SIZE = new TextJustify("size");
+  public static final CSSConstant INTER_WORD = new CSSConstant("inter-word");
+  public static final CSSConstant INTER_IDEOGRAPH = new CSSConstant("inter-ideograph");
+  public static final CSSConstant INTER_CHARACTER = new CSSConstant("inter-character");
+  public static final CSSConstant INTER_CLUSTER = new CSSConstant("inter-cluster");
+  public static final CSSConstant KASHIDA = new CSSConstant("kashida");
+  public static final CSSConstant SIZE = new CSSConstant("size");
 
-  private TextJustify(final String constant)
+  private TextJustify()
   {
-    super(constant);
   }
 }

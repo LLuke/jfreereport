@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ContentValues.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,26 +47,25 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class ContentValues extends CSSConstant
+public class ContentValues
 {
-  public static final ContentValues OPEN_QUOTE = new ContentValues("open-quote");
-  public static final ContentValues CLOSE_QUOTE = new ContentValues("close-quote");
-  public static final ContentValues NO_OPEN_QUOTE = new ContentValues("no-open-quote");
-  public static final ContentValues NO_CLOSE_QUOTE = new ContentValues("no-close-quote");
+  public static final CSSConstant OPEN_QUOTE = new CSSConstant("open-quote");
+  public static final CSSConstant CLOSE_QUOTE = new CSSConstant("close-quote");
+  public static final CSSConstant NO_OPEN_QUOTE = new CSSConstant("no-open-quote");
+  public static final CSSConstant NO_CLOSE_QUOTE = new CSSConstant("no-close-quote");
 
-  public static final ContentValues CONTENTS = new ContentValues("contents");
-  public static final ContentValues NORMAL = new ContentValues("normal");
-  public static final ContentValues NONE = new ContentValues("none");
-  public static final ContentValues INHIBIT = new ContentValues("inhibit");
+  public static final CSSConstant CONTENTS = new CSSConstant("contents");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant INHIBIT = new CSSConstant("inhibit");
 
-  public static final ContentValues FOOTNOTE = new ContentValues("footnote");
-  public static final ContentValues ENDNOTE = new ContentValues("endnote");
-  public static final ContentValues SECTIONNOTE = new ContentValues("sectionote");
-  public static final ContentValues LISTITEM = new ContentValues("list-item");
-  public static final ContentValues DOCUMENT_URL = new ContentValues("document-url");
+  public static final CSSConstant FOOTNOTE = new CSSConstant("footnote");
+  public static final CSSConstant ENDNOTE = new CSSConstant("endnote");
+  public static final CSSConstant SECTIONNOTE = new CSSConstant("sectionote");
+  public static final CSSConstant LISTITEM = new CSSConstant("list-item");
+  public static final CSSConstant DOCUMENT_URL = new CSSConstant("document-url");
 
-  private ContentValues (final String name)
+  private ContentValues ()
   {
-    super (name);
   }
 }

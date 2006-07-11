@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontStretch.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,59 +47,78 @@
 package org.jfree.layouting.input.style.keys.font;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSValue;
 
-public class FontStretch extends CSSConstant implements Comparable
+public class FontStretch
 {
-  public static final FontStretch NORMAL =
-          new FontStretch("normal", 0);
-  public static final FontStretch ULTRA_CONDENSED =
-          new FontStretch("ultra-condensed", -4);
-  public static final FontStretch EXTRA_CONDENSED =
-          new FontStretch("extra-condensed", -3);
-  public static final FontStretch CONDENSED =
-          new FontStretch("condensed", -2);
-  public static final FontStretch SEMI_CONDENSED =
-          new FontStretch("semi-condensed", -1);
-  public static final FontStretch SEMI_EXPANDED =
-          new FontStretch("semi-expanded", 1);
-  public static final FontStretch EXPANDED =
-          new FontStretch("expanded", 2);
-  public static final FontStretch EXTRA_EXPANDED =
-          new FontStretch("extra-expanded", 3);
-  public static final FontStretch ULTRA_EXPANDED =
-          new FontStretch("ultra-expanded", 4);
+  public static final CSSConstant NORMAL =
+          new CSSConstant("normal");
+  public static final CSSConstant ULTRA_CONDENSED =
+          new CSSConstant("ultra-condensed");
+  public static final CSSConstant EXTRA_CONDENSED =
+          new CSSConstant("extra-condensed");
+  public static final CSSConstant CONDENSED =
+          new CSSConstant("condensed");
+  public static final CSSConstant SEMI_CONDENSED =
+          new CSSConstant("semi-condensed");
+  public static final CSSConstant SEMI_EXPANDED =
+          new CSSConstant("semi-expanded");
+  public static final CSSConstant EXPANDED =
+          new CSSConstant("expanded");
+  public static final CSSConstant EXTRA_EXPANDED =
+          new CSSConstant("extra-expanded");
+  public static final CSSConstant ULTRA_EXPANDED =
+          new CSSConstant("ultra-expanded");
 
   public static final CSSConstant WIDER = new CSSConstant("wider");
   public static final CSSConstant NARROWER = new CSSConstant("narrower");
 
-  private int order;
-
-  private FontStretch(String name, final int order)
+  private FontStretch()
   {
-    super(name);
-    this.order = order;
   }
 
-  public int getOrder()
+  public static int getOrder(CSSValue fs)
   {
-    return order;
-  }
-
-  public int compareTo(final Object o)
-  {
-    FontStretch fs = (FontStretch) o;
-    if (fs.order == order)
+    if (ULTRA_CONDENSED.equals(fs))
+    {
+      return -4;
+    }
+    if (EXTRA_CONDENSED.equals(fs))
+    {
+      return -3;
+    }
+    if (CONDENSED.equals(fs))
+    {
+      return -2;
+    }
+    if (SEMI_CONDENSED.equals(fs))
+    {
+      return -1;
+    }
+    if (NORMAL.equals(fs))
     {
       return 0;
     }
-    else if (order > fs.order)
+    if (SEMI_EXPANDED.equals(fs))
     {
       return 1;
     }
-    return -1;
+    if (EXPANDED.equals(fs))
+    {
+      return 2;
+    }
+    if (EXTRA_EXPANDED.equals(fs))
+    {
+      return 3;
+    }
+    if (ULTRA_EXPANDED.equals(fs))
+    {
+      return 4;
+    }
+    return 0;
   }
 
-  public static FontStretch getByOrder(int order)
+  public static CSSConstant getByOrder(int order)
   {
     switch (order)
     {

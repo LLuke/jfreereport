@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderBottomReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.color.ColorReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -79,10 +80,10 @@ public class BorderBottomReadHandler extends BorderStyleReadHandler
       unit = unit.getNextLexicalUnit();
     }
 
-    final BorderStyle style;
+    final CSSConstant style;
     if (unit != null)
     {
-      style = (BorderStyle) lookupValue(unit);
+      style = (CSSConstant) lookupValue(unit);
       if (style != null)
       {
         unit = unit.getNextLexicalUnit();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HangingPunctuation.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class HangingPunctuation extends CSSConstant
+public class HangingPunctuation
 {
-  public static final HangingPunctuation NONE = new HangingPunctuation("none");
-  public static final HangingPunctuation START = new HangingPunctuation("start");
-  public static final HangingPunctuation END = new HangingPunctuation("end");
-  public static final HangingPunctuation BOTH = new HangingPunctuation("both");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant START = new CSSConstant("start");
+  public static final CSSConstant END = new CSSConstant("end");
+  public static final CSSConstant BOTH = new CSSConstant("both");
 
-  private HangingPunctuation(final String constant)
+  private HangingPunctuation()
   {
-    super(constant);
   }
 }

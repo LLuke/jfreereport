@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayModel;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -58,21 +60,21 @@ public class DisplayReadHandler implements CSSCompoundValueReadHandler
 {
   private static class DisplayMapEntry
   {
-    private DisplayModel model;
-    private DisplayRole role;
+    private CSSConstant model;
+    private CSSConstant role;
 
-    public DisplayMapEntry(final DisplayModel model, final DisplayRole role)
+    public DisplayMapEntry(final CSSConstant model, final CSSConstant role)
     {
       this.model = model;
       this.role = role;
     }
 
-    public DisplayModel getModel()
+    public CSSConstant getModel()
     {
       return model;
     }
 
-    public DisplayRole getRole()
+    public CSSConstant getRole()
     {
       return role;
     }
@@ -170,5 +172,13 @@ public class DisplayReadHandler implements CSSCompoundValueReadHandler
     map.put(BoxStyleKeys.DISPLAY_ROLE, entry.getRole());
     map.put(BoxStyleKeys.DISPLAY_MODEL, entry.getModel());
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+            BoxStyleKeys.DISPLAY_ROLE,
+            BoxStyleKeys.DISPLAY_MODEL
+    };
   }
 }

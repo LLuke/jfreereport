@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,22 @@ package org.jfree.layouting.output;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.awt.Image;
 
+import org.jfree.fonts.registry.FontFamily;
+import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
 import org.jfree.layouting.input.style.keys.font.FontSizeConstant;
+import org.jfree.layouting.input.style.keys.page.PageSize;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.util.ExtendedConfiguration;
-import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.util.Log;
+import org.jfree.ui.Drawable;
 
 /**
  * Creation-Date: 02.01.2006, 18:39:46
@@ -63,11 +72,16 @@ public abstract class AbstractOutputProcessorMetaData
   private HashMap fontSizes;
   private HashMap numericFeatures;
   private HashMap fontFamilies;
-  private FontRegistry fontRegistry;
+  private FontStorage fontStorage;
 
-  protected AbstractOutputProcessorMetaData(final FontRegistry fontRegistry)
+  protected AbstractOutputProcessorMetaData(final FontStorage fontStorage)
   {
-    this.fontRegistry = fontRegistry;
+    if (fontStorage == null)
+    {
+      throw new NullPointerException();
+    }
+
+    this.fontStorage = fontStorage;
     this.features = new HashSet();
     this.numericFeatures = new HashMap();
 
@@ -116,7 +130,7 @@ public abstract class AbstractOutputProcessorMetaData
 
   }
 
-  protected void setFamilyMapping(FontFamilyValues family, String name)
+  protected void setFamilyMapping(CSSConstant family, String name)
   {
     if (family == null)
     {
@@ -129,7 +143,7 @@ public abstract class AbstractOutputProcessorMetaData
     fontFamilies.put(family, name);
   }
 
-  public double getFontSize(FontSizeConstant constant)
+  public double getFontSize(CSSConstant constant)
   {
     Double d = (Double) fontSizes.get(constant);
     if (d == null)
@@ -185,7 +199,19 @@ public abstract class AbstractOutputProcessorMetaData
     return d.doubleValue();
   }
 
-  public FontFamily getFontFamily(FontFamilyValues genericName)
+  /**
+   * Although most font systems are global, some may have some issues with
+   * caching. OutputTargets may have to tweak the font storage system to their
+   * needs.
+   *
+   * @return
+   */
+  public FontStorage getFontStorage()
+  {
+    return fontStorage;
+  }
+
+  public FontFamily getFontFamily(CSSConstant genericName)
   {
     if (FontFamilyValues.NONE.equals(genericName))
     {
@@ -198,7 +224,7 @@ public abstract class AbstractOutputProcessorMetaData
       return getDefaultFontFamily();
     }
 
-    FontFamily ff = fontRegistry.getFontFamily(name);
+    FontFamily ff = fontStorage.getFontRegistry().getFontFamily(name);
     if (ff != null)
     {
       return ff;
@@ -208,11 +234,64 @@ public abstract class AbstractOutputProcessorMetaData
 
   protected FontRegistry getFontRegistry()
   {
-    return fontRegistry;
+    return fontStorage.getFontRegistry();
+  }
+
+
+  public PageSize getDefaultPageSize()
+  {
+    return PageSize.A4;
   }
 
   public String getMediaType()
   {
     return "print";
+  }
+
+  public boolean isValid(FontSpecification spec)
+  {
+    final FontRegistry registry = getFontRegistry();
+    final String fontFamily = spec.getFontFamily();
+    if (fontFamily == null)
+    {
+      return false;
+    }
+    final FontFamily family = registry.getFontFamily(fontFamily);
+    return family != null;
+
+  }
+
+  public FontMetrics getFontMetrics(FontSpecification spec)
+  {
+    final String fontFamily = spec.getFontFamily();
+    if (fontFamily == null)
+    {
+      Log.warn("No font family specified.");
+      return null;
+    }
+    final FontRegistry registry = getFontRegistry();
+    final FontFamily family = registry.getFontFamily(fontFamily);
+    if (family == null)
+    {
+      Log.warn("Unable to lookup the font family.");
+      return null;
+    }
+    final DefaultFontContext fontContext = new DefaultFontContext
+                    (this, spec.isAntiAliasing(), spec.getFontSize());
+
+    final FontRecord record = family.getFontRecord
+            (spec.getFontWeight() > 600, spec.isItalic() || spec.isOblique());
+    final FontMetrics fm = getFontStorage().getFontMetrics
+            (record.getIdentifier(), fontContext);
+    if (fm == null)
+    {
+      throw new NullPointerException("FontMetrics returned from factory is null.");
+    }
+    return fm;
+  }
+
+  public Class[] getSupportedResourceTypes()
+  {
+    return new Class[] {Drawable.class, Image.class};
   }
 }

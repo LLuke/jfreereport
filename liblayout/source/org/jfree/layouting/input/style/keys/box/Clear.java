@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Clear.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,21 +47,20 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class Clear extends CSSConstant
+public class Clear
 {
-  public static final Clear NONE = new Clear("none");
-  public static final Clear LEFT = new Clear("left");
-  public static final Clear RIGHT = new Clear("right");
-  public static final Clear TOP = new Clear("top");
-  public static final Clear BOTTOM = new Clear("bottom");
-  public static final Clear INSIDE = new Clear("inside");
-  public static final Clear OUTSIDE = new Clear("outside");
-  public static final Clear START = new Clear("start");
-  public static final Clear END = new Clear("end");
-  public static final Clear BOTH = new Clear("both");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant LEFT = new CSSConstant("left");
+  public static final CSSConstant RIGHT = new CSSConstant("right");
+  public static final CSSConstant TOP = new CSSConstant("top");
+  public static final CSSConstant BOTTOM = new CSSConstant("bottom");
+  public static final CSSConstant INSIDE = new CSSConstant("inside");
+  public static final CSSConstant OUTSIDE = new CSSConstant("outside");
+  public static final CSSConstant START = new CSSConstant("start");
+  public static final CSSConstant END = new CSSConstant("end");
+  public static final CSSConstant BOTH = new CSSConstant("both");
 
-  private Clear(final String constant)
+  private Clear()
   {
-    super(constant);
   }
 }

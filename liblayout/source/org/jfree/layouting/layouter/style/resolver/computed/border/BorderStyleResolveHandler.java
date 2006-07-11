@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderStyleResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.border;
 
-import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 import org.jfree.layouting.input.style.keys.border.BorderStyle;
+import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 /**
  * Creation-Date: 14.12.2005, 23:27:55
@@ -65,5 +65,8 @@ public class BorderStyleResolveHandler extends ConstantsResolveHandler
     addNormalizeValue(BorderStyle.RIDGE);
     addNormalizeValue(BorderStyle.SOLID);
     addNormalizeValue(BorderStyle.WAVE);
+    setFallback(BorderStyle.NONE);
   }
+
+
 }

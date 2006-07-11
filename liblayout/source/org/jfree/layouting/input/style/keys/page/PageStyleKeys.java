@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -50,36 +50,50 @@ import org.jfree.layouting.input.style.StyleKeyRegistry;
  */
 public class PageStyleKeys
 {
-  /** The Page Size */
+  /** The physical Page Size */
   public static final StyleKey SIZE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("size", false, false, false);
+                  ("size", false, false, StyleKey.PAGE_CONTEXT);
+
+  /**
+   * A dimension ({length}{2}) that defines how often the page is repeated
+   * horizontally and vertically if the content does not fit.
+   *
+   * Todo: Should we allow Auto for the horizontal or vertical pages? 
+   */
+  public static final StyleKey HORIZONTAL_PAGE_SPAN =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-horizontal-page-span", false, false, StyleKey.PAGE_CONTEXT);
+
+  public static final StyleKey VERTICAL_PAGE_SPAN =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-vertical-page-span", false, false, StyleKey.PAGE_CONTEXT);
 
   public static final StyleKey PAGE_BREAK_BEFORE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("page-break-before", false, true, false);
+                  ("page-break-before", false, true, StyleKey.BLOCK_ELEMENTS);
   public static final StyleKey PAGE_BREAK_AFTER =
           StyleKeyRegistry.getRegistry().createKey
-                  ("page-break-after", false, true, false);
+                  ("page-break-after", false, true, StyleKey.BLOCK_ELEMENTS);
   public static final StyleKey PAGE_BREAK_INSIDE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("page-break-inside", false, true, false);
+                  ("page-break-inside", false, true, StyleKey.BLOCK_ELEMENTS);
   
   public static final StyleKey PAGE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("page", false, true, false);
+                  ("page", false, true, StyleKey.BLOCK_ELEMENTS);
   public static final StyleKey PAGE_POLICY =
           StyleKeyRegistry.getRegistry().createKey
-                  ("page-policy", false, false, false);
+                  ("page-policy", false, false, StyleKey.COUNTERS);
   public static final StyleKey ORPHANS =
           StyleKeyRegistry.getRegistry().createKey
-                  ("orphans", false, false, false);
+                  ("orphans", false, false, StyleKey.BLOCK_ELEMENTS);
   public static final StyleKey WIDOWS =
           StyleKeyRegistry.getRegistry().createKey
-                  ("widows", false, false, false);
+                  ("widows", false, false, StyleKey.BLOCK_ELEMENTS);
   public static final StyleKey IMAGE_ORIENTATION =
           StyleKeyRegistry.getRegistry().createKey
-                  ("image-orientation", false, false, false);
+                  ("image-orientation", false, false, StyleKey.All_ELEMENTS);
 
   private PageStyleKeys()
   {

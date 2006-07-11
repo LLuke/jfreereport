@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineHeight.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -43,13 +43,12 @@ package org.jfree.layouting.input.style.keys.line;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
-public class LineHeight extends CSSConstant
+public class LineHeight
 {
-  public static final LineHeight NORMAL = new LineHeight("normal");
-  public static final LineHeight NONE = new LineHeight("none");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant NONE = new CSSConstant("none");
 
-  private LineHeight (final String constant)
+  private LineHeight ()
   {
-    super(constant);
   }
 }

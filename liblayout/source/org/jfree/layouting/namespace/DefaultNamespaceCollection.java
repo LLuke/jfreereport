@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultNamespaceCollection.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
 package org.jfree.layouting.namespace;
 
 import java.util.HashMap;
+
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 13.04.2006, 12:38:42

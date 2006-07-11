@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextTransform.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextTransform extends CSSConstant
+public class TextTransform
 {
-  public static final TextTransform CAPITALIZE = new TextTransform("capitalize");
-  public static final TextTransform UPPERCASE = new TextTransform("uppercase");
-  public static final TextTransform LOWERCASE = new TextTransform("lowercase");
-  public static final TextTransform NONE = new TextTransform("none");
+  public static final CSSConstant CAPITALIZE = new CSSConstant("capitalize");
+  public static final CSSConstant UPPERCASE = new CSSConstant("uppercase");
+  public static final CSSConstant LOWERCASE = new CSSConstant("lowercase");
+  public static final CSSConstant NONE = new CSSConstant("none");
 
-  private TextTransform(final String constant)
+  private TextTransform()
   {
-    super(constant);
   }
 }

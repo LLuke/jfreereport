@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.input.style.parser.stylehandler.border;
 import java.util.Map;
 
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -66,5 +67,10 @@ public class BackgroundReadHandler implements CSSCompoundValueReadHandler
   {
     // todo this is a complex parsing task
     return null;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[0];
   }
 }

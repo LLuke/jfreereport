@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundRepeatReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.input.style.values.CSSValuePair;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -73,8 +74,8 @@ public class BackgroundRepeatReadHandler implements CSSValueReadHandler
         return null;
       }
 
-      final BackgroundRepeat horizontal;
-      final BackgroundRepeat vertical;
+      final CSSConstant horizontal;
+      final CSSConstant vertical;
 
       final String horizontalString = value.getStringValue();
       if (horizontalString.equalsIgnoreCase("repeat-x"))
@@ -121,7 +122,7 @@ public class BackgroundRepeatReadHandler implements CSSValueReadHandler
     return new CSSValueList(values);
   }
 
-  private BackgroundRepeat translateRepeat(final String value)
+  private CSSConstant translateRepeat(final String value)
   {
     if (value.equalsIgnoreCase("repeat"))
     {

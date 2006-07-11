@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStylePosition.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class ListStylePosition extends CSSConstant
+public class ListStylePosition
 {
-  public static final ListStylePosition INSIDE = new ListStylePosition("inside");
-  public static final ListStylePosition OUTSIDE = new ListStylePosition("outside");
+  public static final CSSConstant INSIDE = new CSSConstant("inside");
+  public static final CSSConstant OUTSIDE = new CSSConstant("outside");
 
-  private ListStylePosition(final String constant)
+  private ListStylePosition()
   {
-    super(constant);
   }
 }

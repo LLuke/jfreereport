@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontEmphasizeStyle.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,21 +48,20 @@ package org.jfree.layouting.input.style.keys.font;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
-public class FontEmphasizeStyle extends CSSConstant
+public class FontEmphasizeStyle
 {
-  public static final FontEmphasizeStyle NONE =
-          new FontEmphasizeStyle("none");
-  public static final FontEmphasizeStyle ACCENT =
-          new FontEmphasizeStyle("accent");
-  public static final FontEmphasizeStyle DOT =
-          new FontEmphasizeStyle("dot");
-  public static final FontEmphasizeStyle CIRCLE =
-          new FontEmphasizeStyle("circle");
-  public static final FontEmphasizeStyle DISC =
-          new FontEmphasizeStyle("disc");
+  public static final CSSConstant NONE =
+          new CSSConstant("none");
+  public static final CSSConstant ACCENT =
+          new CSSConstant("accent");
+  public static final CSSConstant DOT =
+          new CSSConstant("dot");
+  public static final CSSConstant CIRCLE =
+          new CSSConstant("circle");
+  public static final CSSConstant DISC =
+          new CSSConstant("disc");
 
-  private FontEmphasizeStyle(String name)
+  private FontEmphasizeStyle()
   {
-    super(name);
   }
 }

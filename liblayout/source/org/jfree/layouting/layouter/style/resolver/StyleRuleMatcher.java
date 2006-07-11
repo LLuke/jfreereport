@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleRuleMatcher.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package org.jfree.layouting.layouter.style.resolver;
 
 import org.jfree.layouting.input.style.CSSStyleRule;
-import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**
  * A (possibly statefull) style matcher. This class is responsible for
@@ -69,4 +69,5 @@ public interface StyleRuleMatcher
    */
   public StyleRuleMatcher deriveInstance();
   public CSSStyleRule[] getMatchingRules (LayoutElement element);
+  public boolean isMatchingPseudoElement (LayoutElement element, String pseudo); 
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineGridMode.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class LineGridMode extends CSSConstant
+public class LineGridMode
 {
-  public static final LineGridMode NONE = new LineGridMode("none");
-  public static final LineGridMode IDEOGRAPH = new LineGridMode("ideograph");
-  public static final LineGridMode ALL = new LineGridMode("all");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant IDEOGRAPH = new CSSConstant("ideograph");
+  public static final CSSConstant ALL = new CSSConstant("all");
 
-  private LineGridMode(final String constant)
+  private LineGridMode()
   {
-    super(constant);
   }
 }

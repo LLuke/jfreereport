@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HtmlOutputProcessor.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
+ * $Id: HtmlOutputProcessor.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -46,13 +46,17 @@ import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
-import org.jfree.layouting.model.PageContext;
-import org.jfree.layouting.normalizer.streaming.StreamingNormalizer;
-import org.jfree.layouting.normalizer.NormalizationException;
-import org.jfree.layouting.normalizer.Normalizer;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.normalizer.content.ContentNormalizer;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.feed.DefaultInputFeed;
+import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
+import org.jfree.layouting.normalizer.displaymodel.EmptyModelBuilder;
+import org.jfree.layouting.normalizer.generator.ContentGenerator;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
-import org.jfree.layouting.StreamingLayoutProcess;
 
 /**
  * A later version should allow the same degree of flexibility as jfreereport's
@@ -72,7 +76,7 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
     this.outstream = outstream;
     this.fontRegistry = new AWTFontRegistry();
     this.fontStorage = new DefaultFontStorage(fontRegistry);
-    this.metaData = new HtmlOutputProcessorMetaData(fontRegistry);
+    this.metaData = new HtmlOutputProcessorMetaData(fontStorage);
   }
 
   public OutputProcessorMetaData getMetaData()
@@ -80,20 +84,53 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
     return metaData;
   }
 
+  public Renderer createRenderer(LayoutProcess layoutProcess)
+  {
+    return null;
+  }
+
+  public InputFeed createInputFeed(LayoutProcess layoutProcess)
+  {
+    return new DefaultInputFeed(layoutProcess);
+  }
+  
   public FontStorage getFontStorage()
   {
     return fontStorage;
   }
 
-  public Normalizer createNormalizer (
-          StreamingLayoutProcess layoutProcess)
-          throws NormalizationException
-
+  /**
+   * Returns the content normalizer implementation for this OP. The content
+   * normalizer is responsible for resolving the styles and for initiating the
+   * DOM building.
+   *
+   * @return
+   */
+  public Normalizer createNormalizer(LayoutProcess layoutProcess)
   {
-    return new HtmlStreamingNormalizer(outstream, layoutProcess);
+    return new ContentNormalizer(layoutProcess);
   }
 
-  public PageContext createPageContext(int pageNumber)
+  /**
+   * The model builder normalizes the input and builds the Display-Model. The
+   * DisplayModel enriches and normalizes the logical document model so that it
+   * is better suited for rendering.
+   *
+   * @return
+   */
+  public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
+  {
+    return new EmptyModelBuilder();
+  }
+
+  /**
+   * Creates a new content generator. The content generator is responsible for
+   * creating the visual content from the display model.
+   *
+   * @param layoutProcess the layout process that governs all.
+   * @return the created content generator.
+   */
+  public ContentGenerator createContentGenerator(LayoutProcess layoutProcess)
   {
     return null;
   }

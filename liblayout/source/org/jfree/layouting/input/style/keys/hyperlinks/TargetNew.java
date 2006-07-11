@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TargetNew.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TargetNew extends CSSConstant
+public class TargetNew
 {
-  public static final TargetNew TAB = new TargetNew("tab");
-  public static final TargetNew NONE = new TargetNew("none");
-  public static final TargetNew WINDOW = new TargetNew("window");
+  public static final CSSConstant TAB = new CSSConstant("tab");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant WINDOW = new CSSConstant("window");
 
-  private TargetNew(String name)
+  private TargetNew()
   {
-    super(name);
   }
 }

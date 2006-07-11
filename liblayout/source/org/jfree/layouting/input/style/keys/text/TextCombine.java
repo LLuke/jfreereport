@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextCombine.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextCombine extends CSSConstant
+public class TextCombine
 {
-  public static final TextCombine NONE = new TextCombine("none");
-  public static final TextCombine LETTER = new TextCombine("letter");
-  public static final TextCombine LINE = new TextCombine("line");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant LETTER = new CSSConstant("letter");
+  public static final CSSConstant LINE = new CSSConstant("line");
 
-  private TextCombine(final String constant)
+  private TextCombine()
   {
-    super(constant);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutStyle.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public class LayoutStyle
     this.reference = reference;
   }
 
-  public CSSValue getValue (StyleKey key)
+  public synchronized CSSValue getValue (StyleKey key)
   {
     if (values == null)
     {
@@ -88,7 +88,7 @@ public class LayoutStyle
     return values[key.getIndex()];
   }
 
-  public void setValue (StyleKey key, CSSValue value)
+  public synchronized void setValue (StyleKey key, CSSValue value)
   {
     if (values == null)
     {
@@ -98,7 +98,7 @@ public class LayoutStyle
     values[key.getIndex()] = value;
   }
 
-  public void dispose ()
+  public synchronized void dispose ()
   {
     if (layoutStylePool == null)
     {
@@ -110,5 +110,21 @@ public class LayoutStyle
     }
     Arrays.fill(values, null);
     layoutStylePool.reclaim(this, reference);
+  }
+
+  public synchronized LayoutStyle createCopy ()
+  {
+    final LayoutStyle style = LayoutStylePool.getPool().getStyle();
+    if (values == null)
+    {
+      return style;
+    }
+    if (style.values == null)
+    {
+      style.values = (CSSValue[]) values.clone();
+    }
+
+    System.arraycopy(style.values, 0, values, 0, values.length);
+    return style;
   }
 }

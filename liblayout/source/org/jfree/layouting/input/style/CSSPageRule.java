@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSPageRule.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,40 @@
  */
 package org.jfree.layouting.input.style;
 
+import java.util.ArrayList;
+
 /**
- * Creation-Date: 23.11.2005, 11:05:55
+ * A page rule contains (among others) page area rules as childs.
  *
  * @author Thomas Morgner
  */
-public class CSSPageRule extends StyleRule
+public class CSSPageRule extends CSSDeclarationRule
 {
+  private ArrayList rules; // the margin rules ...
+
   public CSSPageRule(final StyleSheet parentStyle, final StyleRule parentRule)
   {
     super(parentStyle, parentRule);
+    this.rules = new ArrayList();
+  }
+
+  public void insertRule (final int index, final StyleRule rule)
+  {
+    rules.add(index, rule);
+  }
+
+  public void deleteRule (final int index)
+  {
+    rules.remove(index);
+  }
+
+  public int getRuleCount ()
+  {
+    return rules.size();
+  }
+
+  public StyleRule getRule (int index)
+  {
+    return (StyleRule) rules.get(index);
   }
 }

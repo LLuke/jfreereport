@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontStyle.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,13 @@ package org.jfree.layouting.input.style.keys.font;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
-public class FontStyle extends CSSConstant
+public class FontStyle
 {
-  public static final FontStyle NORMAL = new FontStyle("normal");
-  public static final FontStyle OBLIQUE = new FontStyle("oblique");
-  public static final FontStyle ITALIC = new FontStyle("italic");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant OBLIQUE = new CSSConstant("oblique");
+  public static final CSSConstant ITALIC = new CSSConstant("italic");
 
-  private FontStyle(String name)
+  private FontStyle()
   {
-    super(name);
   }
 }

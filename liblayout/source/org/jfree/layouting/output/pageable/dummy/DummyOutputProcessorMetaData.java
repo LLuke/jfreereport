@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DummyOutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
+import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 import org.jfree.layouting.output.OutputProcessorFeature;
 
@@ -54,7 +55,7 @@ public class DummyOutputProcessorMetaData extends AbstractOutputProcessorMetaDat
 
   public DummyOutputProcessorMetaData (FontStorage fontStorage)
   {
-    super(fontStorage.getFontRegistry());
+    super(fontStorage);
     this.fontStorage = fontStorage;
 
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");

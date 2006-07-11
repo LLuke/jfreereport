@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: UnicodeBidi.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class UnicodeBidi extends CSSConstant
+public class UnicodeBidi
 {
-  public static final UnicodeBidi NORMAL = new UnicodeBidi("normal");
-  public static final UnicodeBidi EMBED = new UnicodeBidi("embed");
-  public static final UnicodeBidi BIDI_OVERRIDE = new UnicodeBidi("bidi-override");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant EMBED = new CSSConstant("embed");
+  public static final CSSConstant BIDI_OVERRIDE = new CSSConstant("bidi-override");
 
-  private UnicodeBidi(final String constant)
+  private UnicodeBidi()
   {
-    super(constant);
   }
 }

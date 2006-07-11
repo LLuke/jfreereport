@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontStretchResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,13 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.fonts;
 
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStretch;
+import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 import org.jfree.util.Log;
@@ -75,57 +74,61 @@ public class FontStretchResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
     final CSSValue value = style.getValue(key);
-    final FontSpecification fs =
-            currentNode.getLayoutContext().getFontSpecification();
+    final CSSConstant result;
     if (FontStretch.WIDER.equals(value))
     {
       // ask the parent ...
-      FontStretch parentStretch = queryParent(currentNode.getParent());
-      fs.setFontStretch(FontStretch.getByOrder(parentStretch.getOrder() + 1));
+      CSSConstant parentStretch = queryParent(currentNode.getParent());
+      result = FontStretch.getByOrder(FontStretch.getOrder(parentStretch) + 1);
     }
     else if (FontStretch.NARROWER.equals(value))
     {
       // ask the parent ...
-      FontStretch parentStretch = queryParent(currentNode.getParent());
-      fs.setFontStretch(FontStretch.getByOrder(parentStretch.getOrder() - 1));
+      CSSConstant parentStretch = queryParent(currentNode.getParent());
+      result = FontStretch.getByOrder(FontStretch.getOrder(parentStretch) - 1);
     }
     else if (value instanceof CSSConstant)
     {
-      FontStretch stretch = (FontStretch) lookupValue((CSSConstant) value);
+      CSSConstant stretch = (CSSConstant) lookupValue((CSSConstant) value);
       if (stretch != null)
       {
-        fs.setFontStretch(stretch);
+        result = stretch;
       }
       else
       {
-        fs.setFontStretch(FontStretch.NORMAL);
+        result = FontStretch.NORMAL;
       }
     }
-
+    else
+    {
+      result = FontStretch.NORMAL;
+    }
+    style.setValue(key, result);
   }
 
-  private FontStretch queryParent(final LayoutElement parent)
+  private CSSConstant queryParent(final LayoutElement parent)
   {
     if (parent == null)
     {
       return FontStretch.NORMAL;
     }
-    final FontStretch parentValue =
-            parent.getLayoutContext().getFontSpecification().getFontStretch();
+    final CSSValue parentValue =
+            parent.getLayoutContext().getStyle().getValue(FontStyleKeys.FONT_STRETCH);
     if (parentValue == null)
     {
       Log.error("Assertation failed: Parent stretch is null");
       return FontStretch.NORMAL;
     }
-    return parentValue;
+    // normalize ..
+    return FontStretch.getByOrder(FontStretch.getOrder(parentValue));
   }
 }

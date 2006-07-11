@@ -199,6 +199,18 @@ th {
   padding: 1px;
 }
 
+td[colspan],
+th[colspan],
+colgroup[colspan],
+col[colspan] {
+  -x-liblayout-colspan: attr(colspan);
+}
+
+td[rowspan],
+th[rowspan] {
+  -x-liblayout-rowspan: attr(rowspan);
+}
+
 /* inlines */
 
 q:before {
@@ -418,6 +430,15 @@ img[src] {
   content: url(attr(src,url)));
 }
 
+/**
+ * We dont use the ::alternate element here, as image rendering may fail
+ * at any time. Ultimatly, it is the Renderer's choice whether to skip images,
+ * use the alternate text or to display some kind of placeholder image.
+ */
+img[alt] {
+  -x-liblayout-alternate-text: attr(alt);
+}
+
 img[usemap], object[usemap] {
   color: blue;
 }
@@ -458,4 +479,23 @@ marquee {
     text-decoration: none;
   }
  
+}
+
+
+/**
+ * JFreeReport: Addition to emulate the 'br' tag. This is one of the magic
+ * tags. Mozilla simply ignores all style definitions for that tag and inserts
+ * linebreak into the text (ignoring all whitespace definitions).
+ */
+br {
+  content: "\A";
+  white-space: pre;
+}
+
+
+/** Pseudo-Elemente */
+li:marker {
+  display:inline;
+  content: counter(list-item,decimal) ".";
+  background-color: blue;
 }

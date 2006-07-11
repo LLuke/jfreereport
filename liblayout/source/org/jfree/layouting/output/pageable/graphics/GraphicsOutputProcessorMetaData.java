@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GraphicsOutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,9 @@ package org.jfree.layouting.output.pageable.graphics;
 
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
+import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
 /**
@@ -52,9 +54,9 @@ import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
  */
 public class GraphicsOutputProcessorMetaData extends AbstractOutputProcessorMetaData
 {
-  public GraphicsOutputProcessorMetaData(FontRegistry registry)
+  public GraphicsOutputProcessorMetaData(FontStorage storage)
   {
-    super(registry);
+    super(storage);
 
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");
     setFamilyMapping(FontFamilyValues.FANTASY, "Verdana");

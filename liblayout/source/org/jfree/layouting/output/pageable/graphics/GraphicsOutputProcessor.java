@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GraphicsOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,16 @@
  */
 package org.jfree.layouting.output.pageable.graphics;
 
+import org.jfree.fonts.registry.FontStorage;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
+import org.jfree.layouting.normalizer.generator.ContentGenerator;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.normalizer.Normalizer;
-import org.jfree.layouting.model.PageContext;
-import org.jfree.fonts.registry.FontStorage;
 
 /**
  * Creation-Date: 02.01.2006, 19:55:14
@@ -67,14 +72,50 @@ public class GraphicsOutputProcessor implements OutputProcessor
     return null;
   }
 
-  public Normalizer createNormalizer()
+  /**
+   * Returns the content normalizer implementation for this OP. The content
+   * normalizer is responsible for resolving the styles and for initiating the
+   * DOM building.
+   *
+   * @return
+   */
+  public Normalizer createNormalizer(LayoutProcess layoutProcess)
   {
     return null;
   }
 
-  public PageContext createPageContext(int pageNumber)
+  public InputFeed createInputFeed(LayoutProcess layoutProcess)
+  {
+    return new DefaultInputFeed(layoutProcess);
+  }
+  
+
+  /**
+   * The model builder normalizes the input and builds the Display-Model. The
+   * DisplayModel enriches and normalizes the logical document model so that it
+   * is better suited for rendering.
+   *
+   * @return
+   */
+  public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
     return null;
   }
 
+  /**
+   * Creates a new content generator. The content generator is responsible for
+   * creating the visual content from the display model.
+   *
+   * @param layoutProcess the layout process that governs all.
+   * @return the created content generator.
+   */
+  public ContentGenerator createContentGenerator(LayoutProcess layoutProcess)
+  {
+    return null;
+  }
+
+  public Renderer createRenderer(LayoutProcess layoutProcess)
+  {
+    return null;
+  }
 }

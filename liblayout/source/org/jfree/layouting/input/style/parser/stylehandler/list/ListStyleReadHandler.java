@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.Map;
 import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -108,5 +109,14 @@ public class ListStyleReadHandler implements CSSCompoundValueReadHandler
       map.put(ListStyleKeys.LIST_STYLE_IMAGE, image);
     }
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+            ListStyleKeys.LIST_STYLE_IMAGE,
+            ListStyleKeys.LIST_STYLE_POSITION,
+            ListStyleKeys.LIST_STYLE_TYPE
+    };
   }
 }

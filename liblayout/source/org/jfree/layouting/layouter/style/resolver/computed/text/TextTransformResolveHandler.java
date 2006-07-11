@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextTransformResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,7 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.text;
 
-import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.text.TextTransform;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.text.TextProcessingSpecification;
-import org.jfree.layouting.model.text.TextSpecification;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 /**
@@ -63,26 +57,5 @@ public class TextTransformResolveHandler extends ConstantsResolveHandler
     addNormalizeValue(TextTransform.NONE);
     addNormalizeValue(TextTransform.UPPERCASE);
     setFallback(TextTransform.NONE);
-  }
-
-  /**
-   * Resolves a single property.
-   *
-   * @param style
-   * @param currentNode
-   */
-  public void resolve(final LayoutProcess process,
-                      LayoutNode currentNode,
-                      LayoutStyle style,
-                      StyleKey key)
-  {
-    final TextTransform value =
-            (TextTransform) resolveValue(process, currentNode, style, key);
-    final TextSpecification textSpecification =
-            currentNode.getLayoutContext().getTextSpecification();
-    final TextProcessingSpecification processingSpecifcation =
-            textSpecification.getProcessingSpecification();
-    processingSpecifcation.setTextTransform(value);
-
   }
 }

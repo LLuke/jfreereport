@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FloatingType.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class FloatingType extends CSSConstant
+public class FloatingType
 {
-  public static final FloatingType BOX = new FloatingType("box");
-  public static final FloatingType SHAPE = new FloatingType("shape");
+  public static final CSSConstant BOX = new CSSConstant("box");
+  public static final CSSConstant SHAPE = new CSSConstant("shape");
 
-  private FloatingType(String name)
+  private FloatingType()
   {
-    super(name);
   }
 
 }

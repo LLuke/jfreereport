@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleSheetHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -68,13 +68,15 @@ import org.w3c.css.sac.LexicalUnit;
 import org.w3c.css.sac.SACMediaList;
 import org.w3c.css.sac.Selector;
 import org.w3c.css.sac.SelectorList;
+import org.w3c.css.sac.ErrorHandler;
+import org.w3c.css.sac.CSSParseException;
 
 /**
  * Creation-Date: 23.11.2005, 13:06:06
  *
  * @author Thomas Morgner
  */
-public class StyleSheetHandler implements DocumentHandler
+public class StyleSheetHandler implements DocumentHandler, ErrorHandler
 {
   private HashMap namespaces;
   private StyleKeyRegistry registry;
@@ -256,6 +258,10 @@ public class StyleSheetHandler implements DocumentHandler
     {
       parseNamespaceRule(strtok);
     }
+    else
+    {
+      Log.info ("Ignorable @rule: " + atRule);
+    }
   }
 
   private void parseNamespaceRule(final StringTokenizer strtok)
@@ -393,8 +399,8 @@ public class StyleSheetHandler implements DocumentHandler
   public void startMedia(SACMediaList media) throws CSSException
   {
     // ignore for now ..
-    CSSMediaRule rule = new CSSMediaRule(styleSheet, getParentRule());
-    parentRules.push(rule);
+    styleRule = new CSSMediaRule(styleSheet, getParentRule());
+    parentRules.push(styleRule);
 
   }
 
@@ -424,9 +430,10 @@ public class StyleSheetHandler implements DocumentHandler
    */
   public void startPage(String name, String pseudo_page) throws CSSException
   {
+    // Log.debug ("Page Rule: " + name + " / " + pseudo_page);
     // yes, we have to parse that.
-    CSSPageRule rule = new CSSPageRule(styleSheet, getParentRule());
-    parentRules.push(rule);
+    styleRule = new CSSPageRule(styleSheet, getParentRule());
+    parentRules.push(styleRule);
   }
 
   /**
@@ -440,6 +447,7 @@ public class StyleSheetHandler implements DocumentHandler
   public void endPage(String name, String pseudo_page) throws CSSException
   {
     parentRules.pop();
+    styleRule = null;
   }
 
   /**
@@ -455,8 +463,8 @@ public class StyleSheetHandler implements DocumentHandler
   public void startFontFace() throws CSSException
   {
     // font-face events are ignored for now.
-    CSSFontFaceRule rule = new CSSFontFaceRule(styleSheet, getParentRule());
-    parentRules.push(rule);
+    styleRule = new CSSFontFaceRule(styleSheet, getParentRule());
+    parentRules.push(styleRule);
   }
 
   protected StyleRule getParentRule()
@@ -542,8 +550,79 @@ public class StyleSheetHandler implements DocumentHandler
     catch (Exception e)
     {
       // we catch everything.
-      Log.warn("Error parsing " + name, e);
+      Log.warn("Error parsing style key: " + name, e);
     }
 
+  }
+
+  /**
+   * Receive notification of a warning.
+   * <p/>
+   * <p>CSS parsers will use this method to report conditions that are not
+   * errors or fatal errors as defined by the XML 1.0 recommendation.  The
+   * default behaviour is to take no action.</p>
+   * <p/>
+   * <p>The CSS parser must continue to provide normal parsing events after
+   * invoking this method: it should still be possible for the application to
+   * process the document through to the end.</p>
+   *
+   * @param exception The warning information encapsulated in a CSS parse
+   *                  exception.
+   * @throws CSSException Any CSS exception, possibly wrapping another
+   *                      exception.
+   * @see CSSParseException
+   */
+  public void warning(CSSParseException exception) throws CSSException
+  {
+    Log.warn("Warning: ", exception);
+  }
+
+  /**
+   * Receive notification of a recoverable error.
+   * <p/>
+   * <p>This corresponds to the definition of "error" in section 1.2 of the W3C
+   * XML 1.0 Recommendation.  For example, a validating parser would use this
+   * callback to report the violation of a validity constraint.  The default
+   * behaviour is to take no action.</p>
+   * <p/>
+   * <p>The CSS parser must continue to provide normal parsing events after
+   * invoking this method: it should still be possible for the application to
+   * process the document through to the end.  If the application cannot do so,
+   * then the parser should report a fatal error even if the XML 1.0
+   * recommendation does not require it to do so.</p>
+   *
+   * @param exception The error information encapsulated in a CSS parse
+   *                  exception.
+   * @throws CSSException Any CSS exception, possibly wrapping another
+   *                      exception.
+   * @see CSSParseException
+   */
+  public void error(CSSParseException exception) throws CSSException
+  {
+    Log.warn("Error: ", exception);
+  }
+
+  /**
+   * Receive notification of a non-recoverable error.
+   * <p/>
+   * <p>This corresponds to the definition of "fatal error" in section 1.2 of
+   * the W3C XML 1.0 Recommendation.  For example, a parser would use this
+   * callback to report the violation of a well-formedness constraint.</p>
+   * <p/>
+   * <p>The application must assume that the document is unusable after the
+   * parser has invoked this method, and should continue (if at all) only for
+   * the sake of collecting addition error messages: in fact, CSS parsers are
+   * free to stop reporting any other events once this method has been
+   * invoked.</p>
+   *
+   * @param exception The error information encapsulated in a CSS parse
+   *                  exception.
+   * @throws CSSException Any CSS exception, possibly wrapping another
+   *                      exception.
+   * @see CSSParseException
+   */
+  public void fatalError(CSSParseException exception) throws CSSException
+  {
+    Log.warn("Fatal Error: ", exception);
   }
 }

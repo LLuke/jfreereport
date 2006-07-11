@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineGridProgression.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class LineGridProgression extends CSSConstant
+public class LineGridProgression
 {
-  public static final LineGridProgression TEXT_HEIGHT =
-          new LineGridProgression("text-height");
-  public static final LineGridProgression LINE_HEIGHT =
-          new LineGridProgression("line-height");
+  public static final CSSConstant TEXT_HEIGHT =
+          new CSSConstant("text-height");
+  public static final CSSConstant LINE_HEIGHT =
+          new CSSConstant("line-height");
 
-  private LineGridProgression(final String constant)
+  private LineGridProgression()
   {
-    super(constant);
   }
 }

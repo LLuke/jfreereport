@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: VerticalAlignResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,8 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.line;
 
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class VerticalAlignResolveHandler extends ConstantsResolveHandler
 {
@@ -63,19 +59,6 @@ public class VerticalAlignResolveHandler extends ConstantsResolveHandler
     addNormalizeValue(VerticalAlign.TOP);
     // we do not detect scripts right now ...
     setFallback(VerticalAlign.BASELINE);
-  }
-
-  /**
-   * Resolves a single property.
-   *
-   * @param style
-   * @param currentNode
-   */
-  public void resolve (final LayoutProcess process, LayoutNode currentNode,
-                       LayoutStyle style, StyleKey key)
-  {
-    final VerticalAlign va = (VerticalAlign) resolveValue(process, currentNode, style, key);
-    currentNode.getLayoutContext().getLineSpecification().setVerticalAlign(va);
   }
 
 }

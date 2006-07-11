@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColumnWidthPolicy.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class ColumnWidthPolicy extends CSSConstant
+public class ColumnWidthPolicy
 {
-  public static final ColumnWidthPolicy FLEXIBLE =
-          new ColumnWidthPolicy("flexible");
-  public static final ColumnWidthPolicy STRICT =
-          new ColumnWidthPolicy("strict");
+  public static final CSSConstant FLEXIBLE =
+          new CSSConstant("flexible");
+  public static final CSSConstant STRICT =
+          new CSSConstant("strict");
 
-  private ColumnWidthPolicy(final String constant)
+  private ColumnWidthPolicy()
   {
-    super(constant);
   }
 }

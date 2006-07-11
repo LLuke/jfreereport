@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WordBreak.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -48,16 +48,15 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class WordBreak extends CSSConstant
+public class WordBreak
 {
-  public static final WordBreak NORMAL = new WordBreak("normal");
-  public static final WordBreak KEEP_ALL = new WordBreak("keep-all");
-  public static final WordBreak LOOSE = new WordBreak("loose");
-  public static final WordBreak BREAK_STRICT = new WordBreak("break-strict");
-  public static final WordBreak BREAK_ALL = new WordBreak("break-all");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant KEEP_ALL = new CSSConstant("keep-all");
+  public static final CSSConstant LOOSE = new CSSConstant("loose");
+  public static final CSSConstant BREAK_STRICT = new CSSConstant("break-strict");
+  public static final CSSConstant BREAK_ALL = new CSSConstant("break-all");
 
-  private WordBreak(String name)
+  private WordBreak()
   {
-    super(name);
   }
 }

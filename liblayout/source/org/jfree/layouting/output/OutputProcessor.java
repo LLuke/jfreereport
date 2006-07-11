@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -41,17 +41,46 @@
 package org.jfree.layouting.output;
 
 import org.jfree.fonts.registry.FontStorage;
-import org.jfree.layouting.model.PageContext;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
+import org.jfree.layouting.renderer.Renderer;
 
 /**
- * Creation-Date: 05.12.2005, 18:56:02
+ * The output processor defines, which processing-step implementation will
+ * be used during the layout process.
+ *
+ * Obviously, what computations are required depends heavily on the desired
+ * result.
  *
  * @author Thomas Morgner
  */
 public interface OutputProcessor
 {
   public OutputProcessorMetaData getMetaData();
-  public FontStorage getFontStorage();
 
-  public PageContext createPageContext (int pageNumber);
+  public InputFeed createInputFeed (LayoutProcess layoutProcess);
+
+  /**
+   * Returns the content normalizer implementation for this OP. The content
+   * normalizer is responsible for resolving the styles and for initiating the
+   * display model building.
+   *
+   * @param layoutProcess the layout process that governs all.
+   * @return the created content normalizer.
+   */
+  public Normalizer createNormalizer(LayoutProcess layoutProcess);
+
+  /**
+   * The model builder normalizes the input and builds the Display-Model. The
+   * DisplayModel enriches and normalizes the logical document model so that
+   * it is better suited for rendering.
+   *
+   * @param layoutProcess the layout process that governs all.
+   * @return the created model builder.
+   */
+  public ModelBuilder createModelBuilder(LayoutProcess layoutProcess);
+
+  public Renderer createRenderer (LayoutProcess layoutProcess);
 }

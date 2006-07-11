@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Direction.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class Direction extends CSSConstant
+public class Direction
 {
-  public static final Direction LTR = new Direction("ltr");
-  public static final Direction RTL = new Direction("rtl");
+  public static final CSSConstant LTR = new CSSConstant("ltr");
+  public static final CSSConstant RTL = new CSSConstant("rtl");
 
-  private Direction(final String constant)
+  private Direction()
   {
-    super(constant);
   }
 }

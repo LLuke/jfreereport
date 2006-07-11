@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FitResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,7 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.box;
 
-import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.Fit;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class FitResolveHandler extends ConstantsResolveHandler
@@ -59,13 +55,5 @@ public class FitResolveHandler extends ConstantsResolveHandler
     setFallback(Fit.FILL);
   }
 
-  public void resolve (final LayoutProcess process, LayoutNode currentNode,
-                       LayoutStyle style, StyleKey key)
-  {
-    final Fit value = (Fit) resolveValue(process, currentNode, style, key);
-    style.setValue(key, value);
-
-    currentNode.getLayoutContext().getReplacedElementSpecification().setFit(value);
-  }
 
 }

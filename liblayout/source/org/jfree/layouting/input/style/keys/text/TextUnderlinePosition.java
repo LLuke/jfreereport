@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextUnderlinePosition.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextUnderlinePosition extends CSSConstant
+public class TextUnderlinePosition
 {
-  public static final TextUnderlinePosition BEFORE_EDGE =
-          new TextUnderlinePosition("before-edge");
-  public static final TextUnderlinePosition AFTER_EDGE =
-          new TextUnderlinePosition("after-edge");
-  public static final TextUnderlinePosition ALPHABETIC =
-          new TextUnderlinePosition("alphabetic");
+  public static final CSSConstant BEFORE_EDGE =
+          new CSSConstant("before-edge");
+  public static final CSSConstant AFTER_EDGE =
+          new CSSConstant("after-edge");
+  public static final CSSConstant ALPHABETIC =
+          new CSSConstant("alphabetic");
 
-  private TextUnderlinePosition(final String constant)
+  private TextUnderlinePosition()
   {
-    super(constant);
   }
 }

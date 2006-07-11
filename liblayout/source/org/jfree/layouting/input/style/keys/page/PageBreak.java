@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageBreak.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class PageBreak extends CSSConstant
+public class PageBreak
 {
-  public static PageBreak ALWAYS = new PageBreak("always");
-  public static PageBreak AVOID = new PageBreak("avoid");
-  public static PageBreak LEFT = new PageBreak("left");
-  public static PageBreak RIGHT = new PageBreak("right");
+  public static CSSConstant ALWAYS = new CSSConstant("always");
+  public static CSSConstant AVOID = new CSSConstant("avoid");
+  public static CSSConstant LEFT = new CSSConstant("left");
+  public static CSSConstant RIGHT = new CSSConstant("right");
 
-  private PageBreak(final String constant)
+  private PageBreak()
   {
-    super(constant);
   }
 }

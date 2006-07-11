@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,11 @@
 package org.jfree.layouting.output;
 
 import org.jfree.fonts.registry.FontFamily;
-import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
-import org.jfree.layouting.input.style.keys.font.FontSizeConstant;
+import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.registry.FontStorage;
+import org.jfree.layouting.input.style.keys.page.PageSize;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.layouter.context.FontSpecification;
 
 /**
  * Creation-Date: 14.12.2005, 13:47:00
@@ -55,8 +58,18 @@ public interface OutputProcessorMetaData
   public double getNumericFeatureValue (OutputProcessorFeature.NumericOutputProcessorFeature feature);
 
   public FontFamily getDefaultFontFamily();
-  public FontFamily getFontFamily(FontFamilyValues genericName);
-  public double getFontSize (FontSizeConstant constant);
+  public FontFamily getFontFamily(CSSConstant genericName);
+
+  /**
+   * Although most font systems are global, some may have some issues with
+   * caching. OutputTargets may have to tweak the font storage system to their
+   * needs.
+   *
+   * @return
+   */
+  public FontStorage getFontStorage();
+
+  public double getFontSize (CSSConstant constant);
 
   /**
    * Returns the media type of the output target. This corresponds directly to
@@ -65,5 +78,22 @@ public interface OutputProcessorMetaData
    * @return the media type of the output target.
    */
   public String getMediaType();
+
+  /**
+   * The export descriptor is a string that describes the output characteristics.
+   * For libLayout outputs, it should start with the output class (one of
+   * 'pageable', 'flow' or 'stream'), followed by '/liblayout/' and finally
+   * followed by the output type (ie. PDF, Print, etc).
+   *
+   * @return the export descriptor.
+   */
   public String getExportDescriptor();
+
+  public PageSize getDefaultPageSize();
+
+  public boolean isValid (FontSpecification spec);
+
+  public FontMetrics getFontMetrics(FontSpecification spec);
+
+  public Class[] getSupportedResourceTypes();
 }

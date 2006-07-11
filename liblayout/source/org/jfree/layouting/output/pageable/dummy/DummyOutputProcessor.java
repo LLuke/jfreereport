@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DummyOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,16 @@ package org.jfree.layouting.output.pageable.dummy;
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontStorage;
-import org.jfree.layouting.model.PageContext;
-import org.jfree.layouting.normalizer.pagable.PageGeneratingNormalizer;
-import org.jfree.layouting.normalizer.pagable.PagePreparationNormalizer;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.pageable.PageableOutputProcessor;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
+import org.jfree.layouting.normalizer.generator.ContentGenerator;
+import org.jfree.layouting.normalizer.content.ContentNormalizer;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.feed.DefaultInputFeed;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.renderer.Renderer;
 
 public class DummyOutputProcessor implements PageableOutputProcessor
 {
@@ -66,25 +71,54 @@ public class DummyOutputProcessor implements PageableOutputProcessor
   {
     return fontStorage;
   }
+  public InputFeed createInputFeed(LayoutProcess layoutProcess)
+  {
+    return new DefaultInputFeed(layoutProcess);
+  }
 
   public OutputProcessorMetaData getMetaData ()
   {
     return metaData;
   }
 
-  public PageContext createPageContext(int pageNumber)
+  /**
+   * Returns the content normalizer implementation for this OP. The content
+   * normalizer is responsible for resolving the styles and for initiating the
+   * DOM building.
+   *
+   * @return
+   */
+  public Normalizer createNormalizer(LayoutProcess layoutProcess)
+  {
+    return new ContentNormalizer(layoutProcess);
+  }
+
+  /**
+   * The model builder normalizes the input and builds the Display-Model. The
+   * DisplayModel enriches and normalizes the logical document model so that it
+   * is better suited for rendering.
+   *
+   * @return
+   */
+  public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
     return null;
   }
 
-  public PageGeneratingNormalizer createGenerateNormalizer()
+  /**
+   * Creates a new content generator. The content generator is responsible for
+   * creating the visual content from the display model.
+   *
+   * @param layoutProcess the layout process that governs all.
+   * @return the created content generator.
+   */
+  public ContentGenerator createContentGenerator(LayoutProcess layoutProcess)
   {
     return null;
   }
 
-  public PagePreparationNormalizer createPrepareNormalizer()
+  public Renderer createRenderer(LayoutProcess layoutProcess)
   {
     return null;
   }
-
 }

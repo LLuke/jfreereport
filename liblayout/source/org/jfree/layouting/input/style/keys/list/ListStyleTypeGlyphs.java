@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleTypeGlyphs.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -41,26 +41,24 @@
 package org.jfree.layouting.input.style.keys.list;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.LibLayoutBoot;
 
 /**
  * Creation-Date: 01.12.2005, 18:40:19
  *
  * @author Thomas Morgner
  */
-public class ListStyleTypeGlyphs extends CSSConstant
+public class ListStyleTypeGlyphs
 {
    // box | check | circle | diamond | disc | hyphen | square
-  public static final ListStyleTypeGlyphs BOX = new ListStyleTypeGlyphs("box");
-  public static final ListStyleTypeGlyphs CHECK = new ListStyleTypeGlyphs("check");
-  public static final ListStyleTypeGlyphs CIRCLE = new ListStyleTypeGlyphs("circle");
-  public static final ListStyleTypeGlyphs DIAMOND = new ListStyleTypeGlyphs("diamon");
-  public static final ListStyleTypeGlyphs DISC = new ListStyleTypeGlyphs("disc");
-  public static final ListStyleTypeGlyphs HYPHEN = new ListStyleTypeGlyphs("hyphen");
-  public static final ListStyleTypeGlyphs SQUARE = new ListStyleTypeGlyphs("square");
+  public static final CSSConstant BOX = new CSSConstant("box");
+  public static final CSSConstant CHECK = new CSSConstant("check");
+  public static final CSSConstant CIRCLE = new CSSConstant("circle");
+  public static final CSSConstant DIAMOND = new CSSConstant("diamon");
+  public static final CSSConstant DISC = new CSSConstant("disc");
+  public static final CSSConstant HYPHEN = new CSSConstant("hyphen");
+  public static final CSSConstant SQUARE = new CSSConstant("square");
 
-  private ListStyleTypeGlyphs(final String constant)
+  private ListStyleTypeGlyphs()
   {
-    super(constant);
   }
 }

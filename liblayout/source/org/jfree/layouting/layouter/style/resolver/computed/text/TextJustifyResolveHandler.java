@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextJustifyResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,13 +41,7 @@
 package org.jfree.layouting.layouter.style.resolver.computed.text;
 
 import org.jfree.layouting.input.style.keys.text.TextJustify;
-import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.text.TextSpecification;
-import org.jfree.layouting.model.text.TextAlignmentSpecifcation;
 
 /**
  * Creation-Date: 21.12.2005, 14:54:02
@@ -65,26 +59,6 @@ public class TextJustifyResolveHandler extends ConstantsResolveHandler
     addNormalizeValue(TextJustify.KASHIDA);
     addNormalizeValue(TextJustify.SIZE);
     setFallback(TextJustify.INTER_WORD);
-  }
-
-  /**
-   * Resolves a single property.
-   *
-   * @param style
-   * @param currentNode
-   */
-  public void resolve(final LayoutProcess process,
-                      LayoutNode currentNode,
-                      LayoutStyle style,
-                      StyleKey key)
-  {
-    final TextJustify value =
-            (TextJustify) resolveValue(process, currentNode, style, key);
-    final TextSpecification textSpecification =
-            currentNode.getLayoutContext().getTextSpecification();
-    final TextAlignmentSpecifcation alignmentSpecifcation =
-            textSpecification.getAlignmentSpecifcation();
-    alignmentSpecifcation.setTextJustify(value);
   }
 
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DropInitialAfterAdjust.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,26 +47,25 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class DropInitialAfterAdjust extends CSSConstant
+public class DropInitialAfterAdjust
 {
   // central | middle | after-edge | text-after-edge | ideographic | alphabetic | mathematical
-  public static final DropInitialAfterAdjust CENTRAL =
-          new DropInitialAfterAdjust("central");
-  public static final DropInitialAfterAdjust MIDDLE =
-          new DropInitialAfterAdjust("middle");
-  public static final DropInitialAfterAdjust AFTER_EDGE =
-          new DropInitialAfterAdjust("after-edge");
-  public static final DropInitialAfterAdjust TEXT_AFTER_EDGE =
-          new DropInitialAfterAdjust("text-after-edge");
-  public static final DropInitialAfterAdjust IDEOGRAPHIC =
-          new DropInitialAfterAdjust("ideographic");
-  public static final DropInitialAfterAdjust ALPHABETIC =
-          new DropInitialAfterAdjust("alphabetic");
-  public static final DropInitialAfterAdjust MATHEMATICAL =
-          new DropInitialAfterAdjust("mathematical");
+  public static final CSSConstant CENTRAL =
+          new CSSConstant("central");
+  public static final CSSConstant MIDDLE =
+          new CSSConstant("middle");
+  public static final CSSConstant AFTER_EDGE =
+          new CSSConstant("after-edge");
+  public static final CSSConstant TEXT_AFTER_EDGE =
+          new CSSConstant("text-after-edge");
+  public static final CSSConstant IDEOGRAPHIC =
+          new CSSConstant("ideographic");
+  public static final CSSConstant ALPHABETIC =
+          new CSSConstant("alphabetic");
+  public static final CSSConstant MATHEMATICAL =
+          new CSSConstant("mathematical");
 
-  private DropInitialAfterAdjust(final String constant)
+  private DropInitialAfterAdjust()
   {
-    super(constant);
   }
 }

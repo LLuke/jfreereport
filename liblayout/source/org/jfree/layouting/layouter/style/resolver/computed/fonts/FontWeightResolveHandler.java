@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontWeightResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,14 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.fonts;
 
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.font.FontWeight;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
@@ -77,17 +76,15 @@ public class FontWeightResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
-                         LayoutStyle style,
-                         StyleKey key)
+                      LayoutElement currentNode,
+                      LayoutStyle style,
+                      StyleKey key)
   {
     final CSSValue value = style.getValue(key);
-    final FontSpecification fs =
-            currentNode.getLayoutContext().getFontSpecification();
     final int fontWeight;
     if (FontWeight.BOLD.equals(value))
     {
@@ -127,7 +124,8 @@ public class FontWeightResolveHandler implements ResolveHandler
       fontWeight = queryParent(currentNode.getParent());
     }
 
-    fs.setFontWeight(fontWeight);
+    style.setValue(FontStyleKeys.FONT_WEIGHT,
+            new CSSNumericValue(CSSNumericType.NUMBER, fontWeight));
   }
 
   private int queryParent(final LayoutElement parent)

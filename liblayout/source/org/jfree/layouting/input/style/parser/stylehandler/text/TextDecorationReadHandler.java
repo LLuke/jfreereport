@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextDecorationReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextDecorationMode;
 import org.jfree.layouting.input.style.keys.text.TextDecorationStyle;
 import org.jfree.layouting.input.style.keys.color.CSSSystemColors;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -115,18 +116,37 @@ public class TextDecorationReadHandler extends OneOfConstantsReadHandler
       }
       else if (constant.getCSSText().equals("underline"))
       {
-        map.put(TextStyleKeys.TEXT_UNDERLINE_STYLE, TextDecorationStyle.NONE);
+        map.put(TextStyleKeys.TEXT_UNDERLINE_STYLE, TextDecorationStyle.SOLID);
       }
       else if (constant.getCSSText().equals("overline"))
       {
-        map.put(TextStyleKeys.TEXT_OVERLINE_STYLE, TextDecorationStyle.NONE);
+        map.put(TextStyleKeys.TEXT_OVERLINE_STYLE, TextDecorationStyle.SOLID);
       }
       else if (constant.getCSSText().equals("line-through"))
       {
-        map.put(TextStyleKeys.TEXT_LINE_THROUGH_STYLE, TextDecorationStyle.NONE);
+        map.put(TextStyleKeys.TEXT_LINE_THROUGH_STYLE, TextDecorationStyle.SOLID);
       }
       unit = unit.getNextLexicalUnit();
     }
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+            TextStyleKeys.TEXT_UNDERLINE_POSITION,
+            TextStyleKeys.TEXT_UNDERLINE_MODE,
+            TextStyleKeys.TEXT_OVERLINE_MODE,
+            TextStyleKeys.TEXT_LINE_THROUGH_MODE,
+            TextStyleKeys.TEXT_UNDERLINE_COLOR,
+            TextStyleKeys.TEXT_OVERLINE_COLOR,
+            TextStyleKeys.TEXT_LINE_THROUGH_COLOR,
+            TextStyleKeys.TEXT_UNDERLINE_WIDTH,
+            TextStyleKeys.TEXT_OVERLINE_WIDTH,
+            TextStyleKeys.TEXT_LINE_THROUGH_WIDTH,
+            TextStyleKeys.TEXT_UNDERLINE_STYLE,
+            TextStyleKeys.TEXT_OVERLINE_STYLE,
+            TextStyleKeys.TEXT_LINE_THROUGH_STYLE
+    };
   }
 }

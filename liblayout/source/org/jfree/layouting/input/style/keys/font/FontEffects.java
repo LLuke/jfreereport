@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontEffects.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,15 +48,14 @@ package org.jfree.layouting.input.style.keys.font;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
-public class FontEffects extends CSSConstant
+public class FontEffects
 {
-  public static final FontEffects NONE = new FontEffects("none");
-  public static final FontEffects EMBOSS = new FontEffects("emboss");
-  public static final FontEffects ENGRAVE = new FontEffects("engrave");
-  public static final FontEffects OUTLINE = new FontEffects("outline");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant EMBOSS = new CSSConstant("emboss");
+  public static final CSSConstant ENGRAVE = new CSSConstant("engrave");
+  public static final CSSConstant OUTLINE = new CSSConstant("outline");
 
-  private FontEffects(String name)
+  private FontEffects()
   {
-    super(name);
   }
 }

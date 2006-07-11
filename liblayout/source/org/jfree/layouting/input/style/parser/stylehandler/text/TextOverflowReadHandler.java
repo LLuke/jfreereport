@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextOverflowReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -106,5 +107,13 @@ public class TextOverflowReadHandler implements CSSCompoundValueReadHandler
       map.put(TextStyleKeys.TEXT_OVERFLOW_ELLIPSIS, ellipsis);
     }
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+      TextStyleKeys.TEXT_OVERFLOW_MODE,
+      TextStyleKeys.TEXT_OVERFLOW_ELLIPSIS
+    };
   }
 }

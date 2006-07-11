@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderingIntent.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,19 +48,18 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class RenderingIntent extends CSSConstant
+public class RenderingIntent 
 {
-  public static final RenderingIntent PERCEPTUAL = new RenderingIntent(
+  public static final CSSConstant PERCEPTUAL = new CSSConstant(
           "perceptual");
-  public static final RenderingIntent RELATIVE_COLORIMETRIC = new RenderingIntent(
+  public static final CSSConstant RELATIVE_COLORIMETRIC = new CSSConstant(
           "relative-colorimetric");
-  public static final RenderingIntent SATURATION = new RenderingIntent(
+  public static final CSSConstant SATURATION = new CSSConstant(
           "saturation");
-  public static final RenderingIntent ABSOLUTE_COLORIMETRIC = new RenderingIntent(
+  public static final CSSConstant ABSOLUTE_COLORIMETRIC = new CSSConstant(
           "absolute-colorimetric");
 
-  private RenderingIntent(String name)
+  private RenderingIntent()
   {
-    super(name);
   }
 }

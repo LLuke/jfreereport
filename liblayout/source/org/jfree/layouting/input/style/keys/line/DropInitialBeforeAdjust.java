@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DropInitialBeforeAdjust.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,23 +47,22 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class DropInitialBeforeAdjust extends CSSConstant
+public class DropInitialBeforeAdjust
 {
-  public static final DropInitialBeforeAdjust CENTRAL =
-          new DropInitialBeforeAdjust("central");
-  public static final DropInitialBeforeAdjust MIDDLE =
-          new DropInitialBeforeAdjust("middle");
-  public static final DropInitialBeforeAdjust MATHEMATICAL =
-          new DropInitialBeforeAdjust("mathematical");
-  public static final DropInitialBeforeAdjust BEFORE_EDGE =
-          new DropInitialBeforeAdjust("before-edge");
-  public static final DropInitialBeforeAdjust TEXT_BEFORE_EDGE =
-          new DropInitialBeforeAdjust("text-before-edge");
-  public static final DropInitialBeforeAdjust HANGING =
-          new DropInitialBeforeAdjust("hanging");
+  public static final CSSConstant CENTRAL =
+          new CSSConstant("central");
+  public static final CSSConstant MIDDLE =
+          new CSSConstant("middle");
+  public static final CSSConstant MATHEMATICAL =
+          new CSSConstant("mathematical");
+  public static final CSSConstant BEFORE_EDGE =
+          new CSSConstant("before-edge");
+  public static final CSSConstant TEXT_BEFORE_EDGE =
+          new CSSConstant("text-before-edge");
+  public static final CSSConstant HANGING =
+          new CSSConstant("hanging");
 
-  private DropInitialBeforeAdjust(final String constant)
+  private DropInitialBeforeAdjust()
   {
-    super(constant);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundAttachment.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,17 +48,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BackgroundAttachment extends CSSConstant
+public class BackgroundAttachment
 {
-  public static final BackgroundAttachment SCROLL = new BackgroundAttachment(
+  public static final CSSConstant SCROLL = new CSSConstant(
           "scroll");
-  public static final BackgroundAttachment FIXED = new BackgroundAttachment(
+  public static final CSSConstant FIXED = new CSSConstant(
           "fixed");
-  public static final BackgroundAttachment LOCAL = new BackgroundAttachment(
+  public static final CSSConstant LOCAL = new CSSConstant(
           "local");
 
-  private BackgroundAttachment(String name)
+  private BackgroundAttachment()
   {
-    super(name);
   }
 }

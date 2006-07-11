@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextAutoSpace.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextAutoSpace extends CSSConstant
+public class TextAutoSpace
 {
-  public static final TextAutoSpace NONE = new TextAutoSpace("none");
-  public static final TextAutoSpace IDEOGRAPH_NUMERIC = new TextAutoSpace("ideograph-numeric");
-  public static final TextAutoSpace IDEOGRAPH_ALPHA = new TextAutoSpace("ideograph-alpha");
-  public static final TextAutoSpace IDEOGRAPH_SPACE = new TextAutoSpace("ideograph-space");
-  public static final TextAutoSpace IDEOGRAPH_PARENTHESIS = new TextAutoSpace("ideograph-parenthesis");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant IDEOGRAPH_NUMERIC = new CSSConstant("ideograph-numeric");
+  public static final CSSConstant IDEOGRAPH_ALPHA = new CSSConstant("ideograph-alpha");
+  public static final CSSConstant IDEOGRAPH_SPACE = new CSSConstant("ideograph-space");
+  public static final CSSConstant IDEOGRAPH_PARENTHESIS = new CSSConstant("ideograph-parenthesis");
 
 
-  private TextAutoSpace(final String constant)
+  private TextAutoSpace()
   {
-    super(constant);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontVariantResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,13 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.fonts;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontVariant;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**
  * Creation-Date: 18.12.2005, 20:55:31
@@ -74,24 +73,22 @@ public class FontVariantResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
-                         LayoutStyle style,
-                         StyleKey key)
+                      LayoutElement currentNode,
+                      LayoutStyle style,
+                      StyleKey key)
   {
-    final FontSpecification fs =
-            currentNode.getLayoutContext().getFontSpecification();
     final CSSValue value = style.getValue(key);
     if (FontVariant.SMALL_CAPS.equals(value))
     {
-      fs.setSmallCaps(true);
+      style.setValue(key, FontVariant.SMALL_CAPS);
     }
     else
     {
-      fs.setSmallCaps(false);
+      style.setValue(key, FontVariant.NORMAL);
     }
   }
 }

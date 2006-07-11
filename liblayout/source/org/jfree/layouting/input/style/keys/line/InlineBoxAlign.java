@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InlineBoxAlign.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class InlineBoxAlign extends CSSConstant
+public class InlineBoxAlign
 {
-  public static final InlineBoxAlign INITIAL = new InlineBoxAlign("initial");
-  public static final InlineBoxAlign LAST = new InlineBoxAlign("last");
+  public static final CSSConstant INITIAL = new CSSConstant("initial");
+  public static final CSSConstant LAST = new CSSConstant("last");
 
-  private InlineBoxAlign(String name)
+  private InlineBoxAlign()
   {
-    super(name);
   }
 }

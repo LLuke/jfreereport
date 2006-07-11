@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSConstant.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ package org.jfree.layouting.input.style.values;
  *
  * @author Thomas Morgner
  */
-public class CSSConstant implements CSSValue
+public final class CSSConstant implements CSSValue
 {
   private String constant;
 

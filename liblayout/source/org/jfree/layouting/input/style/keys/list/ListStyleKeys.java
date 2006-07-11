@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -52,13 +52,16 @@ public class ListStyleKeys
 {
   public static final StyleKey LIST_STYLE_IMAGE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("list-style-image", false, false, false);
+                  ("list-style-image", false, false,
+                          StyleKey.DOM_ELEMENTS | StyleKey.PSEUDO_MARKER);
   public static final StyleKey LIST_STYLE_TYPE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("list-style-type", false, false, false);
+                  ("list-style-type", false, false,
+                          StyleKey.DOM_ELEMENTS | StyleKey.PSEUDO_MARKER);
   public static final StyleKey LIST_STYLE_POSITION =
           StyleKeyRegistry.getRegistry().createKey
-                  ("list-style-position", false, false, false);
+                  ("list-style-position", false, false,
+                          StyleKey.DOM_ELEMENTS | StyleKey.PSEUDO_MARKER);
 
 
   private ListStyleKeys()

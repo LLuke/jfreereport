@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSParserContext.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.util.Map;
 
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 25.11.2005, 17:47:10

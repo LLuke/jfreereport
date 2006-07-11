@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MinMaxFontSizeResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,9 @@ import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
-import org.jfree.layouting.model.LayoutNode;
 
 // todo apply built in defaults instead ...
 /**
@@ -98,14 +98,14 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
     addValue(FontSizeConstant.XX_LARGE, predefinedSizes[6]);
   }
 
-  private CSSNumericValue computePredefinedSize(FontSizeConstant c)
+  private CSSNumericValue computePredefinedSize(CSSConstant c)
   {
     String key = SIZE_FACTOR_PREFIX + c.getCSSText();
     double scaling = parseDouble(key, 100);
     return new CSSNumericValue(CSSNumericType.PT, fontSize * scaling / 100d);
   }
 
-  private double computePredefinedScalingFactor(FontSizeConstant c)
+  private double computePredefinedScalingFactor(CSSConstant c)
   {
     String key = SIZE_FACTOR_PREFIX + c.getCSSText();
     return parseDouble(key, 100);
@@ -145,11 +145,11 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
+                         LayoutElement currentNode,
                          LayoutStyle style,
                          StyleKey key)
   {

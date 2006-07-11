@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextHeightResolveHandler.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ package org.jfree.layouting.layouter.style.resolver.autovalue.line;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.line.TextHeight;
 
@@ -69,10 +69,10 @@ public class TextHeightResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
-  public void resolve (LayoutProcess process, LayoutNode currentNode, LayoutStyle style,
+  public void resolve (LayoutProcess process, LayoutElement currentNode, LayoutStyle style,
                        StyleKey key)
   {
     style.setValue(key, TextHeight.FONT_SIZE);

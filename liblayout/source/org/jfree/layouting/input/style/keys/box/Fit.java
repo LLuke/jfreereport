@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Fit.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -49,15 +49,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class Fit extends CSSConstant
+public class Fit
 {
-  public static final Fit FILL = new Fit("fill");
-  public static final Fit NONE = new Fit("none");
-  public static final Fit MEET = new Fit("meet");
-  public static final Fit SLICE = new Fit("slice");
+  public static final CSSConstant FILL = new CSSConstant("fill");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant MEET = new CSSConstant("meet");
+  public static final CSSConstant SLICE = new CSSConstant("slice");
 
-  private Fit(String name)
+  private Fit()
   {
-    super(name);
   }
 }

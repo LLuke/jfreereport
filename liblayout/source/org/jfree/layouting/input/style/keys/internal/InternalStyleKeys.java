@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InternalStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class InternalStyleKeys
    */
   public static final StyleKey PSEUDOCLASS =
           StyleKeyRegistry.getRegistry().createKey
-          ("-x-liblayout-pseudoclass", false, false, true);
+          ("-x-liblayout-pseudoclass", false, false, StyleKey.All_ELEMENTS);
 
   /**
    * Which language does the content have? This is an ISO code like
@@ -65,7 +65,7 @@ public class InternalStyleKeys
    */
   public static final StyleKey LANG =
           StyleKeyRegistry.getRegistry().createKey
-          ("-x-liblayout-language", true, true, false);
+          ("-x-liblayout-language", true, true, StyleKey.All_ELEMENTS);
 
   private InternalStyleKeys()
   {

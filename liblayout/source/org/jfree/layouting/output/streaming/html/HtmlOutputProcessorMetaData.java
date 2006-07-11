@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HtmlOutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
+ * $Id: HtmlOutputProcessorMetaData.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,9 @@ package org.jfree.layouting.output.streaming.html;
 
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
+import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
 /**
@@ -52,9 +54,9 @@ import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
  */
 public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
 {
-  public HtmlOutputProcessorMetaData(final FontRegistry fontRegistry)
+  public HtmlOutputProcessorMetaData(final FontStorage fontStorage)
   {
-    super(fontRegistry);
+    super(fontStorage);
 
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");
     setFamilyMapping(FontFamilyValues.FANTASY, "fantasy");

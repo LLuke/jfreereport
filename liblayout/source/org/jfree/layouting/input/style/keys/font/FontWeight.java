@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontWeight.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,15 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class FontWeight extends CSSConstant
+public class FontWeight
 {
-  public static final FontWeight NORMAL = new FontWeight("normal");
-  public static final FontWeight BOLD = new FontWeight("bold");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant BOLD = new CSSConstant("bold");
 
-  public static final FontWeight BOLDER = new FontWeight("bolder");
-  public static final FontWeight LIGHTER = new FontWeight("lighter");
+  public static final CSSConstant BOLDER = new CSSConstant("bolder");
+  public static final CSSConstant LIGHTER = new CSSConstant("lighter");
 
-  private FontWeight(String name) {
-    super(name);
+  private FontWeight()
+  {
   }
 }

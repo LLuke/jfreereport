@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontSizeConstant.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,18 +47,17 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class FontSizeConstant extends CSSConstant
+public class FontSizeConstant
 {
-  public static final FontSizeConstant XX_SMALL = new FontSizeConstant("xx-small");
-  public static final FontSizeConstant X_SMALL = new FontSizeConstant("x-small");
-  public static final FontSizeConstant SMALL = new FontSizeConstant("small");
-  public static final FontSizeConstant MEDIUM = new FontSizeConstant("medium");
-  public static final FontSizeConstant LARGE = new FontSizeConstant("large");
-  public static final FontSizeConstant X_LARGE = new FontSizeConstant("x-large");
-  public static final FontSizeConstant XX_LARGE = new FontSizeConstant("xx-large");
+  public static final CSSConstant XX_SMALL = new CSSConstant("xx-small");
+  public static final CSSConstant X_SMALL = new CSSConstant("x-small");
+  public static final CSSConstant SMALL = new CSSConstant("small");
+  public static final CSSConstant MEDIUM = new CSSConstant("medium");
+  public static final CSSConstant LARGE = new CSSConstant("large");
+  public static final CSSConstant X_LARGE = new CSSConstant("x-large");
+  public static final CSSConstant XX_LARGE = new CSSConstant("xx-large");
 
-  private FontSizeConstant(final String constant)
+  private FontSizeConstant()
   {
-    super(constant);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FloatDisplace.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class FloatDisplace extends CSSConstant
+public class FloatDisplace
 {
   /**
    * Line boxes should be shortened and moved so as to avoid floats. The margin,
    * border, padding and background of the element are not affected by floats.
    * (This is the behavior as described in CSS2.)
    */
-  public static final FloatDisplace LINE = new FloatDisplace("line");
+  public static final CSSConstant LINE = new CSSConstant("line");
   /**
    * The distance between the margin edge of the floats and the start of the
    * line box is set to the distance between the active reference indent edge
@@ -63,7 +63,7 @@ public class FloatDisplace extends CSSConstant
    * box. This ensures that relative indents are preserved in the presence of
    * floats.
    */
-  public static final FloatDisplace INDENT = new FloatDisplace("indent");
+  public static final CSSConstant INDENT = new CSSConstant("indent");
   /**
    * The containing block's width as used by the horizontal formatting model is
    * reduced by the width of the floats intruding upon its content area (not
@@ -79,7 +79,7 @@ public class FloatDisplace extends CSSConstant
    * width is no longer so constrained or until all floats have been cleared,
    * whichever occurs first.
    */
-  public static final FloatDisplace BLOCK = new FloatDisplace("block");
+  public static final CSSConstant BLOCK = new CSSConstant("block");
   /**
    * As for the 'block' value, but the determination of intrusions that adjust
    * the width of the block is done separately on each page on which the block
@@ -88,11 +88,10 @@ public class FloatDisplace extends CSSConstant
    * with different intrusions. The computed value of the 'width' property for
    * this case is...?
    */
-  public static final FloatDisplace BLOCK_WITHIN_PAGE =
-          new FloatDisplace("block-within-page");
+  public static final CSSConstant BLOCK_WITHIN_PAGE =
+          new CSSConstant("block-within-page");
 
-  private FloatDisplace(String name)
+  private FloatDisplace()
   {
-    super(name);
   }
 }

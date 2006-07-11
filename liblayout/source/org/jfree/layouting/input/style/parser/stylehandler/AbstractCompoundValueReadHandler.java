@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractCompoundValueReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,8 @@ import org.w3c.css.sac.LexicalUnit;
  *
  * @author Thomas Morgner
  */
-public class AbstractCompoundValueReadHandler implements CSSCompoundValueReadHandler
+public class AbstractCompoundValueReadHandler
+        implements CSSCompoundValueReadHandler
 {
   private HashMap handlers;
 
@@ -63,9 +64,15 @@ public class AbstractCompoundValueReadHandler implements CSSCompoundValueReadHan
     this.handlers = new HashMap();
   }
 
-  public void addHandler (StyleKey key, CSSValueReadHandler handler)
+  protected synchronized void addHandler (StyleKey key, CSSValueReadHandler handler)
   {
     this.handlers.put(key, handler);
+  }
+
+  public synchronized StyleKey[] getAffectedKeys()
+  {
+    return (StyleKey[])
+            handlers.keySet().toArray(new StyleKey[handlers.size()]);
   }
 
   /**
@@ -74,7 +81,7 @@ public class AbstractCompoundValueReadHandler implements CSSCompoundValueReadHan
    * @param unit
    * @return
    */
-  public Map createValues(LexicalUnit unit)
+  public synchronized Map createValues(LexicalUnit unit)
   {
     final Map map = new HashMap();
     final Map.Entry[] entries = (Map.Entry[])

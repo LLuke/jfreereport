@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineStackingRuby.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,16 +47,15 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class LineStackingRuby extends CSSConstant
+public class LineStackingRuby
 {
-  public static final LineStackingRuby EXCLUDE_RUBY = new LineStackingRuby(
+  public static final CSSConstant EXCLUDE_RUBY = new CSSConstant(
           "exclude-ruby");
-  public static final LineStackingRuby INCLUDE_RUBY = new LineStackingRuby(
+  public static final CSSConstant INCLUDE_RUBY = new CSSConstant(
           "include-ruby");
 
-  private LineStackingRuby(String name)
+  private LineStackingRuby()
   {
-    super(name);
   }
 
 }

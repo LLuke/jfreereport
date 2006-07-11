@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSValueSupport.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -87,5 +87,26 @@ public class CSSValueSupport
     }
     CSSStringValue sval = (CSSStringValue) value;
     return sval.getType().equals(CSSStringType.URI);
+  }
+
+  public static double getLength(final CSSValue value,
+                                 final CSSNumericType targetType)
+  {
+    if (value instanceof CSSNumericValue == false)
+    {
+      return 0;
+    }
+//
+//    CSSNumericValue nval = (CSSNumericValue) value;
+//    final CSSNumericType type = nval.getType();
+//    if (type.equals(CSSNumericType.CM)) return true;
+//    if (type.equals(CSSNumericType.EM)) return true;
+//    if (type.equals(CSSNumericType.EX)) return true;
+//    if (type.equals(CSSNumericType.INCH)) return true;
+//    if (type.equals(CSSNumericType.MM)) return true;
+//    if (type.equals(CSSNumericType.PC)) return true;
+//    if (type.equals(CSSNumericType.PT)) return true;
+//    return type.equals(CSSNumericType.PX);
+    return 0; // todo
   }
 }

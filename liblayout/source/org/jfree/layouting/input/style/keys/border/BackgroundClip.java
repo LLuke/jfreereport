@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundClip.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BackgroundClip extends CSSConstant
+public class BackgroundClip
 {
-  public static final BackgroundClip BORDER = new BackgroundClip("border");
-  public static final BackgroundClip PADDING = new BackgroundClip("padding");
+  public static final CSSConstant BORDER = new CSSConstant("border");
+  public static final CSSConstant PADDING = new CSSConstant("padding");
 
-  private BackgroundClip(String name)
+  private BackgroundClip()
   {
-    super(name);
   }
 }

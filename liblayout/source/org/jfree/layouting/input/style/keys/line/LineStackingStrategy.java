@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineStackingStrategy.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,20 +47,19 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class LineStackingStrategy extends CSSConstant
+public class LineStackingStrategy
 {
-  public static final LineStackingStrategy INLINE_LINE_HEIGHT =
-          new LineStackingStrategy("inline-line-height");
-  public static final LineStackingStrategy BLOCK_LINE_HEIGHT =
-          new LineStackingStrategy("block-line-height");
-  public static final LineStackingStrategy MAX_LINE_HEIGHT =
-          new LineStackingStrategy("max-line-height");
-  public static final LineStackingStrategy GRID_HEIGHT =
-          new LineStackingStrategy("grid-height");
+  public static final CSSConstant INLINE_LINE_HEIGHT =
+          new CSSConstant("inline-line-height");
+  public static final CSSConstant BLOCK_LINE_HEIGHT =
+          new CSSConstant("block-line-height");
+  public static final CSSConstant MAX_LINE_HEIGHT =
+          new CSSConstant("max-line-height");
+  public static final CSSConstant GRID_HEIGHT =
+          new CSSConstant("grid-height");
 
 
-  private LineStackingStrategy (String name)
+  private LineStackingStrategy ()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OtherColorResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,11 @@ package org.jfree.layouting.layouter.style.resolver.computed.color;
 
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.color.ColorStyleKeys;
+import org.jfree.layouting.input.style.keys.color.HtmlColors;
+import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.LayoutStyle;
 
 /**
  * Creation-Date: 11.12.2005, 23:28:29
@@ -62,6 +67,20 @@ public class OtherColorResolveHandler extends ColorResolveHandler
    */
   public StyleKey[] getRequiredStyles()
   {
-    return new StyleKey[]{ ColorStyleKeys.COLOR };
+    return new StyleKey[]{ColorStyleKeys.COLOR};
+  }
+
+  protected CSSColorValue getCurrentColor(LayoutElement currentNode,
+                                          LayoutStyle style)
+  {
+    final CSSValue value = style.getValue(ColorStyleKeys.COLOR);
+    if (value instanceof CSSColorValue)
+    {
+      return (CSSColorValue) value;
+    }
+    else
+    {
+      return HtmlColors.BLACK;
+    }
   }
 }

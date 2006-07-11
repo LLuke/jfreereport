@@ -1,11 +1,11 @@
 package org.jfree.layouting.layouter.style.resolver;
 
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.State;
+import org.jfree.layouting.StateException;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.LayoutNode;
 
 /**
  * Not yet used. Needs to be implemented. Its my fast resolver, but that
@@ -28,6 +28,25 @@ public class FlatStyleResolver extends AbstractStyleResolver
 
   }
 
+  protected void resolveOutOfContext(LayoutElement element)
+  {
+
+  }
+
+  /**
+   * Performs tests, whether there is a pseudo-element definition for the given
+   * element. The element itself can be a pseudo-element as well.
+   *
+   * @param element
+   * @param pseudo
+   * @return
+   */
+  public boolean isPseudoElementStyleResolvable(LayoutElement element,
+                                                String pseudo)
+  {
+    return false;
+  }
+
   /**
    * Resolves the style. This is guaranteed to be called in the order of the document
    * elements traversing the document tree using the 'deepest-node-first' strategy.
@@ -37,7 +56,7 @@ public class FlatStyleResolver extends AbstractStyleResolver
   public void resolveStyle (LayoutElement node)
   {
     // this is a three stage process
-    final LayoutStyle style = node.getStyle();
+    final LayoutStyle style = node.getLayoutContext().getStyle();
     final StyleKey[] keys = getKeys();
 
     // Stage 0: Initialize with the built-in defaults
@@ -58,4 +77,8 @@ public class FlatStyleResolver extends AbstractStyleResolver
   }
 
 
+  public State saveState() throws StateException
+  {
+    return null;
+  }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundSize.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BackgroundSize extends CSSConstant
+public class BackgroundSize
 {
-  public static final BackgroundSize ROUND =
-          new BackgroundSize("round");
-  public static final BackgroundSize NO_ROUND =
-          new BackgroundSize("-x-no-round");
+  public static final CSSConstant ROUND =
+          new CSSConstant("round");
+  public static final CSSConstant NO_ROUND =
+          new CSSConstant("-x-no-round");
   
-  private BackgroundSize(final String constant)
+  private BackgroundSize()
   {
-    super(constant);
   }
 }

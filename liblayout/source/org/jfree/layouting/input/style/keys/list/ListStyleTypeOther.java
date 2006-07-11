@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleTypeOther.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,38 +47,37 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class ListStyleTypeOther extends CSSConstant
+public class ListStyleTypeOther
 {
-  public static final ListStyleTypeOther NORMAL =
-          new ListStyleTypeOther("normal");
+  public static final CSSConstant NORMAL =
+          new CSSConstant("normal");
 
 
-  public static final ListStyleTypeOther ASTERISKS =
-          new ListStyleTypeOther("asterisks");
-  public static final ListStyleTypeOther FOOTNOTES =
-          new ListStyleTypeOther("footnotes");
+  public static final CSSConstant ASTERISKS =
+          new CSSConstant("asterisks");
+  public static final CSSConstant FOOTNOTES =
+          new CSSConstant("footnotes");
   //  circled-decimal  | circled-lower-latin | circled-upper-latin |
-  public static final ListStyleTypeOther CIRCLED_DECIMAL =
-          new ListStyleTypeOther("circled-decimal");
-  public static final ListStyleTypeOther CIRCLED_LOWER_LATIN =
-          new ListStyleTypeOther("circled-lower-latin");
-  public static final ListStyleTypeOther CIRCLED_UPPER_LATIN =
-          new ListStyleTypeOther("circled-upper-latin");
+  public static final CSSConstant CIRCLED_DECIMAL =
+          new CSSConstant("circled-decimal");
+  public static final CSSConstant CIRCLED_LOWER_LATIN =
+          new CSSConstant("circled-lower-latin");
+  public static final CSSConstant CIRCLED_UPPER_LATIN =
+          new CSSConstant("circled-upper-latin");
   // dotted-decimal | double-circled-decimal | filled-circled-decimal |
-  public static final ListStyleTypeOther DOTTED_DECIMAL =
-          new ListStyleTypeOther("dotted-decimal");
-  public static final ListStyleTypeOther DOUBLE_CIRCLED_DECIMAL =
-          new ListStyleTypeOther("double-circled-decimal");
-  public static final ListStyleTypeOther FILLED_CIRCLED_DECIMAL =
-          new ListStyleTypeOther("filled-circled-decimal");
+  public static final CSSConstant DOTTED_DECIMAL =
+          new CSSConstant("dotted-decimal");
+  public static final CSSConstant DOUBLE_CIRCLED_DECIMAL =
+          new CSSConstant("double-circled-decimal");
+  public static final CSSConstant FILLED_CIRCLED_DECIMAL =
+          new CSSConstant("filled-circled-decimal");
   // parenthesised-decimal | parenthesised-lower-latin
-  public static final ListStyleTypeOther PARANTHESISED_DECIMAL =
-          new ListStyleTypeOther("parenthesised-decimal");
-  public static final ListStyleTypeOther PARANTHESISED_LOWER_LATIN =
-          new ListStyleTypeOther("parenthesised-lower-latin");
+  public static final CSSConstant PARANTHESISED_DECIMAL =
+          new CSSConstant("parenthesised-decimal");
+  public static final CSSConstant PARANTHESISED_LOWER_LATIN =
+          new CSSConstant("parenthesised-lower-latin");
 
-  private ListStyleTypeOther(final String constant)
+  private ListStyleTypeOther()
   {
-    super(constant);
   }
 }

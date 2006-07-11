@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontVariant.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,12 @@ package org.jfree.layouting.input.style.keys.font;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
-public class FontVariant extends CSSConstant
+public class FontVariant
 {
-  public static final FontVariant NORMAL = new FontVariant("normal");
-  public static final FontVariant SMALL_CAPS = new FontVariant("small-caps");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant SMALL_CAPS = new CSSConstant("small-caps");
 
-  private FontVariant(String name)
+  private FontVariant()
   {
-    super(name);
   }
 }

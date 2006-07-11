@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderStyle.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,24 +48,23 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BorderStyle extends CSSConstant
+public class BorderStyle
 {
-  public static final BorderStyle NONE = new BorderStyle("none");
-  public static final BorderStyle HIDDEN = new BorderStyle("hidden");
-  public static final BorderStyle DOTTED = new BorderStyle("dotted");
-  public static final BorderStyle DASHED = new BorderStyle("dashed");
-  public static final BorderStyle SOLID = new BorderStyle("solid");
-  public static final BorderStyle DOUBLE = new BorderStyle("double");
-  public static final BorderStyle DOT_DASH = new BorderStyle("dot-dash");
-  public static final BorderStyle DOT_DOT_DASH = new BorderStyle("dot-dot-dash");
-  public static final BorderStyle WAVE = new BorderStyle("wave");
-  public static final BorderStyle GROOVE = new BorderStyle("groove");
-  public static final BorderStyle RIDGE = new BorderStyle("ridge");
-  public static final BorderStyle INSET = new BorderStyle("inset");
-  public static final BorderStyle OUTSET = new BorderStyle("outset");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant HIDDEN = new CSSConstant("hidden");
+  public static final CSSConstant DOTTED = new CSSConstant("dotted");
+  public static final CSSConstant DASHED = new CSSConstant("dashed");
+  public static final CSSConstant SOLID = new CSSConstant("solid");
+  public static final CSSConstant DOUBLE = new CSSConstant("double");
+  public static final CSSConstant DOT_DASH = new CSSConstant("dot-dash");
+  public static final CSSConstant DOT_DOT_DASH = new CSSConstant("dot-dot-dash");
+  public static final CSSConstant WAVE = new CSSConstant("wave");
+  public static final CSSConstant GROOVE = new CSSConstant("groove");
+  public static final CSSConstant RIDGE = new CSSConstant("ridge");
+  public static final CSSConstant INSET = new CSSConstant("inset");
+  public static final CSSConstant OUTSET = new CSSConstant("outset");
 
-  private BorderStyle(String name)
+  private BorderStyle()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextDecorationMode.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextDecorationMode extends CSSConstant
+public class TextDecorationMode
 {
-  public static final TextDecorationMode CONTINUOUS = new TextDecorationMode("continuous");
-  public static final TextDecorationMode SKIP_WHITE_SPACE = new TextDecorationMode("skip-white-space");
+  public static final CSSConstant CONTINUOUS = new CSSConstant("continuous");
+  public static final CSSConstant SKIP_WHITE_SPACE = new CSSConstant("skip-white-space");
 
-  private TextDecorationMode(final String constant)
+  private TextDecorationMode()
   {
-    super(constant);
   }
 }

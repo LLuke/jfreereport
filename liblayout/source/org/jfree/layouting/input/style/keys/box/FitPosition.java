@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FitPosition.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -43,16 +43,15 @@ package org.jfree.layouting.input.style.keys.box;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
-public class FitPosition extends CSSConstant
+public class FitPosition
 {
-  public static final FitPosition TOP = new FitPosition("top");
-  public static final FitPosition LEFT = new FitPosition("left");
-  public static final FitPosition BOTTOM = new FitPosition("bottom");
-  public static final FitPosition RIGHT = new FitPosition("right");
-  public static final FitPosition CENTER = new FitPosition("center");
+  public static final CSSConstant TOP = new CSSConstant("top");
+  public static final CSSConstant LEFT = new CSSConstant("left");
+  public static final CSSConstant BOTTOM = new CSSConstant("bottom");
+  public static final CSSConstant RIGHT = new CSSConstant("right");
+  public static final CSSConstant CENTER = new CSSConstant("center");
 
-  private FitPosition (final String constant)
+  private FitPosition ()
   {
-    super(constant);
   }
 }

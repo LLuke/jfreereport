@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ColumnStyleKeys.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
+ * $Id: ColumnStyleKeys.java,v 1.3 2006/05/06 13:02:46 taqua Exp $
  *
  * Changes
  * -------
@@ -69,43 +69,43 @@ public class ColumnStyleKeys
 {
   public static final StyleKey COLUMN_COUNT =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-count", false, false, false);
+                  ("column-count", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_SPACE_DISTRIBUTION =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-space-distribution", false, false, false);
+                  ("column-space-distribution", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-width", false, false, false);
+                  ("column-width", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_MIN_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-min-width", false, false, false);
+                  ("column-min-width", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_WIDTH_POLICY =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-width-policy", false, false, false);
+                  ("column-width-policy", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_GAP =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-gap", false, false, false);
+                  ("column-gap", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_RULE_COLOR =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-rule-color", false, false, false);
+                  ("column-rule-color", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_RULE_STYLE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-rule-style", false, false, false);
+                  ("column-rule-style", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_RULE_WIDTH =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-rule-width", false, false, false);
+                  ("column-rule-width", false, false, StyleKey.BLOCK_ELEMENTS);
 
   public static final StyleKey COLUMN_SPAN =
           StyleKeyRegistry.getRegistry().createKey
-                  ("column-span", false, false, false);
+                  ("column-span", false, false, StyleKey.BLOCK_ELEMENTS);
 
   /**
    * Defines, whether column contents should be balanced.
@@ -114,7 +114,7 @@ public class ColumnStyleKeys
    */
   public static final StyleKey COLUMN_BALANCE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("-x-liblayout-column-balance", false, false, false);
+                  ("-x-liblayout-column-balance", false, false, StyleKey.BLOCK_ELEMENTS);
 
 
   private ColumnStyleKeys()

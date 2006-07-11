@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSCompoundValueReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.input.style.parser;
 import java.util.Map;
 
 import org.w3c.css.sac.LexicalUnit;
+import org.jfree.layouting.input.style.StyleKey;
 
 /**
  * Creation-Date: 26.11.2005, 19:45:45
@@ -54,8 +55,10 @@ public interface CSSCompoundValueReadHandler
   /**
    * Parses the LexicalUnit and returns a map of (StyleKey, CSSValue) pairs.
    *
-   * @param unit 
+   * @param unit
    * @return
    */
   public Map createValues (LexicalUnit unit);
+
+  public StyleKey[] getAffectedKeys();
 }

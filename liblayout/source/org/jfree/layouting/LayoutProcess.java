@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutProcess.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,15 @@
  */
 package org.jfree.layouting;
 
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
-import org.jfree.layouting.model.ContextId;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.model.PageContext;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.normalizer.Normalizer;
 import org.jfree.resourceloader.ResourceManager;
 
 /**
@@ -57,13 +58,7 @@ import org.jfree.resourceloader.ResourceManager;
  */
 public interface LayoutProcess
 {
-  public StyleResolver getStyleResolver();
-
   public InputFeed getInputFeed();
-
-  public ContextId generateContextId (long parent);
-
-  public long getLastId ();
 
   /**
    * The document context holds global information, like the used stylesheets.
@@ -72,11 +67,32 @@ public interface LayoutProcess
    * @return the document context.
    */
   public DocumentContext getDocumentContext();
-  public PageContext getPageContext();
 
   public OutputProcessorMetaData getOutputMetaData();
+
   public OutputProcessor getOutputProcessor();
 
-  public Normalizer getNormalizer();
   public ResourceManager getResourceManager();
+
+  public void pageBreakEncountered (final CSSValue pageName,
+                                    final PseudoPage[] pseudoPages)
+          throws NormalizationException;
+
+  /**
+   * A flag that indicates, whether one or more pagebreak have been encountered
+   * during the last operation. The flag does not necessarily state that the
+   * pagebreak(s) have been triggered by the last operation, it can as well be a
+   * delayed pagebreak indication due to caching or layouting effects (as it
+   * happens with pending or moved content).
+   *
+   * @return true, if a pagebreak as been encountered somewhere in the past,
+   *         false otherwise.
+   */
+  public boolean isPagebreakEncountered();
+
+  public LayoutProcessState saveState () throws StateException;
+
+  public StyleResolver getStyleResolver();
+
+  public Normalizer getNormalizer();
 }

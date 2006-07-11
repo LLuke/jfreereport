@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BlockProgression.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,16 +47,15 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BlockProgression extends CSSConstant
+public class BlockProgression
 {
   // flow orientation horizontal
-  public static BlockProgression TB = new BlockProgression("tb");
+  public static CSSConstant TB = new CSSConstant("tb");
   // flow orientation vertical
-  public static BlockProgression RL = new BlockProgression("rl");
-  public static BlockProgression LR = new BlockProgression("lr");
+  public static CSSConstant RL = new CSSConstant("rl");
+  public static CSSConstant LR = new CSSConstant("lr");
 
-  private BlockProgression(final String constant)
+  private BlockProgression()
   {
-    super(constant);
   }
 }

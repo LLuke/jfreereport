@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FunctionFactory.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
+import org.jfree.layouting.layouter.style.functions.content.ContentFunction;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 16.04.2006, 14:15:37
@@ -54,9 +57,13 @@ import org.jfree.util.ObjectUtilities;
  */
 public class FunctionFactory
 {
-  public static final String FUNCTIONS_KEY_RANGE = "org.jfree.layouting.functions.";
+  public static final String VALUE_FUNCTIONS_KEY_RANGE =
+          "org.jfree.layouting.functions.values.";
+  public static final String CONTENT_FUNCTIONS_KEY_RANGE =
+          "org.jfree.layouting.functions.content.";
 
-  private HashMap functions;
+  private HashMap styleFunctions;
+  private HashMap contentFunctions;
   private static FunctionFactory instance;
 
   public static FunctionFactory getInstance()
@@ -71,34 +78,62 @@ public class FunctionFactory
 
   private FunctionFactory()
   {
-    functions = new HashMap();
+    styleFunctions = new HashMap();
+    contentFunctions = new HashMap();
   }
 
   public void registerDefault ()
   {
     final Configuration config = LibLayoutBoot.getInstance().getGlobalConfig();
-    final Iterator keys = config.findPropertyKeys(FUNCTIONS_KEY_RANGE);
-    while (keys.hasNext())
+    final Iterator valueKeys = config.findPropertyKeys(VALUE_FUNCTIONS_KEY_RANGE);
+    while (valueKeys.hasNext())
     {
-      final String key = (String) keys.next();
+      final String key = (String) valueKeys.next();
       final String value = config.getConfigProperty(key);
-      final String name = key.substring(FUNCTIONS_KEY_RANGE.length());
+      final String name = key.substring(VALUE_FUNCTIONS_KEY_RANGE.length());
       final Object maybeFunction =
               ObjectUtilities.loadAndInstantiate(value, FunctionFactory.class);
-      if (maybeFunction instanceof StyleFunction)
+      if (maybeFunction instanceof StyleValueFunction)
       {
-        functions.put (name.toLowerCase(), maybeFunction);
+        styleFunctions.put (name.toLowerCase(), maybeFunction);
       }
     }
+
+    final Iterator contentKeys = config.findPropertyKeys(CONTENT_FUNCTIONS_KEY_RANGE);
+    while (contentKeys.hasNext())
+    {
+      final String key = (String) contentKeys.next();
+      final String value = config.getConfigProperty(key);
+      final String name = key.substring(CONTENT_FUNCTIONS_KEY_RANGE.length());
+      final Object maybeFunction =
+              ObjectUtilities.loadAndInstantiate(value, FunctionFactory.class);
+      if (maybeFunction instanceof ContentFunction)
+      {
+        contentFunctions.put (name.toLowerCase(), maybeFunction);
+      }
+    }
+
   }
 
-  public StyleFunction getFunction (String name)
+  public StyleValueFunction getStyleFunction (String name)
   {
-    final StyleFunction function = (StyleFunction) functions.get(name.toLowerCase());
+    final StyleValueFunction function = (StyleValueFunction) styleFunctions.get(name.toLowerCase());
     if (function == null)
     {
-      throw new NullPointerException(name);
+      Log.warn ("Unrecognized style function encountered: " + name);
     }
+    // todo: Check for null values in all callers ..
+    return function;
+  }
+
+  public ContentFunction getContentFunction (String name)
+  {
+    final ContentFunction function = (ContentFunction) contentFunctions.get(name.toLowerCase());
+    if (function == null)
+    {
+      Log.warn ("Unrecognized content function encountered: " + name);
+    }
+    // todo: Check for null values in all callers ..
     return function;
   }
 }

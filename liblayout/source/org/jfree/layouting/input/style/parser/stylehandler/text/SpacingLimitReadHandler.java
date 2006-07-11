@@ -1,12 +1,12 @@
 /**
- * ===========================================
- * LibLayout : a free Java layouting library
- * ===========================================
+ * ========================================
+ * <libname> : a free Java <foobar> library
+ * ========================================
  *
  * Project Info:  http://www.jfree.org/liblayout/
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2005, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,67 +20,77 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
- * in the United States and other countries.]
- *
- * ------------
+ * ---------
  * SpacingLimitReadHandler.java
- * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * ---------
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
+ * Contributors: -;
  *
- * $Id$
+ * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
- * -------
- *
- *
+ * -------------------------
+ * 24.05.2006 : Initial version
  */
 package org.jfree.layouting.input.style.parser.stylehandler.text;
 
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.text.SpacingValue;
+import java.util.Map;
+import java.util.HashMap;
+
+import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.CSSValueFactory;
-import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
-import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.values.CSSNumericType;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
- * Creation-Date: 28.11.2005, 20:44:02
+ * Creation-Date: 24.05.2006, 15:13:13
  *
  * @author Thomas Morgner
  */
-public class SpacingLimitReadHandler implements CSSValueReadHandler
+public abstract class SpacingLimitReadHandler implements CSSCompoundValueReadHandler
 {
   public static final CSSConstant NORMAL = new CSSConstant("normal");
 
-  public SpacingLimitReadHandler()
+  /**
+   * Parses the LexicalUnit and returns a map of (StyleKey, CSSValue) pairs.
+   *
+   * @param unit
+   * @return
+   */
+  public Map createValues(LexicalUnit unit)
   {
-  }
-
-  public CSSValue createValue(StyleKey name, LexicalUnit value)
-  {
-    CSSValue optimum = parseSingleSpacingValue(value);
+    CSSValue optimum = parseSingleSpacingValue(unit);
     if (optimum == null)
     {
       return null;
     }
-    value = value.getNextLexicalUnit();
+    unit = unit.getNextLexicalUnit();
 
-    CSSValue minimum = parseSingleSpacingValue(value);
+    CSSValue minimum = parseSingleSpacingValue(unit);
     if (minimum != null)
     {
-      value = value.getNextLexicalUnit();
+      unit = unit.getNextLexicalUnit();
     }
 
-    CSSValue maximum = parseSingleSpacingValue(value);
-    return new SpacingValue(optimum, minimum, maximum);
+    CSSValue maximum = parseSingleSpacingValue(unit);
+    final Map map = new HashMap();
+    map.put(getMinimumKey(), minimum);
+    map.put(TextStyleKeys.X_MAX_LETTER_SPACING, maximum);
+    map.put(TextStyleKeys.X_OPTIMUM_LETTER_SPACING, optimum);
+    return map;
   }
+
+  protected abstract StyleKey getMinimumKey();
+
+  protected abstract StyleKey getMaximumKey();
+
+  protected abstract StyleKey getOptimumKey();
 
   private CSSValue parseSingleSpacingValue(final LexicalUnit value)
   {
@@ -93,7 +103,7 @@ public class SpacingLimitReadHandler implements CSSValueReadHandler
     {
       if (value.getStringValue().equalsIgnoreCase("normal"))
       {
-        return NORMAL;
+        return SpacingLimitReadHandler.NORMAL;
       }
       return null;
     }
@@ -106,4 +116,8 @@ public class SpacingLimitReadHandler implements CSSValueReadHandler
     return CSSValueFactory.createLengthValue(value);
   }
 
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] { getMinimumKey(), getMaximumKey(), getOptimumKey()};
+  }
 }

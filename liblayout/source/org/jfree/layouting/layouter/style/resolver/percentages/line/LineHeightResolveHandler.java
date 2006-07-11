@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineHeightResolveHandler.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,19 @@
 
 package org.jfree.layouting.layouter.style.resolver.percentages.line;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineHeight;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutContext;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.resolver.percentages.LengthResolverUtility;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 public class LineHeightResolveHandler implements ResolveHandler
 {
@@ -80,11 +79,11 @@ public class LineHeightResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve (LayoutProcess process,
-                       LayoutNode currentNode,
+                       LayoutElement currentNode,
                        LayoutStyle style,
                        StyleKey key)
   {
@@ -92,20 +91,20 @@ public class LineHeightResolveHandler implements ResolveHandler
     if (LineHeight.NONE.equals(value))
     {
       // query the anchestor, if there's one ..
-      handleNone(currentNode);
+      handleNone(currentNode, style);
       return;
     }
 
     if (LineHeight.NORMAL.equals(value))
     {
-      handleNormal(currentNode);
+      handleNormal(currentNode, style);
       return;
     }
 
     if (value instanceof CSSNumericValue == false)
     {
       // fall back to normal ..
-      handleNormal(currentNode);
+      handleNormal(currentNode, style);
       return;
     }
     CSSNumericValue nval = (CSSNumericValue) value;
@@ -113,10 +112,7 @@ public class LineHeightResolveHandler implements ResolveHandler
 
     if (LengthResolverUtility.isLengthValue(nval))
     {
-      // we can convert it directly ..
-      long val = LengthResolverUtility.convertLengthToInternal
-              (nval, currentNode, process.getOutputMetaData());
-      layoutContext.getLineSpecification().setLineHeight(val);
+      style.setValue(LineStyleKeys.LINE_HEIGHT, nval);
       return;
     }
 
@@ -131,41 +127,44 @@ public class LineHeightResolveHandler implements ResolveHandler
     }
     else
     {
-      handleNormal(currentNode);
+      handleNormal(currentNode, style);
       return;
     }
 
+
     final double fontSize =
             layoutContext.getFontSpecification().getFontSize();
-    layoutContext.getLineSpecification().setLineHeight
-          (StrictGeomUtility.toInternalValue(fontSize * factor));
+    style.setValue(LineStyleKeys.LINE_HEIGHT,
+            new CSSNumericValue(CSSNumericType.PT, fontSize * factor));
 
   }
 
-  private void handleNormal (LayoutNode currentNode)
+  private void handleNormal (LayoutElement currentNode,
+                             LayoutStyle style)
   {
     final LayoutContext layoutContext = currentNode.getLayoutContext();
     final double fontSize =
             layoutContext.getFontSpecification().getFontSize();
     if (fontSize < 10)
     {
-      layoutContext.getLineSpecification().setLineHeight
-            (StrictGeomUtility.toInternalValue(fontSize * 1.2));
+      style.setValue(LineStyleKeys.LINE_HEIGHT,
+              new CSSNumericValue(CSSNumericType.PT, fontSize * 1.2));
     }
     else if (fontSize < 24)
     {
-      layoutContext.getLineSpecification().setLineHeight
-            (StrictGeomUtility.toInternalValue(fontSize * 1.1));
+      style.setValue(LineStyleKeys.LINE_HEIGHT,
+              new CSSNumericValue(CSSNumericType.PT, fontSize * 1.1));
     }
     else
     {
-      layoutContext.getLineSpecification().setLineHeight
-            (StrictGeomUtility.toInternalValue(fontSize * 1.05));
+      style.setValue(LineStyleKeys.LINE_HEIGHT,
+              new CSSNumericValue(CSSNumericType.PT, fontSize * 1.05));
     }
 
   }
 
-  private void handleNone (LayoutNode currentNode)
+  private void handleNone (LayoutElement currentNode,
+                           LayoutStyle style)
   {
     final double fontSize;
     final LayoutElement parent = currentNode.getParent();
@@ -179,8 +178,7 @@ public class LineHeightResolveHandler implements ResolveHandler
     {
       fontSize = parent.getLayoutContext().getFontSpecification().getFontSize();
     }
-
-    layoutContext.getLineSpecification().setLineHeight
-            (StrictGeomUtility.toInternalValue(fontSize));
+    style.setValue(LineStyleKeys.LINE_HEIGHT,
+            new CSSNumericValue(CSSNumericType.PT, fontSize));
   }
 }

@@ -1,6 +1,8 @@
 /**
  * This file contains the inital stylesheet properties as defined
- * by the CSS3 standard.
+ * by the CSS3 standard. The style-rules here do not get matched,
+ * so no matter what selector you put in, they always get matched
+ * as *ANY_NODE* selector.
  */
 
 /** BOX- module */
@@ -250,8 +252,12 @@
   target-position: above;
 }
 
-/** JFreeReport Module */
-* {
-  -x-jfreereport-x: 0;
-  -x-jfreereport-y: 0;
+@page {
+  @top {
+    content: pending(page-header);
+  }
+
+  @bottom {
+    content: pending(page-footer);
+  }
 }

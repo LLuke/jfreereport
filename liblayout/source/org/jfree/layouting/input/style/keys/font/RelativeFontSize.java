@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RelativeFontSize.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class RelativeFontSize extends CSSConstant
+public class RelativeFontSize
 {
-  public static final RelativeFontSize SMALLER = new RelativeFontSize("smaller");
-  public static final RelativeFontSize LARGER = new RelativeFontSize("larger");
+  public static final CSSConstant SMALLER = new CSSConstant("smaller");
+  public static final CSSConstant LARGER = new CSSConstant("larger");
 
-  private RelativeFontSize(final String constant)
+  private RelativeFontSize()
   {
-    super(constant);
   }
 
 }

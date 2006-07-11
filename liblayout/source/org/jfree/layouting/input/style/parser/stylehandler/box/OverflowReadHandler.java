@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OverflowReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.keys.box.Overflow;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -76,11 +77,21 @@ public class OverflowReadHandler extends OneOfConstantsReadHandler
   {
     final CSSValue value = lookupValue(unit);
     if (value == null)
+    {
       return null;
+    }
 
     final Map map = new HashMap();
     map.put (BoxStyleKeys.OVERFLOW_X, value);
     map.put (BoxStyleKeys.OVERFLOW_Y, value);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+            BoxStyleKeys.OVERFLOW_X,
+            BoxStyleKeys.OVERFLOW_Y
+    };
   }
 }

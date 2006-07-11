@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResolveHandlerModule.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ public final class ResolveHandlerModule
   private ResolveHandler computedValueHandler;
   private ResolveHandler percentagesValueHandler;
   private StyleKey[] dependentKeys;
+  private int weight;
 
   public ResolveHandlerModule(final StyleKey key,
                               final ResolveHandler autoValueHandler,
@@ -127,5 +128,15 @@ public final class ResolveHandlerModule
   public StyleKey[] getDependentKeys()
   {
     return dependentKeys;
+  }
+
+  public int getWeight()
+  {
+    return weight;
+  }
+
+  public void setWeight(final int weight)
+  {
+    this.weight = weight;
   }
 }

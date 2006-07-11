@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StringSetResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,24 +41,59 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.content;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
+import org.jfree.layouting.input.style.keys.content.ContentValues;
+import org.jfree.layouting.input.style.values.CSSAttrFunction;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
+import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.content.statics.ExternalContentToken;
+import org.jfree.layouting.layouter.content.statics.ResourceContentToken;
+import org.jfree.layouting.layouter.content.statics.StaticTextToken;
+import org.jfree.layouting.layouter.content.computed.ContentsToken;
+import org.jfree.layouting.layouter.content.computed.OpenQuoteToken;
+import org.jfree.layouting.layouter.content.computed.CloseQuoteToken;
+import org.jfree.layouting.layouter.content.computed.CounterToken;
+import org.jfree.layouting.layouter.context.ContentSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
+import org.jfree.layouting.layouter.style.functions.FunctionFactory;
+import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.content.ContentToken;
-import org.jfree.layouting.model.content.StringContentToken;
+import org.jfree.layouting.layouter.style.values.CSSRawValue;
+import org.jfree.layouting.layouter.style.values.CSSResourceValue;
+import org.jfree.layouting.layouter.counters.CounterStyle;
+import org.jfree.layouting.layouter.counters.CounterStyleFactory;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.loader.URLResourceKey;
+import org.jfree.util.Log;
 
 public class StringSetResolveHandler implements ResolveHandler
 {
+  private static final ContentToken[] DEFAULT_CONTENT = new ContentToken[0];
+
+  private HashMap tokenMapping;
+
   public StringSetResolveHandler ()
   {
+    tokenMapping = new HashMap();
+    tokenMapping.put(ContentValues.CONTENTS, ContentsToken.CONTENTS);
+    tokenMapping.put(ContentValues.OPEN_QUOTE, new OpenQuoteToken(false));
+    tokenMapping.put(ContentValues.NO_OPEN_QUOTE, new OpenQuoteToken(true));
+    tokenMapping.put(ContentValues.CLOSE_QUOTE, new CloseQuoteToken(false));
+    tokenMapping.put(ContentValues.NO_CLOSE_QUOTE, new CloseQuoteToken(true));
+
   }
 
   /**
@@ -73,62 +108,196 @@ public class StringSetResolveHandler implements ResolveHandler
             ContentStyleKeys.COUNTER_RESET,
             ContentStyleKeys.COUNTER_INCREMENT,
             ContentStyleKeys.QUOTES,
+            ContentStyleKeys.STRING_DEFINE
     };
   }
 
   /**
-   * Resolves a single property.
+   * Resolves a String. As the string may contain the 'contents' property, it
+   * is not resolvable here. The ContentNormalizer needs to handle this property
+   * instead. (But this code prepares everything ..)
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve (final LayoutProcess process,
-                       final LayoutNode currentNode,
+                       final LayoutElement element,
                        final LayoutStyle style,
                        final StyleKey key)
   {
-    if (currentNode instanceof LayoutElement == false)
+    final ContentSpecification contentSpecification =
+            element.getLayoutContext().getContentSpecification();
+    final CSSValue value = style.getValue(key);
+    if (value instanceof CSSConstant)
     {
-      return; // we ignore non-elements, as they cannot have
-              // the string-set property.
+      if (ContentValues.NONE.equals(value))
+      {
+        contentSpecification.setStrings(DEFAULT_CONTENT);
+        return;
+      }
     }
 
-    final LayoutElement element = (LayoutElement) currentNode;
-    final CSSValue value = style.getValue(key);
+    contentSpecification.setStrings(DEFAULT_CONTENT);
+    if (value instanceof CSSAttrFunction)
+    {
+      final ContentToken token =
+              evaluateFunction((CSSFunctionValue) value, process, element);
+      if (token == null)
+      {
+        return;
+      }
+      contentSpecification.setStrings(new ContentToken[]{token});
+    }
+
     if (value instanceof CSSValueList == false)
     {
       return; // cant handle that one
     }
 
+    final ArrayList tokens = new ArrayList();
     final CSSValueList list = (CSSValueList) value;
     final int size = list.getLength();
     for (int i = 0; i < size; i++)
     {
-      CSSValueList sequence = (CSSValueList) list.getItem(i);
+      final CSSValueList sequence = (CSSValueList) list.getItem(i);
       for (int j = 0; j < sequence.getLength(); j++)
       {
-        CSSValue content = sequence.getItem(j);
-        // todo This is not yet implemented. The model needs some refinement
+        final CSSValue content = sequence.getItem(j);
+        final ContentToken token = createToken(process, element, content);
+        if (token == null)
+        {
+          // ok, a failure. Skip to the next content spec ...
+          tokens.clear();
+          break;
+        }
+        tokens.add(token);
       }
     }
+
+    final ContentToken[] contents = (ContentToken[]) tokens.toArray
+            (new ContentToken[tokens.size()]);
+    contentSpecification.setStrings(contents);
   }
 
 
-  private ContentToken createToken (CSSValue content)
+  private ContentToken createToken (LayoutProcess process,
+                                    LayoutElement element,
+                                    CSSValue content)
   {
     if (content instanceof CSSStringValue)
     {
       CSSStringValue sval = (CSSStringValue) content;
       if (CSSStringType.STRING.equals(sval.getType()))
       {
-        return new StringContentToken(sval.getValue());
+        return new StaticTextToken(sval.getValue());
       }
       else
       {
         // this is an external URL, so try to load it.
+        CSSFunctionValue function = new CSSFunctionValue
+                ("url", new CSSValue[]{sval});
+        return evaluateFunction(function, process, element);
       }
     }
 
-    return null; // todo
+    if (content instanceof CSSFunctionValue)
+    {
+      return evaluateFunction((CSSFunctionValue) content, process, element);
+    }
+
+    if (content instanceof CSSConstant)
+    {
+      if (ContentValues.DOCUMENT_URL.equals(content))
+      {
+        Object docUrl = process.getDocumentContext().getMetaAttribute
+                ("document-url");
+        if (docUrl != null)
+        {
+          return new StaticTextToken(String.valueOf(docUrl));
+        }
+
+        ResourceKey baseKey = DocumentContextUtility.getBaseResource
+                (process.getDocumentContext());
+        if (baseKey instanceof URLResourceKey)
+        {
+          URLResourceKey urlResourceKey = (URLResourceKey) baseKey;
+          return new StaticTextToken(urlResourceKey.toExternalForm());
+        }
+        return null;
+      }
+
+      ContentToken token = (ContentToken) tokenMapping.get(content);
+      if (token != null)
+      {
+        return token;
+      }
+
+      return resolveContentAlias(content);
+    }
+    return null; 
+  }
+
+
+  private ContentToken resolveContentAlias (CSSValue content)
+  {
+
+    if (ContentValues.FOOTNOTE.equals(content))
+    {
+      final CounterStyle style =
+              CounterStyleFactory.getInstance().getCounterStyle("normal");
+      return new CounterToken("footnote", style);
+    }
+    if (ContentValues.ENDNOTE.equals(content))
+    {
+      final CounterStyle style =
+              CounterStyleFactory.getInstance().getCounterStyle("normal");
+      return new CounterToken("endnote", style);
+    }
+    if (ContentValues.SECTIONNOTE.equals(content))
+    {
+      final CounterStyle style =
+              CounterStyleFactory.getInstance().getCounterStyle("normal");
+      return new CounterToken("section-note", style);
+    }
+    if (ContentValues.LISTITEM.equals(content))
+    {
+      final CounterStyle style =
+              CounterStyleFactory.getInstance().getCounterStyle("normal");
+      return new CounterToken("list-item", style);
+    }
+    return null;
+  }
+
+  private ContentToken evaluateFunction(final CSSFunctionValue function,
+                                        final LayoutProcess process,
+                                        final LayoutElement element)
+  {
+    StyleValueFunction styleFunction =
+            FunctionFactory.getInstance().getStyleFunction(function.getFunctionName());
+    try
+    {
+      CSSValue value = styleFunction.evaluate(process, element, function);
+      if (value instanceof CSSResourceValue)
+      {
+        CSSResourceValue refValue = (CSSResourceValue) value;
+        return new ResourceContentToken(refValue.getValue());
+      }
+      else if (value instanceof CSSStringValue)
+      {
+        CSSStringValue strval = (CSSStringValue) value;
+        return new StaticTextToken(strval.getValue());
+      }
+      else if (value instanceof CSSRawValue)
+      {
+        CSSRawValue rawValue = (CSSRawValue) value;
+        return new ExternalContentToken(rawValue.getValue());
+      }
+      return new StaticTextToken(value.getCSSText());
+    }
+    catch (FunctionEvaluationException e)
+    {
+      Log.debug ("Evaluation failed " + e);
+      return null;
+    }
   }
 }

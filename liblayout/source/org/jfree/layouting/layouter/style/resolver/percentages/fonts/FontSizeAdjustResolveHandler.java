@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontSizeAdjustResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,17 @@
  */
 package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.input.style.values.CSSNumericType;
-import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
+import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**
  * Creation-Date: 18.12.2005, 19:46:43
@@ -85,11 +85,11 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
+                         LayoutElement currentNode,
                          LayoutStyle style,
                          StyleKey key)
   {
@@ -103,7 +103,7 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
     {
       return; // syntax error, do nothing
     }
-    final LayoutNode parent = currentNode.getParent();
+    final LayoutElement parent = currentNode.getParent();
     if (parent == null)
     {
       return; // no parent to resolve against ...
@@ -112,7 +112,7 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
     final double adjustFactor = nval.getValue();
     final FontSpecification fontSpecification =
             currentNode.getLayoutContext().getFontSpecification();
-    final FontMetrics fontMetrics = fontSpecification.getFontMetrics();
+    final FontMetrics fontMetrics = process.getOutputMetaData().getFontMetrics(fontSpecification);
     if (fontMetrics == null)
     {
       return; // no font metrics means no valid font...

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleTypeAlphabetic.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,124 +47,123 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class ListStyleTypeAlphabetic extends CSSConstant
+public class ListStyleTypeAlphabetic
 {
   // afar |  amharic | amharic-abegede | cjk-earthly-branch |
-  public static final ListStyleTypeAlphabetic AFAR =
-          new ListStyleTypeAlphabetic("afar");
-  public static final ListStyleTypeAlphabetic AMHARIC =
-          new ListStyleTypeAlphabetic("amharic");
-  public static final ListStyleTypeAlphabetic AMHARIC_ABEGEDE =
-          new ListStyleTypeAlphabetic("amharic-abegede");
-  public static final ListStyleTypeAlphabetic CJK_EARTHLY_BRANCH =
-          new ListStyleTypeAlphabetic("cjk-earthly-branch");
+  public static final CSSConstant AFAR =
+          new CSSConstant("afar");
+  public static final CSSConstant AMHARIC =
+          new CSSConstant("amharic");
+  public static final CSSConstant AMHARIC_ABEGEDE =
+          new CSSConstant("amharic-abegede");
+  public static final CSSConstant CJK_EARTHLY_BRANCH =
+          new CSSConstant("cjk-earthly-branch");
 
   // cjk-heavenly-stem | ethiopic | ethiopic-abegede |
-  public static final ListStyleTypeAlphabetic CJK_HEAVENLY_STEM =
-          new ListStyleTypeAlphabetic("cjk-heavenly-stem");
-  public static final ListStyleTypeAlphabetic ETHIOPIC =
-          new ListStyleTypeAlphabetic("ethiopic");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_ABEGEDE =
-          new ListStyleTypeAlphabetic("ethiopic-abegede");
+  public static final CSSConstant CJK_HEAVENLY_STEM =
+          new CSSConstant("cjk-heavenly-stem");
+  public static final CSSConstant ETHIOPIC =
+          new CSSConstant("ethiopic");
+  public static final CSSConstant ETHIOPIC_ABEGEDE =
+          new CSSConstant("ethiopic-abegede");
 
   // ethiopic-abegede-am-et |  ethiopic-abegede-gez |
-  public static final ListStyleTypeAlphabetic ETHIOPIC_ABEGEDE_AM_ET =
-          new ListStyleTypeAlphabetic("ethiopic-abegede-am-et");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_ABEGEDE_GEZ =
-          new ListStyleTypeAlphabetic("ethiopic-abegede-gez");
+  public static final CSSConstant ETHIOPIC_ABEGEDE_AM_ET =
+          new CSSConstant("ethiopic-abegede-am-et");
+  public static final CSSConstant ETHIOPIC_ABEGEDE_GEZ =
+          new CSSConstant("ethiopic-abegede-gez");
 
   // ethiopic-abegede-ti-er |  ethiopic-abegede-ti-et |
-  public static final ListStyleTypeAlphabetic ETHIOPIC_ABEGEDE_TI_ER =
-          new ListStyleTypeAlphabetic("ethiopic-abegede-ti-er");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_ABEGEDE_TI_ET =
-          new ListStyleTypeAlphabetic("ethiopic-abegede-ti-et");
+  public static final CSSConstant ETHIOPIC_ABEGEDE_TI_ER =
+          new CSSConstant("ethiopic-abegede-ti-er");
+  public static final CSSConstant ETHIOPIC_ABEGEDE_TI_ET =
+          new CSSConstant("ethiopic-abegede-ti-et");
 
   // ethiopic-halehame-aa-er | ethiopic-halehame-aa-et |
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_AA_ER =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-aa-er");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_AA_ET =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-aa-et");
+  public static final CSSConstant ETHIOPIC_HALEHAME_AA_ER =
+          new CSSConstant("ethiopic-halehame-aa-er");
+  public static final CSSConstant ETHIOPIC_HALEHAME_AA_ET =
+          new CSSConstant("ethiopic-halehame-aa-et");
 
   // ethiopic-halehame-am-et | ethiopic-halehame-gez |
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_AM_ET =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-am-et");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_GEZ =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-gez");
+  public static final CSSConstant ETHIOPIC_HALEHAME_AM_ET =
+          new CSSConstant("ethiopic-halehame-am-et");
+  public static final CSSConstant ETHIOPIC_HALEHAME_GEZ =
+          new CSSConstant("ethiopic-halehame-gez");
 
   // ethiopic-halehame-om-et | ethiopic-halehame-sid-et |
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_OM_ET =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-om-et");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_SID_ET =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-sid-et");
+  public static final CSSConstant ETHIOPIC_HALEHAME_OM_ET =
+          new CSSConstant("ethiopic-halehame-om-et");
+  public static final CSSConstant ETHIOPIC_HALEHAME_SID_ET =
+          new CSSConstant("ethiopic-halehame-sid-et");
 
   // ethiopic-halehame-so-et |  ethiopic-halehame-ti-er |
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_SO_ET =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-so-et");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_TI_ER =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-ti-er");
+  public static final CSSConstant ETHIOPIC_HALEHAME_SO_ET =
+          new CSSConstant("ethiopic-halehame-so-et");
+  public static final CSSConstant ETHIOPIC_HALEHAME_TI_ER =
+          new CSSConstant("ethiopic-halehame-ti-er");
 
   // ethiopic-halehame-ti-et | ethiopic-halehame-tig |
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_TI_ET =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-ti-et");
-  public static final ListStyleTypeAlphabetic ETHIOPIC_HALEHAME_TIG =
-          new ListStyleTypeAlphabetic("ethiopic-halehame-tig");
+  public static final CSSConstant ETHIOPIC_HALEHAME_TI_ET =
+          new CSSConstant("ethiopic-halehame-ti-et");
+  public static final CSSConstant ETHIOPIC_HALEHAME_TIG =
+          new CSSConstant("ethiopic-halehame-tig");
 
   // hangul | hangul-consonant | hiragana | hiragana-iroha |
-  public static final ListStyleTypeAlphabetic HANGUL =
-          new ListStyleTypeAlphabetic("hangul");
-  public static final ListStyleTypeAlphabetic HANGUL_CONSONANT =
-          new ListStyleTypeAlphabetic("hangul-consonant");
-  public static final ListStyleTypeAlphabetic HIRAGANA =
-          new ListStyleTypeAlphabetic("hiragana");
-  public static final ListStyleTypeAlphabetic HIRAGANA_IROHA =
-          new ListStyleTypeAlphabetic("hiragana-iroha");
+  public static final CSSConstant HANGUL =
+          new CSSConstant("hangul");
+  public static final CSSConstant HANGUL_CONSONANT =
+          new CSSConstant("hangul-consonant");
+  public static final CSSConstant HIRAGANA =
+          new CSSConstant("hiragana");
+  public static final CSSConstant HIRAGANA_IROHA =
+          new CSSConstant("hiragana-iroha");
 
   // katakana | katakana-iroha | lower-alpha | lower-greek |
-  public static final ListStyleTypeAlphabetic KATAKANA =
-          new ListStyleTypeAlphabetic("katakana");
-  public static final ListStyleTypeAlphabetic KATAKANA_IROHA =
-          new ListStyleTypeAlphabetic("katakana-iroha");
-  public static final ListStyleTypeAlphabetic LOWER_ALPHA =
-          new ListStyleTypeAlphabetic("lower-alpha");
-  public static final ListStyleTypeAlphabetic LOWER_GREEK =
-          new ListStyleTypeAlphabetic("lower-greek");
+  public static final CSSConstant KATAKANA =
+          new CSSConstant("katakana");
+  public static final CSSConstant KATAKANA_IROHA =
+          new CSSConstant("katakana-iroha");
+  public static final CSSConstant LOWER_ALPHA =
+          new CSSConstant("lower-alpha");
+  public static final CSSConstant LOWER_GREEK =
+          new CSSConstant("lower-greek");
 
   // lower-norwegian | lower-latin | oromo |  sidama |  somali |
-  public static final ListStyleTypeAlphabetic LOWER_NORWEGIAN =
-          new ListStyleTypeAlphabetic("lower-norwegian");
-  public static final ListStyleTypeAlphabetic LOWER_LATIN =
-          new ListStyleTypeAlphabetic("lower-latin");
-  public static final ListStyleTypeAlphabetic OROMO =
-          new ListStyleTypeAlphabetic("oromo");
-  public static final ListStyleTypeAlphabetic SIDAMA =
-          new ListStyleTypeAlphabetic("sidama");
-  public static final ListStyleTypeAlphabetic SOMALI =
-          new ListStyleTypeAlphabetic("somali");
+  public static final CSSConstant LOWER_NORWEGIAN =
+          new CSSConstant("lower-norwegian");
+  public static final CSSConstant LOWER_LATIN =
+          new CSSConstant("lower-latin");
+  public static final CSSConstant OROMO =
+          new CSSConstant("oromo");
+  public static final CSSConstant SIDAMA =
+          new CSSConstant("sidama");
+  public static final CSSConstant SOMALI =
+          new CSSConstant("somali");
 
   // tigre |  tigrinya-er | tigrinya-er-abegede |  tigrinya-et |
-  public static final ListStyleTypeAlphabetic TIGRE =
-          new ListStyleTypeAlphabetic("tigre");
-  public static final ListStyleTypeAlphabetic TIGRINYA_ER =
-          new ListStyleTypeAlphabetic("tigrinya-er");
-  public static final ListStyleTypeAlphabetic TIGRINYA_ER_ABEGEDE =
-          new ListStyleTypeAlphabetic("tigrinya-er-abegede");
-  public static final ListStyleTypeAlphabetic TIGRINYA_ET =
-          new ListStyleTypeAlphabetic("tigrinya-et");
+  public static final CSSConstant TIGRE =
+          new CSSConstant("tigre");
+  public static final CSSConstant TIGRINYA_ER =
+          new CSSConstant("tigrinya-er");
+  public static final CSSConstant TIGRINYA_ER_ABEGEDE =
+          new CSSConstant("tigrinya-er-abegede");
+  public static final CSSConstant TIGRINYA_ET =
+          new CSSConstant("tigrinya-et");
   // tigrinya-et-abegede |  upper-alpha | upper-greek |
-  public static final ListStyleTypeAlphabetic TIGRINYA_ET_ABEGEDE =
-          new ListStyleTypeAlphabetic("tigrinya-et-abegede");
-  public static final ListStyleTypeAlphabetic UPPER_ALPHA =
-          new ListStyleTypeAlphabetic("upper-alpha");
-  public static final ListStyleTypeAlphabetic UPPER_GREEK =
-          new ListStyleTypeAlphabetic("upper-greek");
+  public static final CSSConstant TIGRINYA_ET_ABEGEDE =
+          new CSSConstant("tigrinya-et-abegede");
+  public static final CSSConstant UPPER_ALPHA =
+          new CSSConstant("upper-alpha");
+  public static final CSSConstant UPPER_GREEK =
+          new CSSConstant("upper-greek");
   // upper-norwegian | upper-latin
-  public static final ListStyleTypeAlphabetic UPPER_NORWEGIAN =
-          new ListStyleTypeAlphabetic("upper-norwegian");
-  public static final ListStyleTypeAlphabetic UPPER_LATIN =
-          new ListStyleTypeAlphabetic("upper-latin");
+  public static final CSSConstant UPPER_NORWEGIAN =
+          new CSSConstant("upper-norwegian");
+  public static final CSSConstant UPPER_LATIN =
+          new CSSConstant("upper-latin");
 
-  private ListStyleTypeAlphabetic(final String constant)
+  private ListStyleTypeAlphabetic()
   {
-    super(constant);
   }
 }

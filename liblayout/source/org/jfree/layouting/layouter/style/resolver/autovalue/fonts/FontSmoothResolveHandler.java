@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontSmoothResolveHandler.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,10 @@ package org.jfree.layouting.layouter.style.resolver.autovalue.fonts;
 
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
+import org.jfree.layouting.input.style.keys.font.FontSmooth;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.output.OutputProcessorFeature;
@@ -76,11 +77,11 @@ public class FontSmoothResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
@@ -93,11 +94,11 @@ public class FontSmoothResolveHandler implements ResolveHandler
             (OutputProcessorFeature.FONT_SMOOTH_THRESHOLD);
     if (fs.getFontSize() < threshold)
     {
-      fs.setAntiAliased(false);
+      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
     }
     else
     {
-      fs.setAntiAliased(true);
+      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.ALWAYS);
     }
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineStackingReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.Map;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -118,5 +119,14 @@ public class LineStackingReadHandler implements CSSCompoundValueReadHandler
       map.put(LineStyleKeys.LINE_STACKING_STRATEGY, strategy);
     }
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[]{
+        LineStyleKeys.LINE_STACKING_RUBY,
+        LineStyleKeys.LINE_STACKING_SHIFT,
+        LineStyleKeys.LINE_STACKING_STRATEGY
+    };
   }
 }

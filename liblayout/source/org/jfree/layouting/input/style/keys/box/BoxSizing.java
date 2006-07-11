@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxSizing.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -43,13 +43,12 @@ package org.jfree.layouting.input.style.keys.box;
 
 import org.jfree.layouting.input.style.values.CSSConstant;
 
-public class BoxSizing extends CSSConstant
+public class BoxSizing
 {
-  public static final BoxSizing CONTENT_BOX = new BoxSizing("content-box");
-  public static final BoxSizing BORDER_BOX = new BoxSizing("border-box");
+  public static final CSSConstant CONTENT_BOX = new CSSConstant("content-box");
+  public static final CSSConstant BORDER_BOX = new CSSConstant("border-box");
 
-  private BoxSizing (final String constant)
+  private BoxSizing ()
   {
-    super(constant);
   }
 }

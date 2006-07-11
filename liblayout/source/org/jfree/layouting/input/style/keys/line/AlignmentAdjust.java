@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AlignmentAdjust.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,34 +47,33 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class AlignmentAdjust extends CSSConstant
+public class AlignmentAdjust
 {
-  public static final AlignmentAdjust BASELINE =
-          new AlignmentAdjust("baseline");
-  public static final AlignmentAdjust AFTER_EDGE =
-          new AlignmentAdjust("after-edge");
-  public static final AlignmentAdjust BEFORE_EDGE =
-          new AlignmentAdjust("before-edge");
-  public static final AlignmentAdjust TEXT_AFTER_EDGE =
-          new AlignmentAdjust("text-after-edge");
-  public static final AlignmentAdjust TEXT_BEFORE_EDGE =
-          new AlignmentAdjust("text-before-edge");
+  public static final CSSConstant BASELINE =
+          new CSSConstant("baseline");
+  public static final CSSConstant AFTER_EDGE =
+          new CSSConstant("after-edge");
+  public static final CSSConstant BEFORE_EDGE =
+          new CSSConstant("before-edge");
+  public static final CSSConstant TEXT_AFTER_EDGE =
+          new CSSConstant("text-after-edge");
+  public static final CSSConstant TEXT_BEFORE_EDGE =
+          new CSSConstant("text-before-edge");
 
-  public static final AlignmentAdjust ALPHABETIC =
-          new AlignmentAdjust("alphabetic");
-  public static final AlignmentAdjust HANGING =
-          new AlignmentAdjust("hanging");
-  public static final AlignmentAdjust IDEOGRAPHIC =
-          new AlignmentAdjust("ideographic");
-  public static final AlignmentAdjust MATHEMATICAL =
-          new AlignmentAdjust("alphabetic");
-  public static final AlignmentAdjust CENTRAL =
-          new AlignmentAdjust("central");
-  public static final AlignmentAdjust MIDDLE =
-          new AlignmentAdjust("middle");
+  public static final CSSConstant ALPHABETIC =
+          new CSSConstant("alphabetic");
+  public static final CSSConstant HANGING =
+          new CSSConstant("hanging");
+  public static final CSSConstant IDEOGRAPHIC =
+          new CSSConstant("ideographic");
+  public static final CSSConstant MATHEMATICAL =
+          new CSSConstant("alphabetic");
+  public static final CSSConstant CENTRAL =
+          new CSSConstant("central");
+  public static final CSSConstant MIDDLE =
+          new CSSConstant("middle");
 
-  private AlignmentAdjust(String name)
+  private AlignmentAdjust()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontFamilyValues.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class FontFamilyValues extends CSSConstant
+public class FontFamilyValues
 {
-  public static final FontFamilyValues SERIF = new FontFamilyValues("serif");
-  public static final FontFamilyValues SANS_SERIF = new FontFamilyValues("sans-serif");
-  public static final FontFamilyValues FANTASY = new FontFamilyValues("fantasy");
-  public static final FontFamilyValues CURSIVE = new FontFamilyValues("cursive");
-  public static final FontFamilyValues MONOSPACE = new FontFamilyValues("monospace");
-  public static final FontFamilyValues NONE = new FontFamilyValues("none");
+  public static final CSSConstant SERIF = new CSSConstant("serif");
+  public static final CSSConstant SANS_SERIF = new CSSConstant("sans-serif");
+  public static final CSSConstant FANTASY = new CSSConstant("fantasy");
+  public static final CSSConstant CURSIVE = new CSSConstant("cursive");
+  public static final CSSConstant MONOSPACE = new CSSConstant("monospace");
+  public static final CSSConstant NONE = new CSSConstant("none");
 
-  private FontFamilyValues(final String constant)
+  private FontFamilyValues()
   {
-    super(constant);
   }
 }

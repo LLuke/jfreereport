@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PunctuationTrim.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class PunctuationTrim extends CSSConstant
+public class PunctuationTrim
 {
-  public static final PunctuationTrim NONE = new PunctuationTrim("none");
-  public static final PunctuationTrim START = new PunctuationTrim("start");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant START = new CSSConstant("start");
 
-  private PunctuationTrim(final String constant)
+  private PunctuationTrim()
   {
-    super(constant);
   }
 }

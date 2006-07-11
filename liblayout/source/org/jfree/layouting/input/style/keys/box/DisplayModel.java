@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayModel.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class DisplayModel extends CSSConstant
+public class DisplayModel
 {
   /**
    * If this is not an inline-level element, the effect is the same as for
@@ -62,7 +62,7 @@ public class DisplayModel extends CSSConstant
    * child. The other children and text sequences are rendered as for
    * 'block-inside'.
    */
-  public static final DisplayModel INLINE_INSIDE = new DisplayModel(
+  public static final CSSConstant INLINE_INSIDE = new CSSConstant(
           "inline-inside");
 
   /**
@@ -72,22 +72,21 @@ public class DisplayModel extends CSSConstant
    * boxes. (How many line boxes depends on the line-breaking rules, see the
    * Text module [[!CSS3-text].)
    */
-  public static final DisplayModel BLOCK_INSIDE =
-          new DisplayModel("block-inside");
+  public static final CSSConstant BLOCK_INSIDE =
+          new CSSConstant("block-inside");
 
   /** See the table module */
-  public static final DisplayModel TABLE = new DisplayModel("table");
+  public static final CSSConstant TABLE = new CSSConstant("table");
   /** Not yet used. */
-  public static final DisplayModel RUBY = new DisplayModel("ruby");
+  public static final CSSConstant RUBY = new CSSConstant("ruby");
 
   /**
    * A JFreeReport compatibility setting. Enables the absolute positioning mode. 
    */
-  public static final DisplayModel ABSOLUTE = new DisplayModel("absolute");
+  public static final CSSConstant ABSOLUTE = new CSSConstant("absolute");
 
-  private DisplayModel(String name)
+  private DisplayModel()
   {
-    super(name);
   }
 
 }

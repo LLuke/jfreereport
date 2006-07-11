@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TargetPosition.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,19 +47,18 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TargetPosition extends CSSConstant
+public class TargetPosition
 {
-  public static final TargetPosition ABOVE = new TargetPosition(
+  public static final CSSConstant ABOVE = new CSSConstant(
           "above");
-  public static final TargetPosition BEHIND = new TargetPosition(
+  public static final CSSConstant BEHIND = new CSSConstant(
           "behind");
-  public static final TargetPosition FRONT = new TargetPosition(
+  public static final CSSConstant FRONT = new CSSConstant(
           "front");
-  public static final TargetPosition BACK = new TargetPosition(
+  public static final CSSConstant BACK = new CSSConstant(
           "back");
 
-  private TargetPosition(String name)
+  private TargetPosition()
   {
-    super(name);
   }
 }

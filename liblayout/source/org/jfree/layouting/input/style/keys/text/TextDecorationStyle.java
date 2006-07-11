@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextDecorationStyle.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
+ * $Id: TextDecorationStyle.java,v 1.3 2006/05/06 13:02:46 taqua Exp $
  *
  * Changes
  * -------
@@ -47,22 +47,21 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextDecorationStyle extends CSSConstant
+public class TextDecorationStyle
 {
   // none | solid | double | dotted | dashed | dot-dash | dot-dot-dash | wave
-  public static final TextDecorationStyle NONE = new TextDecorationStyle("none");
-  public static final TextDecorationStyle SOLID = new TextDecorationStyle("solid");
-  public static final TextDecorationStyle DOUBLE = new TextDecorationStyle("double");
-  public static final TextDecorationStyle DOTTED = new TextDecorationStyle("dotted");
-  public static final TextDecorationStyle DASHED = new TextDecorationStyle("dashed");
-  public static final TextDecorationStyle DOT_DASH = new TextDecorationStyle("dot-dash");
-  public static final TextDecorationStyle DOT_DOT_DASH = new TextDecorationStyle("dot-dot-dash");
-  public static final TextDecorationStyle WAVE = new TextDecorationStyle("wave");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant SOLID = new CSSConstant("solid");
+  public static final CSSConstant DOUBLE = new CSSConstant("double");
+  public static final CSSConstant DOTTED = new CSSConstant("dotted");
+  public static final CSSConstant DASHED = new CSSConstant("dashed");
+  public static final CSSConstant DOT_DASH = new CSSConstant("dot-dash");
+  public static final CSSConstant DOT_DOT_DASH = new CSSConstant("dot-dot-dash");
+  public static final CSSConstant WAVE = new CSSConstant("wave");
   // This is an open-office addition ...
-  public static final TextDecorationStyle LONG_DASH = new TextDecorationStyle("-x-liblayout-long-dash");
+  public static final CSSConstant LONG_DASH = new CSSConstant("-x-liblayout-long-dash");
 
-  private TextDecorationStyle(final String constant)
+  private TextDecorationStyle()
   {
-    super(constant);
   }
 }

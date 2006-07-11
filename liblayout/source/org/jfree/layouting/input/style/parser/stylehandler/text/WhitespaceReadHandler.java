@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WhitespaceReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
 import org.jfree.layouting.input.style.keys.text.TextWrap;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -70,6 +71,9 @@ public class WhitespaceReadHandler implements CSSCompoundValueReadHandler
    */
   public Map createValues(LexicalUnit unit)
   {
+    // http://cheeaun.phoenity.com/weblog/2005/06/whitespace-and-generated-content.html
+    // is a good overview about the whitespace stuff ..
+    
     CSSValue whitespace;
     CSSValue textWrap;
     if (unit.getLexicalUnitType() == LexicalUnit.SAC_INHERIT)
@@ -92,17 +96,18 @@ public class WhitespaceReadHandler implements CSSCompoundValueReadHandler
       }
       else if (strVal.equalsIgnoreCase("pre-line"))
       {
-        // how to emulate this?
         whitespace = WhitespaceCollapse.PRESERVE_BREAKS;
         textWrap = TextWrap.NORMAL;
       }
       else if (strVal.equalsIgnoreCase("pre-wrap"))
       {
-        // how to emulate this?
-        whitespace = WhitespaceCollapse.PRESERVE_BREAKS;
-        textWrap = TextWrap.SUPPRESS;
+        whitespace = WhitespaceCollapse.PRESERVE;
+        textWrap = TextWrap.NORMAL;
       }
-      else return null;
+      else
+      {
+        return null;
+      }
     }
     else
     {
@@ -113,5 +118,13 @@ public class WhitespaceReadHandler implements CSSCompoundValueReadHandler
     map.put(TextStyleKeys.WHITE_SPACE_COLLAPSE, whitespace);
     map.put(TextStyleKeys.TEXT_WRAP, textWrap);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+            TextStyleKeys.WHITE_SPACE_COLLAPSE,
+            TextStyleKeys.TEXT_WRAP
+    };
   }
 }

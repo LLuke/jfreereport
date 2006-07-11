@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResolverFactory.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -47,11 +47,11 @@ import java.util.Iterator;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
-import org.jfree.layouting.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
@@ -113,7 +113,13 @@ public class ResolverFactory
 
     handlers = (ResolveHandlerModule[]) handlerList.toArray
             (new ResolveHandlerModule[handlerList.size()]);
-    ResolveHandlerSorter.sort(handlers);
+    handlers = ResolveHandlerSorter.sort(handlers);
+    for (int i = 0; i < handlers.length; i++)
+    {
+      ResolveHandlerModule handler = handlers[i];
+      Log.debug ("Registered sorted handler (" + handler.getWeight() + ") " + handler.getKey() );
+
+    }
     Log.debug ("Registered " + handlers.length + " modules.");
   }
 
@@ -139,6 +145,7 @@ public class ResolverFactory
               ObjectUtilities.loadAndInstantiate(c, ResolverFactory.class);
       if (module != null)
       {
+        Log.info("Loaded resolver: " + name + " (" + module + ")");
         handlers.put(key, module);
       }
       else
@@ -168,15 +175,13 @@ public class ResolverFactory
         }
       }
       
-      final ResolveHandler compValueHandler =
-              handler.getComputedValueHandler();
+      final ResolveHandler compValueHandler = handler.getComputedValueHandler();
       if (compValueHandler != null)
       {
         compValueHandler.resolve(process, node, style, handler.getKey());
       }
 
-      final ResolveHandler percValueHandler =
-              handler.getPercentagesValueHandler();
+      final ResolveHandler percValueHandler = handler.getPercentagesValueHandler();
       if (percValueHandler != null)
       {
         percValueHandler.resolve(process, node, style, handler.getKey());

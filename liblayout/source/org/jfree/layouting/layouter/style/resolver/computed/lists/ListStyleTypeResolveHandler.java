@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleTypeResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -49,11 +49,11 @@ import org.jfree.layouting.input.style.keys.list.ListStyleTypeNumeric;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeOther;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.counters.CounterStyleFactory;
 import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.lists.ListSpecification;
+import org.jfree.layouting.layouter.context.ListSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
@@ -174,11 +174,11 @@ public class ListStyleTypeResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve (final LayoutProcess process,
-                       final LayoutNode currentNode,
+                       final LayoutElement currentNode,
                        final LayoutStyle style,
                        final StyleKey key)
   {

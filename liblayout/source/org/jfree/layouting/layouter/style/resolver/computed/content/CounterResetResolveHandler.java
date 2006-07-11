@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CounterResetResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,18 +41,19 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.content;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.ElementContext;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
+import org.jfree.layouting.input.style.values.CSSAttrFunction;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.input.style.values.CSSCounterValue;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.input.style.values.CSSAttrFunction;
+import org.jfree.layouting.input.style.values.CSSValuePair;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 public class CounterResetResolveHandler implements ResolveHandler
 {
@@ -68,49 +69,63 @@ public class CounterResetResolveHandler implements ResolveHandler
    */
   public StyleKey[] getRequiredStyles ()
   {
-    return new StyleKey[0];
+    return new StyleKey[] {
+            BoxStyleKeys.DISPLAY_ROLE
+    };
   }
 
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve (final LayoutProcess process,
-                       final LayoutNode currentNode,
+                       final LayoutElement element,
                        final LayoutStyle style,
                        final StyleKey key)
   {
+    final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    if (DisplayRole.NONE.equals(displayRole))
+    {
+      // [GENERATED] 8.3. Counters in elements with 'display: none'
+      //
+      // An element that is not displayed ('display' set to 'none') cannot
+      // increment or reset a counter.
+      return;
+    }
+
     final CSSValue value = style.getValue(key);
     if (value instanceof CSSValueList == false)
     {
       return; // do nothing.
     }
-    if (currentNode instanceof LayoutElement == false)
-    {
-      return; // counters only apply to element nodes.
-    }
-    final LayoutElement element = (LayoutElement) currentNode;
-    final ElementContext elementContext = element.getElementContext();
+
     final CSSValueList valueList = (CSSValueList) value;
     for (int i = 0; i < valueList.getLength(); i++)
     {
       final CSSValue item = valueList.getItem(i);
-      if (item instanceof CSSCounterValue == false)
+      if (item instanceof CSSValuePair == false)
       {
         continue;
       }
-      CSSCounterValue counter = (CSSCounterValue) item;
-      final int counterValue = parseCounterValue(counter, element);
-      elementContext.resetCounter(counter.getIdentifier(), counterValue);
+      CSSValuePair counter = (CSSValuePair) item;
+      final CSSValue counterName = counter.getFirstValue();
+      if (counterName instanceof CSSConstant == false)
+      {
+        continue;
+      }
+
+      final CSSValue counterValue = counter.getSecondValue();
+      final int counterIntValue = parseCounterValue(counterValue, element);
+      element.resetCounter(counterName.getCSSText(), counterIntValue);
     }
   }
 
-  private int parseCounterValue (final CSSCounterValue counter,
+  private int parseCounterValue (final CSSValue rawValue,
                                  final LayoutElement element)
   {
-    final CSSValue rawValue = counter.getValue();
+
     if (rawValue instanceof CSSNumericValue)
     {
       final CSSNumericValue nval = (CSSNumericValue) rawValue;
@@ -120,8 +135,10 @@ public class CounterResetResolveHandler implements ResolveHandler
     {
       final CSSAttrFunction attrFunction = (CSSAttrFunction) rawValue;
       final String attrName = attrFunction.getName();
-      final String namespace = attrFunction.getNamespace();
-      final Object rawAttribute = element.getAttribute(namespace, attrName);
+      final String attrNamespace = attrFunction.getNamespace();
+      final Object rawAttribute =
+              element.getLayoutContext().getAttributes().getAttribute
+                      (attrNamespace, attrName);
       if (rawAttribute instanceof Number)
       {
         final Number nAttr = (Number) rawAttribute;

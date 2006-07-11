@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WritingModeReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.layouting.input.style.values.CSSInheritValue;
 import org.jfree.layouting.input.style.keys.text.Direction;
 import org.jfree.layouting.input.style.keys.text.BlockProgression;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -116,5 +117,10 @@ public class WritingModeReadHandler implements CSSCompoundValueReadHandler
     map.put (TextStyleKeys.DIRECTION, direction);
     map.put (TextStyleKeys.BLOCK_PROGRESSION, blockProgression);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {TextStyleKeys.DIRECTION, TextStyleKeys.BLOCK_PROGRESSION };
   }
 }

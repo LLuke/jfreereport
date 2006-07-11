@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageSizeValue.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public class PageSizeValue implements CSSValue
   private CSSNumericValue width;
   private CSSNumericValue height;
 
-  protected PageSizeValue(final PageSize pageSize)
+  public PageSizeValue(final PageSize pageSize)
   {
     this.width = new CSSNumericValue (CSSNumericType.PT, pageSize.getWidth());
     this.height = new CSSNumericValue (CSSNumericType.PT, pageSize.getHeight());

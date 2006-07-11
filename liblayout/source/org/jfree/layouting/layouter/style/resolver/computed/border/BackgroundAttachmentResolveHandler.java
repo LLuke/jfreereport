@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundAttachmentResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.keys.border.BackgroundAttachment;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.border.BackgroundSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.BackgroundSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ListOfConstantsResolveHandler;
 
@@ -76,12 +76,12 @@ public class BackgroundAttachmentResolveHandler
   }
 
   protected boolean resolveItem(final LayoutProcess process,
-                                LayoutNode currentNode,
+                                LayoutElement currentNode,
                                 LayoutStyle style,
                                 StyleKey key, int index,
                                 CSSConstant item)
   {
-    BackgroundAttachment bvalue = (BackgroundAttachment) lookupValue(item);
+    CSSConstant bvalue = (CSSConstant) lookupValue(item);
     BackgroundSpecification backgroundSpecification =
             currentNode.getLayoutContext().getBackgroundSpecification();
     backgroundSpecification.setBackgroundAttachment(index, bvalue);

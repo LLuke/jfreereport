@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundOrigin.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BackgroundOrigin extends CSSConstant
+public class BackgroundOrigin
 {
-  public static final BackgroundOrigin BORDER = new BackgroundOrigin("border");
-  public static final BackgroundOrigin PADDING = new BackgroundOrigin("padding");
-  public static final BackgroundOrigin CONTENT = new BackgroundOrigin("content");
+  public static final CSSConstant BORDER = new CSSConstant("border");
+  public static final CSSConstant PADDING = new CSSConstant("padding");
+  public static final CSSConstant CONTENT = new CSSConstant("content");
 
-  private BackgroundOrigin(String name)
+  private BackgroundOrigin()
   {
-    super(name);
   }
 }

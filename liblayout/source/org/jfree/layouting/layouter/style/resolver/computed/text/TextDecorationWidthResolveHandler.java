@@ -11,7 +11,7 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 public class TextDecorationWidthResolveHandler extends ConstantsResolveHandler
 {
@@ -39,7 +39,8 @@ public class TextDecorationWidthResolveHandler extends ConstantsResolveHandler
   }
 
   protected CSSValue resolveValue (final LayoutProcess process,
-                                   final LayoutNode currentNode, final LayoutStyle style,
+                                   final LayoutElement currentNode,
+                                   final LayoutStyle style,
                                    final StyleKey key)
   {
     CSSValue value = style.getValue(key);

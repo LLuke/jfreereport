@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FloatResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: FloatResolveHandler.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,14 +41,13 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.box;
 
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
-import org.jfree.layouting.input.style.keys.box.DisplayModel;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.box.Floating;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.box.BoxSpecification;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
@@ -86,27 +85,22 @@ public class FloatResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
-  public void resolve (final LayoutProcess process, LayoutNode currentNode,
-                       LayoutStyle style, StyleKey key)
+  public void resolve (final LayoutProcess process,
+                       LayoutElement currentNode,
+                       LayoutStyle style,
+                       StyleKey key)
   {
-    final BoxSpecification boxSpecification = currentNode.getLayoutContext().getBoxSpecification();
-    if (DisplayRole.NONE.equals(boxSpecification.getDisplayRole()))
+    final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    if (DisplayRole.NONE.equals(displayRole))
     {
       style.setValue(key, Floating.NONE);
-      boxSpecification.setFloating(Floating.NONE);
       return;
     }
 
-    Floating f = (Floating) resolveValue(process, currentNode, style, key);
+    CSSValue f = resolveValue(process, currentNode, style, key);
     style.setValue(key, f);
-    boxSpecification.setFloating(f);
-    if (Floating.NONE.equals(f) == false)
-    {
-      //boxSpecification.setDisplayModel(DisplayModel.BLOCK_INSIDE);
-      boxSpecification.setDisplayRole(DisplayRole.BLOCK);
-    }
   }
 }

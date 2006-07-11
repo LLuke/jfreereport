@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextOverflowEllipsisResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,14 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.text;
 
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.values.CSSStringType;
+import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.input.style.values.CSSStringValue;
-import org.jfree.layouting.input.style.values.CSSStringType;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.text.TextSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
@@ -76,11 +76,11 @@ public class TextOverflowEllipsisResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(final LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
@@ -110,10 +110,8 @@ public class TextOverflowEllipsisResolveHandler implements ResolveHandler
       blockEllipsis = new CSSStringValue(CSSStringType.STRING, "..");
     }
 
-    final TextSpecification ts =
-            currentNode.getLayoutContext().getTextSpecification();
-    ts.getOverflowSpecification().setLineOverflowText(lineEllipsis);
-    ts.getOverflowSpecification().setBoxOverflowText(blockEllipsis);
+    style.setValue(TextStyleKeys.X_BLOCK_TEXT_OVERFLOW_ELLIPSIS, blockEllipsis);
+    style.setValue(TextStyleKeys.X_LINE_TEXT_OVERFLOW_ELLIPSIS, lineEllipsis);
   }
 
   private CSSStringValue filterString (CSSValue value)

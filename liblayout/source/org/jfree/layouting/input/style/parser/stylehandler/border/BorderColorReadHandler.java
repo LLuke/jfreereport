@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderColorReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -133,5 +133,15 @@ public class BorderColorReadHandler implements CSSValueReadHandler, CSSCompoundV
     map.put(BorderStyleKeys.BORDER_BOTTOM_COLOR, bottomColor);
     map.put(BorderStyleKeys.BORDER_LEFT_COLOR, leftColor);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[]{
+            BorderStyleKeys.BORDER_TOP_COLOR,
+            BorderStyleKeys.BORDER_RIGHT_COLOR,
+            BorderStyleKeys.BORDER_BOTTOM_COLOR,
+            BorderStyleKeys.BORDER_LEFT_COLOR
+    };
   }
 }

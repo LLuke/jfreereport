@@ -1,16 +1,16 @@
 package org.jfree.layouting.output.streaming.oowriter;
 
-import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
-import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
 import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.fonts.registry.FontStorage;
+import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
+import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
 public class OOWriterOutputProcessorMetaData
         extends AbstractOutputProcessorMetaData
 {
-  public OOWriterOutputProcessorMetaData (final FontRegistry fontRegistry)
+  public OOWriterOutputProcessorMetaData (final FontStorage fontStorage)
   {
-    super(fontRegistry);
+    super(fontStorage);
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");
     setFamilyMapping(FontFamilyValues.FANTASY, "fantasy");
     setFamilyMapping(FontFamilyValues.MONOSPACE, "monospace");

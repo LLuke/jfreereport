@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontEmphasizePosition.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
+ * $Id: FontEmphasizePosition.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -52,19 +52,18 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class FontEmphasizePosition extends CSSConstant
+public class FontEmphasizePosition
 {
-  public static final FontEmphasizePosition BEFORE =
-          new FontEmphasizePosition("before");
-  public static final FontEmphasizePosition AFTER =
-          new FontEmphasizePosition("after");
-  public static final FontEmphasizePosition ABOVE =
-          new FontEmphasizePosition("above");
-  public static final FontEmphasizePosition BELOW =
-          new FontEmphasizePosition("below");
+  public static final CSSConstant BEFORE =
+          new CSSConstant("before");
+  public static final CSSConstant AFTER =
+          new CSSConstant("after");
+  public static final CSSConstant ABOVE =
+          new CSSConstant("above");
+  public static final CSSConstant BELOW =
+          new CSSConstant("below");
 
-  private FontEmphasizePosition(String name)
+  private FontEmphasizePosition()
   {
-    super(name);
   }
 }

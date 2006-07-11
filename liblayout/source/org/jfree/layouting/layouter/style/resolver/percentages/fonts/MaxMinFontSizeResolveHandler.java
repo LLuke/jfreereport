@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MaxMinFontSizeResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,16 @@
  */
 package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.resolver.percentages.LengthResolverUtility;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.context.FontSpecification;
 
 /**
  * Creation-Date: 21.12.2005, 12:53:36
@@ -79,42 +78,25 @@ public class MaxMinFontSizeResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
-                         LayoutStyle style,
-                         StyleKey key)
+                      LayoutElement currentNode,
+                      LayoutStyle style,
+                      StyleKey key)
   {
-    // todo apply built in defaults instead ...
     CSSValue value = style.getValue(key);
     final FontSpecification fs =currentNode.getLayoutContext().getFontSpecification();
     if (value instanceof CSSNumericValue == false)
     {
-      if (key.equals(FontStyleKeys.MAX_FONT_SIZE))
-      {
-        // there is no upper limit if the value is invalid
-        fs.setMaximumFontSize(Short.MAX_VALUE);
-      }
-      else
-      {
-        // there is no lower limit if the value is invalid
-        fs.setMinimumFontSize(0);
-      }
+      // no limit ..
       return;
     }
 
-    final long size = LengthResolverUtility.convertLengthToInternal
-          ((CSSNumericValue) value, currentNode, process.getOutputMetaData());
+    final CSSNumericValue size = LengthResolverUtility.convertLength
+          ((CSSNumericValue) value, currentNode.getLayoutContext(), process.getOutputMetaData());
 
-    if (key.equals(FontStyleKeys.MAX_FONT_SIZE))
-    {
-      fs.setMaximumFontSize(StrictGeomUtility.toExternalValue(size));
-    }
-    else
-    {
-      fs.setMinimumFontSize(StrictGeomUtility.toExternalValue(size));
-    }
+    style.setValue(key, size);
   }
 }

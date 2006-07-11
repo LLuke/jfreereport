@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontEmphasizeReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
+ * $Id: FontEmphasizeReadHandler.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ package org.jfree.layouting.input.style.parser.stylehandler.font;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.w3c.css.sac.LexicalUnit;
 
@@ -98,5 +98,13 @@ public class FontEmphasizeReadHandler
       map.put(FontStyleKeys.FONT_EMPHASIZE_STYLE, style);
     }
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[]{
+            FontStyleKeys.FONT_EMPHASIZE_POSITION,
+            FontStyleKeys.FONT_EMPHASIZE_STYLE
+    };
   }
 }

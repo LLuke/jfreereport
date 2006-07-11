@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueFactory.java,v 1.3 2006/04/23 15:18:12 taqua Exp $
+ * $Id: CSSValueFactory.java,v 1.4 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSCompoundAttrFunction;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
@@ -165,9 +166,12 @@ public class CSSValueFactory
     return true;
   }
 
-  private static CSSAttrFunction parseComplexAttrFn (LexicalUnit parameters)
+  private static CSSAttrFunction parseComplexAttrFn(LexicalUnit parameters)
   {
-    if (parameters == null) return null;
+    if (parameters == null)
+    {
+      return null;
+    }
 
     final String attrName = parameters.getStringValue().trim();
     final String[] name = StyleSheetParserUtil.parseNamespaceIdent(attrName);
@@ -295,13 +299,64 @@ public class CSSValueFactory
     return null;
   }
 
+  private void setCompundInheritValue(String name,
+                                      CSSDeclarationRule rule,
+                                      boolean important)
+  {
+    CSSCompoundValueReadHandler handler =
+            (CSSCompoundValueReadHandler) compoundHandlers.get(name);
+    if (handler == null)
+    {
+      Log.warn("Got no key for inherited value: " + name);
+      return;
+    }
+
+    StyleKey[] keys = handler.getAffectedKeys();
+    for (int i = 0; i < keys.length; i++)
+    {
+      StyleKey key = keys[i];
+      rule.setPropertyValue(key, CSSInheritValue.getInstance());
+      rule.setImportant(key, important);
+    }
+  }
+
+  private void setCompundAttrValue(String name,
+                                   CSSAttrFunction attr,
+                                   CSSDeclarationRule rule,
+                                   boolean important)
+  {
+
+
+    final CSSCompoundValueReadHandler handler =
+            (CSSCompoundValueReadHandler) compoundHandlers.get(name);
+    if (handler == null)
+    {
+      Log.warn("Got no key for compound attr function: " + name);
+      return;
+    }
+
+    StyleKey[] keys = handler.getAffectedKeys();
+    for (int i = 0; i < keys.length; i++)
+    {
+      StyleKey key = keys[i];
+      final CSSCompoundAttrFunction cattr = new CSSCompoundAttrFunction
+              (name, attr.getNamespace(), attr.getName(), attr.getType());
+      rule.setPropertyValue(key, cattr);
+      rule.setImportant(key, important);
+    }
+  }
+
+
   public void parseValue(CSSDeclarationRule rule,
                          String name,
                          LexicalUnit value,
                          boolean important)
           throws CSSParserFactoryException
   {
-    if (rule == null) throw new NullPointerException();
+    if (rule == null)
+    {
+      throw new NullPointerException("Rule given is null.");
+    }
 
     String normalizedName = name.toLowerCase();
     final StyleKey key = registry.findKeyByName(normalizedName);
@@ -309,7 +364,7 @@ public class CSSValueFactory
     {
       if (key == null)
       {
-        Log.warn("Got no key for inherited " + normalizedName, new Exception());
+        setCompundInheritValue(normalizedName, rule, important);
         return;
       }
       rule.setPropertyValue(key, CSSInheritValue.getInstance());
@@ -319,15 +374,16 @@ public class CSSValueFactory
 
     if (value.getLexicalUnitType() == LexicalUnit.SAC_ATTR)
     {
-      // ATTR function.
-      if (key == null)
-      {
-        Log.warn("Got no key for attribute-function " + normalizedName);
-        return;
-      }
       final CSSAttrFunction attrFn = parseAttrFunction(value);
+      // ATTR function.
       if (attrFn != null)
       {
+        if (key == null)
+        {
+          // Log.warn("Got no key for attribute-function " + normalizedName);
+          setCompundAttrValue(normalizedName, attrFn, rule, important);
+          return;
+        }
         rule.setPropertyValue(key, attrFn);
         rule.setImportant(key, important);
       }
@@ -373,7 +429,7 @@ public class CSSValueFactory
       }
       else
       {
-        Log.warn("Got no value for " + normalizedName);
+        Log.warn("Got no value for " + normalizedName + " (" + value + ")");
       }
       return; // ignore this rule ..
     }

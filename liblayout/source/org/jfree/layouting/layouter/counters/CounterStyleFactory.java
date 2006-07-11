@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CounterStyleFactory.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
  *
  * Changes
  * -------
@@ -61,13 +61,14 @@ public class CounterStyleFactory
     if (factory == null)
     {
       factory = new CounterStyleFactory();
+      factory.registerDefaults();
     }
     return factory;
   }
 
   private HashMap knownCounters;
 
-  public CounterStyleFactory ()
+  private CounterStyleFactory ()
   {
     knownCounters = new HashMap();
   }

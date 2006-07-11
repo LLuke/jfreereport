@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSMediaRule.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.util.ArrayList;
  *
  * @author Thomas Morgner
  */
-public class CSSMediaRule extends StyleRule
+public class CSSMediaRule extends CSSDeclarationRule
 {
   private ArrayList rules;
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleKey.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,29 @@ import java.io.Serializable;
  */
 public final class StyleKey implements Serializable, Cloneable
 {
+  public static final int ALWAYS = 0x13FFF;
+
+  public static final int INLINE_ELEMENTS = 0x0001;
+  public static final int BLOCK_ELEMENTS = 0x0002;
+  public static final int DOM_ELEMENTS = 0x0003;
+
+  public static final int All_ELEMENTS = 0x0FFF;
+
+  public static final int PSEUDO_BEFORE = 0x0010;
+  public static final int PSEUDO_AFTER = 0x0020;
+  public static final int PSEUDO_ALTERNATE = 0x0040;
+  public static final int PSEUDO_MARKER = 0x0080;
+  public static final int PSEUDO_LINEMARKER = 0x0100;
+  public static final int PSEUDO_FIRST_LETTER = 0x0200;
+  public static final int PSEUDO_FIRST_LINE = 0x0400;
+  public static final int PSEUDO_OTHER = 0x0800;
+
+  public static final int MARGINS = 0x1000;
+  public static final int FOOTNOTE_AREA = 0x02000;
+
+  public static final int PAGE_CONTEXT = 0x10000;
+  public static final int COUNTERS = 0x20000;
+
   /**
    * The index is implicitly defined when the key is registered. Do not rely
    * on that index for long term persitence.
@@ -73,11 +96,13 @@ public final class StyleKey implements Serializable, Cloneable
    */
   private boolean inherited;
 
-  /**
-   * Defines, whether this key should hold a list of values. The value object
-   * stored by that key must be an instance of CSSValueList.
-   */
-  private boolean listOfValues;
+//  /**
+//   * Defines, whether this key should hold a list of values. The value object
+//   * stored by that key must be an instance of CSSValueList.
+//   */
+//  private boolean listOfValues;
+
+  private int validity;
 
   /**
    * This constructor is intentionally 'package protected'.
@@ -90,18 +115,18 @@ public final class StyleKey implements Serializable, Cloneable
   protected StyleKey(final String name,
            final boolean trans,
            final boolean inherited,
-           final boolean listOfValues,
-           final int index)
+           final int index,
+           final int validity)
   {
     if (name == null)
     {
       throw new NullPointerException("StyleKey.setName(...): null not permitted.");
     }
 
+    this.validity = validity;
     this.name = name;
     this.trans = trans;
     this.inherited = inherited;
-    this.listOfValues = listOfValues;
     this.index = index;
   }
 
@@ -120,9 +145,9 @@ public final class StyleKey implements Serializable, Cloneable
     return index;
   }
 
-  public boolean isListOfValues()
+  public boolean isValidOn (int mask)
   {
-    return listOfValues;
+    return (validity & mask) != 0;
   }
 
   /**
@@ -190,7 +215,7 @@ public final class StyleKey implements Serializable, Cloneable
             "name='" + name + "'" +
             ", trans=" + trans +
             ", inherited=" + inherited +
-            ", listOfValues=" + listOfValues +
+            ", validity=" + Integer.toHexString(validity)+
             "}";
   }
   public Object clone ()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.3 2006/05/06 13:02:46 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.4 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -44,21 +44,25 @@ import java.util.Arrays;
 
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.State;
+import org.jfree.layouting.StateException;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleRule;
+import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.layouting.input.style.selectors.SelectorWeight;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
+import org.jfree.layouting.layouter.context.DocumentContext;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.CSSStyleRuleComparator;
 import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.LayoutNode;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.NamespaceDefinition;
 import org.jfree.layouting.namespace.Namespaces;
+import org.jfree.layouting.util.AttributeMap;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -73,6 +77,50 @@ import org.jfree.util.Log;
  */
 public class DefaultStyleResolver extends AbstractStyleResolver implements StyleResolver
 {
+  private static class DefaultStyleResolverState extends AbstractStyleResolverState
+  {
+    private boolean strictStyleMode;
+    private StyleRuleMatcher ruleMatcher;
+
+    public DefaultStyleResolverState()
+    {
+    }
+
+    public boolean isStrictStyleMode()
+    {
+      return strictStyleMode;
+    }
+
+    public void setStrictStyleMode(final boolean strictStyleMode)
+    {
+      this.strictStyleMode = strictStyleMode;
+    }
+
+    public StyleRuleMatcher getRuleMatcher()
+    {
+      return ruleMatcher;
+    }
+
+    public void setRuleMatcher(final StyleRuleMatcher ruleMatcher)
+    {
+      this.ruleMatcher = ruleMatcher;
+    }
+
+    protected AbstractStyleResolver create()
+    {
+      return new DefaultStyleResolver();
+    }
+
+    protected void fill(final AbstractStyleResolver resolver,
+                        final LayoutProcess layoutProcess)
+    {
+      super.fill(resolver, layoutProcess);
+      DefaultStyleResolver res = (DefaultStyleResolver) resolver;
+      res.styleRuleMatcher = ruleMatcher;
+      res.strictStyleMode = strictStyleMode;
+    }
+  }
+
   private boolean strictStyleMode;
 
   private StyleRuleMatcher styleRuleMatcher;
@@ -94,20 +142,52 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     loadInitialStyle();
   }
 
-  public void resolveStyle (LayoutElement node)
+  protected void resolveOutOfContext (LayoutElement element)
+  {
+    // as this styleresolver is not statefull, we can safely call the resolve
+    // style method. A statefull resolver would have to find other means.
+    resolveStyle(element);
+  }
+
+  /**
+   * Performs tests, whether there is a pseudo-element definition for the given
+   * element. The element itself can be a pseudo-element as well.
+   *
+   * @param element
+   * @param pseudo
+   * @return
+   */
+  public boolean isPseudoElementStyleResolvable(LayoutElement element,
+                                                String pseudo)
+  {
+    return styleRuleMatcher.isMatchingPseudoElement(element, pseudo);
+  }
+
+  /**
+   * Resolves the style. This is guaranteed to be called in the order of the
+   * document elements traversing the document tree using the
+   * 'deepest-node-first' strategy.
+   *
+   * @param element the elemen that should be resolved.
+   */
+  public void resolveStyle(LayoutElement element)
   {
     // this is a three stage process
-    final LayoutStyle style = node.getStyle();
+    final LayoutContext layoutContext = element.getLayoutContext();
+    final LayoutStyle style = layoutContext.getStyle();
     final StyleKey[] keys = getKeys();
+    Log.debug ("Resolving style for " +
+            layoutContext.getTagName() + ":" +
+            layoutContext.getPseudoElement());
 
     // Stage 0: Initialize with the built-in defaults
     // Stage 1a: Add the parent styles (but only the one marked as inheritable).
-    final LayoutNode parent = node.getParent();
+    final LayoutElement parent = element.getParent();
     final LayoutStyle initialStyle = getInitialStyle();
     final LayoutStyle parentStyle;
     if (parent != null)
     {
-      parentStyle = parent.getStyle();
+      parentStyle = parent.getLayoutContext().getStyle();
     }
     else
     {
@@ -116,7 +196,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
 
     for (int i = 0; i < keys.length; i++)
     {
-      StyleKey key = keys[i];
+      final StyleKey key = keys[i];
       if (key.isInherited())
       {
         style.setValue(key, parentStyle.getValue(key));
@@ -128,29 +208,30 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     }
 
     // Stage 1b: Find all matching stylesheets for the given element
-    performSelectionStep(node, style);
+    performSelectionStep(element, style);
 
     // Stage 1c: Add the contents of the style attribute, if there is one ..
     // the libLayout style is always added: This is a computed style and the hook
     // for a element neutral user defined tweaking ..
-    final Object libLayoutStyleValue = node.getAttribute
+
+    final AttributeMap attributes = element.getLayoutContext().getAttributes();
+    final Object libLayoutStyleValue = attributes.getAttribute
             (Namespaces.LIBLAYOUT_NAMESPACE, "style");
+    // You cannot override element specific styles with that. So an HTML-style
+    // attribute has move value than a LibLayout-style attribute.
     addStyleFromAttribute(style, libLayoutStyleValue);
 
     if (strictStyleMode)
     {
-      performStrictStyleAttr(node, style);
+      performStrictStyleAttr(element, style);
     }
     else
     {
-      performCompleteStyleAttr(node, style);
+      performCompleteStyleAttr(element, style);
     }
 
     // Stage 2: Compute the 'specified' set of values.
-
-    // Stage 2a: Find all explicitly inherited styles and add them from the parent.
-    //           if we have no inherited styles, grab them from the default
-    //           stylesheet.
+    // Find all explicitly inherited styles and add them from the parent.
     final CSSInheritValue inheritInstance = CSSInheritValue.getInstance();
     for (int i = 0; i < keys.length; i++)
     {
@@ -162,14 +243,17 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       }
     }
 
+
     // Stage 3:  Compute the computed value set.
     ResolverFactory.getInstance().performResolve
-            (getLayoutProcess(), node, style);
+            (getLayoutProcess(), element, style);
 
   }
 
   /**
-   * Check, whether there is a known style attribute and if so, grab its value.
+   * Check, whether there is a known style attribute for the element's namespace
+   * and if so, grab its value. This method uses strict conformance to the XML
+   * rules and thus it does not evaluate foreign styles.
    * <p/>
    *
    * @param node
@@ -177,7 +261,8 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
    */
   private void performStrictStyleAttr (LayoutElement node, LayoutStyle style)
   {
-    final String namespace = node.getNamespace();
+    final LayoutContext layoutContext = node.getLayoutContext();
+    final String namespace = layoutContext.getNamespace();
     if (namespace == null)
     {
       return;
@@ -190,17 +275,23 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       return;
     }
 
-    final String[] classAttribute = ndef.getClassAttribute(node.getName());
-    for (int i = 0; i < classAttribute.length; i++)
+    final AttributeMap attributes = layoutContext.getAttributes();
+    final String[] styleAttrs = ndef.getStyleAttribute
+            (layoutContext.getTagName());
+    for (int i = 0; i < styleAttrs.length; i++)
     {
-      final String attr = classAttribute[i];
-      final Object styleValue = node.getAttribute(namespace, attr);
+      final String attr = styleAttrs[i];
+      final Object styleValue = attributes.getAttribute(namespace, attr);
       addStyleFromAttribute(style, styleValue);
     }
   }
 
   /**
-   * Check, whether there is a known style attribute and if so, grab its value.
+   * Check, whether there are known style attributes and if so, import them.
+   * This method uses a relaxed syntax and imports all known style attributes
+   * ignoring the element's defined namespace. This allows to add styles to
+   * elements which would not support styles otherwise, but may have ..
+   * chaotic .. side effects.
    * <p/>
    *
    * @param node
@@ -210,6 +301,10 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
   {
     final NamespaceCollection namespaces = getNamespaces();
     final String[] namespaceNames = namespaces.getNamespaces();
+
+    final LayoutContext layoutContext = node.getLayoutContext();
+    final AttributeMap attributes = layoutContext.getAttributes();
+
     for (int i = 0; i < namespaceNames.length; i++)
     {
       final String namespace = namespaceNames[i];
@@ -219,11 +314,11 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
         continue;
       }
 
-      final String[] classAttribute = ndef.getClassAttribute(node.getName());
-      for (int x = 0; x < classAttribute.length; x++)
+      final String[] styleAttrs = ndef.getStyleAttribute(layoutContext.getTagName());
+      for (int x = 0; x < styleAttrs.length; x++)
       {
-        final String attr = classAttribute[x];
-        final Object styleValue = node.getAttribute(namespace, attr);
+        final String attr = styleAttrs[x];
+        final Object styleValue = attributes.getAttribute(namespace, attr);
         addStyleFromAttribute(style, styleValue);
       }
     }
@@ -271,11 +366,11 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
    * @param node
    * @param style
    */
-  private void performSelectionStep (LayoutElement node,
+  private void performSelectionStep (LayoutElement element,
                                      LayoutStyle style)
   {
     final CSSStyleRule[] activeStyleRules =
-            styleRuleMatcher.getMatchingRules(node);
+            styleRuleMatcher.getMatchingRules(element);
 
     // sort ...
     Arrays.sort(activeStyleRules, new CSSStyleRuleComparator());
@@ -303,5 +398,14 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
   public StyleResolver deriveInstance ()
   {
     return this;
+  }
+
+  public State saveState() throws StateException
+  {
+    DefaultStyleResolverState state = new DefaultStyleResolverState();
+    fillState(state);
+    state.setRuleMatcher(styleRuleMatcher);
+    state.setStrictStyleMode(strictStyleMode);
+    return state;
   }
 }

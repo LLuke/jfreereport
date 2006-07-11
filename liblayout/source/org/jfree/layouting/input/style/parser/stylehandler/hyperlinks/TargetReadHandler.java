@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TargetReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.HashMap;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.keys.hyperlinks.HyperlinkStyleKeys;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -109,5 +110,14 @@ public class TargetReadHandler implements CSSCompoundValueReadHandler
       map.put (HyperlinkStyleKeys.TARGET_POSITION, positionValue);
     }
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+        HyperlinkStyleKeys.TARGET_NAME, 
+        HyperlinkStyleKeys.TARGET_NEW,
+        HyperlinkStyleKeys.TARGET_POSITION
+    };
   }
 }

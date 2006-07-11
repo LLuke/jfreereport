@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TargetName.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,21 +47,20 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TargetName extends CSSConstant
+public class TargetName
 {
-  public static final TargetName CURRENT =
-          new TargetName("current");
-  public static final TargetName ROOT =
-          new TargetName("root");
-  public static final TargetName PARENT =
-          new TargetName("parent");
-  public static final TargetName NEW =
-          new TargetName("new");
-  public static final TargetName MODAL =
-          new TargetName("modal");
+  public static final CSSConstant CURRENT =
+          new CSSConstant("current");
+  public static final CSSConstant ROOT =
+          new CSSConstant("root");
+  public static final CSSConstant PARENT =
+          new CSSConstant("parent");
+  public static final CSSConstant NEW =
+          new CSSConstant("new");
+  public static final CSSConstant MODAL =
+          new CSSConstant("modal");
 
-  private TargetName(String name)
+  private TargetName()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextHeight.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextHeight extends CSSConstant
+public class TextHeight
 {
-  public static final TextHeight FONT_SIZE = new TextHeight("font-size");
-  public static final TextHeight TEXT_SIZE = new TextHeight("text-size");
-  public static final TextHeight MAX_SIZE = new TextHeight("max-size");
+  public static final CSSConstant FONT_SIZE = new CSSConstant("font-size");
+  public static final CSSConstant TEXT_SIZE = new CSSConstant("text-size");
+  public static final CSSConstant MAX_SIZE = new CSSConstant("max-size");
 
-  private TextHeight (String name)
+  private TextHeight ()
   {
-    super(name);
   }
 
 }

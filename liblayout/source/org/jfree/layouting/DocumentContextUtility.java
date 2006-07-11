@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DocumentContextUtility.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,7 @@ import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
 import org.jfree.layouting.layouter.style.resolver.StyleRuleMatcher;
 import org.jfree.layouting.layouter.style.resolver.SimpleStyleRuleMatcher;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.namespace.NamespaceCollection;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
 
@@ -113,19 +112,6 @@ public class DocumentContextUtility
     }
     return (Date) o;
   }
-
-  public static StyleResolver getStyleResolver(DocumentContext context)
-  {
-    final Object o = context.getMetaAttribute(DocumentContext.STYLE_RESOLVER_ATTR);
-    if (o instanceof StyleResolver == false)
-    {
-      StyleResolver value = new DefaultStyleResolver();
-      context.setMetaAttribute(DocumentContext.STYLE_RESOLVER_ATTR, value);
-      return value;
-    }
-    return (StyleResolver) o;
-  }
-
 
   public static StyleRuleMatcher getStyleRuleMatcher(DocumentContext context)
   {

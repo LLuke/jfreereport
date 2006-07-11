@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WhitespaceCollapse.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -48,19 +48,18 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class WhitespaceCollapse extends CSSConstant
+public class WhitespaceCollapse
 {
-  public static final WhitespaceCollapse PRESERVE = new WhitespaceCollapse(
+  public static final CSSConstant PRESERVE = new CSSConstant(
           "preserve");
-  public static final WhitespaceCollapse COLLAPSE = new WhitespaceCollapse(
+  public static final CSSConstant COLLAPSE = new CSSConstant(
           "collapse");
-  public static final WhitespaceCollapse PRESERVE_BREAKS = new WhitespaceCollapse(
+  public static final CSSConstant PRESERVE_BREAKS = new CSSConstant(
           "preserve-breaks");
-  public static final WhitespaceCollapse DISCARD = new WhitespaceCollapse(
+  public static final CSSConstant DISCARD = new CSSConstant(
           "discard");
 
-  private WhitespaceCollapse(String name)
+  private WhitespaceCollapse()
   {
-    super(name);
   }
 }

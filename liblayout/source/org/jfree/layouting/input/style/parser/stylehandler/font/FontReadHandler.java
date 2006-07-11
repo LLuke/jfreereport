@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.line.LineHeightReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -171,5 +172,18 @@ public class FontReadHandler implements CSSCompoundValueReadHandler
       map.put(FontStyleKeys.FONT_STYLE, fontStyle);
     }
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[]{
+            FontStyleKeys.FONT_FAMILY,
+            FontStyleKeys.FONT_SIZE,
+            FontStyleKeys.FONT_WEIGHT,
+            FontStyleKeys.FONT_VARIANT,
+            FontStyleKeys.FONT_STYLE,
+            LineStyleKeys.LINE_HEIGHT
+
+    };
   }
 }

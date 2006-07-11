@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontSizeResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,17 +41,18 @@
 package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.resolver.percentages.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.LayoutContext;
-import org.jfree.layouting.model.font.FontSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.fonts.LibFontsDefaults;
 
 /**
@@ -100,16 +101,16 @@ public class FontSizeResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
+                         LayoutElement currentNode,
                          LayoutStyle style,
                          StyleKey key)
   {
     final CSSValue value = style.getValue(key);
-    final LayoutNode parent = currentNode.getParent();
+    final LayoutElement parent = currentNode.getParent();
     final FontSpecification fontSpecification =
             currentNode.getLayoutContext().getFontSpecification();
 
@@ -134,9 +135,9 @@ public class FontSizeResolveHandler implements ResolveHandler
     CSSNumericValue nval = (CSSNumericValue) value;
     if (LengthResolverUtility.isAbsoluteValue(nval))
     {
-      final long fsize = LengthResolverUtility.convertLengthToInternal
-              (nval,currentNode, process.getOutputMetaData());
-      final double fontSize = fsize / 1000d;
+      final CSSNumericValue fsize = LengthResolverUtility.convertLength
+              (nval,currentNode.getLayoutContext(), process.getOutputMetaData());
+      final double fontSize = fsize.getValue();
       fontSpecification.setFontSize(fontSize);
       style.setValue(key, new CSSNumericValue(CSSNumericType.PT, fontSize));
     }

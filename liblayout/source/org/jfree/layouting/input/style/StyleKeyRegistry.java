@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StyleKeyRegistry.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -161,7 +161,7 @@ public class StyleKeyRegistry
   public synchronized StyleKey createKey(final String name,
                                          final boolean trans,
                                          final boolean inherited,
-                                         final boolean listOfValues)
+                                         final int validity)
   {
     final StyleKey existingKey = findKeyByName(name);
     if (existingKey != null)
@@ -169,7 +169,7 @@ public class StyleKeyRegistry
       return existingKey;
     }
     final StyleKey createdKey = new StyleKey
-            (name, trans, inherited, listOfValues, knownStyleKeys.size());
+            (name, trans, inherited, knownStyleKeys.size(), validity);
     knownStyleKeys.put(name, createdKey);
     return createdKey;
   }

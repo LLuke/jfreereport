@@ -1,4 +1,4 @@
-@namespace url(http://jfreereport.sourceforge.net/namespaces/layout); /* set default namespace to HTML */
+@namespace url(http://jfreereport.sourceforge.net/namespaces/layout); 
 @namespace xml url(http://www.w3.org/XML/1998/namespace);
 
 * {
@@ -10,4 +10,23 @@ li-marker {
   margin-right: 1em;
   text-align: right;
   display: inline;
+}
+
+auto-table {
+  display: table;
+}
+
+auto-table-body {
+  display: table-row-group;
+}
+
+auto-table-row {
+  display: table-row;
+}
+
+auto-linebox {
+  display: block;
+}
+
+anonymous-context {
 }

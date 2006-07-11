@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontStyleResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,24 +40,23 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.fonts;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyle;
-import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 /**
  * Creation-Date: 18.12.2005, 20:55:31
  *
  * @author Thomas Morgner
  */
-public class FontStyleResolveHandler implements ResolveHandler
+public class FontStyleResolveHandler extends ConstantsResolveHandler
 {
   public FontStyleResolveHandler()
   {
+    addNormalizeValue(FontStyle.ITALIC);
+    addNormalizeValue(FontStyle.NORMAL);
+    addNormalizeValue(FontStyle.OBLIQUE);
+    setFallback(FontStyle.NORMAL);
   }
 
   /**
@@ -71,34 +70,4 @@ public class FontStyleResolveHandler implements ResolveHandler
     return new StyleKey[0];
   }
 
-  /**
-   * Resolves a single property.
-   *
-   * @param style
-   * @param currentNode
-   */
-  public void resolve(LayoutProcess process,
-                      LayoutNode currentNode,
-                      LayoutStyle style,
-                      StyleKey key)
-  {
-    final FontSpecification fs =
-            currentNode.getLayoutContext().getFontSpecification();
-    final CSSValue value = style.getValue(key);
-    if (FontStyle.ITALIC.equals(value))
-    {
-      fs.setItalic(true);
-      fs.setOblique(true);
-    }
-    else if (FontStyle.OBLIQUE.equals(value))
-    {
-      fs.setItalic(false);
-      fs.setOblique(true);
-    }
-    else
-    {
-      fs.setItalic(false);
-      fs.setOblique(false);
-    }
-  }
 }

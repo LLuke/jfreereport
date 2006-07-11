@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Floating.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -58,25 +58,24 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class Floating extends CSSConstant
+public class Floating
 {
-  public static final Floating LEFT = new Floating("left");
-  public static final Floating RIGHT = new Floating("right");
-  public static final Floating TOP = new Floating("top");
-  public static final Floating BOTTOM = new Floating("bottom");
-  public static final Floating INSIDE = new Floating("inside");
-  public static final Floating OUTSIDE = new Floating("outside");
-  public static final Floating START = new Floating("start");
-  public static final Floating END = new Floating("end");
-  public static final Floating NONE = new Floating("none");
+  public static final CSSConstant LEFT = new CSSConstant("left");
+  public static final CSSConstant RIGHT = new CSSConstant("right");
+  public static final CSSConstant TOP = new CSSConstant("top");
+  public static final CSSConstant BOTTOM = new CSSConstant("bottom");
+  public static final CSSConstant INSIDE = new CSSConstant("inside");
+  public static final CSSConstant OUTSIDE = new CSSConstant("outside");
+  public static final CSSConstant START = new CSSConstant("start");
+  public static final CSSConstant END = new CSSConstant("end");
+  public static final CSSConstant NONE = new CSSConstant("none");
 
   // from the column stuff
-  public static final Floating IN_COLUMN = new Floating("in-column");
-  public static final Floating MID_COLUMN = new Floating("mid-column");
+  public static final CSSConstant IN_COLUMN = new CSSConstant("in-column");
+  public static final CSSConstant MID_COLUMN = new CSSConstant("mid-column");
 
-  private Floating(String name)
+  private Floating()
   {
-    super(name);
   }
 
 }

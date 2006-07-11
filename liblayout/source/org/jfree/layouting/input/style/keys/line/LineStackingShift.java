@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineStackingShift.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class LineStackingShift extends CSSConstant
+public class LineStackingShift
 {
-  public static final LineStackingShift CONSIDER_SHIFTS =
-          new LineStackingShift("consider-shifts");
-  public static final LineStackingShift DISREGARD_SHIFTS =
-          new LineStackingShift("disregard-shifts");
+  public static final CSSConstant CONSIDER_SHIFTS =
+          new CSSConstant("consider-shifts");
+  public static final CSSConstant DISREGARD_SHIFTS =
+          new CSSConstant("disregard-shifts");
 
-  private LineStackingShift(String name)
+  private LineStackingShift()
   {
-    super(name);
   }
 }

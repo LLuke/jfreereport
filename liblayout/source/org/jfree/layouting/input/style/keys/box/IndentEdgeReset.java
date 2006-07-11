@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: IndentEdgeReset.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,22 +48,21 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class IndentEdgeReset extends CSSConstant
+public class IndentEdgeReset
 {
-  public static final IndentEdgeReset NONE =
-          new IndentEdgeReset("none");
-  public static final IndentEdgeReset MARGIN_EDGE =
-          new IndentEdgeReset("margin-edge");
-  public static final IndentEdgeReset BORDER_EDGE =
-          new IndentEdgeReset("border-edge");
-  public static final IndentEdgeReset PADDING_EDGE =
-          new IndentEdgeReset("padding-edge");
-  public static final IndentEdgeReset CONTENT_EDGE =
-          new IndentEdgeReset("content-edge");
+  public static final CSSConstant NONE =
+          new CSSConstant("none");
+  public static final CSSConstant MARGIN_EDGE =
+          new CSSConstant("margin-edge");
+  public static final CSSConstant BORDER_EDGE =
+          new CSSConstant("border-edge");
+  public static final CSSConstant PADDING_EDGE =
+          new CSSConstant("padding-edge");
+  public static final CSSConstant CONTENT_EDGE =
+          new CSSConstant("content-edge");
 
-  private IndentEdgeReset(String name)
+  private IndentEdgeReset()
   {
-    super(name);
   }
 
 }

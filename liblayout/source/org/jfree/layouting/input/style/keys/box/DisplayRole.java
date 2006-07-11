@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayRole.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  * The RUBY_* properties are required for Japanese and other Asian font support
  * and not yet used.
  */
-public class DisplayRole extends CSSConstant
+public class DisplayRole
 {
   /**
    * The element is not rendered. The rendering is the same as if the element
@@ -61,7 +61,7 @@ public class DisplayRole extends CSSConstant
    * Note that :before and :after pseudo elements of this element are also not
    * rendered, see [generated].)
    */
-  public static final DisplayRole NONE = new DisplayRole("none");
+  public static final CSSConstant NONE = new CSSConstant("none");
 
   /**
    * The element is rendered as a rectangular block. See Collapsing margins
@@ -69,19 +69,19 @@ public class DisplayRole extends CSSConstant
    * media [ref] or inside another element that has two or more columns,
    * the box may be split into several smaller boxes.
    */
-  public static final DisplayRole BLOCK = new DisplayRole("block");
+  public static final CSSConstant BLOCK = new CSSConstant("block");
 
   /**
    * The element is rendered inside a line box. It may be split into several
    * boxes because of line breaking and bidi processing (see the Text module).
    */
-  public static final DisplayRole INLINE = new DisplayRole("inline");
+  public static final CSSConstant INLINE = new CSSConstant("inline");
 
   /**
    * The element is rendered the same as if it had display-role 'block', but
    * in addition a marker is generated (see 'list-style').
    */
-  public static final DisplayRole LIST_ITEM = new DisplayRole("list-item");
+  public static final CSSConstant LIST_ITEM = new CSSConstant("list-item");
 
   /**
    * The effect depends on what comes after the element. If the next element
@@ -91,7 +91,7 @@ public class DisplayRole extends CSSConstant
    * of that block element. Otherwise this element will be rendered as if it
    * had display-role 'block'. [Does this explain Ian's tests?]
    */
-  public static final DisplayRole RUN_IN = new DisplayRole("run-in");
+  public static final CSSConstant RUN_IN = new CSSConstant("run-in");
 
   /**
    * The effect depends on the intrinsic size of this element and on what comes
@@ -104,42 +104,41 @@ public class DisplayRole extends CSSConstant
    * script?] In all other cases the compact element is rendered as if its
    * display-role was 'block'.
    */
-  public static final DisplayRole COMPACT = new DisplayRole("compact");
+  public static final CSSConstant COMPACT = new CSSConstant("compact");
 
   /** See the Tables module [CSS3TBL]. */
-  public static final DisplayRole TABLE_ROW = new DisplayRole("table-row");
-  public static final DisplayRole TABLE_CELL = new DisplayRole("table-cell");
-  public static final DisplayRole TABLE_ROW_GROUP = new DisplayRole(
+  public static final CSSConstant TABLE_ROW = new CSSConstant("table-row");
+  public static final CSSConstant TABLE_CELL = new CSSConstant("table-cell");
+  public static final CSSConstant TABLE_ROW_GROUP = new CSSConstant(
           "table-row-group");
-  public static final DisplayRole TABLE_HEADER_GROUP = new DisplayRole(
+  public static final CSSConstant TABLE_HEADER_GROUP = new CSSConstant(
           "table-header-group");
 
-  public static final DisplayRole TABLE_FOOTER_GROUP = new DisplayRole(
+  public static final CSSConstant TABLE_FOOTER_GROUP = new CSSConstant(
           "table-footer-group");
-  public static final DisplayRole TABLE_COLUMN = new DisplayRole(
+  public static final CSSConstant TABLE_COLUMN = new CSSConstant(
           "table-column");
-  public static final DisplayRole TABLE_COLUMN_GROUP = new DisplayRole(
+  public static final CSSConstant TABLE_COLUMN_GROUP = new CSSConstant(
           "table-column-group");
-  public static final DisplayRole TABLE_CAPTION = new DisplayRole(
+  public static final CSSConstant TABLE_CAPTION = new CSSConstant(
           "table-caption");
 
   /** Ruby is not yet used. */
-  public static final DisplayRole RUBY_TEXT = new DisplayRole("ruby-text");
-  public static final DisplayRole RUBY_BASE = new DisplayRole("ruby-base");
-  public static final DisplayRole RUBY_BASE_GROUP = new DisplayRole(
+  public static final CSSConstant RUBY_TEXT = new CSSConstant("ruby-text");
+  public static final CSSConstant RUBY_BASE = new CSSConstant("ruby-base");
+  public static final CSSConstant RUBY_BASE_GROUP = new CSSConstant(
           "ruby-base-group");
-  public static final DisplayRole RUBY_TEXT_GROUP
-          = new DisplayRole("ruby-text-group");
+  public static final CSSConstant RUBY_TEXT_GROUP
+          = new CSSConstant("ruby-text-group");
 
   /**
    * A JFreeReport compatibility setting. Enables the absolute positioning mode.
    */
-  public static final DisplayRole ABSOLUTE
-          = new DisplayRole("absolute");
+  public static final CSSConstant ABSOLUTE
+          = new CSSConstant("absolute");
 
 
-  private DisplayRole(String name)
+  private DisplayRole()
   {
-    super(name);
   }
 }

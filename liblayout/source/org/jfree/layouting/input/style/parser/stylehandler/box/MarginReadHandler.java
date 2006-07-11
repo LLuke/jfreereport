@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MarginReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.AbstractWidthReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -128,5 +129,15 @@ public class MarginReadHandler extends AbstractWidthReadHandler
     map.put(BoxStyleKeys.MARGIN_BOTTOM, bottomWidth);
     map.put(BoxStyleKeys.MARGIN_LEFT, leftWidth);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[]{
+            BoxStyleKeys.MARGIN_TOP, 
+            BoxStyleKeys.MARGIN_RIGHT,
+            BoxStyleKeys.MARGIN_BOTTOM,
+            BoxStyleKeys.MARGIN_LEFT
+    };
   }
 }

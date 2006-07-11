@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontSmoothResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,16 @@
  */
 package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.resolver.percentages.LengthResolverUtility;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.font.FontSpecification;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.keys.font.FontSmooth;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 /**
  * Creation-Date: 18.12.2005, 20:29:20
@@ -80,11 +79,11 @@ public class FontSmoothResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
+                         LayoutElement currentNode,
                          LayoutStyle style,
                          StyleKey key)
   {
@@ -94,17 +93,18 @@ public class FontSmoothResolveHandler implements ResolveHandler
       return;
     }
 
-    final FontSpecification fs =
-            currentNode.getLayoutContext().getFontSpecification();
-    final long length = LengthResolverUtility.convertLengthToInternal
-            ((CSSNumericValue) value, currentNode, process.getOutputMetaData());
-    if (StrictGeomUtility.toInternalValue(fs.getFontSize()) < length)
+    final double fontSize =
+            (currentNode.getLayoutContext().getFontSpecification().getFontSize());
+    final double length = LengthResolverUtility.convertLengthToDouble
+            (value, currentNode.getLayoutContext(), process.getOutputMetaData());
+
+    if (fontSize < length)
     {
-      fs.setAntiAliased(false);
+      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
     }
     else
     {
-      fs.setAntiAliased(true);
+      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.ALWAYS);
     }
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FitPositionResolveHandler.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -42,16 +42,17 @@
 package org.jfree.layouting.layouter.style.resolver.autovalue.box;
 
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.text.BlockProgression;
+import org.jfree.layouting.input.style.keys.text.Direction;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.text.TextSpecification;
 
 public class FitPositionResolveHandler implements ResolveHandler
 {
@@ -79,20 +80,16 @@ public class FitPositionResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve (LayoutProcess process,
-                       LayoutNode currentNode,
+                       LayoutElement currentNode,
                        LayoutStyle style,
                        StyleKey key)
   {
-    final TextSpecification textSpecification =
-            currentNode.getLayoutContext().getTextSpecification();
-    final boolean rightToLeft =
-            textSpecification.getLayoutSpecification().isRightToLeft();
-    final BlockProgression blockProgression =
-            textSpecification.getLayoutSpecification().getBlockProgression();
+    final boolean rightToLeft = Direction.RTL.equals(style.getValue(TextStyleKeys.DIRECTION));
+    final CSSValue blockProgression = style.getValue(TextStyleKeys.BLOCK_PROGRESSION);
     // this might be invalid ...
     if (BlockProgression.TB.equals(blockProgression))
     {

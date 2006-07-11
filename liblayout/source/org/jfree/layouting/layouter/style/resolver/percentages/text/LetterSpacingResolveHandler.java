@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LetterSpacingResolveHandler.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
  *
  * Changes
  * -------
@@ -40,18 +40,19 @@
  */
 package org.jfree.layouting.layouter.style.resolver.percentages.text;
 
+import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
-import org.jfree.layouting.input.style.keys.text.SpacingValue;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.text.AbsoluteSpacingValue;
-import org.jfree.layouting.model.text.TextSpacingSpecification;
-import org.jfree.layouting.model.text.TextSpecification;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.context.FontSpecification;
 
 /**
  * Creation-Date: 21.12.2005, 15:12:04
@@ -82,50 +83,57 @@ public class LetterSpacingResolveHandler implements ResolveHandler
             FontStyleKeys.FONT_WEIGHT,
     };
   }
-
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(final LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
-
-    final TextSpecification textSpecification =
-            currentNode.getLayoutContext().getTextSpecification();
-    final TextSpacingSpecification spacingSpecification =
-            textSpecification.getSpacingSpecification();
-
-    final CSSValue rawvalue = style.getValue(key);
-    if (rawvalue instanceof SpacingValue == false)
+    // Percentages get resolved against the width of a standard space (0x20)
+    // character.
+    final FontSpecification fontSpecification =
+            currentNode.getLayoutContext().getFontSpecification();
+    final FontMetrics fm = process.getOutputMetaData().getFontMetrics(fontSpecification);
+    if (fm == null)
     {
-      // fall back to the default, which is simply zero ---
-      spacingSpecification.setLetterSpacing
-              (new AbsoluteSpacingValue(0, 0, Integer.MAX_VALUE));
+      // we have no font family, so return.
+      style.setValue(TextStyleKeys.X_MIN_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
+      style.setValue(TextStyleKeys.X_MAX_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
+      style.setValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
       return;
     }
 
-    final SpacingValue value = (SpacingValue) rawvalue;
-    final long optimum = resolveValue(value.getOptimumSpacing(), 0);
-    final long minimum = resolveValue(value.getMinimumSpacing(), 0);
-    final long maximum = resolveValue(value.getMaximumSpacing(), 0);
-    spacingSpecification.setLetterSpacing
-            (new AbsoluteSpacingValue(optimum, minimum, maximum));
+    final double width = fm.getCharWidth(0x20);
+    final CSSNumericValue percentageBase =
+            new CSSNumericValue(CSSNumericType.PT, width);
+    final CSSNumericValue min = LengthResolverUtility.getLength
+            (resolveValue(style, TextStyleKeys.X_MIN_LETTER_SPACING), percentageBase);
+    final CSSNumericValue max = LengthResolverUtility.getLength
+            (resolveValue(style, TextStyleKeys.X_MAX_LETTER_SPACING), percentageBase);
+    final CSSNumericValue opt = LengthResolverUtility.getLength
+            (resolveValue(style, TextStyleKeys.X_OPTIMUM_LETTER_SPACING), percentageBase);
 
+    style.setValue(TextStyleKeys.X_MIN_LETTER_SPACING, min);
+    style.setValue(TextStyleKeys.X_MAX_LETTER_SPACING, max);
+    style.setValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING, opt);
   }
 
-  private long resolveValue (CSSValue value, final long normalSpace)
+  private CSSNumericValue resolveValue (LayoutStyle style, StyleKey key)
   {
+    final CSSValue value = style.getValue(key);
     if (value instanceof CSSNumericValue == false)
     {
-      return 0;
+      // this also covers the valid 'normal' property.
+      // it simply means, dont add extra space to the already existing spaces
+      return CSSNumericValue.ZERO_LENGTH;
     }
-    CSSNumericValue nval = (CSSNumericValue) value;
-    final double dval = nval.getValue();
-    return (long) (normalSpace * (dval/ 100));
+
+    return (CSSNumericValue) value;
   }
+
 }

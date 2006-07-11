@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderWidthReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.input.style.keys.border.BorderWidth;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.AbstractWidthReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -154,5 +155,15 @@ public class BorderWidthReadHandler extends AbstractWidthReadHandler
     map.put(BorderStyleKeys.BORDER_BOTTOM_WIDTH, bottomWidth);
     map.put(BorderStyleKeys.BORDER_LEFT_WIDTH, leftWidth);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[]{
+            BorderStyleKeys.BORDER_TOP_WIDTH,
+            BorderStyleKeys.BORDER_RIGHT_WIDTH,
+            BorderStyleKeys.BORDER_BOTTOM_WIDTH,
+            BorderStyleKeys.BORDER_LEFT_WIDTH
+    };
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColorStyleKeys.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class ColorStyleKeys
 {
   public static final StyleKey COLOR =
           StyleKeyRegistry.getRegistry().createKey
-          ("color", false, true, false);
+          ("color", false, true, StyleKey.ALWAYS);
 
   /**
    * Not sure whether we can implement this one. It is a post-processing
@@ -61,7 +61,7 @@ public class ColorStyleKeys
    */
   public static final StyleKey OPACITY =
           StyleKeyRegistry.getRegistry().createKey
-          ("opacity", false, false, false);
+          ("opacity", false, false, StyleKey.ALWAYS);
 
   /**
    * For now, we do not care about color profiles. This might have to do with
@@ -70,10 +70,10 @@ public class ColorStyleKeys
    */
   public static final StyleKey COLOR_PROFILE =
           StyleKeyRegistry.getRegistry().createKey
-          ("color-profile", false, true, false);
+          ("color-profile", false, true, StyleKey.ALWAYS);
   public static final StyleKey RENDERING_INTENT =
           StyleKeyRegistry.getRegistry().createKey
-          ("rendering-intent", false, true, false);
+          ("rendering-intent", false, true, StyleKey.ALWAYS);
 
   private ColorStyleKeys() {}
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageableOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@
 package org.jfree.layouting.output.pageable;
 
 import org.jfree.layouting.output.OutputProcessor;
-import org.jfree.layouting.normalizer.pagable.PageGeneratingNormalizer;
-import org.jfree.layouting.normalizer.pagable.PagePreparationNormalizer;
 
 /**
  * Creation-Date: 03.01.2006, 12:28:14
@@ -51,6 +49,4 @@ import org.jfree.layouting.normalizer.pagable.PagePreparationNormalizer;
  */
 public interface PageableOutputProcessor extends OutputProcessor
 {
-  public PageGeneratingNormalizer createGenerateNormalizer();
-  public PagePreparationNormalizer createPrepareNormalizer();
 }

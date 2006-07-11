@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public class LineStyleKeys
    */
   public static final StyleKey TEXT_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
-                  ("text-height", false, true, false);
+                  ("text-height", false, true, StyleKey.DOM_ELEMENTS);
 
   /**
    * Either one of the constants 'normal' or 'none' or a length, percentage or
@@ -66,8 +66,8 @@ public class LineStyleKeys
    */
   public static final StyleKey LINE_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
-                  ("line-height", false, true, false);
-
+                  ("line-height", false, true, StyleKey.All_ELEMENTS);
+  
   /**
    * This property determines the line stacking strategy for stacked line boxes
    * within a containing block element. The term 'stack-height' is used in the
@@ -76,25 +76,25 @@ public class LineStyleKeys
    */
   public static final StyleKey LINE_STACKING_STRATEGY =
           StyleKeyRegistry.getRegistry().createKey
-                  ("line-stacking-strategy",false, true, false);
+                  ("line-stacking-strategy",false, true, StyleKey.All_ELEMENTS);
 
   /**
    * Ruby is not implemented.
    */
   public static final StyleKey LINE_STACKING_RUBY =
           StyleKeyRegistry.getRegistry().createKey
-                  ("line-stacking-ruby",false, true, false);
+                  ("line-stacking-ruby",false, true, StyleKey.All_ELEMENTS);
 
   /**
    * This is a character level computation, we ignore that for now.
    */
   public static final StyleKey LINE_STACKING_SHIFT =
           StyleKeyRegistry.getRegistry().createKey
-                  ("line-stacking-shift",false, true, false);
+                  ("line-stacking-shift",false, true, StyleKey.All_ELEMENTS);
 
   public static final StyleKey BASELINE_SHIFT =
           StyleKeyRegistry.getRegistry().createKey
-                  ("baseline-shift",false, true, false);
+                  ("baseline-shift",false, true, StyleKey.All_ELEMENTS);
 
 
   /**
@@ -104,45 +104,45 @@ public class LineStyleKeys
    */
   public static final StyleKey VERTICAL_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
-                  ("vertical-align",false, true, false);
+                  ("vertical-align",false, true, StyleKey.All_ELEMENTS);
 
   public static final StyleKey INLINE_BOX_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
-                  ("inline-box-align",false, false, false);
+                  ("inline-box-align",false, false, StyleKey.All_ELEMENTS);
 
   /**
    * DominantBaseLine is not implemented.
    */
   public static final StyleKey DOMINANT_BASELINE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("dominant-baseline",false, true, false);
+                  ("dominant-baseline",false, true, StyleKey.All_ELEMENTS);
   public static final StyleKey ALIGNMENT_BASELINE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("alignment-baseline", false, true, false);
+                  ("alignment-baseline", false, true, StyleKey.All_ELEMENTS);
   public static final StyleKey ALIGNMENT_ADJUST =
           StyleKeyRegistry.getRegistry().createKey
-                  ("alignment-adjust",false, true, false);
+                  ("alignment-adjust",false, true, StyleKey.All_ELEMENTS);
 
   public static final StyleKey DROP_INITIAL_AFTER_ADJUST =
           StyleKeyRegistry.getRegistry().createKey
-                  ("drop-initial-after-adjust",false, false, false);
+                  ("drop-initial-after-adjust",false, false, StyleKey.PSEUDO_FIRST_LETTER);
   public static final StyleKey DROP_INITIAL_AFTER_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
-                  ("drop-initial-after-align",false, false, false);
+                  ("drop-initial-after-align",false, false, StyleKey.PSEUDO_FIRST_LETTER);
 
   public static final StyleKey DROP_INITIAL_BEFORE_ADJUST =
           StyleKeyRegistry.getRegistry().createKey
-                  ("drop-initial-before-adjust",false, false, false);
+                  ("drop-initial-before-adjust",false, false, StyleKey.PSEUDO_FIRST_LETTER);
   public static final StyleKey DROP_INITIAL_BEFORE_ALIGN =
           StyleKeyRegistry.getRegistry().createKey
-                  ("drop-initial-before-align",false, false, false);
+                  ("drop-initial-before-align",false, false, StyleKey.PSEUDO_FIRST_LETTER);
 
   public static final StyleKey DROP_INITIAL_SIZE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("drop-initial-size",false, false, false);
+                  ("drop-initial-size",false, false, StyleKey.PSEUDO_FIRST_LETTER);
   public static final StyleKey DROP_INITIAL_VALUE =
           StyleKeyRegistry.getRegistry().createKey
-                  ("drop-initial-value",false, false, false);
+                  ("drop-initial-value",false, false, StyleKey.PSEUDO_FIRST_LETTER);
 
   private LineStyleKeys()
   {

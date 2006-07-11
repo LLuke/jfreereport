@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: KerningMode.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class KerningMode extends CSSConstant
+public class KerningMode
 {
   // none | [pair || contextual]
-  public static final KerningMode NONE = new KerningMode("none");
-  public static final KerningMode PAIR = new KerningMode("pair");
-  public static final KerningMode CONTEXTUAL = new KerningMode("contextual");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant PAIR = new CSSConstant("pair");
+  public static final CSSConstant CONTEXTUAL = new CSSConstant("contextual");
 
-  private KerningMode(final String constant)
+  private KerningMode()
   {
-    super(constant);
   }
 }

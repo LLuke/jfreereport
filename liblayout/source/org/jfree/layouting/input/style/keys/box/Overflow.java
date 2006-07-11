@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Overflow.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class Overflow extends CSSConstant
+public class Overflow
 {
-  public static final Overflow VISIBLE = new Overflow("visible");
-  public static final Overflow HIDDEN = new Overflow("hidden");
-  public static final Overflow SCROLL = new Overflow("scroll");
+  public static final CSSConstant VISIBLE = new CSSConstant("visible");
+  public static final CSSConstant HIDDEN = new CSSConstant("hidden");
+  public static final CSSConstant SCROLL = new CSSConstant("scroll");
 
-  private Overflow(String name)
+  private Overflow()
   {
-    super(name);
   }
 }

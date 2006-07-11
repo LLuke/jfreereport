@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextJustifyTrim.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,15 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextJustifyTrim extends CSSConstant
+public class TextJustifyTrim
 {
   // none | punctuation | punctuation-and-kana
-  public static final TextJustifyTrim NONE = new TextJustifyTrim("none");
-  public static final TextJustifyTrim PUNCTUATION = new TextJustifyTrim("punctuation");
-  public static final TextJustifyTrim PUNCTUATION_AND_KANA = new TextJustifyTrim("punctuation-and-kana");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant PUNCTUATION = new CSSConstant("punctuation");
+  public static final CSSConstant PUNCTUATION_AND_KANA = new CSSConstant("punctuation-and-kana");
 
-  private TextJustifyTrim(final String constant)
+  private TextJustifyTrim()
   {
-    super(constant);
+
   }
 }

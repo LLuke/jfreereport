@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FontSmooth.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class FontSmooth extends CSSConstant
+public class FontSmooth
 {
-  public static final FontSmooth NEVER = new FontSmooth("never");
-  public static final FontSmooth ALWAYS = new FontSmooth("always");
+  public static final CSSConstant NEVER = new CSSConstant("never");
+  public static final CSSConstant ALWAYS = new CSSConstant("always");
 
-  private FontSmooth(final String constant)
+  private FontSmooth()
   {
-    super(constant);
   }
 }

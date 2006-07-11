@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FlowingOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@
 package org.jfree.layouting.output.flowing;
 
 import org.jfree.layouting.output.OutputProcessor;
-import org.jfree.layouting.normalizer.flowing.FlowGenerationNormalizer;
-import org.jfree.layouting.normalizer.flowing.FlowPreparationNormalizer;
 
 /**
  * Creation-Date: 03.01.2006, 12:50:20
@@ -51,6 +49,4 @@ import org.jfree.layouting.normalizer.flowing.FlowPreparationNormalizer;
  */
 public interface FlowingOutputProcessor extends OutputProcessor
 {
-  public FlowGenerationNormalizer createFlowNormalizer();
-  public FlowPreparationNormalizer createPrepareNormalizer();
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Position.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,15 +47,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class Position extends CSSConstant
+public class Position
 {
-  public static final Position ABSOLUTE = new Position("absolute");
-  public static final Position RELATIVE = new Position("relative");
-  public static final Position STATIC = new Position("static");
-  public static final Position FIXED = new Position("fixed");
+  public static final CSSConstant ABSOLUTE = new CSSConstant("absolute");
+  public static final CSSConstant RELATIVE = new CSSConstant("relative");
+  public static final CSSConstant STATIC = new CSSConstant("static");
+  public static final CSSConstant FIXED = new CSSConstant("fixed");
 
-  private Position(final String constant)
+  private Position()
   {
-    super(constant);
   }
 }

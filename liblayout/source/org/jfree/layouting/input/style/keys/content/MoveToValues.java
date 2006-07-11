@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MoveToValues.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class MoveToValues extends CSSConstant
+public class MoveToValues
 {
-  public static final MoveToValues HERE = new MoveToValues("here");
-  public static final MoveToValues NORMAL = new MoveToValues("normal");
+  public static final CSSConstant HERE = new CSSConstant("here");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
 
-  private MoveToValues (final String name)
+  private MoveToValues ()
   {
-    super (name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WordWrap.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class WordWrap extends CSSConstant
+public class WordWrap
 {
-  public static final WordWrap NORMAL = new WordWrap("normal");
-  public static final WordWrap BREAK_WORD = new WordWrap("break-word");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant BREAK_WORD = new CSSConstant("break-word");
 
-  private WordWrap(String name)
+  private WordWrap()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Visibility.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,13 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class Visibility extends CSSConstant
+public class Visibility
 {
-  public static final Visibility VISIBLE = new Visibility("visible");
-  public static final Visibility HIDDEN = new Visibility("hidden");
-  public static final Visibility COLLAPSE = new Visibility("collapse");
+  public static final CSSConstant VISIBLE = new CSSConstant("visible");
+  public static final CSSConstant HIDDEN = new CSSConstant("hidden");
+  public static final CSSConstant COLLAPSE = new CSSConstant("collapse");
 
-  private Visibility(String name)
+  private Visibility()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundRepeat.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,18 +48,17 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BackgroundRepeat  extends CSSConstant
+public class BackgroundRepeat
 {
-  public static final BackgroundRepeat REPEAT = new BackgroundRepeat("repeat");
-  public static final BackgroundRepeat NOREPEAT = new BackgroundRepeat("no-repeat");
-  public static final BackgroundRepeat SPACE = new BackgroundRepeat("space");
+  public static final CSSConstant REPEAT = new CSSConstant("repeat");
+  public static final CSSConstant NOREPEAT = new CSSConstant("no-repeat");
+  public static final CSSConstant SPACE = new CSSConstant("space");
 
   public static final CSSConstant REPEAT_X = new CSSConstant("repeat-y");
   public static final CSSConstant REPEAT_Y = new CSSConstant("repeat-x");
 
-  private BackgroundRepeat(String name)
+  private BackgroundRepeat()
   {
-    super(name);
   }
 
 }

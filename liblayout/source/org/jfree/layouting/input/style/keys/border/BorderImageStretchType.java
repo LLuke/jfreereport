@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderImageStretchType.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BorderImageStretchType extends CSSConstant
+public class BorderImageStretchType 
 {
-  public static final BorderImageStretchType STRETCH =
-          new BorderImageStretchType("stretch");
-  public static final BorderImageStretchType REPEAT =
-          new BorderImageStretchType("repeat");
-  public static final BorderImageStretchType ROUND =
-          new BorderImageStretchType("round");
+  public static final CSSConstant STRETCH =
+          new CSSConstant("stretch");
+  public static final CSSConstant REPEAT =
+          new CSSConstant("repeat");
+  public static final CSSConstant ROUND =
+          new CSSConstant("round");
 
-  private BorderImageStretchType(String name)
+  private BorderImageStretchType()
   {
-    super(name);
   }
 }

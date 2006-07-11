@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSSelectorFactory.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
+ * $Id: CSSSelectorFactory.java,v 1.3 2006/04/23 15:18:17 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.input.style.selectors;
 
 import java.io.Serializable;
 
+import org.jfree.layouting.input.style.parser.CSSParserContext;
 import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.CharacterDataSelector;
 import org.w3c.css.sac.Condition;
@@ -132,7 +133,13 @@ public class CSSSelectorFactory implements SelectorFactory, Serializable
                                                String tagName)
           throws CSSException
   {
-    return new CSSElementSelector(Selector.SAC_ELEMENT_NODE_SELECTOR, namespaceURI, tagName);
+    if (namespaceURI == null)
+    {
+      namespaceURI = CSSParserContext.getContext().getDefaultNamespace();
+    }
+
+    return new CSSElementSelector
+            (Selector.SAC_ELEMENT_NODE_SELECTOR, namespaceURI, tagName);
   }
 
   /**
@@ -176,7 +183,7 @@ public class CSSSelectorFactory implements SelectorFactory, Serializable
           String data) throws CSSException
   {
     throw new CSSException
-          ("LibLayout does not support ProcessingInstructions.");
+            ("LibLayout does not support ProcessingInstructions.");
   }
 
   /**
@@ -205,6 +212,10 @@ public class CSSSelectorFactory implements SelectorFactory, Serializable
                                                      String pseudoName)
           throws CSSException
   {
+    if (namespaceURI == null)
+    {
+      namespaceURI = CSSParserContext.getContext().getDefaultNamespace();
+    }
     return new CSSElementSelector
             (Selector.SAC_PSEUDO_ELEMENT_SELECTOR, namespaceURI, pseudoName);
   }

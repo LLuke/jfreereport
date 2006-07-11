@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderRadiusReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -110,5 +110,15 @@ public class BorderRadiusReadHandler implements CSSValueReadHandler, CSSCompound
     map.put(BorderStyleKeys.BORDER_BOTTOM_LEFT_RADIUS, value);
     map.put(BorderStyleKeys.BORDER_TOP_LEFT_RADIUS, value);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+        BorderStyleKeys.BORDER_TOP_RIGHT_RADIUS,
+        BorderStyleKeys.BORDER_BOTTOM_RIGHT_RADIUS,
+        BorderStyleKeys.BORDER_BOTTOM_LEFT_RADIUS,
+        BorderStyleKeys.BORDER_TOP_LEFT_RADIUS
+    };
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: HyperlinkStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -52,13 +52,13 @@ public class HyperlinkStyleKeys
 {
   public static final StyleKey TARGET_NAME =
           StyleKeyRegistry.getRegistry().createKey
-                  ("target-name", false, false, false);
+                  ("target-name", false, false, StyleKey.All_ELEMENTS);
   public static final StyleKey TARGET_NEW =
           StyleKeyRegistry.getRegistry().createKey
-                  ("target-new", false, false, false);
+                  ("target-new", false, false, StyleKey.All_ELEMENTS);
   public static final StyleKey TARGET_POSITION =
           StyleKeyRegistry.getRegistry().createKey
-                  ("target-position", false, false, false);
+                  ("target-position", false, false, StyleKey.All_ELEMENTS);
 
   /**
    * todo: implement me
@@ -69,7 +69,7 @@ public class HyperlinkStyleKeys
    */
   public static final StyleKey HREF_TARGET =
           StyleKeyRegistry.getRegistry().createKey
-                  ("-x-liblayout-href-target", true, false, false);
+                  ("-x-liblayout-href-target", true, false, StyleKey.All_ELEMENTS);
   /**
    * todo: implement me
    * This is a libLayout extension to allow a document independent
@@ -79,7 +79,7 @@ public class HyperlinkStyleKeys
    */
   public static final StyleKey ANCHOR =
           StyleKeyRegistry.getRegistry().createKey
-                  ("-x-liblayout-href-anchor", true, false, false);
+                  ("-x-liblayout-href-anchor", true, false, StyleKey.All_ELEMENTS);
 
   private HyperlinkStyleKeys()
   {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ClearAfterReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.box;
 
-import org.jfree.layouting.input.style.keys.box.ClearAfter;
+import org.jfree.layouting.input.style.keys.box.Clear;
 import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 
 /**
@@ -53,15 +53,15 @@ public class ClearAfterReadHandler extends OneOfConstantsReadHandler
   public ClearAfterReadHandler()
   {
     super(false);
-    addValue(ClearAfter.BOTH);
-    addValue(ClearAfter.BOTTOM);
-    addValue(ClearAfter.END);
-    addValue(ClearAfter.INSIDE);
-    addValue(ClearAfter.LEFT);
-    addValue(ClearAfter.NONE);
-    addValue(ClearAfter.OUTSIDE);
-    addValue(ClearAfter.RIGHT);
-    addValue(ClearAfter.START);
-    addValue(ClearAfter.TOP);
+    addValue(Clear.BOTH);
+    addValue(Clear.BOTTOM);
+    addValue(Clear.END);
+    addValue(Clear.INSIDE);
+    addValue(Clear.LEFT);
+    addValue(Clear.NONE);
+    addValue(Clear.OUTSIDE);
+    addValue(Clear.RIGHT);
+    addValue(Clear.START);
+    addValue(Clear.TOP);
   }
 }

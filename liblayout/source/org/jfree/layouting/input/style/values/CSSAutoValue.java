@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSAutoValue.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ package org.jfree.layouting.input.style.values;
  *
  * @author Thomas Morgner
  */
-public final class CSSAutoValue extends CSSConstant
+public final class CSSAutoValue implements CSSValue
 {
   private static CSSAutoValue instance;
 
@@ -62,6 +62,10 @@ public final class CSSAutoValue extends CSSConstant
 
   private CSSAutoValue()
   {
-    super ("auto");
+  }
+
+  public String getCSSText()
+  {
+    return "auto";
   }
 }

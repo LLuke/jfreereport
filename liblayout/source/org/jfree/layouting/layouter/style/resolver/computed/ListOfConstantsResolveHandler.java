@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListOfConstantsResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.util.Log;
 
@@ -63,11 +63,11 @@ public abstract class ListOfConstantsResolveHandler extends ConstantsResolveHand
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(final LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
@@ -103,7 +103,7 @@ public abstract class ListOfConstantsResolveHandler extends ConstantsResolveHand
   }
 
   protected void resolveInvalidItem (final LayoutProcess process,
-                                     LayoutNode currentNode,
+                                     LayoutElement currentNode,
                                      LayoutStyle style,
                                      StyleKey key,
                                      int index)
@@ -112,7 +112,7 @@ public abstract class ListOfConstantsResolveHandler extends ConstantsResolveHand
   }
 
   protected abstract boolean resolveItem(final LayoutProcess process,
-                                         LayoutNode currentNode,
+                                         LayoutElement currentNode,
                                          LayoutStyle style,
                                          StyleKey key,
                                          int index,

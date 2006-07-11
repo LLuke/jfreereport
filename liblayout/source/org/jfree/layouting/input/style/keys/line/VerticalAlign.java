@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: VerticalAlign.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,32 +47,31 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class VerticalAlign extends CSSConstant
+public class VerticalAlign
 {
-  public static final VerticalAlign USE_SCRIPT =
-          new VerticalAlign("use-script");
-  public static final VerticalAlign BASELINE =
-          new VerticalAlign("baseline");
-  public static final VerticalAlign SUB =
-          new VerticalAlign("sub");
-  public static final VerticalAlign SUPER =
-          new VerticalAlign("super");
+  public static final CSSConstant USE_SCRIPT =
+          new CSSConstant("use-script");
+  public static final CSSConstant BASELINE =
+          new CSSConstant("baseline");
+  public static final CSSConstant SUB =
+          new CSSConstant("sub");
+  public static final CSSConstant SUPER =
+          new CSSConstant("super");
 
-  public static final VerticalAlign TOP =
-          new VerticalAlign("top");
-  public static final VerticalAlign TEXT_TOP =
-          new VerticalAlign("text-top");
-  public static final VerticalAlign CENTRAL =
-          new VerticalAlign("central");
-  public static final VerticalAlign MIDDLE =
-          new VerticalAlign("middle");
-  public static final VerticalAlign BOTTOM =
-          new VerticalAlign("bottom");
-  public static final VerticalAlign TEXT_BOTTOM =
-          new VerticalAlign("text-bottom");
+  public static final CSSConstant TOP =
+          new CSSConstant("top");
+  public static final CSSConstant TEXT_TOP =
+          new CSSConstant("text-top");
+  public static final CSSConstant CENTRAL =
+          new CSSConstant("central");
+  public static final CSSConstant MIDDLE =
+          new CSSConstant("middle");
+  public static final CSSConstant BOTTOM =
+          new CSSConstant("bottom");
+  public static final CSSConstant TEXT_BOTTOM =
+          new CSSConstant("text-bottom");
 
-  private VerticalAlign (String name)
+  private VerticalAlign ()
   {
-    super(name);
   }
 }

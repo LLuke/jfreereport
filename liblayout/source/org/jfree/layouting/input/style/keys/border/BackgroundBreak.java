@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundBreak.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,17 +48,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BackgroundBreak extends CSSConstant
+public class BackgroundBreak
 {
-  public static final BackgroundBreak BOUNDING_BOX = new BackgroundBreak(
+  public static final CSSConstant BOUNDING_BOX = new CSSConstant(
           "bounding-box");
-  public static final BackgroundBreak EACH_BOX = new BackgroundBreak(
+  public static final CSSConstant EACH_BOX = new CSSConstant(
           "each-box");
-  public static final BackgroundBreak CONTINUOUS = new BackgroundBreak(
+  public static final CSSConstant CONTINUOUS = new CSSConstant(
           "continuous");
 
-  private BackgroundBreak(String name)
+  private BackgroundBreak()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultFlowPreparationLayoutProcess.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting;
 
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.normalizer.Normalizer;
 import org.jfree.layouting.output.flowing.FlowingOutputProcessor;
 
 /**
@@ -53,12 +52,9 @@ import org.jfree.layouting.output.flowing.FlowingOutputProcessor;
 public class DefaultFlowPreparationLayoutProcess extends AbstractLayoutProcess
         implements FlowPreparationLayoutProcess
 {
-  private FlowingOutputProcessor outputProcessor;
-
   public DefaultFlowPreparationLayoutProcess(FlowingOutputProcessor outputProcessor)
   {
     super(outputProcessor);
-    this.outputProcessor = outputProcessor;
   }
 
   protected InputFeed createInputFeed()
@@ -66,8 +62,8 @@ public class DefaultFlowPreparationLayoutProcess extends AbstractLayoutProcess
     return new DefaultInputFeed(this);
   }
 
-  public Normalizer getNormalizer()
+  protected AbstractLayoutProcessState createState()
   {
-    return outputProcessor.createPrepareNormalizer();
+    return null;
   }
 }

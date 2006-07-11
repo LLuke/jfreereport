@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColumnSpaceDistribution.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,22 +47,21 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class ColumnSpaceDistribution extends CSSConstant
+public class ColumnSpaceDistribution
 {
   // [start || end || inner || outer || between] | inherit
-  public static final ColumnSpaceDistribution START =
-          new ColumnSpaceDistribution("start");
-  public static final ColumnSpaceDistribution END =
-          new ColumnSpaceDistribution("end");
-  public static final ColumnSpaceDistribution INNER =
-          new ColumnSpaceDistribution("inner");
-  public static final ColumnSpaceDistribution OUTER =
-          new ColumnSpaceDistribution("outer");
-  public static final ColumnSpaceDistribution BETWEEN =
-          new ColumnSpaceDistribution("between");
+  public static final CSSConstant START =
+          new CSSConstant("start");
+  public static final CSSConstant END =
+          new CSSConstant("end");
+  public static final CSSConstant INNER =
+          new CSSConstant("inner");
+  public static final CSSConstant OUTER =
+          new CSSConstant("outer");
+  public static final CSSConstant BETWEEN =
+          new CSSConstant("between");
 
-  private ColumnSpaceDistribution(final String constant)
+  private ColumnSpaceDistribution()
   {
-    super(constant);
   }
 }

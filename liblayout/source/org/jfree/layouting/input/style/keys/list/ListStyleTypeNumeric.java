@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleTypeNumeric.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,59 +47,58 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class ListStyleTypeNumeric extends CSSConstant
+public class ListStyleTypeNumeric
 {
-  public static final ListStyleTypeNumeric ARABIC_INDIC =
-          new ListStyleTypeNumeric("arabic-indic");
-  public static final ListStyleTypeNumeric BINARY =
-          new ListStyleTypeNumeric("binary");
-  public static final ListStyleTypeNumeric BENGALI =
-          new ListStyleTypeNumeric("bengali");
-  public static final ListStyleTypeNumeric CAMBODIAN =
-          new ListStyleTypeNumeric("cambodian");
-  public static final ListStyleTypeNumeric DECIMAL =
-          new ListStyleTypeNumeric("decimal");
-  public static final ListStyleTypeNumeric DECIMAL_LEADING_ZERO =
-          new ListStyleTypeNumeric("decimal-leading-zero");
-  public static final ListStyleTypeNumeric DEVANAGARI =
-          new ListStyleTypeNumeric("devanagari");
-  public static final ListStyleTypeNumeric GUJARATI =
-          new ListStyleTypeNumeric("gujarati");
-  public static final ListStyleTypeNumeric GURMUKHI =
-          new ListStyleTypeNumeric("gurmukhi");
-  public static final ListStyleTypeNumeric KANNADA =
-          new ListStyleTypeNumeric("kannada");
-  public static final ListStyleTypeNumeric KHMER =
-          new ListStyleTypeNumeric("khmer");
-  public static final ListStyleTypeNumeric LAO =
-          new ListStyleTypeNumeric("lao");
-  public static final ListStyleTypeNumeric LOWER_HEXADECIMAL =
-          new ListStyleTypeNumeric("lower-hexadecimal");
-  public static final ListStyleTypeNumeric MALAYALAM =
-          new ListStyleTypeNumeric("malayalam");
-  public static final ListStyleTypeNumeric MONGOLIAN =
-          new ListStyleTypeNumeric("mongolian");
-  public static final ListStyleTypeNumeric MYANMAR =
-          new ListStyleTypeNumeric("myanmar");
-  public static final ListStyleTypeNumeric OCTAL =
-          new ListStyleTypeNumeric("octal");
-  public static final ListStyleTypeNumeric ORIYA =
-          new ListStyleTypeNumeric("oriya");
-  public static final ListStyleTypeNumeric PERSIAN =
-          new ListStyleTypeNumeric("persian");
-  public static final ListStyleTypeNumeric TELUGU =
-          new ListStyleTypeNumeric("telugu");
-  public static final ListStyleTypeNumeric TIBETIAN =
-          new ListStyleTypeNumeric("tibetian");
-  public static final ListStyleTypeNumeric THAI =
-          new ListStyleTypeNumeric("thai");
-  public static final ListStyleTypeNumeric UPPER_HEXADECIMAL =
-          new ListStyleTypeNumeric("upper-hexadecimal");
-  public static final ListStyleTypeNumeric URDU =
-          new ListStyleTypeNumeric("urdu");
+  public static final CSSConstant ARABIC_INDIC =
+          new CSSConstant("arabic-indic");
+  public static final CSSConstant BINARY =
+          new CSSConstant("binary");
+  public static final CSSConstant BENGALI =
+          new CSSConstant("bengali");
+  public static final CSSConstant CAMBODIAN =
+          new CSSConstant("cambodian");
+  public static final CSSConstant DECIMAL =
+          new CSSConstant("decimal");
+  public static final CSSConstant DECIMAL_LEADING_ZERO =
+          new CSSConstant("decimal-leading-zero");
+  public static final CSSConstant DEVANAGARI =
+          new CSSConstant("devanagari");
+  public static final CSSConstant GUJARATI =
+          new CSSConstant("gujarati");
+  public static final CSSConstant GURMUKHI =
+          new CSSConstant("gurmukhi");
+  public static final CSSConstant KANNADA =
+          new CSSConstant("kannada");
+  public static final CSSConstant KHMER =
+          new CSSConstant("khmer");
+  public static final CSSConstant LAO =
+          new CSSConstant("lao");
+  public static final CSSConstant LOWER_HEXADECIMAL =
+          new CSSConstant("lower-hexadecimal");
+  public static final CSSConstant MALAYALAM =
+          new CSSConstant("malayalam");
+  public static final CSSConstant MONGOLIAN =
+          new CSSConstant("mongolian");
+  public static final CSSConstant MYANMAR =
+          new CSSConstant("myanmar");
+  public static final CSSConstant OCTAL =
+          new CSSConstant("octal");
+  public static final CSSConstant ORIYA =
+          new CSSConstant("oriya");
+  public static final CSSConstant PERSIAN =
+          new CSSConstant("persian");
+  public static final CSSConstant TELUGU =
+          new CSSConstant("telugu");
+  public static final CSSConstant TIBETIAN =
+          new CSSConstant("tibetian");
+  public static final CSSConstant THAI =
+          new CSSConstant("thai");
+  public static final CSSConstant UPPER_HEXADECIMAL =
+          new CSSConstant("upper-hexadecimal");
+  public static final CSSConstant URDU =
+          new CSSConstant("urdu");
 
-  private ListStyleTypeNumeric(String name)
+  private ListStyleTypeNumeric()
   {
-    super(name);
   }
 }

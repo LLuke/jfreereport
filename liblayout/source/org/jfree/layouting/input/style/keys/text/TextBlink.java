@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextBlink.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextBlink extends CSSConstant
+public class TextBlink
 {
-  public static final TextBlink NONE = new TextBlink("none");
-  public static final TextBlink BLINK = new TextBlink("blink");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant BLINK = new CSSConstant("blink");
 
-  private TextBlink(final String constant)
+  private TextBlink()
   {
-    super(constant);
   }
 }

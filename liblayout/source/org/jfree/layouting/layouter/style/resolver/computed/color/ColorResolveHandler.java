@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColorResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,18 +40,21 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.color;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.color.CSSSystemColors;
 import org.jfree.layouting.input.style.keys.color.ColorStyleKeys;
 import org.jfree.layouting.input.style.keys.color.HtmlColors;
-import org.jfree.layouting.input.style.parser.stylehandler.color.ColorReadHandler;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSColorValue;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
+import org.jfree.layouting.layouter.style.functions.FunctionFactory;
+import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.util.ColorUtil;
 
 /**
@@ -79,52 +82,88 @@ public class ColorResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
     CSSValue value = style.getValue(key);
+
     if (value instanceof CSSColorValue)
     {
       return;
     }
 
-    if (value instanceof CSSConstant)
+
+    // it might as well be a RGB- or HSL- function.
+    if (value instanceof CSSFunctionValue)
     {
-      if (CSSSystemColors.CURRENT_COLOR.equals(value))
+      CSSFunctionValue functionValue = (CSSFunctionValue) value;
+      StyleValueFunction function =
+              FunctionFactory.getInstance().getStyleFunction
+                      (functionValue.getFunctionName());
+      if (function == null)
       {
-        if (key.equals(ColorStyleKeys.COLOR))
-        {
-          LayoutNode parent = currentNode.getParent();
-          if (parent == null)
-          {
-            style.setValue(key, HtmlColors.BLACK);
-          }
-          else
-          {
-            style.setValue(key, parent.getStyle().getValue(ColorStyleKeys.COLOR));
-          }
-        }
-        else
-        {
-          style.setValue(key, style.getValue(ColorStyleKeys.COLOR));
-        }
-        return;
+        value = HtmlColors.BLACK;
       }
-      CSSValue c = ColorUtil.parseIdentColor(value.getCSSText());
-      if (c != null)
+      else
       {
-        style.setValue(key, c);
-        return;
+        try
+        {
+          value = function.evaluate(process, currentNode, functionValue);
+        }
+        catch (FunctionEvaluationException e)
+        {
+          value = HtmlColors.BLACK;
+        }
+      }
+
+      if (value instanceof CSSColorValue)
+      {
+        style.setValue(key, value);
       }
     }
 
-    style.setValue(key, HtmlColors.BLACK);
+
+    if (value instanceof CSSConstant == false)
+    {
+      style.setValue(key, HtmlColors.BLACK);
+      return;
+    }
+    if (CSSSystemColors.CURRENT_COLOR.equals(value))
+    {
+      style.setValue(key, getCurrentColor(currentNode, style));
+      return;
+    }
+
+    CSSValue c = ColorUtil.parseIdentColor(value.getCSSText());
+    if (c != null)
+    {
+      style.setValue(key, c);
+    }
+    else
+    {
+      style.setValue(key, HtmlColors.BLACK);
+    }
   }
 
+  protected CSSColorValue getCurrentColor (LayoutElement currentNode,
+                                           LayoutStyle style)
+  {
+    LayoutElement parent = currentNode.getParent();
+    if (parent != null)
+    {
+      final LayoutStyle pstyle = parent.getLayoutContext().getStyle();
+      CSSValue value = pstyle.getValue(ColorStyleKeys.COLOR);
+      if (value instanceof CSSColorValue)
+      {
+        return (CSSColorValue) value;
+      }
+    }
+    return (HtmlColors.BLACK);
+  }
 
 }

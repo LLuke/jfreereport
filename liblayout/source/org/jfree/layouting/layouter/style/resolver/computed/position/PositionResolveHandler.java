@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PositionResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,16 +41,17 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.position;
 
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayModel;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.box.Floating;
 import org.jfree.layouting.input.style.keys.positioning.Position;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutContext;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.box.BoxSpecification;
+import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
@@ -82,38 +83,39 @@ public class PositionResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve (final LayoutProcess process,
-                       final LayoutNode currentNode,
+                       final LayoutElement currentNode,
                        final LayoutStyle style,
                        final StyleKey key)
   {
-    final LayoutContext layoutContext = currentNode.getLayoutContext();
-    final BoxSpecification boxSpecs = layoutContext.getBoxSpecification();
-    if (DisplayRole.NONE.equals(boxSpecs.getDisplayModel()))
+    CSSValue displayModel = style.getValue(BoxStyleKeys.DISPLAY_MODEL);
+    if (DisplayRole.NONE.equals(displayModel))
     {
       // skip ... the element will not be displayed ...
-      layoutContext.getPositionSpecification().setPosition(Position.STATIC);
+      style.setValue(PositioningStyleKeys.POSITION, Position.STATIC);
       return;
     }
 
-    if (Floating.NONE.equals(boxSpecs.getFloating()))
+    CSSValue floating = style.getValue(BoxStyleKeys.FLOAT);
+    if (Floating.NONE.equals(floating))
     {
-      layoutContext.getPositionSpecification().setPosition(Position.STATIC);
+      style.setValue(PositioningStyleKeys.POSITION, Position.STATIC);
       return;
     }
 
-    final Position value = (Position) resolveValue(process, currentNode, style, key);
-    layoutContext.getPositionSpecification().setPosition(value);
+    final CSSConstant value = (CSSConstant) resolveValue(process, currentNode, style, key);
+    style.setValue(PositioningStyleKeys.POSITION, value);
     if (Position.ABSOLUTE.equals(value) ||
         Position.FIXED.equals(value))
     {
       // http://www.w3.org/TR/REC-CSS2/visuren.html#propdef-float
-      // this is specified in 9.7: Relationships between 'display', 'position', and 'float'
-      boxSpecs.setDisplayModel(DisplayModel.BLOCK_INSIDE);
-      boxSpecs.setDisplayRole(DisplayRole.BLOCK);
+      // this is specified in 9.7: Relationships between 'display',
+      // 'position', and 'float'
+      style.setValue(BoxStyleKeys.DISPLAY_MODEL, DisplayModel.BLOCK_INSIDE);
+      style.setValue(BoxStyleKeys.DISPLAY_ROLE, DisplayRole.BLOCK);
     }
   }
 }

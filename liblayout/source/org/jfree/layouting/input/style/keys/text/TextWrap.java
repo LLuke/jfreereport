@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextWrap.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -48,15 +48,14 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class TextWrap extends CSSConstant
+public class TextWrap
 {
-  public static final TextWrap NORMAL = new TextWrap("normal");
-  public static final TextWrap UNRESTRICTED = new TextWrap("unrestricted");
-  public static final TextWrap NONE = new TextWrap("none");
-  public static final TextWrap SUPPRESS = new TextWrap("suppress");
+  public static final CSSConstant NORMAL = new CSSConstant("normal");
+  public static final CSSConstant UNRESTRICTED = new CSSConstant("unrestricted");
+  public static final CSSConstant NONE = new CSSConstant("none");
+  public static final CSSConstant SUPPRESS = new CSSConstant("suppress");
 
-  private TextWrap(String name)
+  private TextWrap()
   {
-    super(name);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: QuotesResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -48,9 +48,9 @@ import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutContext;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.content.QuotesPair;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.QuotesPair;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
@@ -75,10 +75,10 @@ public class QuotesResolveHandler extends ConstantsResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
-  public void resolve (final LayoutProcess process, LayoutNode currentNode,
+  public void resolve (final LayoutProcess process, LayoutElement currentNode,
                        LayoutStyle style, StyleKey key)
   {
     CSSValue rawValue = style.getValue(key);

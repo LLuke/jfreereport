@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ConstantsResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
@@ -106,16 +106,16 @@ public abstract class ConstantsResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(final LayoutProcess process,
-                      LayoutNode currentNode,
-                      LayoutStyle style,
-                      StyleKey key)
+                      final LayoutElement currentNode,
+                      final LayoutStyle style,
+                      final StyleKey key)
   {
 
-    CSSValue value = resolveValue(process, currentNode, style, key);
+    final CSSValue value = resolveValue(process, currentNode, style, key);
     if (value != null)
     {
       style.setValue(key, value);
@@ -123,11 +123,11 @@ public abstract class ConstantsResolveHandler implements ResolveHandler
   }
 
   protected CSSValue resolveValue (final LayoutProcess process,
-                                   final LayoutNode currentNode,
+                                   final LayoutElement currentNode,
                                    final LayoutStyle style,
                                    final StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final CSSValue value = style.getValue(key);
     if (value instanceof CSSConstant == false)
     {
       final CSSValue fallback = getFallback();

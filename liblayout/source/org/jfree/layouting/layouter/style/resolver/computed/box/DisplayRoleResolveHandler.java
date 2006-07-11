@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayRoleResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,7 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.box;
 
-import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class DisplayRoleResolveHandler extends ConstantsResolveHandler
@@ -74,18 +70,4 @@ public class DisplayRoleResolveHandler extends ConstantsResolveHandler
     setFallback(DisplayRole.INLINE);
   }
 
-  /**
-   * Resolves a single property.
-   *
-   * @param style
-   * @param currentNode
-   */
-  public void resolve (final LayoutProcess process, LayoutNode currentNode,
-                       LayoutStyle style, StyleKey key)
-  {
-    final DisplayRole role = (DisplayRole) resolveValue(process, currentNode, style, key);
-    style.setValue(key, role);
-    
-    currentNode.getLayoutContext().getBoxSpecification().setDisplayRole(role);
-  }
 }

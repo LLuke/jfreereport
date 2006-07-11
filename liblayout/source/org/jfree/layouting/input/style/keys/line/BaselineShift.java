@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BaselineShift.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,16 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class BaselineShift extends CSSConstant
+public class BaselineShift
 {
-  public static final BaselineShift BASELINE =
-          new BaselineShift("baseline");
-  public static final BaselineShift SUB =
-          new BaselineShift("sub");
-  public static final BaselineShift SUPER =
-          new BaselineShift("super");
+  public static final CSSConstant BASELINE =
+          new CSSConstant("baseline");
+  public static final CSSConstant SUB =
+          new CSSConstant("sub");
+  public static final CSSConstant SUPER =
+          new CSSConstant("super");
 
-  private BaselineShift(String name)
+  private BaselineShift()
   {
-    super(name);
   }
 }

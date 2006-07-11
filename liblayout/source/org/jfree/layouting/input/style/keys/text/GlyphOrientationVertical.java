@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GlyphOrientationVertical.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class GlyphOrientationVertical extends CSSConstant
+public class GlyphOrientationVertical
 {
-  public static final GlyphOrientationVertical UPRIGHT = new GlyphOrientationVertical("upright");
-  public static final GlyphOrientationVertical INLINE = new GlyphOrientationVertical("inline");
+  public static final CSSConstant UPRIGHT = new CSSConstant("upright");
+  public static final CSSConstant INLINE = new CSSConstant("inline");
 
-  private GlyphOrientationVertical(final String constant)
+  private GlyphOrientationVertical()
   {
-    super(constant);
   }
 }

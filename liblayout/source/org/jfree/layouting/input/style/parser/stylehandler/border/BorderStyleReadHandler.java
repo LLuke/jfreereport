@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderStyleReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import org.jfree.layouting.input.style.keys.border.BorderStyle;
 import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -84,7 +86,7 @@ public class BorderStyleReadHandler extends OneOfConstantsReadHandler
    */
   public Map createValues(LexicalUnit unit)
   {
-    final BorderStyle topStyle = (BorderStyle) lookupValue(unit);
+    final CSSConstant topStyle = (CSSConstant) lookupValue(unit);
     if (topStyle == null)
     {
       return null;
@@ -92,14 +94,14 @@ public class BorderStyleReadHandler extends OneOfConstantsReadHandler
 
     unit = unit.getNextLexicalUnit();
 
-    final BorderStyle rightStyle;
+    final CSSConstant rightStyle;
     if (unit == null)
     {
       rightStyle = topStyle;
     }
     else
     {
-      rightStyle = (BorderStyle) lookupValue(unit);
+      rightStyle = (CSSConstant) lookupValue(unit);
       if (rightStyle == null)
       {
         return null;
@@ -107,14 +109,14 @@ public class BorderStyleReadHandler extends OneOfConstantsReadHandler
       unit = unit.getNextLexicalUnit();
     }
 
-    final BorderStyle bottomStyle;
+    final CSSConstant bottomStyle;
     if (unit == null)
     {
       bottomStyle = topStyle;
     }
     else
     {
-      bottomStyle = (BorderStyle) lookupValue(unit);
+      bottomStyle = (CSSConstant) lookupValue(unit);
       if (bottomStyle == null)
       {
         return null;
@@ -122,14 +124,14 @@ public class BorderStyleReadHandler extends OneOfConstantsReadHandler
       unit = unit.getNextLexicalUnit();
     }
 
-    final BorderStyle leftStyle;
+    final CSSConstant leftStyle;
     if (unit == null)
     {
       leftStyle = rightStyle;
     }
     else
     {
-      leftStyle = (BorderStyle) lookupValue(unit);
+      leftStyle = (CSSConstant) lookupValue(unit);
       if (leftStyle == null)
       {
         return null;
@@ -142,5 +144,15 @@ public class BorderStyleReadHandler extends OneOfConstantsReadHandler
     map.put(BorderStyleKeys.BORDER_BOTTOM_STYLE, bottomStyle);
     map.put(BorderStyleKeys.BORDER_LEFT_STYLE, leftStyle);
     return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+            BorderStyleKeys.BORDER_TOP_STYLE,
+            BorderStyleKeys.BORDER_RIGHT_STYLE,
+            BorderStyleKeys.BORDER_BOTTOM_STYLE,
+            BorderStyleKeys.BORDER_LEFT_STYLE
+    };
   }
 }

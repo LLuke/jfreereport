@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultInputFeed.java,v 1.1 2006/04/17 21:01:49 taqua Exp $
+ * $Id: DefaultInputFeed.java,v 1.2 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -44,17 +44,18 @@ import java.io.IOException;
 import java.util.Stack;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.ContextId;
-import org.jfree.layouting.model.DefaultDocumentMetaNode;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.model.DocumentMetaNode;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.LayoutTextNode;
+import org.jfree.layouting.State;
+import org.jfree.layouting.StateException;
+import org.jfree.layouting.StatefullComponent;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.layouter.context.DefaultDocumentMetaNode;
+import org.jfree.layouting.layouter.context.DocumentContext;
+import org.jfree.layouting.layouter.context.DocumentMetaNode;
 import org.jfree.layouting.namespace.NamespaceCollection;
-import org.jfree.layouting.namespace.Namespaces;
-import org.jfree.layouting.normalizer.ContentNormalizer;
-import org.jfree.layouting.normalizer.NormalizationException;
-import org.jfree.layouting.normalizer.Normalizer;
+import org.jfree.layouting.util.AttributeMap;
 
 /**
  * Creation-Date: 05.12.2005, 18:19:03
@@ -81,26 +82,155 @@ public class DefaultInputFeed implements InputFeed
           "ELEMENT_CONTENT", "DOCUMENT_FINISHED"
   };
 
-  private boolean initialized;
-  private int state;
-  private boolean [][] validStateTransitions;
-  private LayoutElement document;
-  private Stack elements;
-  private Object savePointData;
-  private LayoutElement currentElement;
-  private LayoutProcess process;
-  private InputFeedState savePoint;
-  private DocumentMetaNode metaNode;
-  private DocumentContext documentContext;
-  private Normalizer normalizer;
-
-  public DefaultInputFeed (final LayoutProcess process)
+  private static class DefaultInputFeedState implements State
   {
-    this.process = process;
-    this.documentContext = process.getDocumentContext();
-    this.elements = new Stack();
-    this.normalizer = new ContentNormalizer(process);
+    private boolean initialized;
+    private int state;
+    private Stack elements;
+    private DocumentMetaNode metaNode;
+    private State normalizerState;
+    private boolean pagebreakEncountered;
+    private int treeDepth;
+    private AttributeMap currentAttributes;
+    private String namespace;
+    private String tagName;
 
+    public DefaultInputFeedState()
+    {
+    }
+
+    public int getTreeDepth()
+    {
+      return treeDepth;
+    }
+
+    public void setTreeDepth(final int treeDepth)
+    {
+      this.treeDepth = treeDepth;
+    }
+
+    public AttributeMap getCurrentAttributes()
+    {
+      return currentAttributes;
+    }
+
+    public void setCurrentAttributes(final AttributeMap currentAttributes)
+    {
+      this.currentAttributes = currentAttributes;
+    }
+
+    public String getNamespace()
+    {
+      return namespace;
+    }
+
+    public void setNamespace(final String namespace)
+    {
+      this.namespace = namespace;
+    }
+
+    public String getTagName()
+    {
+      return tagName;
+    }
+
+    public void setTagName(final String tagName)
+    {
+      this.tagName = tagName;
+    }
+
+    public boolean isPagebreakEncountered()
+    {
+      return pagebreakEncountered;
+    }
+
+    public void setPagebreakEncountered(final boolean pagebreakEncountered)
+    {
+      this.pagebreakEncountered = pagebreakEncountered;
+    }
+
+    public boolean isInitialized()
+    {
+      return initialized;
+    }
+
+    public void setInitialized(final boolean initialized)
+    {
+      this.initialized = initialized;
+    }
+
+    public int getState()
+    {
+      return state;
+    }
+
+    public void setState(final int state)
+    {
+      this.state = state;
+    }
+
+    public Stack getElements()
+    {
+      return elements;
+    }
+
+    public void setElements(final Stack elements)
+    {
+      this.elements = elements;
+    }
+
+    public DocumentMetaNode getMetaNode()
+    {
+      return metaNode;
+    }
+
+    public void setMetaNode(final DocumentMetaNode metaNode)
+    {
+      this.metaNode = metaNode;
+    }
+
+    public State getNormalizerState()
+    {
+      return normalizerState;
+    }
+
+    public void setNormalizerState(final State normalizerState)
+    {
+      this.normalizerState = normalizerState;
+    }
+
+    /**
+     * Creates a restored instance of the saved component.
+     * <p/>
+     * By using this factory-like approach, we gain independence from having to
+     * know the actual implementation. This makes things a lot easier.
+     *
+     * @param layoutProcess the layout process that controls it all
+     * @return the saved state
+     * @throws StateException
+     */
+    public StatefullComponent restore(LayoutProcess layoutProcess)
+            throws StateException
+    {
+      DefaultInputFeed inputFeed = new DefaultInputFeed(layoutProcess, false);
+      inputFeed.initialized = initialized;
+      inputFeed.state = state;
+      inputFeed.metaNode = metaNode;
+      inputFeed.normalizer =
+              (Normalizer) normalizerState.restore(layoutProcess);
+      inputFeed.pagebreakEncountered = pagebreakEncountered;
+      inputFeed.treeDepth = treeDepth;
+      inputFeed.currentAttributes = currentAttributes;
+      inputFeed.namespace = namespace;
+      inputFeed.tagName = tagName;
+      return inputFeed;
+    }
+  }
+
+  private static boolean [][] validStateTransitions;
+
+  static
+  {
     validStateTransitions = new boolean[10][];
     // after startDocument we expect metadata...
     validStateTransitions[DOCUMENT_STARTING] = new boolean[]{
@@ -148,30 +278,60 @@ public class DefaultInputFeed implements InputFeed
             false, false, false, false, false,
             false, false, false, false, false
     };
-
-    state = DOCUMENT_STARTING;
   }
 
-  public DefaultInputFeed (final LayoutProcess process, final InputFeedState state)
+  private boolean initialized;
+  private int state;
+//  private Stack elements;
+  private LayoutProcess process;
+  private DocumentMetaNode metaNode;
+  private DocumentContext documentContext;
+  private Normalizer normalizer;
+  private boolean pagebreakEncountered;
+
+  private int treeDepth;
+  private AttributeMap currentAttributes;
+  private String namespace;
+  private String tagName;
+
+  public DefaultInputFeed(final LayoutProcess process)
   {
-    this(process);
-    if (state != null)
+    this(process, true);
+  }
+
+  protected DefaultInputFeed(final LayoutProcess process, boolean init)
+  {
+    this.process = process;
+    this.documentContext = process.getDocumentContext();
+    if (init)
     {
-      LayoutElement[] elements = state.getOpenElements();
-      for (int i = 0; i < elements.length; i++)
-      {
-        this.elements.add(elements[i]);
-      }
-      if (elements.length > 0)
-      {
-        this.document = elements[0];
-        this.currentElement = elements[elements.length - 1];
-      }
-      this.state = state.getState();
+      this.normalizer = process.getOutputProcessor().createNormalizer(process);
+
+      this.state = DOCUMENT_STARTING;
     }
   }
 
-  private int checkState (int newState)
+  protected void resetPageBreakFlag()
+  {
+    this.pagebreakEncountered = false;
+  }
+
+  public void handlePageBreakEncountered(final CSSValue pageName,
+                                         final PseudoPage[] pseudoPages)
+          throws NormalizationException
+  {
+    this.pagebreakEncountered = true;
+    // OK, we got a pagebreak. (We should get only one, but who knows ...
+    // lets save the states anyway ..
+    normalizer.handlePageBreak (pageName, pseudoPages);
+  }
+
+  public boolean isPagebreakEncountered()
+  {
+    return this.pagebreakEncountered;
+  }
+
+  private int checkState(int newState)
   {
     if (validStateTransitions[state][newState] == false)
     {
@@ -184,83 +344,81 @@ public class DefaultInputFeed implements InputFeed
     return oldState;
   }
 
-  public final void startDocument ()
+  public final void startDocument()
   {
     checkState(META_EXPECTED);
+    resetPageBreakFlag();
     performStartDocument();
   }
 
-  protected void performStartDocument ()
+  protected void performStartDocument()
   {
-    document = new LayoutElement(process.generateContextId(-1),
-            process.getOutputProcessor(), Namespaces.LIBLAYOUT_NAMESPACE, "@document@");
-    currentElement = document;
-    elements.push(document);
+    // todo do nothing?
   }
 
-  public final void startMetaInfo ()
+  public final void startMetaInfo()
   {
     checkState(META_PROCESSING);
     performStartMetaInfo();
   }
 
-  protected void performStartMetaInfo ()
+  protected void performStartMetaInfo()
   {
   }
 
-  public final void addDocumentAttribute (String name, Object attr)
+  public final void addDocumentAttribute(String name, Object attr)
   {
     checkState(META_PROCESSING);
     performAddDocumentAttribute(name, attr);
   }
 
-  protected void performAddDocumentAttribute (String name, Object attr)
+  protected void performAddDocumentAttribute(String name, Object attr)
   {
     documentContext.setMetaAttribute(name, attr);
   }
 
-  public void startMetaNode ()
+  public void startMetaNode()
   {
     checkState(META_NODE_START);
     performStartMetaNode();
   }
 
-  protected void performStartMetaNode ()
+  protected void performStartMetaNode()
   {
     metaNode = new DefaultDocumentMetaNode();// create new DocumentMetaNode(type)
     documentContext.addMetaNode(metaNode);
   }
 
-  public final void setMetaNodeAttribute (String name, Object attr)
+  public final void setMetaNodeAttribute(String name, Object attr)
   {
     checkState(META_NODE_ATTRIBUTES);
     performSetMetaNodeAttribute(name, attr);
   }
 
-  protected void performSetMetaNodeAttribute (String name, Object attr)
+  protected void performSetMetaNodeAttribute(String name, Object attr)
   {
     metaNode.setMetaAttribute(name, attr);
   }
 
-  public void endMetaNode ()
+  public void endMetaNode()
   {
     checkState(META_PROCESSING);
     performEndMetaNode();
   }
 
-  protected void performEndMetaNode ()
+  protected void performEndMetaNode()
   {
     metaNode = null;
   }
 
-  public final void endMetaInfo ()
+  public final void endMetaInfo()
           throws InputFeedException
   {
     checkState(ELEMENT_EXPECTED);
     performEndMetaInfo();
   }
 
-  public NamespaceCollection getNamespaceCollection ()
+  public NamespaceCollection getNamespaceCollection()
   {
     if (initialized == false)
     {
@@ -269,7 +427,7 @@ public class DefaultInputFeed implements InputFeed
     return documentContext.getNamespaces();
   }
 
-  protected void performEndMetaInfo ()
+  protected void performEndMetaInfo()
           throws InputFeedException
   {
     try
@@ -282,10 +440,11 @@ public class DefaultInputFeed implements InputFeed
     }
   }
 
-  public final void startElement (String namespace, String name)
+  public final void startElement(String namespace, String name)
           throws InputFeedException
   {
     int oldState = checkState(ELEMENT_STARTED);
+    resetPageBreakFlag();
 
     if (oldState == META_EXPECTED ||
             oldState == ELEMENT_EXPECTED)
@@ -304,7 +463,7 @@ public class DefaultInputFeed implements InputFeed
     {
       try
       {
-        getNormalizer().startElement(currentElement);
+        getNormalizer().startElement (this.namespace, tagName, currentAttributes);
       }
       catch (NormalizationException e)
       {
@@ -312,13 +471,13 @@ public class DefaultInputFeed implements InputFeed
       }
       catch (IOException e)
       {
-        e.printStackTrace();
+        throw new InputFeedException("IOError: Failed to normalize element", e);
       }
     }
     performStartElement(namespace, name);
   }
 
-  private void initializeDocument ()
+  private void initializeDocument()
           throws IOException, NormalizationException
   {
     if (initialized)
@@ -333,50 +492,43 @@ public class DefaultInputFeed implements InputFeed
     initialized = true;
   }
 
-  protected void performStartElement (String namespace, String name)
+  protected void performStartElement(String namespace, String name)
   {
-    final ContextId contextId = process.generateContextId(-1);
-    LayoutElement newElement = new LayoutElement
-            (contextId, process.getOutputProcessor(), namespace, name);
-    newElement.setInputSavePoint(getSavePoint());
-    currentElement.addChild(newElement);
-    elements.push(newElement);
-    this.currentElement = newElement;
+    this.namespace = namespace;
+    this.tagName = name;
+    this.currentAttributes = new AttributeMap();
   }
 
-//  protected void resolveStyle (LayoutElement context)
-//  {
-//    getNormalizer().startElement(context);
-//  }
-
-  public final void setAttribute (String namespace, String name, Object attr)
+  public final void setAttribute(String namespace, String name, Object attr)
   {
     checkState(ELEMENT_ATTRIBUTES);
     performSetAttribute(namespace, name, attr);
   }
 
-  protected void performSetAttribute (String namespace, String name, Object attr)
+  protected void performSetAttribute(String namespace, String name, Object attr)
   {
-    currentElement.setAttribute(namespace, name, attr);
+    this.currentAttributes.setAttribute(namespace, name, attr);
   }
 
-  public final void addContent (String text)
+  public final void addContent(String text)
           throws InputFeedException
   {
     try
     {
       int oldState = checkState(ELEMENT_CONTENT);
+      resetPageBreakFlag();
+
       if (oldState == ELEMENT_ATTRIBUTES ||
               oldState == ELEMENT_STARTED)
       {
-        getNormalizer().startElement(currentElement);
+        getNormalizer().startElement (this.namespace, tagName, currentAttributes);
       }
       else if (oldState == ELEMENT_EXPECTED ||
               oldState == META_EXPECTED)
       {
         initializeDocument();
       }
-      //System.out.println("GEN: " + (text));
+
       performAddContent(text);
     }
     catch (NormalizationException ne)
@@ -389,40 +541,27 @@ public class DefaultInputFeed implements InputFeed
     }
   }
 
-  protected void performAddContent (String text)
-          throws InputFeedException
+  protected void performAddContent(String text)
+          throws InputFeedException,
+          IOException, NormalizationException
   {
-    final LayoutTextNode ctx = new LayoutTextNode
-            (process.generateContextId(-1),
-                    process.getOutputProcessor(),
-                    text.toCharArray(), 0, text.length());
-    ctx.setInputSavePoint(getSavePoint());
-    currentElement.addChild(ctx);
-    try
-    {
-      getNormalizer().addText(ctx);
-    }
-    catch (NormalizationException e)
-    {
-      throw new InputFeedException("Failed to normalize element", e);
-    }
-    catch (IOException e)
-    {
-      throw new InputFeedException("Failed to normalize element", e);
-    }
+    getNormalizer().addText(text);
   }
 
-  public final void endElement ()
+  public final void endElement()
           throws InputFeedException
   {
     try
     {
       int oldState = checkState(ELEMENT_EXPECTED);
+      resetPageBreakFlag();
       if (oldState == ELEMENT_ATTRIBUTES ||
               oldState == ELEMENT_STARTED)
       {
-        getNormalizer().startElement(currentElement);
+        getNormalizer().startElement (this.namespace, tagName, currentAttributes);
       }
+
+
       performEndElement();
     }
     catch (NormalizationException e)
@@ -435,18 +574,20 @@ public class DefaultInputFeed implements InputFeed
     }
   }
 
-  protected void performEndElement ()
+  protected void performEndElement()
           throws IOException, NormalizationException
   {
-    elements.pop();
-    getNormalizer().endElement(currentElement);
-    currentElement = (LayoutElement) elements.peek();
+    this.namespace = null;
+    this.tagName = null;
+    this.currentAttributes = null;
+    getNormalizer().endElement();
   }
 
-  public final void endDocument ()
+  public final void endDocument()
           throws InputFeedException
   {
     checkState(DOCUMENT_FINISHED);
+    resetPageBreakFlag();
     try
     {
       performEndDocument();
@@ -461,78 +602,56 @@ public class DefaultInputFeed implements InputFeed
     }
   }
 
-  protected void performEndDocument ()
+  protected void performEndDocument()
           throws IOException, NormalizationException
   {
-    elements.pop();
-    if (elements.isEmpty() == false)
-    {
-      throw new IllegalStateException("Stack is not yet empty: " + elements);
-    }
+//    //elements.pop();
+//    if (elements.isEmpty() == false)
+//    {
+//      throw new IllegalStateException("Stack is not yet empty: " + elements);
+//    }
     getNormalizer().endDocument();
-    currentElement = null;
   }
 
-  public Object getSavePointData ()
-  {
-    return savePointData;
-  }
-
-  protected InputFeedState getSavePoint ()
-  {
-    if (savePoint == null)
-    {
-      try
-      {
-        LayoutElement[] e = (LayoutElement[])
-                elements.toArray(new LayoutElement[elements.size()]);
-        for (int i = 0; i < e.length; i++)
-        {
-          LayoutElement context = e[i];
-          e[i] = (LayoutElement) context.clone();
-        }
-        savePoint = new InputFeedState(e, state, process.getLastId(), savePointData);
-      }
-      catch (CloneNotSupportedException e1)
-      {
-        throw new IllegalStateException("Clone not supported. I'm frightened!");
-      }
-    }
-    return savePoint;
-  }
-
-  public void setSavePointData (final Object savePointData)
-  {
-    Object oldSavePointData = this.savePointData;
-    this.savePointData = savePointData;
-    // comparing pointers is intended here
-    if (oldSavePointData != savePointData)
-    {
-      savePoint = null;
-    }
-  }
-
-  protected LayoutProcess getProcess ()
+  protected LayoutProcess getProcess()
   {
     return process;
   }
 
-  protected LayoutElement getCurrentElement ()
-  {
-    return currentElement;
-  }
-
-  protected LayoutElement getDocument ()
-  {
-    return document;
-  }
-
-  protected int getState ()
+  protected int getState()
   {
     return state;
   }
 
-  protected Normalizer getNormalizer ()
+  public Normalizer getNormalizer()
+  {
+    return normalizer;
+  }
+
+  public State saveState() throws StateException
+  {
+    DefaultInputFeedState state = new DefaultInputFeedState();
+    state.setTreeDepth(treeDepth);
+    state.setCurrentAttributes(currentAttributes);
+    state.setNamespace(namespace);
+    state.setTagName(tagName);
+    state.setInitialized(initialized);
+    state.setMetaNode(metaNode);
+    state.setNormalizerState(normalizer.saveState());
+    state.setState(this.state);
+    state.setPagebreakEncountered(pagebreakEncountered);
+    return state;
+  }
+
+  /**
+   * Warning; This method is needed internally, mess with it from the outside
+   * and you will run into trouble. The normalizer is a statefull component and
+   * any call to it may mess up the state. From there on, 'Abandon every hope,
+   * ye who enter here'.
+   *
+   * @return
+   */
+  public Normalizer getCurrentNormalizer()
   {
     return normalizer;
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResolveHandlerSorter.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
  *
  * Changes
  * -------
@@ -127,7 +127,7 @@ public final class ResolveHandlerSorter
       for (int i = 0; i < keys.length; i++)
       {
         StyleKey styleKey = keys[i];
-        haveAdded |= dependentKeySet.add(styleKey);
+        if (dependentKeySet.add(styleKey)) haveAdded = true;
       }
       if (haveAdded)
       {
@@ -155,6 +155,7 @@ public final class ResolveHandlerSorter
     public void setPosition(final int position)
     {
       this.position = position;
+      this.module.setWeight(position);
     }
 
     /**

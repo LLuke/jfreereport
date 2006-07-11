@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BackgroundRepeatResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.layouter.style.resolver.computed.border;
 
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.border.BackgroundRepeat;
 import org.jfree.layouting.input.style.values.CSSValue;
@@ -48,8 +49,7 @@ import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.border.BackgroundSpecification;
+import org.jfree.layouting.layouter.context.BackgroundSpecification;
 
 /**
  * Creation-Date: 11.12.2005, 23:46:01
@@ -79,13 +79,13 @@ public class BackgroundRepeatResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutNode currentNode,
-                         LayoutStyle style,
-                         StyleKey key)
+                      LayoutElement currentNode,
+                      LayoutStyle style,
+                      StyleKey key)
   {
     CSSValue value = style.getValue(key);
     if (value == null)

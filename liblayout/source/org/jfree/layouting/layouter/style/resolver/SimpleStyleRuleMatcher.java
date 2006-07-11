@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleStyleRuleMatcher.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.2 2006/05/06 13:02:47 taqua Exp $
  *
  * Changes
  * -------
@@ -42,29 +42,32 @@ package org.jfree.layouting.layouter.style.resolver;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.input.style.CSSCounterRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
-import org.jfree.layouting.model.DocumentContext;
-import org.jfree.layouting.model.DocumentMetaNode;
-import org.jfree.layouting.model.LayoutElement;
-import org.jfree.layouting.model.ProcessAttributeName;
+import org.jfree.layouting.layouter.context.DocumentMetaNode;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.namespace.Namespaces;
+import org.jfree.layouting.util.AttributeMap;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 import org.w3c.css.sac.AttributeCondition;
 import org.w3c.css.sac.CombinatorCondition;
 import org.w3c.css.sac.Condition;
@@ -75,6 +78,7 @@ import org.w3c.css.sac.NegativeCondition;
 import org.w3c.css.sac.NegativeSelector;
 import org.w3c.css.sac.Selector;
 import org.w3c.css.sac.SiblingSelector;
+import org.w3c.css.sac.SimpleSelector;
 
 /**
  * A stateless implementation of the style rule matching. This implementation is
@@ -87,6 +91,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   private LayoutProcess layoutProcess;
   private ResourceManager resourceManager;
   private CSSStyleRule[] activeStyleRules;
+  private CSSStyleRule[] activePseudoStyleRules;
   private NamespaceCollection namespaces;
 
   public SimpleStyleRuleMatcher()
@@ -112,6 +117,11 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       final String uri = nsUri[i];
       final NamespaceDefinition nsDef = namespaces.getDefinition(uri);
       final ResourceKey rawKey = nsDef.getDefaultStyleSheetLocation();
+      if (rawKey == null)
+      {
+        // there is no default stylesheet for that namespace.
+        continue;
+      }
 
       final ResourceKey baseKey =
               DocumentContextUtility.getBaseResource
@@ -121,6 +131,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         continue;
       }
+      Log.debug ("Loaded stylesheet from " + rawKey);
       addStyleRules(styleSheet, styleRules);
     }
 
@@ -140,6 +151,20 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     }
     activeStyleRules = (CSSStyleRule[])
             styleRules.toArray(new CSSStyleRule[styleRules.size()]);
+
+    styleRules.clear();
+    for (int i = 0; i < activeStyleRules.length; i++)
+    {
+      CSSStyleRule activeStyleRule = activeStyleRules[i];
+      if (isPseudoElementRule(activeStyleRule) == false)
+      {
+        continue;
+      }
+      styleRules.add(activeStyleRule);
+    }
+    activePseudoStyleRules = (CSSStyleRule[])
+            styleRules.toArray(new CSSStyleRule[styleRules.size()]);
+
   }
 
   private void handleLinkNode(final DocumentMetaNode node,
@@ -261,15 +286,56 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     }
     catch (ResourceCreationException e)
     {
-      Log.info ("Unable to parse StyleSheet: " + e.getLocalizedMessage());
+      Log.info("Unable to parse StyleSheet: " + e.getLocalizedMessage());
     }
     catch (ResourceLoadingException e)
     {
-      Log.info ("Unable to parse StyleSheet: " + e.getLocalizedMessage()); 
+      Log.info("Unable to parse StyleSheet: " + e.getLocalizedMessage());
     }
     return null;
   }
 
+  private boolean isPseudoElementRule (CSSStyleRule rule)
+  {
+    final CSSSelector selector = rule.getSelector();
+    if (selector.getSelectorType() != Selector.SAC_CONDITIONAL_SELECTOR)
+    {
+      return false;
+    }
+
+    final ConditionalSelector cs = (ConditionalSelector) selector;
+    final Condition condition = cs.getCondition();
+    if (condition.getConditionType() != Condition.SAC_PSEUDO_CLASS_CONDITION)
+    {
+      return false;
+    }
+    return true;
+  }
+
+  public boolean isMatchingPseudoElement (LayoutElement element, String pseudo)
+  {
+    for (int i = 0; i < activePseudoStyleRules.length; i++)
+    {
+      final CSSStyleRule activeStyleRule = activePseudoStyleRules[i];
+
+      final CSSSelector selector = activeStyleRule.getSelector();
+      final ConditionalSelector cs = (ConditionalSelector) selector;
+      final Condition condition = cs.getCondition();
+
+      final AttributeCondition ac = (AttributeCondition) condition;
+      if (ObjectUtilities.equal(ac.getValue(), pseudo) == false)
+      {
+        continue;
+      }
+
+      final SimpleSelector simpleSelector = cs.getSimpleSelector();
+      if (isMatch(element, simpleSelector))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
 
   /**
    * Creates an independent copy of this style rule matcher.
@@ -294,6 +360,12 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         retvals.add(activeStyleRule);
       }
     }
+
+    final LayoutContext layoutContext = element.getLayoutContext();
+    Log.debug ("Got " + retvals.size() + " matching rules for " +
+            layoutContext.getTagName() + ":" +
+            layoutContext.getPseudoElement());
+
     return (CSSStyleRule[]) retvals.toArray
             (new CSSStyleRule[retvals.size()]);
   }
@@ -301,6 +373,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   private boolean isMatch(final LayoutElement node, final Selector selector)
   {
     final short selectorType = selector.getSelectorType();
+    final LayoutContext layoutContext = node.getLayoutContext();
     switch (selectorType)
     {
       case Selector.SAC_ANY_NODE_SELECTOR:
@@ -319,16 +392,25 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       case Selector.SAC_PSEUDO_ELEMENT_SELECTOR:
       {
-        if ("pseudo-element".equals
-                (node.getProcessAttribute(ProcessAttributeName.TYPE)) == false)
-        {
-          return false;
-        }
+        return layoutContext.isPseudoElement();
       }
       case Selector.SAC_ELEMENT_NODE_SELECTOR:
       {
         ElementSelector es = (ElementSelector) selector;
-        return ObjectUtilities.equal(node.getName(), es.getLocalName());
+        if (ObjectUtilities.equal
+                (layoutContext.getTagName(), es.getLocalName()) == false)
+        {
+//          Log.debug ("No match for " + layoutContext.getTagName() + " " + es.getLocalName());
+          return false;
+        }
+        String namespaceURI = es.getNamespaceURI();
+        if (ObjectUtilities.equal
+                (layoutContext.getNamespace(), namespaceURI) == false)
+        {
+//          Log.debug ("No match for " + layoutContext.getNamespace() + " " + namespaceURI);
+          return false;
+        }
+        return true;
       }
       case Selector.SAC_CHILD_SELECTOR:
       {
@@ -352,11 +434,15 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Selector.SAC_CONDITIONAL_SELECTOR:
       {
         ConditionalSelector cs = (ConditionalSelector) selector;
+        if (evaluateCondition(node, cs.getCondition()) == false)
+        {
+          return false;
+        }
         if (isMatch(node, cs.getSimpleSelector()) == false)
         {
           return false;
         }
-        return evaluateCondition(node, cs.getCondition());
+        return true;
       }
       default:
         return false;
@@ -386,10 +472,11 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         String namespaceURI = ac.getNamespaceURI();
         if (namespaceURI == null)
         {
-          namespaceURI = node.getNamespace();
+          namespaceURI = node.getLayoutContext().getNamespace();
         }
-        final String attr = (String) node.getAttribute
-                (namespaceURI, ac.getLocalName());
+        final String attr = (String) node.getLayoutContext().getAttributes()
+                .getAttribute
+                        (namespaceURI, ac.getLocalName());
         if (ac.getValue() == null)
         {
           // dont care what's inside, as long as there is a value ..
@@ -403,7 +490,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_CLASS_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
-        final String namespace = node.getNamespace();
+        final String namespace = node.getLayoutContext().getNamespace();
         if (namespace == null)
         {
           return false;
@@ -413,11 +500,14 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         {
           return false;
         }
-        final String[] classAttribute = ndef.getClassAttribute(node.getName());
+        final String[] classAttribute = ndef.getClassAttribute(
+                node.getLayoutContext().getTagName());
         for (int i = 0; i < classAttribute.length; i++)
         {
           final String attr = classAttribute[i];
-          final String htmlAttr = (String) node.getAttribute(namespace, attr);
+          final String htmlAttr = (String)
+                  node.getLayoutContext().getAttributes().getAttribute(
+                          namespace, attr);
           if (isOneOfAttributes(htmlAttr, ac.getValue()))
           {
             return true;
@@ -427,14 +517,17 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       case Condition.SAC_ID_CONDITION:
       {
-        AttributeCondition ac = (AttributeCondition) condition;
-        return ObjectUtilities.equal(ac.getValue(), node.getId());
+        final AttributeCondition ac = (AttributeCondition) condition;
+        final AttributeMap attributes = node.getLayoutContext().getAttributes();
+        final Object id = attributes.getAttribute(Namespaces.XML_NAMESPACE,
+                "id");
+        return ObjectUtilities.equal(ac.getValue(), id);
       }
       case Condition.SAC_LANG_CONDITION:
       {
-        AttributeCondition ac = (AttributeCondition) condition;
-        final String lang = (String) node.getProcessAttribute
-                (ProcessAttributeName.LANGUAGE);
+        final AttributeCondition ac = (AttributeCondition) condition;
+        final Locale locale = node.getLayoutContext().getLanguage();
+        final String lang = locale.getLanguage();
         return isBeginHyphenAttribute(lang, ac.getValue());
       }
       case Condition.SAC_NEGATIVE_CONDITION:
@@ -446,15 +539,23 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         final AttributeCondition ac = (AttributeCondition) condition;
         final String attr = (String)
-                node.getAttribute(ac.getNamespaceURI(), ac.getLocalName());
+                node.getLayoutContext().getAttributes().getAttribute(
+                        ac.getNamespaceURI(), ac.getLocalName());
         return isOneOfAttributes(attr, ac.getValue());
       }
       case Condition.SAC_PSEUDO_CLASS_CONDITION:
       {
-        AttributeCondition ac = (AttributeCondition) condition;
-        return ObjectUtilities
-                .equal(ac.getValue(), node.getProcessAttribute(
-                        ProcessAttributeName.PSEUDO_CLASS));
+        final AttributeCondition ac = (AttributeCondition) condition;
+        final String pseudoClass = node.getLayoutContext().getPseudoElement();
+        if (pseudoClass == null)
+        {
+          return false;
+        }
+        if (ObjectUtilities.equal(ac.getValue(), pseudoClass))
+        {
+          return true;
+        }
+        return false;
       }
       case Condition.SAC_ONLY_CHILD_CONDITION:
       case Condition.SAC_ONLY_TYPE_CONDITION:
@@ -518,17 +619,15 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   private boolean isSilblingMatch(final LayoutElement node,
                                   final SiblingSelector select)
   {
-    // todo: We *should* implement silbling matches somehow ..
-//    LayoutNode pred = node.getPredecessor();
-//    while (pred != null)
-//    {
-//      if (pred instanceof LayoutElement)
-//      {
-//        return isMatch((LayoutElement) pred, select);
-//      }
-//
-//      pred = pred.getPredecessor();
-//    }
+    LayoutElement pred = node.getPrevious();
+    while (pred != null)
+    {
+      if (isMatch(pred, select))
+      {
+        return true;
+      }
+      pred = pred.getPrevious();
+    }
     return false;
   }
 

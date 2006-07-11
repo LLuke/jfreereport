@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GlyphOrientationHorizontal.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class GlyphOrientationHorizontal extends CSSConstant
+public class GlyphOrientationHorizontal
 {
-  public static final GlyphOrientationHorizontal INLINE =
-          new GlyphOrientationHorizontal("inline");
+  public static final CSSConstant INLINE =
+          new CSSConstant("inline");
 
-  private GlyphOrientationHorizontal(final String constant)
+  private GlyphOrientationHorizontal()
   {
-    super(constant);
   }
 }

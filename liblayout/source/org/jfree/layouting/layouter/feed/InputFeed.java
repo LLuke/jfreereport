@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InputFeed.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
+ * $Id: InputFeed.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,39 @@
  */
 package org.jfree.layouting.layouter.feed;
 
+import org.jfree.layouting.StatefullComponent;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.namespace.NamespaceCollection;
 
 /**
- * Creation-Date: 05.12.2005, 18:04:11
+ * The input feed shields the internal processing from users errors. It
+ * implements a state maschine, which checks that all documents are well formed
+ * and which does not allow users to manipulate the resulting document tree
+ * directly.
+ * <p/>
+ * An input feed collects all data for elements and other nodes and forwards
+ * them to the normalizer. The normalizer is the first stage of the content
+ * layouting and processing.
+ * <p/>
+ * Pagination ability is not propagated back to the caller. A caller will not
+ * normaly know whether a certain input caused a pagebreak. However, especially
+ * in the cases where only one page should be processed, we allow the detection
+ * of page breaks using a boolean flag. (Which is also used to detect loops.)
+ * <p/>
+ * The flag is reset on each call to 'startElement', 'startDocument',
+ * 'endElement', 'endDocument' and 'addText'. Attribute modifications have no
+ * effect on that flag (as these calls are accumulated into one big supercall
+ * before passing them to the normalizer.)
+ * <p/>
+ * Processing the meta-info also has no effect on the page-break flag, as meta-
+ * info is processed before the content is processed.
  *
  * @author Thomas Morgner
  */
-public interface InputFeed
+public interface InputFeed extends StatefullComponent
 {
   /**
    * Starts the document processing. This is the first method to call. After
@@ -68,15 +93,16 @@ public interface InputFeed
    * @param name
    * @param attr
    */
-  public void addDocumentAttribute(String name, Object attr) throws InputFeedException;
+  public void addDocumentAttribute(String name, Object attr)
+          throws InputFeedException;
 
   /**
    * Starts a new meta-node structure. Meta-Nodes are used to hold content that
    * can appear more than once (like stylesheet declarations).
-   *
+   * <p/>
    * For now, only stylesheet declarations are defined as meta-node content;
    * more content types will surely arise in the future.
-   *
+   * <p/>
    * Calling this method is only valid after 'startMetaInfo' has been called.
    */
   public void startMetaNode() throws InputFeedException;
@@ -88,14 +114,18 @@ public interface InputFeed
    * @param name
    * @param attr
    */
-  public void setMetaNodeAttribute(String name, Object attr) throws InputFeedException;
+  public void setMetaNodeAttribute(String name, Object attr)
+          throws InputFeedException;
+
   public void endMetaNode() throws InputFeedException;
 
   public void endMetaInfo() throws InputFeedException;
 
-  public void startElement(String namespace, String name) throws InputFeedException;
+  public void startElement(String namespace, String name)
+          throws InputFeedException;
 
-  public void setAttribute(String namespace, String name, Object attr) throws InputFeedException;
+  public void setAttribute(String namespace, String name, Object attr)
+          throws InputFeedException;
 
   public void addContent(String text) throws InputFeedException;
 
@@ -103,10 +133,19 @@ public interface InputFeed
 
   public void endDocument() throws InputFeedException;
 
-  public NamespaceCollection getNamespaceCollection ();
+  public NamespaceCollection getNamespaceCollection();
 
-  public Object getSavePointData() throws InputFeedException;
+  public void handlePageBreakEncountered(final CSSValue pageName,
+                                         final PseudoPage[] pseudoPages)
+          throws NormalizationException;
 
-  public void setSavePointData(Object savePoint) throws InputFeedException;
-
+  /**
+   * Warning; This method is needed internally, mess with it from the outside
+   * and you will run into trouble. The normalizer is a statefull component and
+   * any call to it may mess up the state. From there on, 'Abandon every hope,
+   * ye who enter here'.  
+   *
+   * @return
+   */
+  public Normalizer getCurrentNormalizer();
 }

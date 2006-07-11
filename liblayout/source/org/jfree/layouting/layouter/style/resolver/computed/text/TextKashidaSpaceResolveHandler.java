@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextKashidaSpaceResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,15 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.text;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.model.LayoutNode;
-import org.jfree.layouting.model.text.TextSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 /**
  * Creation-Date: 21.12.2005, 15:00:43
@@ -75,11 +75,11 @@ public class TextKashidaSpaceResolveHandler implements ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param style
    * @param currentNode
+   * @param style
    */
   public void resolve(LayoutProcess process,
-                      LayoutNode currentNode,
+                      LayoutElement currentNode,
                       LayoutStyle style,
                       StyleKey key)
   {
@@ -94,10 +94,15 @@ public class TextKashidaSpaceResolveHandler implements ResolveHandler
       return;
     }
     double percentage = nval.getValue();
-    if (percentage < 0) percentage = 0;
-    if (percentage > 100) percentage = 100;
-    final TextSpecification textSpecification =
-            currentNode.getLayoutContext().getTextSpecification();
-    textSpecification.getAlignmentSpecifcation().setKashidaSpace(percentage);
+    if (percentage < 0)
+    {
+      percentage = 0;
+    }
+    if (percentage > 100)
+    {
+      percentage = 100;
+    }
+    style.setValue(TextStyleKeys.TEXT_KASHIDA_SPACE,
+            new CSSNumericValue(CSSNumericType.PERCENTAGE, percentage));
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AlignmentBaseline.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,36 +47,35 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class AlignmentBaseline extends CSSConstant
+public class AlignmentBaseline
 {
-  public static final AlignmentBaseline BASELINE =
-          new AlignmentBaseline("baseline");
-  public static final AlignmentBaseline USE_SCRIPT =
-          new AlignmentBaseline("use-script");
-  public static final AlignmentBaseline BEFORE_EDGE =
-          new AlignmentBaseline("before-edge");
-  public static final AlignmentBaseline TEXT_BEFORE_EDGE =
-          new AlignmentBaseline("text-before-edge");
-  public static final AlignmentBaseline AFTER_EDGE =
-          new AlignmentBaseline("after-edge");
-  public static final AlignmentBaseline TEXT_AFTER_EDGE =
-          new AlignmentBaseline("text-after-edge");
-  public static final AlignmentBaseline ALPHABETIC =
-          new AlignmentBaseline("alphabetic");
-  public static final AlignmentBaseline HANGING =
-          new AlignmentBaseline("hanging");
-  public static final AlignmentBaseline IDEOGRAPHIC =
-          new AlignmentBaseline("ideographic");
-  public static final AlignmentBaseline MATHEMATICAL =
-          new AlignmentBaseline("alphabetic");
-  public static final AlignmentBaseline CENTRAL =
-          new AlignmentBaseline("central");
-  public static final AlignmentBaseline MIDDLE =
-          new AlignmentBaseline("middle");
+  public static final CSSConstant BASELINE =
+          new CSSConstant("baseline");
+  public static final CSSConstant USE_SCRIPT =
+          new CSSConstant("use-script");
+  public static final CSSConstant BEFORE_EDGE =
+          new CSSConstant("before-edge");
+  public static final CSSConstant TEXT_BEFORE_EDGE =
+          new CSSConstant("text-before-edge");
+  public static final CSSConstant AFTER_EDGE =
+          new CSSConstant("after-edge");
+  public static final CSSConstant TEXT_AFTER_EDGE =
+          new CSSConstant("text-after-edge");
+  public static final CSSConstant ALPHABETIC =
+          new CSSConstant("alphabetic");
+  public static final CSSConstant HANGING =
+          new CSSConstant("hanging");
+  public static final CSSConstant IDEOGRAPHIC =
+          new CSSConstant("ideographic");
+  public static final CSSConstant MATHEMATICAL =
+          new CSSConstant("alphabetic");
+  public static final CSSConstant CENTRAL =
+          new CSSConstant("central");
+  public static final CSSConstant MIDDLE =
+          new CSSConstant("middle");
 
 
-  private AlignmentBaseline(String name)
+  private AlignmentBaseline()
   {
-    super(name);
   }
 }

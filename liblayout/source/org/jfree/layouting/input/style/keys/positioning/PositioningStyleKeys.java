@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PositioningStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -54,27 +54,27 @@ public class PositioningStyleKeys
 
   public static final StyleKey TOP =
           StyleKeyRegistry.getRegistry().createKey
-                  ("top", false, false, false);
+                  ("top", false, false, StyleKey.All_ELEMENTS);
 
   public static final StyleKey LEFT =
           StyleKeyRegistry.getRegistry().createKey
-                  ("left", false, false, false);
+                  ("left", false, false, StyleKey.All_ELEMENTS);
 
   public static final StyleKey BOTTOM =
           StyleKeyRegistry.getRegistry().createKey
-                  ("bottom", false, false, false);
+                  ("bottom", false, false, StyleKey.All_ELEMENTS);
 
   public static final StyleKey RIGHT =
           StyleKeyRegistry.getRegistry().createKey
-                  ("right", false, false, false);
+                  ("right", false, false, StyleKey.All_ELEMENTS);
 
   public static final StyleKey POSITION =
           StyleKeyRegistry.getRegistry().createKey
-                  ("position", false, false, false);
+                  ("position", false, false, StyleKey.All_ELEMENTS);
 
   public static final StyleKey Z_INDEX =
           StyleKeyRegistry.getRegistry().createKey
-                  ("z-index", false, false, false);
+                  ("z-index", false, false, StyleKey.All_ELEMENTS);
 
 
   private PositioningStyleKeys()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StrictDimension.java,v 1.2 2006/04/17 20:51:20 taqua Exp $
  *
  * Changes
  * -------
@@ -257,5 +257,11 @@ public class StrictDimension implements Serializable, Cloneable
     result = (int) (width ^ (width >>> 32));
     result = 29 * result + (int) (height ^ (height >>> 32));
     return result;
+  }
+
+  public void setSize(final StrictDimension size)
+  {
+    this.width = size.width;
+    this.height = size.height;
   }
 }
