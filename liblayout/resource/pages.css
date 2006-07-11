@@ -1,0 +1,16 @@
+@page {
+  margin: 10;
+  size: 10in 10in;
+
+  @counter {
+    content: "Right cell (top-right)";
+  }
+
+  @top-left {
+    content: "Header in top-left with approx. twice as many words as right cell.";
+  }
+
+  @top-right {
+    content: "Right cell (top-right)";
+  }
+}
