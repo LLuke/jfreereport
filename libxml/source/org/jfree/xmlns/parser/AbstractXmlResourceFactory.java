@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractXmlResourceFactory.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: AbstractXmlResourceFactory.java,v 1.1.1.1 2006/05/15 12:28:31 taqua Exp $
  *
  * Changes
  * -------
@@ -151,7 +151,7 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
       final XmlFactoryModule[] rootHandlers =
               (XmlFactoryModule[]) modules.toArray
                       (new XmlFactoryModule[modules.size()]);
-      final ResourceDataInputSource input = new ResourceDataInputSource(data);
+      final ResourceDataInputSource input = new ResourceDataInputSource(data, manager);
 
 
       final ResourceKey key;
@@ -159,7 +159,7 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
       if (context == null)
       {
         key = data.getKey();
-        version = data.getVersion();
+        version = data.getVersion(manager);
       }
       else
       {
@@ -180,7 +180,7 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
               (handler.getResult(), manager, data, context);
       if (context != null)
       {
-        handler.getDependencyCollector().add(data.getKey(), data.getVersion());
+        handler.getDependencyCollector().add(data.getKey(), data.getVersion(manager));
       }
       return new CompoundResource
               (data.getKey(), handler.getDependencyCollector(), createdProduct);

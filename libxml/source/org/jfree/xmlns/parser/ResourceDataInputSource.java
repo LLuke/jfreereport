@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceDataInputSource.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: ResourceDataInputSource.java,v 1.1.1.1 2006/05/15 12:28:36 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.xmlns.parser;
 
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 import org.xml.sax.InputSource;
 
 /**
@@ -63,13 +64,14 @@ public class ResourceDataInputSource extends InputSource
    * @see #setCharacterStream
    * @see #setEncoding
    */
-  public ResourceDataInputSource(final ResourceData data)
+  public ResourceDataInputSource(final ResourceData data,
+                                 final ResourceManager caller)
           throws ResourceLoadingException
   {
     if (data == null) throw new NullPointerException("Data must not be null");
     this.data = data;
-    this.version = data.getVersion();
-    setByteStream(data.getResourceAsStream());
+    this.version = data.getVersion(caller);
+    setByteStream(data.getResourceAsStream(caller));
   }
 
   public ResourceData getData()

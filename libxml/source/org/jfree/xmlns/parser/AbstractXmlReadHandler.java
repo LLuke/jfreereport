@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractXmlReadHandler.java,v 1.2 2006/05/06 12:59:25 taqua Exp $
+ * $Id: AbstractXmlReadHandler.java,v 1.1.1.1 2006/05/15 12:28:31 taqua Exp $
  *
  * Changes
  * -------
@@ -115,11 +115,17 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
       final XmlReadHandler childHandler = getHandlerForChild(uri, tagName, attrs);
       if (childHandler == null)
       {
-        Log.warn("Unknown tag <" + uri + ":" + tagName + ">");
-        return;
+        Log.warn("Unknown tag <" + uri + ":" + tagName + ">: Start to ignore this element and all of its childs.");
+        IgnoreAnyChildReadHandler ignoreAnyChildReadHandler =
+                new IgnoreAnyChildReadHandler();
+        ignoreAnyChildReadHandler.init(getRootHandler(), uri, tagName);
+        this.rootHandler.recurse(ignoreAnyChildReadHandler, uri, tagName, attrs);
       }
-      childHandler.init(getRootHandler(), uri, tagName);
-      this.rootHandler.recurse(childHandler, uri, tagName, attrs);
+      else
+      {
+        childHandler.init(getRootHandler(), uri, tagName);
+        this.rootHandler.recurse(childHandler, uri, tagName, attrs);
+      }
     }
   }
 

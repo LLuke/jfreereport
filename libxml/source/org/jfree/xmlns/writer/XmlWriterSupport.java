@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 
-import org.jfree.xmlns.common.AttributeList;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xmlns.common.AttributeList;
 
 /**
  * A support class for writing XML files.
@@ -22,18 +22,18 @@ public class XmlWriterSupport
     private String namespace;
     private String tagName;
 
-    public ElementLevel (String namespace, String tagName)
+    public ElementLevel(String namespace, String tagName)
     {
       this.namespace = namespace;
       this.tagName = tagName;
     }
 
-    public String getNamespace ()
+    public String getNamespace()
     {
       return namespace;
     }
 
-    public String getTagName ()
+    public String getTagName()
     {
       return tagName;
     }
@@ -90,10 +90,10 @@ public class XmlWriterSupport
   private boolean lineEmpty;
 
   /**
-   * Default Constructor. The created XMLWriterSupport will not have no safe tags and
-   * starts with an indention level of 0.
+   * Default Constructor. The created XMLWriterSupport will not have no safe
+   * tags and starts with an indention level of 0.
    */
-  public XmlWriterSupport ()
+  public XmlWriterSupport()
   {
     this(new DefaultTagDescription(), "  ");
   }
@@ -105,8 +105,8 @@ public class XmlWriterSupport
    * @param safeTags     the tags that are safe for line breaks.
    * @param indentString the indent string.
    */
-  public XmlWriterSupport (final TagDescription safeTags,
-                           final String indentString)
+  public XmlWriterSupport(final TagDescription safeTags,
+                          final String indentString)
   {
     if (indentString == null)
     {
@@ -124,7 +124,7 @@ public class XmlWriterSupport
     this.lineEmpty = true;
   }
 
-  public void addNamespace (String namespaceUri, String prefix)
+  public void addNamespace(String namespaceUri, String prefix)
   {
     if (namespaceUri == null)
     {
@@ -143,7 +143,7 @@ public class XmlWriterSupport
    *
    * @return the line separator.
    */
-  public static String getLineSeparator ()
+  public static String getLineSeparator()
   {
     if (lineSeparator == null)
     {
@@ -166,9 +166,9 @@ public class XmlWriterSupport
    * @param name the tag name.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeTag (final Writer w,
-                        final String namespaceUri,
-                        final String name)
+  public void writeTag(final Writer w,
+                       final String namespaceUri,
+                       final String name)
           throws IOException
   {
     writeTag(w, namespaceUri, name, null, OPEN);
@@ -180,7 +180,7 @@ public class XmlWriterSupport
    * @param w the writer.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeCloseTag (final Writer w)
+  public void writeCloseTag(final Writer w)
           throws IOException
   {
     ElementLevel level = (ElementLevel) openTags.pop();
@@ -210,12 +210,12 @@ public class XmlWriterSupport
   }
 
 
-  public boolean isLineEmpty ()
+  public boolean isLineEmpty()
   {
     return lineEmpty;
   }
 
-  public void setLineEmpty (boolean lineEmpty)
+  public void setLineEmpty(boolean lineEmpty)
   {
     this.lineEmpty = lineEmpty;
   }
@@ -230,12 +230,12 @@ public class XmlWriterSupport
    * @param close          controls whether the tag is closed.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeTag (final Writer w,
-                        final String namespace,
-                        final String name,
-                        final String attributeName,
-                        final String attributeValue,
-                        final boolean close)
+  public void writeTag(final Writer w,
+                       final String namespace,
+                       final String name,
+                       final String attributeName,
+                       final String attributeValue,
+                       final boolean close)
           throws IOException
   {
     if (attributeName != null)
@@ -259,38 +259,69 @@ public class XmlWriterSupport
    * @param close      controls whether the tag is closed.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeTag (final Writer w,
-                        final String namespaceUri,
-                        final String name,
-                        AttributeList attributes,
-                        final boolean close)
+  public void writeTag(final Writer w,
+                       final String namespaceUri,
+                       final String name,
+                       AttributeList attributes,
+                       final boolean close)
           throws IOException
   {
+    if (name == null)
+    {
+      throw new NullPointerException();
+    }
+
+    final boolean empty = openTags.isEmpty();
+
     indent(w);
     openTags.push(new ElementLevel(namespaceUri, name));
     setLineEmpty(false);
 
     w.write("<");
-    w.write(name);
-    if (openTags.isEmpty() && namespaces.isEmpty() == false)
+
+    if (namespaceUri == null)
+    {
+      w.write(name);
+    }
+    else
+    {
+      String nsPrefix = (String) namespaces.get(namespaceUri);
+      if (nsPrefix == null)
+      {
+        throw new IllegalArgumentException("Namespace " + namespaceUri + " is not defined.");
+      }
+      if ("".equals(nsPrefix))
+      {
+        w.write(name);
+      }
+      else
+      {
+        w.write(nsPrefix);
+        w.write(":");
+        w.write(name);
+      }
+    }
+
+    if (empty && (namespaces.isEmpty() == false))
     {
       Iterator entries = namespaces.entrySet().iterator();
       while (entries.hasNext())
       {
+        w.write(" ");
+
         Map.Entry entry = (Map.Entry) entries.next();
         final String nsUri = (String) entry.getKey();
         final String nsPrfx = (String) entry.getValue();
 
         if (nsPrfx != null && "".equals(nsPrfx) == false)
         {
-          w.write("xmlns: " + nsPrfx);
+          w.write("xmlns:" + nsPrfx);
         }
         else
         {
           w.write("xmlns");
         }
 
-        w.write(" ");
         w.write("=\"");
         w.write(normalize(nsUri, true));
         w.write("\"");
@@ -326,7 +357,7 @@ public class XmlWriterSupport
     }
   }
 
-  private void doEndOfLine (Writer w)
+  private void doEndOfLine(Writer w)
           throws IOException
   {
     if (openTags.isEmpty())
@@ -344,7 +375,7 @@ public class XmlWriterSupport
     }
   }
 
-  private String buildAttributeName (AttributeList.AttributeEntry entry)
+  private String buildAttributeName(AttributeList.AttributeEntry entry)
   {
     ElementLevel rootElement = (ElementLevel) openTags.peek();
     if (ObjectUtilities.equal(rootElement.getNamespace(), entry.getNamespace()))
@@ -355,8 +386,8 @@ public class XmlWriterSupport
     return buildQualifiedName(entry.getNamespace(), entry.getName());
   }
 
-  private String buildQualifiedName (final String namespaceUri,
-                                     final String name)
+  private String buildQualifiedName(final String namespaceUri,
+                                    final String name)
   {
     final String namespacePrefix =
             (String) namespaces.get(namespaceUri);
@@ -372,14 +403,14 @@ public class XmlWriterSupport
   }
 
   /**
-   * Normalises a string, replacing certain characters with their escape sequences so that
-   * the XML text is not corrupted.
+   * Normalises a string, replacing certain characters with their escape
+   * sequences so that the XML text is not corrupted.
    *
    * @param s the string.
    * @return the normalised string.
    */
-  public static String normalize (final String s,
-                                  final boolean transformNewLine)
+  public static String normalize(final String s,
+                                 final boolean transformNewLine)
   {
     if (s == null)
     {
@@ -438,7 +469,7 @@ public class XmlWriterSupport
    * @param writer the writer which should receive the indentention.
    * @throws java.io.IOException if writing the stream failed.
    */
-  public void indent (final Writer writer)
+  public void indent(final Writer writer)
           throws IOException
   {
     if (openTags.isEmpty())
@@ -462,12 +493,12 @@ public class XmlWriterSupport
    *
    * @return The list.
    */
-  public TagDescription getTagDescription ()
+  public TagDescription getTagDescription()
   {
     return this.safeTags;
   }
 
-  public void writeComment (Writer writer, String s)
+  public void writeComment(Writer writer, String s)
           throws IOException
   {
     if (openTags.isEmpty() == false)
