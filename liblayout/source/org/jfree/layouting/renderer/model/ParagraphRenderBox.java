@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ParagraphRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -124,6 +124,9 @@ public class ParagraphRenderBox extends BlockRenderBox
   public void validate()
   {
     fillLineboxCollection();
+    validateBorders();
+    validateMargins();
+    validatePaddings();
 
     // ok, now the tricky part. Lets build the real lines.
     // This code splits a logical line into one or more physical lines.

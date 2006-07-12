@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
  *
  * Changes
  * -------
@@ -125,7 +125,11 @@ public class BlockRenderBox extends RenderBox
 
     // hardcoded for now, content forms lines, which flow from top to bottom
     // and each line flows horizontally (later with support for LTR and RTL)
+
+    // Major axis vertical means, all childs will be placed below each other
     setMajorAxis(VERTICAL_AXIS);
+    // Minor axis horizontal: All childs may be shifted to the left or right
+    // to do some text alignment
     setMinorAxis(HORIZONTAL_AXIS);
   }
 

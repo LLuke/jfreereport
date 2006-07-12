@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.1 2006/07/11 13:54:24 taqua Exp $
+ * $Id: PageDrawable.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,6 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.text.Glyph;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
 import org.jfree.util.Log;
 
@@ -106,16 +105,16 @@ public class PageDrawable implements Drawable
       Log.warn("Box is unclean: " + level + ": " + box + " (" + box.getParent() + ")");
     }
 
-    final double x = StrictGeomUtility.toExternalValue
-            (box.getX() + box.getMargins().getLeft());
-    final double y = StrictGeomUtility.toExternalValue
-            (box.getY() + box.getMargins().getTop());
-    final double w = StrictGeomUtility.toExternalValue
-            (box.getWidth() - box.getMargins().getLeft() +
-                    box.getMargins().getRight());
-    final double h = StrictGeomUtility.toExternalValue
-            (box.getHeight() - box.getMargins().getTop() +
-                    box.getMargins().getBottom());
+//    final double x = StrictGeomUtility.toExternalValue
+//            (box.getX() + box.getMargins().getLeft());
+//    final double y = StrictGeomUtility.toExternalValue
+//            (box.getY() + box.getMargins().getTop());
+//    final double w = StrictGeomUtility.toExternalValue
+//            (box.getWidth() - box.getMargins().getLeft() +
+//                    box.getMargins().getRight());
+//    final double h = StrictGeomUtility.toExternalValue
+//            (box.getHeight() - box.getMargins().getTop() +
+//                    box.getMargins().getBottom());
 
     BorderShapeFactory borderShapeFactory = new BorderShapeFactory(box);
     borderShapeFactory.generateBorder(g2);
@@ -222,8 +221,12 @@ public class PageDrawable implements Drawable
     b.append(box.getWidth());
     b.append(", height=");
     b.append(box.getHeight());
-    b.append(", padding=");
+    b.append(",\n                           padding=");
     b.append(box.getPaddings());
+    b.append(",\n                           absolute-margin=");
+    b.append(box.getAbsoluteMargins());
+    b.append(",\n                           effective-margin=");
+    b.append(box.getEffectiveMargins());
     b.append("}");
 
     Log.debug(b.toString());

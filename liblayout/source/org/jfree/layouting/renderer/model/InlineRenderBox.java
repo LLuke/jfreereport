@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
  *
  * Changes
  * -------
@@ -61,8 +61,11 @@ public class InlineRenderBox extends RenderBox
 
     // hardcoded for now, content forms lines, which flow from top to bottom
     // and each line flows horizontally (later with support for LTR and RTL)
-    setMajorAxis(VERTICAL_AXIS);
-    setMinorAxis(HORIZONTAL_AXIS);
+
+    // Major axis: All child boxes are placed from left-to-right
+    setMajorAxis(HORIZONTAL_AXIS);
+    // Minor: The childs might be aligned on their position (shifted up or down)
+    setMinorAxis(VERTICAL_AXIS);
   }
 
   /**
@@ -94,7 +97,8 @@ public class InlineRenderBox extends RenderBox
       target = new RenderNode[2];
     }
 
-    if (axis == getMajorAxis())
+    // A line cannot be split vertically for now.
+    if (axis == getMinorAxis())
     {
       // not splitable. By using the invisible render box, we allow the content
       // to move into the next line ..
@@ -251,14 +255,14 @@ public class InlineRenderBox extends RenderBox
   {
     if (splitPosition <= 0)
     {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Split-Position cannot be negative or zero: " + splitPosition);
     }
 
     Log.debug("InlineRenderer: Start BestBreak: " + splitPosition);
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       // not splitable.
-      Log.debug("No split on the major axis");
+      Log.debug("No split on the minor axis");
       return 0;
     }
 
@@ -339,10 +343,10 @@ public class InlineRenderBox extends RenderBox
    */
   public long getFirstBreak(int axis)
   {
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       // not splitable.
-      Log.debug("No split on the major axis");
+      Log.debug("No split on the minor axis");
       return 0;
     }
 
@@ -394,7 +398,7 @@ public class InlineRenderBox extends RenderBox
   {
     long[] paddings = getBordersAndPadding(axis);
 
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       // minor axis means: Drive through all childs and query their size
       // then find the maximum
@@ -422,7 +426,7 @@ public class InlineRenderBox extends RenderBox
   {
     long[] paddings = getBordersAndPadding(axis);
 
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       // minor axis means: Drive through all childs and query their size
       // then find the maximum
@@ -450,7 +454,7 @@ public class InlineRenderBox extends RenderBox
   {
     long[] paddings = getBordersAndPadding(axis);
 
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       // minor axis means: Drive through all childs and query their size
       // then find the maximum
@@ -512,7 +516,7 @@ public class InlineRenderBox extends RenderBox
     {
       node.setX(nodePos);
       node.setY(getY() + getTopInsets());
-      final long preferredWidth = node.getPreferredSize(HORIZONTAL_AXIS);
+      final long preferredWidth = node.getPreferredSize(getMajorAxis());
       node.setWidth(Math.min(Math.max(0, width - nodePos), preferredWidth));
       node.validate();
 

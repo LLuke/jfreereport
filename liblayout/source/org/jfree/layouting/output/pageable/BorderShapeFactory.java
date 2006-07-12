@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderShapeFactory.java,v 1.1 2006/07/11 13:54:24 taqua Exp $
  *
  * Changes
  * -------
@@ -141,16 +141,10 @@ public class BorderShapeFactory
     drawOps = new ArrayList();
     fillOps = new ArrayList();
 
-    x = StrictGeomUtility.toExternalValue
-            (box.getX() + box.getMargins().getLeft());
-    y = StrictGeomUtility.toExternalValue
-            (box.getY() + box.getMargins().getTop());
-    width = StrictGeomUtility.toExternalValue
-            (box.getWidth() - box.getMargins().getLeft() -
-                    box.getMargins().getRight());
-    height = StrictGeomUtility.toExternalValue
-            (box.getHeight() - box.getMargins().getTop() -
-                    box.getMargins().getBottom());
+    x = StrictGeomUtility.toExternalValue(box.getX());
+    y = StrictGeomUtility.toExternalValue(box.getY());
+    width = StrictGeomUtility.toExternalValue(box.getWidth());
+    height = StrictGeomUtility.toExternalValue(box.getHeight());
 
     border = box.getBorder();
     borderSizes = box.getBorderWidths();

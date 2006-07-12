@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderLength.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -116,6 +116,10 @@ public class RenderLength
     if (isPercentage())
     {
       return (value * parent) / 100;
+    }
+    else if (value == Long.MIN_VALUE)
+    {
+      return 0;
     }
     else
     {

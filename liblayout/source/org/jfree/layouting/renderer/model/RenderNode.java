@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: RenderNode.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
  *
  * Changes
  * -------
@@ -110,6 +110,8 @@ public abstract class RenderNode implements Cloneable
   private long x;
   private long y;
 
+  private Long parentWidth;
+
   private int majorAxis;
   private int minorAxis;
 
@@ -169,7 +171,19 @@ public abstract class RenderNode implements Cloneable
 
   public void setWidth(long width)
   {
+    if (width < 0)
+    {
+      throw new IllegalArgumentException("Width cannot be negative: " + width);
+    }
+
+    long oldValue = this.width;
     this.width = width;
+
+    if (oldValue != width)
+    {
+      // someone changed the position, invalidate all childs ..
+      setState(RenderNodeState.PENDING);
+    }
   }
 
   public long getWidth()
@@ -179,7 +193,19 @@ public abstract class RenderNode implements Cloneable
 
   public void setHeight(long height)
   {
+    if (height < 0)
+    {
+      throw new IllegalArgumentException("Width cannot be negative");
+    }
+
+    long oldValue = this.height;
     this.height = height;
+
+    if (oldValue != height)
+    {
+      // someone changed the position, invalidate all childs ..
+      setState(RenderNodeState.PENDING);
+    }
   }
 
   public long getHeight()
@@ -358,8 +384,8 @@ public abstract class RenderNode implements Cloneable
   public abstract long getMinimumChunkSize(int axis);
 
   /**
-   * The minimum size returned here is always a box-size - that is the size
-   * from one border-edge to the opposite border edge (excluding the margins).
+   * The minimum size returned here is always a box-size - that is the size from
+   * one border-edge to the opposite border edge (excluding the margins).
    *
    * @param axis
    * @return
@@ -376,8 +402,8 @@ public abstract class RenderNode implements Cloneable
   public abstract long getPreferredSize(int axis);
 
   /**
-   * The maximum size returned here is always a box-size - that is the size
-   * from one border-edge to the opposite border edge (excluding the margins).
+   * The maximum size returned here is always a box-size - that is the size from
+   * one border-edge to the opposite border edge (excluding the margins).
    *
    * @param axis
    * @return
@@ -440,11 +466,6 @@ public abstract class RenderNode implements Cloneable
     node.next = null;
     node.prev = null;
     return node;
-  }
-
-  public RenderNode getPredecessor()
-  {
-    return null;
   }
 
   public void setClearLeft(final boolean clearLeft)
@@ -560,23 +581,34 @@ public abstract class RenderNode implements Cloneable
     return false;
   }
 
-  protected RenderBox getParentBlockContext ()
+  protected RenderBox getParentBlockContext()
   {
-    if (parent == null) return null;
+    if (parent == null)
+    {
+      return null;
+    }
     if (parent instanceof BlockRenderBox)
     {
-      return (RenderBox) parent;
+      return parent;
     }
     return parent.getParentBlockContext();
   }
 
   protected long getComputedBlockContextWidth()
   {
-    final RenderBox parent = getParentBlockContext();
-    if (parent == null)
+    if (parentWidth == null)
     {
-      return 0;
+      final RenderBox parent = getParentBlockContext();
+      if (parent == null)
+      {
+        parentWidth = new Long(0);
+      }
+      else
+      {
+        parentWidth = new Long(parent.getComputedBlockContextWidth());
+      }
     }
-    return parent.getComputedBlockContextWidth();
+    return parentWidth.longValue();
+
   }
 }

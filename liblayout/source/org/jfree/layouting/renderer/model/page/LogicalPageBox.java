@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LogicalPageBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.IndexedRenderBox;
 import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.util.geom.StrictInsets;
 
 /**
  * The logical page box does not have a layout at all. It has collection of

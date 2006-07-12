@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: RenderBox.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
  *
  * Changes
  * -------
@@ -66,9 +66,12 @@ public abstract class RenderBox extends RenderNode
   private BoxDefinition boxDefinition;
   private RenderNode firstChild;
   private RenderNode lastChild;
-  private StrictInsets margins;
+
+  private StrictInsets effectiveMargins;
+  private StrictInsets absoluteMargins;
   private StrictInsets paddings;
   private StrictInsets borderWidths;
+
   private boolean paddingsValidated;
   private boolean bordersValidated;
 
@@ -79,9 +82,10 @@ public abstract class RenderBox extends RenderNode
       throw new NullPointerException();
     }
     this.boxDefinition = boxDefinition;
-    this.margins = new StrictInsets();
+    this.absoluteMargins = new StrictInsets();
     this.paddings = new StrictInsets();
     this.borderWidths = new StrictInsets();
+    this.effectiveMargins = new StrictInsets();
   }
 
 
@@ -358,6 +362,7 @@ public abstract class RenderBox extends RenderNode
       }
       paddingsValidated = false;
       bordersValidated = false;
+
     }
     super.notifyStateChange(oldState, newState);
   }
@@ -407,7 +412,7 @@ public abstract class RenderBox extends RenderNode
   {
     final RenderBox o = (RenderBox) super.clone();
     o.borderWidths = (StrictInsets) borderWidths.clone();
-    o.margins = (StrictInsets) margins.clone();
+    o.absoluteMargins = (StrictInsets) absoluteMargins.clone();
     o.paddings = (StrictInsets) paddings.clone();
     return o;
   }
@@ -533,9 +538,9 @@ public abstract class RenderBox extends RenderNode
     return SOFT_BREAKABLE;
   }
 
-  public StrictInsets getMargins()
+  public StrictInsets getAbsoluteMargins()
   {
-    return margins;
+    return absoluteMargins;
   }
 
   public StrictInsets getPaddings()
@@ -579,33 +584,110 @@ public abstract class RenderBox extends RenderNode
 
   protected void validateMargins()
   {
-    final long boxContextWidth = getComputedBlockContextWidth();
-    margins.setTop(boxDefinition.getMarginTop().resolve(boxContextWidth));
-    margins.setBottom(boxDefinition.getMarginBottom().resolve(boxContextWidth));
-    margins.setLeft(boxDefinition.getMarginLeft().resolve(boxContextWidth));
-    margins.setRight(boxDefinition.getMarginRight().resolve(boxContextWidth));
+    validateAbsoluteMargins();
+
+    // now here comes the complex part: Compute effective margins.
+    // We have to deal with two cases: Inner element margins and outer margins
+    // for the outer margins, we compute the parent's margin and substract
+    // our margin from it (in other words: We do the normal collapsing).
+    final RenderBox parent = getParent();
+    if (parent == null || isEmpty())
+    {
+      // nice, no parent means no margins.
+      effectiveMargins.setTop(0);
+      effectiveMargins.setLeft(0);
+      effectiveMargins.setBottom(0);
+      effectiveMargins.setRight(0);
+      return;
+    }
+
+    final StrictInsets parentMargins = parent.getAbsoluteMargins();
+    if (getMajorAxis() == HORIZONTAL_AXIS)
+    {
+      effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
+      effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
+      if (getNonEmptyPrev() == null)
+      {
+        effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
+      }
+      else
+      {
+        effectiveMargins.setLeft(absoluteMargins.getLeft());
+      }
+      if (getNonEmptyNext() == null)
+      {
+        effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
+      }
+      else
+      {
+        effectiveMargins.setRight(absoluteMargins.getRight());
+      }
+    }
+    else
+    {
+      effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
+      effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
+
+      if (getNonEmptyPrev() == null)
+      {
+        effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
+      }
+      else
+      {
+        effectiveMargins.setTop(absoluteMargins.getTop());
+      }
+      if (getNonEmptyNext() == null)
+      {
+        effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
+      }
+      else
+      {
+        effectiveMargins.setBottom(absoluteMargins.getBottom());
+      }
+    }
+
+    // inner elements are different. For these, we use the absolute margin as
+    // new effective margin. 
+  }
+
+  protected void validateAbsoluteMargins()
+  {
+    final long topMargin = getLeadingMargin(VERTICAL_AXIS);
+    final long bottomMargin = getTrailingMargin(VERTICAL_AXIS);
+    final long leftMargin = getLeadingMargin(HORIZONTAL_AXIS);
+    final long rightMargin = getTrailingMargin(HORIZONTAL_AXIS);
+    absoluteMargins.setTop(topMargin);
+    absoluteMargins.setLeft(leftMargin);
+    absoluteMargins.setBottom(bottomMargin);
+    absoluteMargins.setRight(rightMargin);
   }
 
   protected long getRightInsets()
   {
-    return getMargins().getRight() + getPaddings().getRight() + getBorderWidths().getRight();
+    return getPaddings().getRight() +
+            getBorderWidths().getRight() +
+            getEffectiveMargins().getRight();
   }
 
   protected long getLeftInsets()
   {
-    return getMargins().getLeft() + getPaddings().getLeft() + getBorderWidths().getLeft();
+    return getPaddings().getLeft() +
+           getBorderWidths().getLeft() +
+            getEffectiveMargins().getLeft();
   }
 
   protected long getTopInsets()
   {
-    return getMargins().getTop() + getPaddings().getTop() +
-            getBorderWidths().getTop();
+    return getPaddings().getTop() +
+           getBorderWidths().getTop() +
+            getEffectiveMargins().getTop();
   }
 
   protected long getBottomInsets()
   {
-    return getMargins().getBottom() + getPaddings().getBottom() +
-            getBorderWidths().getBottom();
+    return getPaddings().getBottom() +
+           getBorderWidths().getBottom() +
+           getEffectiveMargins().getBottom();
   }
 
   protected long getParentWidth()
@@ -639,64 +721,309 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
-   * Queries the margin of the top or left neighbour (position wise).
-   *
-   * @param axis
-   * @return
-   */
-  public long getLeadingMargin (int axis)
-  {
-    RenderBox parent = getParent();
-    if (parent == null)
-    {
-      return Long.MAX_VALUE;
-    }
-    // A block renderer box is easy. Our previous element will be the
-    // element above us.
-    if (axis == parent.getMajorAxis())
-    {
-      RenderNode previous = getPrev();
-      if (previous != null)
-      {
-        if (previous instanceof RenderBox)
-        {
-          RenderBox prevBox = (RenderBox) previous;
-          return prevBox.getTrailingMargin(axis);
-        }
-        else
-        {
-          // fall back ...
-          return 0;
-        }
-      }
-      else
-      {
-        return parent.getLeadingMargin(axis);
-      }
-    }
-    else
-    {
-      return parent.getLeadingMargin(axis);
-    }
-  }
-
-  /**
-   * Queries the bottom or right margin.
+   * Queries the margin between to top or left edge of this box and the bottom
+   * or right edge of this boxes neighbour.
    *
    * @param axis
    * @return
    */
   public long getTrailingMargin (int axis)
   {
-    if (axis == VERTICAL_AXIS)
+    final long parentMargin;
+    RenderBox parent = getParent();
+    if (parent == null)
     {
-      return getMargins().getBottom();
+      // assume an infinite margin ..
+      parentMargin = Long.MAX_VALUE;
     }
     else
     {
-      return getMargins().getRight();
+      if (axis == parent.getMajorAxis())
+      {
+        // check, if we are the first item in the parent.
+        RenderNode next = getNonEmptyNext();
+
+        if (next instanceof RenderBox)
+        {
+          RenderBox nextBox = (RenderBox) next;
+          parentMargin = nextBox.getLeadingMarginInternal(axis);
+        }
+        else if (next != null)
+        {
+          parentMargin = 0;
+        }
+        else if (parent.isTrailingMarginIndependent(axis))
+        {
+          parentMargin = 0;
+        }
+        else
+        {
+          parentMargin = parent.getTrailingMargin(axis);
+        }
+      }
+      else if (parent.isTrailingMarginIndependent(axis))
+      {
+        parentMargin = 0;
+      }
+      else
+      {
+        parentMargin = parent.getTrailingMargin(axis);
+      }
+    }
+
+    final long parentWidth = getComputedBlockContextWidth();
+    final long myMargin;
+    if (axis == HORIZONTAL_AXIS)
+    {
+      myMargin = getBoxDefinition().getMarginRight().resolve(parentWidth);
+    }
+    else
+    {
+      myMargin = getBoxDefinition().getMarginBottom().resolve(parentWidth);
+    }
+
+    return collapseMargins(parentMargin, myMargin);
+  }
+
+  /**
+   * Queries the margin between to top or left edge of this box and the bottom
+   * or right edge of this boxes neighbour.
+   *
+   * @param axis
+   * @return
+   */
+  public long getLeadingMargin (int axis)
+  {
+    final long parentMargin;
+    RenderBox parent = getParent();
+    if (parent == null)
+    {
+      // assume an infinite margin ..
+      parentMargin = Long.MAX_VALUE;
+    }
+    else
+    {
+      if (axis == parent.getMajorAxis())
+      {
+        // check, if we are the first item in the parent.
+        RenderNode previous = getNonEmptyPrev();
+
+        if (previous instanceof RenderBox)
+        {
+          RenderBox prevBox = (RenderBox) previous;
+          parentMargin = prevBox.getTrailingMarginInternal(axis);
+        }
+        else if (previous != null)
+        {
+          parentMargin = 0;
+        }
+        else if (parent.isLeadingMarginIndependent(axis))
+        {
+          parentMargin = 0;
+        }
+        else
+        {
+          parentMargin = parent.getLeadingMargin(axis);
+        }
+      }
+      else if (parent.isLeadingMarginIndependent(axis))
+      {
+        parentMargin = 0;
+      }
+      else
+      {
+        parentMargin = parent.getLeadingMargin(axis);
+      }
+    }
+
+    final long parentWidth = getComputedBlockContextWidth();
+    final long myMargin;
+    if (axis == HORIZONTAL_AXIS)
+    {
+      myMargin = getBoxDefinition().getMarginLeft().resolve(parentWidth);
+    }
+    else
+    {
+      myMargin = getBoxDefinition().getMarginTop().resolve(parentWidth);
+    }
+
+    return collapseMargins(parentMargin, myMargin);
+  }
+
+  private RenderNode getNonEmptyPrev()
+  {
+    RenderNode previous = getPrev();
+    while (previous != null)
+    {
+      if (previous.isEmpty() == false)
+      {
+        return previous;
+      }
+      previous = previous.getPrev();
+    }
+    return null;
+  }
+
+  private RenderNode getNonEmptyNext()
+  {
+    RenderNode next = getNext();
+    while (next != null && next.isEmpty())
+    {
+      if (next.isEmpty() == false)
+      {
+        return next;
+      }
+      next = next.getNext();
+    }
+    return null;
+  }
+
+
+  /**
+   * Queries the bottom or right margin. This dives into the last child
+   * of the queried box, if needed.
+   *
+   * Warning: This method is used by the getLeadingMargin method and
+   * should not be used by someone else.
+   *
+   * @param axis
+   * @return
+   */
+  private long getTrailingMarginInternal (int axis)
+  {
+    RenderNode lastChild = getLastChild();
+    while (lastChild != null && lastChild.isEmpty())
+    {
+      lastChild = lastChild.getPrev();
+    }
+
+    final long childMargins;
+    if (isTrailingMarginIndependent(axis) == false)
+    {
+      if (lastChild instanceof RenderBox)
+      {
+        // I have some childs, lets ask them about their bottom or right margins
+        RenderBox lastBox = (RenderBox) lastChild;
+        childMargins = lastBox.getTrailingMarginInternal(axis);
+      }
+      else
+      {
+        // ok, no valid, margin-carrying childs ...
+        childMargins = 0;
+      }
+    }
+    else
+    {
+      childMargins = 0;
+    }
+
+    final BoxDefinition bd = getBoxDefinition();
+    final long parentWidth = getComputedBlockContextWidth();
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return collapseMargins
+              (bd.getMarginRight().resolve(parentWidth), childMargins);
+    }
+    else
+    {
+      return collapseMargins
+              (bd.getMarginBottom().resolve(parentWidth), childMargins);
     }
   }
 
 
+  /**
+   * Queries the bottom or right margin. This dives into the last child
+   * of the queried box, if needed.
+   *
+   * Warning: This method is used by the getLeadingMargin method and
+   * should not be used by someone else.
+   *
+   * @param axis
+   * @return
+   */
+  private long getLeadingMarginInternal (int axis)
+  {
+    RenderNode firstChild = getFirstChild();
+    while (firstChild != null && firstChild.isEmpty())
+    {
+      firstChild = firstChild.getNext();
+    }
+
+    final long childMargins;
+    if (isTrailingMarginIndependent(axis) == false)
+    {
+      if (firstChild instanceof RenderBox)
+      {
+        // I have some childs, lets ask them about their bottom or right margins
+        RenderBox firstBox = (RenderBox) firstChild;
+        childMargins = firstBox.getLeadingMarginInternal(axis);
+      }
+      else
+      {
+        // ok, no valid, margin-carrying childs ...
+        childMargins = 0;
+      }
+    }
+    else
+    {
+      childMargins = 0;
+    }
+
+    final BoxDefinition bd = getBoxDefinition();
+    final long parentWidth = getComputedBlockContextWidth();
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return collapseMargins
+              (bd.getMarginLeft().resolve(parentWidth), childMargins);
+    }
+    else
+    {
+      return collapseMargins
+              (bd.getMarginTop().resolve(parentWidth), childMargins);
+    }
+  }
+
+  public boolean isLeadingMarginIndependent (int axis)
+  {
+    if (axis == VERTICAL_AXIS)
+    {
+      return getBorderWidths().getTop() > 0 ||
+             getPaddings().getTop() > 0;
+    }
+    else
+    {
+      return getBorderWidths().getLeft() > 0 ||
+             getPaddings().getLeft() > 0;
+    }
+  }
+
+  public boolean isTrailingMarginIndependent (int axis)
+  {
+    if (axis == VERTICAL_AXIS)
+    {
+      return getBorderWidths().getBottom() > 0 ||
+             getPaddings().getBottom() > 0;
+    }
+    else
+    {
+      return getBorderWidths().getRight() > 0 ||
+             getPaddings().getRight() > 0;
+    }
+  }
+
+  private long collapseMargins (long parentMargin, long myMargin)
+  {
+    return Math.max (parentMargin, myMargin);
+  }
+
+  public StrictInsets getEffectiveMargins()
+  {
+    return effectiveMargins;
+  }
+
+  public void setEffectiveMargins(final StrictInsets effectiveMargins)
+  {
+    this.effectiveMargins = effectiveMargins;
+  }
 }
