@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
+ * $Id: PageDrawable.java,v 1.3 2006/07/12 17:53:05 taqua Exp $
  *
  * Changes
  * -------
@@ -104,17 +104,6 @@ public class PageDrawable implements Drawable
     {
       Log.warn("Box is unclean: " + level + ": " + box + " (" + box.getParent() + ")");
     }
-
-//    final double x = StrictGeomUtility.toExternalValue
-//            (box.getX() + box.getMargins().getLeft());
-//    final double y = StrictGeomUtility.toExternalValue
-//            (box.getY() + box.getMargins().getTop());
-//    final double w = StrictGeomUtility.toExternalValue
-//            (box.getWidth() - box.getMargins().getLeft() +
-//                    box.getMargins().getRight());
-//    final double h = StrictGeomUtility.toExternalValue
-//            (box.getHeight() - box.getMargins().getTop() +
-//                    box.getMargins().getBottom());
 
     BorderShapeFactory borderShapeFactory = new BorderShapeFactory(box);
     borderShapeFactory.generateBorder(g2);
@@ -270,6 +259,10 @@ public class PageDrawable implements Drawable
     b.append(text.getWidth());
     b.append(", height=");
     b.append(text.getHeight());
+    b.append(", leading=");
+    b.append(text.getLeadingSpace());
+    b.append(", trailing=");
+    b.append(text.getTrailingSpace());
     b.append(", text=");
 
     Glyph[] gs = text.getGlyphs();

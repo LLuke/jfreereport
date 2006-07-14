@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultRenderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -176,6 +176,7 @@ public class DefaultRenderer implements Renderer
   public void startedFlow(final LayoutContext context)
   {
     //DefaultPendingContentStorage flow = new DefaultPendingContentStorage();
+
     Log.debug("<flow>");
     if (openFlows.isEmpty())
     {
@@ -185,6 +186,8 @@ public class DefaultRenderer implements Renderer
     else
     {
       RenderBox currentBox = getInsertationPoint();
+      currentBox.addChilds(textFactory.finishText());
+
       final BoxDefinition definition =
               boxDefinitionFactory.createBlockBoxDefinition
               (context, layoutProcess.getOutputMetaData());
@@ -197,6 +200,8 @@ public class DefaultRenderer implements Renderer
 
   public void startedTable(final LayoutContext context)
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     Log.debug("<table>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
@@ -210,6 +215,8 @@ public class DefaultRenderer implements Renderer
   public void startedTableSection(final LayoutContext context)
           throws NormalizationException
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     Log.debug("<table-section>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
@@ -221,6 +228,8 @@ public class DefaultRenderer implements Renderer
   public void startedTableRow(final LayoutContext context)
           throws NormalizationException
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     Log.debug("<table-row>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
@@ -232,6 +241,8 @@ public class DefaultRenderer implements Renderer
   public void startedTableCell(final LayoutContext context)
           throws NormalizationException
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     Log.debug("<table-cell>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
@@ -242,6 +253,8 @@ public class DefaultRenderer implements Renderer
 
   public void startedBlock(final LayoutContext context)
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     Log.debug("<block>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
@@ -255,6 +268,8 @@ public class DefaultRenderer implements Renderer
   public void startedRootInline(final LayoutContext context)
           throws NormalizationException
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     Log.debug("<paragraph>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
@@ -267,6 +282,8 @@ public class DefaultRenderer implements Renderer
 
   public void startedInline(final LayoutContext context)
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     Log.debug("<inline>");
     final BoxDefinition definition =
             boxDefinitionFactory.createInlineBoxDefinition
@@ -308,7 +325,6 @@ public class DefaultRenderer implements Renderer
   public void addContent(final LayoutContext context,
                          final ContentToken content)
   {
-//    Log.debug("CONTENT: " + content); // not yet
     if (content instanceof GenericType)
     {
       GenericType generic = (GenericType) content;
@@ -324,6 +340,7 @@ public class DefaultRenderer implements Renderer
         RenderableImage image = createImage((Image) raw, source);
         if (image != null)
         {
+          getInsertationPoint().addChilds(textFactory.finishText());
           getInsertationPoint().addChild(image);
           return;
         }
@@ -342,13 +359,12 @@ public class DefaultRenderer implements Renderer
       TextType textRaw = (TextType) content;
       final String textStr = textRaw.getText();
       final RenderableText[] text = createText(textStr, context);
-//      Log.debug ("Text: " + textStr + " -> " + text[0].getRawText());
       getInsertationPoint().addChilds(text);
     }
   }
 
   private RenderableText[] createText(final String str,
-                                    final LayoutContext context)
+                                      final LayoutContext context)
   {
     if (buffer != null)
     {
@@ -393,6 +409,7 @@ public class DefaultRenderer implements Renderer
 
   public void finishedInline()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</inline>");
     getInsertationPoint().close();
    // currentBox = (RenderBox) currentBox.getParent();
@@ -400,6 +417,7 @@ public class DefaultRenderer implements Renderer
 
   public void finishedRootInline() throws NormalizationException
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</paragraph>");
     getInsertationPoint().close();
    // currentBox = (RenderBox) currentBox.getParent();
@@ -407,6 +425,7 @@ public class DefaultRenderer implements Renderer
 
   public void finishedBlock()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</block>");
     getInsertationPoint().close();
    // currentBox = (RenderBox) currentBox.getParent();
@@ -414,6 +433,7 @@ public class DefaultRenderer implements Renderer
 
   public void finishedTableCell()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-cell>");
     getInsertationPoint().close();
   //  currentBox = (RenderBox) currentBox.getParent();
@@ -421,6 +441,7 @@ public class DefaultRenderer implements Renderer
 
   public void finishedTableRow()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-row>");
     getInsertationPoint().close();
    // currentBox = (RenderBox) currentBox.getParent();
@@ -428,6 +449,7 @@ public class DefaultRenderer implements Renderer
 
   public void finishedTableSection()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-section>");
     getInsertationPoint().close();
  //   currentBox = (RenderBox) currentBox.getParent();
@@ -435,6 +457,7 @@ public class DefaultRenderer implements Renderer
 
   public void finishedTable()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table>");
     getInsertationPoint().close();
   //  currentBox = (RenderBox) currentBox.getParent();
@@ -442,15 +465,15 @@ public class DefaultRenderer implements Renderer
 
   public void finishedFlow()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</flow>");
- //  NormalFlowRenderBox flow = (NormalFlowRenderBox) getInsertationPoint();
- //   currentBox = (RenderBox) flow.getPlaceHolder().getParent();
     getInsertationPoint().close();
     openFlows.pop();
   }
 
   public void finishedPhysicalPageFlow()
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</special-flow>");
     getInsertationPoint().close();
     openFlows.pop();
@@ -473,7 +496,8 @@ public class DefaultRenderer implements Renderer
 
     rootBox.setX(0);
     rootBox.setY(0);
-    rootBox.setWidth(rootBox.getPreferredSize(RenderNode.HORIZONTAL_AXIS) / 2);
+    rootBox.setWidth(150000);
+            //rootBox.getPreferredSize(RenderNode.HORIZONTAL_AXIS));
     rootBox.setHeight(rootBox.getMaximumSize(RenderNode.VERTICAL_AXIS));
 
     rootBox.validate();
@@ -500,6 +524,8 @@ public class DefaultRenderer implements Renderer
 
   public void handlePageBreak(final PageContext pageContext)
   {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
     // initialize the initial page-grid
     // for the first try, use a hard-coded page size. We should change that
     // before we go public ...

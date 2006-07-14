@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.2 2006/07/12 17:53:05 taqua Exp $
  *
  * Changes
  * -------
@@ -132,10 +132,10 @@ public class ParagraphRenderBox extends BlockRenderBox
     // This code splits a logical line into one or more physical lines.
     RenderNode line = lineboxContainer.getFirstChild();
     ValidationStruct lineStruct = new ValidationStruct();
-    lineStruct.setCursor(getY() + getTopInsets());
+    lineStruct.setCursor(getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis()));
 
     final long width = getWidth();
-    final long x = getX() + getLeftInsets();
+    final long x = getPosition(getMinorAxis()) + getLeadingInsets(getMinorAxis());
     RenderNode[] target = new RenderNode[2];
     Log.debug("Performing validate on Paragraph: width=" + width + ", x=" + x);
 
@@ -200,11 +200,11 @@ public class ParagraphRenderBox extends BlockRenderBox
           // Ups ..
           Log.debug("Empty box after the split. ");
         }
-        firstSplitNode.setX(x);
-        firstSplitNode.setWidth(width);
-        firstSplitNode.setY(lineStruct.getCursor());
+        firstSplitNode.setPosition(getMinorAxis(), x);
+        firstSplitNode.setPosition(getMajorAxis(), lineStruct.getCursor());
+        firstSplitNode.setDimension(getMinorAxis(), width);
         firstSplitNode.validate();
-        lineStruct.addCursorPosition(firstSplitNode.getHeight());
+        lineStruct.addCursorPosition(firstSplitNode.getDimension(getMajorAxis()));
 
         addDirectly(firstSplitNode);
 
@@ -222,11 +222,11 @@ public class ParagraphRenderBox extends BlockRenderBox
             Log.debug("Made no progress at all: " + target[1]);
             addDirectly(target[1]);
 
-            target[1].setX(x);
-            target[1].setWidth(width);
-            target[1].setY(lineStruct.getCursor());
+            target[1].setPosition(getMinorAxis(), x);
+            target[1].setPosition(getMajorAxis(), lineStruct.getCursor());
+            target[1].setDimension(getMinorAxis(), width);
             target[1].validate();
-            lineStruct.addCursorPosition(target[1].getHeight());
+            lineStruct.addCursorPosition(target[1].getDimension(getMajorAxis()));
             lineFragment = null;
           }
         }

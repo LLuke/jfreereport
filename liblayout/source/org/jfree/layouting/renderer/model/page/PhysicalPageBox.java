@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PhysicalPageBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
  *
  * Changes
  * -------
@@ -74,5 +74,18 @@ public class PhysicalPageBox extends RenderBox
   public void validate()
   {
 
+  }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now, we
+   * define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public long getReferencePoint(int axis)
+  {
+    return 0;
   }
 }

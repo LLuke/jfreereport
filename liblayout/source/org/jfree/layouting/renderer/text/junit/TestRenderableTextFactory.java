@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TestRenderableTextFactory.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -101,9 +101,41 @@ public class TestRenderableTextFactory extends DefaultRenderableTextFactory
     return new CollapseWhiteSpaceFilter();
   }
 
+//  public static void main(String[] args)
+//  {
+//    LibLayoutBoot.getInstance().start();
+//
+//    DefaultElementContext elementContext = new DefaultElementContext(null);
+//    DefaultLayoutContext layoutContext =
+//            new DefaultLayoutContext(new ContextId(0, 0,0), "Bah", "buh", null, new AttributeMap());
+//
+//    TestRenderableTextFactory tr = new TestRenderableTextFactory(null);
+//
+//
+//    int[] text = new int[]{' ', 'W','o', ' ', 'b', ' ', ' ', '\n' };
+//    tr.startText();
+//    RenderableText[] rts = tr.createText
+//            (text, 0, text.length, layoutContext);
+//    tr.finishText();
+//
+//    RenderableText rt = rts[0];
+//    Log.debug("RT: " + rt.getLength());
+//    printGlyphs(rt);
+//
+////    RenderNode[] nodes = rt.split(rt.getMinorAxis(), 29000, null);
+////    RenderableText text1 = (RenderableText) nodes[0];
+////    RenderableText text2 = (RenderableText) nodes[1];
+////    Log.debug("RT[0]: " + text1.getLength());
+////
+////    printGlyphs(text1);
+////    Log.debug("RT[1]: " + text2.getLength());
+////    printGlyphs(text2);
+//  }
+
+
+
   public static void main(String[] args)
   {
-    LibLayoutBoot.getInstance().start();
 
     DefaultElementContext elementContext = new DefaultElementContext(null);
     DefaultLayoutContext layoutContext =
@@ -112,24 +144,14 @@ public class TestRenderableTextFactory extends DefaultRenderableTextFactory
     TestRenderableTextFactory tr = new TestRenderableTextFactory(null);
 
 
-    int[] text = new int[]{' ', 'W','o', ' ', 'b', ' ', ' ', '\n' };
-    tr.startText();
-    RenderableText[] rts = tr.createText
-            (text, 0, text.length, layoutContext);
+    int[] text = new int[]{ ' ', 'A',' ', 'B',' '};
+    
+    RenderableText[] rts = tr.createText(text, 0, text.length, layoutContext);
     tr.finishText();
 
-    RenderableText rt = rts[0];
-    Log.debug("RT: " + rt.getLength());
+    RenderableText rt = rts[1];
+    Log.debug("RT: " + rt.getLength() + " " + rt.getLeadingSpace() + " " + rt.getTrailingSpace());
     printGlyphs(rt);
-
-    RenderNode[] nodes = rt.split(rt.getMinorAxis(), 29000, null);
-    RenderableText text1 = (RenderableText) nodes[0];
-    RenderableText text2 = (RenderableText) nodes[1];
-    Log.debug("RT[0]: " + text1.getLength());
-
-    printGlyphs(text1);
-    Log.debug("RT[1]: " + text2.getLength());
-    printGlyphs(text2);
   }
 
   private static void printGlyphs(final RenderableText text)
@@ -139,8 +161,7 @@ public class TestRenderableTextFactory extends DefaultRenderableTextFactory
     for (int i = text.getOffset(); i < lpos; i++)
     {
       Glyph glyph = glyphs[i];
-      Log.debug("BO: " + glyph.getBreakWeight() + " - " +
-              glyph.getCodepoint() + " -"  + glyph.getWidth());
+      Log.debug("BO: " + glyph + ", BW: " + glyph.getBreakWeight());
     }
   }
 }

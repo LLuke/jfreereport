@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
+ * $Id: RenderNode.java,v 1.3 2006/07/12 17:53:06 taqua Exp $
  *
  * Changes
  * -------
@@ -227,6 +227,54 @@ public abstract class RenderNode implements Cloneable
     {
       // someone changed the position, invalidate all childs ..
       setState(RenderNodeState.UNCLEAN);
+    }
+  }
+
+  public final void setPosition (int axis, long value)
+  {
+    if (axis == HORIZONTAL_AXIS)
+    {
+      setX(value);
+    }
+    else
+    {
+      setY(value);
+    }
+  }
+
+  public final long getPosition (int axis)
+  {
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return getX();
+    }
+    else
+    {
+      return getY();
+    }
+  }
+
+  public final void setDimension (int axis, long value)
+  {
+    if (axis == HORIZONTAL_AXIS)
+    {
+      setWidth(value);
+    }
+    else
+    {
+      setHeight(value);
+    }
+  }
+
+  public final long getDimension (int axis)
+  {
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return getWidth();
+    }
+    else
+    {
+      return getHeight();
     }
   }
 
@@ -609,6 +657,35 @@ public abstract class RenderNode implements Cloneable
       }
     }
     return parentWidth.longValue();
-
   }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now,
+   * we define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public abstract long getReferencePoint(int axis);
+
+  /**
+   * Defines a spacing, that only applies if the node is not the first node in
+   * the box. This spacing gets later mixed in with the absolute margins and
+   * corresponds to the effective margin of the RenderBox class.
+   *
+   * @param axis
+   * @return
+   */
+  public abstract long getLeadingSpace (int axis);
+
+  /**
+   * Defines a spacing, that only applies, if the node is not the last node in
+   * the box. This spacing gets later mixed in with the absolute margins and
+   * corresponds to the effective margin of the RenderBox class.
+   *
+   * @param axis
+   * @return
+   */
+  public abstract long getTrailingSpace (int axis);
 }

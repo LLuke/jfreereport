@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InvisibleRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -76,5 +76,18 @@ public class InvisibleRenderBox extends RenderBox
     setWidth(0);
     setHeight(0);
     setState(RenderNodeState.FINISHED);
+  }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now, we
+   * define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public long getReferencePoint(int axis)
+  {
+    return 0;
   }
 }

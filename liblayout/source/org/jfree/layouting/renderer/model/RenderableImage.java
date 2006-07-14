@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderableImage.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -148,5 +148,44 @@ public class RenderableImage extends RenderNode
   public int getBreakability()
   {
     return HARD_BREAKABLE;
+  }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now, we
+   * define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public long getReferencePoint(int axis)
+  {
+    return getPreferredSize(axis);
+  }
+
+  /**
+   * Defines a spacing, that only applies if the node is not the first node in
+   * the box. This spacing gets later mixed in with the absolute margins and
+   * corresponds to the effective margin of the RenderBox class.
+   *
+   * @param axis
+   * @return
+   */
+  public long getLeadingSpace(int axis)
+  {
+    return 0;
+  }
+
+  /**
+   * Defines a spacing, that only applies, if the node is not the last node in
+   * the box. This spacing gets later mixed in with the absolute margins and
+   * corresponds to the effective margin of the RenderBox class.
+   *
+   * @param axis
+   * @return
+   */
+  public long getTrailingSpace(int axis)
+  {
+    return 0;
   }
 }

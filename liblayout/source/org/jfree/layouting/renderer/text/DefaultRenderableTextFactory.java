@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultRenderableTextFactory.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -61,10 +61,10 @@ import org.jfree.layouting.renderer.text.classifier.GlyphClassificationProducer;
 import org.jfree.layouting.renderer.text.classifier.LinebreakClassificationProducer;
 import org.jfree.layouting.renderer.text.classifier.WhitespaceClassificationProducer;
 import org.jfree.layouting.renderer.text.font.FontSizeProducer;
-import org.jfree.layouting.renderer.text.font.GlyphMetrics;
 import org.jfree.layouting.renderer.text.font.KerningProducer;
 import org.jfree.layouting.renderer.text.font.NoKerningProducer;
 import org.jfree.layouting.renderer.text.font.VariableFontSizeProducer;
+import org.jfree.layouting.renderer.text.font.GlyphMetrics;
 import org.jfree.layouting.renderer.text.whitespace.CollapseWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.DiscardWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.PreserveBreaksWhiteSpaceFilter;
@@ -92,11 +92,20 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   private GlyphClassificationProducer classificationProducer;
   private LayoutContext layoutContext;
 
+  private transient GlyphMetrics dims;
+
+  private ArrayList words;
+  private ArrayList glyphList;
+  private long leadingMargin;
+
   public DefaultRenderableTextFactory(final LayoutProcess layoutProcess)
   {
     this.layoutProcess = layoutProcess;
     this.clusterProducer = new GraphemeClusterProducer();
     this.startText = true;
+    this.words = new ArrayList();
+    this.glyphList = new ArrayList();
+    this.dims = new GlyphMetrics();
   }
 
 
@@ -124,209 +133,197 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     return processText(text, offset, length);
   }
 
-  public RenderableText[] processText (final int[] text,
+  protected RenderableText[] processText (final int[] text,
                                        final int offset,
                                        final int length)
   {
-    final ArrayList glyphList = new ArrayList(length);
-    int lastCluster = -1;
-    int clusterStart = offset;
-    int cluster = -1;
-    int width = 0;
-    int height = 0;
-    int kerning = 0;
-    int breakweight = BreakOpportunityProducer.BREAK_NEVER;
-    int glyphClassification = 0;
-    int clusterStartCodePoint = -1;
-
-    Spacing spacing = null;
-    GlyphMetrics dims = null;
-
-    ArrayList generatedLines = null;
-    RenderableText firstGeneratedLine = null;
-
+    int clusterStartIdx = -1;
     final int maxLen = Math.min(length + offset, text.length);
     for (int i = offset; i < maxLen; i++)
     {
       final int codePoint = text[i];
-      cluster = this.clusterProducer.createGraphemeCluster(codePoint);
-
-      final int filteredCodePoint = whitespaceFilter.filter(codePoint);
-      final boolean filterWhiteSpace =
-              (filteredCodePoint == WhiteSpaceFilter.STRIP_WHITESPACE);
-
-      // depending on whether we are inside a grapheme cluster right now,
-      // we can skip and/or change some tests.
-
-      if ((filterWhiteSpace == false) &&
-              (cluster > 0 && cluster == lastCluster))
+      final boolean clusterStarted =
+              this.clusterProducer.createGraphemeCluster(codePoint);
+      // ignore the first cluster start; we need to see the whole cluster.
+      if (clusterStarted)
       {
-        // we're inside a codepoint cluster ..
-        dims = fontSizeProducer.getCharacterSize(codePoint, dims);
-        width = Math.max(width, (dims.getWidth() & 0x7FFFFFFF));
-        height = Math.max(height, (dims.getHeight() & 0x7FFFFFFF));
-        glyphClassification = classificationProducer.getClassification(codePoint);
-      }
-      else
-      {
-
-        if (i > offset && clusterStart >= 0)
+        if (i > offset)
         {
-          // finish the old cluster ..
-          int[] extraChars = new int[i - clusterStart - 1];
+          int[] extraChars = new int[i - clusterStartIdx - 1];
           if (extraChars.length > 0)
           {
-            System.arraycopy(text, clusterStart + 1, extraChars, 0, extraChars.length);
+            System.arraycopy(text, clusterStartIdx + 1, extraChars, 0, extraChars.length);
           }
-          if (breakweight == BreakOpportunityProducer.BREAK_LINE)
-          {
-            Glyph[] glyphs = (Glyph[]) glyphList.toArray(new Glyph[glyphList.size()]);
-            glyphList.clear();
-            RenderableText textLine = new RenderableText
-                    (layoutContext, glyphs, 0, glyphs.length, true, true);
-            if (generatedLines == null)
-            {
-              if (firstGeneratedLine == null)
-              {
-                firstGeneratedLine = textLine;
-              }
-              else
-              {
-                generatedLines = new ArrayList();
-                generatedLines.add(firstGeneratedLine);
-                generatedLines.add(textLine);
-                firstGeneratedLine = null;
-              }
-            }
-            else
-            {
-              generatedLines.add(textLine);
-            }
-          }
-          else
-          {
-            // we strip that character, it must be a linebreak indicator.
-            // such characters dont get printed itself (at least here)
-            // and can be safely removed as long
-            Glyph glyph = new Glyph(clusterStartCodePoint, breakweight,
-                    glyphClassification, spacing, width, height,
-                    dims.getBaselinePosition(), kerning, extraChars);
-            glyphList.add(glyph);
-          }
+          addGlyph(text[clusterStartIdx], extraChars);
         }
 
-        if (filterWhiteSpace)
-        {
-          lastCluster = cluster;
-          clusterStart = -1;
-          clusterStartCodePoint = -1;
-//          Log.debug (codePoint + " ~ " + whitespaceFilter);
-        }
-        else
-        {
-//          Log.debug (codePoint + " * " + whitespaceFilter);
-          clusterStartCodePoint = filteredCodePoint;
-          lastCluster = cluster;
-          clusterStart = i;
-          // not inside a codepoint cluster. Ordinary filtering happens ..
-          // kerning:
-          glyphClassification = classificationProducer.getClassification(codePoint);
-          kerning = kerningProducer.getKerning(codePoint);
-          breakweight = breakOpportunityProducer.createBreakOpportunity(codePoint);
-          spacing = spacingProducer.createSpacing(codePoint);
-          dims = fontSizeProducer.getCharacterSize(codePoint, dims);
-          width = (dims.getWidth() & 0x7FFFFFFF);
-          height = (dims.getHeight() & 0x7FFFFFFF);
-        }
+        clusterStartIdx = i;
       }
     }
 
-    // Copy&Paste from above: Process the last codepoint ..
-    if (clusterStart >= 0)
+    // Process the last cluster ...
+    if (clusterStartIdx >= offset)
     {
-      // finish the old cluster ..
-      int[] extraChars = new int[maxLen - clusterStart - 1];
+      int[] extraChars = new int[maxLen - clusterStartIdx - 1];
       if (extraChars.length > 0)
       {
-        System.arraycopy(text, clusterStart + 1, extraChars, 0, extraChars.length);
+        System.arraycopy(text, clusterStartIdx + 1, extraChars, 0, extraChars.length);
       }
-      if (breakweight == BreakOpportunityProducer.BREAK_LINE)
-      {
-        Glyph[] glyphs = (Glyph[]) glyphList.toArray(new Glyph[glyphList.size()]);
-        glyphList.clear();
-        RenderableText textLine = new RenderableText
-                (layoutContext, glyphs, 0, glyphs.length, true, true);
-        if (generatedLines == null)
-        {
-          if (firstGeneratedLine == null)
-          {
-            firstGeneratedLine = textLine;
-          }
-          else
-          {
-            generatedLines = new ArrayList();
-            generatedLines.add(firstGeneratedLine);
-            generatedLines.add(textLine);
-            firstGeneratedLine = null;
-          }
-        }
-        else
-        {
-          generatedLines.add(textLine);
-        }
-      }
-      else
-      {
-        // we strip that character, it must be a linebreak indicator.
-        // such characters dont get printed itself (at least here)
-        // and can be safely removed as long
-        Glyph glyph = new Glyph(clusterStartCodePoint, breakweight,
-                glyphClassification, spacing, width, height,
-                dims.getBaselinePosition(), kerning, extraChars);
-        glyphList.add(glyph);
-      }
+      addGlyph(text[clusterStartIdx], extraChars);
     }
 
-
-    if (glyphList.isEmpty() == false)
+    if (words.isEmpty() == false)
     {
-      Glyph[] glyphs = (Glyph[]) glyphList.toArray(new Glyph[glyphList.size()]);
-      RenderableText textLine = new RenderableText
-            (layoutContext, glyphs, 0, glyphs.length, true,
-                    breakweight == BreakOpportunityProducer.BREAK_LINE);
-      if (generatedLines == null)
-      {
-        if (firstGeneratedLine == null)
-        {
-          firstGeneratedLine = textLine;
-        }
-        else
-        {
-          generatedLines = new ArrayList();
-          generatedLines.add(firstGeneratedLine);
-          generatedLines.add(textLine);
-          firstGeneratedLine = null;
-        }
-      }
-      else
-      {
-        generatedLines.add(textLine);
-      }
-    }
-
-    if (generatedLines != null)
-    {
-      return (RenderableText[]) generatedLines.toArray(new RenderableText[generatedLines.size()]);
-    }
-    else if (firstGeneratedLine != null)
-    {
-      return new RenderableText[]{ firstGeneratedLine };
+      final RenderableText[] renderableTexts = (RenderableText[]) words.toArray(new RenderableText[words.size()]);
+      words.clear();
+      return renderableTexts;
     }
     else
     {
-      // we did not produce any text. 
+      // we did not produce any text.
       return new RenderableText[0];
     }
+  }
+
+  protected void addGlyph (int rawCodePoint, int[] extraChars)
+  {
+  //  Log.debug ("Processing " + rawCodePoint);
+
+    if (rawCodePoint == ClassificationProducer.END_OF_TEXT)
+    {
+      whitespaceFilter.filter(rawCodePoint);
+      classificationProducer.getClassification(rawCodePoint);
+      kerningProducer.getKerning(rawCodePoint);
+      breakOpportunityProducer.createBreakOpportunity(rawCodePoint);
+      spacingProducer.createSpacing(rawCodePoint);
+      fontSizeProducer.getCharacterSize(rawCodePoint, dims);
+
+      if (leadingMargin != 0 || glyphList.isEmpty() == false)
+      {
+        addWord(false);
+      }
+      else
+      {
+        // finish up ..
+        glyphList.clear();
+        leadingMargin = 0;
+      }
+      return;
+    }
+
+    int codePoint = whitespaceFilter.filter(rawCodePoint);
+    boolean stripWhitespaces;
+
+    // No matter whether we will ignore the result, we have to keep our
+    // factories up and running. These beasts need to see all data, no
+    // matter what get printed later.
+    if (codePoint == WhiteSpaceFilter.STRIP_WHITESPACE)
+    {
+      // if we dont have extra-chars, ignore the thing ..
+      if (extraChars.length == 0)
+      {
+        stripWhitespaces = true;
+      }
+      else
+      {
+        // convert it into a space. This might be invalid, but will work for now.
+        codePoint = ' ';
+        stripWhitespaces = false;
+      }
+    }
+    else
+    {
+      stripWhitespaces = false;
+    }
+
+    int glyphClassification = classificationProducer.getClassification(codePoint);
+    int kerning = kerningProducer.getKerning(codePoint);
+    int breakweight = breakOpportunityProducer.createBreakOpportunity(codePoint);
+    Spacing spacing = spacingProducer.createSpacing(codePoint);
+    dims = fontSizeProducer.getCharacterSize(codePoint, dims);
+    int width = (dims.getWidth() & 0x7FFFFFFF);
+    int height = (dims.getHeight() & 0x7FFFFFFF);
+
+    for (int i = 0; i < extraChars.length; i++)
+    {
+      int extraChar = extraChars[i];
+      dims = fontSizeProducer.getCharacterSize(extraChar, dims);
+      width = Math.max(width, (dims.getWidth() & 0x7FFFFFFF));
+      height = Math.max(height, (dims.getHeight() & 0x7FFFFFFF));
+      breakweight = breakOpportunityProducer.createBreakOpportunity(extraChar);
+      glyphClassification = classificationProducer.getClassification(extraChar);
+    }
+
+    if (stripWhitespaces)
+    {
+    //  Log.debug ("Stripping whitespaces");
+      return;
+    }
+
+    if (Glyph.SPACE_CHAR == glyphClassification && isWordBreak(breakweight))
+    {
+
+      // Finish the current word ...
+      if (glyphList.isEmpty() == false)
+      {
+        final boolean forceLinebreak = breakweight == BreakOpportunityProducer.BREAK_LINE;
+        addWord(forceLinebreak);
+      }
+
+
+      // This character can be stripped. We increase the leading margin of the
+      // next word by the character's width.
+      leadingMargin += width;
+   //   Log.debug ("Increasing Margin");
+      return;
+    }
+
+    Glyph glyph = new Glyph(codePoint, breakweight,
+            glyphClassification, spacing, width, height,
+            dims.getBaselinePosition(), kerning, extraChars);
+    glyphList.add(glyph);
+   // Log.debug ("Adding Glyph");
+
+    // does this finish a word? Check it!
+    if (isWordBreak(breakweight) && glyphList.isEmpty() == false)
+    {
+      final boolean forceLinebreak = breakweight == BreakOpportunityProducer.BREAK_LINE;
+      addWord(forceLinebreak);
+    }
+  }
+
+  protected void addWord(boolean forceLinebreak)
+  {
+    if (glyphList.isEmpty())
+    {
+      // create an trailing margin element. This way, it can collapse with
+      // the next element.
+      words.add(new RenderableText
+              (layoutContext, new Glyph[0], 0, 0, true, forceLinebreak,
+                      0, leadingMargin));
+  //    Log.debug ("Adding Placeholder");
+    }
+    else
+    {
+      // ok, it does.
+      Glyph[] glyphs = (Glyph[]) glyphList.toArray(new Glyph[glyphList.size()]);
+      words.add(new RenderableText
+              (layoutContext, glyphs, 0, glyphs.length, true, forceLinebreak,
+                      leadingMargin, 0));
+      glyphList.clear();
+   //   Log.debug ("Adding Text: " + glyphs.length);
+    }
+    leadingMargin = 0;
+  }
+
+  private boolean isWordBreak(int breakOp)
+  {
+    if (BreakOpportunityProducer.BREAK_WORD == breakOp ||
+        BreakOpportunityProducer.BREAK_LINE == breakOp)
+    {
+      return true;
+    }
+    return false;
   }
 
   protected WhiteSpaceFilter createWhitespaceFilter(final LayoutContext layoutContext)
@@ -440,11 +437,6 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 //    return new DefaultKerningProducer(fontMetrics);
   }
 
-  public void startText()
-  {
-    startText = true;
-  }
-
   public RenderableText[] finishText()
   {
     if (layoutContext == null)
@@ -460,6 +452,8 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     fontSizeProducer = null;
     spacingProducer = null;
     breakOpportunityProducer = null;
+
+    startText = true;
     return text;
   }
 }

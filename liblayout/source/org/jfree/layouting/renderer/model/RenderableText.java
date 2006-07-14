@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderableText.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -86,15 +86,26 @@ public class RenderableText extends RenderNode
   private long maximumWidth;
 
   private long height;
+  private long baseLine;
   private boolean forceLinebreak;
+  private long leadingSpace;
+  private long trailingSpace;
 
   public RenderableText(final LayoutContext layoutContext,
                         final Glyph[] glyphs,
                         final int offset,
                         final int length,
                         final boolean ltr,
-                        final boolean forceLinebreak)
+                        final boolean forceLinebreak,
+                        final long leadingSpace,
+                        final long trailingSpace)
   {
+    if (leadingSpace == 0)
+    {
+      Log.debug ("EH");
+    }
+    this.leadingSpace = leadingSpace;
+    this.trailingSpace = trailingSpace;
     if (glyphs == null)
     {
       throw new NullPointerException();
@@ -115,20 +126,27 @@ public class RenderableText extends RenderNode
     this.length = length;
     this.forceLinebreak = forceLinebreak;
 
-    setMajorAxis(RenderNode.VERTICAL_AXIS);
-    setMinorAxis(RenderNode.HORIZONTAL_AXIS);
+    // Major axis: All child boxes are placed from left-to-right
+    setMajorAxis(HORIZONTAL_AXIS);
+    // Minor: The childs might be aligned on their position (shifted up or down)
+    setMinorAxis(VERTICAL_AXIS);
 
     long wordMinChunkWidth = 0;
     long wordMinWidth = 0;
     long wordPrefWidth = 0;
     long wordMaxWidth = 0;
 
+    long heightAbove = 0;
+    long heightBelow = 0;
+
     final int lastPos = Math.min(glyphs.length, offset + length);
     for (int i = offset; i < lastPos; i++)
     {
       Glyph glyph = glyphs[i];
       Spacing spacing = glyph.getSpacing();
-      height = Math.max(glyph.getHeight(), height);
+      heightAbove = Math.max(glyph.getBaseLine(), heightAbove);
+      heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
+      baseLine = Math.max(glyph.getBaseLine(), baseLine);
       final int kerning = glyph.getKerning();
       final int width = glyph.getWidth();
       // Log.debug ("Glyph: " + width + " - " + kerning);
@@ -152,16 +170,17 @@ public class RenderableText extends RenderNode
         minimumChunkWidth = Math.max(minimumChunkWidth, wordMinChunkWidth);
         wordMinWidth = 0;
 
+        // Paranoid sanity checks: The word- and linebreaks should have been
+        // replaced by other definitions in the text factory.
         if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_LINE)
         {
-          // Linebreaks should have been replaced by 'clear-left' and
-          // 'clear-right' in the TextFactory. Something went totally wrong... 
           throw new IllegalStateException("A renderable text cannot and must " +
                   "not contain linebreaks.");
         }
       }
     }
 
+    height = heightAbove + heightBelow;
     minimumChunkWidth = Math.max(minimumChunkWidth, wordMinChunkWidth);
     minimumWidth = Math.max(minimumWidth, wordMinWidth);
     preferredWidth = Math.max(preferredWidth, wordPrefWidth);
@@ -170,6 +189,21 @@ public class RenderableText extends RenderNode
     setHeight(height);
     // Log.debug ("Text: " + minimumWidth + ", " + preferredWidth + ", " + maximumWidth);
 
+  }
+
+  public void setTrailingSpace(final long trailingSpace)
+  {
+    this.trailingSpace = trailingSpace;
+  }
+
+  public long getTrailingSpace()
+  {
+    return trailingSpace;
+  }
+
+  public long getLeadingSpace()
+  {
+    return leadingSpace;
   }
 
   public boolean isForceLinebreak()
@@ -201,6 +235,7 @@ public class RenderableText extends RenderNode
   {
     return length;
   }
+
 
   /**
    * Splits the render node at the given position. This method returns an array
@@ -237,7 +272,7 @@ public class RenderableText extends RenderNode
 
     Log.debug("Attempt to split text: " + axis + " - " + position);
 
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       // not splitable. By using the invisible render box, we allow the content
       // to move into the next line ..
@@ -331,8 +366,9 @@ public class RenderableText extends RenderNode
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
         target[0] = new RenderableText
-                (getLayoutContext(), glyphs, offset, i - offset + 1, isLtr(), false);
-        Log.debug("Text[0]: " + getRawText() + " " + pos + " -> " + offset + ":" + (i - offset));
+                (getLayoutContext(), glyphs, offset,
+                        i - offset + 1, isLtr(), false, getLeadingSpace(), 0);
+//        Log.debug("Text[0]: " + getRawText() + " " + pos + " -> " + offset + ":" + (i - offset));
         break;
       }
     }
@@ -346,8 +382,9 @@ public class RenderableText extends RenderNode
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
         target[1] = new RenderableText
-                (getLayoutContext(), glyphs, i, length - i, isLtr(), isForceLinebreak());
-        Log.debug("Text[1]: " + getRawText() + " " + pos + " -> " + i + ":" + (length - i));
+                (getLayoutContext(), glyphs, i, length - i, isLtr(),
+                        isForceLinebreak(), 0, getTrailingSpace());
+//        Log.debug("Text[1]: " + getRawText() + " " + pos + " -> " + i + ":" + (length - i));
         break;
 
       }
@@ -380,7 +417,7 @@ public class RenderableText extends RenderNode
    */
   public long getBestBreak(int axis, long position)
   {
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       return 0;
     }
@@ -429,7 +466,7 @@ public class RenderableText extends RenderNode
    */
   public long getFirstBreak(int axis)
   {
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       return 0;
     }
@@ -458,7 +495,7 @@ public class RenderableText extends RenderNode
 
   public long getMinimumChunkSize(int axis)
   {
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       return height;
     }
@@ -467,7 +504,7 @@ public class RenderableText extends RenderNode
 
   public long getMinimumSize(int axis)
   {
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       return height;
     }
@@ -476,7 +513,7 @@ public class RenderableText extends RenderNode
 
   public long getPreferredSize(int axis)
   {
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       return height;
     }
@@ -485,7 +522,7 @@ public class RenderableText extends RenderNode
 
   public long getMaximumSize(int axis)
   {
-    if (axis == getMajorAxis())
+    if (axis == getMinorAxis())
     {
       return height;
     }
@@ -578,6 +615,67 @@ public class RenderableText extends RenderNode
   public boolean isEmpty()
   {
     return length == 0;
+  }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now, we
+   * define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public long getReferencePoint(int axis)
+  {
+
+    if (getMajorAxis() == axis)
+    {
+      Log.debug("Queried reference point for major axis");
+      return 0;
+    }
+    return baseLine;
+  }
+
+  /**
+   * Defines a spacing, that only applies if the node is not the first node in
+   * the box. This spacing gets later mixed in with the absolute margins and
+   * corresponds to the effective margin of the RenderBox class.
+   *
+   * @param axis
+   * @return
+   */
+  public long getLeadingSpace(int axis)
+  {
+    if (axis == getMinorAxis())
+    {
+      return 0;
+    }
+    if (getPrev() == null)
+    {
+      return 0;
+    }
+    return leadingSpace;
+  }
+
+  /**
+   * Defines a spacing, that only applies, if the node is not the last node in
+   * the box. This spacing gets later mixed in with the absolute margins and
+   * corresponds to the effective margin of the RenderBox class.
+   *
+   * @param axis
+   * @return
+   */
+  public long getTrailingSpace(int axis)
+  {
+    if (axis == getMinorAxis())
+    {
+      return 0;
+    }
+    if (getNext() == null)
+    {
+      return 0;
+    }
+    return trailingSpace;
   }
 
 }

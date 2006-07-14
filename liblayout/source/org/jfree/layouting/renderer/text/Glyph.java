@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Glyph.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public final class Glyph
                final int[] extraChars)
   {
 
-//    Log.debug ("Glyph: " + ((char) (0xffff & codepoint)) + " [" + extraChars.length + "]");
+    Log.debug ("Glyph: -" + ((char) (0xffff & codepoint)) + "- [" + baseLine + ", " + height + "]");
 
     if (spacing == null)
     {
@@ -200,5 +200,10 @@ public final class Glyph
     result = 29 * result + height;
     result = 29 * result + kerning;
     return result;
+  }
+
+  public String toString ()
+  {
+    return getClass().getName() + "={codepoint='" + ((char)(codepoint & 0xffff)) + ", extra-chars=" + extraChars.length + "}";
   }
 }

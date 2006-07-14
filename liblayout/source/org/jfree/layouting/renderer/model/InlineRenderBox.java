@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.3 2006/07/12 17:53:05 taqua Exp $
  *
  * Changes
  * -------
@@ -109,18 +109,11 @@ public class InlineRenderBox extends RenderBox
     }
 
     // first, find the split point.
-    long[] paddings = getBordersAndPadding(axis);
-    long size = paddings[0];
+    long size = getLeadingInsets(axis);
     RenderNode splitPointChild = getFirstChild();
     while (splitPointChild != null && size <= splitPoint)
     {
       final long prefSize = splitPointChild.getPreferredSize(axis);
-//      Log.debug("Child: PrefSize: " + prefSize);
-//      if (prefSize == 395000)
-//      {
-//        Log.debug("ERE");
-//        child.getFirstBreak(axis);
-//      }
       if (prefSize + size <= splitPoint)
       {
         size += prefSize;
@@ -269,8 +262,7 @@ public class InlineRenderBox extends RenderBox
     // this is simply the best we can get from our contents.
 
     long bestBreak = 0;
-    long[] paddings = getBordersAndPadding(axis);
-    long cursor = paddings[0];
+    long cursor = getLeadingInsets(axis);
     RenderNode child = getFirstChild();
     while (child != null)
     {
@@ -281,7 +273,7 @@ public class InlineRenderBox extends RenderBox
       final long posAfter;
       if (child.getNext() == null)
       {
-        posAfter = posAfterGeneric + paddings[1];
+        posAfter = posAfterGeneric + getTrailingInsets(axis);
       }
       else
       {
@@ -352,8 +344,7 @@ public class InlineRenderBox extends RenderBox
 
     // this is simply the best we can get from our contents.
 
-    long[] paddings = getBordersAndPadding(axis);
-    long cursor = paddings[0];
+    long cursor = getLeadingInsets(axis);
     RenderNode child = getFirstChild();
     while (child != null)
     {
@@ -371,7 +362,7 @@ public class InlineRenderBox extends RenderBox
         if (child.getNext() == null)
         {
           // if this is the last child, include the paddings and borders ..
-          return posAfter + paddings[1];
+          return posAfter + getTrailingInsets(axis);
         }
         return posAfter;
       }
@@ -392,90 +383,6 @@ public class InlineRenderBox extends RenderBox
 
     // maybe we need something like getFirstChunk, getlastChunk or so.
     return super.getMinimumChunkSize(axis);
-  }
-
-  public long getMinimumSize(int axis)
-  {
-    long[] paddings = getBordersAndPadding(axis);
-
-    if (axis == getMinorAxis())
-    {
-      // minor axis means: Drive through all childs and query their size
-      // then find the maximum
-      long size = paddings[0];
-      RenderNode child = getFirstChild();
-      while (child != null)
-      {
-        size = Math.max(size, child.getMinimumSize(axis));
-        child = child.getNext();
-      }
-      return size + paddings[1];
-    }
-
-    long size = paddings[0];
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      size += child.getMinimumSize(axis);
-      child = child.getNext();
-    }
-    return size + paddings[1];
-  }
-
-  public long getPreferredSize(int axis)
-  {
-    long[] paddings = getBordersAndPadding(axis);
-
-    if (axis == getMinorAxis())
-    {
-      // minor axis means: Drive through all childs and query their size
-      // then find the maximum
-      long size = paddings[0];
-      RenderNode child = getFirstChild();
-      while (child != null)
-      {
-        size = Math.max(size, child.getPreferredSize(axis));
-        child = child.getNext();
-      }
-      return size + paddings[1];
-    }
-
-    long size = paddings[0];
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      size += child.getPreferredSize(axis);
-      child = child.getNext();
-    }
-    return size + paddings[1];
-  }
-
-  public long getMaximumSize(int axis)
-  {
-    long[] paddings = getBordersAndPadding(axis);
-
-    if (axis == getMinorAxis())
-    {
-      // minor axis means: Drive through all childs and query their size
-      // then find the maximum
-      long size = paddings[0];
-      RenderNode child = getFirstChild();
-      while (child != null)
-      {
-        size = Math.max(size, child.getMaximumSize(axis));
-        child = child.getNext();
-      }
-      return size + paddings[1];
-    }
-
-    long size = paddings[0];
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      size += child.getMaximumSize(axis);
-      child = child.getNext();
-    }
-    return size + paddings[1];
   }
 
   public void validate()
@@ -499,35 +406,58 @@ public class InlineRenderBox extends RenderBox
     if (state == RenderNodeState.PENDING)
     {
       validateBorders();
-      validateMargins();
       validatePaddings();
       setState(RenderNodeState.LAYOUTING);
     }
 
+    validateMargins();
 
-    final long width = getWidth() - getLeftInsets() - getRightInsets();
+    long nodePos =
+            getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis());
+    final long verticalNodePos =
+            getPosition(getMinorAxis()) + getLeadingInsets(getMinorAxis());
 
-    long nodePos = getX() + getLeftInsets();
-    // as defined by the stylesheet property with the same name.
-    final long lineHeight = 0;
-    long effectiveHeight = 0;
+    final long lineHeight = 0; // this needs to be read from the stylesheet ..
+
+    final long effectiveHeight =
+            Math.max (lineHeight, getPreferredSize(getMinorAxis()));
+
+    final long heightAbove = getReferencePoint(getMinorAxis());
+    long trailingMajor = 0;
+    long trailingMinor = 0;
     RenderNode node = getFirstChild();
     while (node != null)
     {
-      node.setX(nodePos);
-      node.setY(getY() + getTopInsets());
-      final long preferredWidth = node.getPreferredSize(getMajorAxis());
-      node.setWidth(Math.min(Math.max(0, width - nodePos), preferredWidth));
+      Log.debug ("Processing node: " + node);
+
+      final long nodeHeightAbove = node.getReferencePoint(getMinorAxis());
+
+      final long leadingMinor = Math.max
+              (node.getLeadingSpace(getMinorAxis()), trailingMinor);
+      final long leadingMajor = Math.max
+              (node.getLeadingSpace(getMajorAxis()), trailingMajor);
+      Log.debug ("Leading : " + leadingMajor + "  " + leadingMinor);
+
+      nodePos += leadingMajor;
+
+      node.setPosition(getMajorAxis(), nodePos);
+      node.setPosition(getMinorAxis(), verticalNodePos + (heightAbove - nodeHeightAbove) + leadingMinor);
+      node.setDimension(getMajorAxis(), node.getPreferredSize(getMajorAxis()));
       node.validate();
 
-      node.setHeight(Math.max(node.getHeight(), lineHeight));
-      effectiveHeight = Math.max(node.getHeight(), effectiveHeight);
-      nodePos += node.getWidth();
+      trailingMajor = node.getTrailingSpace(getMajorAxis());
+      trailingMinor = node.getTrailingSpace(getMinorAxis());
+
+      Log.debug ("Trailing : " + trailingMajor + "  " + trailingMinor);
+
+
+      nodePos += node.getDimension(getMajorAxis());
       node = node.getNext();
     }
 
-    setWidth((nodePos + getRightInsets()) - getX());
-    setHeight(effectiveHeight);
+    setDimension(getMajorAxis(),
+            (nodePos + getTrailingInsets(getMajorAxis())) - getX());
+    setDimension(getMinorAxis(), effectiveHeight);
     setState(RenderNodeState.FINISHED);
   }
 
@@ -635,5 +565,34 @@ public class InlineRenderBox extends RenderBox
       node = node.getNext();
     }
     return rb;
+  }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now, we
+   * define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public long getReferencePoint(int axis)
+  {
+    // we have no horizontal reference point ... (yet)
+    if (axis == getMajorAxis())
+    {
+      return 0;
+    }
+
+    // this gets a bit more complicated. Iterate over all childs and get their
+    // reference point.
+    RenderNode child = getFirstChild();
+    long referencePoint = 0;
+    while (child != null)
+    {
+      final long refPoint = child.getReferencePoint(getMinorAxis());
+      referencePoint = Math.max (refPoint, referencePoint);
+      child = child.getNext();
+    }
+    return referencePoint;
   }
 }

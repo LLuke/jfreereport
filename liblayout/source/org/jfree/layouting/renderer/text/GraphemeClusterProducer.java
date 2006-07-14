@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GraphemeClusterProducer.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,10 @@
  */
 package org.jfree.layouting.renderer.text;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 11.06.2006, 17:02:27
@@ -97,13 +96,11 @@ public class GraphemeClusterProducer implements ClassificationProducer
     {
       GraphemeClusterProducer prod = new GraphemeClusterProducer();
       prod.lastClassification = lastClassification;
-      prod.lastValue = lastValue;
       return prod;
     }
   }
 
   private int lastClassification;
-  private int lastValue;
   private GraphemeClassifier classifier;
 
   public GraphemeClusterProducer()
@@ -117,22 +114,22 @@ public class GraphemeClusterProducer implements ClassificationProducer
    * the same value, the characters of these calls belong to the same cluster.
    *
    * @param codePoint
-   * @return
+   * @return true, if a new cluster starts, false if the old cluster continues.
    */
-  public int createGraphemeCluster (int codePoint)
+  public boolean createGraphemeCluster (int codePoint)
   {
     int classification = classifier.getGraphemeClassification(codePoint);
     if (codePoint == GraphemeClassifier.EXTEND)
     {
       lastClassification = classification;
-      return lastValue;
+      return false;
     }
 
     if (lastClassification == GraphemeClassifier.LF &&
         classification == GraphemeClassifier.CR)
     {
       lastClassification = classification;
-      return lastValue;
+      return false;
     }
 
     if (lastClassification == GraphemeClassifier.L)
@@ -141,7 +138,7 @@ public class GraphemeClusterProducer implements ClassificationProducer
               GraphemeClassifier.ANY_HANGUL_MASK)
       {
         lastClassification = classification;
-        return lastValue;
+        return false;
       }
     }
 
@@ -154,7 +151,7 @@ public class GraphemeClusterProducer implements ClassificationProducer
     if (oldLVorV && newVorT)
     {
       lastClassification = classification;
-      return lastValue;
+      return false;
     }
 
     final boolean oldLVTorT =
@@ -163,12 +160,11 @@ public class GraphemeClusterProducer implements ClassificationProducer
     if (oldLVTorT && codePoint == GraphemeClassifier.T)
     {
       lastClassification = classification;
-      return lastValue;
+      return false;
     }
 
-    lastValue += 1;
     lastClassification = classification;
-    return lastValue;
+    return true;
   }
 
 
@@ -176,7 +172,6 @@ public class GraphemeClusterProducer implements ClassificationProducer
   {
     GraphemeClusterProducerState state = new GraphemeClusterProducerState();
     state.setLastClassification(lastClassification);
-    state.setLastValue(lastValue);
     return state;
   }
 }
