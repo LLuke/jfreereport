@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
+ * $Id: PageDrawable.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.output.pageable.graphics;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
@@ -54,8 +55,10 @@ import org.jfree.layouting.output.pageable.BorderShapeFactory;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.text.Glyph;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
 import org.jfree.util.Log;
 
@@ -97,7 +100,6 @@ public class PageDrawable implements Drawable
   }
 
 
-
   public void drawBox(Graphics2D g2, RenderBox box, int level)
   {
     if (box.getState() == RenderNodeState.UNCLEAN)
@@ -119,7 +121,34 @@ public class PageDrawable implements Drawable
       {
         drawText(g2, (RenderableText) childs);
       }
+      else if (childs instanceof RenderableReplacedContent)
+      {
+        drawReplacedContent(g2, (RenderableReplacedContent) childs);
+      }
       childs = childs.getNext();
+    }
+  }
+
+  private void drawReplacedContent(final Graphics2D g2,
+                                   final RenderableReplacedContent content)
+  {
+    Object o = content.getRawObject();
+    if (o instanceof Image)
+    {
+      final int x = (int) StrictGeomUtility.toExternalValue(content.getX());
+      final int y = (int) StrictGeomUtility.toExternalValue(content.getY());
+      final int width = (int) StrictGeomUtility.toExternalValue(content.getWidth());
+      final int height = (int) StrictGeomUtility.toExternalValue(content.getHeight());
+      g2.drawImage((Image) o, x, y, width, height, null);
+    }
+    else if (o instanceof Drawable)
+    {
+      final double x = (int) StrictGeomUtility.toExternalValue(content.getX());
+      final double y = (int) StrictGeomUtility.toExternalValue(content.getY());
+      final double width = (int) StrictGeomUtility.toExternalValue(content.getWidth());
+      final double height = (int) StrictGeomUtility.toExternalValue(content.getHeight());
+      Drawable d = (Drawable) o;
+      d.draw(g2, new Rectangle2D.Double(x,y,width, height));
     }
   }
 
@@ -155,7 +184,7 @@ public class PageDrawable implements Drawable
 
     g2.setColor(cssColor);
     g2.setFont(new Font(fontSpecification.getFontFamily(), style,
-            (int) fontSpecification.getFontSize() ));
+            (int) fontSpecification.getFontSize()));
 
     int length = renderableText.getOffset() + renderableText.getLength();
     for (int i = renderableText.getOffset(); i < length; i++)

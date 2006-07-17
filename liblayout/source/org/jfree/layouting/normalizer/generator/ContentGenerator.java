@@ -11,6 +11,8 @@ import org.jfree.layouting.normalizer.displaymodel.DisplayTableElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElement;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.renderer.Renderer;
 
@@ -58,6 +60,12 @@ public interface ContentGenerator extends StatefullComponent
   public void startedTable (final DisplayTableElement element)
           throws NormalizationException;
 
+  public void startTableColumnGroup(final DisplayTableColumnGroupElement element)
+          throws NormalizationException;
+
+  public void startTableColumn(final DisplayTableColumnElement element)
+          throws NormalizationException;
+
   public void startedTableSection (final DisplayTableSectionElement element)
           throws NormalizationException;
 
@@ -91,10 +99,17 @@ public interface ContentGenerator extends StatefullComponent
   public void finishedTableSection()
           throws NormalizationException;
 
+  public void finishedTableColumn()
+          throws NormalizationException;
+
+  public void finishedTableColumnGroup()
+          throws NormalizationException;
+
   public void finishedTable()
           throws NormalizationException;
 
-  public void finishedRootInline() throws NormalizationException;
+  public void finishedRootInline()
+          throws NormalizationException;
 
   public void finishedBlock ()
           throws NormalizationException;

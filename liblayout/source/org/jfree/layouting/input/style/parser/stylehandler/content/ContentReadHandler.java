@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ContentReadHandler.java,v 1.2 2006/04/17 20:51:07 taqua Exp $
  *
  * Changes
  * -------
@@ -158,16 +158,15 @@ public class ContentReadHandler extends OneOfConstantsReadHandler
         final CSSValue[] values =
                 (CSSValue[]) contentList.toArray(
                         new CSSValue[contentList.size()]);
-        final CSSValueList sequence = new CSSValueList(values);
-        contents.add(sequence);
+        contents.add(new CSSValueList(values));
+        contentList.clear();
       }
       value = value.getNextLexicalUnit();
     }
 
     final CSSValue[] values =
             (CSSValue[]) contentList.toArray(new CSSValue[contentList.size()]);
-    final CSSValueList sequence = new CSSValueList(values);
-    contents.add(sequence);
+    contents.add(new CSSValueList(values));
     return new CSSValueList(contents);
   }
 }

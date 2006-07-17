@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayTableRowElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -58,21 +58,20 @@ public class DisplayTableRowElement extends DisplayElement
 
   public void add(DisplayNode node) throws NormalizationException
   {
-    if (node instanceof DisplayTableCellElement == false)
-    {
-      throw new NormalizationException();
-    }
+//    if (node instanceof DisplayTableCellElement == false)
+//    {
+//      throw new NormalizationException();
+//    }
     addInternal(node);
   }
 
-  public void markFinished() throws NormalizationException
+  protected void signalFinish() throws NormalizationException
   {
-    if (isFinished())
-    {
-      return;
-    }
-
-    super.markFinished();
     getRootFlow().getContentGenerator().finishedTableRow();
+  }
+
+  protected void signalStart() throws NormalizationException
+  {
+    getRootFlow().getContentGenerator().startedTableRow(this);
   }
 }

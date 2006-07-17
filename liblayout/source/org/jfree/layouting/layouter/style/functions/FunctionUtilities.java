@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FunctionUtilities.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,8 @@ public class FunctionUtilities
     if (supportedResourceTypes.length == 0)
     {
       throw new FunctionEvaluationException
-              ("Failed to create URI: Resource loading failed ");
+              ("Failed to create URI: Resource loading failed as the output " +
+                      "target does not support any resource types.");
     }
     return loadResource(process, value, supportedResourceTypes);
   }
@@ -114,7 +115,7 @@ public class FunctionUtilities
     catch (Exception e)
     {
       throw new FunctionEvaluationException
-              ("Failed to create URI: Resource loading failed ", e);
+              ("Failed to create URI: Resource loading failed: " + e.getMessage(), e);
     }
   }
 

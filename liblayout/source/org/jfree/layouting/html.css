@@ -200,9 +200,7 @@ th {
 }
 
 td[colspan],
-th[colspan],
-colgroup[colspan],
-col[colspan] {
+th[colspan] {
   -x-liblayout-colspan: attr(colspan);
 }
 
@@ -210,6 +208,18 @@ td[rowspan],
 th[rowspan] {
   -x-liblayout-rowspan: attr(rowspan);
 }
+
+td[align],
+th[align] {
+  text-align: attr(align);
+}
+
+td[valign],
+th[valign] {
+  vertical-align: attr(valign);
+}
+
+/** Todo: Char, charoff */
 
 /* inlines */
 
@@ -427,7 +437,7 @@ form[target="_top"] {
 
 img[src] {
   /** The current CSS parser does not supply types as required by CSS3 */
-  content: url(attr(src,url)));
+  content: url(attr(src,url)), url("res://org/jfree/layouting/broken-image.gif");
 }
 
 /**
@@ -499,3 +509,4 @@ li:marker {
   content: counter(list-item,decimal) ".";
   background-color: blue;
 }
+

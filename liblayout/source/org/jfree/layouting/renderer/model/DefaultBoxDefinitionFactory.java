@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultBoxDefinitionFactory.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: DefaultBoxDefinitionFactory.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -188,7 +188,7 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
                     boxContext, metaData, false, false));
   }
 
-  private RenderLength computeWidth(CSSValue widthValue,
+  public static RenderLength computeWidth(CSSValue widthValue,
                                     LayoutContext boxContext,
                                     OutputProcessorMetaData metaData,
                                     boolean allowAuto,
@@ -220,5 +220,6 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
       return RenderLength.EMPTY;
     }
   }
+
 
 }

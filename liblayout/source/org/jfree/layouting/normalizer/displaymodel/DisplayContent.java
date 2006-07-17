@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayContent.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.normalizer.displaymodel;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.normalizer.content.NormalizationException;
 
 /**
  * A tagging class that separates Elements from content. All renderable content
@@ -67,5 +68,10 @@ public class DisplayContent extends DisplayNode
   public ContentToken getContent()
   {
     return content;
+  }
+
+  protected void signalStart() throws NormalizationException
+  {
+    getRootFlow().getContentGenerator().addContent(this);
   }
 }

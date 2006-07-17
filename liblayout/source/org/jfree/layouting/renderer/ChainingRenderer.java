@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingRenderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
+ * $Id: ChainingRenderer.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -88,13 +88,15 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   private static final int MTH_START_SPECIAL_FLOW = 2;
   private static final int MTH_START_FLOW = 3;
   private static final int MTH_START_TABLE = 4;
-  private static final int MTH_START_TABLE_SECTION = 5;
-  private static final int MTH_START_TABLE_ROW = 6;
-  private static final int MTH_START_TABLE_CELL = 7;
-  private static final int MTH_START_BLOCK = 8;
-  private static final int MTH_START_MARKER = 9;
-  private static final int MTH_START_ROOT_INLINE = 10;
-  private static final int MTH_START_INLINE = 11;
+  private static final int MTH_START_TABLE_COLGROUP = 5;
+  private static final int MTH_START_TABLE_COL = 6;
+  private static final int MTH_START_TABLE_SECTION = 7;
+  private static final int MTH_START_TABLE_ROW = 8;
+  private static final int MTH_START_TABLE_CELL = 9;
+  private static final int MTH_START_BLOCK = 10;
+  private static final int MTH_START_MARKER = 11;
+  private static final int MTH_START_ROOT_INLINE = 12;
+  private static final int MTH_START_INLINE = 13;
 
   private static final int MTH_END_INLINE = 19;
   private static final int MTH_END_ROOT_INLINE = 20;
@@ -103,10 +105,12 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   private static final int MTH_END_TABLE_CELL = 23;
   private static final int MTH_END_TABLE_ROW = 24;
   private static final int MTH_END_TABLE_SECTION = 25;
-  private static final int MTH_END_TABLE = 26;
-  private static final int MTH_END_FLOW = 27;
-  private static final int MTH_END_SPECIAL_FLOW = 28;
-  private static final int MTH_END_DOCUMENT = 29;
+  private static final int MTH_END_TABLE_COL = 26;
+  private static final int MTH_END_TABLE_COLGROUP = 27;
+  private static final int MTH_END_TABLE = 28;
+  private static final int MTH_END_FLOW = 29;
+  private static final int MTH_END_SPECIAL_FLOW = 30;
+  private static final int MTH_END_DOCUMENT = 31;
 
   private static final int MTH_ADD_CONTENT = 41;
   private static final int MTH_HANDLE_PAGEBREAK = 42;
@@ -153,6 +157,18 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   public void startedTable(final LayoutContext layoutContext)
   {
     addCall(new RecordedCall (MTH_START_TABLE, layoutContext));
+  }
+
+  public void startedTableColumnGroup(final LayoutContext context)
+          throws NormalizationException
+  {
+    addCall(new RecordedCall (MTH_START_TABLE_COLGROUP, context));
+  }
+
+  public void startedTableColumn(final LayoutContext context)
+          throws NormalizationException
+  {
+    addCall(new RecordedCall (MTH_START_TABLE_COL, context));
   }
 
   public void startedTableSection(final LayoutContext layoutContext)
@@ -233,6 +249,16 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
     addCall(new RecordedCall (MTH_END_TABLE_SECTION, null));
   }
 
+  public void finishedTableColumnGroup() throws NormalizationException
+  {
+    addCall(new RecordedCall (MTH_END_TABLE_COLGROUP, null));
+  }
+
+  public void finishedTableColumn() throws NormalizationException
+  {
+    addCall(new RecordedCall (MTH_END_TABLE_COL, null));
+  }
+
   public void finishedTable()
   {
     addCall(new RecordedCall (MTH_END_TABLE, null));
@@ -280,6 +306,16 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
       case MTH_START_TABLE:
       {
         renderer.startedTable((LayoutContext) parameters);
+        break;
+      }
+      case MTH_START_TABLE_COL:
+      {
+        renderer.startedTableColumn((LayoutContext) parameters);
+        break;
+      }
+      case MTH_START_TABLE_COLGROUP:
+      {
+        renderer.startedTableColumnGroup((LayoutContext) parameters);
         break;
       }
       case MTH_START_TABLE_SECTION:
@@ -346,6 +382,16 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
       case MTH_END_TABLE_SECTION:
       {
         renderer.finishedTableSection();
+        break;
+      }
+      case MTH_END_TABLE_COLGROUP:
+      {
+        renderer.finishedTableColumnGroup();
+        break;
+      }
+      case MTH_END_TABLE_COL:
+      {
+        renderer.finishedTableColumn();
         break;
       }
       case MTH_END_TABLE:

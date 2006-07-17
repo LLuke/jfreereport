@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.renderer;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
+import java.awt.Dimension;
 import java.util.Stack;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -66,6 +67,7 @@ import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 import org.jfree.layouting.renderer.border.BorderFactory;
+import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.BoxDefinitionFactory;
@@ -75,14 +77,15 @@ import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.RenderableImage;
-import org.jfree.layouting.renderer.model.RenderableText;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.MarkerRenderBox;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
+import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
+import org.jfree.layouting.renderer.model.table.TableColumnNode;
 import org.jfree.layouting.renderer.page.FastPageGrid;
 import org.jfree.layouting.renderer.page.PageGrid;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
@@ -91,6 +94,8 @@ import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.ui.DrawablePanel;
+import org.jfree.ui.Drawable;
+import org.jfree.ui.ExtendedDrawable;
 import org.jfree.util.Log;
 import org.jfree.util.WaitingImageObserver;
 
@@ -217,6 +222,36 @@ public class DefaultRenderer implements Renderer
     applyClear(context, tableRenderBox);
 
     getInsertationPoint().addChild(tableRenderBox);
+  }
+
+  public void startedTableColumnGroup(final LayoutContext context)
+          throws NormalizationException
+  {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
+    Log.debug("<table-col-group>");
+    textFactory.startText();
+
+    final BoxDefinition definition =
+            boxDefinitionFactory.createBlockBoxDefinition
+                    (context, layoutProcess.getOutputMetaData());
+    TableColumnGroupNode columnGroupNode = new TableColumnGroupNode(definition);
+    getInsertationPoint().addChild(columnGroupNode);
+  }
+
+  public void startedTableColumn(final LayoutContext context)
+          throws NormalizationException
+  {
+    getInsertationPoint().addChilds(textFactory.finishText());
+
+    Log.debug("<table-col>");
+    textFactory.startText();
+
+    final BoxDefinition definition =
+            boxDefinitionFactory.createBlockBoxDefinition
+                    (context, layoutProcess.getOutputMetaData());
+    TableColumnNode columnGroupNode = new TableColumnNode(definition);
+    getInsertationPoint().addChild(columnGroupNode);
   }
 
   public void startedTableSection(final LayoutContext context)
@@ -372,18 +407,23 @@ public class DefaultRenderer implements Renderer
       final Object raw = generic.getRaw();
       if (raw instanceof Image)
       {
-        RenderableImage image = createImage((Image) raw, source);
-        if (image != null)
+        RenderableReplacedContent replacedContent =
+                createImage((Image) raw, source, context);
+        if (replacedContent != null)
         {
           getInsertationPoint().addChilds(textFactory.finishText());
-          getInsertationPoint().addChild(image);
+          getInsertationPoint().addChild(replacedContent);
           return;
         }
-        else
+      }
+      else if (raw instanceof Drawable)
+      {
+        RenderableReplacedContent replacedContent =
+                createDrawable((Drawable) raw, source, context);
+        if (replacedContent != null)
         {
-          // todo check, if we have alternate text for this.
-          final RenderNode[] text = createText("IMAGE MISSING", context);
-          getInsertationPoint().addChilds(text);
+          getInsertationPoint().addChilds(textFactory.finishText());
+          getInsertationPoint().addChild(replacedContent);
           return;
         }
       }
@@ -431,7 +471,9 @@ public class DefaultRenderer implements Renderer
     return text;
   }
 
-  private RenderableImage createImage(Image image, ResourceKey source)
+  private RenderableReplacedContent createImage(Image image,
+                                                ResourceKey source,
+                                                LayoutContext context)
   {
     final WaitingImageObserver wobs = new WaitingImageObserver(image);
     wobs.waitImageLoaded();
@@ -439,14 +481,45 @@ public class DefaultRenderer implements Renderer
     {
       return null;
     }
-    else
-    {
-      final StrictDimension dims = StrictGeomUtility.createDimension
-              (image.getWidth(null), image.getHeight(null));
-      return new RenderableImage(image, source, dims);
-    }
+
+    final CSSValue widthVal = context.getStyle().getValue(BoxStyleKeys.WIDTH);
+    final RenderLength width = DefaultBoxDefinitionFactory.computeWidth
+            (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
+
+    final CSSValue heightVal = context.getStyle().getValue(BoxStyleKeys.HEIGHT);
+    final RenderLength height = DefaultBoxDefinitionFactory.computeWidth
+            (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
+    final StrictDimension dims = StrictGeomUtility.createDimension
+            (image.getWidth(null), image.getHeight(null));
+    return new RenderableReplacedContent(image, source, dims, width, height);
   }
 
+
+
+  private RenderableReplacedContent createDrawable(Drawable image,
+                                                   ResourceKey source,
+                                                   LayoutContext context)
+  {
+    final StrictDimension dims = new StrictDimension();
+
+    if (image instanceof ExtendedDrawable)
+    {
+      ExtendedDrawable ext = (ExtendedDrawable) image;
+      final Dimension preferredSize = ext.getPreferredSize();
+      dims.setWidth(StrictGeomUtility.toInternalValue(preferredSize.getWidth()));
+      dims.setHeight(StrictGeomUtility.toInternalValue(preferredSize.getHeight()));
+    }
+
+    final CSSValue widthVal = context.getStyle().getValue(BoxStyleKeys.WIDTH);
+    final RenderLength width = DefaultBoxDefinitionFactory.computeWidth
+            (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
+
+    final CSSValue heightVal = context.getStyle().getValue(BoxStyleKeys.HEIGHT);
+    final RenderLength height = DefaultBoxDefinitionFactory.computeWidth
+            (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
+
+    return new RenderableReplacedContent(image, source, dims, width, height);
+  }
   public void finishedInline()
   {
     getInsertationPoint().addChilds(textFactory.finishText());
@@ -501,6 +574,20 @@ public class DefaultRenderer implements Renderer
     Log.debug("</table-section>");
     getInsertationPoint().close();
     //   currentBox = (RenderBox) currentBox.getParent();
+  }
+
+  public void finishedTableColumnGroup() throws NormalizationException
+  {
+    getInsertationPoint().addChilds(textFactory.finishText());
+    Log.debug("</table-col>");
+    // the plain column is no box, therefore dont close the context.
+  }
+
+  public void finishedTableColumn() throws NormalizationException
+  {
+    getInsertationPoint().addChilds(textFactory.finishText());
+    Log.debug("</table-col-group>");
+    getInsertationPoint().close();
   }
 
   public void finishedTable()

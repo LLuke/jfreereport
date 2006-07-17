@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StageOnePageableOutputProcessor.java,v 1.1 2006/07/11 13:55:34 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.DefaultRenderer;
+import org.jfree.layouting.renderer.EmptyRenderer;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.layouter.feed.InputFeed;
@@ -54,6 +55,7 @@ import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
+import org.jfree.layouting.normalizer.generator.PrintContentGenerator;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
@@ -112,12 +114,13 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
    */
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
-    return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
+    //return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
+    return new DisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
   }
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    return new DefaultRenderer(layoutProcess);
+    return new EmptyRenderer(layoutProcess);
   }
 
 }

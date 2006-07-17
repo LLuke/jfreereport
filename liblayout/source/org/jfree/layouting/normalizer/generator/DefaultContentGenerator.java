@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultContentGenerator.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: DefaultContentGenerator.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,8 @@ import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElement;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.util.Log;
@@ -167,6 +169,18 @@ public class DefaultContentGenerator implements ContentGenerator
     renderer.startedTable(element.getLayoutContext());
   }
 
+  public void startTableColumnGroup(final DisplayTableColumnGroupElement element)
+          throws NormalizationException
+  {
+    renderer.startedTableColumnGroup(element.getLayoutContext());
+  }
+
+  public void startTableColumn(final DisplayTableColumnElement element)
+          throws NormalizationException
+  {
+    renderer.startedTableColumn(element.getLayoutContext());
+  }
+
   public void startedTableSection(final DisplayTableSectionElement element)
           throws NormalizationException
   {
@@ -248,6 +262,16 @@ public class DefaultContentGenerator implements ContentGenerator
   public void finishedTableSection() throws NormalizationException
   {
     renderer.finishedTableSection();
+  }
+
+  public void finishedTableColumn() throws NormalizationException
+  {
+    renderer.finishedTableColumn();
+  }
+
+  public void finishedTableColumnGroup() throws NormalizationException
+  {
+    renderer.finishedTableColumnGroup();
   }
 
   public void finishedTable() throws NormalizationException

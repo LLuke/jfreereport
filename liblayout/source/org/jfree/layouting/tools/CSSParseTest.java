@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSParseTest.java,v 1.3 2006/04/23 15:18:18 taqua Exp $
+ * $Id: CSSParseTest.java,v 1.4 2006/07/11 13:29:55 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ public class CSSParseTest
     namespaces.put("xml", "balh");
 
     Object value = StyleSheetParserUtil.parseStyleValue
-            (namespaces, ContentStyleKeys.CONTENT, "attr(xml|Grump,url))", null, null);
+            (namespaces, ContentStyleKeys.CONTENT, "url(attr(src,url)), url(\"res://org/jfree/layouting/broken-image.gif\")", null, null);
     System.out.println ("Value: " + value);
 
     final InputSource source = new InputSource();

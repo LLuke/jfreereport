@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.3 2006/07/12 17:53:05 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.4 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -69,8 +69,6 @@ public class NormalFlowRenderBox extends BlockRenderBox
 
     // hardcoded for now, content forms lines, which flow from top to bottom
     // and each line flows horizontally (later with support for LTR and RTL)
-    setMajorAxis(VERTICAL_AXIS);
-    setMinorAxis(HORIZONTAL_AXIS);
   }
 
   public SpacerRenderNode getPlaceHolder()
@@ -149,11 +147,6 @@ public class NormalFlowRenderBox extends BlockRenderBox
   public NormalFlowRenderBox getNormalFlow()
   {
     return this;
-  }
-
-  protected void validateAbsoluteMargins()
-  {
-    super.validateAbsoluteMargins();
   }
 
   protected long getEffectiveLayoutSize (int axis)

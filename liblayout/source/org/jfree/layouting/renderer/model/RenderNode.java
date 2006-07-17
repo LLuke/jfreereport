@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
+ * $Id: RenderNode.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -717,15 +717,6 @@ public abstract class RenderNode implements Cloneable
   {
     return getPreferredSize(axis);
   }
-
-
-
-
-
-
-
-
-
 
   private boolean marginsValidated;
   private StrictInsets effectiveMargins;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayTableCellElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -55,13 +55,13 @@ public class DisplayTableCellElement extends DisplayBlockElement
     super(context);
   }
 
-  public void markFinished() throws NormalizationException
+  protected void signalFinish() throws NormalizationException
   {
-    if (isFinished())
-    {
-      return;
-    }
-    super.markFinished();
     getRootFlow().getContentGenerator().finishedTableCell();
+  }
+
+  protected void signalStart() throws NormalizationException
+  {
+    getRootFlow().getContentGenerator().startedTableCell(this);
   }
 }

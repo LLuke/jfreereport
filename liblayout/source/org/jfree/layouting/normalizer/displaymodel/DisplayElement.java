@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: DisplayElement.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -62,46 +62,32 @@ public abstract class DisplayElement extends DisplayNode
 
   public abstract void add (DisplayNode node) throws NormalizationException;
 
+
+
   protected void addInternal (DisplayNode node) throws NormalizationException
   {
     node.setParent(this);
-    if (node instanceof DisplayMarkerElement)
-    {
-      getRootFlow().getContentGenerator().startedMarker((DisplayMarkerElement) node);
-    }
-    else if (node instanceof DisplayTableElement)
-    {
-      getRootFlow().getContentGenerator().startedTable((DisplayTableElement) node);
-    }
-    else if (node instanceof DisplayTableSectionElement)
-    {
-      getRootFlow().getContentGenerator().startedTableSection((DisplayTableSectionElement) node);
-    }
-    else if (node instanceof DisplayTableRowElement)
-    {
-      getRootFlow().getContentGenerator().startedTableRow((DisplayTableRowElement) node);
-    }
-    else if (node instanceof DisplayTableCellElement)
-    {
-      getRootFlow().getContentGenerator().startedTableCell((DisplayTableCellElement) node);
-      getRootFlow().getContentGenerator().startedBlock((DisplayTableCellElement) node);
-    }
-    else if (node instanceof DisplayBlockElement)
-    {
-      getRootFlow().getContentGenerator().startedBlock((DisplayBlockElement) node);
-    }
-    else if (node instanceof DisplayRootInlineElement)
-    {
-      getRootFlow().getContentGenerator().startedRootInline((DisplayRootInlineElement) node);
-    }
-    else if (node instanceof DisplayElement)
-    {
-      getRootFlow().getContentGenerator().startedInline((DisplayElement) node);
-    }
-    else if (node instanceof DisplayContent)
-    {
-      getRootFlow().getContentGenerator().addContent((DisplayContent) node);
-    }
+
+    signalStartOfChild(node);
     // else ignore it .. (should not happen anyway)
   }
+
+  protected void signalStartOfChild(final DisplayNode node)
+          throws NormalizationException
+  {
+    node.signalStart();
+  }
+
+  public void markFinished() throws NormalizationException
+  {
+    if (isFinished())
+    {
+      return;
+    }
+    super.markFinished();
+    signalFinish();
+  }
+
+  protected abstract void signalFinish() throws NormalizationException;
+
 }

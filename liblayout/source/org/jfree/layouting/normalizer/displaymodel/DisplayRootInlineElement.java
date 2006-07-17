@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayRootInlineElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -58,5 +58,10 @@ public class DisplayRootInlineElement extends DisplayInlineElement
   protected void signalFinish() throws NormalizationException
   {
     getRootFlow().getContentGenerator().finishedRootInline();
+  }
+
+  protected void signalStart() throws NormalizationException
+  {
+    getRootFlow().getContentGenerator().startedRootInline(this);
   }
 }

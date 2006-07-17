@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayTableElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -55,31 +55,34 @@ public class DisplayTableElement extends DisplayElement
   public static final int TFOOT_SEEN = 2;
   public static final int TBODY_SEEN = 3;
 
-  private int feedState;
-
   public DisplayTableElement(final LayoutContext context)
   {
     super(context);
   }
 
-  public int getFeedState()
-  {
-    return feedState;
-  }
-
-  public void setFeedState(final int feedState)
-  {
-    this.feedState = feedState;
-  }
-
   public void add(DisplayNode node) throws NormalizationException
   {
-    if (node instanceof DisplayTableSectionElement == false)
+    if (node instanceof DisplayTableSectionElement)
     {
-      throw new NormalizationException(node + " is no table-section.");
+      addInternal(node);
     }
-    feedState = 1;
-    addInternal(node);
+    else if (node instanceof DisplayTableColumnGroupElement)
+    {
+      addInternal(node);
+    }
+    else if (node instanceof DisplayTableColumnElement)
+    {
+      addInternal(node);
+    }
+    else if (node instanceof DisplayContent)
+    {
+      // ignore silently ..
+    }
+    else
+    {
+      throw new NormalizationException
+              ("Unexpected display elemeent encountered.");
+    }
   }
 
   public void markFinished() throws NormalizationException
@@ -89,14 +92,20 @@ public class DisplayTableElement extends DisplayElement
       return;
     }
 
-    if (feedState == 0)
-    {
-      // autogenerate an empty table ...
-
-    }
-
     super.markFinished();
+    signalFinish();
+  }
+
+  protected void signalFinish()
+          throws NormalizationException
+  {
     getRootFlow().getContentGenerator().finishedTable();
   }
 
+  protected void signalStart() throws NormalizationException
+  {
+    getRootFlow().getContentGenerator().startedTable(this);
+  }
+
+  
 }

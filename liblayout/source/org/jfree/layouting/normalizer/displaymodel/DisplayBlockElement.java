@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayBlockElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: DisplayBlockElement.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -153,7 +153,6 @@ public class DisplayBlockElement extends DisplayElement
       }
     }
     super.markFinished();
-    signalFinish();
   }
 
   public DisplayInlineElement getLineBox()
@@ -164,5 +163,10 @@ public class DisplayBlockElement extends DisplayElement
   protected void signalFinish() throws NormalizationException
   {
     getRootFlow().getContentGenerator().finishedBlock();
+  }
+
+  protected void signalStart() throws NormalizationException
+  {
+    getRootFlow().getContentGenerator().startedBlock(this);
   }
 }

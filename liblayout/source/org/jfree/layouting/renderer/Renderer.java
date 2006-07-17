@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Renderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
+ * $Id: Renderer.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -92,6 +92,10 @@ public interface Renderer extends StatefullComponent
 
   public void startedTable(final LayoutContext layoutContext)
           throws NormalizationException;
+  public void startedTableColumnGroup(final LayoutContext context)
+          throws NormalizationException;
+  public void startedTableColumn(final LayoutContext context)
+          throws NormalizationException;
   public void startedTableSection(final LayoutContext layoutContext)
           throws NormalizationException;
   public void startedTableRow(final LayoutContext layoutContext)
@@ -123,6 +127,10 @@ public interface Renderer extends StatefullComponent
   public void finishedTableRow()
           throws NormalizationException;
   public void finishedTableSection()
+          throws NormalizationException;
+  public void finishedTableColumnGroup()
+          throws NormalizationException;
+  public void finishedTableColumn()
           throws NormalizationException;
   public void finishedTable()
           throws NormalizationException;

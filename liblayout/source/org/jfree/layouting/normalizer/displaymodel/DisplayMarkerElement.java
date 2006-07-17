@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayMarkerElement.java,v 1.1 2006/07/17 13:28:33 taqua Exp $
  *
  * Changes
  * -------
@@ -59,5 +59,10 @@ public class DisplayMarkerElement extends DisplayBlockElement
   protected void signalFinish() throws NormalizationException
   {
     getRootFlow().getContentGenerator().finishedMarker();
+  }
+
+  protected void signalStart() throws NormalizationException
+  {
+    getRootFlow().getContentGenerator().startedMarker(this);
   }
 }

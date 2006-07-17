@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentResolveHandler.java,v 1.3 2006/04/23 15:18:18 taqua Exp $
+ * $Id: ContentResolveHandler.java,v 1.4 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -187,11 +187,15 @@ public class ContentResolveHandler implements ResolveHandler
         }
         tokens.add(token);
       }
+      if (tokens.isEmpty() == false)
+      {
+        final ContentToken[] contents = (ContentToken[]) tokens.toArray
+                (new ContentToken[tokens.size()]);
+        contentSpecification.setContents(contents);
+        return;
+      }
     }
 
-    final ContentToken[] contents = (ContentToken[]) tokens.toArray
-            (new ContentToken[tokens.size()]);
-    contentSpecification.setContents(contents);
   }
 
 
@@ -199,55 +203,62 @@ public class ContentResolveHandler implements ResolveHandler
                                    LayoutElement element,
                                    CSSValue content)
   {
-    if (content instanceof CSSStringValue)
+    try
     {
-      CSSStringValue sval = (CSSStringValue) content;
-      if (CSSStringType.STRING.equals(sval.getType()))
+      if (content instanceof CSSStringValue)
       {
-        return new StaticTextToken(sval.getValue());
-      }
-      else
-      {
-        // this is an external URL, so try to load it.
-        CSSFunctionValue function = new CSSFunctionValue
-                ("url", new CSSValue[]{sval});
-        return evaluateFunction(function, process, element);
-      }
-    }
-
-    if (content instanceof CSSConstant)
-    {
-      if (ContentValues.DOCUMENT_URL.equals(content))
-      {
-        Object docUrl = process.getDocumentContext().getMetaAttribute
-                ("document-url");
-        if (docUrl != null)
+        CSSStringValue sval = (CSSStringValue) content;
+        if (CSSStringType.STRING.equals(sval.getType()))
         {
-          return new StaticTextToken(String.valueOf(docUrl));
+          return new StaticTextToken(sval.getValue());
+        }
+        else
+        {
+          // this is an external URL, so try to load it.
+          CSSFunctionValue function = new CSSFunctionValue
+                  ("url", new CSSValue[]{sval});
+          return evaluateFunction(function, process, element);
+        }
+      }
+
+      if (content instanceof CSSConstant)
+      {
+        if (ContentValues.DOCUMENT_URL.equals(content))
+        {
+          Object docUrl = process.getDocumentContext().getMetaAttribute
+                  ("document-url");
+          if (docUrl != null)
+          {
+            return new StaticTextToken(String.valueOf(docUrl));
+          }
+
+          ResourceKey baseKey = DocumentContextUtility.getBaseResource
+                  (process.getDocumentContext());
+          if (baseKey instanceof URLResourceKey)
+          {
+            URLResourceKey urlResourceKey = (URLResourceKey) baseKey;
+            return new StaticTextToken(urlResourceKey.toExternalForm());
+          }
+          return null;
         }
 
-        ResourceKey baseKey = DocumentContextUtility.getBaseResource
-                (process.getDocumentContext());
-        if (baseKey instanceof URLResourceKey)
+        ContentToken token = (ContentToken) tokenMapping.get(content);
+        if (token != null)
         {
-          URLResourceKey urlResourceKey = (URLResourceKey) baseKey;
-          return new StaticTextToken(urlResourceKey.toExternalForm());
+          return token;
         }
-        return null;
+
+        return resolveContentAlias(content);
       }
 
-      ContentToken token = (ContentToken) tokenMapping.get(content);
-      if (token != null)
+      if (content instanceof CSSFunctionValue)
       {
-        return token;
+        return evaluateFunction((CSSFunctionValue) content, process, element);
       }
-
-      return resolveContentAlias(content);
     }
-
-    if (content instanceof CSSFunctionValue)
+    catch(Exception e)
     {
-      return evaluateFunction((CSSFunctionValue) content, process, element);
+      Log.debug ("Content-Resolver: Failed to evaluate " + content);
     }
 
     return null;

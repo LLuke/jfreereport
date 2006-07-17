@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -501,6 +501,7 @@ public class InlineRenderBox extends RenderBox
       node.setPosition(getMajorAxis(), nodePos);
       node.setPosition(getMinorAxis(), minorAxisNodePos + (heightAbove - nodeHeightAbove) + leadingMinor);
       node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
+      node.setDimension(getMinorAxis(), node.getEffectiveLayoutSize(getMinorAxis()));
       node.validate();
 
       trailingMajor = node.getTrailingSpace(getMajorAxis());

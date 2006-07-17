@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PrintContentGenerator.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: PrintContentGenerator.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.EmptyRenderer;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.displaymodel.DisplayBlockElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayContent;
@@ -55,6 +56,8 @@ import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElement;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.util.Log;
 
@@ -67,8 +70,11 @@ public class PrintContentGenerator implements ContentGenerator
 {
   private static class PrintContentGeneratorState implements State
   {
-    public PrintContentGeneratorState()
+    private Renderer renderer;
+
+    public PrintContentGeneratorState(final Renderer renderer)
     {
+      this.renderer = renderer;
     }
 
     /**
@@ -84,8 +90,19 @@ public class PrintContentGenerator implements ContentGenerator
     public StatefullComponent restore(LayoutProcess layoutProcess)
             throws StateException
     {
-      return new PrintContentGenerator();
+      final PrintContentGenerator printContentGenerator = new PrintContentGenerator(layoutProcess);
+      printContentGenerator.renderer = renderer;
+      return printContentGenerator;
     }
+  }
+
+  private LayoutProcess layoutProcess;
+  private Renderer renderer;
+
+  public PrintContentGenerator(LayoutProcess layoutProcess)
+  {
+    this.renderer = layoutProcess.getOutputProcessor().createRenderer(layoutProcess);
+    this.layoutProcess = layoutProcess;
   }
 
   /**
@@ -105,6 +122,18 @@ public class PrintContentGenerator implements ContentGenerator
   public void startedTable(final DisplayTableElement element)
   {
     Log.debug("<table>");
+  }
+
+  public void startTableColumnGroup(final DisplayTableColumnGroupElement element)
+          throws NormalizationException
+  {
+    Log.debug("<table-col-group>");
+  }
+
+  public void startTableColumn(final DisplayTableColumnElement element)
+          throws NormalizationException
+  {
+    Log.debug("<table-col>");
   }
 
   public void startedTableSection(final DisplayTableSectionElement element)
@@ -188,6 +217,16 @@ public class PrintContentGenerator implements ContentGenerator
     Log.debug("</table-section>");
   }
 
+  public void finishedTableColumn() throws NormalizationException
+  {
+    Log.debug("</table-col>");
+  }
+
+  public void finishedTableColumnGroup() throws NormalizationException
+  {
+    Log.debug("</table-col-group>");
+  }
+
   public void finishedTable()
   {
     Log.debug("</table>");
@@ -211,7 +250,7 @@ public class PrintContentGenerator implements ContentGenerator
 
   public State saveState() throws StateException
   {
-    return new PrintContentGeneratorState();
+    return new PrintContentGeneratorState(renderer);
   }
 
   /**
@@ -237,6 +276,6 @@ public class PrintContentGenerator implements ContentGenerator
 
   public Renderer getRenderer()
   {
-    throw new UnsupportedOperationException();
+    return renderer;
   }
 }
