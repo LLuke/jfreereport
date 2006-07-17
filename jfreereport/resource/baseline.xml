@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<report xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://jfreereport.sourceforge.net/namespaces/reports/flow">
+  <query>default</query>
+
+  <inline-stylesheet>
+    @namespace url(http://www.w3.org/1999/xhtml); /* set default namespace to HTML */
+    ol.inner {
+      background-color: red;
+    }
+
+    ol.outer {
+      background-color: green;
+    }
+  </inline-stylesheet>
+
+  <configuration>
+    <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</property>
+  </configuration>
+  <datasource href="sample.sqlds"/>
+ 
+  <html:div>
+    a b c d  e f <html:span style="margin-right: 10pt; margin-left: 10pt">g h i</html:span> j k l m n o p q r s t u v w. x y z  
+  </html:div>
+
+  <html:div>
+    a b c d  e f g h i j k l m n o p q r s t u v w. x y z
+  </html:div>
+
+  <html:div>
+    a<html:span style="font-size: larger">b<html:span style="font-size: larger">c<html:span style="font-size: larger">d<html:span style="font-size: larger">e</html:span>f</html:span>g</html:span>h</html:span>i
+  </html:div>
+
+  <!--
+  <html:span style="font-family: 'Arial';border: 1px solid red;">
+    And I'm an <html:span style="margin-left: 10pt; margin-right: 10pt">inline</html:span> element
+
+    <html:div id="first" style="display-model:block-inside; display-role:inline; border: 1px solid blue;">
+      <html:div id="second">
+        And I'm a inline block element.
+      </html:div>
+      <html:div style="font-size: 15pt;  font-family: 'Times New Roman',serif; ">
+        All content in here is layouted as block content.
+      </html:div>
+    </html:div>
+
+    And this is still inline..
+  </html:span>
+
+  <html:ol class="outer" >
+    <html:li>First</html:li>
+    <html:li>Second
+      <html:ol class="inner">
+        <html:li>InnerA</html:li>
+        <html:li>InnerB</html:li>
+        <html:li>InnerC</html:li>
+        <html:li>InnerD</html:li>
+      </html:ol>
+    </html:li>
+    <html:li>Third</html:li>
+    <html:li>Fourth</html:li>
+  </html:ol>
+
+  <html:img src="gorilla.jpg" alt="Gorilla"/>
+  -->
+</report>
