@@ -26,7 +26,7 @@
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</property>
   </configuration>
   <datasource href="sample.sqlds"/>
-<!--
+
   <html:div>
     <html:p style="margin-top: 50pt">
       1. And I'm an <html:span class="bordered" style="margin-left: 0pt; margin-right: 0pt">inline </html:span> element
@@ -51,7 +51,6 @@
       AND this is still inline..
     </html:span>
   </html:div>
--->
   <html:ol class="outer" >
     <html:li>First</html:li>
     <html:li>Second
@@ -66,7 +65,5 @@
     <html:li>Fourth</html:li>
   </html:ol>
 
-  <!--
-  <html:img src="gorilla.jpg" alt="Gorilla"/>
-  -->
+  <html:img src="gorilla.jpg" style="width:100px; height:100px" alt="Gorilla"/>
 </report>
