@@ -16,7 +16,7 @@
 
   <xsd:element name="name" type="xsd:string"/>
 
-  <xsd:attribute name="encoding" type="xsd:NMTOKEN" default="text">
+  <xsd:attribute name="encoding" default="text">
     <xsd:simpleType>
       <xsd:restriction base="xsd:NMTOKEN">
         <xsd:enumeration value="base64"/>

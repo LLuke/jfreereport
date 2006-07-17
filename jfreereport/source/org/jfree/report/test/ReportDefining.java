@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDefining.java,v 1.3 2006/05/15 12:56:57 taqua Exp $
+ * $Id: ReportDefining.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -139,7 +139,7 @@ public class ReportDefining
           ResourceCreationException, ResourceKeyCreationException,
           ReportDataFactoryException, DataSourceException, ReportProcessingException
   {
-    URL url = ReportDefining.class.getResource("/newreport.xml");
+    URL url = ReportDefining.class.getResource("/baseline.xml");
     ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
     Resource res = manager.createDirectly(url, JFreeReport.class);

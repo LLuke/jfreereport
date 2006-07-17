@@ -12,28 +12,46 @@
     ol.outer {
       background-color: green;
     }
+
+    :marker {
+      margin-right: 10pt;
+    }
+
+    .bordered {
+      background-color: green;
+    }
   </inline-stylesheet>
 
   <configuration>
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</property>
   </configuration>
   <datasource href="sample.sqlds"/>
+<!--
+  <html:div>
+    <html:p style="margin-top: 50pt">
+      1. And I'm an <html:span class="bordered" style="margin-left: 0pt; margin-right: 0pt">inline </html:span> element
+    </html:p>
+    <html:p style="margin-top: 5pt">
+      2. I'm an <html:span style="margin-left: 10pt; margin-right: 10pt">inline</html:span> element too
+    </html:p>
+  </html:div>
 
-  <html:span style="font-family: 'Arial';border: 3px solid red; padding-left: 10pt">
-    And I'm an inline element
+  <html:div>
+    <html:span style="font-family: 'Arial';border: 1px solid red;">
+      And I'm an <html:span style="margin-left: 0pt; margin-right: 0pt">inline </html:span>element
 
-    <html:div id="first" style="display-model:block-inside; display-role:inline; border: 1px solid blue;">
-      <html:div id="second">
-        And I'm a inline block element.
+      <html:div id="first" style="display-model:block-inside; display-role:inline; border: 1pt solid blue;">
+        <html:div id="second">
+          111 I'm a inline block element.
+        </html:div>
+        <html:div style="font-size: 15pt;  font-family: 'Times New Roman',serif; ">
+          All content in here is layouted as block content.
+        </html:div>
       </html:div>
-      <html:div style="font-size: 15pt;  font-family: 'Times New Roman',serif; ">
-        All content in here is layouted as block content.
-      </html:div>
-    </html:div>
-
-    And this is still inline..
-  </html:span>
-
+      AND this is still inline..
+    </html:span>
+  </html:div>
+-->
   <html:ol class="outer" >
     <html:li>First</html:li>
     <html:li>Second
@@ -48,5 +66,7 @@
     <html:li>Fourth</html:li>
   </html:ol>
 
+  <!--
   <html:img src="gorilla.jpg" alt="Gorilla"/>
+  -->
 </report>
