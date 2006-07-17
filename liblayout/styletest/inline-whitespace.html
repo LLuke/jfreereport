@@ -19,15 +19,25 @@
 </p>
 
 <hr/>
+
+<!-- Inline-block elements are unsupported in Mozilla. -->
 <p>
   <span>
   And I'm an Inline Element
-  <div style="display:inline;">
+  <div style="display:inline-block; border: 1px solid red">
     <div>And I'm an Inline Block Element </div>
     <div>All content here is layouted as block content.</div>
   </div>
   And this is still inline
   </span>
 </p>
+
+<div style="border: 1px solid green">
+  <div style="display:block; margin-left: auto; margin-right: auto; width: 250pt; border: 1px solid red">
+    <div>And I'm an Inline Block Element </div>
+    <div>All content here is layouted as block content.</div>
+  </div>
+</div>
+
 </body>
 </html>

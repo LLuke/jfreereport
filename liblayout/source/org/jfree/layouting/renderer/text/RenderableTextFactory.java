@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableTextFactory.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: RenderableTextFactory.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,20 @@
 package org.jfree.layouting.renderer.text;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.renderer.model.RenderableText;
+import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
  * Problem: Text may span more than one chunk, and text may influence the break
  * behaviour of the next chunk.
- *
+ * <p/>
  * Possible solution: TextFactory does not return the complete text. It returns
  * the text up to the last whitespace encountered and returns the text chunk
  * only if either finishText has been called or some more text comes in. The
  * ugly sideffect: Text may result in more than one renderable text chunk
  * returned.
- *
- * If we return lines (broken by an LineBreak-occurence) we can safe us a lot
- * of trouble later.
+ * <p/>
+ * If we return lines (broken by an LineBreak-occurence) we can safe us a lot of
+ * trouble later.
  *
  * @author Thomas Morgner
  */
@@ -62,12 +62,16 @@ public interface RenderableTextFactory
 {
   /**
    * The text is given as CodePoints.
+   *
    * @param text
    * @return
    */
-  public RenderableText[] createText (final int[] text,
-                                    final int offset,
-                                    final int length,
-                                    final LayoutContext layoutContext);
-  public RenderableText[] finishText ();
+  public RenderNode[] createText(final int[] text,
+                                 final int offset,
+                                 final int length,
+                                 final LayoutContext layoutContext);
+
+  public RenderNode[] finishText();
+
+  public void startText();
 }

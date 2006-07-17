@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EmptyBoxDefinition.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -106,32 +106,32 @@ public class EmptyBoxDefinition implements BoxDefinition
 
   public RenderLength getMinimumWidth()
   {
-    return RenderLength.EMPTY;
+    return RenderLength.AUTO;
   }
 
   public RenderLength getMinimumHeight()
   {
-    return RenderLength.EMPTY;
+    return RenderLength.AUTO;
   }
 
   public RenderLength getMaximumWidth()
   {
-    return RenderLength.EMPTY;
+    return RenderLength.AUTO;
   }
 
   public RenderLength getMaximumHeight()
   {
-    return RenderLength.EMPTY;
+    return RenderLength.AUTO;
   }
 
   public RenderLength getPreferredWidth()
   {
-    return RenderLength.EMPTY;
+    return RenderLength.AUTO;
   }
 
   public RenderLength getPreferredHeight()
   {
-    return RenderLength.EMPTY;
+    return RenderLength.AUTO;
   }
 
   public BoxDefinition[] splitVertically()
@@ -147,5 +147,10 @@ public class EmptyBoxDefinition implements BoxDefinition
   public CSSColorValue getBackgroundColor()
   {
     return CSSSystemColors.TRANSPARENT;
+  }
+
+  public boolean isEmpty()
+  {
+    return true;
   }
 }

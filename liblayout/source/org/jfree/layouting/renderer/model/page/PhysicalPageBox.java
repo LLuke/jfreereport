@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.renderer.model.page;
 
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
  * This is behaves like a table box (but is none, as the layouting rules
@@ -56,17 +57,12 @@ public class PhysicalPageBox extends RenderBox
     super(boxDefinition);
   }
 
-  public long getMinimumSize(int axis)
-  {
-    return 0;
-  }
-
   public long getPreferredSize(int axis)
   {
     return 0;
   }
 
-  public long getMaximumSize(int axis)
+  protected long getEffectiveLayoutSize(int axis, RenderNode node)
   {
     return 0;
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultBoxDefinitionFactory.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
+import org.jfree.layouting.input.style.keys.box.DisplayModel;
 import org.jfree.layouting.input.style.keys.color.CSSSystemColors;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSColorValue;
@@ -121,7 +122,12 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
     fillHorizontalPadding(boxDefinition, style, boxContext, metaData);
 
     // inline-elements have no way to define the width. (10.3.1 of CSS2.1)
-    boxDefinition.setPreferredWidth(RenderLength.EMPTY);
+    // exception: inline-block elements can and will have a width.
+    // we move that evaluation into the layouter, that one may or may not
+    // use the preferred width ..
+    boxDefinition.setPreferredWidth(computeWidth
+            (style.getValue(BoxStyleKeys.WIDTH), boxContext, metaData, true, true));
+
     boxDefinition.setMarginLeft(computeWidth
             (style.getValue(BoxStyleKeys.MARGIN_LEFT), boxContext, metaData, false, true));
     boxDefinition.setMarginRight(computeWidth

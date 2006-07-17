@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Border.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,16 +47,16 @@ package org.jfree.layouting.renderer.border;
  * <p/>
  * The border object itself is immutable. During a split operation, new borders
  * have to be created.
- *<p/>
+ * <p/>
  * The border-radius defines the corner-rounding that might take place. This
- * defines the applicable background area of the content box. (Round rects
- * never cause the background to overlap the border, the corner space that lies
+ * defines the applicable background area of the content box. (Round rects never
+ * cause the background to overlap the border, the corner space that lies
  * outside the rounded corners will not receive the background.)
  * <p/>
  * The radius *must* be normalized; the sum of the radius sizes for a single
  * edge must not exceed the edge's total size. (Ex: height &gt;=
- * (topLeftRadius.getHeight() + bottomLeftRadius.getHeight()). If the height
- * is smaller as the radius, reduce the radius until both sizes fit.
+ * (topLeftRadius.getHeight() + bottomLeftRadius.getHeight()). If the height is
+ * smaller as the radius, reduce the radius until both sizes fit.
  *
  * @author Thomas Morgner
  */
@@ -139,7 +139,7 @@ public class Border implements Cloneable
     return bottomRight;
   }
 
-  public Border[] splitVertically (Border[] borders)
+  public Border[] splitVertically(Border[] borders)
   {
     if (borders == null || borders.length < 2)
     {
@@ -154,7 +154,7 @@ public class Border implements Cloneable
     return borders;
   }
 
-  public Border[] splitHorizontally (Border[] borders)
+  public Border[] splitHorizontally(Border[] borders)
   {
     if (borders == null || borders.length < 2)
     {
@@ -188,5 +188,26 @@ public class Border implements Cloneable
 
     return new Border(edge, edge, edge, edge, edge,
             corner, corner, corner, corner);
+  }
+
+  public boolean isEmpty()
+  {
+    if (top.getWidth().getValue() != 0)
+    {
+      return false;
+    }
+    if (left.getWidth().getValue() != 0)
+    {
+      return false;
+    }
+    if (bottom.getWidth().getValue() != 0)
+    {
+      return false;
+    }
+    if (right.getWidth().getValue() != 0)
+    {
+      return false;
+    }
+    return true;
   }
 }

@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: Renderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -101,6 +101,8 @@ public interface Renderer extends StatefullComponent
 
   public void startedBlock(final LayoutContext context)
           throws NormalizationException;
+  public void startedMarker(final LayoutContext context)
+          throws NormalizationException;
   public void startedRootInline(final LayoutContext context)
           throws NormalizationException;
   public void startedInline(final LayoutContext context)
@@ -111,6 +113,8 @@ public interface Renderer extends StatefullComponent
   public void finishedInline()
           throws NormalizationException;
   public void finishedRootInline()
+          throws NormalizationException;
+  public void finishedMarker()
           throws NormalizationException;
   public void finishedBlock()
           throws NormalizationException;

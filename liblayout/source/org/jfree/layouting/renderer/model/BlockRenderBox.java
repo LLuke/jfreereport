@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.3 2006/07/12 17:53:05 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.renderer.model;
+
+import org.jfree.util.Log;
 
 /**
  * A block box behaves according to the 'display:block' layouting rules. In the
@@ -68,56 +70,6 @@ package org.jfree.layouting.renderer.model;
  */
 public class BlockRenderBox extends RenderBox
 {
-  protected static class ValidationStruct
-  {
-    private RenderNode node;
-    private long progress;
-    private long cursor;
-
-    public ValidationStruct()
-    {
-    }
-
-    public RenderNode getNode()
-    {
-      return node;
-    }
-
-    public void setNode(final RenderNode node)
-    {
-      this.node = node;
-    }
-
-    public long getProgress()
-    {
-      return progress;
-    }
-
-    public void setProgress(final long progress)
-    {
-      this.progress = progress;
-    }
-
-    public long getCursor()
-    {
-      return cursor;
-    }
-
-    public void setCursor(final long nodePosition)
-    {
-      this.cursor = nodePosition;
-    }
-
-    public void addCursorPosition(final long nodePosition)
-    {
-      this.cursor += nodePosition;
-    }
-
-    public boolean isFinished()
-    {
-      return node == null;
-    }
-  }
 
   public BlockRenderBox(final BoxDefinition boxDefinition)
   {
@@ -142,11 +94,6 @@ public class BlockRenderBox extends RenderBox
     }
     if (state == RenderNodeState.UNCLEAN)
     {
-      // ok, recompute the margins, paddings and border-sizes and get me a
-      // valid imageable-area.
-
-      // For now, I assume a MBP (margin-border-padding) size of 10, just
-      // to get some visual appearance..
       setState(RenderNodeState.PENDING);
     }
     if (state == RenderNodeState.PENDING)
@@ -158,101 +105,66 @@ public class BlockRenderBox extends RenderBox
 
     validateMargins();
 
+    Log.debug ("BLOCK: Begin Validate");
+
     final long leadingPaddings = getLeadingInsets(getMinorAxis());
-    final long trailingPaddings = getLeadingInsets(getMinorAxis());
+    final long trailingPaddings = getTrailingInsets(getMinorAxis());
 
-    final long nodeWidth = getDimension(getMinorAxis()) - leadingPaddings - trailingPaddings;
+    long nodePos =
+            getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis());
+    final long minorAxisNodePos =
+            getPosition(getMinorAxis()) + leadingPaddings;
 
-    ValidationStruct struct = new ValidationStruct();
-    struct.setProgress(Long.MAX_VALUE);
-    struct.setNode(getFirstChild());
-    struct.setCursor(getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis()));
-    RenderNode[] target = null;
 
-    while (struct.isFinished() == false)
+    final long defaultNodeWidth = Math.max(0,
+            getDimension(getMinorAxis()) - leadingPaddings - trailingPaddings);
+
+    long trailingMajor = 0;
+    long trailingMinor = 0;
+    RenderNode node = getFirstChild();
+    while (node != null)
     {
-      RenderNode node = struct.getNode();
-      node.setPosition(getMinorAxis(), getPosition(getMinorAxis()) + leadingPaddings);
-      node.setPosition(getMajorAxis(), struct.getCursor());
-      // first validate brings the element into a valid state.
-      // And then we break it apart...
-      if (node instanceof InlineRenderBox)
+      if (node.isIgnorableForRendering())
       {
-        struct = validateInlineChild(nodeWidth, target, struct);
+        // Ignore all empty childs. However, give it an position.
+        node.setPosition(getMajorAxis(), nodePos);
+        node.setPosition(getMinorAxis(), minorAxisNodePos);
+        node.setDimension(getMinorAxis(), 0);
+        node.setDimension(getMajorAxis(), 0);
+        node = node.getNext();
+        continue;
       }
-      else
-      {
-        // block boxes are considered simple for now. Just validate them
-        node.setDimension(getMinorAxis(), nodeWidth);
-        node.validate();
 
-        struct.addCursorPosition(node.getDimension(getMajorAxis()));
-        struct.setNode(node.getNext());
-        struct.setProgress(Long.MAX_VALUE);
-      }
-    }
+      // Todo: Width is ignored for now
+      final long nodeSizeMinor = node.getEffectiveLayoutSize(getMinorAxis());
+      final long leadingMinor = Math.max
+              (node.getLeadingSpace(getMinorAxis()), trailingMinor);
 
-    setDimension(getMajorAxis(),
-            struct.getCursor() + getTrailingInsets(getMajorAxis()) -
-                    getPosition(getMajorAxis()));
-  }
+      final long leadingMajor = Math.max
+              (node.getLeadingSpace(getMajorAxis()), trailingMajor);
+      nodePos += leadingMajor;
 
-  private ValidationStruct validateInlineChild(final long nodeWidth,
-                                               RenderNode[] target,
-                                               ValidationStruct struct)
-  {
-    final RenderNode node = struct.getNode();
-    final long progress = struct.getProgress();
-
-    final long desiredWidth = computeWidth(nodeWidth, node);
-    if (desiredWidth <= nodeWidth)
-    {
-      node.setWidth(desiredWidth);
+      node.setPosition(getMajorAxis(), nodePos);
+      node.setPosition(getMinorAxis(), minorAxisNodePos + leadingMinor);
+      node.setDimension(getMinorAxis(), nodeSizeMinor);
       node.validate();
-      struct.addCursorPosition(node.getHeight());
-      struct.setNode(node.getNext());
-      return struct;
+
+      trailingMajor = node.getTrailingSpace(getMajorAxis());
+      trailingMinor = node.getTrailingSpace(getMinorAxis());
+
+      nodePos += node.getDimension(getMajorAxis());
+      node = node.getNext();
     }
 
-    final long prefSize = node.getPreferredSize(getMinorAxis());
+    final long trailingInsets = getTrailingInsets(getMajorAxis());
+    setDimension(getMajorAxis(), trailingMajor + (nodePos + trailingInsets) - getPosition(getMajorAxis()));
+    setDimension(getMinorAxis(),
+            // todo trailingMinor +
+                    defaultNodeWidth + leadingPaddings + trailingPaddings);
 
-    // not enough space; we have to break that beast ...
-    target = node.split(getMinorAxis(), nodeWidth, target);
-    replaceChilds(node, target);
-
-    final long firstNodeWidth = computeWidth(nodeWidth, target[0]);
-    target[0].setPosition(getMinorAxis(),
-            getDimension(getMinorAxis()) + getLeadingInsets(getMinorAxis()));
-    target[0].setPosition(getMajorAxis(), struct.getCursor());
-    target[0].setDimension(getMinorAxis(), firstNodeWidth);
-    target[0].validate();
-    struct.addCursorPosition(target[0].getDimension(getMajorAxis()));
-
-    if (target[1] != null)
-    {
-      if (prefSize < progress)
-      {
-        // made at least some progress ...
-        struct.setProgress(prefSize);
-        struct.setNode(target[1]);
-        return struct;
-      }
-
-      // oh, no progress at all? Break out.
-      target[1].setPosition(getMinorAxis(),
-              getDimension(getMinorAxis()) + getLeadingInsets(getMinorAxis()));
-      target[1].setPosition(getMajorAxis(), struct.getCursor());
-      target[1].setDimension(getMinorAxis(), firstNodeWidth);
-      target[1].validate();
-      struct.addCursorPosition(target[1].getDimension(getMajorAxis()));
-      struct.setNode(target[1].getNext());
-      // throw new IllegalStateException("NO progress is not valid");
-      return struct;
-    }
-
-    struct.setNode(target[0].getNext());
-    struct.setProgress(Long.MAX_VALUE);
-    return struct;
+    Log.debug ("BLOCK: Leave Validate: " + defaultNodeWidth + " " +
+            leadingPaddings  + " " + trailingPaddings);
+    setState(RenderNodeState.FINISHED);
   }
 
   /**
@@ -287,42 +199,13 @@ public class BlockRenderBox extends RenderBox
     return 0;
   }
 
-  protected long computeWidth(long parentWidth, RenderNode node)
-  {
-    final long minWidth = node.getMinimumSize(getMinorAxis());
-    final long prefWidth = node.getPreferredSize(getMinorAxis());
-    final long maxWidth = node.getMaximumSize(getMinorAxis());
-    final long desiredWidth = Math.max(minWidth, Math.min(prefWidth, maxWidth));
-    //return Math.min (parentWidth, desiredWidth);
-    return desiredWidth;
-  }
-
-  public boolean isEmpty()
-  {
-    return getFirstChild() == null;
-  }
-
   protected long getComputedBlockContextWidth()
   {
     return getBoxDefinition().getPreferredWidth().resolve(0);
   }
 
-  /**
-   * The reference point corresponds to the baseline of an box. For now, we
-   * define only one reference point per box. The reference point of boxes
-   * corresponds to the reference point of the first linebox.
-   *
-   * @param axis
-   * @return
-   */
-  public long getReferencePoint(int axis)
+  public int getBreakability(int axis)
   {
-    final RenderNode firstChild = getFirstChild();
-    if (firstChild == null)
-    {
-      return 0;
-    }
-    return firstChild.getReferencePoint(axis);
+    return SOFT_BREAKABLE;
   }
-
 }

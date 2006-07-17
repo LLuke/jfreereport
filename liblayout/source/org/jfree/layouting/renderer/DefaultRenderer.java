@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,8 @@ import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.Clear;
+import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
+import org.jfree.layouting.input.style.keys.list.ListStylePosition;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
@@ -75,6 +77,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableImage;
 import org.jfree.layouting.renderer.model.RenderableText;
+import org.jfree.layouting.renderer.model.MarkerRenderBox;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -163,7 +166,7 @@ public class DefaultRenderer implements Renderer
     Log.debug("<special-flow>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     openFlows.push(new NormalFlowRenderBox(definition));
   }
 
@@ -182,15 +185,17 @@ public class DefaultRenderer implements Renderer
     {
       // this is the first normal flow.
       openFlows.push(logicalPageBox.getNormalFlow());
+      textFactory.startText();
     }
     else
     {
       RenderBox currentBox = getInsertationPoint();
       currentBox.addChilds(textFactory.finishText());
+      textFactory.startText();
 
       final BoxDefinition definition =
               boxDefinitionFactory.createBlockBoxDefinition
-              (context, layoutProcess.getOutputMetaData());
+                      (context, layoutProcess.getOutputMetaData());
       NormalFlowRenderBox newFlow = new NormalFlowRenderBox(definition);
       currentBox.addChild(newFlow.getPlaceHolder());
       currentBox.getNormalFlow().addFlow(newFlow);
@@ -203,9 +208,11 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
 
     Log.debug("<table>");
+    textFactory.startText();
+
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     TableRenderBox tableRenderBox = new TableRenderBox(definition);
     applyClear(context, tableRenderBox);
 
@@ -218,9 +225,11 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
 
     Log.debug("<table-section>");
+    textFactory.startText();
+
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     TableSectionRenderBox tableRenderBox = new TableSectionRenderBox(definition);
     getInsertationPoint().addChild(tableRenderBox);
   }
@@ -231,9 +240,11 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
 
     Log.debug("<table-row>");
+    textFactory.startText();
+
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     TableRowRenderBox tableRenderBox = new TableRowRenderBox(definition);
     getInsertationPoint().addChild(tableRenderBox);
   }
@@ -244,9 +255,11 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
 
     Log.debug("<table-cell>");
+    textFactory.startText();
+
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     TableCellRenderBox tableRenderBox = new TableCellRenderBox(definition);
     getInsertationPoint().addChild(tableRenderBox);
   }
@@ -256,24 +269,46 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
 
     Log.debug("<block>");
+    textFactory.startText();
+
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     BlockRenderBox blockBox = new BlockRenderBox(definition);
     applyClear(context, blockBox);
 
     getInsertationPoint().addChild(blockBox);
   }
 
-  public void startedRootInline(final LayoutContext context)
+  public void startedMarker(final LayoutContext context)
           throws NormalizationException
   {
     getInsertationPoint().addChilds(textFactory.finishText());
 
+    Log.debug("<marker>");
+    textFactory.startText();
+
+    CSSValue position =
+            context.getStyle().getValue(ListStyleKeys.LIST_STYLE_POSITION);
+
+    final BoxDefinition definition =
+            boxDefinitionFactory.createInlineBoxDefinition
+                    (context, layoutProcess.getOutputMetaData());
+    MarkerRenderBox markerBox = new MarkerRenderBox(definition,
+            ListStylePosition.OUTSIDE.equals(position));
+    getInsertationPoint().addChild(markerBox);
+  }
+
+  public void startedRootInline(final LayoutContext context)
+          throws NormalizationException
+  {
+    getInsertationPoint().addChilds(textFactory.finishText());
+    textFactory.startText();
+
     Log.debug("<paragraph>");
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     ParagraphRenderBox paragraphBox = new ParagraphRenderBox(definition);
     applyClear(context, paragraphBox);
 
@@ -287,7 +322,7 @@ public class DefaultRenderer implements Renderer
     Log.debug("<inline>");
     final BoxDefinition definition =
             boxDefinitionFactory.createInlineBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
+                    (context, layoutProcess.getOutputMetaData());
     InlineRenderBox inlineBox = new InlineRenderBox(definition);
     applyClear(context, inlineBox);
 
@@ -347,7 +382,7 @@ public class DefaultRenderer implements Renderer
         else
         {
           // todo check, if we have alternate text for this.
-          final RenderableText[] text = createText("IMAGE MISSING", context);
+          final RenderNode[] text = createText("IMAGE MISSING", context);
           getInsertationPoint().addChilds(text);
           return;
         }
@@ -358,14 +393,20 @@ public class DefaultRenderer implements Renderer
     {
       TextType textRaw = (TextType) content;
       final String textStr = textRaw.getText();
-      final RenderableText[] text = createText(textStr, context);
+      final RenderNode[] text = createText(textStr, context);
+      if (text.length == 0)
+      {
+        return;
+      }
       getInsertationPoint().addChilds(text);
     }
   }
 
-  private RenderableText[] createText(final String str,
+  private RenderNode[] createText(final String str,
                                       final LayoutContext context)
   {
+    Log.debug("Insertation Point: " + getInsertationPoint());
+    Log.debug("Add Text " + str);
     if (buffer != null)
     {
       buffer.setCursor(0);
@@ -373,8 +414,7 @@ public class DefaultRenderer implements Renderer
     buffer = Utf16LE.getInstance().decodeString(str, buffer);
     final int[] data = buffer.getBuffer();
 
-    final RenderableText[] text = textFactory.createText(data, 0, data.length, context);
-//    Log.debug("Generated Text " + text.length + " text token");
+    final RenderNode[] text = textFactory.createText(data, 0, data.length, context);
 //
 //    for (int x = 0; x < text.length; x++)
 //    {
@@ -412,7 +452,7 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</inline>");
     getInsertationPoint().close();
-   // currentBox = (RenderBox) currentBox.getParent();
+    // currentBox = (RenderBox) currentBox.getParent();
   }
 
   public void finishedRootInline() throws NormalizationException
@@ -420,7 +460,15 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</paragraph>");
     getInsertationPoint().close();
-   // currentBox = (RenderBox) currentBox.getParent();
+
+    // currentBox = (RenderBox) currentBox.getParent();
+  }
+
+  public void finishedMarker() throws NormalizationException
+  {
+    getInsertationPoint().addChilds(textFactory.finishText());
+    Log.debug("</marker>");
+    getInsertationPoint().close();
   }
 
   public void finishedBlock()
@@ -428,7 +476,7 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</block>");
     getInsertationPoint().close();
-   // currentBox = (RenderBox) currentBox.getParent();
+    // currentBox = (RenderBox) currentBox.getParent();
   }
 
   public void finishedTableCell()
@@ -436,7 +484,7 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-cell>");
     getInsertationPoint().close();
-  //  currentBox = (RenderBox) currentBox.getParent();
+    //  currentBox = (RenderBox) currentBox.getParent();
   }
 
   public void finishedTableRow()
@@ -444,7 +492,7 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-row>");
     getInsertationPoint().close();
-   // currentBox = (RenderBox) currentBox.getParent();
+    // currentBox = (RenderBox) currentBox.getParent();
   }
 
   public void finishedTableSection()
@@ -452,7 +500,7 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-section>");
     getInsertationPoint().close();
- //   currentBox = (RenderBox) currentBox.getParent();
+    //   currentBox = (RenderBox) currentBox.getParent();
   }
 
   public void finishedTable()
@@ -460,7 +508,7 @@ public class DefaultRenderer implements Renderer
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table>");
     getInsertationPoint().close();
-  //  currentBox = (RenderBox) currentBox.getParent();
+    //  currentBox = (RenderBox) currentBox.getParent();
   }
 
   public void finishedFlow()
@@ -487,18 +535,17 @@ public class DefaultRenderer implements Renderer
     // Ok, lets play a little bit
     LogicalPageBox rootBox = logicalPageBox;
 
-    Log.debug("Min  H-Axis: " + rootBox.getMinimumSize(RenderNode.HORIZONTAL_AXIS));
-    Log.debug("Min  V-Axis: " + rootBox.getMinimumSize(RenderNode.VERTICAL_AXIS));
+//    Log.debug("Min  H-Axis: " + rootBox.getMinimumSize(RenderNode.HORIZONTAL_AXIS));
+//    Log.debug("Min  V-Axis: " + rootBox.getMinimumSize(RenderNode.VERTICAL_AXIS));
     Log.debug("Pref H-Axis: " + rootBox.getPreferredSize(RenderNode.HORIZONTAL_AXIS));
     Log.debug("Pref V-Axis: " + rootBox.getPreferredSize(RenderNode.VERTICAL_AXIS));
-    Log.debug("Max  H-Axis: " + rootBox.getMaximumSize(RenderNode.HORIZONTAL_AXIS));
-    Log.debug("Max  V-Axis: " + rootBox.getMaximumSize(RenderNode.VERTICAL_AXIS));
+//    Log.debug("Max  H-Axis: " + rootBox.getMaximumSize(RenderNode.HORIZONTAL_AXIS));
+//    Log.debug("Max  V-Axis: " + rootBox.getMaximumSize(RenderNode.VERTICAL_AXIS));
 
     rootBox.setX(0);
     rootBox.setY(0);
-    rootBox.setWidth(150000);
-            //rootBox.getPreferredSize(RenderNode.HORIZONTAL_AXIS));
-    rootBox.setHeight(rootBox.getMaximumSize(RenderNode.VERTICAL_AXIS));
+    rootBox.setWidth(rootBox.getPreferredSize(RenderNode.HORIZONTAL_AXIS));
+    rootBox.setHeight(rootBox.getPreferredSize(RenderNode.VERTICAL_AXIS));
 
     rootBox.validate();
 

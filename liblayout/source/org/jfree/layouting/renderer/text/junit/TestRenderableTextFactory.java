@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TestRenderableTextFactory.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: TestRenderableTextFactory.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,7 @@
 package org.jfree.layouting.renderer.text.junit;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.layouter.context.ContextId;
-import org.jfree.layouting.layouter.context.DefaultElementContext;
 import org.jfree.layouting.layouter.context.DefaultLayoutContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.model.RenderNode;
@@ -136,8 +134,6 @@ public class TestRenderableTextFactory extends DefaultRenderableTextFactory
 
   public static void main(String[] args)
   {
-
-    DefaultElementContext elementContext = new DefaultElementContext(null);
     DefaultLayoutContext layoutContext =
             new DefaultLayoutContext(new ContextId(0, 0,0), "Bah", "buh", null, new AttributeMap());
 
@@ -146,11 +142,10 @@ public class TestRenderableTextFactory extends DefaultRenderableTextFactory
 
     int[] text = new int[]{ ' ', 'A',' ', 'B',' '};
     
-    RenderableText[] rts = tr.createText(text, 0, text.length, layoutContext);
+    RenderNode[] rts = tr.createText(text, 0, text.length, layoutContext);
     tr.finishText();
 
-    RenderableText rt = rts[1];
-    Log.debug("RT: " + rt.getLength() + " " + rt.getLeadingSpace() + " " + rt.getTrailingSpace());
+    RenderableText rt = (RenderableText) rts[1];
     printGlyphs(rt);
   }
 

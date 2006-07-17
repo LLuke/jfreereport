@@ -1,16 +1,28 @@
 <html>
 <head>
   <style type="text/css">
-    br {
+    ol {
       border: 1pt solid black;
-      background-color: green;
+      /*margin: 0;*/
+      padding: 2em;
+    }
+
+    li {
+      border: 1pt solid red;
+      margin: 0;
+      padding: 0;
+      list-style-position:outside;
+    }
+
+    li:marker {
+      background-color: yellow;
     }
   </style>
 </head>
 
 <body>
 <h1>
-  Testing whether styles can be applied to a BR tag
+  Testing the list item behaviour
 </h1>
 <ol>
   <li>Test</li>
@@ -27,5 +39,16 @@
   <li>Test</li>
   <li>Test</li>
 </ol>
+
+<p>
+  The following test will only work, if the renderer supports inline-boxes.
+  Opera does.
+</p>
+<p>
+  aa<span style="display:inline-block;">Test</span>
+  Some leadingtext <ol style="display:inline-block;">
+                    <li>Test</li>
+                    </ol>Sometrailing text
+</p>
 </body>
 </html>

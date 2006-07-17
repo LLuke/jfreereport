@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.4 2006/05/15 12:45:12 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,6 @@ import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
-import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
-import org.jfree.layouting.input.style.keys.list.ListStylePosition;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
@@ -381,7 +379,7 @@ public class ContentNormalizer implements Normalizer
       ignoreContext += 1;
     }
 
-    Log.debug ("Element " + layoutContext.getTagName() + " " + displayRole);
+//    Log.debug ("Element " + layoutContext.getTagName() + " " + displayRole);
 
     // update counters and strings ...
     if (DisplayRole.LIST_ITEM.equals(displayRole))
@@ -471,8 +469,6 @@ public class ContentNormalizer implements Normalizer
       // this is an ignored context. We check for counters and string
       // definitions but do not forward anything to the display-model-builder.
     }
-
-
   }
 
   protected boolean generateBeforePseudoElements(LayoutElement element)
@@ -484,17 +480,12 @@ public class ContentNormalizer implements Normalizer
     final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
     if (DisplayRole.LIST_ITEM.equals(displayRole))
     {
-      final CSSValue listMarkerPosition =
-              style.getValue(ListStyleKeys.LIST_STYLE_POSITION);
-      if (ListStylePosition.OUTSIDE.equals(listMarkerPosition))
+      if (styleResolver.isPseudoElementStyleResolvable(element, "marker"))
       {
-        if (styleResolver.isPseudoElementStyleResolvable(element, "marker"))
-        {
-          startElementInternal(layoutContext.getNamespace(),
-                  layoutContext.getTagName(), "marker",
-                  layoutContext.getAttributes());
-          endElement();
-        }
+        startElementInternal(layoutContext.getNamespace(),
+                layoutContext.getTagName(), "marker",
+                layoutContext.getAttributes());
+        endElement();
       }
     }
 
@@ -547,11 +538,9 @@ public class ContentNormalizer implements Normalizer
     return false;
   }
 
-  private boolean generateOutsidePseudoElements
-          (final LayoutElement currentElement)
+  private boolean generateOutsidePseudoElements(final LayoutElement element)
+          throws IOException, NormalizationException
   {
-    // the outside pseudo-element cannot have a contents token. It will be
-    // treated as 'none'.
     return false;
   }
 
@@ -709,7 +698,7 @@ public class ContentNormalizer implements Normalizer
       return;
     }
 
-    Log.debug ("Adding: " + text);
+    //Log.debug ("Adding: " + text);
     modelBuilder.addContent(new StaticTextToken(text));
   }
 

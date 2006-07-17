@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,8 @@ import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.RenderableText;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
 import org.jfree.layouting.renderer.text.breaks.LineBreakProducer;
 import org.jfree.layouting.renderer.text.breaks.WordBreakProducer;
@@ -83,6 +85,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   private LayoutProcess layoutProcess;
   private GraphemeClusterProducer clusterProducer;
   private boolean startText;
+  private boolean produced;
   private FontSizeProducer fontSizeProducer;
   private KerningProducer kerningProducer;
   private SpacingProducer spacingProducer;
@@ -109,11 +112,13 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   }
 
 
-  public RenderableText[] createText(final int[] text,
+  public RenderNode[] createText(final int[] text,
                                      final int offset,
                                      final int length,
                                      final LayoutContext layoutContext)
   {
+    Log.debug ("Processing text");
+
     kerningProducer = createKerningProducer(layoutContext);
     fontSizeProducer = createFontSizeProducer(layoutContext);
     spacingProducer = createSpacingProducer(layoutContext);
@@ -128,12 +133,13 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       breakOpportunityProducer.createBreakOpportunity(ClassificationProducer.START_OF_TEXT);
       kerningProducer.getKerning(ClassificationProducer.START_OF_TEXT);
       startText = false;
+      produced = false;
     }
 
     return processText(text, offset, length);
   }
 
-  protected RenderableText[] processText (final int[] text,
+  protected RenderNode[] processText (final int[] text,
                                        final int offset,
                                        final int length)
   {
@@ -174,14 +180,16 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
     if (words.isEmpty() == false)
     {
-      final RenderableText[] renderableTexts = (RenderableText[]) words.toArray(new RenderableText[words.size()]);
+      final RenderNode[] renderableTexts = (RenderNode[])
+              words.toArray(new RenderNode[words.size()]);
       words.clear();
+      produced = true;
       return renderableTexts;
     }
     else
     {
       // we did not produce any text.
-      return new RenderableText[0];
+      return new RenderNode[0];
     }
   }
 
@@ -298,20 +306,24 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     {
       // create an trailing margin element. This way, it can collapse with
       // the next element.
-      words.add(new RenderableText
-              (layoutContext, new Glyph[0], 0, 0, true, forceLinebreak,
-                      0, leadingMargin));
-  //    Log.debug ("Adding Placeholder");
+      if (produced == true)
+      {
+        words.add(new SpacerRenderNode(leadingMargin, 0, false));
+        Log.debug ("Adding Placeholder");
+      }
     }
     else
     {
       // ok, it does.
       Glyph[] glyphs = (Glyph[]) glyphList.toArray(new Glyph[glyphList.size()]);
+      if (leadingMargin > 0)// && words.isEmpty() == false)
+      {
+        words.add(new SpacerRenderNode(leadingMargin, 0, false));
+      }
       words.add(new RenderableText
-              (layoutContext, glyphs, 0, glyphs.length, true, forceLinebreak,
-                      leadingMargin, 0));
+              (layoutContext, glyphs, 0, glyphs.length, true, forceLinebreak));
       glyphList.clear();
-   //   Log.debug ("Adding Text: " + glyphs.length);
+      Log.debug ("Adding Text: " + glyphs.length);
     }
     leadingMargin = 0;
   }
@@ -402,7 +414,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     final int maxIntVal = (int) LengthResolverUtility.convertLengthToDouble
             (maxValue, layoutContext, outputMetaData);
     final Spacing spacing = new Spacing(minIntVal, optIntVal, maxIntVal);
-    Log.debug("Using some static spacing: " + spacing);
+//    Log.debug("Using some static spacing: " + spacing);
     return new StaticSpacingProducer(spacing);
   }
 
@@ -437,14 +449,14 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 //    return new DefaultKerningProducer(fontMetrics);
   }
 
-  public RenderableText[] finishText()
+  public RenderNode[] finishText()
   {
     if (layoutContext == null)
     {
       return new RenderableText[0];
     }
 
-    RenderableText[] text = processText
+    RenderNode[] text = processText
             (new int[]{ ClassificationProducer.END_OF_TEXT}, 0, 1);
     layoutContext = null;
     classificationProducer = null;
@@ -453,7 +465,11 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     spacingProducer = null;
     breakOpportunityProducer = null;
 
-    startText = true;
     return text;
+  }
+
+  public void startText()
+  {
+    startText = true;
   }
 }

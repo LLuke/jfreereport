@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SelectorTest.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
+ * $Id: SelectorTest.java,v 1.2 2006/07/11 13:29:55 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class SelectorTest
   public static void main (String[] args)
           throws IOException, CSSParserInstantiationException
   {
-    final String selector = ":marker";
+    final String selector = ".bordered";
 
     final ResourceManager resourceManager= new ResourceManager();
     resourceManager.registerDefaults();

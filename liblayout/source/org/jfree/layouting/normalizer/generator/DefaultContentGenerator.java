@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultContentGenerator.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -191,6 +191,12 @@ public class DefaultContentGenerator implements ContentGenerator
     renderer.startedBlock(element.getLayoutContext());
   }
 
+  public void startedMarker(final DisplayElement element)
+          throws NormalizationException
+  {
+    renderer.startedMarker(element.getLayoutContext());
+  }
+
   public void startedRootInline(final DisplayRootInlineElement element)
           throws NormalizationException
   {
@@ -212,6 +218,11 @@ public class DefaultContentGenerator implements ContentGenerator
   public void finishedInline() throws NormalizationException
   {
     renderer.finishedInline();
+  }
+
+  public void finishedMarker() throws NormalizationException
+  {
+    renderer.finishedMarker();
   }
 
   public void finishedRootInline() throws NormalizationException

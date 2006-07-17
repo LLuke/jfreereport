@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,11 @@ public abstract class DisplayElement extends DisplayNode
   protected void addInternal (DisplayNode node) throws NormalizationException
   {
     node.setParent(this);
-    if (node instanceof DisplayTableElement)
+    if (node instanceof DisplayMarkerElement)
+    {
+      getRootFlow().getContentGenerator().startedMarker((DisplayMarkerElement) node);
+    }
+    else if (node instanceof DisplayTableElement)
     {
       getRootFlow().getContentGenerator().startedTable((DisplayTableElement) node);
     }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.3 2006/07/12 17:53:05 taqua Exp $
+ * $Id: PageDrawable.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -210,6 +210,8 @@ public class PageDrawable implements Drawable
     b.append(box.getWidth());
     b.append(", height=");
     b.append(box.getHeight());
+    b.append(",\n                           borders=");
+    b.append(box.getBorderWidths());
     b.append(",\n                           padding=");
     b.append(box.getPaddings());
     b.append(",\n                           absolute-margin=");
@@ -231,8 +233,40 @@ public class PageDrawable implements Drawable
       {
         printText((RenderableText) childs, level + 1);
       }
+      else
+      {
+        printNode(childs, level + 1);
+      }
       childs = childs.getNext();
     }
+  }
+
+  private void printNode(final RenderNode node, final int level)
+  {
+    StringBuffer b = new StringBuffer();
+    for (int i = 0; i < level; i++)
+    {
+      b.append("   ");
+    }
+    b.append(node.getClass().getName());
+    b.append("[");
+    b.append(Integer.toHexString(System.identityHashCode(node)));
+    b.append("]");
+    b.append("={x=");
+    b.append(node.getX());
+    b.append(", y=");
+    b.append(node.getY());
+    b.append(", width=");
+    b.append(node.getWidth());
+    b.append(", height=");
+    b.append(node.getHeight());
+    b.append("',\n                           absolute-margin=");
+    b.append(node.getAbsoluteMargins());
+    b.append(",\n                           effective-margin=");
+    b.append(node.getEffectiveMargins());
+    b.append("}");
+    Log.debug(b.toString());
+
   }
 
   private void printText(final RenderableText text, final int level)
@@ -259,11 +293,7 @@ public class PageDrawable implements Drawable
     b.append(text.getWidth());
     b.append(", height=");
     b.append(text.getHeight());
-    b.append(", leading=");
-    b.append(text.getLeadingSpace());
-    b.append(", trailing=");
-    b.append(text.getTrailingSpace());
-    b.append(", text=");
+    b.append(", text='");
 
     Glyph[] gs = text.getGlyphs();
     int length = text.getOffset() + text.getLength();
@@ -272,6 +302,10 @@ public class PageDrawable implements Drawable
       Glyph g = gs[i];
       b.append(glpyhToString(g));
     }
+    b.append("',\n                           absolute-margin=");
+    b.append(text.getAbsoluteMargins());
+    b.append(",\n                           effective-margin=");
+    b.append(text.getEffectiveMargins());
     b.append("}");
     Log.debug(b.toString());
   }

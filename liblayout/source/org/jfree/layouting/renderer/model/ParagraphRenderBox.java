@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.2 2006/07/12 17:53:05 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.3 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.util.Log;
+import org.jfree.layouting.util.geom.StrictInsets;
 
 /**
  * This articifial renderbox is the connection between block-contexts and the
@@ -90,20 +91,48 @@ public class ParagraphRenderBox extends BlockRenderBox
     protected void notifyStateChange(final RenderNodeState oldState,
                                      final RenderNodeState newState)
     {
-      if (notify)
+     // if (notify)
       {
         super.notifyStateChange(oldState, newState);
       }
     }
+
+    protected void validateMargins()
+    {
+      super.validateMargins();
+    }
   }
 
-  private InlineRenderBox pool;
+  private static class PoolBox extends InlineRenderBox
+  {
+    public PoolBox(final BoxDefinition boxDefinition)
+    {
+      super(boxDefinition);
+    }
+
+    public void close()
+    {
+      if (isOpen() == false)
+      {
+        return;
+      }
+
+      RenderBox parent = getParent();
+      super.close();
+      if (parent != null)
+      {
+        parent.close();
+      }
+    }
+  }
+
+  private PoolBox pool;
   private LineBoxRenderBox lineboxContainer;
 
   public ParagraphRenderBox(final BoxDefinition boxDefinition)
   {
     super(boxDefinition);
-    pool = new InlineRenderBox(new EmptyBoxDefinition());
+    pool = new PoolBox(new EmptyBoxDefinition());
     pool.setParent(this);
     // yet another helper box. Level 2
     lineboxContainer = new LineBoxRenderBox(new EmptyBoxDefinition());
@@ -118,7 +147,9 @@ public class ParagraphRenderBox extends BlockRenderBox
 
   protected void addDirectly(final RenderNode child)
   {
+    setOpen(true);
     super.addChild(child);
+    setOpen(false);
   }
 
   public void validate()
@@ -128,11 +159,26 @@ public class ParagraphRenderBox extends BlockRenderBox
     validateMargins();
     validatePaddings();
 
+    if (isIgnorableForRendering())
+    {
+      setHeight(0);
+      setWidth(0);
+      setState(RenderNodeState.FINISHED);
+      return;
+    }
+
+    if (getWidth() == 0)
+    {
+      //throw new Error();
+      Log.debug("Paragraph width is set to zero: Not processing childs");
+      return;
+    }
+
     // ok, now the tricky part. Lets build the real lines.
     // This code splits a logical line into one or more physical lines.
     RenderNode line = lineboxContainer.getFirstChild();
-    ValidationStruct lineStruct = new ValidationStruct();
-    lineStruct.setCursor(getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis()));
+    long nodePos = getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis());
+
 
     final long width = getWidth();
     final long x = getPosition(getMinorAxis()) + getLeadingInsets(getMinorAxis());
@@ -141,8 +187,6 @@ public class ParagraphRenderBox extends BlockRenderBox
 
     while (line != null)
     {
-      lineStruct.setProgress(Long.MAX_VALUE);
-      lineStruct.setNode(line);
       Log.debug("Performing validate on Paragraph line: " + line);
 
       // split the line unless there is nothing more to split ...
@@ -150,8 +194,10 @@ public class ParagraphRenderBox extends BlockRenderBox
 
       while (lineFragment != null)
       {
+        long progress = Long.MAX_VALUE;
+
         final long preferredSize = lineFragment.getPreferredSize(getMinorAxis());
-        if (preferredSize < width)
+        if (preferredSize <= width)
         {
           Log.debug("No Split needed.");
           target[0] = lineFragment.derive(true);
@@ -162,12 +208,14 @@ public class ParagraphRenderBox extends BlockRenderBox
           final long pos = lineFragment.getBestBreak(getMinorAxis(), width);
           if (pos > 0)
           {
+            Log.debug("Got a best break at " + pos);
             target = lineFragment.split(getMinorAxis(), pos, target);
           }
           else
           {
             // there is no 'best' split, so split after the first child
             final long firstSplit = lineFragment.getFirstBreak(getMinorAxis());
+            Log.debug("Seeking the first break at " + firstSplit);
 
             int axis = getMinorAxis();
             Log.debug("       Extra Info: PS: " + lineFragment.getPreferredSize(axis));
@@ -184,10 +232,6 @@ public class ParagraphRenderBox extends BlockRenderBox
             }
             else
             {
-              if (firstSplit == 395000)
-              {
-                lineFragment.getFirstBreak(getMinorAxis());
-              }
               target = lineFragment.split(getMinorAxis(), firstSplit, target);
             }
           }
@@ -201,20 +245,20 @@ public class ParagraphRenderBox extends BlockRenderBox
           Log.debug("Empty box after the split. ");
         }
         firstSplitNode.setPosition(getMinorAxis(), x);
-        firstSplitNode.setPosition(getMajorAxis(), lineStruct.getCursor());
+        firstSplitNode.setPosition(getMajorAxis(), nodePos);
         firstSplitNode.setDimension(getMinorAxis(), width);
         firstSplitNode.validate();
-        lineStruct.addCursorPosition(firstSplitNode.getDimension(getMajorAxis()));
+        nodePos += (firstSplitNode.getDimension(getMajorAxis()));
 
         addDirectly(firstSplitNode);
 
-        lineFragment = target[1];
         if (target[1] != null)
         {
           long prefWidth = target[1].getPreferredSize(getMinorAxis());
-          if (prefWidth < lineStruct.getProgress())
+          if (prefWidth < progress)
           {
-            lineStruct.setProgress(prefWidth);
+            progress = prefWidth;
+            lineFragment = target[1];
           }
           else
           {
@@ -223,19 +267,23 @@ public class ParagraphRenderBox extends BlockRenderBox
             addDirectly(target[1]);
 
             target[1].setPosition(getMinorAxis(), x);
-            target[1].setPosition(getMajorAxis(), lineStruct.getCursor());
+            target[1].setPosition(getMajorAxis(), nodePos);
             target[1].setDimension(getMinorAxis(), width);
             target[1].validate();
-            lineStruct.addCursorPosition(target[1].getDimension(getMajorAxis()));
+            nodePos += target[1].getDimension(getMajorAxis());
             lineFragment = null;
           }
+        }
+        else
+        {
+          lineFragment = null;
         }
       }
 
       line = line.getNext();
     }
 
-    setHeight(lineStruct.getCursor() - getY());
+    setHeight(nodePos - getY());
     Log.debug("Paragraph: " + getHeight());
     setState(RenderNodeState.FINISHED);
   }
@@ -302,11 +350,12 @@ public class ParagraphRenderBox extends BlockRenderBox
         }
       }
       lineboxContainer.setNotify(true);
+      
 
       // now we have the lineboxes. These boxes are not the *physical*
       // lineboxes, nor to they deal with the clear property for floated
       // elements.
-      Log.debug("Paragraph rebuilds lineboxes: " + lineCount + " lines created.");
+      //  Log.debug("Paragraph rebuilds lineboxes: " + lineCount + " lines created.");
 
       setState(RenderNodeState.LAYOUTING);
     }
@@ -319,42 +368,31 @@ public class ParagraphRenderBox extends BlockRenderBox
     return lineboxContainer.getMinimumChunkSize(axis);
   }
 
-  public long getMinimumSize(int axis)
-  {
-    fillLineboxCollection();
-    return lineboxContainer.getMinimumSize(axis);
-  }
-
   public long getPreferredSize(int axis)
   {
     fillLineboxCollection();
-    return lineboxContainer.getPreferredSize(axis);
+    final long preferredSize = lineboxContainer.getPreferredSize(axis);
+    return preferredSize;
   }
 
-  public long getMaximumSize(int axis)
+  /**
+   * This needs to be adjusted to support vertical flows as well.
+   *
+   * @param axis
+   * @param node
+   * @return
+   */
+  protected long getEffectiveLayoutSize(int axis, RenderNode node)
   {
     fillLineboxCollection();
-    return lineboxContainer.getMaximumSize(axis);
+    final long preferredSize = lineboxContainer.getEffectiveLayoutSize(axis);
+    Log.debug("Paragraph signals on EffLayoutSize: " + preferredSize);
+    return preferredSize;
   }
 
   public RenderBox getInsertationPoint()
   {
     return pool.getInsertationPoint();
-  }
-
-  public boolean isOpen()
-  {
-    return pool.isOpen();
-  }
-
-  protected void setOpen(final boolean open)
-  {
-    pool.setOpen(open);
-  }
-
-  public void close()
-  {
-    pool.close();
   }
 
   public RenderNode findNodeById(Object instanceId)
@@ -370,6 +408,27 @@ public class ParagraphRenderBox extends BlockRenderBox
 
   public boolean isEmpty()
   {
-    return pool.getFirstChild() == null;
+    return pool.isEmpty();
   }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now, we
+   * define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public long getReferencePoint(int axis)
+  {
+    fillLineboxCollection();
+    return lineboxContainer.getReferencePoint(axis);
+  }
+
+  public boolean isDiscardable()
+  {
+    return pool.isDiscardable();
+  }
+
+
 }

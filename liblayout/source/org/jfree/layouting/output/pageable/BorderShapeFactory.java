@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderShapeFactory.java,v 1.1 2006/07/11 13:54:24 taqua Exp $
+ * $Id: BorderShapeFactory.java,v 1.2 2006/07/12 17:53:05 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 11.07.2006, 13:32:31
@@ -234,6 +235,7 @@ public class BorderShapeFactory
     }
     // oh, yeah, I know, there are faster ways than that.
 
+    Log.debug ("Drawing " + globalArea.getBounds() + " with " + backgroundColor);
     g2.setColor(backgroundColor);
     g2.fill(globalArea);
   }

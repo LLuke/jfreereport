@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.3 2006/07/12 17:53:06 taqua Exp $
+ * $Id: RenderNode.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.util.geom.StrictInsets;
+import org.jfree.util.Log;
 
 /**
  * A node of the rendering model. The renderer model keeps track of the
@@ -126,6 +128,11 @@ public abstract class RenderNode implements Cloneable
     instanceId = new Object();
     open = true;
     state = RenderNodeState.UNCLEAN;
+
+
+    this.absoluteMargins = new StrictInsets();
+    this.effectiveMargins = new StrictInsets();
+
   }
 
   public Object getInstanceId()
@@ -311,6 +318,7 @@ public abstract class RenderNode implements Cloneable
 //    Log.debug("STATE_CHANGE: " + toString() + ": " + oldState + " -> " + newState);
     if (newState == RenderNodeState.UNCLEAN)
     {
+      invalidateMargins();
       final RenderNode next = getNext();
       if (next != null)
       {
@@ -329,6 +337,7 @@ public abstract class RenderNode implements Cloneable
     }
     else if (newState == RenderNodeState.PENDING)
     {
+      invalidateMargins();
       // we expect some changes, but for now, these changes have not occured.
       // if they occur, they may alter the height of this element. Telling the
       // others about that change is part of the parent's responsibility.
@@ -356,7 +365,12 @@ public abstract class RenderNode implements Cloneable
 
   public void setParent(final RenderBox parent)
   {
+    Object oldParent = this.parent;
     this.parent = parent;
+    if (oldParent != parent)
+    {
+      setState(RenderNodeState.PENDING);
+    }
   }
 
   public RenderNode getPrev()
@@ -431,14 +445,14 @@ public abstract class RenderNode implements Cloneable
 
   public abstract long getMinimumChunkSize(int axis);
 
-  /**
-   * The minimum size returned here is always a box-size - that is the size from
-   * one border-edge to the opposite border edge (excluding the margins).
-   *
-   * @param axis
-   * @return
-   */
-  public abstract long getMinimumSize(int axis);
+//  /**
+//   * The minimum size returned here is always a box-size - that is the size from
+//   * one border-edge to the opposite border edge (excluding the margins).
+//   *
+//   * @param axis
+//   * @return
+//   */
+//  public abstract long getMinimumSize(int axis);
 
   /**
    * The preferred size returned here is always a box-size - that is the size
@@ -449,14 +463,14 @@ public abstract class RenderNode implements Cloneable
    */
   public abstract long getPreferredSize(int axis);
 
-  /**
-   * The maximum size returned here is always a box-size - that is the size from
-   * one border-edge to the opposite border edge (excluding the margins).
-   *
-   * @param axis
-   * @return
-   */
-  public abstract long getMaximumSize(int axis);
+//  /**
+//   * The maximum size returned here is always a box-size - that is the size from
+//   * one border-edge to the opposite border edge (excluding the margins).
+//   *
+//   * @param axis
+//   * @return
+//   */
+//  public abstract long getMaximumSize(int axis);
 
   public LogicalPageBox getLogicalPage()
   {
@@ -492,7 +506,10 @@ public abstract class RenderNode implements Cloneable
   {
     try
     {
-      return (RenderNode) super.clone();
+      final RenderNode o = (RenderNode)super.clone();
+      o.absoluteMargins = (StrictInsets) absoluteMargins.clone();
+      o.effectiveMargins = (StrictInsets) effectiveMargins.clone();
+      return  o;
     }
     catch (CloneNotSupportedException e)
     {
@@ -513,6 +530,7 @@ public abstract class RenderNode implements Cloneable
     node.parent = null;
     node.next = null;
     node.prev = null;
+    node.open = true;
     return node;
   }
 
@@ -609,17 +627,13 @@ public abstract class RenderNode implements Cloneable
     return open;
   }
 
-  protected void setOpen(final boolean open)
-  {
-    this.open = open;
-  }
-
   public void close()
   {
     this.open = false;
+    Log.debug ("Closing " + this);
   }
 
-  public int getBreakability()
+  public int getBreakability(int axis)
   {
     return UNBREAKABLE;
   }
@@ -669,15 +683,358 @@ public abstract class RenderNode implements Cloneable
    */
   public abstract long getReferencePoint(int axis);
 
+//  /**
+//   * Defines a spacing, that only applies if the node is not the first node in
+//   * the box. This spacing gets later mixed in with the absolute margins and
+//   * corresponds to the effective margin of the RenderBox class.
+//   *
+//   * @param axis
+//   * @return
+//   */
+//  public abstract long getLeadingSpace (int axis);
+//
+//  /**
+//   * Defines a spacing, that only applies, if the node is not the last node in
+//   * the box. This spacing gets later mixed in with the absolute margins and
+//   * corresponds to the effective margin of the RenderBox class.
+//   *
+//   * @param axis
+//   * @return
+//   */
+//  public abstract long getTrailingSpace (int axis);
+
+  public boolean isDiscardable()
+  {
+    return false;
+  }
+
+  protected void setOpen(final boolean open)
+  {
+    this.open = open;
+  }
+
+  protected long getEffectiveLayoutSize (int axis)
+  {
+    return getPreferredSize(axis);
+  }
+
+
+
+
+
+
+
+
+
+
+  private boolean marginsValidated;
+  private StrictInsets effectiveMargins;
+  private StrictInsets absoluteMargins;
+
+
+  protected void validateMargins()
+  {
+    if (marginsValidated)
+    {
+      return;
+    }
+
+    validateAbsoluteMargins();
+
+    // now here comes the complex part: Compute effective margins.
+    // We have to deal with two cases: Inner element margins and outer margins
+    // for the outer margins, we compute the parent's margin and substract
+    // our margin from it (in other words: We do the normal collapsing).
+    final RenderBox parent = getParent();
+    if (parent == null || isEmpty())
+    {
+      // nice, no parent means no margins.
+      effectiveMargins.setTop(0);
+      effectiveMargins.setLeft(0);
+      effectiveMargins.setBottom(0);
+      effectiveMargins.setRight(0);
+      marginsValidated = true;
+      return;
+    }
+
+    final StrictInsets parentMargins = parent.getAbsoluteMargins();
+    if (parent.getMajorAxis() == HORIZONTAL_AXIS)
+    {
+      if (parent.isLeadingMarginIndependent(VERTICAL_AXIS))
+      {
+        effectiveMargins.setTop(absoluteMargins.getTop());
+      }
+      else
+      {
+        effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
+      }
+
+      if (parent.isTrailingMarginIndependent(VERTICAL_AXIS))
+      {
+        effectiveMargins.setBottom(absoluteMargins.getBottom());
+      }
+      else
+      {
+        effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
+      }
+
+      if (getNonEmptyPrev() == null &&
+              (parent.isLeadingMarginIndependent(HORIZONTAL_AXIS) == false))
+      {
+        effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
+      }
+      else
+      {
+        effectiveMargins.setLeft(absoluteMargins.getLeft());
+      }
+      if (getNonEmptyNext() == null &&
+              (parent.isTrailingMarginIndependent(HORIZONTAL_AXIS) == false))
+      {
+        effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
+      }
+      else
+      {
+        effectiveMargins.setRight(absoluteMargins.getRight());
+      }
+    }
+    else
+    {
+      if (parent.isLeadingMarginIndependent(HORIZONTAL_AXIS))
+      {
+        effectiveMargins.setLeft(absoluteMargins.getLeft());
+      }
+      else
+      {
+        effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
+      }
+
+      if (parent.isTrailingMarginIndependent(HORIZONTAL_AXIS))
+      {
+        effectiveMargins.setRight(absoluteMargins.getRight());
+      }
+      else
+      {
+        effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
+      }
+
+      if (getNonEmptyPrev() == null &&
+              (parent.isLeadingMarginIndependent(VERTICAL_AXIS) == false))
+      {
+        effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
+      }
+      else
+      {
+        effectiveMargins.setTop(absoluteMargins.getTop());
+      }
+      if (getNonEmptyNext() == null &&
+              (parent.isTrailingMarginIndependent(VERTICAL_AXIS) == false))
+      {
+        effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
+      }
+      else
+      {
+        effectiveMargins.setBottom(absoluteMargins.getBottom());
+      }
+    }
+    marginsValidated = true;
+
+  }
+
+  protected void validateAbsoluteMargins()
+  {
+    final long topMargin = getLeadingMargin(VERTICAL_AXIS);
+    final long bottomMargin = getTrailingMargin(VERTICAL_AXIS);
+    final long leftMargin = getLeadingMargin(HORIZONTAL_AXIS);
+    final long rightMargin = getTrailingMargin(HORIZONTAL_AXIS);
+    absoluteMargins.setTop(topMargin);
+    absoluteMargins.setLeft(leftMargin);
+    absoluteMargins.setBottom(bottomMargin);
+    absoluteMargins.setRight(rightMargin);
+  }
+
+  protected StrictInsets getAbsoluteMarginsInternal()
+  {
+    return absoluteMargins;
+  }
+  protected StrictInsets getEffectiveMarginsInternal()
+  {
+    return effectiveMargins;
+  }
+
+  public StrictInsets getAbsoluteMargins()
+  {
+    validateMargins();
+    return absoluteMargins;
+  }
+
+  public StrictInsets getEffectiveMargins()
+  {
+    validateMargins();
+    return effectiveMargins;
+  }
+
+  protected void invalidateMargins ()
+  {
+    this.marginsValidated = false;
+  }
+
+  protected boolean isIgnorableForMargins()
+  {
+    return isEmpty();
+  }
+
+  protected RenderNode getNonEmptyPrev()
+  {
+    RenderNode previous = getPrev();
+    while (previous != null)
+    {
+      if (previous.isIgnorableForMargins() == false)
+      {
+        return previous;
+      }
+      previous = previous.getPrev();
+    }
+    return null;
+  }
+
+  protected RenderNode getNonEmptyNext()
+  {
+    RenderNode next = getNext();
+    while (next != null)
+    {
+      if (next.isIgnorableForMargins() == false)
+      {
+        return next;
+      }
+      next = next.getNext();
+    }
+    return null;
+  }
+
+
   /**
-   * Defines a spacing, that only applies if the node is not the first node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
+   * Queries the absolute margins between to top or left edge of this box and
+   * the bottom or right edge of this boxes neighbour. If there is no neighbour
+   * we assume an infinite margin instead.
    *
    * @param axis
    * @return
    */
-  public abstract long getLeadingSpace (int axis);
+  protected long getTrailingMargin(int axis)
+  {
+    final long parentMargin;
+    RenderBox parent = getParent();
+    if (parent == null)
+    {
+      // assume an infinite margin ..
+      parentMargin = Long.MAX_VALUE;
+    }
+    else
+    {
+      if (axis == parent.getMajorAxis())
+      {
+        // check, if we are the last item in the parent.
+        RenderNode next = getNonEmptyNext();
+
+        if (next instanceof RenderBox)
+        {
+          RenderBox nextBox = (RenderBox) next;
+          parentMargin = nextBox.getLeadingMarginInternal(axis);
+        }
+        else if (next != null)
+        {
+          parentMargin = next.getDefinedLeadingMargin(axis);
+        }
+        else if (parent.isTrailingMarginIndependent(axis))
+        {
+          parentMargin = 0;
+        }
+        else
+        {
+          parentMargin = parent.getTrailingMargin(axis);
+        }
+      }
+      else if (parent.isTrailingMarginIndependent(axis))
+      {
+        parentMargin = 0;
+      }
+      else
+      {
+        parentMargin = parent.getTrailingMargin(axis);
+      }
+    }
+
+    return collapseMargins(parentMargin, getDefinedTrailingMargin(axis));
+  }
+
+  protected long getDefinedTrailingMargin (int axis)
+  {
+    return 0;
+  }
+
+  /**
+   * Queries the margin between to top or left edge of this box and the bottom
+   * or right edge of this boxes neighbour.
+   *
+   * @param axis
+   * @return
+   */
+  protected long getLeadingMargin(int axis)
+  {
+    final long parentMargin;
+    RenderBox parent = getParent();
+    if (parent == null)
+    {
+      // assume an infinite margin ..
+      parentMargin = Long.MAX_VALUE;
+    }
+    else
+    {
+      if (axis == parent.getMajorAxis())
+      {
+        // check, if we are the first item in the parent.
+        RenderNode previous = getNonEmptyPrev();
+        if (previous instanceof RenderBox)
+        {
+          RenderBox prevBox = (RenderBox) previous;
+          parentMargin = prevBox.getTrailingMarginInternal(axis);
+        }
+        else if (previous != null)
+        {
+          parentMargin = previous.getDefinedTrailingMargin(axis);
+        }
+        else if (parent.isLeadingMarginIndependent(axis))
+        {
+          parentMargin = 0;
+        }
+        else
+        {
+          parentMargin = parent.getLeadingMargin(axis);
+        }
+      }
+      else if (parent.isLeadingMarginIndependent(axis))
+      {
+        parentMargin = 0;
+      }
+      else
+      {
+        parentMargin = parent.getLeadingMargin(axis);
+      }
+    }
+
+    return collapseMargins(parentMargin, getDefinedLeadingMargin(axis));
+  }
+
+  protected long getDefinedLeadingMargin (int axis)
+  {
+    return 0;
+  }
+
+  protected long collapseMargins(long parentMargin, long myMargin)
+  {
+    return Math.max(parentMargin, myMargin);
+  }
+
 
   /**
    * Defines a spacing, that only applies, if the node is not the last node in
@@ -687,5 +1044,44 @@ public abstract class RenderNode implements Cloneable
    * @param axis
    * @return
    */
-  public abstract long getTrailingSpace (int axis);
+  public long getTrailingSpace(int axis)
+  {
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return getEffectiveMargins().getRight();
+    }
+    return getEffectiveMargins().getBottom();
+  }
+
+  /**
+   * Defines a spacing, that only applies if the node is not the first node in
+   * the box. This spacing gets later mixed in with the absolute margins and
+   * corresponds to the effective margin of the RenderBox class.
+   *
+   * @param axis
+   * @return
+   */
+  public long getLeadingSpace(int axis)
+  {
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return getEffectiveMargins().getLeft();
+    }
+    return getEffectiveMargins().getTop();
+  }
+
+  /**
+   * If that method returns true, the element will not be used for rendering.
+   * For the purpose of computing sizes or performing the layouting (in the
+   * validate() step), this element will treated as if it is not there.
+   *
+   * If the element reports itself as non-empty, however, it will affect the
+   * margin computation.
+   *  
+   * @return
+   */
+  public boolean isIgnorableForRendering ()
+  {
+    return isEmpty();
+  }
 }

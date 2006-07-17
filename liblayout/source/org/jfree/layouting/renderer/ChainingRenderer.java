@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ChainingRenderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -92,11 +92,13 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   private static final int MTH_START_TABLE_ROW = 6;
   private static final int MTH_START_TABLE_CELL = 7;
   private static final int MTH_START_BLOCK = 8;
-  private static final int MTH_START_ROOT_INLINE = 9;
-  private static final int MTH_START_INLINE = 10;
+  private static final int MTH_START_MARKER = 9;
+  private static final int MTH_START_ROOT_INLINE = 10;
+  private static final int MTH_START_INLINE = 11;
 
-  private static final int MTH_END_INLINE = 20;
-  private static final int MTH_END_ROOT_INLINE = 21;
+  private static final int MTH_END_INLINE = 19;
+  private static final int MTH_END_ROOT_INLINE = 20;
+  private static final int MTH_END_MARKER = 21;
   private static final int MTH_END_BLOCK = 22;
   private static final int MTH_END_TABLE_CELL = 23;
   private static final int MTH_END_TABLE_ROW = 24;
@@ -173,6 +175,12 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
     addCall(new RecordedCall (MTH_START_BLOCK, context));
   }
 
+  public void startedMarker(final LayoutContext context)
+          throws NormalizationException
+  {
+    addCall(new RecordedCall (MTH_START_MARKER, context));
+  }
+
   public void startedRootInline(final LayoutContext context)
           throws NormalizationException
   {
@@ -198,6 +206,11 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   public void finishedRootInline() throws NormalizationException
   {
     addCall(new RecordedCall(MTH_END_ROOT_INLINE, null));
+  }
+
+  public void finishedMarker() throws NormalizationException
+  {
+    addCall(new RecordedCall(MTH_END_MARKER, null));
   }
 
   public void finishedBlock()
@@ -294,6 +307,11 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
         renderer.startedRootInline((LayoutContext) parameters);
         break;
       }
+      case MTH_START_MARKER:
+      {
+        renderer.startedMarker((LayoutContext) parameters);
+        break;
+      }
       case MTH_START_INLINE:
       {
         renderer.startedInline((LayoutContext) parameters);
@@ -308,6 +326,11 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
       case MTH_END_INLINE:
       {
         renderer.finishedInline();
+        break;
+      }
+      case MTH_END_MARKER:
+      {
+        renderer.finishedMarker();
         break;
       }
       case MTH_END_TABLE_CELL:

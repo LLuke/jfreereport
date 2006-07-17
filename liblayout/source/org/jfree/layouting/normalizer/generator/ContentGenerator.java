@@ -67,6 +67,9 @@ public interface ContentGenerator extends StatefullComponent
   public void startedTableCell (final DisplayTableCellElement element)
           throws NormalizationException;
 
+  public void startedMarker(final DisplayElement element)
+          throws NormalizationException;
+
   public void startedInline(final DisplayElement element)
           throws NormalizationException;
 
@@ -76,12 +79,18 @@ public interface ContentGenerator extends StatefullComponent
   public void finishedInline()
           throws NormalizationException;
 
+  public void finishedMarker()
+          throws NormalizationException;
+
   public void finishedTableCell()
           throws NormalizationException;
+
   public void finishedTableRow ()
           throws NormalizationException;
+
   public void finishedTableSection()
           throws NormalizationException;
+
   public void finishedTable()
           throws NormalizationException;
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.2 2006/07/11 16:55:11 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.3 2006/07/12 17:53:05 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@
 package org.jfree.layouting.renderer.model;
 
 import java.util.ArrayList;
-
-import org.jfree.layouting.util.geom.StrictInsets;
 
 /**
  * A box that defines its own normal flow. All absolutly positioned or
@@ -60,13 +58,13 @@ import org.jfree.layouting.util.geom.StrictInsets;
  */
 public class NormalFlowRenderBox extends BlockRenderBox
 {
-  private InvisibleRenderBox placeHolder;
+  private SpacerRenderNode placeHolder;
   private ArrayList subFlows;
 
   public NormalFlowRenderBox(final BoxDefinition boxDefinition)
   {
     super(boxDefinition);
-    placeHolder = new InvisibleRenderBox();
+    placeHolder = new SpacerRenderNode(0, 0, true);
     subFlows = new ArrayList();
 
     // hardcoded for now, content forms lines, which flow from top to bottom
@@ -75,7 +73,7 @@ public class NormalFlowRenderBox extends BlockRenderBox
     setMinorAxis(HORIZONTAL_AXIS);
   }
 
-  public InvisibleRenderBox getPlaceHolder()
+  public SpacerRenderNode getPlaceHolder()
   {
     return placeHolder;
   }
@@ -119,7 +117,7 @@ public class NormalFlowRenderBox extends BlockRenderBox
         NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
         renderBox.subFlows.add(box.derive(true));
       }
-      renderBox.placeHolder = (InvisibleRenderBox)
+      renderBox.placeHolder = (SpacerRenderNode)
               renderBox.findNodeById(placeHolder.getInstanceId());
       if (renderBox.placeHolder == null)
       {
@@ -129,7 +127,7 @@ public class NormalFlowRenderBox extends BlockRenderBox
     }
     else
     {
-      renderBox.placeHolder = (InvisibleRenderBox) placeHolder.derive(true);
+      renderBox.placeHolder = (SpacerRenderNode) placeHolder.derive(true);
       renderBox.subFlows = new ArrayList();
     }
     return renderBox;
@@ -157,4 +155,10 @@ public class NormalFlowRenderBox extends BlockRenderBox
   {
     super.validateAbsoluteMargins();
   }
+
+  protected long getEffectiveLayoutSize (int axis)
+  {
+    return getPreferredSize(axis);
+  }
+
 }

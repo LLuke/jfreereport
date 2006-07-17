@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PreserveBreaksWhiteSpaceFilter.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: PreserveBreaksWhiteSpaceFilter.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -127,9 +127,10 @@ public class PreserveBreaksWhiteSpaceFilter implements WhiteSpaceFilter
       }
     }
 
-    if (codepoint == ClassificationProducer.START_OF_TEXT)
+    if (codepoint == ClassificationProducer.START_OF_TEXT ||
+        codepoint == ClassificationProducer.END_OF_TEXT)
     {
-      //collapse = true;
+      collapse = true;
       return WhiteSpaceFilter.STRIP_WHITESPACE;
     }
 

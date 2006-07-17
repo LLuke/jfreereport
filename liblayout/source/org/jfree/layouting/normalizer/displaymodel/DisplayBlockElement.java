@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayBlockElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -160,7 +160,6 @@ public class DisplayBlockElement extends DisplayElement
   {
     return lineBox;
   }
-
 
   protected void signalFinish() throws NormalizationException
   {

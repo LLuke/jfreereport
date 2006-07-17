@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleStyleRuleMatcher.java,v 1.2 2006/05/06 13:02:47 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -362,9 +362,9 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     }
 
     final LayoutContext layoutContext = element.getLayoutContext();
-    Log.debug ("Got " + retvals.size() + " matching rules for " +
-            layoutContext.getTagName() + ":" +
-            layoutContext.getPseudoElement());
+//    Log.debug ("Got " + retvals.size() + " matching rules for " +
+//            layoutContext.getTagName() + ":" +
+//            layoutContext.getPseudoElement());
 
     return (CSSStyleRule[]) retvals.toArray
             (new CSSStyleRule[retvals.size()]);
@@ -397,18 +397,22 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Selector.SAC_ELEMENT_NODE_SELECTOR:
       {
         ElementSelector es = (ElementSelector) selector;
-        if (ObjectUtilities.equal
-                (layoutContext.getTagName(), es.getLocalName()) == false)
+        final String localName = es.getLocalName();
+        if (localName != null)
         {
-//          Log.debug ("No match for " + layoutContext.getTagName() + " " + es.getLocalName());
-          return false;
+
+          if (localName.equals(layoutContext.getTagName()) == false)
+          {
+            return false;
+          }
         }
         String namespaceURI = es.getNamespaceURI();
-        if (ObjectUtilities.equal
-                (layoutContext.getNamespace(), namespaceURI) == false)
+        if (namespaceURI != null)
         {
-//          Log.debug ("No match for " + layoutContext.getNamespace() + " " + namespaceURI);
-          return false;
+          if (namespaceURI.equals(layoutContext.getNamespace()) == false)
+          {
+            return false;
+          }
         }
         return true;
       }

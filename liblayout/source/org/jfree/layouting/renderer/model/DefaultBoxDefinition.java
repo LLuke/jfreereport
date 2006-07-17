@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultBoxDefinition.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -237,15 +237,15 @@ public class DefaultBoxDefinition implements BoxDefinition
     first.marginBottom = marginBottom;
     first.marginRight = RenderLength.EMPTY;
     first.paddingBottom = paddingBottom;
-    first.paddingTop= paddingTop;
+    first.paddingTop = paddingTop;
     first.paddingLeft = paddingLeft;
     first.paddingRight = RenderLength.EMPTY;
     first.border = borders[0];
     first.preferredHeight = null;
     first.preferredWidth = null;
-    first.minimumHeight= null;
+    first.minimumHeight = null;
     first.minimumWidth = null;
-    first.maximumHeight= null;
+    first.maximumHeight = null;
     first.maximumWidth = null;
 
     final DefaultBoxDefinition second = new DefaultBoxDefinition();
@@ -254,15 +254,15 @@ public class DefaultBoxDefinition implements BoxDefinition
     second.marginBottom = marginBottom;
     second.marginRight = marginRight;
     second.paddingBottom = paddingBottom;
-    second.paddingTop= paddingTop;
+    second.paddingTop = paddingTop;
     second.paddingLeft = RenderLength.EMPTY;
     second.paddingRight = paddingRight;
     second.border = borders[1];
     second.preferredHeight = null;
     second.preferredWidth = null;
-    second.minimumHeight= null;
+    second.minimumHeight = null;
     second.minimumWidth = null;
-    second.maximumHeight= null;
+    second.maximumHeight = null;
     second.maximumWidth = null;
 
     final BoxDefinition[] boxes = new BoxDefinition[2];
@@ -281,15 +281,15 @@ public class DefaultBoxDefinition implements BoxDefinition
     first.marginBottom = RenderLength.EMPTY;
     first.marginRight = marginRight;
     first.paddingBottom = RenderLength.EMPTY;
-    first.paddingTop= paddingTop;
+    first.paddingTop = paddingTop;
     first.paddingLeft = paddingLeft;
     first.paddingRight = paddingRight;
     first.border = borders[0];
     first.preferredHeight = null;
     first.preferredWidth = null;
-    first.minimumHeight= null;
+    first.minimumHeight = null;
     first.minimumWidth = null;
-    first.maximumHeight= null;
+    first.maximumHeight = null;
     first.maximumWidth = null;
 
     final DefaultBoxDefinition second = new DefaultBoxDefinition();
@@ -298,15 +298,15 @@ public class DefaultBoxDefinition implements BoxDefinition
     second.marginBottom = marginBottom;
     second.marginRight = marginRight;
     second.paddingBottom = paddingBottom;
-    second.paddingTop= RenderLength.EMPTY;
+    second.paddingTop = RenderLength.EMPTY;
     second.paddingLeft = paddingLeft;
     second.paddingRight = paddingRight;
     second.border = borders[1];
     second.preferredHeight = null;
     second.preferredWidth = null;
-    second.minimumHeight= null;
+    second.minimumHeight = null;
     second.minimumWidth = null;
-    second.maximumHeight= null;
+    second.maximumHeight = null;
     second.maximumWidth = null;
 
     final BoxDefinition[] boxes = new BoxDefinition[2];
@@ -323,5 +323,26 @@ public class DefaultBoxDefinition implements BoxDefinition
   public void setBackgroundColor(final CSSColorValue backgroundColor)
   {
     this.backgroundColor = backgroundColor;
+  }
+
+  public boolean isEmpty()
+  {
+    if (paddingTop.getValue() != 0)
+    {
+      return false;
+    }
+    if (paddingLeft.getValue() != 0)
+    {
+      return false;
+    }
+    if (paddingBottom.getValue() != 0)
+    {
+      return false;
+    }
+    if (paddingRight.getValue() != 0)
+    {
+      return false;
+    }
+    return border.isEmpty();
   }
 }

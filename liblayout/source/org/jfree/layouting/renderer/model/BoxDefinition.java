@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxDefinition.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -98,4 +98,6 @@ public interface BoxDefinition
   public BoxDefinition[] splitHorizontally();
 
   public CSSColorValue getBackgroundColor();
+
+  public boolean isEmpty();
 }

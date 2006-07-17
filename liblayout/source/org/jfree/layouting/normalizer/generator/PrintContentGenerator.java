@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PrintContentGenerator.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -135,6 +135,12 @@ public class PrintContentGenerator implements ContentGenerator
     Log.debug("<paragraph tag='" + tagName + "'>");
   }
 
+  public void startedMarker(final DisplayElement element)
+          throws NormalizationException
+  {
+    Log.debug("<marker>");
+  }
+
   public void startedInline(final DisplayElement element)
   {
     final String tagName = element.getLayoutContext().getTagName();
@@ -149,6 +155,11 @@ public class PrintContentGenerator implements ContentGenerator
   public void finishedInline()
   {
     Log.debug("</inline>");
+  }
+
+  public void finishedMarker() throws NormalizationException
+  {
+    Log.debug("</marker>");
   }
 
   public void finishedRootInline() throws NormalizationException

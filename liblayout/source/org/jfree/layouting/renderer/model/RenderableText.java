@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: RenderableText.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -88,24 +88,14 @@ public class RenderableText extends RenderNode
   private long height;
   private long baseLine;
   private boolean forceLinebreak;
-  private long leadingSpace;
-  private long trailingSpace;
 
   public RenderableText(final LayoutContext layoutContext,
                         final Glyph[] glyphs,
                         final int offset,
                         final int length,
                         final boolean ltr,
-                        final boolean forceLinebreak,
-                        final long leadingSpace,
-                        final long trailingSpace)
+                        final boolean forceLinebreak)
   {
-    if (leadingSpace == 0)
-    {
-      Log.debug ("EH");
-    }
-    this.leadingSpace = leadingSpace;
-    this.trailingSpace = trailingSpace;
     if (glyphs == null)
     {
       throw new NullPointerException();
@@ -191,21 +181,6 @@ public class RenderableText extends RenderNode
 
   }
 
-  public void setTrailingSpace(final long trailingSpace)
-  {
-    this.trailingSpace = trailingSpace;
-  }
-
-  public long getTrailingSpace()
-  {
-    return trailingSpace;
-  }
-
-  public long getLeadingSpace()
-  {
-    return leadingSpace;
-  }
-
   public boolean isForceLinebreak()
   {
     return forceLinebreak;
@@ -265,7 +240,7 @@ public class RenderableText extends RenderNode
 
     if (position == 0)
     {
-      target[0] = new InvisibleRenderBox();
+      target[0] = new SpacerRenderNode();
       target[1] = derive(true);
       return target;
     }
@@ -277,7 +252,7 @@ public class RenderableText extends RenderNode
       // not splitable. By using the invisible render box, we allow the content
       // to move into the next line ..
       Log.debug("Renderable Text is not spittable on this axis");
-      target[0] = new InvisibleRenderBox();
+      target[0] = new SpacerRenderNode();
       target[1] = derive(true);
       return target;
     }
@@ -365,9 +340,8 @@ public class RenderableText extends RenderNode
       Glyph g = glyphs[i];
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
-        target[0] = new RenderableText
-                (getLayoutContext(), glyphs, offset,
-                        i - offset + 1, isLtr(), false, getLeadingSpace(), 0);
+        target[0] = new RenderableText (getLayoutContext(),
+                glyphs, offset, i - offset + 1, isLtr(), false);
 //        Log.debug("Text[0]: " + getRawText() + " " + pos + " -> " + offset + ":" + (i - offset));
         break;
       }
@@ -381,9 +355,8 @@ public class RenderableText extends RenderNode
       Glyph g = glyphs[i];
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
-        target[1] = new RenderableText
-                (getLayoutContext(), glyphs, i, length - i, isLtr(),
-                        isForceLinebreak(), 0, getTrailingSpace());
+        target[1] = new RenderableText (getLayoutContext(),
+                glyphs, i, length - i, isLtr(), isForceLinebreak());
 //        Log.debug("Text[1]: " + getRawText() + " " + pos + " -> " + i + ":" + (length - i));
         break;
 
@@ -393,7 +366,7 @@ public class RenderableText extends RenderNode
     if (target[0] == null)
     {
       Log.debug("This box is not spittable here");
-      target[0] = new InvisibleRenderBox();
+      target[0] = new SpacerRenderNode();
       if (target[1] == null)
       {
         target[1] = derive(true);
@@ -502,14 +475,14 @@ public class RenderableText extends RenderNode
     return minimumChunkWidth;
   }
 
-  public long getMinimumSize(int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return height;
-    }
-    return minimumWidth;
-  }
+//  public long getMinimumSize(int axis)
+//  {
+//    if (axis == getMinorAxis())
+//    {
+//      return height;
+//    }
+//    return minimumWidth;
+//  }
 
   public long getPreferredSize(int axis)
   {
@@ -519,15 +492,15 @@ public class RenderableText extends RenderNode
     }
     return preferredWidth;
   }
-
-  public long getMaximumSize(int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return height;
-    }
-    return maximumWidth;
-  }
+//
+//  public long getMaximumSize(int axis)
+//  {
+//    if (axis == getMinorAxis())
+//    {
+//      return height;
+//    }
+//    return maximumWidth;
+//  }
 
   public void validate()
   {
@@ -586,9 +559,13 @@ public class RenderableText extends RenderNode
     return (RenderableText) super.derive(deep);
   }
 
-  public int getBreakability()
+  public int getBreakability(int axis)
   {
-    return HARD_BREAKABLE;
+    if (axis == getMajorAxis())
+    {
+      return HARD_BREAKABLE;
+    }
+    return UNBREAKABLE;
   }
 
   /**
@@ -630,52 +607,19 @@ public class RenderableText extends RenderNode
 
     if (getMajorAxis() == axis)
     {
-      Log.debug("Queried reference point for major axis");
+      // Log.debug("Queried reference point for major axis");
       return 0;
     }
     return baseLine;
   }
 
-  /**
-   * Defines a spacing, that only applies if the node is not the first node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getLeadingSpace(int axis)
+  public boolean isDiscardable()
   {
-    if (axis == getMinorAxis())
+    if (forceLinebreak)
     {
-      return 0;
+      return false;
     }
-    if (getPrev() == null)
-    {
-      return 0;
-    }
-    return leadingSpace;
-  }
 
-  /**
-   * Defines a spacing, that only applies, if the node is not the last node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getTrailingSpace(int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return 0;
-    }
-    if (getNext() == null)
-    {
-      return 0;
-    }
-    return trailingSpace;
+    return glyphs.length == 0;
   }
-
 }

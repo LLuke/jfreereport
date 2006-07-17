@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.2 2006/07/12 17:53:06 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,12 @@ package org.jfree.layouting.renderer.model.page;
 
 import java.util.ArrayList;
 
-import org.jfree.layouting.renderer.page.PageGrid;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
-import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
-import org.jfree.layouting.renderer.model.IndexedRenderBox;
 import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
+import org.jfree.layouting.renderer.model.IndexedRenderBox;
+import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.util.geom.StrictInsets;
+import org.jfree.layouting.renderer.page.PageGrid;
 
 /**
  * The logical page box does not have a layout at all. It has collection of
@@ -69,9 +68,9 @@ import org.jfree.layouting.util.geom.StrictInsets;
  * The logical page also holds the absolutely and static positioned elements.
  * These elements may overlap the repeating headers, but will never overlap the
  * physical page header or footer.
- *
- * The logical page is also the container for all physical pages. (The sizes
- * of the physical pages influence the available space on the logical pages.) 
+ * <p/>
+ * The logical page is also the container for all physical pages. (The sizes of
+ * the physical pages influence the available space on the logical pages.)
  *
  * @author Thomas Morgner
  */
@@ -95,15 +94,15 @@ public class LogicalPageBox extends BlockRenderBox
     this.pageGrid = pageGrid;
     this.subFlows = new ArrayList();
     this.contentArea = new NormalFlowRenderBox(new EmptyBoxDefinition());
-    this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
-    this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
+//    this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
+//    this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
 
-    addChild(headerArea);
+//    addChild(headerArea);
     addChild(contentArea);
-    addChild(footerArea);
+//    addChild(footerArea);
 
-    footerArea.setElement("footnotes",
-            new NormalFlowRenderBox(new EmptyBoxDefinition()));
+//    footerArea.setElement("footnotes",
+//            new NormalFlowRenderBox(new EmptyBoxDefinition()));
 
     setMajorAxis(VERTICAL_AXIS);
     setMinorAxis(HORIZONTAL_AXIS);
@@ -165,4 +164,14 @@ public class LogicalPageBox extends BlockRenderBox
   {
     return contentArea.getInsertationPoint();
   }
+
+  protected long getEffectiveLayoutSize(int axis)
+  {
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return 150000;
+    }
+    return 600000;
+  }
+
 }

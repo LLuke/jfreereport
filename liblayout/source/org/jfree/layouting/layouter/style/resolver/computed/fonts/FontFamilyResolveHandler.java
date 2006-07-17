@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontFamilyResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: FontFamilyResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
                          LayoutStyle style,
                          StyleKey key)
   {
-    Log.debug ("Processing: " + currentNode);
+    //Log.debug ("Processing: " + currentNode);
     final FontSpecification fs =
             currentNode.getLayoutContext().getFontSpecification();
     final OutputProcessorMetaData outputMetaData = process.getOutputMetaData();

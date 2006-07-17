@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableImage.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: RenderableImage.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -106,14 +106,14 @@ public class RenderableImage extends RenderNode
     return 0;
   }
 
-  public long getMinimumSize(int axis)
-  {
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return contentSize.getWidth();
-    }
-    return contentSize.getHeight();
-  }
+//  public long getMinimumSize(int axis)
+//  {
+//    if (axis == HORIZONTAL_AXIS)
+//    {
+//      return contentSize.getWidth();
+//    }
+//    return contentSize.getHeight();
+//  }
 
   public long getPreferredSize(int axis)
   {
@@ -124,15 +124,15 @@ public class RenderableImage extends RenderNode
     return contentSize.getHeight();
   }
 
-  public long getMaximumSize(int axis)
-  {
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return contentSize.getWidth();
-    }
-    return contentSize.getHeight();
-  }
-
+//  public long getMaximumSize(int axis)
+//  {
+//    if (axis == HORIZONTAL_AXIS)
+//    {
+//      return contentSize.getWidth();
+//    }
+//    return contentSize.getHeight();
+//  }
+//
 
   public void validate()
   {
@@ -145,7 +145,7 @@ public class RenderableImage extends RenderNode
     return BreakAfterEnum.BREAK_DONT_KNOW;
   }
 
-  public int getBreakability()
+  public int getBreakability(int axis)
   {
     return HARD_BREAKABLE;
   }
@@ -188,4 +188,6 @@ public class RenderableImage extends RenderNode
   {
     return 0;
   }
+
+
 }

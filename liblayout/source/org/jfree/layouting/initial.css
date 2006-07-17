@@ -54,6 +54,9 @@
   padding-left:0;
   padding-bottom:0;
   padding-right:0;
+
+  width:auto;
+  height:auto;
 }
 
 /** Color Module */
@@ -212,7 +215,6 @@
   list-style-type: disc;
   list-style-image: none;
   list-style-position: outside;
-
 }
 
 /** Page Module */

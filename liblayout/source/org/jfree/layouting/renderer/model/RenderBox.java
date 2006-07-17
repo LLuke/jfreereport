@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.3 2006/07/12 17:53:05 taqua Exp $
+ * $Id: RenderBox.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.renderer.border.Border;
+import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.util.Log;
 
@@ -67,8 +68,6 @@ public abstract class RenderBox extends RenderNode
   private RenderNode firstChild;
   private RenderNode lastChild;
 
-  private StrictInsets effectiveMargins;
-  private StrictInsets absoluteMargins;
   private StrictInsets paddings;
   private StrictInsets borderWidths;
 
@@ -82,10 +81,8 @@ public abstract class RenderBox extends RenderNode
       throw new NullPointerException();
     }
     this.boxDefinition = boxDefinition;
-    this.absoluteMargins = new StrictInsets();
     this.paddings = new StrictInsets();
     this.borderWidths = new StrictInsets();
-    this.effectiveMargins = new StrictInsets();
   }
 
 
@@ -103,6 +100,7 @@ public abstract class RenderBox extends RenderNode
     this.boxDefinition = boxDefinition;
     this.paddingsValidated = false;
     this.bordersValidated = false;
+    invalidateMargins();
   }
 
   public RenderNode getFirstChild()
@@ -133,6 +131,11 @@ public abstract class RenderBox extends RenderNode
               ("Child to be added must not be null.");
     }
 
+    if (isOpen() == false)
+    {
+      throw new NullPointerException
+              ("Closed: " + this);
+    }
     if (lastChild != null)
     {
       lastChild.setNext(child);
@@ -337,7 +340,7 @@ public abstract class RenderBox extends RenderNode
       target = new RenderNode[2];
     }
     Log.debug("This box is not spittable at all");
-    target[0] = new InvisibleRenderBox();
+    target[0] = new SpacerRenderNode();
     target[1] = derive(true);
     return target;
   }
@@ -362,7 +365,11 @@ public abstract class RenderBox extends RenderNode
       }
       paddingsValidated = false;
       bordersValidated = false;
-
+    }
+    if (newState == RenderNodeState.PENDING)
+    {
+      paddingsValidated = false;
+      bordersValidated = false;
     }
     super.notifyStateChange(oldState, newState);
   }
@@ -412,7 +419,6 @@ public abstract class RenderBox extends RenderNode
   {
     final RenderBox o = (RenderBox) super.clone();
     o.borderWidths = (StrictInsets) borderWidths.clone();
-    o.absoluteMargins = (StrictInsets) absoluteMargins.clone();
     o.paddings = (StrictInsets) paddings.clone();
     return o;
   }
@@ -427,6 +433,10 @@ public abstract class RenderBox extends RenderNode
   public RenderNode derive(boolean deepDerive)
   {
     RenderBox box = (RenderBox) super.derive(deepDerive);
+    box.invalidateMargins();
+    box.paddingsValidated = false;
+    box.bordersValidated = false;
+
     if (deepDerive)
     {
       RenderNode node = firstChild;
@@ -494,6 +504,11 @@ public abstract class RenderBox extends RenderNode
 
   public RenderBox getInsertationPoint()
   {
+    if (isOpen() == false)
+    {
+      throw new IllegalStateException("Already closed");
+    }
+
     final RenderNode lastChild = getLastChild();
     if (lastChild instanceof RenderBox)
     {
@@ -533,23 +548,15 @@ public abstract class RenderBox extends RenderNode
     setState(RenderNodeState.UNCLEAN);
   }
 
-  public int getBreakability()
-  {
-    return SOFT_BREAKABLE;
-  }
-
-  public StrictInsets getAbsoluteMargins()
-  {
-    return absoluteMargins;
-  }
-
   public StrictInsets getPaddings()
   {
+    validatePaddings();
     return paddings;
   }
 
   public StrictInsets getBorderWidths()
   {
+    validateBorders();
     return borderWidths;
   }
 
@@ -582,92 +589,13 @@ public abstract class RenderBox extends RenderNode
     bordersValidated = true;
   }
 
-  protected void validateMargins()
-  {
-    validateAbsoluteMargins();
-
-    // now here comes the complex part: Compute effective margins.
-    // We have to deal with two cases: Inner element margins and outer margins
-    // for the outer margins, we compute the parent's margin and substract
-    // our margin from it (in other words: We do the normal collapsing).
-    final RenderBox parent = getParent();
-    if (parent == null || isEmpty())
-    {
-      // nice, no parent means no margins.
-      effectiveMargins.setTop(0);
-      effectiveMargins.setLeft(0);
-      effectiveMargins.setBottom(0);
-      effectiveMargins.setRight(0);
-      return;
-    }
-
-    final StrictInsets parentMargins = parent.getAbsoluteMargins();
-    if (getMajorAxis() == HORIZONTAL_AXIS)
-    {
-      effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
-      effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
-      if (getNonEmptyPrev() == null)
-      {
-        effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
-      }
-      else
-      {
-        effectiveMargins.setLeft(absoluteMargins.getLeft());
-      }
-      if (getNonEmptyNext() == null)
-      {
-        effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
-      }
-      else
-      {
-        effectiveMargins.setRight(absoluteMargins.getRight());
-      }
-    }
-    else
-    {
-      effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
-      effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
-
-      if (getNonEmptyPrev() == null)
-      {
-        effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
-      }
-      else
-      {
-        effectiveMargins.setTop(absoluteMargins.getTop());
-      }
-      if (getNonEmptyNext() == null)
-      {
-        effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
-      }
-      else
-      {
-        effectiveMargins.setBottom(absoluteMargins.getBottom());
-      }
-    }
-  }
-
-  protected void validateAbsoluteMargins()
-  {
-    final long topMargin = getLeadingMargin(VERTICAL_AXIS);
-    final long bottomMargin = getTrailingMargin(VERTICAL_AXIS);
-    final long leftMargin = getLeadingMargin(HORIZONTAL_AXIS);
-    if (leftMargin == 10000)
-    {
-      Log.debug ("ERE");
-    }
-    final long rightMargin = getTrailingMargin(HORIZONTAL_AXIS);
-    absoluteMargins.setTop(topMargin);
-    absoluteMargins.setLeft(leftMargin);
-    absoluteMargins.setBottom(bottomMargin);
-    absoluteMargins.setRight(rightMargin);
-  }
-
   protected long getTrailingInsets(int axis)
   {
     if (axis == HORIZONTAL_AXIS)
-    return getPaddings().getRight() +
-            getBorderWidths().getRight();
+    {
+      return getPaddings().getRight() +
+              getBorderWidths().getRight();
+    }
     else
     {
       return getPaddings().getBottom() +
@@ -677,10 +605,13 @@ public abstract class RenderBox extends RenderNode
 
   protected long getLeadingInsets(int axis)
   {
+    validatePaddings();
+    validateBorders();
+
     if (axis == HORIZONTAL_AXIS)
     {
       return getPaddings().getLeft() +
-            getBorderWidths().getLeft();
+              getBorderWidths().getLeft();
     }
     else
     {
@@ -688,176 +619,6 @@ public abstract class RenderBox extends RenderNode
               getBorderWidths().getTop();
     }
   }
-
-  protected long getParentWidth()
-  {
-    final RenderNode parent = getParent();
-    if (parent == null)
-    {
-      return 0;
-    }
-    return parent.getWidth();
-  }
-
-  /**
-   * Queries the absolute margins between to top or left edge of this box and
-   * the bottom or right edge of this boxes neighbour. If there is no neighbour
-   * we assume an infinite margin instead.
-   *
-   * @param axis
-   * @return
-   */
-  public long getTrailingMargin(int axis)
-  {
-    final long parentMargin;
-    RenderBox parent = getParent();
-    if (parent == null)
-    {
-      // assume an infinite margin ..
-      parentMargin = Long.MAX_VALUE;
-    }
-    else
-    {
-      if (axis == parent.getMajorAxis())
-      {
-        // check, if we are the last item in the parent.
-        RenderNode next = getNonEmptyNext();
-
-        if (next instanceof RenderBox)
-        {
-          RenderBox nextBox = (RenderBox) next;
-          parentMargin = nextBox.getLeadingMarginInternal(axis);
-        }
-        else if (next != null)
-        {
-          parentMargin = next.getLeadingSpace(axis);
-        }
-        else if (parent.isTrailingMarginIndependent(axis))
-        {
-          parentMargin = 0;
-        }
-        else
-        {
-          parentMargin = parent.getTrailingMargin(axis);
-        }
-      }
-      else if (parent.isTrailingMarginIndependent(axis))
-      {
-        parentMargin = 0;
-      }
-      else
-      {
-        parentMargin = parent.getTrailingMargin(axis);
-      }
-    }
-
-    final long parentWidth = getComputedBlockContextWidth();
-    final long myMargin;
-    if (axis == HORIZONTAL_AXIS)
-    {
-      myMargin = getBoxDefinition().getMarginRight().resolve(parentWidth);
-    }
-    else
-    {
-      myMargin = getBoxDefinition().getMarginBottom().resolve(parentWidth);
-    }
-
-    return collapseMargins(parentMargin, myMargin);
-  }
-
-  /**
-   * Queries the margin between to top or left edge of this box and the bottom
-   * or right edge of this boxes neighbour.
-   *
-   * @param axis
-   * @return
-   */
-  public long getLeadingMargin(int axis)
-  {
-    final long parentMargin;
-    RenderBox parent = getParent();
-    if (parent == null)
-    {
-      // assume an infinite margin ..
-      parentMargin = Long.MAX_VALUE;
-    }
-    else
-    {
-      if (axis == parent.getMajorAxis())
-      {
-        // check, if we are the first item in the parent.
-        RenderNode previous = getNonEmptyPrev();
-
-        if (previous instanceof RenderBox)
-        {
-          RenderBox prevBox = (RenderBox) previous;
-          parentMargin = prevBox.getTrailingMarginInternal(axis);
-        }
-        else if (previous != null)
-        {
-          parentMargin = previous.getTrailingSpace(axis);
-        }
-        else if (parent.isLeadingMarginIndependent(axis))
-        {
-          parentMargin = 0;
-        }
-        else
-        {
-          parentMargin = parent.getLeadingMargin(axis);
-        }
-      }
-      else if (parent.isLeadingMarginIndependent(axis))
-      {
-        parentMargin = 0;
-      }
-      else
-      {
-        parentMargin = parent.getLeadingMargin(axis);
-      }
-    }
-
-    final long parentWidth = getComputedBlockContextWidth();
-    final long myMargin;
-    if (axis == HORIZONTAL_AXIS)
-    {
-      myMargin = getBoxDefinition().getMarginLeft().resolve(parentWidth);
-    }
-    else
-    {
-      myMargin = getBoxDefinition().getMarginTop().resolve(parentWidth);
-    }
-
-    return collapseMargins(parentMargin, myMargin);
-  }
-
-  private RenderNode getNonEmptyPrev()
-  {
-    RenderNode previous = getPrev();
-    while (previous != null)
-    {
-      if (previous.isEmpty() == false)
-      {
-        return previous;
-      }
-      previous = previous.getPrev();
-    }
-    return null;
-  }
-
-  private RenderNode getNonEmptyNext()
-  {
-    RenderNode next = getNext();
-    while (next != null)
-    {
-      if (next.isEmpty() == false)
-      {
-        return next;
-      }
-      next = next.getNext();
-    }
-    return null;
-  }
-
 
   /**
    * Queries the bottom or right margin. This dives into the last child of the
@@ -869,11 +630,15 @@ public abstract class RenderBox extends RenderNode
    * @param axis
    * @return
    */
-  private long getTrailingMarginInternal(int axis)
+  protected long getTrailingMarginInternal(int axis)
   {
     RenderNode lastChild = getLastChild();
-    while (lastChild != null && lastChild.isEmpty())
+    while (lastChild != null)
     {
+      if (lastChild.isIgnorableForMargins() == false)
+      {
+        break;
+      }
       lastChild = lastChild.getPrev();
     }
 
@@ -922,11 +687,15 @@ public abstract class RenderBox extends RenderNode
    * @param axis
    * @return
    */
-  private long getLeadingMarginInternal(int axis)
+  protected long getLeadingMarginInternal(int axis)
   {
     RenderNode firstChild = getFirstChild();
-    while (firstChild != null && firstChild.isEmpty())
+    while (firstChild != null)
     {
+      if (firstChild.isIgnorableForMargins() == false)
+      {
+        break;
+      }
       firstChild = firstChild.getNext();
     }
 
@@ -992,88 +761,43 @@ public abstract class RenderBox extends RenderNode
     }
   }
 
-  private long collapseMargins(long parentMargin, long myMargin)
+  protected long getDefinedTrailingMargin(int axis)
   {
-    return Math.max(parentMargin, myMargin);
-  }
-
-  public StrictInsets getEffectiveMargins()
-  {
-    return effectiveMargins;
-  }
-
-  /**
-   * Defines a spacing, that only applies, if the node is not the last node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getTrailingSpace(int axis)
-  {
-    validateMargins();
+    final long parentWidth = getComputedBlockContextWidth();
+    final long myMargin;
     if (axis == HORIZONTAL_AXIS)
     {
-      return getEffectiveMargins().getLeft();
+      myMargin = getBoxDefinition().getMarginRight().resolve(parentWidth);
     }
-    return getEffectiveMargins().getTop();
+    else
+    {
+      myMargin = getBoxDefinition().getMarginBottom().resolve(parentWidth);
+    }
+    return myMargin;
   }
 
-  /**
-   * Defines a spacing, that only applies if the node is not the first node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getLeadingSpace(int axis)
+  protected long getDefinedLeadingMargin(int axis)
   {
-    validateMargins();
+    final long parentWidth = getComputedBlockContextWidth();
+    final long myMargin;
     if (axis == HORIZONTAL_AXIS)
     {
-      return getEffectiveMargins().getRight();
+      myMargin = getBoxDefinition().getMarginLeft().resolve(parentWidth);
     }
-    return getEffectiveMargins().getBottom();
-  }
-
-
-  public long getMinimumSize(int axis)
-  {
-    if (axis == getMinorAxis())
+    else
     {
-      // minor axis means: Drive through all childs and query their size
-      // then find the maximum
-      long sizeAbove = 0;
-      long sizeBelow = 0;
-      RenderNode child = getFirstChild();
-      while (child != null)
-      {
-        long size = child.getMinimumSize(axis);
-        long refp = child.getReferencePoint(axis);
-
-        sizeAbove = Math.max (sizeAbove, refp);
-        sizeBelow = Math.max (sizeBelow, size - refp);
-        child = child.getNext();
-      }
-      return getLeadingInsets(axis) + sizeAbove + sizeBelow + getTrailingInsets(axis);
+      myMargin = getBoxDefinition().getMarginTop().resolve(parentWidth);
     }
-
-    long size = getLeadingInsets(axis);
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      size += child.getMinimumSize(axis);
-      child = child.getNext();
-    }
-    return size + getTrailingInsets(axis);
+    return myMargin;
   }
 
   public long getPreferredSize(int axis)
   {
+    final long retval;
     if (axis == getMinorAxis())
     {
+      Log.debug("MINOR BEGIN : PreferredSize " + this);
+
       // minor axis means: Drive through all childs and query their size
       // then find the maximum
       long sizeAbove = 0;
@@ -1081,55 +805,301 @@ public abstract class RenderBox extends RenderNode
       RenderNode child = getFirstChild();
       while (child != null)
       {
-        long size = child.getPreferredSize(axis);
-        long refp = child.getReferencePoint(axis);
+        if (child.isIgnorableForRendering())
+        {
+          // empty childs may affect the margin computation or cause linebreaks,
+          // but they must not appear here.
+          child = child.getNext();
+          continue;
+        }
 
-        sizeAbove = Math.max (sizeAbove, refp);
-        sizeBelow = Math.max (sizeBelow, size - refp);
+        if (child instanceof MarkerRenderBox)
+        {
+          MarkerRenderBox mrb = (MarkerRenderBox) child;
+          if (mrb.isOutside())
+          {
+            child = child.getNext();
+            continue;
+          }
+        }
+
+        //long size = child.getPreferredSize(axis);
+        long size = child.getEffectiveLayoutSize(axis);
+        long refp = child.getReferencePoint(axis);
+        long lead = child.getLeadingSpace(axis);
+        long trai = child.getTrailingSpace(axis);
+
+        sizeAbove = Math.max(sizeAbove, refp + lead);
+        sizeBelow = Math.max(sizeBelow, (size - refp) + trai);
+        Log.debug("  P-Size: " + size + " " + refp + " " + lead + " " + trai + " " + child);
         child = child.getNext();
       }
-      return getLeadingInsets(axis) + sizeAbove + sizeBelow + getTrailingInsets(axis);
-    }
+      retval = getLeadingInsets(axis) + sizeAbove +
+              sizeBelow + getTrailingInsets(axis);
+      Log.debug("MINOR END: PreferredSize: " + retval + " " + axis + " " + this);
 
-    long size = getLeadingInsets(axis);
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      size += child.getPreferredSize(axis);
-      child = child.getNext();
     }
-    return size + getTrailingInsets(axis);
+    else
+    {
+      Log.debug("MAJOR BEGIN : PreferredSize " + this);
+
+      long size = getLeadingInsets(axis);
+      RenderNode child = getFirstChild();
+      long trailingSpace = 0;
+      while (child != null)
+      {
+        if (child.isIgnorableForRendering())
+        {
+          // empty childs may affect the margin computation or cause linebreaks,
+          // but they must not appear here.
+          child = child.getNext();
+          continue;
+        }
+        if (child instanceof MarkerRenderBox)
+        {
+          MarkerRenderBox mrb = (MarkerRenderBox) child;
+          if (mrb.isOutside())
+          {
+            child = child.getNext();
+            continue;
+          }
+        }
+
+
+        final long layoutSize = child.getEffectiveLayoutSize(axis);
+        size += layoutSize;
+
+        final long leadingSpace = child.getLeadingSpace(axis);
+        size += Math.max(leadingSpace, trailingSpace);
+
+        trailingSpace = child.getTrailingSpace(axis);
+//        size += trailingSpace;
+
+        Log.debug("  P-Size: " + layoutSize + " " + leadingSpace + " " + trailingSpace + " " + child);
+        child = child.getNext();
+      }
+      retval = size + trailingSpace + getTrailingInsets(axis);
+      Log.debug("MAJOR END: PreferredSize: " + retval + " " + axis + " " + this);
+    }
+    return retval;
   }
 
-  public long getMaximumSize(int axis)
+  /**
+   * This needs to be adjusted to support vertical flows as well.
+   *
+   * @param axis
+   * @param node
+   * @return
+   */
+  protected long getEffectiveLayoutSize(int axis)
   {
-    if (axis == getMinorAxis())
+    if (axis == VERTICAL_AXIS)
     {
-      // minor axis means: Drive through all childs and query their size
-      // then find the maximum
-      long sizeAbove = 0;
-      long sizeBelow = 0;
-      RenderNode child = getFirstChild();
-      while (child != null)
-      {
-        long size = child.getMaximumSize(axis);
-        long refp = child.getReferencePoint(axis);
-
-        sizeAbove = Math.max (sizeAbove, refp);
-        sizeBelow = Math.max (sizeBelow, size - refp);
-        child = child.getNext();
-      }
-      return getLeadingInsets(axis) + sizeAbove + sizeBelow + getTrailingInsets(axis);
+      return getPreferredSize(axis);
     }
 
-    long size = getLeadingInsets(axis);
+    // 1. If the element is a flow root other than the root element,
+    //    width is the intrinsic width.
+
+    // 2. If the element is the root element on paged media, the value
+    //    is the computed width value of the 'size' property.
+    final RenderBox parent = getParent();
+    if (parent == null)
+    {
+      // this should not happen ...
+      return getPreferredSize(axis);
+    }
+
+    // 3. Otherwise, if the element is a block-level element and its
+    //    containing block also has a horizontal flow, equation (1)
+    //    below determines the width.
+    //
+    // (1) (width of containing block) = margin-left + border-left +
+    //                                   padding-left + width + padding-right +
+    //                                   border-right + margin-right
+
+    if (parent instanceof BlockRenderBox)
+    {
+      final RenderLength preferredWidth =
+              getBoxDefinition().getPreferredWidth();
+      if (RenderLength.AUTO.equals(preferredWidth))
+      {
+        // margins with 'auto' are not yet supported.
+        // This is also the behaviour of Mozilla and Opera: if the width is
+        // auto, then all auto-margins get set to zero.
+        final long margins = getLeadingSpace(axis) + getTrailingSpace(axis);
+        final long contextWidth = getPreferredSize(axis);
+        final long l = contextWidth - margins;
+        if (l < 0)
+        {
+          return 0;
+        }
+        return l;
+      }
+      else
+      {
+        // todo: At the moment, this fails, as there is no computed block
+        // context width at all.
+        Log.debug("Still Empty");
+        final long contextWidth = getComputedBlockContextWidth();
+        final long width = preferredWidth.resolve(contextWidth);
+        if (width < 0)
+        {
+          return 0;
+        }
+        else
+        {
+          return width;
+        }
+      }
+    }
+
+    // 4. Otherwise, if the element is block-level and the containing
+    //    block has a different orientation, the computed value is the
+    //    intrinsic width.
+
+    return getPreferredSize(axis);
+
+  }
+
+  /**
+   * The reference point corresponds to the baseline of an box. For now, we
+   * define only one reference point per box. The reference point of boxes
+   * corresponds to the reference point of the first linebox.
+   *
+   * @param axis
+   * @return
+   */
+  public long getReferencePoint(int axis)
+  {
+    // we have no horizontal reference point ... (yet)
+    if (axis == getMajorAxis())
+    {
+      RenderNode firstChild = getFirstChild();
+      while (firstChild != null)
+      {
+        if (firstChild.isIgnorableForRendering() == false)
+        {
+          return firstChild.getReferencePoint(axis);
+        }
+        firstChild = firstChild.getNext();
+      }
+      return 0;
+    }
+
+    // this gets a bit more complicated. Iterate over all childs and get their
+    // reference point.
     RenderNode child = getFirstChild();
+    long referencePoint = 0;
     while (child != null)
     {
-      size += child.getMaximumSize(axis);
+      final long refPoint = child.getReferencePoint(getMinorAxis());
+      referencePoint = Math.max(refPoint, referencePoint);
       child = child.getNext();
     }
-    return size + getTrailingInsets(axis);
+    return referencePoint;
   }
+
+  private RenderNode getFirstNonEmpty()
+  {
+    RenderNode firstChild = getFirstChild();
+    while (firstChild != null)
+    {
+      if (firstChild.isEmpty() == false)
+      {
+        return firstChild;
+      }
+      firstChild = firstChild.getNext();
+    }
+    return null;
+  }
+
+  public boolean isEmpty()
+  {
+    if (getBoxDefinition().isEmpty() == false)
+    {
+      return false;
+    }
+
+    RenderNode node = getFirstNonEmpty();
+    if (node != null)
+    {
+      return false;
+    }
+    // Ok, the childs were not able to tell us some truth ..
+    // lets try something else.
+    return true;
+  }
+
+  public boolean isDiscardable()
+  {
+    RenderNode node = getFirstChild();
+    while (node != null)
+    {
+      if (node.isDiscardable() == false)
+      {
+        return false;
+      }
+      node = node.getNext();
+    }
+    return true;
+  }
+
+  public void close()
+  {
+    if (isOpen() == false)
+    {
+      Log.debug("no longer open " + this);
+      return;
+    }
+
+    super.close();
+    if (isDiscardable())
+    {
+      if (getParent() != null)
+      {
+        getParent().remove(this);
+      }
+    }
+    else
+    {
+      Log.debug("not discardable " + this);
+    }
+  }
+
+  protected void remove(RenderNode child)
+  {
+    Log.debug("Removing " + child);
+    final RenderBox parent = child.getParent();
+    if (parent != this)
+    {
+      throw new IllegalArgumentException("None of my childs");
+    }
+
+    child.setParent(null);
+
+    RenderNode prev = child.getPrev();
+    RenderNode next = child.getNext();
+
+    if (prev != null)
+    {
+      prev.setNext(next);
+    }
+
+    if (next != null)
+    {
+      next.setPrev(prev);
+    }
+
+    if (firstChild == child)
+    {
+      firstChild = next;
+    }
+    if (lastChild == child)
+    {
+      lastChild = prev;
+    }
+  }
+
 
 }
