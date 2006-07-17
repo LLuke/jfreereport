@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<report:report xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:report="http://jfreereport.sourceforge.net/namespaces/reports/flow">
+  <report:query>default</report:query>
+
+  <report:inline-stylesheet>
+    @namespace url(http://www.w3.org/1999/xhtml); /* set default namespace to HTML */
+    ol.inner {
+      background-color: red;
+    }
+
+    ol.outer {
+      background-color: green;
+    }
+
+    :marker {
+      margin-right: 10pt;
+    }
+
+    .bordered {
+      background-color: green;
+    }
+  </report:inline-stylesheet>
+
+  <report:configuration>
+    <report:property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</report:property>
+  </report:configuration>
+  <report:datasource href="sample.sqlds"/>
+
+  <table>
+    <colgroup>
+      <col style="width:100%" span="2"/>
+    </colgroup>
+    <thead>
+      <tr>
+        <td>Header</td>
+        <td>Header</td>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <td>Footer</td>
+        <td>Footer</td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>Body</td>
+        <td>Body</td>
+      </tr>
+    </tbody>
+  </table>
+
+</report:report>
