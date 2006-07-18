@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.6 2006/07/17 16:48:53 taqua Exp $
+ * $Id: RenderNode.java,v 1.7 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -121,12 +121,10 @@ public abstract class RenderNode implements Cloneable
   private boolean clearRight;
   private boolean clearLeft;
   private Object instanceId;
-  private boolean open;
 
   public RenderNode()
   {
     instanceId = new Object();
-    open = true;
     state = RenderNodeState.UNCLEAN;
 
 
@@ -533,7 +531,6 @@ public abstract class RenderNode implements Cloneable
     node.parent = null;
     node.next = null;
     node.prev = null;
-    node.open = true;
     return node;
   }
 
@@ -627,13 +624,7 @@ public abstract class RenderNode implements Cloneable
 
   public boolean isOpen()
   {
-    return open;
-  }
-
-  public void close()
-  {
-    this.open = false;
-    Log.debug ("Closing " + this);
+    return false;
   }
 
   public int getBreakability(int axis)
@@ -710,11 +701,6 @@ public abstract class RenderNode implements Cloneable
   public boolean isDiscardable()
   {
     return false;
-  }
-
-  protected void setOpen(final boolean open)
-  {
-    this.open = open;
   }
 
   protected long getEffectiveLayoutSize (int axis)

@@ -24,58 +24,48 @@
  * in the United States and other countries.]
  *
  * ------------
- * TableSectionRenderBox.java
+ * XColSpanReadHandler.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableSectionRenderBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.layouting.renderer.model.table;
+package org.jfree.layouting.input.style.parser.stylehandler.table;
 
-import org.jfree.layouting.renderer.model.BlockRenderBox;
-import org.jfree.layouting.renderer.model.BoxDefinition;
-import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
+import org.w3c.css.sac.LexicalUnit;
 
 /**
- * A table section box does not much rendering or layouting at all. It
- * represents one of the three possible sections and behaves like any other
- * block box. But (here it comes!) it refuses to be added to anything else than
- * a TableRenderBox (a small check to save me a lot of insanity ..).
+ * Creation-Date: 18.07.2006, 19:00:10
  *
  * @author Thomas Morgner
  */
-public class TableSectionRenderBox extends BlockRenderBox
+public class XColSpanReadHandler implements CSSValueReadHandler
 {
-  public TableSectionRenderBox(final BoxDefinition boxDefinition)
+  public XColSpanReadHandler()
   {
-    super(boxDefinition);
   }
 
-  public TableRenderBox getTable()
+  public CSSValue createValue(StyleKey name, LexicalUnit value)
   {
-    RenderBox parent = getParent();
-    if (parent instanceof TableRenderBox)
+    if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
-      return (TableRenderBox) parent;
+      return new CSSNumericValue(CSSNumericType.NUMBER,
+              value.getIntegerValue());
     }
     return null;
   }
 
-  public TableColumnModel getColumnModel()
-  {
-    final TableRenderBox table = getTable();
-    if (table == null)
-    {
-      return null;
-    }
-    return table.getColumnModel();
-  }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableColumnGroupNode.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,11 @@ package org.jfree.layouting.renderer.model.table;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSNumericType;
 
 /**
  * Creation-Date: 17.07.2006, 18:32:42
@@ -51,9 +56,32 @@ import org.jfree.layouting.renderer.model.RenderNodeState;
  */
 public class TableColumnGroupNode extends RenderBox
 {
-  public TableColumnGroupNode(final BoxDefinition boxDefinition)
+  private LayoutContext context;
+
+  public TableColumnGroupNode(final BoxDefinition boxDefinition,
+                              final LayoutContext context)
   {
     super(boxDefinition);
+    this.context = context;
+  }
+
+  public int getColSpan ()
+  {
+    CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
+    if (value instanceof CSSNumericValue)
+    {
+      CSSNumericValue nval = (CSSNumericValue) value;
+      if (CSSNumericType.NUMBER.equals(nval.getType()))
+      {
+        return (int) nval.getValue();
+      }
+    }
+    return 1;
+  }
+
+  public LayoutContext getContext()
+  {
+    return context;
   }
 
   public boolean isDiscardable()

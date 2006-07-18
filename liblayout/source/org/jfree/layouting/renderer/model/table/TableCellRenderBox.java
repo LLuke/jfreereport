@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableCellRenderBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer.model.table;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
+import org.jfree.layouting.renderer.model.RenderBox;
 
 /**
  * A table section box does not much rendering or layouting at all. It represents
@@ -58,5 +59,28 @@ public class TableCellRenderBox extends BlockRenderBox
           throws NormalizationException
   {
     super(boxDefinition);
+  }
+
+
+  public TableRenderBox getTable()
+  {
+    RenderBox parent = getParent();
+    if (parent instanceof TableRowRenderBox)
+    {
+      final TableRowRenderBox rowRenderBox =
+              (TableRowRenderBox) parent;
+      return rowRenderBox.getTable();
+    }
+    return null;
+  }
+
+  public TableColumnModel getColumnModel()
+  {
+    final TableRenderBox table = getTable();
+    if (table == null)
+    {
+      return null;
+    }
+    return table.getColumnModel();
   }
 }

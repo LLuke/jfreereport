@@ -199,6 +199,11 @@ th {
   padding: 1px;
 }
 
+col[span],
+colgroup[span] {
+  -x-liblayout-colspan: attr(span);
+}
+
 td[colspan],
 th[colspan] {
   -x-liblayout-colspan: attr(colspan);
@@ -209,11 +214,15 @@ th[rowspan] {
   -x-liblayout-rowspan: attr(rowspan);
 }
 
+col[align],
+colgroup[align],
 td[align],
 th[align] {
   text-align: attr(align);
 }
 
+col[valign],
+colgroup[valign],
 td[valign],
 th[valign] {
   vertical-align: attr(valign);

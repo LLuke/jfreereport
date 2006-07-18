@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.4 2006/07/17 16:48:52 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.5 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -225,7 +225,7 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    TableRenderBox tableRenderBox = new TableRenderBox(definition);
+    TableRenderBox tableRenderBox = new TableRenderBox(definition, context);
     applyClear(context, tableRenderBox);
 
     getInsertationPoint().addChild(tableRenderBox);
@@ -242,7 +242,7 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    TableColumnGroupNode columnGroupNode = new TableColumnGroupNode(definition);
+    TableColumnGroupNode columnGroupNode = new TableColumnGroupNode(definition, context);
     getInsertationPoint().addChild(columnGroupNode);
   }
 
@@ -257,7 +257,7 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    TableColumnNode columnGroupNode = new TableColumnNode(definition);
+    TableColumnNode columnGroupNode = new TableColumnNode(definition, context);
     getInsertationPoint().addChild(columnGroupNode);
   }
 
@@ -613,14 +613,13 @@ public class DefaultRenderer implements Renderer
   {
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-col-group>");
-    // the plain column is no box, therefore dont close the context.
+    getInsertationPoint().close();
   }
 
   public void finishedTableColumn() throws NormalizationException
   {
     getInsertationPoint().addChilds(textFactory.finishText());
     Log.debug("</table-col>");
-    //getInsertationPoint().close();
   }
 
   public void finishedTable()

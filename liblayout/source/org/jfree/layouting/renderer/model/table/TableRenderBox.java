@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.2 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,14 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
+import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
-import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
+import org.jfree.layouting.input.style.keys.table.BorderCollapse;
 
 /**
  * A table render box contains table header, table footer and the table body.
@@ -53,17 +59,189 @@ import org.jfree.layouting.renderer.model.RenderBox;
  *
  * @author Thomas Morgner
  */
-public class TableRenderBox extends RenderBox
+public class TableRenderBox extends BlockRenderBox
 {
-  private Object tableColumnModel;
+  private TableColumnModel columnModel;
+  private boolean columnModelBuilt;
+  private boolean needsPruning;
+  private LayoutContext layoutContext;
 
-  public TableRenderBox(final BoxDefinition boxDefinition)
+  public TableRenderBox(final BoxDefinition boxDefinition,
+                        final LayoutContext layoutContext)
   {
     super(boxDefinition);
+    this.layoutContext = layoutContext;
+    columnModel = new TableColumnModel();
   }
 
   public void validate()
   {
+    if (RenderNodeState.FINISHED.equals(getState()))
+    {
+      return;
+    }
 
+    prune();
+
+    if (!columnModelBuilt)
+    {
+      if (isDataAvailable())
+      {
+        // process the columns ..
+        buildColumnModel();
+        columnModelBuilt = true;
+      }
+    }
+
+
+    // The layouting here is rather simple. We do a simple block layouting;
+    // and it is guaranteed, that the various sections do not overlap. It
+    // is not possible for a table-cell of the header section to interact
+    // with the cells of the body- or footer-sections.
+    if (columnModel.isIncrementalModeSupported() == false)
+    {
+      // If we are not in the incremental mode, then we cannot continue unless
+      // we've seen everything.
+      if (isOpen())
+      {
+        return;
+      }
+    }
+
+
+    setState(RenderNodeState.FINISHED);
+  }
+
+  private void buildColumnModel()
+  {
+    RenderNode node = getFirstChild();
+    while (node != null)
+    {
+      if (node instanceof TableColumnGroupNode)
+      {
+        final TableColumnGroupNode group = (TableColumnGroupNode) node;
+
+        // prefer the declared columns instead of the colspan attribute.
+        RenderNode cnode = group.getFirstChild();
+        boolean added = false;
+        while (cnode != null)
+        {
+          if (cnode instanceof TableColumnNode)
+          {
+            final TableColumnNode column = (TableColumnNode) cnode;
+            int colspan = column.getColSpan();
+            for (int i = 0; i < colspan; i++)
+            {
+              columnModel.addColumn(column);
+              added = true;
+            }
+          }
+          cnode = cnode.getNext();
+        }
+
+        if (added == false)
+        {
+          final int colspan = group.getColSpan();
+          for (int i = 0; i < colspan; i++)
+          {
+            columnModel.addColumn(new TableColumnNode
+                    (group.getBoxDefinition(), group.getContext()));
+          }
+        }
+
+        node = node.getNext();
+        remove(group);
+      }
+      else if (node instanceof TableColumnNode)
+      {
+        final TableColumnNode column = (TableColumnNode) node;
+        int colspan = column.getColSpan();
+        for (int i = 0; i < colspan; i++)
+        {
+          columnModel.addColumn(column);
+        }
+        node = node.getNext();
+        remove(column);
+      }
+      else if (node instanceof TableSectionRenderBox)
+      {
+        break;
+      }
+      else
+      {
+        node = node.getNext();
+      }
+    }
+  }
+
+  public long getPreferredSize(int axis)
+  {
+    prune();
+    return super.getPreferredSize(axis);
+  }
+
+  public TableColumnModel getColumnModel()
+  {
+    return columnModel;
+  }
+
+  private void prune()
+  {
+    if (needsPruning == false)
+    {
+      return;
+    }
+
+    RenderNode last = getLastChild();
+    while (last != null)
+    {
+      if (last.isOpen() ||
+          last instanceof TableSectionRenderBox ||
+          last instanceof TableColumnGroupNode ||
+          last instanceof TableColumnNode)
+      {
+        last = last.getPrev();
+      }
+      else
+      {
+        RenderNode prev = last.getPrev();
+        remove(last);
+        last = prev;
+      }
+    }
+
+    needsPruning = false;
+  }
+
+  public void addChild(final RenderNode child)
+  {
+    super.addChild(child);
+    needsPruning = true;
+  }
+
+  public boolean isLayoutable()
+  {
+    return columnModel.isIncrementalModeSupported();
+  }
+
+  private boolean isDataAvailable()
+  {
+    RenderNode last = getLastChild();
+    while (last != null)
+    {
+      if (last instanceof TableSectionRenderBox)
+      {
+        return true;
+      }
+      last = last.getPrev();
+    }
+    return false;
+  }
+
+  public boolean isCollapsingBorderModel()
+  {
+    final CSSValue borderModel =
+            layoutContext.getStyle().getValue(TableStyleKeys.BORDER_COLLAPSE);
+    return BorderCollapse.COLLAPSE.equals(borderModel);
   }
 }

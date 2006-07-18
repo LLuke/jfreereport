@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
+ * $Id: RenderBox.java,v 1.6 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,7 @@ public abstract class RenderBox extends RenderNode
 
   private boolean paddingsValidated;
   private boolean bordersValidated;
+  private boolean open;
 
   public RenderBox(final BoxDefinition boxDefinition)
   {
@@ -83,6 +84,7 @@ public abstract class RenderBox extends RenderNode
     this.boxDefinition = boxDefinition;
     this.paddings = new StrictInsets();
     this.borderWidths = new StrictInsets();
+    this.open = true;
   }
 
 
@@ -357,7 +359,13 @@ public abstract class RenderBox extends RenderNode
       size = Math.max(size, child.getMinimumChunkSize(axis));
       child = child.getNext();
     }
-    return size;
+
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return Math.max (boxDefinition.getMinimumWidth().resolve(0), size);
+    }
+    
+    return Math.max (boxDefinition.getMinimumHeight().resolve(0), size);
   }
 
   public BreakAfterEnum getBreakAfterAllowed(final int axis)
@@ -413,6 +421,7 @@ public abstract class RenderBox extends RenderNode
     box.invalidateMargins();
     box.paddingsValidated = false;
     box.bordersValidated = false;
+    box.open = true;
 
     if (deepDerive)
     {
@@ -1030,7 +1039,7 @@ public abstract class RenderBox extends RenderNode
       return;
     }
 
-    super.close();
+    this.open = false;
     if (isDiscardable())
     {
       if (getParent() != null)
@@ -1463,4 +1472,13 @@ public abstract class RenderBox extends RenderNode
     return target;
   }
 
+  public boolean isOpen()
+  {
+    return open;
+  }
+
+  public void setOpen(final boolean open)
+  {
+    this.open = open;
+  }
 }

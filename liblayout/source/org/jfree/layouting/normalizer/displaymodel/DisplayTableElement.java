@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayTableElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: DisplayTableElement.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,6 @@ public class DisplayTableElement extends DisplayElement
     }
 
     super.markFinished();
-    signalFinish();
   }
 
   protected void signalFinish()

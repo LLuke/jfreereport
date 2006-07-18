@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableColumnNode.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
  *
  * Changes
  * -------
@@ -40,22 +40,56 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
-import org.jfree.layouting.renderer.model.SpacerRenderNode;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
+import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.model.BoxDefinition;
+import org.jfree.layouting.renderer.model.SpacerRenderNode;
 
 /**
- * Creation-Date: 17.07.2006, 18:32:42
+ * A table column defines a limited set of style properties, which may be
+ * applied to the cells.
+ * <p/>
+ * Border, if the border-model is the collapsing border model. Background, if
+ * both cell and row have a transparent background Width, is a minimum width. If
+ * the cell exceeds that size, the table cannot be rendered in incremental mode
+ * anymore. We may have to use the validation run to check for that rule.
+ * Visiblity, if set to collapse, the column will not be rendered. Not yet.
  *
  * @author Thomas Morgner
  */
 public class TableColumnNode extends SpacerRenderNode
 {
   private BoxDefinition definition;
+  private LayoutContext context;
 
-  public TableColumnNode(final BoxDefinition definition)
+  public TableColumnNode(final BoxDefinition definition,
+                         final LayoutContext context)
   {
-    super(0,0,false);
+    super(0, 0, true);
     this.definition = definition;
+    this.context = context;
+  }
+
+  public LayoutContext getContext()
+  {
+    return context;
+  }
+
+  public int getColSpan()
+  {
+    CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
+    if (value instanceof CSSNumericValue)
+    {
+      CSSNumericValue nval = (CSSNumericValue) value;
+      if (CSSNumericType.NUMBER.equals(nval.getType()))
+      {
+        return (int) nval.getValue();
+      }
+    }
+    return 1;
   }
 
   public BoxDefinition getDefinition()

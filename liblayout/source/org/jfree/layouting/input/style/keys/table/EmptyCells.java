@@ -24,58 +24,35 @@
  * in the United States and other countries.]
  *
  * ------------
- * TableSectionRenderBox.java
+ * EmptyCells.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableSectionRenderBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.layouting.renderer.model.table;
+package org.jfree.layouting.input.style.keys.table;
 
-import org.jfree.layouting.renderer.model.BlockRenderBox;
-import org.jfree.layouting.renderer.model.BoxDefinition;
-import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.input.style.values.CSSConstant;
 
 /**
- * A table section box does not much rendering or layouting at all. It
- * represents one of the three possible sections and behaves like any other
- * block box. But (here it comes!) it refuses to be added to anything else than
- * a TableRenderBox (a small check to save me a lot of insanity ..).
+ * Creation-Date: 18.07.2006, 19:04:01
  *
  * @author Thomas Morgner
  */
-public class TableSectionRenderBox extends BlockRenderBox
+public class EmptyCells
 {
-  public TableSectionRenderBox(final BoxDefinition boxDefinition)
-  {
-    super(boxDefinition);
-  }
+  public static final CSSConstant SHOW = new CSSConstant("show");
+  public static final CSSConstant HIDE = new CSSConstant("hide");
 
-  public TableRenderBox getTable()
+  private EmptyCells()
   {
-    RenderBox parent = getParent();
-    if (parent instanceof TableRenderBox)
-    {
-      return (TableRenderBox) parent;
-    }
-    return null;
-  }
-
-  public TableColumnModel getColumnModel()
-  {
-    final TableRenderBox table = getTable();
-    if (table == null)
-    {
-      return null;
-    }
-    return table.getColumnModel();
   }
 }
