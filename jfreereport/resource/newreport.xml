@@ -66,4 +66,27 @@
   </html:ol>
 
   <html:img src="gorilla.jpg" style="width:100px; height:100px" alt="Gorilla"/>
+
+
+  <html:p style="width: 300pt; text-align:left">
+    JFreeReport is a free Java report library, distributed under the terms
+    of the GNU Lesser General Public License (see license-LGPL.txt for
+    details).  JFreeReport is developed by Thomas Morgner, David Gilbert
+    and others.
+  </html:p>
+
+  <html:p style="width: 300pt; text-align:center">
+    JFreeReport is a free Java report library, distributed under the terms
+    of the GNU Lesser General Public License (see license-LGPL.txt for
+    details).  JFreeReport is developed by Thomas Morgner, David Gilbert
+    and others.
+  </html:p>
+
+  <html:p style="width: 300pt; text-align:right">
+    JFreeReport is a free Java report library, distributed under the terms
+    of the GNU Lesser General Public License (see license-LGPL.txt for
+    details).  JFreeReport is developed by Thomas Morgner, David Gilbert
+    and others.
+  </html:p>
+
 </report>

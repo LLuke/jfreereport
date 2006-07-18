@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutControler.java,v 1.3 2006/04/22 16:18:14 taqua Exp $
+ * $Id: DefaultLayoutControler.java,v 1.4 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -414,6 +414,12 @@ public class DefaultLayoutControler implements LayoutControler
       ler.setDeclaringParent(group);
 
       final Expression groupingExpression = group.getGroupingExpression();
+      if (groupingExpression == null)
+      {
+        // stay in the group. This is the same behaviour as if we check
+        // for field equality on an empty field list.
+        return true;
+      }
       groupingExpression.setRuntime(ler);
       final Object result;
       try
