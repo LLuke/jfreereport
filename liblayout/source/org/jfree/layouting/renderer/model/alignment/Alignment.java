@@ -24,46 +24,38 @@
  * in the United States and other countries.]
  *
  * ------------
- * TableRenderBox.java
+ * Alignment.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.layouting.renderer.model.table;
+package org.jfree.layouting.renderer.model.alignment;
 
-import org.jfree.layouting.renderer.model.BoxDefinition;
-import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
- * A table render box contains table header, table footer and the table body.
- * The table body itself may also contain table header cells - which get repeated
- * after pagebreaks.
- *
- * Tables contain more than just rows, in fact, they are separated into three
- * sections.
+ * An alignment strategy. What happens, if the element overflows during the
+ * alignment?
  *
  * @author Thomas Morgner
  */
-public class TableRenderBox extends RenderBox
+public interface Alignment
 {
-  private Object tableColumnModel;
-
-  public TableRenderBox(final BoxDefinition boxDefinition)
-  {
-    super(boxDefinition);
-  }
-
-  public void validate()
-  {
-
-  }
+  /**
+   * Tries to align the element. If the given box overflows, do not perform
+   * any alignment and return the box unchanged. (This is not yet implemented)
+   *
+   * @param box
+   * @return
+   */
+  public boolean align (int axis, RenderNode node, long totalWidth);
 }

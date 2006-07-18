@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.3 2006/07/14 14:34:41 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.4 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,10 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.util.Log;
-import org.jfree.layouting.util.geom.StrictInsets;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.text.TextAlign;
+import org.jfree.layouting.renderer.model.alignment.Alignment;
+import org.jfree.layouting.renderer.model.alignment.JustifyAlignment;
 
 /**
  * This articifial renderbox is the connection between block-contexts and the
@@ -126,12 +129,32 @@ public class ParagraphRenderBox extends BlockRenderBox
     }
   }
 
+  public static final int ALIGN_LEFT = 0;
+  public static final int ALIGN_RIGHT = 0;
+  public static final int ALIGN_CENTER = 0;
+  public static final int ALIGN_JUSTIFY = 0;
+
   private PoolBox pool;
   private LineBoxRenderBox lineboxContainer;
+  private Alignment textAlignment;
+  private Alignment lastLineAlignment;
 
-  public ParagraphRenderBox(final BoxDefinition boxDefinition)
+  public ParagraphRenderBox(final BoxDefinition boxDefinition,
+                            final Alignment textAlignment,
+                            final Alignment lastLineAlignment)
   {
     super(boxDefinition);
+
+    this.textAlignment = textAlignment;
+    if (textAlignment instanceof JustifyAlignment)
+    {
+      this.lastLineAlignment = lastLineAlignment;
+    }
+    else
+    {
+      this.lastLineAlignment = textAlignment;
+    }
+
     pool = new PoolBox(new EmptyBoxDefinition());
     pool.setParent(this);
     // yet another helper box. Level 2
@@ -191,66 +214,44 @@ public class ParagraphRenderBox extends BlockRenderBox
 
       // split the line unless there is nothing more to split ...
       RenderNode lineFragment = line;
+      boolean deadLockDanger = false;
 
+      long progress = Long.MAX_VALUE;
       while (lineFragment != null)
       {
-        long progress = Long.MAX_VALUE;
 
-        final long preferredSize = lineFragment.getPreferredSize(getMinorAxis());
-        if (preferredSize <= width)
-        {
-          Log.debug("No Split needed.");
-          target[0] = lineFragment.derive(true);
-          target[1] = null;
-        }
-        else
-        {
-          final long pos = lineFragment.getBestBreak(getMinorAxis(), width);
-          if (pos > 0)
-          {
-            Log.debug("Got a best break at " + pos);
-            target = lineFragment.split(getMinorAxis(), pos, target);
-          }
-          else
-          {
-            // there is no 'best' split, so split after the first child
-            final long firstSplit = lineFragment.getFirstBreak(getMinorAxis());
-            Log.debug("Seeking the first break at " + firstSplit);
+        target = performLinebreak(lineFragment, width, target);
 
-            int axis = getMinorAxis();
-            Log.debug("       Extra Info: PS: " + lineFragment.getPreferredSize(axis));
-            Log.debug("       Extra Info: FB: " + lineFragment.getFirstBreak(axis));
-            Log.debug("       Extra Info: BP: " + lineFragment.getBestBreak(axis, width));
-            Log.debug("       Extra Info:*BP: " + getBestBreak(axis, width));
-            Log.debug("       Extra Info:*FP: " + getFirstBreak(axis));
-
-            if (firstSplit == 0)
-            {
-              Log.debug("No Split possible.");
-              target[0] = lineFragment.derive(true);
-              target[1] = null;
-            }
-            else
-            {
-              target = lineFragment.split(getMinorAxis(), firstSplit, target);
-            }
-          }
-        }
-
-        Log.debug(".");
         final RenderNode firstSplitNode = target[0];
         if (firstSplitNode.isEmpty())
         {
-          // Ups ..
+          // Ups .. this could easily lead to an dead-lock.
           Log.debug("Empty box after the split. ");
+          if (deadLockDanger == true)
+          {
+            throw new IllegalStateException("Infinite loop detected.");
+          }
+          deadLockDanger = true;
         }
-        firstSplitNode.setPosition(getMinorAxis(), x);
-        firstSplitNode.setPosition(getMajorAxis(), nodePos);
-        firstSplitNode.setDimension(getMinorAxis(), width);
-        firstSplitNode.validate();
-        nodePos += (firstSplitNode.getDimension(getMajorAxis()));
-
-        addDirectly(firstSplitNode);
+        else
+        {
+          firstSplitNode.setPosition(getMinorAxis(), x);
+          firstSplitNode.setPosition(getMajorAxis(), nodePos);
+          firstSplitNode.setDimension(getMinorAxis(), width);
+          firstSplitNode.validate();
+          nodePos += (firstSplitNode.getDimension(getMajorAxis()));
+          final boolean overflow;
+          if (target[1] == null)
+          {
+            // this will be the last line.
+            overflow = lastLineAlignment.align(getMinorAxis(), firstSplitNode, width);
+          }
+          else
+          {
+            overflow = textAlignment.align(getMinorAxis(), firstSplitNode, width);
+          }
+          addDirectly(firstSplitNode);
+        }
 
         if (target[1] != null)
         {
@@ -271,11 +272,16 @@ public class ParagraphRenderBox extends BlockRenderBox
             target[1].setDimension(getMinorAxis(), width);
             target[1].validate();
             nodePos += target[1].getDimension(getMajorAxis());
+            // this will be the last line.
+            final boolean overflow =
+                    lastLineAlignment.align(getMinorAxis(), target[1], width);
             lineFragment = null;
+            deadLockDanger = false;
           }
         }
         else
         {
+          deadLockDanger = false;
           lineFragment = null;
         }
       }
@@ -286,6 +292,53 @@ public class ParagraphRenderBox extends BlockRenderBox
     setHeight(nodePos - getY());
     Log.debug("Paragraph: " + getHeight());
     setState(RenderNodeState.FINISHED);
+  }
+
+  private RenderNode[] performLinebreak(final RenderNode lineFragment,
+                                        final long width,
+                                        RenderNode[] target)
+  {
+    final long preferredSize = lineFragment.getPreferredSize(getMinorAxis());
+    if (preferredSize <= width)
+    {
+      Log.debug("No Split needed.");
+      target[0] = lineFragment.derive(true);
+      target[1] = null;
+    }
+    else
+    {
+      final long pos = lineFragment.getBestBreak(getMinorAxis(), width);
+      if (pos > 0)
+      {
+        Log.debug("Got a best break at " + pos);
+        target = lineFragment.split(getMinorAxis(), pos, target);
+      }
+      else
+      {
+        // there is no 'best' split, so split after the first child
+        final long firstSplit = lineFragment.getFirstBreak(getMinorAxis());
+        Log.debug("Seeking the first break at " + firstSplit);
+
+        int axis = getMinorAxis();
+        Log.debug("       Extra Info: PS: " + lineFragment.getPreferredSize(axis));
+        Log.debug("       Extra Info: FB: " + lineFragment.getFirstBreak(axis));
+        Log.debug("       Extra Info: BP: " + lineFragment.getBestBreak(axis, width));
+        Log.debug("       Extra Info:*BP: " + getBestBreak(axis, width));
+        Log.debug("       Extra Info:*FP: " + getFirstBreak(axis));
+
+        if (firstSplit == 0)
+        {
+          Log.debug("No Split possible.");
+          target[0] = lineFragment.derive(true);
+          target[1] = null;
+        }
+        else
+        {
+          target = lineFragment.split(getMinorAxis(), firstSplit, target);
+        }
+      }
+    }
+    return target;
   }
 
 
@@ -350,7 +403,7 @@ public class ParagraphRenderBox extends BlockRenderBox
         }
       }
       lineboxContainer.setNotify(true);
-      
+
 
       // now we have the lineboxes. These boxes are not the *physical*
       // lineboxes, nor to they deal with the clear property for floated
@@ -401,9 +454,9 @@ public class ParagraphRenderBox extends BlockRenderBox
     return super.findNodeById(instanceId);
   }
 
-  public BreakAfterEnum getBreakAfterAllowed()
+  public BreakAfterEnum getBreakAfterAllowed(final int axis)
   {
-    return pool.getBreakAfterAllowed();
+    return pool.getBreakAfterAllowed(axis);
   }
 
   public boolean isEmpty()
@@ -430,5 +483,13 @@ public class ParagraphRenderBox extends BlockRenderBox
     return pool.isDiscardable();
   }
 
+  public Alignment getLastLineAlignment()
+  {
+    return lastLineAlignment;
+  }
 
+  public Alignment getTextAlignment()
+  {
+    return textAlignment;
+  }
 }

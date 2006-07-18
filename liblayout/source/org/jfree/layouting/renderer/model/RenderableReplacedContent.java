@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableImage.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: RenderableReplacedContent.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
  *
  * Changes
  * -------
@@ -144,7 +144,7 @@ public class RenderableReplacedContent extends RenderNode
     setState(RenderNodeState.FINISHED);
   }
 
-  public BreakAfterEnum getBreakAfterAllowed()
+  public BreakAfterEnum getBreakAfterAllowed(final int axis)
   {
     return BreakAfterEnum.BREAK_DONT_KNOW;
   }

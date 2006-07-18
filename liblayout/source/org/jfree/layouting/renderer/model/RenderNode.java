@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
+ * $Id: RenderNode.java,v 1.6 2006/07/17 16:48:53 taqua Exp $
  *
  * Changes
  * -------
@@ -318,6 +318,7 @@ public abstract class RenderNode implements Cloneable
 //    Log.debug("STATE_CHANGE: " + toString() + ": " + oldState + " -> " + newState);
     if (newState == RenderNodeState.UNCLEAN)
     {
+      parentWidth = null;
       invalidateMargins();
       final RenderNode next = getNext();
       if (next != null)
@@ -337,6 +338,7 @@ public abstract class RenderNode implements Cloneable
     }
     else if (newState == RenderNodeState.PENDING)
     {
+      parentWidth = null;
       invalidateMargins();
       // we expect some changes, but for now, these changes have not occured.
       // if they occur, they may alter the height of this element. Telling the
@@ -494,7 +496,7 @@ public abstract class RenderNode implements Cloneable
 
   public abstract void validate();
 
-  public abstract BreakAfterEnum getBreakAfterAllowed();
+  public abstract BreakAfterEnum getBreakAfterAllowed(final int axis);
 
   /**
    * Clones this node. Be aware that cloning can get you into deep trouble, as
@@ -509,6 +511,7 @@ public abstract class RenderNode implements Cloneable
       final RenderNode o = (RenderNode)super.clone();
       o.absoluteMargins = (StrictInsets) absoluteMargins.clone();
       o.effectiveMargins = (StrictInsets) effectiveMargins.clone();
+      o.parentWidth = null;
       return  o;
     }
     catch (CloneNotSupportedException e)
@@ -658,6 +661,7 @@ public abstract class RenderNode implements Cloneable
 
   protected long getComputedBlockContextWidth()
   {
+    Long parentWidth = null;
     if (parentWidth == null)
     {
       final RenderBox parent = getParentBlockContext();

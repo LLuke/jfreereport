@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
+ * $Id: RenderableText.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -340,7 +340,7 @@ public class RenderableText extends RenderNode
       Glyph g = glyphs[i];
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
-        target[0] = new RenderableText (getLayoutContext(),
+        target[0] = new RenderableText(getLayoutContext(),
                 glyphs, offset, i - offset + 1, isLtr(), false);
 //        Log.debug("Text[0]: " + getRawText() + " " + pos + " -> " + offset + ":" + (i - offset));
         break;
@@ -355,7 +355,7 @@ public class RenderableText extends RenderNode
       Glyph g = glyphs[i];
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
-        target[1] = new RenderableText (getLayoutContext(),
+        target[1] = new RenderableText(getLayoutContext(),
                 glyphs, i, length - i, isLtr(), isForceLinebreak());
 //        Log.debug("Text[1]: " + getRawText() + " " + pos + " -> " + i + ":" + (length - i));
         break;
@@ -510,8 +510,13 @@ public class RenderableText extends RenderNode
     setWidth(preferredWidth);
   }
 
-  public BreakAfterEnum getBreakAfterAllowed()
+  public BreakAfterEnum getBreakAfterAllowed(final int axis)
   {
+    if (axis == getMinorAxis())
+    {
+      return BreakAfterEnum.BREAK_ALLOW;
+    }
+
     if (isForceLinebreak())
     {
       return BreakAfterEnum.BREAK_ALLOW;

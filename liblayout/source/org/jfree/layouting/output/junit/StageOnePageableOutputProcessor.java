@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOnePageableOutputProcessor.java,v 1.1 2006/07/11 13:55:34 taqua Exp $
+ * $Id: StageOnePageableOutputProcessor.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -114,13 +114,14 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
    */
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
-    //return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
-    return new DisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
+    return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
+    //return new DisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
   }
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    return new EmptyRenderer(layoutProcess);
+    //return new EmptyRenderer(layoutProcess);
+    return new DefaultRenderer(layoutProcess);
   }
 
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
+ * $Id: RenderBox.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -318,34 +318,6 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
-   * Splits the render node at the given position. This method returns an array
-   * with the length of two; if the node is not splittable, the first element
-   * should be empty (in the element's behavioural context) and the second
-   * element should contain an independent copy of the original node.
-   * <p/>
-   * If the break position is ambugious, the break should appear *in front of*
-   * the position - where in front-of depends on the reading direction.
-   *
-   * @param axis     the axis on which to break
-   * @param position the break position within that axis.
-   * @param target   the target array that should receive the broken node. If
-   *                 the target array is not null, it must have at least two
-   *                 slots.
-   * @return the broken nodes contained in the target array.
-   */
-  public RenderNode[] split(int axis, long position, RenderNode[] target)
-  {
-    if (target == null || target.length < 2)
-    {
-      target = new RenderNode[2];
-    }
-    Log.debug("This box is not spittable at all");
-    target[0] = new SpacerRenderNode();
-    target[1] = derive(true);
-    return target;
-  }
-
-  /**
    * Propage all changes to all silbling nodes which come after this node and to
    * all childs.
    * <p/>
@@ -388,8 +360,13 @@ public abstract class RenderBox extends RenderNode
     return size;
   }
 
-  public BreakAfterEnum getBreakAfterAllowed()
+  public BreakAfterEnum getBreakAfterAllowed(final int axis)
   {
+    if (axis == getMinorAxis())
+    {
+      return BreakAfterEnum.BREAK_ALLOW;
+    }
+
     final RenderNode lastChild = getLastChild();
     if (lastChild == null)
     {
@@ -399,7 +376,7 @@ public abstract class RenderBox extends RenderNode
     RenderNode node = lastChild;
     while (node != null)
     {
-      BreakAfterEnum breakAllow = node.getBreakAfterAllowed();
+      BreakAfterEnum breakAllow = node.getBreakAfterAllowed(axis);
       if (breakAllow != BreakAfterEnum.BREAK_DONT_KNOW)
       {
         return breakAllow;
@@ -928,8 +905,8 @@ public abstract class RenderBox extends RenderNode
         // This is also the behaviour of Mozilla and Opera: if the width is
         // auto, then all auto-margins get set to zero.
         final long margins = getLeadingSpace(axis) + getTrailingSpace(axis);
-        final long contextWidth = getPreferredSize(axis);
-        final long l = contextWidth - margins;
+        final long nodeWidth = getPreferredSize(axis);
+        final long l = (nodeWidth - margins);
         if (l < 0)
         {
           return 0;
@@ -1063,7 +1040,19 @@ public abstract class RenderBox extends RenderNode
     }
     else
     {
-      Log.debug("not discardable " + this);
+      RenderNode lastChild = getLastChild();
+      while (lastChild != null)
+      {
+        if (lastChild.isDiscardable())
+        {
+          remove(lastChild);
+          lastChild = getLastChild();
+        }
+        else
+        {
+          break;
+        }
+      }
     }
   }
 
@@ -1101,5 +1090,377 @@ public abstract class RenderBox extends RenderNode
     }
   }
 
+
+  /**
+   * Returns the nearest break-point that occurrs before that splitPosition. If
+   * the splitPosition already is a break point, return that point. If there is
+   * no break opportinity at all, return zero (= BREAK_NONE).
+   * <p/>
+   * (This causes the split to behave correctly; this moves all non-splittable
+   * elements down to the next free area.)
+   *
+   * @param axis          the axis.
+   * @param splitPosition the maximum splitPosition
+   * @return the best break splitPosition.
+   */
+  public long getBestBreak(int axis, long splitPosition)
+  {
+    if (splitPosition <= 0)
+    {
+      throw new IllegalArgumentException("Split-Position cannot be negative or zero: " + splitPosition);
+    }
+
+    //  Log.debug("InlineRenderer: Start BestBreak: " + splitPosition);
+    if (axis == getMinorAxis())
+    {
+      // not splitable.
+      Log.debug("The box is not splittable on the minor axis");
+      return 0;
+    }
+
+    // this is simply the best we can get from our contents.
+
+    long bestBreak = 0;
+    long cursor = getLeadingInsets(axis);
+
+    RenderNode child = getFirstChild();
+    while (child != null)
+    {
+      final long currentSize = child.getEffectiveLayoutSize(axis);
+      //  Log.debug("InlineRenderer: Best Break: Preferred Size: " + currentSize + " " + child);
+
+      final long posAfterGeneric = currentSize + cursor;
+      final long posAfter;
+      if (child.getNext() == null)
+      {
+        posAfter = posAfterGeneric + getTrailingInsets(axis);
+      }
+      else
+      {
+        posAfter = posAfterGeneric;
+      }
+
+      // shortcut .. test for a direct hit.
+      final BreakAfterEnum breakAfterAllowed = child.getBreakAfterAllowed(axis);
+      if (posAfter == splitPosition)
+      {
+        if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
+        {
+          return posAfter;
+        }
+      }
+
+      // this would go over the limit .. try to find a suitable break point
+      // inside the element.
+      if (posAfter >= splitPosition)
+      {
+        final long effectiveSplitPos = splitPosition - cursor;
+        final long bestBreakLocal = child.getBestBreak(axis, effectiveSplitPos);
+        if (bestBreakLocal > 0)
+        {
+          //        Log.debug("InlineRenderer: Best Break(1): " + (cursor + bestBreakLocal));
+          return cursor + bestBreakLocal;
+        }
+        else if (bestBreak > 0)
+        {
+          //       Log.debug("InlineRenderer: Best Break(3): " + (bestBreak));
+          return bestBreak;
+        }
+      }
+
+      if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
+      {
+        //     Log.debug("InlineRenderer: Setting best Break: " + (posAfter));
+        bestBreak = Math.max(bestBreak, posAfter);
+      }
+
+      if (posAfter >= splitPosition)
+      {
+        //      Log.debug("InlineRenderer: Best Break(2): " + (bestBreak));
+        return bestBreak;
+      }
+      child = child.getNext();
+      cursor += currentSize;
+    }
+    return 0;
+  }
+
+
+  /**
+   * Returns the first break-point in that element. If there is no break
+   * opportinity at all, return zero (= BREAK_NONE).
+   * <p/>
+   *
+   * @param axis the axis.
+   * @return the first break position.
+   */
+  public long getFirstBreak(int axis)
+  {
+    if (axis == getMinorAxis())
+    {
+      // not splitable.
+      Log.debug("No split on the minor axis");
+      return 0;
+    }
+
+    // this is simply the best we can get from our contents.
+
+    long cursor = getLeadingInsets(axis);
+    RenderNode child = getFirstChild();
+    while (child != null)
+    {
+      long currentSize = child.getPreferredSize(axis);
+      final long posAfter = currentSize + cursor;
+      final long bestBreakLocal = child.getFirstBreak(axis);
+      if (bestBreakLocal > 0)
+      {
+        return bestBreakLocal + cursor;
+      }
+
+      final BreakAfterEnum breakAfterAllowed = child.getBreakAfterAllowed(axis);
+      if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
+      {
+        if (child.getNext() == null)
+        {
+          // if this is the last child, include the paddings and borders ..
+          return posAfter + getTrailingInsets(axis);
+        }
+        return posAfter;
+      }
+      else
+      {
+        //       Log.debug("BreakAfter: " + breakAfterAllowed);
+      }
+      cursor = posAfter;
+      child = child.getNext();
+    }
+    return 0;
+  }
+
+
+  /**
+   * Splits the render node at the given splitPoint. This method returns an
+   * array with the length of two; if the node is not splittable, the first
+   * element should be empty (in the element's behavioural context) and the
+   * second element should contain an independent copy of the original node.
+   * <p/>
+   * If the break splitPoint is ambugious, the break should appear *in front of*
+   * the splitPoint - where in front-of depends on the reading direction.
+   *
+   * @param axis       the axis on which to break
+   * @param splitPoint the break splitPoint within that axis.
+   * @param target     the target array that should receive the broken node. If
+   *                   the target array is not null, it must have at least two
+   *                   slots.
+   * @return the broken nodes contained in the target array.
+   */
+  public RenderNode[] split(int axis, long splitPoint, RenderNode[] target)
+  {
+    if (splitPoint <= 0)
+    {
+      throw new IllegalArgumentException();
+    }
+
+    if (splitPoint == 41000)
+    {
+      Log.debug ("BEGIN SPLIT: " + splitPoint);
+    }
+
+    if (target == null || target.length < 2)
+    {
+      target = new RenderNode[2];
+    }
+
+    if (axis == getMinorAxis())
+    {
+      target[0] = new SpacerRenderNode();
+      target[1] = derive(true);
+      return target;
+    }
+
+    // first, find the split point.
+    long firstSplitSize = getLeadingInsets(axis);
+    RenderNode firstSplitChild = getFirstChild();
+    long trailingSpace = 0;
+    while (firstSplitChild != null)
+    {
+      if (firstSplitChild.isDiscardable())
+      {
+        firstSplitChild = firstSplitChild.getNext();
+        continue;
+      }
+
+      final long prefSize =
+              firstSplitChild.getEffectiveLayoutSize(axis) +
+              Math.max (firstSplitChild.getLeadingSpace(axis), trailingSpace);
+
+      trailingSpace = firstSplitChild.getTrailingSpace(axis);
+      if ((prefSize + firstSplitSize + trailingSpace) <= splitPoint)
+      {
+        firstSplitSize += prefSize;
+        firstSplitChild = firstSplitChild.getNext();
+      }
+      else
+      {
+        break;
+      }
+    }
+
+    // we will fit, no split is needed.
+    if (firstSplitChild == null)
+    {
+      Log.warn("PERFORMANCE: Unnecessarily stupid split detected.");
+      target[0] = derive(true);
+      target[1] = null;
+      return target;
+    }
+
+    // Prepare the borders ...
+    BoxDefinition[] boxes = getBoxDefinition().split(axis);
+    InlineRenderBox firstBox = (InlineRenderBox) derive(false);
+    firstBox.setBoxDefinition(boxes[0]);
+
+    // Now add everything up to the split point to the first box.
+    int firstNodeCounter = 0;
+    RenderNode firstBoxChild = getFirstChild();
+    while (firstBoxChild != null && firstSplitChild != firstBoxChild)
+    {
+      if (firstSplitChild.isDiscardable())
+      {
+        firstBoxChild = firstBoxChild.getNext();
+        continue;
+      }
+
+      firstBox.addChild(firstBoxChild.derive(true));
+      firstNodeCounter += 1;
+      firstBoxChild = firstBoxChild.getNext();
+    }
+
+    // now we've reached the split point, make a sanity test.
+    final long splitPos = splitPoint - firstBox.getEffectiveLayoutSize(axis);
+    if (splitPos < 0)
+    {
+      throw new IllegalStateException("The selected child split is not valid: " + splitPos);
+    }
+
+    // prepare the second box.
+    InlineRenderBox secondBox = (InlineRenderBox) derive(false);
+    secondBox.setBoxDefinition(boxes[1]);
+    int secondNodeCounter = 0;
+
+    if (firstSplitChild.isDiscardable() == false)
+    {
+
+      // the split pos is directly after the first box's end. So we can add
+      // the child to the second box without having to split it.
+      if (splitPos == 0)
+      {
+        //    Log.debug("Not splitting, deriving a second box. ");
+        secondBox.addChild(firstSplitChild.derive(true));
+        secondNodeCounter += 1;
+      }
+      else if (splitPos <= firstSplitChild.getPreferredSize(axis))
+      {
+        // no split needed, the child will fit perfectly.
+        firstBox.addChild(firstSplitChild.derive(true));
+        firstNodeCounter += 1;
+      }
+      else
+      {
+  //      Log.debug("       Extra Info: PS: " + splitPointChild.getPreferredSize(axis));
+  //      Log.debug("       Extra Info: FB: " + splitPointChild.getFirstBreak(axis));
+  //      Log.debug("       Extra Info: BP: " + splitPointChild.getBestBreak(axis, splitPos));
+  //      Log.debug("       Extra Info:*BP: " + getBestBreak(axis, splitPos));
+  //      Log.debug("       Extra Info:*FP: " + getFirstBreak(axis));
+        long bestBreakPos = firstSplitChild.getBestBreak(axis, splitPos);
+        if (bestBreakPos > 0)
+        {
+          target = firstSplitChild.split(axis, bestBreakPos, target);
+          firstBox.addChild(target[0]);
+          firstNodeCounter += 1;
+          if (target[1] != null)
+          {
+            secondNodeCounter += 1;
+            secondBox.addChild(target[1]);
+            firstSplitChild = target[1];
+          }
+          else
+          {
+            firstSplitChild = target[0];
+          }
+        }
+        else
+        {
+          long firstBreakPos = firstSplitChild.getFirstBreak(axis);
+          if (firstBreakPos > 0)
+          {
+            target = firstSplitChild.split(axis, firstBreakPos, target);
+            firstBox.addChild(target[0]);
+            firstNodeCounter += 1;
+            if (target[1] != null)
+            {
+              secondNodeCounter += 1;
+              secondBox.addChild(target[1]);
+              firstSplitChild = target[1];
+            }
+            else
+            {
+              firstSplitChild = target[0];
+            }
+          }
+          else
+          {
+            // there is no best break position, so we add the child to the
+            // second box.
+            secondBox.addChild(firstSplitChild.derive(true));
+            secondNodeCounter += 1;
+          }
+        }
+      }
+    }
+
+    RenderNode postChild = firstSplitChild.getNext();
+    while (postChild != null)
+    {
+      if (secondNodeCounter == 0)
+      {
+        if (postChild.isDiscardable())
+        {
+          postChild = postChild.getNext();
+          continue;
+        }
+      }
+      // first, add everything up to the child .
+      secondBox.addChild(postChild.derive(true));
+      secondNodeCounter += 1;
+      postChild = postChild.getNext();
+    }
+
+    Log.debug("Result: " + firstNodeCounter + " " + secondNodeCounter);
+    if (firstNodeCounter == 0)
+    {
+      Log.debug("PERFORMANCE: This split is avoidable.");
+      // correct the second box. The box is not split.
+      secondBox.setBoxDefinition(getBoxDefinition());
+      target[0] = new SpacerRenderNode();
+      target[1] = secondBox;
+    }
+    else if (secondNodeCounter == 0)
+    {
+      Log.warn("PERFORMANCE: Invalid split implementation. Second box should never be empty.");
+      firstBox.setBoxDefinition(getBoxDefinition());
+      target[0] = firstBox;
+      target[1] = null;
+    }
+    else
+    {
+      target[0] = firstBox;
+      target[1] = secondBox;
+    }
+    //   Log.debug("LEAVE SPLIT : " + this);
+
+    // make sure that noone works with that anymore ..
+    return target;
+  }
 
 }

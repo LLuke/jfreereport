@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultBoxDefinition.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: DefaultBoxDefinition.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -226,6 +226,15 @@ public class DefaultBoxDefinition implements BoxDefinition
   public void setPreferredHeight(final RenderLength preferredHeight)
   {
     this.preferredHeight = preferredHeight;
+  }
+
+  public BoxDefinition[] split(int axis)
+  {
+    if (axis == RenderNode.VERTICAL_AXIS)
+    {
+      return splitVertically();
+    }
+    return splitHorizontally();
   }
 
   public BoxDefinition[] splitVertically()

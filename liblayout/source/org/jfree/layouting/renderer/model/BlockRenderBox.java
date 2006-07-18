@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.4 2006/07/14 14:34:41 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -105,7 +105,7 @@ public class BlockRenderBox extends RenderBox
 
     validateMargins();
 
-    Log.debug ("BLOCK: Begin Validate");
+    Log.debug("BLOCK: Begin Validate");
 
     final long leadingPaddings = getLeadingInsets(getMinorAxis());
     final long trailingPaddings = getTrailingInsets(getMinorAxis());
@@ -135,8 +135,8 @@ public class BlockRenderBox extends RenderBox
         continue;
       }
 
-      // Todo: Width is ignored for now
-      final long nodeSizeMinor = node.getEffectiveLayoutSize(getMinorAxis());
+      final long nodeSizeMinor = Math.min
+              (defaultNodeWidth, node.getEffectiveLayoutSize(getMinorAxis()));
       final long leadingMinor = Math.max
               (node.getLeadingSpace(getMinorAxis()), trailingMinor);
 
@@ -160,47 +160,21 @@ public class BlockRenderBox extends RenderBox
     setDimension(getMajorAxis(), trailingMajor + (nodePos + trailingInsets) - getPosition(getMajorAxis()));
     setDimension(getMinorAxis(),
             // todo trailingMinor +
-                    defaultNodeWidth + leadingPaddings + trailingPaddings);
+            defaultNodeWidth + leadingPaddings + trailingPaddings);
 
-    Log.debug ("BLOCK: Leave Validate: " + defaultNodeWidth + " " +
-            leadingPaddings  + " " + trailingPaddings);
+    Log.debug("BLOCK: Leave Validate: " + defaultNodeWidth + " " +
+            leadingPaddings + " " + trailingPaddings);
     setState(RenderNodeState.FINISHED);
-  }
-
-  /**
-   * Returns the nearest break-point that occurrs before that position. If the
-   * position already is a break point, return that point. If there is no break
-   * opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   * (This causes the split to behave correctly; this moves all non-splittable
-   * elements down to the next free area.)
-   *
-   * @param axis     the axis.
-   * @param position the maximum position
-   * @return the best break position.
-   */
-  public long getBestBreak(int axis, long position)
-  {
-    // todo
-    return 0;
-  }
-
-  /**
-   * Returns the first break-point in that element. If there is no break
-   * opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   *
-   * @param axis the axis.
-   * @return the first break position.
-   */
-  public long getFirstBreak(int axis)
-  {
-    // todo
-    return 0;
   }
 
   protected long getComputedBlockContextWidth()
   {
+    final RenderBox parent = getParent();
+    if (parent != null)
+    {
+      return getBoxDefinition().getPreferredWidth().resolve
+              (parent.getComputedBlockContextWidth());
+    }
     return getBoxDefinition().getPreferredWidth().resolve(0);
   }
 

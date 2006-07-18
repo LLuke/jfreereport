@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.4 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,8 @@ import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.Clear;
 import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
 import org.jfree.layouting.input.style.keys.list.ListStylePosition;
+import org.jfree.layouting.input.style.keys.text.TextAlign;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
@@ -79,6 +81,11 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.MarkerRenderBox;
+import org.jfree.layouting.renderer.model.alignment.Alignment;
+import org.jfree.layouting.renderer.model.alignment.LeadingEdgeAlignment;
+import org.jfree.layouting.renderer.model.alignment.TrailingEdgeAlignment;
+import org.jfree.layouting.renderer.model.alignment.CenterAlignment;
+import org.jfree.layouting.renderer.model.alignment.JustifyAlignment;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -344,10 +351,36 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    ParagraphRenderBox paragraphBox = new ParagraphRenderBox(definition);
+    CSSValue alignVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN);
+    CSSValue alignLastVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN_LAST);
+    ParagraphRenderBox paragraphBox = new ParagraphRenderBox
+           (definition, createAlignment(alignVal), createAlignment(alignLastVal));
     applyClear(context, paragraphBox);
 
     getInsertationPoint().addChild(paragraphBox);
+  }
+
+  private Alignment createAlignment (CSSValue value)
+  {
+    if (TextAlign.LEFT.equals(value) ||
+        TextAlign.START.equals(value))
+    {
+      return new LeadingEdgeAlignment();
+    }
+    if (TextAlign.RIGHT.equals(value) ||
+        TextAlign.END.equals(value))
+    {
+      return new TrailingEdgeAlignment();
+    }
+    if (TextAlign.CENTER.equals(value))
+    {
+      return new CenterAlignment();
+    }
+    if (TextAlign.JUSTIFY.equals(value))
+    {
+      return new JustifyAlignment();
+    }
+    return new LeadingEdgeAlignment();
   }
 
   public void startedInline(final LayoutContext context)
@@ -579,15 +612,15 @@ public class DefaultRenderer implements Renderer
   public void finishedTableColumnGroup() throws NormalizationException
   {
     getInsertationPoint().addChilds(textFactory.finishText());
-    Log.debug("</table-col>");
+    Log.debug("</table-col-group>");
     // the plain column is no box, therefore dont close the context.
   }
 
   public void finishedTableColumn() throws NormalizationException
   {
     getInsertationPoint().addChilds(textFactory.finishText());
-    Log.debug("</table-col-group>");
-    getInsertationPoint().close();
+    Log.debug("</table-col>");
+    //getInsertationPoint().close();
   }
 
   public void finishedTable()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EmptyBoxDefinition.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: EmptyBoxDefinition.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -134,12 +134,7 @@ public class EmptyBoxDefinition implements BoxDefinition
     return RenderLength.AUTO;
   }
 
-  public BoxDefinition[] splitVertically()
-  {
-    return new BoxDefinition[] { this, this };
-  }
-
-  public BoxDefinition[] splitHorizontally()
+  public BoxDefinition[] split(int axis)
   {
     return new BoxDefinition[] { this, this };
   }

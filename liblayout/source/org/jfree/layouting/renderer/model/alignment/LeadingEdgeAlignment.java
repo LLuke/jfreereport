@@ -24,82 +24,48 @@
  * in the United States and other countries.]
  *
  * ------------
- * BoxDefinition.java
+ * LeftAlignment.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxDefinition.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.layouting.renderer.model;
+package org.jfree.layouting.renderer.model.alignment;
 
-import org.jfree.layouting.renderer.border.Border;
-import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
- * A box definition.
- *
- * Todo How to deal with auto-size margins? 
+ * The class (despite its name) aligns the element on the leading edge.
  *
  * @author Thomas Morgner
  */
-public interface BoxDefinition
+public class LeadingEdgeAlignment implements Alignment
 {
-  public RenderLength getMarginTop();
-
-  public RenderLength getMarginBottom();
-
-  public RenderLength getMarginLeft();
-
-  public RenderLength getMarginRight();
-
-  public RenderLength getPaddingTop();
-
-  public RenderLength getPaddingLeft();
-
-  public RenderLength getPaddingBottom();
-
-  public RenderLength getPaddingRight();
-
-  public Border getBorder();
-
-  public RenderLength getMinimumWidth();
-
-  public RenderLength getMinimumHeight();
-
-  public RenderLength getMaximumWidth();
-
-  public RenderLength getMaximumHeight();
+  public LeadingEdgeAlignment()
+  {
+  }
 
   /**
-   * The preferred size is only set, if a width has been explicitly defined.
+   * Tries to align the element. If the given box overflows, do not perform any
+   * alignment and return the box unchanged. (This is not yet implemented)
    *
+   * @param box
    * @return
    */
-  public RenderLength getPreferredWidth();
+  public boolean align(int axis, RenderNode box, long totalWidth)
+  {
+    // Nothing needed for now. All elements are left-aligned by default.
 
-  /**
-   * The preferred size is only set, if a height has been explicitly defined.
-   *
-   * @return
-   */
-  public RenderLength getPreferredHeight();
-
-  public BoxDefinition[] split (int axis);
-
-//  public BoxDefinition[] splitVertically();
-//
-//  public BoxDefinition[] splitHorizontally();
-//
-  public CSSColorValue getBackgroundColor();
-
-  public boolean isEmpty();
+    // This will change as soon as we have Right-To-Left text support.
+    return false;
+  }
 }

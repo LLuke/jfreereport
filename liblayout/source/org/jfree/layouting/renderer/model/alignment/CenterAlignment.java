@@ -24,82 +24,51 @@
  * in the United States and other countries.]
  *
  * ------------
- * BoxDefinition.java
+ * CenterAlignment.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxDefinition.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.layouting.renderer.model;
+package org.jfree.layouting.renderer.model.alignment;
 
-import org.jfree.layouting.renderer.border.Border;
-import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
- * A box definition.
- *
- * Todo How to deal with auto-size margins? 
+ * The class (despite its name) aligns the element on the leading edge.
  *
  * @author Thomas Morgner
  */
-public interface BoxDefinition
+public class CenterAlignment implements Alignment
 {
-  public RenderLength getMarginTop();
-
-  public RenderLength getMarginBottom();
-
-  public RenderLength getMarginLeft();
-
-  public RenderLength getMarginRight();
-
-  public RenderLength getPaddingTop();
-
-  public RenderLength getPaddingLeft();
-
-  public RenderLength getPaddingBottom();
-
-  public RenderLength getPaddingRight();
-
-  public Border getBorder();
-
-  public RenderLength getMinimumWidth();
-
-  public RenderLength getMinimumHeight();
-
-  public RenderLength getMaximumWidth();
-
-  public RenderLength getMaximumHeight();
+  public CenterAlignment()
+  {
+  }
 
   /**
-   * The preferred size is only set, if a width has been explicitly defined.
+   * Tries to align the element. If the given box overflows, do not perform any
+   * alignment and return the box unchanged. (This is not yet implemented)
    *
+   * @param box
    * @return
    */
-  public RenderLength getPreferredWidth();
-
-  /**
-   * The preferred size is only set, if a height has been explicitly defined.
-   *
-   * @return
-   */
-  public RenderLength getPreferredHeight();
-
-  public BoxDefinition[] split (int axis);
-
-//  public BoxDefinition[] splitVertically();
-//
-//  public BoxDefinition[] splitHorizontally();
-//
-  public CSSColorValue getBackgroundColor();
-
-  public boolean isEmpty();
+  public boolean align(int axis, RenderNode box, long totalWidth)
+  {
+    // that one is simple. Just take the computed X value, and the computed
+    // width and off you go.
+    final long start = box.getPosition(axis);
+    final long width = box.getDimension(axis);
+    final long correction = totalWidth - width;
+    box.setPosition(axis, start + (correction / 2));
+    box.validate();
+    return false;
+  }
 }

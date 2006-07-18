@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SpacerRenderNode.java,v 1.1 2006/07/17 13:28:34 taqua Exp $
  *
  * Changes
  * -------
@@ -140,7 +140,7 @@ public class SpacerRenderNode extends RenderNode
     effectiveMargins.setRight(width);
   }
 
-  public BreakAfterEnum getBreakAfterAllowed()
+  public BreakAfterEnum getBreakAfterAllowed(final int axis)
   {
     return BreakAfterEnum.BREAK_DONT_KNOW;
   }
