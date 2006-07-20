@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -8,26 +8,41 @@
     table.test td {
       margin: 4pt;
       border: 1px solid black;
-
     }
+
     table.test {
-      border-collapse:collapse;
+      border-collapse: collapse;
     }
   </style>
 </head>
+
 <body>
 What makes a table a table?
 <hr/>
+
+A simple table.
 <table border="1">
   <tr>
     <th>
-    Now how do we render this?
+      Now how do we render this?
     </th>
+    <td>
+      Test
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Test
+    </td>
+    <td>
+      Test
+    </td>
   </tr>
 </table>
 
 <hr/>
-<table border="1"  class="test">
+This table will have the collapsing border-model.
+<table class="test">
   <tr>
     <td>
       Data
@@ -42,14 +57,104 @@ What makes a table a table?
 </table>
 
 <table>
-  
   <thead>
     <tr>
-    <td>
-asdasd
-    </td>
+      <td>
+        asdasd
+      </td>
     </tr>
   </thead>
+</table>
+
+<p>A table with background images and a colspan definition</p>
+
+<table>
+  <colgroup style="background-image:url(gorilla.jpg);" span="2"/>
+  <tbody>
+    <tr>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A table with background images and a spanned column definition</p>
+
+<table>
+  <col style="background-image:url(gorilla.jpg);" span="2"/>
+  <tbody>
+    <tr>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A table with background images and two column definitions</p>
+
+<table>
+  <col style="background-image:url(gorilla.jpg);" span="1"/>
+  <col style="background-image:url(gorilla.jpg);" span="1"/>
+  <tbody>
+    <tr>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Testing, whether and how width applies to colgroups.</p>
+
+<table>
+  <colgroup style="background-image:url(gorilla.jpg);width:100pt" span="2"/>
+  <tbody>
+    <tr>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<p>Testing, how the system resolves the complicated and buggy definitions.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td rowspan="2">
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+      <td rowspan="2">
+        Test<br>
+        test
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        overlapping
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 </body>

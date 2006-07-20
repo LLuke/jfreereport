@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Border.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
+ * $Id: Border.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,8 @@ package org.jfree.layouting.renderer.border;
  */
 public class Border implements Cloneable
 {
+  private static Border emptyBorder;
+
   private BorderEdge top;
   private BorderEdge left;
   private BorderEdge bottom;
@@ -181,13 +183,17 @@ public class Border implements Cloneable
     }
   }
 
-  public static Border createEmptyBorder()
+  public static synchronized Border createEmptyBorder()
   {
-    final EmptyBorderEdge edge = new EmptyBorderEdge();
-    final EmptyBorderCorner corner = new EmptyBorderCorner();
+    if (emptyBorder == null)
+    {
+      final EmptyBorderEdge edge = new EmptyBorderEdge();
+      final EmptyBorderCorner corner = new EmptyBorderCorner();
 
-    return new Border(edge, edge, edge, edge, edge,
-            corner, corner, corner, corner);
+      emptyBorder = new Border(edge, edge, edge, edge, edge,
+              corner, corner, corner, corner);
+    }
+    return emptyBorder;
   }
 
   public boolean isEmpty()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.5 2006/07/18 14:40:28 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.6 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -287,7 +287,7 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    TableRowRenderBox tableRenderBox = new TableRowRenderBox(definition);
+    TableRowRenderBox tableRenderBox = new TableRowRenderBox(definition, false);
     getInsertationPoint().addChild(tableRenderBox);
   }
 
@@ -302,7 +302,8 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    TableCellRenderBox tableRenderBox = new TableCellRenderBox(definition);
+    TableCellRenderBox tableRenderBox =
+            new TableCellRenderBox(definition, context);
     getInsertationPoint().addChild(tableRenderBox);
   }
 

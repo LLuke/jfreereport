@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.6 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -147,6 +147,7 @@ public class BlockRenderBox extends RenderBox
       node.setPosition(getMajorAxis(), nodePos);
       node.setPosition(getMinorAxis(), minorAxisNodePos + leadingMinor);
       node.setDimension(getMinorAxis(), nodeSizeMinor);
+      node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
       node.validate();
 
       trailingMajor = node.getTrailingSpace(getMajorAxis());

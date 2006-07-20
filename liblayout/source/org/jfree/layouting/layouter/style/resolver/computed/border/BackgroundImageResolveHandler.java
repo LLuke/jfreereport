@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BackgroundImageResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: BackgroundImageResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,15 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.border;
 
+import org.jfree.layouting.DocumentContextUtility;
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.input.style.values.CSSValueSupport;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.DocumentContextUtility;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.BackgroundSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.output.OutputProcessorFeature;
@@ -121,7 +121,7 @@ public class BackgroundImageResolveHandler implements ResolveHandler
     {
       CSSValue item = list.getItem(i);
 
-      if (CSSValueSupport.isURI(item))
+      if (CSSValueResolverUtility.isURI(item))
       {
         CSSStringValue svalue = (CSSStringValue) item;
         try

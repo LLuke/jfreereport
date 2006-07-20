@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnNode.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
+ * $Id: TableColumnNode.java,v 1.2 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,9 @@
 package org.jfree.layouting.renderer.model.table;
 
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
-import org.jfree.layouting.input.style.values.CSSNumericType;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 
@@ -63,33 +62,28 @@ import org.jfree.layouting.renderer.model.SpacerRenderNode;
 public class TableColumnNode extends SpacerRenderNode
 {
   private BoxDefinition definition;
-  private LayoutContext context;
+  private int colspan;
+
+  public TableColumnNode(final BoxDefinition definition)
+  {
+    super(0, 0, true);
+    this.definition = definition;
+    this.colspan = 1;
+  }
 
   public TableColumnNode(final BoxDefinition definition,
                          final LayoutContext context)
   {
     super(0, 0, true);
     this.definition = definition;
-    this.context = context;
+    
+    final CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
+    this.colspan = (int) CSSValueResolverUtility.getNumericValue(value, 1);
   }
 
-  public LayoutContext getContext()
+  public int getColspan()
   {
-    return context;
-  }
-
-  public int getColSpan()
-  {
-    CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
-    if (value instanceof CSSNumericValue)
-    {
-      CSSNumericValue nval = (CSSNumericValue) value;
-      if (CSSNumericType.NUMBER.equals(nval.getType()))
-      {
-        return (int) nval.getValue();
-      }
-    }
-    return 1;
+    return colspan;
   }
 
   public BoxDefinition getDefinition()

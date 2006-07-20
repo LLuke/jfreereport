@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LetterSpacingResolveHandler.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: LetterSpacingResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.context.FontSpecification;
 
 /**
@@ -111,11 +111,11 @@ public class LetterSpacingResolveHandler implements ResolveHandler
     final double width = fm.getCharWidth(0x20);
     final CSSNumericValue percentageBase =
             new CSSNumericValue(CSSNumericType.PT, width);
-    final CSSNumericValue min = LengthResolverUtility.getLength
+    final CSSNumericValue min = CSSValueResolverUtility.getLength
             (resolveValue(style, TextStyleKeys.X_MIN_LETTER_SPACING), percentageBase);
-    final CSSNumericValue max = LengthResolverUtility.getLength
+    final CSSNumericValue max = CSSValueResolverUtility.getLength
             (resolveValue(style, TextStyleKeys.X_MAX_LETTER_SPACING), percentageBase);
-    final CSSNumericValue opt = LengthResolverUtility.getLength
+    final CSSNumericValue opt = CSSValueResolverUtility.getLength
             (resolveValue(style, TextStyleKeys.X_OPTIMUM_LETTER_SPACING), percentageBase);
 
     style.setValue(TextStyleKeys.X_MIN_LETTER_SPACING, min);

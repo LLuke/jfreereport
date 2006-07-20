@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSDeclarationRule.java,v 1.3 2006/04/21 17:29:37 taqua Exp $
+ * $Id: CSSDeclarationRule.java,v 1.4 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -183,6 +183,12 @@ public abstract class CSSDeclarationRule extends StyleRule
   public Iterator getPropertyKeys()
   {
     return declarations.keySet().iterator();
+  }
+
+  public StyleKey[] getPropertyKeysAsArray()
+  {
+    return (StyleKey[]) declarations.keySet().toArray
+            (new StyleKey[declarations.size()]);
   }
 
   public Iterator getImportantKeys()

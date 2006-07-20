@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.5 2006/07/11 13:29:48 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.6 2006/07/17 13:27:24 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,6 @@ import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleRule;
-import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.layouting.input.style.selectors.SelectorWeight;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
@@ -176,6 +175,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     final LayoutContext layoutContext = element.getLayoutContext();
     final LayoutStyle style = layoutContext.getStyle();
     final StyleKey[] keys = getKeys();
+
 //    Log.debug ("Resolving style for " +
 //            layoutContext.getTagName() + ":" +
 //            layoutContext.getPseudoElement());
@@ -219,7 +219,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
             (Namespaces.LIBLAYOUT_NAMESPACE, "style");
     // You cannot override element specific styles with that. So an HTML-style
     // attribute has move value than a LibLayout-style attribute.
-    addStyleFromAttribute(style, libLayoutStyleValue);
+    addStyleFromAttribute(style, libLayoutStyleValue, element);
 
     if (strictStyleMode)
     {
@@ -282,7 +282,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     {
       final String attr = styleAttrs[i];
       final Object styleValue = attributes.getAttribute(namespace, attr);
-      addStyleFromAttribute(style, styleValue);
+      addStyleFromAttribute(style, styleValue, node);
     }
   }
 
@@ -319,13 +319,14 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       {
         final String attr = styleAttrs[x];
         final Object styleValue = attributes.getAttribute(namespace, attr);
-        addStyleFromAttribute(style, styleValue);
+        addStyleFromAttribute(style, styleValue, node);
       }
     }
   }
 
-  private void addStyleFromAttribute (final LayoutStyle style,
-                                      final Object styleValue)
+  private void addStyleFromAttribute(final LayoutStyle style,
+                                     final Object styleValue,
+                                     final LayoutElement node)
   {
     if (styleValue instanceof String)
     {
@@ -345,7 +346,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
                 (CSSDeclarationRule) resource.getResource();
         if (rule != null)
         {
-          copyStyleInformation(style, rule);
+          copyStyleInformation(style, rule, node);
         }
       }
       catch (Exception e)
@@ -355,7 +356,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     }
     else if (styleValue instanceof CSSDeclarationRule)
     {
-      copyStyleInformation(style, (CSSDeclarationRule) styleValue);
+      copyStyleInformation(style, (CSSDeclarationRule) styleValue, node);
     }
   }
 
@@ -391,7 +392,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       }
 
       oldSelectorWeight = activeWeight;
-      copyStyleInformation(style, activeStyleRule);
+      copyStyleInformation(style, activeStyleRule, element);
     }
   }
 

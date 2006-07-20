@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontSmoothResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: FontSmoothResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 /**
@@ -95,7 +95,7 @@ public class FontSmoothResolveHandler implements ResolveHandler
 
     final double fontSize =
             (currentNode.getLayoutContext().getFontSpecification().getFontSize());
-    final double length = LengthResolverUtility.convertLengthToDouble
+    final double length = CSSValueResolverUtility.convertLengthToDouble
             (value, currentNode.getLayoutContext(), process.getOutputMetaData());
 
     if (fontSize < length)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableCellRenderBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id: TableCellRenderBox.java,v 1.2 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,16 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
-import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
+import org.jfree.layouting.renderer.model.table.cols.TableCell;
 
 /**
  * A table section box does not much rendering or layouting at all. It represents
@@ -53,14 +59,34 @@ import org.jfree.layouting.renderer.model.RenderBox;
  *
  * @author Thomas Morgner
  */
-public class TableCellRenderBox extends BlockRenderBox
+public class TableCellRenderBox extends BlockRenderBox implements TableCell
 {
+  private int colSpan;
+  private int rowSpan;
+
   public TableCellRenderBox(final BoxDefinition boxDefinition)
-          throws NormalizationException
   {
     super(boxDefinition);
+    colSpan = 1;
+    rowSpan = 1;
   }
 
+  public TableCellRenderBox(final BoxDefinition boxDefinition,
+                            final LayoutContext context)
+  {
+    this(boxDefinition);
+    final CSSValue csValue = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
+    this.colSpan = (int) CSSValueResolverUtility.getNumericValue(csValue, 1);
+
+    final CSSValue rsValue = context.getStyle().getValue(TableStyleKeys.ROW_SPAN);
+    this.rowSpan = (int) CSSValueResolverUtility.getNumericValue(rsValue, 1);
+
+  }
+
+  public RenderNode getCellNode()
+  {
+    return this;
+  }
 
   public TableRenderBox getTable()
   {
@@ -82,5 +108,35 @@ public class TableCellRenderBox extends BlockRenderBox
       return null;
     }
     return table.getColumnModel();
+  }
+
+  public void validate()
+  {
+    super.validate();
+  }
+
+  public int getColSpan()
+  {
+    return colSpan;
+  }
+
+  public int getRowSpan()
+  {
+    return rowSpan;
+  }
+
+  /**
+   * If that method returns true, the element will not be used for rendering.
+   * For the purpose of computing sizes or performing the layouting (in the
+   * validate() step), this element will treated as if it is not there.
+   * <p/>
+   * If the element reports itself as non-empty, however, it will affect the
+   * margin computation.
+   *
+   * @return
+   */
+  public boolean isIgnorableForRendering()
+  {
+    return false;
   }
 }

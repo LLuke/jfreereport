@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.1 2006/07/17 13:28:34 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.2 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -127,6 +127,9 @@ public class SpacerRenderNode extends RenderNode
 
   protected void validateMargins()
   {
+    if (isMarginsValidated())
+      return;
+
     StrictInsets margins = getAbsoluteMarginsInternal();
     margins.setTop(height);
     margins.setBottom(height);
@@ -138,6 +141,8 @@ public class SpacerRenderNode extends RenderNode
     effectiveMargins.setBottom(height);
     effectiveMargins.setLeft(width);
     effectiveMargins.setRight(width);
+
+    setMarginsValidated(true);
   }
 
   public BreakAfterEnum getBreakAfterAllowed(final int axis)

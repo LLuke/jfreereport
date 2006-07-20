@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSParseTest.java,v 1.4 2006/07/11 13:29:55 taqua Exp $
+ * $Id: CSSParseTest.java,v 1.5 2006/07/17 16:48:53 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.io.IOException;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.parser.StyleSheetParserUtil;
 import org.w3c.flute.parser.Parser;
 import org.w3c.css.sac.InputSource;
@@ -64,7 +65,8 @@ public class CSSParseTest
     namespaces.put("xml", "balh");
 
     Object value = StyleSheetParserUtil.parseStyleValue
-            (namespaces, ContentStyleKeys.CONTENT, "url(attr(src,url)), url(\"res://org/jfree/layouting/broken-image.gif\")", null, null);
+            (namespaces, TableStyleKeys.ROW_SPAN,
+                    "1", null, null);
     System.out.println ("Value: " + value);
 
     final InputSource source = new InputSource();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueList.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
+ * $Id: CSSValueList.java,v 1.3 2006/05/06 13:02:46 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.util.ObjectUtilities;
  *
  * @author Thomas Morgner
  */
-public class CSSValueList implements CSSValue
+public final class CSSValueList implements CSSValue, Cloneable
 {
   private CSSValue[] values;
 
@@ -164,5 +164,19 @@ public class CSSValueList implements CSSValue
     System.arraycopy(list.values, 0, newValues, 0, length);
     newValues[length] = value;
     return new CSSValueList(newValues);
+  }
+
+  public Object clone()
+  {
+    try
+    {
+      final CSSValueList o = (CSSValueList) super.clone();
+      o.values = (CSSValue[]) values.clone();
+      return o;
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalAccessError("Clone cannot be unsupported.");
+    }
   }
 }

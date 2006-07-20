@@ -5,13 +5,6 @@
   -x-liblayout-language: attr("xml|lang");
 }
 
-/** todo: An CSS3 parser would accept li::marker instead. */
-li-marker {
-  margin-right: 1em;
-  text-align: right;
-  display: inline;
-}
-
 auto-table {
   display: table;
 }

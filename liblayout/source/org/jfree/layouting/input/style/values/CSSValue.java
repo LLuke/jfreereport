@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSValue.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,14 @@
  */
 package org.jfree.layouting.input.style.values;
 
+import java.io.Serializable;
+
 /**
  * Creation-Date: 23.11.2005, 11:32:55
  *
  * @author Thomas Morgner
  */
-public interface CSSValue
+public interface CSSValue extends Serializable
 {
   public String getCSSText();
 }

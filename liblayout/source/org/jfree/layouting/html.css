@@ -96,7 +96,7 @@ h6 {
 
 listing {
   display: block;
-  font-family: -moz-fixed;
+  font-family: monospace;
   font-size: medium;
   white-space: pre;
   margin: 1em 0;
@@ -104,7 +104,7 @@ listing {
 
 plaintext, xmp, pre {
   display: block;
-  font-family: -moz-fixed;
+  font-family: monospace;
   white-space: pre;
   margin: 1em 0;
 }
@@ -132,8 +132,8 @@ table[align="right"] {
 table[rules] {
   border-collapse: collapse;
 }
-   
-/* caption inherits from table not table-outer */  
+
+/* caption inherits from table not table-outer */
 caption {
   display: table-caption;
   text-align: center;
@@ -185,10 +185,10 @@ table > tr {
   vertical-align: middle;
 }
 
-td { 
+td {
   display: table-cell;
   vertical-align: inherit;
-  text-align: inherit; 
+  text-align: inherit;
   padding: 1px;
 }
 
@@ -249,7 +249,7 @@ i, cite, em, var, dfn {
 }
 
 tt, code, kbd, samp {
-  font-family: -moz-fixed;
+  font-family: monospace;
 }
 
 u, ins {
@@ -392,10 +392,6 @@ hr[size="1"] {
   border-style: solid none none none;
 }
 
-
-/**
- * JFreeReport: Addition
- */
 a {
   target-new: window;
   target-position: above;
@@ -417,31 +413,31 @@ a img, img[usemap], object[usemap] {
 a[target],
 area[target],
 form[target] {
-  target: attr(target,string)
+  target-name: attr(target,string)
 }
 
 a[target="_blank"],
 area[target="_blank"],
 form[target="_blank"] {
-  target: new
+  target-name: new
 }
 
 a[target="_self"],
 area[target="_self"],
 form[target="_self"] {
-  target: current
+  target-name: current
 }
 
 a[target="_parent"],
 area[target="_parent"],
 form[target="_parent"] {
-  target: parent
+  target-name: parent
 }
 
 a[target="_top"],
 area[target="_top"],
 form[target="_top"] {
-  target: root
+  target-name: root
 }
 
 img[src] {
@@ -497,7 +493,7 @@ marquee {
   blink {
     text-decoration: none;
   }
- 
+
 }
 
 

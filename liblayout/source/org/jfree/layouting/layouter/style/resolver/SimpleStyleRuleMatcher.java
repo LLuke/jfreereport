@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleStyleRuleMatcher.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.4 2006/07/17 13:27:24 taqua Exp $
  *
  * Changes
  * -------
@@ -47,12 +47,12 @@ import java.util.StringTokenizer;
 
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.input.style.CSSCounterRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.context.DocumentMetaNode;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
@@ -350,7 +350,6 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   public CSSStyleRule[] getMatchingRules(LayoutElement element)
   {
     final ArrayList retvals = new ArrayList();
-
     for (int i = 0; i < activeStyleRules.length; i++)
     {
       final CSSStyleRule activeStyleRule = activeStyleRules[i];
@@ -361,7 +360,6 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
     }
 
-    final LayoutContext layoutContext = element.getLayoutContext();
 //    Log.debug ("Got " + retvals.size() + " matching rules for " +
 //            layoutContext.getTagName() + ":" +
 //            layoutContext.getPseudoElement());
@@ -392,6 +390,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       case Selector.SAC_PSEUDO_ELEMENT_SELECTOR:
       {
+        Selector s;
         return layoutContext.isPseudoElement();
       }
       case Selector.SAC_ELEMENT_NODE_SELECTOR:
@@ -456,6 +455,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   private boolean evaluateCondition(final LayoutElement node,
                                     final Condition condition)
   {
+    final LayoutContext layoutContext = node.getLayoutContext();
     switch (condition.getConditionType())
     {
       case Condition.SAC_AND_CONDITION:
@@ -476,11 +476,12 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         String namespaceURI = ac.getNamespaceURI();
         if (namespaceURI == null)
         {
-          namespaceURI = node.getLayoutContext().getNamespace();
+          namespaceURI = layoutContext.getNamespace();
         }
-        final String attr = (String) node.getLayoutContext().getAttributes()
-                .getAttribute
-                        (namespaceURI, ac.getLocalName());
+
+        final AttributeMap attributes = layoutContext.getAttributes();
+        final String attr = (String) attributes.getAttribute
+                (namespaceURI, ac.getLocalName());
         if (ac.getValue() == null)
         {
           // dont care what's inside, as long as there is a value ..
@@ -494,7 +495,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_CLASS_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
-        final String namespace = node.getLayoutContext().getNamespace();
+        final String namespace = layoutContext.getNamespace();
         if (namespace == null)
         {
           return false;
@@ -505,12 +506,12 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
           return false;
         }
         final String[] classAttribute = ndef.getClassAttribute(
-                node.getLayoutContext().getTagName());
+                layoutContext.getTagName());
         for (int i = 0; i < classAttribute.length; i++)
         {
           final String attr = classAttribute[i];
           final String htmlAttr = (String)
-                  node.getLayoutContext().getAttributes().getAttribute(
+                  layoutContext.getAttributes().getAttribute(
                           namespace, attr);
           if (isOneOfAttributes(htmlAttr, ac.getValue()))
           {
@@ -522,7 +523,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_ID_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
-        final AttributeMap attributes = node.getLayoutContext().getAttributes();
+        final AttributeMap attributes = layoutContext.getAttributes();
         final Object id = attributes.getAttribute(Namespaces.XML_NAMESPACE,
                 "id");
         return ObjectUtilities.equal(ac.getValue(), id);
@@ -530,7 +531,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_LANG_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
-        final Locale locale = node.getLayoutContext().getLanguage();
+        final Locale locale = layoutContext.getLanguage();
         final String lang = locale.getLanguage();
         return isBeginHyphenAttribute(lang, ac.getValue());
       }
@@ -543,14 +544,14 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         final AttributeCondition ac = (AttributeCondition) condition;
         final String attr = (String)
-                node.getLayoutContext().getAttributes().getAttribute(
+                layoutContext.getAttributes().getAttribute(
                         ac.getNamespaceURI(), ac.getLocalName());
         return isOneOfAttributes(attr, ac.getValue());
       }
       case Condition.SAC_PSEUDO_CLASS_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
-        final String pseudoClass = node.getLayoutContext().getPseudoElement();
+        final String pseudoClass = layoutContext.getPseudoElement();
         if (pseudoClass == null)
         {
           return false;

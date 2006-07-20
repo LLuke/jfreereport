@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderLength.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
+ * $Id: RenderLength.java,v 1.2 2006/07/12 17:53:05 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 
@@ -148,7 +148,7 @@ public class RenderLength
                 (nval.getValue()) * 100, true);
       }
 
-      final CSSNumericValue cssNumericValue = LengthResolverUtility.convertLength
+      final CSSNumericValue cssNumericValue = CSSValueResolverUtility.convertLength
               ((CSSNumericValue) value, layoutContext, metaData);
       // the resulting nvalue is guaranteed to have the unit PT
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.7 2006/07/18 14:40:28 taqua Exp $
+ * $Id: RenderNode.java,v 1.8 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -121,6 +121,10 @@ public abstract class RenderNode implements Cloneable
   private boolean clearRight;
   private boolean clearLeft;
   private Object instanceId;
+
+  private boolean marginsValidated;
+  private StrictInsets effectiveMargins;
+  private StrictInsets absoluteMargins;
 
   public RenderNode()
   {
@@ -378,7 +382,7 @@ public abstract class RenderNode implements Cloneable
     return prev;
   }
 
-  protected void setPrev(final RenderNode prev)
+  public void setPrev(final RenderNode prev)
   {
     this.prev = prev;
   }
@@ -388,7 +392,7 @@ public abstract class RenderNode implements Cloneable
     return next;
   }
 
-  protected void setNext(final RenderNode next)
+  public void setNext(final RenderNode next)
   {
     this.next = next;
   }
@@ -678,40 +682,25 @@ public abstract class RenderNode implements Cloneable
    */
   public abstract long getReferencePoint(int axis);
 
-//  /**
-//   * Defines a spacing, that only applies if the node is not the first node in
-//   * the box. This spacing gets later mixed in with the absolute margins and
-//   * corresponds to the effective margin of the RenderBox class.
-//   *
-//   * @param axis
-//   * @return
-//   */
-//  public abstract long getLeadingSpace (int axis);
-//
-//  /**
-//   * Defines a spacing, that only applies, if the node is not the last node in
-//   * the box. This spacing gets later mixed in with the absolute margins and
-//   * corresponds to the effective margin of the RenderBox class.
-//   *
-//   * @param axis
-//   * @return
-//   */
-//  public abstract long getTrailingSpace (int axis);
-
   public boolean isDiscardable()
   {
     return false;
   }
 
-  protected long getEffectiveLayoutSize (int axis)
+  public long getEffectiveLayoutSize (int axis)
   {
     return getPreferredSize(axis);
   }
 
-  private boolean marginsValidated;
-  private StrictInsets effectiveMargins;
-  private StrictInsets absoluteMargins;
+  protected boolean isMarginsValidated()
+  {
+    return marginsValidated;
+  }
 
+  protected void setMarginsValidated(final boolean marginsValidated)
+  {
+    this.marginsValidated = marginsValidated;
+  }
 
   protected void validateMargins()
   {

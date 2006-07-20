@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableStyleKeys.java,v 1.1 2006/07/11 13:33:03 taqua Exp $
  *
  * Changes
  * -------
@@ -87,10 +87,10 @@ public class TableStyleKeys
 
   public static final StyleKey ROW_SPAN =
           StyleKeyRegistry.getRegistry().createKey
-                  ("-x-liblayout-rowspan", false, true, StyleKey.All_ELEMENTS);
+                  ("-x-liblayout-rowspan", false, false, StyleKey.All_ELEMENTS);
   public static final StyleKey COL_SPAN =
           StyleKeyRegistry.getRegistry().createKey
-                  ("-x-liblayout-colspan", false, true, StyleKey.All_ELEMENTS);
+                  ("-x-liblayout-colspan", false, false, StyleKey.All_ELEMENTS);
 
 
 }

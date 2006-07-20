@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.4 2006/07/17 13:27:25 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.5 2006/07/17 16:48:53 taqua Exp $
  *
  * Changes
  * -------
@@ -149,7 +149,20 @@ public class NormalFlowRenderBox extends BlockRenderBox
     return this;
   }
 
-  protected long getEffectiveLayoutSize (int axis)
+  public void validate()
+  {
+    super.validate();
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
+      if (box.isOpen() == false)
+      {
+        box.validate();
+      }
+    }
+  }
+
+  public long getEffectiveLayoutSize (int axis)
   {
     return getPreferredSize(axis);
   }

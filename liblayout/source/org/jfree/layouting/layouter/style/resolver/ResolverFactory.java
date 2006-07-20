@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResolverFactory.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
+ * $Id: ResolverFactory.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -45,13 +45,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
@@ -117,10 +117,10 @@ public class ResolverFactory
     for (int i = 0; i < handlers.length; i++)
     {
       ResolveHandlerModule handler = handlers[i];
-      Log.debug ("Registered sorted handler (" + handler.getWeight() + ") " + handler.getKey() );
+      Log.debug("Registered sorted handler (" + handler.getWeight() + ") " + handler.getKey());
 
     }
-    Log.debug ("Registered " + handlers.length + " modules.");
+    Log.debug("Registered " + handlers.length + " modules.");
   }
 
   private HashMap loadModules(final String configPrefix)
@@ -163,28 +163,28 @@ public class ResolverFactory
     for (int i = 0; i < handlers.length; i++)
     {
       final ResolveHandlerModule handler = handlers[i];
+      final StyleKey key = handler.getKey();
+      final CSSValue value = style.getValue(key);
 
       final ResolveHandler autoValueHandler = handler.getAutoValueHandler();
       if (autoValueHandler != null)
       {
-        final StyleKey key = handler.getKey();
-        CSSValue value = style.getValue(key);
         if (value instanceof CSSAutoValue)
         {
           autoValueHandler.resolve(process, node, style, key);
         }
       }
-      
+
       final ResolveHandler compValueHandler = handler.getComputedValueHandler();
       if (compValueHandler != null)
       {
-        compValueHandler.resolve(process, node, style, handler.getKey());
+        compValueHandler.resolve(process, node, style, key);
       }
 
       final ResolveHandler percValueHandler = handler.getPercentagesValueHandler();
       if (percValueHandler != null)
       {
-        percValueHandler.resolve(process, node, style, handler.getKey());
+        percValueHandler.resolve(process, node, style, key);
       }
     }
   }

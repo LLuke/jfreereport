@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableSectionRenderBox.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id: TableSectionRenderBox.java,v 1.2 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,14 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
+import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
+import org.jfree.layouting.util.geom.StrictInsets;
+import org.jfree.util.Log;
 
 /**
  * A table section box does not much rendering or layouting at all. It
@@ -66,7 +71,8 @@ public class TableSectionRenderBox extends BlockRenderBox
     {
       return (TableRenderBox) parent;
     }
-    return null;
+    throw new IllegalStateException
+          ("A table section without a table is invalid.");
   }
 
   public TableColumnModel getColumnModel()
@@ -77,5 +83,138 @@ public class TableSectionRenderBox extends BlockRenderBox
       return null;
     }
     return table.getColumnModel();
+  }
+
+  protected void validateMargins()
+  {
+    if (getTable().isCollapsingBorderModel())
+    {
+      if (isMarginsValidated())
+      {
+        return;
+      }
+
+      StrictInsets margins = getAbsoluteMarginsInternal();
+      margins.setTop(0);
+      margins.setBottom(0);
+      margins.setLeft(0);
+      margins.setRight(0);
+
+      StrictInsets effectiveMargins = getEffectiveMarginsInternal();
+      effectiveMargins.setTop(0);
+      effectiveMargins.setBottom(0);
+      effectiveMargins.setLeft(0);
+      effectiveMargins.setRight(0);
+
+      setMarginsValidated(true);
+      return;
+    }
+
+    super.validateMargins();
+  }
+
+  public Border getBorder()
+  {
+    if (getTable().isCollapsingBorderModel())
+    {
+      // ignore all borders.
+      return Border.createEmptyBorder();
+    }
+
+    return super.getBorder();
+  }
+
+  private void validateRows ()
+  {
+//    TableRowRenderBox row = findLastRow();
+//    if (row == null)
+//    {
+//      return;
+//    }
+//
+//    while (row.isRowSpanned())
+//    {
+//      final TableRowRenderBox newLastRow =
+//              new TableRowRenderBox(new EmptyBoxDefinition(), true);
+//      insertAfter(row, newLastRow);
+//      row = newLastRow;
+//    }
+
+    final TableColumnModel columnModel = getTable().getColumnModel();
+
+    RenderNode node = getFirstChild();
+    Log.debug ("Starting validation process..");
+    while (node != null)
+    {
+      if (node instanceof TableRowRenderBox == false)
+      {
+        node = node.getNext();
+        continue;
+      }
+
+      // A row.
+      TableRowRenderBox row = (TableRowRenderBox) node;
+      if (row.isStructureDirty())
+      {
+        final int size = columnModel.getColumnCount();
+        row.validateCells();
+        if (columnModel.getColumnCount() != size)
+        {
+          // a structural change. Great, we have to restart.
+          node = getFirstChild();
+          Log.debug ("Structural change detected; restarting.");
+          continue;
+        }
+      }
+
+      Log.debug ("Row validated.");
+      node = node.getNext();
+    }
+
+    node = getFirstChild();
+    Log.debug ("Starting size-validation process..");
+    while (node != null)
+    {
+      if (node instanceof TableRowRenderBox == false)
+      {
+        node = node.getNext();
+        continue;
+      }
+
+      TableRowRenderBox row = (TableRowRenderBox) node;
+      row.validateCellSizes();
+      node = node.getNext();
+    }
+
+    columnModel.validateSizes();
+    Log.debug ("Finished size-validation process..");
+  }
+
+//  private TableRowRenderBox findLastRow()
+//  {
+//    TableRowRenderBox row = null;
+//    RenderNode node = getLastChild();
+//    while (node != null)
+//    {
+//      if (node instanceof TableRowRenderBox)
+//      {
+//        row = (TableRowRenderBox) node;
+//        break;
+//      }
+//    }
+//    return row;
+//  }
+
+  public void validate()
+  {
+    // we need to validate our rows ...
+    validateRows();
+    super.validate();
+  }
+
+  public long getPreferredSize(int axis)
+  {
+    validateRows();
+    return super.getPreferredSize(axis);
   }
 }

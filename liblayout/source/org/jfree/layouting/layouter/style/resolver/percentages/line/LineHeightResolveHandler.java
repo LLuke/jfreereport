@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LineHeightResolveHandler.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: LineHeightResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 
@@ -110,7 +110,7 @@ public class LineHeightResolveHandler implements ResolveHandler
     CSSNumericValue nval = (CSSNumericValue) value;
     final LayoutContext layoutContext = currentNode.getLayoutContext();
 
-    if (LengthResolverUtility.isLengthValue(nval))
+    if (CSSValueResolverUtility.isLengthValue(nval))
     {
       style.setValue(LineStyleKeys.LINE_HEIGHT, nval);
       return;

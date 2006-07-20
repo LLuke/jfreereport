@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.RenderNode;
@@ -407,11 +407,11 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     final OutputProcessorMetaData outputMetaData =
             layoutProcess.getOutputMetaData();
 
-    final int minIntVal = (int) LengthResolverUtility.convertLengthToDouble
+    final int minIntVal = (int) CSSValueResolverUtility.convertLengthToDouble
             (minValue, layoutContext, outputMetaData);
-    final int optIntVal = (int) LengthResolverUtility.convertLengthToDouble
+    final int optIntVal = (int) CSSValueResolverUtility.convertLengthToDouble
             (optValue, layoutContext, outputMetaData);
-    final int maxIntVal = (int) LengthResolverUtility.convertLengthToDouble
+    final int maxIntVal = (int) CSSValueResolverUtility.convertLengthToDouble
             (maxValue, layoutContext, outputMetaData);
     final Spacing spacing = new Spacing(minIntVal, optIntVal, maxIntVal);
 //    Log.debug("Using some static spacing: " + spacing);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.4 2006/07/17 13:27:25 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.5 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,9 @@
  */
 package org.jfree.layouting.renderer.model;
 
-import org.jfree.util.Log;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.keys.text.TextAlign;
 import org.jfree.layouting.renderer.model.alignment.Alignment;
 import org.jfree.layouting.renderer.model.alignment.JustifyAlignment;
+import org.jfree.util.Log;
 
 /**
  * This articifial renderbox is the connection between block-contexts and the

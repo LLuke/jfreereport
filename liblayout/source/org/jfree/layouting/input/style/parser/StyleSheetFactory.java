@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetFactory.java,v 1.2 2006/05/19 11:33:26 taqua Exp $
+ * $Id: StyleSheetFactory.java,v 1.3 2006/07/11 13:29:47 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class StyleSheetFactory implements ResourceFactory
       final StyleSheetHandler handler = new StyleSheetHandler
               (manager, key, version, StyleKeyRegistry.getRegistry(), null);
       parser.setDocumentHandler(handler);
-      //parser.setErrorHandler(handler);
+      parser.setErrorHandler(handler);
 
       final InputSource inputSource = new InputSource();
       inputSource.setByteStream(data.getResourceAsStream(manager));

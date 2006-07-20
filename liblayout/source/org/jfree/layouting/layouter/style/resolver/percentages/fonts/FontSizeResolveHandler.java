@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontSizeResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: FontSizeResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.resolver.LengthResolverUtility;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.context.LayoutContext;
@@ -52,7 +52,6 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.fonts.LibFontsDefaults;
 
 /**
@@ -133,9 +132,9 @@ public class FontSizeResolveHandler implements ResolveHandler
     }
 
     CSSNumericValue nval = (CSSNumericValue) value;
-    if (LengthResolverUtility.isAbsoluteValue(nval))
+    if (CSSValueResolverUtility.isAbsoluteValue(nval))
     {
-      final CSSNumericValue fsize = LengthResolverUtility.convertLength
+      final CSSNumericValue fsize = CSSValueResolverUtility.convertLength
               (nval,currentNode.getLayoutContext(), process.getOutputMetaData());
       final double fontSize = fsize.getValue();
       fontSpecification.setFontSize(fontSize);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.2 2006/07/12 17:53:06 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -165,13 +165,18 @@ public class LogicalPageBox extends BlockRenderBox
     return contentArea.getInsertationPoint();
   }
 
-  protected long getEffectiveLayoutSize(int axis)
+  public long getEffectiveLayoutSize(int axis)
   {
     if (axis == HORIZONTAL_AXIS)
     {
       return 150000;
     }
     return 600000;
+  }
+
+  protected long getComputedBlockContextWidth()
+  {
+    return getEffectiveLayoutSize(HORIZONTAL_AXIS);
   }
 
 }

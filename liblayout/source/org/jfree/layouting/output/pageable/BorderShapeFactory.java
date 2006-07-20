@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderShapeFactory.java,v 1.2 2006/07/12 17:53:05 taqua Exp $
+ * $Id: BorderShapeFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -149,6 +149,8 @@ public class BorderShapeFactory
 
     border = box.getBorder();
     borderSizes = box.getBorderWidths();
+
+    // todo: Change this to the real background ..
     backgroundColor = box.getBoxDefinition().getBackgroundColor();
   }
 
@@ -187,7 +189,9 @@ public class BorderShapeFactory
 
   private BasicStroke createStroke (BorderEdge edge, long width)
   {
-    return new BasicStroke(width / 1000f);
+    final float extWidth = (float) StrictGeomUtility.toExternalValue(width);
+    // todo: depending on the stroke type, we need other strokes instead.
+    return new BasicStroke (extWidth);
   }
 
   public void generateBorder (Graphics2D g2)

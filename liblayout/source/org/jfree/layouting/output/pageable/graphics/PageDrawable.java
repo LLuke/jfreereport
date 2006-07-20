@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.5 2006/07/17 13:27:25 taqua Exp $
+ * $Id: PageDrawable.java,v 1.6 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,11 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
+import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
+import org.jfree.layouting.renderer.model.table.cols.TableCell;
+import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
+import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
@@ -250,6 +255,35 @@ public class PageDrawable implements Drawable
     b.append("}");
 
     Log.debug(b.toString());
+
+    if (box instanceof TableRowRenderBox)
+    {
+      TableRowRenderBox row = (TableRowRenderBox) box;
+      final TableCell[] cells = row.getCells();
+      for (int i = 0; i < cells.length; i++)
+      {
+        TableCell cell = cells[i];
+        Log.debug ("CELL: " + i + " = " + cell.getRowSpan() + " " + cell.getColSpan() + " " + cell);
+      }
+    }
+    else if (box instanceof TableRenderBox)
+    {
+      TableRenderBox table = (TableRenderBox) box;
+      final TableColumnModel columnModel = table.getColumnModel();
+      for (int i = 0; i < columnModel.getColumnCount(); i++)
+      {
+        final TableColumn col = columnModel.getColumn(i);
+        for (int cs = 1; cs < 3; cs++)
+        {
+          Log.debug ("* COLUMN: " + i + "(" + cs + ") " +
+                  col.getPreferredSize(cs) + " " +
+                  col.getMinimumChunkSize(cs));
+        }
+        Log.debug ("COLUMN: " + i + " " +
+                col.getPreferredSize() + " " +
+                col.getMinimumChunkSize());
+      }
+    }
 
     RenderNode childs = box.getFirstChild();
     while (childs != null)

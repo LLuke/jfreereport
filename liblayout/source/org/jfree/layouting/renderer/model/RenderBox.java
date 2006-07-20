@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.6 2006/07/18 14:40:28 taqua Exp $
+ * $Id: RenderBox.java,v 1.7 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -125,7 +125,7 @@ public abstract class RenderBox extends RenderNode
     this.lastChild = lastChild;
   }
 
-  public void addChild(final RenderNode child)
+  protected void addGeneratedChild(final RenderNode child)
   {
     if (child == null)
     {
@@ -133,11 +133,6 @@ public abstract class RenderBox extends RenderNode
               ("Child to be added must not be null.");
     }
 
-    if (isOpen() == false)
-    {
-      throw new NullPointerException
-              ("Closed: " + this);
-    }
     if (lastChild != null)
     {
       lastChild.setNext(child);
@@ -154,6 +149,140 @@ public abstract class RenderBox extends RenderNode
 
     child.setParent(this);
     setState(RenderNodeState.PENDING);
+  }
+
+  public void addChild(final RenderNode child)
+  {
+    if (child == null)
+    {
+      throw new NullPointerException
+              ("Child to be added must not be null.");
+    }
+
+    if (isOpen() == false)
+    {
+      throw new IllegalStateException
+              ("Adding content to an already closed element.");
+    }
+
+    if (lastChild != null)
+    {
+      lastChild.setNext(child);
+    }
+
+    child.setPrev(lastChild);
+    child.setNext(null);
+    lastChild = child;
+
+    if (firstChild == null)
+    {
+      firstChild = child;
+    }
+
+    child.setParent(this);
+    setState(RenderNodeState.PENDING);
+  }
+
+  /**
+   * Inserts the given target after the specified node. If the node is null,
+   * the target is inserted as first node.
+   *
+   * @param node
+   * @param target
+   */
+  protected void insertAfter(RenderNode node, RenderNode target)
+  {
+    if (node == null)
+    {
+      // ok, insert as new first element.
+      RenderNode firstChild = getFirstChild();
+      if (firstChild == null)
+      {
+        setLastChild(target);
+        setFirstChild(target);
+        target.setParent(this);
+        target.setPrev(null);
+        target.setNext(null);
+        return;
+      }
+
+      // we have a first-child.
+      firstChild.setPrev(target);
+      setFirstChild(target);
+      target.setParent(this);
+      target.setPrev(null);
+      target.setNext(firstChild);
+      return;
+    }
+
+    if (node.getParent() != this)
+    {
+      throw new IllegalStateException("You made a big boo");
+    }
+
+    final RenderNode next = node.getNext();
+    node.setNext(target);
+    target.setPrev(node);
+    target.setParent(this);
+    target.setNext(next);
+    if (next != null)
+    {
+      next.setPrev(target);
+    }
+    else
+    {
+      setLastChild(target);
+    }
+  }
+
+  /**
+   * Inserts the given target directly before the the specified node.
+   * If the node is null, the element is inserted at the last position.
+   *
+   * @param node
+   * @param target
+   */
+  protected void insertBefore(RenderNode node, RenderNode target)
+  {
+    if (node == null)
+    {
+      RenderNode lastChild = getLastChild();
+      if (lastChild == null)
+      {
+        target.setParent(this);
+        target.setPrev(null);
+        target.setNext(null);
+        setFirstChild(target);
+        setLastChild(target);
+        return;
+      }
+
+      setLastChild(target);
+      target.setParent(this);
+      target.setPrev(lastChild);
+      target.setNext(null);
+      lastChild.setNext(target);
+      return;
+    }
+
+    if (node.getParent() != this)
+    {
+      throw new IllegalStateException("You made a big boo");
+    }
+
+    final RenderNode prev = node.getPrev();
+    node.setPrev(target);
+    target.setNext(node);
+    target.setParent(this);
+    target.setNext(prev);
+    if (prev != null)
+    {
+      prev.setNext(target);
+    }
+    else
+    {
+      setFirstChild(target);
+    }
   }
 
   public void replaceChild(final RenderNode old, final RenderNode replacement)
@@ -362,10 +491,10 @@ public abstract class RenderBox extends RenderNode
 
     if (axis == HORIZONTAL_AXIS)
     {
-      return Math.max (boxDefinition.getMinimumWidth().resolve(0), size);
+      return Math.max(boxDefinition.getMinimumWidth().resolve(0), size);
     }
-    
-    return Math.max (boxDefinition.getMinimumHeight().resolve(0), size);
+
+    return Math.max(boxDefinition.getMinimumHeight().resolve(0), size);
   }
 
   public BreakAfterEnum getBreakAfterAllowed(final int axis)
@@ -567,7 +696,7 @@ public abstract class RenderBox extends RenderNode
       return;
     }
     final long boxContextWidth = getComputedBlockContextWidth();
-    final Border border = boxDefinition.getBorder();
+    final Border border = getBorder();
     borderWidths.setTop(border.getTop().getWidth().resolve(boxContextWidth));
     borderWidths.setBottom(border.getBottom().getWidth().resolve(boxContextWidth));
     borderWidths.setLeft(border.getLeft().getWidth().resolve(boxContextWidth));
@@ -877,7 +1006,7 @@ public abstract class RenderBox extends RenderNode
    * @param node
    * @return
    */
-  protected long getEffectiveLayoutSize(int axis)
+  public long getEffectiveLayoutSize(int axis)
   {
     if (axis == VERTICAL_AXIS)
     {
@@ -1272,7 +1401,7 @@ public abstract class RenderBox extends RenderNode
 
     if (splitPoint == 41000)
     {
-      Log.debug ("BEGIN SPLIT: " + splitPoint);
+      Log.debug("BEGIN SPLIT: " + splitPoint);
     }
 
     if (target == null || target.length < 2)
@@ -1301,7 +1430,7 @@ public abstract class RenderBox extends RenderNode
 
       final long prefSize =
               firstSplitChild.getEffectiveLayoutSize(axis) +
-              Math.max (firstSplitChild.getLeadingSpace(axis), trailingSpace);
+                      Math.max(firstSplitChild.getLeadingSpace(axis), trailingSpace);
 
       trailingSpace = firstSplitChild.getTrailingSpace(axis);
       if ((prefSize + firstSplitSize + trailingSpace) <= splitPoint)
@@ -1376,11 +1505,11 @@ public abstract class RenderBox extends RenderNode
       }
       else
       {
-  //      Log.debug("       Extra Info: PS: " + splitPointChild.getPreferredSize(axis));
-  //      Log.debug("       Extra Info: FB: " + splitPointChild.getFirstBreak(axis));
-  //      Log.debug("       Extra Info: BP: " + splitPointChild.getBestBreak(axis, splitPos));
-  //      Log.debug("       Extra Info:*BP: " + getBestBreak(axis, splitPos));
-  //      Log.debug("       Extra Info:*FP: " + getFirstBreak(axis));
+        //      Log.debug("       Extra Info: PS: " + splitPointChild.getPreferredSize(axis));
+        //      Log.debug("       Extra Info: FB: " + splitPointChild.getFirstBreak(axis));
+        //      Log.debug("       Extra Info: BP: " + splitPointChild.getBestBreak(axis, splitPos));
+        //      Log.debug("       Extra Info:*BP: " + getBestBreak(axis, splitPos));
+        //      Log.debug("       Extra Info:*FP: " + getFirstBreak(axis));
         long bestBreakPos = firstSplitChild.getBestBreak(axis, splitPos);
         if (bestBreakPos > 0)
         {
