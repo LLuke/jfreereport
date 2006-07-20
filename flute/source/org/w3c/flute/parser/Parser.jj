@@ -4,7 +4,7 @@
  *  en Informatique et en Automatique, Keio University).
  * All Rights Reserved. http://www.w3.org/Consortium/Legal/
  *
- * $Id: Parser.jj,v 1.2 2006/05/30 14:39:41 taqua Exp $
+ * $Id: Parser.jj,v 1.3 2006/06/23 12:39:22 taqua Exp $
  */
 
 options {
@@ -47,7 +47,7 @@ import org.w3c.flute.util.Encoding;
  * A CSS2 parser
  *
  * @author Philippe Le Hégaret
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Parser implements org.w3c.css.sac.Parser {
 
@@ -514,8 +514,8 @@ TOKEN : /* basic tokens */
                          ( <H> )? ( <H> )? 
                     ( [ " ", "\t" , "\n" , "\r", "\f" ] )? >
   | < #ESCAPE     : <UNICODE> | ( "\\" [ " "-"~","\200"-"\377" ] ) >
-  | < #NMSTART    : [ "a"-"z" ] | <NONASCII> | <ESCAPE> >
-  | < #NMCHAR	  : ["a"-"z", "0"-"9", "-"] | <NONASCII> | <ESCAPE> >
+  | < #NMSTART    : [ "a"-"z","-","_" ] | <NONASCII> | <ESCAPE> >
+  | < #NMCHAR	  : ["a"-"z", "0"-"9", "-", "_"] | <NONASCII> | <ESCAPE> >
   | < #STRINGCHAR : [ "\t"," ","!","#","$","%","&","("-"~" ] 
                     | "\\\n" | "\\\r\n" | "\\\r" | "\\\f" 
                     | <NONASCII> | <ESCAPE> >
@@ -529,7 +529,7 @@ TOKEN :
 {
   < STRING      : ( "\"" ( <STRINGCHAR> | "'" )* "\"" ) | 
                   ( "'" ( <STRINGCHAR> | "\"" )* "'" ) >
-  | < IDENT         : <NNAME> >
+  | < IDENT     : <NNAME> >
   | < NUMBER	  : ( <D> )+ | ( <D> )* "." ( <D> )+ >
   | < #_URL       : [ "!","#","$","%","&","*"-"~" ] | <NONASCII> | <ESCAPE> >
   | < URL         : "url(" ( <S> )*

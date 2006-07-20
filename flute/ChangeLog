@@ -1,3 +1,8 @@
+    * Changed the grammar to support vendor-extension stylekeys. Vendor
+      specific stylekeys must be preceeded with '-x-vendorname-', for instance
+      '-x-moz-' for keys defined by the Mozilla foundation. Both "_" and "-"
+      have been added as valid name-token-chars.
+
 23-Apr-2006: Flute 1.3-jfree
     * Changed the grammar to accept namespaces. As we have to co-exist with
       Birt, we can't change the overal semantics; therefore we map the raw-
