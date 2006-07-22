@@ -132,7 +132,6 @@ This table will have the collapsing border-model.
 </table>
 
 
-
 <p>Testing, how the system resolves the complicated and buggy definitions.</p>
 
 <table>
@@ -157,5 +156,86 @@ This table will have the collapsing border-model.
   </tbody>
 </table>
 
+
+<p>Testing, how cells deal with margins..</p>
+
+Margins are not supported on table-sections, table-rows and table-cells.
+
+<table style="border-collapse:separate;">
+  <tbody style="margin: 400em">
+    <tr style="margin:2em">
+      <td rowspan="2" style="margin: 400em">
+        No margins
+      </td>
+      <td>
+        Test
+      </td>
+      <td rowspan="2">
+        Test<br>
+        test
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        overlapping
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>Testing, how borders are handled in the separate column model.</p>
+
+Borders are not supported on table-rows or table-sections.
+
+<table style="border-collapse:separate;">
+  <tbody style="border: 3pt solid blue">
+    <tr style="border: 3pt solid green">
+      <td rowspan="2" style="border: 1pt solid red">
+        TR-Border green
+      </td>
+      <td style="border: 1pt solid yellow">>
+        Test
+      </td>
+      <td rowspan="2">
+        Test<br>
+        test
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        overlapping
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<p>Testing, how paddings are handled in the separate column model.</p>
+
+Paddings are not supported on table-rows or table-sections.
+
+<table style="border-collapse:separate;">
+  <tbody style="padding: 4em">
+    <tr style="padding: 4em">
+      <td rowspan="2" style="border: 1pt solid red">
+        TR-Border green
+      </td>
+      <td style="border: 1pt solid yellow">>
+        Test
+      </td>
+      <td rowspan="2">
+        Test<br>
+        test
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        overlapping
+      </td>
+    </tr>
+  </tbody>
+</table>
 </body>
 </html>

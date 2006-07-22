@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.6 2006/07/18 14:40:28 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.7 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.util.Log;
+import org.jfree.layouting.renderer.border.RenderLength;
 
 /**
  * A block box behaves according to the 'display:block' layouting rules. In the
@@ -171,12 +172,20 @@ public class BlockRenderBox extends RenderBox
   protected long getComputedBlockContextWidth()
   {
     final RenderBox parent = getParent();
+    final RenderLength preferredWidth = getBoxDefinition().getPreferredWidth();
     if (parent != null)
     {
-      return getBoxDefinition().getPreferredWidth().resolve
-              (parent.getComputedBlockContextWidth());
+      if (RenderLength.AUTO.equals(preferredWidth) == false)
+      {
+        return preferredWidth.resolve
+                (parent.getComputedBlockContextWidth());
+      }
+      else
+      {
+        return parent.getComputedBlockContextWidth();
+      }
     }
-    return getBoxDefinition().getPreferredWidth().resolve(0);
+    return preferredWidth.resolve(0);
   }
 
   public int getBreakability(int axis)

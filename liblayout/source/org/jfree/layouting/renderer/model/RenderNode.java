@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.8 2006/07/18 17:26:32 taqua Exp $
+ * $Id: RenderNode.java,v 1.9 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -204,7 +204,7 @@ public abstract class RenderNode implements Cloneable
   {
     if (height < 0)
     {
-      throw new IllegalArgumentException("Width cannot be negative");
+      throw new IllegalArgumentException("Height cannot be negative: " + height);
     }
 
     long oldValue = this.height;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableColumn.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
  *
  * Changes
  * -------
@@ -187,11 +187,13 @@ public class TableColumn
                            long preferredWidth,
                            long chunkSizes)
   {
-    if (preferredSizes.get(colspan) < preferredWidth)
+    if ((preferredSizes.size() <= colspan) ||
+         (preferredSizes.get(colspan) < preferredWidth))
     {
       preferredSizes.set(colspan - 1, preferredWidth);
     }
-    if (minimumChunkSizes.get(colspan) < chunkSizes)
+    if ((colspan >= minimumChunkSizes.size()) ||
+         (minimumChunkSizes.get(colspan) < chunkSizes))
     {
       minimumChunkSizes.set(colspan - 1, chunkSizes);
     }

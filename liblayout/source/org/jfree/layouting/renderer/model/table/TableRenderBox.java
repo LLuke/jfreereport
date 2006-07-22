@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.3 2006/07/18 17:26:32 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,13 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
+import java.util.ArrayList;
+
 import org.jfree.layouting.input.style.keys.table.BorderCollapse;
 import org.jfree.layouting.input.style.keys.table.EmptyCells;
-import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.keys.table.TableLayout;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.border.Border;
@@ -54,7 +57,10 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
 import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnGroup;
+import org.jfree.layouting.renderer.model.table.cols.SpearateColumnModel;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
+import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
+import org.jfree.util.Log;
 
 /**
  * A table render box contains table header, table footer and the table body.
@@ -74,11 +80,24 @@ public class TableRenderBox extends BlockRenderBox
   private boolean displayEmptyCells;
   private boolean collapsingBorderModel;
   private boolean autoLayout;
+  private RenderLength borderSpacing;
+  private RenderLength rowSpacing;
+  private long preferredHeight;
+  private long minimumChunkSize;
 
-  public TableRenderBox(final BoxDefinition boxDefinition,
-                        final LayoutContext layoutContext)
+  public TableRenderBox(final BoxDefinition boxDefinition)
   {
     super(boxDefinition);
+    this.columnModel = new SpearateColumnModel(this);
+    this.borderSpacing = RenderLength.EMPTY;
+  }
+
+  public TableRenderBox(final BoxDefinition boxDefinition,
+                        final LayoutContext layoutContext,
+                        final RenderLength borderSpacing,
+                        final RenderLength rowSpacing)
+  {
+    this(boxDefinition);
 
     CSSValue emptyCellsVal = layoutContext.getStyle().getValue
             (TableStyleKeys.EMPTY_CELLS);
@@ -92,9 +111,13 @@ public class TableRenderBox extends BlockRenderBox
     final CSSValue layoutModel =
             layoutContext.getStyle().getValue(TableStyleKeys.TABLE_LAYOUT);
     this.autoLayout = TableLayout.AUTO.equals(layoutModel);
+    this.borderSpacing = borderSpacing;
+    this.rowSpacing = rowSpacing;
+  }
 
-    this.columnModel = new TableColumnModel(this);
-
+  public RenderLength getBorderSpacing()
+  {
+    return borderSpacing;
   }
 
   public boolean isAutoLayout()
@@ -128,9 +151,147 @@ public class TableRenderBox extends BlockRenderBox
 
     columnModel.validate();
 
-    super.validate();
+    validateSections();
 
     setState(RenderNodeState.FINISHED);
+  }
+
+  protected void validateSections()
+  {
+    final RenderNodeState state = getState();
+    if (state == RenderNodeState.FINISHED)
+    {
+      return;
+    }
+    if (state == RenderNodeState.UNCLEAN)
+    {
+      setState(RenderNodeState.PENDING);
+    }
+    if (state == RenderNodeState.PENDING)
+    {
+      validateBorders();
+      validatePaddings();
+      setState(RenderNodeState.LAYOUTING);
+    }
+
+    validateMargins();
+
+    Log.debug("TABLE: Begin Validate");
+
+    final long borderSpacing = getRowSpacing();
+    final long leadingPaddings = getLeadingInsets(getMinorAxis());
+    final long trailingPaddings = getTrailingInsets(getMinorAxis());
+
+    long nodePos =
+            getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis());
+    final long minorAxisNodePos =
+            getPosition(getMinorAxis()) + leadingPaddings;
+
+
+    final long defaultNodeWidth = Math.max(0,
+            getDimension(getMinorAxis()) - leadingPaddings - trailingPaddings);
+
+    RenderNode[][] sortedNodes = collectBoxes();
+    RenderNode[] discarded = sortedNodes[0];
+    for (int i = 0; i < discarded.length; i++)
+    {
+      RenderNode node = discarded[i];
+      node.setPosition(getMajorAxis(), nodePos);
+      node.setPosition(getMinorAxis(), minorAxisNodePos);
+      node.setDimension(getMinorAxis(), 0);
+      node.setDimension(getMajorAxis(), 0);
+    }
+
+    nodePos = validateSection(sortedNodes[1],
+            defaultNodeWidth, minorAxisNodePos, borderSpacing, nodePos);
+    nodePos = validateSection(sortedNodes[3],
+            defaultNodeWidth, minorAxisNodePos, borderSpacing, nodePos);
+    nodePos = validateSection(sortedNodes[2],
+            defaultNodeWidth, minorAxisNodePos, borderSpacing, nodePos);
+
+    final long trailingInsets = getTrailingInsets(getMajorAxis());
+    setDimension(getMajorAxis(), (nodePos + trailingInsets) - getPosition(getMajorAxis()));
+    setDimension(getMinorAxis(),
+            defaultNodeWidth + leadingPaddings + trailingPaddings);
+
+    Log.debug("TABLE: Leave Validate: " + defaultNodeWidth + " " +
+            leadingPaddings + " " + trailingPaddings);
+    setState(RenderNodeState.FINISHED);
+  }
+
+  private long validateSection (RenderNode[] nodes,
+                                long defaultNodeWidth,
+                                long minorAxisNodePos,
+                                long borderSpacing,
+                                long nodePos)
+  {
+    for (int i = 0; i < nodes.length; i++)
+    {
+      RenderNode node = nodes[i];
+
+      node.setPosition(getMajorAxis(), nodePos);
+      node.setPosition(getMinorAxis(), minorAxisNodePos);
+      node.setDimension(getMinorAxis(), defaultNodeWidth);
+//      node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
+      node.validate();
+
+      nodePos += node.getDimension(getMajorAxis());
+      nodePos += borderSpacing;
+    }
+    if (nodes.length != 0)
+    {
+      nodePos -= borderSpacing;
+    }
+    return nodePos;
+  }
+
+  private RenderNode[][] collectBoxes()
+  {
+    ArrayList headers = new ArrayList();
+    ArrayList footers = new ArrayList();
+    ArrayList bodies = new ArrayList();
+    ArrayList others = new ArrayList();
+
+    int collectState = 0;
+    RenderNode node = getFirstChild();
+    while (node != null)
+    {
+      if (node.isIgnorableForRendering() ||
+          node instanceof TableSectionRenderBox == false)
+      {
+        // Ignore all empty childs. However, give it an position.
+        others.add(node);
+        node = node.getNext();
+        continue;
+      }
+
+      TableSectionRenderBox renderBox = (TableSectionRenderBox) node;
+      CSSValue displayRole = renderBox.getDisplayRole();
+      if (collectState == 0 &&
+          DisplayRole.TABLE_HEADER_GROUP.equals(displayRole))
+      {
+        headers.add(renderBox);
+      }
+      else if (collectState <= 1 &&
+          DisplayRole.TABLE_FOOTER_GROUP.equals(displayRole))
+      {
+        footers.add(renderBox);
+        collectState = 1;
+      }
+      else
+      {
+        bodies.add(renderBox);
+        collectState = 2;
+      }
+      node = node.getNext();
+    }
+
+    RenderNode[][] retval = new RenderNode[4][];
+    retval[0] = (RenderNode[]) others.toArray(new RenderNode[others.size()]);
+    retval[1] = (RenderNode[]) headers.toArray(new RenderNode[headers.size()]);
+    retval[2] = (RenderNode[]) footers.toArray(new RenderNode[footers.size()]);
+    retval[3] = (RenderNode[]) bodies.toArray(new RenderNode[bodies.size()]);
+    return retval;
   }
 
   private void buildColumnModel()
@@ -223,21 +384,51 @@ public class TableRenderBox extends BlockRenderBox
     columnModelBuilt = true;
   }
 
+  private void validateSizes()
+  {
+    // validate the columns ...
+    preferredHeight = 0;
+    minimumChunkSize = 0;
+    RenderNode[][] allNodes = collectBoxes();
+    for (int i = 1; i < allNodes.length; i++)
+    {
+      RenderNode[] sections = allNodes[i];
+      for (int j = 0; j < sections.length; j++)
+      {
+        TableSectionRenderBox node = (TableSectionRenderBox) sections[j];
+        node.structValidateRows();
+        final TableRowModel rowModel = node.getRowModel();
+        preferredHeight = rowModel.getPreferredSize();
+        minimumChunkSize = Math.max
+                (minimumChunkSize, rowModel.getMinimumChunkSize());
+      }
+    }
+  }
+
   public long getPreferredSize(int axis)
   {
     prune();
     buildColumnModel();
+    validateSizes();
+
     if (axis == HORIZONTAL_AXIS)
     {
       return columnModel.getPreferredSize();
     }
-    return super.getPreferredSize(axis);
+    else
+    {
+      return preferredHeight;
+    }
+    //return super.getPreferredSize(axis);
   }
+
 
   public long getMinimumChunkSize(int axis)
   {
     prune();
     buildColumnModel();
+    validateSizes();
+
     if (axis == HORIZONTAL_AXIS)
     {
       return columnModel.getMinimumChunkSize();
@@ -333,36 +524,46 @@ public class TableRenderBox extends BlockRenderBox
    */
   public long getEffectiveLayoutSize(int axis)
   {
+    if (axis == VERTICAL_AXIS)
+    {
+      return getPreferredSize(axis);
+    }
+
+    prune();
+    buildColumnModel();
+    validateSizes();
+
     // 17.5.2 Table width algorithms: the 'table-layout' property
     //
     // Note that this section overrides the rules that apply to
     // calculating widths as described in section 10.3.
 
-//    if (isAutoLayout())
-//    {
-//
-//    }
+    //    if (isAutoLayout())
+    //    {
+    //
+    //    }
     // We assume Auto-Layout for now. Yes, that needs a change in the future.
     final RenderLength preferredWidth =
             getBoxDefinition().getPreferredWidth();
+
     final long minChunk = columnModel.getMinimumChunkSize();
     final long prefSize = columnModel.getPreferredSize();
     final long contextWidth = getComputedBlockContextWidth();
     final long nodeWidth;
     if (RenderLength.AUTO.equals(preferredWidth))
     {
-      if (prefSize < contextWidth)
+      if (prefSize <= contextWidth)
       {
         nodeWidth = prefSize;
       }
       else
       {
-        nodeWidth = Math.min (minChunk, contextWidth);
+        nodeWidth = Math.max (minChunk, contextWidth);
       }
     }
     else
     {
-      nodeWidth = Math.min (minChunk, contextWidth);
+      nodeWidth = Math.max (minChunk, contextWidth);
     }
 
     final long margins = getLeadingSpace(axis) + getTrailingSpace(axis);
@@ -374,5 +575,17 @@ public class TableRenderBox extends BlockRenderBox
     return l;
   }
 
+  /**
+   * Make this method public, so that the model can access it ..
+   * @return
+   */
+  public long getComputedBlockContextWidth()
+  {
+    return super.getComputedBlockContextWidth();
+  }
 
+  public long getRowSpacing()
+  {
+    return rowSpacing.resolve(getComputedBlockContextWidth());
+  }
 }

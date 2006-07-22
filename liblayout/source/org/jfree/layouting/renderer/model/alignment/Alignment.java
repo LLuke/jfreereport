@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Alignment.java,v 1.1 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,10 @@ package org.jfree.layouting.renderer.model.alignment;
 import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
- * An alignment strategy. What happens, if the element overflows during the
- * alignment?
+ * An alignment strategy.
+ *
+ * The alignment code needs a rewrite to properly support page spanning
+ * elements.
  *
  * @author Thomas Morgner
  */
@@ -58,4 +60,10 @@ public interface Alignment
    * @return
    */
   public boolean align (int axis, RenderNode node, long totalWidth);
+
+//
+//  public long findBestSplitAligned (int axis, RenderNode node, long totalWidth);
+//
+//  public RenderNode[] splitAligned
+//          (int axis, RenderNode nodeToSplit, long splitPos, long totalWidth);
 }

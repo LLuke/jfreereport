@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.6 2006/07/18 17:26:32 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.7 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,9 @@ import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
 import org.jfree.layouting.input.style.keys.list.ListStylePosition;
 import org.jfree.layouting.input.style.keys.text.TextAlign;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
 import org.jfree.layouting.layouter.content.type.ResourceType;
@@ -225,7 +227,27 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    TableRenderBox tableRenderBox = new TableRenderBox(definition, context);
+    final CSSValue borderSpacingVal =
+            context.getStyle().getValue(TableStyleKeys.BORDER_SPACING);
+
+    final RenderLength borderSpacing;
+    final RenderLength rowSpacing;
+    if (borderSpacingVal instanceof CSSValuePair)
+    {
+      CSSValuePair borderSpacingPair = (CSSValuePair) borderSpacingVal;
+      rowSpacing = DefaultBoxDefinitionFactory.computeWidth
+              (borderSpacingPair.getFirstValue(), context, layoutProcess.getOutputMetaData(), false, false);
+      borderSpacing = DefaultBoxDefinitionFactory.computeWidth
+              (borderSpacingPair.getSecondValue(), context, layoutProcess.getOutputMetaData(), false, false);
+    }
+    else
+    {
+      borderSpacing = RenderLength.EMPTY;
+      rowSpacing = RenderLength.EMPTY;
+    }
+
+    TableRenderBox tableRenderBox =
+            new TableRenderBox(definition, context, borderSpacing, rowSpacing);
     applyClear(context, tableRenderBox);
 
     getInsertationPoint().addChild(tableRenderBox);
@@ -269,10 +291,13 @@ public class DefaultRenderer implements Renderer
     Log.debug("<table-section>");
     textFactory.startText();
 
+    final CSSValue displayRole =
+            context.getStyle().getValue(BoxStyleKeys.DISPLAY_ROLE);
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    TableSectionRenderBox tableRenderBox = new TableSectionRenderBox(definition);
+    TableSectionRenderBox tableRenderBox =
+            new TableSectionRenderBox(definition, displayRole);
     getInsertationPoint().addChild(tableRenderBox);
   }
 

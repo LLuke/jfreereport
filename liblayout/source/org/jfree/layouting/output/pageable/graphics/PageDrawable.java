@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.6 2006/07/17 16:48:52 taqua Exp $
+ * $Id: PageDrawable.java,v 1.7 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -59,9 +59,9 @@ import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.layouting.renderer.model.table.cols.TableCell;
-import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
+import org.jfree.layouting.renderer.model.table.TableCell;
 import org.jfree.layouting.renderer.model.table.cols.TableColumn;
+import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
@@ -91,7 +91,7 @@ public class PageDrawable implements Drawable
    */
   public void draw(Graphics2D g2, Rectangle2D area)
   {
-    g2.setPaint(Color.WHITE);
+    g2.setPaint(Color.white);
     g2.fill(area);
 
     g2.translate(-area.getX(), -area.getY());
@@ -99,7 +99,7 @@ public class PageDrawable implements Drawable
     final Rectangle2D.Double bounds = new Rectangle2D.Double
             (rootBox.getX() / 1000f, rootBox.getY() / 1000f,
                     rootBox.getWidth() / 1000f, rootBox.getHeight() / 1000f);
-    g2.setPaint(Color.BLACK);
+    g2.setPaint(Color.black);
     g2.draw(bounds);
     drawBox(g2, rootBox, 0);
   }

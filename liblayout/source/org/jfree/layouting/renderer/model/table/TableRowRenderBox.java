@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowRenderBox.java,v 1.2 2006/07/18 17:26:32 taqua Exp $
+ * $Id: TableRowRenderBox.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,15 +42,15 @@ package org.jfree.layouting.renderer.model.table;
 
 import java.util.ArrayList;
 
-import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
-import org.jfree.layouting.renderer.model.table.cols.TableCell;
+import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
+import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.util.Log;
 
@@ -114,13 +114,36 @@ public class TableRowRenderBox extends BlockRenderBox
 
   public long getPreferredSize(int axis)
   {
-    if (isStructureDirty())
+//    if (isStructureDirty())
+//    {
+//      Log.warn ("Table-Row is invalid.");
+//      return 0;
+//    }
+//
+//    if (axis == HORIZONTAL_AXIS)
+//    {
+//      return 0;
+//    }
+//    else
+//    {
+//      final long leadingPaddings = getLeadingInsets(getMinorAxis());
+//      final long trailingPaddings = getTrailingInsets(getMinorAxis());
+//      return leadingPaddings + trailingPaddings + computeRowHeight(0);
+//    }
+    if (axis == HORIZONTAL_AXIS)
     {
-      Log.warn ("Table-Row is invalid.");
-      return 0;
+      // The width computation is handled by the column model, which gets
+      // built if someone calls stuctValidate..
+      throw new UnsupportedOperationException
+              ("A table row has no own width preferences.");
     }
-
-    return super.getPreferredSize(axis);
+    else
+    {
+      // thw height is computed by the TableRowModel. We need a global view
+      // on the table for that.
+      throw new UnsupportedOperationException
+              ("A table row has no own width preferences.");
+    }
   }
 
   public void validate()
@@ -143,31 +166,31 @@ public class TableRowRenderBox extends BlockRenderBox
 
     if (isStructureDirty())
     {
-      Log.warn ("This row needs cell-validation first.");
+      Log.warn("This row needs cell-validation first.");
       return;
     }
     validateMargins();
 
     Log.debug("TABLE-ROW: Begin Validate");
 
-    final long leadingPaddings = getLeadingInsets(getMinorAxis());
-    final long trailingPaddings = getTrailingInsets(getMinorAxis());
+    long nodePos = getPosition(getMajorAxis());
+    final long minorAxisNodePos = getPosition(getMinorAxis());
 
-    long nodePos =
-            getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis());
-    final long minorAxisNodePos =
-            getPosition(getMinorAxis()) + leadingPaddings;
+    final long defaultNodeSizeMinor = getDimension(getMinorAxis());
 
+    final TableColumnModel columnModel = getColumnModel();
+    final long totalMinChunkSize = columnModel.getMinimumChunkSize();
+    final long givenExtraSpace = getWidth() - totalMinChunkSize;
+    final long expectedExtraSpace =
+            columnModel.getPreferredSize() - totalMinChunkSize;
+    final long borderSpacing = columnModel.getBorderSpacing();
 
-    final long defaultNodeWidth = Math.max(0,
-            getDimension(getMinorAxis()) - leadingPaddings - trailingPaddings);
-
-    long trailingMajor = 0;
-    long trailingMinor = 0;
+    int cellCounter = 0;
     RenderNode node = getFirstChild();
+    boolean worked = false;
     while (node != null)
     {
-      if (node.isIgnorableForRendering())
+      if (node instanceof TableCell == false)
       {
         // Ignore all empty childs. However, give it an position.
         node.setPosition(getMajorAxis(), nodePos);
@@ -178,39 +201,140 @@ public class TableRowRenderBox extends BlockRenderBox
         continue;
       }
 
-      final long nodeSizeMinor = Math.min
-              (defaultNodeWidth, node.getEffectiveLayoutSize(getMinorAxis()));
-      final long leadingMinor = Math.max
-              (node.getLeadingSpace(getMinorAxis()), trailingMinor);
+      TableCell cell = (TableCell) node;
+      worked = true;
+      long nativeCellSize = computeColWidth
+              (columnModel, cellCounter, givenExtraSpace, expectedExtraSpace);
 
-      final long leadingMajor = Math.max
-              (node.getLeadingSpace(getMajorAxis()), trailingMajor);
-      nodePos += leadingMajor;
+      if (cell instanceof SpannedCellPlaceholder)
+      {
+        node.setPosition(getMajorAxis(), nodePos);
+        node.setPosition(getMinorAxis(), minorAxisNodePos);
+        node.setDimension(getMinorAxis(), 0);
+        node.setDimension(getMajorAxis(), 0);
+      }
+      else
+      {
+        long cellSize = nativeCellSize;
+        for (int i = 1; i < cell.getColSpan(); i += 1)
+        {
+          Log.debug("Validating cell " + (cellCounter + i) + ": " + cell);
+          cellSize += computeColWidth
+                  (columnModel, cellCounter + i, givenExtraSpace, expectedExtraSpace);
+        }
+        cellSize += (cell.getColSpan() - 1) * borderSpacing;
 
-      node.setPosition(getMajorAxis(), nodePos);
-      node.setPosition(getMinorAxis(), minorAxisNodePos + leadingMinor);
-      node.setDimension(getMinorAxis(), nodeSizeMinor);
-      node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
-      node.validate();
-
-      trailingMajor = node.getTrailingSpace(getMajorAxis());
-      trailingMinor = node.getTrailingSpace(getMinorAxis());
-
-      nodePos += node.getDimension(getMajorAxis());
+        node.setPosition(getMajorAxis(), nodePos);
+        node.setPosition(getMinorAxis(), minorAxisNodePos);
+        node.setDimension(getMinorAxis(), defaultNodeSizeMinor);
+        node.setDimension(getMajorAxis(), cellSize);
+        node.validate();
+      }
+      
+      nodePos += nativeCellSize;
+      nodePos += borderSpacing;
       node = node.getNext();
+      cellCounter += 1;//cell.getColSpan();
     }
 
-    final long trailingInsets = getTrailingInsets(getMajorAxis());
-    setDimension(getMajorAxis(), trailingMajor + (nodePos + trailingInsets) - getPosition(getMajorAxis()));
-    setDimension(getMinorAxis(),
-            // todo trailingMinor +
-            defaultNodeWidth + leadingPaddings + trailingPaddings);
+    if (worked)
+    {
+      // undo the last border spacing ...
+      nodePos -= borderSpacing;
+    }
 
-    Log.debug("TABLE-ROW: Leave Validate: " + defaultNodeWidth + " " +
-            leadingPaddings + " " + trailingPaddings);
+    setDimension(getMajorAxis(), nodePos - getPosition(getMajorAxis()));
+    setDimension(getMinorAxis(), defaultNodeSizeMinor);
+    Log.debug("TABLE-ROW: Leave Validate: " + defaultNodeSizeMinor);
     setState(RenderNodeState.FINISHED);
   }
 
+  private long computeColWidth(final TableColumnModel columnModel,
+                               final int cellCounter,
+                               final long givenExtraSpace,
+                               final long expectedExtraSpace)
+  {
+    final TableColumn firstColumn = columnModel.getColumn(cellCounter);
+    final long cellPrefWidth = firstColumn.getPreferredSize();
+    final long cellMinChunk = firstColumn.getMinimumChunkSize();
+    final long cellExpExtraSpace = cellPrefWidth - cellMinChunk;
+    if (expectedExtraSpace == 0)
+    {
+      return firstColumn.getMinimumChunkSize();
+    }
+    else
+    {
+      return firstColumn.getMinimumChunkSize() +
+              givenExtraSpace * cellExpExtraSpace / expectedExtraSpace;
+    }
+  }
+//
+//  private long computeRowHeight(final long defaultNodeSizeMinor)
+//  {
+//    final TableColumnModel columnModel = getColumnModel();
+//    final long totalMinChunkSize = columnModel.getMinimumChunkSize();
+//    final long givenExtraSpace = getWidth() - totalMinChunkSize;
+//    final long expectedExtraSpace =
+//            columnModel.getPreferredSize() - totalMinChunkSize;
+//
+//    // Computes the height of the row, under the condition, that position and
+//    // width are set and valid.
+//    final long minorAxisNodePos = getPosition(getMinorAxis());
+//    final long initialNodePos = getPosition(getMajorAxis());
+//    long nodePos = initialNodePos;
+//    int cellCounter = 0;
+//    long sizeMinor = 0;
+//    RenderNode node = getFirstChild();
+//    while (node != null)
+//    {
+//      if (node instanceof TableCell == false)
+//      {
+//        // Ignore all empty childs. However, give it an position.
+//        node.setPosition(getMajorAxis(), nodePos);
+//        node.setPosition(getMinorAxis(), minorAxisNodePos);
+//        node.setDimension(getMinorAxis(), 0);
+//        node.setDimension(getMajorAxis(), 0);
+//        node = node.getNext();
+//        continue;
+//      }
+//
+//      TableCell cell = (TableCell) node;
+//      long nativeCellSize = computeColWidth
+//              (columnModel, cellCounter, givenExtraSpace, expectedExtraSpace);
+//
+//      if (cell instanceof SpannedCellPlaceholder)
+//      {
+//        node.setPosition(getMajorAxis(), nodePos);
+//        node.setPosition(getMinorAxis(), minorAxisNodePos);
+//        node.setDimension(getMinorAxis(), 0);
+//        node.setDimension(getMajorAxis(), 0);
+//      }
+//      else
+//      {
+//        long cellSize = nativeCellSize;
+//        for (int i = 1; i < cell.getColSpan(); i += 1)
+//        {
+//          Log.debug("Validating cell " + (cellCounter + i) + ": " + cell);
+//          cellSize += computeColWidth
+//                  (columnModel, cellCounter + i, givenExtraSpace, expectedExtraSpace);
+//        }
+//        cellSize += (cell.getColSpan() - 1) * borderSpacing;
+//
+//        node.setPosition(getMajorAxis(), nodePos);
+//        node.setPosition(getMinorAxis(), minorAxisNodePos);
+//        node.setDimension(getMinorAxis(), defaultNodeSizeMinor);
+//        node.setDimension(getMajorAxis(), cellSize);
+//        node.validate();
+//      }
+//
+//      Log.debug ("XXX: " + node.getDimension(getMinorAxis()));
+//      sizeMinor = Math.max(sizeMinor, node.getDimension(getMinorAxis()));
+//      node = node.getNext();
+//      cellCounter += 1;
+//    }
+//
+//    return sizeMinor;
+//  }
 
   public TableColumnModel getColumnModel()
   {
@@ -222,43 +346,58 @@ public class TableRowRenderBox extends BlockRenderBox
     return table.getColumnModel();
   }
 
-  public Border getBorder()
+  protected void validateBorders()
   {
-    if (getTable().isCollapsingBorderModel())
+    if (isBordersValidated())
     {
-      // ignore all borders.
-      return Border.createEmptyBorder();
+      return;
     }
 
-    return super.getBorder();
+    StrictInsets borders = getBordersInternal();
+    borders.setTop(0);
+    borders.setBottom(0);
+    borders.setLeft(0);
+    borders.setRight(0);
+
+    setBordersValidated(true);
+  }
+
+  protected void validatePaddings()
+  {
+    if (isPaddingsValidated())
+    {
+      return;
+    }
+
+    StrictInsets paddings = getPaddingsInternal();
+    paddings.setTop(0);
+    paddings.setBottom(0);
+    paddings.setLeft(0);
+    paddings.setRight(0);
+
+    setPaddingsValidated(true);
   }
 
   protected void validateMargins()
   {
-    if (getTable().isCollapsingBorderModel())
+    if (isMarginsValidated())
     {
-      if (isMarginsValidated())
-      {
-        return;
-      }
-
-      StrictInsets margins = getAbsoluteMarginsInternal();
-      margins.setTop(0);
-      margins.setBottom(0);
-      margins.setLeft(0);
-      margins.setRight(0);
-
-      StrictInsets effectiveMargins = getEffectiveMarginsInternal();
-      effectiveMargins.setTop(0);
-      effectiveMargins.setBottom(0);
-      effectiveMargins.setLeft(0);
-      effectiveMargins.setRight(0);
-
-      setMarginsValidated(true);
       return;
     }
 
-    super.validateMargins();
+    StrictInsets margins = getAbsoluteMarginsInternal();
+    margins.setTop(0);
+    margins.setBottom(0);
+    margins.setLeft(0);
+    margins.setRight(0);
+
+    StrictInsets effectiveMargins = getEffectiveMarginsInternal();
+    effectiveMargins.setTop(0);
+    effectiveMargins.setBottom(0);
+    effectiveMargins.setLeft(0);
+    effectiveMargins.setRight(0);
+
+    setMarginsValidated(true);
   }
 
   public boolean isStructureDirty()
@@ -273,21 +412,21 @@ public class TableRowRenderBox extends BlockRenderBox
     return true;
   }
 
-  public void validateCells()
+  public void structureValidateCells()
   {
 
     final TableRowRenderBox prev = getPrevRow();
     if (prev == null)
     {
-      validateFirstRow();
+      structureValidateFirstRow();
     }
     else
     {
-      validateInnerRow(prev);
+      striuctureValidateInnerRow(prev);
     }
   }
 
-  public void validateCellSizes()
+  public void validateCellSizes(TableRow tableRow)
   {
     final TableColumnModel columnModel = getColumnModel();
     // Now update the sizes.
@@ -298,15 +437,19 @@ public class TableRowRenderBox extends BlockRenderBox
       {
         final TableCellRenderBox cellRenderBox = (TableCellRenderBox) cell;
         final long chunkSize = cellRenderBox.getMinimumChunkSize(HORIZONTAL_AXIS);
-        final long preferredSize = cellRenderBox.getMinimumChunkSize(HORIZONTAL_AXIS);
+        final long preferredSize = cellRenderBox.getPreferredSize(HORIZONTAL_AXIS);
 
-        columnModel.getColumn(i).setSizes(cell.getColSpan(),
+        columnModel.getColumn(i).updateSizes(cell.getColSpan(),
                 preferredSize, chunkSize);
+
+        final long chunkHeight = cellRenderBox.getMinimumChunkSize(VERTICAL_AXIS);
+        final long preferredHeight = cellRenderBox.getPreferredSize(VERTICAL_AXIS);
+        tableRow.updateSizes(cell.getRowSpan(), preferredHeight, chunkHeight);
       }
     }
   }
 
-  private void validateInnerRow(final TableRowRenderBox prev)
+  private void striuctureValidateInnerRow(final TableRowRenderBox prev)
   {
     final TableColumnModel columnModel = getColumnModel();
     Log.debug("TABLE-STRUCT BEGIN: Inner-Row-ValidateCells " + this);
@@ -495,13 +638,13 @@ public class TableRowRenderBox extends BlockRenderBox
         {
 
           final SpannedCellPlaceholder span = new SpannedCellPlaceholder
-                          (pendingCell, pendingCell.getRowSpan(), x);
+                  (pendingCell, pendingCell.getRowSpan(), x);
           insertAfter(pendingCell, span);
-          generatedCells.add (span);
+          generatedCells.add(span);
         }
       }
 
-      generatedCells.add (cell);
+      generatedCells.add(cell);
       if (cell.getColSpan() > 1 && cell instanceof TableCellRenderBox)
       {
         pendingCell = (TableCellRenderBox) cell;
@@ -518,7 +661,8 @@ public class TableRowRenderBox extends BlockRenderBox
       // Add empty cells.
       for (int i = finalColCount; i < initialColCount; i++)
       {
-        final TableCellRenderBox cell = new TableCellRenderBox(new EmptyBoxDefinition());
+        final TableCellRenderBox cell =
+                new TableCellRenderBox(new EmptyBoxDefinition(), true);
         addGeneratedChild(cell);
         generatedCells.add(cell);
       }
@@ -601,7 +745,7 @@ public class TableRowRenderBox extends BlockRenderBox
     return spacerCount;
   }
 
-  private void validateFirstRow()
+  private void structureValidateFirstRow()
   {
     final TableColumnModel columnModel = getColumnModel();
     final int initialColCount = columnModel.getColumnCount();
@@ -688,7 +832,7 @@ public class TableRowRenderBox extends BlockRenderBox
         {
 
           final SpannedCellPlaceholder span = new SpannedCellPlaceholder
-                          (pendingCell, pendingCell.getRowSpan(), x);
+                  (pendingCell, pendingCell.getRowSpan(), x);
           insertAfter(pendingCell, span);
           cells[columns + colSpan - x - 1] = span;
         }
@@ -712,7 +856,8 @@ public class TableRowRenderBox extends BlockRenderBox
       // Add empty cells.
       for (int i = columns; i < finalColCount; i++)
       {
-        final TableCellRenderBox cell = new TableCellRenderBox(new EmptyBoxDefinition());
+        final TableCellRenderBox cell =
+                new TableCellRenderBox(new EmptyBoxDefinition(), true);
         addGeneratedChild(cell);
         cells[i] = cell;
       }

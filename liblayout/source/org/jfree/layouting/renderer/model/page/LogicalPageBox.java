@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -169,7 +169,7 @@ public class LogicalPageBox extends BlockRenderBox
   {
     if (axis == HORIZONTAL_AXIS)
     {
-      return 150000;
+      return 300000;
     }
     return 600000;
   }

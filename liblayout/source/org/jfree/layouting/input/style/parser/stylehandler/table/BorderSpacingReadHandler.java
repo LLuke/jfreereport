@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderSpacingReadHandler.java,v 1.1 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,18 +40,48 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.table;
 
-import org.jfree.layouting.input.style.parser.stylehandler.AbstractWidthReadHandler;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.parser.CSSValueFactory;
+import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSValuePair;
+import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Creation-Date: 18.07.2006, 19:00:10
  *
  * @author Thomas Morgner
  */
-public class BorderSpacingReadHandler extends AbstractWidthReadHandler
+public class BorderSpacingReadHandler implements CSSValueReadHandler
 {
   public BorderSpacingReadHandler()
   {
-    super(false, false);
+  }
+
+  public CSSValue createValue(StyleKey name, LexicalUnit value)
+  {
+    CSSNumericValue firstValue = CSSValueFactory.createLengthValue(value);
+    if (firstValue == null)
+    {
+      return null;
+    }
+    value = value.getNextLexicalUnit();
+    CSSNumericValue secondValue;
+    if (value == null)
+    {
+      secondValue = firstValue;
+    }
+    else
+    {
+      secondValue = CSSValueFactory.createLengthValue(value);
+      if (secondValue == null)
+      {
+        return null;
+      }
+    }
+
+    return new CSSValuePair(firstValue, secondValue);
   }
 
 }

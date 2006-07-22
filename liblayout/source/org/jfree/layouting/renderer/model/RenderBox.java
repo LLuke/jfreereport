@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.7 2006/07/18 17:26:32 taqua Exp $
+ * $Id: RenderBox.java,v 1.8 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -675,6 +675,21 @@ public abstract class RenderBox extends RenderNode
     return borderWidths;
   }
 
+  protected boolean isPaddingsValidated()
+  {
+    return paddingsValidated;
+  }
+
+  protected void setPaddingsValidated(final boolean paddingsValidated)
+  {
+    this.paddingsValidated = paddingsValidated;
+  }
+
+  protected StrictInsets getPaddingsInternal()
+  {
+    return paddings;
+  }
+
   protected void validatePaddings()
   {
     if (paddingsValidated)
@@ -687,6 +702,21 @@ public abstract class RenderBox extends RenderNode
     paddings.setLeft(boxDefinition.getPaddingLeft().resolve(boxContextWidth));
     paddings.setRight(boxDefinition.getPaddingRight().resolve(boxContextWidth));
     paddingsValidated = true;
+  }
+
+  protected boolean isBordersValidated()
+  {
+    return bordersValidated;
+  }
+
+  protected void setBordersValidated(final boolean bordersValidated)
+  {
+    this.bordersValidated = bordersValidated;
+  }
+
+  protected StrictInsets getBordersInternal()
+  {
+    return borderWidths;
   }
 
   protected void validateBorders()
