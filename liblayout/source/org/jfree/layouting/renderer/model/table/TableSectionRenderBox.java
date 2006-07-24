@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableSectionRenderBox.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
+ * $Id: TableSectionRenderBox.java,v 1.4 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.renderer.model.table;
+
+import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
@@ -161,25 +163,58 @@ public class TableSectionRenderBox extends BlockRenderBox
 
   public void structValidateRows ()
   {
-//    TableRowRenderBox row = findLastRow();
-//    if (row == null)
-//    {
-//      return;
-//    }
-//
-//    while (row.isRowSpanned())
-//    {
-//      final TableRowRenderBox newLastRow =
-//              new TableRowRenderBox(new EmptyBoxDefinition(), true);
-//      insertAfter(row, newLastRow);
-//      row = newLastRow;
-//    }
-
     final TableColumnModel columnModel = getTable().getColumnModel();
 
+    boolean needsRestart = true;
+    while (needsRestart)
+    {
+      Log.debug ("Starting validation process..");
+      needsRestart = false;
+      int rowCount = 0;
+      RenderNode node = getFirstChild();
+      while (node != null)
+      {
+        if (node instanceof TableRowRenderBox == false)
+        {
+          node = node.getNext();
+          continue;
+        }
+
+        // A row.
+        TableRowRenderBox row = (TableRowRenderBox) node;
+        if (row.isStructureDirty())
+        {
+          final int size = columnModel.getColumnCount();
+          row.structureValidateCells();
+          if (columnModel.getColumnCount() != size)
+          {
+            // a structural change. Great, we have to restart.
+            Log.debug ("Structural change detected; restarting.");
+            needsRestart = true;
+          }
+        }
+
+        rowCount += 1;
+        if (rowCount > rowModel.getRowCount())
+        {
+          // generate a new row in the model.
+          final BoxDefinition boxDef = row.getBoxDefinition();
+          rowModel.addRow(new TableRow
+                  (boxDef.getPreferredHeight(), boxDef.getBorder()));
+        }
+        Log.debug ("Row validated.");
+        node = node.getNext();
+      }
+    }
+    Log.debug ("Finished validation process..");
+
+  }
+
+  public void structValidateRowSizes ()
+  {
+    Log.debug ("Starting size-validation process..");
     RenderNode node = getFirstChild();
-    Log.debug ("Starting validation process..");
-    int rowCount = 0;
+    ArrayList rows = new ArrayList();
     while (node != null)
     {
       if (node instanceof TableRowRenderBox == false)
@@ -187,62 +222,22 @@ public class TableSectionRenderBox extends BlockRenderBox
         node = node.getNext();
         continue;
       }
-
-      // A row.
-      TableRowRenderBox row = (TableRowRenderBox) node;
-      if (row.isStructureDirty())
-      {
-        final int size = columnModel.getColumnCount();
-        row.structureValidateCells();
-        if (columnModel.getColumnCount() != size)
-        {
-          // a structural change. Great, we have to restart.
-          node = getFirstChild();
-          rowCount = 0;
-          Log.debug ("Structural change detected; restarting.");
-          continue;
-        }
-      }
-      if (rowCount >= rowModel.getRowCount())
-      {
-        // generate a new row in the model.
-        final BoxDefinition boxDef = row.getBoxDefinition();
-        rowModel.addRow(new TableRow
-                (boxDef.getPreferredHeight(), boxDef.getBorder()));
-      }
-      rowCount += 1;
-      Log.debug ("Row validated.");
+      rows.add(node);
       node = node.getNext();
     }
 
-    node = getFirstChild();
-    rowCount = 0;
-    Log.debug ("Starting size-validation process..");
-    while (node != null)
+    for (int i = 0; i < rows.size(); i++)
     {
-      if (node instanceof TableRowRenderBox == false)
-      {
-        node = node.getNext();
-        continue;
-      }
-
-      TableRowRenderBox row = (TableRowRenderBox) node;
-      row.validateCellSizes(rowModel.getRow(rowCount));
-      node = node.getNext();
-      rowCount += 1;
+      final TableRowRenderBox row = (TableRowRenderBox) rows.get(i);
+      row.validateCellSizes(rowModel.getRow(i), i == 0, i == rows.size() - 1);
     }
 
     rowModel.validateSizes();
-    columnModel.validateSizes();
     Log.debug ("Finished size-validation process..");
   }
 
   public void validate()
   {
-    // we need to validate our rows ...
-    structValidateRows();
-
-
     final RenderNodeState state = getState();
     if (state == RenderNodeState.FINISHED)
     {
@@ -271,9 +266,13 @@ public class TableSectionRenderBox extends BlockRenderBox
     final long defaultNodeWidth = Math.max(0, getDimension(getMinorAxis()));
 
     // first run: Validate all rows under the condition that the width is
-    // given.
+    // given. This produces the cell heights and a prelimentary a row-height.
+    // If there were no rowspans, this rowheight would be the valid final height.
+    rowModel.clear();
+
     RenderNode node = getFirstChild();
     boolean worked = false;
+    int rowCount = 0;
     while (node != null)
     {
       if (node.isIgnorableForRendering() ||
@@ -289,16 +288,20 @@ public class TableSectionRenderBox extends BlockRenderBox
       }
 
       worked = true;
+      TableRowRenderBox rowBox = (TableRowRenderBox) node;
+
+      final TableRow row = rowModel.getRow(rowCount);
 
       node.setPosition(getMajorAxis(), nodePos);
       node.setPosition(getMinorAxis(), minorAxisNodePos);
       node.setDimension(getMinorAxis(), defaultNodeWidth);
       node.setDimension(getMajorAxis(), 0);
-      node.validate();
+      rowBox.validate(rowModel, row, rowCount, true);
 
       nodePos += node.getDimension(getMajorAxis());
       nodePos += borderSpacing;
       node = node.getNext();
+      rowCount += 1;
     }
 
     if (worked)
@@ -307,9 +310,9 @@ public class TableSectionRenderBox extends BlockRenderBox
       nodePos -= borderSpacing;
     }
 
-    // fill the sizes
+    // Read in the computed sizes.
     node = getFirstChild();
-    int rowCount = 0;
+    rowCount = 0;
     while (node != null)
     {
       if (node.isIgnorableForRendering() ||
@@ -319,6 +322,7 @@ public class TableSectionRenderBox extends BlockRenderBox
         continue;
       }
       TableRow row = rowModel.getRow(rowCount);
+      Log.debug ("Validating: " + row);
       TableRowRenderBox rowBox = (TableRowRenderBox) node;
       RenderNode cell = rowBox.getFirstChild();
       while (cell != null)
@@ -326,7 +330,13 @@ public class TableSectionRenderBox extends BlockRenderBox
         if (cell instanceof TableCellRenderBox)
         {
           TableCellRenderBox tcb = (TableCellRenderBox) cell;
-          row.updateValidatedSize(tcb.getRowSpan(), tcb.getHeight());
+          final long height = tcb.getHeight();
+          final long refp = tcb.getReferencePoint(VERTICAL_AXIS);
+          final long lead = tcb.getLeadingSpace(VERTICAL_AXIS);
+          row.updateValidatedSize(tcb.getRowSpan(),
+                  lead + refp, height - lead - refp);
+          Log.debug ("Validated: " + tcb.getRowSpan() + " " +
+                  height + " " + cell);
         }
         cell = cell.getNext();
       }
@@ -358,12 +368,14 @@ public class TableSectionRenderBox extends BlockRenderBox
       }
 
       worked = true;
-
+      TableRowRenderBox rowBox = (TableRowRenderBox) node;
+      final TableRow row = rowModel.getRow(rowCount);
       node.setPosition(getMajorAxis(), nodePos);
       node.setPosition(getMinorAxis(), minorAxisNodePos);
+
       node.setDimension(getMinorAxis(), defaultNodeWidth);
-      node.setDimension(getMajorAxis(), rowModel.getRow(rowCount).getValidateSize());
-      node.validate();
+      node.setDimension(getMajorAxis(), row.getValidateSize());
+      rowBox.validate(rowModel, row, rowCount, false);
 
       nodePos += node.getDimension(getMajorAxis());
       nodePos += borderSpacing;
@@ -385,31 +397,37 @@ public class TableSectionRenderBox extends BlockRenderBox
     setState(RenderNodeState.FINISHED);
   }
 
-
-  private long computeRowWidth(final TableRowModel rowModel,
-                               final int rowCounter,
-                               final long givenExtraSpace,
-                               final long expectedExtraSpace)
-  {
-    final TableRow row = rowModel.getRow(rowCounter);
-    final long cellPrefWidth = row.getPreferredSize();
-    final long cellMinChunk = row.getMinimumChunkSize();
-    final long cellExpExtraSpace = cellPrefWidth - cellMinChunk;
-    if (expectedExtraSpace == 0)
-    {
-      return row.getMinimumChunkSize();
-    }
-    else
-    {
-      return row.getMinimumChunkSize() +
-              givenExtraSpace * cellExpExtraSpace / expectedExtraSpace;
-    }
-  }
   public long getPreferredSize(int axis)
   {
     throw new UnsupportedOperationException
             ("A table section has no preferred size.");
-//    structValidateRows();
-//    return super.getPreferredSize(axis);
+  }
+
+  public TableSectionRenderBox getPreviousSection()
+  {
+    RenderNode node = getPrev();
+    while (node != null)
+    {
+      if (node instanceof TableSectionRenderBox)
+      {
+        return (TableSectionRenderBox) node;
+      }
+      node = node.getPrev();
+    }
+    return null;
+  }
+
+  public TableSectionRenderBox getNextSection()
+  {
+    RenderNode node = getNext();
+    while (node != null)
+    {
+      if (node instanceof TableSectionRenderBox)
+      {
+        return (TableSectionRenderBox) node;
+      }
+      node = node.getNext();
+    }
+    return null;
   }
 }

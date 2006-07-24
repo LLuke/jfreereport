@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.9 2006/07/20 17:50:52 taqua Exp $
+ * $Id: RenderNode.java,v 1.10 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -1054,4 +1054,5 @@ public abstract class RenderNode implements Cloneable
   {
     return isEmpty();
   }
+
 }

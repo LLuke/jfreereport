@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EmptyBorderEdge.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
 package org.jfree.layouting.renderer.border;
 
 import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.border.BorderStyle;
 
 /**
  * A border that corresponds to 'none' - it is empty and consumes no space
@@ -50,7 +52,9 @@ import org.jfree.layouting.input.style.values.CSSColorValue;
  */
 public class EmptyBorderEdge implements BorderEdge
 {
-  public EmptyBorderEdge()
+  private static EmptyBorderEdge instance;
+
+  private EmptyBorderEdge()
   {
   }
 
@@ -62,5 +66,19 @@ public class EmptyBorderEdge implements BorderEdge
   public CSSColorValue getColor()
   {
     return new CSSColorValue(0,0,0,255);
+  }
+
+  public CSSValue getBorderStyle()
+  {
+    return BorderStyle.NONE;
+  }
+
+  public static synchronized BorderEdge getInstance()
+  {
+    if (instance == null)
+    {
+      instance = new EmptyBorderEdge();
+    }
+    return instance;
   }
 }

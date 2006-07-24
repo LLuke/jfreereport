@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SeparateRowModel.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer.model.table.rows;
 
-import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
+import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 
 /**
  * Creation-Date: 22.07.2006, 15:23:00
@@ -151,23 +151,23 @@ public class SeparateRowModel extends AbstractRowModel
     }
 
     // first, find out how much space is already used.
-    final long[] sizes = new long[rowCount];
+    final long[] trailingSizes = new long[rowCount];
     // For each rowspan ...
     for (int rowspan = 1; rowspan <= maxRowSpan; rowspan += 1)
     {
-      for (int rowIdx = 0; rowIdx < sizes.length; rowIdx++)
+      for (int rowIdx = 0; rowIdx < trailingSizes.length; rowIdx++)
       {
         final TableRow row = rows[rowIdx];
-        final long size = row.getValidatedSize(rowspan);
+        final long size = row.getValidatedTrailingSize(rowspan);
 
-        distribute(size, sizes, rowIdx, rowspan);
+        distribute(size, trailingSizes, rowIdx, rowspan);
       }
     }
 
-    for (int i = 0; i < sizes.length; i++)
+    for (int i = 0; i < trailingSizes.length; i++)
     {
       final TableRow row = rows[i];
-      row.setValidateSize(sizes[i]);
+      row.setValidateSize(trailingSizes[i] + row.getValidatedLeadingSize());
     }
   }
 
@@ -198,4 +198,14 @@ public class SeparateRowModel extends AbstractRowModel
     allSpaces[colIdx + maxColspan - 1] = distSpace - ((maxColspan - 1) * delta);
   }
 
+  public void clear()
+  {
+    final TableRow[] rows = getRows();
+    final int rowCount = rows.length;
+    for (int i = 0; i < rowCount; i++)
+    {
+      final TableRow row = rows[i];
+      row.clear();
+    }
+  }
 }

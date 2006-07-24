@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderShapeFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: BorderShapeFactory.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -142,13 +142,19 @@ public class BorderShapeFactory
     drawOps = new ArrayList();
     fillOps = new ArrayList();
 
-    x = StrictGeomUtility.toExternalValue(box.getX());
-    y = StrictGeomUtility.toExternalValue(box.getY());
-    width = StrictGeomUtility.toExternalValue(box.getWidth());
-    height = StrictGeomUtility.toExternalValue(box.getHeight());
+
+    final StrictInsets bWidths = box.getBorderWidths();
+    x = StrictGeomUtility.toExternalValue
+            (box.getX() + (bWidths.getLeft() / 2));
+    y = StrictGeomUtility.toExternalValue
+            (box.getY() + (bWidths.getTop() / 2));
+    width = StrictGeomUtility.toExternalValue
+            (box.getWidth() - (bWidths.getLeft() + bWidths.getRight())/2);
+    height = StrictGeomUtility.toExternalValue
+            (box.getHeight() - (bWidths.getTop() + bWidths.getBottom())/2);
 
     border = box.getBorder();
-    borderSizes = box.getBorderWidths();
+    borderSizes = bWidths;
 
     // todo: Change this to the real background ..
     backgroundColor = box.getBoxDefinition().getBackgroundColor();

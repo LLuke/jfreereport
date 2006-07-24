@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableColumnModel.java,v 1.2 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -70,4 +70,6 @@ public interface TableColumnModel
   public TableColumn getColumn(int i);
 
   public long getBorderSpacing();
+
+  public TableColumnGroup getGroupForIndex(final int i);
 }

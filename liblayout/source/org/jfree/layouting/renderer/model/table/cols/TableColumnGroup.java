@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableColumnGroup.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
  *
  * Changes
  * -------
@@ -124,5 +124,23 @@ public class TableColumnGroup
   public TableColumn getColumn(final int pos)
   {
     return (TableColumn) tableColumns.get(pos);
+  }
+
+  public boolean isFirstColumn(TableColumn col)
+  {
+    if (tableColumns.size() == 0)
+    {
+      return false;
+    }
+    return tableColumns.get(0) == col;
+  }
+
+  public boolean isLastColumn(TableColumn col)
+  {
+    if (tableColumns.size() == 0)
+    {
+      return false;
+    }
+    return tableColumns.get(tableColumns.size() - 1) == col;
   }
 }

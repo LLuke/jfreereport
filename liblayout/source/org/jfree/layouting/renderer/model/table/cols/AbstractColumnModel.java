@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractColumnModel.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
  *
  * Changes
  * -------
@@ -164,5 +164,23 @@ public abstract class AbstractColumnModel implements TableColumnModel
   public long getBorderSpacing()
   {
     return 0;
+  }
+
+  public TableColumnGroup getGroupForIndex(final int idx)
+  {
+    int offset = 0;
+    for (int j = 0; j < columnGroups.size(); j++)
+    {
+      final TableColumnGroup group = (TableColumnGroup) columnGroups.get(j);
+      if (offset + group.getColumnCount() <= idx)
+      {
+        offset += group.getColumnCount();
+      }
+      else
+      {
+        return group;
+      }
+    }
+    throw new IndexOutOfBoundsException("No such group");
   }
 }

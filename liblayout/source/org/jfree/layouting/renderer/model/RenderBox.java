@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.8 2006/07/20 17:50:52 taqua Exp $
+ * $Id: RenderBox.java,v 1.9 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -489,12 +489,14 @@ public abstract class RenderBox extends RenderNode
       child = child.getNext();
     }
 
+    final long insets = getLeadingInsets(axis) + getTrailingInsets(axis);
+
     if (axis == HORIZONTAL_AXIS)
     {
-      return Math.max(boxDefinition.getMinimumWidth().resolve(0), size);
+      return insets + Math.max(boxDefinition.getMinimumWidth().resolve(0), size);
     }
 
-    return Math.max(boxDefinition.getMinimumHeight().resolve(0), size);
+    return insets + Math.max(boxDefinition.getMinimumHeight().resolve(0), size);
   }
 
   public BreakAfterEnum getBreakAfterAllowed(final int axis)
@@ -1125,7 +1127,7 @@ public abstract class RenderBox extends RenderNode
       {
         if (firstChild.isIgnorableForRendering() == false)
         {
-          return firstChild.getReferencePoint(axis);
+          return getLeadingInsets(axis) + firstChild.getReferencePoint(axis);
         }
         firstChild = firstChild.getNext();
       }
@@ -1142,7 +1144,7 @@ public abstract class RenderBox extends RenderNode
       referencePoint = Math.max(refPoint, referencePoint);
       child = child.getNext();
     }
-    return referencePoint;
+    return getLeadingInsets(axis) + referencePoint;
   }
 
   private RenderNode getFirstNonEmpty()

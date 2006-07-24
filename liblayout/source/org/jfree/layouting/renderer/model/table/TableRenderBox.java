@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.5 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.layouting.input.style.keys.table.EmptyCells;
 import org.jfree.layouting.input.style.keys.table.TableLayout;
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.border.Border;
@@ -60,6 +61,7 @@ import org.jfree.layouting.renderer.model.table.cols.TableColumnGroup;
 import org.jfree.layouting.renderer.model.table.cols.SpearateColumnModel;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
+import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.util.Log;
 
 /**
@@ -106,7 +108,6 @@ public class TableRenderBox extends BlockRenderBox
     final CSSValue borderModel =
             layoutContext.getStyle().getValue(TableStyleKeys.BORDER_COLLAPSE);
     this.collapsingBorderModel = BorderCollapse.COLLAPSE.equals(borderModel);
-
 
     final CSSValue layoutModel =
             layoutContext.getStyle().getValue(TableStyleKeys.TABLE_LAYOUT);
@@ -397,12 +398,24 @@ public class TableRenderBox extends BlockRenderBox
       {
         TableSectionRenderBox node = (TableSectionRenderBox) sections[j];
         node.structValidateRows();
+      }
+    }
+
+    for (int i = 1; i < allNodes.length; i++)
+    {
+      RenderNode[] sections = allNodes[i];
+      for (int j = 0; j < sections.length; j++)
+      {
+        TableSectionRenderBox node = (TableSectionRenderBox) sections[j];
+        node.structValidateRowSizes();
         final TableRowModel rowModel = node.getRowModel();
         preferredHeight = rowModel.getPreferredSize();
         minimumChunkSize = Math.max
                 (minimumChunkSize, rowModel.getMinimumChunkSize());
       }
     }
+
+    columnModel.validateSizes();
   }
 
   public long getPreferredSize(int axis)
@@ -411,17 +424,17 @@ public class TableRenderBox extends BlockRenderBox
     buildColumnModel();
     validateSizes();
 
+    final long insets = getLeadingInsets(axis) + getTrailingInsets(axis);
+
     if (axis == HORIZONTAL_AXIS)
     {
-      return columnModel.getPreferredSize();
+      return columnModel.getPreferredSize() + insets;
     }
     else
     {
-      return preferredHeight;
+      return preferredHeight  + insets;
     }
-    //return super.getPreferredSize(axis);
   }
-
 
   public long getMinimumChunkSize(int axis)
   {
@@ -431,7 +444,8 @@ public class TableRenderBox extends BlockRenderBox
 
     if (axis == HORIZONTAL_AXIS)
     {
-      return columnModel.getMinimumChunkSize();
+      final long insets = getLeadingInsets(axis) + getTrailingInsets(axis);
+      return insets + columnModel.getMinimumChunkSize();
     }
     return super.getMinimumChunkSize(axis);
   }
@@ -499,15 +513,50 @@ public class TableRenderBox extends BlockRenderBox
     return collapsingBorderModel;
   }
 
-  public Border getBorder()
+  protected void validateBorders()
   {
-    if (isCollapsingBorderModel())
+    if (isCollapsingBorderModel() == false)
     {
-      // ignore all borders.
-      return Border.createEmptyBorder();
+      // In the separate border model, tables may have their own borders.
+      super.validateBorders();
+      return;
     }
 
-    return super.getBorder();
+    if (isBordersValidated())
+    {
+      return;
+    }
+
+    StrictInsets borders = getBordersInternal();
+    borders.setTop(0);
+    borders.setBottom(0);
+    borders.setLeft(0);
+    borders.setRight(0);
+
+    setBordersValidated(true);
+  }
+
+  protected void validatePaddings()
+  {
+    if (isCollapsingBorderModel() == false)
+    {
+      // In the separate border model, tables may have their own padding.
+      super.validateBorders();
+      return;
+    }
+
+    if (isPaddingsValidated())
+    {
+      return;
+    }
+
+    StrictInsets paddings = getPaddingsInternal();
+    paddings.setTop(0);
+    paddings.setBottom(0);
+    paddings.setLeft(0);
+    paddings.setRight(0);
+
+    setPaddingsValidated(true);
   }
 
   public boolean isDisplayEmptyCells()
@@ -543,11 +592,13 @@ public class TableRenderBox extends BlockRenderBox
     //
     //    }
     // We assume Auto-Layout for now. Yes, that needs a change in the future.
+    final long insets = getLeadingInsets(axis) + getTrailingInsets(axis);
+
     final RenderLength preferredWidth =
             getBoxDefinition().getPreferredWidth();
 
-    final long minChunk = columnModel.getMinimumChunkSize();
-    final long prefSize = columnModel.getPreferredSize();
+    final long minChunk = insets + columnModel.getMinimumChunkSize();
+    final long prefSize = insets + columnModel.getPreferredSize();
     final long contextWidth = getComputedBlockContextWidth();
     final long nodeWidth;
     if (RenderLength.AUTO.equals(preferredWidth))

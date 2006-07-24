@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.6 2006/07/17 13:27:24 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.7 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleRule;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.layouting.input.style.selectors.SelectorWeight;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
@@ -230,6 +231,8 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       performCompleteStyleAttr(element, style);
     }
 
+    Log.debug ("Vertical Align: " + style.getValue(LineStyleKeys.VERTICAL_ALIGN) + " on Element " + layoutContext.getTagName());
+
     // Stage 2: Compute the 'specified' set of values.
     // Find all explicitly inherited styles and add them from the parent.
     final CSSInheritValue inheritInstance = CSSInheritValue.getInstance();
@@ -243,6 +246,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       }
     }
 
+    Log.debug ("Vertical Align: " + style.getValue(LineStyleKeys.VERTICAL_ALIGN) + " on Element " + layoutContext.getTagName());
 
     // Stage 3:  Compute the computed value set.
     ResolverFactory.getInstance().performResolve

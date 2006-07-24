@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EmptyBorderCorner.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,9 @@ package org.jfree.layouting.renderer.border;
  */
 public class EmptyBorderCorner implements BorderCorner
 {
-  public EmptyBorderCorner()
+  private static EmptyBorderCorner instance;
+
+  private EmptyBorderCorner()
   {
   }
 
@@ -59,5 +61,14 @@ public class EmptyBorderCorner implements BorderCorner
   public RenderLength getHeight()
   {
     return RenderLength.EMPTY;
+  }
+
+  public static synchronized EmptyBorderCorner getInstance()
+  {
+    if (instance == null)
+    {
+      instance = new EmptyBorderCorner();
+    }
+    return instance;
   }
 }

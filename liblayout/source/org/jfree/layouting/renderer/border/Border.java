@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Border.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: Border.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -187,8 +187,8 @@ public class Border implements Cloneable
   {
     if (emptyBorder == null)
     {
-      final EmptyBorderEdge edge = new EmptyBorderEdge();
-      final EmptyBorderCorner corner = new EmptyBorderCorner();
+      final BorderEdge edge = EmptyBorderEdge.getInstance();
+      final BorderCorner corner = EmptyBorderCorner.getInstance();
 
       emptyBorder = new Border(edge, edge, edge, edge, edge,
               corner, corner, corner, corner);
@@ -216,4 +216,5 @@ public class Border implements Cloneable
     }
     return true;
   }
+
 }

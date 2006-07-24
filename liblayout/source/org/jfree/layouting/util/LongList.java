@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LongList.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
  *
  * Changes
  * -------
@@ -136,7 +136,7 @@ public class LongList implements Serializable, Cloneable
   {
     if (index >= size || index < 0)
     {
-      throw new IndexOutOfBoundsException();
+      throw new IndexOutOfBoundsException("Illegal Index: " + index + " Max:" + size);
     }
     return data[index];
   }

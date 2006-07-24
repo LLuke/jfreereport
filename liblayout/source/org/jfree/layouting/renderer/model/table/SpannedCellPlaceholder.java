@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpannedCellPlaceholder.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
+ * $Id: SpannedCellPlaceholder.java,v 1.2 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,15 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
-import org.jfree.layouting.renderer.model.SpacerRenderNode;
+import java.util.ArrayList;
+
+import org.jfree.layouting.renderer.border.Border;
+import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.SpacerRenderNode;
+import org.jfree.layouting.renderer.model.table.cols.TableColumn;
+import org.jfree.layouting.renderer.model.table.cols.TableColumnGroup;
+import org.jfree.layouting.renderer.model.table.rows.TableRow;
 
 /**
  * A place holder for overlaid cells. (Yet another idea stolen from
@@ -55,7 +62,10 @@ public class SpannedCellPlaceholder extends SpacerRenderNode
   private Object cellId;
   private int row;
   private int column;
-  private boolean continuedSpan;
+  private boolean verticallyContinued;
+  private boolean horizontallyContinued;
+  private Border originalBorder;
+  private Border effectiveBorder;
 
   public SpannedCellPlaceholder(final SpannedCellPlaceholder cell)
   {
@@ -63,11 +73,14 @@ public class SpannedCellPlaceholder extends SpacerRenderNode
     this.column = cell.getColSpan();
     this.row = cell.getRowSpan() - 1;
     this.cellId = cell.getCellId();
-    this.continuedSpan = true;
+    this.verticallyContinued = true;
+    this.originalBorder = cell.getOriginalBorder();
   }
 
   public SpannedCellPlaceholder(TableCellRenderBox cell,
-                                int row, int column)
+                                int row, int column,
+                                boolean verticallyContinued,
+                                boolean horizontallyContinued)
   {
     super(0, 0, true);
     if (cell == null)
@@ -79,15 +92,32 @@ public class SpannedCellPlaceholder extends SpacerRenderNode
       throw new NullPointerException();
     }
 
+    this.verticallyContinued = verticallyContinued;
+    this.horizontallyContinued = horizontallyContinued;
+    this.originalBorder = cell.getBorder();
     this.cellId = cell.getInstanceId();
     this.column = column;
     this.row = row;
   }
 
-  public SpannedCellPlaceholder(int rows, int cols)
+  public SpannedCellPlaceholder(int rows,
+                                int cols,
+                                Border originalBorder)
   {
+    if (originalBorder == null)
+    {
+      throw new NullPointerException();
+    }
     this.column = cols;
     this.row = rows;
+    this.originalBorder = originalBorder;
+    this.verticallyContinued = true;
+    this.horizontallyContinued = true;
+  }
+
+  public boolean isHorizontallyContinued()
+  {
+    return horizontallyContinued;
   }
 
   /**
@@ -120,8 +150,29 @@ public class SpannedCellPlaceholder extends SpacerRenderNode
     return true;
   }
 
-  public boolean isContinuedSpan ()
+  public boolean isVerticallyContinued()
   {
-    return continuedSpan;
+    return verticallyContinued;
   }
+
+  /**
+   * This contains the border of the source cell - unmodified and not split.
+   *
+   * @return
+   */
+  public Border getOriginalBorder()
+  {
+    return originalBorder;
+  }
+
+  public Border getEffectiveBorder()
+  {
+    return effectiveBorder;
+  }
+
+  public void setEffectiveBorder(final Border effectiveBorder)
+  {
+    this.effectiveBorder = effectiveBorder;
+  }
+
 }

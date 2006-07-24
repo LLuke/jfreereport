@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableRow.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,8 @@ public class TableRow
 
   private LongList minimumChunkSizes;
   private LongList preferredSizes;
-  private LongList validatedSizes;
+  private long validatedLeadingSize;
+  private LongList validatedTrailingSize;
   private RenderLength definedHeight;
 
   public TableRow()
@@ -73,7 +74,8 @@ public class TableRow
     this.border = border;
     this.definedHeight = definedHeight;
     this.preferredSizes = new LongList(10);
-    this.validatedSizes = new LongList(10);
+    this.validatedLeadingSize = 0;
+    this.validatedTrailingSize = new LongList(10);
     this.minimumChunkSizes = new LongList(10);
   }
 
@@ -146,15 +148,21 @@ public class TableRow
                           long preferredWidth,
                           long chunkSizes)
   {
-    if ((preferredSizes.size() <= rowSpan) ||
-            (preferredSizes.get(rowSpan) < preferredWidth))
+    if (rowSpan < 1)
     {
-      preferredSizes.set(rowSpan - 1, preferredWidth);
+      throw new IllegalArgumentException();
+    }
+    final int idx = rowSpan - 1;
+
+    if ((idx >= preferredSizes.size()) ||
+            (preferredSizes.get(idx) < preferredWidth))
+    {
+      preferredSizes.set(idx, preferredWidth);
     }
     if ((rowSpan >= minimumChunkSizes.size()) ||
-            (minimumChunkSizes.get(rowSpan) < chunkSizes))
+            (minimumChunkSizes.get(idx) < chunkSizes))
     {
-      minimumChunkSizes.set(rowSpan - 1, chunkSizes);
+      minimumChunkSizes.set(idx, chunkSizes);
     }
   }
 
@@ -166,28 +174,46 @@ public class TableRow
     minimumChunkSizes.set(rowSpan - 1, chunkSizes);
   }
 
-  public long getValidatedSize(int rowSpan)
+  public long getValidatedLeadingSize()
   {
-    return validatedSizes.get(rowSpan - 1);
+    return validatedLeadingSize;
   }
 
-  public void setValidatedSize(final int rowSpan,
-                                final long validatedSize)
+  public long getValidatedTrailingSize(int rowSpan)
   {
-    this.validatedSizes.set(rowSpan - 1, validatedSize);
+    return validatedTrailingSize.get(rowSpan - 1);
   }
 
-  public int getMaxValidatedRowSpan ()
+//  public void setValidatedLeadingSize(final long validatedSize)
+//  {
+//    this.validatedLeadingSize = validatedSize;
+//  }
+
+  public void setValidatedTralingSize(final int rowSpan,
+                                      final long validatedSize)
   {
-    return this.validatedSizes.size();
+    this.validatedTrailingSize.set(rowSpan - 1, validatedSize);
   }
 
-  public void updateValidatedSize(final int rowSpan, final long height)
+  public int getMaxValidatedRowSpan()
   {
-    if ((rowSpan >= validatedSizes.size()) ||
-            (validatedSizes.get(rowSpan) < height))
+    return this.validatedTrailingSize.size();
+  }
+
+  public void updateValidatedSize(final int rowSpan,
+                                  final long leading,
+                                  final long trailing)
+  {
+    final int idx = rowSpan - 1;
+    if (validatedLeadingSize < leading)
     {
-      validatedSizes.set(rowSpan - 1, height);
+      validatedLeadingSize = leading;
+    }
+    
+    if ((idx >= validatedTrailingSize.size()) ||
+            (validatedTrailingSize.get(idx) < trailing))
+    {
+      validatedTrailingSize.set(idx, trailing);
     }
   }
 
@@ -199,5 +225,12 @@ public class TableRow
   public void setValidateSize(final long validateSize)
   {
     this.validateSize = validateSize;
+  }
+
+  public void clear()
+  {
+    //this.validatedLeadingSize = 0;
+    this.validatedTrailingSize.clear();
+    this.validateSize = 0;
   }
 }

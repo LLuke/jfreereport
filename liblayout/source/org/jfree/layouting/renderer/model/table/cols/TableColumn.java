@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumn.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
+ * $Id: TableColumn.java,v 1.2 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -183,25 +183,29 @@ public class TableColumn
     return preferredSizes.size();
   }
 
-  public void updateSizes (int colspan,
-                           long preferredWidth,
-                           long chunkSizes)
+  public void updateSizes(final int colspan,
+                          final long preferredWidth,
+                          final long chunkSizes)
   {
-    if ((preferredSizes.size() <= colspan) ||
-         (preferredSizes.get(colspan) < preferredWidth))
+    if (colspan < 1) throw new IllegalArgumentException();
+
+    final int idx = colspan -1;
+
+    if ((idx >= preferredSizes.size()) ||
+         (preferredSizes.get(idx) < preferredWidth))
     {
-      preferredSizes.set(colspan - 1, preferredWidth);
+      preferredSizes.set(idx, preferredWidth);
     }
-    if ((colspan >= minimumChunkSizes.size()) ||
-         (minimumChunkSizes.get(colspan) < chunkSizes))
+    if ((idx >= minimumChunkSizes.size()) ||
+         (minimumChunkSizes.get(idx) < chunkSizes))
     {
-      minimumChunkSizes.set(colspan - 1, chunkSizes);
+      minimumChunkSizes.set(idx, chunkSizes);
     }
   }
 
-  public void setSizes (int colspan,
-                           long preferredWidth,
-                           long chunkSizes)
+  public void setSizes (final int colspan,
+                        final long preferredWidth,
+                        final long chunkSizes)
   {
     preferredSizes.set(colspan - 1, preferredWidth);
     minimumChunkSizes.set(colspan - 1, chunkSizes);

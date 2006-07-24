@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.6 2006/07/17 16:48:52 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.7 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -149,7 +149,9 @@ public class InlineRenderBox extends RenderBox
           // The box is positioned outside of the principal box.
           // Margins do not apply (for now).
 
-          final long nodeHeightAbove = node.getReferencePoint(getMinorAxis());
+          final long nodeHeightAbove =
+                  node.getReferencePoint(getMinorAxis()) +
+                          node.getLeadingSpace(getMinorAxis());
           final long prefSize = node.getEffectiveLayoutSize(getMajorAxis());
           node.setPosition(getMajorAxis(), nodePos - prefSize - node.getTrailingSpace(getMajorAxis()));
           node.setPosition(getMinorAxis(), minorAxisNodePos + (heightAbove - nodeHeightAbove));
@@ -159,7 +161,9 @@ public class InlineRenderBox extends RenderBox
           continue;
         }
       }
-      final long nodeHeightAbove = node.getReferencePoint(getMinorAxis());
+      final long nodeHeightAbove =
+              node.getReferencePoint(getMinorAxis()) +
+                      node.getLeadingSpace(getMinorAxis());
       final long leadingMinor = Math.max
               (node.getLeadingSpace(getMinorAxis()), trailingMinor);
       final long leadingMajor = Math.max
